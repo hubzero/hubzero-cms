@@ -189,6 +189,9 @@ class modSpotlight
 		for ($i = 0, $n = $numspots; $i < $numspots; $i++) {
 		
 			$spot = $spots[$i];
+			if($spot == '') {
+				continue;
+			}
 			$row = null;
 			$out = '';
 			$tbl = '';
@@ -206,6 +209,7 @@ class modSpotlight
 			$fh->loadActive($start, $tbl, $spot.$k);
 			
 			// Did we find a feature for today?
+		
 			if ($fh->id && $fh->objectid) {
 				
 				if($fh->tbl == 'resources') {
@@ -249,7 +253,7 @@ class modSpotlight
 					$row->load( $fh->objectid );
 				}
 			}
-			else {
+			else { 
 				// No - so we need to randomly choose one					
 				if($tbl == 'resources') {
 				
@@ -284,16 +288,22 @@ class modSpotlight
 				if($tbl == 'topics') {					
 					// No - so we need to randomly choose one
 					$topics_tag = trim($params->get( 'topics_tag' ));
-					$query  = "SELECT DISTINCT w.id, w.pagename, w.title  ";
+					$query  = "SELECT DISTINCT w.id, w.pagename, w.title ";
 					$query .= " FROM #__wiki_page AS w ";
 					if($topics_tag) {
-					$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=w.id AND RTA.tbl='wiki' ";
-					$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
+						$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=w.id AND RTA.tbl='wiki' ";
+						$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
 					}
-					$query .= " WHERE w.access!=1 ";
+					else {
+						$query .= ", #__wiki_version AS v ";
+					}
+					$query .= " WHERE w.access!=1  ";
 					if($topics_tag) {
-					$query .= " AND TA.tag='".$topics_tag."' or TA.tag='".$topics_tag."'";
+						$query .= " AND (TA.tag='".$topics_tag."' OR TA.raw_tag='".$topics_tag."') ";
 					}		
+					else {
+						$query .= " AND v.pageid=w.id AND v.approved = 1 AND v.pagetext != '' ";
+					}
 					$query .= " ORDER BY RAND() ";
 					$database->setQuery( $query );
 					$rows[$spot] = isset($rows[$spot]) ? $rows[$spot] : $database->loadObjectList();					
@@ -345,7 +355,7 @@ class modSpotlight
 				if($k != 1 && in_array($spot, $activespots) && $rows && count($rows[$spot]) > 1 ){
 					$row = count($rows[$spot]) < $k ? $rows[$spot][$k-1] : $rows[$spot][1]; // get the next one
 				}									
-			}
+			} 
 							
 			// pull info
 			if($row) {				
@@ -388,6 +398,10 @@ class modSpotlight
 		$thumb = '';
 				
 		if($tbl == 'profiles') {
+			
+			if($getid) {
+				return $row->uidNumber;
+			}
 				
 			// Load their bio
 			$profile = new Hubzero_User_Profile();
@@ -433,10 +447,6 @@ class modSpotlight
 				}
 			}	
 			
-			if($getid) {
-				return $row->uidNumber;
-			}
-		
 			$title = $row->name;
 			if (!trim($title)) {
 				$title = $row->givenName.' '.$row->surname;
@@ -444,9 +454,7 @@ class modSpotlight
 			$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities($title).'" /></a></span>'."\n";
 			$out .= '<span class="spotlight-item"><a href="'. JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'">'.$title.'</a></span>, '.$row->organization."\n";
 			$numcontributions = $this->countContributions( $row->uidNumber, $row->username, $database );
-			//$ave_ranking = $this->getAverageRanking( $row->uidNumber, $database);
 			$out .= ' - '.JText::_('Contributions').':&nbsp;'.$numcontributions.''."\n";
-			//$out .= ' - '.JText::_('Contributions').': '.$numcontributions.'; '.JText::_('Average resource ranking').': '.round($ave_ranking, 2).''."\n";
 			$out .= '<div class="clear"></div>'."\n";
 												
 		}
