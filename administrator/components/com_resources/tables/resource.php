@@ -431,10 +431,8 @@ class ResourcesResource extends JTable
 			$query .= "AND r.published=1 ";
 		}
 		if (isset($filters['author'])) {
-			/*$query .= "AND (".$filters['author']." IN (SELECT aus.authorid FROM #__author_assoc AS aus ON aus.subid=r.id AND aus.subtable='resources') 
-							OR r.created_by=". $filters['author'] .") ";*/
-			//$query .= "AND aa.authorid='". $filters['author'] ."' AND r.id=aa.subid AND aa.subtable='resources' ";
-			$query .= "AND (aa.authorid='". $filters['author'] ."' OR r.created_by=". $filters['author'] .") ";
+			$query .= "AND (aa.authorid='". $filters['author'] ."') "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect
+
 		}
 		if (isset($filters['favorite'])) {
 			$query .= "AND xf.uid='". $filters['favorite'] ."' AND r.id=xf.oid AND xf.tbl='resources' ";
