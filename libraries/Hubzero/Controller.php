@@ -33,6 +33,8 @@ jimport('joomla.application.component.view');
 
 class Hubzero_Controller extends JObject
 {	
+	public $componentMessageQueue = array();
+	
 	protected $_name = NULL;
 	protected $_data = array();
 	protected $_task = NULL;
@@ -64,6 +66,9 @@ class Hubzero_Controller extends JObject
 		$this->juser = JFactory::getUser();
 		$this->database = JFactory::getDBO();
 		$this->config = JComponentHelper::getParams( $this->_option );
+		
+		//clear component messages - for cross component messages
+		$this->getComponentMessage();
 	}
 
 	//-----------
@@ -98,6 +103,42 @@ class Hubzero_Controller extends JObject
 			$app =& JFactory::getApplication();
 			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
 		}
+	}
+	
+	//-----------
+	
+	public function addComponentMessage( $message,  $type = 'message' )
+	{
+		//if message is somthing
+		if($message != '') {
+			$this->componentMessageQueue[] = array('message' => $message, 'type' => strtolower($type), 'option' => $this->_option);
+		}
+		
+		$session =& JFactory::getSession();
+		$session->set('component.message.queue', $this->componentMessageQueue);
+	}
+	
+	//-----------
+	
+	public function getComponentMessage()
+	{
+		if (!count($this->componentMessageQueue))
+		{
+			$session =& JFactory::getSession();
+			$componentMessage = $session->get('component.message.queue');
+			if (count($componentMessage)) {
+				$this->componentMessageQueue = $componentMessage;
+				$session->set('component.message.queue', null);
+			}
+		}
+		
+		foreach($this->componentMessageQueue as $k => $cmq) {
+			if($cmq['option'] != $this->_option) {
+				$this->componentMessageQueue[$k] = array();
+			}
+		} 
+		
+		return $this->componentMessageQueue;
 	}
 	
 	//----------------------------------------------------------

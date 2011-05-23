@@ -105,27 +105,21 @@ class GroupsController extends Hubzero_Controller
 	
 	function setNotification( $message, $type ) 
 	{
-		//get the app
-		$app =& JFactory::getApplication();
-		
 		//if type is not set, set to error message
 		$type = ($type == '') ? 'error' : $type;
 		
 		//if message is set push to notifications
 		if($message != '') {
-			$app->enqueueMessage($message, $type);
+			$this->addComponentMessage($message, $type);
 		}
 	}
 	
 	//------
 	
 	function getNotifications() 
-	{
-		//get the app
-		$app =& JFactory::getApplication();
-		
+	{	
 		//getmessages in quene 
-		$messages = $app->getMessageQueue();
+		$messages = $this->getComponentMessage();
 		
 		//if we have any messages return them
 		if($messages) {
