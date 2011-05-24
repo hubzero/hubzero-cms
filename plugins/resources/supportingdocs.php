@@ -78,6 +78,7 @@ class plgResourcesSupportingDocs extends JPlugin
 			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
 			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				// do nothing
+				return;
 			}
 		}
 		
