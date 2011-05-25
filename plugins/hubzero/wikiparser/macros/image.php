@@ -226,9 +226,12 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$path .= ($this->pageid) ? DS.$this->pageid : '';
 			$path .= DS.$filename;
 			
-			$link  = $config->filepath;
+			/*$link  = $config->filepath;
 			$link .= ($this->pageid) ? DS.$this->pageid : '';
-			$link .= DS.$filename;
+			$link .= DS.$filename;*/
+			$link  = substr($this->option,4,strlen($this->option)).DS;
+			$link .= ($this->scope) ? $this->scope.DS : '';
+			$link .= $this->pagename.DS.'Image:'.$filename;
 			$href = ($href) ? $href : $link;
 		}
 		

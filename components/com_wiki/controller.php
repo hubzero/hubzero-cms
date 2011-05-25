@@ -73,6 +73,14 @@ class WikiController extends Hubzero_Controller
 		$this->_task = JRequest::getVar( 'task', 'view' );
 		$this->_base_path = JPATH_ROOT.DS.'components'.DS.'com_wiki';
 		
+		if (!$this->pagename) {
+			$this->pagename = trim(JRequest::getVar( 'pagename', '', 'default', 'none', 2 ));
+		}
+		if (substr(strtolower($this->pagename), 0, 5) == 'image' 
+		 || substr(strtolower($this->pagename), 0, 4) == 'file') {
+			$this->_task = 'download';
+		}
+		
 		switch ($this->_task) 
 		{
 			// Media manager
@@ -81,6 +89,7 @@ class WikiController extends Hubzero_Controller
 			case 'upload':         $this->upload();         break;
 			case 'deletefolder':   $this->delete_folder();  break;
 			case 'deletefile':     $this->delete_file();    break;
+			case 'download':       $this->download();       break;
 
 			// Page tasks
 			case 'view':           $this->view();           break;
@@ -624,29 +633,28 @@ class WikiController extends Hubzero_Controller
 				// No pagename so let's generate one from the title
 				$page->pagename = trim(JRequest::getVar( 'title', '', 'post' ));
 				if (!$page->pagename) {
-					//echo WikiHtml::alert( JText::_('WIKI_ERROR_NO_PAGE_TITLE') );
-					//exit();
-					$revision = new WikiPageRevision( $this->database );
-					$revision->pageid     = $pageid;
-					$revision->created    = date( 'Y-m-d H:i:s', time() );
-					$revision->created_by = JRequest::getInt( 'created_by', 0, 'post' );
-					$revision->version    = JRequest::getInt( 'version', 0, 'post' );
-					$revision->pagetext   = stripslashes(rtrim($_POST['pagetext']));
-					$revision->summary    = trim(JRequest::getVar( 'summary', '', 'post' ));
-					$revision->minor_edit = JRequest::getInt( 'minor_edit', 0, 'post' );
-					$this->preview = $revision;
-					$this->_task = 'new';
 					$this->setError( JText::_('WIKI_ERROR_NO_PAGE_TITLE') );
-					$this->edit();
-					return;
+				} else {
+					$page->pagename = $this->normalize($page->pagename);
 				}
-				$page->pagename = $this->normalize($page->pagename);
-				// Check that no other pages are using the new title
-				$g = new WikiPage( $this->database );
-				$g->load( $page->pagename, $page->scope );
-				if ($g->exist()) {
-					//echo WikiHtml::alert( JText::_('WIKI_ERROR_PAGE_EXIST') );
-					//exit();
+				
+				if (!$this->getError()) {
+					if (substr(strtolower($page->pagename), 0, 6) == 'image:' 
+				 	|| substr(strtolower($page->pagename), 0, 5) == 'file:') {
+						$this->setError( JText::_('WIKI_ERROR_INVALID_TITLE') );
+					}
+				}
+				
+				if (!$this->getError()) {
+					// Check that no other pages are using the new title
+					$g = new WikiPage( $this->database );
+					$g->load( $page->pagename, $page->scope );
+					if ($g->exist()) {
+						$this->setError( JText::_('WIKI_ERROR_PAGE_EXIST') );
+					}
+				}
+
+				if ($this->getError()) {
 					$revision = new WikiPageRevision( $this->database );
 					$revision->pageid     = $pageid;
 					$revision->created    = date( 'Y-m-d H:i:s', time() );
@@ -657,7 +665,6 @@ class WikiController extends Hubzero_Controller
 					$revision->minor_edit = JRequest::getInt( 'minor_edit', 0, 'post' );
 					$this->preview = $revision;
 					$this->_task = 'new';
-					$this->setError( JText::_('WIKI_ERROR_PAGE_EXIST') );
 					$this->edit();
 					return;
 				}
@@ -2049,6 +2056,137 @@ class WikiController extends Hubzero_Controller
 		$keys = join('|', array_keys($classes));
 		
 		return preg_replace("/\[:($keys):]/e", '$classes["\1"]', $regexp);
+	}
+	
+	//-----------
+
+	protected function download()
+	{
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+		// Ensure we have a database object
+		if (!$this->database) {
+			JError::raiseError( 500, JText::_('COM_WIKI_DATABASE_NOT_FOUND') );
+			return;
+		}
+		
+		// Instantiate an attachment object
+		$attachment = new WikiPageAttachment( $this->database );
+		if (substr(strtolower($this->pagename), 0, 5) == 'image') {
+			$attachment->filename .= substr($this->pagename, 6);
+		} else if (substr(strtolower($this->pagename), 0, 4) == 'file') {
+			$attachment->filename .= substr($this->pagename, 5);
+		}
+		
+		// Get the scope of the parent page the file is attached to
+		if (!$this->scope) {
+			$this->scope = trim(JRequest::getVar( 'scope', '' ));
+		}
+		$segments = explode(DS,$this->scope);
+		$pagename = array_pop($segments);
+		$scope = implode(DS,$segments);
+		
+		// Get the parent page the file is attached to
+		$this->page = new WikiPage( $this->database );
+		$this->page->load( $pagename, $scope );
+		
+		// Load the page
+		if (!$this->page->id) {
+			JError::raiseError( 404, JText::_('COM_WIKI_PAGE_NOT_FOUND') );
+			return;
+		}
+		
+		// Check authorization
+		$authorized = $this->checkAuthorization('view');
+
+		// Check if the page is group restricted and the user is authorized
+		if ($this->page->group != '' && $this->page->access != 0 && !$authorized) {
+			if ($this->_sub) {
+				echo WikiHtml::warning( JText::_('WIKI_WARNING_NOT_AUTH') );
+			} else {
+				JError::raiseWarning( 403, JText::_('WIKI_WARNING_NOT_AUTH') );
+			}
+			return;
+		}
+		
+		// Ensure we have a path
+		if (empty($attachment->filename)) {
+			JError::raiseError( 404, JText::_('COM_WIKI_FILE_NOT_FOUND') );
+			return;
+		}
+		if (preg_match("/^\s*http[s]{0,1}:/i", $attachment->filename)) {
+			JError::raiseError( 404, JText::_('COM_WIKI_BAD_FILE_PATH') );
+			return;
+		}
+		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $attachment->filename)) {
+			JError::raiseError( 404, JText::_('COM_WIKI_BAD_FILE_PATH') );
+			return;
+		}
+		// Disallow windows drive letter
+		if (preg_match("/^\s*[.]:/", $attachment->filename)) {
+			JError::raiseError( 404, JText::_('COM_WIKI_BAD_FILE_PATH') );
+			return;
+		}
+		// Disallow \
+		if (strpos('\\',$attachment->filename)) {
+			JError::raiseError( 404, JText::_('COM_WIKI_BAD_FILE_PATH') );
+			return;
+		}
+		// Disallow ..
+		if (strpos('..',$attachment->filename)) {
+			JError::raiseError( 404, JText::_('COM_WIKI_BAD_FILE_PATH') );
+			return;
+		}
+		
+		// Get the configured upload path
+		$base_path = '/site/wiki/'.$this->page->id;
+		/*$base_path = $this->config->filepath;
+		if ($base_path) {
+			// Make sure the path doesn't end with a slash
+			if (substr($base_path, -1) == DS) { 
+				$base_path = substr($base_path, 0, strlen($base_path) - 1);
+			}
+			// Ensure the path starts with a slash
+			if (substr($base_path, 0, 1) != DS) { 
+				$base_path = DS.$base_path;
+			}
+		}*/
+		
+		// Does the path start with a slash?
+		if (substr($attachment->filename, 0, 1) != DS) { 
+			$attachment->filename = DS.$attachment->filename;
+			// Does the beginning of the $attachment->path match the config path?
+			if (substr($attachment->filename, 0, strlen($base_path)) == $base_path) {
+				// Yes - this means the full path got saved at some point
+			} else {
+				// No - append it
+				$attachment->filename = $base_path.$attachment->filename;
+			}
+		}
+		
+		// Add JPATH_ROOT
+		$filename = JPATH_ROOT.$attachment->filename;
+		
+		// Ensure the file exist
+		if (!file_exists($filename)) {
+			JError::raiseError( 404, JText::_('COM_WIKI_FILE_NOT_FOUND').' '.$filename );
+			return;
+		}
+		//echo $filename; //http://dev.nanohub.org/topics/aTCADLab/Image:tcad_large_600pix.gif
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($filename);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+		
+		if (!$xserver->serve()) {
+			// Should only get here on error
+			JError::raiseError( 404, JText::_('COM_WIKI_SERVER_ERROR') );
+		} else {
+			exit;
+		}
+		return;
 	}
 }
 
