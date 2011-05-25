@@ -134,12 +134,14 @@ class Hubzero_Content_Server
 
 		$extension =  $fileinfo['extension'];
 		
-		if (strcasecmp($extension, 'jnlp') == 0)
-			$type = 'application/x-java-jnlp-file';
-		else if (strcasecmp($extension, 'pdf') == 0)
-			$type = 'application/pdf';
-		else
+		include_once(dirname(__FILE__).DS.'Mimetypes.php');
+		
+		$mime = new Hubzero_Content_Mimetypes();
+		$type = $mime->getMimeType($filename);
+		
+		if ($type == '##INVALID_FILE##') {
 			$type = 'application/octet-stream';
+		}
 
 		if ($acceptranges 
 		 && $_SERVER['REQUEST_METHOD']=='GET' 
