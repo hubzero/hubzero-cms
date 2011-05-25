@@ -30,8 +30,7 @@ class MathRenderer
 		$this->tex = $tex;
 		$this->params = $params;
 		
-		$config = new WikiConfig( array('option'=>$params['option']) );
-		$this->config = $config;
+		$this->config = JComponentHelper::getParams( 'com_wiki' );
  	}
 
 	//-----------
@@ -74,7 +73,7 @@ class MathRenderer
 
 	public function render() 
 	{
-		$tmpDirectory = JPATH_ROOT.$this->config->tmppath;
+		$tmpDirectory = JPATH_ROOT.$this->config->get('tmppath');
 		$inputEncoding = 'UTF-8';
 
 		// To use inline TeX, you need to compile 'texvc' (in the 'math' subdirectory of
@@ -320,7 +319,7 @@ class MathRenderer
 	
 	private function _linkToMathImage() 
 	{
-		$url = $this->config->mathpath .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1) .DS. "{$this->hash}.png";
+		$url = $this->config->get('mathpath') .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1) .DS. "{$this->hash}.png";
 
 		return '<img src="'.$url.'" class="tex" alt="'.$this->tex.'" />';
 	}
@@ -329,7 +328,7 @@ class MathRenderer
 
 	private function _getHashPath() 
 	{
-		$path = JPATH_ROOT.$this->config->mathpath .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1);
+		$path = JPATH_ROOT.$this->config->get('mathpath') .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1);
 		return $path;
 	}
 	

@@ -35,11 +35,10 @@ class WikiController extends Hubzero_Controller
 {	
 	public function execute()
 	{
-		$config = new WikiConfig( array('option'=>$this->_option) );
-		$this->config = $config;
+		$this->config = JComponentHelper::getParams( 'com_wiki' );
 		
-		define('WIKI_SUBPAGE_SEPARATOR',$config->subpage_separator);
-		define('WIKI_MAX_PAGENAME_LENGTH',$config->max_pagename_length);
+		define('WIKI_SUBPAGE_SEPARATOR',$this->config->get('subpage_separator'));
+		define('WIKI_MAX_PAGENAME_LENGTH',$this->config->get('max_pagename_length'));
 		
 		$this->_task = strtolower(JRequest::getVar('task', 'pages'));
 
@@ -366,7 +365,7 @@ class WikiController extends Hubzero_Controller
 		// Parse attachments
 		/*$a = new WikiPageAttachment( $this->database );
 		$a->pageid = $row->pageid;
-		$a->path = $this->config->filepath;
+		$a->path = $this->config->get('filepath');
 		$row->pagehtml = $a->parse($row->pagehtml);*/
 
 		// Check content
@@ -455,7 +454,7 @@ class WikiController extends Hubzero_Controller
 
 						// Delete the page's files
 						jimport('joomla.filesystem.folder');
-						if (!JFolder::delete($this->config->filepath .DS. $id)) {
+						if (!JFolder::delete($this->config->get('filepath') .DS. $id)) {
 							$this->setError( JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER') );
 						}
 

@@ -55,11 +55,10 @@ class WikiController extends Hubzero_Controller
 
 	public function execute()
 	{
-		$config = new WikiConfig( array('option'=>$this->_option) );
-		$this->config = $config;
+		$this->config = JComponentHelper::getParams( 'com_wiki' );
 		
-		define('WIKI_SUBPAGE_SEPARATOR',$config->subpage_separator);
-		define('WIKI_MAX_PAGENAME_LENGTH',$config->max_pagename_length);
+		define('WIKI_SUBPAGE_SEPARATOR',$this->config->get('subpage_separator'));
+		define('WIKI_MAX_PAGENAME_LENGTH',$this->config->get('max_pagename_length'));
 		
 		$wp = new WikiPage( $this->database );
 		$c = $wp->count();
@@ -590,8 +589,6 @@ class WikiController extends Hubzero_Controller
 	
 	protected function save()
 	{
-		$config =& $this->config;
-	
 		$pageid = JRequest::getInt( 'pageid', 0, 'post' );
 		
 		// Was the preview button pushed?
@@ -731,10 +728,10 @@ class WikiController extends Hubzero_Controller
 		// Rename the temporary upload directory if it exist
 		$lid = JRequest::getInt( 'lid', 0, 'post' );
 		if ($lid != $page->id) {
-			if (is_dir(JPATH_ROOT.$config->filepath.DS.$lid)) {
+			if (is_dir(JPATH_ROOT.$this->config->get('filepath').DS.$lid)) {
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::move(JPATH_ROOT.$config->filepath.DS.$lid,JPATH_ROOT.$config->filepath.DS.$page->id)) {
-					$this->setError( JFolder::move(JPATH_ROOT.$config->filepath.DS.$lid,JPATH_ROOT.$config->filepath.DS.$page->id) );
+				if (!JFolder::move(JPATH_ROOT.$this->config->get('filepath').DS.$lid,JPATH_ROOT.$this->config->get('filepath').DS.$page->id)) {
+					$this->setError( JFolder::move(JPATH_ROOT.$this->config->get('filepath').DS.$lid,JPATH_ROOT.$this->config->get('filepath').DS.$page->id) );
 				}
 				$wpa = new WikiPageAttachment( $this->database );
 				$wpa->setPageID( $lid, $page->id );
@@ -777,7 +774,7 @@ class WikiController extends Hubzero_Controller
 			// Parse attachments
 			$a = new WikiPageAttachment( $this->database );
 			$a->pageid = $pageid;
-			$a->path = $config->filepath;
+			$a->path = $this->config->get('filepath');
 			$revision->pagehtml = $a->parse($revision->pagehtml);
 			
 			// Check content
@@ -850,7 +847,7 @@ class WikiController extends Hubzero_Controller
 
 						// Delete the page's files
 						jimport('joomla.filesystem.folder');
-						if (!JFolder::delete($this->config->filepath .DS. $this->page->id)) {
+						if (!JFolder::delete($this->config->get('filepath') .DS. $this->page->id)) {
 							$this->setError( JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER') );
 						}
 						
@@ -1537,10 +1534,10 @@ class WikiController extends Hubzero_Controller
 
 		// Build the upload path if it doesn't exist
 		$path = JPATH_ROOT;
-		if (substr($this->config->filepath, 0, 1) != DS) {
+		if (substr($this->config->get('filepath'), 0, 1) != DS) {
 			$path .= DS;
 		}
-		$path .= $this->config->filepath.DS.$listdir;
+		$path .= $this->config->get('filepath').DS.$listdir;
 		
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
@@ -1608,10 +1605,10 @@ class WikiController extends Hubzero_Controller
 		
 		// Build the file path
 		$path = JPATH_ROOT;
-		if (substr($this->config->filepath, 0, 1) != DS) {
+		if (substr($this->config->get('filepath'), 0, 1) != DS) {
 			$path .= DS;
 		}
-		$path .= $this->config->filepath.DS.$listdir.DS.$folder;
+		$path .= $this->config->get('filepath').DS.$listdir.DS.$folder;
 
 		// Delete the folder
 		if (is_dir($path)) { 
@@ -1656,10 +1653,10 @@ class WikiController extends Hubzero_Controller
 
 		// Build the file path
 		$path = JPATH_ROOT;
-		if (substr($this->config->filepath, 0, 1) != DS) {
+		if (substr($this->config->get('filepath'), 0, 1) != DS) {
 			$path .= DS;
 		}
-		$path .= $this->config->filepath.DS.$listdir;
+		$path .= $this->config->get('filepath').DS.$listdir;
 
 		// Delete the file
 		if (!file_exists($path.DS.$file) or !$file) { 
@@ -1736,10 +1733,10 @@ class WikiController extends Hubzero_Controller
 		}
 
 		$path = JPATH_ROOT;
-		if (substr($this->config->filepath, 0, 1) != DS) {
+		if (substr($this->config->get('filepath'), 0, 1) != DS) {
 			$path .= DS;
 		}
-		$path .= $this->config->filepath.DS.$listdir;
+		$path .= $this->config->get('filepath').DS.$listdir;
 
 		// Get the directory we'll be reading out of
 		$d = @dir($path);
@@ -1841,7 +1838,7 @@ class WikiController extends Hubzero_Controller
 
 			// No page name given! Default to the home page
 			if (!$this->pagename && $this->_task != 'new') 
-				$this->pagename = $this->config->homepage;
+				$this->pagename = $this->config->get('homepage');
 			
 			// Load the page
 			$page = new WikiPage( $this->database );
@@ -1983,7 +1980,7 @@ class WikiController extends Hubzero_Controller
 					$RE[] = '/([[:lower:]])((?<!Mc|De|Di)[[:upper:]]|\d)/';
 					break;
 			}
-			
+
 			$sep = preg_quote(WIKI_SUBPAGE_SEPARATOR, '/');
 			// This the single-letter words 'I' and 'A' from any following
 			// capitalized words.
@@ -2140,8 +2137,8 @@ class WikiController extends Hubzero_Controller
 		}
 		
 		// Get the configured upload path
-		$base_path = '/site/wiki/'.$this->page->id;
-		/*$base_path = $this->config->filepath;
+		//$base_path = '/site/wiki/'.$this->page->id;
+		$base_path = $this->config->get('filepath');
 		if ($base_path) {
 			// Make sure the path doesn't end with a slash
 			if (substr($base_path, -1) == DS) { 
@@ -2151,7 +2148,8 @@ class WikiController extends Hubzero_Controller
 			if (substr($base_path, 0, 1) != DS) { 
 				$base_path = DS.$base_path;
 			}
-		}*/
+		}
+		$base_path .= DS.$this->page->id;
 		
 		// Does the path start with a slash?
 		if (substr($attachment->filename, 0, 1) != DS) { 

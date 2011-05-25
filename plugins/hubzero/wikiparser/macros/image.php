@@ -214,19 +214,16 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$link = ($link) ? $link : $file;
 			$href = ($href) ? $href : $file;
 		} else {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'config.php');
-			$configs = array();
-			$configs['option'] = $this->option;
+			$config = JComponentHelper::getParams( 'com_wiki' );
 			if ($this->filepath != '') {
-				$configs['filepath'] = $this->filepath;
+				$config->set('filepath', $this->filepath);
 			}
-			$config = new WikiConfig( $configs );
 
-			$path  = JPATH_ROOT.$config->filepath;
+			$path  = JPATH_ROOT.$config->get('filepath');
 			$path .= ($this->pageid) ? DS.$this->pageid : '';
 			$path .= DS.$filename;
 			
-			/*$link  = $config->filepath;
+			/*$link  = $config->get('filepath');
 			$link .= ($this->pageid) ? DS.$this->pageid : '';
 			$link .= DS.$filename;*/
 			$link  = substr($this->option,4,strlen($this->option)).DS;

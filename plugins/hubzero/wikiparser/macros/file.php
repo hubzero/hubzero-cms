@@ -50,13 +50,10 @@ class FileMacro extends WikiMacro
 			return '';
 		}
 		
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'config.php');
-		$configs = array();
-		$configs['option'] = $this->option;
+		$config = JComponentHelper::getParams( 'com_wiki' );
 		if ($this->filepath != '') {
-			$configs['filepath'] = $this->filepath;
+			$config->set('filepath', $this->filepath);
 		}
-		$config = new WikiConfig( $configs );
 
 		// Is it numeric?
 		if (is_numeric($et)) {
@@ -68,12 +65,12 @@ class FileMacro extends WikiMacro
 			$attach->load( $id );
 			
 			// Did we get a result from the database?
-			$fp  = JPATH_ROOT.$config->filepath;
+			$fp  = JPATH_ROOT.$config->get('filepath');
 			$fp .= ($attach->pageid) ? DS.$attach->pageid : ''; 
 			$fp .= DS.$attach->filename;
 			if ($attach->filename && is_file($fp)) {
 				/*$xhub =& Hubzero_Factory::getHub();
-				$link  = $xhub->getCfg('hubLongURL').$config->filepath;
+				$link  = $xhub->getCfg('hubLongURL').$config->get('filepath');
 				$link .= ($attach->pageid) ? DS.$attach->pageid : ''; 
 				$link .= DS.$attach->filename;*/
 				$link  = substr($this->option,4,strlen($this->option)).DS;
@@ -85,7 +82,7 @@ class FileMacro extends WikiMacro
 				$ext = end($bits);
 
 				// Build and return the link
-				if (in_array($ext, $config->image_ext)) {
+				if (in_array($ext, $config->get('image_ext'))) {
 					return '<img src="'.$link.'" alt="'.$desc.'" />';
 				} else {
 					// Link
@@ -98,12 +95,12 @@ class FileMacro extends WikiMacro
 			}
 		} else {
 			// Did we get a result from the database?
-			$fp  = JPATH_ROOT.$config->filepath;
+			$fp  = JPATH_ROOT.$config->get('filepath');
 			$fp .= ($this->pageid) ? DS.$this->pageid : '';
 			$fp .= DS.$et;
 			if (is_file($fp)) {
 				/*$xhub =& Hubzero_Factory::getHub();
-				$link  = $xhub->getCfg('hubLongURL').$config->filepath;
+				$link  = $xhub->getCfg('hubLongURL').$config->get('filepath');
 				$link .= ($this->pageid) ? DS.$this->pageid : ''; 
 				$link .= DS.$et;*/
 				$link  = substr($this->option,4,strlen($this->option)).DS;
@@ -115,7 +112,7 @@ class FileMacro extends WikiMacro
 				$ext = end($bits);
 
 				// Build and return the link
-				if (in_array($ext, $config->image_ext)) {
+				if (in_array($ext, $config->get('image_ext'))) {
 					return '<img src="'.$link.'" alt="'.$desc.'" />';
 				} else {
 					// Link

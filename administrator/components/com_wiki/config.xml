@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<config>
+	<params>
+		<param name="subpage_separator" type="text" menu="hide" default="/" label="Subpage Separator" description="Subpage Separator" />
+		<param name="homepage" type="text" menu="hide" default="MainPage" label="Default Main Page name" description="Default Main Page name" />
+		<param name="max_pagename_length" type="text" menu="hide" default="100" label="Maximum Pagename Length" description="Maximum Pagename Length" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="filepath" type="text" menu="hide" default="/site/wiki" label="Upload path" description="File path for attachments" />
+		<param name="mathpath" type="text" menu="hide" default="/site/wiki/math" label="Upload path" description="File path for math images" />
+		<param name="tmppath" type="text" menu="hide" default="/site/wiki/tmp" label="Upload path" description="File path for temp files" />
+		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<param name="img_ext" type="text" menu="hide" label="Image Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed image types" />
+		<param name="file_ext" type="text" menu="hide" label="File Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+	</params>
+</config>

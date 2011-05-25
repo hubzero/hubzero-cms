@@ -62,13 +62,10 @@ class FileIndexMacro extends WikiMacro
 		
 		// Did we get a result from the database?
 		if ($rows) {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'config.php');
-			$configs = array();
-			$configs['option'] = $this->option;
+			$config = JComponentHelper::getParams( 'com_wiki' );
 			if ($this->filepath != '') {
-				$configs['filepath'] = $this->filepath;
+				$config->set('filepath', $this->filepath);
 			}
-			$config = new WikiConfig( $configs );
 			
 			$xhub =& Hubzero_Factory::getHub();
 			
@@ -77,7 +74,7 @@ class FileIndexMacro extends WikiMacro
 			foreach ($rows as $row) 
 			{
 				//$html .= '<li><a href="'.$this->scope.'/'.$row->pagename.'">'.$title.'</a></li>';
-				$link = $xhub->getCfg('hubLongURL').$config->filepath.DS.$this->pageid.DS.$row->filename;
+				$link = $xhub->getCfg('hubLongURL').$config->get('filepath').DS.$this->pageid.DS.$row->filename;
 				
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
