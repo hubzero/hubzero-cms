@@ -82,7 +82,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 
 			<label>
 				<?php echo JText::_('GROUPS_TITLE'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span>
-				<input type="text" name="description" size="35" value="<?php echo htmlentities(stripslashes($this->group->get('description'))); ?>" />
+				<input type="text" name="description" size="35" value="<?php echo stripslashes($this->group->get('description')); ?>" />
 			</label>
 			<label>
 				<?php echo JText::_('GROUPS_FIELD_TAGS'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>
