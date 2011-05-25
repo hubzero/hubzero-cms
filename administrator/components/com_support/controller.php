@@ -1286,12 +1286,17 @@ class SupportController extends Hubzero_Controller
 					
 					$base = $juri->base();
 					if (substr($base,-14) == 'administrator/') {
-						$base = substr($base,0,strlen($base)-15); //fixed on 5/13/2011 - remove ending slash in base url - already included in param(webpath)
+						$base = substr($base,0,strlen($base)-14); 
+					}
+					
+					$webpath = $this->config->get('webpath');
+					if (substr($webpath,0,1) == '/') {
+						$webpath = substr($webpath,1,strlen($webpath));
 					}
 					
 					// Parse comments for attachments
 					$attach = new SupportAttachment( $this->database );
-					$attach->webpath = $base.$this->config->get('webpath').DS.$id;
+					$attach->webpath = $base.$webpath.DS.$id;
 					$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 					$attach->output  = 'email';
 
