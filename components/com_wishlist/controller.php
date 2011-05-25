@@ -244,6 +244,7 @@ class WishlistController extends JObject
 		if (count($pathway->getPathWay()) <= 0) {
 			$this->startPath ($wishlist, $comtitle, $pathway);
 		}
+		
 		if ($this->_task) {
 			switch ($this->_task) 
 			{
@@ -296,7 +297,7 @@ class WishlistController extends JObject
 	//------------
 	
 	public function startPath ($wishlist, $title, $pathway) {
-				
+		
 		// build return path to resource
 		if(isset($wishlist->resource) && isset($wishlist->resource->typetitle)) {
 				$normalized_valid_chars = 'a-zA-Z0-9';
@@ -310,7 +311,15 @@ class WishlistController extends JObject
 				
 		}
 		else {
-			$pathway->addItem( $title, 'index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid );
+			if($wishlist->category == 'group') {
+				ximport('Hubzero_Group');
+				$group = Hubzero_Group::getInstance($wishlist->referenceid);
+				$pathway->addItem('Groups','index.php?option=com_groups');
+				$pathway->addItem( $group->get('description'), 'index.php?option=com_groups&gid='.$group->get('cn'));
+				$pathway->addItem( 'Wishlist', 'index.php?option=com_groups&gid='.$group->get('cn').'&active=wishlist');
+			} else {
+				$pathway->addItem( $title, 'index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid );
+			}
 		}		
 	}
 	
