@@ -192,7 +192,7 @@ class ToolsController extends Hubzero_Controller
 		
 		// Get the forge image
 		ximport('Hubzero_Document');
-		$image = Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
+		$image = Hubzero_Document::getComponentImage('com_tools', 'forge.png', 1);
 		
 		// Instantiate the view
 		$view = new JView( array('name'=>'tools') );
@@ -216,7 +216,7 @@ class ToolsController extends Hubzero_Controller
 	protected function image() 
 	{
 		ximport('Hubzero_Document');
-		$image = JPATH_SITE . Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
+		$image = JPATH_SITE . Hubzero_Document::getComponentImage('com_tools', 'forge.png', 1);
 
 		if (is_readable($image)) {
 			ob_clean();
