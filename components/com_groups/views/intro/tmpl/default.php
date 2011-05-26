@@ -131,7 +131,7 @@ if ($groups) {
 		
 		$public_desc = '(No public description available.)';
 		if ($group->public_desc) {
-			$public_desc = $p->parse( "\n".stripslashes($group->public_desc), $wikiconfig );
+			$public_desc = $p->parse( "\n".stripslashes($group->public_desc), $wikiconfig, true, true );
 			$public_desc = strip_tags($public_desc);
 			$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 			$public_desc = preg_replace("/$UrlPtrn/", '', $public_desc);
