@@ -120,7 +120,7 @@ abstract class YSearchResult
 	public function highlight($regex)
 	{
 		$this->highlight_regex = $regex;
-		$hl = "/$regex/ims";
+		$hl = "#$regex#ims";
 		foreach (array('title', 'author', 'excerpt') as $key)
 			if (!empty($this->$key))
 			{
@@ -136,14 +136,14 @@ abstract class YSearchResult
 	{
 		if (!$this->excerpt)
 		{
-			$descr = preg_replace('/(?:[{]xhub:.*?[}]|[{}]|[#][!]html)/ixms', '', $this->description);
-			if (preg_match_all('/(?:^|[.?!"])\s*?(.*?'.$this->highlight_regex.'.*?(?:[.?!"]|$))/ims', $descr, $excerpt))
+			$descr = preg_replace('#(?:[{]xhub:.*?[}]|[{}]|[\#][!]html)#ixms', '', $this->description);
+			if (preg_match_all('#(?:^|[.?!"])\s*?(.*?'.$this->highlight_regex.'.*?(?:[.?!"]|$))#ims', $descr, $excerpt))
 				$descr = join('<small>…</small> ', array_unique($excerpt[1]));
 
 			$wrapped = wordwrap(str_replace("\n", '', $descr), self::$intro_excerpt_len);
 			$wrap_pos = strpos($wrapped, "\n");
-			$this->excerpt = substr($wrapped, 0, $wrap_pos ? $wrap_pos : self::$intro_excerpt_len) . ($wrap_pos ? '<small>…</small>' : '');
-			$this->excerpt = preg_replace("/$this->highlight_regex/ims", '<span class="highlight">$1</span>', $this->excerpt);
+			$this->excerpt = substr($wrapped, 0, $wrap_pos ? $wrap_pos : self::$intro_excerpt_len) . ($wrap_pos ? '<small>…</small>' : '')
+			$this->excerpt = preg_replace("#$this->highlight_regex#ims", '<span class="highlight">$1</span>', $this->excerpt);
 		}
 		return $this->excerpt;
 	}
