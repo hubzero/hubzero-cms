@@ -846,9 +846,11 @@ class WikiController extends Hubzero_Controller
 						$page->delete( $this->page->id );
 
 						// Delete the page's files
-						jimport('joomla.filesystem.folder');
-						if (!JFolder::delete($this->config->get('filepath') .DS. $this->page->id)) {
-							$this->setError( JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER') );
+						if (is_dir($this->config->get('filepath') .DS. $this->page->id)) {
+							jimport('joomla.filesystem.folder');
+							if (!JFolder::delete($this->config->get('filepath') .DS. $this->page->id)) {
+								$this->setError( JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER') );
+							}
 						}
 						
 						// Log the action
