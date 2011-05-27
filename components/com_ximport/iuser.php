@@ -45,7 +45,7 @@ function _compareusers($mode = 0)
     $dn = 'ou=users,' . $hubLDAPBaseDN;
     //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=12434))';
     //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=15825))';
-    //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=10617))';
+    //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=42015))';
     $filter = '(&(objectclass=*)(hasSubordinates=FALSE))';
 
     $sr = @ldap_search($conn, $dn, $filter, array("*","+")); //, $attributes, 0, 0, 0);
@@ -69,7 +69,7 @@ function _compareusers($mode = 0)
 		$rowhtml = '';
 		$showrow = false;
 
-		if (0 && $attributes['uidNumber'][0] < 29000)
+		if (1 && $attributes['uidNumber'][0] < 45000)
 		{
 			$mycount++;
             $entry = @ldap_next_entry($conn, $entry);
@@ -80,8 +80,10 @@ function _compareusers($mode = 0)
 			
 		$result = $profile->load($attributes['uid'][0]);
 			
-		if ($result === false)
+		if ($result === false) {
+			continue;
 			die('couldn\'t find profile for ' . $attributes['uid'][0]);
+		}
 
 		for($i = 0; $i < $attributes['count']; $i++)
 		{
@@ -310,7 +312,7 @@ function _compareusers($mode = 0)
 								{
 									$profile->set('orgtype',$dbvalue);
 									$profile->update('ldap');
-									$rowhtml .= "</td><td>SYNCD TO MYSQL</td></tr>";
+									$rowhtml .= "</td><td>SYNCD TO MYSQL ($dbvalue)</td></tr>";
 								}
 							}
 						}
@@ -331,8 +333,8 @@ function _compareusers($mode = 0)
 								else 
 								{
 									$profile->set('emailConfirmed',$dbvalue);
-									$profile->update('mysql');
-									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
+									$profile->update('ldap');
+									$rowhtml .= "</td><td>SYNCD TO MYSQL</td></tr>";
 								}
 							}
 						}
@@ -534,6 +536,17 @@ function _compareusers($mode = 0)
 							if ($j > 0)
 								die('unexpected multivalue');
 						
+							if ($key == 'userPassword') 
+							{	ximport('Hubzero_User_Helper');
+								if ((strncmp($value[$j],"{MD5}",5) != 0) && (strncmp($value[$j],"{SSHA}",6) != 0)) {
+									$profile->set('userPassword',  Hubzero_User_Helper::encrypt_password($value[$j]));
+									$profile->update('mysql');
+									$profile->update('ldap');
+									echo "<tr><td>" .  $attributes['uidNumber'][0] . "</td><td>Encrypted password from " . $value[$j] . " to " . $profile->get('userPassword') . "</td></tr>";
+									continue;
+								}
+							}
+						
 							if ($profile->get($key) != $value[$j])
 							{
 								$dbvalue = $profile->get($key);
@@ -542,11 +555,21 @@ function _compareusers($mode = 0)
 								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j] . "</td>";
 								if (in_array($key,array('url','regIP','countryresident','countryorigin','userPassword')))
 								{
+
 									if (empty($dbvalue))
 									{
 										$profile->set($key,$value[$j]);
 										$profile->update('mysql');
 										$rowhtml .= "<td>FIXED</td></tr>";
+									}
+									else {
+										if ($key == 'userPassword') {
+											$profile->set($key,$value[$j]);
+											$profile->update('mysql');
+											$rowhtml .= "<td>SYNC TO LDAP</td></tr>";
+										} else {
+											$rowhtml .= "<td>MISMATCH</td></tr>\n";
+										}
 									}
 								}
 								else if ($key == 'homeDirectory')
@@ -560,6 +583,24 @@ function _compareusers($mode = 0)
 										echo "fixed $key <br>";
 									}
 								}
+								else if ($key == 'regHost')
+								{
+									$dbvalue = $profile->get($key);
+
+									if (($value[$j] == '?') || ($value[$j] == '3'))
+									{
+										$profile->set($key,$dbvalue);
+										$profile->update('ldap');
+										$rowhtml .= "<td>SYNCED TO MYSQL</td></tr>\n";
+									}
+								}
+                                else if ($key == 'mailPreferenceOption')
+                                {
+                                    $dbvalue = $profile->get($key);
+                                    $profile->set($key,$dbvalue);
+                                    $profile->update('ldap');
+                                    $rowhtml .= "<td>SYNCED TO MYSQL</td></tr>\n";
+                                }
 								else
 								{
 									$rowhtml .= "<td>MISMATCH</td></tr>\n";
@@ -578,7 +619,7 @@ function _compareusers($mode = 0)
 
 				$mycount++;
                     $entry = @ldap_next_entry($conn, $entry);
-				//if ($mycount > 14000) break;
+				if ($mycount > 68000) break;
 
                }
                while($entry !== false);
