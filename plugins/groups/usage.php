@@ -1,30 +1,25 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package		HUBzero CMS
+ * @author		Christopher <csmoak@purdue.edu>
+ * @copyright	Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
  *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
  *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 // No direct access
@@ -55,7 +50,7 @@ class plgGroupsUsage extends JPlugin
 		$area = array(
 			'name' => 'usage',
 			'title' => JText::_('USAGE'),
-			'default_access' => 'members'
+			'default_access' => 'anyone'
 		);
 		
 		return $area;
@@ -84,11 +79,59 @@ class plgGroupsUsage extends JPlugin
 		}
 		
 		if ($return == 'html') {
+			
+			//instantiate the db
 			$database =& JFactory::getDBO();
 			
-			ximport('Hubzero_Document');
-			Hubzero_Document::addComponentStylesheet('com_usage');
+			//reference group for other functions
+			$this->group = $group;
 			
+			//import the hubzero document library
+			ximport('Hubzero_Document');
+			
+			//get the joomla document
+			$doc =& JFactory::getDocument();
+			
+			//add usage stylesheet to view
+			Hubzero_Document::addPluginStylesheet('groups', 'usage');
+			
+			//add datepicker stylesheet to view
+			$doc->addStyleSheet('plugins'.DS.'groups'.DS.'usage'.DS.'datepicker.css');
+			
+			//add google js-api
+			$doc->addScript('https://www.google.com/jsapi');
+			
+			//add jquery from google cdn
+			$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
+			
+			//add usage custom script
+			$doc->addScript('plugins'.DS.'groups'.DS.'usage'.DS.'usage.js');
+			
+			//add datepicker script
+			$doc->addScript('plugins'.DS.'groups'.DS.'usage'.DS.'datepicker.js');
+			
+			//get the page id if we want to view stats on a specific page
+			$pid = JRequest::getVar('pid', '');
+			
+			//get start and end dates
+			$start = JRequest::getVar('start', date("Y-m-d 00:00:00",strtotime('-30 DAYS')));
+			$end = JRequest::getVar('end', date("Y-m-d 23:59:59"));
+			
+			//make sure start date is a full php datetime
+			if(strlen($start) != 19) {
+				$start .= " 00:00:00";
+			}
+			
+			//make sure end date is a full php datetime
+			if(strlen($end) != 19) {
+				$end .= " 23:59:59";
+			}
+		
+			//generate script to draw chart and push to the page
+			$script = $this->drawChart($pid, $start, $end);
+			$doc->addScriptDeclaration($script);
+			
+			//import and create view
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -97,10 +140,21 @@ class plgGroupsUsage extends JPlugin
 					'name'=>'index'
 				)
 			);
+			
+			//get the group pages
+			$query = "SELECT id, title FROM #__xgroups_pages WHERE gid=".$group->get('gidNumber');
+			$database->setQuery($query);
+			$view->pages = $database->loadAssocList();
+			
 			$view->option = $option;
 			$view->group = $group;
 			$view->authorized = $authorized;
 			$view->database = $database;
+
+			$view->pid = $pid;
+			$view->start = $start;
+			$view->end = $end;
+			
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
@@ -199,5 +253,186 @@ class plgGroupsUsage extends JPlugin
 		$forum = new XForum( $database );
 		return $forum->getCount( $filters );
 	}
-}
+	
+	//-------
+	
+	public function getGroupPagesCount($gid)
+	{
+		if (!$gid) {
+			return 0;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_groups'.DS.'tables'.DS.'pages.php' );
+		
+		$gp = new GroupPages( $database );
+		
+		$pages = $gp->getPages($gid);
+		
+		return count($pages);
+	}
+	
+	//--------
+	
+	public function getGroupPageViews( $gid, $pageid = null, $start, $end )
+	{
+		$database =& JFactory::getDBO();
+		
+		if($pageid != '') {
+			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gid=".$gid." AND datetime > '{$start}' AND datetime < '{$end}' AND pid={$pageid} ORDER BY datetime ASC";
+		} else {
+			$query = "SELECT * FROM #__xgroups_pages_hits WHERE gid=".$gid." AND datetime > '{$start}' AND datetime < '{$end}' ORDER BY datetime ASC";
+		}
+		$database->setQuery($query);
+		$views = $database->loadAssocList();
+		
+		
+		
+		$s = strtotime($start);
+		$e = strtotime($end);
+		$diff = round(($e-$s)/60/60/24);
+		
+		$page_views = array();
+		
+		for($i=0; $i < $diff; $i++) {
+			$count = 0;
+			$date = date("M d, Y", strtotime("-{$i} DAYS", strtotime($end)));
+			
+			$day_s = date("Y-m-d 00:00:00", strtotime("-{$i} DAYS", strtotime($end)));
+			$day_e = date("Y-m-d 23:59:59", strtotime("-{$i} DAYS", strtotime($end)));
+			
+			foreach($views as $view) {
+				$t = $view['datetime'];
+				
+				if($t >= $day_s && $t <= $day_e) {
+					$count++;
+				}
+			}
+			
+			$page_views[$date] = $count;
+		}
+		
+		return array_reverse($page_views);
+	}
+	
+	//-------
+	
+	public function drawChart($pid, $start, $end)
+	{
+		//vars used 
+		$jsObj = "";
+		$script = "";
+		
+		//num pages views
+		$page_views = $this->getGroupPageViews($this->group->get('gidNumber'), $pid, $start, $end);
+		$total = count($page_views);
+		$count = 0;
+		foreach($page_views as $d => $c) {
+			$count++;
+			$jsObj .= "[\"{$d}\", {$c}]";
+			if($count < $total) {
+				$jsObj .= ", \n \t\t\t\t";
+			}
+		}
+		
+		$script = "
+			google.load(\"visualization\", \"1\", {
+				packages:[\"corechart\"]
+			});
 
+			google.setOnLoadCallback(drawChart);
+
+			function drawChart() {
+				var data = new google.visualization.DataTable();
+		       	data.addColumn('string', 'Day');
+		       	data.addColumn('number', 'Views');
+		       	data.addRows([
+		         	{$jsObj}
+				]);
+
+				var options = {
+					height: 240,
+					legend: 'none',
+					pointSize: 4,
+					axisTitlesPosition: 'none',
+					hAxis: {
+						textPosition:'out',
+						slantedText: false,
+						slantedTextAngle: 0,
+						showTextEvery: 2,
+						textStyle: {
+							fontSize:10
+						}
+					},
+					vAxis: {
+						minValue: 10,
+						textPosition: 'out'
+					},
+					chartArea: {
+						width: \"90%\"
+					}
+				}
+
+		       	var chart = new google.visualization.AreaChart(document.getElementById('page_views_chart'));
+		       	chart.draw(data, options);
+			}";
+		
+			
+		return $script;
+	}
+	
+	//-------
+	
+	public function getGroupBlogCount($gid)
+	{
+		if (!$gid) {
+			return 0;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.entry.php');
+		
+		$filters = array();
+		$filters['scope'] = 'group';
+		$filters['group_id'] = $gid;
+		
+		$gb = new BlogEntry($database);
+		
+		$total = $gb->getCount($filters);
+		
+		return $total;
+	}
+	
+	//------
+	
+	public function getGroupBlogCommentCount( $gid )
+	{
+		if (!$gid) {
+			return 0;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		$query = "SELECT count(*) FROM jos_blog_entries as be, jos_blog_comments as bc WHERE be.scope='group' AND be.group_id=".$gid." AND be.id=bc.entry_id";
+		$database->setQuery($query);
+		
+		$count = $database->loadResult();
+		return $count;
+	}
+	
+	//-----
+	
+	public function getGroupCalendarCount( $gid )
+	{
+		$database =& JFactory::getDBO();
+		
+		$query = "SELECT COUNT(*) FROM jos_xgroups_events WHERE gidNumber=".$gid;
+		$database->setQuery($query);
+		
+		$count = $database->loadResult();
+		return $count;
+	}
+	
+}
