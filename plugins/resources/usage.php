@@ -114,6 +114,9 @@ class plgResourcesUsage extends JPlugin
 		}
 		$stats->loadStats( $resource->id, $period, $dthis );
 
+		$clusters = new ResourcesStatsClusters ( $database );
+		$clusters->loadStats( $resource->id );
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			ximport('Hubzero_Document');
@@ -152,6 +155,9 @@ class plgResourcesUsage extends JPlugin
 				if ($stats->users) {
 					$arr['metadata'] = '<p class="usage">'.JText::sprintf('%s user(s)',$stats->users).'</p>';
 				}
+			}
+			if ($clusters->users && $clusters->classes) {
+				$arr['metadata'] .= '<p class="usage">'.JText::sprintf('%s user(s)',$clusters->users).' in '.JText::sprintf('%s class(es)',$clusters->classes).'</p>';
 			}
 		}
 

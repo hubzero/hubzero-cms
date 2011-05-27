@@ -63,7 +63,7 @@ class plgUsageTools extends JPlugin
 	{
 		$html = '';
 		
-		$sql = "SELECT * FROM #__stats_topvals WHERE top = '".$s_top."' AND datetime = '".$dthis."-00' AND period = '".$period."' ORDER BY value DESC";
+		$sql = "SELECT * FROM #__stats_topvals WHERE top = '".$s_top."' AND datetime = '".$dthis."-00' AND period = '".$period."' ORDER BY rank";
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
 		
@@ -92,7 +92,7 @@ class plgUsageTools extends JPlugin
 					$html .= "\t\t".'<tr class="summary">'."\n";
 					$html .= "\t\t\t".'<th colspan="2" class="numerical-data">'.$row->name.'</th>'."\n";
 					$html .= "\t\t\t".'<th class="numerical-data">'.$value.'</th>'."\n";
-					$html .= "\t\t\t".'<th class="numerical-data">'.round((($row->value/$total)*100),2).'%</th>'."\n";
+					$html .= "\t\t\t".'<th class="numerical-data">'.number_format((($row->value/$total)*100),2).'%</th>'."\n";
 					$html .= "\t\t".'</tr>'."\n";
 					$html .= "\t".'</tfoot>'."\n";
 					$html .= "\t".'<tbody>'."\n";
@@ -107,7 +107,7 @@ class plgUsageTools extends JPlugin
 					$html .= "\t\t\t".'<td>'.$row->rank.'</td>'."\n";
 					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id='.$name[0].'&active=usage').'">'.$name[1].'</a></td>'."\n";
 					$html .= "\t\t\t".'<td>'.$value.'</td>'."\n";
-					$html .= "\t\t\t".'<td>'.round((($row->value/$total)*100),2).'%</td>'."\n";
+					$html .= "\t\t\t".'<td>'.number_format((($row->value/$total)*100),2).'%</td>'."\n";
 					$html .= "\t\t".'</tr>'."\n";
 				}
 			}
@@ -174,7 +174,7 @@ class plgUsageTools extends JPlugin
 	{
 		$html = '';
 		
-		$sql = 'SELECT COUNT(DISTINCT c.id) FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND standalone = "1" AND published = "1"';
+		$sql = 'SELECT COUNT(DISTINCT c.id) FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1"';
 		$database->setQuery( $sql );
 		$result = $database->loadResult();
 		
@@ -196,7 +196,7 @@ class plgUsageTools extends JPlugin
 		}
 		
 		$count = 1;
-		$sql = 'SELECT DISTINCT r.id, r.title, r.published, COUNT(c.id) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND standalone = "1" AND published = "1" GROUP BY r.id ORDER BY citations DESC';
+		$sql = 'SELECT DISTINCT r.id, r.title, r.published, COUNT(c.id) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1" GROUP BY r.id ORDER BY citations DESC';
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
 		
@@ -527,7 +527,8 @@ class plgUsageTools extends JPlugin
 		$s_top  = JRequest::getVar( 'top', '2' );
 
 		// Build the HTML
-		$html  = $this->navlinks($period, $s_top);
+		if ($s_top < 9)
+			$html  = $this->navlinks($period, $s_top);
 		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period='.$period) .'">'."\n";
 		$html .= "\t".'<fieldset class="filters">'."\n";
 		$html .= "\t\t".'<label>'."\n";
@@ -553,7 +554,8 @@ class plgUsageTools extends JPlugin
 		
 		$html .= "\t\t\t".'</select>'."\n";
 		$html .= "\t\t".'</label> '."\n";
-		$html .= $this->drop_down_dates($database, $period, $s_top, $dthis).' ';
+		if ($s_top < 9)
+			$html .= $this->drop_down_dates($database, $period, $s_top, $dthis).' ';
 		$html .= "\t\t".'<input type="submit" value="'.JText::_('PLG_USAGE_VIEW').'" />'."\n";
 		$html .= "\t".'</fieldset>'."\n";
 		$html .= '</form>'."\n";

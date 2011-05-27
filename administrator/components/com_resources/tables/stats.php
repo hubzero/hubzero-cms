@@ -88,7 +88,6 @@ class ResourcesStats extends JTable
 	}
 }
 
-
 class ResourcesStatsTools extends JTable 
 {
 	var $id       = NULL;  // @var int(11) Primary key
@@ -274,5 +273,60 @@ class ResourcesStatsToolsUsers extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
+}
+
+class ResourcesStatsClusters extends JTable
+{
+    var $id         = NULL; // @var bigint(20) Primary key
+    var $cluster    = NULL; // @var varchar(255)
+    var $username   = NULL; // @var varchar(32)
+    var $uidNumber  = NULL; // @var int(11)
+    var $toolname   = NULL; // @var varchar(80)
+    var $resid      = NULL; // @var int(11)
+
+    var $users      = NULL;
+    var $classes    = NULL;
+    //-----------
+
+    public function __construct( &$db )
+    {
+        parent::__construct( '#__resource_stats_clusters', 'id', $db );
+    }
+
+    //-----------
+
+    public function check()
+    {
+        if (trim( $this->resid ) == '') {
+            $this->setError( JText::_('Your entry must have a resource ID.') );
+            return false;
+        }
+        return true;
+    }
+
+    //-----------
+
+    public function loadStats( $resid=NULL )
+    {
+        if ($resid == NULL) {
+            $resid = $this->resid;
+        }
+        if ($resid == NULL) {
+            return false;
+        }
+
+        $sql = "SELECT COUNT(DISTINCT uidNumber, username) AS users, COUNT(DISTINCT cluster) AS classes
+                FROM $this->_tbl
+                WHERE resid = '".$resid."'";
+
+        $this->_db->setQuery( $sql );
+        //return $this->_db->loadObject( $this );
+        if ($result = $this->_db->loadAssoc()) {
+            return $this->bind( $result );
+        } else {
+            $this->setError( $this->_db->getErrorMsg() );
+            return false;
+        }
+    }
 }
 
