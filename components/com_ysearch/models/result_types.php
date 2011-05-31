@@ -142,7 +142,7 @@ abstract class YSearchResult
 
 			$wrapped = wordwrap(str_replace("\n", '', $descr), self::$intro_excerpt_len);
 			$wrap_pos = strpos($wrapped, "\n");
-			$this->excerpt = substr($wrapped, 0, $wrap_pos ? $wrap_pos : self::$intro_excerpt_len) . ($wrap_pos ? '<small>&hellip;</small>' : '')
+			$this->excerpt = substr($wrapped, 0, $wrap_pos ? $wrap_pos : self::$intro_excerpt_len) . ($wrap_pos ? '<small>&hellip;</small>' : '');
 			$this->excerpt = preg_replace("#$this->highlight_regex#ims", '<span class="highlight">$1</span>', $this->excerpt);
 		}
 		return $this->excerpt;
