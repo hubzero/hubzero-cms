@@ -454,11 +454,11 @@ ol.comments .five-stars      { background-position: 0 -400px; }
     margin: 2em 0 0 0;
     }
 a.ext-link {
-    background: url("../../../../components/com_groups/images/extlink.gif") 0 0.4em no-repeat;
+    background: url("../../../../components/com_groups/assets/img/extlink.gif") 0 0.4em no-repeat;
     padding-left: 15px;
     }
 a.missing {
-    background: url("../../../../components/com_groups/images/missinglink.gif") 0 0.4em no-repeat;
+    background: url("../../../../components/com_groups/assets/img/missinglink.gif") 0 0.4em no-repeat;
     padding-left: 7px;
     }
 						
