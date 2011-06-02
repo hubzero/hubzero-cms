@@ -33,6 +33,7 @@
 		}	
 	ul.questions li .tags li {
 		background: none;
+		margin-bottom:10px;
 		}
 	.entry-details {
 		margin: 0.5em 0;

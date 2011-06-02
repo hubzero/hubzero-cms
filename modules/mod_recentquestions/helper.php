@@ -138,7 +138,7 @@ class modRecentQuestions
 		{
 			case 'open': $st = "a.state=0"; break;
 			case 'closed': $st = "a.state=1"; break;
-			case 'both':
+			case 'both': $st = "a.state<2"; break;
 			default: $st = ""; break;
 		}
 		
@@ -155,7 +155,7 @@ class modRecentQuestions
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
 				."\n FROM #__answers_questions AS a";
 			if ($st) {
-				$query .= "WHERE ".$st;
+				$query .= " WHERE ".$st;
 			}
 		}
 		$query .= "\n ORDER BY a.created DESC";
