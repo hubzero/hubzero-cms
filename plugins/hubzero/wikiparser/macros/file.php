@@ -69,28 +69,28 @@ class FileMacro extends WikiMacro
 			$fp .= ($attach->pageid) ? DS.$attach->pageid : ''; 
 			$fp .= DS.$attach->filename;
 			if ($attach->filename && is_file($fp)) {
+				/*
 				$xhub =& Hubzero_Factory::getHub();
 				$link  = $xhub->getCfg('hubLongURL').$config->get('filepath');
 				$link .= ($attach->pageid) ? DS.$attach->pageid : ''; 
 				$link .= DS.$attach->filename;
-				/*
+				*/
 				$link  = substr($this->option,4,strlen($this->option)).DS;
 				$link .= ($this->scope) ? $this->scope.DS : '';
 				$link .= $this->pagename.DS.'File:'.$attach->filename;
-				*/
 				$desc = ($attach->description) ? stripslashes($attach->description) : $attach->filename;
 
 				$bits = explode('.',$attach->filename);
 				$ext = end($bits);
 
 				// Build and return the link
-				if (in_array($ext, $config->get('image_ext'))) {
+				if (in_array($ext, explode(',',$config->get('img_ext')))) {
 					return '<img src="'.$link.'" alt="'.$desc.'" />';
 				} else {
 					// Link
 					//return '['.JRoute::_($link).' '.$desc.']';
-					return '<a href="'.JRoute::_($link).'">'.$desc.'</a>';
-					//return '<a class="attachment" href="'.JRoute::_($link).'">'.$desc.'</a>';
+					//return '<a href="'.JRoute::_($link).'">'.$desc.'</a>';
+					return '<a class="attachment" href="'.JRoute::_($link).'">'.$desc.'</a>';
 				}
 			} else {
 				// Return error message
@@ -102,28 +102,28 @@ class FileMacro extends WikiMacro
 			$fp .= ($this->pageid) ? DS.$this->pageid : '';
 			$fp .= DS.$et;
 			if (is_file($fp)) {
+				/*
 				$xhub =& Hubzero_Factory::getHub();
 				$link  = $xhub->getCfg('hubLongURL').$config->get('filepath');
 				$link .= ($this->pageid) ? DS.$this->pageid : ''; 
 				$link .= DS.$et;
-				/*
+				*/
 				$link  = substr($this->option,4,strlen($this->option)).DS;
 				$link .= ($this->scope) ? $this->scope.DS : '';
 				$link .= $this->pagename.DS.'File:'.$et;
-				*/
 				$desc = $et;
 
 				$bits = explode('.',$et);
 				$ext = end($bits);
 
 				// Build and return the link
-				if (in_array($ext, $config->get('image_ext'))) {
+				if (in_array($ext, explode(',',$config->get('img_ext')))) {
 					return '<img src="'.$link.'" alt="'.$desc.'" />';
 				} else {
 					// Link
 					//return '['.JRoute::_($link).' '.$desc.']';
-					return '<a href="'.JRoute::_($link).'">'.$desc.'</a>';
-					//return '<a class="attachment" href="'.JRoute::_($link).'">'.$desc.'</a>';
+					//return '<a href="'.JRoute::_($link).'">'.$desc.'</a>';
+					return '<a class="attachment" href="'.JRoute::_($link).'">'.$desc.'</a>';
 				}
 			} else {
 				// Return error message
