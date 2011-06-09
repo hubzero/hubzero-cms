@@ -98,7 +98,13 @@ function GroupsParseRoute($segments)
 	}
 	if (isset($segments[2])) {
 		if ($segments[1] == 'wiki') {
-			$vars['pagename'] = array_pop($segments);
+			
+			if(preg_match('/File:|Image:/', $segments[3])) {
+				$vars['pagename'] = $segments[2];
+			} else {
+				$vars['pagename'] = array_pop($segments);
+			}
+			
 			$s = implode(DS,$segments);
 			$vars['scope'] = $s;
 		} elseif ($segments[1] == 'chat') {

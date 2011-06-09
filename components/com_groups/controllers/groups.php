@@ -55,6 +55,16 @@ class GroupsController extends Hubzero_Controller
 			$this->_task = 'intro';
 		}
 		
+		
+		
+		$file = array_pop(explode("/",$_SERVER["REQUEST_URI"]));
+		
+		if(substr(strtolower($file), 0, 5) == 'image' || 
+			substr(strtolower($file), 0, 4) == 'file') {
+			$this->_task = 'download';
+			//$file = $this->active;
+		}
+		
 		// Execute the task
 		switch ($this->_task) 
 		{
@@ -97,6 +107,10 @@ class GroupsController extends Hubzero_Controller
 			case 'login':   		$this->login();   			break;
 			case 'intro':			$this->intro();   			break;
 			case 'features':		$this->features();			break;
+			
+			//serve group files via content server
+			case 'download':		$this->download( $file );	break;
+			
 			default: 				$this->intro(); 			break;
 		}
 	}
@@ -453,12 +467,18 @@ class GroupsController extends Hubzero_Controller
 		// Get the active tab (section)
 		$tab = JRequest::getVar( 'active', 'overview' );
 		
+		if($tab == 'wiki') {
+			$path = '';
+		} else {
+			$path = $this->config->get('uploadpath');
+		}
+	
 		$wikiconfig = array(
 			'option'   => $this->_option,
-			'scope'    => $group->get('cn').DS.'wiki',
-			'pagename' => 'group',
+			'scope'    => '',
+			'pagename' => $group->get('cn'),
 			'pageid'   => $group->get('gidNumber'),
-			'filepath' => $this->config->get('uploadpath'),
+			'filepath' => $path,
 			'domain'   => $group->get('cn') 
 		);
 		
@@ -2128,8 +2148,8 @@ class GroupsController extends Hubzero_Controller
 		//import the wiki parser
 		$wikiconfig = array(
 			'option'   => $this->_option,
-			'scope'    => $group->get('cn').DS.'wiki',
-			'pagename' => 'group',
+			'scope'    => '',
+			'pagename' => $group->get('cn'),
 			'pageid'   => $group->get('gidNumber'),
 			'filepath' => $this->config->get('uploadpath'),
 			'domain'   => $group->get('cn') 
@@ -2860,7 +2880,7 @@ class GroupsController extends Hubzero_Controller
 					} else {
 						$docs[$entry] = $img_file;
 					}
-				} else if (is_dir($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'cvs' && strtolower($entry) !== 'template') {
+				} else if (is_dir($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'cvs' && strtolower($entry) !== 'template' && strtolower($entry) !== 'blog') {
 					$folders[$entry] = $img_file;
 				}
 			}
@@ -3112,6 +3132,88 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		return strtoupper($str);
+	}
+	
+	//-----
+	
+	protected function download( $filename )
+	{
+		//get the group
+		$group = Hubzero_Group::getInstance( $this->gid );
+		
+		//get the file name
+		if(substr(strtolower($filename), 0, 5) == 'image') {
+			$file = substr($filename, 6);
+		} elseif(substr(strtolower($filename), 0, 4) == 'file') {
+			$file = substr($filename, 5);
+		}
+		
+		$authorized = $this->_authorize();
+		
+		if($this->active == 'wiki') {
+			$access = $group->getPluginAccess('wiki');
+			
+			if($authorized != 'admin') {
+				if(($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) ||
+			   	   ($access == 'registered' && $this->juser->get('guest') == 1)) {
+					JError::raiseError( 403, JText::_('COM_GROUPS_NOT_AUTH').' '.$file );
+					return;
+				}
+			}
+			
+			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+			$page = new WikiPage( $this->database );
+			$page->load(JRequest::getVar('pagename'), $group->get('cn').DS.'wiki');
+			
+			if($page->get('access') == 1 && !in_array($this->juser->get('id'), $group->get('members')) && $authorized != 'admin') {
+				JError::raiseError( 403, JText::_('COM_GROUPS_NOT_AUTH').' '.$file );
+				return;
+			}
+			
+			$wiki_config = JComponentHelper::getParams( 'com_wiki' );
+			$base_path = $wiki_config->get('filepath').DS.$page->get('id');
+		} else {
+			$access = $group->getPluginAccess('overview');
+			
+			//if($authorized != 'admin') {
+				if(($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) ||
+			   	   ($access == 'registered' && $this->juser->get('guest') == 1)) {
+					JError::raiseError( 403, JText::_('COM_GROUPS_NOT_AUTH').' '.$file );
+					return;
+				}
+			//}
+					
+			//build the path
+			$base_path = $this->config->get('uploadpath');
+			$base_path .= DS.$group->get('gidNumber');
+		}
+		
+		
+		//final path of file
+		$file_path = $base_path . DS . $file;
+		
+		// Ensure the file exist
+		if (!file_exists(JPATH_ROOT.DS.$file_path)) {
+			JError::raiseError( 404, JText::_('COM_GROUPS_FILE_NOT_FOUND').' '.$file );
+			return;
+		}
+		
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+		
+		//serve up the image
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename(JPATH_ROOT.DS.$file_path);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+		
+		if (!$xserver->serve()) {
+			// Should only get here on error
+			JError::raiseError( 404, JText::_('COM_GROUPS_SERVER_ERROR') );
+		} else {
+			exit;
+		}
+		return;
 	}
 
 }
