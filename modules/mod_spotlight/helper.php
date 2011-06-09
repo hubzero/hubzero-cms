@@ -297,7 +297,7 @@ class modSpotlight
 					else {
 						$query .= ", #__wiki_version AS v ";
 					}
-					$query .= " WHERE w.access!=1  ";
+					$query .= " WHERE w.access!=1 AND w.scope = ''  ";
 					if($topics_tag) {
 						$query .= " AND (TA.tag='".$topics_tag."' OR TA.raw_tag='".$topics_tag."') ";
 					}		
@@ -483,9 +483,11 @@ class modSpotlight
 			if($getid) {
 				return $row->id;
 			}
+			$url = $row->group && $row->scope ? 'groups'.DS.$row->scope.DS.$row->pagename : 'topics'.DS.$row->pagename;
+
 			$thumb = trim($this->params->get( 'default_topicpic', 'modules/mod_spotlight/default.gif' ));
 			$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->title)).'" /></a></span>'."\n";
-			$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'">'.stripslashes($row->title).'</a></span> ';
+			$out .= '<span class="spotlight-item"><a href="'.$url.'">'.stripslashes($row->title).'</a></span> ';
 			$out .=  ' - '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_topics').'">'.JText::_('Topics').'</a>'."\n";
 			$out .= '<div class="clear"></div>'."\n";
 		}

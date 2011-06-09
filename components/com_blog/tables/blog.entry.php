@@ -59,7 +59,7 @@ class BlogEntry extends JTable
 	
 	//-----------
 	
-	public function loadAlias( $oid=NULL, $scope=NULL ) 
+	public function loadAlias( $oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL ) 
 	{
 		if ($oid === NULL) {
 			return false;
@@ -70,7 +70,34 @@ class BlogEntry extends JTable
 		if (!$scope) {
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope'" );
+		switch ($scope) 
+		{
+			case 'member':
+				if ($created_by === NULL) {
+					$created_by = $this->created_by;
+				}
+				if (!$created_by) {
+					return false;
+				}
+				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND created_by='$created_by'";
+			break;
+			
+			case 'group':
+				if ($group_id === NULL) {
+					$group_id = $this->group_id;
+				}
+				if (!$group_id) {
+					return false;
+				}
+				//$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND group_id='$group_id'";
+				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND group_id='$group_id'";
+			break;
+			
+			default:
+				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope'";
+			break;
+		}
+		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
 		} else {
