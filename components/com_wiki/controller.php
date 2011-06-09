@@ -1553,6 +1553,7 @@ class WikiController extends Hubzero_Controller
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = str_replace(' ','_',$file['name']);
 		
 		// Upload new files
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
