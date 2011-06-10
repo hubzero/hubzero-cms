@@ -1,5 +1,8 @@
 #<?php exit('no access'); ?>
 #!/bin/bash
+
+# Run me through bash to start a MySQL client without having to punch in the information from configuration.php
+
 conf="`dirname $0`/configuration.php"
 get_var () { grep "var\ \$$1 " $conf | awk '{ print $4 }' | sed "s/^'\|[';]\+$//g"; }
 
