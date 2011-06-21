@@ -1065,8 +1065,15 @@ class ResourcesController extends Hubzero_Controller
 			$base = substr($base, 0, -1);
 		}
 
+		$title = $resource->title;
+		if ( is_integer( strpos( $feedtype, 'hd_video' ) ) )
+			$title = '[HD] '.$title;
+		else if ( is_integer( strpos( $feedtype, 'sd_video' ) ) )
+			$title = '[SD full] '.$title;
+		
 		// Build some basic RSS document information
-		$dtitle = $jconfig->getValue('config.sitename').' - '.Hubzero_View_Helper_Html::purifyText(stripslashes($resource->title));
+		$dtitle = Hubzero_View_Helper_Html::purifyText(stripslashes($title));
+		
 		$doc->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle), 250, 0));
 		$doc->description = Hubzero_View_Helper_Html::xhtml(html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($resource->introtext))));
 		$doc->copyright = JText::sprintf('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
@@ -1123,13 +1130,14 @@ class ResourcesController extends Hubzero_Controller
 		$doc->itunes_keywords = $tags;
 		$doc->itunes_author = $author;
 		
-		$dimg = $this->checkForImage('itunes_artwork', $this->config->get('uploadpath'), $resource->created, $resource->id);
+		$itunes_image_name = "itunes_" . str_replace(" ","_",strtolower($feedtype));
+		
+		$dimg = $this->checkForImage($itunes_image_name, $this->config->get('uploadpath'), $resource->created, $resource->id);
 		if ($dimg) {
 			$dimage = new Hubzero_Document_Feed_Image();
 			$dimage->url = $dimg;
 			$dimage->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle.' '.JText::_('COM_RESOURCES_RSS_ARTWORK')), 250, 0));
 			$dimage->link = $base.$doc->link;
-			
 			$doc->itunes_image = $dimage;
 		}
 		
@@ -1163,49 +1171,63 @@ class ResourcesController extends Hubzero_Controller
 				
 				// Get any podcast/vodcast files
 				$podcast = '';
-
-				$rhelper->getChildren();
-				if ($rhelper->children && count($rhelper->children) > 0) {
-					$grandchildren = $rhelper->children;
-					foreach ($grandchildren as $grandchild) 
+				
+				$type_model            = new ResourcesType( $database );
+				$all_logical_types     = $type_model->getTypes( 28 );    // 28 means 'logical' types.
+				$queried_logical_types = @explode( ' ', $feedtype );
+				
+				if ( is_null( $queried_logical_types ) || !is_array( $queried_logical_types ) )
+				{
+					JError::raiseError( 404, JText::_( 'COM_RESOURCES_RESOURCE_FEED_BAD_REQUEST' ) );
+					return;
+				}
+				
+				$relevant_logical_types_by_id = array();
+				foreach ( $queried_logical_types as $queried )
+				{
+					$as_mnemonic = preg_replace( '/[_-]/', ' ', $queried );
+					foreach( $all_logical_types as $logical_type )
 					{
-						$ftype = ResourcesHtml::getFileExtension($grandchild->path);
-						if (stripslashes($grandchild->introtext) != '') {
-							$gdescription = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($grandchild->introtext)));
-						}
-						switch ($feedtype) 
+						if ( preg_match_all( '/Podcast \(([^()]+)\)/', $logical_type->type, $matches ) == 1 &&
+						     strcasecmp( $matches[ 1 ][ 0 ], $as_mnemonic ) == 0 )
 						{
-							case 'slides':
-								//if ($ftype == 'ppt' || $ftype == 'pdf' || $ftype == 'doc') {
-								if ($grandchild->logicaltype == 14) {
-									$podcast = $grandchild->path;
-								}
+							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
 							break;
-							
-							case 'video':
-								$vts = array('mp4', 'm4v', 'mov', 'wmv', 'avi', 'asf', 'qt', 'mp2', 'mpeg', 'mpe', 'mpg', 'mpv2');
-								if (in_array($ftype, $vts)) {
-									$podcast = $grandchild->path;
-								}
+						}
+						elseif ( $as_mnemonic == 'slides' && $logical_type->type == 'Presentation Slides' )
+						{
+							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
 							break;
-							
-							case 'audio':
-							default:
-								$ats = array('m4a', 'mp3', 'wav', 'aiff', 'aif', 'ra', 'ram');
-								if (in_array($ftype, $ats)) {
-									$podcast = $grandchild->path;
-								}
+						}
+						elseif ( $as_mnemonic == 'notes' && $logical_type->type == 'Lecture Notes' )
+						{
+							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
 							break;
 						}
 					}
 				}
-
+				
+				$rhelper->getChildren();
+				
+				$podcasts = array();
+				$children = array();
+				if ($rhelper->children && count($rhelper->children) > 0) {
+					$grandchildren = $rhelper->children;
+					foreach ($grandchildren as $grandchild) 
+					{
+						if ( isset( $relevant_logical_types_by_id[ (int)$grandchild->logicaltype ] ) )
+						{
+							if (stripslashes($grandchild->introtext) != '')
+								$gdescription = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($grandchild->introtext)));
+							array_push( $podcasts, $grandchild->path );
+							array_push( $children, $grandchild );
+						}
+					}
+				}
+				
 				// Get the contributors of this resource
 				$rhelper->getContributors();
 				$author = strip_tags($rhelper->contributors);
-				
-				// Get attributes
-				$attribs =& new JParameter( $row->attribs );
 				
 				$rtt = new ResourcesTags($database);
 				$rtags = $rtt->get_tag_string( $row->id, 0, 0, 0, 0, 0 );
@@ -1214,86 +1236,97 @@ class ResourcesController extends Hubzero_Controller
 					$rtags = substr($rtags, 0, -1);
 				}
 				
-				// Load individual item creator class
-				$item = new Hubzero_Document_Feed_Item();
-				$item->title       = $title;
-				$item->link        = $link;
-				$item->description = $description;
-				$item->date        = $date;
-				$item->category    = ($row->typetitle) ? $row->typetitle : '';
-				$item->author      = $author;
 				
-				$img = $this->checkForImage('itunes_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
-				if ($img) {
-					$image = new Hubzero_Document_Feed_Image();
-					$image->url = $img;
-					$image->title = $title.' '.JText::_('COM_RESOURCES_RSS_ARTWORK');
-					$image->link = $base.$link;
+				// Get attributes
+				//$attribs =& new JParameter( $row->attribs );
+				if($children)
+					$attribs =& new JParameter( $children[0]->attribs );
+				
+				foreach ( $podcasts as $podcast )
+				{
+					// Load individual item creator class
+					$item = new Hubzero_Document_Feed_Item();
+					$item->title       = $title;
+					$item->link        = $link;
+					$item->description = $description;
+					$item->date        = $date;
+					$item->category    = ($row->typetitle) ? $row->typetitle : '';
+					$item->author      = $author;
+				
+					$img = $this->checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
+					if ($img) {
+						$image = new Hubzero_Document_Feed_Image();
+						$image->url = $img;
+						$image->title = $title.' '.JText::_('COM_RESOURCES_RSS_ARTWORK');
+						$image->link = $base.$link;
 					
-					$item->itunes_image = $image;
-				}
-				
-				$item->itunes_summary = $description;
-				$item->itunes_explicit = "no";
-				$item->itunes_keywords = $rtags;
-				$item->itunes_author = $author;
-				if ($attribs->get('duration')) {
-					$item->itunes_duration = $attribs->get('duration');
-				}
-				
-				if ($podcast) {
-					$podcastp = $podcast;
-					$podcast = $this->fullPath($podcast);
-					if (substr($podcastp, 0, 1) != DS) { 
-						$podcastp = DS.$podcastp;
+						$item->itunes_image = $image;
 					}
-					if (substr($podcastp, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath')) {
-						// Do nothing
-					} else {
-						$podcastp = $this->config->get('uploadpath').$podcastp;
+				
+					$item->itunes_summary = $description;
+					$item->itunes_explicit = "no";
+					$item->itunes_keywords = $rtags;
+					$item->itunes_author = $author;
+					
+					
+					if ($attribs->get('duration')) {
+						$item->itunes_duration = $attribs->get('duration');
 					}
-					$podcastp = JPATH_ROOT.$podcastp;
-					if (file_exists( $podcastp )) {
-						$fs = filesize( $podcastp );
-
-						$enclosure = new Hubzero_Document_Feed_Enclosure; //JObject;
-						$enclosure->url = $podcast;
-						switch ( ResourcesHtml::getFileExtension($podcast) ) 
-						{
-							case 'm4v': $enclosure->type = 'video/x-m4v'; break;
-							case 'mp4': $enclosure->type = 'video/mp4'; break;
-							case 'wmv': $enclosure->type = 'video/wmv'; break;
-							case 'mov': $enclosure->type = 'video/quicktime'; break;
-							case 'qt': $enclosure->type = 'video/quicktime'; break;
-							case 'mpg': $enclosure->type = 'video/mpeg'; break;
-							case 'mpeg': $enclosure->type = 'video/mpeg'; break;
-							case 'mpe': $enclosure->type = 'video/mpeg'; break;
-							case 'mp2': $enclosure->type = 'video/mpeg'; break;
-							case 'mpv2': $enclosure->type = 'video/mpeg'; break;
-							
-							case 'mp3': $enclosure->type = 'audio/mpeg'; break;
-							case 'm4a': $enclosure->type = 'audio/x-m4a'; break;
-							case 'aiff': $enclosure->type = 'audio/x-aiff'; break;
-							case 'aif': $enclosure->type = 'audio/x-aiff'; break;
-							case 'wav': $enclosure->type = 'audio/x-wav'; break;
-							case 'ra': $enclosure->type = 'audio/x-pn-realaudio'; break;
-							case 'ram': $enclosure->type = 'audio/x-pn-realaudio'; break;
-							
-							case 'ppt': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
-							case 'pps': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
-							case 'pdf': $enclosure->type = 'application/pdf'; break;
-							case 'doc': $enclosure->type = 'application/msword'; break;
-							case 'txt': $enclosure->type = 'text/plain'; break;
-							case 'html': $enclosure->type = 'text/html'; break;
-							case 'htm': $enclosure->type = 'text/html'; break;
+				
+					if ($podcast) {
+						$podcastp = $podcast;
+						$podcast = $this->fullPath($podcast);
+						if (substr($podcastp, 0, 1) != DS) { 
+							$podcastp = DS.$podcastp;
 						}
-						$enclosure->length = $fs;
+						if (substr($podcastp, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath')) {
+							// Do nothing
+						} else {
+							$podcastp = $this->config->get('uploadpath').$podcastp;
+						}
+						$podcastp = JPATH_ROOT.$podcastp;
+						if ( true /* file_exists( $podcastp ) */) {
+							$fs = filesize( $podcastp );
 
-						$item->guid = $podcast;
-						$item->enclosure = $enclosure;
+							$enclosure = new Hubzero_Document_Feed_Enclosure; //JObject;
+							$enclosure->url = $podcast;
+							switch ( ResourcesHtml::getFileExtension($podcast) ) 
+							{
+								case 'm4v': $enclosure->type = 'video/x-m4v'; break;
+								case 'mp4': $enclosure->type = 'video/mp4'; break;
+								case 'wmv': $enclosure->type = 'video/wmv'; break;
+								case 'mov': $enclosure->type = 'video/quicktime'; break;
+								case 'qt': $enclosure->type = 'video/quicktime'; break;
+								case 'mpg': $enclosure->type = 'video/mpeg'; break;
+								case 'mpeg': $enclosure->type = 'video/mpeg'; break;
+								case 'mpe': $enclosure->type = 'video/mpeg'; break;
+								case 'mp2': $enclosure->type = 'video/mpeg'; break;
+								case 'mpv2': $enclosure->type = 'video/mpeg'; break;
+							
+								case 'mp3': $enclosure->type = 'audio/mpeg'; break;
+								case 'm4a': $enclosure->type = 'audio/x-m4a'; break;
+								case 'aiff': $enclosure->type = 'audio/x-aiff'; break;
+								case 'aif': $enclosure->type = 'audio/x-aiff'; break;
+								case 'wav': $enclosure->type = 'audio/x-wav'; break;
+								case 'ra': $enclosure->type = 'audio/x-pn-realaudio'; break;
+								case 'ram': $enclosure->type = 'audio/x-pn-realaudio'; break;
+							
+								case 'ppt': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
+								case 'pps': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
+								case 'pdf': $enclosure->type = 'application/pdf'; break;
+								case 'doc': $enclosure->type = 'application/msword'; break;
+								case 'txt': $enclosure->type = 'text/plain'; break;
+								case 'html': $enclosure->type = 'text/html'; break;
+								case 'htm': $enclosure->type = 'text/html'; break;
+							}
+							$enclosure->length = $fs;
+
+							$item->guid = $podcast;
+							$item->enclosure = $enclosure;
+						}
+						// Loads item info into rss array
+						$doc->addItem( $item );
 					}
-					// Loads item info into rss array
-					$doc->addItem( $item );
 				}
 			}
 		}
@@ -1339,7 +1372,7 @@ class ResourcesController extends Hubzero_Controller
 			}
 			$d->close();
 		}
-
+		
 		$b = 0;
 		$img = '';
 		if ($images) {
