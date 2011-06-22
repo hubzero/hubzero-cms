@@ -247,6 +247,7 @@ class plgGroupsForum extends JPlugin
 		
 		// Load the topic
 		$forum->load( $filters['parent'] );
+		
 		if ($forum->access == 4 && !$this->authorized) {
 			return $this->topics();
 		}
@@ -449,10 +450,17 @@ class plgGroupsForum extends JPlugin
 		}
 		
 		//is this an anonymous topic
-		if (!isset($topic['anonymous'])) {
+		if (!isset($incoming['anonymous'])) {
 			$row->anonymous = 0;
 		}
-		
+	
+		//is this a public topic
+		if (!isset($incoming['access'])) {
+			$row->access = 4;
+		} else {
+			$row->access = 0;
+		}
+	
 		// Check content
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
