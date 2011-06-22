@@ -231,7 +231,7 @@ Class GroupPages extends JTable
 		$access = $this->group->getPluginAccess('members');
 		
 		//check to make sure we should be showing the mini member browser
-		if($access == 'nobody' || ($access == 'registered' && $this->user->get('guest')) || ($access == 'members' && !$isMember)) {
+		if($access == 'nobody' || ($access == 'registered' && $this->juser->get('guest')) || ($access == 'members' && !$isMember)) {
 			$member_browser = '';
 		} else {
 			$member_browser  = '<div class="group-content-header">';
