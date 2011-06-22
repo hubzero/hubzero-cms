@@ -38,7 +38,7 @@ $dispatcher =& JDispatcher::getInstance();
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('GROUPS_ALL_GROUPS'); ?></a></li>
+		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -50,12 +50,17 @@ $dispatcher =& JDispatcher::getInstance();
 	?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
+			<p><strong>Invite Members to Your Group</strong></p>
+			<p>Start typing the names of registered members on the hub and suggestions matching the text entered with be displayed.</p>
+			<p><img src="/components/com_groups/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" style="border:3px solid #aaa;" />
+			<!--
 			<div class="admin-options">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>"><?php echo JText::_('GROUPS_CUSTOMIZE_GROUP'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>"><?php echo JText::_('GROUPS_DELETE_GROUP'); ?></a></p>
+				<p><a href="<?php //echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php //echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
+				<p><a href="<?php //echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php //echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
+				<p><a href="<?php //echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>"><?php //echo JText::_('GROUPS_CUSTOMIZE_GROUP'); ?></a></p>
+				<p><a href="<?php //echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>"><?php //echo JText::_('GROUPS_DELETE_GROUP'); ?></a></p>
 			</div>
+			-->
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('GROUPS_INVITE_HEADER'); ?></h3>
