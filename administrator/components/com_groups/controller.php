@@ -403,6 +403,19 @@ class GroupsController extends Hubzero_Controller
 
 	//-----------
 	
+	protected function multi_array_map( $func, $arr ) 
+	{
+		$newArr = array();
+	    
+		foreach( $arr as $key => $value ) {
+			$newArr[ $key ] = ( is_array( $value ) ? $this->multi_array_map( $func, $value ) : $func( $value ) );
+	    }
+	    
+		return $newArr;
+	}
+	
+	//-----------
+	
 	protected function save() 
 	{
 		// Check for request forgeries
@@ -410,7 +423,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Incoming
 		$g = JRequest::getVar( 'group', array(), 'post' );
-		$g = array_map('trim', $g);
+		$g = $this->multi_array_map('trim', $g);
 		
 		// Instantiate an Hubzero_Group object
 		$group = new Hubzero_Group();
@@ -483,6 +496,27 @@ class GroupsController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
+		
+		//group params
+		$gparams =& new JParameter( $group->get('params') );
+		
+		//set membership control param
+		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
+		$gparams->set('membership_control', $membership_control);
+		
+		//make array of params
+		$gparams = $gparams->toArray();
+		
+		//array to hold params
+		$params = array();
+		
+		//create key=val from each param
+		foreach($gparams as $key => $val) {
+			$params[] = $key."=".$val;
+		}
+		
+		//each param must have its own line
+		$params = implode("\n", $params);	
 				
 		// Set the group changes and save
 		$group->set('cn', $g['cn']);
@@ -506,7 +540,9 @@ class GroupsController extends Hubzero_Controller
 		$group->set('logo',$g['logo']);
 		$group->set('overview_type',$g['overview_type']);
 		$group->set('overview_content',$g['overview_content']);
-		$group->set('plugins',$g['plugins']);
+		$group->set('plugins',$g['plugins']);	
+		$group->set('params', $params);
+		
 		$group->update();
 
 		// Output messsage and redirect

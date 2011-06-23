@@ -133,6 +133,10 @@ class plgGroupsMembers extends JPlugin
 			
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', 'members');
+			
+			
+			$gparams =& new JParameter( $group->get('params') );
+			$this->membership_control = $gparams->get('membership_control', 1);
 
 			// Do we need to perform any actions?
 			if ($action) {
@@ -159,6 +163,8 @@ class plgGroupsMembers extends JPlugin
 						'name'=>'browse'
 					)
 				);
+				
+				$view->membership_control = $this->membership_control;
 				
 				$view->option = $option;
 				$view->group = $group;
@@ -294,6 +300,10 @@ class plgGroupsMembers extends JPlugin
 			return false;
 		}
 		
+		if($this->membership_control == 0) {
+			return false;
+		}
+		
 		$database =& JFactory::getDBO();
 		
 		// Set a flag for emailing any changes made
@@ -386,6 +396,10 @@ class plgGroupsMembers extends JPlugin
 			return false;
 		}
 		
+		if($this->membership_control == 0) {
+			return false;
+		}
+		
 		// Set a flag for emailing any changes made
 		$admchange = '';
 		$users = array();
@@ -455,6 +469,10 @@ class plgGroupsMembers extends JPlugin
 	private function demote() 
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
+			return false;
+		}
+		
+		if($this->membership_control == 0) {
 			return false;
 		}
 
@@ -535,6 +553,10 @@ class plgGroupsMembers extends JPlugin
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
 			return false;
 		}
+		
+		if($this->membership_control == 0) {
+			return false;
+		}
 
 		// Set the page title
 		$document =& JFactory::getDocument();
@@ -565,6 +587,10 @@ class plgGroupsMembers extends JPlugin
 	private function confirmremove() 
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
+			return false;
+		}
+		
+		if($this->membership_control == 0) {
 			return false;
 		}
 		
@@ -673,6 +699,10 @@ class plgGroupsMembers extends JPlugin
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
 			return false;
 		}
+		
+		if($this->membership_control == 0) {
+			return false;
+		}
 
 		// Get message about restricted access to group
 		$msg = $this->group->get('restrict_msg');
@@ -706,6 +736,10 @@ class plgGroupsMembers extends JPlugin
 	private function confirmdeny() 
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
+			return false;
+		}
+		
+		if($this->membership_control == 0) {
 			return false;
 		}
 		
@@ -779,6 +813,10 @@ class plgGroupsMembers extends JPlugin
 			return false;
 		}
 		
+		if($this->membership_control == 0) {
+			return false;
+		}
+		
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_(strtoupper($this->action)) );
@@ -808,6 +846,10 @@ class plgGroupsMembers extends JPlugin
 	private function confirmcancel() 
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
+			return false;
+		}
+		
+		if($this->membership_control == 0) {
 			return false;
 		}
 		
@@ -902,6 +944,10 @@ class plgGroupsMembers extends JPlugin
 	/* Member Roles */
 	private function addrole()
 	{
+		if($this->membership_control == 0) {
+			return false;
+		}
+		
 		$role = JRequest::getVar('role', '');
 		$gid = JRequest::getVar('gid', '');
 		
@@ -924,6 +970,10 @@ class plgGroupsMembers extends JPlugin
 	
 	private function removerole()
 	{
+		if($this->membership_control == 0) {
+			return false;
+		}
+		
 		$role = JRequest::getVar('role','');
 		
 		if(!$role) {
@@ -952,6 +1002,10 @@ class plgGroupsMembers extends JPlugin
 	private function assignrole()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
+			return false;
+		}
+		
+		if($this->membership_control == 0) {
 			return false;
 		}
 		
@@ -997,6 +1051,10 @@ class plgGroupsMembers extends JPlugin
 	
 	private function submitrole()
 	{
+		if($this->membership_control == 0) {
+			return false;
+		}
+		
 		$uid = JRequest::getVar('uid', '','post');
 		$role = JRequest::getVar('role','','post');
 		$no_html = JRequest::getInt('no_html', 0,'post');
@@ -1022,6 +1080,10 @@ class plgGroupsMembers extends JPlugin
 	
 	private function deleterole()
 	{
+		if($this->membership_control == 0) {
+			return false;
+		}
+		
 		$uid = JRequest::getVar('uid','');
 		$role = JRequest::getVar('role','');
 		

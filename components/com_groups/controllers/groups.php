@@ -460,6 +460,9 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		//get the group params
+		$gparams =& new JParameter($group->get('params'));
+		
 		// Check authorization
 		$authorized = $this->_authorize();
 		$ismember = $this->_authorize(true);
@@ -567,6 +570,7 @@ class GroupsController extends Hubzero_Controller
 			$view->option = $this->_option;
 			$view->group = $group;
 			$view->authorized = $authorized;
+			$view->gparams = $gparams;
 			
 			$view->user = $this->juser;
 			$view->ismember = $ismember;
@@ -635,6 +639,16 @@ class GroupsController extends Hubzero_Controller
 		// Check if they're logged in	
 		if ($this->juser->get('guest')) {
 			$this->login( $this->_title );
+			return;
+		}
+		
+		//get the group params
+		$gparams =& new JParameter($group->get('params'));
+		
+		//if membership is managed in seperate place disallow action
+		if( $gparams->get('membership_control', 1) == 0 ) {
+			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));
 			return;
 		}
 		
@@ -709,6 +723,16 @@ class GroupsController extends Hubzero_Controller
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
+			return;
+		}
+		
+		//get the group params
+		$gparams =& new JParameter($group->get('params'));
+		
+		//if membership is managed in seperate place disallow action
+		if( $gparams->get('membership_control', 1) == 0 ) {
+			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));
 			return;
 		}
 		
@@ -799,6 +823,16 @@ class GroupsController extends Hubzero_Controller
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
+			return;
+		}
+		
+		//get the group params
+		$gparams =& new JParameter($group->get('params'));
+		
+		//if membership is managed in seperate place disallow action
+		if( $gparams->get('membership_control', 1) == 0 ) {
+			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));
 			return;
 		}
 
@@ -935,6 +969,16 @@ class GroupsController extends Hubzero_Controller
 		
 		if($group->get('type') == 2) {
 			JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
+			return;
+		}
+		
+		//get the group params
+		$gparams =& new JParameter($group->get('params'));
+		
+		//if membership is managed in seperate place disallow action
+		if( $gparams->get('membership_control', 1) == 0 ) {
+			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));
 			return;
 		}
 		
@@ -1380,6 +1424,16 @@ class GroupsController extends Hubzero_Controller
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
+		
+		//get the group params
+		$gparams =& new JParameter($group->get('params'));
+		
+		//if membership is managed in seperate place disallow action
+		if( $gparams->get('membership_control') == 0 ) {
+			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));
+			return;
+		}
 
 		// Push some needed styles to the template
 		$this->_getStyles();
@@ -1664,6 +1718,14 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		//get group params
+		$gparams =& new JParameter( $group->get('params') );
+		if($gparams->get('membership_control', 1) == 0) {
+			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));
+			return;
+		}
+		
 		// Incoming
 		$process = JRequest::getVar( 'process', '' );
 		$logins = trim(JRequest::getVar( 'logins', '', 'post' ));
@@ -1673,7 +1735,7 @@ class GroupsController extends Hubzero_Controller
 		// Did they confirm delete?
 		if (!$process || !$logins) {
 			if ($process && !$logins) {
-				$this->setNotification( JText::_('GROUPS_ERROR_PROVIDE_LOGINS'), 'error' );
+				$this->setNotification( JText::_('Please provide a list of names or emails to invite.'), 'error' );
 			}
 			
 			//build the page title
