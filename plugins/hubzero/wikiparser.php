@@ -76,6 +76,7 @@ class plgHubzeroWikiparser extends JPlugin
 	{
 		$parser = $this->onGetWikiParser( $config, $getnew );
 		
-		return is_object($parser) ? $parser->parse( "\n".stripslashes($text), $fullparse ) : $text;
+		//return is_object($parser) ? $parser->parse( "\n".stripslashes($text), $fullparse ) : $text;
+		return is_object($parser) ? $parser->parse( "\n".$text, $fullparse ) : $text;
 	}
 }

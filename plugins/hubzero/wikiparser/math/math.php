@@ -13,6 +13,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 // by Tomasz Wegrzanowski, with additions by Brion Vibber (2003, 2004)
 //-------------------------------------------------------------
 
+// Maths constants
+define( 'MW_MATH_PNG',    0 );
+define( 'MW_MATH_SIMPLE', 1 );
+define( 'MW_MATH_HTML',   2 );
+define( 'MW_MATH_SOURCE', 3 );
+define( 'MW_MATH_MODERN', 4 );
+define( 'MW_MATH_MATHML', 5 );
+
 class MathRenderer 
 {
 	var $mode = MW_MATH_MODERN;
@@ -142,7 +150,7 @@ class MathRenderer
 			*/
 
 			if (strlen($contents) == 0) {
-				return $this->_error( 'math_unknown_error' );
+				return $this->_error( 'math_unknown_error1' );
 			}
 
 			$retval = substr($contents, 0, 1);
@@ -186,7 +194,7 @@ class MathRenderer
 					case 'E': $errmsg = $this->_error( 'math_lexing_error', $errbit );
 					case 'S': $errmsg = $this->_error( 'math_syntax_error', $errbit );
 					case 'F': $errmsg = $this->_error( 'math_unknown_function', $errbit );
-					default:  $errmsg = $this->_error( 'math_unknown_error', $errbit );
+					default:  $errmsg = $this->_error( 'math_unknown_error2', $errbit );
 				}
 			}
 
@@ -199,7 +207,7 @@ class MathRenderer
 			}
 
 			if (!preg_match("/^[a-f0-9]{32}$/", $this->hash)) {
-				return $this->_error( 'math_unknown_error' );
+				return $this->_error( 'math_unknown_error3' );
 			}
 
 			if (!file_exists( "$tmpDirectory/{$this->hash}.png" )) {
@@ -307,8 +315,9 @@ class MathRenderer
 			return '<math xmlns="http://www.w3.org/1998/Math/MathML">'.$this->mathml.'</math>';
 		}
 		if (($this->mode == MW_MATH_PNG) || ($this->html == '') ||
-		   (($this->mode == MW_MATH_SIMPLE) && ($this->conservativeness != 2)) ||
-		   (($this->mode == MW_MATH_MODERN || $this->mode == MW_MATH_MATHML) && ($this->conservativeness == 0))) {
+		    (($this->mode == MW_MATH_SIMPLE) && ($this->conservativeness != 2)) ||
+		    (($this->mode == MW_MATH_MODERN || $this->mode == MW_MATH_MATHML) && ($this->conservativeness == 0))
+		) {
 			return $this->_linkToMathImage();
 		} else {
 			return '<span class="texhtml">'.$this->html.'</span>';
