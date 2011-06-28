@@ -868,8 +868,7 @@ class ResourcesHtml
 		}
 		
 		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
-		$maintext = str_replace('&amp;','&',$maintext);
-		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 		$maintext = str_replace('<blink>','',$maintext);
 		$maintext = str_replace('</blink>','',$maintext);
 	
