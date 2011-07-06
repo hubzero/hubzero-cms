@@ -62,7 +62,7 @@ $topvals = new ResourcesStatsToolsTopvals( $database );
 	<div class="timeperiod">
 		<fieldset>
 			<label>
-				<?php echo JText::_('PLG_RESOURCES_USAGE_TIME_PERIOD'); ?>
+				<?php if ($this->period == '14') { echo JText::_('PLG_RESOURCES_USAGE_CUMULATIVE'); } else { echo JText::_('PLG_RESOURCES_USAGE_TIME_PERIOD'); } ?>
 				<?php echo plgResourcesUsage::dropDownDates( $database, $this->period, $this->resource->id, $this->dthis ); ?>
 			</label>
 			<input type="hidden" name="period" value="<?php echo $this->period; ?>" />
@@ -177,10 +177,10 @@ if ($this->stats->simulations == $this->stats->jobs) { ?>
 			<tbody>
 <?php 
 $toporgs = $topvals->getTopCountryRes( $this->stats->id, 3 );
+$total = '';
+$cls = 'even';
+$tot = '';
 if ($toporgs) {
-	$total = '';
-	$cls = 'even';
-	$tot = '';
 	foreach ($toporgs as $row) 
 	{
 		if ($row->name == '?') {
@@ -227,10 +227,10 @@ echo $tot;
 			<tbody>
 <?php 
 $topcountries = $topvals->getTopCountryRes( $this->stats->id, 1 );
+$total = '';
+$cls = 'even';
+$tot = '';
 if ($topcountries) {
-	$total = '';
-	$cls = 'even';
-	$tot = '';
 	foreach ($topcountries as $row) 
 	{
 		if ($row->name == '?') {
@@ -277,10 +277,10 @@ echo $tot;
 			<tbody>
 <?php 
 $topdoms = $topvals->getTopCountryRes( $this->stats->id, 2 );
+$total = '';
+$cls = 'even';
+$tot = '';
 if ($topdoms) {
-	$total = '';
-	$cls = 'even';
-	$tot = '';
 	foreach ($topdoms as $row) 
 	{
 		if ($row->name == '?') {
