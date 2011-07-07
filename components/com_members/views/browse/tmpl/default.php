@@ -240,11 +240,11 @@ if (count($this->rows) > 0) {
 								<!-- rcount: <?php echo $row->rcount; ?> --> 
 								<span class="activity"><?php echo $row->resource_count.' Resources, '.$row->wiki_count.' Topics'; ?></span>
 							</td>
-							<td class="message-member">
+<?php /* ?>							<td class="message-member">
 <?php if (!$juser->get('guest') && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) { ?>
 								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$juser->get('id').'&active=messages&task=new&to='.$row->uidNumber); ?>" title="Message :: Send a message to <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>"><?php echo JText::_('Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8')); ?></a></td>
 <?php } ?>
-							</td>
+							</td><?php */ ?>
 						</tr>
 <?php
 	}
