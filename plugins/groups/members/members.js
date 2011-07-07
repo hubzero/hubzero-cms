@@ -86,13 +86,13 @@ HUB.Plugins.GroupsMembers = {
 								if (frm) {
 									frm.addEvent('submit', function(e) {
 										new Event(e).stop();
-										if($('role').value == '') {
+										if($('roles').value == '') {
 											alert('You must select a member role.');
 											return false;
 										}
 										frm.send({
 											onComplete: function() {
-												role = $('role').options[$('role').selectedIndex].text;
+												role = $('roles').options[$('roles').selectedIndex].text;
 												old = $('roles-list-' + uid).innerHTML;
 												if(old == '') {
 													$('roles-list-' + uid).innerHTML = role;

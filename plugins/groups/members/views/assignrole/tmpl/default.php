@@ -54,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<strong>Member: </strong> <?php echo $u->get('name'); ?>
 		</label>
 		<label><strong>Select a Role</strong>
-			<select name="role" id="role">
+			<select name="role" id="roles">
 				<option value="">Select a Member Role...</option>
 				<?php foreach($this->roles as $role) { ?>
 					<?php if(!in_array($role['role'],$current_roles)) { ?>
