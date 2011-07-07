@@ -223,6 +223,7 @@ class MembersController extends Hubzero_Controller
 		$view = new JView( array('name'=>'browse') );
 		$view->option = $this->_option;
 		$view->title = $title;
+		$view->config = $this->config;
 		$view->rows = $rows;
 		$view->filters = $filters;
 		$view->total = $total;

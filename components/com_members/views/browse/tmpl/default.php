@@ -168,6 +168,36 @@ if (count($this->rows) > 0) {
 	}
 	$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
 
+	// User messaging
+	$messaging = false;
+	if ($this->config->get('user_messaging') > 0 
+	 && !$juser->get('guest')) {
+		ximport('Hubzero_User_Helper');
+
+		switch ($this->config->get('user_messaging')) 
+		{
+			case 1:
+				// Get the groups the visiting user
+				$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+				$usersgroups = array();
+				if (!empty($xgroups)) {
+					foreach ($xgroups as $group)
+					{
+						if ($group->regconfirmed) {
+							$usersgroups[] = $group->cn;
+						}
+					}
+				}
+			break;
+
+			case 2:
+			case 0:
+			default:
+			break;
+		}
+		$messaging = true;
+	}
+
 	foreach ($this->rows as $row)
 	{
 		//$cls = ($cls == 'odd') ? 'even' : 'odd';
@@ -225,6 +255,44 @@ if (count($this->rows) > 0) {
 		} else {
 			$p = $dfthumb;
 		}
+		
+		// User messaging
+		$messageuser = false;
+		if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) {
+			switch ($this->config->get('user_messaging')) 
+			{
+				case 1:
+					// Get the groups of the profile
+					$pgroups = Hubzero_User_Helper::getGroups($row->uidNumber, 'all');
+					// Get the groups the user has access to
+					$profilesgroups = array();
+					if (!empty($pgroups)) {
+						foreach ($pgroups as $group)
+						{
+							if ($group->regconfirmed) {
+								$profilesgroups[] = $group->cn;
+							}
+						}
+					}
+
+					// Find the common groups
+					$common = array_intersect($usersgroups, $profilesgroups);
+
+					if (count($common) > 0) {
+						$messageuser = true;
+					}
+				break;
+
+				case 2:
+					$messageuser = true;
+				break;
+
+				case 0:
+				default:
+					$messageuser = false;
+				break;
+			}
+		}
 ?>
 						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 							<th class="entry-img">
@@ -240,11 +308,11 @@ if (count($this->rows) > 0) {
 								<!-- rcount: <?php echo $row->rcount; ?> --> 
 								<span class="activity"><?php echo $row->resource_count.' Resources, '.$row->wiki_count.' Topics'; ?></span>
 							</td>
-<?php /* ?>							<td class="message-member">
-<?php if (!$juser->get('guest') && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) { ?>
+						<td class="message-member">
+<?php if ($messageuser) { ?>
 								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$juser->get('id').'&active=messages&task=new&to='.$row->uidNumber); ?>" title="Message :: Send a message to <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>"><?php echo JText::_('Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8')); ?></a></td>
 <?php } ?>
-							</td><?php */ ?>
+							</td>
 						</tr>
 <?php
 	}
