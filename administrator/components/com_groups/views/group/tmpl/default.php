@@ -181,7 +181,7 @@ if ($this->getError()) {
 						<td colspan="2"><hr /></td>
 					</tr>
 					<tr>
-						<td class="key" valign="top"><label for="plugin_params"><?php echo JText::_('Membership Control'); ?>:</label> <br><br><span style="font-weight:normal; font-style:italic; color:#777; ">Is membership controlled outside the group realm?</span></td>
+						<td class="key" valign="top"><label for="plugin_params"><?php echo JText::_('Membership Control'); ?>:</label> <br><br><span style="font-weight:normal; font-style:italic; color:#777; ">Control membership within the group?</span></td>
 						<td>
 							<input type="checkbox" name="group[params][membership_control]" id="membership_control" value="1" <?php if($membership_control == 1) { ?>checked="checked"<?php } ?>/>
 						</td>
