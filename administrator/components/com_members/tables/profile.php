@@ -277,7 +277,7 @@ class MembersProfile extends JTable
 	
 	//-----------
 	
-	public public function selectWhere( $select, $where ) 
+	public function selectWhere( $select, $where ) 
 	{
 		$query = "SELECT $select FROM $this->_tbl WHERE $where";
 

@@ -82,7 +82,7 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public public function getXDomainUserId($domain_username, $domain)
+	public function getXDomainUserId($domain_username, $domain)
 	{
 		$db =& JFactory::getDBO();
 
@@ -106,7 +106,7 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public public function deleteXDomainUserId($id)
+	public function deleteXDomainUserId($id)
 	{
 		$db =& JFactory::getDBO();
 
