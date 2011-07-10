@@ -107,7 +107,7 @@ class Hubzero_Log
 	
 	//-----------
 	
-	public public function log($priority, $message, $trace = false) 
+	public function log($priority, $message, $trace = false) 
 	{
 		foreach ($this->_handler[$priority] as $handler) 
 		{
