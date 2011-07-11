@@ -192,14 +192,14 @@ class MyhubController extends Hubzero_Controller
 		}
 	
 		// Splits string into columns
-		$mymods = split(';',$myhub->prefs);
+		$mymods = explode(';',$myhub->prefs);
 		// Save array of columns for later work
 		$usermods = $mymods;
 	
 		// Splits each column into modules, listed by the order they should appear
 		for ( $i = 0; $i < count($mymods); $i++ ) 
 		{
-			$mymods[$i] = split(',',$mymods[$i]);
+			$mymods[$i] = explode(',',$mymods[$i]);
 		}
 
 		// Build a list of all modules being used by this user 
@@ -249,10 +249,10 @@ class MyhubController extends Hubzero_Controller
 	{
 		$id  = $this->save(1);
 		
-		$ids = split(';',$id);
+		$ids = explode(';',$id);
 		for ( $i = 0; $i < count($ids); $i++ ) 
 		{
-			$ids[$i] = split(',',$ids[$i]);
+			$ids[$i] = explode(',',$ids[$i]);
 		}
 		
 		$allmods = array();
