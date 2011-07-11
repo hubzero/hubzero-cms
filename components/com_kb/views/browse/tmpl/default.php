@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="container">
 			<h3>Trouble Report</h3>
 			<p class="starter"><span class="starter-point"></span>
-				Found a bug? <a href="<?php echo JRoute::_('index.php?option=com_feedback&task=trouble_report'); ?>">Let us know!</a>
+				Found a bug? <a href="<?php echo JRoute::_('index.php?option=com_feedback&task=report_problems'); ?>">Let us know!</a>
 			</p>
 		</div><!-- / .container -->
 	</div><!-- / .aside -->
