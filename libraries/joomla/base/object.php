@@ -41,12 +41,12 @@ class JObject
 	 * @access	public
 	 * @return	Object
 	 * @since	1.5
-	 */
 	function JObject()
 	{
 		$args = func_get_args();
 		call_user_func_array(array(&$this, '__construct'), $args);
 	}
+	 */
 
 	/**
 	 * Class constructor, overridden in descendant classes.
