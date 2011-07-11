@@ -1500,7 +1500,7 @@ class Hubzero_Tool_Version
         return $result;
     }
 
-    private function __get($property = null)
+    public function __get($property = null)
     {
         $xlog = &Hubzero_Factory::getLogger();
 
@@ -1582,7 +1582,7 @@ class Hubzero_Tool_Version
         return null;
     }
 
-    private function __set($property = null, $value = null)
+    public function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
         {
@@ -1652,7 +1652,7 @@ class Hubzero_Tool_Version
             $this->_updatedkeys[] = $property;
     }
 
-    private function __isset($property = null)
+    public function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
         {
@@ -1666,7 +1666,7 @@ class Hubzero_Tool_Version
         return isset($this->$property);
     }
 
-    private function __unset($property = null)
+    public function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
         {
