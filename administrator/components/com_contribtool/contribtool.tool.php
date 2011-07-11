@@ -391,7 +391,7 @@ class Tool extends JTable
 			$developers = $this->getToolDevelopers($toolid);	
 			$authors = $objA->getToolAuthors($version, $toolinfo[0]->rid, $toolinfo[0]->toolname);
 		
-			$this->buildToolStatus($toolinfo, $developers, $authors, $version, &$status, $option, $ldap);
+			$this->buildToolStatus($toolinfo, $developers, $authors, $version, $status, $option, $ldap);
 
 		}
 		else {
