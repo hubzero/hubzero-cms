@@ -67,7 +67,7 @@ $app =& JFactory::getApplication();
 				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->listdir; ?>" />
 				<input type="hidden" name="task" value="upload" />
 				<input type="hidden" name="no_html" value="1" />
-				<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+				<!--<input type="hidden" name="gid" value="<?php //echo $this->group->get('cn'); ?>" />-->
 			</fieldset>
 		</form>
 	</body>
