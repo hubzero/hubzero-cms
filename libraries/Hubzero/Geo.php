@@ -68,7 +68,8 @@ class Hubzero_Geo
 	{
 		$countries = array();
 
-		$gdb =& Hubzero_Geo::getGODBO();
+		if (!($gdb = Hubzero_Geo::getGODBO()))
+			return $countries;
 
 		$sql = "SELECT code, name FROM countries ORDER BY name";
 		$gdb->setQuery( $sql );
