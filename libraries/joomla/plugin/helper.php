@@ -202,7 +202,7 @@ class JPluginHelper
 		return $plugins;
 	}
 
-	static function loadLanguage($extension, $baserPath = JPATH_BASE)
+	static function loadLanguage($extension, $basePath = JPATH_BASE)
 	{
 		return JFactory::getLanguage()->load( strtolower($extension), $basePath);
 	}
