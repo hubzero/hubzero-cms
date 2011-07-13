@@ -232,7 +232,9 @@ class modToolList
 					}
 					
 					// Launch tool link
-					$html .= "\t\t\t".' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>'."\n";
+					if ($this->can_launch) {
+						$html .= "\t\t\t".' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>'."\n";
+					}
 					$html .= "\t\t".' </li>'."\n";
 				}
 				// If we're in the 'favorites' pane ...
@@ -256,6 +258,22 @@ class modToolList
 	public function display()
 	{
 		$params = $this->params;
+
+		$jacl =& JFactory::getACL();
+		$jacl->addACL( 'com_tools', 'manage', 'users', 'super administrator' );
+		$jacl->addACL( 'com_tools', 'manage', 'users', 'administrator' );
+		$jacl->addACL( 'com_tools', 'manage', 'users', 'manager' );
+		
+		$juser =& JFactory::getUser();
+		
+		$mconfig = JComponentHelper::getParams( 'com_tools' );
+
+		// Ensure we have a connection to the middleware
+		$this->can_launch = true;
+		if (!$mconfig->get('mw_on') 
+		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) {
+			$this->can_launch = false;
+		}
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests

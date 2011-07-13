@@ -1944,6 +1944,24 @@ class ResourcesHtml
 		switch ($resource->type)
 		{
 			case 7:
+				$jacl =& JFactory::getACL();
+				$jacl->addACL( 'com_tools', 'manage', 'users', 'super administrator' );
+				$jacl->addACL( 'com_tools', 'manage', 'users', 'administrator' );
+				$jacl->addACL( 'com_tools', 'manage', 'users', 'manager' );
+
+				$juser =& JFactory::getUser();
+
+				$mconfig = JComponentHelper::getParams( 'com_tools' );
+
+				// Ensure we have a connection to the middleware
+				$this->can_launch = true;
+				if (!$mconfig->get('mw_on') 
+				 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) {
+					$pop   = ResourcesHtml::warning(JText::_('Session invocation is currently disabled.'));
+					$html .= ResourcesHtml::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
+					return $html;
+				}
+				
 				// Generate the URL that launches a tool session			
 				$lurl ='';
 				$database =& JFactory::getDBO();

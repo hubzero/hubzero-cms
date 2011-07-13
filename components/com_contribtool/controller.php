@@ -154,12 +154,13 @@ class ContribtoolController extends JObject
 		$tconfig = new ContribtoolConfig( $this->_option );
 		$this->config = $tconfig;
 		
+		$juser =& JFactory::getUser();
 		$contribtool_enabled = (isset($this->config->parameters['contribtool_on'])) ? $this->config->parameters['contribtool_on'] : 0;
 		
-		if(!$contribtool_enabled) {
+		if (!$contribtool_enabled || ($contribtool_enabled > 1 && !$juser->authorize($this->_option, 'manage'))) {
 			// Redirect to home page
-			$this->_redirect = '/home/';
-			$this->redirect();		
+			$this->_redirect = (isset($this->config->parameters['contribtool_redirect'])) ? $this->config->parameters['contribtool_redirect'] : '/home';
+			$this->redirect();
 		}
 		
 		
@@ -4624,8 +4625,8 @@ class ContribtoolController extends JObject
 					if ($ug->cn == $admingroup) {
 						$admin = 2;
 					}
-					if($ug->manager) {
-						$groups[]=$ug->cn;
+					if ($ug->manager) {
+						$groups[] = $ug->cn;
 					}
 				}
 			}
@@ -4658,5 +4659,3 @@ class ContribtoolController extends JObject
 	}
 
 }
-
-?>

@@ -114,14 +114,23 @@ class modMySessions
 			}
 		}
 		
+		$jacl =& JFactory::getACL();
+		$jacl->addACL( 'com_tools', 'manage', 'users', 'super administrator' );
+		$jacl->addACL( 'com_tools', 'manage', 'users', 'administrator' );
+		$jacl->addACL( 'com_tools', 'manage', 'users', 'manager' );
+		
 		$juser =& JFactory::getUser();
 		
 		// Get a connection to the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-	
+
+		$mconfig = JComponentHelper::getParams( 'com_tools' );
+
 		// Ensure we have a connection to the middleware
 		$this->error = false;
-		if (!$mwdb) {
+		if (!$mwdb 
+		 || !$mconfig->get('mw_on') 
+		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) {
 			$this->error = true;
 			return false;
 		}

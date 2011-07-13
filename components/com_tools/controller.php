@@ -37,11 +37,13 @@ class ToolsController extends Hubzero_Controller
 	{
 		// Get the task
 		$this->_task = JRequest::getVar( 'task', '' );
-		
+
 		// Check if middleware is enabled
-		if (!$this->config->get('mw_on') && $this->_task != 'image' && $this->_task != 'css') {
+		if ($this->_task != 'image' 
+		 && $this->_task != 'css' 
+		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin'))) {
 			// Redirect to home page
-			$this->_redirect = '/home';
+			$this->_redirect = ($this->config->get('mw_redirect')) ? $this->config->get('mw_redirect') : '/home';
 			return;
 		}
 		
