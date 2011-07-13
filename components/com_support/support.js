@@ -64,6 +64,7 @@ HUB.Support = {
 					}
 					$('commentform').addClass('private');
 				} else {
+					es.checked = true;
 					es.disabled = false;
 					$('commentform').removeClass('private');
 				}
