@@ -621,9 +621,11 @@ class modSpotlight
 		}
 		$count = 0;
 		
-		// get contributions count
+/*
 		$query  = "SELECT COUNT(*) as resources ";
-		$query .= ", (SELECT COUNT(*) FROM jos_wiki_page AS w WHERE (w.created_by=$uid OR w.authors LIKE '%".$username."%')) as topics ";
+		if($username) {
+			$query .= ", (SELECT COUNT(*) FROM jos_wiki_page AS w WHERE (w.created_by=$uid OR w.authors LIKE '%".$username."%')) as topics ";
+		}
 		$query .= "FROM #__author_assoc AS AA, #__resources AS R ";
 		//$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
 		//$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
@@ -632,13 +634,26 @@ class modSpotlight
 		$query .= "AND AA.subtable = 'resources' ";
 		$query .= "AND R.published=1 AND R.standalone=1 ";
 		//$query .= "AND R.access!=2 AND R.access!=4 ";
-		//$query .= "AND R.type=rt.id ";
+		//$query .= "AND R.type=rt.id "; */
+		
+		$query  = "SELECT count(DISTINCT r.id) FROM jos_resources AS r ";
+		$query .= "LEFT JOIN jos_resource_types AS rt ON r.type=rt.id ";
+		$query .= "LEFT JOIN jos_author_assoc AS aa ON aa.subid=r.id AND aa.subtable='resources' ";
+		$query .= "WHERE r.standalone=1 AND r.published=1 AND (aa.authorid='".$uid."') AND (r.access=0 OR r.access=3)";
 	
 		$database->setQuery( $query );
-		$result = $database->loadObjectList();
-		if($result) {
-			$count = $result[0]->resources + $result[0]->topics;
-		}
+		$resources = $database->loadResult();
+		
+		$query  = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.pageid) FROM jos_wiki_page AS w, jos_wiki_version AS v ";
+		  
+		$query .= "WHERE w.id=v.pageid AND v.approved=1 AND (w.created_by='".$uid."' ";
+		$query .= $username ? "OR w.authors LIKE '%".$username."%')" : ") ";		  
+		$query .= "	AND w.access!=1 GROUP BY pageid ) AS f ";
+		
+		$database->setQuery( $query );
+		$topics = $database->loadResult();
+		$count = $resources + $topics;
+		
 		return $count;					
 	}
 	
