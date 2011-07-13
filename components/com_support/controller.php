@@ -955,7 +955,8 @@ class SupportController extends Hubzero_Controller
 		}
 
 		// Display the ticket with changes, new comment
-		$this->ticket();
+		//$this->ticket();
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='.$id);
 	}
 
 	//-----------
