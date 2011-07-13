@@ -27,10 +27,10 @@ HUB.Wiki = {
 			var ji = $(id.value+'_tags').value;
 			var jo = $('actags');
 			jo.value = ji;
-			
-			if ($('maininput') && jo) {
-				var ul = $($('maininput').getParent().getParent());
-				var label = $($('maininput').getParent().getParent().getParent());
+
+			if ($('maininput-actags') && jo) {
+				var ul = $($('maininput-actags').getParent().getParent());
+				var label = $($('maininput-actags').getParent().getParent().getParent());
 				label.removeChild(ul);
 				
 				var actags = new AppleboxList(jo, {'hideempty': false, 'resizable': {'step': 8}});
