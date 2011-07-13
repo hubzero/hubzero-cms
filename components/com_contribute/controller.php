@@ -358,7 +358,7 @@ class ContributeController extends Hubzero_Controller
 		// Get groups
 		ximport('Hubzero_User_Helper');
 			
-		$groups = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members' );
+		$groups = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members', 1 );
 		
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'authors') );
