@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=com_ysearch'); ?>" id="searchform"<?php if ($modxsearch->clasfx) { echo ' class="'.$modxsearch->clasfx.'"'; } ?>>
+<form method="get" action="/search" id="searchform"<?php if ($modxsearch->clasfx) { echo ' class="'.$modxsearch->clasfx.'"'; } ?>>
 	<fieldset>
 		<legend><?php echo $modxsearch->text; ?></legend>
 		<label for="searchword" id="searchword-label"><?php echo $modxsearch->text; ?></label>
