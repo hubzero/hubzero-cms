@@ -30,6 +30,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $app =& JFactory::getApplication();
+
+ximport('Hubzero_Group');
+$group = Hubzero_Group::getInstance($this->listdir);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -141,7 +144,11 @@ for ($i=0; $i<count($docs); $i++)
 					<tr>
 						<td><img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" /></td>
 						<td width="100%"><?php echo $docs[$doc_name]; ?></td>
-						<td><a href="#" onclick="return showFilePath('<?php echo '/site'.DS.'groups'.DS.$this->listdir.DS.$docs[$doc_name]; ?>')" title="Show File Path"><img src="/components/com_groups/assets/img/file_path.png" alt="Show Image Path" width="15" height="15" /></a></td>
+						<td>
+							<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'groups'.DS.$group->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="Show File Path">
+								<img src="/components/com_groups/assets/img/file_path.png" alt="Show Image Path" width="15" height="15" />
+							</a>
+						</td>
 						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
 					</tr>
 <?php
@@ -161,7 +168,7 @@ for ($i=0; $i<count($images); $i++)
 					<tr>
 						<td><img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" /></td>
 						<td width="100%"><?php echo $images[$image_name]; ?></td>
-						<td><a href="#" onclick="return showFilePath('<?php echo '/site'.DS.'groups'.DS.$this->listdir.DS.$images[$image_name]; ?>')" title="Show File Path"><img src="/components/com_groups/assets/img/file_path.png" alt="Show Image Path" width="15" height="15" /></a></td>
+						<td><a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'groups'.DS.$group->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path"><img src="/components/com_groups/assets/img/file_path.png" alt="Show Image Path" width="15" height="15" /></a></td>
 						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
 					</tr>
 <?php
