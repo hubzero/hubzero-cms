@@ -123,6 +123,12 @@
 	-webkit-box-shadow:0px 3px 5px #000;
 	-webkit-border-bottom-right-radius:5px;
 	-webkit-border-bottom-left-radius:5px;
+	-moz-box-shadow:0px 3px 5px #000;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	box-shadow:0px 3px 5px #000;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
 	text-indent:-555em;
 	}
 #special-group-tab span {
@@ -154,7 +160,7 @@
 	color:#aaa;
 	border-top:1px solid #ccc;
 	overflow:hidden;
-		font-size:11px;
+	font-size:11px;
 	line-height:11px;
 	}
 #special_management ul {
