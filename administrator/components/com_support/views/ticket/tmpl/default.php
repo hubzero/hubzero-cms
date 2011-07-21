@@ -73,7 +73,7 @@ if ($this->filters['_show'] != '') {
 <div class="col width-70">
 	<div class="overview">
 		<blockquote cite="<?php echo ($this->row->login) ? $this->row->name : $this->row->name; ?>">
-			<p><?php echo $this->row->report; ?></p>
+			<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
 		</blockquote>
 		
 		<table class="admintable" id="ticket-details" summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
@@ -178,7 +178,7 @@ if ($this->filters['_show'] != '') {
 					$comment->comment = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$comment->comment);
 					
 					$html .= "\t\t\t\t\t\t\t".'<blockquote cite="'. $comment->created_by .'">'."\n";
-					$html .= "\t\t\t\t\t\t\t\t".'<p>'.$comment->comment.'</p>'."\n";
+					$html .= "\t\t\t\t\t\t\t\t".'<p>'.preg_replace('/  /', ' &nbsp;', $comment->comment).'</p>'."\n";
 					$html .= "\t\t\t\t\t\t\t".'</blockquote>'."\n";
 				}
 				$html .= '<div class="changelog">'.$comment->changelog.'</div>';
