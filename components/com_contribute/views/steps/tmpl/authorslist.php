@@ -62,11 +62,11 @@ $app =& JFactory::getApplication();
 					<?php
 					foreach ($this->rows as $row) 
 					{
-						if ($row->surname || $row->givenName) {
-							$name  = stripslashes($row->surname).', ';
-							$name .= stripslashes($row->givenName);
-							if ($row->middleName != NULL) {
-								$name .= ' '.stripslashes($row->middleName);
+						if ($row->lname || $row->fname) {
+							$name  = stripslashes($row->lname).', ';
+							$name .= stripslashes($row->fname);
+							if ($row->mname != NULL) {
+								$name .= ' '.stripslashes($row->mname);
 							}
 						} else {
 							$name = stripslashes($row->name);

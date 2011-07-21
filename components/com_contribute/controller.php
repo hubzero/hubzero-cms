@@ -1913,7 +1913,7 @@ class ContributeController extends Hubzero_Controller
 		$filters['show']   = '';
 		$filters['index']  = '';
 		$filters['limit']  = 'all';
-		$filters['sortby'] = 'surname';
+		$filters['sortby'] = 'name';
 		$filters['authorized'] = false;
 		
 		// Get all members
