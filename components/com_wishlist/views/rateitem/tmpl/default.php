@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser 		=& JFactory::getUser();
 $item 		= $this->item;
-$option 	= $this->option;
+//$this->option 	= $this->option;
 $listid 	= $this->listid;
 $admin 		= $this->admin;
 $page 		= $this->page;
@@ -61,9 +61,9 @@ $html  = n.t.t.t.'<span class="thumbsvote" title="'.$title.'">'.n;
 $html .= t.t.t.t.'<span class="'.$pclass.'">'.$item->positive.'</span>'.n;
 					
 if ($juser->get('guest')) {
-	$html .= t.t.t.t.'<span class="gooditem r_disabled"><a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;
+	$html .= t.t.t.t.'<span class="gooditem r_disabled"><a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;
 	$html .= t.t.t.t.'<span class="'.$nclass.'">'.$item->negative.'</span>'.n;
-	$html .= t.t.t.t.'<span class="baditem r_disabled"><a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;				
+	$html .= t.t.t.t.'<span class="baditem r_disabled"><a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;				
 }
 else {					
 	$html .= t.t.t.t.'<span class="gooditem">'.n;
@@ -74,7 +74,7 @@ else {
 		$html .= t.t.t.t.'<span>&nbsp;</span>'.n;
 	}
 	else {
-		$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;			
+		$html .= t.t.t.t.t.'<a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;			
 	}
 	$html .= t.t.t.t.'</span>'.n;
 	$html .= t.t.t.t.'<span class="'.$nclass.'">'.$item->negative.'</span>'.n;
@@ -86,7 +86,7 @@ else {
 		$html .= t.t.t.'<span>&nbsp;</span>'.n;
 	}
 	else {
-		$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;	
+		$html .= t.t.t.t.t.'<a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;	
 	}
 	$html .= t.t.t.t.'</span>'.n;		
 }
