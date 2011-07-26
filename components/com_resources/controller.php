@@ -1066,10 +1066,10 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		$title = $resource->title;
-		if ( is_integer( strpos( $feedtype, 'hd_video' ) ) )
-			$title = '[HD] '.$title;
-		else if ( is_integer( strpos( $feedtype, 'sd_video' ) ) )
-			$title = '[SD full] '.$title;
+		$feedtypes_abr = array(" ","slides","audio","sd_video","hd_video");
+		$feedtypes_full = array(" & ","Slides","Audio","SD full","HD");
+		$type = str_replace( $feedtypes_abr, $feedtypes_full, $feedtype);
+		$title = "[" . $type . "] " . $title;
 		
 		// Build some basic RSS document information
 		$dtitle = Hubzero_View_Helper_Html::purifyText(stripslashes($title));
