@@ -1829,7 +1829,7 @@ class GroupsController extends Hubzero_Controller
 						}
 					} else {
 						if (!in_array($l,$current_inviteemails)) {
-							$inviteemails[] = array($l, $group->get('gidNumber'), $this->randomString(32));
+							$inviteemails[] = array("email" => $l, "gidNumber" => $group->get('gidNumber'), "token" => $this->randomString(32));
 						} else {
 							$badentries[] = array( $l, 'Email address has already been invited.' );
 						}
@@ -1849,11 +1849,8 @@ class GroupsController extends Hubzero_Controller
 		// Add the inviteemails
 		foreach ($inviteemails as $ie) 
 		{
-			$invite = array();
-			$invite['email'] = $ie[0];
-			$invite['gidNumber'] = $ie[1];
-			$invite['token'] = $ie[2];
-			$group_inviteemails->save($invite);
+			$group_inviteemails = new Hubzero_Group_Invite_Email($this->database);
+			$group_inviteemails->save($ie);
 		}
 		
 		// Log the sending of invites
@@ -1922,13 +1919,13 @@ class GroupsController extends Hubzero_Controller
 			$eview2->juser = $this->juser;
 			$eview2->group = $group;
 			$eview2->msg = $msg;
-			$eview2->token = $mbr[2];
+			$eview2->token = $mbr["token"];
 			$message2 = $eview2->loadTemplate();
 			$message2 = str_replace("\n", "\r\n", $message2);
 			
 			// Send the e-mail
-			if (!$this->email($mbr[0], $jconfig->getValue('config.sitename').' '.$subject, $message2, $from)) {
-				$this->setNotification( JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED').' '.$mbr[0], 'error' );
+			if (!$this->email($mbr["email"], $jconfig->getValue('config.sitename').' '.$subject, $message2, $from)) {
+				$this->setNotification( JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED').' '.$mbr["email"], 'error' );
 			}
 		}
 		
@@ -1959,7 +1956,7 @@ class GroupsController extends Hubzero_Controller
 					$user = JUser::getInstance($invite);
 					$success_message .= " - " . $user->get('name') . "<br>";
 				} else {
-					$success_message .= " - " . $invite[0] . "<br>";
+					$success_message .= " - " . $invite["email"] . "<br>";
 				}
 			}
 		}
