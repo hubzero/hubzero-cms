@@ -97,6 +97,7 @@ if (typeof(Fx) === 'undefined') {
 			loginId:   'trLogin',
 			problemId: 'trProblem',
 			captchaId: 'trAnswer',
+			uploadId:  'trUpload',
 			loaderId:  'trSending',
 			successId: 'trSuccess',
 			sendId:    'send-form'
@@ -139,6 +140,13 @@ if (typeof(Fx) === 'undefined') {
 				}
 			});
 			
+			this.name    = $(this.options.nameId);
+			this.email   = $(this.options.emailId);
+			this.login   = $(this.options.loginId);
+			this.problem = $(this.options.problemId);
+			this.answer  = $(this.options.captchaId);
+			this.upload  = $(this.options.uploadId);
+			
 			var res = new Element('div', {
 				id: 'help-btn-close',
 				alt: 'Close',
@@ -176,12 +184,6 @@ if (typeof(Fx) === 'undefined') {
 					return false;
 				}.bindWithEvent(this));
 
-				this.name    = $(this.options.nameId);
-				this.email   = $(this.options.emailId);
-				this.login   = $(this.options.loginId);
-				this.problem = $(this.options.problemId);
-				this.answer  = $(this.options.captchaId);
-
 				this.frm = $(this.options.formId);
 				if (this.frm) {
 					var d = document.createElement('DIV');
@@ -210,6 +212,7 @@ if (typeof(Fx) === 'undefined') {
 
 		resetForm: function() {
 			this.problem.setProperties({'value':''});
+			this.upload.parentNode.innerHTML = this.upload.parentNode.innerHTML;
 			this.success.hide();
 			this.frm.setStyle('display','block');
 		},
