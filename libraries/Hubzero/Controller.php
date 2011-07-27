@@ -29,18 +29,50 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * @see JView
+ */
 jimport('joomla.application.component.view');
 
+/**
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ */
 class Hubzero_Controller extends JObject
 {	
+	/**
+	 * Container for component messages
+	 * @var		array
+	 */
 	public $componentMessageQueue = array();
 	
+	/**
+	 * The name of the component derived from the controller class name
+	 * @var		string
+	 */
 	protected $_name = NULL;
+
+	/**
+	 * Container for storing overloaded data
+	 * @var		array
+	 */
 	protected $_data = array();
+
+	/**
+	 * The task the component is to perform
+	 * @var		string
+	 */
 	protected $_task = NULL;
 
-	//-----------
-	
+	/**
+	 * Constructor
+	 *
+	 * @access	public
+	 * @param	array	$config		Optional configurations to be used
+	 * @return	void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
@@ -67,19 +99,28 @@ class Hubzero_Controller extends JObject
 		$this->database = JFactory::getDBO();
 		$this->config = JComponentHelper::getParams( $this->_option );
 		
-		//clear component messages - for cross component messages
+		// Clear component messages - for cross component messages
 		$this->getComponentMessage();
 	}
 
-	//-----------
-
+	/**
+	 * Method to set an overloaded variable to the component
+	 *
+	 * @param	string	$property	Name of overloaded variable to add
+	 * @param	mixed	$value 		Value of the overloaded variable
+	 * @return	void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 	
-	//-----------
-	
+	/**
+	 * Method to get an overloaded variable of the component
+	 *
+	 * @param	string	$property	Name of overloaded variable to retrieve
+	 * @return	mixed 	Value of the overloaded variable
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -87,30 +128,39 @@ class Hubzero_Controller extends JObject
 		}
 	}
 	
-	//----------------------------------------------------------
-	// Public methods
-	//----------------------------------------------------------
-	
+	/**
+	 * Overloadable method
+	 *
+	 * @return	void
+	 */
 	public function execute()
 	{
 	}
 	
-	//-----------
-
+	/**
+	 * Method to redirect the application to a new URL and optionally include a message
+	 *
+	 * @return	void
+	 */
 	public function redirect()
 	{
 		if ($this->_redirect != NULL) {
 			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
+			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
 	
-	//-----------
-	
-	public function addComponentMessage( $message,  $type = 'message' )
+	/**
+	 * Method to add a message to the component message que
+	 *
+	 * @param	string	$message	The message to add
+	 * @param	string	$type		The type of message to add
+	 * @return	void
+	 */
+	public function addComponentMessage($message, $type='message')
 	{
 		//if message is somthing
-		if($message != '') {
+		if ($message != '') {
 			$this->componentMessageQueue[] = array('message' => $message, 'type' => strtolower($type), 'option' => $this->_option);
 		}
 		
@@ -118,12 +168,14 @@ class Hubzero_Controller extends JObject
 		$session->set('component.message.queue', $this->componentMessageQueue);
 	}
 	
-	//-----------
-	
+	/**
+	 * Method to get component messages
+	 *
+	 * @return	array
+	 */
 	public function getComponentMessage()
 	{
-		if (!count($this->componentMessageQueue))
-		{
+		if (!count($this->componentMessageQueue)) {
 			$session =& JFactory::getSession();
 			$componentMessage = $session->get('component.message.queue');
 			if (count($componentMessage)) {
@@ -132,8 +184,8 @@ class Hubzero_Controller extends JObject
 			}
 		}
 		
-		foreach($this->componentMessageQueue as $k => $cmq) {
-			if($cmq['option'] != $this->_option) {
+		foreach ($this->componentMessageQueue as $k => $cmq) {
+			if ($cmq['option'] != $this->_option) {
 				$this->componentMessageQueue[$k] = array();
 			}
 		} 
@@ -141,10 +193,14 @@ class Hubzero_Controller extends JObject
 		return $this->componentMessageQueue;
 	}
 	
-	//----------------------------------------------------------
-	// Protected methods
-	//----------------------------------------------------------
-	
+	/**
+	 * Method to add stylesheets to the document.
+	 * Defaults to current component and stylesheet name the same as component.
+	 *
+	 * @param	string	$option 	Component name to load stylesheet from
+	 * @param	string	$script 	Name of the stylesheet to load
+	 * @return	void
+	 */
 	protected function _getStyles($option='', $stylesheet='') 
 	{
 		ximport('Hubzero_Document');
@@ -152,8 +208,14 @@ class Hubzero_Controller extends JObject
 		Hubzero_Document::addComponentStylesheet($option, $stylesheet);
 	}
 
-	//-----------
-	
+	/**
+	 * Method to add scripts to the document.
+	 * Defaults to current component and script name the same as component.
+	 *
+	 * @param	string	$script 	Name of the script to load
+	 * @param	string	$option 	Component name to load script from
+	 * @return	void
+	 */
 	protected function _getScripts($script='', $option='')
 	{
 		$document =& JFactory::getDocument();
@@ -166,8 +228,11 @@ class Hubzero_Controller extends JObject
 		}
 	}
 	
-	//-----------
-
+	/**
+	 * Method to set the document path
+	 *
+	 * @return	void
+	 */
 	protected function _buildPathway() 
 	{
 		$app =& JFactory::getApplication();
@@ -187,8 +252,11 @@ class Hubzero_Controller extends JObject
 		}
 	}
 	
-	//-----------
-	
+	/**
+	 * Method to build and set the document title
+	 *
+	 * @return	void
+	 */
 	protected function _buildTitle() 
 	{
 		$title = JText::_(strtoupper($this->_option));
@@ -199,10 +267,11 @@ class Hubzero_Controller extends JObject
 		$document->setTitle( $title );
 	}
 	
-	//----------------------------------------------------------
-	// Authorization checks
-	//----------------------------------------------------------
-	
+	/**
+	 * Method to check admin access permission
+	 *
+	 * @return	boolean	True on success
+	 */
 	protected function _authorize()
 	{
 		// Check if they are logged in

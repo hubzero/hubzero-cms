@@ -29,14 +29,61 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Browser/OS detection class.
+ *
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @package		HUBzero CMS
+ */
 class Hubzero_Browser
 {
+	/**
+	 * The raw user agent string provided by the user's browser
+	 *
+	 * @access private
+	 * @var string
+	 */
 	private $_user_agent = null;
+	
+	/**
+	 * OS determined from user agent string
+	 *
+	 * @access private
+	 * @var string
+	 */
 	private $_os = null;
+	
+	/**
+	 * OS version determined from user agent string
+	 *
+	 * @access private
+	 * @var string
+	 */
 	private $_os_version = null;
+	
+	/**
+	 * Browser determined from user agent string
+	 *
+	 * @access private
+	 * @var string
+	 */
 	private $_browser = null;
+	
+	/**
+	 * Browser version determined from user agent string
+	 *
+	 * @access private
+	 * @var string
+	 */
 	private $_browser_version = null;
 	
+	/**
+	 * Determines the user's Browser, Browser version, OS, and OS version from 
+	 * the browser user agent string.
+	 *
+	 * @access public
+	 * @param	string	$sagent 	User's browser user agent string
+	 */
 	public function __construct($sagent=null) 
 	{
 		if (!$sagent) {
@@ -274,36 +321,56 @@ class Hubzero_Browser
 		$this->_browser_version = ($browser_ver) ? $browser_ver : '';
 	}
 	
-	//-----------
-	
+	/**
+	 * Return the user's browser
+	 *
+	 * @access public
+	 * @return string
+	 */
 	public function getBrowser() 
 	{
 		return $this->_browser;
 	}
 	
-	//-----------
-	
+	/**
+	 * Return the user's browser version
+	 *
+	 * @access public
+	 * @return string
+	 */
 	public function getBrowserVersion() 
 	{
 		return $this->_browser_version;
 	}
 	
-	//-----------
-	
+	/**
+	 * Return the user's OS
+	 *
+	 * @access public
+	 * @return string
+	 */
 	public function getOs() 
 	{
 		return $this->_os;
 	}
 	
-	//-----------
-	
+	/**
+	 * Return the user's OS version
+	 *
+	 * @access public
+	 * @return string
+	 */
 	public function getOsVersion() 
 	{
 		return $this->_os_version;
 	}
 	
-	//-----------
-	
+	/**
+	 * Return the user's browser user agent string
+	 *
+	 * @access public
+	 * @return string
+	 */
 	public function getUserAgent() 
 	{
 		return $this->_user_agent;
