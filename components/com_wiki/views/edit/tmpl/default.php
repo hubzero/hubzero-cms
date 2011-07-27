@@ -209,8 +209,16 @@ if ($this->authorized) {
 <?php 	} ?>
 	
 			<label<?php echo $cls; ?>>
-				<?php echo JText::_('WIKI_FIELD_AUTHORS'); ?>:
-				<input type="text" name="authors" id="params_authors" value="<?php echo $this->authors; ?>" />
+					<?php echo JText::_('WIKI_FIELD_AUTHORS'); ?>:
+<?php 
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
+$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'authors', 'params_authors', '', $this->authors)) );
+if (count($mc) > 0) {
+	echo $mc[0];
+} else { ?>
+					<input type="text" name="authors" id="params_authors" value="<?php echo $this->authors; ?>" />
+<?php } ?>
 			</label>
 			<label<?php echo $cls; ?>>
 				<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($params->get( 'hide_authors' ) == 1) { echo ' checked="checked"'; } ?> value="1" />
@@ -260,8 +268,6 @@ if ($this->authorized) {
 			<label>
 				<?php echo JText::_('WIKI_FIELD_TAGS'); ?>:
 <?php 
-	JPluginHelper::importPlugin( 'hubzero' );
-	$dispatcher =& JDispatcher::getInstance();
 	$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
 	if (count($tf) > 0) {
 		echo $tf[0];

@@ -69,11 +69,15 @@ HUB.Wiki = {
 		var mode = $('params_mode');
 		if (mode.value != 'knol') {
 			$($('params_authors').parentNode).addClass('hide');
+			$($('params_hide_authors').parentNode).addClass('hide');
 			$($('params_allow_changes').parentNode).addClass('hide');
 			$($('params_allow_comments').parentNode).addClass('hide');
 		} else {
 			if ($($('params_authors').parentNode).hasClass('hide')) {
 				$($('params_authors').parentNode).removeClass('hide');
+			}
+			if ($($('params_hide_authors').parentNode).hasClass('hide')) {
+				$($('params_hide_authors').parentNode).removeClass('hide');
 			}
 			if ($($('params_allow_changes').parentNode).hasClass('hide')) {
 				$($('params_allow_changes').parentNode).removeClass('hide');
