@@ -1066,8 +1066,8 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		$title = $resource->title;
-		$feedtypes_abr = array(" ","slides","audio","sd_video","hd_video");
-		$feedtypes_full = array(" & ","Slides","Audio","SD full","HD");
+		$feedtypes_abr = array(" ","slides","audio","video","sd_video","hd_video");
+		$feedtypes_full = array(" & ","Slides","Audio","Video","SD full","HD");
 		$type = str_replace( $feedtypes_abr, $feedtypes_full, $feedtype);
 		$title = "[" . $type . "] " . $title;
 		

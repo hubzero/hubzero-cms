@@ -101,9 +101,10 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 		if ($data->itunes_author!="") {
 			$feed.= "		<itunes:author>".htmlspecialchars($data->itunes_author, ENT_COMPAT, 'UTF-8')."</itunes:author>\n";
 		}
-		/*if ($data->itunes_image!="") {
-			$feed.= "		<itunes:image>".htmlspecialchars($data->itunes_image, ENT_COMPAT, 'UTF-8')."</itunes:image>\n";
-		}*/
+		if ($data->itunes_image!=null) {
+			$feed.= "		<itunes:image href=\"".$data->itunes_image->url."\" />\n";
+		}
+		/*
 		if ($data->itunes_image!=null)
 		{
 			$feed.= "		<itunes:image>\n";
@@ -121,6 +122,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 			}
 			$feed.= "		</itunes:image>\n";
 		}
+		*/
 		// end iTunes specific tags
 
 		if ($data->image!=null)
