@@ -89,7 +89,7 @@ class plgTagsBlogs extends JPlugin
 		
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.alias, e.content AS `text`, e.created_by, COUNT(DISTINCT t.tagid) AS uniques, e.publish_up, e.publish_down, 'blog' AS section, e.scope, u.name";
+		$e_fields = "SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, NULL AS modified, e.publish_up, e.publish_down, CONCAT( 'index.php?option=com_blog&task=view&id=', e.id ) AS href, 'blog' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1, NULL AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
 		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
 		$juser =& JFactory::getUser();
@@ -118,6 +118,10 @@ class plgTagsBlogs extends JPlugin
 			$this->_total = $database->loadResult();
 			return $this->_total;
 		} else {
+			if (count($areas) > 1) {
+				return $e_fields . $e_from . $e_where;
+			}
+			
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
@@ -175,9 +179,9 @@ class plgTagsBlogs extends JPlugin
 		// Start building the HTML
 		$html  = "\t".'<li class="blog-entry">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
-		$html .= "\t\t".'<p class="details">'.JHTML::_('date', $row->publish_up, '%d %b %Y').' <span>|</span> '.JText::sprintf('PLG_TAGS_BLOGS_POSTED_BY','<cite><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($row->name).'</a></cite>').'</p>'."\n";
-		if ($row->text) {
-			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)), 200)."\n";
+		$html .= "\t\t".'<p class="details">'.JHTML::_('date', $row->publish_up, '%d %b %Y').' <span>|</span> '.JText::sprintf('PLG_TAGS_BLOGS_POSTED_BY','<cite><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($row->data1).'</a></cite>').'</p>'."\n";
+		if ($row->ftext) {
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
 		}
 		$html .= "\t".'</li>'."\n";
 		

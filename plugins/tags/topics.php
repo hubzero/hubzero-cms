@@ -93,28 +93,35 @@ class plgTagsTopics extends JPlugin
 		// Build query
 		$filters = array();
 		$filters['tags'] = $ids;
-		$filters['sortby'] = ($sort) ? $sort : 'id';
+		$filters['sortby'] = ($sort) ? $sort : 'date';
 		$filters['authorized'] = $this->_authorize();
 
 		// Execute the query
 		if (!$limit) {
 			$filters['select'] = 'count';
 			
-			$database->setQuery( $wp->buildPluginQuery( $filters ) );
+			//$database->setQuery( $wp->buildPluginQuery( $filters ) );
+			$database->setQuery( $this->_buildPluginQuery( $filters ) );
 			$this->_total = $database->loadResult();
 			return $this->_total;
 		} else {
+			$filters['select'] = 'records';
+			$filters['limit'] = (count($areas) > 1) ? 'all' : $limit;
+			$filters['limitstart'] = $limitstart;
+			
+			//$query = $wp->buildPluginQuery( $filters );
+			$query = $this->_buildPluginQuery( $filters );
+			if (count($areas) > 1) {
+				return $query;
+			}
+			
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
 				}
 			}
 			
-			$filters['select'] = 'records';
-			$filters['limit'] = $limit;
-			$filters['limitstart'] = $limitstart;
-			
-			$database->setQuery( $wp->buildPluginQuery( $filters ) );
+			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
@@ -122,10 +129,10 @@ class plgTagsTopics extends JPlugin
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row) 
 				{
-					if ($row->area != '' && $row->category != '') {
-						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->category.'&pagename='.$row->alias);
+					if ($row->data1 != '' && $row->category != '') {
+						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->data1.'&pagename='.$row->alias);
 					} else {
-						$rows[$key]->href = JRoute::_('index.php?option=com_topics&scope='.$row->category.'&pagename='.$row->alias);
+						$rows[$key]->href = JRoute::_('index.php?option=com_topics&scope='.$row->data1.'&pagename='.$row->alias);
 					}
 					$rows[$key]->text = $rows[$key]->itext;
 				}
@@ -134,6 +141,74 @@ class plgTagsTopics extends JPlugin
 			// Return the results
 			return $rows;
 		}
+	}
+	
+	private function _buildPluginQuery( $filters=array() ) 
+	{
+		//$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
+		
+		//include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'wiki'.DS.'revision.php' );
+		//$wr = new WikiPageRevision( $database );
+		if (isset($filters['search']) && $filters['search'] != '') {
+			$searchquery = $filters['search'];
+			$phrases = $searchquery->searchPhrases;
+		}
+		if (isset($filters['select']) && $filters['select'] == 'count') {
+			if (isset($filters['tags'])) {
+				$query = "SELECT COUNT(f.id) FROM (SELECT v.pageid AS id, COUNT(DISTINCT t.tagid) AS uniques ";
+			} else {
+				$query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.pageid) ";
+			}
+		} else {
+			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by, v.created AS modified, v.created AS publish_up, NULL AS publish_down,  
+					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS section ";
+			if (isset($filters['tags'])) {
+				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
+			}
+			$query .= ", w.params, NULL AS rcount, w.scope AS data1, NULL AS data2, NULL AS data3 ";
+		}
+		$query .= "FROM #__wiki_page AS w, #__wiki_version AS v ";
+		if (isset($filters['tags'])) {
+			$query .= ", #__tags_object AS t ";
+		}
+		$query .= "WHERE w.id=v.pageid AND v.approved=1 ";
+		if (isset($filters['tags'])) {
+			$ids = implode(',',$filters['tags']);
+			$query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
+		}
+		
+		$query .= "GROUP BY pageid ";
+		if (isset($filters['tags'])) {
+			$query .= "HAVING uniques=".count($filters['tags'])." ";
+		}
+		if (isset($filters['select']) && $filters['select'] != 'count') {
+			if (isset($filters['sortby'])) {
+				$query .= "ORDER BY ";
+				switch ($filters['sortby']) 
+				{
+					case 'title':   $query .= 'title ASC';         break;
+					case 'id':  $query .= "id DESC"; break;
+					case 'rating': $query .= "rating DESC";                  break;
+					case 'ranking': $query .= "ranking DESC";                  break;
+					case 'relevance': $query .= "relevance DESC";              break;
+					case 'usage':
+					case 'hits':    $query .= 'hits DESC';               break;
+					case 'date':
+					default: $query .= 'created DESC';               break;
+				}
+			}
+			if (isset($filters['limit']) && $filters['limit'] != 'all') {
+				$query .= " LIMIT ".$filters['limitstart'].",".$filters['limit'];
+			}
+		}
+		if (isset($filters['select']) && $filters['select'] == 'count') {
+			//if (isset($filters['tags'])) {
+				$query .= ") AS f";
+			//}
+		}
+		//echo '<!-- '.$query.' -->';
+		return $query;
 	}
 	
 	//-----------

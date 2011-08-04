@@ -89,14 +89,22 @@ class plgTagsGroups extends JPlugin
 		// Build the query
 		$f_count = "SELECT COUNT(f.gidNumber) FROM (SELECT a.gidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
 
-		$f_fields = "SELECT a.gidNumber AS id, a.description AS title, a.public_desc AS text, a.cn, 'groups' AS section, COUNT(DISTINCT t.tagid) AS uniques";
+		$f_fields = "SELECT a.gidNumber AS id, a.description AS title, a.cn AS alias, NULL AS itext, a.public_desc AS ftext, a.type AS state, a.created, a.created_by, NULL AS modified, NULL AS publish_up, NULL AS publish_down, CONCAT( 'index.php?option=com_groups&gid=', a.gidNumber ) AS href, 'groups' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
 		$f_from = " FROM #__xgroups AS a, #__tags_object AS t
 					WHERE a.type=1 AND a.privacy<=1
 					AND a.gidNumber=t.objectid 
 					AND t.tbl='groups' 
 					AND t.tagid IN ($ids)";
 		$f_from .= " GROUP BY a.gidNumber HAVING uniques=".count($tags);
-		$order_by = " ORDER BY a.description DESC, title LIMIT $limitstart,$limit";
+		$order_by  = " ORDER BY ";
+		switch ($sort) 
+		{
+			case 'title': $order_by .= 'title ASC, publish_up';  break;
+			case 'id':    $order_by .= "id DESC";                break;
+			case 'date':  
+			default:      $order_by .= 'publish_up DESC, title'; break;
+		}
+		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
 		// Execute the query
 		if (!$limit) {
@@ -104,6 +112,10 @@ class plgTagsGroups extends JPlugin
 			$this->_total = $database->loadResult();
 			return $this->_total;
 		} else {
+			if (count($areas) > 1) {
+				return $f_fields . $f_from;
+			}
+			
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
@@ -118,7 +130,7 @@ class plgTagsGroups extends JPlugin
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row) 
 				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_groups&gid='.$row->cn);
+					$rows[$key]->href = JRoute::_('index.php?option=com_groups&gid='.$row->alias);
 				}
 			}
 

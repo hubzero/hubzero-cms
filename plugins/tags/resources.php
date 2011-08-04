@@ -170,17 +170,29 @@ class plgTagsResources extends JPlugin
 			}
 			
 			$filters['select'] = 'records';
-			$filters['limit'] = $limit;
+			$filters['limit'] = (count($areas) > 1) ? 'all' : $limit;
 			$filters['limitstart'] = $limitstart;
+			$filters['sortby'] = ($sort) ? $sort : 'date';
 			
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
 			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources') {
 				$filters['type'] = $cats[$areas[0]]['id'];
 			}
+			
+			// Get results
+			/*if (count($areas) > 1) {
+				$filters['groupby'] = true;
+			}*/
+			//$query = $rr->buildPluginQuery( $filters );
+			$query = $this->_buildPluginQuery( $filters );
+			if (count($areas) > 1) {
+				plgTagsResources::documents();
+				return $query;
+			}
 
 			// Get results
-			$database->setQuery( $rr->buildPluginQuery( $filters ) );
+			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
@@ -212,7 +224,8 @@ class plgTagsResources extends JPlugin
 						$filters['type'] = $cats[$a]['id'];
 
 						// Execute a count query for each area/category
-						$database->setQuery( $rr->buildPluginQuery( $filters ) );
+						//$database->setQuery( $rr->buildPluginQuery( $filters ) );
+						$database->setQuery( $this->_buildPluginQuery( $filters ) );
 						$counts[] = $database->loadResult();
 					}
 				}
@@ -222,6 +235,92 @@ class plgTagsResources extends JPlugin
 			$this->_total = $counts;
 			return $counts;
 		}
+	}
+	
+	private function _buildPluginQuery( $filters=array() )
+	{
+		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
+		
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
+		$rt = new ResourcesType( $database );
+		
+		if (isset($filters['select']) && $filters['select'] == 'count') {
+			if (isset($filters['tags'])) {
+				$query = "SELECT count(f.id) FROM (SELECT r.id, COUNT(DISTINCT t.tagid) AS uniques ";
+			} else {
+				$query = "SELECT count(DISTINCT r.id) ";
+			}
+		} else {
+			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltext AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.publish_down,  
+					CONCAT( 'index.php?option=com_resources&id=', r.id ) AS href, 'resources' AS section ";
+			if (isset($filters['tags'])) {
+				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
+			}
+			$query .= ", r.params, r.rating AS rcount, r.type AS data1, rt.type AS data2, r.ranking data3 ";
+			/*if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
+				$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=r.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+			}
+			if (isset($filters['sortby']) && $filters['sortby'] == 'jobs') {
+				$query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=r.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+			}*/
+		}
+		$query .= "FROM #__resources AS r ";
+		$query .= "LEFT JOIN ".$rt->getTableName()." AS rt ON r.type=rt.id ";
+		if (isset($filters['tag'])) {
+			$query .= ", #__tags_object AS t, #__tags AS tg ";
+		}
+		if (isset($filters['tags'])) {
+			$query .= ", #__tags_object AS t ";
+			//$query .= " INNER JOIN #__tags AS tg ON (t.tagid = tg.id)";
+		}
+		$query .= "WHERE r.standalone=1 ";
+		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized'])) {
+			$query .= "AND r.published=1 ";
+		}
+		if (isset($filters['tag'])) {
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='".$filters['tag']."' OR tg.alias='".$filters['tag']."') ";
+		}
+		if (isset($filters['tags'])) {
+			$ids = implode(',',$filters['tags']);
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid IN (".$ids.") ";
+		}
+		if (isset($filters['type']) && $filters['type'] != '') {
+			$query .= "AND r.type=".$filters['type']." ";
+		}
+		
+		if (isset($filters['tags'])) {
+			$query .= " GROUP BY r.id HAVING uniques=".count($filters['tags'])." ";
+		}
+		if (isset($filters['select']) && $filters['select'] != 'count') {
+			if (isset($filters['sortby'])) {
+				if (isset($filters['groupby'])) {
+					$query .= "GROUP BY r.id ";
+				}
+				$query .= "ORDER BY ";
+				switch ($filters['sortby']) 
+				{
+					case 'date':    $query .= 'publish_up DESC';               break;
+					case 'title':   $query .= 'title ASC, publish_up DESC';         break;
+					case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
+					case 'ranking': $query .= "ranking DESC";                  break;
+					case 'relevance': $query .= "relevance DESC";              break;
+					case 'users':
+					case 'usage':   $query .= "users DESC";              break;
+					case 'jobs':   $query .= "jobs DESC";              break;
+				}
+			}
+			if (isset($filters['limit']) && $filters['limit'] != 'all') {
+				$query .= " LIMIT ".$filters['limitstart'].",".$filters['limit'];
+			}
+		}
+		if (isset($filters['select']) && $filters['select'] == 'count') {
+			if (isset($filters['tags'])) {
+				$query .= ") AS f";
+			}
+		}
+//echo '<!-- '.$query.' -->';
+		return $query;
 	}
 
 	//----------------------------------------------------------
@@ -258,9 +357,14 @@ class plgTagsResources extends JPlugin
 
 		// Get the component params and merge with resource params
 		$config =& JComponentHelper::getParams( 'com_resources' );
-		$rparams = new JParameter( $row->params );
+		$rparams =& new JParameter( $row->params );
 		$params = $config;
 		$params->merge( $rparams );
+
+		$row->rating = $row->rcount;
+		$row->category = $row->data1;
+		$row->area = $row->data2;
+		$row->ranking = $row->data3;
 
 		// Set the display date
 		switch ($params->get('show_date')) 

@@ -228,7 +228,7 @@ class TagsController extends Hubzero_Controller
 		// Incoming paging vars
 		$limit = JRequest::getInt( 'limit', 25 );
 		$limitstart = JRequest::getInt( 'limitstart', 0 );
-		$sort = JRequest::getVar( 'sort', '' );
+		$sort = JRequest::getVar( 'sort', 'date' );
 
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();
@@ -243,7 +243,7 @@ class TagsController extends Hubzero_Controller
 		if ($area) {
 			$activeareas = array($area);
 		} else {
-			$limit = 5;
+			//$limit = 5;
 			$activeareas = $areas;
 		}
 
@@ -259,13 +259,54 @@ class TagsController extends Hubzero_Controller
 		$limit = ($limit == 0) ? 'all' : $limit;
 
 		// Get the search results
-		$results = $dispatcher->trigger( 'onTagView', array(
+		/*$results = $dispatcher->trigger( 'onTagView', array(
 				$tags,
 				$limit,
 				$limitstart,
 				$sort,
 				$activeareas)
-			);
+		);*/
+
+		// Get the search results
+		if (count($activeareas) > 1) {
+			$sqls = $dispatcher->trigger( 'onTagView', array(
+					$tags,
+					$limit,
+					$limitstart,
+					$sort,
+					$activeareas)
+				);
+			if ($sqls) {
+				$s = array();
+				foreach ($sqls as $sql) 
+				{
+					if (trim($sql) != '') {
+						$s[] = $sql;
+					}
+				}
+				$query  = "(";
+				$query .= implode(") UNION (", $s);
+				$query .= ") ORDER BY ";
+				switch ($sort) 
+				{
+					case 'title': $query .= 'title ASC, publish_up';  break;
+					case 'id':    $query .= "id DESC";                break;
+					case 'date':  
+					default:      $query .= 'publish_up DESC, title'; break;
+				}
+				$query .= ($limit != 'all' && $limit > 0) ? " LIMIT $limitstart, $limit" : "";
+			}
+			$this->database->setQuery( $query );
+			$results = array($this->database->loadObjectList());
+		} else {
+			$results = $dispatcher->trigger( 'onTagView', array(
+					$tags,
+					$limit,
+					$limitstart,
+					$sort,
+					$activeareas)
+				);
+		}
 
 		// Get the total results found (sum of all categories)
 		$i = 0;
@@ -347,6 +388,7 @@ class TagsController extends Hubzero_Controller
 		$view->tags = $tags;
 		$view->option = $this->_option;
 		$view->totals = $totals;
+		$view->total = $total;
 		$view->results = $results;
 		$view->cats = $cats;
 		$view->active = $active;
@@ -456,7 +498,12 @@ class TagsController extends Hubzero_Controller
 		$area = JRequest::getVar( 'area', '' );
 		$sort = JRequest::getVar( 'sort', '' );
 
-		if (!$area) {
+		if ($area) {
+			$activeareas = array($area);
+		} else {
+			$activeareas = $areas;
+		}
+		/*if (!$area) {
 			$t = array();
 			foreach ($tags as $tag) 
 			{
@@ -477,8 +524,48 @@ class TagsController extends Hubzero_Controller
 				$limitstart,
 				$sort,
 				$activeareas)
-			);
-		
+		);*/
+		// Get the search results
+		if (count($activeareas) > 1) {
+			$sqls = $dispatcher->trigger( 'onTagView', array(
+					$tags,
+					$limit,
+					$limitstart,
+					$sort,
+					$activeareas)
+				);
+			if ($sqls) {
+				$s = array();
+				foreach ($sqls as $sql) 
+				{
+					if (trim($sql) != '') {
+						$s[] = $sql;
+					}
+				}
+				$query  = "(";
+				$query .= implode(") UNION (", $s);
+				$query .= ") ORDER BY ";
+				switch ($sort) 
+				{
+					case 'title': $query .= 'title ASC, publish_up';  break;
+					case 'id':    $query .= "id DESC";                break;
+					case 'date':  
+					default:      $query .= 'publish_up DESC, title'; break;
+				}
+				$query .= ($limit != 'all' && $limit > 0) ? " LIMIT $limitstart, $limit" : "";
+			}
+			$this->database->setQuery( $query );
+			$results = array($this->database->loadObjectList());
+		} else {
+			$results = $dispatcher->trigger( 'onTagView', array(
+					$tags,
+					$limit,
+					$limitstart,
+					$sort,
+					$activeareas)
+				);
+		}
+
 		$jconfig =& JFactory::getConfig();
 		
 		// Run through the array of arrays returned from plugins and find the one that returned results
@@ -524,11 +611,11 @@ class TagsController extends Hubzero_Controller
 				//$link = JRoute::_($row->href);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)),300,0));
+				$description = html_entity_decode(Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)),300,0));
 				$author = '';
-				@$date = ( $row->publis_up ? date( 'r', strtotime($row->publish_up) ) : '' );
+				@$date = ( $row->publish_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 
-				if (isset($row->ranking) || isset($row->rating)) {
+				if (isset($row->data3) || isset($row->rcount)) {
 					$resourceEx = new ResourceExtended($row->id, $this->database);
 					$resourceEx->getCitationsCount();
 					$resourceEx->getLastCitationDate();
@@ -543,7 +630,7 @@ class TagsController extends Hubzero_Controller
 				$item->link        = $row->href;
 				$item->description = $description;
 				$item->date        = $date;
-				$item->category    = (isset($row->typetitle)) ? $row->typetitle : '';
+				$item->category    = (isset($row->data1)) ? $row->data1 : '';
 				$item->author      = $author;
 
 				// Loads item info into rss array

@@ -65,6 +65,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 				$url  = 'index.php?option='.$this->option.'&tag='.$this->tagstring;
 				$url .= ($blob) ? '&area='. stripslashes($blob) : '';
+				$url .= ($this->sort) ? '&sort='.$this->sort : '';
 				$sef = JRoute::_($url);
 				$sef = str_replace('%20','+',$sef);
 				
@@ -75,7 +76,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					
 					$app =& JFactory::getApplication();
 					$pathway =& $app->getPathway();
-					$pathway->addItem($cat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob));
+					$pathway->addItem($cat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->sort);
 				}
 				
 				// Build the HTML
@@ -102,11 +103,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 								
 								$app =& JFactory::getApplication();
 								$pathway =& $app->getPathway();
-								$pathway->addItem($subcat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob));
+								$pathway->addItem($subcat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->sort);
 							}
 							
 							// Build the HTML
-							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob));
+							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->sort);
 							$sef = str_replace('%20','+',$sef);
 							$k[] = "\t\t\t".'<li'.$a.'><a href="'.$sef.'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
 						}
@@ -182,20 +183,31 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		<div class="container">
 			<ul class="entries-menu">
-				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=title'); ?>" title="Sort by title">&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=date'); ?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?></a></li>
-				<li><a<?php echo ($this->sort == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php 
+						$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=title');
+						$sef = str_replace('%20','+',$sef);
+						echo $sef;
+					?>" title="Sort by title">&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'date' || $this->sort == '') ? ' class="active"' : ''; ?> href="<?php 
+						$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=date');
+						$sef = str_replace('%20','+',$sef);
+						echo $sef;
+					?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?></a></li>
+<?php /*				<li><a<?php echo ($this->sort == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li> */ ?>
 			</ul>
 			
 			<div class="container-block">
 <?php
 $juri =& JURI::getInstance();
 $foundresults = false;
-$dopaging = false;
-$cats = $this->cats;
+$dopaging = true;
+//$cats = $this->cats;
 $jconfig =& JFactory::getConfig();
 $html = '';
 $k = 0;
+if ($this->active) {
+	$k++;
+}
 foreach ($this->results as $category)
 {
 	$amt = count($category);
@@ -218,6 +230,8 @@ foreach ($this->results as $category)
 				$dopaging = true;
 			}
 		} else {
+			$total = $this->cats[$k]['total'];
+			
 			// It is not - does this category have sub-categories?
 			if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
 				// It does - loop through them and see if one is the active category
@@ -237,8 +251,11 @@ foreach ($this->results as $category)
 		}
 		$this->total = $total;
 		
-		$num  = $total .' ';
-		$num .= ($total > 1) ? JText::_('COM_TAGS_RESULTS') : JText::_('COM_TAGS_RESULT');
+		$name  = ($name) ? $name : JText::_('COM_TAGS_ALL_CATEGORIES');
+		$divid = ($divid) ? $divid : 'searchall';
+		
+		//$num  = $total .' ';
+		//$num .= ($total > 1) ? JText::_('COM_TAGS_RESULTS') : JText::_('COM_TAGS_RESULT');
 	
 		// A function for category specific items that may be needed
 		$f = 'plgTags'.ucfirst($cats[$k]['category']).'Doc';
@@ -287,7 +304,9 @@ foreach ($this->results as $category)
 		if (!$dopaging) {
 			$html .= '<span class="more">&raquo;</span></a> ';
 		}
-		$html .= '<a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a>';
+		//if ($this->active) {
+			$html .= '<a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a>';
+		//}
 		$html .= '</h4>'."\n";
 		$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
 		$html .= '<ol class="search results">'."\n";			
@@ -299,7 +318,7 @@ foreach ($this->results as $category)
 			// Does this category have a unique output display?
 			$func = 'plgTags'.ucfirst($row->section).'Out';
 			// Check if a method exist (using JPlugin style)
-			$obj = 'plgTags'.ucfirst($cats[$k]['category']);
+			$obj = 'plgTags'.ucfirst($row->section); //ucfirst($cats[$k]['category']);
 			
 			if (function_exists($func)) {
 				$html .= $func( $row );
@@ -315,9 +334,9 @@ foreach ($this->results as $category)
 				
 				$html .= "\t".'<li>'."\n";
 				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.Hubzero_View_Helper_Html::purifyText($row->title).'</a></p>'."\n";
-				if ($row->text) {
-					$row->text = strip_tags($row->text);
-					$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText($row->text), 200)."\n";
+				if ($row->ftext) {
+					$row->ftext = strip_tags($row->ftext);
+					$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText($row->ftext), 200)."\n";
 				}
 				$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 				$html .= "\t".'</li>'."\n";
@@ -365,6 +384,7 @@ if ($dopaging) {
 
 	$pf = str_replace($nm.'/?',$nm.'/'.$this->tagstring.'/'.$this->active.'/?',$pf);
 	$pf = str_replace('%20','+',$pf);
+	$pf = str_replace('//','/',$pf);
 	echo $pf.'<div class="clearfix"></div>';
 }
 ?>

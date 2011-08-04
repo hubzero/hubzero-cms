@@ -89,7 +89,7 @@ class plgTagsAnswers extends JPlugin
 		// Build the query
 		$f_count = "SELECT COUNT(f.id) FROM (SELECT a.id, COUNT(DISTINCT t.tagid) AS uniques ";
 
-		$f_fields = "SELECT a.id, a.subject AS title, a.question AS text, a.state, a.created, a.created_by, a.anonymous, 'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount";
+		$f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by, NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT( 'index.php?option=com_answers&task=question&id=', a.id ) AS href, 'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
 		/*$f_count = "SELECT COUNT(f.id) FROM (SELECT a.id, COUNT(DISTINCT tg.tag) AS uniques ";
 
 		$f_fields = "SELECT a.id, a.subject AS title, a.question AS text, a.state, a.created, a.created_by, a.anonymous, 'answers' AS section, COUNT(DISTINCT tg.tag) AS uniques, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount";
@@ -110,7 +110,7 @@ class plgTagsAnswers extends JPlugin
 			case 'title': $order_by .= 'title ASC, created';    break;
 			case 'id':    $order_by .= "id DESC";               break;
 			case 'date':  
-			default:      $order_by .= 'a.created DESC, title'; break;
+			default:      $order_by .= 'created DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -120,6 +120,10 @@ class plgTagsAnswers extends JPlugin
 			$this->_total = $database->loadResult();
 			return $this->_total;
 		} else {
+			if (count($areas) > 1) {
+				return $f_fields . $f_from;
+			}
+			
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
@@ -181,9 +185,9 @@ class plgTagsAnswers extends JPlugin
 			$html .= JText::_('PLG_TAGS_ANSWERS_CLOSED');
 		}
 		$html .= ' <span>|</span> '.JText::_('PLG_TAGS_ANSWERS_RESPONSES').' '.$row->rcount .'</p>'."\n";
-		if ($row->text) {
-			//$row->text = strip_tags($row->text);
-			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)), 200)."\n";
+		if ($row->ftext) {
+			//$row->ftext = strip_tags($row->ftext);
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";

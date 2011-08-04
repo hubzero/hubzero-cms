@@ -94,7 +94,7 @@ class plgTagsEvents extends JPlugin
 		$e_from .= " INNER JOIN #__tags AS t ON (tg.tagid = t.id)";
 		$e_where = " WHERE e.state=1 AND tg.objectid=e.id AND tg.tbl='events' AND t.id=tg.tagid AND t.id IN ($ids)";*/
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.content AS text, COUNT(DISTINCT t.tagid) AS uniques, CONCAT( 'index.php?option=com_events&task=details&id=', e.id ) AS href, e.publish_up, 'events' AS section";
+		$e_fields = "SELECT e.id, e.title, NULL AS alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, NULL AS modified, e.publish_up, e.publish_down, CONCAT( 'index.php?option=com_events&task=details&id=', e.id ) AS href, 'events' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__events AS e, #__tags_object AS t";
 		$e_where = " WHERE e.state=1 AND t.objectid=e.id AND t.tbl='events' AND t.tagid IN ($ids)";
 		
@@ -118,6 +118,13 @@ class plgTagsEvents extends JPlugin
 			$this->_total = $database->loadResult();
 			return $this->_total;
 		} else {
+			if (count($areas) > 1) {
+				ximport('Hubzero_Document');
+				Hubzero_Document::addComponentStylesheet('com_events');
+				
+				return $e_fields . $e_from . $e_where;
+			}
+			
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
@@ -169,9 +176,9 @@ class plgTagsEvents extends JPlugin
 		$html  = "\t".'<li class="event">'."\n";
 		$html .= "\t\t".'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
-		if ($row->text) {
-			$row->text = str_replace('[[BR]]', '', $row->text);
-			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)), 200)."\n";
+		if ($row->ftext) {
+			$row->ftext = str_replace('[[BR]]', '', $row->ftext);
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
 		}
 		$html .= "\t".'</li>'."\n";
 		
