@@ -194,28 +194,15 @@ class MembersProfile extends JTable
 			if ($filters['show'] == 'vips') {
 				$query .= " AND m.vip=1";
 			}
-			if (!isset($filters['confirmed']) || $filters['confirmed'] != 1) {
-				$query .= " AND m.emailConfirmed=1";
-			}
 		} else {
 			if (!$admin || $filters['show'] == 'contributors' || (isset($filters['sortby']) && $filters['sortby'] == "RAND()")) {
 				$query .= " WHERE m.public=1";
 				if ($filters['show'] == 'vips') {
 					$query .= " AND m.vip=1";
 				}
-				if (!isset($filters['confirmed']) || $filters['confirmed'] != 1) {
-					$query .= " AND m.emailConfirmed=1";
-				}
 			} else {
 				if ($filters['show'] == 'vips') {
 					$query .= " WHERE m.vip=1";
-					if (!isset($filters['confirmed']) || $filters['confirmed'] != 1) {
-						$query .= " AND m.emailConfirmed=1";
-					}
-				} else {
-					if (!isset($filters['confirmed']) || $filters['confirmed'] != 1) {
-						$query .= " WHERE m.emailConfirmed=1";
-					}
 				}
 			}
 		}
