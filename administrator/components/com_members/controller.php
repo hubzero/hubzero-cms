@@ -80,6 +80,7 @@ class MembersController extends Hubzero_Controller
 		$view->filters['show']   = '';
 		$view->filters['scope']  = '';
 		$view->filters['authorized'] = true;
+		$view->filters['confirmed'] = 0;
 		
 		$view->filters['sortby'] = $view->filters['sort'].' '.$view->filters['sort_Dir'];
 		
