@@ -966,9 +966,10 @@ class ContribtoolController extends JObject
 
 		// get admin priviliges
 		$this->authorize_admin();
-		
+
 		// set vars
 		$tool				= ($task=='save' or $task=='register') ? array_map('trim', $_POST['tool']): array();
+		$tool				= array_map(array('JRequest','_cleanVar'), $tool); // Sanitize the input a bit
 		$today 				= date( 'Y-m-d H:i:s', time() );
 		$ldap_save		    = isset($this->config->parameters['ldap_save']) ? $this->config->parameters['ldap_save'] : 0;
 		$group_prefix       = isset($this->config->parameters['group_prefix']) ? $this->config->parameters['group_prefix'] : 'app-';
