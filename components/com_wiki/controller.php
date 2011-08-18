@@ -602,7 +602,7 @@ class WikiController extends Hubzero_Controller
 			$revision->version    = JRequest::getInt( 'version', 0, 'post' );
 			//$revision->pagetext   = stripslashes(trim(JRequest::getVar( 'pagetext', '', 'post' )));
 			$revision->pagetext   = stripslashes(rtrim($_POST['pagetext']));
-			$revision->summary    = trim(JRequest::getVar( 'summary', '', 'post' ));
+			$revision->summary    = preg_replace('/\s+/', ' ',trim(JRequest::getVar( 'summary', '', 'post' )));
 			$revision->minor_edit = JRequest::getInt( 'minor_edit', 0, 'post' );
 			
 			// Save it as a preview object
@@ -658,7 +658,7 @@ class WikiController extends Hubzero_Controller
 					$revision->created_by = JRequest::getInt( 'created_by', 0, 'post' );
 					$revision->version    = JRequest::getInt( 'version', 0, 'post' );
 					$revision->pagetext   = stripslashes(rtrim($_POST['pagetext']));
-					$revision->summary    = trim(JRequest::getVar( 'summary', '', 'post' ));
+					$revision->summary    = preg_replace('/\s+/', ' ',trim(JRequest::getVar( 'summary', '', 'post' )));
 					$revision->minor_edit = JRequest::getInt( 'minor_edit', 0, 'post' );
 					$this->preview = $revision;
 					$this->_task = 'new';

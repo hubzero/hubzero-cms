@@ -651,6 +651,7 @@ class ContributeController extends Hubzero_Controller
 			}
 		}
 
+		$row->title = preg_replace('/\s+/', ' ',$row->title);
 		$row->title = $this->_txtClean($row->title);
 		
 		// Strip any scripting there may be

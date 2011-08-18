@@ -1899,7 +1899,7 @@ class ContribtoolController extends JObject
 		if(count($status) > 0) {
 		$resource->fulltext = addslashes($status['fulltext']);
 		$resource->introtext = $status['description'];
-		$resource->title = $status['title'];
+		$resource->title = preg_replace('/\s+/', ' ',$status['title']);
 		$resource->modified = date( "Y-m-d H:i:s" );
 		$resource->modified_by = $juser->get('id');
 		}
@@ -1933,6 +1933,8 @@ class ContribtoolController extends JObject
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 
+		$tool['title'] = preg_replace('/\s+/', ' ',$tool['title']);
+
 		$params = 'pageclass_sfx=
 					show_title=1
 					show_authors=1
@@ -1959,7 +1961,7 @@ class ContribtoolController extends JObject
 		$row->attribs = 'marknew=0';
 		$row->standalone = '1';
 		$row->type = '7';
-		$binditems = array ('title'=>$tool['title'], 'introtext'=>$tool['description'],  'alias'=>strtolower($tool['toolname']) );
+		$binditems = array('title'=>$tool['title'], 'introtext'=>$tool['description'],  'alias'=>strtolower($tool['toolname']) );
 
 		if (!$row->bind($binditems)) {
 			$this->_error = $row->getError();
@@ -2402,7 +2404,7 @@ class ContribtoolController extends JObject
 					}
 				}
 				// check that revision number is greater than in previous version
-				$currentrev = $objV->getCurrentVersionProperty ($status['toolname'], 'revision');			
+				$currentrev = $objV->getCurrentVersionProperty($status['toolname'], 'revision');			
 				if($currentrev && (intval($currentrev) > intval($status['revision']))) {
 					$result = 0;
 					$output['fail'] .= '<br />* '.JText::_('ERR_REVISION_GREATER');
@@ -2509,7 +2511,7 @@ class ContribtoolController extends JObject
 			$status['vncCommand'] = $invokedir.DS.$status['toolname'].DS.'r'.$status['revision'].DS.'middleware'.DS.'invoke -T r'.$status['revision'];
 						
 			// create new version
-			$binditems = array ('id'=>0, 'toolname'=>$status['toolname'], 'instance'=>$newtool, 'toolid'=>$this->_toolid, 'state'=>1, 'title'=>$status['title'], 
+			$binditems = array('id'=>0, 'toolname'=>$status['toolname'], 'instance'=>$newtool, 'toolid'=>$this->_toolid, 'state'=>1, 'title'=>$status['title'], 
 				'version'=>$status['version'], 'revision'=>$status['revision'], 'description'=>$status['description'], 'toolaccess'=>$status['exec'], 'codeaccess'=>$status['code'], 
 				'wikiaccess'=>$status['wiki'], 'vnc_geometry'=>$status['vncGeometry'], 'vnc_command'=>$invoke, 'mw'=>$status['mw'], 
 				'released'=>$now, 'released_by'=>$juser->get('username'), 'license'=>$status['license'], 'fulltext'=>$status['fulltext']);
@@ -2698,7 +2700,7 @@ class ContribtoolController extends JObject
 						
 			$hztv->fulltext = $objV->fulltext   = $status['fulltext'];
 			$hztv->description = $objV->description  = $this->txt_shorten(JRequest::getVar( 'description', $status['description'], 'post'));
-			$hztv->title = $objV->title  = $this->txt_shorten(JRequest::getVar( 'title', $status['title'], 'post'));
+			$hztv->title = $objV->title  = $this->txt_shorten(preg_replace('/\s+/', ' ',JRequest::getVar( 'title', $status['title'], 'post')));
 
 			if (!$hztv->update()) {
 				$this->_error = "Error updating tool tables.";
@@ -3462,7 +3464,7 @@ class ContribtoolController extends JObject
 		
 		// Incoming
 		$file = JRequest::getVar( 'filename', '' );
-		$title = JRequest::getVar( 'title', '' );
+		$title = preg_replace('/\s+/', ' ',JRequest::getVar( 'title', '' ));
 			
 		// Instantiate a new screenshot object
 		$ss = new ResourceScreenshot($database);
@@ -3590,7 +3592,7 @@ class ContribtoolController extends JObject
 		}
 		
 		$version = JRequest::getVar( 'version', 'dev' );
-		$title = JRequest::getVar( 'title', '' );
+		$title = preg_replace('/\s+/', ' ',JRequest::getVar( 'title', '' ));
 		$allowed = array('.gif','.jpg','.png','.bmp');
 		$changing_version = JRequest::getInt( 'changing_version', 0 );
 		if($changing_version) {
