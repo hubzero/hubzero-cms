@@ -17,19 +17,21 @@ if (!HUB) {
 //----------------------------------------------------------
 HUB.Kb = {
 	initialize: function() {
+		
 		// Voting
-		$$('.vote-button').each(function(v) {
-			v.addEvent('click', function(e) {
-				new Event(e).stop();
-				if (this.href) {
-					new Ajax(this.href+'?no_html=1',{
-						'method' : 'get',
-						'update' : $(this.parentNode.parentNode)
-					}).request();
-				}
-			});
+		j('.vote-link').live('click', function(e) {
+			if (this.href) {
+				new Ajax(this.href+'?no_html=1',{
+					'method' : 'get',
+					'update' : $(this.parentNode.parentNode)
+				}).request();
+			}
+			return false;
 		});
-	} // end initialize
+		
+	}
 }
+
+//---------------
 
 window.addEvent('domready', HUB.Kb.initialize);

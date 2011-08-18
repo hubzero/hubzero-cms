@@ -300,9 +300,96 @@
 		text-decoration: none;
 		}
 /* Voting */
+	.like span {
+		padding:1px 15px 0px 3px;
+		background: url("images/thumbs.png") 100% -5% no-repeat;
+		}
+	.dislike span {
+		padding:0 15px 0 0;
+		background: url("images/thumbs.png") 100% 95% no-repeat;
+		}
+	.like:hover {
+		color: #e8f0de;
+		border: solid 1px #538312;
+		border-right:none;
+		background: #64991e;
+		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
+		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
+		}
+	.dislike:hover {
+		color: #fae7e9;
+		border: solid 1px #b73948;
+		background: #ba4b58;
+		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
+		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
+		}
+	.like,
+	.like-disabled:hover,
+	.dislike,
+	.dislike-disabled:hover,
+	a.like,
+	a.dislike {
+		color: #aaa;
+		border: solid 1px #b7b7b7;
+		background: #fff;
+		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+		background: -moz-linear-gradient(top,  #fff,  #ededed);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+		
+		outline: none;
+		text-align: center;
+		text-decoration: none;
+		font: 11px/100% Arial, Helvetica, sans-serif;
+		padding:3px;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		opacity: 0.8;
+		}
+	.like {
+		border-right:none;
+		-moz-border-radius-bottomleft: 0.5em;
+		-moz-border-radius-topleft: 0.5em;
+		-webkit-border-bottom-left-radius: 0.5em;
+		-webkit-border-top-left-radius: 0.5em;
+		border-bottom-left-radius: 0.5em;
+		border-top-left-radius: 0.5em;
+		}
+	.dislike {
+		-moz-border-radius-bottomright: 0.5em;
+		-moz-border-radius-topright: 0.5em;
+		-webkit-border-bottom-right-radius: 0.5em;
+		-webkit-border-top-right-radius: 0.5em;
+		border-bottom-right-radius: 0.5em;
+		border-top-right-radius: 0.5em;
+		}
+	.like-disabled:hover {
+		border-right:none;
+		}
+	
+	.like-chosen {
+		color: #e8f0de;
+		border: solid 1px #538312;
+		border-right:none;
+		background: #64991e;
+		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
+		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
+		}
+	.dislike-chosen {
+		color: #fae7e9;
+		border: solid 1px #b73948;
+		background: #ba4b58;
+		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
+		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
+	}
+	 
+	
+/*
 	.vote-button {
 		display: inline-block;
-		zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+		zoom: 1; zoom and *display = ie7 hack for display:inline-block
 		*display: inline;
 		vertical-align: baseline;
 		margin: 0 2px;
@@ -351,7 +438,7 @@
 		border-bottom-left-radius: 0;
 		border-top-left-radius: 0;
 		}
-	/* neutral (gray base colors) */
+	
 	.vote-button,
 	a.vote-button {
 		color: #aaa;
@@ -378,7 +465,7 @@
 		background: -moz-linear-gradient(top,  #ededed,  #fff);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
 		}
-	/* dislike (rose) */
+	
 	.chosen .dislike,
 	.voting:hover a.dislike,
 	.entries tr:hover a.dislike {
@@ -407,7 +494,7 @@
 		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
 		}
-	/* like (green) */
+
 	.chosen .like,
 	.voting:hover a.like,
 	.entries tr:hover a.like {
@@ -436,7 +523,7 @@
 		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
 		}
-	/* thumbs up/down image */
+	
 	.vote-button span {
 		display: inline-block;
 		width: 14px;
@@ -454,6 +541,8 @@
 	.dislike span {
 		background: url("images/thumbs.png") 0 -14px no-repeat;
 		}
+		
+		*/
 /* Article Listing */
 	.below h3 {
 		font-weight: normal;

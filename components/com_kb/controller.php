@@ -38,6 +38,10 @@ class KbController extends Hubzero_Controller
 		$this->_longname = JText::_('COMPONENT_LONG_NAME');
 
 		$this->_task = strtolower(JRequest::getVar( 'task', 'browse' ));
+		
+		$doc =& JFactory::getDocument();
+		$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
+		$doc->addScriptDeclaration("\tvar j = jQuery.noConflict();");
 
 		switch ( $this->_task ) 
 		{
@@ -265,7 +269,7 @@ class KbController extends Hubzero_Controller
 		if (!$this->juser->get('guest')) {
 			// See if this person has already voted
 			$h = new KbVote( $this->database );
-			$view->vote = $h->getVote( $view->article->id, $this->juser->get('id'), $this->_ipAddress() );
+			$view->vote = $h->getVote( $view->article->id, $this->juser->get('id'), $this->_ipAddress(), 'entry' );
 		} else {
 			$view->vote = strtolower(JRequest::getVar( 'vote', '' ));
 		}
@@ -431,10 +435,11 @@ class KbController extends Hubzero_Controller
 		$result = $h->getVote( $id, $this->juser->get('id'), $ip, $type );
 		
 		if ($result) {
-			// Already voted
-			$this->setError( JText::_('COM_KB_USER_ALREADY_VOTED') );
-			$this->article();
-			return;
+			$db =& JFactory::getDBO();
+			$sql = "DELETE FROM #__faq_helpful_log
+					WHERE object_id='{$id}' AND (user_id='{$this->juser->get('id')}' OR ip='$ip')";
+			$db->setQuery( $sql );
+			$db->query();
 		}
 	
 		// Did they vote?
@@ -456,6 +461,7 @@ class KbController extends Hubzero_Controller
 			break;
 		}
 		$row->load( $id );
+		
 
 		// Record if it was helpful or not
 		switch ($vote)
@@ -471,6 +477,16 @@ class KbController extends Hubzero_Controller
 			case 'dislike':
 				$row->nothelpful++;
 			break;
+		}
+		
+		switch ($result)
+		{
+			case 'like':
+				$row->helpful--;
+				break;
+			case 'dislike':
+				$row->nothelpful--;
+				break;
 		}
 
 		if (!$row->store()) {

@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		} else {
 			$cls = '';
 		}
-		$html = "\t".'<li><a'.$cls.' href="'.JRoute::_('index.php?option='.$this->option.'&section=all').'">'.JText::_('All Articles').'</li>'."\n";
+		$html = "\t".'<li><a'.$cls.' href="'.JRoute::_('index.php?option='.$this->option.'&section=all').'">'.JText::_('All Articles').'</a></li>'."\n";
 		if (count($this->categories) > 0) {
 			foreach ($this->categories as $row) 
 			{
@@ -141,7 +141,7 @@ if (count($this->articles) > 0) {
 								$view = new JView( array('name'=>'vote') );
 								$view->option = $this->option;
 								$view->item = $row;
-								$view->type = 'article';
+								$view->type = 'entry';
 								$view->vote = '';
 								$view->id = '';
 								if (!$this->juser->get('guest')) {
