@@ -228,7 +228,7 @@ class ResourcesHelper extends JObject
 				if ($newstyle) {				
 					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) {
 						$orgs[$i-1] = trim($contributor->org);
-						$orgsln 	.= $i. '. ' .trim($contributor->org).'; ';
+						$orgsln 	.= $i. '. ' .trim($contributor->org).' ';
 						$orgsln_s 	.= trim($contributor->org).' ';
 						$k = $i; 
 						$i++;
