@@ -54,7 +54,7 @@ class plgGroupsForum extends JPlugin
 		$area = array(
 			'name' => 'forum',
 			'title' => JText::_('PLG_GROUPS_FORUM'),
-			'default_access' => $this->_params->get('plugin_access','anyone')
+			'default_access' => $this->_params->get('plugin_access','members')
 		);
 		
 		return $area;

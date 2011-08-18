@@ -63,7 +63,7 @@ class plgGroupsResources extends JPlugin
 		$area = array(
 			'name' => 'resources',
 			'title' => JText::_('PLG_GROUPS_RESOURCES'),
-			'default_access' => $this->_params->get('plugin_access','anyone')
+			'default_access' => $this->_params->get('plugin_access','members')
 		);
 		
 		return $area;
