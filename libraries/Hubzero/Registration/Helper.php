@@ -53,7 +53,7 @@ class Hubzero_Registration_Helper
 
 	public function validlogin($login) 
 	{
-		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z\.]*$", $login)) {
+		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z\.]*$/i", $login)) {
 			if (Hubzero_Registration_Helper::is_positiveint($login)) {
 				return(0);
 			} else {
@@ -79,7 +79,7 @@ class Hubzero_Registration_Helper
 	
 	public function validpassword($password) 
 	{
-		if (eregi("^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$", $password)) {
+		if (preg_match("/^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$/", $password)) {
 			return true;
 		} else {
 			return false;
@@ -90,7 +90,7 @@ class Hubzero_Registration_Helper
 	
 	public function validemail($email) 
 	{
-		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
+		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/", $email)) {
 			return true;
 		} else {
 			return false;
@@ -101,7 +101,7 @@ class Hubzero_Registration_Helper
 	
 	public function validurl($url) 
 	{
-		if (eregi("^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]*$", $url)) {
+		if (preg_match("/^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]*$/", $url)) {
 			return(1);
 		} else {
 			return(0);
@@ -112,7 +112,7 @@ class Hubzero_Registration_Helper
 
 	public function validphone($phone) 
 	{
-		if (eregi("^[\ \#\*\+\:\,\.0-9-]*$", $phone)) {
+		if (preg_match("/^[\ \#\*\+\:\,\.0-9-]*$/", $phone)) {
 			return(1);
 		} else {
 			return(0);
