@@ -731,7 +731,7 @@ class RegisterController extends Hubzero_Controller
 							}
 						}
 
-						$xprofile->set('public', JComponentHelper::getParams('com_members')->get('privacy', '0'));
+						$xprofile->set('public', 0);
 
 						// Do we have a return URL?
 						$regReturn = JRequest::getVar('return', ''); 
@@ -1272,6 +1272,10 @@ class RegisterController extends Hubzero_Controller
 				$profile->setParam('return','');
 			}
 			$profile->set('emailConfirmed', 1);
+			
+			$mconfig =& JComponentHelper::getParams( 'com_members' );
+			$profile->set('public', $mconfig->get('privacy', '0'));
+			
 			if (!$profile->update()) {	
 				$this->setError( JText::_('COM_REGISTER_ERROR_CONFIRMING') );
 			}
