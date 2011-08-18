@@ -107,7 +107,7 @@ class ContentViewArticle extends ContentView
 		// because the application sets a default page title, we need to get it
 		// right from the menu item itself
 		// Get the menu item object
-		$menus = &JSite::getMenu();
+		$menus = &JFactory::getApplication()->getMenu();
 		$menu  = $menus->getActive();
 
 		if (is_object( $menu ) && isset($menu->query['view']) && $menu->query['view'] == 'article' && isset($menu->query['id']) && $menu->query['id'] == $article->id) {

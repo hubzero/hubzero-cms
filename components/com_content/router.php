@@ -16,7 +16,7 @@ function ContentBuildRoute(&$query)
 	$segments = array();
 
 	// get a menu item based on Itemid or currently active
-	$menu = &JSite::getMenu();
+	$menu = &JFactory::getApplication()->getMenu();
 	if (empty($query['Itemid'])) {
 		$menuItem = &$menu->getActive();
 	} else {
@@ -117,7 +117,7 @@ function ContentParseRoute($segments)
 	$vars = array();
 
 	//Get the active menu item
-	$menu =& JSite::getMenu();
+	$menu =& JFactory::getApplication()->getMenu();
 	$item =& $menu->getActive();
 
 	// Count route segments

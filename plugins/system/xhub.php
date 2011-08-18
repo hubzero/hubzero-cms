@@ -217,7 +217,7 @@ class XRouter extends JRouter
 	{
 		$vars = array();
 
-		$menu =& JSite::getMenu(true);
+		$menu =& JFactory::getApplication()->getMenu(true);
 
 		//Handle an empty URL (special case)
 		if(!$uri->getVar('Itemid') && !$uri->getVar('option'))
@@ -510,7 +510,7 @@ class XRouter extends JRouter
 			return;
 		}
 
-		$menu =& JSite::getMenu();
+		$menu =& JFactory::getApplication()->getMenu();
 
 		/*
 		 * Build the component route
@@ -601,7 +601,7 @@ class XRouter extends JRouter
 		// Make sure any menu vars are used if no others are specified
 		if(($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2)
 		{
-			$menu =& JSite::getMenu();
+			$menu =& JFactory::getApplication()->getMenu();
 
 			// Get the active menu item
 			$itemid = $uri->getVar('Itemid');
@@ -637,7 +637,7 @@ class XRouter extends JRouter
 		$uri =& parent::_createURI($url);
 
 		// Set URI defaults
-		$menu =& JSite::getMenu();
+		$menu =& JFactory::getApplication()->getMenu();
 
 		// Get the itemid form the URI
 		$itemid = $uri->getVar('Itemid');
@@ -744,7 +744,7 @@ class XRouter extends JRouter
 	function _parseContentRoute(&$segments)
 	{
 		$view = 'article';
-		$menu =& JSite::getMenu(true);
+		$menu =& JFactory::getApplication()->getMenu(true);
 		$item =& $menu->getActive();
 		$db = & JFactory::getDBO();
 		$count = count($segments);

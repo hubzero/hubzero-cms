@@ -697,7 +697,7 @@ class JApplication extends JObject
 	 * @return object JMenu.
 	 * @since 1.5
 	 */
-	static function &getMenu($name = null, $options = array())
+	function &getMenu($name = null, $options = array())
 	{
 		if(!isset($name)) {
 			$name = $this->_name;

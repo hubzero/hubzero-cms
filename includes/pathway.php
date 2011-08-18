@@ -31,7 +31,7 @@ class JPathwaySite extends JPathway
 		//Initialise the array
 		$this->_pathway = array();
 
-		$menu   =& JSite::getMenu();
+		$menu   =& JFactory::getApplication()->getMenu();
 
 		if($item = $menu->getActive())
 		{

@@ -9,7 +9,7 @@ if ( ! defined('modMainMenuXMLCallbackDefined') )
 function modMainMenuXMLCallback(&$node, $args)
 {
 	$user	= &JFactory::getUser();
-	$menu	= &JSite::getMenu();
+	$menu	= &JFactory::getApplication()->getMenu();
 	$active	= $menu->getActive();
 	$path	= isset($active) ? array_reverse($active->tree) : null;
 
