@@ -289,7 +289,7 @@ class FeedbackController extends Hubzero_Controller
 		
 		// Push some styles to the template
 		$this->_getStyles();
-
+		
 		// Output HTML
 		$view = new JView( array('name'=>'report') );
 		$view->title = $this->_title;
@@ -298,6 +298,7 @@ class FeedbackController extends Hubzero_Controller
 		$view->reporter = $this->_getUser();
 		$view->problem = $problem;
 		$view->verified = ($this->juser->get('guest')) ? 0 : 1;
+		$view->file_types = $this->config->get('file_ext');
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -843,7 +844,10 @@ class FeedbackController extends Hubzero_Controller
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
 		$ext = strtolower(JFile::getExt($file['name']));
-		if (!in_array($ext, array('jpg','jpeg','jpe','png','bmp','gif'))) {
+		
+		//make sure that file is acceptable type
+		if ( !in_array($ext, explode(',',$this->config->get('file_ext'))) ) {
+			$this->setError( JText::_('Incorrect file type.') );
 			return '';
 		}
 

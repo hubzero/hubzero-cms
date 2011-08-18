@@ -179,7 +179,9 @@ $topics = array(
 			
 			<label>
 				<?php echo JText::_('Attach a screenshot'); ?>:
+				<small>(.<?php echo str_replace(",", ", .", $this->file_types); ?>)</small>
 				<input type="file" name="upload" id="trUpload" />
+				
 			</label>
 			
 <?php if (!$this->verified) { ?>

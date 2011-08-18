@@ -102,6 +102,8 @@ class modReportProblems
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet('mod_reportproblems');
 		
+		$this->feedback_params = JComponentHelper::getParams( 'com_feedback' );
+		
 		$jdocument =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.'/modules/mod_reportproblems/mod_reportproblems.js')) {
 			$jdocument->addScript('/modules/mod_reportproblems/mod_reportproblems.js');

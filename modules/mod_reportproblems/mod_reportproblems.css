@@ -228,6 +228,10 @@
 	#help-btn-close:hover {
 		background-position: 0 -30px;
 		}
+	.filetypes {
+		color:#F00;
+		font-size:0.5em;
+	}
 /* Help Tab */
 	#tab {
 		display: block;
