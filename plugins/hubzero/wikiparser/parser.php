@@ -344,7 +344,9 @@ class WikiParser
 		$href = str_replace('&#8221','',$href);
 		
 		$h = array('h','m','f','g','n');
+		$pfx = '';
 		if (!in_array(substr($href,0,1), $h)) {
+			$pfx = substr($href,0,1);
 			$href = substr($href, 1);
 		}
 
@@ -354,7 +356,7 @@ class WikiParser
 			' rel="external"',
 			trim($href)
 		);
-		array_push($this->alinks,$l);
+		array_push($this->alinks,$pfx.$l);
 		return '<alink></alink>';
 	}
 	
