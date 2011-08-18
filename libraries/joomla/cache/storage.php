@@ -58,7 +58,7 @@ class JCacheStorage extends JObject
 	 * @return	object	A JCacheStorageHandler object
 	 * @since	1.5
 	 */
-	function &getInstance($handler = 'file', $options = array())
+	static function &getInstance($handler = 'file', $options = array())
 	{
 		static $now = null;
 		if(is_null($now)) {

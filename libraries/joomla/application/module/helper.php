@@ -36,7 +36,7 @@ class JModuleHelper
 	 * @param	string	$title	The title of the module, optional
 	 * @return	object	The Module object
 	 */
-	function &getModule($name, $title = null )
+	static function &getModule($name, $title = null )
 	{
 		$result		= null;
 		$modules	=& JModuleHelper::_load();
@@ -80,7 +80,7 @@ class JModuleHelper
 	 * @param string 	$position	The position of the module
 	 * @return array	An array of module objects
 	 */
-	function &getModules($position)
+	static function &getModules($position)
 	{
 		$position	= strtolower( $position );
 		$result		= array();
@@ -112,13 +112,13 @@ class JModuleHelper
 	 * @param   string 	$module	The module name
 	 * @return	boolean
 	 */
-	function isEnabled( $module )
+	static function isEnabled( $module )
 	{
 		$result = &JModuleHelper::getModule( $module);
 		return (!is_null($result));
 	}
 
-	function renderModule($module, $attribs = array())
+	static function renderModule($module, $attribs = array())
 	{
 		static $chrome;
 		global $mainframe, $option;
@@ -230,7 +230,7 @@ class JModuleHelper
 	 * @return	string	The path to the module layout
 	 * @since	1.5
 	 */
-	function getLayoutPath($module, $layout = 'default')
+	static function getLayoutPath($module, $layout = 'default')
 	{
 		global $mainframe;
 
@@ -252,7 +252,7 @@ class JModuleHelper
 	 * @access	private
 	 * @return	array
 	 */
-	function &_load()
+	static function &_load()
 	{
 		global $mainframe, $Itemid;
 

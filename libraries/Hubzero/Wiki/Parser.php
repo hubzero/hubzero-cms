@@ -76,7 +76,7 @@ class Hubzero_Wiki_Parser extends JObservable
 	 * @param	string	$parser  The name of the parser to use.
 	 * @return	object  Hubzero_Wiki_Parser  The Parser object.
 	 */
-	public function &getInstance($parser = '')
+	public static function &getInstance($parser = '')
 	{
 		static $instances;
 

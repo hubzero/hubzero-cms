@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class modFeedYoutubeHelper
 {
-	function getFeed($params)
+	static function getFeed($params)
 	{
 		// module params
 		$rssurl			= $params->get('rssurl', '');

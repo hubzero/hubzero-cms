@@ -44,7 +44,7 @@ class JResponse
 	 * @return	boolean 	True of browser caching should be allowed
 	 * @since	1.5
 	 */
-	function allowCache($allow = null)
+	static function allowCache($allow = null)
 	{
 		if (!is_null($allow)) {
 			$GLOBALS['_JRESPONSE']->cachable = (bool) $allow;
@@ -63,7 +63,7 @@ class JResponse
 	 * @param string 	$value
 	 * @param boolean 	$replace
 	 */
-	function setHeader($name, $value, $replace = false)
+	static function setHeader($name, $value, $replace = false)
 	{
 		$name	= (string) $name;
 		$value	= (string) $value;
@@ -89,7 +89,7 @@ class JResponse
 	 * @access public
 	 * @return array
 	 */
-	function getHeaders() {
+	static function getHeaders() {
 		return  $GLOBALS['_JRESPONSE']->headers;
 	}
 
@@ -98,7 +98,7 @@ class JResponse
 	 *
 	 * @access public
 	 */
-	function clearHeaders() {
+	static function clearHeaders() {
 		$GLOBALS['_JRESPONSE']->headers = array();
 	}
 
@@ -108,7 +108,7 @@ class JResponse
 	 * @access public
 	 * @return void
 	 */
-	function sendHeaders()
+	static function sendHeaders()
 	{
 		if (!headers_sent())
 		{
@@ -133,7 +133,7 @@ class JResponse
 	 * @access public
 	 * @param string $content
 	 */
-	function setBody($content) {
+	static function setBody($content) {
 		$GLOBALS['_JRESPONSE']->body = array((string) $content);
 	}
 
@@ -143,7 +143,7 @@ class JResponse
 	 * @access public
 	 * @param string $content
 	 */
-	function prependBody($content) {
+	static function prependBody($content) {
 		array_unshift($GLOBALS['_JRESPONSE']->body, (string) $content);
 	}
 
@@ -153,7 +153,7 @@ class JResponse
 	 * @access public
 	 * @param string $content
 	 */
-	function appendBody($content) {
+	static function appendBody($content) {
 		array_push($GLOBALS['_JRESPONSE']->body, (string) $content);
 	}
 
@@ -165,7 +165,7 @@ class JResponse
 	 * array of strings or as a single string; defaults to false
 	 * @return string|array
 	 */
-	function getBody($toArray = false)
+	static function getBody($toArray = false)
 	{
 		if ($toArray) {
 			return $GLOBALS['_JRESPONSE']->body;
@@ -185,7 +185,7 @@ class JResponse
 	 * @param boolean 	$compress	If true, compress the data
 	 * @return string
 	 */
-	function toString($compress = false)
+	static function toString($compress = false)
 	{
 		$data = JResponse::getBody();
 
@@ -217,7 +217,7 @@ class JResponse
 	* @param	string		data
 	* @return	string		compressed data
 	*/
-	function _compress( $data )
+	static function _compress( $data )
 	{
 		$encoding = JResponse::_clientEncoding();
 
@@ -262,7 +262,7 @@ class JResponse
 	* @access	private
 	* @return	boolean
 	*/
-	function _clientEncoding()
+	static function _clientEncoding()
 	{
 		if (!isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 			return false;

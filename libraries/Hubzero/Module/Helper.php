@@ -36,21 +36,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_Module_Helper
 {
-	public function displayModules($position, $style=-2) 
+	public static function displayModules($position, $style=-2) 
 	{
 		echo Hubzero_Module_Helper::renderModules($position, $style);
 	}
 	
 	//-----------
 
-	public function displayModule($name, $style=-1)
+	public static function displayModule($name, $style=-1)
 	{
 		echo Hubzero_Module_Helper::renderModule($name,$style);
 	}
 	
 	//-----------
 
-	public function renderModule($name, $style=-1) 
+	public static function renderModule($name, $style=-1) 
 	{
 		$module = JModuleHelper::getModule($name);
 		$params	= array('style'=>$style);
@@ -61,7 +61,7 @@ class Hubzero_Module_Helper
 
 	//-----------
 
-	public function renderModules( $position, $style=-2 )
+	public static function renderModules( $position, $style=-2 )
 	{
 		if (!defined('_JEXEC')) {
 			ob_start();

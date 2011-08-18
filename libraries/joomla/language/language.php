@@ -127,7 +127,7 @@ class JLanguage extends JObject
 	 * @return	JLanguage  The Language object.
 	 * @since	1.5
 	 */
-	function & getInstance($lang)
+	static function & getInstance($lang)
 	{
 		$instance = new JLanguage($lang);
 		$reference = & $instance;
@@ -220,7 +220,7 @@ class JLanguage extends JObject
 	 * @return	string	The transliteration of the string
 	 * @since	1.5
 	 */
-	function transliterate($string)
+	static function transliterate($string)
 	{
 		$string = htmlentities(utf8_decode($string));
 		$string = preg_replace(
@@ -242,7 +242,7 @@ class JLanguage extends JObject
 	 * @return	boolean True if the language exists
 	 * @since	1.5
 	 */
-	function exists($lang, $basePath = JPATH_BASE)
+	static function exists($lang, $basePath = JPATH_BASE)
 	{
 		static	$paths	= array();
 

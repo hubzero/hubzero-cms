@@ -84,7 +84,7 @@ class JRouter extends JObject
 	 * @param array   $options An associative array of options
 	 * @return	JRouter	A router object.
 	 */
-	function &getInstance($client, $options = array())
+	static function &getInstance($client, $options = array())
 	{
 		static $instances;
 

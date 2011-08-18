@@ -42,7 +42,7 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 	$print   = JRequest::getBool('print');
 	$showall = JRequest::getBool('showall');
 
-	JPlugin::loadLanguage( 'plg_content_pagebreak' );
+	JPluginHelper::loadLanguage( 'plg_content_pagebreak' );
 
 	if (!$pluginParams->get('enabled', 1)) {
 		$print = true;

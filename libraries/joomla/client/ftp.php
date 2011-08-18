@@ -204,7 +204,7 @@ class JFTP extends JObject
 	 * @return	JFTP	The FTP Client object.
 	 * @since 1.5
 	 */
-	function &getInstance($host = '127.0.0.1', $port = '21', $options = null, $user = null, $pass = null)
+	static function &getInstance($host = '127.0.0.1', $port = '21', $options = null, $user = null, $pass = null)
 	{
 		static $instances = array();
 

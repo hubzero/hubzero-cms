@@ -31,7 +31,7 @@ class JFactory
 	 * @param	array	$config 	An optional associative array of configuration settings.
 	 * @return object JApplication
 	 */
-	function &getApplication($id = null, $config = array(), $prefix='J')
+	static function &getApplication($id = null, $config = array(), $prefix='J')
 	{
 		static $instance;
 
@@ -60,7 +60,7 @@ class JFactory
 	 * @param string	The type of the configuration file
 	 * @return object JRegistry
 	 */
-	function &getConfig($file = null, $type = 'PHP')
+	static function &getConfig($file = null, $type = 'PHP')
 	{
 		static $instance;
 
@@ -86,7 +86,7 @@ class JFactory
 	 * @param array An array containing session options
 	 * @return object JSession
 	 */
-	function &getSession($options = array())
+	static function &getSession($options = array())
 	{
 		static $instance;
 
@@ -106,7 +106,7 @@ class JFactory
 	 * @access public
 	 * @return object JLanguage
 	 */
-	function &getLanguage()
+	static function &getLanguage()
 	{
 		static $instance;
 
@@ -132,7 +132,7 @@ class JFactory
 	 * @access public
 	 * @return object JDocument
 	 */
-	function &getDocument()
+	static function &getDocument()
 	{
 		static $instance;
 
@@ -154,7 +154,7 @@ class JFactory
 	 * @access public
 	 * @return object JUser
 	 */
-	function &getUser($id = null)
+	static function &getUser($id = null)
 	{
 		jimport('joomla.user.user');
 
@@ -185,7 +185,7 @@ class JFactory
 	 * @param string The storage method
 	 * @return object JCache
 	 */
-	function &getCache($group = '', $handler = 'callback', $storage = null)
+	static function &getCache($group = '', $handler = 'callback', $storage = null)
 	{
 		$handler = ($handler == 'function') ? 'callback' : $handler;
 
@@ -219,7 +219,7 @@ class JFactory
 	 * @access public
 	 * @return object JAuthorization
 	 */
-	function &getACL( )
+	static function &getACL( )
 	{
 		static $instance;
 
@@ -239,7 +239,7 @@ class JFactory
 	 * @access public
 	 * @return object JTemplate
 	 */
-	function &getTemplate( )
+	static function &getTemplate( )
 	{
 		static $instance;
 
@@ -258,7 +258,7 @@ class JFactory
 	 *
 	 * @return object JDatabase
 	 */
-	function &getDBO()
+	static function &getDBO()
 	{
 		static $instance;
 
@@ -284,7 +284,7 @@ class JFactory
 	 * @access public
 	 * @return object JMail
 	 */
-	function &getMailer( )
+	static function &getMailer( )
 	{
 		static $instance;
 
@@ -311,7 +311,7 @@ class JFactory
 	 * @return object Parsed XML document object
 	 */
 
-	 function &getXMLParser( $type = 'DOM', $options = array())
+	 static function &getXMLParser( $type = 'DOM', $options = array())
 	 {
 		$doc = null;
 
@@ -373,7 +373,7 @@ class JFactory
 	* @param string $editor The editor to load, depends on the editor plugins that are installed
 	* @return object JEditor
 	*/
-	function &getEditor($editor = null)
+	static function &getEditor($editor = null)
 	{
 		jimport( 'joomla.html.editor' );
 
@@ -396,7 +396,7 @@ class JFactory
 	 * @return object JURI
 	 * @since 1.5
 	 */
-	function &getURI($uri = 'SERVER')
+	static function &getURI($uri = 'SERVER')
 	{
 		jimport('joomla.environment.uri');
 
@@ -413,7 +413,7 @@ class JFactory
 	 * @return object JDate
 	 * @since 1.5
 	 */
-	function &getDate($time = 'now', $tzOffset = 0)
+	static function &getDate($time = 'now', $tzOffset = 0)
 	{
 		jimport('joomla.utilities.date');
 		static $instances;
@@ -467,7 +467,7 @@ class JFactory
 	 * @return object JRegistry
 	 * @since 1.5
 	 */
-	function &_createConfig($file, $type = 'PHP')
+	static function &_createConfig($file, $type = 'PHP')
 	{
 		jimport('joomla.registry.registry');
 
@@ -493,7 +493,7 @@ class JFactory
 	 * @return object JSession
 	 * @since 1.5
 	 */
-	function &_createSession( $options = array())
+	static function &_createSession( $options = array())
 	{
 		jimport('joomla.session.session');
 
@@ -519,7 +519,7 @@ class JFactory
 	 * @return object JAuthorization
 	 * @since 1.5
 	 */
-	function &_createACL()
+	static function &_createACL()
 	{
 		//TODO :: take the authorization class out of the application package
 		jimport( 'joomla.user.authorization' );
@@ -543,7 +543,7 @@ class JFactory
 	 * @return object JDatabase
 	 * @since 1.5
 	 */
-	function &_createDBO()
+	static function &_createDBO()
 	{
 		jimport('joomla.database.database');
 		jimport( 'joomla.database.table' );
@@ -582,7 +582,7 @@ class JFactory
 	 * @return object JMail
 	 * @since 1.5
 	 */
-	function &_createMailer()
+	static function &_createMailer()
 	{
 		jimport('joomla.mail.mail');
 
@@ -631,7 +631,7 @@ class JFactory
 	 * @return object JTemplate
 	 * @since 1.5
 	 */
-	function &_createTemplate($files = array())
+	static function &_createTemplate($files = array())
 	{
 		jimport('joomla.template.template');
 
@@ -676,7 +676,7 @@ class JFactory
 	 * @return object JLanguage
 	 * @since 1.5
 	 */
-	function &_createLanguage()
+	static function &_createLanguage()
 	{
 		jimport('joomla.language.language');
 
@@ -695,7 +695,7 @@ class JFactory
 	 * @return object JDocument
 	 * @since 1.5
 	 */
-	function &_createDocument()
+	static function &_createDocument()
 	{
 		jimport('joomla.document.document');
 

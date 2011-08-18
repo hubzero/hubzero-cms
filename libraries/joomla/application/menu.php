@@ -79,7 +79,7 @@ class JMenu extends JObject
 	 * @return JMenu 	A menu object.
 	 * @since	1.5
 	 */
-	function &getInstance($client, $options = array())
+	static function &getInstance($client, $options = array())
 	{
 		static $instances;
 

@@ -77,7 +77,7 @@ class JFilterInput extends JObject
 	 * @return	object	The JFilterInput object.
 	 * @since	1.5
 	 */
-	function & getInstance($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1)
+	static function & getInstance($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1)
 	{
 		static $instances;
 

@@ -50,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_Session_Helper
 {
-	public function purge()
+	public static function purge()
 	{
 		$db = JFactory::getDBO();
 		
@@ -61,7 +61,7 @@ class Hubzero_Session_Helper
 	
 	//-----------
 
-	public function set_ip($session_id, $ip)
+	public static function set_ip($session_id, $ip)
 	{
 		$db = JFactory::getDBO();
 		

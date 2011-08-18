@@ -308,7 +308,7 @@ class JSite extends JApplication
 
 		// Allows for overriding the active template from the request
 		$template = JRequest::getCmd('template', $template);
-		$template = JFilterInput::clean($template, 'cmd'); // need to filter the default value as well
+		$template = JFilterInput::getInstance()->clean($template, 'cmd'); // need to filter the default value as well
 
 		// Fallback template
 		if (!file_exists(JPATH_THEMES.DS.$template.DS.'index.php')) {
@@ -339,7 +339,7 @@ class JSite extends JApplication
 	 * @return object JPathway.
 	 * @since 1.5
 	 */
-	function &getMenu()
+	static function &getMenu()
 	{
 		$options = array();
 		$menu =& parent::getMenu('site', $options);

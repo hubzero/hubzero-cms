@@ -69,7 +69,7 @@ class JProfiler extends JObject
 	 * @param string Prefix used to distinguish profiler objects.
 	 * @return JProfiler  The Profiler object.
 	 */
-	function &getInstance($prefix = '')
+	static function &getInstance($prefix = '')
 	{
 		static $instances;
 

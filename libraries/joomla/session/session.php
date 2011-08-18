@@ -146,7 +146,7 @@ class JSession extends JObject
 	 * @return	JSession	The Session object.
 	 * @since	1.5
 	 */
-	function & getInstance($handler, $options)
+	static function & getInstance($handler, $options)
 	{
 		static $instance;
 

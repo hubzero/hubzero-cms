@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_Factory
 {
-	public function &getProfile()
+	public static function &getProfile()
 	{
 		static $instances = null;
 
@@ -54,7 +54,7 @@ class Hubzero_Factory
 	
 	//-----------
 
-	public function loadArrayList(&$arraylist, $namespace = null)
+	public static function loadArrayList(&$arraylist, $namespace = null)
 	{
 		$config = &JFactory::getConfig();
 		// If namespace is not set, get the default namespace
@@ -80,7 +80,7 @@ class Hubzero_Factory
 	
 	//-----------
 
-	public function &getHub()
+	public static function &getHub()
 	{
 		 ximport('Hubzero_Hub');
 
@@ -97,7 +97,7 @@ class Hubzero_Factory
 	
 	//-----------
 
-	public function &getComponentFactory($component)
+	public static function &getComponentFactory($component)
 	{
 		static $instances;
 
@@ -124,7 +124,7 @@ class Hubzero_Factory
 	
 	//-----------
 
-	public function &getLDC($primary = 0)
+	public static function &getLDC($primary = 0)
 	{
 		static $instances;
 		$debug = 0;
@@ -279,7 +279,7 @@ class Hubzero_Factory
 	
 	//-----------
 
-	public function &getPLDC()
+	public static function &getPLDC()
 	{
 		static $instances;
 
@@ -293,7 +293,7 @@ class Hubzero_Factory
 	
 	//-----------
 
-	public function &getLogger()
+	public static function &getLogger()
 	{
 		static $instances;
 
@@ -311,7 +311,7 @@ class Hubzero_Factory
 	
 	//-----------
 
-	public function &getAuthLogger()
+	public static function &getAuthLogger()
 	{
 		static $instances;
 

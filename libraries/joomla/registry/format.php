@@ -34,7 +34,7 @@ class JRegistryFormat extends JObject
 	 * @return	object	Registry format handler
 	 * @since	1.5
 	 */
-	function &getInstance($format)
+	static function &getInstance($format)
 	{
 		static $instances;
 
@@ -42,7 +42,7 @@ class JRegistryFormat extends JObject
 			$instances = array ();
 		}
 
-		$format = strtolower(JFilterInput::clean($format, 'word'));
+		$format = strtolower(JFilterInput::getInstance()->clean($format, 'word'));
 		if (empty ($instances[$format]))
 		{
 			$class = 'JRegistryFormat'.$format;

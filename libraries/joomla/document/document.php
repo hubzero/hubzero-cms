@@ -255,7 +255,7 @@ class JDocument extends JObject
 	 * @param type $type The document type to instantiate
 	 * @return object  The document object.
 	 */
-	function &getInstance($type = 'html', $attributes = array())
+	static function &getInstance($type = 'html', $attributes = array())
 	{
 		static $instances;
 

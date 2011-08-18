@@ -32,7 +32,7 @@ class JHTMLBehavior
 	 * @return	void
 	 * @since	1.5
 	 */
-	function mootools($debug = null)
+	static function mootools($debug = null)
 	{
 		static $loaded;
 
@@ -59,23 +59,23 @@ class JHTMLBehavior
 		return;
 	}
 
-		function caption() {
+		static function caption() {
 		JHTML::script('caption.js');
 	}
 
-	function formvalidation() {
+	static function formvalidation() {
 		JHTML::script('validate.js' );
 	}
 
-	function switcher() {
+	static function switcher() {
 		JHTML::script('switcher.js' );
 	}
 
-	function combobox() {
+	static function combobox() {
 		JHTML::script('combobox.js' );
 	}
 
-	function tooltip($selector='.hasTip', $params = array())
+	static function tooltip($selector='.hasTip', $params = array())
 	{
 		static $tips;
 
@@ -114,7 +114,7 @@ class JHTMLBehavior
 		return;
 	}
 
-	function modal($selector='a.modal', $params = array())
+	static function modal($selector='a.modal', $params = array())
 	{
 		static $modals;
 		static $included;
@@ -172,7 +172,7 @@ class JHTMLBehavior
 		return;
 	}
 
-	function uploader($id='file-upload', $params = array())
+	static function uploader($id='file-upload', $params = array())
 	{
 		JHTML::script('swf.js' );
 		JHTML::script('uploader.js' );
@@ -226,7 +226,7 @@ class JHTMLBehavior
 		return;
 	}
 
-	function tree($id, $params = array(), $root = array())
+	static function tree($id, $params = array(), $root = array())
 	{
 		static $trees;
 
@@ -280,7 +280,7 @@ class JHTMLBehavior
 		return;
 	}
 
-	function calendar()
+	static function calendar()
 	{
 		$document =& JFactory::getDocument();
 		JHTML::stylesheet('calendar-jos.css', 'media/system/css/', array(' title' => JText::_( 'green' ) ,' media' => 'all' ));
@@ -296,7 +296,7 @@ class JHTMLBehavior
 	/**
 	 * Keep session alive, for example, while editing or creating an article.
 	 */
-	function keepalive()
+	static function keepalive()
 	{
 		// Include mootools framework
 		JHTMLBehavior::mootools();
@@ -327,7 +327,7 @@ class JHTMLBehavior
 	 * @return	string	JavaScript object notation representation of the array
 	 * @since	1.5
 	 */
-	function _getJSObject($array=array())
+	static function _getJSObject($array=array())
 	{
 		// Initialize variables
 		$object = '{';
@@ -360,7 +360,7 @@ class JHTMLBehavior
 	 * @return	string	JavaScript that translates the object
 	 * @since	1.5
 	 */
-	function _calendartranslation()
+	static function _calendartranslation()
 	{
 		static $jsscript = 0;
 

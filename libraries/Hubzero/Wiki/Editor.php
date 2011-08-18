@@ -76,7 +76,7 @@ class Hubzero_Wiki_Editor extends JObservable
 	 * @param	string	$editor  The editor to use.
 	 * @return	JEditor	The Editor object.
 	 */
-	public function &getInstance($editor = '')
+	public static function &getInstance($editor = '')
 	{
 		static $instances;
 

@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-----------
 
 jimport( 'joomla.plugin.plugin' );
-JPlugin::loadLanguage( 'plg_whatsnew_kb' );
+JPluginHelper::loadLanguage( 'plg_whatsnew_kb' );
 
 //-----------
 

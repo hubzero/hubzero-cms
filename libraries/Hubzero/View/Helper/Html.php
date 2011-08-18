@@ -31,21 +31,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_View_Helper_Html 
 {
-	public function error($msg, $tag='p')
+	public static function error($msg, $tag='p')
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 	
 	//-----------
 	
-	public function warning($msg, $tag='p')
+	public static function warning($msg, $tag='p')
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 
 	//-----------
 
-	public function div($txt, $cls='', $id='')
+	public static function div($txt, $cls='', $id='')
 	{
 		$html  = '<div';
 		$html .= ($cls) ? ' class="'.$cls.'"' : '';
@@ -67,7 +67,7 @@ class Hubzero_View_Helper_Html
 
 	//-----------
 
-	public function hed( $level, $words, $class='' ) 
+	public static function hed( $level, $words, $class='' ) 
 	{
 		$html  = '<h'.$level;
 		$html .= ($class) ? ' class="'.$class.'"' : '';
@@ -77,7 +77,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
-	public function xhtml( $text ) 
+	public static function xhtml( $text ) 
 	{
 		$text = stripslashes($text);
 		$text = strip_tags($text);
@@ -92,7 +92,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 
-	public function shortenText($text, $chars=300, $p=1) 
+	public static function shortenText($text, $chars=300, $p=1) 
 	{
 		$text = strip_tags($text);
 		$text = trim($text);
@@ -118,7 +118,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 
-	public function purifyText( &$text ) 
+	public static function purifyText( &$text ) 
 	{
 		$text = stripslashes($text);
 		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
@@ -138,7 +138,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
-	public function str_highlight($text, $needles)
+	public static function str_highlight($text, $needles)
 	{
 		$highlight = '<span class="highlight">\1</span>';
 	
@@ -156,7 +156,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
-	public function ampReplace( $text )
+	public static function ampReplace( $text )
 	{
 		$text = str_replace( '&&', '*--*', $text );
 		$text = str_replace( '&#', '*-*', $text );
@@ -170,7 +170,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 
-	public function mkt($stime)
+	public static function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
 			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
@@ -180,7 +180,7 @@ class Hubzero_View_Helper_Html
 
 	//-----------
 
-	public function timeAgoo($timestamp)
+	public static function timeAgoo($timestamp)
 	{
 		// Store the current time
 		$current_time = time();
@@ -224,7 +224,7 @@ class Hubzero_View_Helper_Html
 
 	//-----------
 
-	public function timeAgo($timestamp) 
+	public static function timeAgo($timestamp) 
 	{
 		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
 
@@ -237,7 +237,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
-	public function niceidformat($someid) 
+	public static function niceidformat($someid) 
 	{
 		while (strlen($someid) < 5) 
 		{
@@ -248,7 +248,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
-	public function thumbit($thumb) 
+	public static function thumbit($thumb) 
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -262,7 +262,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
-	public function getFileAttribs( $path, $base_path='' )
+	public static function getFileAttribs( $path, $base_path='' )
 	{
 		// Return nothing if no path provided
 		if (!$path) {
@@ -324,7 +324,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 
-	public function formatSize($file_size) 
+	public static function formatSize($file_size) 
 	{
 		if ($file_size >= 1073741824) {
 			$file_size = round($file_size / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
@@ -340,7 +340,7 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
-	public function filesize_r($path) 
+	public static function filesize_r($path) 
 	{
 		if (!file_exists($path)) {
 			return 0;

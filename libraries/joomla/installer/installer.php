@@ -90,7 +90,7 @@ class JInstaller extends JObject
 	 * @return	object	An installer object
 	 * @since 1.5
 	 */
-	function &getInstance()
+	static function &getInstance()
 	{
 		static $instance;
 

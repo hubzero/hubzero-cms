@@ -81,7 +81,7 @@ class JTemplate extends patTemplate
 	* @return jtemplate A template object
 	* @since 1.5
 	*/
-	function &getInstance( $type = 'html' )
+	static function &getInstance( $type = 'html' )
 	{
 		static $instances;
 

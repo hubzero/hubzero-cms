@@ -33,7 +33,7 @@ class JComponentHelper
 	 * @param 	boolean	$string	If set and a component does not exist, the enabled attribue will be set to false
 	 * @return	object A JComponent object
 	 */
-	function &getComponent( $name, $strict = false )
+	static function &getComponent( $name, $strict = false )
 	{
 		$result = null;
 		$components = JComponentHelper::_load();
@@ -60,7 +60,7 @@ class JComponentHelper
 	 * @param 	boolean	$string	If set and a component does not exist, false will be returned
 	 * @return	boolean
 	 */
-	function isEnabled( $component, $strict = false )
+	static function isEnabled( $component, $strict = false )
 	{
 		global $mainframe;
 
@@ -75,7 +75,7 @@ class JComponentHelper
 	 * @param string $name The component name
 	 * @return object A JParameter object
 	 */
-	function &getParams( $name )
+	static function &getParams( $name )
 	{
 		static $instances;
 		if (!isset( $instances[$name] ))
@@ -86,7 +86,7 @@ class JComponentHelper
 		return $instances[$name];
 	}
 
-	function renderComponent($name = null, $params = array())
+	static function renderComponent($name = null, $params = array())
 	{
 		global $mainframe, $option;
 
@@ -185,7 +185,7 @@ class JComponentHelper
 	 * @access	private
 	 * @return	array
 	 */
-	function _load()
+	static function _load()
 	{
 		static $components;
 

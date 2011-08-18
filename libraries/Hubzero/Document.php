@@ -33,7 +33,7 @@ jimport('joomla.document.document');
 
 class Hubzero_Document
 {
-	public function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public static function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -62,7 +62,7 @@ class Hubzero_Document
 		}
 	}
 
-	public function getComponentImage($component, $image)
+	public static function getComponentImage($component, $image)
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -81,7 +81,7 @@ class Hubzero_Document
 
 	//-----------
 
-	public function getComponentStylesheet($component, $stylesheet)
+	public static function getComponentStylesheet($component, $stylesheet)
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -100,7 +100,7 @@ class Hubzero_Document
 
 	//-----------
 
-	public function getModuleImage($module, $image)
+	public static function getModuleImage($module, $image)
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -119,7 +119,7 @@ class Hubzero_Document
 
 	//-----------
 
-	public function getHubImage($image)
+	public static function getHubImage($image)
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -138,7 +138,7 @@ class Hubzero_Document
 
 	//-----------
 
-	public function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public static function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -166,7 +166,7 @@ class Hubzero_Document
 	
 	//-----------
 	
-	public function addPluginStyleSheet($plugin_group, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public static function addPluginStyleSheet($plugin_group, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		$mainframe =& JFactory::getApplication();
 

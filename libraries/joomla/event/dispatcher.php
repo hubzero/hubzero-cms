@@ -52,7 +52,7 @@ class JDispatcher extends JObservable
 	 * @return	JDispatcher	The EventDispatcher object.
 	 * @since	1.5
 	 */
-	function & getInstance()
+	static function & getInstance()
 	{
 		static $instance;
 

@@ -117,7 +117,7 @@ class JApplication extends JObject
 	 * @return	JApplication	The appliction object.
 	 * @since	1.5
 	 */
-	function &getInstance($client, $config = array(), $prefix = 'J')
+	static function &getInstance($client, $config = array(), $prefix = 'J')
 	{
 		static $instances;
 
@@ -697,7 +697,7 @@ class JApplication extends JObject
 	 * @return object JMenu.
 	 * @since 1.5
 	 */
-	function &getMenu($name = null, $options = array())
+	static function &getMenu($name = null, $options = array())
 	{
 		if(!isset($name)) {
 			$name = $this->_name;

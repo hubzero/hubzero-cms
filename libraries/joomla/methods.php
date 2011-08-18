@@ -35,7 +35,7 @@ class JRoute
 	 * 		-1: Make URI unsecure using the global unsecure site URI
 	 * @return The translated humanly readible URL
 	 */
-	function _($url, $xhtml = true, $ssl = null)
+	static function _($url, $xhtml = true, $ssl = null)
 	{
 		// Get the router
 		$app	= &JFactory::getApplication();
@@ -115,7 +115,7 @@ class JText
 	 * @since	1.5
 	 *
 	 */
-	function _($string, $jsSafe = false)
+	static function _($string, $jsSafe = false)
 	{
 		$lang =& JFactory::getLanguage();
 		return $lang->_($string, $jsSafe);
@@ -129,7 +129,7 @@ class JText
 	 * @param	mixed Mixed number of arguments for the sprintf function
 	 * @since	1.5
 	 */
-	function sprintf($string)
+	static function sprintf($string)
 	{
 		$lang =& JFactory::getLanguage();
 		$args = func_get_args();
@@ -148,7 +148,7 @@ class JText
 	 * @param	mixed Mixed number of arguments for the sprintf function
 	 * @since	1.5
 	 */
-	function printf($string)
+	static function printf($string)
 	{
 		$lang =& JFactory::getLanguage();
 		$args = func_get_args();

@@ -61,7 +61,7 @@ class JPathway extends JObject
 	 * @return JPathway 	A pathway object.
 	 * @since	1.5
 	 */
-	function &getInstance($client, $options = array())
+	static function &getInstance($client, $options = array())
 	{
 		static $instances;
 

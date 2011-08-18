@@ -29,7 +29,7 @@ class JLoader
 	 * @return void
 	 * @since 1.5
 	 */
-	function import( $filePath, $base = null, $key = 'libraries.' )
+	static function import( $filePath, $base = null, $key = 'libraries.' )
 	{
 		static $paths;
 
@@ -94,7 +94,7 @@ class JLoader
 	 * @return	array|boolean  		Array of classes
 	 * @since 	1.5
 	 */
-	function & register ($class = null, $file = null)
+	static function & register ($class = null, $file = null)
 	{
 		static $classes;
 
@@ -127,7 +127,7 @@ class JLoader
 	 * @return  boolean True on success
 	 * @since   1.5
 	 */
-	function load( $class )
+	static function load( $class )
 	{
 		$class = strtolower($class); //force to lower case
 

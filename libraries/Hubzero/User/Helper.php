@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_User_Helper
 {
-	public function random_password($length = 8) 
+	public static function random_password($length = 8) 
 	{
 		$genpass = '';
 		$salt = "abchefghjkmnpqrstuvwxyz0123456789";
@@ -53,14 +53,14 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public function encrypt_password($password) 
+	public static function encrypt_password($password) 
 	{
 		return("{MD5}" . base64_encode(pack('H*', md5($password))));
 	}
 	
 	//-----------
 
-	public function getXDomainId($domain)
+	public static function getXDomainId($domain)
 	{
 		$db =& JFactory::getDBO();
 
@@ -82,7 +82,7 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public function getXDomainUserId($domain_username, $domain)
+	public static function getXDomainUserId($domain_username, $domain)
 	{
 		$db =& JFactory::getDBO();
 
@@ -106,7 +106,7 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public function deleteXDomainUserId($id)
+	public static function deleteXDomainUserId($id)
 	{
 		$db =& JFactory::getDBO();
 
@@ -129,7 +129,7 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public function isXDomainUser($uid)
+	public static function isXDomainUser($uid)
 	{
 		$db =& JFactory::getDBO();
 
@@ -147,7 +147,7 @@ class Hubzero_User_Helper
 
 	//-----------
 
-	public function createXDomain($domain)
+	public static function createXDomain($domain)
 	{
 		$db =& JFactory::getDBO();
 
@@ -179,14 +179,14 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public function setXDomainUserId($domain_username, $domain, $uidNumber)
+	public static function setXDomainUserId($domain_username, $domain, $uidNumber)
 	{
 		return Hubzero_User_Helper::mapXDomainUser($domain_username, $domain, $uidNumber);
 	}
 
 	//-----------
 
-	public function mapXDomainUser($domain_username, $domain, $uidNumber)
+	public static function mapXDomainUser($domain_username, $domain, $uidNumber)
 	{
 		$db =& JFactory::getDBO();
 
@@ -229,7 +229,7 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public function getGroups($uid, $type='all', $cat = null)
+	public static function getGroups($uid, $type='all', $cat = null)
 	{
 		$db =& JFactory::getDBO();
 		

@@ -100,7 +100,7 @@ class JModel extends JObject
 	 * @return	mixed	A model object, or false on failure
 	 * @since	1.5
 	*/
-	function &getInstance( $type, $prefix = '', $config = array() )
+	static function &getInstance( $type, $prefix = '', $config = array() )
 	{
 		$type		= preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 		$modelClass	= $prefix.ucfirst($type);
@@ -241,7 +241,7 @@ class JModel extends JObject
 	 * @return	array	An array with directory elements
 	 * @since	1.5
 	 */
-	function addIncludePath( $path='' )
+	static function addIncludePath( $path='' )
 	{
 		static $paths;
 
@@ -337,7 +337,7 @@ class JModel extends JObject
 	 * @return	string The filename
 	 * @since	1.5
 	 */
-	function _createFileName($type, $parts = array())
+	static function _createFileName($type, $parts = array())
 	{
 		$filename = '';
 
