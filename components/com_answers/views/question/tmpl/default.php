@@ -806,7 +806,7 @@ if ($this->responses) {
 				} //if (count($row->replies) > 0) 
 				?>
 				<?php } else { ?>
-					<p class="condensed"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
+					<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
 				<?php } //if ($this->showcomments && isset($row->replies)) ?>
 			</li>
 		<?php } //foreach ($this->responses as $row) ?>
