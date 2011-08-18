@@ -62,7 +62,8 @@ class plgSystemRemember extends JPlugin
 				//Create the encryption key, apply extra hardening using the user agent string
 				$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
-				$crypt	= new JSimpleCrypt($key);
+				//$crypt	= new JSimpleCrypt($key);
+				$crypt	= new JSimpleCrypt();
 				$str	= $crypt->decrypt($str);
 
 				$options = array();

@@ -1031,7 +1031,8 @@ class plgSystemXhub extends JPlugin
 				//Create the encryption key, apply extra hardening using the user agent string
 				$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
-				$crypt = new JSimpleCrypt($key);
+				//$crypt = new JSimpleCrypt($key);
+				$crypt = new JSimpleCrypt();
 				$str = $crypt->decrypt($str);
 				$user = unserialize($str);
 				// We should store userid not username in cookie, will save us a database query here
@@ -1043,7 +1044,7 @@ class plgSystemXhub extends JPlugin
 					{
 						apache_note('userid',$myuser->get('id'));
 						apache_note('auth','cookie');
-                    $authlog = Hubzero_Factory::getAuthLogger();
+                        $authlog = Hubzero_Factory::getAuthLogger();
                     	$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 					}
 				}
