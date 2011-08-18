@@ -44,6 +44,13 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_groups_blog.ini</language>
 	</languages>
 	<params>
+		<param name="plugin_access" type="list" default="anyone" label="Default Plugin Access" description="Default access level assigned to the blog plugin.">
+			<option value="anyone">Any HUB Visitor</option>
+			<option value="registered">Only Registered HUB Users</option>
+			<option value="members">Only Group Members</option>
+			<option value="nobody">Disabled/Off</option>
+		</param>
+		<param type="spacer" />
 		<param name="uploadpath" type="text" menu="hide" default="/site/groups/{{gid}}/blog" label="Upload path" description="File path for uploads" />
 		<param name="posting" type="list" default="0" label="Article Posting" description="The default setting for who can post to the blog.">
 			<option value="0">All members</option>

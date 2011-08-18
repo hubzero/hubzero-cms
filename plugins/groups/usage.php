@@ -50,7 +50,7 @@ class plgGroupsUsage extends JPlugin
 		$area = array(
 			'name' => 'usage',
 			'title' => JText::_('USAGE'),
-			'default_access' => 'anyone'
+			'default_access' => $this->_params->get('plugin_access','anyone')
 		);
 		
 		return $area;

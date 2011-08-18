@@ -59,7 +59,7 @@ class plgGroupsWishlist extends JPlugin
 		$area = array(
 			'name' => 'wishlist',
 			'title' => JText::_('PLG_GROUPS_WISHLIST'),
-			'default_access' => 'registered'
+			'default_access' => $this->_params->get('plugin_access','anyone')
 		);
 		
 		return $area;
