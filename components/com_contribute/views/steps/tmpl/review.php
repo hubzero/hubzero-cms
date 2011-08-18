@@ -33,7 +33,7 @@ $juser =& JFactory::getUser();
 $jconfig =& JFactory::getConfig();
 
 // Get parameters
-$rparams =& new JParameter( $this->resource->params );
+$rparams = new JParameter( $this->resource->params );
 $params = $this->config;
 $params->merge( $rparams );
 ?>
@@ -125,7 +125,7 @@ include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usa
 
 
 // Get attributes
-$attribs =& new JParameter( $this->resource->attribs );
+$attribs = new JParameter( $this->resource->attribs );
 
 // Get the resource's children
 $helper = new ResourcesHelper( $this->id, $this->database );

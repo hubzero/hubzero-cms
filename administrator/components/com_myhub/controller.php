@@ -306,9 +306,9 @@ class MyhubController extends Hubzero_Controller
 		// If the user has special prefs, load them.
 		// Otherwise, load default prefs
 		if ($module->myparams != '') {
-			$params =& new JParameter( $module->myparams );
+			$params = new JParameter( $module->myparams );
 		} else {
-			$params =& new JParameter( $module->params );
+			$params = new JParameter( $module->params );
 		}
 		
 		if ($params) {
@@ -375,10 +375,10 @@ class MyhubController extends Hubzero_Controller
 				$rendered = false;
 				// if the user has special prefs, load them. Otherwise, load default prefs
 				if ($module->myparams != '') {
-					$params =& new JParameter( $module->myparams );
+					$params = new JParameter( $module->myparams );
 					$module->params .= $module->myparams;
 				} else {
-					$params =& new JParameter( $module->params );
+					$params = new JParameter( $module->params );
 				}
 
 				if ($params) {

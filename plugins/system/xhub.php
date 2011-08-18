@@ -430,7 +430,7 @@ class XRouter extends JRouter
 				$db =& JFactory::getDBO();
 				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
 	        	$db->setQuery($sql);
-	        	$row =& $db->loadObject();
+		        $row = $db->loadObject();
 
 				if (!empty($row))
 				{
@@ -906,7 +906,7 @@ class XRouter extends JRouter
 		}
 
 		$db->setQuery($query);
-		$row =& $db->loadResult();
+		$row = $db->loadResult();
 
 		if (!empty($row))
 		{	

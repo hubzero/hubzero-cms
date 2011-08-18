@@ -212,8 +212,8 @@ class StoreController extends Hubzero_Controller
 			if ($orderitems) {
 				foreach ($orderitems as $r) 
 				{
-					$params =& new JParameter( $r->params );
-					$selections =& new JParameter( $r->selections );
+					$params = new JParameter( $r->params );
+					$selections = new JParameter( $r->selections );
 					
 					// Get size selection
 					$r->sizes    		= $params->get( 'size', '' );
@@ -321,8 +321,8 @@ class StoreController extends Hubzero_Controller
 			if (count($view->orderitems) > 0) {
 				foreach ($view->orderitems as $r) 
 				{
-					$params =& new JParameter( $r->params );
-					$selections =& new JParameter( $r->selections );
+					$params = new JParameter( $r->params );
+					$selections = new JParameter( $r->selections );
 					
 					// Get size selection
 					$r->sizes = $params->get( 'size', '' );
@@ -376,7 +376,7 @@ class StoreController extends Hubzero_Controller
 	
 		if ($id) {		
 			// Get parameters
-			$params =& new JParameter( $view->row->params );
+			$params = new JParameter( $view->row->params );
 			$view->row->size = $params->get( 'size', '' );							
 			$view->row->color = $params->get( 'color', '' );
 		} else {

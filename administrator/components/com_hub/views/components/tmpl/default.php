@@ -73,7 +73,7 @@ JHTML::_('behavior.tooltip');
 			<?php
 			$path = JPATH_ADMINISTRATOR.DS.'components'.DS.$this->component->option.DS.'config.xml';
 			if (is_file($path)) {
-				$params =& new JParameter( $this->component->params, $path );
+				$params = new JParameter( $this->component->params, $path );
 				echo $params->render();
 			} else {
 				echo '<p>'.JText::_('No parameters to render').'</p>';

@@ -607,7 +607,7 @@ class Hubzero_User extends JObject
 			if (!is_file($path)) {
 				$path = '';
 			}
-			$jconfig =& new JParameter( $component->params, $path );
+			$jconfig = new JParameter( $component->params, $path );
 			$data = $jconfig->renderToArray();
 			$c = array();
 			foreach ($data as $d=>$info) 
@@ -617,7 +617,7 @@ class Hubzero_User extends JObject
 				}
 			}
 			$g = implode(n,$c);
-			$config =& new JParameter( $g );
+			$config = new JParameter( $g );
 		} else {
 			$config =& JComponentHelper::getParams( 'com_members' );
 		}

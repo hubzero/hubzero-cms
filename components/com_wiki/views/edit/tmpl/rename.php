@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$xparams =& new JParameter( $this->page->params );
+$xparams = new JParameter( $this->page->params );
 
 if ($this->sub) {
 	$hid = 'sub-content-header';

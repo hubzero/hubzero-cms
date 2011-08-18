@@ -206,7 +206,7 @@ class plgXSearchMembers extends JPlugin
 		}
 		
 		$juser =& JFactory::getUser();
-		$params =& new JParameter( $row->params );
+		$params = new JParameter( $row->params );
 		
 		$html  = "\t".'<li class="member">'."\n";
 		if (is_file(JPATH_ROOT.$thumb)) {

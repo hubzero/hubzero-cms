@@ -257,7 +257,7 @@ class plgMembersResources extends JPlugin
 
 		// Get the component params and merge with resource params
 		$config =& JComponentHelper::getParams( 'com_resources' );
-		$rparams =& new JParameter( $row->params );
+		$rparams = new JParameter( $row->params );
 		$params = $config;
 		$params->merge( $rparams );
 		

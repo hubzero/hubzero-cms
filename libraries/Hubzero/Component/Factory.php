@@ -59,7 +59,7 @@ class Hubzero_Component_Factory
 
 		if (class_exists($configclass)) {
 			$registry =& JFactory::getConfig();
-			$config =& new $configclass();
+			$config = new $configclass();
 			$registry->loadObject($config, $namespace);
 		}
 	}

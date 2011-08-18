@@ -331,7 +331,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$helper = new ResourcesHelper($child->id, $database);
 					$helper->getChildren();
 
-					$child_params =& new JParameter( $child->params );
+					$child_params = new JParameter( $child->params );
 					$link_action = $child_params->get( 'link_action', '' );
 
 					$child->title = ResourcesHtml::encode_html($child->title);

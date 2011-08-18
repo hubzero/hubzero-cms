@@ -559,7 +559,7 @@ class WikiController extends Hubzero_Controller
 		}
 
 		// Process the page's params
-		$params =& new JParameter( $this->page->params, 'components'.DS.$this->_option.DS.$this->_name.'.xml', 'component' );
+		$params = new JParameter( $this->page->params, 'components'.DS.$this->_option.DS.$this->_name.'.xml', 'component' );
 		
 		// Output content
 		//echo WikiHtml::edit( $this->_sub, JText::_(strtoupper($this->_name)), $authorized, $pagetitle, $this->page, $revision, $authors, $this->_option, $tagstring, $this->_task, $params, $preview );
@@ -1877,7 +1877,7 @@ class WikiController extends Hubzero_Controller
 			}
 		}
 
-		$params =& new JParameter( $this->page->params );
+		$params = new JParameter( $this->page->params );
 		if ($params->get( 'mode' ) == 'knol') {
 			if ($type == 'edit') {
 				// Knol mode - only authorized authors can make pre-approved changes

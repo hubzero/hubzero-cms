@@ -117,7 +117,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 	
-	$rparams =& new JParameter( $row->params );
+	$rparams = new JParameter( $row->params );
 	$license = $rparams->get('license');
 	
 	// Build some publishing info

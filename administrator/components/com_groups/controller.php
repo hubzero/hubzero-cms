@@ -498,7 +498,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//group params
-		$gparams =& new JParameter( $group->get('params') );
+		$gparams = new JParameter( $group->get('params') );
 		
 		//set membership control param
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;

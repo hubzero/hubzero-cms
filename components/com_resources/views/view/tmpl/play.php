@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $html = '';
 if ($this->resource->type == 4) {
-	$parameters =& new JParameter( $this->resource->params );
+	$parameters = new JParameter( $this->resource->params );
 	
 	$this->helper->getChildren();
 
@@ -47,10 +47,10 @@ if ($this->resource->type == 4) {
 	$html .= '<ul class="sub-nav">'."\n";
 	foreach ($children as $child) 
 	{
-		$attribs =& new JParameter( $child->attribs );
+		$attribs = new JParameter( $child->attribs );
 
 		if ($attribs->get( 'exclude', '' ) != 1) {
-			$params =& new JParameter( $child->params );
+			$params = new JParameter( $child->params );
 			$link_action = $params->get( 'link_action', '' );
 			switch ($child->logicaltype)
 			{
@@ -127,7 +127,7 @@ if ($this->resource->type == 4) {
 	$url = $this->activechild->path;
 	
 	// Get some attributes
-	$attribs =& new JParameter( $this->activechild->attribs );
+	$attribs = new JParameter( $this->activechild->attribs );
 	$width  = $attribs->get( 'width', '' );
 	$height = $attribs->get( 'height', '' );
 	

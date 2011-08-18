@@ -2044,14 +2044,14 @@ class ResourcesHtml
 					$html .= ResourcesHtml::primaryButton($class.' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
 					//$html .= t.'<p class="warning" style="clear: none;">You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can download.</p>'."\n";
 				} else {
-					$child_params =& new JParameter( $firstChild->params );
+					$child_params = new JParameter( $firstChild->params );
 					$link_action = $child_params->get( 'link_action', '' );
 
 					$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $link_action);
 					
 					//$class .= ($firstChild->type == 32) ? ' breeze' : '';
 					
-					$attribs =& new JParameter( $firstChild->attribs );
+					$attribs = new JParameter( $firstChild->attribs );
 					$width  = $attribs->get( 'width', '' );
 					$height = $attribs->get( 'height', '' );
 					
@@ -2220,7 +2220,7 @@ class ResourcesHtml
 				
 			// Get parameters
 			$params = clone($config);
-			$rparams =& new JParameter( $line->params );
+			$rparams = new JParameter( $line->params );
 			$params->merge( $rparams );
 			
 			// Instantiate a new view

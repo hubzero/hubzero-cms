@@ -461,7 +461,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the group params
-		$gparams =& new JParameter($group->get('params'));
+		$gparams = new JParameter($group->get('params'));
 		
 		// Check authorization
 		$authorized = $this->_authorize();
@@ -643,7 +643,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the group params
-		$gparams =& new JParameter($group->get('params'));
+		$gparams = new JParameter($group->get('params'));
 		
 		//if membership is managed in seperate place disallow action
 		if( $gparams->get('membership_control', 1) == 0 ) {
@@ -727,7 +727,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the group params
-		$gparams =& new JParameter($group->get('params'));
+		$gparams = new JParameter($group->get('params'));
 		
 		//if membership is managed in seperate place disallow action
 		if( $gparams->get('membership_control', 1) == 0 ) {
@@ -827,7 +827,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the group params
-		$gparams =& new JParameter($group->get('params'));
+		$gparams = new JParameter($group->get('params'));
 		
 		//if membership is managed in seperate place disallow action
 		if( $gparams->get('membership_control', 1) == 0 ) {
@@ -973,7 +973,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the group params
-		$gparams =& new JParameter($group->get('params'));
+		$gparams = new JParameter($group->get('params'));
 		
 		//if membership is managed in seperate place disallow action
 		if( $gparams->get('membership_control', 1) == 0 ) {
@@ -1426,7 +1426,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the group params
-		$gparams =& new JParameter($group->get('params'));
+		$gparams = new JParameter($group->get('params'));
 		
 		//if membership is managed in seperate place disallow action
 		if( $gparams->get('membership_control', 1) == 0 ) {
@@ -1719,7 +1719,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get group params
-		$gparams =& new JParameter( $group->get('params') );
+		$gparams = new JParameter( $group->get('params') );
 		if($gparams->get('membership_control', 1) == 0) {
 			$this->setNotification('Group membership is not managed in the group interface.', 'error');
 			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));

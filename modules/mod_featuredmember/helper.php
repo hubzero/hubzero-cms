@@ -265,7 +265,7 @@ class modFeaturedmember
 					$profile->load( $row->uidNumber );
 				}
 				
-				$rparams =& new JParameter( $profile->get('params') );
+				$rparams = new JParameter( $profile->get('params') );
 				$params = $config;
 				$params->merge( $rparams );
 

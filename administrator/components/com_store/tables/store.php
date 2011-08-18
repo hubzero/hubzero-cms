@@ -129,7 +129,7 @@ class Store extends  JTable
 					$row->root = JPATH_ROOT;
 					
 					// Get parameters
-					$params =& new JParameter( $row->params );
+					$params = new JParameter( $row->params );
 					$row->size  = $params->get( 'size', '' );
 					$row->color = $params->get( 'color', '' );
 				}

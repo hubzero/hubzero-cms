@@ -89,8 +89,8 @@ class Cart extends JTable
 					$total = $total + $price;
 				}
 				
-				$params 	 		=& new JParameter( $r->params );
-				$selections  		=& new JParameter( $r->selections );
+				$params 	 		= new JParameter( $r->params );
+				$selections  		= new JParameter( $r->selections );
 				
 				// get size selection
 				$r->sizes    		= $params->get( 'size', '' );

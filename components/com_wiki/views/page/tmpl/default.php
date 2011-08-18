@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$params =& new JParameter( $this->page->params );
+$params = new JParameter( $this->page->params );
 $mode = $params->get( 'mode', 'wiki' );
 
 if ($this->sub) {

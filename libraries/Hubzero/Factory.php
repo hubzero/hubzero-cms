@@ -90,7 +90,7 @@ class Hubzero_Factory
 			 $instances[0] = null;
 
 		 if (!is_object($instances[0]))
-			 $instances[0] =& new Hubzero_Hub();
+			 $instances[0] = new Hubzero_Hub();
 
 		 return $instances[0];
 	}
@@ -112,9 +112,9 @@ class Hubzero_Factory
 				include_once($file);
 
 			if (class_exists($factoryclass))
-				$factory =& new $factoryclass($component);
+				$factory = new $factoryclass($component);
 			else
-				$factory =& new Hubzero_Component_Factory($component);
+				$factory = new Hubzero_Component_Factory($component);
 		
 			$instances[$component] = $factory;
 		}
@@ -301,8 +301,8 @@ class Hubzero_Factory
 		{
 			ximport('Hubzero_Log');
 
-			$instances[0] =& new Hubzero_Log();
-			$handler =& new Hubzero_Log_FileHandler("/var/log/hubzero/cmsdebug.log");
+			$instances[0] = new Hubzero_Log();
+			$handler = new Hubzero_Log_FileHandler("/var/log/hubzero/cmsdebug.log");
 			$instances[0]->attach(HUBZERO_LOG_DEBUG, $handler);
 		}
 
@@ -319,8 +319,8 @@ class Hubzero_Factory
 		{
 			ximport('Hubzero_Log');
 
-			$instances[] =& new Hubzero_Log();
-			$handler =& new Hubzero_Log_FileHandler("/var/log/hubzero/cmsauth.log");
+			$instances[] = new Hubzero_Log();
+			$handler = new Hubzero_Log_FileHandler("/var/log/hubzero/cmsauth.log");
 			$instances[0]->attach(HUBZERO_LOG_AUTH, $handler);
 		}
 

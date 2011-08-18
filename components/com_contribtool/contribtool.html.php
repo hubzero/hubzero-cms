@@ -1917,12 +1917,12 @@ if($tagname!='screenshots' and $tagname!='bio') {
         <?php
 		
 		// Get parameters
-		$rparams =& new JParameter( $resource->params );
+		$rparams = new JParameter( $resource->params );
 		$params = $config;
 		$params->merge( $rparams );
 
 		// Get attributes
-		$attribs =& new JParameter( $resource->attribs );
+		$attribs = new JParameter( $resource->attribs );
 		
 		// Get the resource's children
 		$helper = new ResourcesHelper( $rid, $database );

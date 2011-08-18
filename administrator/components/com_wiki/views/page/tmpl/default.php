@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 			<legend><?php echo JText::_('PARAMETERS'); ?></legend>
 			
 			<?php 
-			$params =& new JParameter( $this->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->option.DS.'wiki.xml' );
+			$params = new JParameter( $this->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->option.DS.'wiki.xml' );
 			echo $params->render();
 			?>
 			

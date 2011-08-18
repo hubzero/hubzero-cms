@@ -317,7 +317,7 @@ class KbController extends Hubzero_Controller
 		$view->replyto->load($r);
 		
 		// Get parameters and merge with the component params
-		$rparams =& new JParameter( $view->article->params );
+		$rparams = new JParameter( $view->article->params );
 		$view->config = $this->config;
 		$view->config->merge( $rparams );
 		

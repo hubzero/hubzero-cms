@@ -49,7 +49,7 @@ class Hubzero_Hub
 
 		if ( class_exists('HubConfig') ) 
 		{
-			$config =& new HubConfig();
+			$config = new HubConfig();
 			$registry->loadObject($config, 'xhub');
 		}
 
@@ -60,7 +60,7 @@ class Hubzero_Hub
 
 		if ( class_exists('HubConfigOverride') ) 
 		{
-			$config =& new HubConfigOverride();
+			$config = new HubConfigOverride();
 			$registry->loadObject($config, 'xhub');
 		}
 	}

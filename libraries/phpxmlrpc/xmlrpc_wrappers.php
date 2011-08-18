@@ -181,7 +181,7 @@
 			}
 
 			// start to introspect PHP code
-			$func =& new ReflectionFunction($funcname);
+			$func = new ReflectionFunction($funcname);
 			if($func->isInternal())
 			{
 				// Note: from PHP 5.1.0 onward, we will possibly be able to use invokeargs
@@ -474,7 +474,7 @@
 		$valclass = $prefix.'val';
 		$decodefunc = 'php_'.$prefix.'_decode';
 
-		$msg =& new $msgclass('system.methodSignature');
+		$msg = new $msgclass('system.methodSignature');
 		$msg->addparam(new $valclass($methodname));
 		$client->setDebug($debug);
 		$response =& $client->send($msg, $timeout, $protocol);
@@ -520,7 +520,7 @@
 				// in online mode, favour speed of operation
 				if(!$buildit)
 				{
-					$msg =& new $msgclass('system.methodHelp');
+					$msg = new $msgclass('system.methodHelp');
 					$msg->addparam(new $valclass($methodname));
 					$response =& $client->send($msg, $timeout, $protocol);
 					if (!$response->faultCode())
@@ -589,7 +589,7 @@
 		//$valclass = $prefix.'val';
 		$decodefunc = 'php_'.$prefix.'_decode';
 
-		$msg =& new $msgclass('system.listMethods');
+		$msg = new $msgclass('system.listMethods');
 		$response =& $client->send($msg, $timeout, $protocol);
 		if($response->faultCode())
 		{
@@ -709,7 +709,7 @@
 			$innercode = '';
 			$this_ = 'this->';
 		}
-		$innercode .= "\$msg =& new {$prefix}msg('$methodname');\n";
+		$innercode .= "\$msg = new {$prefix}msg('$methodname');\n";
 
 		if ($mdesc != '')
 		{
@@ -732,7 +732,7 @@
 				$ptype == 'string' || $ptype == 'dateTime.iso8601' || $ptype == 'base64' || $ptype == 'null')
 			{
 				// only build directly xmlrpcvals when type is known and scalar
-				$innercode .= "\$p$i =& new {$prefix}val(\$p$i, '$ptype');\n";
+				$innercode .= "\$p$i = new {$prefix}val(\$p$i, '$ptype');\n";
 			}
 			else
 			{
@@ -794,7 +794,7 @@
 	*/
 	function build_client_wrapper_code($client, $verbatim_client_copy, $prefix='xmlrpc')
 	{
-		$code = "\$client =& new {$prefix}_client('".str_replace("'", "\'", $client->path).
+		$code = "\$client = new {$prefix}_client('".str_replace("'", "\'", $client->path).
 			"', '" . str_replace("'", "\'", $client->server) . "', $client->port);\n";
 
 		// copy all client fields to the client that will be generated runtime

@@ -107,7 +107,7 @@ if (!$contributions) {
 			case 0:  $class = 'deleted';    break;  // pending
 		}
 			
-		/*$rparams =& new JParameter( $contributions[$i]->params );
+		/*$rparams = new JParameter( $contributions[$i]->params );
 		$params = $config;
 		$params->merge( $rparams );
 

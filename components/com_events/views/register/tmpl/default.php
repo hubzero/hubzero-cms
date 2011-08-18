@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$params =& new JParameter( $this->event->params );
+$params = new JParameter( $this->event->params );
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

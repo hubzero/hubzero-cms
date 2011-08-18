@@ -463,7 +463,7 @@ class ResourcesController extends Hubzero_Controller
 				$resource->ranking = round($resource->ranking, 1);
 				
 				// Get parameters and merge with the component params
-				$rparams =& new JParameter( $resource->params );
+				$rparams = new JParameter( $resource->params );
 				$params = $this->config;
 				$params->merge( $rparams );
 				$bits['params'] = $params;
@@ -829,12 +829,12 @@ class ResourcesController extends Hubzero_Controller
 		}
 		
 		// Get parameters and merge with the component params
-		$rparams =& new JParameter( $resource->params );
+		$rparams = new JParameter( $resource->params );
 		$params = $this->config;
 		$params->merge( $rparams );
 		
 		// Get attributes
-		$attribs =& new JParameter( $resource->attribs );
+		$attribs = new JParameter( $resource->attribs );
 		
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
@@ -1238,9 +1238,9 @@ class ResourcesController extends Hubzero_Controller
 				
 				
 				// Get attributes
-				//$attribs =& new JParameter( $row->attribs );
+				//$attribs = new JParameter( $row->attribs );
 				if($children)
-					$attribs =& new JParameter( $children[0]->attribs );
+					$attribs = new JParameter( $children[0]->attribs );
 				
 				foreach ( $podcasts as $podcast )
 				{

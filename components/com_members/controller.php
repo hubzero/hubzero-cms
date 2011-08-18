@@ -346,7 +346,7 @@ class MembersController extends Hubzero_Controller
 		// Get the sections
 		$sections = $dispatcher->trigger( 'onMembers', array($profile, $this->_option, $authorized, array($tab)) );
 		
-		$rparams =& new JParameter( $profile->get('params') );
+		$rparams = new JParameter( $profile->get('params') );
 		$params = $this->config;
 		$params->merge( $rparams );
 		
