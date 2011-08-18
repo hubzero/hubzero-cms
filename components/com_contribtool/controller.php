@@ -2201,6 +2201,7 @@ class ContribtoolController extends JObject
 			$handle = fopen($fname, "w");
 			fwrite($handle, $status['license']);
 			fclose($handle);
+			chmod($fname, 0664);
 
 			$command = '/bin/sh ' . $scriptdir.DS.'finalizetool.php -hubdir '.JPATH_ROOT.' -title "'.$status['title'].'" -version "'.$status['version'].'" -license '.$fname.' '.$status['toolname'];
 			$xlog->logDebug("finalizeTool(): checkpoint 3: $command");
