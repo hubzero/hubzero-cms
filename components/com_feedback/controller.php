@@ -575,6 +575,15 @@ class FeedbackController extends Hubzero_Controller
 		$no_html  = JRequest::getInt( 'no_html', 0 );
 		$reporter = array_map('trim', $_POST['reporter']);
 		$problem  = array_map('trim', $_POST['problem']);
+
+ 		// Normally calling JRequest::getVar calls _cleanVar, but b/c of the way this page processes the posts
+ 		// (with array square brackets in the html names) against the $_POST collection, we explicitly
+		// call the clean_var function on these arrays after fetching them
+		$reporter = array_map(array('JRequest','_cleanVar'), $reporter);
+		$problem  = array_map(array('JRequest','_cleanVar'), $problem);
+
+		// Probably redundant after the change to call JRequest::_cleanVar change above, It is a bit hard to 
+		// tell if the Joomla  _cleanvar function does enough to allow us to remove the purifyText call
 		$reporter = array_map(array('Hubzero_View_Helper_Html','purifyText'), $reporter);
 		//$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
 	

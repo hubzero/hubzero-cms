@@ -106,7 +106,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						
 						<input type="hidden" name="problem[topic]" value="???" />
 						<input type="hidden" name="problem[short]" value="" />
-						<input type="hidden" name="problem[referer]" value="<?php echo $modreportproblems->referrer; ?>" />
+						<input type="hidden" name="problem[referer]" value="<?php echo htmlspecialchars($modreportproblems->referrer); ?>" />
 						<input type="hidden" name="problem[tool]" value="" />
 						<input type="hidden" name="problem[os]" value="<?php echo $modreportproblems->os; ?>" />
 						<input type="hidden" name="problem[osver]" value="<?php echo $modreportproblems->os_version; ?>" />

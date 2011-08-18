@@ -93,11 +93,11 @@ $topics = array(
 			<input type="hidden" name="task" value="sendreport" />
 			<input type="hidden" name="verified" value="<?php echo $this->verified; ?>" />
 			
-			<input type="hidden" name="problem[referer]" value="<?php echo $this->problem['referer']; ?>" />
-			<input type="hidden" name="problem[tool]" value="<?php echo $this->problem['tool']; ?>" />
-			<input type="hidden" name="problem[osver]" value="<?php echo $this->problem['osver']; ?>" />
-			<input type="hidden" name="problem[browserver]" value="<?php echo $this->problem['browserver']; ?>" />
-			<input type="hidden" name="problem[short]" value="<?php echo $this->problem['short']; ?>" />
+			<input type="hidden" name="problem[referer]" value="<?php echo htmlspecialchars($this->problem['referer']); ?>" />
+			<input type="hidden" name="problem[tool]" value="<?php echo htmlspecialchars($this->problem['tool']); ?>" />
+			<input type="hidden" name="problem[osver]" value="<?php echo htmlspecialchars($this->problem['osver']); ?>" />
+			<input type="hidden" name="problem[browserver]" value="<?php echo htmlspecialchars($this->problem['browserver']); ?>" />
+			<input type="hidden" name="problem[short]" value="<?php echo htmlspecialchars($this->problem['short']); ?>" />
 			
 			<input type="hidden" name="krhash" value="<?php echo $this->problem['key']; ?>" />
 <?php if ($this->verified) { ?>
