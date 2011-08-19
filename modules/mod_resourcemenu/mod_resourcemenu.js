@@ -34,7 +34,7 @@ HUB.Modules.ResourceMenu = {
 				 || triggers[i].href.indexOf('resources') != -1
 				 || triggers[i].href.indexOf('/resources') != -1
 				 || triggers[i].href.indexOf('/resources/') != -1) {
-					rnav = triggers[i].parentNode;
+					rnav = $(triggers[i].parentNode);
 					break;
 				}
 			}
