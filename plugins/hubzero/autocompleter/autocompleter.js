@@ -158,11 +158,11 @@ Autocompleter.Base = new Class({
 		if (this.visible || !this.choices.getFirst()) return;
 		this.visible = true;
 		var pos = this.element.getCoordinates(this.options.overflown);
-		var left = pos.left;
-		if (Browser.detect().name == 'trident' && Browser.detect().version <= 5) {
+		var left = (pos.left) ? parseInt(pos.left) : 0;
+		if (Browser.detect().name == 'trident' && Browser.detect().version <= 5 && Browser.detect().ieversion < 8) {
 			var pos2 = this.element.getParent().getParent().getParent().getCoordinates(this.options.overflown);
 			left = pos.left - pos2.left + 145;
-			// fix for IE7 dispay of autocompleter list
+			// fix for IE7 dispay of autocompleter when used in aside right div
 			if (left < 160) {
 				left = pos.left;	
 			}
@@ -605,8 +605,17 @@ Browser.detect = function(){
 			break;
 		}
 	}
+	
+	var rv = -1; // Return value assumes failure.
+	if (navigator.appName == 'Microsoft Internet Explorer') {
+		var ua = navigator.userAgent;
+		var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+		if (re.exec(ua) != null) {
+			rv = parseFloat(RegExp.$1);
+	    }
+	}
 
-	return {name: engine, version: version};
+	return {name: engine, version: version, ieversion: rv};
 
 };
 
