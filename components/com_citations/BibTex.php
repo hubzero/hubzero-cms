@@ -1003,6 +1003,7 @@ class Structures_BibTex
         $ret = str_replace("LAST", $array['last'], $ret);
         $ret = str_replace("JR", $array['jr'], $ret);
         $ret = str_replace("FIRST", $array['first'], $ret);
+		$ret = str_replace(' ,', ',', $ret);
         return trim($ret);
     }
 
