@@ -1776,11 +1776,21 @@ class ResourcesController extends Hubzero_Controller
 				for ($i=0, $n=count( $auths ); $i < $n; $i++)
 				{
 					$author = trim($auths[$i]);
-					$author_arr = explode(',',$author);
-					$author_arr = array_map('trim',$author_arr);
-					
-					$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
-					$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
+					$author = preg_replace('/\{\{(.+)\}\}/i','',$author);
+					if (strstr( $author, ',' )) {
+						$author_arr = explode(',',$author);
+						$author_arr = array_map('trim',$author_arr);
+
+						$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? trim($author_arr[1]) : '';
+						$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? trim($author_arr[0]) : '';
+					} else {
+						$author_arr = explode(' ',$author);
+						$author_arr = array_map('trim',$author_arr);
+
+						$last = array_pop($author_arr);
+						$addarray['author'][$i]['first'] = (count($author_arr) > 0) ? implode(' ',$author_arr) : '';
+						$addarray['author'][$i]['last']  = ($last) ? trim($last) : '';
+					}
 				}
 				$addarray['month'] = JHTML::_('date', $thedate, '%b');
 				$addarray['url']   = $url;
