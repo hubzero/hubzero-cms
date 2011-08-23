@@ -150,6 +150,9 @@ if (!$juser->get('guest')) {
 	<div id="wrap">
 		<div id="content" class="<?php echo $option; ?>">
 			<div id="content-wrap">
+				<?php if ($this->getBuffer('message')) : ?>
+					<jdoc:include type="message" />
+				<?php endif; ?>
 			<a name="content"></a>
 <?php if ($this->countModules( 'left' )) : ?>
 				<div class="main section withleft">

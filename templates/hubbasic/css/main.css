@@ -376,6 +376,54 @@
 	.passed h4 {
 		color: #360;
 		}
+        #system-message {
+                margin: 0;
+                padding: 15px;
+                background:#fff;
+                }
+        #system-message dt {
+                margin: 0;
+                padding: 10px 0 0 30px;
+                font-weight: bold;
+                border: 1px solid #C2D6EF;
+                color: #4379CA;
+                background: #EFF7FF url("../images/icons/information.gif") 10px 10px no-repeat;
+                border-bottom: none;
+                }
+        #system-message dd {
+                margin: 0;
+                padding: 0 10px 10px 30px;
+                border: 1px solid #C2D6EF;
+                border-top: none;
+                color: #4379CA;
+                background: #EFF7FF;
+                }
+        #system-message dd ul,
+        #system-message dd ul li {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                }
+        #system-message dt.error {
+                color: #CC0000;
+                background: #FFF2EF url("../images/icons/error.gif") 10px 10px no-repeat;
+                border-color: #EFCCC2;
+                }
+        #system-message dd.error {
+                color: #CC0000;
+                background: #FFF2EF;
+                border-color: #EFCCC2;
+                }
+        #system-message dt.warning {
+                border-color: #EFEAC2;
+                color: #CC6633;
+                background: #FFFDEF url("../images/icons/warning.gif") 10px 10px no-repeat;
+                }
+        #system-message dd.warning {
+                border-color: #EFEAC2;
+                color: #CC6633;
+                background: #FFFDEF;
+                }
 /*---------------------------------------------------------------
 	Header
 ---------------------------------------------------------------*/
