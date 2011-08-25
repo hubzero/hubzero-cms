@@ -1341,7 +1341,6 @@ class ToolsController extends Hubzero_Controller
 						$ingroup = true;
 						if ($toolgroup->role == 1)
 							$indevgroup = true;
-						break;
 					}
 				}
 			}
