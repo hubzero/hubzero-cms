@@ -99,25 +99,6 @@ class MyhubController extends Hubzero_Controller
 		$document->setTitle( $this->_title );
 	}
 
-	//-----------
-	
-	protected function _buildTitle($question=null) 
-	{
-		$juser =& JFactory::getUser();
-		$jconfig =& JFactory::getConfig();
-		
-		$this->_title = JText::sprintf(strtoupper($this->_option).'_TITLE',$jconfig->getValue('config.sitename'));
-		if (!$juser->get('guest')) {
-			$this->_title .= ': '.$juser->get('name');
-		}
-		if ($this->_act && $this->_act == 'customize') {
-			$this->_title .= ': '.JText::_('COM_MYHUB_PERSONALIZE');
-		}
-
-		$document =& JFactory::getDocument();
-		$document->setTitle( $this->_title );
-	}
-
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
