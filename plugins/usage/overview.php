@@ -887,7 +887,7 @@ class plgUsageOverview extends JPlugin
 		$html .= "\t\t".'<li id="fn8"><a name="fn8"></a>Sum of Simulation Users <sup><a href="#fn5">5</a></sup> + Unregistered Interactive Users <sup><a href="#fn3">3</a></sup> including web bots/crawlers.</li>'."\n";
 		$html .= "\t\t".'<li id="fn9"><a name="fn9"></a>Number of Simulation users that returned after a gap of 3 months.</li>'."\n";						
 		$html .= "\t\t".'<li id="fn10"><a name="fn10"></a>Begins when an IP is active on the site for at least 15 minutes. Ends when inactive for more than 30 minutes, including time spent viewing videos.</li>'."\n";
-		$html .= "\t\t".'<li id="fn11"><a name="fn11"></a> - </li>'."\n";
+		$html .= "\t\t".'<li id="fn11"><a name="fn11"></a>Identified by a unique IP address / hostname.</li>'."\n";
 		$html .= "\t\t".'<li id="fn12"><a name="fn12"></a>Based on MIT OCW metric of Visits: A visit is activity by a unique visitor delimitated by a 30 minute absence from the site on either side of the activity.<br />These visits correspond to unique visitors <sup><a href="#fn11">11</a></sup>. Does not include known web bots/crawlers</li>'."\n";
 		$html .= "\t\t".'<li id="fn13"><a name="fn13"></a>Number of Simulation sessions that were shared between 2 or more users.</li>'."\n";
 		$html .= "\t".'</ol>'."\n";
