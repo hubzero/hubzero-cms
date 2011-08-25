@@ -67,7 +67,7 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 							<td class="quick">
 								<a title="Preview :: Preview this page" href="#" class="quick-view tooltips" rel="active-page-<?php echo $counter; ?>-preview">Quick View</a>
 								<div id="active-page-<?php echo $counter; ?>-preview" class="preview">
-									<h3>Page Preview: <?php echo $page['title']; ?></h3>
+									<h3 class="header">Page Preview: <?php echo $page['title']; ?></h3>
 									<div class="parsed">
 										<?php echo $this->parser->parse( "\n".stripslashes($page['content']), $this->wikiconfig ); ?>
 									</div>
@@ -110,7 +110,7 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 							<td class="quick">
 								<a title="Preview :: Preview this page" href="#" class="quick-view tooltips" rel="inactive-page-<?php echo $counter; ?>-preview">Quick View</a>
 								<div id="inactive-page-<?php echo $counter; ?>-preview" class="preview">
-									<h3>Page Preview: <?php echo $page['title']; ?></h3>
+									<h3 class="header">Page Preview: <?php echo $page['title']; ?></h3>
 									<div class="parsed">
 										<?php echo $this->parser->parse( "\n".stripslashes($page['content']), $this->wikiconfig ); ?>
 									</div>
@@ -161,7 +161,7 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 								<td class="quick">
 									<a title="Preview :: Preview this module" href="#" class="quick-view tooltips" rel="active-module-<?php echo $counter; ?>-preview">Quick View</a>
 									<div id="active-module-<?php echo $counter; ?>-preview" class="preview">
-										<h3>Module Preview: <?php echo $module['type']; ?></h3>
+										<h3 class="header">Module Preview: <?php echo $module['type']; ?></h3>
 										<div class="parsed">
 											<?php echo $this->parser->parse( "\n".stripslashes($module['content']), $this->wikiconfig ); ?>
 										</div>
@@ -206,7 +206,7 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 								<td class="quick">
 									<a title="Preview :: Preview this module" href="#" class="quick-view tooltips" rel="active-module-<?php echo $counter; ?>-preview">Quick View</a>
 									<div id="active-module-<?php echo $counter; ?>-preview" class="preview">
-										<h3>Module Preview: <?php echo $module['type']; ?></h3>
+										<h3 class="header">Module Preview: <?php echo $module['type']; ?></h3>
 										<div class="parsed">
 											<?php echo $this->parser->parse( "\n".stripslashes($module['content']), $this->wikiconfig ); ?>
 										</div>
