@@ -1,6 +1,8 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
 <?php
+$jconfig =& JFactory::getConfig();
+$sitename = $jconfig->getValue('config.sitename');
 echo $this->params->get('type');
 ?>
 
@@ -9,17 +11,17 @@ echo $this->params->get('type');
 		<?php
                 $usersConfig = &JComponentHelper::getParams( 'com_users' );
                 if ($usersConfig->get('allowUserRegistration')) : ?>
-                <h4>No account?</h4><p><a href="<?php echo JRoute::_( 'index.php?option=com_user&view=register' ); ?>">
+                <h4>No account?</h4><p><a href="<?php echo JRoute::_( 'index.php?option=com_register' ); ?>">
                 <?php echo JText::_('REGISTER'); ?></a>. It's free!</p>
 
                 <h4>Is this really free?</h4>
-                <p>Yes! Use of hubbub resources and tools is <em>free</em> for registered users. There are no hidden costs or fees.</p>
+                <p>Yes! Use of <?php echo $sitename; ?> resources and tools is <em>free</em> for registered users. There are no hidden costs or fees.</p>
 
-                <h4>Why is registration required for parts of hubbub?</h4>
+                <h4>Why is registration required for parts of <?php echo $sitename; ?>?</h4>
 
-                <p>Our sponsors ask us who uses hubbub and what they use it for. Registration
+                <p>Our sponsors ask us who uses <?php echo $sitename; ?> and what they use it for. Registration
                 helps us answer these questions. Usage statistics also focus our attention on improvements, making the
-                hubbub experience better for <em>you</em>.</p>
+                <?php echo $sitename; ?> experience better for <em>you</em>.</p>
                 <?php endif; ?>
 
         </div>

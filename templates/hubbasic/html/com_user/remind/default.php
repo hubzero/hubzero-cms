@@ -10,7 +10,7 @@
 
 	<div class="explaination">
 		<p class="info">
-			If you already know your username, and only need your password reset, <a href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>">go here now</a>.
+			If you already know your username, and only need your password reset, <a href="<?php echo JRoute::_('/login/reset'); ?>">go here now</a>.
 		</p>
 	</div>
 	<fieldset>

@@ -171,57 +171,53 @@ class UserModelReset extends JModel
 
 		global $mainframe;
 
-		// Make sure that we have a pasword
-		if ( ! $password1 )
-		{
-			$this->setError(JText::_('MUST_SUPPLY_PASSWORD'));
-			return false;
-		}
-
-		// Verify that the passwords match
-		if ($password1 != $password2)
-		{
-			$this->setError(JText::_('PASSWORDS_DO_NOT_MATCH_LOW'));
-			return false;
-		}
-
 		// Get the necessary variables
-		$db			= &JFactory::getDBO();
-		$id			= $mainframe->getUserState($this->_namespace.'id');
-		$token		= $mainframe->getUserState($this->_namespace.'token');
-		$salt		= JUserHelper::genRandomPassword(32);
-		$crypt		= JUserHelper::getCryptedPassword($password1, $salt);
-		$password	= $crypt.':'.$salt;
+		$id	= $mainframe->getUserState($this->_namespace.'id');
 
-		// Get the user object
+		// Load some needed Hubzero libraries
+		ximport('Hubzero_Registration_Helper');
+		ximport('Hubzero_User_Helper');
+		ximport('Hubzero_User_Profile');
+
+		// Initiate profile classs
+		$profile = new Hubzero_User_Profile();
+		$profile->load( $id );
+		
+		// Get the juser object
 		$user = new JUser($id);
 
 		// Fire the onBeforeStoreUser trigger
 		JPluginHelper::importPlugin('user');
 		$dispatcher =& JDispatcher::getInstance();
 		$dispatcher->trigger('onBeforeStoreUser', array($user->getProperties(), false));
+		
+		if (Hubzero_User_Helper::isXDomainUser($user->get('id'))) {
+			JError::raiseError( 403, JText::_('This is a linked account. To change your password you must change it using the procedures available where the account your are linked to is managed.') );
+			return;
+		}
 
-		// Build the query
-		$query 	= 'UPDATE #__users'
-				. ' SET password = '.$db->Quote($password)
-				. ' , activation = ""'
-				. ' WHERE id = '.(int) $id
-				. ' AND activation = '.$db->Quote($token)
-				. ' AND block = 0';
+		if (!$password1 || !$password2) {
+			$this->setError( JText::_('you must enter your new password twice to ensure we have it correct') );
+		} elseif ($password1 != $password2) {
+			$this->setError( JText::_('the new password and confirmation you entered do not match. Please try again') );
+		} elseif (!Hubzero_Registration_Helper::validpassword($password1)) {
+			$this->setError( JText::_('the password you entered was invalid password. You may be using characters that are not allowed') );
+		}
 
-		$db->setQuery($query);
-
-		// Save the password
-		if (!$result = $db->query())
-		{
-			$this->setError(JText::_('DATABASE_ERROR'));
+		if ($this->getError()) {
+			$this->setError( $this->getError() );
 			return false;
 		}
 
-		// Update the user object with the new values.
-		$user->password			= $password;
-		$user->activation		= '';
-		$user->password_clear	= $password1;
+		// Encrypt the password and update the profile
+		$userPassword = Hubzero_User_Helper::encrypt_password($password1);
+		$profile->set('userPassword', $userPassword);
+
+		// Save the changes
+		if (!$profile->update()) {
+			$this->setError( JText::_('There was an error changing your password.') );
+			return false;
+		}
 
 		// Fire the onAfterStoreUser trigger
 		$dispatcher->trigger('onAfterStoreUser', array($user->getProperties(), false, $result, $this->getError()));
