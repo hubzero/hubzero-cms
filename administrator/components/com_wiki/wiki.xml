@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           administrator/components/com_wiki/wiki.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<install type="component" version="1.5">
+	<name>Wiki</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Manage wiki pages</description>
+	<files>
+		<filename>router.php</filename>
+	    <filename>controller.php</filename>
+		<filename>wiki.css</filename>
+		<filename>wiki.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_wiki.ini</language>
+	</languages>
+	<install>
+	    <sql>
+	        <file charset="utf8" driver="mysql">install.sql</file>
+	    </sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<install>
+	</install>
+	<installfile>
+		<filename></filename>
+	</installfile>
+	<uninstallfile>
+		<filename></filename>
+	</uninstallfile>
+	<administration>
+		<menu>Wiki</menu>
+		<files>
+		    <filename>controller.php</filename>
+			<filename>wiki.php</filename>
+			<filename>views/revision/tmpl/default.php</filename>
+			<filename>views/revision/tmpl/default.xml</filename>
+			<filename>views/revisions/tmpl/default.php</filename>
+			<filename>views/revisions/tmpl/default.xml</filename>
+			<filename>views/pages/tmpl/default.php</filename>
+			<filename>views/pages/tmpl/default.xml</filename>
+			<filename>views/page/tmpl/default.php</filename>
+			<filename>views/page/tmpl/default.xml</filename>
+			<filename>views/page/tmpl/delete.php</filename>
+			<filename>views/page/tmpl/delete.xml</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_wiki.ini</language>
+		</languages>
+	</administration>
+    <params>
+        <param name="mode" type="list" default="wiki" label="Mode" description="Mode of the page">
+            <option value="wiki">Wiki</option>
+            <option value="knol">Knol</option>
+            <option value="static">Static</option>
+        </param>
+    </params>
+</install>
