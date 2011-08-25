@@ -17,16 +17,12 @@ if (!HUB) {
 //----------------------------------------------------------
 HUB.Wishlist = {
 	initialize: function() {
-		
-		
-		
 		//------------------------
 		// reply to review or comment
 		//------------------------
 		var add = $$('.addcomment');
-		var show = $$('.showreplyform');
-		if(add) {
-	
+		var show = $$('.reply');
+		if (show) {
 			for (i = 0; i < add.length; i++) 
 			{
 				//if(add[i].hasClass('hide') == true) {
@@ -35,29 +31,25 @@ HUB.Wishlist = {
 				
 			}
 			
-			if($$('.showreplyform')) {		
-			$$('.showreplyform').each(function(item) {
-									 
-					item.addEvent('click', function() {	
+			if ($$('.reply')) {		
+				$$('.reply').each(function(item) { 
+					item.addEvent('click', function(e) {
+							new Event(e).stop();
 							
 							var vnum = this.getProperty('id').replace('rep_','');
-
 							$('comm_' + vnum).removeClass('hide');
 							$('comm_' + vnum).style.display = "block";
 							t = $('comm_' + vnum).getElement('.commentarea');
 							t.value = 'Enter your comments...';
-		
-					}
-				);
-			});
+						}
+					);
+				});
 			}
 			
 			// show hide comments area
-			if($('section-comments')) { 
-			
-				$('part_com').addEvent('click', function(){
-					
-					if($('part_com').hasClass('collapse')) {
+			if ($('section-comments')) { 
+				$('part_com').addEvent('click', function() {
+					if ($('part_com').hasClass('collapse')) {
 						$('part_com').removeClass('collapse');
 						$('full_com').style.display = "none";
 						$('part_com').addClass('expand');
@@ -66,19 +58,14 @@ HUB.Wishlist = {
 						$('full_com').style.display = "block";
 						$('part_com').addClass('collapse');
 					}
-														   
 					return false;
-				
 				});
-			
 			}
 			
 			// show/hide plan area
-			if($('section-plan')) { 
-			
-				$('part_plan').addEvent('click', function(){
-					
-					if($('part_plan').hasClass('collapse')) {
+			if ($('section-plan')) { 
+				$('part_plan').addEvent('click', function() {
+					if ($('part_plan').hasClass('collapse')) {
 						$('part_plan').removeClass('collapse');
 						$('full_plan').style.display = "none";
 						$('part_plan').addClass('expand');
@@ -87,49 +74,41 @@ HUB.Wishlist = {
 						$('full_plan').style.display = "block";
 						$('part_plan').addClass('collapse');
 					}
-														   
 					return false;
-				
 				});
-			
 			}
 			
 			// due date
-			if($('nodue')) { 
-				var frm = document.getElementById('hubForm');
-				$('nodue').addEvent('click', function(){
-					
+			if ($('nodue')) { 
+				var frm = $('hubForm');
+				$('nodue').addEvent('click', function() {
 					frm.publish_up.value = '';
-				
-				});			
-				
+				});
 			}
 			
-			
-			if($$('.commentarea')) {	
-			$$('.commentarea').each(function(item) {
+			if ($$('.commentarea')) {	
+				$$('.commentarea').each(function(item) {
 					// clear the default text						 
 					item.addEvent('focus', function() {	
-						if(item.value =='Enter your comments...') {
-							item.value = '';
+							if (item.value =='Enter your comments...') {
+								item.value = '';
+							}
 						}
-					}
-				);
-			});
+					);
+				});
 			}
 			
-			if($$('.closeform')) {		
-			$$('.closeform').each(function(item) {
+			if ($$('.closeform')) {		
+				$$('.closeform').each(function(item) {
 					// clear the default text						 
 					item.addEvent('click', function() {	
-						var vnum = this.getProperty('id').replace('close_','');
-						$('comm_' + vnum).addClass('hide');
-						$('comm_' + vnum).style.display = "none";
-					}
-				);
-			});
+							var vnum = this.getProperty('id').replace('close_','');
+							$('comm_' + vnum).addClass('hide');
+							$('comm_' + vnum).style.display = "none";
+						}
+					);
+				});
 			}
-			
 		}
 		
 	},
