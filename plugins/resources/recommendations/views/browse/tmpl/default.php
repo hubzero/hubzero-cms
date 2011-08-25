@@ -41,9 +41,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	{
 		// Get the SEF for the resource
 		if ($line->alias) {
-			$sef = JRoute::_('index.php?option='.$this->option.'&alias='. $line->alias);
+			$sef = JRoute::_('index.php?option='.$this->option.'&alias='. $line->alias.'&rec_ref='.$this->resource->id);
 		} else {
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $line->id);
+			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $line->id.'&rec_ref='.$this->resource->id);
 		}
 ?>
 		<li>

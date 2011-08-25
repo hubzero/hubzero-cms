@@ -105,6 +105,11 @@ class plgResourcesRecommendations extends JPlugin
 				)
 			);
 		} else {
+   			if (is_file(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'recommendations'.DS.'recommendations.js')) {
+				$document =& JFactory::getDocument();
+				$document->addScript('plugins'.DS.'resources'.DS.'recommendations'.DS.'recommendations.js');
+			}
+
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'=>'resources',
