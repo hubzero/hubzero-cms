@@ -33,12 +33,12 @@ $tags = $modfindresources->tags;
 $categories = $modfindresources->categories;
 			
 // search
-$html  = '<form action="/ysearch/" method="get" class="search">'."\n";
+$html  = '<form action="/search/" method="get" class="search">'."\n";
 $html .= ' <fieldset>'."\n";
 $html .= '  <p>'."\n";
 $html .= '   <label for="rsearchword">'.JText::_('Keyword or phrase:').'</label>'."\n";
 $html .= '   <input type="text" name="terms" id="rsearchword" value="" />'."\n";
-$html .= '   <input type="hidden" name="section" value="resources" />'."\n";
+$html .= '   <input type="hidden" name="domains[]" value="resources" />'."\n";
 $html .= '   <input type="submit" value="'.JText::_('Search').'" />'."\n";
 $html .= '  </p>'."\n";
 $html .= ' </fieldset>'."\n";
