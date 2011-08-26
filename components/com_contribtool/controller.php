@@ -2087,7 +2087,10 @@ class ContribtoolController extends JObject
 		$xhub   =& Hubzero_Factory::getHub();
 		$database =& JFactory::getDBO();
 		$pw 	= $xhub->getCfg('hubLDAPSearchUserPW');
-		$scriptdir = '/usr/bin';
+
+		$scriptdirparam =& JComponentHelper::getParams( 'com_contribtool' );     
+		$scriptdir = $scriptdirparam->get( 'addreposcript_dir', '/usr/bin' );
+
 		$ldap = 0;
 		
 		// Create a Tool object
