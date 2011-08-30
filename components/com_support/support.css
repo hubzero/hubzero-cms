@@ -669,17 +669,21 @@
 	#commentform .optional {
 		color: #888;
 		}
+	#commentform .hint {
+		color: #aaa;
+		font-size: 90%;
+		}
 	#commentform label {
 		padding-top: 1em;
 		position: relative;
 		display: block;
 		}
-	#commentform label span {
+	/*#commentform label span {
 		position: absolute;
 		top: 1.5em;
 		right: 0;
 		display: none;
-		}
+		}*/
 	#commentform .grouping {
 		position: relative;
 		margin-left: -3em;
