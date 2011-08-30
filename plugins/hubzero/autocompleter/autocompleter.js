@@ -147,7 +147,7 @@ Autocompleter.Base = new Class({
 			if (this.element.value == '') {
 				var request = new Json.Remote('/index.php?option=com_groups&no_html=1&task=memberslist&group=', {
 					onComplete: function(jsonObj) {
-						HUB.Autocompleter.writeSelectList(jsonObj.members, this.options.wsel);
+						HUB.Autocomplete.writeSelectList(jsonObj.members, this.options.wsel);
 					}.bind(this)
 				}).send();
 			}
