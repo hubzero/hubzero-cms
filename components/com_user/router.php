@@ -19,11 +19,23 @@ function UserBuildRoute(&$query)
 	{
 		if(empty($query['Itemid'])) {
 			$segments[] = $query['view'];
+
+			if ($query['view'] == 'reset' && isset($query['layout'])) {
+				$segments[] = $query['layout'];
+				unset($query['layout']);
+			}
 		} else {
 			$menu = &JSite::getMenu();
 			$menuItem = &$menu->getItem( $query['Itemid'] );
 			if(!isset($menuItem->query['view']) || $menuItem->query['view'] != $query['view']) {
+				$segments[] = 'user'; // throw away menu route if switching views, hackish
+				unset($query['option']);
 				$segments[] = $query['view'];
+			}
+
+			if ($query['view'] == 'reset' && isset($query['layout'])) {
+				$segments[] = $query['layout'];
+				unset($query['layout']);
 			}
 		}
 		unset($query['view']);
@@ -48,6 +60,12 @@ function UserParseRoute($segments)
 
 	if (!empty($count) && !isset($vars['view'])) {
 		$vars['view'] = $segments[0];
+		array_shift($segments);
+		$count--;
+	}
+
+	if (!empty($count) && !isset($vars['layout']) && isset($vars['view']) && ($vars['view'] == 'reset')) {
+		$vars['layout'] = $segments[0];
 		array_shift($segments);
 		$count--;
 	}
