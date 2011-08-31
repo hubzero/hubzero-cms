@@ -1102,6 +1102,14 @@ class GroupsController extends Hubzero_Controller
 			}
 		} else {
 			$invitees = $group->get('invitees');
+			$members = $group->get("members");
+			
+			if(in_array($this->juser->get('id'),$members)) {
+				global $mainframe;
+				$mainframe->redirect( JRoute::_('index.php?option=com_groups&gid=' . $group->get("cn")) );
+				exit();
+			}
+			
 			if (!in_array($this->juser->get('id'), $invitees)) {
 				JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
 				return;
