@@ -1439,6 +1439,7 @@ class ContributeController extends Hubzero_Controller
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('COM_CONTRIBUTE_ERROR_UPLOADING') );
+			return;
 		} else {
 			// File was uploaded
 
