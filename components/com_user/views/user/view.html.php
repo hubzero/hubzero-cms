@@ -31,6 +31,7 @@ class UserViewUser extends JView
 	{
 		global $mainframe;
 
+		$pathway    =& $mainframe->getPathway();
 		$layout	= $this->getLayout();
 		if( $layout == 'form') {
 			$this->_displayForm($tpl);
@@ -63,6 +64,7 @@ class UserViewUser extends JView
 		$document	= &JFactory::getDocument();
 		$document->setTitle( $params->get( 'page_title' ) );
 
+		$pathway->addItem(  $params->get( 'page_title' ), '');
 		// Set pathway information
 		$this->assignRef('user'   , $user);
 		$this->assignRef('params',		$params);

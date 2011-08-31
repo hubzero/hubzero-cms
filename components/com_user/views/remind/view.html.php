@@ -42,6 +42,7 @@ class UserViewRemind extends JView
 	{
 		jimport('joomla.html.html');
 		$mainframe = &JFactory::getApplication();
+		$pathway    =& $mainframe->getPathway();
 
 		// Get the page/component configuration
 		$params = &$mainframe->getParams();
@@ -60,6 +61,7 @@ class UserViewRemind extends JView
 			$params->set('page_title',	JText::_( 'FORGOT_YOUR_USERNAME' ));
 		}
 		$document	= &JFactory::getDocument();
+		$pathway->addItem($params->get( 'page_title' ), JRoute::_('index.php?option=com_user&view=remind'));
 		$document->setTitle( $params->get( 'page_title' ) );
 
 

@@ -43,6 +43,7 @@ class UserViewReset extends JView
 		jimport('joomla.html.html');
 
 		global $mainframe;
+		$pathway    =& $mainframe->getPathway();
 
 		// Load the form validation behavior
 		JHTML::_('behavior.formvalidation');
@@ -60,7 +61,7 @@ class UserViewReset extends JView
 
 			if (is_null($id) || is_null($token))
 			{
-				$mainframe->redirect('index.php?option=com_user&view=reset');
+				$mainframe->redirect(JRoute::_('index.php?option=com_user&view=reset'));
 			}
 		}
 
@@ -81,6 +82,16 @@ class UserViewReset extends JView
 			$params->set('page_title',	JText::_( 'FORGOT_YOUR_PASSWORD' ));
 		}
 		$document	= &JFactory::getDocument();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( $params->get( 'page_title' ), JRoute::_('index.php?option=com_user&view=reset'));
+		}
+		if ($layout == 'confirm') {
+			$pathway->addItem( JText::_( 'Confirm' ) );
+		}
+		if ($layout == 'complete') {
+			$pathway->addItem( JText::_( 'Complete' ) );
+		}
+
 		$document->setTitle( $params->get( 'page_title' ) );
 
 		$this->assignRef('params',		$params);

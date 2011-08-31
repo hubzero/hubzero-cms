@@ -40,11 +40,18 @@ class UserViewLogin extends JView
 		$item   = $menu->getActive();
 		if($item)
 			$params	=& $menu->getParams($item->id);
-		else
-			$params	=& $menu->getParams(null);
+		else {
+			$params = new JParameter( '' );
+			$template = JFactory::getApplication()->getTemplate();
+			$inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'login' . DS . 'config.ini';
+			if (file_exists($inifile)) {
+				$params->loadINI( file_get_contents($inifile) );
+			}
 
+			$params->def('page_title',	JText::_( 'Login' ));
+		}
 
-		$type = (!$user->get('guest')) ? 'logout' : 'login';
+		$type = 'login';
 
 		// Set some default page parameters if not set
 		$params->def( 'show_page_title', 				1 );
@@ -54,45 +61,29 @@ class UserViewLogin extends JView
 		if(!$item)
 		{
 			$params->def( 'header_login', 			'' );
-			$params->def( 'header_logout', 			'' );
 		}
 
 		$params->def( 'pageclass_sfx', 			'' );
-		$params->def( 'login', 					'index.php' );
-		$params->def( 'logout', 				'index.php' );
+		$params->def( 'login', 					JRoute::_('index.php') );
 		$params->def( 'description_login', 		1 );
-		$params->def( 'description_logout', 		1 );
 		$params->def( 'description_login_text', 	JText::_( 'LOGIN_DESCRIPTION' ) );
-		$params->def( 'description_logout_text',	JText::_( 'LOGOUT_DESCRIPTION' ) );
 		$params->def( 'image_login', 				'key.jpg' );
-		$params->def( 'image_logout', 				'key.jpg' );
 		$params->def( 'image_login_align', 			'right' );
-		$params->def( 'image_logout_align', 		'right' );
 		$usersConfig = &JComponentHelper::getParams( 'com_users' );
 		$params->def( 'registration', 				$usersConfig->get( 'allowUserRegistration' ) );
 
-		if ( !$user->get('guest') )
-		{
-			$title = JText::_( 'Logout');
+		$title = JText::_( 'Login');
 
-			// pathway item
-			//$pathway->addItem($title, '' ); /* HUBZERO: remove extra pathway which goes to empty site url */
-			// Set page title
-			$document->setTitle( $title );
-		}
-		else
-		{
-			$title = JText::_( 'Login');
-
-			// pathway item
+		// pathway item
+		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem($title, '' );
-			// Set page title
-			$document->setTitle( $title );
 		}
+		// Set page title
+		$document->setTitle( $title );
 
 		// Build login image if enabled
 		if ( $params->get( 'image_'.$type ) != -1 ) {
-			$image = 'images/stories/'.$params->get( 'image_'.$type );
+			$image = '/images/stories/'.$params->get( 'image_'.$type );
 			$image = '<img src="'. $image  .'" align="'. $params->get( 'image_'.$type.'_align' ) .'" hspace="10" alt="" />';
 		}
 

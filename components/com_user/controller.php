@@ -26,6 +26,17 @@ jimport('joomla.application.component.controller');
  */
 class UserController extends JController
 {
+	function execute( $task )
+	{
+		$task = strtolower( $task );
+
+		if ( ($task == 'register_save') || ($task == 'register') ) {
+			return JError::raiseError( 404, JText::_('Task ['.$task.'] not found') );
+		}
+
+		parent::execute($task);
+	}	
+
 	/**
 	 * Method to display a view
 	 *
@@ -36,15 +47,11 @@ class UserController extends JController
 	{
 		global $mainframe;
 
-		$view = JRequest::getCmd( 'view', $this->getName() );
+		$view = strtolower( JRequest::getCmd( 'view', $this->getName() ) );
 
-		/* @TODO: should do this redirect based on menu parameter *njk* */
-
-		if ($view == 'login') {
-			if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off') {
-				$mainframe->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-				die('insecure connection and redirection failed');
-			}
+		if ($view == 'register') {
+			$mainframe->redirect( JRoute::_('index.php?option=com_register') );
+			JError::raiseError( 404, 'Not Found' );
 		}
 
 		parent::display();
@@ -128,7 +135,7 @@ class UserController extends JController
 
 	function cancel()
 	{
-		$this->setRedirect( 'index.php' );
+		$this->setRedirect( JRoute::_('index.php') );
 	}
 
 	function login()
@@ -209,7 +216,7 @@ class UserController extends JController
 		{
 			// Redirect if the return url is not registration or login
 			if ( ! $return ) {
-				$return	= 'index.php?option=com_user';
+				$return	= JRoute::_('index.php?option=com_user');
 			}
 
 			$mainframe->redirect( $return );
@@ -218,7 +225,7 @@ class UserController extends JController
 		{
 			// Facilitate third party login forms
 			if ( ! $return ) {
-				$return	= 'index.php?option=com_user&view=login';
+				$return	= JRoute::_('index.php?option=com_user&view=login');
 			}
 
 			if (isset($freturn))
@@ -302,7 +309,7 @@ class UserController extends JController
 		if ( $user->get('guest')) {
 			JRequest::setVar('view', 'register');
 		} else {
-			$this->setredirect('index.php?option=com_user&task=edit',JText::_('You are already registered.'));
+			$this->setRedirect(JRoute::_('index.php?option=com_user&task=edit'),JText::_('You are already registered.'));
 		}
 
 		parent::display();
@@ -381,7 +388,7 @@ class UserController extends JController
 			$message = JText::_( 'REG_COMPLETE' );
 		}
 
-		$this->setRedirect('index.php', $message);
+		$this->setRedirect(JRoute::_('index.php'), $message);
 	}
 
 	function activate()
@@ -401,7 +408,7 @@ class UserController extends JController
 		// Check to see if they're logged in, because they don't need activating!
 		if ($user->get('id')) {
 			// They're already logged in, so redirect them to the home page
-			$mainframe->redirect( 'index.php' );
+			$mainframe->redirect( JRoute::_('index.php') );
 		}
 
 		if ($allowUserRegistration == '0' || $userActivation == '0') {
@@ -480,11 +487,11 @@ class UserController extends JController
 		if ($model->requestReset($email) === false)
 		{
 			$message = JText::sprintf('PASSWORD_RESET_REQUEST_FAILED', $model->getError());
-			$this->setRedirect('index.php?option=com_user&view=reset', $message);
+			$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset'), $message);
 			return false;
 		}
 
-		$this->setRedirect('index.php?option=com_user&view=reset&layout=confirm');
+		$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset&layout=confirm'));
 	}
 
 	/**
@@ -508,10 +515,10 @@ class UserController extends JController
 		if ($model->confirmReset($token, $username) !== true)
 		{
 			$message = JText::sprintf('PASSWORD_RESET_CONFIRMATION_FAILED', $model->getError());
-			$this->setRedirect('index.php?option=com_user&view=reset&layout=confirm', $message);
+			$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset&layout=confirm'), $message);
 			return false;
 		}
-		$this->setRedirect('index.php?option=com_user&view=reset&layout=complete');
+		$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset&layout=complete'));
 	}
 
 	/**
@@ -535,12 +542,12 @@ class UserController extends JController
 		if ($model->completeReset($password1, $password2) === false)
 		{
 			$message = JText::sprintf('PASSWORD_RESET_FAILED', $model->getError());
-			$this->setRedirect('index.php?option=com_user&view=reset&layout=complete', $message);
+			$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset&layout=complete'), $message);
 			return false;
 		}
 
 		$message = JText::_('PASSWORD_RESET_SUCCESS');
-		$this->setRedirect('index.php?option=com_user&view=login', $message);
+		$this->setRedirect(JRoute::_('index.php?option=com_user&view=login'), $message);
 	}
 
 	/**
@@ -563,12 +570,12 @@ class UserController extends JController
 		if ($model->remindUsername($email) === false)
 		{
 			$message = JText::sprintf('USERNAME_REMINDER_FAILED', $model->getError());
-			$this->setRedirect('index.php?option=com_user&view=remind', $message);
+			$this->setRedirect(JRoute::_('index.php?option=com_user&view=remind'), $message);
 			return false;
 		}
 
 		$message = JText::sprintf('USERNAME_REMINDER_SUCCESS', $email);
-		$this->setRedirect('index.php?option=com_user&view=login', $message);
+		$this->setRedirect(JRoute::_('index.php?option=com_user&view=login'), $message);
 	}
 
 	function _sendMail(&$user, $password)
@@ -592,7 +599,7 @@ class UserController extends JController
 		$subject 	= html_entity_decode($subject, ENT_QUOTES);
 
 		if ( $useractivation == 1 ){
-			$message = sprintf ( JText::_( 'SEND_MSG_ACTIVATE' ), $name, $sitename, $siteURL."index.php?option=com_user&task=activate&activation=".$user->get('activation'), $siteURL, $username, $password);
+			$message = sprintf ( JText::_( 'SEND_MSG_ACTIVATE' ), $name, $sitename, $siteURL.JRoute::_("index.php?option=com_user&task=activate&activation=".$user->get('activation')), $siteURL, $username, $password);
 		} else {
 			$message = sprintf ( JText::_( 'SEND_MSG' ), $name, $sitename, $siteURL);
 		}
