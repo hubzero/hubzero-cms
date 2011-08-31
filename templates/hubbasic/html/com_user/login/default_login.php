@@ -1,4 +1,20 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
+<?php if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off'):
+		JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		JError::raiseError( 403, 'Forbidden: SSL is required to view this resource' );
+endif; ?>
+<?php if(JPluginHelper::isEnabled('authentication', 'openid')) :
+        $lang = &JFactory::getLanguage();
+        $lang->load( 'plg_authentication_openid', JPATH_ADMINISTRATOR );
+        $langScript =   'var JLanguage = {};'.
+                        ' JLanguage.WHAT_IS_OPENID = \''.JText::_( 'WHAT_IS_OPENID' ).'\';'.
+                        ' JLanguage.LOGIN_WITH_OPENID = \''.JText::_( 'LOGIN_WITH_OPENID' ).'\';'.
+                        ' JLanguage.NORMAL_LOGIN = \''.JText::_( 'NORMAL_LOGIN' ).'\';'.
+                        ' var comlogin = 1;';
+        $document = &JFactory::getDocument();
+        $document->addScriptDeclaration( $langScript );
+        JHTML::_('script', 'openid.js');
+endif; ?>
 
 <?php
 $jconfig =& JFactory::getConfig();
@@ -51,15 +67,16 @@ echo $this->params->get('type');
 			<?php echo JText::_('FORGOT_YOUR_PASSWORD'); ?></a>
 		</p>
 
-	<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
-                <label>
-                        <input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" />
-                        <?php echo JText::_('Remember me'); ?>
-                </label>
-	<?php endif; ?>
+		<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
+		<label>
+			<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" />
+			<?php echo JText::_('Remember me'); ?>
+		</label>
+		<?php endif; ?>
 
 		<input type="hidden" name="option" value="com_user" />
 		<input type="hidden" name="task" value="login" />
+		<input type="hidden" name="freturn" value="<?php echo  base64_encode(  $_SERVER['REQUEST_URI'] ); ?>" />
 		<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
 		<?php echo JHTML::_( 'form.token' ); ?>
         </fieldset>
