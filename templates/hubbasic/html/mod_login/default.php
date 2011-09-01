@@ -1,12 +1,16 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 
+if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off'):
+JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+JError::raiseError( 403, 'Forbidden: SSL is required to view this resource' );
+endif;
+
 ximport('Hubzero_Document');
 Hubzero_Document::addComponentStylesheet('com_user');
 
 $jconfig =& JFactory::getConfig();
 $sitename = $jconfig->getValue('config.sitename');
-r
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php', true ); ?>"  method="post" name="com-login" id="hubForm" >
@@ -50,16 +54,17 @@ r
 		<?php echo JText::_('FORGOT_YOUR_PASSWORD'); ?></a>
 	</p>
 
-<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
-			<label>
-					<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" />
-					<?php echo JText::_('Remember me'); ?>
-			</label>
-<?php endif; ?>
+	<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
+	<label>
+			<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" />
+			<?php echo JText::_('Remember me'); ?>
+	</label>
+	<?php endif; ?>
 
 	<input type="hidden" name="option" value="com_user" />
 	<input type="hidden" name="task" value="login" />
 	<input type="hidden" name="return" value="<?php echo $return; ?>" />
+	<input type="hidden" name="freturn" value="<?php echo  base64_encode(  $_SERVER['REQUEST_URI'] ); ?>" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 	</fieldset>
 	<div class="clear"></div>
