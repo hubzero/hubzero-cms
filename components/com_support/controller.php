@@ -1,30 +1,33 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
 ximport('Hubzero_Controller');
 
 class SupportController extends Hubzero_Controller
@@ -140,7 +143,11 @@ class SupportController extends Hubzero_Controller
 		$view->type = ($type == 'automatic') ? 1 : 0;
 		
 		$view->group = JRequest::getVar('group', '');
-		
+
+        if (!$view->group && trim($this->config->get('group'))) {
+            $view->group = trim($this->config->get('group'));
+        }
+
 		$view->sort = JRequest::getVar('sort', 'name');
 		
 		// Set up some dates
@@ -454,8 +461,8 @@ class SupportController extends Hubzero_Controller
 		}
 		
 		// Get the next and previous support tickets
-		$view->row->prev = $view->row->getTicketId('prev', $view->filters);
-		$view->row->next = $view->row->getTicketId('next', $view->filters);
+		$view->row->prev = $view->row->getTicketId('prev', $view->filters, $view->authorized);
+		$view->row->next = $view->row->getTicketId('next', $view->filters, $view->authorized);
 
 		$summary = substr($view->row->report, 0, 70);
 		if (strlen($summary) >=70 ) {
@@ -905,15 +912,16 @@ class SupportController extends Hubzero_Controller
 							
 							// Is this a username or email address?
 							if (!strstr( $acc, '@' )) {
-								// Username - load the user
-								$juser =& JUser::getInstance( strtolower($acc) );
+								// Username or user ID - load the user
+								$acc = (is_string($acc)) ? strtolower($acc) : $acc;
+								$juser =& JUser::getInstance( $acc );
 								// Did we find an account?
 								if (is_object($juser)) {
 									// Get the user's email address
 									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
 										$this->setError( JText::_('Failed to message ticket owner.') );
 									}
-									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
+									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$juser->get('name').' ('.$juser->get('username').') </li>';
 								} else {
 									// Move on - nothing else we can do here
 									continue;
@@ -921,7 +929,7 @@ class SupportController extends Hubzero_Controller
 							// Make sure it's a valid e-mail address
 							} else if (SupportUtilities::checkValidEmail($acc)) {
 								$emails[] = $acc;
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
+								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$juser->get('name').' ('.$juser->get('username').') </li>';
 							}
 						}
 					}
