@@ -1,32 +1,7 @@
 <?php
-/**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- */
-
-// Check to ensure this file is included in Joomla!
+// No direct access
 defined('_JEXEC') or die( 'Restricted access' );
+
 $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 JToolBarHelper::title( JText::_( 'Resource' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
 JToolBarHelper::spacer();
@@ -437,6 +412,27 @@ $tagcontent = end($field);
 		
 			echo $tabs->startPanel('Parameters','params-page');
 			echo $this->params->render();
+			echo $tabs->endPanel();
+		} else {
+			echo $tabs->startPanel('Parameters','params-page');
+			?>
+			<table width="100%" class="paramlist admintable" cellspacing="1">
+				<tr>
+					<td width="40%" class="paramlist_key">
+						<span class="editlinktip">
+							<label id="paramslink_action-lbl" for="paramslink_action" class="hasTip" title="Link action::Set link action of primary file">Link action</label>
+						</span>
+					</td>
+					<td class="paramlist_value">
+						<select name="params[link_action]" id="link_action">
+							<option value="0"<?php if (!$this->params->get('link_action')) { echo ' selected="selected"'; } ?>>Default action</option>
+							<option value="1"<?php if ($this->params->get('link_action') == 1) { echo ' selected="selected"'; } ?>>New window</option>
+							<option value="2"<?php if ($this->params->get('link_action') == 2) { echo ' selected="selected"'; } ?>>Lightbox</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+			<?php
 			echo $tabs->endPanel();
 		}
 		
