@@ -1,29 +1,25 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
  *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
  *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -44,6 +40,7 @@ class SupportController extends Hubzero_Controller
 		
 		switch ($this->_task) 
 		{
+			case 'download':   $this->download();   break;
 			case 'upload':     $this->upload();     break;
 			case 'save':       $this->save();       break;
 			case 'ticket':     $this->ticket();     break;
@@ -143,11 +140,7 @@ class SupportController extends Hubzero_Controller
 		$view->type = ($type == 'automatic') ? 1 : 0;
 		
 		$view->group = JRequest::getVar('group', '');
-
-		if (!$view->group && trim($this->config->get('group'))) {
-			$view->group = trim($this->config->get('group'));
-		}
-
+		
 		$view->sort = JRequest::getVar('sort', 'name');
 		
 		// Set up some dates
@@ -461,8 +454,8 @@ class SupportController extends Hubzero_Controller
 		}
 		
 		// Get the next and previous support tickets
-		$view->row->prev = $view->row->getTicketId('prev', $view->filters, $view->authorized);
-		$view->row->next = $view->row->getTicketId('next', $view->filters, $view->authorized);
+		$view->row->prev = $view->row->getTicketId('prev', $view->filters);
+		$view->row->next = $view->row->getTicketId('next', $view->filters);
 
 		$summary = substr($view->row->report, 0, 70);
 		if (strlen($summary) >=70 ) {
@@ -1569,7 +1562,145 @@ class SupportController extends Hubzero_Controller
 	// media manager
 	//----------------------------------------------------------
 
-	protected function upload( $listdir )
+	/**
+	 * Serves up files only after passing access checks
+	 *
+	 * @return	void
+	 */
+	protected function download()
+	{
+		// Check logged in status
+		if ($this->juser->get('guest')) {
+			return $this->login();
+		}
+		
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+		// Ensure we have a database object
+		if (!$this->database) {
+			JError::raiseError(500, JText::_('SUPPORT_DATABASE_NOT_FOUND'));
+			return;
+		}
+		
+		// Get the ID of the file requested
+		$id = JRequest::getInt('id', 0);
+
+		// Instantiate an attachment object
+		$attach = new SupportAttachment($this->database);
+		$attach->load($id);
+		if (!$attach->filename) {
+			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND'));
+			return;
+		}
+		$file = $attach->filename;
+		
+		// Get the parent ticket the file is attached to
+		$row = new SupportTicket($this->database);
+		$row->load($attach->ticket);
+
+		if (!$row->report) {
+			JError::raiseError(404, JText::_('SUPPORT_TICKET_NOT_FOUND'));
+			return;
+		}
+
+		// Load ACL
+		if ($row->login == $this->juser->get('username') 
+		 || $row->owner == $this->juser->get('username')) {
+			if (!$this->acl->check('read', 'tickets')) {
+				$this->acl->setAccess('read', 'tickets', 1);
+			}
+		}
+		if ($this->acl->authorize($row->group)) {
+			$this->acl->setAccess('read', 'tickets', 1);
+		}
+
+		// Ensure the user is authorized to view this file
+		if (!$this->acl->check('read', 'tickets')) {
+			JError::raiseError(403, JText::_('SUPPORT_NOT_AUTH_FILE'));
+			return;
+		}
+		
+		// Ensure we have a path
+		if (empty($file)) {
+			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND'));
+			return;
+		}
+		if (preg_match("/^\s*http[s]{0,1}:/i", $file)) {
+			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
+			return;
+		}
+		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file)) {
+			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow windows drive letter
+		if (preg_match("/^\s*[.]:/", $file)) {
+			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow \
+		if (strpos('\\', $file)) {
+			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow ..
+		if (strpos('..', $file)) {
+			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
+			return;
+		}
+		
+		// Get the configured upload path
+		$basePath = $this->config->get('webpath');
+		if ($basePath) {
+			// Make sure the path doesn't end with a slash
+			if (substr($basePath, -1) == DS) { 
+				$basePath = substr($basePath, 0, strlen($basePath) - 1);
+			}
+			// Ensure the path starts with a slash
+			if (substr($basePath, 0, 1) != DS) { 
+				$basePath = DS . $basePath;
+			}
+		}
+		$basePath .= DS . $attach->ticket;
+		
+		// Does the path start with a slash?
+		if (substr($file, 0, 1) != DS) { 
+			$file = DS . $file;
+			// Does the beginning of the $attachment->path match the config path?
+			if (substr($file, 0, strlen($basePath)) == $basePath) {
+				// Yes - this means the full path got saved at some point
+			} else {
+				// No - append it
+				$file = $basePath . $file;
+			}
+		}
+		
+		// Add JPATH_ROOT
+		$filename = JPATH_ROOT . $file;
+		
+		// Ensure the file exist
+		if (!file_exists($filename)) {
+			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND') . ' ' . $filename);
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($filename);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+		
+		if (!$xserver->serve()) {
+			// Should only get here on error
+			JError::raiseError(404, JText::_('SUPPORT_SERVER_ERROR'));
+		} else {
+			exit;
+		}
+		return;
+	}
+
+	protected function upload($listdir)
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
@@ -1674,4 +1805,3 @@ class SupportController extends Hubzero_Controller
 		return false;
 	}
 }
-
