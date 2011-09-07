@@ -57,6 +57,11 @@ $juser =& JFactory::getUser();
 	</div>
 	
 	<div class="subject">
+		<?php
+			foreach($this->notifications as $notification) {
+				echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+			}
+		?>
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />

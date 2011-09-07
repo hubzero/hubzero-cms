@@ -49,6 +49,11 @@ $wikiconfig = array(
 );
 ?>
 <div class="main section">
+	<?php
+		foreach($this->notifications as $notification) {
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+		}
+	?>
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post">
 		<h3 class="title"><?php echo stripslashes($this->forum->topic); ?></h3>
 		<div class="aside">
