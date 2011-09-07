@@ -30,7 +30,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title( JText::_( 'HUB Configuration' ).': <small><small>[ '. JText::_('Employment Types').' ]</small></small>', 'user.png' );
 JToolBarHelper::addNew('addorgtype');
 JToolBarHelper::editList('editorgtype');
-JToolBarHelper::deleteList('Remove organization type?','removeorgtype');
+JToolBarHelper::deleteList('Remove employment type?','removeorgtype');
 
 ?>
 <script type="text/javascript">
