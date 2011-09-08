@@ -468,6 +468,7 @@ video {
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
 	filter: alpha(opacity = 95);
 	opacity:0.95;
+	line-height:1em;
 	}
 #replay #replay-details {
 	position:absolute;
@@ -727,6 +728,7 @@ video {
 	width:100%;
 	background:#f5d0d0 url("../img/warning.png") no-repeat 125px 170px;
 	position:relative;
+	line-height:1em;
 	}
 #hubpresenter-error #title {
 	font-weight:bold;
@@ -738,7 +740,7 @@ video {
 	}		
 #hubpresenter-error	p {
 	position:absolute;
-	top:250px;
+	top:230px;
 	left:300px;
 	width:600px;
 	font-size:14px;

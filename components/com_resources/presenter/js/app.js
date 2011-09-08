@@ -1028,16 +1028,18 @@ HUB.Presenter = {
 	
 	locationHash: function()
 	{
-		var hash = window.location.hash,
-			time_regex = /\d{1,}\:\d{2}/;
+		var time, time_parts, time_min, time_sec, time_total,
+			hash = window.location.hash,
+			time_regex = /time-\d{1,}\:\d{2}/;
 		
-		//if has
+		//if hash is a time
 		if(hash.match(time_regex)) {
-			time = hash.substr(1);
-			console.log(time);
-			//time_min = parseInt(time.substr(0,2));
-			//time_sec = parseInt(time.substr(3,5));
-			//HUB.Presenter.seek( (time_min *60) + time_sec );
+			time = hash.substr(6);
+			time_parts = time.split(":");
+			time_min = parseInt(time_parts[0]);
+			time_sec = parseInt(time_parts[1]);
+			time_total = ( time_min * 60 ) + time_sec;
+			HUB.Presenter.seek( time_total );
 		}
 	}
 
