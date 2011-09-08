@@ -2306,7 +2306,7 @@ class ResourcesHtml
 				break;
 
 				case 'hubpresenter':
-					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&task=watch');
+					$url = JRoute::_('index.php?option='.$option.'&id='.$id.'&task=watch');
 					break;
 				case 'breeze':
 					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=play');

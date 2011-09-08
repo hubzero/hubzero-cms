@@ -91,7 +91,7 @@ if($rt->type == "Series") {
 
 <div id="presenter-container">
 	<div id="presenter-header">
-		<div id="title"><?php echo $presentation->title; ?></div>
+		<div id="title"><?php echo $rr->title; ?></div>
 		<div id="slide_title"></div>
 	</div><!-- /#header -->
 	

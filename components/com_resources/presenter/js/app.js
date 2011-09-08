@@ -97,7 +97,7 @@ HUB.Presenter = {
 		HUB.Presenter.setVolume(0.75);
 		
 		//Nav bar
-		HUB.Presenter.navBar();                                            
+		HUB.Presenter.navBar();                                           
 	},
 	
 	//-----
@@ -115,6 +115,9 @@ HUB.Presenter = {
 				},
 				canplay: function( e ) {
 					HUB.Presenter.doneLoading();
+					
+					//seeek to time if in hash
+					HUB.Presenter.locationHash();
 				},
 				seeked: function( e ) {
 					seeking = true;
@@ -122,6 +125,12 @@ HUB.Presenter = {
 				},
 				ended: function( e ) {
 					HUB.Presenter.replay();
+				},
+				error: function(e) {
+					throw "An error occured while trying to load the media.";
+				},
+				stalled: function(e) {
+					throw "For some reason the player stalled while trying to load the media. Verify the media location.";
 				}
 			});
 		} else {               
@@ -1015,6 +1024,21 @@ HUB.Presenter = {
 			
 		if( volume > 66) 
 			icon.css('background-position','-72px 0');
+	},
+	
+	locationHash: function()
+	{
+		var hash = window.location.hash,
+			time_regex = /\d{1,}\:\d{2}/;
+		
+		//if has
+		if(hash.match(time_regex)) {
+			time = hash.substr(1);
+			console.log(time);
+			//time_min = parseInt(time.substr(0,2));
+			//time_sec = parseInt(time.substr(3,5));
+			//HUB.Presenter.seek( (time_min *60) + time_sec );
+		}
 	}
 
 }

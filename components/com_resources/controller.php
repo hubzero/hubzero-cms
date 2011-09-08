@@ -704,9 +704,7 @@ class ResourcesController extends Hubzero_Controller
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
 		
 		//get the presentation id
-		$helper = new ResourcesHelper( $this->_id, $database );
-		$helper->getFirstChild();
-		$id = $helper->firstChild->id;
+		$id = JRequest::getVar("id","");
 		
 		//load resource
 		$activechild = new ResourcesResource( $database );
@@ -749,48 +747,53 @@ class ResourcesController extends Hubzero_Controller
 		//path to media
 		$media_path = JPATH_ROOT . $path;
 		
-		//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-		$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3', false, false );
-		foreach($media as $m) {
-			$ext[] = array_pop(explode(".",$m));
-		}
+		//check if path exists
+		if(!is_dir($media_path)) {
+			$errors[] = "Path to media does not exist.";
+		} else {
+			//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
+			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3', false, false );
+			foreach($media as $m) {
+				$ext[] = array_pop(explode(".",$m));
+			}
 		
-		//if we dont have all the necessary media formats
-		if( (in_array("mp4", $ext) && count($ext) < 3) || (in_array("mp3", $ext) && count($ext) < 2) )  {
-			$errors[] = "Missing necessary media formats for video or audio.";
-		}
+			//if we dont have all the necessary media formats
+			if( (in_array("mp4", $ext) && count($ext) < 3) || (in_array("mp3", $ext) && count($ext) < 2) )  {
+				$errors[] = "Missing necessary media formats for video or audio.";
+			}
 		
-		//make sure if any slides are video we have three formats of video and backup image for mobile
-		$slide_path = $media_path . DS . 'slides';
-		$slides = JFolder::files($slide_path,'',false,false);
+			//make sure if any slides are video we have three formats of video and backup image for mobile
+			$slide_path = $media_path . DS . 'slides';
+			$slides = JFolder::files($slide_path,'',false,false);
 		
-		//array to hold slides with video clips
-		$slide_video = array();
+			//array to hold slides with video clips
+			$slide_video = array();
 		
-		//build array for checking slide video formats
-		foreach($slides as $s) {
-			$parts = explode(".",$s);
-			$ext = array_pop($parts);
-			$name = implode(".", $parts);
+			//build array for checking slide video formats
+			foreach($slides as $s) {
+				$parts = explode(".",$s);
+				$ext = array_pop($parts);
+				$name = implode(".", $parts);
 			
-			if(in_array($ext, array("mp4","m4v","webm","ogv"))) {
-				$slide_video[$name][$ext] = $name.".".$ext; 
+				if(in_array($ext, array("mp4","m4v","webm","ogv"))) {
+					$slide_video[$name][$ext] = $name.".".$ext; 
+				}
 			}
-		}
 		
-		//make sure for each of the slide videos we have all three formats
-		//and has a backup image for the slide
-		foreach($slide_video as $k => $v) {
-			if(count($v) < 3) {
-				$errors[] = "Video Slides must be Uploaded in the Three Standard Formats. You currently only have " . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ").";
-			}
+			//make sure for each of the slide videos we have all three formats
+			//and has a backup image for the slide
+			foreach($slide_video as $k => $v) {
+				if(count($v) < 3) {
+					$errors[] = "Video Slides must be Uploaded in the Three Standard Formats. You currently only have " . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ").";
+				}
 			
-			if( !file_exists($slide_path . DS . $k .'.png') ) {
-				$errors[] = "Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename '" . $k . ".png" . "'.";
+				if( !file_exists($slide_path . DS . $k .'.png') ) {
+					$errors[] = "Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename '" . $k . ".png" . "'.";
+				}
 			}
-		}
 		
-		$this->database = $database;
+			$this->database = $database;
+		}
 		
 		$return = array();
 		$return['errors'] = $errors;
