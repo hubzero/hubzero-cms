@@ -131,7 +131,8 @@ class plgResourcesUsage extends JPlugin
 		}
 
 		// Get/set some variables
-		$dthis = JRequest::getVar('dthis',date('Y').'-'.date('m'));
+		// Default to last month as there won't be data for this month yet
+		$dthis = JRequest::getVar('dthis',date('Y').'-'.date("m", mktime(0, 0, 0, date("m")-1, date("d"),   date("Y"))));
 		$period = JRequest::getInt('period', $this->_params->get('period',14));
 
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'stats.php' );
