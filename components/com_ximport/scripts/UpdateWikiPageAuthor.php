@@ -76,12 +76,12 @@ class UpdateWikiPageAuthor extends XImportHelperScript
 				}
 			}
 		}
-		if (!$this->getError()) {
+		/*if (!$this->getError()) {
 			$this->_db->setQuery("ALTER TABLE $this->_tbl DROP COLUMN `authors`");
 			if (!$this->_db->query()) {
 				$this->setError($this->_db->getErrorMsg());
 			}
-		}
+		}*/
 		if (!$this->getError()) {
 			return '<p class="passed">Success!</p>';
 		}
