@@ -2926,6 +2926,7 @@ class GroupsController extends Hubzero_Controller
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
+		$file['name'] = urldecode($file['name']);
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
 
