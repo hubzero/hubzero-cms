@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           modules/mod_featuredresource/mod_featuredresource.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<install version="1.5" type="plugin" group="autocompleter">
+	<name>System - Disable Cache</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Disables the cache for specific pages</description>
+	<files>
+		<filename plugin="disablecache">disablecache.php</filename>
+	</files>
+	<params>
+        <param name="definitions" type="textarea" cols="30" rows="10" default="option=com_content" label="Rules" description="Add a line for each rule. Each line consists of a list of url parameters. For instance option=com_content&amp;view=article would turn off caching for com_content in article view. You can also use ? for any value, for instance option=com_content&amp;view=article&amp;id=?. Please do not forget to enable the plugin!"/>
+        <param name="reenable_afterdispatch" type="radio" default="0" label="Re-Enable Caching After Dispatch" description="Wether caching should be enabled after a rule fired. By that the page will be cached partially, but components such as com_content won't be cached. This option doesn't work if the joomla cache plugin is enabled.">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </param>
+    </params>
+</install>
