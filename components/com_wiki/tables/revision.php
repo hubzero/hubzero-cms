@@ -145,6 +145,9 @@ class WikiPageRevision extends JTable
 	 */
 	public function loadByVersion( $pageid, $version=0 )
 	{
+		if (!$pageid) {
+			return;
+		}
 		if ($version) {
 			$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE pageid='$pageid' AND version='$version'" );
 		} else {
