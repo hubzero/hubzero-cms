@@ -37,6 +37,13 @@ class plgSystemDisablecache extends JPlugin
 	
 	private $_path = '';
 	
+	/**
+	 * Constructor
+	 *
+	 * @param	object	$subject The object to observe
+	 * @param 	array   $config  An array that holds the plugin configuration
+	 * @since	1.0
+	 */
 	public function plgSystemDisablecache(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -44,9 +51,13 @@ class plgSystemDisablecache extends JPlugin
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin('system', 'disablecache');
 		$this->_params = new JParameter($this->_plugin->params);
-		//$this->_params = new JParameter($config);
 	}
 	
+	/**
+	 * Check if caching is disabled for this page and set the site config accordingly
+	 *
+	 * @return 	void
+	 */
 	public function onAfterRoute() 
 	{
 		if ($this->_checkRules() && JFactory::getApplication()->isSite()) {
@@ -55,6 +66,12 @@ class plgSystemDisablecache extends JPlugin
 		}
 	}
 	
+	/**
+	 * Check if caching should be re-enabled for this page if it was disabled and 
+	 * set the site config accordingly
+	 *
+	 * @return 	void
+	 */
 	public function onAfterDispatch() 
 	{
 		if ($this->_checkRules() && JFactory::getApplication()->isSite()) {
@@ -64,6 +81,11 @@ class plgSystemDisablecache extends JPlugin
         }
     }
 
+	/**
+	 * Check if the current URL is one of the set rules
+	 *
+	 * @return 	boolean	True if the current page is a rule
+	 */
 	private function _checkRules() 
 	{
 		if (!$this->_path) {
@@ -79,33 +101,18 @@ class plgSystemDisablecache extends JPlugin
 			if ($result == $this->_path) {
 				return true;
 			}
-			/*if (is_array($result)) {
-				$found = 0;
-				$required = count($result);
-				foreach ($result As $key => $value) 
-				{
-					if (JRequest::getVar($key) == $value || (JRequest::getVar($key, null) !== null && $value == '?' )) {
-						$found++;
-					}
-				}
-				if ($found == $required) {
-					return true;
-				}
-			}*/
 		}
 		return false;
 	}
 	
+	/**
+	 * Trim leading and trailing slashes off a URI
+	 *
+	 * @param	string	$str
+	 * @return 	string
+	 */
 	private function _parseQueryString($str) 
 	{
-		/*$op = array();
-		$pairs = explode('&', $str);
-		foreach ($pairs as $pair) 
-		{
-			list($k, $v) = array_map('urldecode', explode('=', $pair));
-			$op[$k] = $v;
-		}
-		return $op;*/
 		$str = trim($str);
 		if (substr($str, 0, 1) == '/') {
 			$str = substr($str, 1, strlen($str));
@@ -113,5 +120,6 @@ class plgSystemDisablecache extends JPlugin
 		if (substr($str, -1) == '/') {
 			$str = substr($str, 0, (strlen($str) - 1));
 		}
+		return $str;
 	}
 }
