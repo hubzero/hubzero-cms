@@ -36,28 +36,26 @@ class WishlistOwnerGroup extends JTable
 	var $id         = NULL;  // @var int(11) Primary key
 	var $wishlist	= NULL;  // @var int(11)
 	var $groupid	= NULL;  // @var int(11)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist_ownergroups', 'id', $db );
 	}
-		 
-	//----------
-	
-	public function get_owner_groups($listid, $controlgroup='', $wishlist='', $native=0, $groups = array()) 
+
+	public function get_owner_groups($listid, $controlgroup='', $wishlist='', $native=0, $groups = array())
 	{
 		ximport('Hubzero_Group');
-			
+
 		if ($listid === NULL) {
 			return false;
 		}
-		
+
 		$wishgroups = array();
-		
+
 		$obj = new Wishlist( $this->_db );
-		
+
 		// if tool, get tool group
 		if (!$wishlist) {
 			$wishlist = $obj->get_wishlist($listid);
@@ -66,7 +64,7 @@ class WishlistOwnerGroup extends JTable
 			$toolgroup = $obj->getToolDevGroup ($wishlist->referenceid);
 			if ($toolgroup) { $groups[] = $toolgroup; }
 		}
-				
+
 		// if primary list, add all site admins
 		if ($controlgroup && $wishlist->category=='general') {
 			$instance = Hubzero_Group::getInstance($controlgroup);
@@ -78,68 +76,64 @@ class WishlistOwnerGroup extends JTable
 				}
 			}
 		}
-		
+
 		// if private group list, add the group
 		if ($wishlist->category == 'group') {
 			$groups[] = $wishlist->referenceid;
 		}
-			
+
 		// get groups assigned to this wishlist
 		if (!$native) {
 			$sql = "SELECT o.groupid"
 				. "\n FROM #__wishlist_ownergroups AS o "
 				. "\n WHERE o.wishlist='".$listid."'";
-	
+
 			$this->_db->setQuery( $sql );
 			$wishgroups = $this->_db->loadObjectList();
-			
+
 			if ($wishgroups) {
-				foreach ($wishgroups as $wg) 
+				foreach ($wishgroups as $wg)
 				{
 					if (Hubzero_Group::exists($wg->groupid)) {
 						$groups[]=$wg->groupid;
-					}				
+					}
 				}
 			}
 		}
-		
+
 		$groups = array_unique($groups);
 		sort($groups);
-		return $groups;	 
+		return $groups;
 	 }
-	 
-	 //----------
-	
-	 public function delete_owner_group($listid, $groupid, $admingroup) 
+
+	 public function delete_owner_group($listid, $groupid, $admingroup)
 	 {
 	 	ximport('Hubzero_Group');
 
 		if ($listid === NULL or $groupid === NULL) {
 			return false;
 		}
-		
+
 		$nativegroups = $this->get_owner_groups($listid, $admingroup, '', 1);
-		
+
 		// cannot delete "native" owners (e.g. tool dev group)
 		if (Hubzero_Group::exists($groupid) && !in_array($groupid, $nativegroups, true)) {
 			$query = "DELETE FROM $this->_tbl WHERE wishlist='". $listid."' AND groupid='".$groupid."'";
 			$this->_db->setQuery( $query );
 			$this->_db->query();
-		}		
+		}
 	}
-	
-	//----------
-	
-	public function save_owner_groups($listid, $admingroup, $newgroups = array()) 
+
+	public function save_owner_groups($listid, $admingroup, $newgroups = array())
 	{
 		if ($listid === NULL) {
 			return false;
 		}
-		
+
 		$groups = $this->get_owner_groups($listid, $admingroup);
-			
+
 		if( count($newgroups) > 0)  {
-			foreach ($newgroups as $ng) 
+			foreach ($newgroups as $ng)
 			{
 				$instance = Hubzero_Group::getInstance($ng);
 				if (is_object($instance))  {
@@ -149,15 +143,15 @@ class WishlistOwnerGroup extends JTable
 						$this->id = 0;
 						$this->groupid = $gid;
 						$this->wishlist = $listid;
-						
+
 						if (!$this->store()) {
 							$this->setError( JText::_('Failed to add a user.') );
 							return false;
 						}
 					}
-				}			
+				}
 			}
-		}		
-	}	
+		}
+	}
 }
 

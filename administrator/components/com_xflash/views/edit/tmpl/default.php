@@ -32,10 +32,10 @@ JToolBarHelper::preferences('com_xflash', '550');
 JToolBarHelper::save('savedata', 'Save changes');
 
 $slides = array();
-foreach ($this->xml->Slides[0]->Slide as $slide) 
+foreach ($this->xml->Slides[0]->Slide as $slide)
 {
 	$slides[] = $slide;
-	foreach ($slides as $s) 
+	foreach ($slides as $s)
 	{
 		if ($s->sType != 'regular') {
 			$s->style = 'style="display:none"';
@@ -43,11 +43,11 @@ foreach ($this->xml->Slides[0]->Slide as $slide)
 			$s->style = 'style="display:table-row"';
 		}
 	}
-	
+
 }
 $res = array();
 if ($this->xml->Resources[0]) {
-	foreach ($this->xml->Resources[0]->Resource as $resource) 
+	foreach ($this->xml->Resources[0]->Resource as $resource)
 	{
 		$res[] = $resource;
 	}

@@ -29,41 +29,36 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class JobType extends JTable
 {
 	var $id       = NULL;  // @var int(11) Primary key
 	var $category = NULL;  // @var varchar(150)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_types', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function getTypes($sortby = 'id', $sortdir = 'ASC')
 	{
 		$types = array();
-		
+
 		$query  = "SELECT id, category ";
 		$query .= "FROM #__jobs_types ORDER BY $sortby $sortdir ";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		if ($result) {
-			foreach ($result as $r) 
+			foreach ($result as $r)
 			{
 				$types[$r->id] = $r->category;
 			}
 		}
-		
-		return $types;		
+
+		return $types;
 	}
-	
-	//-----------
-	
+
 	public function getType($id = NULL, $default = 'unspecified')
 	{
 		if ($id === NULL) {
@@ -72,11 +67,11 @@ class JobType extends JTable
 		if ($id == 0 ) {
 			return $default;
 		}
-		
+
 		$query  = "SELECT category ";
 		$query .= "FROM #__jobs_types WHERE id='".$id."'  ";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();		
-	}		
+		return $this->_db->loadResult();
+	}
 }
 

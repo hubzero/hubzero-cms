@@ -64,7 +64,7 @@ list($resp) = $resp->getRecords();
 		<?php endif; ?>
 		<?php 
 		$race = EventsRespondent::getRacialIdentification($resp->id);
-		if (!empty($race)): 
+		if (!empty($race)):
 		?>
 		<tr><td><?php echo JText::_('RACE'); ?></td><td><?php echo $race; ?></td></tr>
 		<?php endif; ?>

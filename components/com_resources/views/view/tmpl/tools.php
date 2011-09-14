@@ -29,7 +29,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Tool page view  */
-	
+
 	$option 		= $this->option;
 	$config 		= $this->config;
 	$resource 		= $this->resource;
@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$revision 		= $this->revision;
 	$attribs 		= $this->attribs;
 	$fsize 			= $this->fsize;
-	
+
 	$juser =& JFactory::getUser();
 
 	$html  = '<div class="main section upperpane">'."\n";
@@ -55,14 +55,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	// Show resource ratings
 	if (!$thistool) {
 		$statshtml = '';
-		
+
 		if ($params->get('show_ranking')) {
 			$helper->getCitations();
 			$helper->getLastCitationDate();
 			$stats = new ToolStats($database, $resource->id, $resource->type, $resource->rating, count($helper->citations), $helper->lastCitationDate);
 			$statshtml = $stats->display();
 		}
-		
+
 		if ($params->get('show_metadata')) {
 			$supported = null;
 			$database =& JFactory::getDBO();
@@ -70,12 +70,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$supported = $rt->checkTagUsage( $config->get('supportedtag'), $resource->id );
 
 			$xtra = '';
-			
+
 			if($params->get('show_audience')) {
 				include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'audience.php');
 				include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'audience.level.php');
 				$ra = new ResourceAudience( $database );
-				$audience = $ra->getAudience($resource->id, $versionid = 0 , $getlabels = 1, $numlevels = 4);					
+				$audience = $ra->getAudience($resource->id, $versionid = 0 , $getlabels = 1, $numlevels = 4);
 				$xtra .= ResourcesHtml:: showSkillLevel($audience, $showtips = 1, $numlevels = 4, $params->get('audiencelink') );
 			}
 			if ($supported) {
@@ -96,25 +96,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 	} else if ($revision=='dev' or !$resource->toolpublished) {
 		$txt_meta = ($revision=='dev') ? JText::_('This section will be filled when this tool version gets published.') : JText::_('This section is unavailable in an archive version of a tool.') ;
-		
+
 		if (isset($resource->curversion) && $resource->curversion) {
 			$txt_meta .= ' '.JText::_('Consult the latest published version').' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&rev='.$curtool->revision).'">'.$resource->curversion.'</a> '.JText::_('for most current information.');
 		}
-		
+
 		// show empty meta data box
 		$html .= '<div class="metaplaceholder"><p>'.$txt_meta.'</p></div>'."\n";
 	}
-	
-	$html .= ' </div><!-- / .aside -->'."\n";	
-	$html .= '<div class="subject">'."\n";	
+
+	$html .= ' </div><!-- / .aside -->'."\n";
+	$html .= '<div class="subject">'."\n";
 	$html .= ' <div class="overviewcontainer">'."\n";
 	$html .= ResourcesHtml::title( $option, $resource, $params, $authorized, $config, 0 );
-	
+
 	// Display authors
 	if ($params->get('show_authors')) {
 			// Get contributors of this version		
 			if ($alltools && $resource->revision!='dev') {
-				$helper->getToolAuthors($resource->alias, $resource->revision);			
+				$helper->getToolAuthors($resource->alias, $resource->revision);
 			}
 
 			// Get contributors on this resource
@@ -125,7 +125,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= '</div>'."\n";
 			}
 	}
-	
+
 	// Display "at a glance"
 	$html .= '<p class="ataglance">';
 	$introtext = $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 255, 0) : Hubzero_View_Helper_Html::shortenText(stripslashes($resource->fulltext), 255, 0);
@@ -133,16 +133,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 	//$html .= ' <a href="">'.JText::_('Learn more').' &rsaquo;</a>';
 	$html .= '</p>'."\n";
 	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
-	
+
 	$html .= ' <div class="aside launcharea">'."\n";
-	
+
 	// perform check for groups
-	
+
 	// Private/Public resource access check
 	if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
 		$ghtml = JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP').' ';
 		$allowedgroups = $resource->getGroups();
-		foreach ($allowedgroups as $allowedgroup) 
+		foreach ($allowedgroups as $allowedgroup)
 		{
 			$ghtml .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='.$allowedgroup).'">'.$allowedgroup.'</a>, ';
 		}
@@ -182,7 +182,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$msg .= ' <br />'.JText::_('COM_RESOURCES_LATEST_VERSION').': <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&rev='.$curtool->revision).'">'.$resource->curversion.'</a>.';
 			}
 			$msg .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=versions').'">'.JText::_('All versions').'</a>';
-			$html .= ResourcesHtml::archive($msg)."\n";			
+			$html .= ResourcesHtml::archive($msg)."\n";
 		}
 
 		// doi message
@@ -194,7 +194,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		if (isset($resource->toolsource) && $resource->toolsource == 1 && isset($resource->tool)) { // open source
 			$html .= '<p class="opensource_license">'.JText::_('Open source').': <a class="popup" href="index.php?option='.$this->option.'&task=license&tool='.$resource->tool.'&no_html=1">license</a> ';
 			$html .= ($resource->taravailable) ? ' |  <a href="index.php/'.$resource->tarname.'?option='.$option.'&task=sourcecode&tool='.$resource->tool.'">'.JText::_('download').'</a> '."\n" : ' | <span class="unavail">'.JText::_('code unavaialble').'</span>'."\n";
-			$html .= '</p>'."\n";	
+			$html .= '</p>'."\n";
 		} elseif (isset($resource->toolsource) && !$resource->toolsource) { // closed source, archive page
 			$html .= '<p class="closedsource_license">'.JText::_('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE').'</p>'."\n";
 		}
@@ -204,10 +204,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		if (!$thistool) {
 			$guide = 0;
-			foreach ($children as $child) 
+			foreach ($children as $child)
 			{
-				$title = ($child->logicaltitle) 
-						? $child->logicaltitle 
+				$title = ($child->logicaltitle)
+						? $child->logicaltitle
 						: stripslashes($child->title);
 				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) {
 					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) {
@@ -217,63 +217,62 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 			$url = $guide ? ResourcesHtml::processPath($option, $guide, $resource->id) : '';
 			$html .= "\t\t".'<p class="supdocs">'."\n";
-			if ($url) {			
-				$html .= "\t\t\t".'<span><span class="guide"><a href="'.$url.'">'.JText::_('First-Time User Guide').'</a></span></span>'."\n";			
+			if ($url) {
+				$html .= "\t\t\t".'<span><span class="guide"><a href="'.$url.'">'.JText::_('First-Time User Guide').'</a></span></span>'."\n";
 			}
 			$html .= "\t\t\t".'<span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'">'.JText::_('View All Supporting Documents').'</a></span>'."\n";
 			$html .= "\t\t".'</p>'."\n";
 		}
 	} // --- end else (if group check passed)
-	
-	$html .= ' </div><!-- / .aside launcharea -->'."\n";	
+
+	$html .= ' </div><!-- / .aside launcharea -->'."\n";
 	$html .= ' </div><!-- / .subject -->'."\n";
-	
-			
+
 	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $authorized=0)) {
 		// show nothing else
-		$html .= '</div><!-- / .main section -->'."\n";		
+		$html .= '</div><!-- / .main section -->'."\n";
 	} else {
-		$html .= '<div class="clear sep"></div>'."\n";	
-		$html .= '</div><!-- / .main section -->'."\n";		
+		$html .= '<div class="clear sep"></div>'."\n";
+		$html .= '</div><!-- / .main section -->'."\n";
 		$html .= '<div class="main section noborder">'."\n";
 		$html .= ' <div class="aside extracontent">'."\n";
-		
+
 		// Get Releated Resources plugin
 		JPluginHelper::importPlugin( 'resources', 'related' );
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Show related content
 		$out = $dispatcher->trigger( 'onResourcesSub', array($resource, $option, 1) );
 		if (count($out) > 0) {
-			foreach ($out as $ou) 
+			foreach ($out as $ou)
 			{
 				if (isset($ou['html'])) {
 					$html .= $ou['html'];
 				}
 			}
 		}
-		
+
 		// Link to all resources of this type
 		/*$normalized_valid_chars = 'a-zA-Z0-9';
 		$typenorm = preg_replace("/[^$normalized_valid_chars]/", "", $resource->getTypeTitle());
 		$typenorm = strtolower($typenorm);
 		$html .= ' <p class="viewalltypes">'.JText::_('View all').' <a href="'.JRoute::_('index.php?option='.$option.a.'type='.$typenorm).'">'.$resource->getTypeTitle().'</a></p>'."\n";*/
-				
+
 		// show what's popular
 		if ($tab == 'about') {
 			ximport('Hubzero_Module_Helper');
 			$html .= Hubzero_Module_Helper::renderModules('extracontent');
 		}
-		
-		$html .= ' </div><!-- / .aside -->'."\n";		
+
+		$html .= ' </div><!-- / .aside -->'."\n";
 		$html .= ' <div class="subject tabbed">'."\n";
 		$html .= ResourcesHtml::tabs( $option, $resource->id, $cats, $tab, $resource->alias );
-		$html .= ResourcesHtml::sections( $sections, $cats, $tab, 'hide', 'main' );	
+		$html .= ResourcesHtml::sections( $sections, $cats, $tab, 'hide', 'main' );
 		$html .= '</div><!-- / .subject -->'."\n";
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '</div><!-- / .main section -->'."\n";
 	}
 	$html .= '<div class="clear"></div>'."\n";
-	
+
 	echo $html;
 ?>

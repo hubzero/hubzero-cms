@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-function com_install() 
+function com_install()
 {
 	$database =& JFactory::getDBO();
 
@@ -44,14 +44,14 @@ function com_install()
 		$sql = "SELECT * FROM #__components WHERE name='Events' AND id!='$lastInstalled' AND admin_menu_link LIKE 'option=com_events'";
 		$database->setQuery($sql);
 		$toberemoved = $database->loadObjectList();
-		foreach ($toberemoved as $remid) 
+		foreach ($toberemoved as $remid)
 		{
 			// Delete duplicate entries
 			$database->setQuery("DELETE FROM #__components WHERE id='$remid->id' or parent='$remid->id'");
 			$database->query();
 		}
 	}
-	
+
 	// Well done
     echo "Installed Successfully";
     echo "<div align='left'>";

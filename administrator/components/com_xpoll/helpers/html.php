@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class XPollHtml 
+class XPollHtml
 {
 	public function alert( $msg )
 	{

@@ -35,9 +35,7 @@ Class InformationModule
 		//group object
 		$this->group = $group;
 	}
-	
-	//-----
-	
+
 	function onManageModules()
 	{
 		$mod = array(
@@ -47,20 +45,18 @@ Class InformationModule
 			'input_title' => '',
 			'input' => 'There is nothing you can edit for this group module. Clicking the update button below or the back above will take you back to the manage pages dashboard.'
 		);
-		
+
 		return $mod;
 	}
-	
-	//-----
-	
+
 	function render()
 	{
 		//var to hold content being returned
 		$content  = '';
-		
+
 		//get the group object
 		$group = Hubzero_Group::getInstance( $this->group->get('gidNumber') );
-		
+
 		// Get the group tags
 		$database =& JFactory::getDBO();
 		$gt = new GroupsTags( $database );
@@ -73,7 +69,7 @@ Class InformationModule
 		$managers = $group->get('managers');
 		$m = array();
 		if ($managers) {
-			foreach ($managers as $manager) 
+			foreach ($managers as $manager)
 			{
 				$person =& JUser::getInstance($manager);
 				$m[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$manager).'" rel="member">'.stripslashes($person->get('name')).'</a>';
@@ -82,7 +78,7 @@ Class InformationModule
 		$m = implode(', ', $m);
 
 		// Determine the join policy
-		switch ($group->get('join_policy')) 
+		switch ($group->get('join_policy'))
 		{
 			case 3: $policy = JText::_('Closed');      break;
 			case 2: $policy = JText::_('Invite Only'); break;
@@ -92,7 +88,7 @@ Class InformationModule
 		}
 
 		// Determine the privacy
-		switch ($group->get('privacy')) 
+		switch ($group->get('privacy'))
 		{
 			case 1: $privacy = JText::_('Hidden'); break;
 			case 0:
@@ -102,8 +98,7 @@ Class InformationModule
 		// Get the group creation date
 		$gl = new XGroupLog( $database );
 		$gl->getLog( $group->get('gidNumber'), 'first' );
-		
-		
+
 		$information  = '<div class="metadata">'."\n";
 		$information .= '<table summary="Meatadata about this group">'."\n";
 		$information .= '<tbody>'."\n";
@@ -134,13 +129,12 @@ Class InformationModule
 		$information .= '</tbody>'."\n";
 		$information .= '</table>'."\n";
 		$information .= '</div>'."\n";
-		
+
 		$content = $information;
-		
+
 		//return content
 		return $content;
 	}
-	
-	
+
 }
 ?>

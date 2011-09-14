@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_questions' );
-	
-//-----------
 
 class plgResourcesQuestions extends JPlugin
 {
@@ -46,10 +42,8 @@ class plgResourcesQuestions extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'questions' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onResourcesAreas( $resource ) 
+
+	public function &onResourcesAreas( $resource )
 	{
 		if ($resource->_type->_params->get('plg_questions')) {
 			$areas = array(
@@ -61,23 +55,21 @@ class plgResourcesQuestions extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
+			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) )
 			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				$rtrn = 'metadata';
 			}
 		}
-		
+
 		// Display only for tools
 		if ($resource->type != 7) {
 			return $arr;
@@ -103,28 +95,28 @@ class plgResourcesQuestions extends JPlugin
 		$filters['sortby']   = JRequest::getVar( 'sortby', 'withinplugin' );
 
 		$count = $a->getCount( $filters );
-		
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php');
-			
+
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('resources', 'questions');
-			
+
 			// Are we banking?
 			$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
-			$banking = $upconfig->get('bankAccounts');		
+			$banking = $upconfig->get('bankAccounts');
 
 			// Info aboit points link
 			$aconfig =& JComponentHelper::getParams( 'com_answers' );
 			$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
-			
+
 			$limit = $this->_params->get('display_limit');
 			$limit = $limit ? $limit : 10;
-			
+
 			// Get results
 			$rows = $a->getResults( $filters );
-			
+
 			// Instantiate a view
 			ximport('Hubzero_View_Helper_Html');
 			ximport('Hubzero_Plugin_View');
@@ -151,7 +143,7 @@ class plgResourcesQuestions extends JPlugin
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
-		
+
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
 			$arr['metadata']  = '<p class="answer"><a href="'.JRoute::_('index.php?option='.$option.'&alias='.$resource->alias.'&active=questions').'">';
@@ -162,7 +154,7 @@ class plgResourcesQuestions extends JPlugin
 			}
 			$arr['metadata'] .= '</a> (<a href="/answers/question/new/?tag=tool:'.$resource->alias.'">'.JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION').'</a>)</p>';
 		}
-		
+
 		// Return output
 		return $arr;
 	}

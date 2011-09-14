@@ -29,26 +29,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
-
-//-----------
 
 class plgHubzeroWikiparser extends JPlugin
 {
 	public $parser;
-	
-	//-----------
-	
+
 	public function plgHubzeroWikiparser(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 	}
-	
-	//-----------
 
-	public function onGetWikiParser( $config, $getnew=false ) 
+	public function onGetWikiParser( $config, $getnew=false )
 	{
 		if (!is_object($this->parser) || $getnew) {
 			$path = dirname(__FILE__);
@@ -57,25 +49,23 @@ class plgHubzeroWikiparser extends JPlugin
 			} else {
 				return null;
 			}
-			
+
 			$option   = (isset($config['option']))   ? $config['option']   : 'com_wiki';
 			$scope    = (isset($config['scope']))    ? $config['scope']    : '';
 			$pagename = (isset($config['pagename'])) ? $config['pagename'] : '';
 			$pageid   = (isset($config['pageid']))   ? $config['pageid']   : 0;
 			$filepath = (isset($config['filepath'])) ? $config['filepath'] : '';
 			$domain   = (isset($config['domain']))   ? $config['domain']   : null;
-			
+
 			$this->parser = new WikiParser( $option, $scope, $pagename, $pageid, $filepath, $domain );
 		}
 		return $this->parser;
 	}
-	
-	//-----------
-	
+
 	public function onWikiParseText( $text, $config, $fullparse=true, $getnew=false )
 	{
 		$parser = $this->onGetWikiParser( $config, $getnew );
-		
+
 		//return is_object($parser) ? $parser->parse( "\n".stripslashes($text), $fullparse ) : $text;
 		return is_object($parser) ? $parser->parse( "\n".$text, $fullparse ) : $text;
 	}

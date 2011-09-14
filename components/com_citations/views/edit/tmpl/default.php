@@ -235,7 +235,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						} else {
 							$n = 5;
 						}
-						for ($i=0; $i < $n; $i++) 
+						for ($i=0; $i < $n; $i++)
 						{
 							if ($r == 0 || !isset($this->assocs[$i])) {
 								$this->assocs[$i] = new stdClass;

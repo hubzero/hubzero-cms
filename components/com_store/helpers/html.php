@@ -29,31 +29,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class StoreHtml 
+class StoreHtml
 {
 	public function productimage( $option, $item, $root, $wpath, $alt, $category )
 	{
 		if ($wpath) {
 			// Strip any trailing slash
-			if (substr($wpath, -1) == DS) { 
+			if (substr($wpath, -1) == DS) {
 				$wpath = substr($wpath, 0, strlen($wpath) - 1);
 			}
 			// Ensure a starting slash
-			if (substr($wpath, 0, 1) != DS) { 
+			if (substr($wpath, 0, 1) != DS) {
 				$wpath = DS.$wpath;
 			}
 			$wpath = $wpath.DS;
 		}
-		
+
 		$d = @dir($root.$wpath.$item);
 
 		$images = array();
 		$html = '';
-			
+
 		if ($d) {
-			while (false !== ($entry = $d->read())) 
+			while (false !== ($entry = $d->read()))
 			{
-				$img_file = $entry; 
+				$img_file = $entry;
 				if (is_file($root.$wpath.$item.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png|swf", $img_file )) {
 						$images[] = $img_file;
@@ -68,13 +68,13 @@ class StoreHtml
 				$html = '<img src="../components/'.$option.'/images/nophoto.gif" alt="'.JText::_('COM_STORE_MSG_NO_PHOTO').'" />';
 			}
 		}
-		
+
 		sort($images);
 		$els = '';
 		$k = 0;
 		$g = 0;
-		
-		for ($i=0, $n=count( $images ); $i < $n; $i++) 
+
+		for ($i=0, $n=count( $images ); $i < $n; $i++)
 		{
 			$pic = explode('.',$images[$i]);
 			$c = count($pic);
@@ -82,15 +82,15 @@ class StoreHtml
 			$end = array_pop($pic);
 			$pic[] = 'gif';
 			$tn = implode('.',$pic);
-			
+
 			$type = explode('.',$images[$i]);
-			
+
 			if (is_file($root.$wpath.$item.'/'.$tn)) {
 				$k++;
 				$els .= '<a rel="lightbox" href="'.$wpath.$item.'/'.$images[$i].'" title="'.$alt.'"><img src="'.$wpath.$item.'/'.$tn.'" alt="'.$alt.'" /></a>';
 			}
 		}
-		
+
 		if ($els) {
 			$html .= $els;
 		}

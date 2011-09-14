@@ -46,7 +46,7 @@ $end_time = "08:00";
 if($this->event->id) {
 	$form_btn = 'Update Event';
 	$form_title = 'Edit Event';
-	
+
 	$id = $this->event->id;
 	$title = $this->event->title;
 	$details = $this->event->details;

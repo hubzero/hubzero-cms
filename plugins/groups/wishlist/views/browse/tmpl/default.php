@@ -28,7 +28,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
+
 if (!defined('n')) {
 	define('t',"\t");
 	define('n',"\n");
@@ -79,7 +79,7 @@ else {
 								$item->subject = htmlspecialchars($item->subject);
 								$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
 								$name = $item->anonymous == 1 ? JText::_('ANONYMOUS') : $item->authorname;
-								
+
 								$cls  = "reg";
 								$cls .= (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? " newish" : "";
 								$cls .= ($item->private && $wishlist->public) ? " private" : "";
@@ -135,7 +135,7 @@ else {
 														if(($this->admin or $item->status==1 or ($item->status==0 && $item->accepted==1) or $item->status==3 or $item->status==4) && !$item->reports) {
 															echo ($item->status==1) ?' <span class="special priority_number">'.JText::_('WISH_STATUS_GRANTED').'</span>': '';
 													 		echo ($item->status==1 && $item->granted!='0000-00-00 00:00:00') ?' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b %y').'</span>': '';
-														
+
 															if(isset($item->ranked) && !$item->ranked && $item->status==0 && ($this->admin==2 or $this->admin==3)) {
 																echo '<a class="rankit" href="index.php?option=com_wishlist'.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$this->filters['filterby'].'">'.JText::_('WISH_RANK_THIS').'</a>';
 															} else if(isset($item->ranked) && $item->ranked && $item->status==0) {
@@ -160,7 +160,7 @@ else {
 													$view->admin = 0;
 													$view->page = 'wishlist';
 													$view->filters = $this->filters;
-													echo $view->loadTemplate();												
+													echo $view->loadTemplate();
 												?>
 											</div>
 											

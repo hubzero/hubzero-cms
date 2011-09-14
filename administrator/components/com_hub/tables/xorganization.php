@@ -29,22 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class XOrganization extends JTable 
+class XOrganization extends JTable
 {
 	var $id = null;
 	var $organization = null;
-	
-	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xorganizations', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->organization ) == '') {
 			$this->setError( JText::_('Organization must contain text') );
@@ -53,9 +48,7 @@ class XOrganization extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*) FROM $this->_tbl";
@@ -66,10 +59,8 @@ class XOrganization extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array() ) 
+
+	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT * FROM $this->_tbl";
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -83,21 +74,19 @@ class XOrganization extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getOrgs( $filters=array() ) 
+
+	public function getOrgs( $filters=array() )
 	{
 		$os = $this->getRecords($filters);
 
 		$orgs = array();
 		if ($os) {
-			foreach ($os as $o) 
+			foreach ($os as $o)
 			{
 				$orgs[] = $o->organization;
 			}
 		}
-		
+
 		return $orgs;
 	}
 }

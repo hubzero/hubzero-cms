@@ -181,7 +181,7 @@ $total = '';
 $cls = 'even';
 $tot = '';
 if ($toporgs) {
-	foreach ($toporgs as $row) 
+	foreach ($toporgs as $row)
 	{
 		if ($row->name == '?') {
 			$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
@@ -231,7 +231,7 @@ $total = '';
 $cls = 'even';
 $tot = '';
 if ($topcountries) {
-	foreach ($topcountries as $row) 
+	foreach ($topcountries as $row)
 	{
 		if ($row->name == '?') {
 			$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
@@ -281,7 +281,7 @@ $total = '';
 $cls = 'even';
 $tot = '';
 if ($topdoms) {
-	foreach ($topdoms as $row) 
+	foreach ($topdoms as $row)
 	{
 		if ($row->name == '?') {
 			$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
@@ -344,7 +344,7 @@ if (!$juser->get('guest')) {
 		if ($topusers) {
 			$cls = 'even';
 			$rank = 1;
-			foreach ($topusers as $row) 
+			foreach ($topusers as $row)
 			{
 				if ($row->name == '?') {
 					$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
@@ -367,13 +367,13 @@ if (!$juser->get('guest')) {
 <?php
 				$rank++;
 			}
-		} else { 
+		} else {
 ?>
 				<tr class="odd">
 					<td colspan="10" class="textual-data"><?php echo JText::_('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE'); ?></td>
 				</tr>
 <?php
-		} 
+		}
 ?>
 			</tbody>
 		</table>

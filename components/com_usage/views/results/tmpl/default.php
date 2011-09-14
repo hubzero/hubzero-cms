@@ -63,7 +63,7 @@ $h = 'hide';
 $c = 'main';
 if ($this->sections) {
 	$k = 0;
-	foreach ($this->sections as $section) 
+	foreach ($this->sections as $section)
 	{
 		if ($section != '') {
 			$cls  = ($c) ? $c.' ' : '';

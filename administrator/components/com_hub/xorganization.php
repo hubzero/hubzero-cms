@@ -29,5 +29,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_hub'.DS.'tables'.DS.'xorganization.php' );

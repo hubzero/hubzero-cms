@@ -29,23 +29,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class TagMacro extends WikiMacro 
+class TagMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'This macro will generate a link to a Tag.';
 		$txt['html'] = '<p>This macro will generate a link to a Tag.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$tag = $this->args;
-		
+
 		if ($tag) {
 			// Perform query
 			$this->_db->setQuery( "SELECT raw_tag FROM #__tags WHERE tag='".$tag."' OR alias='".$tag."' LIMIT 1" );

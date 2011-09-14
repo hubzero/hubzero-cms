@@ -29,14 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchQuestions extends YSearchPlugin
 {
 	public static function sort_by_date($a, $b)
 	{
 		$aw = $a->get_date();
 		$bw = $b->get_date();
-		if ($aw == $bw) 
+		if ($aw == $bw)
 			return 0;
 		return $aw < $bw ? -1 : 1;
 	}
@@ -65,7 +64,7 @@ class plgYSearchQuestions extends YSearchPlugin
 			$qaddtl_where[] = "(q.subject NOT LIKE '%$forb%' AND q.question NOT LIKE '%$forb%')";
 			$raddtl_where[] = "(r.answer NOT LIKE '%$forb%')";
 		}
-		
+
 		$dbh =& JFactory::getDBO();
 		$dbh->setQuery(
 			"select 
@@ -114,8 +113,8 @@ class plgYSearchQuestions extends YSearchPlugin
 			where $r2weight > 0 and r2.state != 2
 			order by q_created, r_created"
 		);
-		
-		$questions = array();	
+
+		$questions = array();
 		$seen_answers = array();
 		foreach ($dbh->loadAssocList() as $row)
 		{

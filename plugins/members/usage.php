@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_usage' );
-
-//-----------
 
 class plgMembersUsage extends JPlugin
 {
@@ -46,10 +42,8 @@ class plgMembersUsage extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'usage' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onMembersAreas( $authorized ) 
+
+	public function &onMembersAreas( $authorized )
 	{
 		$areas = array(
 			'usage' => JText::_('PLG_MEMBERS_USAGE')
@@ -57,25 +51,23 @@ class plgMembersUsage extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
-		
+
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) ) 
+			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
 			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
 				$returnhtml = false;
 			}
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$tables = $database->getTableList();
 		$table = $database->_table_prefix.'author_stats';
@@ -91,9 +83,9 @@ class plgMembersUsage extends JPlugin
 		if ($returnhtml) {
 			ximport('Hubzero_Document');
 			Hubzero_Document::addComponentStylesheet('com_usage');
-			
+
 			//$sort = JRequest::getVar('sort','');
-			
+
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -102,7 +94,7 @@ class plgMembersUsage extends JPlugin
 					'name'=>'summary'
 				)
 			);
-			
+
 			$view->member = $member;
 			$view->option = $option;
 			$view->contribution = $this->first_last_contribution($member->get('uidNumber'));
@@ -112,7 +104,6 @@ class plgMembersUsage extends JPlugin
 			$view->total_andmore_users = $this->get_total_stats($member->get('uidNumber'), 'andmore_users',14);
 			$view->citation_count = $this->get_citationcount(null, $member->get('uidNumber'));
 
-			
 			$sql = "SELECT res.id, res.title, DATE_FORMAT(res.publish_up, '%d %b %Y') AS publish_up, restypes.type 
 					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
 					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type = 7 AND res.access != 4 AND aa.subtable = 'resources' AND aa.role = '' AND res.standalone = 1 ORDER BY res.publish_up DESC";
@@ -121,7 +112,7 @@ class plgMembersUsage extends JPlugin
 			$view->tool_stats = $database->loadObjectList();
 			$view->tool_total_12 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 12);
 			$view->tool_total_14 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 14);
-			
+
 			$sql = "SELECT res.id, res.title, DATE_FORMAT(res.publish_up, '%d %b %Y') AS publish_up, restypes.type 
 					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
 					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type <> 7 AND res.access != 4 AND aa.subtable = 'resources' AND aa.role = '' AND res.standalone = 1 ORDER BY res.publish_up DESC";
@@ -130,12 +121,11 @@ class plgMembersUsage extends JPlugin
 			$view->andmore_stats = $database->loadObjectList();
 			$view->andmore_total_12 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 12);
 			$view->andmore_total_14 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 14);
-			
 
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
-			
+
 			$arr['html'] = $view->loadTemplate();
 		}
 
@@ -146,10 +136,8 @@ class plgMembersUsage extends JPlugin
 
 		return $arr;
 	}
-	
-	//-----------
-	
-	public function uid($uid) 
+
+	public function uid($uid)
 	{
 		if ($uid < 0) {
 			return 'n' . -$uid;
@@ -158,40 +146,36 @@ class plgMembersUsage extends JPlugin
 		}
 	}
 
-	//-----------
-	
-	public function first_last_contribution($authorid) 
+	public function first_last_contribution($authorid)
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$sql = 'SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), "%d %b %Y") AS first_contrib, DATE_FORMAT(MAX(res.publish_up), "%d %b %Y") AS last_contrib FROM #__resources res, #__author_assoc aa, #__resource_types restypes WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = "'.$authorid.'" AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = "resources" AND res.standalone = 1 AND aa.role = ""';
-		
+
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
-		
+
 		$contribution = array();
 		$contribution['contribs'] = '';
 		$contribution['first'] = '';
 		$contribution['last'] = '';
-		
+
 		if ($results) {
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$contribution['contribs'] = $row->contribs;
 				$contribution['first'] = $row->first_contrib;
 				$contribution['last'] = $row->last_contrib;
 	        }
 		}
-		
+
 		return $contribution;
 	}
-
-	//-----------
 
 	public function get_simcount($resid, $period)
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$sql = 'SELECT jobs FROM #__resource_stats_tools WHERE resid="'.$resid.'" AND period="'.$period.'" ORDER BY datetime DESC LIMIT 1';
 
 		$database->setQuery( $sql );
@@ -199,16 +183,14 @@ class plgMembersUsage extends JPlugin
 		if ($result) {
 			return $result;
 		}
-		
+
 		return 0;
 	}
 
-	//-----------
-	
-	public function get_usercount($resid, $period, $restype='0') 
+	public function get_usercount($resid, $period, $restype='0')
 	{
 		$database =& JFactory::getDBO();
-		
+
 		if ($restype == '7') {
 			$table = "#__resource_stats_tools";
 		} else {
@@ -221,27 +203,25 @@ class plgMembersUsage extends JPlugin
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
 		if ($results) {
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$data = $row->users;
 			}
 		}
-		
+
 		return $data;
 	}
-	
-	//-----------
-	
-	public function get_citationcount($resid, $authorid=0) 
+
+	public function get_citationcount($resid, $authorid=0)
 	{
 		$database =& JFactory::getDBO();
-		
+
 		if ($authorid) {
 			$sql = 'SELECT COUNT(DISTINCT (c.id) ) FROM #__citations c, #__citations_assoc ca, #__author_assoc aa, #__resources r WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.table = "resource" AND r.published = "1" AND r.standalone = "1" AND aa.authorid = "'.$authorid.'" AND aa.role = ""';
 		} else {
 			$sql = 'SELECT COUNT( DISTINCT (c.id) ) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND standalone = "1" AND r.id = "'.$resid.'"';
 		}
-		
+
 		$database->setQuery( $sql );
 		$result = $database->loadResult();
 		if ($result) {
@@ -250,22 +230,20 @@ class plgMembersUsage extends JPlugin
 			return '-';
 		}
 	}
-	
-	//-----------
-	
-	public function get_rank($authorid) 
+
+	public function get_rank($authorid)
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$rank = 0;
 		$i = 1;
 		$sql = 'SELECT a.uidNumber AS aid, COUNT(DISTINCT aa.subid) AS contribs FROM #__xprofiles a, #__resources res, #__author_assoc aa WHERE a.uidNumber = aa.authorid AND res.id = aa.subid AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = "resources" AND aa.role = "" AND res.standalone = 1 GROUP BY aid ORDER BY contribs DESC';
-		
+
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
-				
+
 		if ($results) {
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				if ($row->aid == $authorid) {
 					$rank = $i;
@@ -273,8 +251,8 @@ class plgMembersUsage extends JPlugin
 				$i++;
 	    	}
 		}
-	
-		if ($rank)  {	
+
+		if ($rank)  {
 			$sql = 'SELECT COUNT(DISTINCT a.uidNumber) as authors 
 				FROM #__xprofiles a, #__author_assoc aa, #__resources res 
 				WHERE a.uidNumber=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND aa.role = "" AND res.published=1 AND res.access !=1 AND res.access!=4 AND res.standalone=1';
@@ -288,16 +266,14 @@ class plgMembersUsage extends JPlugin
 		}
 		return $rank;
 	}
-	
-	//-----------
-	
-	public function get_total_stats($authorid, $user_type, $period) 
+
+	public function get_total_stats($authorid, $user_type, $period)
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$sql = "SELECT ".$user_type." FROM #__author_stats WHERE authorid = '".$authorid."' AND period = '".$period."' ORDER BY datetime DESC LIMIT 1";
-		
-		$database->setQuery( $sql ); 
+
+		$database->setQuery( $sql );
 		return $database->loadResult();
 	}
 }

@@ -40,12 +40,12 @@ if ($this->citations) {
 	// Set some vars
 	$affiliated = '';
 	$nonaffiliated = '';
-	
+
 	$formatter = new CitationsFormat;
 	$formatter->setFormat($this->format);
-	
+
 	// Loop through the citations and build the HTML
-	foreach ($this->citations as $cite) 
+	foreach ($this->citations as $cite)
 	{
 		$item  = "\t".'<li>'."\n";
 		$item .= $formatter->formatReference($cite, '');
@@ -80,8 +80,8 @@ if ($this->citations) {
 	</span>
 </h3>
 <?php
-if ($this->citations) { 
-	if ($nonaffiliated) { 
+if ($this->citations) {
+	if ($nonaffiliated) {
 ?>
 	<h4><?php echo JText::_('PLG_RESOURCES_CITATIONS_NOT_AFFILIATED'); ?></h4>
 	<ul class="citations results">

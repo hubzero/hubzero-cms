@@ -33,7 +33,6 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 
-
 if ($this->filters['_show'] != '') {
 	$fstring = urlencode(trim($this->filters['_show']));
 } else {
@@ -133,16 +132,16 @@ JHTML::_('behavior.tooltip');
 		<tbody>
 <?php
 ximport('Hubzero_View_Helper_Html');
-		
+
 $k = 0;
 $database =& JFactory::getDBO();
 $sc = new SupportComment( $database );
 $st = new SupportTags( $database );
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	$comments = $sc->countComments(true, $row->id);
 	$lastcomment = '0000-00-00 00:00:00';
 	if ($comments > 0) {
@@ -162,11 +161,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$status = 'open';
 		}
 	}
-	
+
 	if ($row->owner == '') {
 		$row->owner = '&nbsp';
 	}
-	
+
 	$tags = $st->get_tag_cloud( 3, 1, $row->id );
 ?>
 			<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">

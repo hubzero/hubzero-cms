@@ -34,12 +34,12 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 
 $messaging = false;
 
-if ($this->config->get('user_messaging') > 0 
- && !$juser->get('guest') 
+if ($this->config->get('user_messaging') > 0
+ && !$juser->get('guest')
  && $this->profile->get('uidNumber') != $juser->get('id')) {
 	ximport('Hubzero_User_Helper');
 
-	switch ($this->config->get('user_messaging')) 
+	switch ($this->config->get('user_messaging'))
 	{
 		case 1:
 			// Get the groups the visiting user
@@ -74,11 +74,11 @@ if ($this->config->get('user_messaging') > 0
 				$messaging = true;
 			}
 		break;
-		
+
 		case 2:
 			$messaging = true;
 		break;
-		
+
 		case 0:
 		default:
 			$messaging = false;
@@ -96,7 +96,7 @@ if ($this->config->get('user_messaging') > 0
 <?php if ($this->authorized) { ?>
 			<li<?php if ($juser->get('guest') || ($this->profile->get('uidNumber') == $juser->get('id'))) { echo ' class="last"'; } ?>><a class="edit-member" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='. $this->profile->get('uidNumber')); ?>"><?php echo JText::_('Edit profile'); ?></a></li>
 <?php 
-	} 
+	}
 	if ($messaging) {
 ?>
 			<li class="last"><a class="message" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='. $juser->get('id').'&active=messages&task=new&to='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('Send Message'); ?></a></li>
@@ -120,7 +120,7 @@ if ($this->config->get('user_messaging') > 0
 ?>
 			<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->tab) ? ' class="active"' : ''; ?>><a class="tab" rel="<?php echo $name; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&active='.$name); ?>"><span><?php echo $cat[$name]; ?></span></a></li>
 <?php
-			$i++;	
+			$i++;
 		}
 	}
 ?>
@@ -131,7 +131,7 @@ if ($this->config->get('user_messaging') > 0
 <?php
 if ($this->sections) {
 	$k = 0;
-	foreach ($this->sections as $section) 
+	foreach ($this->sections as $section)
 	{
 		if ($section['html'] != '') {
 			$cls = ('main') ? 'main ' : '';

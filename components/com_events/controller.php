@@ -36,12 +36,12 @@ class EventsController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_setup();
-		
+
 		$this->_getStyles();
 
 		$this->_task = ($this->_task) ? $this->_task : JRequest::getString('task', $this->config->getCfg('startview'));
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'delete':   $this->delete();   break;
 			case 'add':      $this->edit();     break;
@@ -58,97 +58,93 @@ class EventsController extends Hubzero_Controller
 			default: $this->month(); break;
 		}
 	}
-	
-	//-----------
 
-	protected function _buildPathway() 
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
 				'index.php?option='.$this->_option
 			);
 		}
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'year':
 				if ($this->year) {
-					$pathway->addItem( 
-						$this->year, 
+					$pathway->addItem(
+						$this->year,
 						'index.php?option='.$this->_option.'&year='.$this->year
 					);
 				}
 			break;
 			case 'month':
 				if ($this->year) {
-					$pathway->addItem( 
-						$this->year, 
+					$pathway->addItem(
+						$this->year,
 						'index.php?option='.$this->_option.'&year='.$this->year
 					);
 				}
 				if ($this->month) {
-					$pathway->addItem( 
-						$this->month, 
+					$pathway->addItem(
+						$this->month,
 						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month
 					);
 				}
 			break;
 			case 'day':
 				if ($this->year) {
-					$pathway->addItem( 
-						$this->year, 
+					$pathway->addItem(
+						$this->year,
 						'index.php?option='.$this->_option.'&year='.$this->year
 					);
 				}
 				if ($this->month) {
-					$pathway->addItem( 
-						$this->month, 
+					$pathway->addItem(
+						$this->month,
 						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month
 					);
 				}
 				if ($this->day) {
-					$pathway->addItem( 
-						$this->day, 
+					$pathway->addItem(
+						$this->day,
 						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day
 					);
 				}
 			break;
 			case 'week':
 				if ($this->year) {
-					$pathway->addItem( 
-						$this->year, 
+					$pathway->addItem(
+						$this->year,
 						'index.php?option='.$this->_option.'&year='.$this->year
 					);
 				}
 				if ($this->month) {
-					$pathway->addItem( 
-						$this->month, 
+					$pathway->addItem(
+						$this->month,
 						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month
 					);
 				}
 				if ($this->day) {
-					$pathway->addItem( 
-						$this->day, 
+					$pathway->addItem(
+						$this->day,
 						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day
 					);
 				}
-				$pathway->addItem( 
-					JText::sprintf('EVENTS_WEEK_OF',$this->day), 
+				$pathway->addItem(
+					JText::sprintf('EVENTS_WEEK_OF',$this->day),
 					'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day.'&task=week'
 				);
 			break;
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle() 
+
+	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_name));
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'year':
 				if ($this->year) {
@@ -202,32 +198,32 @@ class EventsController extends Hubzero_Controller
 		// Load the events configuration
 		$config = new EventsConfigs( $this->database );
 		$config->load();
-		
+
 		$this->config = $config;
-		
+
 		// Set some defines
 		define( '_CAL_CONF_STARDAY', $config->getCfg('starday'));
 		define( '_CAL_CONF_DATEFORMAT', $config->getCfg('dateformat') );
-		
+
 		$jconfig =& JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
-		
+
 		// Incoming
 		$year  = JRequest::getVar( 'year',  strftime("%Y", time()+($this->offset*60*60)) );
 		$month = JRequest::getVar( 'month', strftime("%m", time()+($this->offset*60*60)) );
 		$day   = JRequest::getVar( 'day',   strftime("%d", time()+($this->offset*60*60)) );
-		
+
 		$category = JRequest::getInt( 'category', 0 );
-		
+
 		if ($day<="9"&ereg("(^[1-9]{1})",$day)) {
 			$day = "0$day";
 		}
 		if ($month<="9"&ereg("(^[1-9]{1})",$month)) {
 			$month = "0$month";
 		}
-		
+
 		$ee = new EventsEvent( $this->database );
-		
+
 		// Find the date of the first event
 		$row = $ee->getFirst();
 		if ($row) {
@@ -258,17 +254,17 @@ class EventsController extends Hubzero_Controller
 		$this->year  = $year;
 		$this->month = $month;
 		$this->day   = $day;
-		
+
 		$this->category = $category;
 
 		$this->gid = intval( $this->juser->get('gid') );
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	protected function year() 
+	protected function year()
 	{
 		// Get some needed info
 		$year   = $this->year;
@@ -277,7 +273,7 @@ class EventsController extends Hubzero_Controller
 		$offset = $this->offset;
 		$option = $this->_option;
 		$gid    = $this->gid;
-		
+
 		// Set some filters
 		$filters = array();
 		$filters['gid'] = $gid;
@@ -293,16 +289,16 @@ class EventsController extends Hubzero_Controller
 		if ($this->config->getCfg('adminlevel')) {
 			$authorized = $this->_authorize();
 		}
-		
+
 		// Get a list of categories
 		$categories = $this->_getCategories();
-		
+
 		// Build the page title
 		$this->_buildTitle();
-		
+
 		// Build the pathway
 		$this->_buildPathway();
-		
+
 		// Output HMTL
 		$view = new JView( array('name'=>'browse','layout'=>'year') );
 		$view->option = $this->_option;
@@ -323,29 +319,27 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function month() 
+	protected function month()
 	{
 		// Get some needed info
 		$offset = $this->offset;
 		$option = $this->_option;
 		$year   = $this->year;
 		$month  = $this->month;
-		$day    = $this->day;		
+		$day    = $this->day;
 		$gid    = $this->gid;
 
 		// Set some dates
 		$select_date = $year.'-'.$month.'-01 00:00:00';
 		$select_date_fin = $year.'-'.$month.'-'.date("t",mktime(0,0,0,($month+1),0,$year)).' 23:59:59';
-		
+
 		// Set some filters
 		$filters = array();
 		$filters['gid'] = $gid;
 		$filters['select_date'] = $select_date;
 		$filters['select_date_fin'] = $select_date_fin;
 		$filters['category'] = $this->category;
-		
+
 		// Retrieve records
 		$ee = new EventsEvent( $this->database );
 		$rows = $ee->getEvents( 'month', $filters );
@@ -355,13 +349,13 @@ class EventsController extends Hubzero_Controller
 		if ($this->config->getCfg('adminlevel')) {
 			$authorized = $this->_authorize();
 		}
-		
+
 		// Get a list of categories
 		$categories = $this->_getCategories();
 
 		// Build the page title
 		$this->_buildTitle();
-		
+
 		// Build the pathway
 		$this->_buildPathway();
 
@@ -385,9 +379,7 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function week() 
+	protected function week()
 	{
 		// Get some needed info
 		$offset = $this->offset;
@@ -395,34 +387,34 @@ class EventsController extends Hubzero_Controller
 		$year   = intval($this->year);
 		$month  = intval($this->month);
 		$day    = intval($this->day);
-		
+
 		$startday = _CAL_CONF_STARDAY;
 		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
 		if ($numday == -1) {
 			$numday = 6;
-		} 
+		}
 		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year );
 
 		$this_date = new EventsDate();
 		$this_date->setDate(strftime("%Y", $week_start ), strftime("%m", $week_start ), strftime("%d", $week_start ));
 		$this_enddate = clone($this_date);
 		$this_enddate->addDays( +6 );
-		
+
 		$sdt = JHTML::_('date', $this_date->year.'-'.$this_date->month.'-'.$this_date->day.' 00:00:00', '%d %b',0);
 		$edt = JHTML::_('date', $this_enddate->year.'-'.$this_enddate->month.'-'.$this_enddate->day.' 00:00:00', '%d %b',0);
-		
+
 		$this_currentdate = $this_date;
-		
+
 		$categories = $this->_getCategories();
-		
+
 		$filters = array();
 		$filters['gid'] = $this->gid;
 		$filters['category'] = $this->category;
-		
+
 		$ee = new EventsEvent( $this->database );
-		
+
 		$rows = array();
-		for ($d = 0; $d < 7; $d++) 
+		for ($d = 0; $d < 7; $d++)
 		{
 			if ($d > 0) {
 				$this_currentdate->addDays( +1 );
@@ -433,7 +425,7 @@ class EventsController extends Hubzero_Controller
 			$week['year']  = sprintf("%4d",  $this_currentdate->year);
 
 			$filters['select_date'] = sprintf( "%4d-%02d-%02d", $week['year'], $week['month'], $week['day'] );
-			
+
 			$rows[$d] = array();
 			$rows[$d]['events'] = $ee->getEvents( 'day', $filters );
 			$rows[$d]['week'] = $week;
@@ -444,13 +436,13 @@ class EventsController extends Hubzero_Controller
 		if ($this->config->getCfg('adminlevel')) {
 			$authorized = $this->_authorize();
 		}
-		
+
 		// Build the page title
 		$this->_buildTitle();
-		
+
 		// Build the pathway
 		$this->_buildPathway();
-		
+
 		// Output HTML;
 		$view = new JView( array('name'=>'browse','layout'=>'week') );
 		$view->option = $this->_option;
@@ -474,9 +466,7 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function day() 
+	protected function day()
 	{
 		// Get some needed info
 		$year   = $this->year;
@@ -484,40 +474,40 @@ class EventsController extends Hubzero_Controller
 		$day    = $this->day;
 		$offset = $this->offset;
 		$option = $this->_option;
-		
+
 		// Get the events for this day
 		$filters = array();
 		$filters['gid'] = $this->gid;
 		$filters['select_date'] = sprintf( "%4d-%02d-%02d", $year, $month, $day );
 		$filters['category'] = $this->category;
-		
+
 		$ee = new EventsEvent( $this->database );
 		$rows = $ee->getEvents( 'day', $filters );
 
 		// Go through each event and ensure it should be displayed
 		$events = array();
 		if (count($rows) > 0) {
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
 				$checkprint = new EventsRepeat($row, $year, $month, $day);
-				if ($checkprint->viewable == true) { 
+				if ($checkprint->viewable == true) {
 					$events[] = $row;
 				}
 			}
 		}
-		
+
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = true;
 		if ($this->config->getCfg('adminlevel')) {
 			$authorized = $this->_authorize();
 		}
-		
+
 		// Get a list of categories
 		$categories = $this->_getCategories();
 
 		// Build the page title
 		$this->_buildTitle();
-		
+
 		// Build the pathway
 		$this->_buildPathway();
 
@@ -541,9 +531,7 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function details() 
+	protected function details()
 	{
 		// Get some needed info
 		$offset = $this->offset;
@@ -551,54 +539,54 @@ class EventsController extends Hubzero_Controller
 		$month  = $this->month;
 		$day    = $this->day;
 		$option = $this->_option;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
-		
+
 		// Load event
 		$row = new EventsEvent( $this->database );
 		$row->load( $id );
-		
+
 		// Ensure we have an event
 		if (!$row) {
 			JError::raiseError( 404, JText::_('EVENTS_CAL_LANG_NO_EVENTFOR').' '.JText::_('EVENTS_CAL_LANG_THIS_DAY') );
 			return;
 		}
-		
+
 		$event_up = new EventsDate( $row->publish_up );
 		$row->start_date = EventsHtml::getDateFormat($event_up->year,$event_up->month,$event_up->day,0);
-		$row->start_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES') 
-						 ? $event_up->get12hrTime() 
+		$row->start_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES')
+						 ? $event_up->get12hrTime()
 						 : $event_up->get24hrTime();
-		
+
 		$event_down = new EventsDate( $row->publish_down );
 		$row->stop_date = EventsHtml::getDateFormat($event_down->year,$event_down->month,$event_down->day,0);
-		$row->stop_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES') 
-						? $event_down->get12hrTime() 
+		$row->stop_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES')
+						? $event_down->get12hrTime()
 						: $event_down->get24hrTime();
-		
+
 		// Kludge for overnight events, advance the displayed stop_date by 1 day when an overnighter is detected
 		if ($row->stop_time < $row->start_time) {
 			$event_down->addDays(1);
 		}
-		
+
 		// Parse http and mailto
 		$alphadigit = "([a-z]|[A-Z]|[0-9])";
 
 		// Adresse
 		$row->adresse_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i","<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->adresse_info);
-		$row->adresse_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->adresse_info); 
-	
+		$row->adresse_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->adresse_info);
+
 		// Contact
 		$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i","<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
-		$row->contact_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->contact_info); 
+		$row->contact_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->contact_info);
 
 		// Images - replace the {mosimage} plugins in both text areas
 		if ($row->images) {
 			$row->images = explode("\n", $row->images);
 			$images = array();
-			
-			foreach ($row->images as $img) 
+
+			foreach ($row->images as $img)
 			{
 				$temp = explode( '|', trim( $img ) );
 				if (!isset($temp[1]))
@@ -617,7 +605,7 @@ class EventsController extends Hubzero_Controller
 
 			$row->content = $text[0];
 
-			for ($i=0, $n=count( $text )-1; $i < $n; $i++) 
+			for ($i=0, $n=count( $text )-1; $i < $n; $i++)
 			{
 				if (isset( $images[$i] )) {
 					$row->content .= $images[$i];
@@ -627,37 +615,37 @@ class EventsController extends Hubzero_Controller
 				}
 			}
 			unset( $text );
-		} 
-		
+		}
+
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 		$row->content = preg_replace_callback("/$UrlPtrn/", array('EventsHtml','autolink'), trim(stripslashes($row->content)));
 		$row->content = nl2br($row->content);
 		$row->content = str_replace("[[BR]]",'<br />',$row->content);
 		$row->content = str_replace(" * ",'<br />&nbsp;&bull;&nbsp;',$row->content);
 		//$row->content = stripslashes($row->content);
-		
+
 		$fields = $this->config->getCfg('fields');
 		if (!empty($fields)) {
-			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+			for ($i=0, $n=count( $fields ); $i < $n; $i++)
 			{
 				// Explore the text and pull out all matches
 				array_push($fields[$i], $this->parseTag($row->content, $fields[$i][0]));
-				
+
 				// Clean the original text of any matches
 				$row->content = str_replace('<ef:'.$fields[$i][0].'>'.end($fields[$i]).'</ef:'.$fields[$i][0].'>','',$row->content);
 			}
 			$row->content = trim($row->content);
 		}
-		
+
 		$bits = explode('-',$row->publish_up);
 		$eyear = $bits[0];
 		$emonth = $bits[1];
 		$edbits = explode(' ',$bits[2]);
 		$eday = $edbits[0];
-		
+
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = $this->_authorize($row->created_by_alias);
-		
+
 		$auth = true;
 		if ($this->config->getCfg('adminlevel')) {
 			$auth = $this->_authorize();
@@ -665,15 +653,15 @@ class EventsController extends Hubzero_Controller
 
 		// Get a list of categories
 		$categories = $this->_getCategories();
-		
+
 		// Get tags on this event
 		$rt = new EventsTags( $this->database );
 		$tags = $rt->get_tag_cloud(0, 0, $row->id);
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.stripslashes($row->title) );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -684,10 +672,10 @@ class EventsController extends Hubzero_Controller
 		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth );
 		$pathway->addItem( $eday, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth.'&day='.$eday );
 		$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.'&task=details&id='.$row->id );
-		
+
 		// Incoming
 		$alias = JRequest::getVar( 'page', '' );
-		
+
 		// Load the current page
 		$page = new EventsPage( $this->database );
 		if ($alias) {
@@ -696,11 +684,11 @@ class EventsController extends Hubzero_Controller
 
 		// Get the pages for this workshop
 		$pages = $page->loadPages( $row->id );
-		
+
 		if ($alias) {
 			$pathway->addItem(stripslashes($page->title),'index.php?option='.$this->_option.'&task=details&id='.$row->id.'&page='.$page->alias);
 		}
-		
+
 		// Build the HTML
 		$view = new JView( array('name'=>'details') );
 		$view->option = $this->_option;
@@ -725,52 +713,50 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function register()
 	{
 		$document =& JFactory::getDocument();
-		
+
 		// Get some needed info
 		$offset = $this->offset;
 		$year   = $this->year;
 		$month  = $this->month;
 		$day    = $this->day;
 		$option = $this->_option;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
-		
+
 		// Ensure we have an ID
 		if (!$id) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
+
 		// Load event
 		$event = new EventsEvent( $this->database );
 		$event->load( $id );
-		
+
 		// Ensure we have an event
 		if (!$event->title || $event->registerby == '0000-00-00 00:00:00') {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
+
 		$auth = true;
 		if ($this->config->getCfg('adminlevel')) {
 			$auth = $this->_authorize();
 		}
-		
+
 		$bits = explode('-',$event->publish_up);
 		$eyear = $bits[0];
 		$emonth = $bits[1];
 		$edbits = explode(' ',$bits[2]);
 		$eday = $edbits[0];
-		
+
 		// Set the page title
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER').': '.stripslashes($event->title) );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -782,22 +768,22 @@ class EventsController extends Hubzero_Controller
 		$pathway->addItem( $eday, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth.'&day='.$eday );
 		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.'&task=details&id='.$event->id );
 		$pathway->addItem( JText::_('EVENTS_REGISTER'),'index.php?option='.$this->_option.'&task=details&id='.$event->id.'&page=register');
-		
+
 		$page = new EventsPage( $this->database );
 		$page->alias = $this->_task;
-		
+
 		// Get the pages for this workshop
 		$pages = $page->loadPages( $event->id );
-		
+
 		// Check if registration is still open
 		$registerby = Hubzero_View_Helper_Html::mkt($event->registerby);
 		$now = time();
-		
+
 		$register = array();
 		if (!$this->juser->get('guest')) {
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $this->juser->get('id') );
-			
+
 			$register['firstname'] = $profile->get('givenName');
 			$register['lastname'] = $profile->get('surname');
 			$register['affiliation'] = $profile->get('organization');
@@ -805,13 +791,13 @@ class EventsController extends Hubzero_Controller
 			$register['telephone'] = $profile->get('phone');
 			$register['website'] = $profile->get('url');
 		}
-		
+
 		// Is the registration open?
 		if ($registerby >= $now) {
 			// Is the registration restricted?
 			if ($event->restricted) {
 				$passwrd = JRequest::getVar('passwrd', '', 'post');
-				
+
 				if ($event->restricted == $passwrd) {
 					// Instantiate a view
 					$view = new JView( array('name'=>'register') );
@@ -831,7 +817,7 @@ class EventsController extends Hubzero_Controller
 			$view = new JView( array('name'=>'register','layout'=>'closed') );
 			$view->state = 'closed';
 		}
-		
+
 		// Output HTML
 		$view->option = $this->_option;
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER');
@@ -853,59 +839,57 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function process() 
+	protected function process()
 	{
 		$document =& JFactory::getDocument();
-		
+
 		// Get some needed info
 		$offset = $this->offset;
 		$year   = $this->year;
 		$month  = $this->month;
 		$day    = $this->day;
 		$option = $this->_option;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'post' );
-		
+
 		// Ensure we have an ID
 		if (!$id) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
+
 		// Load event
 		$event = new EventsEvent( $this->database );
 		$event->load( $id );
 		$this->event = $event;
-		
+
 		// Ensure we have an event
 		if (!$event->title) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
+
 		$auth = true;
 		if ($this->config->getCfg('adminlevel')) {
 			$auth = $this->_authorize();
 		}
-		
+
 		$bits = explode('-',$event->publish_up);
 		$eyear = $bits[0];
 		$emonth = $bits[1];
 		$edbits = explode(' ',$bits[2]);
 		$eday = $edbits[0];
-		
+
 		$page = new EventsPage( $this->database );
 		$page->alias = $this->_task;
-		
+
 		// Get the pages for this workshop
 		$pages = $page->loadPages( $event->id );
-		
+
 		// Set the page title
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER').': '.stripslashes($event->title) );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -917,7 +901,7 @@ class EventsController extends Hubzero_Controller
 		$pathway->addItem( $eday, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth.'&day='.$eday );
 		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.'&task=details&id='.$event->id );
 		$pathway->addItem( JText::_('EVENTS_REGISTER'),'index.php?option='.$this->_option.'&task=details&id='.$event->id.'&page=register');
-		
+
 		// Incoming
 		$register   = JRequest::getVar('register', NULL, 'post');
 		$arrival    = JRequest::getVar('arrival', NULL, 'post');
@@ -931,7 +915,7 @@ class EventsController extends Hubzero_Controller
 		if ($register) {
 			$register = array_map('trim', $register);
 			$register = array_map(array('Hubzero_View_Helper_Html','purifyText'), $register);
-			
+
 			$validemail = $this->_validEmail($register['email']);
 		}
 		if ($arrival) {
@@ -946,17 +930,17 @@ class EventsController extends Hubzero_Controller
 			$dietary = array_map('trim', $dietary);
 			$dietary = array_map(array('Hubzero_View_Helper_Html','purifyText'), $dietary);
 		}
-	
+
 		if ($register['firstname'] && $register['lastname'] && $register['affiliation'] && ($validemail == 1)) {
 			$jconfig =& JFactory::getConfig();
 
 			$email = $event->email;
 			$subject = JText::_('EVENTS_EVENT_REGISTRATION').' ('.$event->id.')';
 			$hub = array(
-				'email' => $register['email'], 
+				'email' => $register['email'],
 				'name' => $jconfig->getValue('config.sitename').' '.JText::_('EVENTS_EVENT_REGISTRATION')
 			);
-			
+
 			$eview = new JView( array('name'=>'register','layout'=>'email') );
 			$eview->option = $this->_option;
 			$eview->hubShortName = $jconfig->getValue('config.sitename');
@@ -970,7 +954,7 @@ class EventsController extends Hubzero_Controller
 			$eview->bos = $bos;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
-				
+
 			$this->_sendEmail($hub, $email, $subject, $message);
 
 			$this->_log($register);
@@ -999,9 +983,7 @@ class EventsController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	private function _log($reg)
 	{
 		$this->database->setQuery(
@@ -1015,7 +997,7 @@ class EventsController extends Hubzero_Controller
 				$this->event->id . ', '.
 				$this->_getValueString($this->database, $reg, array(
 					'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
-					'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability', 
+					'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability',
 					'dietary', 'dinner', 'additional', 'comments'
 				)).
 			')'
@@ -1024,7 +1006,7 @@ class EventsController extends Hubzero_Controller
 		$races = JRequest::getVar('race', NULL, 'post');
 		if (!is_null($races) && (!isset($races['refused']) || !$races['refused'])) {
 			$resp_id = $this->database->insertid();
-			foreach (array('nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic') as $race) 
+			foreach (array('nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic') as $race)
 			{
 				if (array_key_exists($race, $races) && $races[$race]) {
 					$this->database->execute(
@@ -1036,8 +1018,6 @@ class EventsController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
 	private function _getValueString($database, $reg, $values)
 	{
 		$rv = array();
@@ -1046,15 +1026,15 @@ class EventsController extends Hubzero_Controller
 			switch ($val)
 			{
 				case 'position':
-					$rv[] = ((isset($reg['position']) || isset($reg['position_other'])) && ($reg['position'] || $reg['position_other'])) 
+					$rv[] = ((isset($reg['position']) || isset($reg['position_other'])) && ($reg['position'] || $reg['position_other']))
 						? $this->database->quote(
 							$reg['position'] ? $reg['position'] : $reg['position_other']
-						) 
+						)
 						: 'NULL';
 				break;
 				case 'gender':
-					$rv[] = (isset($reg['sex']) && ($reg['sex'] == 'male' || $reg['sex'] == 'female')) 
-						? '\''.substr($reg['sex'], 0, 1).'\'' 
+					$rv[] = (isset($reg['sex']) && ($reg['sex'] == 'male' || $reg['sex'] == 'female'))
+						? '\''.substr($reg['sex'], 0, 1).'\''
 						: 'NULL';
 				break;
 				case 'dinner':
@@ -1062,12 +1042,12 @@ class EventsController extends Hubzero_Controller
 					$rv[] = is_null($dinner) ? 'NULL' : $dinner ? '1' : '0';
 				break;
 				case 'dietary':
-					$rv[] = (($dietary = JRequest::getVar('dietary', NULL, 'post'))) 
-						? $this->database->quote($dietary['specific']) 
+					$rv[] = (($dietary = JRequest::getVar('dietary', NULL, 'post')))
+						? $this->database->quote($dietary['specific'])
 						: 'NULL';
 				break;
 				case 'arrival': case 'departure':
-					$rv[] = ($date = JRequest::getVar($val, NULL, 'post')) 
+					$rv[] = ($date = JRequest::getVar($val, NULL, 'post'))
 						? $this->database->quote($date['day'] . ' ' . $date['time'])
 						: 'NULL';
 				break;
@@ -1082,8 +1062,6 @@ class EventsController extends Hubzero_Controller
 		return implode($rv, ',');
 	}
 
-	//-----------
-
 	protected function login()
 	{
 		$view = new JView( array('name'=>'login') );
@@ -1094,10 +1072,8 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function edit($row=NULL)
-	{		
+	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
 			$app =& JFactory::getApplication();
@@ -1106,61 +1082,61 @@ class EventsController extends Hubzero_Controller
 				$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 			}
 			$pathway->addItem( JText::_('EVENTS_CAL_LANG_ADD_TITLE'), 'index.php?option='.$this->_option.'&task=add' );
-			
+
 			$this->login();
 			return;
 		}
-		
+
 		// Push some styles to the tmeplate
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components'.DS.$this->_option.DS.'calendar.css');
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
-		
+
 		// We need at least one category before we can proceed
 		$cat = new EventsCategory( $this->database );
 		if ($cat->getCategoryCount( $this->_option ) < 1) {
 			JError::raiseError( 500, JText::_('EVENTS_LANG_NEED_CATEGORY') );
 			return;
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
-		
+
 		// Load event object
 		if (!is_object($row)) {
 			$row = new EventsEvent( $this->database );
 			$row->load( $id );
 		}
-		
+
 		// Do we have an ID?
 		if ($row->id) {
 			// Yes - edit mode
-			
+
 			// Are they authorized to make edits?
 			if (!$this->_authorize($row->created_by)) {
 				// Not authorized - redirect
 				$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 				return;
 			}
-			
+
 			$event_up = new EventsDate( $row->publish_up );
 			$start_publish = sprintf( "%4d-%02d-%02d",$event_up->year,$event_up->month,$event_up->day);
 			$start_time = $event_up->hour .':'. $event_up->minute;
-	
+
 			$event_down = new EventsDate( $row->publish_down );
 			$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
 			$end_time = $event_down->hour .':'. $event_down->minute;
-			
+
 			$event_registerby = new EventsDate( $row->registerby );
 			$registerby_date = sprintf( "%4d-%02d-%02d",$event_registerby->year,$event_registerby->month,$event_registerby->day);
 			$registerby_time = $event_registerby->hour .':'. $event_registerby->minute;
-        
+
 			$row->reccurday_month = 99;
 			$row->reccurday_week = 99;
 			$row->reccurday_year = 99;
-			
+
 			if ($row->reccurday <> '') {
 				if ($row->reccurtype == 1) {
 					$row->reccurday_week = $row->reccurday;
@@ -1206,7 +1182,7 @@ class EventsController extends Hubzero_Controller
 					$stop_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
 					$registerby_date = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
 				}
-				
+
 				$start_time = "08:00";
 				$end_time = "17:00";
 				$registerby_time = "08:00";
@@ -1220,43 +1196,43 @@ class EventsController extends Hubzero_Controller
 			$row->created_by_alias = $this->juser->get('username');
 			$row->created_by = $this->juser->get('id');
 			$row->reccurtype = 0;
-			
+
 			$lists = '';
 		}
-		
+
 		// Get custom fields
 		$fields = $this->config->getCfg('fields');
 		if (!empty($fields)) {
-			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+			for ($i=0, $n=count( $fields ); $i < $n; $i++)
 			{
 				// Explore the text and pull out all matches
 				array_push($fields[$i], $this->parseTag($row->content, $fields[$i][0]));
-				
+
 				// Clean the original text of any matches
 				$row->content = str_replace('<ef:'.$fields[$i][0].'>'.end($fields[$i]).'</ef:'.$fields[$i][0].'>','',$row->content);
 			}
 			$row->content = trim($row->content);
 		}
-		
+
 		list($start_hrs, $start_mins) = explode(':',$start_time);
 		list($end_hrs, $end_mins) = explode(':',$end_time);
 		list($registerby_hrs, $registerby_mins) = explode(':',$registerby_time);
 		$start_pm = false;
 		$end_pm = false;
 		$registerby_pm = false;
-		if ($this->config->getCfg('calUseStdTime') == 'YES') { 
+		if ($this->config->getCfg('calUseStdTime') == 'YES') {
 			$start_hrs = intval($start_hrs);
 			if ($start_hrs >= 12) $start_pm = true;
 			if ($start_hrs > 12) $start_hrs -= 12;
 			else if ($start_hrs == 0) $start_hrs = 12;
 			if (strlen($start_mins) == 1) $start_mins = '0'.$start_mins;
 			$start_time = $start_hrs .":". $start_mins;
-			
+
 			$end_hrs = intval($end_hrs);
 			if ($end_hrs >= 12) $end_pm = true;
 			if ($end_hrs > 12) $end_hrs -= 12;
 			else if ($end_hrs == 0) $end_hrs = 12;
-			
+
 			$registerby_hrs = intval($registerby_hrs);
 			if ($registerby_hrs >= 12) $registerby_pm = true;
 			if ($registerby_hrs > 12) $registerby_hrs -= 12;
@@ -1267,36 +1243,36 @@ class EventsController extends Hubzero_Controller
 		if (strlen($start_mins) == 1) $start_mins = '0'.$start_mins;
 		if (strlen($start_hrs) == 1) $start_hrs = '0'.$start_hrs;
 		$start_time = $start_hrs .':'. $start_mins;
-		
+
 		if (strlen($end_mins) == 1) $end_mins = '0'.$end_mins;
 		if (strlen($end_hrs) == 1) $end_hrs = '0'.$end_hrs;
 		$end_time = $end_hrs .':'. $end_mins;
-		
+
 		if (strlen($registerby_mins) == 1) $registerby_mins = '0'.$registerby_mins;
 		if (strlen($registerby_hrs) == 1) $registerby_hrs = '0'.$registerby_hrs;
 		$registerby_time = $registerby_hrs .':'. $registerby_mins;
-		
+
 		$times = array();
 		$times['start_publish'] = $start_publish;
 		$times['start_time'] = $start_time;
 		$times['start_pm'] = $start_pm;
-		
+
 		$times['stop_publish'] = $stop_publish;
 		$times['end_time'] = $end_time;
 		$times['end_pm'] = $end_pm;
-		
+
 		$times['registerby_date'] = $registerby_date;
 		$times['registerby_time'] = $registerby_time;
 		$times['registerby_pm'] = $registerby_pm;
-		
+
 		// Get tags on this event
 		$rt = new EventsTags( $this->database );
 		$lists['tags'] = $rt->get_tag_string($row->id, 0, 0, NULL, 0, 1);
-		
+
 		// Set the title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_name).'_'.strtoupper($this->_task)) );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -1311,7 +1287,7 @@ class EventsController extends Hubzero_Controller
 		if ($row->id) {
 			$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.'&task=details&id='.$row->id );
 		}
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'edit') );
 		$view->option = $this->_option;
@@ -1333,7 +1309,7 @@ class EventsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Actions
 	//----------------------------------------------------------
-	
+
 	protected function delete()
 	{
 		// Check if they are logged in
@@ -1344,48 +1320,48 @@ class EventsController extends Hubzero_Controller
 
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
+
 		// Load event object
 		$event = new EventsEvent( $this->database );
 		$event->load( $id );
-		
+
 		if (!$this->_authorize($event->created_by)) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
+
 		// Delete the event
 		$event->delete( $id );
-		
+
 		// Delete any associated pages 
 		$ep = new EventsPage( $this->database );
 		$ep->deletePages( $id );
-		
+
 		// Delete any associated respondents
 		$ep = new EventsRespondent( array() );
 		$er->deleteRespondents( $id );
-		
+
 		// Delete tags on this event
 		$rt = new EventsTags( $this->database );
 		$rt->remove_all_tags($id);
-		
+
 		// Load the event's category and update the count
 		$category = new EventsCategory( $this->database );
 		$category->updateCount( $event->catid );
-		
+
 		// Get the HUB configuration
 		//$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
-		
+
 		// E-mail subject line
 		$subject  = '['.$jconfig->getValue('config.sitename').' '.JText::_('EVENTS').'] - '.JText::_('EVENTS_EVENT_DELETED');
-		
+
 		// Build the message to be e-mailed
 		$eview = new JView( array('name'=>'emails','layout'=>'deleted') );
 		$eview->option = $this->_option;
@@ -1394,17 +1370,15 @@ class EventsController extends Hubzero_Controller
 		$eview->event = $event;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
-		
+
 		// Send the e-mail
 		$this->_sendMail($jconfig->getValue('config.sitename'), $jconfig->getValue('config.mailfrom'), $subject, $message);
-		
+
 		// Go back to the default front page
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 
-	//-----------
-
-	protected function save() 
+	protected function save()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
@@ -1413,7 +1387,7 @@ class EventsController extends Hubzero_Controller
 		}
 
 		$offset = $this->offset;
-		
+
 		// Incoming
 		$start_time = JRequest::getVar( 'start_time', '08:00', 'post' );
 		$state_time = ($start_time) ? $start_time : '08:00';
@@ -1421,7 +1395,7 @@ class EventsController extends Hubzero_Controller
 		$end_time   = JRequest::getVar( 'end_time', '17:00', 'post' );
 		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = JRequest::getInt( 'end_pm', 0, 'post' );
-		
+
 		$reccurweekdays = JRequest::getVar( 'reccurweekdays', array(), 'post' );
 		$reccurweeks    = JRequest::getVar( 'reccurweeks', array(), 'post' );
 		$reccurday_week = JRequest::getVar( 'reccurday_week', '', 'post' );
@@ -1448,7 +1422,7 @@ class EventsController extends Hubzero_Controller
 				$row->created_by = $this->juser->get('id');
 			}
 		}
-		
+
 		// Set some fields and do some cleanup work
 		if (is_null($row->useCatColor)) {
 			$row->useCatColor = 0;
@@ -1456,12 +1430,12 @@ class EventsController extends Hubzero_Controller
 		if ($row->catid) {
 			$row->catid = intval( $row->catid );
 		}
-		
+
 		$row->title = htmlentities($row->title);
 
 		$row->content = $_POST['econtent'];
 		$row->content = $this->_clean($row->content);
-	
+
 		// Get the custom fields defined in the events configuration
 		if (isset($_POST['fields'])) {
 			$fields = $_POST['fields'];
@@ -1474,7 +1448,7 @@ class EventsController extends Hubzero_Controller
 				if (trim($value) != '') {
 					$row->content .= '<ef:'.$param.'>'.$this->_clean($value).'</ef:'.$param.'>';
 				} else {
-					foreach ($fs as $f) 
+					foreach ($fs as $f)
 					{
 						if ($f[0] == $param && end($f) == 1) {
 							JError::raiseError( 500, JText::sprintf('EVENTS_REQUIRED_FIELD_CHECK', $f[1]) );
@@ -1484,23 +1458,23 @@ class EventsController extends Hubzero_Controller
 				}
 			}
 		}
-	
+
 		// Clean adresse
 		$row->adresse_info = $this->_clean($row->adresse_info);
-	
+
 		// Clean contact
 		$row->contact_info = $this->_clean($row->contact_info);
-	
+
 		// Clean extra
 		$row->extra_info = $this->_clean($row->extra_info);
-	
+
 		// Prepend http:// to URLs without it
 		if ($row->extra_info != NULL) {
 			if ( (substr($row->extra_info,0,7) != 'http://') && (substr($row->extra_info,0,8) != 'https://')) {
 				$row->extra_info = 'http://'.$row->extra_info;
 			}
 		}
-		
+
 		$row->created_by_alias = htmlentities($row->created_by_alias);
 
 		// Reformat the time into 24hr format if necessary
@@ -1513,7 +1487,7 @@ class EventsController extends Hubzero_Controller
 			if ($hrs < 10) $hrs = '0'.$hrs;
 			if ($mins < 10) $mins = '0'.$mins;
 			$start_time = $hrs.':'.$mins;
-		
+
 			list($hrs,$mins) = explode(':', $end_time);
 			$hrs = intval($hrs);
 			$mins = intval($mins);
@@ -1523,7 +1497,7 @@ class EventsController extends Hubzero_Controller
 			if ($mins < 10) $mins = '0'.$mins;
 			$end_time = $hrs.':'.$mins;
 		}
-		
+
 		$rpup = $row->publish_up;
 		if ($row->publish_up) {
 			$publishtime = $row->publish_up.' '.$start_time.':00';
@@ -1531,7 +1505,7 @@ class EventsController extends Hubzero_Controller
 		} else {
 			$row->publish_up = strftime( "%Y-%m-%d 00:00:00", time()+($offset*60*60));
 		}
-	
+
 		if ($row->publish_down) {
 			$publishtime = $row->publish_down.' '.$end_time.':00';
 			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
@@ -1540,13 +1514,13 @@ class EventsController extends Hubzero_Controller
 			//$row->publish_down = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
 			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
 		}
-		
+
 		if ($row->publish_up <> $row->publish_down) {
 			$row->reccurtype = intval( $row->reccurtype );
 		} else {
 			$row->reccurtype = 0;
 		}
-	
+
 		if ($row->reccurtype == 0) {
 			$row->reccurday = '';
 		} elseif ($row->reccurtype == 1) {
@@ -1559,16 +1533,16 @@ class EventsController extends Hubzero_Controller
 			$row->reccurday = '';
 		} elseif ($row->reccurtype == 5) {
 			$row->reccurday = $reccurday_year;
-		}	
-		
+		}
+
 		// Reccur week days
-		if (empty($reccurweekdays)) {		
+		if (empty($reccurweekdays)) {
 			$weekdays = '';
 		} else {
 			$weekdays = implode( '|', $reccurweekdays );
 		}
 		$row->reccurweekdays = $weekdays;
-        
+
 		// Reccur viewable weeks
 		$reccurweekss = JRequest::getVar( 'reccurweekss', '', 'post' );
 		$reccurweeks = array();
@@ -1581,7 +1555,7 @@ class EventsController extends Hubzero_Controller
 			$weekweeks = implode( '|', $reccurweeks );
 		}
 		$row->reccurweeks = $weekweeks;
-	
+
 		// Always unpublish if no Publisher otherwise publish automatically
 		if ($this->config->getCfg('adminlevel')) {
 			$row->state = 0;
@@ -1591,7 +1565,7 @@ class EventsController extends Hubzero_Controller
 
 		$row->state = 1;
 		$row->mask = 0;
-	
+
 		$pubdow = strtotime($row->publish_down);
 		$pubup = strtotime($row->publish_up);
 		if ($pubdow <= $pubup) {
@@ -1602,7 +1576,7 @@ class EventsController extends Hubzero_Controller
 			return;
 			//$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime("+1 hour", $pubup));
 		}
-	
+
 		if (!$row->check()) {
 			// Set the error message
 			$this->setError($row->getError());
@@ -1618,16 +1592,16 @@ class EventsController extends Hubzero_Controller
 			return;
 		}
 		$row->checkin();
-		
+
 		// Incoming tags
 		$tags = JRequest::getVar( 'tags', '', 'post' );
-		
+
 		// Save the tags
 		$rt = new EventsTags( $this->database );
 		$rt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
-		
+
 		$jconfig =& JFactory::getConfig();
-		
+
 		// Build the message to be e-mailed
 		if ($state == 'add') {
 			$subject  = '['.$jconfig->getValue('config.sitename').' '.JText::_('EVENTS_CAL_LANG_CAL_TITLE').'] - '.JText::_('EVENTS_CAL_LANG_MAIL_ADDED');
@@ -1644,19 +1618,19 @@ class EventsController extends Hubzero_Controller
 		$eview->row = $row;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
-		
+
 		// Send the e-mail
 		$this->_sendMail($jconfig->getValue('config.sitename'), $jconfig->getValue('config.mailfrom'), $subject, $message);
-		
+
 		// Redirect to the details page for the event we just created
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=details&id='.$row->id);
 	}
-	
+
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
 
-	private function _sendEmail(&$hub, $email, $subject, $message) 
+	private function _sendEmail(&$hub, $email, $subject, $message)
 	{
 		if ($hub) {
 			$jconfig =& JFactory::getConfig();
@@ -1678,9 +1652,7 @@ class EventsController extends Hubzero_Controller
 		return(0);
 	}
 
-	//-----------
-
-	private function _validEmail($email) 
+	private function _validEmail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
 			return(1);
@@ -1688,26 +1660,22 @@ class EventsController extends Hubzero_Controller
 			return(0);
 		}
 	}
-	
-	//-----------
 
-	private function _getCategories() 
+	private function _getCategories()
 	{
 		$sql = "SELECT * FROM #__categories WHERE section='".$this->_option."' AND published = '1' ORDER BY title DESC";
 
 		$this->database->setQuery($sql);
 		$cats = $this->database->loadObjectList();
-		
+
 		$c = array();
-		foreach ($cats as $cat) 
+		foreach ($cats as $cat)
 		{
 			$c[$cat->id] = $cat->title;
 		}
-		
+
 		return $c;
 	}
-	
-	//-----------
 
 	public function parseTag($text, $tag)
 	{
@@ -1721,15 +1689,13 @@ class EventsController extends Hubzero_Controller
 		}
 		return $match;
 	}
-	
-	//-----------
 
-	private function _clean($string) 
+	private function _clean($string)
 	{
 		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
 		}
-		
+
 		// strip out any KL_PHP, script, style, HTML comments
 		$string = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $string );
 		$string = preg_replace( "'<head[^>]*?>.*?</head>'si", '', $string);
@@ -1737,14 +1703,14 @@ class EventsController extends Hubzero_Controller
 		$string = preg_replace( "'<style[^>]*>.*?</style>'si", '', $string );
 		$string = preg_replace( "'<script[^>]*>.*?</script>'si", '', $string );
 		$string = preg_replace( '/<!--.+?-->/', '', $string );
-		
+
 		$string = str_replace(array("&amp;","&lt;","&gt;"),array("&amp;amp;","&amp;lt;","&amp;gt;",),$string);
 		// fix &entitiy\n;
-		
+
 		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;",$string);
 		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$string);
 		$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
-		
+
 		// remove any attribute starting with "on" or xmlns
 		$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu',"$1>",$string);
 		// remove javascript: and vbscript: protocol
@@ -1762,16 +1728,14 @@ class EventsController extends Hubzero_Controller
 			$oldstring = $string;
 			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i',"",$string);
 		} while ($oldstring != $string);
-	
+
 		return $string;
 	}
 
-	//-----------
-
-	private function _sendMail($name, $email, $subject, $message) 
+	private function _sendMail($name, $email, $subject, $message)
 	{
 		$name .= ' '.JText::_('EVENTS_ADMINISTRATOR');
-		
+
 		$headers  = "";
 		$headers .= "MIME-Version: 1.0\r\n";
 		$headers .= "From: ".$name." <".$email.">\r\n";
@@ -1782,8 +1746,6 @@ class EventsController extends Hubzero_Controller
 
 	    @mail($email, $subject, $message, $headers);
 	}
-	
-	//-----------
 
 	protected function _authorize($id='')
 	{
@@ -1791,19 +1753,19 @@ class EventsController extends Hubzero_Controller
 		if ($this->juser->get('guest')) {
 			return false;
 		}
-	
+
 		// Check if they're a site admin from Joomla
 		if ($this->juser->authorize($this->_option, 'manage')) {
 			return true;
 		}
-	
+
 		// Check against events configuration
 		if (!$this->config->getCfg('adminlevel')) {
 			if ($id && $id == $this->juser->get('id')) {
 				return true;
 			}
-		}	
-		
+		}
+
 		return false;
 	}
 }

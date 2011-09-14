@@ -65,7 +65,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @return String
  * @public
  */
-function codepointToUtf8( $codepoint ) 
+function codepointToUtf8( $codepoint )
 {
 	if($codepoint <		0x80) return chr($codepoint);
 	if($codepoint <    0x800) return chr($codepoint >>	6 & 0x3f | 0xc0) .
@@ -91,10 +91,10 @@ function codepointToUtf8( $codepoint )
  * @return String
  * @private
  */
-function hexSequenceToUtf8( $sequence ) 
+function hexSequenceToUtf8( $sequence )
 {
 	$utf = '';
-	foreach ( explode( ' ', $sequence ) as $hex ) 
+	foreach ( explode( ' ', $sequence ) as $hex )
 	{
 		$n = hexdec( $hex );
 		$utf .= codepointToUtf8( $n );
@@ -110,7 +110,7 @@ function hexSequenceToUtf8( $sequence )
  * @return string
  * @private
  */
-function utf8ToHexSequence( $str ) 
+function utf8ToHexSequence( $str )
 {
 	return rtrim( preg_replace( '/(.)/uSe',
 	                            'sprintf("%04x ", utf8ToCodepoint("$1"))',
@@ -125,7 +125,7 @@ function utf8ToHexSequence( $str )
  * @return Integer
  * @public
  */
-function utf8ToCodepoint( $char ) 
+function utf8ToCodepoint( $char )
 {
 	# Find the length
 	$z = ord( $char{0} );
@@ -151,7 +151,7 @@ function utf8ToCodepoint( $char )
 	$z >>= $length;
 
 	# Add in the free bits from subsequent bytes
-	for ( $i=1; $i<$length; $i++ ) 
+	for ( $i=1; $i<$length; $i++ )
 	{
 		$z <<= 6;
 		$z |= ord( $char{$i} ) & 0x3f;
@@ -167,7 +167,7 @@ function utf8ToCodepoint( $char )
  * @return String: escaped string.
  * @public
  */
-function escapeSingleString( $string ) 
+function escapeSingleString( $string )
 {
 	return strtr( $string,
 		array(

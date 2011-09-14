@@ -32,34 +32,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 function WishlistBuildRoute(&$query)
 {
     $segments = array();
-	
+
 	if (!empty($query['category'])) {
         $segments[] = $query['category'];
         unset($query['category']);
     }
-	
+
 	if (!empty($query['rid'])) {
         $segments[] = $query['rid'];
         unset($query['rid']);
     }
-	
+
     if (!empty($query['id'])) {
         $segments[] = $query['id'];
         unset($query['id']);
     }
-	
+
 	if (!empty($query['task'])) {
-		if ($query['task'] != 'wishlist') {			
+		if ($query['task'] != 'wishlist') {
         	$segments[] = $query['task'];
         }
 		unset($query['task']);
     }
-   
+
 	if (!empty($query['wishid'])) {
         $segments[] = $query['wishid'];
         unset($query['wishid']);
     }
-		
+
     return $segments;
 }
 
@@ -90,29 +90,28 @@ function WishlistParseRoute($segments)
 		$vars['task'] = $segments[0];
 		return $vars;
 	}
-	
 
  	if (!empty($segments[1]))
     {
-		
-		if (intval($segments[0])) { 
-			
+
+		if (intval($segments[0])) {
+
 			// we have a specific list id requested
 			$vars['id'] = $segments[0];
 			$vars['task'] = $segments[1];
 			if(!empty($segments[2])) {
 				$vars['wishid'] = $segments[2];
 			}
-			
+
 		}
-		else { 
-		
+		else {
+
 			if($segments[0]=='rateitem') {
 				$vars['task'] = 'rateitem';
 				$vars['id'] = $segments[1];
 				return $vars;
 			}
-			
+
 			else if($segments[0]=='saveplan') {
 				$vars['task'] = 'saveplan';
 				$vars['wishid'] = $segments[1];
@@ -123,14 +122,13 @@ function WishlistParseRoute($segments)
 				$vars['wishid'] = $segments[1];
 				return $vars;
 			}
-			
-			
+
 			else {
-			
+
 				// we got a category
 				$vars['category'] = $segments[0];
 				$vars['rid'] = $segments[1];
-				
+
 				if(!empty($segments[2])) {
 					$vars['task'] = $segments[2];
 				}
@@ -138,14 +136,12 @@ function WishlistParseRoute($segments)
 					$vars['wishid'] = $segments[3];
 				}
 			}
-			
+
 		}
-		
+
         return $vars;
     }
-	
-	
-    
+
     return $vars;
 }
 

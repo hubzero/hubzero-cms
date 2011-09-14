@@ -34,17 +34,16 @@ JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-
 if ($this->row->standalone == 1) {
 	$database =& JFactory::getDBO();
-	
+
 	$type = new ResourcesType( $database );
 	$type->load( $this->row->type );
 
 	$fields = array();
 	if (trim($type->customFields) != '') {
 		$fs = explode("\n", trim($type->customFields));
-		foreach ($fs as $f) 
+		foreach ($fs as $f)
 		{
 			$fields[] = explode('=', $f);
 		}
@@ -55,14 +54,14 @@ if ($this->row->standalone == 1) {
 			$flds = $this->rconfig->get('tagsothr');
 		}
 		$flds = explode(',',$flds);
-		foreach ($flds as $fld) 
+		foreach ($flds as $fld)
 		{
 			$fields[] = array($fld, $fld, 'textarea', 0);
 		}
 	}
 
 	if (!empty($fields)) {
-		for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+		for ($i=0, $n=count( $fields ); $i < $n; $i++)
 		{
 			// Explore the text and pull out all matches
 			array_push($fields[$i], ResourcesHtml::parseTag($this->row->fulltext, $fields[$i][0]));
@@ -263,10 +262,10 @@ function popratings()
 			<caption style="text-align: left; font-weight: bold;"><?php echo JText::_('Custom fields'); ?></caption>
 			<tbody>
 <?php
-$i = 3; 
+$i = 3;
 
 foreach ($fields as $field)
-{ 
+{
 $i++;
 /*
 $tagcontent = preg_replace('/<br\\s*?\/??>/i', "", end($field));
@@ -281,13 +280,13 @@ $tagcontent = end($field);
 					<?php
 					} else {
 						echo $editor->display('nbtag['.$field[0].']', htmlentities(stripslashes($tagcontent), ENT_COMPAT, 'UTF-8'), '100%', '100px', '45', '10', false);
-					} 
+					}
 					?>
 				</td>
 			</tr>
 			
 <?php 
-} 
+}
 ?>
 			</tbody>
 		</table>
@@ -428,14 +427,14 @@ $tagcontent = end($field);
 		<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
 <?php
 		echo $tabs->endPanel();
-		
+
 		if ($this->row->standalone == 1) {
 			echo $tabs->startPanel('Tags','tags-page');
 			?>
 			<textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
 			<?php
 			echo $tabs->endPanel();
-		
+
 			echo $tabs->startPanel('Parameters','params-page');
 			echo $this->params->render();
 			echo $tabs->endPanel();
@@ -461,7 +460,7 @@ $tagcontent = end($field);
 			<?php
 			echo $tabs->endPanel();
 		}
-		
+
 		echo $tabs->endPane();
 ?>
 

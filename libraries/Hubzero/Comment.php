@@ -35,68 +35,68 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
-class Hubzero_Comment extends JTable 
+class Hubzero_Comment extends JTable
 {
 	/**
 	 * Entry ID
 	 * @var	integer int(11) Primary key
 	 */
 	public $id = NULL;
-	
+
 	/**
 	 * ID of the entry the comment is attached to
 	 * @var	integer int(11)
 	 */
 	public $referenceid = NULL;
-	
+
 	/**
 	 * Category of the entry the comment is attached to (resource, question, etc.)
 	 * @var	string varchar(50)
 	 */
 	public $category = NULL;
-	
+
 	/**
 	 * The comment
 	 * @var	string text
 	 */
 	public $comment = NULL;
-	
+
 	/**
 	 * When the entry was made
 	 * @var	datetime (0000-00-00 00:00:00)
 	 */
 	public $added = NULL;
-	
+
 	/**
 	 * User ID of commenter
 	 * @var	integer int(11)
 	 */
 	public $added_by = NULL;
-	
+
 	/**
 	 * The published state of the entry
 	 * @var	integer int(3)
 	 */
 	public $state = NULL;
-	
+
 	/**
 	 * Flag for if the user posted anonymously
 	 * @var	integer int(3)
 	 */
 	public $anonymous = NULL;
-	
+
 	/**
 	 * Flag notifying the commenter of replies by email
 	 * @var	integer int(3)
 	 */
 	public $email = NULL;
-	
+
 	/**
 	 * A short subject or title of the entry
 	 * @var	string varchar(150)
 	 */
 	public $subject = NULL;
-	
+
 	/**
 	 * Object constructor to set the database
 	 * Calls parent to set the table and key field
@@ -108,13 +108,13 @@ class Hubzero_Comment extends JTable
 	{
 		parent::__construct( '#__comments', 'id', $db );
 	}
-	
+
 	/**
 	 * Check if a comment was provided
 	 *
 	 * @return boolean True if a comment was provided
 	 */
-	public function check() 
+	public function check()
 	{
 		if (trim( $this->comment ) == '' or trim( $this->comment ) == JText::_('Enter your comments...')) {
 			$this->setError( JText::_('Please provide a comment') );
@@ -122,7 +122,7 @@ class Hubzero_Comment extends JTable
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get an array of comments from the database
 	 *
@@ -131,7 +131,7 @@ class Hubzero_Comment extends JTable
 	 * @param int Optional flag for returning the number of abuse reports in the result set
 	 * @return array of objects with properties matching the fields SELECTed
 	 */
-	public function getResults( $filters=array(), $get_profile_name = 0, $get_abuse_reports = 0 ) 
+	public function getResults( $filters=array(), $get_profile_name = 0, $get_abuse_reports = 0 )
 	{
 		$query  = "SELECT c.* ";
 		$query .= $get_profile_name ? ", xp.name AS authorname " : "";
@@ -140,7 +140,7 @@ class Hubzero_Comment extends JTable
 		$query .= $get_profile_name ? "JOIN #__xprofiles AS xp ON xp.uidNumber=c.added_by " : "";
 		$query .= "WHERE c.referenceid=".$filters['id']." AND c.category='".$filters['category']."' AND c.state!=2 ";
 		$query .= "ORDER BY c.added ASC";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

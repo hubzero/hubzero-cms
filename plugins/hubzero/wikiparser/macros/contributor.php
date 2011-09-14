@@ -29,23 +29,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ContributorMacro extends WikiMacro 
+class ContributorMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'This macro will generate a link to a contributor\'s page with the contributor\'s name as the link text. It accepts either the contributor\'s ID, username, or name. NOTE: to use a name, it must be identical to their contributor page.';
 		$txt['html'] = '<p>This macro will generate a link to a contributor\'s page with the contributor\'s name as the link text. It accepts either the contributor\'s ID, username, or name. NOTE: to use a name, it must be identical to their contributor page.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
-		
+
 		if (!$et) {
 			return '';
 		}

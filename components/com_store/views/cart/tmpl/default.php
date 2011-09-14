@@ -73,8 +73,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</thead>
 			<tbody>
 <?php
-	$total = 0;	
-	foreach ($this->rows as $row) 
+	$total = 0;
+	foreach ($this->rows as $row)
 	{
 		$price = $row->price*$row->quantity;
 		if ($row->available) { // do not add if not available
@@ -82,7 +82,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		$sizes = array(); // build size options
 		if ($row->sizes && count($row->sizes) > 0) {
-			foreach ($row->sizes as $rs) 
+			foreach ($row->sizes as $rs)
 			{
 				if (trim($rs) != '') {
 					$sizes[$rs] = $rs;
@@ -119,7 +119,7 @@ if ($row->category!='service') {
 <?php if (count($sizes)>0) { ?>
 							<select name="size<?php echo $row->itemid; ?>" id="size<?php echo $row->itemid; ?>">
 <?php
-							foreach ($sizes as $anode) 
+							foreach ($sizes as $anode)
 							{
 ?>
 								<option value="<?php echo $anode; ?>"<?php echo ($anode == $selectedsize) ? ' selected="selected"' : ''; ?>><?php echo stripslashes($anode); ?></option>

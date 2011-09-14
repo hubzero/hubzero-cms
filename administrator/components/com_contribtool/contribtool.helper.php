@@ -34,35 +34,29 @@ class ContribtoolHelper
 	//------------------------------------
 	// Misceleneous contribtool functions
 	//------------------------------------
-	
+
 	public function makeArray($string='') {
-		
-		
-		$string		= ereg_replace(' ',',',$string);		
+
+		$string		= ereg_replace(' ',',',$string);
 		$arr 		= split(',',$string);
 		//$arr 		= $this->cleanArray($arr); 
-		$arr 		= ContribtoolHelper::cleanArray($arr); 
+		$arr 		= ContribtoolHelper::cleanArray($arr);
 		$arr 		= array_unique($arr);
-		
+
 		return $arr;
 	}
-	
-	
-	//-----------
 
 	public function cleanArray($array) {
-        
+
 		foreach ($array as $key => $value) {
 			$value = trim($value);
             if ($value == "") unset($array[$key]);
         }
-        
+
 		return $array;
 	}
-	
-	//-----------
-	
-	public function check_validInput($field) 
+
+	public function check_validInput($field)
 	{
 		if(eregi("^[_0-9a-zA-Z.:-]+$", $field) or $field=='') {
 			return(0);
@@ -71,17 +65,15 @@ class ContribtoolHelper
 		}
 	}
 	//-----------
-	
-	public function getLicenses($database) 
+
+	public function getLicenses($database)
 	{
 		$database->setQuery( "SELECT text, name, title"
 				. "\n FROM #__tool_licenses ORDER BY ordering ASC"
 				);
 		return $database->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function transform($array, $label, $newarray=array()) {
 		if(count($array)>0) {
 			foreach($array as $a) {
@@ -93,11 +85,11 @@ class ContribtoolHelper
 				}
 			}
 		}
-		
+
 		return $newarray;
 	}
 	//-----------
-	
+
 	public function getLogins($uids, $logins = array()) {
 		if(is_array($uids)) {
 			foreach ($uids as $uid) {
@@ -106,9 +98,9 @@ class ContribtoolHelper
 					$logins[] = $juser->get('username');
 				}
 			}
-		}	
+		}
 		return $logins;
-	}	
+	}
 	//-----------
 	public function record_view($database, $ticketid)
 	{
@@ -136,8 +128,6 @@ class ContribtoolHelper
 
 	}
 
-
 }
-
 
 ?>

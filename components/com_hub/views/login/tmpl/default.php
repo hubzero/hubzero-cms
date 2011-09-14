@@ -54,8 +54,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p class="hint">
 			<?php if (($this->realm == 'hzldap') || ($this->realm == 'hubzero')) { ?>
 				<a href="/myaccount/resend"><?php echo JText::_('_LOST_USERNAME');?></a><br />
-			<?php } 
-			echo JText::_('_NO_USERNAME'); 
+			<?php }
+			echo JText::_('_NO_USERNAME');
 			?>
 			<a href="/register"><?php echo JText::_('_CREATE_ACCOUNT'); ?></a>
 		</p>
@@ -92,6 +92,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 	if (!empty($this->error_message))
 		echo '<p class="error">'. $this->error_message . '</p>';
-	if (!empty($this->login_attempts) && $this->login_attempts >= 2) 
+	if (!empty($this->login_attempts) && $this->login_attempts >= 2)
 		echo '<p class="hint">Having trouble logging in? <a href="support/report_problems/">Report problems to Support</a>.</p>';
 ?>

@@ -35,21 +35,18 @@ class modWhatsNew
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
-
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,13 +55,11 @@ class modWhatsNew
 	}
 
 	//-----------
-
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
 		if (!isset($this->searchareas) || empty($this->searchareas)) {
 			// No - so we'll need to get it
-
 			$areas = array();
 
 			// Load the XSearch plugins
@@ -75,7 +70,7 @@ class modWhatsNew
 			$searchareas = $dispatcher->trigger( 'onWhatsNewAreas' );
 
 			// Build an array of the areas
-			foreach ($searchareas as $area) 
+			foreach ($searchareas as $area)
 			{
 				$areas = array_merge( $areas, $area );
 			}
@@ -89,7 +84,6 @@ class modWhatsNew
 	}
 
 	//-----------
-
 	public function formatTags($tags=array(), $num=3, $max=25)
 	{
 		$out = '';
@@ -98,9 +92,9 @@ class modWhatsNew
 			$out .= '<span class="taggi">'."\n";
 			$counter = 0;
 
-			for ($i=0; $i< count($tags); $i++) 
+			for ($i=0; $i< count($tags); $i++)
 			{
-				$counter = $counter + strlen(stripslashes($tags[$i]['raw_tag']));	
+				$counter = $counter + strlen(stripslashes($tags[$i]['raw_tag']));
 				if ($counter > $max) {
 					$num = $num - 1;
 				}
@@ -119,7 +113,6 @@ class modWhatsNew
 	}
 
 	//-----------
-
 	public function display()
 	{
 		$module    =& $this->module;
@@ -147,7 +140,7 @@ class modWhatsNew
 			}
 			$this->feedlink = $feedlink;
 		}
-		
+
 		// Get categories
 		$areas = $this->_getAreas();
 
@@ -156,7 +149,7 @@ class modWhatsNew
 		// Check the search string for a category prefix
 		if ($this->period != NULL) {
 			$searchstring = strtolower($this->period);
-			foreach ($areas as $c=>$t) 
+			foreach ($areas as $c=>$t)
 			{
 				$regexp = "/" . $c . ":/";
 		    	if (strpos($searchstring, $c . ":") !== false) {
@@ -170,7 +163,7 @@ class modWhatsNew
 				// Does the category contain sub-categories?
 				if (is_array($t) && !empty($t)) {
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc=>$st) 
+					foreach ($t as $sc=>$st)
 					{
 						$regexp = "/" . $sc . ":/";
 				    	if (strpos($searchstring, $sc . ":") !== false) {
@@ -204,8 +197,8 @@ class modWhatsNew
 
 		// Get the search results
 		$results = $dispatcher->trigger( 'onWhatsnew', array(
-				$p, 
-				$count, 
+				$p,
+				$count,
 				0,
 				$activeareas,
 				array())
@@ -214,7 +207,7 @@ class modWhatsNew
 		$rows = array();
 
 		if ($results) {
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				if (is_array($result) && !empty($result)) {
 					$rows = $result;
@@ -222,30 +215,30 @@ class modWhatsNew
 				}
 			}
 		}
-		
+
 		$this->rows = $rows;
 		$this->rows2 = null;
-		
+
 		if ($this->tagged) {
 			$juser =& JFactory::getUser();
 
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'tags.php' );
 			$mt = new MembersTags( $database );
 			$tags = $mt->get_tags_on_object($juser->get('id'), 0, 0, NULL, 0, 0);
-			
+
 			$this->tags = $tags;
-			
+
 			if (count($tags) > 0) {
 				$tagids = array();
-				foreach ($tags as $tag) 
+				foreach ($tags as $tag)
 				{
 					$tagids[] = $tag['id'];
 				}
 
 				// Get the search results
 				$results2 = $dispatcher->trigger( 'onWhatsnew', array(
-						$p, 
-						$count, 
+						$p,
+						$count,
 						0,
 						$activeareas,
 						$tagids)
@@ -254,7 +247,7 @@ class modWhatsNew
 				$rows2 = array();
 
 				if ($results2) {
-					foreach ($results2 as $result2) 
+					foreach ($results2 as $result2)
 					{
 						if (is_array($result2) && !empty($result2)) {
 							$rows2 = $result2;
@@ -262,13 +255,13 @@ class modWhatsNew
 						}
 					}
 				}
-				
+
 				$this->rows2 = $rows2;
 			}
 		}
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_whatsnew');	
+		Hubzero_Document::addModuleStyleSheet('mod_whatsnew');
 	}
 }

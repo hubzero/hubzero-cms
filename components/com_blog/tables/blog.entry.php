@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Blog Entry database class
 //----------------------------------------------------------
 
-class BlogEntry extends JTable 
+class BlogEntry extends JTable
 {
 	var $id           = NULL;  // @var int(11) Primary key
 	var $title        = NULL;  // @var varchar(150)
@@ -49,17 +49,15 @@ class BlogEntry extends JTable
 	var $hits         = NULL;  // @var int(11)
 	var $allow_comments = NULL;  // @var int(2)
 	var $scope        = NULL;  // @var varchar(100)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__blog_entries', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function loadAlias( $oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL ) 
+
+	public function loadAlias( $oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL )
 	{
 		if ($oid === NULL) {
 			return false;
@@ -70,7 +68,7 @@ class BlogEntry extends JTable
 		if (!$scope) {
 			return false;
 		}
-		switch ($scope) 
+		switch ($scope)
 		{
 			case 'member':
 				if ($created_by === NULL) {
@@ -81,7 +79,7 @@ class BlogEntry extends JTable
 				}
 				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND created_by='$created_by'";
 			break;
-			
+
 			case 'group':
 				if ($group_id === NULL) {
 					$group_id = $this->group_id;
@@ -92,7 +90,7 @@ class BlogEntry extends JTable
 				//$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND group_id='$group_id'";
 				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND group_id='$group_id'";
 			break;
-			
+
 			default:
 				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope'";
 			break;
@@ -105,10 +103,8 @@ class BlogEntry extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->title ) == '') {
 			$this->setError( JText::_('Please provide a title.') );
@@ -124,36 +120,30 @@ class BlogEntry extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getEntriesCount($filters=array()) 
+
+	public function getEntriesCount($filters=array())
 	{
 		$filters['limit'] = 0;
 		$query = "SELECT COUNT(*) ".$this->_buildAdminQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getEntries($filters=array()) 
+
+	public function getEntries($filters=array())
 	{
 		$bc = new BlogComment( $this->_db );
-		
+
 		$query = "SELECT m.*, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildAdminQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	private function _buildAdminQuery($filters) 
+
+	private function _buildAdminQuery($filters)
 	{
 		$filters['scope'] = 'site';
-		
+
 		$nullDate = $this->_db->getNullDate();
 		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
@@ -168,7 +158,7 @@ class BlogEntry extends JTable
 			$query .= " AND m.group_id=".$filters['group_id'];
 		}
 		if (isset($filters['state']) && $filters['state'] != '') {
-			switch ($filters['state']) 
+			switch ($filters['state'])
 			{
 				case 'public':
 					$query .= " AND m.state=1";
@@ -196,33 +186,27 @@ class BlogEntry extends JTable
 		}
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount($filters=array()) 
+
+	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
 		$query = "SELECT COUNT(*) ".$this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords($filters=array()) 
+
+	public function getRecords($filters=array())
 	{
 		$bc = new BlogComment( $this->_db );
-		
+
 		$query = "SELECT m.*, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	private function _buildQuery($filters) 
+
+	private function _buildQuery($filters)
 	{
 		$nullDate = $this->_db->getNullDate();
 		$date =& JFactory::getDate();
@@ -231,11 +215,11 @@ class BlogEntry extends JTable
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
 					WHERE m.scope='".$filters['scope']."' AND m.created_by=u.uidNumber ";
-					
+
 		if (isset($filters['year']) && $filters['year'] != 0) {
 			if (isset($filters['month']) && $filters['month'] != 0) {
 				$startmonth = $filters['year'].'-'.$filters['month'].'-01 00:00:00';
-				
+
 				if ($filters['month']+1 == 13) {
 					$year = $filters['year'] + 1;
 					$month = 1;
@@ -249,7 +233,7 @@ class BlogEntry extends JTable
 			} else {
 				$startyear = $filters['year'].'-01-01 00:00:00';
 				$endyear = ($filters['year']+1).'-01-01 00:00:00';
-				
+
 				$query .= " AND m.publish_up >= ".$this->_db->Quote($startyear)." AND m.publish_up < ".$this->_db->Quote($endyear)." ";
 			}
 		} else {
@@ -263,7 +247,7 @@ class BlogEntry extends JTable
 			$query .= " AND m.group_id=".$filters['group_id'];
 		}
 		if (isset($filters['state']) && $filters['state'] != '') {
-			switch ($filters['state']) 
+			switch ($filters['state'])
 			{
 				case 'public':
 					$query .= " AND m.state=1 AND u.public=1 ";
@@ -291,8 +275,8 @@ class BlogEntry extends JTable
 		}
 		return $query;
 	}
-	
-	public function deleteComments($id=null) 
+
+	public function deleteComments($id=null)
 	{
 		if (!$id) {
 			$id = $this->id;
@@ -301,9 +285,9 @@ class BlogEntry extends JTable
 			$this->setError( JText::_('Missing Entry ID.') );
 			return false;
 		}
-		
+
 		$bc = new BlogComment( $this->_db );
-		
+
 		$this->_db->setQuery( "DELETE FROM ".$bc->getTableName()." WHERE entry_id=$id" );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
@@ -312,8 +296,8 @@ class BlogEntry extends JTable
 			return true;
 		}
 	}
-	
-	public function deleteFiles($id=null) 
+
+	public function deleteFiles($id=null)
 	{
 		// Build the file path
 		/*$path = JPATH_ROOT;
@@ -333,8 +317,8 @@ class BlogEntry extends JTable
 		}*/
 		return true;
 	}
-	
-	public function deleteTags($id=null) 
+
+	public function deleteTags($id=null)
 	{
 		if (!$id) {
 			$id = $this->id;
@@ -343,7 +327,7 @@ class BlogEntry extends JTable
 			$this->setError( JText::_('Missing Entry ID.') );
 			return false;
 		}
-		
+
 		$bt = new BlogTags( $this->_db );
 		if (!$bt->remove_all_tags($id)) {
 			$this->setError( JText::_('UNABLE_TO_DELETE_TAGS') );
@@ -351,41 +335,41 @@ class BlogEntry extends JTable
 		}
 		return true;
 	}
-	
-	public function getPopularEntries($filters=array()) 
+
+	public function getPopularEntries($filters=array())
 	{
 		$filters['order'] = 'hits DESC';
-		
+
 		$bc = new BlogComment( $this->_db );
-		
+
 		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	public function getRecentEntries($filters=array()) 
+
+	public function getRecentEntries($filters=array())
 	{
 		$filters['order'] = 'publish_up DESC';
-		
+
 		$bc = new BlogComment( $this->_db );
-		
+
 		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	public function getDateOfFirstEntry($filters=array()) 
+
+	public function getDateOfFirstEntry($filters=array())
 	{
 		$filters['order'] = 'publish_up ASC';
 		$filters['limit'] = 1;
 		$filters['start'] = 0;
 		$filters['year'] = 0;
 		$filters['month'] = 0;
-		
+
 		$query = "SELECT publish_up ".$this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}

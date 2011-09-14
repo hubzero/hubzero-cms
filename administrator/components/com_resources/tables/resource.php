@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourcesResource extends JTable 
+class ResourcesResource extends JTable
 {
 	var $id               = NULL;  // @var int(11) Primary key
 	var $title            = NULL;  // @var varchar(250)
@@ -60,17 +59,15 @@ class ResourcesResource extends JTable
 	var $attribs          = NULL;  // @var text
 	var $alias            = NULL;  // @var varchar(100)
 	var $ranking          = NULL;  // @var float
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__resources', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function loadAlias( $oid=NULL ) 
+
+	public function loadAlias( $oid=NULL )
 	{
 		if ($oid === NULL) {
 			return false;
@@ -83,10 +80,8 @@ class ResourcesResource extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->title ) == '') {
 			$this->setError( 'Your Resource must contain a title.' );
@@ -94,9 +89,7 @@ class ResourcesResource extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function getTypeTitle($which=0)
 	{
 		if ($which) {
@@ -108,9 +101,7 @@ class ResourcesResource extends JTable
 		$title = $this->_db->loadResult();
 		return ($title) ? $title : '';
 	}
-	
-	//-----------
-	
+
 	public function getGroups()
 	{
 		if ($this->group_access != '') {
@@ -124,39 +115,35 @@ class ResourcesResource extends JTable
 		if (!empty($this->group_owner)) {
 			$allowedgroups[] = $this->group_owner;
 		}
-		
+
 		return $allowedgroups;
 	}
-	
-	//-----------
 
 	public function calculateRating()
 	{
 		$this->_db->setQuery( "SELECT rating FROM #__resource_ratings WHERE resource_id='$this->id'" );
 		$ratings = $this->_db->loadObjectList();
-	
+
 		$totalcount = count($ratings);
 		$totalvalue = 0;
-		
+
 		// Add the ratings up
 		foreach ($ratings as $item)
 		{
 			$totalvalue = $totalvalue + $item->rating;
 		}
-	
+
 		// Find the average of all ratings
 		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
-	
+
 		// Round to the nearest half
 		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
-	
+
 		// Update page with new rating
 		$this->rating = $newrating;
 		$this->times_rated = $totalcount;
 	}
-	
-	//-----------
-	
+
 	public function updateRating()
 	{
 		$this->_db->setQuery( "UPDATE $this->_tbl SET rating='$this->rating', times_rated='$this->times_rated' WHERE id='$this->id'" );
@@ -165,15 +152,13 @@ class ResourcesResource extends JTable
 			exit;
 		}
 	}
-	
-	//-----------
-	
-	public function deleteExistence( $id=NULL ) 
+
+	public function deleteExistence( $id=NULL )
 	{
 		if (!$id) {
 			$id = $this->id;
 		}
-		
+
 		// Delete child associations
 		$this->_db->setQuery( "DELETE FROM #__resource_assoc WHERE child_id=".$id );
 		if (!$this->_db->query()) {
@@ -199,14 +184,12 @@ class ResourcesResource extends JTable
 			exit;
 		}
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$juser =& JFactory::getUser();
 		$now = date( 'Y-m-d H:i:s', time() );
-		
+
 		$query  = "";
 		if (isset($filters['tag']) && $filters['tag'] != '') {
 			$query .= "FROM #__tags_object AS RTA ";
@@ -262,7 +245,7 @@ class ResourcesResource extends JTable
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 			$tagging = new ResourcesTags( $this->_db );
 			$tags = $tagging->_parse_tags($filters['tag']);
-		
+
 			$query .= "AND RTA.objectid=C.id AND (TA.tag IN (";
 			$tquery = '';
 			foreach ($tags as $tagg)
@@ -276,7 +259,7 @@ class ResourcesResource extends JTable
 		}
 		$query .= " ORDER BY ";
 		if (isset($filters['sortby'])) {
-			switch ($filters['sortby']) 
+			switch ($filters['sortby'])
 			{
 				case 'date':
 				case 'date_published':   $query .= 'publish_up DESC';      break;
@@ -288,12 +271,10 @@ class ResourcesResource extends JTable
 				case 'random':  $query .= "RAND()";                        break;
 			}
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
+
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
@@ -307,23 +288,19 @@ class ResourcesResource extends JTable
 		}
 		return $arr;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array(), $admin=false ) 
+
+	public function getCount( $filters=array(), $admin=false )
 	{
 		$query = $this->buildQuery( $filters, $admin );
-		
+
 		$sql  = "SELECT C.id";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques ".$query : " ".$query;
 
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array(), $admin=false ) 
+
+	public function getRecords( $filters=array(), $admin=false )
 	{
 		$sql  = "SELECT C.id, C.title, C.type, C.introtext, C.fulltext, C.created, C.created_by, C.modified, C.published, C.publish_up, C.standalone, C.access, C.hits, C.rating, C.times_rated, C.params, C.alias, C.ranking, t.type AS typetitle, lt.type AS logicaltitle";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
@@ -333,17 +310,15 @@ class ResourcesResource extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function buildPluginQuery( $filters=array() )
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
 		$rt = new ResourcesType( $database );
-		
+
 		if (isset($filters['search']) && $filters['search'] != '') {
 			$searchquery = $filters['search'];
 			$phrases = $searchquery->searchPhrases;
@@ -373,7 +348,7 @@ class ResourcesResource extends JTable
 					$words = array();
 					if (count($searchquery->searchWords) > 0) {
 						$ws = $searchquery->searchWords;
-						foreach ($ws as $w) 
+						foreach ($ws as $w)
 						{
 							if (strlen($w) > 2) {
 								$words[] = $w;
@@ -382,7 +357,7 @@ class ResourcesResource extends JTable
 					}
 					$text = implode(' +',$words);
 					$text = addslashes($text);
-					
+
 					$text2 = str_replace('+','',$text);
 
 					$query .= ", ("
@@ -447,11 +422,11 @@ class ResourcesResource extends JTable
 		if (isset($filters['type']) && $filters['type'] != '') {
 			$query .= "AND r.type=".$filters['type']." ";
 		}
-		
+
 		if (isset($filters['group']) && $filters['group'] != '') {
 			$query .= "AND (r.group_owner='".$filters['group']."' OR r.group_access LIKE '%;".$filters['group'].";%') ";
 			if (!$filters['authorized']) {
-				switch ($filters['access']) 
+				switch ($filters['access'])
 				{
 					case 'public':    $query .= "AND r.access = 0 ";  break;
 					case 'protected': $query .= "AND r.access = 3 ";  break;
@@ -460,7 +435,7 @@ class ResourcesResource extends JTable
 					default:          $query .= "AND r.access != 4 "; break;
 				}
 			} else {
-				switch ($filters['access']) 
+				switch ($filters['access'])
 				{
 					case 'public':    $query .= "AND r.access = 0 ";  break;
 					case 'protected': $query .= "AND r.access = 3 ";  break;
@@ -500,7 +475,7 @@ class ResourcesResource extends JTable
 				$query .= "AND (r.access=0 OR r.access=3) ";
 			}
 		}
-		
+
 		if (isset($filters['now'])) {
 			$query .= "AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '".$filters['now']."') ";
 			$query .= "AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '".$filters['now']."') ";
@@ -511,19 +486,19 @@ class ResourcesResource extends JTable
 		if (isset($filters['enddate'])) {
 			$query .= "AND r.publish_up < '".$filters['enddate']."' ";
 		}
-		
+
 		if (isset($filters['search']) && $filters['search'] != '') {
 			if (!empty($phrases)) {
 				$exactphrase = addslashes('"'.$phrases[0].'"');
 				$query .= "AND ( (MATCH(r.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR"
 						 . " (MATCH(au.givenName,au.surname) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR "
 						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) ) ";
-						
+
 			} else {
 				$words = array();
 				if (count($searchquery->searchWords) > 0) {
 					$ws = $searchquery->searchWords;
-					foreach ($ws as $w) 
+					foreach ($ws as $w)
 					{
 						if (strlen($w) > 2) {
 							$words[] = $w;
@@ -534,11 +509,11 @@ class ResourcesResource extends JTable
 				//$text = implode(' ',$searchquery->searchWords);
 				$text = addslashes($text);
 				$text2 = str_replace('+','',$text);
-				
+
 				$query .= "AND ( (MATCH(r.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
 						 . " (MATCH(au.givenName,au.surname) AGAINST ('+$text -\"$text2\"') > 0) OR "
 						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') > 0) ) ";
-						
+
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all') {
 				$query .= "GROUP BY r.id ";
@@ -553,7 +528,7 @@ class ResourcesResource extends JTable
 					$query .= "GROUP BY r.id ";
 				}
 				$query .= "ORDER BY ";
-				switch ($filters['sortby']) 
+				switch ($filters['sortby'])
 				{
 					case 'date':    $query .= 'publish_up DESC';               break;
 					case 'title':   $query .= 'title ASC, publish_up';         break;

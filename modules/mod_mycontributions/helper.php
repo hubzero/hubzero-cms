@@ -35,38 +35,33 @@ class modMyContributions
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
 			return $this->attributes[$property];
 		}
 	}
-	
+
 	//-----------
-	
-	private function _getContributions() 
+	private function _getContributions()
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
 		// Container for the various types of contributions
 		//$contributions = array();
-		
 		// Get "published" contributions
 		/*$query1 = "SELECT COUNT(*)"
 			. " FROM #__resources AS R, #__author_assoc AS AA"
@@ -75,7 +70,7 @@ class modMyContributions
 		$database->setQuery( $query1 );
 		$contributions['published'] = $database->loadResult();
 		*/
-		
+
 		// Get "in progress" contributions
 		/*$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
 							AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone, 
@@ -97,7 +92,6 @@ class modMyContributions
 
 		$database->setQuery($query);
 		//$contributions['inprogress'] = $database->loadObjectList(); // not include tools
-					
 		// Get "pending" contributions
 		/*
 		$query3 = "SELECT COUNT(*)"
@@ -107,12 +101,11 @@ class modMyContributions
 		$database->setQuery( $query3 );
 		$contributions['pending'] = $database->loadResult();
 		*/
-		
+
 		return $database->loadObjectList();
 	}
-	
+
 	//-----------
-	
 	private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools='40')
 	{
 		$juser =& JFactory::getUser();
@@ -122,27 +115,27 @@ class modMyContributions
 		$filters = array();
 		$filters['sortby'] = 'f.published DESC';
 		$filters['filterby'] = 'all';
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
-		
+
 		// Create a Tool object
 		$rows = Hubzero_Tool::getTools( $filters, false);
 		$limit = 100000;
-		
+
 		if ($rows) {
-			for ($i=0; $i < count($rows); $i++) 
+			for ($i=0; $i < count($rows); $i++)
 			{
 				// what is resource id?
 				$rid = Hubzero_Tool::getResourceId($rows[$i]->id);
 				$rows[$i]->rid = $rid;
-						
+
 				// get questions, wishes and tickets on published tools
 				if ($rows[$i]->published == 1 && $i <= $limit_tools) {
 					if ($show_questions) {
 						// get open questions
 						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
 						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
-						$aq = new AnswersQuestion( $database );	
+						$aq = new AnswersQuestion( $database );
 						$filters = array();
 						$filters['limit']    = $limit;
 						$filters['start']    = 0;
@@ -153,7 +146,7 @@ class modMyContributions
 						$results = $aq->getResults( $filters );
 						$unanswered = 0;
 						if ($results) {
-							foreach ($results as $r) 
+							foreach ($results as $r)
 							{
 								if ($r->rcount == 0) {
 									$unanswered++;
@@ -164,7 +157,7 @@ class modMyContributions
 						$rows[$i]->q = count($results);
 						$rows[$i]->q_new = $unanswered;
 					}
-					
+
 					if ($show_wishes) {
 						// get open wishes
 						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
@@ -175,36 +168,36 @@ class modMyContributions
 						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php' );
 						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php' );
 						require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'controller.php' );
-						
+
 						$objWishlist = new Wishlist( $database );
 						$objWish = new Wish( $database );
 						$listid = $objWishlist->get_wishlistID($rid, 'resource');
-						
+
 						$rows[$i]->w = 0;
 						$rows[$i]->w_new = 0;
-							
+
 						if ($listid) {
 							$filters = WishlistController::getFilters(1);
 							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
 							$unranked = 0;
 							if ($wishes) {
-								foreach ($wishes as $w) 
+								foreach ($wishes as $w)
 								{
 									if ($w->ranked == 0) {
 										$unranked++;
 									}
 								}
 							}
-							
+
 							$rows[$i]->w = count($wishes);
 							$rows[$i]->w_new = $unranked;
 						}
 					}
-					
+
 					if ($show_tickets) {
 						// get open tickets
 						$group = $rows[$i]->devgroup;
-						
+
 						// Find support tickets on the user's contributions
 						$database->setQuery( "SELECT id, summary, category, status, severity, owner, created, login, name, 
 							 (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
@@ -219,28 +212,25 @@ class modMyContributions
 						}
 						$unassigned = 0;
 						if ($tickets) {
-							foreach ($tickets as $t) 
+							foreach ($tickets as $t)
 							{
 								if ($t->comments == 0 && $t->status==0 && !$t->owner) {
 									$unassigned++;
 								}
 							}
 						}
-						
-						
+
 						$rows[$i]->s = count($tickets);
 						$rows[$i]->s_new = $unassigned;
 					}
 				}
 			}
 		}
-	
-				
+
 		return $rows;
 	}
-	
-	//-----------
 
+	//-----------
 	public function getState($int)
 	{
 		switch ($int)
@@ -257,9 +247,8 @@ class modMyContributions
 		}
 		return $state;
 	}
-	
-	//-----------
 
+	//-----------
 	public function getType($int)
 	{
 		switch ($int)
@@ -273,9 +262,8 @@ class modMyContributions
 		}
 		return $type;
 	}
-	
+
 	//-----------
-	
 	public function display()
 	{
 		// Get the user's profile from LDAP...
@@ -283,41 +271,41 @@ class modMyContributions
 		$juser =& JFactory::getUser();
 		$session_quota = $xprofile->get('jobsAllowed');
 		$administrator = in_array('middleware', $xprofile->get('admin'));
-		
+
 		// show tool contributions separately?
 		$show_tools = intval( $this->params->get( 'show_tools' ) );
 		$show_tools = $show_tools ? $show_tools : 1;
 		$this->show_tools = $show_tools;
-		
+
 		// get questions on resources?
 		//$show_questions = intval( $this->params->get( 'get_questions' ) );
 		//$show_questions = $show_questions ? $show_questions : 1;
 		$this->show_questions = 1;
-		
+
 		// get wishes on resources?
 		//$show_wishes = intval( $this->params->get( 'get_wishes' ) );
 		//$show_wishes = $show_wishes ? $show_wishes : 1;
 		$this->show_wishes = 1;
-		
+
 		// get tickets on resources?
 		//$show_tickets = intval( $this->params->get( 'get_tickets' ) );
 		//$show_tickets = $show_tickets ? $show_tickets : 1;
 		$this->show_tickets = 1;
-		
+
 		// how many tools to display?
 		$limit_tools = intval( $this->params->get( 'limit_tools' ) );
 		$limit_tools = $limit_tools ? $limit_tools : 10;
 		$this->limit_tools = $limit_tools;
-		
+
 		// how many tools to display?
 		$limit_other = intval( $this->params->get( 'limit_other' ) );
 		$limit_other = $limit_other ? $limit_other : 5;
 		$this->limit_other = $limit_other;
-		
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_mycontributions');
-		
+
 		// Tools in progress
 		$this->tools = ($this->show_tools) ? $this->_getToollist($this->show_questions, $this->show_wishes, $this->show_tickets, $this->limit_tools) : array();
 

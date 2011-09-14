@@ -46,8 +46,6 @@ class Hubzero_Registration
 	var $_invalid;
 	var $_checked;
 
-	//-----------
-
 	public function clear()
 	{
 		$this->_registration = array();
@@ -56,8 +54,6 @@ class Hubzero_Registration
 		$this->_invalid = false;
 		$this->_checked = true;
 	}
-	
-	//-----------
 
 	public function __construct($login = null)
 	{
@@ -65,8 +61,6 @@ class Hubzero_Registration
 
 		$this->clear();
 	}
-	
-	//-----------
 
 	public function normalize()
 	{
@@ -95,8 +89,6 @@ class Hubzero_Registration
 		$this->_registration['usageAgreement'] = null;
 		$this->_registration['mailPreferenceOption'] = null;
 	}
-	
-	//-----------
 
 	public function loadPost()
 	{
@@ -146,7 +138,7 @@ class Hubzero_Registration
 		} else {
 			$cresident = null;
 		}
-		
+
 		if ($disability_p === null) // field not on form
 			$disability = null;
 		else
@@ -200,7 +192,7 @@ class Hubzero_Registration
 		}
 
 		if ($racenativeamerican_p === NULL
-		 && $racenativetribe_p === null 
+		 && $racenativetribe_p === null
 		 && $raceasian_p === NULL
 		 && $raceblack_p === NULL
 		 && $racehawaiian_p === NULL
@@ -276,7 +268,7 @@ class Hubzero_Registration
 		$nm .= ' '.trim($name['last']);
 		$this->_registration['name'] = $nm;
 
-		$this->_registration['countryresident'] = $cresident; 
+		$this->_registration['countryresident'] = $cresident;
 		$this->_registration['countryorigin']	= $corigin;
 		$this->_registration['nativetribe'] = $racenativetribe;
 		$this->_registration['role'] = $role;
@@ -284,14 +276,14 @@ class Hubzero_Registration
 		$this->_registration['hispanic'] = $hispanic;
 		$this->_registration['disability'] = $disability;
 		$this->_registration['race'] = $race;
-		$this->_registration['login'] = strtolower(JRequest::getVar('login', null, 'post')); 
+		$this->_registration['login'] = strtolower(JRequest::getVar('login', null, 'post'));
 		$this->_registration['email'] = JRequest::getVar('email', null, 'post');
 		$this->_registration['confirmEmail'] = JRequest::getVar('email2', null, 'post');
 		$this->_registration['web'] = JRequest::getVar('web', null, 'post');
 		$this->_registration['phone'] = JRequest::getVar('phone', null, 'post');
 		//$this->_registration['name'] = JRequest::getVar('name', null, 'post');
 		$this->_registration['orgtype']	= JRequest::getVar('orgtype', null, 'post');
-		$this->_registration['org'] = JRequest::getVar('org', null, 'post'); 
+		$this->_registration['org'] = JRequest::getVar('org', null, 'post');
 		$this->_registration['orgtext']	= JRequest::getVar('orgtext', null, 'post');
 		$this->_registration['reason'] = JRequest::getVar('reason', null, 'post');
 		$this->_registration['reasontxt'] = JRequest::getVar('reasontxt', null, 'post');
@@ -308,7 +300,7 @@ class Hubzero_Registration
 		if ($this->_registration['usageAgreement'] !== null)
 			$this->_registration['usageAgreement'] = ($this->_registration['usageAgreement'] === 'unset') ? false : true;
 
-		if ($this->_registration['mailPreferenceOption'] !== null)	
+		if ($this->_registration['mailPreferenceOption'] !== null)
 			if ($this->_registration['mailPreferenceOption'] == 'unset')
 				$this->_registration['mailPreferenceOption'] = '0';
 			else
@@ -316,17 +308,15 @@ class Hubzero_Registration
 
 		$this->_checked = false;
 	}
-	
-	//-----------
 
 	public function loadProfile($xprofile = null)
 	{
 		$this->clear();
-		
+
 		if (!is_object($xprofile)) {
 			return;
 		}
-		
+
 		$this->set('countryresident', $xprofile->get('countryresident'));
 		$this->set('countryorigin', $xprofile->get('countryorigin'));
 		$this->set('nativetribe', $xprofile->get('nativeTribe'));
@@ -358,19 +348,17 @@ class Hubzero_Registration
 	function loadAccount($juser = null)
 	{
 		$this->clear();
-		
+
 		if (!is_object($juser)) {
 			return;
 		}
-		
+
 		$this->set('login', $juser->get('username'));
 		$this->set('name', $juser->get('name'));
 		$this->set('email', $juser->get('email'));
-		
+
 		$this->_checked = false;
 	}
-	
-	//-----------
 
 	public function get($key)
 	{
@@ -381,13 +369,11 @@ class Hubzero_Registration
 
 		return $this->_registration[$key];
 	}
-	
-	//-----------
-	
+
 	public function set($key,$value)
 	{
 		//$this->logDebug("Hubzero_Registration::set($key,$value)");
-			
+
 		$this->_checked = false;
 
 		if (!array_key_exists($key, $this->_registration))
@@ -398,8 +384,6 @@ class Hubzero_Registration
 		//if (($key == 'login') || ($key == 'email'))
 			//unset($this->_encoded[$key]);
 	}
-
-	//-----------
 
 	private function registrationField($name, $default, $task = 'register')
 	{
@@ -453,17 +437,15 @@ class Hubzero_Registration
 		$db->setQuery($query, 0, 1);
 		return $db->loadResult();
 	}
-	
-	//-----------
 
 	public function check($task = 'create', $id = 0)
 	{
 		ximport('Hubzero_User_Helper');
 		ximport('Hubzero_Registration_Helper');
 		ximport('Hubzero_Validate');
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		if ($id == 0) {
 			$id = $juser->get('id');
 		}
@@ -505,10 +487,10 @@ class Hubzero_Registration
 			else {
 				$registrationUsername = REG_READONLY;
 			}
-			
+
 			$registrationPassword = REG_HIDE;
 			$registrationConfirmPassword = REG_HIDE;
-			
+
 			if (empty($registration['email'])) {
 				$registrationEmail = REG_REQUIRED;
 			}
@@ -520,18 +502,18 @@ class Hubzero_Registration
 			$registrationPassword = REG_HIDE;
 			$registrationConfirmPassword = REG_HIDE;
 		}
-		
+
 		if ($juser->get('auth_link_id') && $task == 'create') {
 			$registrationPassword = REG_HIDE;
 			$registrationConfirmPassword = REG_HIDE;
 		}
-		
+
 		$login = $registration['login'];
 
 		$email = $registration['email'];
 		$confirmEmail = $registration['confirmEmail'];
 
-		if ($registrationUsername == REG_REQUIRED) 
+		if ($registrationUsername == REG_REQUIRED)
 		{
 			if (empty($login))
 			{
@@ -545,11 +527,11 @@ class Hubzero_Registration
 			if (!empty($login) && !Hubzero_Registration_Helper::validlogin($login) )
 				$this->_invalid['login'] = 'Invalid login name. Please use only alphanumeric characters.';
 		}
-		
+
 		if (!empty($login) && ($task == 'create' || $task == 'proxycreate' || $task == 'update'))
 		{
 			jimport('joomla.user.helper');
-			
+
 			$uid = JUserHelper::getUserId($login);
 
 			if ($uid && $uid != $id)
@@ -557,9 +539,9 @@ class Hubzero_Registration
 
 			if (Hubzero_Validate::is_reserved_username($login))
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
-				
+
 			$puser = posix_getpwnam($login);
-			
+
 			//if (!empty($puser) && $uid && $uid != $puser['uid'])
 				//$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
 		}
@@ -611,7 +593,7 @@ class Hubzero_Registration
 				// Strong pass
 			}
 		}
-			
+
 		if ($registrationFullname == REG_REQUIRED)
 		{
 			if (empty($registration['name']))
@@ -623,7 +605,7 @@ class Hubzero_Registration
 				$surname = null;
 				$middleName = null;
 				$givenName = null;
-				
+
 				if (count($bits) == 1)
 				{
 					$givenName = array_shift($bits);
@@ -631,7 +613,7 @@ class Hubzero_Registration
 				else
 				{
 					$surname = array_pop($bits);
-				
+
 					if (count($bits) >= 1) {
 						$givenName = array_shift($bits);
 					}
@@ -639,7 +621,7 @@ class Hubzero_Registration
 						$middleName = implode(' ',$bits);
 					}
 				}
-				
+
 				if (!$givenName) {
 					$this->_missing['name'] = 'Full Name';
 					$this->_invalid['name'] = 'Please provide a name.';
@@ -650,7 +632,6 @@ class Hubzero_Registration
 		if ($registrationFullname != REG_HIDE)
 			if (!empty($registration['name']) && !Hubzero_Registration_Helper::validtext($registration['name']) )
 				$this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
-
 
 		if ($registrationEmail == REG_REQUIRED)
 		{
@@ -681,7 +662,7 @@ class Hubzero_Registration
 				}
 			}
 		}
-		
+
 		if ($registrationConfirmEmail == REG_REQUIRED)
 		{
 			if (empty($confirmEmail) && empty($this->_invalid['email']))
@@ -702,7 +683,7 @@ class Hubzero_Registration
 				}
 			}
 		}
-		
+
 		if ($registrationURL == REG_REQUIRED)
 		{
 			if (empty($registration['web']))
@@ -789,7 +770,7 @@ class Hubzero_Registration
 
 		if ($registrationResidency != REG_HIDE)
 			if (!empty($registration['countryresident']) && !Hubzero_Registration_Helper::validtext($registration['countryresident']))
-				$this->_invalid['countryresident'] = 'Invalid country of residency. You may be using characters that are not allowed.'; 
+				$this->_invalid['countryresident'] = 'Invalid country of residency. You may be using characters that are not allowed.';
 
 		if ($registrationSex == REG_REQUIRED)
 		{
@@ -875,7 +856,7 @@ class Hubzero_Registration
 			}
 		}
 
-		if ($registrationReason != REG_HIDE) 
+		if ($registrationReason != REG_HIDE)
 		{
 			if (!empty($registration['reason']) && !Hubzero_Registration_Helper::validtext($registration['reason'])) {
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
@@ -908,7 +889,7 @@ class Hubzero_Registration
 				$this->_invalid['usageAgreement'] = 'Registration requires acceptance of the usage agreement';
 			}
 		}
-		
+
 		/*
 		if ($registrationTOU != REG_HIDE)
 			if (!empty($registration['usageAgreement']))
@@ -920,10 +901,8 @@ class Hubzero_Registration
 
 		return false;
 	}
-	
-	//-----------
-	
-	public function scorePassword($password, $username='') 
+
+	public function scorePassword($password, $username='')
 	{
 		$score = 0;
 
@@ -935,7 +914,7 @@ class Hubzero_Registration
 
 		$seen = array();
 
-		for ( $i = 0 ; $i < strlen($password) ; $i++ ) 
+		for ( $i = 0 ; $i < strlen($password) ; $i++ )
 		{
 			$char = substr($password, $i, 1);
 
@@ -952,7 +931,7 @@ class Hubzero_Registration
 			}
 
 			if ($seen[$char] != 1) {
-				for ( $k = 1 ; $k < $seen[$char] ; $k++ ) 
+				for ( $k = 1 ; $k < $seen[$char] ; $k++ )
 				{
 					$s = $s / 2;
 				}

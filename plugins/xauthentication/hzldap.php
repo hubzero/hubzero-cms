@@ -184,44 +184,44 @@ class plgXAuthenticationHzldap extends JPlugin
     		if (isset($matches[4]) && is_numeric($matches[4]))
         		$port = $matches[4];
 		}
-	
+
         $_ldc = @ldap_connect($host, $port);
-        
+
 		if (!$_ldc)
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'Unable to connect to the HUBzero LDAP server';
-			return;	
+			return;
 		}
 
 		if ( $use_ldapV3 && !@ldap_set_option($_ldc, LDAP_OPT_PROTOCOL_VERSION, 3) )
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'HUBzero LDAP server refuses protocol version 3.';
-			return;	
+			return;
 		}
 
 		if ( $use_ldapV3 && !@ldap_set_option($_ldc, LDAP_OPT_REFERRALS, $no_referrals) )
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'HUBzero LDAP server refuses to set referrals options.';
-			return;	
+			return;
 		}
 
 		if ( $use_ldapV3 && $negotiate_tls && !@ldap_start_tls($_ldc))
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'HUBzero LDAP server refuses to start TLS mode.';
-			return;	
+			return;
 		}
 
 		$attributes = array('mail','cn', 'uid');
 
 		if ($auth_method == 'search')
 		{
-			if (strlen($username)) 
+			if (strlen($username))
 				$bindtest = @ldap_bind($username, $password);
-			else 
+			else
 				$bindtest = @ldap_bind($_ldc);
 
 			if($bindtest)
@@ -247,9 +247,9 @@ class plgXAuthenticationHzldap extends JPlugin
 			$dn = str_replace('[username]', $credentials['username'], $users_dn);
 
 			$success = ldap_bind($_ldc, $dn, $credentials['password']);
-       		
+
 			$search_result = ldap_search($_ldc, $dn, '(objectClass=hubAccount)', array('mail','cn','uid'));
-			
+
 			$userdetails = ldap_get_entries($_ldc, $search_result);
 		}
 

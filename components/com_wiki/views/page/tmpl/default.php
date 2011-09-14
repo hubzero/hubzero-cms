@@ -47,7 +47,7 @@ if ($this->sub) {
 <?php
 if (!$mode || ($mode && $mode != 'static')) {
 	echo WikiHtml::authors( $this->page, $params );
-} 
+}
 ?>
 </div><!-- /#content-header -->
 
@@ -75,7 +75,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 <?php
 if (!$mode || ($mode && $mode != 'static')) {
 	echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->editauthorized );
-	
+
 	$first = $this->page->getRevision(1);
 ?>
 <div class="main section">
@@ -95,7 +95,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 	</div><!-- / .subject -->
 </div><!-- / .main section -->
 <?php
-} else { 
+} else {
 	echo $this->output['text'];
 }
 ?>

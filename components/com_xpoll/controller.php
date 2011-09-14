@@ -36,8 +36,8 @@ class XPollController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', 'latest' );
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'latest': $this->latest(); break;
 			case 'vote':   $this->vote();   break;
@@ -47,13 +47,11 @@ class XPollController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
-	protected function _buildPathway($poll=null) 
+	protected function _buildPathway($poll=null)
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -73,10 +71,8 @@ class XPollController extends Hubzero_Controller
 			);
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle($poll=null) 
+
+	protected function _buildTitle($poll=null)
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task && $this->_task != 'view') {
@@ -88,15 +84,15 @@ class XPollController extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	protected function vote() 
+	protected function vote()
 	{
 		$redirect = 1;
-		
+
 		// Instantiate a view
 		$view = new JView( array('name'=>'vote') );
 		$view->option = $this->_option;
@@ -104,7 +100,7 @@ class XPollController extends Hubzero_Controller
 		// Incoming poll ID
 		$uid = JRequest::getInt( 'id', 0 );
 		$view->pollid = $uid;
-		
+
 		// Load the poll
 		$poll = new XPollPoll( $this->database );
 		if (!$poll->load( $uid )) {
@@ -115,7 +111,7 @@ class XPollController extends Hubzero_Controller
 
 		// Set the cookie name
 		$cookiename = 'voted'.$poll->id;
-		
+
 		// Check if this user has already voted
 		$voted = JRequest::getVar( $cookiename, '0', 'cookie' );
 		if ($voted) {
@@ -131,7 +127,7 @@ class XPollController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
-		
+
 		// Set a cookie so we know they voted
 		setcookie( $cookiename, '1', time()+$poll->lag );
 
@@ -147,15 +143,15 @@ class XPollController extends Hubzero_Controller
 			JError::raiseError( 500, $vote->getError() );
 			return;
 		}
-		
+
 		// Increase the total vote count for the poll
 		$poll->increaseVoteCount();
-		
+
 		// Get voter's IP
 		$ip = (getenv(HTTP_X_FORWARDED_FOR))
 	    	?  getenv(HTTP_X_FORWARDED_FOR)
 	    	:  getenv(REMOTE_ADDR);
-		
+
 		// Store the data about this vote
 		$xpdate = new XPollDate( $this->database );
 		$xpdate->date = date("Y-m-d G:i:s");
@@ -170,7 +166,7 @@ class XPollController extends Hubzero_Controller
 			JError::raiseError( 500, $vote->getError() );
 			return;
 		}
-		
+
 		// Choose the action
 		if ($redirect) {
 			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=view&id='.$uid );
@@ -180,20 +176,18 @@ class XPollController extends Hubzero_Controller
 
 			// Set the pathway
 			$this->_buildPathway($poll);
-			
+
 			// Display the poll
 			$view->display();
 		}
 	}
 
-	//-----------
-
-	protected function view() 
+	protected function view()
 	{
 		// Instantiate a view
 		$view = new JView( array('name'=>'view') );
 		$view->option = $this->_option;
-		
+
 		// Incoming
 		$uid = JRequest::getInt( 'id', 0 );
 
@@ -226,19 +220,19 @@ class XPollController extends Hubzero_Controller
 				$view->first_vote = JHTML::_( 'date', $dates[0]->mindate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
 				$view->last_vote  = JHTML::_( 'date', $dates[0]->maxdate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
 			}
-			
+
 			// Get the poll data
 			$xpdata = new XPollData( $this->database );
 			$view->votes = $xpdata->getPollData( $poll->id );
 		}
-	
+
 		// Get all published polls
 		$view->polls = $poll->getAllPolls();
-		
+
 		// Push some needed styles and javascript to the template
 		$this->_getStyles();
 		$this->_getScripts();
-		
+
 		// Set the page title
 		$this->_buildTitle($poll);
 
@@ -251,9 +245,7 @@ class XPollController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	protected function latest()
 	{
 		// Instantiate a new view
@@ -271,7 +263,7 @@ class XPollController extends Hubzero_Controller
 		} else {
 			$view->options = array();
 		}
-		
+
 		// Set the page title
 		$this->_buildTitle();
 

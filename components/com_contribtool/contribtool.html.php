@@ -38,46 +38,33 @@ if (!defined('n')) {
 	define('a','&amp;');
 }
 
-
-
-class ContribtoolHtml 
+class ContribtoolHtml
 {
 
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
-	
-	//-----------
-	
+
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
-	
-	//-----------
 
 	public function passed( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'.n;
 	}
 
-
-	//-----------
-	
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
-	//-----------
-	
 	public function hed($level, $txt)
 	{
 		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
 	}
-
-	//-----------
 
 	public function div($txt, $cls='', $id='')
 	{
@@ -105,74 +92,69 @@ class ContribtoolHtml
 		}
 		return $stime;
 	}
-	
-	//-----------
-	
+
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
 		$current_time = time();
-		
+
 		// Determine the difference, between the time now and the timestamp
 		$difference = $current_time - $timestamp;
-		
+
 		// Set the periods of time
 		$periods = array(JText::_('SECOND'), JText::_('MINUTE'), JText::_('HOUR'), JText::_('DAY'), JText::_('WEEK'), JText::_('MONTH'), JText::_('YEAR'), JText::_('DECADE'));
-		
+
 		// Set the number of seconds per period
 		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		
+
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-		
+
 		// Ensure the script has found a match
 		if ($val < 0) $val = 0;
-		
+
 		// Determine the minor value, to recurse through
 		$new_time = $current_time - ($difference % $lengths[$val]);
-		
+
 		// Set the current value to be floored
 		$number = floor($number);
 
 		// If required create a plural
-		if ($number != 1) 
+		if ($number != 1)
 		$periods = array(JText::_('SECONDS'), JText::_('MINUTES'), JText::_('HOURS'), JText::_('DAYS'), JText::_('WEEKS'), JText::_('MONTHS'), JText::_('YEARS'), JText::_('DECADES'));
-		
-		
+
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
+
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
 		if (($val >= 1) && (($current_time - $new_time) > 0)){
 			$text .= ContribtoolHtml::timeAgoo($new_time);
 		}
-		
+
 		return $text;
 	}
-	
-	//-----------
-	
-	public function timeAgo($timestamp) 
+
+	public function timeAgo($timestamp)
 	{
 		$timestamp = ContribtoolHtml::mkt($timestamp);
 		$text = ContribtoolHtml::timeAgoo($timestamp);
-		
+
 		$parts = explode(' ',$text);
 
 		$text  = $parts[0].' '.$parts[1];
 
 		return $text;
 	}
-	
+
 	//-----------
 	public function formSelect($name, $idname, $array, $value, $class='', $jscall='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$idname.'"';
 		$out .= ($class) ? ' class="'.$class.'"' : ''."";
 		$out .= ($jscall) ? ' onChange="'.$jscall.'">'."\n" : '>'."\n";
-		foreach ($array as $avalue => $alabel) 
+		foreach ($array as $avalue => $alabel)
 		{
 			$selected = ($avalue == $value || $alabel == $value)
 					  ? ' selected="selected"'
@@ -182,7 +164,7 @@ class ContribtoolHtml
 		$out .= '</select>'."\n";
 		return $out;
 	}
-	
+
 	//-----------
 	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='')
 	{
@@ -192,15 +174,13 @@ class ContribtoolHtml
 		$html .= '</span>'.n;
 		return $html;
 	}
-			
-	//-----------
-		
-	public function getNumofTools($status, $toolnum='') 
-	{	
+
+	public function getNumofTools($status, $toolnum='')
+	{
 		// get hub parameters
 		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
-		
+
 		$toolnum = ($status['state']!=9) ? JText::_('THIS_TOOL').'  ': '';
 		if(!$status['published'] && ContribtoolHtml::toolActive($status['state']) ) {
 			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('TOOLS')). ' '
@@ -213,12 +193,10 @@ class ContribtoolHtml
 		else if($status['state']==8) {
 			$toolnum .= JText::_('WAS_ONCE_PUBLISHED').' '.JText::_('ON').' '.$xhub->getCfg('hubShortName').' '.JText::_('NOW_RETIRED');
 		}
-			
+
 		return $toolnum;
 	}
-	
-	//-----------
-		
+
 	public function toolActive($stateNum) {
 		if($stateNum==8 or $stateNum==9) {
 			return false;
@@ -226,10 +204,10 @@ class ContribtoolHtml
 		else {
 			return true;
 		}
-	
+
 	}
 	//-----------
-		
+
 	public function toolWIP($stateNum) {
 		if($stateNum==2 or $stateNum==9 or $stateNum==1) {
 			return false;
@@ -237,11 +215,9 @@ class ContribtoolHtml
 		else {
 			return true;
 		}
-	
+
 	}
-	
-	//-----------
-		
+
 	public function toolEstablished($stateNum) {
 		if($stateNum==1 or $stateNum==9) {
 			return false;
@@ -249,27 +225,27 @@ class ContribtoolHtml
 		else {
 			return true;
 		}
-	
+
 	}
 	//-----------
-		
+
 	public function getStatusClass($statusNum, &$statusClass) {
-		
-		switch($statusNum) 
+
+		switch($statusNum)
 		{
 			case 7: 	$statusClass = '_closed';		break;
 			case 8: 	$statusClass = '_abandoned';	break;
 			case 9: 	$statusClass = '_abandoned';	break;
-			default: 	$statusClass = '';							
+			default: 	$statusClass = '';
 		}
-		
+
 		return $statusClass;
 	}
 	//-----------
-		
+
 	public function getStatusName($statusNum, &$statusName) {
-		
-		switch($statusNum) 
+
+		switch($statusNum)
 		{
 			case 1: 	$statusName = JText::_('REGISTERED');     	break;
 			case 2: 	$statusName = JText::_('CREATED'); 			break;
@@ -279,13 +255,13 @@ class ContribtoolHtml
 			case 6: 	$statusName = JText::_('APPROVED'); 		break;
 			case 7: 	$statusName = JText::_('PUBLISHED');		break;
 			case 8: 	$statusName = JText::_('RETIRED');			break;
-			case 9: 	$statusName = JText::_('ABANDONED');		break;							
+			case 9: 	$statusName = JText::_('ABANDONED');		break;
 		}
-		
+
 		return $statusName;
 	}
 	//-----------
-	
+
 	public function getStatusNum($statusName, $statusNum=1)
 	{
 		$statusName= strtolower($statusName);
@@ -305,7 +281,7 @@ class ContribtoolHtml
 		return $statusNum;
 	}
 	//-----------
-	
+
 	public function getPriority ($int, $priority='')
 	{
 		switch($int)
@@ -316,36 +292,32 @@ class ContribtoolHtml
 			case 4: 	$priority = 'low'; 			break;
 			case 5: 	$priority = 'lowest'; 		break;
 			default: 	$priority = 'normal';		break;
-		
+
 		}
 		return $priority;
 	}
 
-	//-----------
-		
 	public function getDevTeam($members, $obj = 1, $team='') {
-		
+
 		if(count($members)>0) {
 			foreach($members as $member) {
-				$uid = ($obj) ? $member->uidNumber  : $member ;			
+				$uid = ($obj) ? $member->uidNumber  : $member ;
 				$juser =& JUser::getInstance ( $uid );
 				if (is_object($juser)) {
 							$login = $juser->get('username');
 				} else {
-					$login = JText::_('UNKNOWN'); 
-				}	
+					$login = JText::_('UNKNOWN');
+				}
 				$team .= ($member != end($members)) ? $login. ', ' : $login;
 			}
 		}
 		else {
-			$team .= JText::_('N/A'); 
+			$team .= JText::_('N/A');
 		}
-		
+
 		return $team;
 	}
-	
-	//-----------
-		
+
 	public function getGroups($groups, $obj = 1, $list='') {
 		if(count($groups)>0) {
 			foreach($groups as $group) {
@@ -353,17 +325,15 @@ class ContribtoolHtml
 				$list .= ($group != end($groups)) ? $cn. ', ' : $cn;
 			}
 		}
-			
+
 		return $list;
 	}
-	
-	//-----------
-		
-	public function getToolAccess($access, $groups, $toolaccess='') 
-	{		
-		switch($access) 
+
+	public function getToolAccess($access, $groups, $toolaccess='')
+	{
+		switch($access)
 		{
-			case '@GROUP': 	
+			case '@GROUP':
 							if(count($groups)>0) {
 							$toolaccess = JText::_('RESTRICTED').' '.JText::_('TO').' '.JText::_('GROUP_OR_GROUPS').' ';
 								foreach($groups as $group) {
@@ -371,57 +341,55 @@ class ContribtoolHtml
 								}
 							}
 							else { $toolaccess = JText::_('RESTRICTED').' '.JText::_('TO').' '.JText::_('UNSPECIFIED').' '.JText::_('GROUP_OR_GROUPS'); }
-							
+
 							break;
-							
-			case '@US': 	$toolaccess = JText::_('TOOLACCESS_US'); 			break;			
+
+			case '@US': 	$toolaccess = JText::_('TOOLACCESS_US'); 			break;
 			case '@PU': 	$toolaccess = JText::_('TOOLACCESS_PU'); 			break;
-			case '@D1': 	$toolaccess = JText::_('TOOLACCESS_D1'); 			break;				
-			default: 		$toolaccess = JText::_('ACCESS_OPEN'); 				break;			
+			case '@D1': 	$toolaccess = JText::_('TOOLACCESS_D1'); 			break;
+			default: 		$toolaccess = JText::_('ACCESS_OPEN'); 				break;
 		}
-		
+
 		return $toolaccess;
 	}
 	//-----------
-	
-	public function getCodeAccess($access, $codeaccess = '') 
-	{	
-		switch($access) 
+
+	public function getCodeAccess($access, $codeaccess = '')
+	{
+		switch($access)
 		{
 			case '@OPEN': 	$codeaccess = JText::_('OPEN_SOURCE');				break;
-			case '@DEV': 	$codeaccess = JText::_('CLOSED_SOURCE');			break;							
-			default: 		$codeaccess = JText::_('UNSPECIFIED');				break;				
+			case '@DEV': 	$codeaccess = JText::_('CLOSED_SOURCE');			break;
+			default: 		$codeaccess = JText::_('UNSPECIFIED');				break;
 		}
-		
+
 		return $codeaccess;
 	}
-	
-	//-----------
-	
-	public function getWikiAccess($access, $wikiaccess = '') 
-	{		
-		switch($access) 
+
+	public function getWikiAccess($access, $wikiaccess = '')
+	{
+		switch($access)
 		{
 			case '@OPEN': 	$wikiaccess = JText::_('ACCESS_OPEN'); 				break;
-			case '@DEV': 	$wikiaccess = JText::_('ACCESS_RESTRICTED'); 		break;							
-			default: 		$wikiaccess = JText::_('UNSPECIFIED');				break;				
+			case '@DEV': 	$wikiaccess = JText::_('ACCESS_RESTRICTED'); 		break;
+			default: 		$wikiaccess = JText::_('UNSPECIFIED');				break;
 		}
-		
+
 		return $wikiaccess;
 	}
 	//------------
-	
-	public function writeWhatNext ($status, $config, $option, $title, $par='', $step2='', $step4='', $step5addon='') 
-	{			
+
+	public function writeWhatNext ($status, $config, $option, $title, $par='', $step2='', $step4='', $step5addon='')
+	{
 		// get configs
 		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$hubShortURL 	= $xhub->getCfg('hubShortURL');
 		$hubLongURL 	= $xhub->getCfg('hubLongURL');
-		
+
 		// get tool access text
 		$toolaccess = ContribtoolHtml::getToolAccess($status['exec'], $status['membergroups']);
-		
+
 		// get configurations/ defaults
 		$developer_site = isset($config->parameters['developer_site']) ? $config->parameters['developer_site'] : 'nanoFORGE';
 		$developer_url 	= isset($config->parameters['developer_url']) ? $config->parameters['developer_url'] : 'https://developer.nanohub.org';
@@ -429,27 +397,27 @@ class ContribtoolHtml
 		$learn_url 	= isset($config->parameters['learn_url']) ? $config->parameters['learn_url'] : '';
 		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/tools/app-';
 		$dev_suffix 	= isset($config->parameters['dev_suffix']) ? $config->parameters['dev_suffix'] : '_dev';
-		
+
 		// set common paths
 		$statuspath =  JRoute::_('index.php?option='.$option.a.'task=status'.a.'toolid='.$status['toolid']);
 		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=test';
-		
-		$step3 = ($status['resource_modified'] == '1') 
+
+		$step3 = ($status['resource_modified'] == '1')
 					? '<li class="complete"> '.JText::_('TODO_MAKE_RES_PAGE').'. 
 					<a href="/resources/'.$status['resourceid'].'/?rev=dev">'.JText::_('PREVIEW').'</a> | 
-					<a href="index.php?option=com_contribtool&amp;task=start&amp;step=1&amp;rid='.$status['resourceid'].'">'.JText::_('TODO_EDIT_PAGE').'...</a></li>' 
+					<a href="index.php?option=com_contribtool&amp;task=start&amp;step=1&amp;rid='.$status['resourceid'].'">'.JText::_('TODO_EDIT_PAGE').'...</a></li>'
 					: '<li class="todo"> '.JText::_('TODO_MAKE_RES_PAGE').'. 
 					<a href="index.php?option=com_contribtool&amp;task=start&amp;step=1&amp;rid='.$status['resourceid'].'">'.JText::_('TODO_CREATE_PAGE').'...</a></li>';
-			
+
 		switch ($status['state']) {
-       
+
 	    //  registered
         case 1:
 			$par = '		<p>'.JText::_('TEAM_WILL_CREATE').' <a href="'.$developer_url.'">'.$developer_site.'</a>, '.JText::_('WHATSNEXT_REGISTERED_INSTRUCTIONS').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_YOUR_REQUEST').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 24 '.JText::_('HOURS').'</p>';
 			$step2 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>';
 			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 		break;
-			
+
 		//  created
         case 2:
 			$par  = '		<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').'  '.JText::_('WHATSNEXT_AREA_CREATED').' <a href="'.$developer_url.'">'.$developer_site.'</a> '.JText::_('SITE').': <br />';
@@ -471,15 +439,15 @@ class ContribtoolHtml
 			$par .= '		</ul>'.n;
 			$step2 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_UPLOAD_COMMIT_FINAL_CODE').' <span id="Uploaded_"><a href="javascript:void(0);'.$statuspath.'" class="flip" >'.JText::_('WHATSNEXT_DONE').'</a></span> <br /><a href="'.$developer_url.$project_path.$status['toolname'].'/wiki/GettingStarted">'.JText::_('WHATSNEXT_UPLOAD_HOW_DO_I_DO_THIS').'</a></li>';
 			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
-		break; 
-			
+		break;
+
 		//  uploaded
         case 3:
 			$par = '<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS').' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 3 '.JText::_('DAYS').'.</p>';
 			$step2 = '		<li class="complete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>';
-			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';			
+			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 		break;
-			
+
 		//  installed
         case 4:
 			$par = '		<p>'.JText::_('WHATSNEXT_INSTALLED_CODE_READY').' '.$xhub->getCfg('hubShortURL').'. '.JText::_('WHATSNEXT_INSTALLED_PLS_TEST').':</p>'.n;
@@ -502,14 +470,14 @@ class ContribtoolHtml
 			$step4.= ($status['resource_modified'] == '1') ?'<span id="Approved_"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_I_APPROVE').'</a></span> ' : '<span class="disabled">'.JText::_('WHATSNEXT_I_APPROVE').'</span>';
 			$step4.= ' | <span id="Updated_"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_CHANGES_MADE').'</a></span></li>'.n;
 		break;
-			 
+
 		//  updated
         case 5:
 			$par = '<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS').' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 3 '.JText::_('DAYS').'.</p>';
 			$step2 = '		<li class="complete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>' ;
-			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';		
+			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 		break;
-			 
+
 		//  approved
         case 6:
 			$par = '		<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_APPROVED_SINCE').'  '.JText::_('WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess.'.</p>';
@@ -517,9 +485,9 @@ class ContribtoolHtml
 			$par .= '		<a href="'.JRoute::_('index.php?option=com_resources&alias='.$status['toolname']).'" ><'.$xhub->getCfg('hubLongURL').'/tools/'.$status['toolname'].'</a></p>';
 			$step2 = '		<li class="complete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>' ;
 			$step4 = '		<li class="complete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
-			$step5addon = '<br /><span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_WAIT').'</a></span>';	
+			$step5addon = '<br /><span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_WAIT').'</a></span>';
 		break;
-			 
+
 		//  published
         case 7:
 			$par = '		<p>'.JText::_('WHATSNEXT_PUBLISHED_MSG').': <br />'.n;
@@ -529,7 +497,7 @@ class ContribtoolHtml
 			$par .= '		<li> '.JText::_('WHATSNEXT_CHANGES_MADE').' <span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_PUBLISHED_PLS_INSTALL').'</a></span></li>'.n;
 			$par .= '		</ul>'.n;
 		break;
-			
+
 		//  retired
         case 8:
 			$par = '		<p>'.JText::_('WHATSNEXT_RETIRED_FROM').' '.$xhub->getCfg('hubShortURL').'. '.JText::_('CONTACT').' '.$xhub->getCfg('hubShortName').' '.JText::_('CONTACT_SUPPORT_TO_REPUBLISH').' .</p>	';
@@ -538,16 +506,16 @@ class ContribtoolHtml
 			$par .= '		<li> '.JText::_('WHATSNEXT_RETIRED_WANT_REPUBLISH').'. <span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_RETIRED_PLS_REPUBLISH').'</a></span></li>'.n;
 			$par .= '		</ul>'.n;
 		break;
-			
+
 		//  abandoned
         case 9:
 			$par = '		<p> '.JText::_('WHATSNEXT_ABANDONED_MSG').' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_ABANDONED_CONTACT').'.</p>	';
-		break;			
-		} 		 
+		break;
+		}
 			 $html = $par.n;
-			 
+
 			 if($step2) {
-			 $html .= '		<h4>'.JText::_('WHATSNEXT_REMAINING_STEPS').':</h4>'.n; 
+			 $html .= '		<h4>'.JText::_('WHATSNEXT_REMAINING_STEPS').':</h4>'.n;
 			 $html .= '		<ul>'.n;
 			 $html .= ' 		<li class="complete">'.JText::_('WHATSNEXT_REGISTER').' '.$xhub->getCfg('hubShortName').'</li>'.n;
 			 $html .= $step2.n;
@@ -555,60 +523,57 @@ class ContribtoolHtml
 			 $html .= $step4.n;
 			 $html .= ' 		<li class="incomplete">  '.JText::_('WHATSNEXT_PUBLISH').' '.$xhub->getCfg('hubShortURL');
 			 $html .= ($step5addon) ? $step5addon: '';
-			 $html .= '			</li>'.n; 
-			 $html .= '		</ul>'.n; 
+			 $html .= '			</li>'.n;
+			 $html .= '		</ul>'.n;
 			 }
-			 
+
 			// $html .= '<p style="margin-top:5em;border-top:1px solid #ccc;"> '.JText::_('WHATSNEXT_CONFUSED').' '.JText::_('VIEW').' <a href="contribute/tools">'.JText::_('RESOURCES').'</a> '.JText::_('EXPLAINING_CONTRIBUTION').'.</p>'.n;
 			// $html .= '		</div>'.n;
 			// $html .= '	  </div>'.n;
 			 //$html .= '<div class="clear"></div>'.n;
-			 return $html;			
+			 return $html;
 	}
-		
-	//-----------
-	
-	public function writeApproval($active_stage) 
+
+	public function writeApproval($active_stage)
 	{
-	
+
 		//$stages = array(JText::_('CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('CONTRIBTOOL_STEP_APPEND_NOTES'), JText::_('CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
 		$stages = array(JText::_('CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
 		$key = array_keys($stages, $active_stage);
-	
+
 		$html = "\t\t".'<div class="clear"></div>'."\n";
 		$html .= "\t\t".'<ol id="steps">'."\n";
 		$html .= "\t\t".' <li>'.JText::_('CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
-		
-		for ($i=0, $n=count( $stages ); $i < $n; $i++) 
+
+		for ($i=0, $n=count( $stages ); $i < $n; $i++)
 			{
 				$html .= "\t\t".' <li';
-				
-				if(strtolower($active_stage) == strtolower($stages[$i])) { 
+
+				if(strtolower($active_stage) == strtolower($stages[$i])) {
 					$html .= ' class="active"';
-					
-				} 
-				else if (count($key) == 0 or $i > $key[0]) {				
+
+				}
+				else if (count($key) == 0 or $i > $key[0]) {
 					$html .= ' class="future"';
 				}
-	
+
 				$html .= '>';
 				$html .= $stages[$i];
 				$html .= '</li>'."\n";
 			}
 		$html .= "\t\t".'</ol>'."\n";
-		$html .= "\t\t".'<div class="clear"></div>'."\n";		
-			
+		$html .= "\t\t".'<div class="clear"></div>'."\n";
+
 		echo $html;
 	}
 	//-----------
-	
-	public function writeResourceEditStage($stage, $version, $option, $rid, $published, $vnum) 
+
+	public function writeResourceEditStage($stage, $version, $option, $rid, $published, $vnum)
 	{
 		$stages = array(JText::_('CONTRIBTOOL_STEP_DESCRIPTION'),JText::_('CONTRIBTOOL_STEP_CONTRIBUTORS'),
 		JText::_('CONTRIBTOOL_STEP_ATTACHMENTS'),JText::_('CONTRIBTOOL_STEP_TAGS'), JText::_('CONTRIBTOOL_STEP_FINALIZE'));
 		$key = $stage-1;
-		
-		
+
 		$html = "\t\t".'<div class="clear"></div>'."\n";
 		$html .= "\t\t".'<ol id="steps" style="border-bottom:1px solid #ccc;margin-bottom:0;padding-bottom:0.7em;">'."\n";
 		$html .= "\t\t".' <li>'.JText::_('CONTRIBTOOL_EDIT_PAGE_FOR').' ';
@@ -619,16 +584,16 @@ class ContribtoolHtml
 		$html .= JText::_('CONTRIBTOOL_TIP_CURRENT_VERSION');
 		}
 		$html .= ':</li>'.n;
-		
-		for ($i=0, $n=count( $stages ); $i < $n; $i++) 
+
+		for ($i=0, $n=count( $stages ); $i < $n; $i++)
 			{
 				$html .= "\t\t".' <li';
-				
-				if($i==$key) { 
+
+				if($i==$key) {
 					$html .= ' class="active"';
-					
-				} 
-		
+
+				}
+
 				$html .= '>';
 				if($version=='dev' && $i!=$key && ($i+1)!= count( $stages )){
 				$html .='<a href="'.JRoute::_('index.php?option=com_contribtool&amp;task=start&amp;step='.($i+1).'&amp;rid='.$rid).'">'.$stages[$i].'</a>';
@@ -641,10 +606,10 @@ class ContribtoolHtml
 				}
 				$html .= '</li>'."\n";
 			}
-	
+
 		$html .= "\t\t".'</ol>'."\n";
 		$html .= "\t\t".'<p class="';
-		if($version=='dev') { 
+		if($version=='dev') {
 			if($vnum) {
 				$html .= 'devversion">'.ucfirst(JText::_('VERSION')).' '.$vnum;
 			}
@@ -656,65 +621,63 @@ class ContribtoolHtml
 		else if($version=='current' ) {
 		$html .= 'currentversion">'.ucfirst(JText::_('VERSION')).' '.$vnum.' - '.JText::_('published now (changes take effect immediately)');
 		}
-		$html .= ($version=='dev' && $published) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=com_contribtool&amp;task=start&amp;step='.$stage.'&amp;rid='.$rid).'?editversion=current">'.JText::_('change current published version instead').'</a></span>' : ''; 
+		$html .= ($version=='dev' && $published) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=com_contribtool&amp;task=start&amp;step='.$stage.'&amp;rid='.$rid).'?editversion=current">'.JText::_('change current published version instead').'</a></span>' : '';
 		$html .= ($version=='current' && $published) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=com_contribtool&amp;task=start&amp;step='.$stage.'&amp;rid='.$rid).'">'.JText::_('change upcoming version instead').'</a></span>' : '' ;
 		$html .='</p>'."\n";
-		
-		$html .= "\t\t".'<div class="clear"></div>'."\n";		
-			
+
+		$html .= "\t\t".'<div class="clear"></div>'."\n";
+
 		echo $html;
 	}
-	
-	//-----------
-	
+
 	public function writeStates($active_state, $statuspath )
 	{
-	
+
 		$states = array(JText::_('REGISTERED'),JText::_('CREATED'),JText::_('UPLOADED'),JText::_('INSTALLED'),JText::_('APPROVED'),JText::_('PUBLISHED')); // regular state list
-	
+
 		if($active_state == JText::_('RETIRED')) {
 			$states[] = JText::_('RETIRED');
 		}
-		
+
 		if($active_state == JText::_('UPDATED')) {
 			$states[2] = JText::_('UPDATED');
 		}
-	
+
 		$key = array_keys($states, $active_state);
-			
+
 		$html = "\t\t".'<div class="clear"></div>'."\n";
 		$html .= "\t\t".'<ol id="steps">'."\n";
 		$html .= "\t\t".' <li class="steps_hed">'.JText::_('STATUS').':</li>'."\n";
-		
-		for ($i=0, $n=count( $states ); $i < $n; $i++) 
+
+		for ($i=0, $n=count( $states ); $i < $n; $i++)
 		{
 			$html .= "\t\t".' <li';
-				
-			if(strtolower($active_state) == strtolower($states[$i])) { 
+
+			if(strtolower($active_state) == strtolower($states[$i])) {
 				$html .= ' class="active"';
-					
-			} 
+
+			}
 			/*if ($i< $key[0]) {				
 				$html .= ' class="future"';
 			}*/
-			
-			else if (count($key) == 0 or $i > $key[0]) {				
+
+			else if (count($key) == 0 or $i > $key[0]) {
 				$html .= ' class="future"';
 			}
-	
+
 			$html .= '>';
 			if(strtolower($active_state) == strtolower($states[$i])) {
 				$html .= $states[$i];
-			} 
+			}
 			else {
 				$html .= $states[$i];
 			}
 			$html .= '</li>'."\n";
 		}
-			
+
 		$html .= "\t\t".'</ol>'."\n";
-		$html .= "\t\t".'<div class="clear"></div>'."\n";		
-			
+		$html .= "\t\t".'<div class="clear"></div>'."\n";
+
 		echo $html;
 	}
 	//-----------
@@ -736,7 +699,7 @@ class ContribtoolHtml
 		return $html;
 	}
 	//-----------
-	
+
 	public function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner">'.n;
@@ -756,28 +719,28 @@ class ContribtoolHtml
 	//-----------------------------------------------------
 	// Tool registration/edit form
 	//-----------------------------------------------------
-	public function writeToolForm($option, $title, $admin, $juser, $defaults, $error, $id, $task, $config, $editversion='dev') 
-	{	
+	public function writeToolForm($option, $title, $admin, $juser, $defaults, $error, $id, $task, $config, $editversion='dev')
+	{
 		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
-		
+
 		$exec_pu = isset($config->parameters['exec_pu']) ? $config->parameters['exec_pu'] : 1;
-		
+
 		$execChoices[''] = JText::_('SELECT_TOP');
         $execChoices['@OPEN'] =  ucfirst(JText::_('TOOLACCESS_OPEN'));
         $execChoices['@US'] = ucfirst(JText::_('TOOLACCESS_US'));
 		$execChoices['@D1'] = ucfirst(JText::_('TOOLACCESS_D1'));
 		if($exec_pu) { $execChoices['@PU'] = ucfirst(JText::_('TOOLACCESS_PU')); }
 		$execChoices['@GROUP'] = ucfirst(JText::_('RESTRICTED')).' '.JText::_('TO').' '.JText::_('GROUP_OR_GROUPS');
-		
+
 		$codeChoices[''] = JText::_('SELECT_TOP');
         $codeChoices['@OPEN'] = ucfirst(JText::_('OPEN_SOURCE')). ' ('.JText::_('OPEN_SOURCE_TIPS').')';
         $codeChoices['@DEV'] = ucfirst(JText::_('ACCESS_RESTRICTED'));
-		
+
 		$wikiChoices[''] = JText::_('SELECT_TOP');
         $wikiChoices['@OPEN'] = ucfirst(JText::_('ACCESS_OPEN'));
         $wikiChoices['@DEV'] = ucfirst(JText::_('ACCESS_RESTRICTED'));
-		
+
 ?>
 	 <div id="content-header">
 			<h2><?php echo $title; ?></h2>
@@ -825,7 +788,7 @@ class ContribtoolHtml
                     <label><?php echo JText::_('TOOLNAME'); ?>: 
 				   		<?php if($id) { echo '<input type="hidden" name="tool[toolname]" id="t_toolname" value="'.$defaults['toolname'].'" />
 						<strong>'.$defaults['toolname'].' ('; echo ($editversion=="current") ? JText::_('CURRENT_VERSION') : JText::_('DEV_VERSION'); echo ')</strong>';
-						if(isset($defaults['published']) && $defaults['published']) { echo ' <a href="'.JRoute::_('index.php?option='.$option.'&amp;task=versions&amp;toolid='.$id).'">'.JText::_('ALL_VERSIONS').'</a>'; }  } 
+						if(isset($defaults['published']) && $defaults['published']) { echo ' <a href="'.JRoute::_('index.php?option='.$option.'&amp;task=versions&amp;toolid='.$id).'">'.JText::_('ALL_VERSIONS').'</a>'; }  }
 						else { ?> <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 					<input type="text" name="tool[toolname]" id="t_toolname" maxlength = "15" value="<?php echo $defaults['toolname']; ?>" />
 					<p class="hint"><?php echo JText::_('HINT_TOOLNAME'); ?></p>
@@ -883,13 +846,13 @@ class ContribtoolHtml
 	</div> 
     <div class="clear"></div>       
 <?php	
-	}	
+	}
 
 	//-----------------------------------------------------
 	// Version Approval Steps
 	//-----------------------------------------------------
 
-	public function writeFinalizeVersion($status, $admin, $error, $option, $title) 
+	public function writeFinalizeVersion($status, $admin, $error, $option, $title)
 	{
 		/*
 			$status['toolid']
@@ -910,10 +873,10 @@ class ContribtoolHtml
 		// get tool access text
 		$toolaccess = ContribtoolHtml::getToolAccess($status['exec'], $status['membergroups']);
 		// get source code access text
-		$codeaccess = ContribtoolHtml::getCodeAccess($status['code']);		
+		$codeaccess = ContribtoolHtml::getCodeAccess($status['code']);
 		// get wiki access text
 		$wikiaccess = ContribtoolHtml::getWikiAccess($status['wiki']);
-		
+
 	 	?>
           <div id="content-header">
 			<h2><?php echo $title; ?></h2>
@@ -926,7 +889,7 @@ class ContribtoolHtml
           </div><!-- / #content-header-extra -->
          <div class="main section">   
         <?php
-		
+
 		// write header
 		ContribtoolHtml::writeApproval('Approve');
 		if($error) echo '<p class="error">'.$error.'</p>'; ?>
@@ -962,16 +925,14 @@ class ContribtoolHtml
         </form>  
 		<div class="clear"></div>
         </div>
-    <?php		
+    <?php	
 	}
-	
-	//------------
 
-	public function writeNotesArea($notes, $option, $type='', $edititem = 0, $addnew = 1) 
+	public function writeNotesArea($notes, $option, $type='', $edititem = 0, $addnew = 1)
 	{
-	
+
 		$out ='';
-		$i = 0;	
+		$i = 0;
 		if(count($notes) > 0 ) {
 			$out .= '<ul class="features">'.n;
 			for ($i=0, $n=count( $notes ); $i < $n; $i++) {
@@ -983,34 +944,30 @@ class ContribtoolHtml
 			}
 			$out .= '</ul>'.n;
 		}
-		
+
 		if ($addnew) {
 			$out .= ContribtoolHtml::addNoteArea($i, $option, $type);
 		}
-        
-		return $out;   
-	
-	}
-	
-	//------------
 
-	public function addNoteArea($i, $option, $type = 'item') 
-	{	
-		$out  = ''; 
+		return $out;
+
+	}
+
+	public function addNoteArea($i, $option, $type = 'item')
+	{
+		$out  = '';
 	 	$out .= '<label>'.n;
 		$out .= ' <span class="selectgroup editnote">'.n;
 		$out .= '   <textarea name="'.$type.'[]" id="'.$type.$i.'"  rows="6" cols="35"></textarea>'.n;
         $out .= '   <span class="extras"><span></span></span>'.n;
         $out .= ' </span>'.n;
 		$out .= '</label>'.n;
-		
-		return $out;
-	
-	}
-	
-	//------------
 
-	public function writeToolLicense($licenses, $status, $admin, $error, $option, $action, $license_choice, $code, $action, $title) 
+		return $out;
+
+	}
+
+	public function writeToolLicense($licenses, $status, $admin, $error, $option, $action, $license_choice, $code, $action, $title)
 	{
 		$open 					= ($code == '@OPEN') ? 1 : 0 ;
 		$codeaccess 			= ($code == '@OPEN') ? 'open' : 'closed';
@@ -1019,7 +976,7 @@ class ContribtoolHtml
 		$submitlabel 			= ($action == 'edit') ? 'Save' : 'Use this license';
 		$instruction 			= ($action == 'edit') ? 'Specify license for next tool release:' : 'Please confirm your license for this tool release:';
 		$codeChoices['@OPEN'] 	= 'open source (anyone can access code)';
-		$codeChoices['@DEV'] 	= 'closed code';	
+		$codeChoices['@DEV'] 	= 'closed code';
 		$choices 				= ContribtoolHtml::formSelect('t_code', 't_code',  $codeChoices, $code,'shifted','');
 		$licenseChoices 		= array();
 		$licenseChoices['c1'] 	= 'Load a standard license';
@@ -1040,7 +997,7 @@ class ContribtoolHtml
           </div><!-- / #content-header-extra -->
          <div class="main section">   
         <?php
-		
+
 		$templates = ContribtoolHtml::formSelect('templates', 'templates',  $licenseChoices, $license_choice['template'],'shifted','');
 		if($action == 'confirm') {
 				ContribtoolHtml::writeApproval('Confirm license');
@@ -1059,7 +1016,7 @@ class ContribtoolHtml
 								<textarea name="license" cols="50" rows="15" id="license"><?php echo stripslashes($license_choice['text']); ?></textarea>
 									 <?php if($licenses) {
 										foreach ($licenses as $l) {
-											echo '<input type="hidden" name="'.$l->name.'" id="'.$l->name.'" value="'.stripslashes(htmlentities($l->text)).'" /> '.n; } 
+											echo '<input type="hidden" name="'.$l->name.'" id="'.$l->name.'" value="'.stripslashes(htmlentities($l->text)).'" /> '.n; }
 									 } ?>
 							<input type="hidden" name="option" value="<?php echo $option ?>" />   
 							<input type="hidden" name="task" value="savelicense" />
@@ -1090,10 +1047,8 @@ class ContribtoolHtml
             </div>
 		<?php
 	}
-	
-	//------------
 
-	public function writeToolVersions($tools, $status, $admin, $error, $option, $action, $title) 
+	public function writeToolVersions($tools, $status, $admin, $error, $option, $action, $title)
 	{
 		/*
 			$status['toolid']
@@ -1132,27 +1087,25 @@ class ContribtoolHtml
      <?php 
 		($status['published'] != 1 && !$status['version']) ?  $hint = '1.0' :$hint = '' ; // if tool is under dev and no version was specified before
 		$statuspath = JRoute::_('index.php?option='.$option.a.'task=status'.a.'toolid='.$status['toolid']);
-		
+
 		$newstate = ($action == 'edit') ? $status['state']: ContribtoolHtml::getStatusNum('Approved') ;
 		$submitlabel = ($action == 'edit') ? JText::_('SAVE') : JText::_('USE_THIS_VERSION');
 		if($action == 'confirm') {
 		ContribtoolHtml::writeApproval(JText::_('CONFIRM_VERSION'));
 		}
-	
+
 		$xhub =& Hubzero_Factory::getHub();
-		
+
 		$rconfig =& JComponentHelper::getParams( 'com_resources' );
 		$hubDOIpath = $rconfig->get('doi');
-		
-		
-		
+
 	?> 
         <div class="two columns first">	
 		<?php 
-		if ($error) { echo ContribtoolHtml::error( $error ); }  
+		if ($error) { echo ContribtoolHtml::error( $error ); }
 		if($action != 'dev' && $status['state']!=ContribtoolHtml::getStatusNum('Published')) {
-			if ($action == 'confirm' or $action == 'edit') { 
-				
+			if ($action == 'confirm' or $action == 'edit') {
+
 			?>
 			<h4><?php echo JText::_('VERSION_PLS_CONFIRM'); ?> <?php echo($action == 'edit') ? JText::_('NEXT'): JText::_('THIS'); ?> <?php echo JText::_('TOOL_RELEASE'); ?>:</h4>
 		<?php }
@@ -1193,19 +1146,19 @@ class ContribtoolHtml
 			 </thead>
 			 <tbody>             
 	<?php
-			$i=0;				
+			$i=0;
 			foreach ($tools as $t) {
-		
+
 			// get tool access text
 			$toolaccess = ContribtoolHtml::getToolAccess($t->toolaccess, $status['membergroups']);
 			// get source code access text
-			$codeaccess = ContribtoolHtml::getCodeAccess($t->codeaccess);		
+			$codeaccess = ContribtoolHtml::getCodeAccess($t->codeaccess);
 			// get wiki access text
 			$wikiaccess = ContribtoolHtml::getWikiAccess($t->wikiaccess);
-			
+
 			$handle = ($t->doi) ? $hubDOIpath.'r'.$status['resourceid'].'.'.$t->doi : '' ;
-			
-			$t->version = ($t->state==3 && $t->version==$status['currentversion']) ? JText::_('NO_LABEL') : $t->version; 
+
+			$t->version = ($t->state==3 && $t->version==$status['currentversion']) ? JText::_('NO_LABEL') : $t->version;
 	?>
 			  <tr id="displays_<?php echo $i; ?>">
 			   <td><span class="showcontrols"><a href="javascript:void(0);" class="expand" style="border:none;" id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a></span> <?php echo ($t->version) ? $t->version : JText::_('NA'); ?></td>
@@ -1250,24 +1203,24 @@ class ContribtoolHtml
 		<div class="clear"></div>
 </div>
 		<?php
-	
-	}	
+
+	}
 	//-----------------------------------------------------
 	// Status
 	//-----------------------------------------------------
-    
-    public function writeToolStatus($status, $user, $admin, $error, $option, $msg, $title, $config) 
-	{	
+
+    public function writeToolStatus($status, $user, $admin, $error, $option, $msg, $title, $config)
+	{
 		// get configurations/ defaults
 		$developer_site = isset($config->parameters['developer_site']) ? $config->parameters['developer_site'] : 'nanoFORGE';
 		$developer_url 	= isset($config->parameters['developer_url']) ? $config->parameters['developer_url'] : 'https://developer.nanohub.org';
 		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/projects/app-';
 		$dev_suffix 	= isset($config->parameters['dev_suffix']) ? $config->parameters['dev_suffix'] : '_dev';
-		
+
 		// get status name
 		ContribtoolHtml::getStatusName($status['state'], $state);
 		ContribtoolHtml::getStatusClass($status['state'], $statusClass);
-		
+
 		// format tool title
 		$tooltitle = $status['title'];
         if ($status['version']) { $tooltitle = $tooltitle.' v.'.$status['version']; }
@@ -1275,14 +1228,14 @@ class ContribtoolHtml
 		// write breadcrumbs
 		//$bc = '<a href="index.php?option='.$option.'">'.JText::_('CONTRIBTOOL_ALL_TOOLS').' ('.$status['ntools'].')</a> &gt; '.$status['toolname'];
 		//echo ContribtoolHtml::div( $bc, '', 'breadcrumbs' );
-		
+
 		// write title
 		$title .= ' - <span class="state_hed">'.$state.'</span>';
 		echo ContribtoolHtml::div( ContribtoolHtml::hed( 2, $title ), '', 'content-header' );
-		
+
 		// display error
-		if ($error) { echo ContribtoolHtml::error( $error ); }  else { 
-			
+		if ($error) { echo ContribtoolHtml::error( $error ); }  else {
+
 		// set common paths
 		$statuspath =  JRoute::_('index.php?option='.$option.a.'task=status'.a.'toolid='.$status['toolid']);
 		$editpath 	=  JRoute::_('index.php?option='.$option.a.'task=edit'.a.'toolid='.$status['toolid']);
@@ -1290,20 +1243,19 @@ class ContribtoolHtml
 		$licensepath = JRoute::_('index.php?option='.$option.a.'task=license'.a.'toolid='.$status['toolid']);
 		$ticketpath = JRoute::_('index.php?option=com_support'.a.'task=ticket'.a.'id='.$status['ticketid']);
 		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=test';
-		
+
 		// get configs
 		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$hubShortURL 	= $xhub->getCfg('hubShortURL');
 		$hubLongURL 	= $xhub->getCfg('hubLongURL');
-		
-		
+
 		// get tool access text
 		$toolaccess = ContribtoolHtml::getToolAccess($status['exec'], $status['membergroups']);
 		// get source code access text
-		$codeaccess = ContribtoolHtml::getCodeAccess($status['code']);		
+		$codeaccess = ContribtoolHtml::getCodeAccess($status['code']);
 		// get wiki access text
-		$wikiaccess = ContribtoolHtml::getWikiAccess($status['wiki']);	
+		$wikiaccess = ContribtoolHtml::getWikiAccess($status['wiki']);
 		?> 
 		
 	
@@ -1330,8 +1282,8 @@ class ContribtoolHtml
 					<tbody>
 						<tr>
 							<th colspan="2" class="toolinfo_hed"><?php 
-							echo JText::_('TOOL_INFO'); 
-							if(ContribtoolHtml::toolActive($status['state'])) { 
+							echo JText::_('TOOL_INFO');
+							if(ContribtoolHtml::toolActive($status['state'])) {
 							echo ' <a class="edit button" href="'.$editpath.'" title="'.JText::_('EDIT_TIPS').'">'.JText::_('EDIT'); ?></a><?php } ?></th>
 						</tr>
                         <tr>
@@ -1531,16 +1483,16 @@ class ContribtoolHtml
         </div>
         <div class="clear"></div>
         </div>
-        <?php 			   	
+        <?php 
 	  	} //end if no error
     }
-	
+
 	//-----------------------------------------------------
 	// Pipeline
 	//-----------------------------------------------------
 
-	public function summary (&$tools, $option, $filters, $admin, &$pageNav, $total, $title, $config) 
-	{	
+	public function summary (&$tools, $option, $filters, $admin, &$pageNav, $total, $title, $config)
+	{
 		// get configurations/ defaults
 		$developer_site = isset($config->parameters['developer_site']) ? $config->parameters['developer_site'] : 'nanoFORGE';
 		$developer_url 	= isset($config->parameters['developer_url']) ? $config->parameters['developer_url'] : 'https://developer.nanohub.org';
@@ -1557,7 +1509,7 @@ class ContribtoolHtml
 		</div><!-- / #content-header-extra -->
 
 		<div class="main section">
- 			<p><?php if(!$admin) { echo  (JText::_('CONTRIBTOOL_CHECK_STATUS'). ' ( '.$total.' )'); } 
+ 			<p><?php if(!$admin) { echo  (JText::_('CONTRIBTOOL_CHECK_STATUS'). ' ( '.$total.' )'); }
 			else { echo (JText::_('CONTRIBTOOL_LOGGED_AS_ADMIN').' '.JText::_('CONTRIBTOOL_ALL_SUBMISSIONS').' ('.$total.')');  } ?>.</p> 
 			<form action="index.php" method="get" name="adminForm">
 					<fieldset class="filters">
@@ -1622,17 +1574,17 @@ class ContribtoolHtml
 						<tbody>
                         <?php
 		$k = 0;
-			
-		for ($i=0, $n=count( $tools ); $i < $n; $i++) 
+
+		for ($i=0, $n=count( $tools ); $i < $n; $i++)
 		{
 			$row = &$tools[$i];
-			
+
 			$ticketpath = JRoute::_('index.php?option=com_support'.a.'task=ticket'.a.'id='.$row->ticketid);
-			
+
 			$lastchange = ($row->state_changed!='0000-00-00 00:00:00') ? ContribtoolHtml::timeAgo($row->state_changed) : ContribtoolHtml::timeAgo($row->registered);
 			$title = ($row->version) ? $row->title.' v'.$row->version : $row->title;
 			ContribtoolHtml::getStatusName($row->state, $status);
-					
+
 ?>
 							<tr  class="<?php echo strtolower($status) ; if(!$admin) { echo ('_user'); }?>">
 								<td><?php echo $row->id; ?></td>
@@ -1666,19 +1618,18 @@ class ContribtoolHtml
 		</div><!-- /.main section -->	
 
 <?php 
-	
-	
+
 	}
 
 	//-------------------------------------------------------------
 	// Resource page editing
 	//-------------------------------------------------------------
 
-	public function writeResourceEditForm ($rid, $toolid, $status, $row, $version, $allnbtags, $step, $option, $admin, $tags, $tagfa, $fat, $authors, $title, $groups) 
-	{		
+	public function writeResourceEditForm ($rid, $toolid, $status, $row, $version, $allnbtags, $step, $option, $admin, $tags, $tagfa, $fat, $authors, $title, $groups)
+	{
 		$nextstep = $step+1;
 		$task = ($nextstep==5) ? 'preview' : 'start';
-	      
+
 		echo ContribtoolHtml::div( ContribtoolHtml::hed( 2, $title ), '', 'content-header' );
 		?>
            <div id="content-header-extra">
@@ -1692,14 +1643,14 @@ class ContribtoolHtml
 		$dev = ($version=='dev') ? 1: 0;
 		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
-			
+
 		if($version=='dev') {
 			$v = ($status['version'] && $status['version']!= $status['currentversion']) ? $status['version'] : '';
 		}
 		else {
 			$v = $status['version'];
 		}
-		
+
 		ContribtoolHtml::writeResourceEditStage($step, $version, $option, $rid, $status['published'], $v);
 		?>
 <div class="main section noborder">
@@ -1747,9 +1698,9 @@ class ContribtoolHtml
 			<fieldset>
 				<h3><?php echo JText::_('COMPOSE_DETAILS'); ?></h3>
 <?php 
-foreach ($allnbtags as $tagname => $tagcontent) 
+foreach ($allnbtags as $tagname => $tagcontent)
 if($tagname!='screenshots' and $tagname!='bio') {
-{ 
+{
 	$tagcontent = preg_replace('/<br\\s*?\/??>/i', "", $tagcontent);
 ?>
 				<label>
@@ -1758,18 +1709,18 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				</label>
 <?php 
 }
-} 
+}
 ?>
-				<?php break; 
-				case 2: 
+				<?php break;
+				case 2:
 					// authors
 					ContribtoolHtml::stepAuthors( $rid, $version, $option);
-					 break; 
+					 break;
 				case 3:
 					// attachments
 				 	ContribtoolHtml::stepAttach( $rid, $option, $version, $status['published']);
-				 	break; 
-				case 4: 
+				 	break;
+				case 4:
 					// tags
 					ContribtoolHtml::stepTags( $rid, $tags, $tagfa, $fat, $option, $status['published'], $version );
 					break;
@@ -1797,7 +1748,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
         <?php	
 	}
 	//-----------
-	
+
 	public function stepAttach( $rid, $option, $version, $published=0)
 	{
 		$allowupload = ($version=='current' or !$published) ? 1 : 0;
@@ -1823,8 +1774,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		<?php
 	}
 
-	//-----------
-
 	public function stepAuthors($rid, $version, $option)
 	{
 		?>
@@ -1841,13 +1790,11 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		<?php
 	}
 
-	//-----------
-
 	public function stepTags( $rid, $tags, $tagfa, $fat, $option, $published=0, $version )
 	{
-		
+
 		$showwarning = ($version=='current' or !$published) ? 0 : 1;
-		
+
 		?>
 			<div class="explaination">
 				<h4><?php echo JText::_('TAGS_WHAT_ARE_TAGS'); ?></h4>
@@ -1859,7 +1806,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				<fieldset>
 					<legend><?php echo JText::_('TAGS_SELECT_FOCUS_AREA'); ?>:</legend>
 					<?php
-					foreach ($fat as $key => $value) 
+					foreach ($fat as $key => $value)
 					{
 						echo '<label><input class="option" type="radio" name="tagfa" value="' . $value . '"';
 						if ($tagfa == $value) {
@@ -1875,9 +1822,9 @@ if($tagname!='screenshots' and $tagname!='bio') {
 					<?php
 					JPluginHelper::importPlugin( 'hubzero' );
 					$dispatcher =& JDispatcher::getInstance();
-					
+
 					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$tags)) );
-					
+
 					if (count($tf) > 0) {
 						echo $tf[0];
 					} else {
@@ -1890,11 +1837,9 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		<?php
 	}
 
-	//-----------
-	
-	public function writeResourcePreview ( &$database, $option, $task, $rid, $toolid, $resource, $config, $usersgroups, $version, $title ) 
+	public function writeResourcePreview ( &$database, $option, $task, $rid, $toolid, $resource, $config, $usersgroups, $version, $title )
 	{
-		
+
 		$juser =& JFactory::getUser();
 		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
@@ -1902,7 +1847,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		$license = '/legal/license';
 
 		$html = '';
-		
+
 		?>
         
          <div id="content-header">
@@ -1915,7 +1860,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			</ul>
 		</div><!-- / #content-header-extra -->
         <?php
-		
+
 		// Get parameters
 		$rparams = new JParameter( $resource->params );
 		$params = $config;
@@ -1923,10 +1868,10 @@ if($tagname!='screenshots' and $tagname!='bio') {
 
 		// Get attributes
 		$attribs = new JParameter( $resource->attribs );
-		
+
 		// Get the resource's children
 		$helper = new ResourcesHelper( $rid, $database );
-		
+
 		ContribtoolHtml::writeResourceEditStage(5, $version, $option, $rid, 0, $resource->version);
 		?>
          <form action="index.php" method="post" id="hubForm" >
@@ -1948,41 +1893,40 @@ if($tagname!='screenshots' and $tagname!='bio') {
             <div class="clear"></div>
          </form>
         <?php
-	
+
 		$cats = array();
 		$sections = array();
-		
+
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
-		
+
 		$body = ResourcesHtml::about( $database, 0, $usersgroups, $resource, $helper, $config, array(), null, null, null, null, $params, $attribs, $option, 0 );
-		
+
 		$cat = array();
 		$cat['about'] = JText::_('ABOUT');
 		array_unshift($cats, $cat);
 		array_unshift($sections, array('html'=>$body,'metadata'=>''));
-		
-		
+
 		//$html  = '<h1 id="preview-header">'.JText::_('REVIEW_PREVIEW').'</h1>'.n;
 		//$html .= '<div id="preview-pane">'.n;
 		//$html .= ResourcesHtml::title( 'com_resources', $resource, $params, false );
 		//$html .= ResourcesHtml::tabs( 'com_resources', $rid, $cats, 'about' );
 		$html .= ResourcesHtml::sections( $sections, $cats, 'about', 'hide', 'main' );
 		//$html .= '</div><!-- / #preview-pane -->'.n;
-		
+
 		echo $html;
 	}
 	//-------------------------------------------------------------
 	// Other views
 	//-------------------------------------------------------------
-	
-	public function ss_pop( $option, $rid, $wpath, $upath, $file, $error, $version, $vid, $shot=array()) 
+
+	public function ss_pop( $option, $rid, $wpath, $upath, $file, $error, $version, $vid, $shot=array())
 	{
 	$size = getimagesize($upath.DS.$file);
 	$w = ($size[0] > 600) ? $size[0]/1.4444444 : $size[0];
 	$h = ($w != $size[0]) ? $size[1]/1.4444444 : $size[1];
-		
-	$title = (count($shot)>0 && isset($shot[0]->title)) ? $shot[0]->title : ''; 
-	
+
+	$title = (count($shot)>0 && isset($shot[0]->title)) ? $shot[0]->title : '';
+
 ?>
 	<div class="ss_pop">
 		<div><img src="<?php echo $wpath.DS.$file; ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>"  /></div>
@@ -2005,11 +1949,9 @@ if($tagname!='screenshots' and $tagname!='bio') {
      </div>
         
 <?php
-			
+
 	}
-	
-	//--------------
-	
+
 	public function screenshots ( $option, $rid, $upath, $wpath, $cparams, $error, $version, $shots, $published=0)
 	{
 		$versionlabel = ($version == 'current') ? JText::_('CURRENTLY_PUBLISHED') : JText::_('DEVELOPMENT');
@@ -2025,18 +1967,18 @@ if($tagname!='screenshots' and $tagname!='bio') {
       
 		<?php
 		$d = @dir($upath);
-	
+
 		$images = array();
 		$tns = array();
 		$all = array();
 		$ordering = array();
 		$html = '';
-		
+
 		// pick images from the upload directory
 		if ($d) {
-			while (false !== ($entry = $d->read())) 
-			{			
-				$img_file = $entry; 
+			while (false !== ($entry = $d->read()))
+			{
+				$img_file = $entry;
 				if (is_file($upath.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png|swf", $img_file )) {
 						$images[] = $img_file;
@@ -2046,12 +1988,12 @@ if($tagname!='screenshots' and $tagname!='bio') {
 					}
 					$images = array_diff($images, $tns);
 				}
-							
+
 			}
-										
+
 			$d->close();
 		}
-		
+
 		// get rid of images without thumbnails
 		if($images) {
 			foreach($images as $key => $value) {
@@ -2062,7 +2004,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			}
 			$images = array_values($images);
 		}
-		
+
 		// Get screenshot titles and ordering
 		$b = 0;
 		if($images) {
@@ -2070,24 +2012,24 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				$new = array();
 				$new['img'] = $ima;
 				$new['type'] = explode('.',$new['img']);
-						
+
 				// get title and ordering info from the database, if available
 				if(count($shots) > 0) {
-					foreach ($shots as $si) {				
+					foreach ($shots as $si) {
 						if($si->filename == $ima) {
 							$new['title'] = stripslashes($si->title);
 							$new['title'] = preg_replace( '/"((.)*?)"/i', "&#147;\\1&#148;", $new['title'] );
 							$new['ordering'] = $si->ordering;
-						}	
+						}
 					}
 				}
-			
+
 				$ordering[] = isset($new['ordering']) ? $new['ordering'] : $b;
 				$b++;
 				$all[]=$new;
-			} 
+			}
 		}
-			
+
 		// Order images
 		if(count($shots) > 0)  {
 			// sort by ordering
@@ -2098,18 +2040,17 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			sort ($all);
 		}
 		$images = $all;
-		
 
 		// Display screenshots
 		$els = '';
 		$k = 0;
 		$g = 0;
-		for ($i=0, $n=count( $images ); $i < $n; $i++) 
+		for ($i=0, $n=count( $images ); $i < $n; $i++)
 		{
 			$tn = ResourcesHtml::thumbnail($images[$i]['img']);
-			
+
 			if (is_file($upath.DS.$tn)) {
-			
+
 				if (strtolower(end($images[$i]['type'])) == 'swf') {
 					$g++;
 					$title = (isset($images[$i]['title']) && $images[$i]['title']!='' ) ? $images[$i]['title'] : JText::_('DEMO').' #'.$g;
@@ -2131,7 +2072,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				}
 			}
 		}
-		
+
 		if ($els) {
 			$html .= '<div class="upload_ss">'.n;
 			$html .= '<ul class="screenshots">'.n;
@@ -2189,16 +2130,13 @@ if($tagname!='screenshots' and $tagname!='bio') {
          <?php } ?>
 
 		<?php
-		
-		
-		
+
+
 	}
-	
-	//--------------
-	
- 	public function attachments( $option, $id, $path, $children, $config, $error='', $allowupload=1 ) 
+
+ 	public function attachments( $option, $id, $path, $children, $config, $error='', $allowupload=1 )
 	{
-		
+
 		$out = '';
 		if($allowupload) {
 		?>
@@ -2221,43 +2159,42 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		else {
 		$out .= t.t.'<p class="warning">'.JText::_('SUPPORTING_DOCS_ONLY_CURRENT').' '.JText::_('PLEASE').' <a href="'.JRoute::_('index.php?option=com_contribtool&amp;task=start&amp;step=3&amp;rid='.$id).'?editversion=current" target="_top">'.strtolower(JText::_('EDIT_CURRENT_VERSION')).'</a>, '.JText::_('IF_YOU_NEED_CHANGES').'</p>'.n;
 		}
-		
-		
+
 		if ($error) {
 			$out .= ContribtoolHtml::error($error);
 		}
-		
+
 		// loop through children and build list
 		if ($children) {
 			$base = $config->get('uploadpath');
-			
+
 			$k = 0;
 			$i = 0;
 			$files = array(13,15,26,33,35,38);
 			$n = count( $children );
-			
+
 			if($allowupload) {
 			$out .= '<p>'.JText::_('ATTACH_EDIT_TITLE_EXPLANATION').'</p>'.n;
 			}
 			$out .= '<table class="list">'.n;
-			
-			foreach ($children as $child) 
+
+			foreach ($children as $child)
 			{
 				$k++;
-			
+
 				// figure ou the URL to the file
-				switch ($child->type) 
+				switch ($child->type)
 				{
 					case 12:
 						if ($child->path) {
 							// internal link, not a resource
-							$url = $child->path; 
+							$url = $child->path;
 						} else {
 							// internal link but a resource
 							$url = '/index.php?option=com_resources'.a.'id='. $child->id;
 						}
 						break;
-					default: 
+					default:
 						$url = $child->path;
 						/*if (substr($url, 0, 1) == '/') {
 							$url = substr($url, 1, strlen($url)-1);
@@ -2277,7 +2214,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 					$type = ($type) ? $type : 'html';
 					$liclass = ' class="ftitle '.$type;
 				}
-			
+
 				$out .= ' <tr>'.n;
 				$out .= '  <td width="100%">';
 				if($allowupload) {
@@ -2303,11 +2240,9 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		echo $out;
 	}
 
-	//-----------
-	
- 	public function contributors( $id, $rows, $contributors, $option, $error='', $version='dev' ) 
+ 	public function contributors( $id, $rows, $contributors, $option, $error='', $version='dev' )
 	{
-		
+
 		$out = '';
 		if($version=='dev') {
 		?>
@@ -2318,14 +2253,14 @@ if($tagname!='screenshots' and $tagname!='bio') {
 					if ($error) {
 						echo ContribtoolHtml::error($error);
 					}
-					
+
 					$html  = '<select name="authid" id="authid">'.n;
 					$html .= ' <option value="">'.JText::_('AUTHORS_SELECT').'</option>'.n;
-					foreach ($rows as $row) 
+					foreach ($rows as $row)
 					{
-						if(trim($row->surname) != '' && trim($row->givenName) != '' 
+						if(trim($row->surname) != '' && trim($row->givenName) != ''
 						&& trim($row->surname) != '&nbsp;' && trim($row->givenName) != '&npsp;'
-						&& trim($row->surname) != '.' && trim($row->givenName) != '.') 
+						&& trim($row->surname) != '.' && trim($row->givenName) != '.')
 						{
 							$html .= t.'<option value="'.$row->uidNumber.'">'.$row->surname.', '.$row->givenName;
 							$html .= ($row->middleName) ? ' '.$row->middleName : '';
@@ -2359,17 +2294,16 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		else {
 		$out .= t.t.'<p class="warning">'.JText::_('AUTHORS_CANT_CHANGE').'</p>'.n;
 		}
-		
-		
+
 		// Do we have any contributors associated with this resource?
 		if ($contributors) {
 			$i = 0;
 			$n = count( $contributors );
-	
+
 			// loop through contributors and build HTML list
 			$out .= '<table class="list">'.n;
 			$out .= ' <tbody>'.n;
-			foreach ($contributors as $contributor) 
+			foreach ($contributors as $contributor)
 			{
 				$out .= ' <tr>'.n;
 				// build name
@@ -2400,8 +2334,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		echo $out;
 	}
 
-	//------------
-
 	public function parseTag($text, $tag)
 	{
 		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
@@ -2415,8 +2347,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		return $match;
 	}
 
-	//------------
-
 	public function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
@@ -2425,14 +2355,14 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		$pee = str_replace('</p>', "\n", $pee);
 		$pee = str_replace('<br />', '', $pee);
 		$pee = trim($pee);
-		return $pee; 
+		return $pee;
 	}
-	
+
 	//-------------------------------------------------------------
 	// Media manager functions
 	//-------------------------------------------------------------
-	
-	public function pageTop( $option, $app, $title) 
+
+	public function pageTop( $option, $app, $title)
 	{
 		?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -2462,19 +2392,15 @@ if($tagname!='screenshots' and $tagname!='bio') {
  <body id="small-page">
  		<?php
 	}
-	
-	//-----------
-	
-	public function pageBottom() 
+
+	public function pageBottom()
 	{
 		$html  = ' </body>'.n;
 		$html .= '</html>'.n;
 		echo $html;
 	}
-	
-	//-----------
-	
-	public function orderUpIcon( $i, $pid, $cid, $for='' ) 
+
+	public function orderUpIcon( $i, $pid, $cid, $for='' )
 	{
 		if ($i > 0 || ($i+0 > 0)) {
 		    return '<a href="index.php?option=com_contribtool'.a.'no_html=1'.a.'pid='.$pid.a.'id='.$cid.a.'task=orderup'.$for.'" class="order up" title="'.JText::_('MOVE_UP').'"><span>'.JText::_('MOVE_UP').'</span></a>';
@@ -2482,10 +2408,8 @@ if($tagname!='screenshots' and $tagname!='bio') {
   		    return '&nbsp;';
 		}
 	}
-	
-	//-----------
 
-	public function orderDownIcon( $i, $n, $pid, $cid, $for='' ) 
+	public function orderDownIcon( $i, $n, $pid, $cid, $for='' )
 	{
 		if ($i < $n-1 || $i+0 < $n-1) {
 			return '<a href="index.php?option=com_contribtool'.a.'no_html=1'.a.'pid='.$pid.a.'id='.$cid.a.'task=orderdown'.$for.'" class="order down" title="'.JText::_('MOVE_DOWN').'"><span>'.JText::_('MOVE_DOWN').'</span></a>';
@@ -2493,40 +2417,36 @@ if($tagname!='screenshots' and $tagname!='bio') {
   		    return '&nbsp;';
 		}
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $someid;
 	}
-	
-	//-----------
-	
+
 	public function getFileAttribs( $path, $base_path='' )
 	{
 		// Return nothing if no path provided
 		if (!$path) {
 			return '';
 		}
-		
+
 		if ($base_path) {
 			// Strip any trailing slash
-			if (substr($base_path, -1) == DS) { 
+			if (substr($base_path, -1) == DS) {
 				$base_path = substr($base_path, 0, strlen($base_path) - 1);
 			}
 			// Ensure a starting slash
-			if (substr($base_path, 0, 1) != DS) { 
+			if (substr($base_path, 0, 1) != DS) {
 				$base_path = DS.$base_path;
 			}
 		}
-		
+
 		// Ensure a starting slash
-		if (substr($path, 0, 1) != DS) { 
+		if (substr($path, 0, 1) != DS) {
 			$path = DS.$path;
 		}
 		if (substr($path, 0, strlen($base_path)) == $base_path) {
@@ -2541,14 +2461,14 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		//$type = strtoupper($type);
 		$file_name_arr = explode(DS,$path);
 	    $type = end($file_name_arr);
-	
+
 		$fs = '';
-		
+
 		// Get the file size if the file exist
 		if (file_exists( $path )) {
 			$fs = filesize( $path );
 		}
-		
+
 		$html  = $type;
 		if ($fs) {
 			switch ($type)
@@ -2558,20 +2478,18 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				case 'PHP':
 				case 'ASF':
 				case 'SWF': $fs = ''; break;
-				default: 
-					$fs = ContribtoolHtml::formatsize($fs); 
+				default:
+					$fs = ContribtoolHtml::formatsize($fs);
 					break;
 			}
-		
+
 			$html .= ($fs) ? ', '.$fs : '';
 		}
-		
+
 		return $html;
 	}
-	
-	//-----------
 
-	public function formatsize($file_size) 
+	public function formatsize($file_size)
 	{
 		if ($file_size >= 1073741824) {
 			$file_size = round($file_size / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
@@ -2585,8 +2503,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		return $file_size;
 	}
 	//-----------
-	
-	
+
 }
 
 ?>

@@ -35,39 +35,35 @@ class modRandomQuote
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
 			return $this->attributes[$property];
 		}
 	}
-	
-	//-----------
 
-	public function display() 
+	//-----------
+	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_feedback'.DS.'tables'.DS.'selectedquotes.php' );
 		ximport('Hubzero_View_Helper_Html');
-	
+
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
-		
+
 		//Get the admin configured settings
 		$filters = array();
 		$filters['limit'] = 1;
@@ -75,7 +71,7 @@ class modRandomQuote
 		$this->showauthor = $params->get( 'show_author', 1 );
 		$this->showall = $params->get( 'show_all_link', 1 );
 		$quotesrc = $params->get( 'quotesrc', 'miniquote' );
-	
+
 		$pool = trim($params->get( 'quotepool'));
 		$filters['notable_quotes'] = $pool == 'notable_quotes' ?  1 : 0;
 		$filters['flash_rotation'] = $pool == 'flash_rotation' ?  1 : 0;

@@ -27,8 +27,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
-	/* Jobs List */	
+
+	/* Jobs List */
 	$jobs = $this->jobs;
 	$option = $this->option;
 	$jobs = $this->jobs;
@@ -38,11 +38,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 	if($this->subscriptioncode && $this->thisemployer) {
 		$this->title .= ' '.JText::_('FROM').' '.$this->thisemployer->companyName;
 	}
-	
+
 	$html  = '';
 	$now = date( 'Y-m-d H:i:s', time() );
-		
-if(!$this->mini) {	
+
+if(!$this->mini) {
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -63,11 +63,11 @@ if(!$this->mini) {
     <?php } ?>  		
 	</ul>
 </div><!-- / #content-header-extra -->
-<?php  
-	
+<?php 
+
 		$html .= '<div class="main section">'.n;
-		$html .= t.'<form method="get" action="'.JRoute::_('index.php?option='.$option.a.'task=browse').'">'.n;		
-		
+		$html .= t.'<form method="get" action="'.JRoute::_('index.php?option='.$option.a.'task=browse').'">'.n;
+
 		if($this->allowsubscriptions) {
 			$html .= t.'<div class="aside minimenu">'.n;
 			$html .= t.t.'<h3>'.JText::_('EMPLOYERS').' ';
@@ -84,7 +84,7 @@ if(!$this->mini) {
 			$html .= t.'</div><!-- / .aside -->'.n;
 			$html .= t.'<div class="subject">'.n;
 		}
-		
+
 		// show how many
 		$totalnote = JText::_('NOTICE_DISPLAYING').' ';
 		if($filters['start'] == 0) {
@@ -100,7 +100,7 @@ if(!$this->mini) {
 
 		$sortbys = array('category'=>JText::_('CATEGORY'),'opendate'=>JText::_('POSTED_DATE'),'type'=>JText::_('TYPE'));
 		$filterbys = array('all'=>JText::_('ALL'),'open'=>JText::_('ACTIVE'),'closed'=>JText::_('EXPIRED'));
-		
+
 		$html .= '<div class="jobs_controls">'.n;
 		$html .= t.t.'<fieldset>'.n;
 		$html .= t.t.t.'<label> '.JText::_('ACTION_SEARCH_BY_KEYWORDS').':<span class="questionmark tooltips" title="'.JText::_('TIP_SEARCH_JOBS_BY_KEYWORDS').'"></span> '.n;
@@ -109,7 +109,7 @@ if(!$this->mini) {
 		$html .= t.t.t.'&nbsp;&nbsp;<label>'.JText::_('SORTBY').':'.n;
 		$html .= '<select name="sortby" id="sortby">'.n;
 		$add = ($filters['search'] != '') ? 'Relevance and ' : '';
-		foreach ($sortbys as $avalue => $alabel) 
+		foreach ($sortbys as $avalue => $alabel)
 		{
 			$selected = ($avalue == $filters['sortby'] || $alabel == $filters['sortby'])
 					  ? ' selected="selected"'
@@ -122,21 +122,21 @@ if(!$this->mini) {
 		$html .= t.t.t.'<input type="hidden" name="limitstart" value="0" />'.n;
 		$html .= t.t.t.'<input type="hidden" name="performsearch" value="1" />'.n;
 		$html .= t.t.'</fieldset>'.n;
-		$html .= t.t.t.'<div class="note_total">'.$totalnote.'</div>'.n;		
+		$html .= t.t.t.'<div class="note_total">'.$totalnote.'</div>'.n;
 		$html .= '</div>'.n;
-		
+
 		}
 		else {
 		$html .= '<div class="main section">'.n;
 		$html .= t.t.'<h3>'.JText::_('JOBS_LATEST_POSTINGS').'</h3> ';
 		}
-		
+
 		if(count($jobs) > 0 ) {
 			$jt = new JobType ( $this->database );
 			$jc = new JobCategory ( $this->database );
 	//		$curtype = $jobs[0]->type > 0 ? $jt->getType($jobs[0]->type) : '';
 	//		$curcat = $jobs[0]->cid > 0 ? $jc->getCat($jobs[0]->cid) : '';
-			
+
 			$html .= t.t.'<table class="postings">'.n;
 			$html .= t.t.t.'<thead>'.n;
 			$html .= t.t.t.'<tr class="headings">'.n;
@@ -155,60 +155,60 @@ if(!$this->mini) {
 			}
 			$html .= t.t.t.'</tr>'.n;
 			$html .= t.t.t.'</thead>'.n;
-			
+
 			$wikiconfig = array(
 				'option'   => $this->option,
 				'scope'    => 'jobs.browse',
 				'pagename' => 'jobs',
 				'pageid'   => 1,
 				'filepath' => '',
-				'domain'   => '' 
+				'domain'   => ''
 			);
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
-			
+
 			$maxscore = $filters['search'] && $jobs[0]->keywords > 0 ? $jobs[0]->keywords : 1;
-			
-			$html .= t.t.t.'<tbody>'.n;				
-			for ($i=0, $n=count( $jobs ); $i < $n; $i++) 
+
+			$html .= t.t.t.'<tbody>'.n;
+			for ($i=0, $n=count( $jobs ); $i < $n; $i++)
 			{
 				//$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
 				$txt = $p->parse(stripslashes($jobs[$i]->description), $wikiconfig);
 				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, '%d&nbsp;%b&nbsp;%y',0) : 'ASAP';
 				$curtype = $jt->getType($jobs[$i]->type);
-				$curcat = $jc->getCat($jobs[$i]->cid);				
-				
+				$curcat = $jc->getCat($jobs[$i]->cid);
+
 				// compute relevance to search keywords
 				if ($filters['search']) {
-					$relscore = $jobs[$i]->keywords > 0 ? floor(($jobs[$i]->keywords * 100) / $maxscore) : 0;				
-				}		
-				
+					$relscore = $jobs[$i]->keywords > 0 ? floor(($jobs[$i]->keywords * 100) / $maxscore) : 0;
+				}
+
 				// what's the job status?
 				if ($this->admin && !$this->emp && !$this->mini) {
 					$status = '';
 					$class =  '';
-					switch ( $jobs[$i]->status ) 
+					switch ( $jobs[$i]->status )
 					{
 						case 0:    		$status =  JText::_('JOB_STATUS_PENDING');
-										$class  = 'post_pending';  		
+										$class  = 'post_pending';
 																				break;
 						case 1:    		$status =  $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
-										? JText::_('JOB_STATUS_INVALID') 
-										: JText::_('JOB_STATUS_ACTIVE'); 
-										$class  = $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now 
+										? JText::_('JOB_STATUS_INVALID')
+										: JText::_('JOB_STATUS_ACTIVE');
+										$class  = $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
 										? 'post_invalidsub'
-										: 'post_active';  			
+										: 'post_active';
 																				break;
-						case 3:    		$status =  JText::_('JOB_STATUS_INACTIVE');  		
+						case 3:    		$status =  JText::_('JOB_STATUS_INACTIVE');
 										$class  = 'post_inactive';
-										break;  
-						case 4:    		$status =  JText::_('JOB_STATUS_DRAFT');  			
+										break;
+						case 4:    		$status =  JText::_('JOB_STATUS_DRAFT');
 										$class  = 'post_draft';
-										break;  
+										break;
 					}
-				}			
+				}
 				$html .= t.t.t.'<tr>'.n;
-				$html .= t.t.t.t.'<td class="jobtitle">'.n;		
+				$html .= t.t.t.t.'<td class="jobtitle">'.n;
 				$html .= t.t.t.t.'<a href="'.JRoute::_('index.php?option='.$option.a.'task=job'.a.'code='.$jobs[$i]->code).'" title="'.Hubzero_View_Helper_Html::shortenText($txt, 250, 0).'">';
 				$html .= $jobs[$i]->title.'</a>'.n;
 				$html .= t.t.t.t.'</td>'.n;
@@ -223,12 +223,12 @@ if(!$this->mini) {
 				$html .= t.t.t.t.t.$jobs[$i]->companyName;
 				$html .= t.t.t.t.'</td>'.n;
 				$html .= t.t.t.t.'<td>'.n;
-				$html .= t.t.t.t.t.$jobs[$i]->companyLocation.', '.$jobs[$i]->companyLocationCountry.n;				
+				$html .= t.t.t.t.t.$jobs[$i]->companyLocation.', '.$jobs[$i]->companyLocationCountry.n;
 				$html .= t.t.t.t.'</td>'.n;
 				$html .= t.t.t.t.'<td class="secondary">'.$curcat.'</td>'.n;
-				$html .= t.t.t.t.'<td class="secondary">'.$curtype.'</td>'.n;				
+				$html .= t.t.t.t.'<td class="secondary">'.$curtype.'</td>'.n;
 				$html .= t.t.t.t.'<td class="secondary">'.n;
-				$html .= t.t.t.t.t.'<span class="datedisplay">'.JHTML::_('date',$jobs[$i]->added, '%d&nbsp;%b&nbsp;%y',0).'</span>'.n;				
+				$html .= t.t.t.t.t.'<span class="datedisplay">'.JHTML::_('date',$jobs[$i]->added, '%d&nbsp;%b&nbsp;%y',0).'</span>'.n;
 				$html .= t.t.t.t.'</td>'.n;
 				$html .= t.t.t.t.'<td>'.n;
 				if ($jobs[$i]->applied) {
@@ -250,7 +250,7 @@ if(!$this->mini) {
 				}
 				$html .= t.t.t.'</tr>'.n;
 			}
-			$html .= t.t.t.'</tbody>'.n;			
+			$html .= t.t.t.'</tbody>'.n;
 			$html .= t.t.'</table>'.n;
 		}
 		else {
@@ -266,18 +266,18 @@ if(!$this->mini) {
 			}
 			$html .= '.</p>'.n;
 		}
-		
+
 		if (!$this->mini) {
 			// Insert page navigation
 			$pagenavhtml = $this->pageNav->getListFooter();
 			$pagenavhtml = str_replace('jobs/?','jobs/browse/?',$pagenavhtml);
 			$html .= t.t.$pagenavhtml;
 			if ($allowsubscriptions) {
-				$html .= t.'</div><!-- / .subject -->'.n;		
+				$html .= t.'</div><!-- / .subject -->'.n;
 			}
-			$html .= t.'</form>'.n;	
+			$html .= t.'</form>'.n;
 		}
-		$html .= t.'</div>'.n;			
-		
+		$html .= t.'</div>'.n;
+
 		echo $html;
 ?>

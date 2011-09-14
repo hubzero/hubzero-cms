@@ -109,7 +109,7 @@ if ($groups) {
 	</div><!-- / .four columns first -->
 <?php
 	$i = 1;
-	foreach ($groups as $group) 
+	foreach ($groups as $group)
 	{
 		$wikiconfig = array(
 			'option'   => $option,
@@ -117,18 +117,18 @@ if ($groups) {
 			'pagename' => 'group',
 			'pageid'   => $group->gidNumber,
 			'filepath' => $config->get('uploadpath'),
-			'domain'   => $group->cn 
+			'domain'   => $group->cn
 		);
-		
+
 		//$p = new WikiParser( $group->cn, $option, $group->cn.DS.'wiki', 'group', $group->gidNumber, $config->get('uploadpath') );
-		
-		switch ($i) 
+
+		switch ($i)
 		{
 			case 1: $cls = 'second'; break;
 			case 2: $cls = 'third'; break;
 			case 3: $cls = 'fourth'; break;
 		}
-		
+
 		$public_desc = '(No public description available.)';
 		if ($group->public_desc) {
 			$public_desc = $p->parse( "\n".stripslashes($group->public_desc), $wikiconfig, true, true );

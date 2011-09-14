@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourcesDoi extends JTable 
+class ResourcesDoi extends JTable
 {
 	var $local_revision = NULL;  // @var int(11) Primary key
 	var $doi_label      = NULL;  // @var int(11)
 	var $rid            = NULL;  // @var int(11)
 	var $alias          = NULL;  // @var varchar(30)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__doi_mapping', 'rid', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->rid ) == '') {
 			$this->setError( JText::_('Your entry must have a resource ID.') );
@@ -54,9 +51,7 @@ class ResourcesDoi extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function getDoi( $id=NULL, $revision=NULL )
 	{
 		if ($id == NULL) {
@@ -71,17 +66,15 @@ class ResourcesDoi extends JTable
 		if ($revision == NULL) {
 			return false;
 		}
-		
+
 		$query  = "SELECT d.doi_label as doi ";
 		$query .= "FROM $this->_tbl as d ";
 		$query .= "WHERE d.rid='".$id."' AND d.local_revision='".$revision."' LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getLatestDoi( $id=NULL, $revision=NULL )
 	{
 		if ($id == NULL) {
@@ -90,23 +83,21 @@ class ResourcesDoi extends JTable
 		if ($id == NULL) {
 			return false;
 		}
-		
+
 		$query  = "SELECT d.doi_label as doi ";
 		$query .= "FROM $this->_tbl as d ";
 		$query .= "WHERE d.rid='".$id."' ORDER BY d.doi_label DESC LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function saveDOI($revision=0, $newlabel=1, $rid, $alias='') 
+
+	public function saveDOI($revision=0, $newlabel=1, $rid, $alias='')
 	{
 		if ($rid == NULL) {
 			return false;
 		}
-		
+
 		$query = "INSERT INTO $this->_tbl (local_revision, doi_label, rid, alias) VALUES ('".$revision."','".$newlabel."','".$rid."','".$alias."')";
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
@@ -115,28 +106,26 @@ class ResourcesDoi extends JTable
 			return true;
 		}
 	}
-	
-	//-----------
-	
-	public function createDOIHandle($url, $handle, $doiservice, &$err='') 
+
+	public function createDOIHandle($url, $handle, $doiservice, &$err='')
 	{
 		jimport('nusoap.lib.nusoap');
-			
+
 		$client = new nusoap_client($doiservice, 'wsdl', '', '', '', '');
 		$err = $client->getError();
 		if ($err) {
 			$this->_error = 'Constructor error: '. $err;
 			return false;
 		}
-		
+
 		$param = array('in0'=>$url, 'in1'=>$handle);
-	
+
 		$result = $client->call('create', $param, '', '', false, true);
-		
+
 		// Check for a fault
 		if ($client->fault) {
 			//print_r ($result);
-			$err = 'Fault: '.$result['faultstring'];		
+			$err = 'Fault: '.$result['faultstring'];
 			return false;
 		} else {
 			// Check for errors
@@ -151,28 +140,26 @@ class ResourcesDoi extends JTable
 			}
 		}
 	}
-	
-	//-----------
-	
-	public function deleteDOIHandle($url, $handle, $doiservice) 
+
+	public function deleteDOIHandle($url, $handle, $doiservice)
 	{
 		jimport('nusoap.lib.nusoap');
-			
+
 		$client = new nusoap_client($doiservice, 'wsdl', '', '', '', '');
 		$err = $client->getError();
 		if ($err) {
 			$this->_error = 'Constructor error: '. $err;
 			return false;
 		}
-		
+
 		$param = array('in0'=>$url, 'in1'=>$handle);
-	
+
 		$result = $client->call('delete', $param, '', '', false, true);
-		
+
 		// Check for a fault
 		if ($client->fault) {
 			print_r ($result);
-			$this->setError( 'Fault: '.$result['faultstring']);		
+			$this->setError( 'Fault: '.$result['faultstring']);
 			return false;
 		} else {
 			// Check for errors
@@ -180,14 +167,14 @@ class ResourcesDoi extends JTable
 			if ($err) {
 				// Return the error
 				print_r($err);
-				$this->setError( 'Error: '. $err);		
+				$this->setError( 'Error: '. $err);
 				return false;
 			} else {
 				return $result;
 			}
 		}
 	}
-	
+
 	/*
 	
 	//-----------

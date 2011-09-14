@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
 <?php
 			if ($this->components) {
-				foreach ($this->components as $component) 
+				foreach ($this->components as $component)
 				{
 					$component = substr($component, 4);
 					$sbjt  = "\t\t\t".'<option value="'.$component.'"';
@@ -95,7 +95,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 if ($this->rows) {
 	$cls = 'even';
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		if ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') {
 			$status = '<span class="read status"></span>';
@@ -104,7 +104,7 @@ if ($this->rows) {
 			$status = '<span class="unread status">*</span>';
 			$lnkcls = 'class="unread" ';
 		}
-		
+
 		if (substr($row->component,0,4) == 'com_') {
 			$row->component = substr($row->component,4);
 		}
@@ -114,7 +114,7 @@ if ($this->rows) {
 			$fh = array_pop($fg);
 			$row->subject = implode(' ',$fg);
 		}
-		
+
 		$cls = (($cls == 'even') ? 'odd' : 'even');
 ?>
 					<tr class="<?php echo $cls; ?>">

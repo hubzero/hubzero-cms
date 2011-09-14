@@ -29,18 +29,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
 
-//-----------
-
-switch ($task) 
+switch ($task)
 {
 	case 'add':  ToolsToolbar::_CANCEL(); break;
 	case 'new':  ToolsToolbar::_CANCEL(); break;
 	case 'edit': ToolsToolbar::_CANCEL(); break;
-	
+
 	default: ToolsToolbar::_DEFAULT(); break;
 }
 ?>

@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class XPollPoll extends JTable 
+class XPollPoll extends JTable
 {
 	var $id               = NULL; // @var int Primary key
 	var $title            = NULL; // @var string
@@ -43,28 +43,26 @@ class XPollPoll extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xpolls', 'id', $db );
 	}
 
-	//-----------
-
-	public function check() 
+	public function check()
 	{
 		// Check for valid name
 		if (trim( $this->title ) == '') {
 			$this->setError( JText::_('XPOLL_ERROR_MUST_HAVE_A_TITLE') );
 			return false;
 		}
-		
+
 		// Check for valid lag
 		$this->lag = intval( $this->lag );
 		if ($this->lag == 0) {
 			$this->setError( JText::_('XPOLL_ERROR_MUST_HAVE_A_NON-ZERO_LAG_TIME') );
 			return false;
 		}
-		
+
 		// Check for existing title
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE title='$this->title'");
 		$xid = intval( $this->_db->loadResult() );
@@ -81,9 +79,7 @@ class XPollPoll extends JTable
 		return true;
 	}
 
-	//-----------
-
-	public function delete( $oid=NULL ) 
+	public function delete( $oid=NULL )
 	{
 		$k = $this->_tbl_key;
 		if ($oid) {
@@ -111,22 +107,18 @@ class XPollPoll extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function getAllPolls() 
+
+	public function getAllPolls()
 	{
 		$query = "SELECT id, title FROM $this->_tbl WHERE published=1 ORDER BY id";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getLatestPoll() 
+
+	public function getLatestPoll()
 	{
 		$Itemid = 1;
-		
+
 		$query = "SELECT p.id, p.title"
 				."\n FROM #__xpoll_menu AS pm, $this->_tbl AS p"
 				."\n WHERE (pm.menuid='$Itemid' OR pm.menuid='0') AND p.id=pm.pollid"
@@ -140,34 +132,28 @@ class XPollPoll extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function increaseVoteCount( $poll_id=NULL ) 
+
+	public function increaseVoteCount( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {
 			$poll_id = $this->id;
 		}
-		
+
 		$this->_db->setQuery( "UPDATE $this->_tbl SET voters=voters + 1 WHERE id='$poll_id'" );
 		if (!$this->_db->query()) {
 			echo $this->_db->getErrorMsg();
 			exit;
 		}
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl AS m";
 
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters ) 
+
+	public function getCount( $filters )
 	{
 		$query  = "SELECT COUNT(m.id)";
 		$query .= $this->buildquery( $filters );
@@ -175,10 +161,8 @@ class XPollPoll extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters ) 
+
+	public function getRecords( $filters )
 	{
 		$query = "SELECT m.*, u.name AS editor, COUNT(d.id) AS numoptions";
 		$query .= $this->buildquery( $filters );
@@ -186,7 +170,7 @@ class XPollPoll extends JTable
 		$query .= " LEFT JOIN #__xpoll_data AS d ON d.pollid = m.id AND d.text <> ''";
 		$query .= " GROUP BY m.id";
 		$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

@@ -22,7 +22,7 @@ if (count($pathway->getPathWay()) <= 0) {
 	} else {
 		$pathway->addItem(JText::_('Add Topic'), 'index.php?option='.$this->option.'&task=addtopic');
 	}
-	
+
 }
 ?>
 

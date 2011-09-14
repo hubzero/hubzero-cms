@@ -241,8 +241,8 @@ class Hubzero_Users_Password
 
         $dn = "uidNumber=" . $this->user_id . ",ou=users," . $xhub->getCfg('hubLDAPBaseDN');
 
-        $reqattr = array('uidNumber', 'userPassword', 'shadowLastChange', 
-						'shadowMin', 'shadowMax', 'shadowWarning', 
+        $reqattr = array('uidNumber', 'userPassword', 'shadowLastChange',
+						'shadowMin', 'shadowMax', 'shadowWarning',
 						'shadowInactive', 'shadowExpire', 'shadowFlag');
 
         $entry = @ldap_search($conn, $dn, "(objectClass=hubAccount)", $reqattr, 0, 0, 0, 3);
@@ -626,7 +626,7 @@ class Hubzero_Users_Password
         $conn = & XFactory::getPLDC();
         $xhub = & XFactory::getHub();
 
-		return false; 
+		return false;
 
 		// WARNING: THIS WOULD BE BAD, it would delete the ldap account record
         // at best we could delete some/all of the password fields but even

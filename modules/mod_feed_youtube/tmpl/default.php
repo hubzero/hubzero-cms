@@ -35,14 +35,14 @@ if( $feed != false )
 	//image handling
 	//$iUrl 	= isset($feed->image->url)   ? $feed->image->url   : null;
 	$iTitle = isset($feed->image->title) ? $feed->image->title : null;
-	
+
 	// Get layout
 	$layout = $params->get('layout') ? $params->get('layout') : 'vertical';
-	
+
 	// Push some CSS to the template
 	ximport('Hubzero_Document');
 	Hubzero_Document::addModuleStylesheet('mod_feed_youtube');
-	
+
 	$youtube_ima  = $params->get('imagepath');
 	if (substr($youtube_ima, 0, 1) != DS) {
 		$youtube_ima = DS.$youtube_ima;
@@ -53,10 +53,10 @@ if( $feed != false )
 	if (!is_file(JPATH_ROOT.$youtube_ima)) {
 		$youtube_ima = '';
 	}
-	
+
 	// Link to more videos
 	$morelink =  $params->get('moreurl') ? str_replace( '&', '&amp', $params->get('moreurl') ) : str_replace( '&', '&amp', $feed->link );
-			
+
 	?>
 	<?php
 	// feed image & title
@@ -103,15 +103,15 @@ if( $feed != false )
 				<li>
 				<?php
 				if ( !is_null( $currItem->get_link() ) ) {
-		
+
 					// get video id
 					$match = array();
 					$vid = 0;
 					preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->get_link() , $match);
 					if(count($match) > 1 && strlen($match[1]) > 11) {
-						$vid = substr($match[1], 0, 11); 	
+						$vid = substr($match[1], 0, 11);
 					}
-					
+
 					// copy thumbnail to server
 					if($vid) {
 						$img_src = 'http://img.youtube.com/vi/'.$vid.'/default.jpg';
@@ -123,7 +123,7 @@ if( $feed != false )
 							$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 						}
 						$thumb .= DS.$vid.'.jpg';
-						
+
 						if (!is_file(JPATH_ROOT.$thumb)) {
 							copy($img_src, JPATH_ROOT.$thumb);
 						}
@@ -131,7 +131,7 @@ if( $feed != false )
 							$vid = 0;
 						}
 					}
-					
+
 					// display with thumbnails
 					if($vid) { ?>
 						<a href="<?php echo $currItem->get_link(); ?>" rel="external">
@@ -141,8 +141,8 @@ if( $feed != false )
                         	<span><?php echo $currItem->get_title(); ?></span>
                         </a>
 					<?php
-					} 
-					else {				
+					}
+					else {
 				?>
 					<a href="<?php echo $currItem->get_link(); ?>" rel="external">
 					<span><?php echo $currItem->get_title(); ?></span></a>

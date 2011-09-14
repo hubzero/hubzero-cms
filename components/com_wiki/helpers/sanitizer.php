@@ -354,12 +354,11 @@ $wgHtmlEntityAliases = array(
 	'رلم' => 'rlm',
 );
 
-
 /**
  * XHTML sanitizer for MediaWiki
  * @addtogroup Parser
  */
-class Sanitizer 
+class Sanitizer
 {
 	const NONE = 0;
 	const INITIAL_NONLETTER = 1;
@@ -373,7 +372,7 @@ class Sanitizer
 	 * @param array $args for the processing callback
 	 * @return string
 	 */
-	static function removeHTMLtags( $text, $processCallback = null, $args = array(), $extratags = array() ) 
+	static function removeHTMLtags( $text, $processCallback = null, $args = array(), $extratags = array() )
 	{
 		global $wgUseTidy;
 
@@ -413,7 +412,7 @@ class Sanitizer
 			$htmlelements = array_merge( $htmlsingle, $htmlpairs, $htmlnest );
 
 			# Convert them all to hashtables for faster lookup
-			$vars = array( 'htmlpairs', 'htmlsingle', 'htmlsingleonly', 'htmlnest', 'tabletags', 
+			$vars = array( 'htmlpairs', 'htmlsingle', 'htmlsingleonly', 'htmlnest', 'tabletags',
 				'htmllist', 'listtags', 'htmlsingleallowed', 'htmlelements' );
 			foreach ( $vars as $var ) {
 				$$var = array_flip( $$var );
@@ -449,7 +448,7 @@ class Sanitizer
 								$optstack = array();
 								array_push ($optstack, $ot);
 								while ( ( ( $ot = @array_pop( $tagstack ) ) != $t ) &&
-										isset( $htmlsingleallowed[$ot] ) ) 
+										isset( $htmlsingleallowed[$ot] ) )
 								{
 									array_push ($optstack, $ot);
 								}
@@ -558,9 +557,9 @@ class Sanitizer
 	 * @param string $text
 	 * @return string
 	 */
-	static function removeHTMLcomments( $text ) 
+	static function removeHTMLcomments( $text )
 	{
-		while (($start = strpos($text, '<!--')) !== false) 
+		while (($start = strpos($text, '<!--')) !== false)
 		{
 			$end = strpos($text, '-->', $start + 4);
 			if ($end === false) {
@@ -609,11 +608,11 @@ class Sanitizer
 	 * @todo Check for legal values where the DTD limits things.
 	 * @todo Check for unique id attribute :P
 	 */
-	static function validateTagAttributes( $attribs, $element ) 
+	static function validateTagAttributes( $attribs, $element )
 	{
 		return Sanitizer::validateAttributes( $attribs, Sanitizer::attributeWhitelist( $element ) );
 	}
-	
+
 	/**
 	 * Take an array of attribute names and values and normalize or discard
 	 * illegal values for the given whitelist.
@@ -629,11 +628,11 @@ class Sanitizer
 	 * @todo Check for legal values where the DTD limits things.
 	 * @todo Check for unique id attribute :P
 	 */
-	static function validateAttributes( $attribs, $whitelist ) 
+	static function validateAttributes( $attribs, $whitelist )
 	{
 		$whitelist = array_flip( $whitelist );
 		$out = array();
-		foreach( $attribs as $attribute => $value ) 
+		foreach( $attribs as $attribute => $value )
 		{
 			if ( !isset( $whitelist[$attribute] ) ) {
 				continue;
@@ -657,7 +656,7 @@ class Sanitizer
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * Merge two sets of HTML attributes.
 	 * Conflicting items in the second set will override those
@@ -669,13 +668,13 @@ class Sanitizer
 	 * @param array $b
 	 * @return array
 	 */
-	static function mergeAttributes( $a, $b ) 
+	static function mergeAttributes( $a, $b )
 	{
 		$out = array_merge( $a, $b );
 		if ( isset( $a['class'] )
 			&& isset( $b['class'] )
 			&& $a['class'] !== $b['class'] ) {
-			
+
 			$out['class'] = implode( ' ',
 				array_unique(
 					preg_split( '/\s+/',
@@ -685,7 +684,7 @@ class Sanitizer
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * Pick apart some CSS and check it for forbidden or unsafe structures.
 	 * Returns a sanitized string, or false if it was just too evil.
@@ -695,13 +694,13 @@ class Sanitizer
 	 * @param string $value
 	 * @return mixed
 	 */
-	static function checkCss( $value ) 
+	static function checkCss( $value )
 	{
 		$stripped = Sanitizer::decodeCharReferences( $value );
 
 		// Remove any comments; IE gets token splitting wrong
 		$stripped = StringUtils::delimiterReplace( '/*', '*/', ' ', $stripped );
-		
+
 		$value = $stripped;
 
 		// ... and continue checks
@@ -713,7 +712,7 @@ class Sanitizer
 			# haxx0r
 			return false;
 		}
-		
+
 		return $value;
 	}
 
@@ -736,7 +735,7 @@ class Sanitizer
 	 * @param string $element
 	 * @return string
 	 */
-	static function fixTagAttributes( $text, $element ) 
+	static function fixTagAttributes( $text, $element )
 	{
 		if (trim( $text ) == '') {
 			return '';
@@ -746,7 +745,7 @@ class Sanitizer
 			Sanitizer::decodeTagAttributes( $text ), $element );
 
 		$attribs = array();
-		foreach ($stripped as $attribute => $value) 
+		foreach ($stripped as $attribute => $value)
 		{
 			$encAttribute = htmlspecialchars( $attribute );
 			$encValue = Sanitizer::safeEncodeAttribute( $value );
@@ -761,7 +760,7 @@ class Sanitizer
 	 * @param $text
 	 * @return HTML-encoded text fragment
 	 */
-	static function encodeAttribute( $text ) 
+	static function encodeAttribute( $text )
 	{
 		$encValue = htmlspecialchars( $text );
 
@@ -783,7 +782,7 @@ class Sanitizer
 	 * @param $text
 	 * @return HTML-encoded text fragment
 	 */
-	static function safeEncodeAttribute( $text ) 
+	static function safeEncodeAttribute( $text )
 	{
 		$encValue = Sanitizer::encodeAttribute( $text );
 
@@ -828,7 +827,7 @@ class Sanitizer
 	 *                      would otherwise start with a nonletter.
 	 * @return string
 	 */
-	static function escapeId( $id, $flags = Sanitizer::INITIAL_NONLETTER ) 
+	static function escapeId( $id, $flags = Sanitizer::INITIAL_NONLETTER )
 	{
 		static $replace = array(
 			'%3A' => ':',
@@ -837,7 +836,7 @@ class Sanitizer
 
 		$id = urlencode( Sanitizer::decodeCharReferences( strtr( $id, ' ', '_' ) ) );
 		$id = str_replace( array_keys( $replace ), array_values( $replace ), $id );
-		
+
 		if( ~$flags & Sanitizer::INITIAL_NONLETTER
 		&& !preg_match( '/[a-zA-Z]/', $id[0] ) ) {
 			// Initial character must be a letter!
@@ -857,7 +856,7 @@ class Sanitizer
 	 * @param string $class
 	 * @return string
 	 */
-	static function escapeClass( $class ) 
+	static function escapeClass( $class )
 	{
 		// Convert ugly stuff to underscores and kill underscores in ugly places
 		return rtrim(preg_replace(
@@ -872,7 +871,7 @@ class Sanitizer
 	 * @return string
 	 * @private
 	 */
-	private static function armorLinksCallback( $matches ) 
+	private static function armorLinksCallback( $matches )
 	{
 		return str_replace( ':', '&#58;', $matches[1] );
 	}
@@ -885,7 +884,7 @@ class Sanitizer
 	 * @param string
 	 * @return array
 	 */
-	static function decodeTagAttributes( $text ) 
+	static function decodeTagAttributes( $text )
 	{
 		$attribs = array();
 
@@ -924,7 +923,7 @@ class Sanitizer
 	 * @return string
 	 * @private
 	 */
-	private static function getTagAttributeCallback( $set ) 
+	private static function getTagAttributeCallback( $set )
 	{
 		if( isset( $set[6] ) ) {
 			# Illegal #XXXXXX color with no quotes.
@@ -959,14 +958,14 @@ class Sanitizer
 	 * @return string
 	 * @private
 	 */
-	private static function normalizeAttributeValue( $text ) 
+	private static function normalizeAttributeValue( $text )
 	{
 		return str_replace( '"', '&quot;',
 			self::normalizeWhitespace(
 				Sanitizer::normalizeCharReferences( $text ) ) );
 	}
-	
-	private static function normalizeWhitespace( $text ) 
+
+	private static function normalizeWhitespace( $text )
 	{
 		return preg_replace(
 			'/\r\n|[\x20\x0d\x0a\x09]/',
@@ -988,7 +987,7 @@ class Sanitizer
 	 * @return string
 	 * @private
 	 */
-	static function normalizeCharReferences( $text ) 
+	static function normalizeCharReferences( $text )
 	{
 		return preg_replace_callback(
 			MW_CHAR_REFS_REGEX,
@@ -999,7 +998,7 @@ class Sanitizer
 	 * @param string $matches
 	 * @return string
 	 */
-	static function normalizeCharReferencesCallback( $matches ) 
+	static function normalizeCharReferencesCallback( $matches )
 	{
 		$ret = null;
 		if( $matches[1] != '' ) {
@@ -1028,7 +1027,7 @@ class Sanitizer
 	 * @return string
 	 * @static
 	 */
-	static function normalizeEntity( $name ) 
+	static function normalizeEntity( $name )
 	{
 		global $wgHtmlEntities, $wgHtmlEntityAliases;
 		if ( isset( $wgHtmlEntityAliases[$name] ) ) {
@@ -1040,7 +1039,7 @@ class Sanitizer
 		}
 	}
 
-	static function decCharReference( $codepoint ) 
+	static function decCharReference( $codepoint )
 	{
 		$point = intval( $codepoint );
 		if( Sanitizer::validateCodepoint( $point ) ) {
@@ -1050,7 +1049,7 @@ class Sanitizer
 		}
 	}
 
-	static function hexCharReference( $codepoint ) 
+	static function hexCharReference( $codepoint )
 	{
 		$point = hexdec( $codepoint );
 		if( Sanitizer::validateCodepoint( $point ) ) {
@@ -1065,7 +1064,7 @@ class Sanitizer
 	 * @param int $codepoint
 	 * @return bool
 	 */
-	private static function validateCodepoint( $codepoint ) 
+	private static function validateCodepoint( $codepoint )
 	{
 		return ($codepoint ==    0x09)
 			|| ($codepoint ==    0x0a)
@@ -1084,7 +1083,7 @@ class Sanitizer
 	 * @public
 	 * @static
 	 */
-	public static function decodeCharReferences( $text ) 
+	public static function decodeCharReferences( $text )
 	{
 		return preg_replace_callback(
 			MW_CHAR_REFS_REGEX,
@@ -1096,7 +1095,7 @@ class Sanitizer
 	 * @param string $matches
 	 * @return string
 	 */
-	static function decodeCharReferencesCallback( $matches ) 
+	static function decodeCharReferencesCallback( $matches )
 	{
 		if( $matches[1] != '' ) {
 			return Sanitizer::decodeEntity( $matches[1] );
@@ -1118,7 +1117,7 @@ class Sanitizer
 	 * @return string
 	 * @private
 	 */
-	static function decodeChar( $codepoint ) 
+	static function decodeChar( $codepoint )
 	{
 		if( Sanitizer::validateCodepoint( $codepoint ) ) {
 			return codepointToUtf8( $codepoint );
@@ -1135,7 +1134,7 @@ class Sanitizer
 	 * @param string $name
 	 * @return string
 	 */
-	static function decodeEntity( $name ) 
+	static function decodeEntity( $name )
 	{
 		global $wgHtmlEntities, $wgHtmlEntityAliases;
 		if ( isset( $wgHtmlEntityAliases[$name] ) ) {
@@ -1155,7 +1154,7 @@ class Sanitizer
 	 * @param string $element
 	 * @return array
 	 */
-	static function attributeWhitelist( $element ) 
+	static function attributeWhitelist( $element )
 	{
 		static $list;
 		if( !isset( $list ) ) {
@@ -1170,7 +1169,7 @@ class Sanitizer
 	 * @todo Document it a bit
 	 * @return array
 	 */
-	static function setupAttributeWhitelist() 
+	static function setupAttributeWhitelist()
 	{
 		$common = array( 'id', 'class', 'lang', 'dir', 'title', 'style' );
 		$block = array_merge( $common, array( 'align' ) );
@@ -1277,7 +1276,7 @@ class Sanitizer
 			# 11.2.6
 			'td'         => array_merge( $common, $tablecell, $tablealign ),
 			'th'         => array_merge( $common, $tablecell, $tablealign ),
-			
+
 			# 13.2
 			# Not usually allowed, but may be used for extension-style hooks
 			# such as <math> when it is rasterized
@@ -1308,7 +1307,7 @@ class Sanitizer
 			'rb'         => $common,
 			'rt'         => $common, #array_merge( $common, array( 'rbspan' ) ),
 			'rp'         => $common,
-			
+
 			# MathML root element, where used for extensions
 			# 'title' may not be 100% valid here; it's XHTML
 			# http://www.w3.org/TR/REC-MathML/
@@ -1327,7 +1326,7 @@ class Sanitizer
 	 * @param string $text HTML fragment
 	 * @return string
 	 */
-	static function stripAllTags( $text ) 
+	static function stripAllTags( $text )
 	{
 		# Actual <tags>
 		$text = StringUtils::delimiterReplace( '<', '>', '', $text );
@@ -1349,7 +1348,7 @@ class Sanitizer
 	 * @return string
 	 * @static
 	 */
-	static function hackDocType() 
+	static function hackDocType()
 	{
 		global $wgHtmlEntities;
 		$out = "<!DOCTYPE html [\n";
@@ -1360,7 +1359,7 @@ class Sanitizer
 		return $out;
 	}
 
-	static function cleanUrl( $url, $hostname=true ) 
+	static function cleanUrl( $url, $hostname=true )
 	{
 		# Normalize any HTML entities in input. They will be
 		# re-escaped by makeExternalLink().

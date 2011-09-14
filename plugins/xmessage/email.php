@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xmessage_email' );
-
-//-----------
 
 class plgXMessageEmail extends JPlugin
 {
@@ -46,34 +42,30 @@ class plgXMessageEmail extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xmessage', 'email' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function onMessageMethods()
 	{
 		return 'email';
 	}
-
-	//-----------
 
 	public function onMessage( $from, $xmessage, $user, $action )
 	{
 		if ($this->onMessageMethods() != $action) {
 			return true;
 		}
-		
+
 		if ($user->get('emailConfirmed') <= 0) {
 			return false;
 		}
-		
+
 		$email = $user->get('email');
-		
+
 		if (!$email) {
 			return false;
 		}
-		
+
 		$jconfig =& JFactory::getConfig();
-		
+
 		if (!isset($from['name']) || $from['name'] == '') {
 			$from['name'] = $jconfig->getValue('config.sitename') . ' Administrator';
 		}
@@ -89,11 +81,11 @@ class plgXMessageEmail extends JPlugin
 		$headers .= "X-Priority: 3\n";
 		$headers .= "X-MSMail-Priority: High\n";
 		$headers .= "X-Mailer: " . $from['name'] . "\n";
-		
+
 		if (mail($email, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args)) {
 			return true;
 		}
-    
+
 		return false;
 	}
 }

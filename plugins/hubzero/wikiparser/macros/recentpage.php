@@ -29,11 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-class RecentPageMacro extends WikiMacro 
+class RecentPageMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Generates a link and optional bit of text to a recently created or updated page page.';
@@ -41,15 +39,13 @@ class RecentPageMacro extends WikiMacro
 		<ul><li>limit - Number of articles to return. Defaults to 1</li><li>container class - A CSS class to be applied to the wrapper <code>DIV</code></li></ul>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$limit = 1;
 		$cls = '';
 		$limitstart = 0;
-		
+
 		if ($this->args) {
 			$args = explode(',', $this->args);
 			if (isset($args[0])) {
@@ -68,7 +64,7 @@ class RecentPageMacro extends WikiMacro
 				}
 			}
 		}
-		
+
 		$query = "SELECT f.pageid, f.title, f.pagename, f.scope, f.GROUP, f.access, f.created_by, f.created, f.pagehtml, MAX(f.version) AS version FROM (
 					SELECT v.pageid, w.title, w.pagename, w.scope, w.group, w.access, v.version, v.created_by, v.created, v.pagehtml
 					FROM #__wiki_page AS w, #__wiki_version AS v
@@ -76,13 +72,13 @@ class RecentPageMacro extends WikiMacro
 					ORDER BY created DESC
 					) AS f GROUP BY pageid ORDER BY created DESC
 					LIMIT $limitstart, $limit";
-					
+
 		// Perform query
 		$this->_db->setQuery( $query );
 		$rows = $this->_db->loadObjectList();
-		
+
 		$html = '';
-		
+
 		// Did we get a result from the database?
 		if ($rows) {
 			foreach ($rows as $row)
@@ -103,17 +99,15 @@ class RecentPageMacro extends WikiMacro
 				$html .= "\t".'<p><a href="'.JRoute::_('index.php?option='.$this->option.'&pagename='.$row->pagename.'&scope='.$row->scope).'">Read more &rsaquo;</a></p>'."\n";
 				$html .= '</div>'."\n";
 			}
-			
+
 		} else {
 			$html .= '<p class="warning">No results found.</p>'."\n";
 		}
-		
+
 		return $html;
 	}
 
-	//-----------
-	
-	private function _shortenText($text, $chars=300, $p=1) 
+	private function _shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
 		$text = str_replace("\n",' ',$text);
@@ -128,11 +122,11 @@ class RecentPageMacro extends WikiMacro
 			$text = substr($text,0,strrpos($text,' '));
 			$text = $text.' &#8230;';
 		}
-		
+
 		if ($text == '') {
 			$text = '&#8230;';
 		}
-		
+
 		if ($p) {
 			$text = '<p>'.$text.'</p>';
 		}

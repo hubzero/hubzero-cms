@@ -38,7 +38,7 @@ $group_statuses = array(
 
 $role_id = JRequest::getVar('role_id');
 if($role_id) {
-	foreach($this->member_roles as $role) { 
+	foreach($this->member_roles as $role) {
 		if($role['id'] == $role_id) {
 			$role_name = $role['role'];
 			break;

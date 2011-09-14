@@ -43,22 +43,16 @@ class HubHtml
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
-	
-	//-----------
-	
+
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
 
-	//-----------
-	
 	public function hed($level, $txt)
 	{
 		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
 	}
-	
-	//-----------
 
 	public function div($txt, $cls='', $id='')
 	{

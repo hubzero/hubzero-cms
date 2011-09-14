@@ -38,8 +38,8 @@ if ($modxpoll->poll->id && $modxpoll->poll->title) {
 		<ul class="poll">
 <?php
 $tabcnt = 0;
-for ($i=0, $n=count( $options ); $i < $n; $i++) 
-{ 
+for ($i=0, $n=count( $options ); $i < $n; $i++)
+{
 ?>
 		 <li>
 			<input type="radio" name="voteid" id="voteid<?php echo $options[$i]->id;?>" value="<?php echo $options[$i]->id;?>" alt="<?php echo $options[$i]->id;?>" />

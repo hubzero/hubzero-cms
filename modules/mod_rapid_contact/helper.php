@@ -35,21 +35,18 @@ class modRapidContact
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,26 +55,25 @@ class modRapidContact
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet('mod_rapid_contact');
-		
+
 		$params = $this->params;
-		
+
 		// Field labels
 		$this->name_label = $params->get('name_label', 'Name:');
 		$this->email_label = $params->get('email_label', 'Email:');
 		$this->subject_label = $params->get('subject_label', 'Subject:');
 		$this->message_label = $params->get('message_label', 'Message:');
-		
+
 		// Button text
 		$this->button_text = $params->get('button_text', 'Send Message');
-		
+
 		// Pre text
 		$this->pre_text = $params->get('pre_text', '');
-		
+
 		// Thank you message
 		$this->page_text = $params->get('page_text', 'Thank you for your contact.');
 
@@ -92,7 +88,7 @@ class modRapidContact
 
 		// To
 		$this->recipient = $params->get('email_recipient', '');
-		
+
 		// Enable Anti-spam?
 		$this->enable_anti_spam = $params->get('enable_anti_spam', true);
 		$this->anti_spam_q = $params->get('anti_spam_q', 'How many eyes has a typical person?');
@@ -111,15 +107,15 @@ class modRapidContact
 				$this->url = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 			}
 		}
-		
+
 		$fixed_url = $params->get('fixed_url', true);
 		if ($fixed_url) {
 			$this->url = $params->get('fixed_url_address', '');
 		}
-		
+
 		$this->error = '';
 		$this->replacement = '';
-		
+
 		$this->posted = array(
 			'name' => '',
 			'email' => '',
@@ -129,7 +125,7 @@ class modRapidContact
 
 		if (isset($_POST['rp'])) {
 			$this->posted = $_POST['rp'];
-			
+
 			if ($this->enable_anti_spam) {
 				if ($_POST['rp']['anti_spam_answer'] != $this->anti_spam_a) {
 					$this->error = JText::_('Wrong anti-spam answer');
@@ -144,14 +140,14 @@ class modRapidContact
 			if ($this->error == '') {
 				$mySubject = $_POST['rp']['subject'];
 				$myMessage = 'You received a message from '. $_POST['rp']['email'] ."\n\n". $_POST['rp']['message'];
-				
+
 				$mailSender = &JFactory::getMailer();
 				$mailSender->addRecipient($this->recipient);
 				$mailSender->setSender(array($this->from_email,$this->from_name));
 				$mailSender->addReplyTo(array( $_POST['rp']['email'], '' ));
 				$mailSender->setSubject($mySubject);
 				$mailSender->setBody($myMessage);
-				
+
 				if (!$mailSender->Send()) {
 					$this->error = $this->error_text;
 				} else {

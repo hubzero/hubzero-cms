@@ -35,21 +35,18 @@ class modMySessions
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,26 +55,24 @@ class modMySessions
 	}
 
 	//-----------
-
-	private function _setTimeout( $sess ) 
+	private function _setTimeout( $sess )
 	{
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		$ms = new MwSession( $mwdb );
 		$ms->load( $sess );
 		$ms->timeout = 1209600;
 		$ms->store();
 	}
-	
-	//-----------
 
+	//-----------
 	private function _getTimeout( $sess )
 	{
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		$ms = new MwSession( $mwdb );
 		$remaining = $ms->getTimeout();
-		
+
 		$tl = 'unknown';
 
 		if (is_numeric($remaining)) {
@@ -85,7 +80,7 @@ class modMySessions
 			$hours_left = floor(($remaining - $days_left*60*60*24)/60/60);
 			$minutes_left = floor(($remaining - $days_left*60*60*24 - $hours_left*60*60)/60);
 			$left = array($days_left, $hours_left, $minutes_left);
-			
+
 			$tl  = '';
 			$tl .= ($days_left > 0) ? $days_left .' days, ' : '';
 			$tl .= ($hours_left > 0) ? $hours_left .' hours, ' : '';
@@ -96,31 +91,30 @@ class modMySessions
 	}
 
 	//-----------
-	
 	public function display()
 	{
 		// Get the module parameters
 		$params =& $this->params;
 		$this->moduleclass_sfx = $params->get( 'moduleclass_sfx' );
 		$this->show_storage = $params->get( 'show_storage' );
-		
+
 		// Check if the user is an admin.
 		$this->authorized = false;
-		
+
 		$xprofile =& Hubzero_Factory::getProfile();
 		if (is_object($xprofile)) {
 			if (in_array('middleware', $xprofile->get('admin'))) {
 				$this->authorized = 'admin';
 			}
 		}
-		
+
 		$jacl =& JFactory::getACL();
 		$jacl->addACL( 'com_tools', 'manage', 'users', 'super administrator' );
 		$jacl->addACL( 'com_tools', 'manage', 'users', 'administrator' );
 		$jacl->addACL( 'com_tools', 'manage', 'users', 'manager' );
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		// Get a connection to the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 
@@ -128,32 +122,32 @@ class modMySessions
 
 		// Ensure we have a connection to the middleware
 		$this->error = false;
-		if (!$mwdb 
-		 || !$mconfig->get('mw_on') 
+		if (!$mwdb
+		 || !$mconfig->get('mw_on')
 		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) {
 			$this->error = true;
 			return false;
 		}
-		
+
 		$ms = new MwSession( $mwdb );
 		$this->sessions = $ms->getRecords( $juser->get('username'), '', false );
 		if ($this->authorized) {
 			// Add the JavaScript that does the AJAX magic to the template
 			$document =& JFactory::getDocument();
 			$document->addScript('/modules/mod_mysessions/mod_mysessions.js');
-				
+
 			$this->allsessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
 		}
-		
+
 		$rconfig = JComponentHelper::getParams( 'com_resources' );
 		$this->supportedtag = $rconfig->get('supportedtag');
-		
+
 		$database =& JFactory::getDBO();
 		if ($this->supportedtag) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 			$this->rt = new ResourcesTags( $database );
 		}
-	
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_mysessions');

@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Favorite extends JTable
 {
 	var $id    = NULL;  // int(11) Primary key
@@ -40,14 +39,12 @@ class Hubzero_Favorite extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xfavorites', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function loadFavorite( $uid=NULL, $oid=NULL, $tbl=NULL ) 
+
+	public function loadFavorite( $uid=NULL, $oid=NULL, $tbl=NULL )
 	{
 		if ($uid === NULL) {
 			return false;
@@ -58,16 +55,14 @@ class Hubzero_Favorite extends JTable
 		if ($tbl === NULL) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE uid='$uid' AND oid='$oid' AND tbl='$tbl' LIMIT 1" );
 		$this->id = $this->_db->loadResult();
-		
+
 		return $this->load( $this->id );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->uid ) == '') {
 			$this->setError( JText::_('Missing user ID') );
@@ -83,10 +78,8 @@ class Hubzero_Favorite extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery($filters) 
+
+	public function buildQuery($filters)
 	{
 		$filter = '';
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
@@ -98,23 +91,19 @@ class Hubzero_Favorite extends JTable
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " ORDER BY t.faved ASC LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
-		
+
 		$this->_db->setQuery( $this->buildQuery( $filters ) );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array() ) 
+
+	public function getRecords( $filters=array() )
 	{
 		$this->_db->setQuery( $this->buildQuery( $filters ) );
 		return $this->_db->loadObjectList();

@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourcesType extends JTable 
+class ResourcesType extends JTable
 {
 	var $id       = NULL;  // @var int(11) Primary key
 	var $type     = NULL;  // @var varchar(250)
@@ -39,17 +38,15 @@ class ResourcesType extends JTable
 	var $contributable = NULL;  // @var int(2)
 	var $customFields = NULL;  // @var text
 	var $params = NULL;  // @var text
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_types', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->type ) == '') {
 			$this->setError( JText::_('Your resource type must contain text.') );
@@ -57,30 +54,24 @@ class ResourcesType extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getMajorTypes() 
+
+	public function getMajorTypes()
 	{
 		return $this->getTypes( 27 );
 	}
-	
-	//-----------
-	
-	public function getAllCount( $filters=array() ) 
+
+	public function getAllCount( $filters=array() )
 	{
 		$query = "SELECT count(*) FROM $this->_tbl";
 		if (isset($filters['category']) && $filters['category'] != 0) {
 			$query .= " WHERE category=".$filters['category'];
 		}
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getAllTypes( $filters=array() ) 
+
+	public function getAllTypes( $filters=array() )
 	{
 		$query  = "SELECT * FROM $this->_tbl ";
 		if (isset($filters['category']) && $filters['category'] != 0) {
@@ -88,22 +79,18 @@ class ResourcesType extends JTable
 		}
 		$query .= "ORDER BY ".$filters['sort']." ".$filters['sort_Dir']." ";
 		$query .= "LIMIT ".$filters['start'].",".$filters['limit'];
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getTypes( $cat='0' ) 
+
+	public function getTypes( $cat='0' )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE category=".$cat." ORDER BY type" );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function checkUsage( $id=NULL ) 
+
+	public function checkUsage( $id=NULL )
 	{
 		if (!$id) {
 			$id = $this->id;
@@ -111,11 +98,11 @@ class ResourcesType extends JTable
 		if (!$id) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
-		
+
 		$r = new ResourcesResource( $this->_db );
-		
+
 		$this->_db->setQuery( "SELECT count(*) FROM $r->_tbl WHERE type=".$id." OR logical_type=".$id );
 		return $this->_db->loadResult();
 	}

@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPluginHelper::loadLanguage( 'plg_whatsnew_content' );
-
-//-----------
 
 class plgWhatsnewContent extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgWhatsnewContent extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'whatsnew', 'content' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onWhatsnewAreas()
 	{
 		$areas = array(
@@ -56,9 +50,7 @@ class plgWhatsnewContent extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
-	
+
 	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
 		if (is_array( $areas ) && $limit) {
@@ -101,8 +93,8 @@ class plgWhatsnewContent extends JPlugin
 
 			if ($rows) {
 				//require_once(JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
-				
-				foreach ($rows as $key => $row) 
+
+				foreach ($rows as $key => $row)
 				{
 					//$database->setQuery( "SELECT parent FROM #__menu WHERE alias='$row->alias' LIMIT 1" );
 					$database->setQuery( "SELECT alias, parent FROM #__menu WHERE link='index.php?option=com_content&view=article&id=".$row->id."' AND published=1 LIMIT 1" );
@@ -137,7 +129,7 @@ class plgWhatsnewContent extends JPlugin
 					$rows[$key]->href = $path;
 				}
 			}
-			
+
 			return $rows;
 		} else {
 			// Get a count
@@ -145,12 +137,10 @@ class plgWhatsnewContent extends JPlugin
 			return $database->loadResult();
 		}
 	}
-	
-	//-----------
 
-	private function _recursiveMenuLookup($id, $startnew=true) 
+	private function _recursiveMenuLookup($id, $startnew=true)
 	{
-	    static $aliases = array(); 
+	    static $aliases = array();
 
 		if ($startnew) {
 			unset($aliases);
@@ -159,15 +149,15 @@ class plgWhatsnewContent extends JPlugin
 		$database =& JFactory::getDBO();
 		$database->setQuery( "SELECT alias, parent FROM #__menu WHERE id='$id' LIMIT 1" );
 		$level = $database->loadRow();
-		
+
 		$aliases[] = $level[0];
 		if ($level[1]) {
 			$a = $this->_recursiveMenuLookup($level[1], false);
 		}
 
-	    return $aliases; 
+	    return $aliases;
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use

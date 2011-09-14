@@ -56,7 +56,7 @@ class YSearchAuthorization
 			$dbh->setQuery(
 				'select distinct xm.gidNumber, cn from #__xgroups_members xm inner join #__xgroups g on g.gidNumber = xm.gidNumber where uidNumber = '.$this->uid.' union select distinct xm.gidNumber, cn from #__xgroups_managers xm inner join #__xgroups g on g.gidNumber = xm.gidNumber where uidNumber = '.$this->uid
 			);
-	
+
 			$this->groups = array();
 			foreach ($dbh->loadAssocList() as $row)
 				$this->groups[$row['gidNumber']] = $row['cn'];

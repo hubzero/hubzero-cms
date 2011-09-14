@@ -29,18 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class WikiMacro
 {
 	protected $_name  = NULL;
 	protected $_data  = array();
 	protected $_db    = NULL;
 	protected $_error = NULL;
-	
+
 	static protected $thisInstance = NULL;
-	
-	//-----------
-	
+
 	public function __construct( $config=array() )
 	{
 		$this->_db =& JFactory::getDBO();
@@ -61,15 +58,11 @@ class WikiMacro
 		}
 	}
 
-	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -77,9 +70,7 @@ class WikiMacro
 		}
 	}
 
-	//-----------
-
-	static public function getInstance( $config=array() ) 
+	static public function getInstance( $config=array() )
 	{
 		if (self::$thisInstance == null) {
 			if (isset($config['name'])) {
@@ -92,16 +83,12 @@ class WikiMacro
 		return self::$thisInstance;
 	}
 
-	//-----------
-	
-	public function render() 
+	public function render()
 	{
 		// Abstract function for overloading
 	}
-	
-	//-----------
-	
-	public function description() 
+
+	public function description()
 	{
 		return JText::_('Not implemented.');
 	}

@@ -95,21 +95,21 @@ if (!$juser->get('guest')) {
 			$rc = new ResourcesContributor( $database );
 			$rt = new ResourcesTags( $database );
 			$cls = 'even';
-			foreach ($submissions as $submission) 
+			foreach ($submissions as $submission)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
-				
+
 				switch ($submission->published)
 				{
 					case 1: $state = 'published';  break;  // published
 					case 2: $state = 'draft';      break;  // draft
 					case 3: $state = 'pending';    break;  // pending
 				}
-				
+
 				$attachments = $ra->getCount( $submission->id );
-			
+
 				$authors = $rc->getCount( $submission->id, 'resources' );
-				
+
 				$tags = $rt->getTags( $submission->id );
 ?>
 				<tr class="<?php echo $cls; ?>">
@@ -140,7 +140,7 @@ if (!$juser->get('guest')) {
 			Once you've started a new contribution, you can proceed at your leisure. Stop half-way through and watch a presentation, go to lunch, even close the browser and come back a different day! Your contribution will be waiting just as you left it, ready to continue at any time.
 		</p>
 <?php 
-		} 
+		}
 ?>
 	</div><!-- / .four columns second third fourth -->
 <?php } ?>
@@ -176,24 +176,24 @@ if ($categories) {
 	/*if (count($categories)%3!=0) { 
 	    ;
 	}*/
-	foreach ($categories as $category) 
+	foreach ($categories as $category)
 	{
 		if ($category->contributable != 1) {
 			continue;
 		}
-		
+
 		$i++;
-		switch ($clm) 
+		switch ($clm)
 		{
 			case 'second': $clm = 'third'; break;
 			case 'first': $clm = 'second'; break;
 			case '':
 			default: $clm = 'first'; break;
 		}
-		
+
 		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
 		$normalized = strtolower($normalized);
-		
+
 		if (substr($normalized, -3) == 'ies') {
 			$cls = $normalized;
 		} else {

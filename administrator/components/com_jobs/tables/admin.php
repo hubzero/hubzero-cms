@@ -29,28 +29,25 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class JobAdmin extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $jid		= NULL;  // @var int(11)
 	var $uid		= NULL;  // @var int(11)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_admins', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function isAdmin($uid,  $jid)
 	{
 		if ($uid === NULL or $jid === NULL) {
 			return false;
 		}
-		
+
 		$query  = "SELECT id ";
 		$query .= "FROM #__jobs_admins  ";
 		$query .= "WHERE uid = '".$uid."' AND jid = '".$jid."'";
@@ -59,32 +56,30 @@ class JobAdmin extends JTable
 			return true;
 		} else {
 			return false;
-		}		
+		}
 	}
-	
-	//-----------
-	
+
 	public function getAdmins($jid)
 	{
 		if ($jid === NULL) {
 			return false;
 		}
-		
+
 		$admins = array();
-		
+
 		$query  = "SELECT uid ";
 		$query .= "FROM #__jobs_admins  ";
 		$query .= "WHERE jid = '".$jid."'";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		if ($result) {
-			foreach ($result as $r) 
+			foreach ($result as $r)
 			{
 				$admins[] = $r->uid;
 			}
 		}
-		
-		return $admins;		
+
+		return $admins;
 	}
 }
 

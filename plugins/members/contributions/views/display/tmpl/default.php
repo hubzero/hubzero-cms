@@ -45,7 +45,7 @@ array_unshift($this->cats, $all);
 $links = array();
 
 // Loop through each category
-foreach ($this->cats as $cat) 
+foreach ($this->cats as $cat)
 {
 	// Only show categories that have returned search results
 	if ($cat['total'] > 0) {
@@ -66,7 +66,7 @@ foreach ($this->cats as $cat)
 			// An array for storing the HTML we make
 			$k = array();
 			// Loop through each sub-category
-			foreach ($cat['_sub'] as $subcat) 
+			foreach ($cat['_sub'] as $subcat)
 			{
 				// Only show sub-categories that returned search results
 				if ($subcat['total'] > 0) {
@@ -128,21 +128,21 @@ $k = 1;
 foreach ($this->results as $category)
 {
 	$amt = count($category);
-	
+
 	if ($amt > 0) {
 		$foundresults = true;
-		
+
 		$name  = $this->cats[$k]['title'];
 		$total = $this->cats[$k]['total'];
 		$divid = 'search'.$this->cats[$k]['category'];
-		
+
 		// Is this category the active category?
 		if (!$this->active || $this->active == $this->cats[$k]['category']) {
 			// It is - get some needed info
 			$name  = $this->cats[$k]['title'];
 			$total = $this->cats[$k]['total'];
 			$divid = 'search'.$this->cats[$k]['category'];
-			
+
 			if ($this->active == $this->cats[$k]['category']) {
 				$dopaging = true;
 			}
@@ -150,24 +150,24 @@ foreach ($this->results as $category)
 			// It is not - does this category have sub-categories?
 			if (isset($this->cats[$k]['_sub']) && is_array($this->cats[$k]['_sub'])) {
 				// It does - loop through them and see if one is the active category
-				foreach ($this->cats[$k]['_sub'] as $sub) 
+				foreach ($this->cats[$k]['_sub'] as $sub)
 				{
 					if ($this->active == $sub['category']) {
 						// Found an active category
 						$name  = $sub['title'];
 						$total = $sub['total'];
 						$divid = 'search'.$sub['category'];
-						
+
 						$dopaging = true;
 						break;
 					}
 				}
 			}
 		}
-		
+
 		//$num  = $total .' result';
 		//$num .= ($total > 1) ? 's' : '';
-	
+
 		// A function for category specific items that may be needed
 		// Check if a function exist (using old style plugins)
 		$f = 'plgMembers'.ucfirst($this->cats[$k]['category']).'Doc';
@@ -179,7 +179,7 @@ foreach ($this->results as $category)
 		if (method_exists($obj, 'documents')) {
 			$html .= call_user_func( array($obj,'documents') );
 		}
-	
+
 		$ttl = ($total > 5) ? 5 : $total;
 		if (!$dopaging) {
 			$num = '1-'.$ttl.' of ';
@@ -189,7 +189,7 @@ foreach ($this->results as $category)
 			$ttl = ($total > $ttl) ? $ttl : $total;
 			$num = $stl.'-'.$ttl.' of ';
 		}
-	
+
 		// Build the category HTML
 		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">';
 		if (!$dopaging) {
@@ -201,7 +201,7 @@ foreach ($this->results as $category)
 		}
 		$html .= '</h4>'."\n";
 		$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
-		
+
 		// Does this category have custom output?
 		// Check if a function exist (using old style plugins)
 		$func = 'plgMembers'.ucfirst($this->cats[$k]['category']).'Before';
@@ -213,18 +213,18 @@ foreach ($this->results as $category)
 		if (method_exists($obj, 'before')) {
 			$html .= call_user_func( array($obj,'before') );
 		}
-		
-		$html .= '<ol class="search results">'."\n";			
-		foreach ($category as $row) 
+
+		$html .= '<ol class="search results">'."\n";
+		foreach ($category as $row)
 		{
 			$row->href = str_replace('&amp;', '&', $row->href);
 			$row->href = str_replace('&', '&amp;', $row->href);
-			
+
 			// Does this category have a unique output display?
 			$func = 'plgMembers'.ucfirst($row->section).'Out';
 			// Check if a method exist (using JPlugin style)
 			$obj = 'plgMembers'.ucfirst($this->cats[$k]['category']);
-			
+
 			if (function_exists($func)) {
 				$html .= $func( $row, $this->authorized );
 			} elseif (method_exists($obj, 'out')) {
@@ -284,7 +284,7 @@ if ($dopaging) {
 
 	//$html .= $pageNav->getListFooter();
 	$pf = $pageNav->getListFooter();
-	
+
 	$nm = str_replace('com_','',$this->option);
 
 	$pf = str_replace($nm.'/?',$nm.'/'.$this->member->get('uidNumber').'/contributions/?',$pf);

@@ -39,28 +39,22 @@ class ResourcesHelper extends JObject
 	private $_db = NULL;
 	private $_data = array();
 
-	//-----------
-	
 	public function __construct( $id, &$db )
 	{
 		$this->_id = $id;
 		$this->_db =& $db;
-		
+
 		$this->contributors = null;
 		$this->children = null;
 		$this->firstchild = null;
 		$this->parents = null;
 	}
 
-	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -72,17 +66,17 @@ class ResourcesHelper extends JObject
 	// Contributors
 	//----------------------------------------------------------
 
-	public function getUnlinkedContributors($incSubmitter=false) 
+	public function getUnlinkedContributors($incSubmitter=false)
 	{
 		if (!isset($this->_contributors)) {
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
-	
+
 		$html = '';
 		if ($contributors != '') {
 			$names = array();
-			foreach ($contributors as $contributor) 
+			foreach ($contributors as $contributor)
 			{
 				if ($incSubmitter == false && $contributor->role == 'submitter') {
 					continue;
@@ -105,10 +99,8 @@ class ResourcesHelper extends JObject
 		}
 		$this->ul_contributors = $html;
 	}
-	
-	//-----------
-	
-	public function getToolAuthors($toolname, $revision) 
+
+	public function getToolAuthors($toolname, $revision)
 	{
 		if (false) // @FIXME  quick hack to deal with influx of LDAP data in jos_tool_groups
 		{
@@ -129,7 +121,7 @@ class ResourcesHelper extends JObject
 		$this->_db->setQuery( $sql );
 		$cons = $this->_db->loadObjectList();
 		if ($cons) {
-			foreach ($cons as $k => $c) 
+			foreach ($cons as $k => $c)
 			{
 				if (!$cons[$k]->name) {
 					$cons[$k]->name = $cons[$k]->xname;
@@ -141,10 +133,8 @@ class ResourcesHelper extends JObject
 		}
 		$this->_contributors = $cons;
 	}
-	
-	//-----------
 
-	public function getCons() 
+	public function getCons()
 	{
 		/*$sql = "SELECT n.uidNumber AS id, n.name AS name, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, a.role"
 			 . "\n FROM #__xprofiles AS n"
@@ -167,11 +157,11 @@ class ResourcesHelper extends JObject
 				AND a.subtable='resources' 
 				AND a.subid=".$this->_id." 
 				ORDER BY ordering, surname, givenName, middleName";
-	
+
 		$this->_db->setQuery( $sql );
 		$cons = $this->_db->loadObjectList();
 		if ($cons) {
-			foreach ($cons as $k => $c) 
+			foreach ($cons as $k => $c)
 			{
 				if (!$cons[$k]->name) {
 					$cons[$k]->name = $cons[$k]->xname;
@@ -183,8 +173,6 @@ class ResourcesHelper extends JObject
 		}
 		$this->_contributors = $cons;
 	}
-	
-	//-----------
 
 	public function getContributors($showorgs=false, $newstyle=0)
 	{
@@ -192,7 +180,7 @@ class ResourcesHelper extends JObject
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
-		
+
 		if ($contributors != '') {
 			$html = '';
 			$names = array();
@@ -202,8 +190,8 @@ class ResourcesHelper extends JObject
 			$orgsln = '';
 			$names_s = array();
 			$orgsln_s = '';
-			
-			foreach ($contributors as $contributor) 
+
+			foreach ($contributors as $contributor)
 			{
 				// Build the user's name and link to their profile
 				if ($contributor->name) {
@@ -220,34 +208,34 @@ class ResourcesHelper extends JObject
 				if (!$contributor->org) {
 					$contributor->org = $contributor->xorg;
 				}
-				
+
 				$name = str_replace( '"', '&quot;', $name );
 				$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
 				$link .= ($contributor->role) ? ' ('.$contributor->role.')' : '';
-				
-				if ($newstyle) {				
+
+				if ($newstyle) {
 					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) {
 						$orgs[$i-1] = trim($contributor->org);
 						$orgsln 	.= $i. '. ' .trim($contributor->org).' ';
 						$orgsln_s 	.= trim($contributor->org).' ';
-						$k = $i; 
+						$k = $i;
 						$i++;
 					} else {
 						$k = array_search(trim($contributor->org), $orgs) + 1;
 					}
 					$link_s = $link;
 					$link .= '<sup>'. $k .'</sup>';
-					$names_s[] = $link_s;			
-					
+					$names_s[] = $link_s;
+
 				} else {
 					$orgs[trim($contributor->org)][] = $link;
 				}
-				
+
 				$names[] = $link;
 			}
-			
+
 			if ($showorgs && !$newstyle) {
-				foreach ($orgs as $org=>$links) 
+				foreach ($orgs as $org=>$links)
 				{
 					$orgs[$org] = implode( ', ', $links ).'<br />'.$org;
 				}
@@ -273,8 +261,6 @@ class ResourcesHelper extends JObject
 		}
 		$this->contributors = $html;
 	}
-	
-	//-----------
 
 	public function getContributorIDs()
 	{
@@ -287,22 +273,22 @@ class ResourcesHelper extends JObject
 				 . "\n FROM #__xprofiles AS n"
 				 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
 				 . "\n WHERE a.subtable = 'resources'"
-				 . "\n AND a.subid=". $this->_id 
+				 . "\n AND a.subid=". $this->_id
 				 . "\n ORDER BY ordering, surname, givenName, middleName";
 
 			$this->_db->setQuery( $sql );
-			$contributors = $this->_db->loadObjectList();	
+			$contributors = $this->_db->loadObjectList();
 		}
-		
+
 		if ($contributors) {
 			foreach ($contributors as $con)
-			{ 
+			{
 				$cons[] = $con->id;
 			}
 		}
 		$this->contributorIDs = $cons;
 	}
-	
+
 	//----------------------------------------------------------
 	// Citations
 	//----------------------------------------------------------
@@ -312,19 +298,17 @@ class ResourcesHelper extends JObject
 		if (!$this->_id) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'citation.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'association.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'author.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'secondary.php' );
 		$database =& JFactory::getDBO();
-		
+
 		$cc = new CitationsCitation( $database );
-	
+
 		$this->citations = $cc->getCitations( 'resource', $this->_id );
 	}
-
-	//-----------
 
 	public function getCitationsCount()
 	{
@@ -332,24 +316,22 @@ class ResourcesHelper extends JObject
 		if (!$citations) {
 			$citations = $this->getCitations();
 		}
-	
+
 		$this->citationsCount = $citations;
 	}
-
-	//-----------
 
 	public function getLastCitationDate()
 	{
 		if ($this->_id) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'citation.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'association.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'author.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'secondary.php' );
 		$database =& JFactory::getDBO();
-		
+
 		$cc = new CitationsCitation( $database );
 
 		$this->lastCitationDate = $cc->getLastCitationDate( 'resource', $this->_id );
@@ -366,41 +348,37 @@ class ResourcesHelper extends JObject
 		}
 
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-		
+
 		$rt = new ResourcesTags( $database );
 		$this->tags = $rt->get_tags_on_object($this->_id, 0, 0, $tagger_id, $strength, $admin);
 	}
-	
-	//-----------
 
 	public function getTagsForEditing( $tagger_id=0, $strength=0 )
 	{
 		if ($this->_id == 0) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 		$database =& JFactory::getDBO();
-		
+
 		$rt = new ResourcesTags( $database );
 		$this->tagsForEditing = $rt->get_tag_string( $this->_id, 0, 0, $tagger_id, $strength, 0 );
 	}
-
-	//-----------
 
 	public function getTagCloud( $admin=0 )
 	{
 		if ($this->_id == 0) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 		$database =& JFactory::getDBO();
-		
+
 		$rt = new ResourcesTags( $database );
 		$this->tagCloud = $rt->get_tag_cloud(0, $admin, $this->_id);
 	}
-	
+
 	//----------------------------------------------------------
 	// Children, parents, etc.
 	//----------------------------------------------------------
@@ -418,11 +396,11 @@ class ResourcesHelper extends JObject
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.child_id"
 			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
 			 . "\n WHERE r.published=1 AND a.parent_id=".$id." AND r.type=rt.id";
-		switch ($standalone) 
+		switch ($standalone)
 		{
 			case 'no': $sql .= " AND r.standalone=0"; break;
 			case 'yes': $sql .= " AND r.standalone=1"; break;
-			case 'all': 
+			case 'all':
 			default: $sql .= ""; break;
 		}
 		$sql .= "\n ORDER BY a.ordering, a.grouping";
@@ -438,15 +416,13 @@ class ResourcesHelper extends JObject
 			$this->children = $children;
 		}
 	}
-	
-	//-----------
-	
-	public function getStandaloneCount( $filters ) 
+
+	public function getStandaloneCount( $filters )
 	{
 		//$rt = new ResourcesType( $database );
 		//$ra = new ResourcesAssoc( $database );
 		//$rr = new ResourcesResource( $database );
-		
+
 		$sql = "SELECT COUNT(*)"
 			 . " FROM #__resource_types AS rt, #__resources AS r"
 			 . " JOIN #__resource_assoc AS a ON r.id=a.child_id"
@@ -455,10 +431,8 @@ class ResourcesHelper extends JObject
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getStandaloneChildren( $filters ) 
+
+	public function getStandaloneChildren( $filters )
 	{
 		$sql = "SELECT r.id, r.title, r.alias, r.introtext, r.fulltext, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
 						r.published, r.publish_up, r.path, r.access, r.standalone, r.rating, r.times_rated, r.attribs, r.ranking,
@@ -472,7 +446,7 @@ class ResourcesHelper extends JObject
 			$sql .= " AND r.publish_up >= '".$filters['year']."-01-01 00:00:00' AND r.publish_up <= '".$filters['year']."-12-31 23:59:59'";
 		}
 		$sql .= " ORDER BY ";
-		switch ($filters['sortby']) 
+		switch ($filters['sortby'])
 		{
 			case 'ordering': $sql .= "a.ordering, a.grouping";            break;
 			case 'date':     $sql .= "r.publish_up DESC";                 break;
@@ -488,9 +462,7 @@ class ResourcesHelper extends JObject
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getFirstChild()
 	{
 		if ($this->children) {
@@ -500,14 +472,12 @@ class ResourcesHelper extends JObject
 		}
 	}
 
-	//-----------
-
 	public function getParents()
 	{
 		if ($this->_id == 0) {
 			return false;
 		}
-		
+
 		$sql = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.footertext, r.type, r.logical_type AS logicaltype, 
 				r.created, r.published, r.publish_up, r.path, r.standalone, r.hits, r.rating, r.times_rated, r.params, r.ranking,
 				t.type AS logicaltitle, rt.type AS typetitle 
@@ -518,29 +488,29 @@ class ResourcesHelper extends JObject
 				ORDER BY a.ordering, a.grouping";
 		$this->_db->setQuery( $sql );
 		$parents = $this->_db->loadObjectList();
-	
+
 		$this->parents = $parents;
 	}
 
 	//----------------------------------------------------------
 	// Reviews
 	//----------------------------------------------------------
-	
+
 	public function getReviews()
 	{
 		if ($this->_id == 0) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
 		$database =& JFactory::getDBO();
-		
+
 		$rr = new ResourcesReview( $database );
 
 		$this->reviews = $rr->getRatings( $this->_id );
 	}
-	
-	public function countQuestions() 
+
+	public function countQuestions()
 	{
 		return 0;
 	}
@@ -556,28 +526,24 @@ class ResourcesHelper extends JObject
 		var $ordering      = NULL;  // @var int (11)
 		var $filename 	   = NULL;  // @var string (100)
 		var $resourceid    = NULL;  // @var int
-		
+
 		//-----------
-	
-		public function __construct( &$db ) 
+
+		public function __construct( &$db )
 		{
 			parent::__construct( '#__screenshots', 'id', $db );
 		}
-		
-		//-----------
-		
-		public function check() 
+
+		public function check()
 		{
 			if (trim( $this->filename ) == '') {
 				$this->setError( 'Missing filename');
 				return false;
 			}
-	
+
 			return true;
 		}
-		
-		//-----------
-		
+
 		public function loadFromFilename( $filename, $rid=NULL, $versionid=NULL)
 		{
 			if ($filename===NULL) {
@@ -586,12 +552,12 @@ class ResourcesHelper extends JObject
 			if ($rid===NULL) {
 				return false;
 			}
-			
+
 			$query = "SELECT * FROM $this->_tbl as s WHERE s.filename='".$filename."' AND s.resourceid= '".$rid."'";
 			if($versionid)  {
 			$query.= " AND s.versionid= '".$versionid."' LIMIT 1";
 			}
-			
+
 			$this->_db->setQuery( $query );
 			if ($result = $this->_db->loadAssoc()) {
 				return $this->bind( $result );
@@ -601,7 +567,7 @@ class ResourcesHelper extends JObject
 			}
 		}
 		//-----------
-		
+
 		public function getScreenshot( $filename, $rid=NULL, $versionid=NULL)
 		{
 			if ($filename===NULL) {
@@ -610,21 +576,19 @@ class ResourcesHelper extends JObject
 			if ($rid===NULL) {
 				return false;
 			}
-			
+
 			$query = "SELECT * FROM $this->_tbl as s WHERE s.filename='".$filename."' AND s.resourceid= '".$rid."'";
 			if($versionid)  {
 			$query.= " AND s.versionid= '".$versionid."'";
 			}
 			$query.= " LIMIT 1";
-			
+
 			$this->_db->setQuery( $query );
 			return $this->_db->loadObjectList();
 		}
-		
-		//-----------
-		
+
 		public function getLastOrdering($rid=NULL, $versionid=NULL) {
-		
+
 			if ($rid===NULL) {
 				return false;
 			}
@@ -633,14 +597,14 @@ class ResourcesHelper extends JObject
 			$query.= " AND s.versionid= '".$versionid."' ";
 			}
 			$query.= "ORDER BY s.ordering DESC LIMIT 1";
-			
+
 			$this->_db->setQuery( $query );
 			return $this->_db->loadResult();
-			
+
 		}
 		//-----------
-	
-		public function saveScreenshot( $filename, $rid=NULL, $versionid=0, $ordering = 0, $new=false ) 
+
+		public function saveScreenshot( $filename, $rid=NULL, $versionid=0, $ordering = 0, $new=false )
 		{
 			if ($filename===NULL) {
 				return false;
@@ -669,9 +633,7 @@ class ResourcesHelper extends JObject
 				return true;
 			}
 		}
-		
-		//-----------
-		
+
 		public function deleteScreenshot($filename, $rid=NULL, $versionid=NULL) {
 			if ($filename===NULL) {
 				return false;
@@ -679,7 +641,7 @@ class ResourcesHelper extends JObject
 			if ($rid===NULL) {
 				return false;
 			}
-			
+
 			$query = "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND resourceid= '".$rid."'";
 			if($versionid)  {
 			$query.= " AND versionid= '".$versionid."' LIMIT 1";
@@ -687,55 +649,49 @@ class ResourcesHelper extends JObject
 			$this->_db->setQuery( $query );
 			$this->_db->query();
 		}
-		
-		//-----------
-		
+
 		public function getScreenshots( $rid=NULL, $versionid=NULL)
 		{
 			if ($rid===NULL) {
 				return false;
 			}
-		
+
 			$query = "SELECT * FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
 			if($versionid)  {
 			$query.= " AND s.versionid= '".$versionid."' ";
 			}
 			$query.= "ORDER BY s.ordering ASC";
-			
+
 			$this->_db->setQuery( $query );
 			return $this->_db->loadObjectList();
 		}
-		
-		//-----------
-		
+
 		public function getFiles( $rid=NULL, $versionid=NULL)
 		{
 			if ($rid===NULL) {
 				return false;
 			}
-		
+
 			$query = "SELECT filename FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
 			if($versionid)  {
 			$query.= " AND s.versionid= '".$versionid."' ";
 			}
 			$query.= "ORDER BY s.ordering ASC";
-			
+
 			$this->_db->setQuery( $query );
 			return $this->_db->loadObjectList();
 		}
-		
-		//-----------
-		
+
 		public function updateFiles( $rid=NULL, $devid=NULL, $currentid=NULL, $copy=0)
 		{
 			if ($rid===NULL or $devid===NULL or $currentid===NULL) {
 				return false;
 			}
-		
+
 			if($copy) {
-			
+
 				$ss = $this->getScreenshots( $rid, $devid);
-				
+
 				if($ss) {
 					foreach($ss as $s) {
 						$this->id = 0;
@@ -748,21 +704,20 @@ class ResourcesHelper extends JObject
 						}
 						$this->checkin();
 						$newid = $this->id;
-						
+
 						$query = "UPDATE $this->_tbl as t1, $this->_tbl as t2 ";
 						$query.= "SET t2.versionid='".$currentid."', t2.title=t1.title, t2.filename=t1.filename, t2.ordering=t1.ordering, t2.resourceid=t1.resourceid";
 						$query.= " WHERE t1.id = '".$s->id."' ";
 						$query.= " AND t2.id ='".$newid."'";
 						$this->_db->setQuery( $query );
 						$this->_db->query();
-						
+
 					}
 				}
-				
-				
+
 			}
 			else {
-		
+
 				$query = "UPDATE $this->_tbl SET versionid='".$currentid."' WHERE ";
 				$query.= " versionid = '".$devid."' ";
 				$query.= " AND resourceid='".$rid."'";
@@ -772,10 +727,9 @@ class ResourcesHelper extends JObject
 					return false;
 				}
 			}
-			
-			
+
 		}
-	
+
 	}
 
 // For backwards compatibility

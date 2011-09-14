@@ -40,7 +40,7 @@ class Hubzero_Document
 		$jdocument = &JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
-		
+
 		if (empty($stylesheet)) {
 			$stylesheet = substr($component,4) . '.css';
 		}
@@ -54,7 +54,7 @@ class Hubzero_Document
 			if ($augment && file_exists(JPATH_SITE . $componentcss) ) {
 				$this->addStyleSheet($componentcss, $type, $media, $attribs);
 			}
-			
+
 			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
         }
 		else if (file_exists(JPATH_SITE . $componentcss)) {
@@ -69,7 +69,7 @@ class Hubzero_Document
 		$template  = $mainframe->getTemplate();
 
 		$templateimage = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'images' . DS . $image;
-        
+
 		$componentimage = DS . 'components' . DS . $component . DS . 'images' . DS . $image;
 
 		if (file_exists(JPATH_SITE . $templateimage)) {
@@ -79,8 +79,6 @@ class Hubzero_Document
 		}
 	}
 
-	//-----------
-
 	public static function getComponentStylesheet($component, $stylesheet)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -88,7 +86,7 @@ class Hubzero_Document
 		$template  = $mainframe->getTemplate();
 
 		$templateimage = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'css' . DS . $stylesheet;
-        
+
 		$componentimage = DS . 'components' . DS . $component . DS . 'css' . DS . $stylesheet;
 
 		if (file_exists(JPATH_SITE . $templateimage)) {
@@ -98,8 +96,6 @@ class Hubzero_Document
 		}
 	}
 
-	//-----------
-
 	public static function getModuleImage($module, $image)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -107,17 +103,15 @@ class Hubzero_Document
 		$template  = $mainframe->getTemplate();
 
 		$templateimage = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . 'images' . DS . $image;
-        
+
 		$moduleimage = DS . 'modules' . DS . $module . DS . 'images' . DS . $image;
-		
+
 		if (file_exists(JPATH_SITE . $templateimage)) {
 			return $templateimage;
 		} else {
 			return $moduleimage;
 		}
 	}
-
-	//-----------
 
 	public static function getHubImage($image)
 	{
@@ -126,17 +120,15 @@ class Hubzero_Document
 		$template  = $mainframe->getTemplate();
 
 		$templateimage = DS . 'templates' . DS . $template . DS . 'images' . DS . $image;
-        
+
 		$hubimage =  DS . 'components' . DS . 'com_hub'  . DS . 'images' . DS . $image;
-		
+
 		if (file_exists(JPATH_SITE . $templateimage)) {
 			return $templateimage;
 		} else {
 			return $hubimage;
 		}
 	}
-
-	//-----------
 
 	public static function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
@@ -145,7 +137,7 @@ class Hubzero_Document
 		$jdocument = &JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
-		
+
 		if (empty($stylesheet)) {
 			$stylesheet = $module . '.css';
 		}
@@ -163,9 +155,7 @@ class Hubzero_Document
 			$jdocument->addStyleSheet($modulecss, $type, $media, $attribs);
 		}
 	}
-	
-	//-----------
-	
+
 	public static function addPluginStyleSheet($plugin_group, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -173,7 +163,7 @@ class Hubzero_Document
 		$jdocument = &JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
-		
+
 		if (empty($stylesheet)) {
 			$stylesheet = $plugin . '.css';
 		}

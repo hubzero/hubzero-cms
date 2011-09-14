@@ -35,21 +35,18 @@ class modXPoll
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,16 +55,15 @@ class modXPoll
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'poll.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'data.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'date.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'menu.php' );
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
 		$this->formid = $params->get( 'formid' );
 
@@ -78,10 +74,10 @@ class modXPoll
 		// Did we get a result from the database?
 		if ($poll->id && $poll->title) {
 			$this->poll = $poll;
-			
+
 			$xpdata = new XPollData( $database );
 			$this->options = $xpdata->getPollOptions( $poll->id, false );
-			
+
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
 			Hubzero_Document::addModuleStyleSheet('mod_xpoll');

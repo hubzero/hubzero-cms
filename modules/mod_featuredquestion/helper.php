@@ -35,21 +35,18 @@ class modFeaturedquestion
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
-
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,10 +55,9 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
@@ -69,8 +65,7 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
-	public function shortenText($text, $chars=300, $p=1) 
+	public function shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
 		$text = trim($text);
@@ -94,7 +89,6 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
 	public function encode_html($str, $quotes=1)
 	{
 		$str = $this->ampersands($str);
@@ -113,8 +107,7 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
-	public function ampersands( $str ) 
+	public function ampersands( $str )
 	{
 		$str = stripslashes($str);
 		$str = str_replace('&#','*-*', $str);
@@ -125,7 +118,6 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -135,7 +127,6 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
@@ -179,8 +170,7 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
-	public function timeAgo($timestamp) 
+	public function timeAgo($timestamp)
 	{
 		$text = $this->timeAgoo($timestamp);
 
@@ -192,32 +182,31 @@ class modFeaturedquestion
 	}
 
 	//-----------
-
-	public function display() 
+	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
-		
+
 		$this->error = false;
 		if (!class_exists('FeaturesHistory')) {
 			$this->error = true;
 			return false;
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$params =& $this->params;
-		
+
 		$filters = array();
 		$filters['limit'] = 1;
-		
+
 		$this->cls = trim($params->get( 'moduleclass_sfx' ));
 		$this->txt_length = trim($params->get( 'txt_length' ));
-		
+
 		$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
 		$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
-		
+
 		$row = null;
-		
+
 		$fh = new FeaturesHistory( $database );
 
 		// Load some needed libraries
@@ -225,16 +214,16 @@ class modFeaturedquestion
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
-		
+
 		// Check the feature history for today's feature
 		$fh->loadActive($start, 'answers');
-		
+
 		// Did we find a feature for today?
 		if ($fh->id && $fh->tbl == 'answers') {
 			// Yes - load the member profile
 			$row = new AnswersQuestion( $database );
 			$row->load( $fh->objectid );
-			
+
 			$ar = new AnswersResponse( $database );
 			$row->rcount = count($ar->getIds( $row->id ));
 		} else {
@@ -244,7 +233,7 @@ class modFeaturedquestion
 			$filters['tag'] = '';
 			$filters['filterby'] = 'open';
 			$filters['created_before'] = date('Y-m-d', mktime(0,0,0,date('m'),(date('d')+7), date('Y')))." 00:00:00";
-			
+
 			$mp = new AnswersQuestion( $database );
 
 			$rows = $mp->getResults( $filters );
@@ -256,9 +245,9 @@ class modFeaturedquestion
 		// Did we have a result to display?
 		if ($row) {
 			$this->row = $row;
-			
+
 			$config =& JComponentHelper::getParams( 'com_answers' );
-				
+
 			// Check if this has been saved in the feature history
 			if (!$fh->id) {
 				$fh->featured = $start;
@@ -266,7 +255,7 @@ class modFeaturedquestion
 				$fh->tbl = 'answers';
 				$fh->store();
 			}
-			
+
 			$this->thumb = trim($params->get( 'defaultpic' ));
 		} else {
 			$this->row = null;

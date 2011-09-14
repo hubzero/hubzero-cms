@@ -95,20 +95,20 @@ if ($categories) {
 	/*if (count($categories)%3!=0) { 
 	    ;
 	}*/
-	foreach ($categories as $category) 
+	foreach ($categories as $category)
 	{
 		$i++;
-		switch ($clm) 
+		switch ($clm)
 		{
 			case 'second': $clm = 'third'; break;
 			case 'first': $clm = 'second'; break;
 			case '':
 			default: $clm = 'first'; break;
 		}
-		
+
 		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
 		$normalized = strtolower($normalized);
-		
+
 		if (substr($normalized, -3) == 'ies') {
 			$cls = $normalized;
 		} else {

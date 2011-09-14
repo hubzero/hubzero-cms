@@ -102,12 +102,12 @@ $cls = 'even';
 		</thead>
 		<tbody>
 <?php
-	if ($this->tool_stats) {	
+	if ($this->tool_stats) {
 		$count = 1;
 		$cls = 'even';
 		$sum_simcount_12 = 0;
 		$sum_simcount_14 = 0;
-		foreach ($this->tool_stats as $row) 
+		foreach ($this->tool_stats as $row)
 		{
 			$sim_count_12 = plgMembersUsage::get_simcount($row->id, 12);
 			$sim_count_14 = plgMembersUsage::get_simcount($row->id, 14);
@@ -169,7 +169,7 @@ $cls = 'even';
 	if ($this->andmore_stats) {
 		$cls = 'even';
 		$count = 1;
-		foreach ($this->andmore_stats as $row) 
+		foreach ($this->andmore_stats as $row)
 		{
 ?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">

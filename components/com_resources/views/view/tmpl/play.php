@@ -33,19 +33,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 $html = '';
 if ($this->resource->type == 4) {
 	$parameters = new JParameter( $this->resource->params );
-	
+
 	$this->helper->getChildren();
 
 	$children = $this->helper->children;
-	
+
 	// We're going through a learning module
 	$html .= '<div class="aside">'."\n";
 	$n = count($children);
 	$i = 0;
 	$blorp = 0;
-		
+
 	$html .= '<ul class="sub-nav">'."\n";
-	foreach ($children as $child) 
+	foreach ($children as $child)
 	{
 		$attribs = new JParameter( $child->attribs );
 
@@ -56,7 +56,7 @@ if ($this->resource->type == 4) {
 			{
 				case 19: $class = ' class="withoutaudio'; break;
 				case 20: $class = ' class="withaudio';    break;
-				default: 
+				default:
 					if ($child->type == 33) {
 						$class = ' class="pdf';
 					} else {
@@ -77,14 +77,14 @@ if ($this->resource->type == 4) {
 
 				$type = new ResourcesType( $this->database );
 				$type->load( $child->grouping );
-				
+
 				$html .= ' <li class="grouping"><span>'.$type->type.'</span>'."\n";
 				$html .= "\t".'<ul id="'.strtolower($type->type).$i.'">'."\n";
 			}
 			$html .= ($blorp) ? "\t" : '';
 			$html .= ' <li'.$class.'>';
-		
-			$url  = ($link_action == 1) 
+
+			$url  = ($link_action == 1)
 				  ? checkPath($child->path, $child->type, $child->logicaltype)
 				  : JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&resid='. $child->id);
 			$html .= '<a href="'.$url.'" ';
@@ -94,8 +94,8 @@ if ($this->resource->type == 4) {
 				$html .= 'onclick="popupWindow(\''.$child->path.'\', \''.$child->title.'\', 400, 400, \'auto\');" ';
 			}
 			$html .= '>'. $child->title .'</a>';
-			$html .= ($child->type == 33) 
-				   ? ' '.ResourcesHtml::getFileAttribs( $child->path, '', $this->fsize ) 
+			$html .= ($child->type == 33)
+				   ? ' '.ResourcesHtml::getFileAttribs( $child->path, '', $this->fsize )
 				   : '';
 			$html .= '</li>'."\n";
 			if ($i == $n && $blorp) {
@@ -125,12 +125,12 @@ if ($this->resource->type == 4) {
 	$html .= '<div class="clear"></div>'."\n";
 } else {
 	$url = $this->activechild->path;
-	
+
 	// Get some attributes
 	$attribs = new JParameter( $this->activechild->attribs );
 	$width  = $attribs->get( 'width', '' );
 	$height = $attribs->get( 'height', '' );
-	
+
 	$type = '';
 	$arr  = explode('.',$url);
 	$type = end($arr);
@@ -139,7 +139,7 @@ if ($this->resource->type == 4) {
 
 	$width = (intval($width) > 0) ? $width : 0;
 	$height = (intval($height) > 0) ? $height : 0;
-	
+
 	if (is_file(JPATH_ROOT.$url)) {
 		if (strtolower($type) == 'swf') {
 			$height = '400px';

@@ -35,7 +35,7 @@ if ($modfeaturedquestion->error) {
 } else {
 	if ($modfeaturedquestion->row) {
 		ximport('Hubzero_View_Helper_Html');
-		
+
 		$name = JText::_('MOD_FEATUREDQUESTION_ANONYMOUS');
 		if ($modfeaturedquestion->row->anonymous == 0) {
 			$juser =& JUser::getInstance( $modfeaturedquestion->row->created_by );

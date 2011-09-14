@@ -38,29 +38,29 @@ Class GroupPages extends JTable
 	var $porder = NULL;
 	var $active = NULL;
 	var $privacy = NULL;
-	
+
 	function __construct( &$db)
 	{
 		parent::__construct( '#__xgroups_pages', 'id', $db );
 	}
-	
+
 	////////////////////////////////////////
 	// Displaying Pages
 	///////////////////////////////////////
-	
-	public function getPages( $gid, $active = false ) 
+
+	public function getPages( $gid, $active = false )
 	{
 		$final_pages = array();
-		
+
 		if($active) {
 			$sql = "SELECT * FROM $this->_tbl WHERE gid='".$gid."' AND active=1 ORDER BY porder ASC";
 		} else {
 			$sql = "SELECT * FROM $this->_tbl WHERE gid='".$gid."' ORDER BY porder ASC";
 		}
-		
+
 		$this->_db->setQuery($sql);
 		$pages = $this->_db->loadAssocList();
-		
+
 		if(count($pages) > 0) {
 			foreach($pages as $page) {
 				$final_pages[$page['url']] = array(
@@ -70,39 +70,35 @@ Class GroupPages extends JTable
 					'content' => $page['content'],
 					'order' => $page['porder'],
 					'active' => $page['active'],
-					'privacy' => $page['privacy'] 
+					'privacy' => $page['privacy']
 					);
 			}
 		} else {
 			$final_pages = array();
 		}
-		
+
 		return $final_pages;
 	}
-	
-	//-------
-	
+
 	public function getHighestPageOrder( $gid )
 	{
 		$sql = "SELECT porder from $this->_tbl WHERE gid='".$gid."' ORDER BY porder DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		$high = $this->_db->loadAssoc();
-		
+
 		return $high['porder'];
 	}
-	
-	//------
-	
+
 	public function displayPage()
 	{
 		$this->juser =& JFactory::getUser();
 
 		//var to hold page content
 		$page = '';
-		
+
 		//var to hold if user has access
 		$access = true;
-		
+
 		//get overview page access
 		$overview_access = $this->group->getPluginAccess('overview');
 
@@ -111,7 +107,7 @@ Class GroupPages extends JTable
 
 		//get the group members
 		$members = $this->group->get('members');
-		
+
 		//if user isnt logged in and access level is set to registered users or members only
 		if($this->juser->get('guest') && ($overview_access == 'registered' || $overview_access == 'members')) {
 			$access = false;
@@ -121,7 +117,7 @@ Class GroupPages extends JTable
 		if(!in_array($this->juser->get('id'),$members) && $overview_access == 'members' && $this->authorized != 'admin') {
 			$access = false;
 		}
-		
+
 		//if we have failed access and we are on the overview tab or one on the group pages
 		if(!$access && ($this->tab == 'overview' || array_key_exists($this->tab,$this->pages))) {
 			if($discoverability == 1) {
@@ -131,7 +127,7 @@ Class GroupPages extends JTable
 				return $page = "<p class=\"info\">You do not have the permissions to access this page.</p>";
 			}
 		}
-		
+
 		//var to hold content and page id
 		$pContent = "";
 		$pID = "";
@@ -169,53 +165,51 @@ Class GroupPages extends JTable
 		if($this->tab == 'overview' || array_key_exists($this->tab, $this->pages)) {
 			$this->pageHit($pID);
 		}
-		
+
 		//return the page content
 		return $page;
 	}
-	
-	//-----------
-	
-	public function defaultPage() 
+
+	public function defaultPage()
 	{
 		//get the group members
 		$members = $this->group->get('members');
-		shuffle($members); 
-		
+		shuffle($members);
+
 		//get the public and private desc from group object
 		$public_desc = $this->group->get('public_desc');
 		$private_desc = $this->group->get('private_desc');
-		
+
 		//if there is no public desc use group name
 		if ($public_desc == '') {
 			$public_desc = $this->group->get('description');
 		}
-		
+
 		//if there is no private desc use the public desc
 		if($private_desc == '') {
 			$private_desc = $public_desc;
 		}
-		
+
 		//parse the content with the wiki parser
 		$public_desc = $this->parser->parse( stripslashes($public_desc), $this->config );
 		$private_desc = $this->parser->parse( stripslashes($private_desc), $this->config );
-		
+
 		//load the member profile lib
 		ximport('Hubzero_User_Profile');
-		
+
 		//check if member or manager or Joomla admin
 		$isMember = ($this->authorized != 'admin' && $this->authorized != 'manager' && $this->authorized != 'member') ? false : true;
-		
+
 		//$about  = '<h3 class="default">'.JText::_('GROUPS_ABOUT_HEADING').'</h3>'; 
 		$about  = '<div class="group-content-header">';
 			$about .= '<h3>'.JText::_('GROUPS_ABOUT_HEADING').'</h3>';
-		
+
 		if($isMember && $this->group->get('private_desc') != '') {
 			$about .= '<div class="group-content-header-extra">';
 				$about .= '<a id="toggle_description" class="hide" href="#">Show Public Description (+)</a>';
 			$about .= '</div>';
 			$about .= '</div>';
-			
+
 			$about .= '<div id="description">';
 				$about .= '<span id="private">'.$private_desc.'</span>';
 				$about .= '<span id="public" class="hide">'.$public_desc.'</span>';
@@ -224,12 +218,12 @@ Class GroupPages extends JTable
 			$about .= '</div>';
 			$about .= $public_desc;
 		}
-		
+
 		$about .= '<br />';
-		
+
 		//get the members plugin access for this group
 		$access = $this->group->getPluginAccess('members');
-		
+
 		//check to make sure we should be showing the mini member browser
 		if($access == 'nobody' || ($access == 'registered' && $this->juser->get('guest')) || ($access == 'members' && !$isMember)) {
 			$member_browser = '';
@@ -240,11 +234,11 @@ Class GroupPages extends JTable
 					$member_browser .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members').'">'.JText::_('VIEW_ALL_MEMBERS').' &rarr;</a>';
 				$member_browser .= '</div>';
 			$member_browser .= '</div>';
-		
+
 			$counter = 0;
 			$member_browser .= '<div id="member_browser">';
-		
-			foreach($members as $member) { 
+
+			foreach($members as $member) {
 				$counter++;
 				if($counter < 8) {
 					$u = new Hubzero_User_Profile();
@@ -257,16 +251,14 @@ Class GroupPages extends JTable
 					$member_browser .= '</a>';
 				}
 			}
-		
+
 			$member_browser .= '</div>';
 		}
-		
+
 	 	return $about.$member_browser;
 	}
-	
-	//------------
-	
-	private function pageHit( $pid ) 
+
+	private function pageHit( $pid )
 	{
 		//instantiate database
 		$db =& JFactory::getDBO();
@@ -281,30 +273,28 @@ Class GroupPages extends JTable
 		//perform query
 		$db->query();
 	}
-		
-	//------
-	
+
 	private function thumbit( $uid, $picture )
 	{
 		//set a default
 		$this->default_thumb = true;
-		
+
 		//set the default for the member picture
 		$default_member_thumb = 'components'.DS.'com_groups'.DS.'assets'.DS.'img'.DS.'default_member_picture.jpg';
-		
+
 		//check if picture is empty
 		if($picture != '') {
 			//split the picture into parts
 			$pic_parts = explode(".", $picture);
-			
+
 			if(strlen($uid) == 4) {
 				$uid = '0'.$uid;
 			}
-			
+
 			//build the thumb path
 			$thumb = $pic_parts[0]."_thumb.".$pic_parts[1];
 			$path = 'site'.DS.'members'.DS.$uid.DS;
-			
+
 			//check if picture exits
 			if (is_file($path.$thumb)) {
 				$return = $path.$thumb;
@@ -315,16 +305,16 @@ Class GroupPages extends JTable
 			} else {
 				$return = $default_member_thumb;
 				$this->default_thumb = true;
-			}		
+			}
 		} else {
 			$return = $default_member_thumb;
 			$this->default_thumb = true;
 		}
-		
+
 		//return picture
 		return $return;
-	} 
-	
+	}
+
 	//-----
 }
 ?>

@@ -33,30 +33,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class Hubzero_Filter 
+class Hubzero_Filter
 {
 	//-----------
 	// clean out any cross site scripting attempts (XSS)
-	
-	public function cleanXss($string) 
+
+	public function cleanXss($string)
 	{
 		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
 		}
-		
+
 		// strip out any KL_PHP, script, style, HTML comments
 		$string = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $string );
 		$string = preg_replace( "'<style[^>]*>.*?</style>'si", '', $string );
 		$string = preg_replace( "'<script[^>]*>.*?</script>'si", '', $string );
 		$string = preg_replace( '/<!--.+?-->/', '', $string );
-		
+
 		$string = str_replace(array("&amp;","&lt;","&gt;"),array("&amp;amp;","&amp;lt;","&amp;gt;",),$string);
 		// fix &entitiy\n;
-		
+
 		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;",$string);
 		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$string);
 		//$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
-		
+
 		// remove any attribute starting with "on" or xmlns
 		$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu',"$1>",$string);
 		// remove javascript: and vbscript: protocol
@@ -74,7 +74,7 @@ class Hubzero_Filter
 			$oldstring = $string;
 			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i',"",$string);
 		} while ($oldstring != $string);
-	
+
 		return $string;
 	}
 }

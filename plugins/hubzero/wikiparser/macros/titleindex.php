@@ -29,41 +29,38 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class TitleIndexMacro extends WikiMacro 
+class TitleIndexMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.';
 		$txt['html'] = '<p>Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.</p><p>The list may have a sorting applied by adding the sort=[title,created(oldest to newest),modified(newest to oldest)] argument. For example, <code>[[TitleIndex(sort=modified)]]</code> will list all pages by their last modified date (most recent to oldest). If you have a page prefix, simply add a comma and the sort parameter <em>after</em>. For example: <code>[[TitleIndex(Help, sort=modified)]]</code></p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
 
 		$sort = '';
 		if ($et) {
 			$et = strip_tags($et);
-			
+
 			if (strstr($et, ',')) {
 				$attribs = explode(',', $et);
 				$et = trim($attribs[0]);
 				$sort = strtolower(trim($attribs[1]));
 			}
-			
+
 			if (strtolower($et) == 'sort=modified' || strtolower($et) == 'sort=created' || strtolower($et) == 'sort=title') {
 				$sort = $et;
 				$et = '';
 			}
 		}
-		
+
 		// What pages are we getting?
-		switch ($sort) 
+		switch ($sort)
 		{
 			case 'sort=modified':
 				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created` AS `modified`, MAX(v.`created`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND ";
@@ -74,7 +71,7 @@ class TitleIndexMacro extends WikiMacro
 				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created`, MAX(v.`version`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND ";
 			break;
 		}
-		
+
 		if ($et) {
 			// Get pages with a prefix
 			if ($this->domain) {
@@ -90,7 +87,7 @@ class TitleIndexMacro extends WikiMacro
 				$sql .= "p.`group`=''";
 			}
 		}
-		switch ($sort) 
+		switch ($sort)
 		{
 			case 'sort=created':
 				$sql .= " GROUP BY v.pageid ORDER BY `created` ASC";
@@ -112,7 +109,7 @@ class TitleIndexMacro extends WikiMacro
 		if ($rows) {
 			// Build and return the link
 			$html = '<ul>';
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
 				if ($row->pagename == $this->pagename) {
 					continue;
@@ -122,7 +119,7 @@ class TitleIndexMacro extends WikiMacro
 				$url  = substr($this->option,4,strlen($this->option)).DS;
 				$url .= ($row->scope) ? $row->scope.DS : '';
 				$url .= $row->pagename;
-				
+
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
@@ -131,7 +128,7 @@ class TitleIndexMacro extends WikiMacro
 				$html .= '</a></li>'."\n";
 			}
 			$html .= '</ul>';
-		
+
 			return $html;
 		} else {
 			// Return error message

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Support Attachments class
 //----------------------------------------------------------
 
-class SupportAttachment extends JTable 
+class SupportAttachment extends JTable
 {
 	var $id          = NULL;  // @var int(11) Primary key
 	var $ticket      = NULL;  // @var int(11)
@@ -42,14 +42,12 @@ class SupportAttachment extends JTable
 
 	//-----------
 
-	public function __construct(&$db) 
+	public function __construct(&$db)
 	{
 		parent::__construct('#__support_attachments', 'id', $db);
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if ($this->ticket == NULL) {
 			$this->setError(JText::_('SUPPORT_ERROR_NO_TICKET_ID'));
@@ -62,35 +60,29 @@ class SupportAttachment extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getID() 
+
+	public function getID()
 	{
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename='".$this->filename."' AND description='".$this->description."' AND ticket=".$this->ticket);
 		$id = $this->_db->loadResult();
 		$this->id = $id;
 	}
-	
-	//-----------
 
 	public function parse($text)
 	{
 		$f = '/\{attachment#[0-9]*\}/sU';
 		return preg_replace_callback($f, array(&$this,'getAttachment'), $text);
 	}
-	
-	//-----------
-	
+
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
 		$tokens = split('#',$match);
 		$id = intval(end($tokens));
-		
+
 		$this->_db->setQuery( "SELECT filename, description FROM $this->_tbl WHERE id=".$id );
 		$a = $this->_db->loadRow();
-		
+
 		if ($this->output == 'web') {
 			if (is_file($this->uppath . DS . $a[0])) {
 				$juri =& JURI::getInstance();
@@ -99,7 +91,7 @@ class SupportAttachment extends JTable
 					$sef = substr($sef,1,strlen($sef));
 				}
 				$url = $juri->base() . $sef;
-				
+
 				if (eregi("bmp|gif|jpg|jpe|jpeg|tif|tiff|png", $a[0])) {
 					$size = getimagesize($this->uppath . DS . $a[0]);
 					if ($size[0] > 400) {
@@ -121,10 +113,8 @@ class SupportAttachment extends JTable
 			return $this->webpath . '/' . $a[0];
 		}
 	}
-	
-	//-----------
-	
-	public function deleteAttachment( $filename, $ticket ) 
+
+	public function deleteAttachment( $filename, $ticket )
 	{
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND ticket=".$ticket );
 		if (!$this->_db->query()) {
@@ -132,9 +122,7 @@ class SupportAttachment extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function loadAttachment($filename=NULL, $ticket=NULL)
 	{
 		if ($filename === NULL) {

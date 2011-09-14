@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class SupportAro extends JTable 
+class SupportAro extends JTable
 {
 	var $id      = NULL;  // @var int(11) Primary key
 	var $model   = NULL;  // @var varchar(100)
@@ -42,14 +42,12 @@ class SupportAro extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_acl_aros', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->model ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD').': model' );
@@ -62,31 +60,25 @@ class SupportAro extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	private function _buildQuery( $filters=array() ) 
+
+	private function _buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl ORDER BY id";
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->_buildQuery( $filters );
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT *";

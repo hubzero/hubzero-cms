@@ -29,32 +29,29 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class Resume extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $uid		= NULL;  // @var int(11)
-	var $created	= NULL;  
+	var $created	= NULL;
 	var $title		= NULL;
 	var $filename	= NULL;
 	var $main		= NULL;  // tinyint  0 - no, 1 - yes
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_resumes', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (intval( $this->uid ) == 0) {
 			$this->setError( JText::_('ERROR_MISSING_UID') );
 			return false;
 		}
-		
+
 		if (trim( $this->filename ) == '') {
 			$this->setError( JText::_('ERROR_MISSING_FILENAME') );
 			return false;
@@ -62,9 +59,7 @@ class Resume extends JTable
 
 		return true;
 	}
-	
-	//--------
-	
+
 	public function load( $name=NULL )
 	{
 		if ($name !== NULL) {
@@ -81,17 +76,15 @@ class Resume extends JTable
 
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$name' AND main='1' LIMIT 1" );
 		//return $this->_db->loadObject( $this );
-		
+
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
 		} else {
 			return false;
 		}
 	}
-	
-	//----------
-	 
-	public function delete_resume ($id = NULL) 
+
+	public function delete_resume ($id = NULL)
 	{
 		if ($id === NULL) {
 			$id == $this->id;
@@ -99,41 +92,39 @@ class Resume extends JTable
 		if ($id === NULL) {
 			return false;
 		}
-		
-		$query  = "DELETE FROM $this->_tbl WHERE id=".$id;		
+
+		$query  = "DELETE FROM $this->_tbl WHERE id=".$id;
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		return true;	 
+		return true;
 	}
-	 
-	//----------
-	 
-	public function getResumeFiles ($pile = 'all', $uid = 0, $admin = 0) 
-	{	 
+
+	public function getResumeFiles ($pile = 'all', $uid = 0, $admin = 0)
+	{
 		$query  = "SELECT DISTINCT r.uid, r.filename FROM $this->_tbl AS r ";
 		$query .= "JOIN #__jobs_seekers AS s ON s.uid=r.uid ";
-		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=".$uid." AND s.uid != '".$uid."' AND s.uid=r.uid AND W.category='resume' " : "";	
+		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=".$uid." AND s.uid != '".$uid."' AND s.uid=r.uid AND W.category='resume' " : "";
 		$uid 	 = $admin ? 1 : $uid;
-		$query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid='$uid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";	
+		$query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid='$uid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
-		
+
 		$files = array();
-		
+
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
-		
+
 		if ($result) {
-			foreach ($result as $r) 
+			foreach ($result as $r)
 			{
 				$files[$r->uid] = $r->filename;
 			}
 		}
-		
+
 		$files = array_unique($files);
-		return $files;			 
-	}	
+		return $files;
+	}
 }
 

@@ -29,7 +29,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class Shortlist extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
@@ -38,23 +37,21 @@ class Shortlist extends JTable
 	var $category	= NULL;  // @var varchar (job / resume)
 	var $jobid		= NULL;  // @var int(11)
 	var $added		= NULL;  // @var datetime
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_shortlist', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (intval( $this->emp) == 0) {
 			$this->setError( JText::_('ERROR_MISSING_EMPLOYER_ID') );
 			return false;
 		}
-		
+
 		if (trim( $this->seeker ) == 0) {
 			$this->setError( JText::_('ERROR_MISSING_JOB_SEEKER_ID') );
 			return false;
@@ -62,9 +59,7 @@ class Shortlist extends JTable
 
 		return true;
 	}
-	
-	//--------
-	
+
 	public function loadEntry( $emp, $seeker, $category = 'resume' )
 	{
 		if ($emp === NULL or $seeker === NULL) {
@@ -72,12 +67,12 @@ class Shortlist extends JTable
 		}
 
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE emp='$emp' AND seeker='$seeker' AND category='$category' LIMIT 1" );
-		
+
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
 		} else {
 			return false;
 		}
-	}	
+	}
 }
 

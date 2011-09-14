@@ -41,7 +41,7 @@ require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'tag.php' 
 require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'object.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'group.php' );
 
-class TagsHandler extends JObject 
+class TagsHandler extends JObject
 {
 	public $_db  = NULL;  // Database
 	public $_tbl = 'tags';  // Secondary tag table, used for linking objects (such as resources) to tags
@@ -49,28 +49,24 @@ class TagsHandler extends JObject
 	public $_tag_tbl = '#__tags';  // The primary tag table
 	public $_obj_tbl = '#__tags_object';
 
-	//-----------
-	
 	public function __construct( $db, $config=array() )
 	{
 		$this->_db = $db;
 	}
 
-	//-----------
-
-	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0) 
+	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0)
 	{
 		if (!isset($object_id)) {
 			$this->setError('get_tags_on_object argument missing');
 			return array();
 		}
-		
+
 		$to = new TagsObject($this->_db);
 		$to->objectid = $object_id;
 		$to->tbl = $this->_tbl;
 		$to->strength = $strength;
 		$to->taggerid = $tagger_id;
-		
+
 		$tags = $to->getTagsOnObject($object_id, $this->_tbl, $admin, $offset, $limit);
 		if (!$tags) {
 			$this->setError( $to->getError() );
@@ -79,9 +75,7 @@ class TagsHandler extends JObject
 		return $tags;
 	}
 
-	//-----------
-	
-	public function safe_tag($tagger_id, $object_id, $tag, $strength=1) 
+	public function safe_tag($tagger_id, $object_id, $tag, $strength=1)
 	{
 		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
 			$this->setError('safe_tag argument missing');
@@ -91,11 +85,11 @@ class TagsHandler extends JObject
 		if ($this->normalize_tag($tag) === '0') {
 			return true;
 		}
-		
+
 		$to = new TagsObject($this->_db);
 		$to->objectid = $object_id;
 		$to->tbl = $this->_tbl;
-		
+
 		// First see if the tag exists.
 		$t = new TagsTag($this->_db);
 		$t->loadTag($this->normalize_tag($tag));
@@ -121,7 +115,7 @@ class TagsHandler extends JObject
 				return true;
 			}
 		}
-		
+
 		// Add an entry linking the tag to the object it was used on
 		$to->strength = $strength;
 		$to->taggerid = $tagger_id;
@@ -135,9 +129,7 @@ class TagsHandler extends JObject
 		return true;
 	}
 
-	//-----------
-
-	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false) 
+	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false)
 	{
 		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
 		$tagArray2 = $this->_parse_tags($tag_string,1); // array of normalized => raw tags
@@ -150,7 +142,7 @@ class TagsHandler extends JObject
 		$preserveTags = array();
 
 		if (count($oldTags) > 0) {
-			foreach ($oldTags as $tagItem) 
+			foreach ($oldTags as $tagItem)
 			{
 				if (!in_array($tagItem['tag'], $tagArray)) {
 					// We need to delete old tags that don't appear in the new parsed string.
@@ -163,7 +155,7 @@ class TagsHandler extends JObject
 		}
 		$newTags = array_diff($tagArray, $preserveTags);
 
-		foreach ($newTags as $tag) 
+		foreach ($newTags as $tag)
 		{
 			$tag = trim($tag);
 			if ($tag != '') {
@@ -177,9 +169,7 @@ class TagsHandler extends JObject
 		return true;
 	}
 
-	//-----------
-
-	public function remove_tag($tagger_id, $object_id, $tag, $admin) 
+	public function remove_tag($tagger_id, $object_id, $tag, $admin)
 	{
 		if (!isset($object_id) || !isset($tag)) {
 			$this->setError('remove_tag argument missing');
@@ -199,9 +189,7 @@ class TagsHandler extends JObject
 		return true;
 	}
 
-	//-----------
-
-	public function remove_all_tags($object_id) 
+	public function remove_all_tags($object_id)
 	{
 		if ($object_id > 0) {
 			$to = new TagsObject($this->_db);
@@ -211,20 +199,16 @@ class TagsHandler extends JObject
 			}
 			return true;
 		} else {
-			return false;	
+			return false;
 		}
 	}
 
-	//-----------
-	
-	public function normalize_tag($tag) 
+	public function normalize_tag($tag)
 	{
 		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $tag));
 	}
-	
-	//-----------
-	
-	public function get_tag_id($tag) 
+
+	public function get_tag_id($tag)
 	{
 		if (!isset($tag)) {
 			$this->setError('get_tag_id argument missing');
@@ -236,9 +220,7 @@ class TagsHandler extends JObject
 		return $t->id;
 	}
 
-	//-----------
-
-	public function get_raw_tag_id($tag) 
+	public function get_raw_tag_id($tag)
 	{
 		if (!isset($tag)) {
 			$this->setError('get_raw_tag_id argument missing');
@@ -246,9 +228,7 @@ class TagsHandler extends JObject
 		}
 		return $this->get_tag_id($tag);
 	}
-	
-	//-----------
-	
+
 	public function count_tags($admin=0)
 	{
 		$filters = array();
@@ -259,9 +239,7 @@ class TagsHandler extends JObject
 		$t = new TagsTag($this->_db);
 		return $t->getCount( $filters );
 	}
-	
-	//-----------
-	
+
 	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
 	{
 		// find all tags
@@ -272,20 +250,18 @@ class TagsHandler extends JObject
 		}*/
 		$t = new TagsTag( $this->_db );
 		$tags = $t->getCloud($this->_tbl, $admin, $objectid);
-		
+
 		return $this->buildCloud($tags, 'alpha', $showsizes);
 	}
-	
-	//-----------
-	
-	public function buildCloud($tags, $sort='alpha', $showsizes=0) 
+
+	public function buildCloud($tags, $sort='alpha', $showsizes=0)
 	{
 		$html = '';
-		
+
 		if ($tags && count($tags) > 0) {
 			$min_font_size = 1;
 			$max_font_size = 1.8;
-			
+
 			if ($showsizes) {
 				$retarr = array();
 				foreach ($tags as $tag)
@@ -311,7 +287,7 @@ class TagsHandler extends JObject
 			foreach ($tags as $tag)
 			{
 				$class = '';
-				switch ($tag->admin) 
+				switch ($tag->admin)
 				{
 					/*case 0:
 						$class = ' class="restricted"';
@@ -339,16 +315,14 @@ class TagsHandler extends JObject
 			}
 			$html .= '</ol>'."\n";
 		}
-		
+
 		return $html;
 	}
-	
-	//-----------
-	
-	public function get_tag_string( $oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0 ) 
+
+	public function get_tag_string( $oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0 )
 	{
 		$tags = $this->get_tags_on_object( $oid, $offset, $limit, $tagger_id, $strength, $admin );
-		
+
 		if ($tags && count($tags) > 0) {
 			$tagarray = array();
 			foreach ($tags as $tag)
@@ -361,22 +335,20 @@ class TagsHandler extends JObject
 		}
 		return $tags;
 	}
-	
-	//-----------
-	
-	public function _parse_tags( $tag_string, $keep=0 ) 
+
+	public function _parse_tags( $tag_string, $keep=0 )
 	{
 		$newwords = array();
-		
+
 		// If the tag string is empty, return the empty set.
 		if ($tag_string == '') {
 			return $newwords;
 		}
-		
+
 		// Perform tag parsing
 		$tag_string = trim($tag_string);
 		$raw_tags = explode(',',$tag_string);
-		
+
 		foreach ($raw_tags as $raw_tag)
 		{
 			$raw_tag = trim($raw_tag);

@@ -38,7 +38,7 @@ class EventsController extends Hubzero_Controller
 		$config = new EventsConfigs( $this->database );
 		$config->load();
 		$this->config = $config;
-		
+
 		$tables = $this->database->getTableList();
 		$table = $this->database->_table_prefix.'events_respondent_race_rel';
 		if (!in_array($table,$tables)) {
@@ -52,13 +52,13 @@ class EventsController extends Hubzero_Controller
 				return false;
 			}
 		}
-		
+
 		define( '_CAL_CONF_STARDAY', $config->getCfg('starday'));
 		define( '_CAL_CONF_DEFCOLOR', $config->getCfg('navbarcolor'));
-		
+
 		$this->_task = strtolower(JRequest::getString('task', ''));
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			// Category management
 			case 'cats':         $this->cats();         break;
@@ -71,10 +71,10 @@ class EventsController extends Hubzero_Controller
 			case 'unpublishcat': $this->unpublishcat(); break;
 			case 'orderup':      $this->orderup();      break;
 			case 'orderdown':    $this->orderdown();    break;
-			
+
 			case 'make_announcement': $this->setType(); break;
 			case 'make_event':   $this->setType();      break;
-			
+
 			// Event management
 			case 'remove':       $this->remove();       break;
 			case 'add':          $this->edit();         break;
@@ -84,17 +84,17 @@ class EventsController extends Hubzero_Controller
 			case 'unpublish':    $this->unpublish();    break;
 			case 'cancel':       $this->cancel();       break;
 			case 'events':       $this->events();       break;
-			
+
 			// Configuration
 			case 'configure':    $this->configure();    break;
 			case 'saveconfig':   $this->saveconfig();   break;
-			
+
 			// Respondents
 			case 'viewrespondent':    $this->viewrespondent();    break;
 			case 'viewlist':   $this->viewlist();   break;
 			case 'downloadlist':   $this->downloadlist();   break;
 			case 'removerespondent':   $this->removerespondent();   break;
-			
+
 			// Pages
 			case 'pages':    $this->pages();    break;
 			case 'addpage':   $this->addpage();   break;
@@ -109,9 +109,7 @@ class EventsController extends Hubzero_Controller
 			default: $this->events(); break;
 		}
 	}
-	
-	//-----------
-	
+
 	private function getScripts()
 	{
 		$document =& JFactory::getDocument();
@@ -120,34 +118,34 @@ class EventsController extends Hubzero_Controller
 			$document->addScript('components'.DS.$this->_option.DS.'js'.DS.$this->_name.'.js');
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-	
-	protected function events() 
+
+	protected function events()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'events') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']  = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$view->filters['start']  = JRequest::getVar('limitstart', 0, '', 'int');
 		$view->filters['search'] = urldecode(JRequest::getString('search'));
 		$view->filters['catid']  = JRequest::getVar('catid', 0, '', 'int');
-		
+
 		$ee = new EventsEvent( $this->database );
-		
+
 		// Get a record count
 		$view->total = $ee->getCount( $view->filters );
-		
+
 		// Get records
 		$view->rows = $ee->getRecords( $view->filters );
 
@@ -161,26 +159,24 @@ class EventsController extends Hubzero_Controller
 		$categories = array_merge( $categories, $this->database->loadObjectList() );
 
 		$view->clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $view->filters['catid'], false, false );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function edit() 
+
+	protected function edit()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'event') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->config = $this->config;
-		
+
 		$config = JFactory::getConfig();
 		$offset = $config->getValue('config.offset');
 
@@ -190,10 +186,10 @@ class EventsController extends Hubzero_Controller
 			JError::raiseError( 500, JText::_('EVENTS_LANG_NEED_CATEGORY') );
 			return;
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
-		
+
 		// Load the event object
 		$view->row = new EventsEvent( $this->database );
 		$view->row->load( $id );
@@ -219,11 +215,11 @@ class EventsController extends Hubzero_Controller
 			if (trim( $view->row->publish_down ) == '0000-00-00 00:00:00') {
 				$view->row->publish_down = JText::_('EVENTS_CAL_LANG_NEVER');
 			}
-			
+
 			$event_up = new EventsDate( $view->row->publish_up );
 			$start_publish = sprintf( "%4d-%02d-%02d",$event_up->year,$event_up->month,$event_up->day);
 			$start_time = $event_up->hour .':'. $event_up->minute;
-			
+
 			$event_down = new EventsDate( $view->row->publish_down );
 			$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
 			$end_time = $event_down->hour .':'. $event_down->minute;
@@ -231,7 +227,7 @@ class EventsController extends Hubzero_Controller
 			$view->row->reccurday_month = 99;
 			$view->row->reccurday_week = 99;
 			$view->row->reccurday_year = 99;
-			
+
 			if ($view->row->reccurday <> '') {
 				if ($view->row->reccurtype == 1) {
 					$view->row->reccurday_week = $view->row->reccurday;
@@ -264,7 +260,7 @@ class EventsController extends Hubzero_Controller
 
 		$view->fields = $this->config->getCfg('fields');
 		if (!empty($view->fields)) {
-			for ($i=0, $n=count( $view->fields ); $i < $n; $i++) 
+			for ($i=0, $n=count( $view->fields ); $i < $n; $i++)
 			{
 				// explore the text and pull out all matches
 				array_push($view->fields[$i], $this->parseTag($view->row->content, $view->fields[$i][0]));
@@ -278,7 +274,7 @@ class EventsController extends Hubzero_Controller
 		list($end_hrs, $end_mins) = explode(':',$end_time);
 		$start_pm = false;
 		$end_pm = false;
-		if ($this->config->getCfg('calUseStdTime') == 'YES') { 
+		if ($this->config->getCfg('calUseStdTime') == 'YES') {
 			$start_hrs = intval($start_hrs);
 			if ($start_hrs >= 12) $start_pm = true;
 			if ($start_hrs > 12) $start_hrs -= 12;
@@ -303,24 +299,22 @@ class EventsController extends Hubzero_Controller
 		$view->times['stop_publish'] = $stop_publish;
 		$view->times['end_time'] = $end_time;
 		$view->times['end_pm'] = $end_pm;
-		
+
 		// Get tags on this event
 		$rt = new EventsTags( $this->database );
 		$view->tags = $rt->get_tag_string($view->row->id, 0, 0, NULL, 0, 1);
-		
+
 		// Output HTML
 		//EventsHtml::edit( $row, $this->config, $fields, $glist, $times, $juser->get('id'), $this->_option, $tags );
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	private function parseTag($text, $tag)
 	{
 		preg_match("#<ef:".$tag.">(.*?)</ef:".$tag.">#s", $text, $matches);
@@ -333,26 +327,22 @@ class EventsController extends Hubzero_Controller
 		}
 		return $match;
 	}
-	
-	//-----------
-	
-	protected function cancel() 
+
+	protected function cancel()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Check in the event
 		$event = new EventsEvent( $this->database );
 		$event->load( $id );
 		$event->checkin();
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
-	
-	//-----------
-	
-	protected function save() 
+
+	protected function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -361,7 +351,7 @@ class EventsController extends Hubzero_Controller
 		$offset = $config->getValue('config.offset');
 
 		$juser =& JFactory::getUser();
-		
+
 		// Incoming
 		$start_time = JRequest::getVar( 'start_time', '08:00', 'post' );
 		$start_pm   = JRequest::getInt( 'start_pm', 0, 'post' );
@@ -380,7 +370,7 @@ class EventsController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		// New entry or existing?
 		if ($row->id) {
 			// Existing - update modified info
@@ -395,7 +385,7 @@ class EventsController extends Hubzero_Controller
 				$row->created_by = $juser->get('id');
 			}
 		}
-		
+
 		// Set some fields and do some cleanup work
 		if (is_null($row->useCatColor)) {
 			$row->useCatColor = 0;
@@ -403,13 +393,13 @@ class EventsController extends Hubzero_Controller
 		if ($row->catid) {
 			$row->catid = intval( $row->catid );
 		}
-		
+
 		$row->title = htmlentities($row->title);
 
 		//$row->content = JRequest::getVar( 'econtent', '', 'post' );
 		$row->content = $_POST['econtent'];
 		$row->content = $this->clean($row->content);
-		
+
 		// Get the custom fields defined in the events configuration
 		$fields = JRequest::getVar( 'fields', array(), 'post' );
 		$fields = array_map('trim',$fields);
@@ -420,7 +410,7 @@ class EventsController extends Hubzero_Controller
 			if (trim($value) != '') {
 				$row->content .= '<ef:'.$param.'>'.$this->clean($value).'</ef:'.$param.'>';
 			} else {
-				foreach ($fs as $f) 
+				foreach ($fs as $f)
 				{
 					if ($f[0] == $param && end($f) == 1) {
 						echo EventsHtml::alert( JText::sprintf('EVENTS_REQUIRED_FIELD_CHECK', $f[1]) );
@@ -432,20 +422,20 @@ class EventsController extends Hubzero_Controller
 
 		// Clean adresse
 		$row->adresse_info = $this->clean($row->adresse_info);
-	
+
 		// Clean contact
 		$row->contact_info = $this->clean($row->contact_info);
-	
+
 		// Clean extra
 		$row->extra_info = $this->clean($row->extra_info);
-	
+
 		// Prepend http:// to URLs without it
 		if ($row->extra_info != NULL) {
 			if ( (substr($row->extra_info,0,7) != 'http://') && (substr($row->extra_info,0,8) != 'https://')) {
 				$row->extra_info = 'http://'.$row->extra_info;
 			}
 		}
-		
+
 		$row->created_by_alias = htmlentities($row->created_by_alias);
 
 		// reformat the time into 24hr format if necessary
@@ -458,7 +448,7 @@ class EventsController extends Hubzero_Controller
 			if ($hrs < 10) $hrs = '0'.$hrs;
 			if ($mins < 10) $mins = '0'.$mins;
 			$start_time = $hrs.':'.$mins;
-		
+
 			list($hrs,$mins) = explode(':', $end_time);
 			$hrs = intval($hrs);
 			$mins = intval($mins);
@@ -475,20 +465,20 @@ class EventsController extends Hubzero_Controller
 		} else {
 			$row->publish_up = strftime( "%Y-%m-%d 00:00:00", time()+($offset*60*60));
 		}
-		
+
 		if ($row->publish_down) {
 			$publishtime = $row->publish_down." ".$end_time.":00";
 			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
 		} else {
 			$row->publish_down = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
 		}
-		
+
 		if ($row->publish_up <> $row->publish_down) {
 			$row->reccurtype = intval( $row->reccurtype );
 		} else {
 			$row->reccurtype = 0;
 		}
-		
+
 		if ($row->reccurtype == 0) {
 			$row->reccurday = '';
 		} elseif ($row->reccurtype == 1) {
@@ -504,13 +494,13 @@ class EventsController extends Hubzero_Controller
 		}
 
 		// Reccur week days
-		if (empty($reccurweekdays) == '') {		
+		if (empty($reccurweekdays) == '') {
 			$weekdays = '';
 		} else {
 			$weekdays = implode( '|', $reccurweekdays );
 		}
 		$row->reccurweekdays = $weekdays;
-        
+
 		// Reccur viewable weeks
 		$reccurweekss = JRequest::getVar( 'reccurweekss', '', 'post' );
 		$reccurweeks = array();
@@ -535,7 +525,7 @@ class EventsController extends Hubzero_Controller
 		$params = JRequest::getVar( 'params', '', 'post' );
 		if (is_array( $params )) {
 			$txt = array();
-			foreach ( $params as $k=>$v) 
+			foreach ( $params as $k=>$v)
 			{
 				$txt[] = "$k=$v";
 			}
@@ -551,27 +541,25 @@ class EventsController extends Hubzero_Controller
 			return;
 		}
 		$row->checkin();
-		
+
 		// Incoming tags
 		$tags = JRequest::getVar( 'tags', '', 'post' );
-		
+
 		// Save the tags
 		$rt = new EventsTags( $this->database );
 		$rt->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('EVENTS_CAL_LANG_SAVED');
 	}
-	
-	//-----------
 
-	private function clean($string) 
+	private function clean($string)
 	{
 		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
 		}
-		
+
 		// strip out any KL_PHP, script, style, HTML comments
 		$string = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $string );
 		$string = preg_replace( "'<head[^>]*?>.*?</head>'si", '', $string);
@@ -579,14 +567,14 @@ class EventsController extends Hubzero_Controller
 		$string = preg_replace( "'<style[^>]*>.*?</style>'si", '', $string );
 		$string = preg_replace( "'<script[^>]*>.*?</script>'si", '', $string );
 		$string = preg_replace( '/<!--.+?-->/', '', $string );
-		
+
 		$string = str_replace(array("&amp;","&lt;","&gt;"),array("&amp;amp;","&amp;lt;","&amp;gt;",),$string);
 		// fix &entitiy\n;
-		
+
 		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;",$string);
 		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$string);
 		$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
-		
+
 		// remove any attribute starting with "on" or xmlns
 		$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu',"$1>",$string);
 		// remove javascript: and vbscript: protocol
@@ -604,73 +592,67 @@ class EventsController extends Hubzero_Controller
 			$oldstring = $string;
 			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i',"",$string);
 		} while ($oldstring != $string);
-	
+
 		return $string;
 	}
 
-	//-----------
-	
-	protected function publish() 
+	protected function publish()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
 			$ids = array();
 		}
-		
+
 		// Make sure we have an ID
 		if (empty($ids)) {
 			$this->_redirect = 'index.php?option='.$this->_option;
 			return;
 		}
-		
+
 		// Instantiate an event object
 		$event = new EventsEvent( $this->database );
-		
+
 		// Loop through the IDs and publish the event
-		foreach ($ids as $id) 
-		{	
+		foreach ($ids as $id)
+		{
 			$event->publish( $id );
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('EVENTS_CAL_LANG_PUBLISHED');
 	}
-	
-	//-----------
-	
-	protected function unpublish() 
+
+	protected function unpublish()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
 			$ids = array();
 		}
-		
+
 		// Make sure we have an ID
 		if (empty($ids)) {
 			$this->_redirect = 'index.php?option='.$this->_option;
 			return;
 		}
-		
+
 		// Instantiate an event object
 		$event = new EventsEvent( $this->database );
-		
+
 		// Loop through the IDs and unpublish the event
-		foreach ($ids as $id) 
-		{	
+		foreach ($ids as $id)
+		{
 			$event->unpublish( $id );
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('EVENTS_CAL_LANG_UNPUBLISHED');
 	}
 
-	//-----------
-	
-	protected function setType() 
+	protected function setType()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -683,8 +665,8 @@ class EventsController extends Hubzero_Controller
 			$this->_redirect = 'index.php?option='.$this->_option;
 			return;
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'make_announcement':
 				$v = 1;
@@ -694,10 +676,10 @@ class EventsController extends Hubzero_Controller
 				$v = 0;
 			break;
 		}
-		
+
 		// Loop through the IDs and publish the event
-		foreach ($ids as $id) 
-		{	
+		foreach ($ids as $id)
+		{
 			// Instantiate an event object
 			$event = new EventsEvent( $this->database );
 			$event->load( $id );
@@ -707,92 +689,88 @@ class EventsController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
-	//-----------
-	
-	protected function remove() 
+	protected function remove()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
 			$ids = array();
 		}
-		
+
 		// Make sure we have an ID
 		if (empty($ids)) {
 			$this->_redirect = 'index.php?option='.$this->_option;
 			return;
 		}
-		
+
 		// Instantiate an event object
 		$event = new EventsEvent( $this->database );
-		
+
 		// Instantiate an event tags object
 		$rt = new EventsTags( $this->database );
-		
+
 		// Instantiate a page object
 		$ep = new EventsPage( $this->database );
-		
+
 		// Instantiate a respondent object
 		$er = new EventsRespondent( array() );
-		
+
 		// Loop through the IDs and unpublish the event
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Delete tags on this event
 			$rt->remove_all_tags($id);
-			
+
 			// Delete the event
 			$event->delete( $id );
-			
+
 			// Delete any associated pages 
 			$ep->deletePages( $id );
-			
+
 			// Delete any associated respondents
 			$er->deleteRespondents( $id );
 		}
-	
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('EVENTS_CAL_LANG_REMOVED');
 	}
-	
+
 	//----------------------------------------------------------
 	// Configuration
 	//----------------------------------------------------------
-	
-	protected function configure() 
+
+	protected function configure()
 	{
 		$view = new JView( array('name'=>'configure') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->config = $this->config;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function saveconfig() 
+
+	protected function saveconfig()
 	{
 		// Get the configuration
 		$config = JRequest::getVar('config', array(), 'post');
-		foreach ($config as $n=>$v) 
+		foreach ($config as $n=>$v)
 		{
 			$box = array();
 			$box['param'] = $n;
 			$box['value'] = $v;
-			
+
 			$row = new EventsConfig( $this->database );
 			if (!$row->bind( $box )) {
 				JError::raiseError( 500, $row->getError() );
@@ -809,7 +787,7 @@ class EventsController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		// Get the custom fields
 		$fields = JRequest::getVar('fields', array(), 'post');
 
@@ -833,7 +811,7 @@ class EventsController extends Hubzero_Controller
 			$field = implode( "\n", $txta );
 		}
 		$box['value'] = $field;
-		
+
 		$row = new EventsConfig( $this->database );
 		if (!$row->bind( $box )) {
 			JError::raiseError( 500, $row->getError() );
@@ -849,37 +827,35 @@ class EventsController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('EVENTS_CAL_LANG_CONFIG_SAVED');
 	}
-	
-	//-----------
-	
-	private function normalize($txt) 
+
+	private function normalize($txt)
 	{
 		// Strip any non-alphanumeric characters
 		$normalized_valid_chars = 'a-zA-Z0-9';
 		$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $txt);
 		return strtolower($normalized);
 	}
-	
+
 	//----------------------------------------------------------
 	// Categories
 	//----------------------------------------------------------
 
-	protected function cats() 
+	protected function cats()
 	{
 		$view = new JView( array('name'=>'categories') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		$view->section = $this->_option;
 
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Incoming
 		$limit = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
@@ -937,28 +913,26 @@ class EventsController extends Hubzero_Controller
 			JError::raiseError( 500, $this->database->stderr() );
 			return;
 		}
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $this->total, $limitstart, $limit );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function editcat() 
+	protected function editcat()
 	{
 		$view = new JView( array('name'=>'category') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
@@ -984,9 +958,9 @@ class EventsController extends Hubzero_Controller
 
 		// Make order list
 		$order = array();
-		
+
 		$max = intval( $view->row->getCategoryCount() ) + 1;
-		for ($i=1; $i < $max; $i++) 
+		for ($i=1; $i < $max; $i++)
 		{
 			$order[] = JHTML::_('select.option', $i, $i, 'value', 'text' );
 		}
@@ -998,7 +972,7 @@ class EventsController extends Hubzero_Controller
 
 		$imgFiles = $this->readDirectory( JPATH_ROOT.DS.'images'.DS.'stories' );
 		$images = array( JHTML::_('select.option', '', JText::_('Select Image'), 'value', 'text') );
-		foreach ($imgFiles as $file) 
+		foreach ($imgFiles as $file)
 		{
 			if (eregi( "bmp|gif|jpg|png", $file )) {
 				$images[] = JHTML::_('select.option', $file, $file, 'value', 'text' );
@@ -1021,12 +995,10 @@ class EventsController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	private function readDirectory( $path, $filter='.', $recurse=false, $fullpath=false  )
 	{
@@ -1043,13 +1015,11 @@ class EventsController extends Hubzero_Controller
 		return $arr;
 	}
 
-	//-----------
-
-	protected function savecat() 
+	protected function savecat()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$row = new EventsCategory( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
@@ -1083,31 +1053,27 @@ class EventsController extends Hubzero_Controller
 			JError::raiseError( 500, $this->database->getErrorMsg() );
 			return;
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
-	
-	//-----------
 
-	protected function cancelcat() 
+	protected function cancelcat()
 	{
 		// Checkin the category
 		$row = new EventsCategory( $this->database );
 		$row->bind( $_POST );
 		$row->checkin();
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
-	
-	//-----------
-	
-	protected function publishcat() 
+
+	protected function publishcat()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
@@ -1119,61 +1085,57 @@ class EventsController extends Hubzero_Controller
 			$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 			return;
 		}
-		
+
 		// Instantiate a category object
 		$event = new EventsCategory( $this->database );
-		
+
 		// Loop through the IDs and publish the category
-		foreach ($ids as $id) 
-		{	
+		foreach ($ids as $id)
+		{
 			$event->publish( $id );
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 		$this->_message = JText::_('EVENTS_CAL_LANG_CATEGORY_PUBLISHED');
 	}
-	
-	//-----------
-	
-	protected function unpublishcat() 
+
+	protected function unpublishcat()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
 			$ids = array();
 		}
-		
+
 		// Make sure we have an ID
 		if (empty($ids)) {
 			$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 			return;
 		}
-		
+
 		// Instantiate a category object
 		$event = new EventsCategory( $this->database );
-		
+
 		// Loop through the IDs and unpublish the category
-		foreach ($ids as $id) 
-		{	
+		foreach ($ids as $id)
+		{
 			$event->unpublish( $id );
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 		$this->_message = JText::_('EVENTS_CAL_LANG_CATEGORY_UNPUBLISHED');
 	}
-	
-	//-----------
-	
-	protected function orderup() 
+
+	protected function orderup()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
@@ -1181,43 +1143,39 @@ class EventsController extends Hubzero_Controller
 		$row = new EventsCategory( $this->database );
 		$row->load( $id );
 		$row->move( -1, "section='$row->section'" );
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
-	
-	//-----------
-	
-	protected function orderdown() 
+
+	protected function orderdown()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Load the category, reorder, save
 		$row = new EventsCategory( $this->database );
 		$row->load( $id );
 		$row->move( 1, "section='$row->section'" );
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
-	
-	//-----------
-	
-	protected function removecat() 
+
+	protected function removecat()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
 			$ids = array();
 		}
-		
+
 		// Make sure we have an ID
 		if (empty($ids)) {
 			$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
@@ -1227,7 +1185,7 @@ class EventsController extends Hubzero_Controller
 		$cids = array();
 		if (count( $ids ) > 0) {
 			// Loop through each category ID
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Load the category
 				$cat = new EventsCategory( $this->database );
@@ -1249,28 +1207,28 @@ class EventsController extends Hubzero_Controller
 			$this->_message = JText::sprintf('EVENTS_CAL_LANG_CATEGORY_NOTEMPTY', $cids);
 			return;
 		}
-	
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 		$this->_message = JText::_('EVENTS_CAL_LANG_CATEGORY_REMOVED');
 	}
-	
+
 	//----------------------------------------------------------
 	//  Respondents
 	//----------------------------------------------------------
-	
+
 	protected function viewrespondent()
 	{
 		$view = new JView( array('name'=>'respondent') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		$view->resp = new EventsRespondent(array('respondent_id' => JRequest::getInt('id', 0)));
 
 		// Incoming
 		$ids = JRequest::getInt('event_id', 0);
 		$id = $ids[0];
-		
+
 		$view->event = new EventsEvent( $this->database );
 		$view->event->load( $id );
 
@@ -1278,44 +1236,40 @@ class EventsController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function viewlist()
 	{
 		$view = new JView( array('name'=>'respondents') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		$view->resp = $this->getRespondents();
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
 		$id = $ids[0];
-		
+
 		if (!$id) {
 			$this->_redirect = 'index.php?option='.$this->_option;
 			return;
 		}
-		
+
 		$view->event = new EventsEvent( $this->database );
 		$view->event->load( $id );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	private function getRespondents()
 	{
 		$app =& JFactory::getApplication();
@@ -1330,24 +1284,19 @@ class EventsController extends Hubzero_Controller
 			'offset' => JRequest::getInt('limitstart', 0)
 		);
 		if (!$filters['limit']) $filters['limit'] = 30;
-		return new EventsRespondent($filters);	
+		return new EventsRespondent($filters);
 	}
-	
-	//-----------
 
 	protected function downloadlist()
 	{
 		EventsHtml::downloadlist($this->getRespondents(), $this->_option);
 	}
-	
-	
-	//-----------
 
-	protected function removerespondent() 
+	protected function removerespondent()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$workshop = JRequest::getInt( 'workshop', 0 );
 		$ids = JRequest::getVar( 'rid', array() );
@@ -1356,24 +1305,24 @@ class EventsController extends Hubzero_Controller
 		if (!is_array($ids)) {
 			$ids = array();
 		}
-		
+
 		// Do we have any IDs?
 		if (!empty($ids)) {
 			$r = new EventsRespondent( array() );
-			
+
 			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Remove the profile
 				$r->delete( $id );
 			}
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=viewList&id[]='.$workshop;
 		$this->_message = JText::_('EVENTS_RESPONDENT_REMOVED');
 	}
-	
+
 	//----------------------------------------------------------
 	//  Pages
 	//----------------------------------------------------------
@@ -1389,7 +1338,7 @@ class EventsController extends Hubzero_Controller
 		$view = new JView( array('name'=>'pages') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Get configuration
 		$config = JFactory::getConfig();
 		$app =& JFactory::getApplication();
@@ -1403,10 +1352,10 @@ class EventsController extends Hubzero_Controller
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
 		$obj = new EventsPage( $this->database );
-		
+
 		// Get a record count
 		$view->total = $obj->getCount( $view->filters );
-		
+
 		// Get records
 		$view->rows = $obj->getRecords( $view->filters );
 
@@ -1421,12 +1370,10 @@ class EventsController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function addpage()
 	{
@@ -1440,74 +1387,70 @@ class EventsController extends Hubzero_Controller
 		$this->editpage($id);
 	}
 
-	//-----------
-
-	protected function editpage($eid=null) 
+	protected function editpage($eid=null)
 	{
 		$view = new JView( array('name'=>'page') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming
 		$eid = ($eid) ? $eid : JRequest::getInt( 'event', 0 );
 		$ids = JRequest::getVar( 'id', array() );
-		
+
 		// Get the single ID we're working with
 		if (is_array($ids)) {
 			$id = (!empty($ids)) ? $ids[0] : 0;
 		} else {
 			$id = 0;
 		}
-		
+
 		// Initiate database class and load info
 		$view->page = new EventsPage( $this->database );
 		$view->page->load( $id );
-		
+
 		$view->event = new EventsEvent( $this->database );
 		$view->event->load( $eid );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function savepage() 
+	protected function savepage()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Bind incoming data to object
 		$row = new EventsPage( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		if (!$row->alias) {
 			$row->alias = $row->title;
 		}
-		
+
 		$row->event_id = JRequest::getInt( 'event', 0 );
 		$row->alias = preg_replace("/[^a-zA-Z0-9]/", "", $row->alias);
 		$row->alias = strtolower($row->alias);
-		
+
 		// Get parameters
 		$params = JRequest::getVar( 'params', '', 'post' );
 		if (is_array( $params )) {
 			$txt = array();
-			foreach ( $params as $k=>$v) 
+			foreach ( $params as $k=>$v)
 			{
 				$txt[] = "$k=$v";
 			}
 			$row->params = implode( "\n", $txt );
 		}
-		
+
 		// Check content for missing required data
 		if (!$row->check()) {
 			JError::raiseError( 500, $row->getError() );
@@ -1519,19 +1462,17 @@ class EventsController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=pages&id[]='.$row->event_id;
 		$this->_message = JText::_('EVENTS_PAGE_SAVED');
 	}
-	
-	//-----------
 
-	protected function removepage() 
+	protected function removepage()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$event = JRequest::getInt( 'event', 0 );
 		$ids = JRequest::getVar( 'id', array(0) );
@@ -1540,45 +1481,39 @@ class EventsController extends Hubzero_Controller
 		if (!is_array($ids)) {
 			$ids = array();
 		}
-		
+
 		// Do we have any IDs?
 		if (!empty($ids)) {
 			$page = new EventsPage( $this->database );
-			
+
 			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Remove the profile
 				$page->delete( $id );
 			}
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=pages&id[]='.$event;
 		$this->_message = JText::_('EVENTS_PAGES_REMOVED');
 	}
-	
-	//-----------
 
-	protected function orderuppage() 
+	protected function orderuppage()
 	{
 		$this->reorderpage();
 	}
-	
-	//-----------
-	
-	protected function orderdownpage() 
+
+	protected function orderdownpage()
 	{
 		$this->reorderpage();
 	}
-	
-	//-----------
-	
-	protected function reorderpage() 
+
+	protected function reorderpage()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getVar( 'id', array() );
 		$id = $id[0];
@@ -1589,7 +1524,7 @@ class EventsController extends Hubzero_Controller
 			echo EventsHtml::alert( JText::_('No page ID found.') );
 			exit;
 		}
-		
+
 		// Ensure we have a parent ID to work with
 		if (!$pid) {
 			echo EventsHtml::alert( JText::_('No event ID found.') );
@@ -1604,41 +1539,39 @@ class EventsController extends Hubzero_Controller
 		$page2 = clone( $page1 );
 		$page2->getNeighbor( $this->_task );
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
-			case 'orderuppage':				
+			case 'orderuppage':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $page2->ordering;
 				$orderdn = $page1->ordering;
-				
+
 				$page1->ordering = $orderup;
 				$page2->ordering = $orderdn;
 				break;
-			
+
 			case 'orderdownpage':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $page1->ordering;
 				$orderdn = $page2->ordering;
-				
+
 				$page1->ordering = $orderdn;
 				$page2->ordering = $orderup;
 				break;
 		}
-		
+
 		// Save changes
 		$page1->store();
 		$page2->store();
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option .'&task=pages&id[]='. $pid;
 	}
-	
-	//-----------
 
 	protected function cancelpage()
 	{
 		$workshop = JRequest::getInt( 'event', 0 );
-		
+
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=pages&id[]='.$workshop;
 	}
 }

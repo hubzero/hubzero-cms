@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class KbArticle extends JTable 
+class KbArticle extends JTable
 {
 	var $id           = NULL;  // @var int(11) Primary key
 	var $title        = NULL;  // @var varchar(250)
@@ -51,17 +50,15 @@ class KbArticle extends JTable
 	var $helpful      = NULL;  // @var int(11)
 	var $nothelpful   = NULL;  // @var int(11)
 	var $alias        = NULL;  // @var varchar(200)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->title ) == '') {
 			$this->setError( JText::_('KB_ERROR_EMPTY_TITLE') );
@@ -78,10 +75,8 @@ class KbArticle extends JTable
 
 		return parent::store();
 	}
-	
-	//-----------
-	
-	public function loadAlias( $oid=NULL, $cat=NULL ) 
+
+	public function loadAlias( $oid=NULL, $cat=NULL )
 	{
 		if (empty($oid)) {
 			return false;
@@ -96,13 +91,11 @@ class KbArticle extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function getCategoryArticles($noauth, $section, $category, $access) 
+
+	public function getCategoryArticles($noauth, $section, $category, $access)
 	{
 		$juser =& JFactory::getUser();
-		
+
 		$query = "SELECT a.id, a.title, a.created, a.created_by, a.access, a.hits, a.section, a.category, a.helpful, a.nothelpful, a.alias, c.alias AS calias"
 				. " FROM $this->_tbl AS a"
 				. " LEFT JOIN #__faq_categories AS c ON c.id = a.category"
@@ -113,13 +106,11 @@ class KbArticle extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getArticles($limit, $order)
 	{
 		$juser =& JFactory::getUser();
-		
+
 		$query = "SELECT a.id, a.title, a.state, a.access, a.created, a.modified, a.hits, a.alias, c.alias AS category,  cc.alias AS section"
 				." FROM $this->_tbl AS a"
 				. " LEFT JOIN #__faq_categories AS c ON c.id = a.section"
@@ -131,9 +122,7 @@ class KbArticle extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getCollection( $cid=NULL )
 	{
 		if ($cid == NULL) {
@@ -145,10 +134,8 @@ class KbArticle extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getArticlesCount( $filters=array() ) 
+
+	public function getArticlesCount( $filters=array() )
 	{
 		if (isset($filters['cid']) && $filters['cid']) {
 			$where = "m.section=".$filters['cid']." AND m.category=".$filters['id'];
@@ -162,16 +149,14 @@ class KbArticle extends JTable
 		if (isset($filters['orphans'])) {
 			$where = "m.section=0";
 		}
-		
+
 		$query = "SELECT count(*) FROM $this->_tbl AS m WHERE ".$where;
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getArticlesAll( $filters=array() ) 
+
+	public function getArticlesAll( $filters=array() )
 	{
 		if (isset($filters['cid']) && $filters['cid']) {
 			$where = "m.section=".$filters['cid']." AND m.category=".$filters['id'];
@@ -185,7 +170,7 @@ class KbArticle extends JTable
 		if (isset($filters['orphans'])) {
 			$where = "m.section=0";
 		}
-		
+
 		$query = "SELECT m.id, m.title, m.created, m.state, m.access, m.checked_out, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, cc.title AS cctitle, u.name AS editor, g.name AS groupname"
 			. " FROM $this->_tbl AS m"
 			. " LEFT JOIN #__users AS u ON u.id = m.checked_out"
@@ -199,10 +184,8 @@ class KbArticle extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function deleteSef( $option, $id=NULL ) 
+
+	public function deleteSef( $option, $id=NULL )
 	{
 		if ($id == NULL) {
 			$id = $this->id;
@@ -215,13 +198,13 @@ class KbArticle extends JTable
 			return false;
 		}
 	}
-	
+
 	//----
 	//----
-	
+
 	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$sql = "FROM $this->_tbl AS m 
 				LEFT JOIN #__faq_categories AS c ON c.id = m.section 
@@ -233,7 +216,7 @@ class KbArticle extends JTable
 		if (isset($filters['user_id']) && $filters['user_id'] > 0) {
 			$sql .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=m.id AND v.user_id=".$filters['user_id']." AND v.type='entry' ";
 		}
-		
+
 		$w = array();
 		if (isset($filters['section']) && $filters['section']) {
 			$w[] = "m.section=".$filters['section'];
@@ -256,12 +239,12 @@ class KbArticle extends JTable
 					OR m.fulltext LIKE '%".$filters['search']."%' 
 				)";
 		}
-		
+
 		$sql .= (count($w) > 0) ? "WHERE " : "";
 		$sql .= implode(" AND ",$w);
-		
+
 		if (isset($filters['order']) && $filters['order'] != '') {
-			switch ($filters['order']) 
+			switch ($filters['order'])
 			{
 				case 'recent': $order = 'm.modified DESC, m.created DESC'; break;
 				//case 'created': $order = $filters['orderby'].' DESC'; break;
@@ -276,25 +259,23 @@ class KbArticle extends JTable
 
 		return $sql;
 	}
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query = "SELECT count(*) ".$this->buildQuery( $filters );
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array() ) 
+
+	public function getRecords( $filters=array() )
 	{
 		$query = "SELECT DISTINCT(m.id), m.title, m.created, m.state, m.access, m.modified, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
 		if (isset($filters['user_id']) && $filters['user_id'] > 0) {
 			$query .= ", v.vote, v.user_id ";
 		}
 		$query .= $this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

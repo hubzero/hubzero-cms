@@ -37,7 +37,7 @@ function ForumBuildRoute(&$query)
         $segments[] = $query['topic'];
         unset($query['topic']);
     }
- 
+
     return $segments;
 }
 
@@ -51,7 +51,7 @@ function ForumParseRoute($segments)
     if (isset($segments[0])) {
 		$vars['task'] = $segments[0];
 	}
-	
+
 	if (isset($segments[1])) {
 		$vars['topic'] = $segments[1];
 	}

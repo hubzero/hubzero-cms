@@ -43,7 +43,7 @@ function membersBuildRoute(&$query)
 	if (!empty($query['active'])) {
 		$segments[] = $query['active'];
 		unset($query['active']);
-		
+
 		if (!empty($query['task'])) {
 			$segments[] = $query['task'];
 			unset($query['task']);
@@ -54,7 +54,7 @@ function membersBuildRoute(&$query)
 		unset($query['task']);
 	}
 	/**/
- 
+
     return $segments;
 }
 

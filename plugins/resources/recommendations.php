@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_recommendations' );
-	
-//-----------
 
 class plgResourcesRecommendations extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgResourcesRecommendations extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'recommendations' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onResourcesSubAreas( $resource )
 	{
 		$areas = array(
@@ -57,29 +51,27 @@ class plgResourcesRecommendations extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onResourcesSub( $resource, $option, $miniview=0 )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if they are logged in
 		//$juser =& JFactory::getUser();
 		//if ($juser->get('guest')) {
 		//	return $arr;
 		//}
-		
+
 		// Check if they're a site admin (from Joomla)
 		//if (!$juser->authorize($option, 'manage')) {
 		//	return $arr;
 		//}
-		
+
 		// Get some needed libraries
 		include_once(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'recommendations'.DS.'resources.recommendation.php');
-		
+
 		// Set some filters for returning results
 		$filters = array();
 		$filters['id'] = $resource->id;
@@ -87,12 +79,12 @@ class plgResourcesRecommendations extends JPlugin
 		$filters['threshold'] = ($filters['threshold']) ? $filters['threshold'] : '0.21';
 		$filters['limit'] = $this->_params->get('display_limit');
 		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 10;
-		
+
 		// Get recommendations
 		$database =& JFactory::getDBO();
 		$r = new ResourcesRecommendation($database);
 		$results = $r->getResults($filters);
-		
+
 		// Instantiate a view
 		ximport('Hubzero_Plugin_View');
 		if ($miniview) {

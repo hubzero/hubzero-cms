@@ -29,13 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_wishlist' );
 JPlugin::loadLanguage( 'com_wishlist' );
-	
-//-----------
 
 class plgResourcesWishlist extends JPlugin
 {
@@ -46,15 +42,13 @@ class plgResourcesWishlist extends JPlugin
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'wishlist' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		// Get the component parameters
 		$wconfig = & JComponentHelper::getParams( 'com_wishlist' );
 		$this->config = $wconfig;
 	}
-	
-	//-----------
-	
-	function &onResourcesAreas( $resource ) 
+
+	function &onResourcesAreas( $resource )
 	{
 		if ($resource->_type->_params->get('plg_wishlist')) {
 			$areas = array(
@@ -63,37 +57,35 @@ class plgResourcesWishlist extends JPlugin
 		} else {
 			$areas = array();
 		}
-		
+
 		return $areas;
 	}
-
-	//-----------
 
 	function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
+			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) )
 			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				$rtrn = 'metadata';
 			}
 		}
-		
+
 		// Display only for tools		
 		if ($resource->type != 7) {
 			return array('html'=>'','metadata'=>'');
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
-		
+
 		$option = 'com_wishlist';
 		$cat 	= 'resource';
 		$refid  = $resource->id;
 		$items  = 0;
 		$admin  = 0;
-		$html	= '';		
-		
+		$html	= '';
+
 		// Include some classes & scripts
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.plan.php' );
@@ -105,40 +97,40 @@ class plgResourcesWishlist extends JPlugin
 		ximport('Hubzero_View_Helper_Html');
 		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 		//require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
-		
+
 		// Configure controller
 		WishlistController::setVar('_option', $option);
 		WishlistController::setVar('banking', $this->config->get('banking'));
-		
+
 		// Get filters
 		$filters = WishlistController::getFilters(0);
 		$filters['limit'] = $this->_params->get('limit');
-		
+
 		// Load some objects
 		$obj = new Wishlist( $database );
 		$objWish = new Wish( $database );
 		$objOwner = new WishlistOwner( $database );
-		
+
 		// Get wishlist id
 		$id = $obj->get_wishlistID($refid, $cat);
-		
+
 		// Create a new list if necessary
 		if (!$id) {
 			if ($resource->title && $resource->standalone == 1  && $resource->published == 1) {
 				$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('WISHLIST_NAME_RESOURCE_TOOL').' '.$resource->alias : JText::_('WISHLIST_NAME_RESOURCE_ID').' '.$resource->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $resource->title);
-			}				
+			}
 		}
-		
+
 		// get wishlist data
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
-		
+
 		if (!$wishlist) {
 			$html = Hubzero_View_Helper_Html::error(JText::_('ERROR_WISHLIST_NOT_FOUND'));
 		} else {
 			// Get list owners
 			$owners = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);
-			
+
 			// Authorize admins & list owners
 			if (!$juser->get('guest')) {
 				if ($juser->authorize($option, 'manage')) {
@@ -154,19 +146,19 @@ class plgResourcesWishlist extends JPlugin
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
 			}
-			
-			$items = $objWish->get_count ($id, $filters, $admin);	
-			
+
+			$items = $objWish->get_count ($id, $filters, $admin);
+
 			if ($rtrn != 'metadata') {
 				// Add the CSS to the template
 				WishlistController::_getStyles();
-				
+
 				// Thumbs voting CSS & JS
 				WishlistController::_getStyles('com_answers', 'vote.css');
-				
+
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
-				
+
 				$title = ($admin) ?  JText::_('WISHLIST_TITLE_PRIORITIZED') : JText::_('WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit']) {
 					$title.= ' (<a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid).'">'.JText::_('view all') .' '.$items.'</a>)';
@@ -183,7 +175,7 @@ class plgResourcesWishlist extends JPlugin
 						'name'=>'browse'
 					)
 				);
-	
+
 				// Pass the view some info
 				$view->option = $option;
 				$view->resource = $resource;
@@ -195,19 +187,19 @@ class plgResourcesWishlist extends JPlugin
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
 				}
-	
+
 				// Return the output
 				$html = $view->loadTemplate();
-			}						
+			}
 		}
-					
+
 		// Build the HTML meant for the "about" tab's metadata overview
 		$metadata = '';
 			if ($rtrn == 'all' || $rtrn == 'metadata') {
 				$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
 				$metadata .= '</a> (<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$id.a.'task=add').'">'.JText::_('ADD_NEW_WISH').'</a>)</p>'.n;
 		}
-		
+
 		$arr = array(
 				'html'=>$html,
 				'metadata'=>$metadata

@@ -72,17 +72,17 @@ function EventsParseRoute($segments)
 	if (is_numeric($segments[0])) {
 		$vars['year'] = $segments[0];
 		$vars['task'] = 'year';
-	
+
 		if (isset($segments[1]) && is_numeric($segments[1])) {
 			$vars['month']  = $segments[1];
 			$vars['task'] = 'month';
 		}
-	
+
 		if (isset($segments[2]) && is_numeric($segments[2])) {
 			$vars['day']  = $segments[2];
 			$vars['task'] = 'day';
 		}
-		
+
 		if (isset($segments[3])) {
 			$vars['task'] = $segments[3];
 		}

@@ -31,16 +31,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 abstract class CitationsFormatAbstract
 {
-	public function cleanUrl($url) 
+	public function cleanUrl($url)
 	{
 		$url = stripslashes($url);
 		$url = str_replace('&amp;', '&', $url);
 		$url = str_replace('&', '&amp;', $url);
-		
+
 		return $url;
 	}
-	
-	//-----------
 
 	public function keyExistsOrIsNotEmpty($key,$row)
 	{
@@ -54,10 +52,8 @@ abstract class CitationsFormatAbstract
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function grammarCheck($html, $punct=',') 
+
+	public function grammarCheck($html, $punct=',')
 	{
 		if (substr($html,-1) == '"') {
 			$html = substr($html,0,strlen($html)-1).$punct.'"';
@@ -66,9 +62,7 @@ abstract class CitationsFormatAbstract
 		}
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function format($row, $link='none', $highlight='')
 	{
 		return '';

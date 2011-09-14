@@ -29,16 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class SupportHtml 
+class SupportHtml
 {
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
-	//-----------
-	
 	public function getStatus($int)
 	{
 		switch ($int)

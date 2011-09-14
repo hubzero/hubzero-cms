@@ -41,17 +41,17 @@ $juser =& JFactory::getUser();
 	$view = new JView( array('name'=>'monitor') );
 	$view->option = $this->option;
 	$view->amt = $this->app['percent'];
-	$view->du = NULL; 
-	$view->percent = 0; 
+	$view->du = NULL;
+	$view->percent = 0;
 	$view->msgs = 0;
 	$view->ajax = 0;
 	$view->writelink = 1;
 	$view->display();
-	
+
 	if ($this->app['percent'] >= 100 && isset($this->app['remaining'])) {
 		$view = new JView( array('name'=>'monitor','layout'=>'warning') );
 		$view->sec = $this->app['remaining'];
-		$view->padHours = false; 
+		$view->padHours = false;
 		$view->option = $this->option;
 		$view->display();
 	}
@@ -80,7 +80,7 @@ if (!$this->app['sess']) {
 } else {
 	$k = 0;
 	$html = '<div id="app-content">'."\n";
-	foreach ($this->output as $line) 
+	foreach ($this->output as $line)
 	{
 		if (strpos($line,'<div id="app-wrap">')) {
 			continue;
@@ -124,7 +124,7 @@ if (!$this->app['sess']) {
 	<p class="warning">
 		This session is shared with: 
 		<?php 
-		foreach ($this->shares as $row) 
+		foreach ($this->shares as $row)
 		{
 			if ($row->viewuser != $juser->get('username')) {
 				?>&nbsp; <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=unshare&sess='.$this->app['sess'].'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing"><?php echo $row->viewuser; ?></a><?php

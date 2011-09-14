@@ -40,7 +40,7 @@ if (count($rows) > 0) {
 
 	ximport('Hubzero_View_Helper_Html');
 
-	foreach ($rows as $row) 
+	foreach ($rows as $row)
 	{
 		$name = JText::_('MOD_POPULARQUESTIONS_ANONYMOUS');
 		if ($row->anonymous == 0) {
@@ -49,9 +49,9 @@ if (count($rows) > 0) {
 				$name = $juser->get('name');
 			}
 		}
-		
+
 		//$when = $modpopularquestions->timeAgo( $modpopularquestions->mkt($row->created) );
-		
+
 		$tags = $tagging->get_tags_on_object($row->id, 0, 0, 0);
 ?>
 		<li>

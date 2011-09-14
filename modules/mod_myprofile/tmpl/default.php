@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if (!$modmyprofile->profile->get('picture')) { ?>
 		<img src="/components/com_members/images/profile.gif" alt="<?php echo JText::_('MOD_MYPROFILE_IMAGE'); ?>" />
 <?php 
-	} else { 
+	} else {
 		list($width,$height) = getimagesize(JPATH_ROOT.$modmyprofile->profile->get('picture'));
 		$w = ($width && $width > 190) ? 190 : $width;
 		$h = $height;
@@ -53,12 +53,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		'pagename' => 'member',
 		'pageid'   => $modmyprofile->profile->get('uidNumber'),
 		'filepath' => '',
-		'domain'   => '' 
+		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$p =& Hubzero_Wiki_Parser::getInstance();
 	echo $p->parse(stripslashes($modmyprofile->profile->get('bio')), $wikiconfig);
-} else { 
+} else {
 	echo JText::_('MOD_MYPROFILE_NO_BIO');
 } ?>
 	</div>

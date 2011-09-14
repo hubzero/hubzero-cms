@@ -61,21 +61,21 @@ $k = 0;
 foreach ($this->results as $category)
 {
 	$amt = count($category);
-	
+
 	if ($amt > 0) {
 		$foundresults = true;
-		
+
 		$name  = $cats[$k]['title'];
 		$total = $cats[$k]['total'];
 		$divid = $cats[$k]['category'];
-		
+
 		// Is this category the active category?
 		if (!$this->active || $this->active == $cats[$k]['category']) {
 			// It is - get some needed info
 			$name  = $cats[$k]['title'];
 			$total = $cats[$k]['total'];
 			$divid = $cats[$k]['category'];
-			
+
 			if ($this->active == $cats[$k]['category']) {
 				$dopaging = true;
 			}
@@ -83,14 +83,14 @@ foreach ($this->results as $category)
 			// It is not - does this category have sub-categories?
 			if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
 				// It does - loop through them and see if one is the active category
-				foreach ($cats[$k]['_sub'] as $sub) 
+				foreach ($cats[$k]['_sub'] as $sub)
 				{
 					if ($this->active == $sub['category']) {
 						// Found an active category
 						$name  = $sub['title'];
 						$total = $sub['total'];
 						$divid = $sub['category'];
-						
+
 						$dopaging = true;
 						break;
 					}
@@ -102,19 +102,19 @@ foreach ($this->results as $category)
 		$html .= "\t\t\t" . '<type>'. $divid . '</type>'."\n";
 		$html .= "\t\t\t" . '<title>' . htmlspecialchars( $name ) . '</title>' . "\n";
 		$html .= "\t\t\t" . '<total>' . $total. '</total>' . "\n";
-		$html .= "\t\t\t" . '<items>'."\n";			
-		foreach ($category as $row) 
+		$html .= "\t\t\t" . '<items>'."\n";
+		foreach ($category as $row)
 		{
 			$row->href = str_replace('&amp;', '&', $row->href);
 			$row->href = str_replace('&', '&amp;', $row->href);
-			
+
 			if (strstr( $row->href, 'index.php' )) {
 				$row->href = JRoute::_($row->href);
 			}
 			if (substr($row->href,0,1) == '/') {
 				$row->href = substr($row->href,1,strlen($row->href));
 			}
-				
+
 			$html .= "\t\t\t\t".'<item>'."\n";
 			$html .= "\t\t\t\t\t".'<title>'.htmlspecialchars(Hubzero_View_Helper_Html::purifyText($row->title)).'</title>'."\n";
 			if (isset($row->text) && $row->text != '') {

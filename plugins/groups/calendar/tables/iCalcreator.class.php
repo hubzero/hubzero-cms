@@ -4160,7 +4160,7 @@ class calendarComponent {
           if( !$this->_isOffset( $tzid ))
             $params['TZID'] = $tzid; // save only timezone
         }
-        elseif( !$parno && ( 3 == count( $theDate )) && 
+        elseif( !$parno && ( 3 == count( $theDate )) &&
           ( isset( $params['VALUE'] ) && ( 'DATE' == $params['VALUE'] )))
           $parno = 3;
         else
@@ -4170,7 +4170,7 @@ class calendarComponent {
         $date = trim( $theDate );
         if( 'Z' == substr( $date, -1 ))
           $parno = 7; // UTC DATE-TIME
-        elseif((( 8 == strlen( $date ) && ctype_digit( $date )) || ( 11 >= strlen( $date ))) && 
+        elseif((( 8 == strlen( $date ) && ctype_digit( $date )) || ( 11 >= strlen( $date ))) &&
           ( !isset( $params['VALUE'] ) || !in_array( $params['VALUE'], array( 'DATE-TIME', 'PERIOD' ))))
           $parno = 3; // DATE
         $date = $this->_date_time_string( $date, $parno );

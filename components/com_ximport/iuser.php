@@ -62,9 +62,9 @@ function _compareusers($mode = 0)
 
 	echo "<table>";
 	echo "<tr><td>uidNumber</td><td>key</td><td>mysql</td><td>ldap</td><td>action</td></tr>";
-    
+
 	do
-    {	
+    {
    		$attributes = ldap_get_attributes($conn, $entry);
 		$rowhtml = '';
 		$showrow = false;
@@ -77,9 +77,9 @@ function _compareusers($mode = 0)
 		}
 
 		$profile = new Hubzero_User_Profile();
-			
+
 		$result = $profile->load($attributes['uid'][0]);
-			
+
 		if ($result === false) {
 			continue;
 			die('couldn\'t find profile for ' . $attributes['uid'][0]);
@@ -89,12 +89,12 @@ function _compareusers($mode = 0)
 		{
 			$key = $attributes[$i];
 			$value = $attributes[$key];
-	
+
 			for($j = 0; $j < $value['count']; $j++)
 			{
 				if (in_array($key,array('member','objectClass','structuralObjectClass','entryUUID','entryCSN','modifiersName','subschemaSubentry','hasSubordinates','creatorsName','entryDN')))
 					continue; // don't care about these
-						
+
 				if ($key == 'createTimestamp')
 				{
 					$ddate = $profile->get('registerDate');
@@ -122,7 +122,7 @@ function _compareusers($mode = 0)
 							$ldate = strftime("%F %T",strtotime($myvalue));
 							$dts = strtotime($ddate);
 							$lts = strtotime($ldate);
-							
+
 							if ($lts > $dts) // ldap timestamp > recorded timestamp
 							{
 								if (empty($ddate) || ($ddate == '0000-00-00 00:00:00')) // no recorded timestamp
@@ -177,7 +177,7 @@ function _compareusers($mode = 0)
 								$showrow = true;
 					          	$rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
 								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j] . "</td>";
-								
+
 								if (strtolower($dbvalue) == strtolower($value[$j]))
 								{
 									$profile->set('uid',$value[$j]);
@@ -220,7 +220,7 @@ function _compareusers($mode = 0)
 								$showrow = true;
 					               $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
 								$rowhtml .= "<td>$key</td><td>$dbvalue</td><td>" . $value[$j] . "</td>";
-								
+
 								if (empty($dbvalue))
 								{
 										$profile->set('note',$value[$j]);
@@ -286,7 +286,7 @@ function _compareusers($mode = 0)
 									$profile->update('mysql');
 									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 								}
-								else 
+								else
 								{
 									$profile->set('name',$dbvalue);
 									$profile->update('ldap');
@@ -308,7 +308,7 @@ function _compareusers($mode = 0)
 									$profile->update('mysql');
 									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 								}
-								else 
+								else
 								{
 									$profile->set('orgtype',$dbvalue);
 									$profile->update('ldap');
@@ -330,7 +330,7 @@ function _compareusers($mode = 0)
 									$profile->update('mysql');
 									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 								}
-								else 
+								else
 								{
 									$profile->set('emailConfirmed',$dbvalue);
 									$profile->update('ldap');
@@ -352,7 +352,7 @@ function _compareusers($mode = 0)
 									$profile->update('mysql');
 									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 								}
-								else 
+								else
 								{
 									$profile->set('name',$dbvalue);
 									$profile->update('ldap');
@@ -466,7 +466,7 @@ function _compareusers($mode = 0)
 							{
 								$myhtml = '';
 							     $license = $value[$j];
-							    
+
 								if (preg_match('/^license=([^,.]*),.*$/', $license, $matches) == 0)
 								{
 									$showrow = true;
@@ -495,7 +495,7 @@ function _compareusers($mode = 0)
 										$query = "SELECT license_id,user_id FROM jos_licenses_users WHERE license_id='" . $lid . "' AND user_id='" . $attributes['uidNumber'][0] . "';";
 										$db->setQuery( $query );
           								$result = $db->loadObject();
-									
+
 										if ($result)
 										{
 											//$rowhtml .= "<td>EXISTS</td></tr>";
@@ -507,7 +507,7 @@ function _compareusers($mode = 0)
 											$showrow = true;
 								    			$rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
 								     		$rowhtml .= "<td>$key</td><td>" . $value[$j] . "</td><td>$license</td>";
-										
+
 											if ($result)
 												$rowhtml .= "<td>ADDED</td></tr>";
 											else
@@ -535,8 +535,8 @@ function _compareusers($mode = 0)
 						{
 							if ($j > 0)
 								die('unexpected multivalue');
-						
-							if ($key == 'userPassword') 
+
+							if ($key == 'userPassword')
 							{	ximport('Hubzero_User_Helper');
 								if ((strncmp($value[$j],"{MD5}",5) != 0) && (strncmp($value[$j],"{SSHA}",6) != 0)) {
 									$profile->set('userPassword',  Hubzero_User_Helper::encrypt_password($value[$j]));
@@ -546,7 +546,7 @@ function _compareusers($mode = 0)
 									continue;
 								}
 							}
-						
+
 							if ($profile->get($key) != $value[$j])
 							{
 								$dbvalue = $profile->get($key);
@@ -613,7 +613,6 @@ function _compareusers($mode = 0)
 						}
 					}
 
-
 				}
 					if ($showrow) echo $rowhtml . "\n";
 
@@ -629,11 +628,9 @@ function _compareusers($mode = 0)
 			echo "mycount = $mycount<br>";
 }
 
-
 function printuser($name)
 {
 	global $mycount;
-
 
 	if ($mycount > 1000)
 		exit();
@@ -682,7 +679,7 @@ function printuser($name)
 			$db->Quote( $acl->get_group_id( '', $usertype) ) . "," .
 			$db->Quote( $usertype ) .
 			");";
-	
+
 		$db->setQuery($sql);
 		$result = $db->query();
 
@@ -713,7 +710,7 @@ function printuser($name)
 
 }
 
-function _showusers() 
+function _showusers()
 {
 Hubzero_User_Profile_Helper::iterate_profiles('printuser','ldap');
 return;

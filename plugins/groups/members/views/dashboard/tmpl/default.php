@@ -33,19 +33,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<tbody>
 <?php 
 if ($this->logs) {
-	foreach ($this->logs as $log) 
+	foreach ($this->logs as $log)
 	{
 		$name = JText::_('UNKNOWN');
 		//$username = JText::_('UNKNOWN');
-		
+
 		$juser =& JUser::getInstance( $log->actorid );
 		if (is_object($juser) && $juser->get('name')) {
 			$name = $juser->get('name');
 			//$username = $juser->get('username');
 		}
-		
+
 		$info = '';
-		
+
 		if ($log->uid && $log->uid != $log->actorid) {
 			$target_name = JText::_('UNKNOWN');
 			//$target_username = JText::_('UNKNOWN');
@@ -61,10 +61,9 @@ if ($this->logs) {
 				$info .= $log->uid;
 			}
 
-			
 		}
-		
-		switch ($log->action) 
+
+		switch ($log->action)
 		{
 			case 'membership_cancelled':
 			case 'membership_invites_sent':
@@ -78,27 +77,27 @@ if ($this->logs) {
 			case 'membership_demoted':
 				$area = '<span class="membership-action">'.JText::_('PLG_GROUPS_MEMBERS_MEMBER').'</span>';
 			break;
-			
+
 			case 'group_created':
 			case 'group_edited':
 			case 'group_approved':
-			case 'group_deleted':  
-				$area = '<span class="group-action">'.JText::_('PLG_GROUPS_MEMBERS_GROUP').'</span>'; 
+			case 'group_deleted':
+				$area = '<span class="group-action">'.JText::_('PLG_GROUPS_MEMBERS_GROUP').'</span>';
 			break;
-			
-			case 'group_members_message': 
+
+			case 'group_members_message':
 				$area = '<span class="group-action">'.JText::_('PLG_GROUPS_MEMBERS_GROUP').'</span>';
 				$info .= ' '.JText::_('PLG_GROUPS_MEMBERS_ALL_MEMBERS');
 			break;
-			case 'group_managers_message': 
+			case 'group_managers_message':
 				$area = '<span class="group-action">'.JText::_('PLG_GROUPS_MEMBERS_GROUP').'</span>';
 				$info .= ' '.JText::_('PLG_GROUPS_MEMBERS_ALL_MANAGERS');
 			break;
-			case 'group_pending_message': 
+			case 'group_pending_message':
 				$area = '<span class="group-action">'.JText::_('PLG_GROUPS_MEMBERS_GROUP').'</span>';
 				$info .= ' '.JText::_('PLG_GROUPS_MEMBERS_ALL_PENDING_MEMBERS');
 			break;
-			case 'group_invitees_message': 
+			case 'group_invitees_message':
 				$area = '<span class="group-action">'.JText::_('PLG_GROUPS_MEMBERS_GROUP').'</span>';
 				$info .= ' '.JText::_('PLG_GROUPS_MEMBERS_ALL_INVITEES');
 			break;

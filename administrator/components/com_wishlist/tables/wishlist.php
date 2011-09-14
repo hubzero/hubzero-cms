@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Wishlist extends JTable
 {
 	var $id         	= NULL;  // @var int(11) Primary key
@@ -41,17 +40,15 @@ class Wishlist extends JTable
 	var $created_by 	= NULL;  // @var int(11)
 	var $state     		= NULL;  // @var int(3)
 	var $public			= NULL;  // @var int(3)  // can any user view and submit to it?
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->title ) == '') {
 			$this->setError( JText::_('Missing title for the wish list') );
@@ -60,9 +57,7 @@ class Wishlist extends JTable
 
 		return true;
 	}
-	
-	//------------
-	
+
 	public function get_wishlistID($rid=0, $cat='resource')
 	{
 		if ($rid === NULL) {
@@ -71,7 +66,7 @@ class Wishlist extends JTable
 		if ($rid === NULL) {
 			return false;
 		}
-		
+
 		// get individuals
 		$sql = "SELECT id"
 			. "\n FROM $this->_tbl "
@@ -80,31 +75,29 @@ class Wishlist extends JTable
 		$this->_db->setQuery( $sql );
 		return  $this->_db->loadResult();
 	}
-	
-	//------------
-	
+
 	public function createlist($category='resource', $refid, $public=1, $title='', $description='')
 	{
 		if ($refid === NULL) {
 			return false;
 		}
-		
+
 		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 		$juser =& JFactory::getUser();
-				
+
 		$this->created = date( 'Y-m-d H:i:s' );
 		$this->category = $category;
 		$this->created_by = $juser->get('id');
 		$this->referenceid = $refid;
 		$this->description = $description;
 		$this->public = $public;
-	
-		switch ($category) 
+
+		switch ($category)
 		{
 			case 'general':
 				$this->title = $title ? $title : $hubShortName;
-					
+
 				if (!$this->store()) {
 					$this->_error = $this->getError();
 					return false;
@@ -112,15 +105,15 @@ class Wishlist extends JTable
 					// Checkin wishlist
 					$this->checkin();
 				}
-			
-				return $this->id;			
+
+				return $this->id;
 			break;
-			
+
 			case 'resource':
 				// resources can only have one list
-				if (!$this->get_wishlist('',$refid, 'resource')) {	
+				if (!$this->get_wishlist('',$refid, 'resource')) {
 					$this->title = $title ? $title :'Resource #'.$rid;
-					
+
 					if (!$this->store()) {
 						$this->_error = $this->getError();
 						return false;
@@ -128,13 +121,13 @@ class Wishlist extends JTable
 						// Checkin wishlist
 						$this->checkin();
 					}
-			
+
 					return $this->id;
 				} else {
 					return $this->get_wishlistID($refid); // return existing id
 				}
 			break;
-			
+
 			case 'group':
 				$this->title = $title ? $title :'Group #'.$rid;
 				if (!$this->store()) {
@@ -144,10 +137,10 @@ class Wishlist extends JTable
 					// Checkin wishlist
 					$this->checkin();
 				}
-			
+
 				return $this->id;
 			break;
-			
+
 			case 'user':
 				$this->title = $title;
 				if (!$this->store()) {
@@ -157,16 +150,14 @@ class Wishlist extends JTable
 					// Checkin wishlist
 					$this->checkin();
 				}
-			
+
 				return $this->id;
 			break;
-		} 
-				
+		}
+
 		return 0;
 	}
-	
-	//------------
-	
+
 	public function getTitle($id)
 	{
 		if ($id === NULL) {
@@ -175,20 +166,18 @@ class Wishlist extends JTable
 		$sql = "SELECT w.title "
 				. "\n FROM $this->_tbl AS w";
 		$sql .=	"\n WHERE w.id=".$id;
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//------------
-	
+
 	public function is_primary($id)
 	{
 		if ($id === NULL) {
 			return false;
 		}
 		$sql = "SELECT w.* FROM $this->_tbl AS w WHERE w.id=".$id." AND w.referenceid=1 AND w.category='general'";
-		
+
 		$this->_db->setQuery( $sql );
 		$bingo = $this->_db->loadResult();
 		if ($bingo) {
@@ -197,9 +186,7 @@ class Wishlist extends JTable
 			return false;
 		}
 	}
-	
-	//------------
-	
+
 	public function get_wishlist($id='', $refid=0, $cat='', $primary = 0, $getversions=0)
 	{
 		if ($id===NULL && $refid===0 && $cat===NULL) {
@@ -211,7 +198,7 @@ class Wishlist extends JTable
 		if ($refid && !intval($refid)) {
 			return false;
 		}
-		
+
 		$sql = "SELECT w.*";
 		//if($cat == 'resource') {
 			//$sql .= "\n , r.title as resourcetitle, r.type as resourcetype, r.alias, r.introtext";
@@ -227,14 +214,14 @@ class Wishlist extends JTable
 		} else if ($primary) {
 			$sql .=	"\n WHERE w.referenceid=1 AND w.category='general'";
 		}
-			
+
 		$this->_db->setQuery( $sql );
 		$res = $this->_db->loadObjectList();
 		$wishlist = ($res) ? $res[0] : array();
-		
+
 		// get parent 
 		//$parent = $this->get_wishlist_parent($wishlist->referenceid, $wishlist->category);
-		
+
 		if (count($wishlist) > 0 && $wishlist->category=='resource') {
 			$wishlist->resource = $this->get_wishlist_parent($wishlist->referenceid, $wishlist->category);
 			// Currenty for tools only
@@ -242,7 +229,7 @@ class Wishlist extends JTable
 				$wishlist->resource->versions = $this->get_parent_versions($wishlist->referenceid, $wishlist->resource->type );
 			}
 		}
-		
+
 		return $wishlist;
 	}
 	//-----------
@@ -259,11 +246,9 @@ class Wishlist extends JTable
 			$result  = $this->_db->loadObjectList();
 			$versions = $result ? $result : array();
 		}
-		
+
 		return $versions;
 	}
-	
-	//-----------
 
 	public function get_wishlist_parent($refid, $cat='resource')
 	{
@@ -277,26 +262,22 @@ class Wishlist extends JTable
 			$res  = $this->_db->loadObjectList();
 			$resource = ($res) ? $res[0]: array();
 		}
-		
+
 		return $resource;
 	}
-	
-	//---------
-	
-	public function getCons($refid) 
+
+	public function getCons($refid)
 	{
 		$sql = "SELECT n.uidNumber AS id"
 			 . "\n FROM #__xprofiles AS n"
 			 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
 			 . "\n WHERE a.subtable = 'resources'"
 			 . "\n AND a.subid=". $refid;
-	
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getToolDevGroup($refid, $groups = array())
 	{
 		$query  = "SELECT g.cn FROM #__tool_groups AS g ";
@@ -306,6 +287,6 @@ class Wishlist extends JTable
 		$query .= " WHERE r.id = '".$refid."' AND g.role=1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
-	}	
+	}
 }
 

@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 	$y = date("Y");
 	$y++;
-	for ($i=1995, $n=$y; $i < $n; $i++) 
+	for ($i=1995, $n=$y; $i < $n; $i++)
 	{
 ?>
 						<option value="<?php echo $i; ?>"<?php if ($this->filters['year'] == $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
@@ -144,9 +144,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	if (count($this->citations) > 0) {
 		$formatter = new CitationsFormat;
 		$formatter->setFormat($this->format);
-		
+
 		$html = '<ol class="citations results" start="'.($this->filters['start']+1).'">'."\n";
-		foreach ($this->citations as $cite) 
+		foreach ($this->citations as $cite)
 		{
 			// Get the associations
 			$assoc = new CitationsAssociation( $this->database );
@@ -164,7 +164,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$html .= "\t\t".' <span>|</span> '.JText::_('RESOURCES_CITED').': '."\n";
 						$k = 0;
 						$rrs = array();
-						foreach ($assocs as $rid) 
+						foreach ($assocs as $rid)
 						{
 							if ($rid->table == 'resource') {
 								$this->database->setQuery( "SELECT published FROM #__resources WHERE id=".$rid->oid );
@@ -195,25 +195,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		$html .= '</ol>'."\n";
 		echo $html;
-		
+
 		$qs = '';
-		foreach ($this->filters as $key=>$value) 
+		foreach ($this->filters as $key=>$value)
 		{
-			switch ($key) 
+			switch ($key)
 			{
 				case 'limit':
 				case 'start':
 				break;
-				
+
 				case 'reftype':
 				case 'aff':
 				case 'geo':
-					foreach ($value as $k=>$v) 
+					foreach ($value as $k=>$v)
 					{
 						$qs .= $key.'['.$k.']='.$v.'&';
 					}
 				break;
-				
+
 				default:
 					$qs .= $key.'='.$value.'&';
 				break;

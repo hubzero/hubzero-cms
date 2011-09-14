@@ -100,7 +100,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 					<dd class="comments"><?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?></dd>
 				<?php } ?>
 				<?php 
-					switch ($this->row->state) 
+					switch ($this->row->state)
 					{
 						case 1:
 							$state = JText::_('Public');
@@ -181,7 +181,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 									$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 								}
 							}
-							
+
 							if ($comment->reports) {
 								$content = '<p class="warning">'.JText::_('PLG_GROUPS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 							} else {
@@ -384,7 +384,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 								</p>
 								<p>
 									<?php 
-										$reply_content = Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); 
+										$reply_content = Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0);
 										echo $this->p->parse( "\n".stripslashes($reply_content), $this->wikiconfig );
 									?>
 								</p>

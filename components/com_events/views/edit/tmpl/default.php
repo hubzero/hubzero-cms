@@ -69,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 <?php
 	if ($this->fields) {
-		foreach ($this->fields as $field) 
+		foreach ($this->fields as $field)
 		{
 			?>
 			<label>

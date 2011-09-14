@@ -75,7 +75,7 @@ if ($this->xpoll && $this->wishlist) {
 		echo 'third';
 	} else {
 		echo 'second';
-	}		
+	}
 	?>">
 		<div class="mainsection" id="problem">
 			<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=report_problems'); ?>"><?php echo JText::_('COM_FEEDBACK_TROUBLE_HEADER'); ?></a></h3>

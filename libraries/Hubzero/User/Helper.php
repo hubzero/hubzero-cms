@@ -31,16 +31,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_User_Helper
 {
-	public static function random_password($length = 8) 
+	public static function random_password($length = 8)
 	{
 		$genpass = '';
 		$salt = "abchefghjkmnpqrstuvwxyz0123456789";
-		
+
 		srand((double)microtime()*1000000);
-		
+
 		$i = 0;
-		
-		while ($i < $length) 
+
+		while ($i < $length)
 		{
 			$num = rand() % 33;
 			$tmp = substr($salt, $num, 1);
@@ -50,15 +50,11 @@ class Hubzero_User_Helper
 
 		return($genpass);
 	}
-	
-	//-----------
 
-	public static function encrypt_password($password) 
+	public static function encrypt_password($password)
 	{
 		return("{MD5}" . base64_encode(pack('H*', md5($password))));
 	}
-	
-	//-----------
 
 	public static function getXDomainId($domain)
 	{
@@ -73,14 +69,12 @@ class Hubzero_User_Helper
 		$db->setQuery( $query );
 
 		$result = $db->loadObject();
-		
+
 		if (empty($result))
 			return false;
 
 		return $result->domain_id;
 	}
-	
-	//-----------
 
 	public static function getXDomainUserId($domain_username, $domain)
 	{
@@ -97,14 +91,12 @@ class Hubzero_User_Helper
 		$db->setQuery( $query );
 
 		$result = $db->loadObject();
-		
+
 		if (empty($result))
 			return false;
 
 		return $result->uidNumber;
 	}
-	
-	//-----------
 
 	public static function deleteXDomainUserId($id)
 	{
@@ -126,8 +118,6 @@ class Hubzero_User_Helper
 
 		return true;
 	}
-	
-	//-----------
 
 	public static function isXDomainUser($uid)
 	{
@@ -144,8 +134,6 @@ class Hubzero_User_Helper
 
 		return true;
 	}
-
-	//-----------
 
 	public static function createXDomain($domain)
 	{
@@ -164,7 +152,7 @@ class Hubzero_User_Helper
 		if (empty($result))
 		{
 			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->Quote($domain) . ')';
-			
+
 			$db->setQuery($query);
 
 			$db->query();
@@ -176,15 +164,11 @@ class Hubzero_User_Helper
 
 		return $domain_id;
 	}
-	
-	//-----------
 
 	public static function setXDomainUserId($domain_username, $domain, $uidNumber)
 	{
 		return Hubzero_User_Helper::mapXDomainUser($domain_username, $domain, $uidNumber);
 	}
-
-	//-----------
 
 	public static function mapXDomainUser($domain_username, $domain, $uidNumber)
 	{
@@ -203,7 +187,7 @@ class Hubzero_User_Helper
 		if (empty($result))
 		{
 			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->Quote($domain) . ')';
-			
+
 			$db->setQuery($query);
 
 			$db->query();
@@ -214,7 +198,7 @@ class Hubzero_User_Helper
 			$domain_id = $result->domain_id;
 
 		$query = 'INSERT INTO #__xdomain_users (domain_id,domain_username,uidNumber) ' .
-			' VALUES (' . $db->Quote($domain_id) . ',' . 
+			' VALUES (' . $db->Quote($domain_id) . ',' .
 			$db->Quote($domain_username) . ',' . $db->Quote($uidNumber) . ')';
 
 		$db->setQuery($query);
@@ -226,13 +210,11 @@ class Hubzero_User_Helper
 
 		return true;
 	}
-	
-	//-----------
 
 	public static function getGroups($uid, $type='all', $cat = null)
 	{
 		$db =& JFactory::getDBO();
-		
+
 		$g = '';
 		if ($cat) {
 			$g .= "(g.type='".$cat."' OR g.type='3') AND";
@@ -243,8 +225,8 @@ class Hubzero_User_Helper
 		$query2 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
 		$query3 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
 		$query4 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		
-		switch ($type) 
+
+		switch ($type)
 		{
 			case 'all':
 				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
@@ -262,7 +244,7 @@ class Hubzero_User_Helper
 				$query = $query4." ORDER BY description, cn";
 			break;
 		}
-		
+
 		$db->setQuery($query);
 
 		$result = $db->loadObjectList();

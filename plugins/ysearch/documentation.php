@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchDocumentation extends YSearchPlugin
 {
 	public static function onYSearch($request, &$results)
@@ -38,7 +37,7 @@ class plgYSearchDocumentation extends YSearchPlugin
 		$weight = 'match(m.title, m.description) against (\''.join(' ', $terms['stemmed']).'\')';
 		$s_weight = 'match(s.title, s.content) against (\''.join(' ', $terms['stemmed']).'\')';
 		$c_weight = 'match(c.title) against(\''.join(' ', $terms['stemmed']).'\')';
-		
+
 		$addtl_where = array();
 		$s_addtl_where = array();
 		$c_addtl_where = array();
@@ -54,7 +53,7 @@ class plgYSearchDocumentation extends YSearchPlugin
 			$s_addtl_where[] = "(s.title NOT LIKE '%$forb%' AND s.content NOT LIKE '%$forb%')";
 			$c_addtl_where[] = "(c.title NOT LIKE '%$forb%')";
 		}
-			
+
 		$sql = new YSearchResultSQL(
 			"SELECT
 				m.id,
@@ -129,11 +128,11 @@ class plgYSearchDocumentation extends YSearchPlugin
 			'sections' => array()
 		);
 		$assoc = $sql->to_associative();
-		
+
 		foreach ($assoc as $row)
 		{
 		}
-		
+
 		$results->add($sql);
 	}
 }

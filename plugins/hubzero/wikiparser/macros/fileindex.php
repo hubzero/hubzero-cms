@@ -29,20 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class FileIndexMacro extends WikiMacro 
+class FileIndexMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Inserts an alphabetic list of all files and images attached to this page into the output. Accepts a prefix string as parameter: if provided, only files with names that start with the prefix are included in the resulting list. If this parameter is omitted, all files are listed.';
 		$txt['html'] = '<p>Inserts an alphabetic list of all files and images attached to this page into the output. Accepts a prefix string as parameter: if provided, only files with names that start with the prefix are included in the resulting list. If this parameter is omitted, all files are listed.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
 
@@ -59,23 +56,23 @@ class FileIndexMacro extends WikiMacro
 		// Perform query
 		$this->_db->setQuery( $sql );
 		$rows = $this->_db->loadObjectList();
-		
+
 		// Did we get a result from the database?
 		if ($rows) {
 			$config = JComponentHelper::getParams( 'com_wiki' );
 			if ($this->filepath != '') {
 				$config->set('filepath', $this->filepath);
 			}
-			
+
 			$xhub =& Hubzero_Factory::getHub();
-			
+
 			// Build and return the link
 			$html = '<ul>';
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
 				//$html .= '<li><a href="'.$this->scope.'/'.$row->pagename.'">'.$title.'</a></li>';
 				$link = $xhub->getCfg('hubLongURL').$config->get('filepath').DS.$this->pageid.DS.$row->filename;
-				
+
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
@@ -84,7 +81,7 @@ class FileIndexMacro extends WikiMacro
 				$html .= '</a></li>'."\n";
 			}
 			$html .= '</ul>';
-		
+
 			return $html;
 		} else {
 			// Return error message

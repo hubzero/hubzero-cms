@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class EventsCategory extends JTable 
+class EventsCategory extends JTable
 {
 	var $id               = NULL;
 	var $parent_id        = NULL;
@@ -49,16 +49,12 @@ class EventsCategory extends JTable
 	var $count            = NULL;
 	var $params           = NULL;
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__categories', 'id', $db );
 	}
 
-	//-----------
-	
-	public function check() 
+	public function check()
 	{
 		// check for valid name
 		if (trim( $this->title ) == '') {
@@ -68,9 +64,7 @@ class EventsCategory extends JTable
 		return true;
 	}
 
-	//-----------
-	
-	public function updateCount( $oid=NULL ) 
+	public function updateCount( $oid=NULL )
 	{
 		if ($oid == NULL) {
 			$oid = $this->id;
@@ -78,10 +72,8 @@ class EventsCategory extends JTable
 		$this->_db->setQuery( "UPDATE $this->_tbl SET count = count-1 WHERE id = '$oid'" );
 		$this->_db->query();
 	}
-	
-	//-----------
-	
-	public function publish( $oid=NULL ) 
+
+	public function publish( $oid=NULL )
 	{
 		if (!$oid) {
 			$oid = $this->id;
@@ -90,9 +82,7 @@ class EventsCategory extends JTable
 		$this->_db->query();
 	}
 
-	//-----------
-
-	public function unpublish( $oid=NULL ) 
+	public function unpublish( $oid=NULL )
 	{
 		if (!$oid) {
 			$oid = $this->id;
@@ -100,10 +90,8 @@ class EventsCategory extends JTable
 		$this->_db->setQuery( "UPDATE $this->_tbl SET published=0 WHERE id=$oid" );
 		$this->_db->query();
 	}
-	
-	//-----------
-	
-	public function getCategoryCount( $section=NULL ) 
+
+	public function getCategoryCount( $section=NULL )
 	{
 		if (!$section) {
 			$section = $this->section;

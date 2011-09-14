@@ -103,11 +103,11 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	switch ($row->approved) 
+	switch ($row->approved)
 	{
 		case '1':
 			$color_access = 'style="color: green;"';

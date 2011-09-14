@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class SupportCategory extends JTable 
+class SupportCategory extends JTable
 {
 	var $id       = NULL;  // @var int(11) Primary key
 	var $category = NULL;  // @var varchar(50)
@@ -41,14 +41,12 @@ class SupportCategory extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_categories', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->category ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -57,10 +55,8 @@ class SupportCategory extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getCategories( $section=NULL ) 
+
+	public function getCategories( $section=NULL )
 	{
 		if ($section !== NULL) {
 			$section = ($section) ? $section : 1;
@@ -68,14 +64,12 @@ class SupportCategory extends JTable
 		} else {
 			$where = "";
 		}
-		
+
 		$this->_db->setQuery( "SELECT category AS id, category AS txt FROM $this->_tbl $where ORDER BY category");
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl AS c, #__support_sections AS s"
 				. " WHERE c.section=s.id";
@@ -85,26 +79,22 @@ class SupportCategory extends JTable
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getRecords( $filters=array() )
 	{
 		$filters['order'] = 'section, category';
-		
+
 		$query  = "SELECT c.id, c.category, s.section";
 		$query .= $this->buildQuery( $filters );
 		$this->_db->setQuery( $query );

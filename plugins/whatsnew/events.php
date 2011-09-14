@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPluginHelper::loadLanguage( 'plg_whatsnew_events' );
-
-//-----------
 
 class plgWhatsnewEvents extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgWhatsnewEvents extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'whatsnew', 'events' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
 
-	public function &onWhatsnewAreas() 
+	public function &onWhatsnewAreas()
 	{
 		$areas = array(
 			'events' => JText::_('PLG_WHATSNEW_EVENTS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
@@ -92,7 +84,6 @@ class plgWhatsnewEvents extends JPlugin
 		$order_by  = " ORDER BY publish_up DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-
 		if (!$limit) {
 			// Get a count
 			$database->setQuery( $e_count.$e_from ." WHERE ". $e_where );
@@ -104,7 +95,7 @@ class plgWhatsnewEvents extends JPlugin
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_($row->href);
 				}
@@ -113,33 +104,29 @@ class plgWhatsnewEvents extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_events');
 	}
-	
-	//-----------
-	
+
 	/*public function before()
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row, $period )
 	{
 		$month = JHTML::_('date', $row->publish_up, '%b');
 		$day = JHTML::_('date', $row->publish_up, '%d');
 		$year = JHTML::_('date', $row->publish_up, '%Y');
-		
+
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
 		}
@@ -147,7 +134,7 @@ class plgWhatsnewEvents extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		// Start building the HTML
 		$html  = "\t".'<li class="event">'."\n";
 		$html .= "\t\t".'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'."\n";
@@ -158,13 +145,11 @@ class plgWhatsnewEvents extends JPlugin
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

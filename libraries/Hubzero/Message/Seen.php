@@ -29,23 +29,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Message_Seen extends JTable
 {
 	var $mid      = NULL;  // @var int(11)
 	var $uid      = NULL;  // @var int(11)
 	var $whenseen = NULL;  // @var datetime(0000-00-00 00:00:00)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xmessage_seen', 'uid', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->mid ) == '') {
 			$this->setError( JText::_('Please provide a message ID.') );
@@ -57,10 +54,8 @@ class Hubzero_Message_Seen extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadRecord( $mid=NULL, $uid=NULL ) 
+
+	public function loadRecord( $mid=NULL, $uid=NULL )
 	{
 		if (!$mid) {
 			$mid = $this->mid;
@@ -71,7 +66,7 @@ class Hubzero_Message_Seen extends JTable
 		if (!$mid || !$uid) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'" );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -80,10 +75,8 @@ class Hubzero_Message_Seen extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
 
-	public function store( $new=false ) 
+	public function store( $new=false )
 	{
 		if (!$new) {
 			$this->_db->setQuery( "UPDATE $this->_tbl SET whenseen='$this->whenseen' WHERE mid='$this->mid' AND uid='$this->uid'");

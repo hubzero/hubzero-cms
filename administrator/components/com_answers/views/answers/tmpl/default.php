@@ -91,11 +91,11 @@ function submitbutton(pressbutton) {
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 {
 	$row =& $this->results[$i];
 
-	switch ($row->state) 
+	switch ($row->state)
 	{
 		case '1':
 			$task = 'reject';
@@ -107,10 +107,9 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 			$img = 'publish_x.png';
 			$alt = JText::_( 'Unaccepted' );
 			break;
-			
-		
+
 	}
-	
+
 	$row->answer = stripslashes($row->answer);
 	$row->answer = Hubzero_View_Helper_Html::shortenText($row->answer, 75);
 ?>

@@ -32,33 +32,33 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Controller');
 
 class WikiController extends Hubzero_Controller
-{	
+{
 	public function execute()
 	{
 		$this->config = JComponentHelper::getParams( 'com_wiki' );
-		
+
 		define('WIKI_SUBPAGE_SEPARATOR',$this->config->get('subpage_separator'));
 		define('WIKI_MAX_PAGENAME_LENGTH',$this->config->get('max_pagename_length'));
-		
+
 		$this->_task = strtolower(JRequest::getVar('task', 'pages'));
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'cancel':           $this->cancel();         break;
-			
+
 			// Revisions
 			case 'newrevision':      $this->editrevision();   break;
 			case 'editrevision':     $this->editrevision();   break;
 			case 'saverevision':     $this->saverevision();   break;
 			case 'deleterevision':   $this->deleterevision(); break;
 			case 'toggleapprove':    $this->toggleapprove();  break;
-			
+
 			//case 'publish':          $this->publish(1);       break;
 			//case 'unpublish':        $this->publish(1);       break;
 			case 'accesspublic':     $this->access();         break;
 			case 'accessregistered': $this->access();         break;
 			case 'accessspecial':    $this->access();         break;
-			
+
 			// Pages
 			case 'newpage':          $this->editpage();       break;
 			case 'editpage':         $this->editpage();       break;
@@ -66,7 +66,7 @@ class WikiController extends Hubzero_Controller
 			case 'deletepage':       $this->deletepage();     break;
 			case 'resethits':        $this->resethits();      break;
 			case 'togglestate':      $this->togglestate();    break;
-			
+
 			// Browsing
 			case 'revisions':        $this->revisions();      break;
 			case 'pages':            $this->pages();          break;
@@ -74,7 +74,7 @@ class WikiController extends Hubzero_Controller
 			default: $this->pages(); break;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Collection functions
 	//----------------------------------------------------------
@@ -89,7 +89,7 @@ class WikiController extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get paging variables
 		$view->filters = array();
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.pages.limit', 'limit', $config->getValue('config.list_limit'), 'int');
@@ -98,7 +98,7 @@ class WikiController extends Hubzero_Controller
 		$view->filters['search'] = JRequest::getVar( 'search', '' );
 
 		$p = new WikiPage( $this->database );
-		
+
 		// Get record count
 		$view->total = $p->getPagesCount( $view->filters );
 
@@ -108,17 +108,15 @@ class WikiController extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function revisions()
 	{
@@ -129,7 +127,7 @@ class WikiController extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get paging variables
 		$view->filters = array();
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.revisions.limit', 'limit', $config->getValue('config.list_limit'), 'int');
@@ -137,14 +135,14 @@ class WikiController extends Hubzero_Controller
 		$view->filters['pageid'] = JRequest::getInt( 'pageid', 0 );
 		$view->filters['sortby'] = JRequest::getVar( 'sortyby', 'version DESC, created DESC' );
 		$view->filters['search'] = JRequest::getVar( 'search', '' );
-		
+
 		$view->page = new WikiPage( $this->database );
 		if ($view->filters['pageid']) {
 			$view->page->load( $view->filters['pageid'] );
 		}
-		
+
 		$r = new WikiPageRevision( $this->database );
-		
+
 		// Get record count
 		$view->total = $r->getRecordsCount( $view->filters );
 
@@ -154,26 +152,24 @@ class WikiController extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function editpage() 
+	protected function editpage()
 	{
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 		if (is_array($ids) && !empty($ids)) {
 			$id = $ids[0];
 		}
-		
+
 		// Load the article
 		$row = new WikiPage( $this->database );
 		$row->load( $id );
@@ -182,51 +178,49 @@ class WikiController extends Hubzero_Controller
 		$view = new JView( array('name'=>'page') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		if (!$id) {
 			// Creating new
 			$row->created_by = $this->juser->get('id');
 		}
-		
+
 		$creator =& JUser::getInstance($row->created_by);
-		
+
 		$view->creator = $creator;
-		
+
 		$view->row = $row;
 
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function editrevision() 
+
+	protected function editrevision()
 	{
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 		if (is_array($ids) && !empty($ids)) {
 			$id = $ids[0];
 		}
-		
+
 		$pageid = JRequest::getInt( 'pageid', 0 );
 		if (!$pageid) {
 			echo WikiHtml::alert( JText::_('Missing page ID') );
 			exit();
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'revision') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		$view->page = new WikiPage( $this->database );
 		$view->page->load( $pageid );
-		
+
 		if (!$id) {
 			// Creating new
 			$view->revision = $view->page->getCurrentRevision();
@@ -236,12 +230,12 @@ class WikiController extends Hubzero_Controller
 			$view->revision = new WikiPageRevision( $this->database );
 			$view->revision->load($id);
 		}
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
@@ -249,12 +243,12 @@ class WikiController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Processers
 	//----------------------------------------------------------
-	
-	protected function savepage() 
+
+	protected function savepage()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$page = JRequest::getVar( 'page', array(), 'post' );
 		$page = array_map('trim', $page);
@@ -278,12 +272,12 @@ class WikiController extends Hubzero_Controller
 			$row->title = $row->pagename;
 		}
 		$row->access = JRequest::getInt( 'access', 0, 'post' );
-		
+
 		// Get parameters
 		$params = JRequest::getVar( 'params', '', 'post' );
 		if (is_array( $params )) {
 			$txt = array();
-			foreach ( $params as $k=>$v) 
+			foreach ( $params as $k=>$v)
 			{
 				$txt[] = "$k=$v";
 			}
@@ -295,7 +289,7 @@ class WikiController extends Hubzero_Controller
 			echo WikiHtml::alert( $row->getError() );
 			exit();
 		}
-		
+
 		// Store new content
 		if (!$row->store()) {
 			echo WikiHtml::alert( $row->getError() );
@@ -322,33 +316,31 @@ class WikiController extends Hubzero_Controller
 		$this->_message = JText::_('Page successfully saved');
 	}
 
-	//-----------
-
-	protected function saverevision() 
+	protected function saverevision()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$revision = JRequest::getVar( 'revision', array() );
 		$revision = array_map('trim',$revision);
-		
+
 		// Initiate extended database class
 		$row = new WikiPageRevision( $this->database );
 		if (!$row->bind( $revision )) {
 			echo WikiHtml::alert( $row->getError() );
 			exit();
 		}
-		
+
 		$isNew = false;
 		if (!$row->id) {
 			$row->created = date( 'Y-m-d H:i:s', time() );
 			$isNew = true;
 		}
-		
+
 		$page = new WikiPage( $this->database );
 		$page->load( $row->pageid );
-		
+
 		// Parse text
 		$wikiconfig = array(
 			'option'   => $this->_option,
@@ -356,12 +348,12 @@ class WikiController extends Hubzero_Controller
 			'pagename' => $page->pagename,
 			'pageid'   => $page->id,
 			'filepath' => '',
-			'domain'   => $this->_group 
+			'domain'   => $this->_group
 		);
 		ximport('Hubzero_Wiki_Parser');
 		$p =& Hubzero_Wiki_Parser::getInstance();
 		$row->pagehtml = $p->parse($row->pagetext, $wikiconfig);
-		
+
 		// Parse attachments
 		/*$a = new WikiPageAttachment( $this->database );
 		$a->pageid = $row->pageid;
@@ -400,16 +392,14 @@ class WikiController extends Hubzero_Controller
 		$this->_message = JText::_('Revision saved');
 	}
 
-	//-----------
-
-	protected function deletepage() 
+	protected function deletepage()
 	{
 		// Incoming
 		$step = JRequest::getInt( 'step', 1 );
 		$step = (!$step) ? 1 : $step;
-		
+
 		$ids = JRequest::getVar( 'id', array(0) );
-		
+
 		// What step are we on?
 		switch ($step)
 		{
@@ -419,7 +409,7 @@ class WikiController extends Hubzero_Controller
 				$view->option = $this->_option;
 				$view->task = $this->_task;
 				$view->ids = $ids;
-			
+
 				// Set any errors
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
@@ -428,18 +418,18 @@ class WikiController extends Hubzero_Controller
 				// Output the HTML
 				$view->display();
 			break;
-			
+
 			case 2:
 				// Check for request forgeries
 				JRequest::checkToken() or jexit( 'Invalid Token' );
-			
+
 				// Check if they confirmed
 				$confirmed = JRequest::getInt( 'confirm', 0 );
 				if (!$confirmed) {
 					echo WikiHtml::alert( JText::_('Please confirm removal') );
 					exit();
 				}
-			
+
 				if (!empty($ids)) {
 					// Create a category object
 					$page = new WikiPage( $this->database );
@@ -470,26 +460,24 @@ class WikiController extends Hubzero_Controller
 						}
 					}
 				}
-				
+
 				$this->_message = JText::_(count($ids).' page(s) successfully removed');
 			break;
 		}
-		
+
 		// Set the redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
-	//-----------
-
-	protected function deleterevision() 
+	protected function deleterevision()
 	{
 		// Incoming
 		$step = JRequest::getInt( 'step', 1 );
 		$step = (!$step) ? 1 : $step;
-		
+
 		$pageid = JRequest::getInt( 'pageid', 0 );
 		$ids = JRequest::getVar( 'id', array(0) );
-		
+
 		// What step are we on?
 		switch ($step)
 		{
@@ -500,7 +488,7 @@ class WikiController extends Hubzero_Controller
 				$view->task = $this->_task;
 				$view->ids = $ids;
 				$view->pageid = $pageid;
-				
+
 				// Set any errors
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
@@ -509,18 +497,18 @@ class WikiController extends Hubzero_Controller
 				// Output the HTML
 				$view->display();
 			break;
-			
+
 			case 2:
 				// Check for request forgeries
 				JRequest::checkToken() or jexit( 'Invalid Token' );
-				
+
 				// Check if they confirmed
 				$confirmed = JRequest::getInt( 'confirm', 0 );
 				if (!$confirmed) {
 					echo WikiHtml::alert( JText::_('Please confirm removal') );
 					exit();
 				}
-				
+
 				if (!empty($ids)) {
 					// Create a category object
 					$revision = new WikiPageRevision( $this->database );
@@ -553,7 +541,7 @@ class WikiController extends Hubzero_Controller
 							$this->setError( $log->getError() );
 						}
 					}
-					
+
 					$this->_message = JText::_(count($ids).' revision(s) successfully removed');
 				}
 
@@ -563,13 +551,11 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
-	protected function access() 
+	protected function access()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
@@ -582,15 +568,15 @@ class WikiController extends Hubzero_Controller
 		// Load the article
 		$row = new WikiPage( $this->database );
 		$row->load( $id );
-		
+
 		// Set the access
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'accesspublic':     $row->access = 0; break;
 			case 'accessregistered': $row->access = 1; break;
 			case 'accessspecial':    $row->access = 2; break;
 		}
-		
+
 		// Check and store the changes
 		if (!$row->check()) {
 			echo WikiHtml::alert( $row->getError() );
@@ -605,17 +591,15 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
-	//-----------
-
-	protected function toggleapprove() 
+	protected function toggleapprove()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$pageid = JRequest::getInt( 'pageid', 0 );
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		if ($id) {
 			// Load the revision, approve it, and save
 			$revision = new WikiPageRevision( $this->database );
@@ -629,7 +613,7 @@ class WikiController extends Hubzero_Controller
 				echo WikiHtml::alert( $revision->getError() );
 				exit();
 			}
-			
+
 			// Log the action
 			$log = new WikiLog( $this->database );
 			$log->pid = $pageid;
@@ -641,11 +625,9 @@ class WikiController extends Hubzero_Controller
 				$this->setError( $log->getError() );
 			}
 		}
-		
+
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=revisions&pageid='.$pageid;
 	}
-	
-	//-----------
 
 	protected function cancel()
 	{
@@ -659,22 +641,20 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
 	protected function resethits()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-	
+
 		// Make sure we have an ID to work with
 		if (!$id) {
-			echo WikiHtml::alert( JText::_('No ID') ); 
+			echo WikiHtml::alert( JText::_('No ID') );
 			exit;
 		}
-		
+
 		// Load and reset the article's hits
 		$page = new WikiPage( $this->database );
 		$page->load( $id );
@@ -691,23 +671,21 @@ class WikiController extends Hubzero_Controller
 		// Set the redirect
 		$this->_redirect  = 'index.php?option='.$this->_option;
 	}
-	
-	//-----------
 
 	protected function togglestate()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-	
+
 		// Make sure we have an ID to work with
 		if (!$id) {
-			echo WikiHtml::alert( JText::_('No ID') ); 
+			echo WikiHtml::alert( JText::_('No ID') );
 			exit;
 		}
-		
+
 		// Load and reset the article's hits
 		$page = new WikiPage( $this->database );
 		$page->load( $id );

@@ -35,8 +35,6 @@ class XImportController extends JObject
         private $_data  = array();
         private $_task  = NULL;
 
-        //-----------
-
         public function __construct( $config=array() )
         {
                 $this->_redirect = NULL;
@@ -62,14 +60,10 @@ class XImportController extends JObject
                 $this->_option = 'com_'.$this->_name;
         }
 
-        //-----------
-
         public function __set($property, $value)
         {
                 $this->_data[$property] = $value;
         }
-
-        //-----------
 
         public function __get($property)
         {
@@ -78,16 +72,14 @@ class XImportController extends JObject
                 }
         }
 
-        //-----------
-
 		public function execute()
         {
 			// Load the component config
             //$config = new XImportConfig( $this->_option );
             //$this->config = $config;
-            
+
 			$default = 'browse';
-                
+
            	$task = strtolower(JRequest::getVar('task', '', 'default'));
             $this->_task = $task;
 
@@ -145,13 +137,13 @@ class XImportController extends JObject
 
 		// ximport/author/id?override=1
         }
-        
+
         //----------------------------------------------------------
         // Redirect functions
         //----------------------------------------------------------
-        
+
         public function redirect()
-        {       
+        {
                 if ($this->_redirect != NULL) {
                         $app =& JFactory::getApplication();
                         $app->redirect( $this->_redirect, $this->_message );
@@ -199,7 +191,7 @@ class XImportController extends JObject
 	public function fixname($name)
 	{
 		$xprofile = new Hubzero_User_Profile();
- 
+
 		if ($xprofile->load($name) === false)
 			 echo "Error loading $name\n";
 		else
@@ -240,7 +232,7 @@ class XImportController extends JObject
 					$firstname = $words[0];
 					$lastname = $words[$count-1];
 					$middlename = $words[1];
-				
+
 					for($i = 2; $i < $count-1; $i++)
 						$middlename .= ' ' .$words[$i];
 				}
@@ -453,7 +445,7 @@ class XImportController extends JObject
 	{
 		die('this function is now in groups admin component');
 	}
-        
+
 	function importgroups()
 	{
 		die('this function is now in groups admin component');
@@ -491,25 +483,23 @@ class XImportController extends JObject
         _comparegroups();
     }
 
-	//------
-	
 	//function to add created date and created by to xgroups table
 	//take this data from xgroups_logs table
 	//Added May 3, 2011 by Chris Smoak
-	
+
 	function moveGroupCreatedDate()
 	{
 		//instatiate database
 		$db =& JFactory::getDBO();
-		
+
 		//import group library
 		ximport('Hubzero_Group');
-		
+
 		//select all logs where group was created
 		$sql = "SELECT * FROM #__xgroups_log WHERE action='group_created'";
 		$db->setQuery($sql);
 		$logs = $db->loadAssocList();
-		
+
 		foreach($logs as $log) {
 			echo $log['gid'];
 			$group = Hubzero_Group::getInstance($log['gid']);
@@ -520,6 +510,6 @@ class XImportController extends JObject
 			}
 		}
 	}
-	
+
 }
 

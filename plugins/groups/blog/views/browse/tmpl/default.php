@@ -66,7 +66,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 							$feed = $jconfig->getValue('config.live_site').$feed;
 						}
 						$feed = str_replace('https:://','http://',$feed);
-			
+
 						echo "<p class=\"feed\"><a href=\"{$feed}\">".JText::_('Subscribe RSS')."</a></p>";
 					}
 				?>
@@ -189,7 +189,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						<?php foreach ($this->rows as $row) { ?>
 							<tr>
 								<?php 
-									switch ($row->state) 
+									switch ($row->state)
 									{
 										case 1:
 											$state = JText::_('Public');
@@ -204,7 +204,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 											$state = JText::_('Private');
 											$cls = "private";
 											break;
-									} 
+									}
 								?>
 								<td id="e<?php echo $row->id; ?>" class="<?php echo $cls; ?>">
 									<dl class="entry-meta">
@@ -232,7 +232,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 										<p>
 											<?php 
 												$content = plgGroupsBlog::stripWiki($row->content);
-												echo Hubzero_View_Helper_Html::shortenText($content, 300, 0); 
+												echo Hubzero_View_Helper_Html::shortenText($content, 300, 0);
 												//echo $p->parse( "\n".stripslashes($content), $wikiconfig, true, true );
 											?> 
 											<a class="readmore" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('PLG_GROUPS_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a>

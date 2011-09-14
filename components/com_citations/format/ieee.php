@@ -37,10 +37,10 @@ class CitationsFormatIEEE extends CitationsFormatAbstract
 	{
 		$html = "\t".'<p>';
 		if ($this->keyExistsOrIsNotEmpty('author',$row)) {
-			
+
 			$auths = explode(';',$row->author);
 			$a = array();
-			foreach ($auths as $auth) 
+			foreach ($auths as $auth)
 			{
 				preg_match('/{{(.*?)}}/s',$auth, $matches);
 				if (isset($matches[0]) && $matches[0]!='') {
@@ -66,7 +66,7 @@ class CitationsFormatIEEE extends CitationsFormatAbstract
 				}
 			}
 			$row->author = implode('; ', $a);
-	
+
 			$html .= Hubzero_View_Helper_Html::str_highlight(stripslashes($row->author), array($highlight));
 		} elseif ($this->keyExistsOrIsNotEmpty('editor',$row)) {
 			$html .= stripslashes($row->editor);
@@ -75,7 +75,7 @@ class CitationsFormatIEEE extends CitationsFormatAbstract
 		if ($this->keyExistsOrIsNotEmpty('year',$row)) {
 			$html .= ' ('.$row->year.')';
 		}
-		
+
 		if ($this->keyExistsOrIsNotEmpty('title',$row)) {
 			if (!$row->url) {
 				$html .= ', "'.stripslashes($row->title);
@@ -83,7 +83,7 @@ class CitationsFormatIEEE extends CitationsFormatAbstract
 				$html .= ', "<a href="'.$this->cleanUrl($row->url).'">'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->title), array($highlight)).'</a>';
 			}
 		}
-		if ($this->keyExistsOrIsNotEmpty('journal',$row) 
+		if ($this->keyExistsOrIsNotEmpty('journal',$row)
 		 || $this->keyExistsOrIsNotEmpty('edition',$row)
 		 || $this->keyExistsOrIsNotEmpty('booktitle',$row)) {
 			$html .= ',';
@@ -95,7 +95,7 @@ class CitationsFormatIEEE extends CitationsFormatAbstract
 			$html .= ' <i>'.stripslashes($row->booktitle).'</i>';
 		}
 		if ($row->type) {
-			switch ($row->type) 
+			switch ($row->type)
 			{
 				case 'phdthesis': $html .= ' (PhD Thesis)'; break;
 				case 'mastersthesis': $html .= ' (Masters Thesis)'; break;

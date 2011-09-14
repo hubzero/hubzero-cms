@@ -30,26 +30,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class modXWhosonline 
+class modXWhosonline
 {
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,11 +55,10 @@ class modXWhosonline
 	}
 
 	//-----------
-
-	public function display() 
+	public function display()
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$params  =& $this->params;
 		$this->online = $params->get( 'online' );
 		$this->users  = $params->get( 'users' );

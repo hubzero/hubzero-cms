@@ -78,7 +78,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php
 						if (count($this->articles['top']) > 0) {
 							$html  = "\t".'<ul class="articles">'."\n";
-							foreach ($this->articles['top'] as $row) 
+							foreach ($this->articles['top'] as $row)
 							{
 								if (!empty($row->alias)) {
 									$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
@@ -99,7 +99,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php
 						if (count($this->articles['new']) > 0) {
 							$html  = "\t".'<ul class="articles">'."\n";
-							foreach ($this->articles['new'] as $row) 
+							foreach ($this->articles['new'] as $row)
 							{
 								if (!empty($row->alias)) {
 									$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
@@ -124,19 +124,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 		if (count($this->categories) > 0) {
 			// Get the list of articles for this category
 			$kba = new KbArticle( $this->database );
-			
+
 			$filters = array();
 			$filters['limit'] = JRequest::getInt('limit', 3);
 			$filters['start'] = JRequest::getInt('limitstart', 0);
 			$filters['order'] = JRequest::getVar('order', 'recent');
 			$filters['category'] = 0;
 			$filters['search'] = JRequest::getVar('search','');
-			
+
 			foreach ($this->categories as $row)
 			{
 				$i++;
 
-				switch ($i) 
+				switch ($i)
 				{
 					case 1: $cls = 'first';  break;
 					case 2: $cls = 'second'; break;
@@ -149,12 +149,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .= '<p>'.Hubzero_View_Helper_Html::shortenText($row->description, 100, 0).'</p>'."\n";
 				}*/
 				$filters['section'] = $row->id;
-				
+
 				// Get the records
 				$articles = $kba->getRecords($filters);
 				if (count($articles) > 0) {
 					$html .= "\t".'<ul class="articles">'."\n";
-					foreach ($articles as $article) 
+					foreach ($articles as $article)
 					{
 						if (!empty($article->alias)) {
 							$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$article->calias.'&category='.$article->ccalias.'&alias='.$article->alias);
@@ -173,7 +173,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= "\t\t".'</div><!-- / .two columns '.$cls.' -->'."\n";
 				$html .= ($i >= 2) ? '<div class="clearfix"></div>' : '';
 
-				if ($i >= 2) { 
+				if ($i >= 2) {
 					$i = 0;
 				}
 			}

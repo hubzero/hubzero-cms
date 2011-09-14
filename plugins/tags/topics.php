@@ -29,19 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_topics' );
-
-//-----------
 
 class plgTagsTopics extends JPlugin
 {
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgTagsTopics(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,8 +45,6 @@ class plgTagsTopics extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onTagAreas()
 	{
 		$areas = array(
@@ -60,8 +52,6 @@ class plgTagsTopics extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
 
 	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
@@ -76,20 +66,20 @@ class plgTagsTopics extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$ids = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ids[] = $tag->id;
 		}
 
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
-		
+
 		// Instantiate some needed objects
 		$wp = new WikiPage( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['tags'] = $ids;
@@ -99,7 +89,7 @@ class plgTagsTopics extends JPlugin
 		// Execute the query
 		if (!$limit) {
 			$filters['select'] = 'count';
-			
+
 			//$database->setQuery( $wp->buildPluginQuery( $filters ) );
 			$database->setQuery( $this->_buildPluginQuery( $filters ) );
 			$this->_total = $database->loadResult();
@@ -108,26 +98,26 @@ class plgTagsTopics extends JPlugin
 			$filters['select'] = 'records';
 			$filters['limit'] = (count($areas) > 1) ? 'all' : $limit;
 			$filters['limitstart'] = $limitstart;
-			
+
 			//$query = $wp->buildPluginQuery( $filters );
 			$query = $this->_buildPluginQuery( $filters );
 			if (count($areas) > 1) {
 				return $query;
 			}
-			
+
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
 				}
 			}
-			
+
 			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
 			if ($rows) {
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					if ($row->data1 != '' && $row->category != '') {
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->data1.'&pagename='.$row->alias);
@@ -142,12 +132,12 @@ class plgTagsTopics extends JPlugin
 			return $rows;
 		}
 	}
-	
-	private function _buildPluginQuery( $filters=array() ) 
+
+	private function _buildPluginQuery( $filters=array() )
 	{
 		//$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-		
+
 		//include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'wiki'.DS.'revision.php' );
 		//$wr = new WikiPageRevision( $database );
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -177,7 +167,7 @@ class plgTagsTopics extends JPlugin
 			$ids = implode(',',$filters['tags']);
 			$query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
 		}
-		
+
 		$query .= "GROUP BY pageid ";
 		if (isset($filters['tags'])) {
 			$query .= "HAVING uniques=".count($filters['tags'])." ";
@@ -185,7 +175,7 @@ class plgTagsTopics extends JPlugin
 		if (isset($filters['select']) && $filters['select'] != 'count') {
 			if (isset($filters['sortby'])) {
 				$query .= "ORDER BY ";
-				switch ($filters['sortby']) 
+				switch ($filters['sortby'])
 				{
 					case 'title':   $query .= 'title ASC';         break;
 					case 'id':  $query .= "id DESC"; break;
@@ -210,17 +200,15 @@ class plgTagsTopics extends JPlugin
 		//echo '<!-- '.$query.' -->';
 		return $query;
 	}
-	
-	//-----------
 
-	private function _authorize() 
+	private function _authorize()
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }

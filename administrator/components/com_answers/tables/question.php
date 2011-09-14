@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class AnswersQuestion extends JTable 
+class AnswersQuestion extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $subject    = NULL;  // @var varchar(250)
@@ -42,17 +41,15 @@ class AnswersQuestion extends JTable
 	var $email      = NULL;  // @var int(2)
 	var $helpful    = NULL;  // @var int(11)
 	var $reward 	= NULL;  // @var int(2)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__answers_questions', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->subject ) == '') {
 			$this->setError( JText::_('Your question must contain a subject.') );
@@ -60,19 +57,17 @@ class AnswersQuestion extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery($filters=array()) 
+
+	public function buildQuery($filters=array())
 	{
 		$juser =& JFactory::getUser();
-		
+
 		// build body of query
 		$query  = "";
 		if ($filters['tag']) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 			$tagging = new AnswersTags( $this->_db );
-			
+
 			$query .= "FROM $this->_tbl AS C";
 			if (isset($filters['count'])) {
 				$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=C.id AND RTA.tbl='answers' ";
@@ -84,7 +79,7 @@ class AnswersQuestion extends JTable
 			$query .= "FROM $this->_tbl AS C ";
 		}
 		$query .= ", #__users AS U ";
-		
+
 		switch ($filters['filterby'])
 		{
 			case 'mine':   		$query .= "WHERE C.state!=2 "; $filters['mine'] = 1;       break;
@@ -97,7 +92,7 @@ class AnswersQuestion extends JTable
 		$query .= "AND U.username=C.created_by ";
 		if (isset($filters['q']) && $filters['q'] != '') {
 			$words   = explode(' ', $filters['q']);
-			foreach ($words as $word) 
+			foreach ($words as $word)
 			{
 				$query .= "AND ( (LOWER(C.subject) LIKE '%$word%') 
 					OR (LOWER(C.question) LIKE '%$word%') 
@@ -114,7 +109,7 @@ class AnswersQuestion extends JTable
 			$query .= " AND C.created <='" . $filters['created_before'] . "' ";
 		}
 		if ($filters['tag']) {
-			
+
 			$tags = $tagging->_parse_tags($filters['tag']);
 
 			$query .= "AND (RTA.objectid=C.id AND (RTA.tbl='answers') AND (TA.tag IN (";
@@ -145,45 +140,39 @@ class AnswersQuestion extends JTable
 
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount($filters=array()) 
+
+	public function getCount($filters=array())
 	{
 		$query  = "SELECT COUNT(C.id) ";
 		//$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id ) AS points";
 		//$query .= (isset($filters['tag']) && $filters['tag']!='') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
-			
+
 		$filters['sortby'] = '';
 		$filters['count'] = 1;
 		$query .= $this->buildQuery( $filters );
-	
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getResults($filters=array()) 
+
+	public function getResults($filters=array())
 	{
 		$ar = new AnswersResponse( $this->_db );
-		
+
 		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful, U.name, U.id AS userid";
 		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount";
 		$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id ) AS points";
 		$query .= ($filters['tag']) ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
 		$query .= $this->buildQuery( $filters );
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
-	
+
 		//$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		//echo '<!-- '.$query.' -->';
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getQuestionsByTag( $tag, $limit=100 ) 
+
+	public function getQuestionsByTag( $tag, $limit=100 )
 	{
 		$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount";
 		//$query.= "\n FROM $this->_tbl AS a, #__answers_tags AS t, #__tags AS tg";
@@ -193,7 +182,7 @@ class AnswersQuestion extends JTable
 
 		$query .= "\n ORDER BY a.created DESC";
 		$query .= ($limit) ? "\n LIMIT ".$limit : "";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

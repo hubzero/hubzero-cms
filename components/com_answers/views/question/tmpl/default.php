@@ -37,7 +37,7 @@ $wikiconfig = array(
 	'pagename' => $this->question->id,
 	'pageid'   => $this->question->id,
 	'filepath' => '',
-	'domain'   => '' 
+	'domain'   => ''
 );
 ximport('Hubzero_Wiki_Parser');
 $parser =& Hubzero_Wiki_Parser::getInstance();
@@ -45,7 +45,7 @@ $parser =& Hubzero_Wiki_Parser::getInstance();
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
 $user = new Hubzero_User_Profile();
 $user->load( $this->question->created_by );
-if ($this->question->anonymous == 0) {			
+if ($this->question->anonymous == 0) {
 	//$user =& JUser::getInstance( $this->question->created_by );
 	if (is_object($user)) {
 		$name = $user->get('name');
@@ -140,7 +140,7 @@ if (!$this->juser->get('guest')) {
 } else {
 	$addon =' title="'.JText::_('COM_ANSWERS_LOGIN_TO_RECOMMEND_QUESTION').'"';
 }
-if ($reports == 0) { 
+if ($reports == 0) {
 ?>
 					<p class="voting">
 						<span class="vote-like">
@@ -417,11 +417,11 @@ if ($reports == 0) {
 $chosen = false;
 if ($this->responses) {
 	$cls = 'even';
-	foreach ($this->responses as $row) 
+	foreach ($this->responses as $row)
 	{
 		if ($this->question->state == 1 && $row->state == 1) {
 			$chosen = true;
-			
+
 			// Set the name of the reviewer
 			$name = JText::_('COM_ANSWERS_ANONYMOUS');
 			$ruser = new Hubzero_User_Profile();
@@ -433,15 +433,15 @@ if ($this->responses) {
 					$name = $ruser->get('name');
 				}
 			}
-			
+
 			$abuse = isset($row->reports) ? $row->reports : 0;
-			
+
 			$cls  = ($cls == 'odd') ? 'even' : 'odd';
 			$cls .= ($abuse) ? ' abusive' : '';
 			if ($this->question->created_by == $row->created_by) {
 				$cls .= ' author';
 			}
-		
+
 		$cls .= ' chosen';
 		?>
 <div class="below section">
@@ -504,12 +504,12 @@ if ($this->responses) {
 					$view->display();
 				?>
 				</div><!-- / .comment-content -->
-			<?php if ($this->showcomments && isset($row->replies)) {				
+			<?php if ($this->showcomments && isset($row->replies)) {
 			$o = 'even';
 			$html = '';
 			if (count($row->replies) > 0) {
 				$html .= '<ol class="comments pass2">';
-				foreach ($row->replies as $reply) 
+				foreach ($row->replies as $reply)
 				{
 					$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -534,11 +534,11 @@ if ($this->responses) {
 					$view->addcomment = $this->addcomment;
 					$view->parser = $parser;
 					$html .= $view->loadTemplate();
-					
+
 					// Another level? 
 					if (count($reply->replies) > 0) {
 						$html .= '<ol class="comments pass3">';
-						foreach ($reply->replies as $r) 
+						foreach ($reply->replies as $r)
 						{
 							$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -550,7 +550,7 @@ if ($this->responses) {
 								$cls .= ' author';
 							}
 							$html .= '" id="c'.$r->id.'r">';
-							
+
 							$view = new JView( array('name'=>'question', 'layout'=>'comment') );
 							$view->option = $this->option;
 							$view->reply = $r;
@@ -566,7 +566,7 @@ if ($this->responses) {
 							// Yet another level?? 
 							if (count($r->replies) > 0) {
 								$html .= '<ol class="comments pass4">';
-								foreach ($r->replies as $rr) 
+								foreach ($r->replies as $rr)
 								{
 									$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -636,12 +636,12 @@ if ($this->responses) {
 		<?php if ($this->responses && ((count($this->responses) > 1) || (count($this->responses) == 1 && !$chosen))) { ?>
 			<ol class="comments"><?php
 		$cls = 'even';
-		foreach ($this->responses as $row) 
+		foreach ($this->responses as $row)
 		{
 			if ($this->question->state == 1 && $row->state == 1) {
 				continue;
 			}
-			
+
 			// Set the name of the reviewer
 			$name = JText::_('COM_ANSWERS_ANONYMOUS');
 			$ruser = new Hubzero_User_Profile();
@@ -653,9 +653,9 @@ if ($this->responses) {
 					$name = $ruser->get('name');
 				}
 			}
-			
+
 			$abuse = isset($row->reports) ? $row->reports : 0;
-			
+
 			$cls  = ($cls == 'odd') ? 'even' : 'odd';
 			$cls .= ($abuse) ? ' abusive' : '';
 			if ($this->question->created_by == $row->created_by) {
@@ -707,12 +707,12 @@ if ($this->responses) {
 						$view->display();
 					?>
 					</div><!-- / .comment-content -->
-				<?php if ($this->showcomments && isset($row->replies)) {				
+				<?php if ($this->showcomments && isset($row->replies)) {
 				$o = 'even';
 				$html = '';
 				if (count($row->replies) > 0) {
 					$html .= '<ol class="comments pass2">';
-					foreach ($row->replies as $reply) 
+					foreach ($row->replies as $reply)
 					{
 						$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -737,11 +737,11 @@ if ($this->responses) {
 						$view->addcomment = $this->addcomment;
 						$view->parser = $parser;
 						$html .= $view->loadTemplate();
-						
+
 						// Another level? 
 						if (count($reply->replies) > 0) {
 							$html .= '<ol class="comments pass3">';
-							foreach ($reply->replies as $r) 
+							foreach ($reply->replies as $r)
 							{
 								$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -753,7 +753,7 @@ if ($this->responses) {
 									$cls .= ' author';
 								}
 								$html .= '" id="c'.$r->id.'r">';
-								
+
 								$view = new JView( array('name'=>'question', 'layout'=>'comment') );
 								$view->option = $this->option;
 								$view->reply = $r;
@@ -769,7 +769,7 @@ if ($this->responses) {
 								// Yet another level?? 
 								if (count($r->replies) > 0) {
 									$html .= '<ol class="comments pass4">';
-									foreach ($r->replies as $rr) 
+									foreach ($r->replies as $rr)
 									{
 										$o = ($o == 'odd') ? 'even' : 'odd';
 

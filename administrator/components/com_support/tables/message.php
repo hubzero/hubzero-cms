@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class SupportMessage extends JTable 
+class SupportMessage extends JTable
 {
 	var $id      = NULL;  // @var int(11) Primary key
 	var $title   = NULL;  // @var varchar(250)
@@ -41,14 +41,12 @@ class SupportMessage extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_messages', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->message ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -57,40 +55,32 @@ class SupportMessage extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getMessages() 
+
+	public function getMessages()
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl ORDER BY id");
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY id";
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT id, title";

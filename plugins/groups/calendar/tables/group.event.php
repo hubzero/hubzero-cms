@@ -40,12 +40,12 @@ Class GroupEvent extends JTable
 	var $end = null;
 	var $active = null;
 	var $created = null;
-	
-	function __construct( &$db ) 
+
+	function __construct( &$db )
 	{
 		parent::__construct('#__xgroups_events', 'id', $db );
 	}
-	
+
 	//-----
 }
 

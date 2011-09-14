@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchKB extends YSearchPlugin
 {
 	public static function getName() { return 'Knowledge Base'; }
@@ -38,7 +37,7 @@ class plgYSearchKB extends YSearchPlugin
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(f.title, f.params, f.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')';
-			
+
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 			$addtl_where[] = "(f.title LIKE '%$mand%' OR f.params LIKE '%$mand%' OR f.`fulltext` LIKE '%$mand%')";

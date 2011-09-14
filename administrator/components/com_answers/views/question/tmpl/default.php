@@ -29,7 +29,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'editq' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 JToolBarHelper::title( JText::_( 'Question' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-JToolBarHelper::spacer();	
+JToolBarHelper::spacer();
 JToolBarHelper::save( 'saveq', 'Save Question' );
 JToolBarHelper::cancel();
 

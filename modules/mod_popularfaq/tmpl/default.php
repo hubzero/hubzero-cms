@@ -37,13 +37,13 @@ $rows = $modpopularfaq->rows;
 <?php if ($rows) { ?>
 	<ul class="articles">
 <?php
-	foreach ($rows as $row) 
+	foreach ($rows as $row)
 	{
 		if ($row->access <= $juser->get('aid')) {
 			$link = 'index.php?option=com_kb&amp;section='.$row->section;
 			$link .= ($row->category) ? '&amp;category='.$row->category : '';
 			$link .= ($row->alias) ? '&amp;alias='. $row->alias : '&amp;alias='. $row->id;
-			
+
 			$link_on = JRoute::_($link);
 		} else {
 			$link_on = JRoute::_('index.php?option=com_hub&task=register');

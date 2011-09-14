@@ -90,19 +90,19 @@ $yearlystats = $this->yearlystats;
 $cls = 'even';
 $tot = 0;
 $rows = array();
-foreach ($yearlystats as $year=>$amt) 
+foreach ($yearlystats as $year=>$amt)
 {
 	$cls = ($cls == 'even') ? 'odd' : 'even';
-	
+
 	$tr  = "\t\t".'<tr class="'.$cls.'">'."\n";
 	$tr .= "\t\t\t".'<th class="textual-data">'.$year.'</th>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$amt['affiliate'].'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$amt['non-affiliate'].'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data highlight">'.(intval($amt['affiliate']) + intval($amt['non-affiliate'])).'</td>'."\n";
 	$tr .= "\t\t".'</tr>'."\n";
-	
+
 	$rows[] = $tr;
-	
+
 	$tot += (intval($amt['affiliate']) + intval($amt['non-affiliate']));
 }
 
@@ -127,8 +127,6 @@ $html .= implode('',$rows);
 $html .= "\t".'</tbody>'."\n";
 $html .= '</table>'."\n";
 
-//---
-
 $typestats = $this->typestats;
 $cls = 'even';
 $rows = array();
@@ -136,7 +134,7 @@ $j = 0;
 $data_arr = array();
 $data_arr['text'] = null;
 $data_arr['hits'] = null;
-foreach ($typestats as $type=>$stat) 
+foreach ($typestats as $type=>$stat)
 {
 	$data_arr['text'][$j] = trim($type);
 	$data_arr['hits'][$j] = $stat;
@@ -153,7 +151,7 @@ $maxval = 0;
 
 array_multisort( $data_arr['hits'], SORT_NUMERIC, SORT_DESC, $data_arr['text'] );
 
-foreach ($data_arr['hits'] as $hits) 
+foreach ($data_arr['hits'] as $hits)
 {
 	if ($maxval < $hits) {
 		$maxval = $hits;
@@ -161,7 +159,7 @@ foreach ($data_arr['hits'] as $hits)
 }
 $sumval = array_sum( $data_arr['hits'] );
 
-for ($i=0, $n=count($data_arr['text']); $i < $n; $i++) 
+for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 {
 	$text =& $data_arr['text'][$i];
 	$hits =& $data_arr['hits'][$i];
@@ -183,9 +181,9 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 	} else {
 		$tdclass = 'color'.$polls_barcolor;
 	}
-	
+
 	$cls = ($cls == 'even') ? 'odd' : 'even';
-	
+
 	$tr  = "\t\t".'<tr class="'.$cls.'">'."\n";
 	$tr .= "\t\t\t".'<th class="textual-data">'.$text.'</th>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'."\n";
@@ -195,9 +193,9 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 	$tr .= "\t\t\t".'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$hits.'</td>'."\n";
 	$tr .= "\t\t".'</tr>'."\n";
-	
+
 	$rows[] = $tr;
-	
+
 	$tabcnt = 1 - $tabcnt;
 }
 

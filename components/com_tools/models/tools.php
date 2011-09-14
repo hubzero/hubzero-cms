@@ -48,8 +48,8 @@ class ToolsModelTools extends JModel
 	{
 		$dh = opendir('/opt/trac/tools');
 		$result = array();
-		
-		while (($file = readdir($dh)) !== false) 
+
+		while (($file = readdir($dh)) !== false)
 		{
 			if (is_dir('/opt/trac/tools/' . $file)) {
 				if (strncmp($file,'.', 1) != 0) {
@@ -57,14 +57,14 @@ class ToolsModelTools extends JModel
 				}
 			}
 		}
-		
+
 		closedir($dh);
-		
+
 		sort($result);
-		
+
 		if (count($result) > 0) {
 			$aliases = implode("','",$result);
-			
+
 			$database =& JFactory::getDBO();
 			//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 			//$tv = new ToolVersion( $database );
@@ -78,7 +78,7 @@ class ToolsModelTools extends JModel
 			$database->setQuery( $query );
 			return $database->loadObjectList();
 		}
-		
+
 		return $result;
 	}
 }

@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_groups' );
-
-//-----------
 
 class plgXSearchGroups extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgXSearchGroups extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'groups' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onXSearchAreas()
 	{
 		$areas = array(
@@ -56,8 +50,6 @@ class plgXSearchGroups extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -72,7 +64,7 @@ class plgXSearchGroups extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		// An array for all the words and phrases
@@ -81,7 +73,7 @@ class plgXSearchGroups extends JPlugin
 		// Build the query
 		$c_count = "SELECT COUNT(*) ";
 		$b = '';
-		foreach ($words as $word) 
+		foreach ($words as $word)
 		{
 			if (trim($word) != '') {
 				$word = addslashes($word);
@@ -96,7 +88,7 @@ class plgXSearchGroups extends JPlugin
 		 			CONCAT( 'index.php?option=com_groups&gid=', g.cn ) as href, 'groups' AS section, NULL AS area, NULL AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking, g.access, ($b) AS relevance ";
 		$c_from = "FROM #__xgroups AS g 
 				WHERE g.type=1 AND g.privacy<=1 AND (";
-		foreach ($words as $word) 
+		foreach ($words as $word)
 		{
 			if (trim($word) != '') {
 				$word = addslashes($word);
@@ -116,12 +108,12 @@ class plgXSearchGroups extends JPlugin
 			if (count($areas) > 1) {
 				return $c_fields.$c_from;
 			}
-			
+
 			// Get results
 			$database->setQuery( $c_fields.$c_from.$c_order.$c_limit );
 			$rows = $database->loadObjectList();
 
-			foreach ($rows as $key => $row) 
+			foreach ($rows as $key => $row)
 			{
 				$rows[$key]->href = JRoute::_('index.php?option=com_groups&gid='.$row->alias);
 			}

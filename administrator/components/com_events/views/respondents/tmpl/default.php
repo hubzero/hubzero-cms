@@ -99,7 +99,7 @@ foreach ($rows as $idx=>&$row)
 {
 	if (!@$row->id) continue;*/
 $k = 0;
-for ($i=0, $n=count( $rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $rows ); $i < $n; $i++)
 {
 	$row = &$rows[$i];
 ?>

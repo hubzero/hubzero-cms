@@ -96,17 +96,17 @@ $database =& JFactory::getDBO();
 
 $jt = new JobType( $database );
 $jc = new JobCategory( $database );
-	
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
-	
+
 	$admin = $row->employerid == 1 ? 1 : 0;
 	$adminclass = $admin ? 'class="adminpost"' : '';
-	
+
 	$curtype = $row->type > 0 ? $jt->getType($row->type) : '';
 	$curcat = $row->cid > 0 ? $jc->getCat($row->cid) : '';
-	
+
 	// Build some publishing info
 	$info  = JText::_('Created').': '.JHTML::_('date',$row->added, '%d&nbsp;%b&nbsp;%y').'<br />';
 	$info .= JText::_('Created by').': '.$row->addedBy;
@@ -114,31 +114,31 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	$info .= '<br />';
 	$info .= JText::_('Category').': '.$curcat.'<br />';
 	$info .= JText::_('Type').': '.$curtype.'<br />';
-	
+
 	// Get the published status			
-	switch ($row->status) 
+	switch ($row->status)
 	{
-		case 0: 
+		case 0:
 			$alt   = 'Pending approval';
 			$class = 'post_pending';
 			break;
-		case 1: 
-			$alt 	=  $row->inactive 
-					? JText::_('Invalid Subscription') 
-					: JText::_('Active'); 
-			$class  = $row->inactive 
+		case 1:
+			$alt 	=  $row->inactive
+					? JText::_('Invalid Subscription')
+					: JText::_('Active');
+			$class  = $row->inactive
 					? 'post_invalidsub'
-					: 'post_active';  
+					: 'post_active';
 			break;
-		case 2: 
+		case 2:
 			$alt   = 'Deleted';
 			$class = 'post_deleted';
 			break;
-		case 3: 
+		case 3:
 			$alt   = 'Inactive';
 			$class = 'post_inactive';
 			break;
-		case 4: 
+		case 4:
 			$alt   = 'Draft';
 			$class = 'post_draft';
 			break;
@@ -147,7 +147,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$class = '';
 			break;
 	}
-	
+
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>

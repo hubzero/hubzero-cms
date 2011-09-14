@@ -70,7 +70,7 @@ function toolsParseRoute($segments)
 	}
 
 	if (isset($segments[0])) {
-		switch ($segments[0]) 
+		switch ($segments[0])
 		{
 			case 'login':
 			case 'accessdenied':
@@ -92,7 +92,7 @@ function toolsParseRoute($segments)
 			case 'deletefile':
 				$vars['task'] = $segments[0];
 			break;
-			
+
 			default:
 				$vars['option'] = 'com_resources';
 				$vars['alias'] = $segments[0];
@@ -100,7 +100,7 @@ function toolsParseRoute($segments)
 		}
 	}
 	if (isset($segments[1])) {
-		switch ($segments[1]) 
+		switch ($segments[1])
 		{
 			case 'invoke':
 				$vars['option'] = 'com_tools';

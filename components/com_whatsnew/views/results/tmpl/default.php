@@ -54,7 +54,7 @@ array_unshift($this->cats, $all);
 $links = array();
 
 // Loop through each category
-foreach ($this->cats as $cat) 
+foreach ($this->cats as $cat)
 {
 	// Only show categories that have returned search results
 	if ($cat['total'] > 0) {
@@ -64,17 +64,17 @@ foreach ($this->cats as $cat)
 		} else {
 			$blob = $this->period;
 		}
-		
+
 		// Is this the active category?
 		$a = '';
 		if ($cat['category'] == $this->active) {
 			$a = ' class="active"';
-			
+
 			$app =& JFactory::getApplication();
 			$pathway =& $app->getPathway();
 			$pathway->addItem($cat['title'],'index.php?option='.$this->option.'&period='. urlencode(stripslashes($blob)));
 		}
-		
+
 		// Build the HTML
 		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&period='. urlencode(stripslashes($blob))) .'">' . JText::_($cat['title']) . ' ('.$cat['total'].')</a>';
 		// Are there sub-categories?
@@ -82,7 +82,7 @@ foreach ($this->cats as $cat)
 			// An array for storing the HTML we make
 			$k = array();
 			// Loop through each sub-category
-			foreach ($cat['_sub'] as $subcat) 
+			foreach ($cat['_sub'] as $subcat)
 			{
 				// Only show sub-categories that returned search results
 				if ($subcat['total'] > 0) {
@@ -92,17 +92,17 @@ foreach ($this->cats as $cat)
 					} else {
 						$blob = $this->period;
 					}
-					
+
 					// Is this the active category?
 					$a = '';
 					if ($subcat['category'] == $this->active) {
 						$a = ' class="active"';
-						
+
 						$app =& JFactory::getApplication();
 						$pathway =& $app->getPathway();
 						$pathway->addItem($subcat['title'],'index.php?option='.$this->option.'&period='. urlencode(stripslashes($blob)));
 					}
-					
+
 					// Build the HTML
 					$k[] = "\t\t\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&period='. urlencode(stripslashes($blob))) .'">' . JText::_($subcat['title']) . ' ('.$subcat['total'].')</a></li>';
 				}
@@ -147,17 +147,17 @@ $k = 1;
 foreach ($this->results as $category)
 {
 	$amt = count($category);
-	
+
 	if ($amt > 0) {
 		$foundresults = true;
-		
+
 		// Is this category the active category?
 		if (!$this->active || $this->active == $this->cats[$k]['category']) {
 			// It is - get some needed info
 			$name  = $this->cats[$k]['title'];
 			$total = $this->cats[$k]['total'];
 			$divid = 'search'.$this->cats[$k]['category'];
-			
+
 			if ($this->active == $this->cats[$k]['category']) {
 				$dopaging = true;
 			}
@@ -165,24 +165,24 @@ foreach ($this->results as $category)
 			// It is not - does this category have sub-categories?
 			if (isset($this->cats[$k]['_sub']) && is_array($this->cats[$k]['_sub'])) {
 				// It does - loop through them and see if one is the active category
-				foreach ($this->cats[$k]['_sub'] as $sub) 
+				foreach ($this->cats[$k]['_sub'] as $sub)
 				{
 					if ($this->active == $sub['category']) {
 						// Found an active category
 						$name  = $sub['title'];
 						$total = $sub['total'];
 						$divid = 'search'.$sub['category'];
-						
+
 						$dopaging = true;
 						break;
 					}
 				}
 			}
 		}
-		
+
 		$num = ($total > 1) ? JText::sprintf('COM_WHATSNEW_RESULTS', $total) : JText::sprintf('COM_WHATSNEW_RESULT', $total);
 		$this->total = $num;
-	
+
 		// A function for category specific items that may be needed
 		// Check if a function exist (using old style plugins)
 		$f = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']).'Doc';
@@ -194,7 +194,7 @@ foreach ($this->results as $category)
 		if (method_exists($obj, 'documents')) {
 			$html .= call_user_func( array($obj,'documents') );
 		}
-		
+
 		$feed = JRoute::_('index.php?option='.$this->option.'&task=feed.rss&period='.urlencode(strToLower($this->cats[$k]['category']).':'.stripslashes($this->period)));
 		if (substr($feed, 0, 4) != 'http') {
 			if (substr($feed, 0, 1) != DS) {
@@ -203,11 +203,11 @@ foreach ($this->results as $category)
 			$feed = $jconfig->getValue('config.live_site').$feed;
 		}
 		$feed = str_replace('https:://','http://',$feed);
-	
+
 		// Build the category HTML
 		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.JText::_($name).' <small>'.$num.' (<a class="feed" href="'.$feed.'">'.JText::_('COM_WHATSNEW_FEED').'</a>)</small></h4>'."\n";
 		$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
-		
+
 		// Does this category have custom output?
 		// Check if a function exist (using old style plugins)
 		$func = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']).'Before';
@@ -219,18 +219,18 @@ foreach ($this->results as $category)
 		if (method_exists($obj, 'before')) {
 			$html .= call_user_func( array($obj,'before'), $this->period );
 		}
-		
-		$html .= '<ol class="search results">'."\n";			
-		foreach ($category as $row) 
+
+		$html .= '<ol class="search results">'."\n";
+		foreach ($category as $row)
 		{
 			$row->href = str_replace('&amp;', '&', $row->href);
 			$row->href = str_replace('&', '&amp;', $row->href);
-			
+
 			// Does this category have a unique output display?
 			$func = 'plgWhatsnew'.ucfirst($row->section).'Out';
 			// Check if a method exist (using JPlugin style)
 			$obj = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']);
-			
+
 			if (function_exists($func)) {
 				$html .= $func( $row, $this->period );
 			} elseif (method_exists($obj, 'out')) {
@@ -242,7 +242,7 @@ foreach ($this->results as $category)
 				if (substr($row->href,0,1) == '/') {
 					$row->href = substr($row->href,1,strlen($row->href));
 				}
-				
+
 				$html .= "\t".'<li>'."\n";
 				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 				if ($row->text) {
@@ -270,7 +270,7 @@ foreach ($this->results as $category)
 			$ttl = 0;
 			if (isset($this->totals[$k])) {
 				if (is_array($this->totals[$k])) {
-					foreach ($this->totals[$k] as $t) 
+					foreach ($this->totals[$k] as $t)
 					{
 						$ttl += $t;
 					}
@@ -283,7 +283,7 @@ foreach ($this->results as $category)
 			}
 			$html .= '</p>'."\n\n";
 		}
-		
+
 		// Does this category have custom output?
 		// Check if a function exist (using old style plugins)
 		$func = 'plgWhatsnew'.ucfirst($this->cats[$k]['category']).'After';
@@ -295,7 +295,7 @@ foreach ($this->results as $category)
 		if (method_exists($obj, 'after')) {
 			$html .= call_user_func( array($obj,'after'), $this->period );
 		}
-		
+
 		$html .= '</div><!-- / #'.$divid.' -->'."\n";
 	}
 	$k++;

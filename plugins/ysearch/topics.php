@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchTopics extends YSearchPlugin
 {
 	public static function onYSearch($request, &$results, $authz)

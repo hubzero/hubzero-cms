@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Blog Comment database class
 //----------------------------------------------------------
 
-class KbComment extends JTable 
+class KbComment extends JTable
 {
 	var $id         = NULL;  // @var int(11) primary key
 	var $entry_id   = NULL;  // @var int(11)
@@ -44,17 +44,15 @@ class KbComment extends JTable
 	var $parent     = NULL;  // @var int(11)
 	var $helpful    = NULL;  // @var int(11)
 	var $nothelpful = NULL;  // @var int(11)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq_comments', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->content ) == '') {
 			$this->setError( JText::_('Your comment must contain text.') );
@@ -70,10 +68,8 @@ class KbComment extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadUserComment( $entry_id, $user_id ) 
+
+	public function loadUserComment( $entry_id, $user_id )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE entry_id=".$entry_id." AND created_by=".$user_id." LIMIT 1" );
 		if ($result = $this->_db->loadAssoc()) {
@@ -83,9 +79,7 @@ class KbComment extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
+
 	public function getComments( $entry_id=NULL, $parent=NULL )
 	{
 		if (!$entry_id) {
@@ -94,9 +88,9 @@ class KbComment extends JTable
 		if (!$parent) {
 			$parent = 0;
 		}
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		//$sql = "SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND parent=$parent ORDER BY created ASC";
 		if (!$juser->get('guest')) {
 			$sql  = "SELECT c.*, v.vote FROM $this->_tbl AS c ";
@@ -105,19 +99,17 @@ class KbComment extends JTable
 			$sql = "SELECT c.* FROM $this->_tbl AS c ";
 		}
 		$sql .= "WHERE c.entry_id=$entry_id AND c.parent=$parent ORDER BY created ASC";
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getAllComments( $entry_id=NULL )
 	{
 		if (!$entry_id) {
 			$entry_id = $this->entry_id;
 		}
-		
+
 		$comments = $this->getComments( $entry_id, 0 );
 		if ($comments) {
 			$ra = null;
@@ -125,21 +117,21 @@ class KbComment extends JTable
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
 				$ra = new ReportAbuse( $this->_db );
 			}
-			foreach ($comments as $key => $row) 
+			foreach ($comments as $key => $row)
 			{
 				if ($ra) {
 					$comments[$key]->reports = $ra->getCount( array('id'=>$comments[$key]->id, 'category'=>'kb') );
 				}
 				$comments[$key]->replies = $this->getComments( $entry_id, $row->id );
 				if ($comments[$key]->replies) {
-					foreach ($comments[$key]->replies as $ky => $rw) 
+					foreach ($comments[$key]->replies as $ky => $rw)
 					{
 						if ($ra) {
 							$comments[$key]->replies[$ky]->reports = $ra->getCount( array('id'=>$rw->id, 'category'=>'kb') );
 						}
 						$comments[$key]->replies[$ky]->replies = $this->getComments( $entry_id, $rw->id );
 						if ($comments[$key]->replies[$ky]->replies && $ra) {
-							foreach ($comments[$key]->replies[$ky]->replies as $kyy => $rwy) 
+							foreach ($comments[$key]->replies[$ky]->replies as $kyy => $rwy)
 							{
 								$comments[$key]->replies[$ky]->replies[$kyy]->reports = $ra->getCount( array('id'=>$rwy->id, 'category'=>'kb') );
 							}
@@ -150,19 +142,17 @@ class KbComment extends JTable
 		}
 		return $comments;
 	}
-	
-	//-----------
-	
+
 	public function deleteChildren( $id=NULL )
 	{
 		if (!$id) {
 			$id = $this->id;
 		}
-		
+
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE parent=".$id );
 		$comments = $this->_db->loadObjectList();
 		if ($comments) {
-			foreach ($comments as $row) 
+			foreach ($comments as $row)
 			{
 				// Delete abuse reports
 				/*$this->_db->setQuery( "DELETE FROM #__abuse_reports WHERE referenceid=".$row->id." AND category='blog'" );

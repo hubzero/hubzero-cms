@@ -43,7 +43,7 @@ $hours = intval(intval($this->sec) / 3600);
 
 // add to $hms, with a leading 0 if asked for
 if ($hours) {
-	$hms .= ($this->padHours) 
+	$hms .= ($this->padHours)
 			? str_pad($hours, 2, "0", STR_PAD_LEFT). ' hours,'
 			: $hours. ' hours, ';
 }

@@ -35,21 +35,18 @@ class modMyMessages
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,24 +55,23 @@ class modMyMessages
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
 		$this->moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 10;
 
 		$this->error = false;
-		
+
 		// Check for the existence of required tables that should be
 		// installed with the com_support component
 		$database->setQuery("SHOW TABLES");
 		$tables = $database->loadResultArray();
-		
+
 		if ($tables && array_search($database->_table_prefix.'xmessage', $tables)===false) {
 			// MEssages table not found!
 			$this->error = true;

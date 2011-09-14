@@ -93,7 +93,7 @@ if ($this->row) {
 		}
 		$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'"><span>'.JText::_('EVENTS_OVERVIEW').'</span></a></li>'."\n";
 		if ($this->pages) {
-			foreach ($this->pages as $p) 
+			foreach ($this->pages as $p)
 			{
 				$html .= "\t".'<li';
 				if ($this->page->alias == $p->alias) {
@@ -111,7 +111,7 @@ if ($this->row) {
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '</div>'."\n";
 	}
-	
+
 	if ($this->page->alias != '') {
 		$html .= (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">'. JText::_('EVENTS_NO_INFO_AVAILABLE') .'</p>';
 	} else {
@@ -168,7 +168,7 @@ if ($this->row) {
 		if (trim($this->row->contact_info)) {
 			$html .= '  <tr>'."\n";
 			$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_CONTACT').':</th>'."\n";
-			$html .= '   <td>'. htmlentities($this->row->contact_info) .'</td>'."\n";		
+			$html .= '   <td>'. htmlentities($this->row->contact_info) .'</td>'."\n";
 			$html .= '  </tr>'."\n";
 		}
 		if (trim($this->row->adresse_info)) {
@@ -180,11 +180,11 @@ if ($this->row) {
 		if (trim($this->row->extra_info)) {
 			$html .= '  <tr>'."\n";
 			$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_EXTRA').':</th>'."\n";
-			$html .= '   <td><a href="'. htmlentities($this->row->extra_info) .'">'. htmlentities($this->row->extra_info) .'</a></td>'."\n";		
+			$html .= '   <td><a href="'. htmlentities($this->row->extra_info) .'">'. htmlentities($this->row->extra_info) .'</a></td>'."\n";
 			$html .= '  </tr>'."\n";
 		}
 		if ($this->fields) {
-			foreach ($this->fields as $field) 
+			foreach ($this->fields as $field)
 			{
 				if (end($field) != NULL) {
 					if (end($field) == '1') {

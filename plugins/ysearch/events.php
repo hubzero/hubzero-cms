@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchEvents extends YSearchPlugin
 {
 	public static function onYSearch($request, &$results)
@@ -68,7 +67,7 @@ class plgYSearchEvents extends YSearchPlugin
  	public static function onBeforeYSearchRenderEvents($res)
 	{
 		$date = $res->get('date');
-		return 
+		return
 			'<p class="event-date">
 			<span class="month">'.date('M', $date).'</span>
 			<span class="day">'.date('d', $date).'</span>

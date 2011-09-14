@@ -48,7 +48,7 @@ if ($this->rows) {
 		<p><?php echo JText::sprintf('COM_STORE_THERE_ARE_ITEMS_AVAILABLE', count($this->rows)); ?></p>
 		<ul class="storeitems">
 <?php
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		$cls = '';
 		if ($row->featured) {
@@ -72,14 +72,14 @@ if ($this->rows) {
 					<span class="sizes"><?php echo JText::_('COM_STORE_SIZES'); ?>: <?php echo $row->size; ?></span>
 <?php } ?>
 <?php 
-if ($row->category != 'service') { 
+if ($row->category != 'service') {
 	if ($row->available) { ?>
 					<span class="yes"><?php echo JText::_('COM_STORE_INSTOCK'); ?></span>
 <?php } else { ?>
 					<span class="no"><?php echo JText::_('COM_STORE_SOLDOUT'); ?></span>
 <?php 
 	}
-} 
+}
 ?>
 				</p>
 			</div>

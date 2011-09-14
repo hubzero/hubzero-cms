@@ -58,7 +58,7 @@ if ($this->report && !$this->getError()) {
 	 				echo ($this->report->href) ? '<a href="'.$this->report->href.'">': '';
 	 				echo ucfirst($this->cat).' by ';
 	 				echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name;
-	 				echo ($this->report->href) ? '</a>': ''; 
+	 				echo ($this->report->href) ? '</a>': '';
 				?></h4>
 				<?php echo ($this->report->subject) ? t.t.'<p><strong>'.stripslashes($this->report->subject).'</strong></p>'.n : ''; ?>
 				<p><?php echo stripslashes($this->report->text); ?></p>
@@ -85,7 +85,7 @@ if ($this->report && !$this->getError()) {
 	<div class="clear"></div>
 <?php
 } else {
-	if ($this->getError()) { 
+	if ($this->getError()) {
 ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php

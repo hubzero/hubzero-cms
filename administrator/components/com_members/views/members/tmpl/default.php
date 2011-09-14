@@ -95,10 +95,10 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	if (!$row->surname && !$row->givenName) {
 		$bits = explode(' ', $row->name);
 		$row->surname = array_pop($bits);
@@ -109,7 +109,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$row->middleName = implode(' ',$bits);
 		}
 	}
-	
+
 	if (!$row->lastvisitDate || $row->lastvisitDate == "0000-00-00 00:00:00") {
 		$lvisit = JText::_( 'Never' );
 	} else {

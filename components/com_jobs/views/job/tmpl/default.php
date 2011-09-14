@@ -27,22 +27,22 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
+
 	/* Job Posting */
-	
+
 	// load some classes
 	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	$juser =& JFactory::getUser();
-	
+
 	$job = $this->job;
-	
+
 	$job->cat = $job->cat ? $job->cat : 'unspecified';
 	$job->type = $job->type ? $job->type : 'unspecified';
-	
+
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%d %b %Y',0) : 'N/A';
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%d %b %Y',0) : 'ASAP';
-		
+
 	// Transform the wikitext to HTML
 	$wikiconfig = array(
 		'option'   => $this->option,
@@ -50,14 +50,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 		'pagename' => 'jobs',
 		'pageid'   => $job->code,
 		'filepath' => '',
-		'domain'   => '' 
+		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$p =& Hubzero_Wiki_Parser::getInstance();
 	$maintext = $p->parse(stripslashes($job->description), $wikiconfig);
-	
-	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;	
-	
+
+	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
+
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?>
@@ -81,50 +81,50 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php
-		
+
 		$html = '';
-		
+
 		$job->title = trim(stripslashes($job->title));
 		$job->description = trim(stripslashes($job->description));
 		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
 		$job->description = JobsHtml::txt_unpee($job->description);
-		
-		$html .= '<div class="clear"></div>'.n;	
+
+		$html .= '<div class="clear"></div>'.n;
 		$html .= '<div class="main section">'.n;
-		
+
 	if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
-	<?php } 
+	<?php }
 	if ($this->msg_warning) { ?>
 	<p class="warning"><?php echo $this->msg_warning; ?></p>
 	<?php }
 	if ($this->msg_passed) { ?>
 	<p class="passed"><?php echo $this->msg_passed; ?></p>
-	<?php }  
+	<?php }
 		if($owner) {
 			// admin status message
-			switch( $job->status ) 
+			switch( $job->status )
 			{
-				case 1:    		
-				$html .= '<p class="statusmsg activead">'.JText::_('JOB_AD_PUBLISHED').' '.JText::_('You can').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=editjob'.a.'code='.$job->code).'">'.strtolower(JText::_('ACTION_EDIT_JOB')).'</a> '.JText::_('JOB_AD_PUBLISHED_TIPS').'</p>';    		
+				case 1:
+				$html .= '<p class="statusmsg activead">'.JText::_('JOB_AD_PUBLISHED').' '.JText::_('You can').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=editjob'.a.'code='.$job->code).'">'.strtolower(JText::_('ACTION_EDIT_JOB')).'</a> '.JText::_('JOB_AD_PUBLISHED_TIPS').'</p>';
 				break;
-				case 3:    		
-				$html .= '<p class="statusmsg inactive">'.JText::_('JOB_AD_UNPUBLISHED').' '.JText::_('JOB_REOPEN_NOTICE').'</p>';    		
+				case 3:
+				$html .= '<p class="statusmsg inactive">'.JText::_('JOB_AD_UNPUBLISHED').' '.JText::_('JOB_REOPEN_NOTICE').'</p>';
 				break;
-				case 4:    		
-				$html .= '<p class="statusmsg inactive">'.JText::_('JOB_AD_DRAFT_NOTICE').'</p>';    		
+				case 4:
+				$html .= '<p class="statusmsg inactive">'.JText::_('JOB_AD_DRAFT_NOTICE').'</p>';
 				break;
-				case 0:    		
-				$html .= '<p class="statusmsg inactive">'.JText::_('JOB_AD_PENDING_NOTICE').'</p>';    		
+				case 0:
+				$html .= '<p class="statusmsg inactive">'.JText::_('JOB_AD_PENDING_NOTICE').'</p>';
 				break;
-			}	
+			}
 		}
-			
-		$html .= t.'<div id="jobinfo">'.n;	
+
+		$html .= t.'<div id="jobinfo">'.n;
 		$html .= t.t.'<h3><span>'.JText::_('JOB_REFERENCE_CODE').': '.$job->code.'</span>'.$job->title.' - ';
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName;
 		$html .= ', '.$job->companyLocation.', '.$job->companyLocationCountry.'</h3>'.n;
-		$html .= '<div class="clear"></div>'.n;	
+		$html .= '<div class="clear"></div>'.n;
 		$html .= t.t.'<div class="apply"><p>'.n;
 		if($job->applied) {
 			$html .= t.t.'<span class="alreadyapplied">'.JText::_('JOB_APPLIED_ON').' '.JHTML::_('date',$job->applied, '%d %b %Y',0).'<span>'.n;
@@ -138,7 +138,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if($job->applyExternalUrl) {
 				$html .= t.t.'<a class="extlink" href="'.$job->applyExternalUrl.'">'.JText::_('ACTION_APPLY_EXTERNALLY').'</a>'.n;
 				$html .= $job->applyInternal ? '<span class="or">'.strtolower(JText::_('OR')).'</span>'.n : ''.n;
-			}		
+			}
 			if($job->applyInternal) {
 				$html .= t.t.'<span class="applybtn"><a href="'.JRoute::_('index.php?option='.$option.a.'task=apply'.a.'code='.$job->code).'">'.JText::_('ACTION_APPLY_THROUGH_HUB').' '.$hubShortName.'</a></span>'.n;
 			}
@@ -164,24 +164,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= $job->contactEmail ? t.t.'<span class="contactinfo">'.JText::_('JOB_TABLE_EMAIL').': '.$job->contactEmail.'</span>'.n : '';
 			$html .= t.t.'</p>'.n;
 		}
-		$html .= t.'</div>'.n;	
+		$html .= t.'</div>'.n;
 		$html .= '</div>'.n;
-		
+
 		if($owner) {
 			// admin options
-			switch( $job->status ) 
+			switch( $job->status )
 			{
-				case 1:    		
-					$html .= '<p class="manageroptions"><span><a href="'.JRoute::_('index.php?option='.$option.a.'task=unpublish'.a.'code='.$job->code).'">'.JText::_('ACTION_UNPUBLISH_THIS_JOB').'</a> '.JText::_('NOTICE_ACCESS_PRESERVED').'</span> </p>';    		
+				case 1:
+					$html .= '<p class="manageroptions"><span><a href="'.JRoute::_('index.php?option='.$option.a.'task=unpublish'.a.'code='.$job->code).'">'.JText::_('ACTION_UNPUBLISH_THIS_JOB').'</a> '.JText::_('NOTICE_ACCESS_PRESERVED').'</span> </p>';
 				break;
-				case 4:    		
-					$html .= '<p class="confirmPublish"><span><a href="'.JRoute::_('index.php?option='.$option.a.'task=confirmjob'.a.'code='.$job->code).'">'.JText::_('ACTION_PUBLISH_AD').'</a></span> <span class="alternative">'.JText::_('or').'</span> <span class="makechanges"><a href="'.JRoute::_('index.php?option='.$option.a.'task=editjob'.a.'code='.$job->code).'">'.JText::_('ACTION_MAKE_CHANGES').'</a></span> <span class="alternative">'.JText::_('OR').'</span> <span class="makechanges"><a href="'.JRoute::_('index.php?option='.$option.a.'task=remove'.a.'code='.$job->code).'">'.JText::_('ACTION_REMOVE_AD').'</a></span> </p>';    		
+				case 4:
+					$html .= '<p class="confirmPublish"><span><a href="'.JRoute::_('index.php?option='.$option.a.'task=confirmjob'.a.'code='.$job->code).'">'.JText::_('ACTION_PUBLISH_AD').'</a></span> <span class="alternative">'.JText::_('or').'</span> <span class="makechanges"><a href="'.JRoute::_('index.php?option='.$option.a.'task=editjob'.a.'code='.$job->code).'">'.JText::_('ACTION_MAKE_CHANGES').'</a></span> <span class="alternative">'.JText::_('OR').'</span> <span class="makechanges"><a href="'.JRoute::_('index.php?option='.$option.a.'task=remove'.a.'code='.$job->code).'">'.JText::_('ACTION_REMOVE_AD').'</a></span> </p>';
 				break;
-				case 3:    		
-					$html .= '<p class="manageroptions"><span><a href="'.JRoute::_('index.php?option='.$option.a.'task=reopen'.a.'code='.$job->code).'">'.JText::_('ACTION_REOPEN_THIS').'</a> '.JText::_('ACTION_INCLUDE_INPUBLIC_LISTING').'</span> <span class="alternative">|</span> <span><a href="'.JRoute::_('index.php?option='.$option.a.'task=remove'.a.'code='.$job->code).'">'.JText::_('ACTION_DELETE_THIS_JOB').'</a> ('.JText::_('ACTION_DELETE_ALL_RECORDS').')</span> </p>';    		
+				case 3:
+					$html .= '<p class="manageroptions"><span><a href="'.JRoute::_('index.php?option='.$option.a.'task=reopen'.a.'code='.$job->code).'">'.JText::_('ACTION_REOPEN_THIS').'</a> '.JText::_('ACTION_INCLUDE_INPUBLIC_LISTING').'</span> <span class="alternative">|</span> <span><a href="'.JRoute::_('index.php?option='.$option.a.'task=remove'.a.'code='.$job->code).'">'.JText::_('ACTION_DELETE_THIS_JOB').'</a> ('.JText::_('ACTION_DELETE_ALL_RECORDS').')</span> </p>';
 				break;
 			}
-		}				
+		}
 		echo $html;
 ?>
  <?php if($owner) {  ?>
@@ -189,22 +189,22 @@ defined('_JEXEC') or die( 'Restricted access' );
     <h3><?php echo JText::_('APPLICATIONS').' ('.count($job->applications).' '.JText::_('TOTAL').')'; ?></h3>
     <?php if (count($job->applications) <= 0 ){  ?>
     <p><?php echo JText::_('NOTICE_APPLICATIONS_NONE'); ?></p>
-    <?php }  else { 
-		
+    <?php }  else {
+
 		$html = '';
 		$html.= t.'<ul id="candidates">'.n;
-		
+
 		JPluginHelper::importPlugin( 'members','resume' );
 		$dispatcher =& JDispatcher::getInstance();
 		$k = 1;
-		for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {	
-			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {				
+		for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {
+			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
 				$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, '%d %b %Y',0) : JText::_('N/A');
 				$html  .= t.'<li class="applic">'.n;
 				$html  .= t.'<span class="countc">'.$k.'</span> '.$job->applications[$i]->seeker->name.' '.JText::_('applied on').' '.$applied.n;
 				$html  .= $job->applications[$i]->cover ? '<blockquote>'.trim(stripslashes($job->applications[$i]->cover)).'</blockquote>' : '';
-				$html  .= t.'</li>'.n;			
-				$html  .= t.'<li>'.n;				
+				$html  .= t.'</li>'.n;
+				$html  .= t.'<li>'.n;
 				// show seeker info
 				$out   = $dispatcher->trigger( 'showSeeker', array($job->applications[$i]->seeker, $this->emp, $this->admin, 'com_members', $list=0) );
 				if (count($out) > 0) {
@@ -216,18 +216,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		}
 		if(count($job->withdrawnlist) > 0) {
-			for ($i=0, $n=count( $job->withdrawnlist ); $i < $n; $i++) {	
+			for ($i=0, $n=count( $job->withdrawnlist ); $i < $n; $i++) {
 				$n = $k;
-				
+
 				$n++;
 			}
 		}
-		
+
 		$html  .= t.'</ul>'.n;
 		if(count($job->withdrawnlist) > 0) {
 			$html  .= t.'<p>'.count($job->withdrawnlist).' '.JText::_('NOTICE_CANDIDATES_WITHDREW').'</p>'.n;
 		}
-		
+
 		echo $html;
 	} ?>
  <?php } ?>

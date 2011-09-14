@@ -40,23 +40,23 @@ class ToolsViewTools extends JView
 	function display($tpl = null)
 	{
 		ximport('Hubzero_Document');
-		
+
 		$xhub  = & Hubzero_Factory::getHub();
 		$model = & $this->getModel();
-		
+
 		// Get some vars to fill in text
 		$forgeName = $xhub->getCfg('forgeName');
 		$forgeURL = $xhub->getCfg('forgeURL');
 		$hubShortName = $xhub->getCfg('hubShortName');
 		$hubShortURL = $xhub->getCfg('hubShortURL');
 		$hubLongURL = $xhub->getCfg('hubLongURL');
-		
+
 		// Get the tool list
 		$appTools = $model->getApplicationTools();
-		
+
 		// Get the forge image
 		$image = Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
-		
+
 		$this->assignRef( 'forgeName', $forgeName );
 		$this->assignRef( 'forgeURL', $forgeURL);
 		$this->assignRef( 'hubShortURL', $hubShortURL );
@@ -64,7 +64,7 @@ class ToolsViewTools extends JView
 		$this->assignRef( 'hubShortName', $hubShortName );
 		$this->assignRef( 'appTools', $appTools);
 		$this->assignRef( 'image', $image);
-		
+
         parent::display($tpl);
     }
 }

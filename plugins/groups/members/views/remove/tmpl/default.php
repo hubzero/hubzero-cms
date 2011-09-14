@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php echo JText::_('PLG_GROUPS_MEMBERS_REMOVE_USERS'); ?><br />
 <?php 
 $names = array();
-foreach ($this->users as $user) 
+foreach ($this->users as $user)
 {
 	$u =& JUser::getInstance($user);
 	$names[] = $u->get('name');

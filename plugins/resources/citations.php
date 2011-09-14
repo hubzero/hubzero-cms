@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_citations' );
-	
-//-----------
 
 class plgResourcesCitations extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgResourcesCitations extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'citations' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onResourcesAreas( $resource )
 	{
 		if ($resource->_type->_params->get('plg_citations')) {
@@ -61,23 +55,21 @@ class plgResourcesCitations extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
+			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) )
 			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				$rtrn = 'metadata';
 			}
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		// Get a needed library
@@ -89,7 +81,7 @@ class plgResourcesCitations extends JPlugin
 		// Get reviews for this resource
 		$c = new CitationsCitation( $database );
 		$citations = $c->getCitations( 'resource', $resource->id );
-		
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			// Instantiate a view
@@ -122,7 +114,7 @@ class plgResourcesCitations extends JPlugin
 			} else {
 				$url = JRoute::_('index.php?option='.$option.'&id='.$resource->id.'&active=citations');
 			}
-			
+
 			$arr['metadata']  = '<p class="citation"><a href="'.$url.'">'.JText::sprintf('PLG_RESOURCES_CITATIONS_COUNT',count($citations)).'</a></p>';
 		}
 

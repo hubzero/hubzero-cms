@@ -29,20 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class AnchorMacro extends WikiMacro 
+class AnchorMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = "Inserts an anchor into a page.";
 		$txt['html'] = "<p>Inserts an anchor into a page.</p>";
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$name = $this->args;
 

@@ -34,8 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // This class holds information about one application.
 // It may be either a running session or an app that can be invoked.
 //----------------------------------------------------------
-
-class MwModApp 
+class MwModApp
 {
 	var $name;
 	var $caption;
@@ -46,8 +45,8 @@ class MwModApp
 	var $num;        // Nth occurrence of this application in a list
 	var $public;     // is this tool public?
 	var $revision;   // what license is in use?
-	
-	public function __construct($n,$c,$d,$m,$s,$o,$num,$p,$r, $tn) 
+
+	public function __construct($n,$c,$d,$m,$s,$o,$num,$p,$r, $tn)
 	{
 		$this->name       = $n;
 		$this->caption    = $c;
@@ -65,54 +64,49 @@ class MwModApp
 //----------------------------------------------------------
 // Module class
 //----------------------------------------------------------
-
 class modToolList
 {
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
 			return $this->attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	// Get a list of applications that the user might invoke.
-	
 	private function _getToollist($lst=NULL)
 	{
 		ximport('Hubzero_Tool');
 		ximport('Hubzero_Tool_Version');
 
 		$toollist = array();
-		
+
 		// Create a Tool object
 		$database =& JFactory::getDBO();
-	
+
 		if (is_array($lst)) {
 			$tools = array();
 			// Check if the list is empty or not
 			if (!empty($lst)) {
 				ksort($lst);
 				// Get info for tools in the list
-				foreach ($lst as $item) 
+				foreach ($lst as $item)
 				{
 					/*
 					if (strstr($item, '_')) {
@@ -140,11 +134,11 @@ class modToolList
 			// Get all available tools
 			$tools = Hubzero_Tool::getMyTools();
 		}
-		
+
 		$toolnames = array();
 
 		// Turn it into an App array.
-		foreach ($tools as $tool) 
+		foreach ($tools as $tool)
 		{
 			if (!in_array(strtolower($tool->toolname), $toolnames)) { // include only one version
 				$toollist[strtolower($tool->instance)] = new MwModApp($tool->instance,
@@ -159,21 +153,18 @@ class modToolList
 			$toolnames[] = strtolower($tool->toolname);
 		}
 		//ksort($toollist);
-	
 		return $toollist;
 	}
-	
+
 	//-----------
-	
-	private function _prepText($txt) 
+	private function _prepText($txt)
 	{
 		$txt = stripslashes($txt);
 		$txt = str_replace('"','&quot;',$txt);
 		return $txt;
 	}
-	
+
 	//-----------
-	
 	public function buildList(&$toollist, $type='all')
 	{
 		if ($type == 'favs') {
@@ -182,9 +173,9 @@ class modToolList
 			//$favs = (isset($this->favs)) ? $this->favs : array();
 			$favs = $this->favs;
 		}
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		$html  = "\t\t".'<ul>'."\n";
 		if (count($toollist) <= 0) {
 			$html .= "\t\t".' <li>'.JText::_('MOD_MYTOOLS_NONE_FOUND').'</li>'."\n";
@@ -196,15 +187,15 @@ class modToolList
 					// Prep the text for XHTML output
 					$tool->caption = $this->_prepText($tool->caption);
 					$tool->desc = $this->_prepText($tool->desc);
-		
+
 					// Get the tool's name without any revision attachments
 					// e.g. "qclab" instead of "qclab_r53"
 					$toolname = $tool->toolname ? $tool->toolname : $tool->name;
-				
+
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
 					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
 					$url = 'index.php?option=com_tools&task=invoke&app='.$tool->toolname.'&version='.$tool->revision;
-					
+
 					$cls = '';
 					// Build the HTML
 					$html .= "\t\t".' <li id="'.$tool->name.'"';
@@ -222,15 +213,15 @@ class modToolList
 					}
 					$html .= ($cls) ? ' class="'.$cls.'"' : '';
 					$html .= '>'."\n";
-					
+
 					// Tool info link
 					$html .= "\t\t\t".' <a href="/tools/'.$tool->toolname.'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>'."\n";
-					
+
 					// Only add the "favorites" button to the all tools list
 					if ($type == 'all') {
 						$html .= "\t\t\t".' <a href="javascript:void(0);" class="fav" title="Add '.$tool->caption.' to your favorites">'.$tool->caption.'</a>'."\n";
 					}
-					
+
 					// Launch tool link
 					if ($this->can_launch) {
 						$html .= "\t\t\t".' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>'."\n";
@@ -246,15 +237,14 @@ class modToolList
 			}
 		}
 		$html .= "\t\t".'</ul>'."\n";
-		
+
 		if ($type == 'favs') {
 			$this->favs = $favs;
 		}
 		return $html;
 	}
-	
+
 	//-----------
-	
 	public function display()
 	{
 		$params = $this->params;
@@ -263,14 +253,14 @@ class modToolList
 		$jacl->addACL( 'com_tools', 'manage', 'users', 'super administrator' );
 		$jacl->addACL( 'com_tools', 'manage', 'users', 'administrator' );
 		$jacl->addACL( 'com_tools', 'manage', 'users', 'manager' );
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		$mconfig = JComponentHelper::getParams( 'com_tools' );
 
 		// Ensure we have a connection to the middleware
 		$this->can_launch = true;
-		if (!$mconfig->get('mw_on') 
+		if (!$mconfig->get('mw_on')
 		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) {
 			$this->can_launch = false;
 		}
@@ -279,27 +269,27 @@ class modToolList
 		// This should only happen on AJAX requests
 		$this->fav = JRequest::getVar( 'fav', '' );
 		$this->no_html = JRequest::getVar( 'no_html', 0 );
-		
+
 		$rconfig = JComponentHelper::getParams( 'com_resources' );
 		$this->supportedtag = $rconfig->get('supportedtag');
-		
+
 		$database =& JFactory::getDBO();
 		if ($this->supportedtag) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 			$this->rt = new ResourcesTags( $database );
 			$this->supportedtagusage = $this->rt->getTagUsage( $this->supportedtag, 'alias' );
 		}
-		
+
 		if ($this->fav || $this->no_html) {
 			// We have a string of tools! This means we're updating the
 			// favorite tools pane of the module via AJAX
 			$favs = split(',',$this->fav);
 			$favs = array_map('trim',$favs);
-			
+
 			$this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
 		} else {
 			$juser =& JFactory::getUser();
-			
+
 			// Add the JavaScript that does the AJAX magic to the template
 			$document =& JFactory::getDocument();
 			$document->addScript('/modules/mod_mytools/mod_mytools.js');
@@ -307,7 +297,7 @@ class modToolList
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
 			Hubzero_Document::addModuleStyleSheet('mod_mytools');
-			
+
 			// Get a list of recent tools
 			$rt = new RecentTool( $database );
 			$rows = $rt->getRecords( $juser->get('id') );

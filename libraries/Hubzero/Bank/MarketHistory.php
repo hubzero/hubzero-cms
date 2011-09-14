@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Logs batch transactions, royalty distributions and other big transactions
 //----------------------------------------------------------
 
-class Hubzero_Bank_MarketHistory extends JTable 
+class Hubzero_Bank_MarketHistory extends JTable
 {
 	var $id          	= NULL;  // @var int(11) Primary key
 	var $itemid      	= NULL;  // @var int(11)
@@ -43,17 +43,15 @@ class Hubzero_Bank_MarketHistory extends JTable
 	var $date      		= NULL;  // @var datetime
 	var $action	 		= NULL;  // @var varchar(50)
 	var $log    		= NULL;  // @var text
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__market_history', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function getRecord($itemid=0, $action='', $category='', $created='', $log = '') 
+
+	public function getRecord($itemid=0, $action='', $category='', $created='', $log = '')
 	{
 		if ($itemid === NULL) {
 			$itemid = $this->itemid;
@@ -64,7 +62,7 @@ class Hubzero_Bank_MarketHistory extends JTable
 		if ($category === NULL) {
 			$category = $this->category;
 		}
-			
+
 		$sql = "SELECT id FROM #__market_history WHERE ";
 		if ($itemid) {
 			$sql.= " itemid='".$itemid."'";
@@ -83,9 +81,9 @@ class Hubzero_Bank_MarketHistory extends JTable
 		if ($log) {
 			$sql.= " AND log='".$log."'";
 		}
-		
+
 		$sql.= " LIMIT 1";
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}

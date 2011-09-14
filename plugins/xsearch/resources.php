@@ -29,21 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_resources' );
-
-//-----------
 
 class plgXSearchResources extends JPlugin
 {
 	private $_areas = null;
 	private $_cats  = null;
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgXSearchResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,20 +45,18 @@ class plgXSearchResources extends JPlugin
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'resources' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
-	
-	//-----------
-	
+
 	public function onXSearchAreas()
 	{
 		$areas = $this->_areas;
 		if (is_array($areas)) {
 			return $areas;
 		}
-		
+
 		$categories = $this->_cats;
 		if (!is_array($categories)) {
 			// Get categories
@@ -78,8 +70,8 @@ class plgXSearchResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$normalized_valid_chars = 'a-zA-Z0-9';
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -93,15 +85,13 @@ class plgXSearchResources extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
 		$database =& JFactory::getDBO();
 
 		if (is_array( $areas ) && $limit) {
 			$ars = $this->onXSearchAreas();
-			if (!array_intersect( $areas, $ars ) 
+			if (!array_intersect( $areas, $ars )
 			&& !array_intersect( $areas, array_keys( $ars ) )
 			&& !array_intersect( $areas, array_keys( $ars['resources'] ) )) {
 				return array();
@@ -113,7 +103,7 @@ class plgXSearchResources extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		// Instantiate some needed objects
 		$rr = new ResourcesResource( $database );
 
@@ -121,11 +111,11 @@ class plgXSearchResources extends JPlugin
 		$filters = array();
 		$filters['search'] = $searchquery;
 		$filters['authorized'] = false;
-		
+
 		ximport('Hubzero_User_Helper');
 		$juser =& JFactory::getUser();
 		$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
-		
+
 		// Get categories
 		$categories = $this->_cats;
 		if (!is_array($categories)) {
@@ -137,8 +127,8 @@ class plgXSearchResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
 		$normalized_valid_chars = 'a-zA-Z0-9';
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -150,7 +140,7 @@ class plgXSearchResources extends JPlugin
 			if ($this->_total != null) {
 				$total = 0;
 				$t = $this->_total;
-				foreach ($t as $l) 
+				foreach ($t as $l)
 				{
 					$total += $l;
 				}
@@ -162,12 +152,12 @@ class plgXSearchResources extends JPlugin
 					return array();
 				}
 			}*/
-			
+
 			$filters['sortby'] = 'relevance';
 			$filters['select'] = 'records';
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
-			
+
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
 			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources') {
@@ -183,14 +173,14 @@ class plgXSearchResources extends JPlugin
 				plgXSearchResources::documents();
 				return $query;
 			}
-			
+
 			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
 			if ($rows) {
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					if ($row->alias) {
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias='.$row->alias);
@@ -205,14 +195,14 @@ class plgXSearchResources extends JPlugin
 			return $rows;
 		} else {
 			$filters['select'] = 'count';
-			
+
 			// Get a count
 			$counts = array();
 			$ares = $this->onXSearchAreas();
-			foreach ($ares as $area=>$val) 
+			foreach ($ares as $area=>$val)
 			{
 				if (is_array($val)) {
-					foreach ($val as $a=>$t) 
+					foreach ($val as $a=>$t)
 					{
 						$filters['type'] = $cats[$a]['id'];
 
@@ -225,15 +215,15 @@ class plgXSearchResources extends JPlugin
 			// Return the counts
 			$this->_total = $counts;
 			return $counts;
-		}	
+		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 	 	$document =& JFactory::getDocument();
@@ -246,17 +236,13 @@ class plgXSearchResources extends JPlugin
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 		ximport('Hubzero_View_Helper_Html');
 	}
-	
-	//-----------
-	
+
 	/*public function before()
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
-	public function out( $row, $keyword ) 
+
+	public function out( $row, $keyword )
 	{
 		$database =& JFactory::getDBO();
 
@@ -269,16 +255,16 @@ class plgXSearchResources extends JPlugin
 		$rparams = new JParameter( $row->params );
 		$params = $config;
 		$params->merge( $rparams );
-		
+
 		// Set the display date
-		switch ($params->get('show_date')) 
+		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
 			case 1: $thedate = JHTML::_('date', $row->created, '%d %b %Y');    break;
 			case 2: $thedate = JHTML::_('date', $row->modified, '%d %b %Y');   break;
 			case 3: $thedate = JHTML::_('date', $row->publish_up, '%d %b %Y'); break;
 		}
-		
+
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
 		}
@@ -302,16 +288,16 @@ class plgXSearchResources extends JPlugin
 		if ($params->get('show_ranking')) {
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
-			
+
 			if ($row->area == 'Tools') {
 				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			} else {
 				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			$statshtml = $stats->display();
-			
+
 			$row->ranking = round($row->ranking, 1);
-			
+
 			$html .= "\t\t".'<div class="metadata">'."\n";
 			$r = (10*$row->ranking);
 			if (intval($r) < 10) {
@@ -328,7 +314,7 @@ class plgXSearchResources extends JPlugin
 			$html .= "\t\t\t".'</dl>'."\n";
 			$html .= "\t\t".'</div>'."\n";
 		} elseif ($params->get('show_rating')) {
-			switch ($row->rating) 
+			switch ($row->rating)
 			{
 				case 0.5: $class = ' half-stars';      break;
 				case 1:   $class = ' one-stars';       break;
@@ -343,7 +329,7 @@ class plgXSearchResources extends JPlugin
 				case 0:
 				default:  $class = ' no-stars';      break;
 			}
-			
+
 			$html .= "\t\t".'<div class="metadata">'."\n";
 			$html .= "\t\t\t".'<p class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_XSEARCH_RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'."\n";
 			$html .= "\t\t".'</div>'."\n";
@@ -363,9 +349,7 @@ class plgXSearchResources extends JPlugin
 		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

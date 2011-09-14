@@ -123,7 +123,6 @@ $sections = array();
 
 include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 
-
 // Get attributes
 $attribs = new JParameter( $this->resource->attribs );
 

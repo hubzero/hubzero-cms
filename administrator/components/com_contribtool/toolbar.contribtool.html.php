@@ -36,10 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class ContribtoolToolbar
 {
-	
-	//-----------
 
-	public function _DEFAULT($enabled) 
+	public function _DEFAULT($enabled)
 	{
 		$text = (!$enabled) ? ' <small><small style="color:red;">(component is disabled)</small></small>' : '';
 		JToolBarHelper::title( '<a href="index.php?option=com_contribtool">'.JText::_( 'Tool Manager' ).'</a>'.$text, 'addedit.png' );
@@ -47,7 +45,7 @@ class ContribtoolToolbar
 		JToolBarHelper::spacer();
 	}
 
-	public function _VIEWTOOLS($enabled) 
+	public function _VIEWTOOLS($enabled)
 	{
 		$text = (!$enabled) ? ' <small><small style="color:red;">(component is disabled)</small></small>' : '';
 		JToolBarHelper::title( '<a href="index.php?option=com_contribtool">'.JText::_( 'Tool Manager' ).'</a>'.$text, 'addedit.png' );

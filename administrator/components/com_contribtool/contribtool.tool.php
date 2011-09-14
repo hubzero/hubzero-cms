@@ -56,17 +56,15 @@ class Tool extends JTable
 	//var $mw   		   = NULL;  // @var string (15)
 	//var $revision 	   = NULL;  // @var int
 	//var $license	   = NULL;  // @var text
-	
+
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->toolname ) == '') {
 			$this->setError( JText::_('CONTRIBTOOL_ERROR_NO_TOOLNAME') );
@@ -75,17 +73,15 @@ class Tool extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function loadFromName( $toolname )
 	{
 		if ($toolname === NULL) {
 			return false;
 		}
-		
+
 		$query = "SELECT * FROM $this->_tbl as t WHERE t.toolname= '".$toolname."' LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -94,16 +90,14 @@ class Tool extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters, $admin) 
+
+	public function buildQuery( $filters, $admin)
 	{
 		$juser =& JFactory::getUser();
-		
+
 		// get and set record filter
 		$filter = ($admin) ? " WHERE f.id!=0": " WHERE f.state!=9";
-		
+
 		switch($filters['filterby'])
 			{
 				case 'mine':     	$filter .= " AND f.registered_by='".$juser->get('username')."' ";		break;
@@ -116,42 +110,40 @@ class Tool extends JTable
 			if(intval($search)) {
 			$filter .= " AND f.id='%$search%' ";
 			}
-			else { 
+			else {
 			$filter .= " AND LOWER(f.toolname) LIKE '%$search%' ";
 			}
 		}
-		if(!$admin) {	
+		if(!$admin) {
 		$filter .= " AND m.uidNumber='".$juser->get('id')."' ";
 		$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered'; }
 		else { $sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state_changed DESC'; }
-		
+
 		$query = "#__tool as f "
 				."JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 "
 				."JOIN #__tool_groups AS g ON f.id=g.toolid AND g.cn=CONCAT('app-',f.toolname) AND g.role=1 "
 				."JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		if(!$admin) {
 		$query .="JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
-		}	
+		}
 		$query .= "$filter"
 				. "\n ORDER BY $sortby";
-	
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getToolCount( $filters=array(), $admin=false ) 
+
+	public function getToolCount( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
-		
+
 		$sql = "SELECT count(*) FROM $filter";
 
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
 	//-----------
-	
-	public function getMyTools() 
+
+	public function getMyTools()
 	{
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
 				FROM #__resources AS r, #__tool_version AS v	
@@ -162,15 +154,13 @@ class Tool extends JTable
 				AND r.alias=v.toolname 
 				AND v.state=1
 				ORDER BY v.title, v.toolname, v.revision DESC";
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
-	
+
 	}
-	
-	//-----------
-	
-	public function getTools( $filters=array(), $admin=false ) 
+
+	public function getTools( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
 
@@ -178,16 +168,14 @@ class Tool extends JTable
 				. " FROM $filter";
 		if(isset($filters['start']) && isset($filters['limit'])) {
 		$sql .= " LIMIT ".$filters['start'].",".$filters['limit'];
-				
+
 		}
 		$this->_db->setQuery( $sql );
 		$result = $this->_db->loadObjectList();
 		return $result;
 	}
 
-	//-----------
-	
-	public function getToolsOldScheme() 
+	public function getToolsOldScheme()
 	{
 
 		$sql = "SELECT * FROM #__tool";
@@ -196,7 +184,7 @@ class Tool extends JTable
 		return $this->_db->loadObjectList();
 	}
 	//-----------
-	
+
 	public function getTicketId($toolid=NULL)
 	{
 		if ($toolid=== NULL) {
@@ -206,7 +194,7 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 	//-----------
-	
+
 	public function getResourceId($toolid=NULL)
 	{
 		if ($toolid=== NULL) {
@@ -216,29 +204,29 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 	//-----------
-	
+
 	public function getToolInstanceFromResource($rid=NULL, $version ='dev')
 	{
 		if ($rid=== NULL) {
 			return false;
 		}
-				
+
 		$query = "SELECT v.instance FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id='".$rid."'";
 		if($version=='dev') {
 		$query.= " AND v.state=3 LIMIT 1";
 		}
 		else if($version=='current') {
 		$query.= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
-		} 
+		}
 		else {
 		$query.= " AND v.version='".$version."' LIMIT 1";
 		}
-	
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
 	//-----------
-	
+
 	public function getToolIdFromResource($rid=NULL)
 	{
 		if ($rid=== NULL) {
@@ -247,9 +235,7 @@ class Tool extends JTable
 		$this->_db->setQuery( 'SELECT t.id FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id="'.$rid.'" LIMIT 1' );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getToolnameFromResource($rid=NULL)
 	{
 		if ($rid=== NULL) {
@@ -258,9 +244,7 @@ class Tool extends JTable
 		$this->_db->setQuery( 'SELECT t.toolname FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id="'.$rid.'" LIMIT 1' );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getToolId($toolname=NULL)
 	{
 		if ($toolname=== NULL) {
@@ -270,7 +254,7 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 	//-----------
-	
+
 	public function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
 		if ($toolid=== NULL or $ticketid=== NULL) {
@@ -285,9 +269,7 @@ class Tool extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
+
 	public function updateTool($toolid=NULL, $newstate=NULL, $priority=NULL)
 	{
 		if ($toolid=== NULL) {
@@ -303,7 +285,7 @@ class Tool extends JTable
 			}
 			if($priority) {
 			$query.= "priority='".$priority."'";
-			}		
+			}
 			$query.= " WHERE id=".$toolid;
 			$this->_db->setQuery( $query );
 			if(!$this->_db->query()) {
@@ -311,11 +293,9 @@ class Tool extends JTable
 			}
 		}
 		return true;
-		
+
 	}
-	
-	//-----------
-	
+
 	public function getToolInfo($toolid, $toolname='')
 	{
 		$juser =& JFactory::getUser();
@@ -341,10 +321,7 @@ class Tool extends JTable
 //		var_dump($this->_db);die();
 		return $result;
 	}
-	
-	
-	//-----------
-	
+
 	public function getToolDevGroup($toolid)
 	{
 		$query  = "SELECT g.cn FROM #__tool_groups AS g ";
@@ -353,9 +330,7 @@ class Tool extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getToolDevelopers($toolid)
 	{
 		$query  = "SELECT m.uidNumber FROM #__tool_groups AS g ";
@@ -367,7 +342,7 @@ class Tool extends JTable
 		return $result;
 	}
 	//-----------
-	
+
 	public function getToolGroups($toolid, $groups = array())
 	{
 		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
@@ -375,46 +350,44 @@ class Tool extends JTable
 		$query .= "WHERE g.toolid = '".$toolid."' AND g.role=0 ";
 		$this->_db->setQuery( $query );
 		$groups = $this->_db->loadObjectList();
-		
+
 		return  $groups;
 	}
 	//-----------
-	
+
 	public function getToolStatus($toolid, $option, &$status, $version='dev', $ldap=false)
 	{
 		$toolinfo = $this->getToolInfo(intval($toolid));
 		if($toolinfo) {
-			
-			$objV = new ToolVersion( $this->_db);	
-			$objA = new ToolAuthor( $this->_db);	
-			$version = $objV->getVersionInfo(0, $version, $toolinfo[0]->toolname, $ldap);		
-			$developers = $this->getToolDevelopers($toolid);	
+
+			$objV = new ToolVersion( $this->_db);
+			$objA = new ToolAuthor( $this->_db);
+			$version = $objV->getVersionInfo(0, $version, $toolinfo[0]->toolname, $ldap);
+			$developers = $this->getToolDevelopers($toolid);
 			$authors = $objA->getToolAuthors($version, $toolinfo[0]->rid, $toolinfo[0]->toolname);
-		
+
 			$this->buildToolStatus($toolinfo, $developers, $authors, $version, $status, $option, $ldap);
 
 		}
 		else {
 			$status=array();
 		}
-	
+
 	}
-	
-	//-----------
-	
+
 	public function buildToolStatus($toolinfo, $developers=array(), $authors=array(), $version, &$status, $option, $ldap)
 	{
 		// Create a Version object
 		$objV = new ToolVersion( $this->_db);
-	
+
 		// Get the component parameters
 		$tconfig = new ContribtoolConfig( $option );
-		$this->config = $tconfig;		
+		$this->config = $tconfig;
 		$invokedir = isset($this->config->parameters['invokescript_dir']) ? $this->config->parameters['invokescript_dir'] : DS.'apps';
 		$dev_suffix = isset($this->config->parameters['dev_suffix']) ? $this->config->parameters['dev_suffix'] : '_dev';
 		$vnc = isset($this->config->parameters['default_vnc']) ? $this->config->parameters['default_vnc'] : '780x600';
 		$mw = isset($this->config->parameters['default_mw']) ? $this->config->parameters['default_mw'] : 'narwhal';
-		
+
 		// build status array
 		$status = array(
 			  'resourceid' => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
@@ -455,23 +428,22 @@ class Tool extends JTable
 			);
 
 		list($status['vncGeometryX'], $status['vncGeometryY']) = split('[x]', $status['vncGeometry']);
-		
+
 		// get latest version information
 		if($ldap) {
 			$current = $objV->getVersionInfo('', 'current', $status['toolname'], '', true);
 		}
-		else if($status['published']) {			
-			$current = $objV->getVersionInfo('', 'current', $toolinfo[0]->toolname);				
-		}				
-		
+		else if($status['published']) {
+			$current = $objV->getVersionInfo('', 'current', $toolinfo[0]->toolname);
+		}
+
 		$status['currenttool'] 		= isset($current[0]->instance) ? $current[0]->instance : $status['toolname'].$dev_suffix;
 		$status['currentrevision'] 	= isset($current[0]->revision) ? $current[0]->revision : $status['revision'];
 		$status['currentversion'] 	= isset($current[0]->version) ? $current[0]->version : $status['version'];
-					
+
 		return $status;
 	}
 
 }
-
 
 ?>

@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 function StoreBuildRoute(&$query)
 {
 	$segments = array();
-	
+
 	if (!empty($query['task'])) {
 		$segments[] = $query['task'];
 		unset($query['task']);
@@ -45,7 +45,7 @@ function StoreBuildRoute(&$query)
 		$segments[] = $query['item'];
 		unset($query['item']);
 	}
-	
+
 	return $segments;
 }
 
@@ -56,7 +56,7 @@ function StoreParseRoute($segments)
 	if (empty($segments[0])) {
 		return $vars;
 	}
-	
+
 	if (isset($segments[0])) {
 		$vars['task'] = $segments[0];
 	}
@@ -66,7 +66,7 @@ function StoreParseRoute($segments)
 	if (isset($segments[2])) {
 		$vars['item'] = $segments[2];
 	}
-	
+
 	return $vars;
 }
 

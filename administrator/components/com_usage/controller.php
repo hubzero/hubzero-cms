@@ -36,11 +36,11 @@ class UsageController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'browse': $this->browse(); break;
-			
+
 			default: $this->browse(); break;
 		}
 	}
@@ -49,25 +49,23 @@ class UsageController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-	protected function browse() 
+	protected function browse()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'browse') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function cancel() 
+	protected function cancel()
 	{
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;

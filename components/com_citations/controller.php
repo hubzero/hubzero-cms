@@ -60,10 +60,10 @@ class CitationsController extends Hubzero_Controller
 			'manuscript'=>JText::_('MANUSCRIPT')
 
 		);
-		
+
 		$this->_task = strtolower(JRequest::getVar('task', ''));
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'download': $this->download(); break;
 			case 'save':     $this->save();     break;
@@ -81,44 +81,42 @@ class CitationsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-	protected function intro() 
+	protected function intro()
 	{
 		// Push some styles to the template
 		$this->_getStyles();
 		$this->_getStyles('com_usage');
-		
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'intro') );
 		$view->title = JText::_(strtoupper($this->_name));
-		
+
 		$view->database = $this->database;
-		
+
 		// Load the object
 		$row = new CitationsCitation( $this->database );
 		$view->yearlystats = $row->getStats();
-		
+
 		// Get some stats
 		$view->typestats = array();
 		$types = $this->types;
-		foreach ($types as $t=>$x) 
+		foreach ($types as $t=>$x)
 		{
 			$view->typestats[$x] = $row->getCount( array('type'=>$t), false );
 		}
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-
-	//-----------
 
 	protected function browse()
 	{
@@ -127,9 +125,9 @@ class CitationsController extends Hubzero_Controller
 		$view->title = JText::_(strtoupper($this->_name));
 		$view->option = $this->_option;
 		$view->database = $this->database;
-		
+
 		$view->format = ($this->config->get('format')) ? $this->config->get('format') : 'APA';
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']  = JRequest::getInt( 'limit', 50, 'request' );
@@ -145,7 +143,7 @@ class CitationsController extends Hubzero_Controller
 
 		$view->filters['type']   = ($view->filters['type'] == 'all')   ? '' : $view->filters['type'];
 		$view->filters['filter'] = ($view->filters['filter'] == 'all') ? '' : $view->filters['filter'];
-		
+
 		// Instantiate a new citations object
 		$obj = new CitationsCitation( $this->database );
 
@@ -158,16 +156,16 @@ class CitationsController extends Hubzero_Controller
 
 		// Get records
 		$view->citations = $obj->getRecords( $view->filters, false );
-		
+
 		// Add some data to our view for form filtering/sorting
 		$view->types = array_merge(array('all'=>JText::_('ALL')), $this->types);
-		
+
 		$view->filter = array(
 			'all'=>JText::_('ALL'),
 			'aff'=>JText::_('AFFILIATE'),
 			'nonaff'=>JText::_('NONAFFILIATE')
 		);
-						
+
 		$view->sorts = array(
 			'sec_cnt DESC'=>JText::_('Cited by'),
 			'year DESC'=>JText::_('YEAR'),
@@ -176,16 +174,16 @@ class CitationsController extends Hubzero_Controller
 			'author ASC'=>JText::_('AUTHORS'),
 			'journal ASC'=>JText::_('JOURNAL')
 		);
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -193,9 +191,7 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function login() 
+	protected function login()
 	{
 		$view = new JView( array('name'=>'login') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
@@ -205,83 +201,79 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function add() 
+	protected function add()
 	{
 		$this->edit();
 	}
-	
-	//-----------
-	
+
 	protected function edit()
 	{
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
-		
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$this->login();
 			return;
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'edit') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		$view->option = $this->_option;
 		$view->types = $this->types;
-		
+
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getVar( 'id', array() );
-		
+
 		// Get the single ID we're working with
 		if (is_array($id) && !empty($id)) {
 			$id = $id[0];
 		} else {
 			$id = 0;
 		}
-		
+
 		// Load the object
 		$view->row = new CitationsCitation( $this->database );
 		$view->row->load( $id );
-		
+
 		// Load the associations object
 		$assoc = new CitationsAssociation( $this->database );
-		
+
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
 		if (!$id) {
 			$juser =& JFactory::getUser();
 			$view->row->uid = $juser->get('id');
-			
+
 			// It's new - no associations to get
 			$view->assocs = array();
 		} else {
 			// Get the associations
 			$view->assocs = $assoc->getRecords( array('cid'=>$id) );
 		}
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
+
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-	
+
 	protected function save()
 	{
 		// Check if they're logged in
@@ -290,7 +282,7 @@ class CitationsController extends Hubzero_Controller
 			$this->intro();
 			return;
 		}
-		
+
 		// Bind incoming data to object
 		$row = new CitationsCitation( $this->database );
 		if (!$row->bind( $_POST )) {
@@ -298,15 +290,15 @@ class CitationsController extends Hubzero_Controller
 			$this->edit();
 			return;
 		}
-	
+
 		// New entry so set the created date
 		if (!$row->id) {
 			$row->created = date( 'Y-m-d H:i:s', time() );
 		}
-		
+
 		// Field named 'uri' due to conflict with existing 'url' variable
 		$row->url = JRequest::getVar( 'uri', '', 'post' );
-		
+
 		// Check content for missing required data
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
@@ -320,29 +312,29 @@ class CitationsController extends Hubzero_Controller
 			$this->edit();
 			return;
 		}
-		
+
 		// Incoming associations
 		$arr = JRequest::getVar( 'assocs', array() );
-		
+
 		$ignored = array();
-		
+
 		foreach ($arr as $a)
 		{
 			$a = array_map('trim',$a);
 
 			// Initiate extended database class
 			$assoc = new CitationsAssociation( $this->database );
-			
+
 			if (!$this->_isempty($a, $ignored)) {
 				$a['cid'] = $row->id;
-			
+
 				// bind the data
 				if (!$assoc->bind( $a )) {
 					$this->setError( $assoc->getError() );
 					$this->edit();
 					return;
 				}
-		
+
 				// Check content
 				if (!$assoc->check()) {
 					$this->setError( $assoc->getError() );
@@ -365,13 +357,11 @@ class CitationsController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
-	//-----------
-	
 	private function _isempty($b, $ignored=array())
 	{
 		foreach ($ignored as $ignore)
@@ -385,7 +375,7 @@ class CitationsController extends Hubzero_Controller
 		}
 		$values = array_values($b);
 		$e = true;
-		foreach ($values as $v) 
+		foreach ($values as $v)
 		{
 			if ($v) {
 				$e = false;
@@ -394,8 +384,6 @@ class CitationsController extends Hubzero_Controller
 		return $e;
 	}
 
-	//-----------
-	
 	protected function delete()
 	{
 		// Check if they're logged in
@@ -404,7 +392,7 @@ class CitationsController extends Hubzero_Controller
 			$this->intro();
 			return;
 		}
-		
+
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar('id', array());
 		if (!is_array($ids)) {
@@ -417,27 +405,27 @@ class CitationsController extends Hubzero_Controller
 			$citation = new CitationsCitation( $this->database );
 			$assoc = new CitationsAssociation( $this->database );
 			$author = new CitationsAuthor( $this->database );
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Fetch and delete all the associations to this citation
 				$assocs = $assoc->getRecords( array('cid'=>$id) );
-				foreach ($assocs as $a) 
+				foreach ($assocs as $a)
 				{
 					$assoc->delete( $a->id );
 				}
-				
+
 				// Fetch and delete all the authors to this citation
 				$authors = $author->getRecords( array('cid'=>$id) );
-				foreach ($authors as $a) 
+				foreach ($authors as $a)
 				{
 					$author->delete( $a->id );
 				}
-				
+
 				// Delete the citation
 				$citation->delete( $id );
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
@@ -445,23 +433,23 @@ class CitationsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Download
 	//----------------------------------------------------------
-	
+
 	protected function download()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		$format = strtolower(JRequest::getVar( 'format', 'bibtex', 'request' ));
-		
+
 		// Esnure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('NO_CITATION_ID') );
 			return;
 		}
-		
+
 		// Load the citation
 		$row = new CitationsCitation( $this->database );
 		$row->load( $id );
-	
+
 		// Set the write path
 		$path = JPATH_ROOT;
 		if ($this->config->get('uploadpath')) {
@@ -472,18 +460,18 @@ class CitationsController extends Hubzero_Controller
 		} else {
 			$path .= DS.'site'.DS.'citations'.DS;
 		}
-	
+
 		// Instantiate the download helper
 		include_once( JPATH_COMPONENT.DS.'citations.download.php' );
-	
+
 		$formatter = new CitationsDownload;
 		$formatter->setFormat($format);
-		
+
 		// Set some vars
 		$doc  = $formatter->formatReference($row);
 		$mime = $formatter->getMimeType();
 		$file = 'download_'.$id.'.'.$formatter->getExtension();
-	
+
 		// Ensure we have a directory to write files to
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
@@ -492,19 +480,17 @@ class CitationsController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		// Write the contents to a file
-		$fp = fopen($path.$file, "w") or die("can't open file"); 
+		$fp = fopen($path.$file, "w") or die("can't open file");
 		fwrite($fp, $doc);
 		fclose($fp);
-		
+
 		$this->_serveup(false, $path, $file, $mime);
-		
+
 		die; // REQUIRED
 	}
-	
-	//-----------
-	
+
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
@@ -531,14 +517,12 @@ class CitationsController extends Hubzero_Controller
  		// No encoding - we aren't using compression... (RFC1945)
 		//header("Content-Encoding: none");
 		//header("Vary: none");
-		
+
         $this->_readfile_chunked($p.$f);
         // The caller MUST 'die();'
     }
-    
-	//-----------
-	
-	private function _readfile_chunked($filename,$retbytes=true) 
+
+	private function _readfile_chunked($filename,$retbytes=true)
 	{
 		$chunksize = 1*(1024*1024); // How many bytes per chunk
 		$buffer = '';
@@ -547,7 +531,7 @@ class CitationsController extends Hubzero_Controller
 		if ($handle === false) {
 			return false;
 		}
-		while (!feof($handle)) 
+		while (!feof($handle))
 		{
 			$buffer = fread($handle, $chunksize);
 			echo $buffer;
@@ -562,13 +546,11 @@ class CitationsController extends Hubzero_Controller
 		return $status;
 	}
 
-	//-----------
-
-	protected function _buildPathway() 
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
@@ -582,10 +564,8 @@ class CitationsController extends Hubzero_Controller
 			);
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle() 
+
+	protected function _buildTitle()
 	{
 		$title = JText::_(strtoupper($this->_name));
 		if ($this->_task) {

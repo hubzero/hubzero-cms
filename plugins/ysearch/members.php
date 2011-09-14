@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ContributionSorter 
+class ContributionSorter
 {
 	public static function sort($a, $b)
 	{
@@ -64,7 +63,7 @@ class plgYSearchMembers extends YSearchPlugin
 	{
 		$terms = $request->get_term_ar();
 		$weight = '(match(p.name) against (\''.join(' ', $terms['stemmed']).'\') + match(b.bio) against(\''.join(' ', $terms['stemmed']) .'\'))';
-			
+
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 			$addtl_where[] = "(p.name LIKE '%$mand%' OR b.bio LIKE '%$mand%')";
@@ -95,7 +94,7 @@ class plgYSearchMembers extends YSearchPlugin
 	{
 		if (($section = $request->get_terms()->get_section()) && $section[0] != 'members')
 			return;
- 
+
 		$terms = $request->get_term_ar();
 		$addtl_where = array();
 		foreach (array($terms['mandatory'], $terms['optional']) as $pos)
@@ -182,7 +181,7 @@ class plgYSearchMembers extends YSearchPlugin
 					WHERE aa.authorid = ".$row->get('id')
 			);
 			$work_assoc = $work->to_associative();
-			
+
 			$added = array();
 			foreach ($work_assoc as $wrow)
 			{

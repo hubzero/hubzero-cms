@@ -92,7 +92,7 @@ if ($this->rows) {
 
 	$k = 0;
 	$cls = 'even';
-	for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+	for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	{
 		$row = &$this->rows[$i];
 		$now = date( "Y-m-d H:i:s" );
@@ -125,7 +125,7 @@ if ($this->rows) {
 					$pn = str_replace('view=browse','task=browse',$pn);
 					$pn = str_replace('/?task=browse&amp;','/browse?search='.urlencode($this->filters['search']).'&amp;',$pn);
 					$pn = str_replace('?search='.urlencode($this->filters['search']).'&amp;search='.urlencode($this->filters['search']).'&amp;','?search='.urlencode($this->filters['search']).'&amp;',$pn);
-					
+
 					echo $pn;
 				?>
 				<div class="clearfix"></div>

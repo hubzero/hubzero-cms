@@ -60,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<option value=""><?php echo JText::_('EVENTS_ALL_CATEGORIES'); ?></option>
 <?php
 			if ($this->categories) {
-				foreach ($this->categories as $id=>$title) 
+				foreach ($this->categories as $id=>$title)
 				{
 ?>
 					<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>
@@ -118,7 +118,7 @@ if (count($this->rows) > 0) {
 					<div class="ewrap">
 						<ul class="events">
 <?php
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		$view = new JView( array('name'=>'browse','layout'=>'item') );
 		$view->option = $this->option;

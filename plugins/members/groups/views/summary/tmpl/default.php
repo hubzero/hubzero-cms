@@ -52,12 +52,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<tbody>
 <?php
 if ($this->groups) {
-	foreach ($this->groups as $group) 
+	foreach ($this->groups as $group)
 	{
 		$status = '';
 		if ($group->manager && $group->published) {
 			$status = 'manager';
-			
+
 			$opt  = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&active=members') .'">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
 			$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=edit') .'">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
 			$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=delete') .'">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
@@ -97,7 +97,7 @@ if ($this->groups) {
 					</td>
 					<td>
 						<?php
-						switch ($group->join_policy) 
+						switch ($group->join_policy)
 						{
 							case 3: echo '<span class="closed join-policy">'.JText::_('Closed').'</span>'."\n"; break;
 							case 2: echo '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'."\n"; break;
@@ -109,7 +109,7 @@ if ($this->groups) {
 					</td>
 					<td>
 						<span class="<?php echo $status; ?> status"><?php
-							switch ($status) 
+							switch ($status)
 							{
 								case 'manager': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); break;
 								case 'new': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); break;

@@ -36,7 +36,7 @@ class XPollController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
-		
+
 		switch ($this->_task)
 		{
 			case 'add':       $this->edit();     break;
@@ -50,22 +50,22 @@ class XPollController extends Hubzero_Controller
 			case 'open':      $this->open(1);    break;
 			case 'close':     $this->open(0);    break;
 			case 'browse':    $this->browse();   break;
-			
+
 			default: $this->browse(); break;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	protected function browse() 
+	protected function browse()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'polls') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
@@ -76,13 +76,13 @@ class XPollController extends Hubzero_Controller
 		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.limitstart', 'limitstart', 0, 'int');
 
 		$p = new XPollPoll( $this->database );
-		
+
 		// Get a record count
 		$view->total = $p->getCount( $view->filters );
-		
+
 		// Retrieve all the records
 		$view->rows = $p->getRecords( $view->filters );
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
@@ -91,20 +91,18 @@ class XPollController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function edit() 
+	protected function edit()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'poll') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming (expecting an array)
 		$cid = JRequest::getVar( 'cid', array(0) );
 		if (!is_array( $cid )) {
@@ -128,7 +126,7 @@ class XPollController extends Hubzero_Controller
 			// Editing existing
 			// Check it out
 			$view->row->checkout( $this->juser->get('id') );
-			
+
 			// Load the poll's options
 			$xpdata = new XPollData( $this->database );
 			$view->options = $xpdata->getPollOptions( $uid, true );
@@ -160,14 +158,12 @@ class XPollController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function save() 
+	protected function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -192,17 +188,17 @@ class XPollController extends Hubzero_Controller
 			return;
 		}
 		$row->checkin();
-		
+
 		// Incoming poll options
 		$options = JRequest::getVar( 'polloption', array(), 'post' );
 
-		foreach ($options as $i=>$text) 
+		foreach ($options as $i=>$text)
 		{
 			// 'slash' the options
 			if (!get_magic_quotes_gpc()) {
 				$text = addslashes( $text );
 			}
-		
+
 			if (trim($text) != '') {
 				$xpdata = new XPollData( $this->database );
 				if (!$isNew) {
@@ -224,26 +220,24 @@ class XPollController extends Hubzero_Controller
 		// Remove old menu entries for this poll
 		$xpmenu = new XPollMenu( $this->database );
 		$xpmenu->deleteEntries( $row->id );
-		
+
 		// Update the menu visibility
 		$selections = JRequest::getVar( 'selections', array(), 'post' );
-		
-		for ($i=0, $n=count($selections); $i < $n; $i++) 
+
+		for ($i=0, $n=count($selections); $i < $n; $i++)
 		{
 			$xpmenu->insertEntry( $row->id, $selections[$i] );
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;
 	}
-
-	//-----------
 
 	protected function resetit()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar( 'cid', array(0) );
 		if (!is_array( $ids )) {
@@ -258,17 +252,17 @@ class XPollController extends Hubzero_Controller
 
 		// Loop through the IDs
 		$xpdate = new XPollDate( $this->database );
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Load the poll
 			$row = new XPollPoll( $this->database );
 			$row->load( $id );
-			
+
 			// Only alter items not checked out or checked out by 'me'
 			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id')) {
 				// Delete the Date entries
 				$xpdate->deleteEntries( $id );
-				
+
 				// Reset voters to 0 and save
 				$row->voters = 0;
 				if (!$row->check()) {
@@ -287,9 +281,7 @@ class XPollController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='. $this->_option;
 	}
 
-	//-----------
-
-	protected function remove() 
+	protected function remove()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -303,23 +295,21 @@ class XPollController extends Hubzero_Controller
 		// Make sure we have IDs to work with
 		if (count($ids) > 0) {
 			$poll = new XPollPoll( $this->database );
-			
+
 			// Loop through the array of IDs and delete
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				if (!$poll->delete( $id )) {
 					$this->_message .= $poll->getError();
 				}
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;
 	}
 
-	//-----------
-
-	protected function publish( $publish=1 ) 
+	protected function publish( $publish=1 )
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -341,12 +331,12 @@ class XPollController extends Hubzero_Controller
 		}
 
 		// Loop through the IDs
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Load the poll
 			$row = new XPollPoll( $this->database );
 			$row->load( $id );
-			
+
 			// Only alter items not checked out or checked out by 'me'
 			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id')) {
 				// Reset voters to 0 and save
@@ -362,18 +352,16 @@ class XPollController extends Hubzero_Controller
 				$row->checkin( $id );
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;
 	}
 
-	//-----------
-
-	protected function open( $open=1 ) 
+	protected function open( $open=1 )
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar( 'cid', array(0) );
 		if (!is_array( $ids )) {
@@ -389,14 +377,14 @@ class XPollController extends Hubzero_Controller
 			}
 			exit;
 		}
-		
+
 		// Loop through the IDs
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Load the poll
 			$row = new XPollPoll( $this->database );
 			$row->load( $id );
-			
+
 			// Only alter items not checked out or checked out by 'me'
 			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id')) {
 				// Reset voters to 0 and save
@@ -412,22 +400,20 @@ class XPollController extends Hubzero_Controller
 				$row->checkin( $id );
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;
 	}
 
-	//-----------
-
-	protected function cancel() 
+	protected function cancel()
 	{
 		$p = JRequest::getVar( 'poll', array(), 'post' );
-		
+
 		// Check the poll in
 		$row = new XPollPoll( $this->database );
 		$row->bind( $p );
 		$row->checkin();
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;
 	}

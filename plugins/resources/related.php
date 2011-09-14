@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_related' );
-	
-//-----------
 
 class plgResourcesRelated extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgResourcesRelated extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'related' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onResourcesSubAreas( $resource )
 	{
 		$areas = array(
@@ -57,17 +51,15 @@ class plgResourcesRelated extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onResourcesSub( $resource, $option, $miniview=0 )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-			
+
 		$database =& JFactory::getDBO();
-		
+
 		// Build the query that checks topic pages
 		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group`  
 				FROM #__wiki_page AS w, #__wiki_version AS v
@@ -83,7 +75,7 @@ class plgResourcesRelated extends JPlugin
 				$ugs = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
 				$groups = array();
 				if ($ugs && count($ugs) > 0) {
-					foreach ($ugs as $ug) 
+					foreach ($ugs as $ug)
 					{
 						$groups[] = $ug->cn;
 					}
@@ -121,9 +113,9 @@ class plgResourcesRelated extends JPlugin
 		// Execute the query
 		$database->setQuery( $query );
 		$related = $database->loadObjectList();
-		
+
 		ximport('Hubzero_View_Helper_Html');
-		
+
 		// Instantiate a view
 		ximport('Hubzero_Plugin_View');
 		if ($miniview) {

@@ -40,8 +40,8 @@ $pending = $this->subscription->currency.' '.$this->subscription->pendingpayment
 $now = date( 'Y-m-d H:i:s', time() );
 
 $onhold_msg = ($this->subscription->status==2) ? JText::_('No action / send message to user') : JText::_('Subscription on hold (pending payment or verification)');
-	
-switch ($this->subscription->status) 
+
+switch ($this->subscription->status)
 {
 	case '1':
 		$status = ($this->subscription->expires > $now) ? '<span style="color:#197f11;">'.strtolower(JText::_('Active')).'</span>' : '<span style="color:#ef721e;">'.strtolower(JText::_('Expired')).'</span>';
@@ -57,7 +57,7 @@ switch ($this->subscription->status)
 
 		$priceline  = $this->subscription->currency.' '.$this->subscription->unitprice.'  </strong>'.JText::_( 'per' ).' '.$this->subscription->unitmeasure;
 		$priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscription->pointsprice.' '.JText::_('points') : '';
-		
+
 	?>
 
 	<script type="text/javascript">
@@ -179,7 +179,7 @@ switch ($this->subscription->status)
                <?php } ?>
                 
                <?php
-				} else { 
+				} else {
 				?>                            
               <tr>
 			   	<td colspan="2"><input type="radio" name="action" value="activate" /> <?php echo JText::_('Activate/ Extend this subscription (new payment or verification received) '); ?></td>

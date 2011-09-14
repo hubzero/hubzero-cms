@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchWeightTitle
 {
 	public static function onYSearchWeightAll($terms, $res)

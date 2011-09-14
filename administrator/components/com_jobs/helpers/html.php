@@ -29,35 +29,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class JobsHtml 
+class JobsHtml
 {
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
-	
-	//-----------
-	
+
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 
-	//-----------
-	
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
-	
-	//-----------
 
 	public function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
 		$out .= ($class) ? ' class="'.$class.'" style"width:100%;">'."\n" : '>'."\n";
-		foreach ($array as $avalue => $alabel) 
+		foreach ($array as $avalue => $alabel)
 		{
 			$selected = ($avalue == $value || $alabel == $value)
 					  ? ' selected="selected"'
@@ -67,8 +60,6 @@ class JobsHtml
 		$out .= '</select>'."\n";
 		return $out;
 	}
-	
-	//-----------
 
 	public function txt_unpee($pee)
 	{

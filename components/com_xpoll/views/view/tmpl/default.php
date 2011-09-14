@@ -42,19 +42,19 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } else {
-	
+
 $votes = $this->votes;
 if ($votes) {
 	$j = 0;
 	$data_arr['text'] = null;
 	$data_arr['hits'] = null;
-	foreach ($votes as $vote) 
+	foreach ($votes as $vote)
 	{
 		$data_arr['text'][$j] = trim($vote->text);
 		$data_arr['hits'][$j] = $vote->hits;
 		$j++;
 	}
-	
+
 	$polls_graphwidth = 200;
 	$polls_barheight  = 2;
 	$polls_maxcolors  = 5;
@@ -66,7 +66,7 @@ if ($votes) {
 
 	array_multisort( $data_arr['hits'], SORT_NUMERIC, SORT_DESC, $data_arr['text'] );
 
-	foreach ($data_arr['hits'] as $hits) 
+	foreach ($data_arr['hits'] as $hits)
 	{
 		if ($maxval < $hits) {
 			$maxval = $hits;
@@ -94,7 +94,7 @@ if ($votes) {
 								<select name="id" id="pollid">
 									<option value=""><?php echo JText::_('COM_XPOLL_SELECT_POLL'); ?></option>
 <?php 
-									foreach ($this->polls as $poll) 
+									foreach ($this->polls as $poll)
 									{
 ?>
 									<option value="<?php echo $poll->id; ?>"<?php echo ($poll->id == intval( $this->poll->id ) ? ' selected="selected"' : ''); ?>><?php echo stripslashes($poll->title); ?></option>
@@ -116,7 +116,7 @@ if ($votes) {
 			</tfoot>
 			<tbody>
 <?php
-		for ($i=0, $n=count($data_arr['text']); $i < $n; $i++) 
+		for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 		{
 			$text =& $data_arr['text'][$i];
 			$hits =& $data_arr['hits'][$i];
@@ -157,7 +157,7 @@ if ($votes) {
 	</div><!-- / .subject -->
 <?php } else { ?>
 	<p class="warning"><?php echo JText::_('COM_XPOLL_NO_RESULTS'); ?></p>
-<?php } 
+<?php }
 }
 ?>
 <div class="clear"></div>

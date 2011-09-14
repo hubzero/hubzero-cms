@@ -67,9 +67,9 @@ function submitbutton(pressbutton)
 <?php 
 		if ($this->name) {
 			echo $this->name.' <input type="hidden" name="editname" value="' . $this->name . '" />';
-		} else { 
+		} else {
 			echo '<input type="text" name="name" id="name" size="30" maxlength="250" value="' . $this->name . '" />';
-		} 
+		}
 ?>
            </td>
 		  </tr>

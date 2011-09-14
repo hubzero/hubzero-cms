@@ -36,84 +36,84 @@ class CitationsDownload
 	protected $_formatters = array();
 	protected $_mime = '';
 	protected $_extension = '';
-	
-	public function __construct($reference=null, $format='Bibtex') 
+
+	public function __construct($reference=null, $format='Bibtex')
 	{
 		$this->setFormat($format);
 		$this->setReference($reference);
 	}
-	
-	public function setFormat($format) 
+
+	public function setFormat($format)
 	{
 		$this->_format = ucfirst(trim(strtolower($format)));
 	}
-	
-	public function getFormat() 
+
+	public function getFormat()
 	{
 		return $this->_format;
 	}
-	
-	public function setReference($reference) 
+
+	public function setReference($reference)
 	{
 		$this->_reference = $reference;
 	}
-	
-	public function getReference() 
+
+	public function getReference()
 	{
 		return $this->_reference;
 	}
-	
-	public function setMimeType($mime) 
+
+	public function setMimeType($mime)
 	{
 		$this->_mime = $mime;
 	}
-	
-	public function getMimeType() 
+
+	public function getMimeType()
 	{
 		return $this->_mime;
 	}
-	
-	public function setExtension($extension) 
+
+	public function setExtension($extension)
 	{
 		$this->_extension = $extension;
 	}
-	
-	public function getExtension() 
+
+	public function getExtension()
 	{
 		return $this->_extension;
 	}
-	
-	public function setFormatter($formatter, $format='') 
+
+	public function setFormatter($formatter, $format='')
 	{
 		$format = ($format) ? $format : $this->_format;
-		
+
 		$this->_formatter[$format] = $formatter;
 	}
-	
-	public function getFormatter($format='') 
+
+	public function getFormatter($format='')
 	{
 		$format = ($format) ? $format : $this->_format;
-		
+
 		return (isset($this->_formatter[$format])) ? $this->_formatter[$format] : NULL;
 	}
-	
-	public function formatReference($reference=null) 
+
+	public function formatReference($reference=null)
 	{
 		if (!$reference) {
 			$reference = $this->getReference();
 		}
-		
+
 		if (!$reference || (!is_array($reference) && !is_object($reference))) {
 			return '';
 		}
-		
+
 		$format = $this->getFormat();
-		
+
 		$formatter = $this->getFormatter($format);
-		
+
 		if (!$formatter || !is_object($formatter)) {
 			$cls = 'CitationsDownload'.$format;
-			
+
 			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'download'.DS.strtolower($format).'.php')) {
 				include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'download'.DS.strtolower($format).'.php');
 			}
@@ -136,7 +136,7 @@ class CitationsDownload
 			$this->setExtension($formatter->getExtension());
 			$this->setMimeType($formatter->getMimeType());
 		}
-		
+
 		return $formatter->format($reference);
 	}
 }

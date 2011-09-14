@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Auth_Domain');
 ximport('Hubzero_Auth_Link');
 
-class plgAuthenticationPUCAS 
+class plgAuthenticationPUCAS
 {
 	/**
 	 * Constructor
@@ -47,18 +47,18 @@ class plgAuthenticationPUCAS
 	function plgAuthenticationJoomla(& $subject, $config) {
 		parent::__construct($subject, $config);
 	}
-	
+
 	public function logout()
 	{
 		global $PHPCAS_CLIENT, $mainframe;
-		
+
 		if ( !is_object($PHPCAS_CLIENT) )
 		{
 			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.0.1'.DS.'CAS.php');
 			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0,'www.purdue.edu',443,'/apps/account/cas',false);
 		}
-		
+
 		$xhub = Hubzero_Factory::getHub();
 
 		$service = $xhub->getCfg('hubLongURL');
@@ -67,16 +67,15 @@ class plgAuthenticationPUCAS
 		{
 			$service = $_SERVER['HTTP_HOST'];
 		}
-		
+
 		$return = '';
 
 		if ($view->return)
 			$return = "&return=" . $view->return;
-				
+
 		phpCAS::setFixedServiceURL($service . '/index.php?option=com_user&view=login&authenticator=pucas' . $return);
 		phpCAS::setNoCasServerValidation();
-		
-		
+
 		if (phpCAS::isAuthenticated() || phpCAS::checkAuthentication())
 		{
 			phpCAS::logoutWithUrl($service . '/index.php?option=com_user&view=login&authenticator=pucas' . $return);
@@ -86,16 +85,16 @@ class plgAuthenticationPUCAS
 	public function status()
 	{
 		global $PHPCAS_CLIENT, $mainframe;
-		
+
 		$status = array();
-		
+
 		if ( !is_object($PHPCAS_CLIENT) )
 		{
 			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.0.1'.DS.'CAS.php');
 			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0,'www.purdue.edu',443,'/apps/account/cas',false);
 		}
-		
+
 		phpCAS::setNoCasServerValidation();
 
 		if (phpCAS::checkAuthentication())
@@ -104,7 +103,7 @@ class plgAuthenticationPUCAS
 		}
 		return $status;
 	}
-	
+
 	public function login(&$credentials, &$options)
 	{
 		if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
@@ -113,7 +112,7 @@ class plgAuthenticationPUCAS
 				$return = '';
 			}
 		}
-		
+
 		$options['return'] = $return;
 	}
 
@@ -136,23 +135,23 @@ class plgAuthenticationPUCAS
 		{
 			$service = $_SERVER['HTTP_HOST'];
 		}
-		
+
 		$return = '';
 
 		if ($view->return)
 			$return = "&return=" . $view->return;
-				
+
 		phpCAS::setFixedServiceURL($service . '/index.php?option=com_user&task=login&authenticator=pucas' . $return);
 		phpCAS::setNoCasServerValidation();
 		phpCAS::forceAuthentication();
 
 		$mainframe->redirect($service . '/index.php?option=com_user&task=login&authenticator=pucas' . $return);
 	}
-	
+
 	public function onAuthenticate( $credentials, $options, &$response )
 	{
 		global $PHPCAS_CLIENT;
-		
+
 		if ( !is_object($PHPCAS_CLIENT) )
 		{
 			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.0.1'.DS.'CAS.php');
@@ -161,14 +160,14 @@ class plgAuthenticationPUCAS
 		}
 
 		phpCAS::setNoCasServerValidation();
-		
+
 		if (phpCAS::isAuthenticated())
 		{
 			$username = phpCAS::getUser();
 
 			$hzal = Hubzero_Auth_Link::find_or_create('authentication','pucas',null,$username);
 			$hzal->email = $username . '@purdue.edu';
-			
+
 			$response->auth_link = $hzal;
 			$response->type = 'pucas';
 			$response->status = JAUTHENTICATE_STATUS_SUCCESS;
@@ -179,7 +178,7 @@ class plgAuthenticationPUCAS
 			{
 				if (@ldap_bind($_ldc_ped))
 				{
-					$search_result = @ldap_search($_ldc_ped, "uid=" . phpCAS::getUser() . 
+					$search_result = @ldap_search($_ldc_ped, "uid=" . phpCAS::getUser() .
 						',ou=ped,dc=purdue,dc=edu', '(objectClass=*)' , array('mail','cn'));
                     			$userdetails = @ldap_get_entries($_ldc_ped, $search_result);
 					if (!empty($userdetails[0]['mail'][0]))
@@ -190,10 +189,10 @@ class plgAuthenticationPUCAS
 
 				@ldap_close($_ldc_ped);
 			}
-			
+
 			if (!empty($hzal->user_id)) {
 				$user = JUser::getInstance($hzal->user_id); // Bring this in line with the rest of the system
-				
+
 				$response->username = $user->username;
 				$response->email = $user->email;
 				$response->fullname = $user->name;
@@ -204,7 +203,7 @@ class plgAuthenticationPUCAS
 			}
 
 			$hzal->update();
-			
+
 		}
 		else
 		{

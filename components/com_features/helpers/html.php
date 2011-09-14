@@ -29,25 +29,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class FeaturesHtml 
+class FeaturesHtml
 {
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
 		$pre = '';
 		if ($someid < 0) {
 			$pre = 'n';
 			$someid = abs($someid);
 		}
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $pre.$someid;
 	}
-	
-	//-----------
 
-	public function thumb( $thumb ) 
+	public function thumb( $thumb )
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -55,22 +53,20 @@ class FeaturesHtml
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		return $thumb;
 	}
-	
-	//-----------
-	
-	public function getImage( $path ) 
+
+	public function getImage( $path )
 	{
 		$d = @dir(JPATH_ROOT.$path);
 
 		$images = array();
-		
+
 		if ($d) {
-			while (false !== ($entry = $d->read())) 
-			{			
-				$img_file = $entry; 
+			while (false !== ($entry = $d->read()))
+			{
+				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png", $img_file )) {
 						$images[] = $img_file;
@@ -83,28 +79,26 @@ class FeaturesHtml
 
 		$b = 0;
 		if ($images) {
-			foreach ($images as $ima) 
+			foreach ($images as $ima)
 			{
 				$bits = explode('.',$ima);
 				$type = array_pop($bits);
 				$img = implode('.',$bits);
-				
+
 				if ($img == 'thumb') {
 					return $ima;
 				}
 			}
 		}
 	}
-	
-	//-----------
-	
-	public function getToolImage( $path, $versionid=0 ) 
+
+	public function getToolImage( $path, $versionid=0 )
 	{
 		// Get contribtool parameters
 		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
 		$allowversions = $tconfig->get('screenshot_edit');
-		
-		if ($versionid && $allowversions) { 
+
+		if ($versionid && $allowversions) {
 			// Add version directory
 			//$path .= DS.$versionid;
 		}
@@ -118,9 +112,9 @@ class FeaturesHtml
 		$html = '';
 
 		if ($d) {
-			while (false !== ($entry = $d->read())) 
-			{			
-				$img_file = $entry; 
+			while (false !== ($entry = $d->read()))
+			{
+				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png", $img_file )) {
 						$images[] = $img_file;
@@ -133,20 +127,18 @@ class FeaturesHtml
 
 		$b = 0;
 		if ($images) {
-			foreach ($images as $ima) 
+			foreach ($images as $ima)
 			{
 				$bits = explode('.',$ima);
 				$type = array_pop($bits);
 				$img = implode('.',$bits);
-				
+
 				if ($img == 'thumb') {
 					return $ima;
 				}
 			}
 		}
 	}
-	
-	//-----------
 
 	public function thumbnail($pic)
 	{
@@ -158,8 +150,6 @@ class FeaturesHtml
 		$tn = implode('.',$pic);
 		return $tn;
 	}
-	
-	//-----------
 
 	public function build_path( $date, $id, $base='' )
 	{
@@ -177,8 +167,6 @@ class FeaturesHtml
 
 		return $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
 	}
-	
-	//-----------
 
 	public function mkt($stime)
 	{
@@ -187,8 +175,6 @@ class FeaturesHtml
 		}
 		return $stime;
 	}
-	
-	//-----------
 
 	public function timeAgoo($timestamp)
 	{
@@ -232,9 +218,7 @@ class FeaturesHtml
 		return $text;
 	}
 
-	//-----------
-
-	public function timeAgo($timestamp) 
+	public function timeAgo($timestamp)
 	{
 		$text = FeaturesHtml::timeAgoo($timestamp);
 
@@ -244,13 +228,11 @@ class FeaturesHtml
 		$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
 		return $text;
 	}
-	
-	//-----------
-	
+
 	public function getContributorImage( $id, $database )
 	{
 		$thumb = '';
-		
+
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php');
 		$helper = new ResourcesHelper( $id, $database );
 		$ids = $helper->getContributorIDs();
@@ -263,15 +245,15 @@ class FeaturesHtml
 		// Load some needed libraries
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
-		
+
 		// Load the member profile
 		$row = new MembersProfile( $database );
 		$row->load( $uid );
-		
+
 		// Do they have a picture?
 		if (isset($row->picture) && $row->picture != '') {
 			$config =& JComponentHelper::getParams( 'com_members' );
-			
+
 			// Yes - so build the path to it
 			$thumb  = $config->get('webpath');
 			if (substr($thumb, 0, 1) != DS) {
@@ -281,12 +263,12 @@ class FeaturesHtml
 				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 			}
 			$thumb .= DS.FeaturesHtml::niceidformat($row->uidNumber).DS.$row->picture;
-			
+
 			// No - use default picture
 			if (is_file(JPATH_ROOT.$thumb)) {
 				// Build a thumbnail filename based off the picture name
 				$thumb = FeaturesHtml::thumb( $thumb );
-				
+
 				if (!is_file(JPATH_ROOT.$thumb)) {
 					// Create a thumbnail image
 					include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'imghandler.php' );
@@ -303,7 +285,7 @@ class FeaturesHtml
 				}
 			}
 		}
-		
+
 		return $thumb;
 	}
 }

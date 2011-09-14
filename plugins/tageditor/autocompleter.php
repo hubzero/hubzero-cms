@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tageditor_autocompleter' );
-
-//-----------
 
 class plgTageditorAutocompleter extends JPlugin
 {
@@ -46,10 +42,8 @@ class plgTageditorAutocompleter extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'tageditor', 'autocompleter' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function onTagsEdit( $atts ) 
+
+	public function onTagsEdit( $atts )
 	{
 		$name  = $atts[0];
 		$id    = (isset($atts[1])) ? $atts[1] : 'actags';

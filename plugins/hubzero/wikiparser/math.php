@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiPageMath extends JTable 
+class WikiPageMath extends JTable
 {
 	var $id               = NULL;  // @var int(11) Primary key
 	var $inputhash        = NULL;  // @var varbinary(16)
@@ -38,17 +37,15 @@ class WikiPageMath extends JTable
 	var $conservativeness = NULL;  // @var tinyint
 	var $html             = NULL;  // @var text
 	var $mathml           = NULL;  // @var text
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_math', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function loadByInput( $inputhash ) 
+
+	public function loadByInput( $inputhash )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE inputhash='".addslashes($inputhash)."' LIMIT 1" );
 		if ($result = $this->_db->loadAssoc()) {

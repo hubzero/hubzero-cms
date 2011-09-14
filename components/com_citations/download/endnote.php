@@ -35,11 +35,11 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 {
 	protected $_mime = 'application/x-endnote-refer';
 	protected $_extension = 'enw';
-	
+
 	public function format($row)
 	{
 		$doc = '';
-		switch ($row->type) 
+		switch ($row->type)
 		{
 			case 'article':
 				$doc .= "%0 Journal Article\r\n";
@@ -92,12 +92,12 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
 				if ($row->journal) $doc .= "%B " . trim(stripslashes($row->journal)) . "\r\n";
 				break; // generic
-		} 
+		}
 		$doc .= "%D " . trim($row->year) . "\r\n";
 		$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
 		$author_array = explode(";", stripslashes($row->author));
-		foreach ($author_array as $auth) 
+		foreach ($author_array as $auth)
 		{
 			$auth = preg_replace( '/{{(.*?)}}/s', '', $auth );
 			if (!strstr($auth,',')) {
@@ -107,15 +107,15 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 				$auth = $n.trim(implode(' ',$bits));
 			}
 			$doc .= "%A " . trim($auth) . "\r\n";
-		} 
+		}
 
 		if ($row->address) $doc .= "%C " . trim(stripslashes($row->address)) . "\r\n";
 		if ($row->editor) {
 			$author_array = explode(";", stripslashes($row->editor));
-			foreach ($author_array as $auth) 
+			foreach ($author_array as $auth)
 			{
 				$doc .= "%E " . trim($auth) . "\r\n";
-			} 
+			}
 		}
 		if ($row->publisher) $doc .= "%I " . trim(stripslashes($row->publisher)) . "\r\n";
 		if ($row->number)    $doc .= "%N " . trim($row->number) . "\r\n";

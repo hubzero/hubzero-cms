@@ -36,9 +36,9 @@ $num_dislikes = 0;
 $like_link = JRoute::_('index.php?option='.$this->option.'&task=vote&category='.$this->type.'&id='.$this->item->id.'&vote=like');
 $dislike_link = JRoute::_('index.php?option='.$this->option.'&task=vote&category='.$this->type.'&id='.$this->item->id.'&vote=dislike');
 
-if($this->vote == 'like' || $this->vote == 'yes' || $this->vote == 'positive') { 
+if($this->vote == 'like' || $this->vote == 'yes' || $this->vote == 'positive') {
 	$this->vote = 'like';
-} elseif($this->vote == 'dislike' || $this->vote == 'no' || $this->vote == 'negative') { 
+} elseif($this->vote == 'dislike' || $this->vote == 'no' || $this->vote == 'negative') {
 	$this->vote = 'dislike';
 }
 

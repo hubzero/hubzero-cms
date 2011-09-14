@@ -35,13 +35,13 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 {
 	protected $_mime = 'application/x-bibtex';
 	protected $_extension = 'bib';
-	
+
 	public function format($row)
 	{
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'BibTex.php');
 
 		$bibtex = new Structures_BibTex();
-		
+
 		$addarray = array();
 		$addarray['type']    = $row->type;
 		$addarray['cite']    = $row->cite;
@@ -61,7 +61,7 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 			} else {
 				$author_arr = explode(' ',$author);
 				$author_arr = array_map('trim',$author_arr);
-				
+
 				$last = array_pop($author_arr);
 				$addarray['author'][$i]['first'] = (count($author_arr) > 0) ? implode(' ',$author_arr) : '';
 				$addarray['author'][$i]['last']  = ($last) ? trim($last) : '';
@@ -94,13 +94,13 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 			$addarray['isbn']     = $row->isbn;
 		}
 		$addarray['doi']          = $row->doi;
-		
+
 		$bibtex->addEntry($addarray);
 
 		//$file = 'download_'.$id.'.bib';
 		//$mime = 'application/x-bibtex';
 		$doc = $bibtex->bibTex();
-		
+
 		return $doc;
 	}
 }

@@ -45,7 +45,7 @@ function UsageBuildRoute(&$query)
         $segments[] = $query['type'];
         unset($query['type']);
     }
- 
+
     return $segments;
 }
 
@@ -58,9 +58,9 @@ function UsageParseRoute($segments)
 
     $vars['task'] = $segments[0];
 	if (isset($segments[0])) {
-		switch ($segments[0]) 
+		switch ($segments[0])
 		{
-			case 'maps': 
+			case 'maps':
 				if (isset($segments[1])) {
 					$vars['type'] = $segments[1];
 				}
@@ -73,7 +73,7 @@ function UsageParseRoute($segments)
 			break;
 		}
 	}
-	
+
     return $vars;
 }
 

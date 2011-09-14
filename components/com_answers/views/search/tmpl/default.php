@@ -134,7 +134,7 @@ if (!$this->filters['filterby']) {
 <?php
 	$s = $this->filters['start']+1;
 	$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-	
+
 	if ($this->filters['q'] != '') {
 		echo 'Search for "'.$this->filters['q'].'" in ';
 	}
@@ -145,11 +145,11 @@ if (!$this->filters['filterby']) {
 					<tbody>
 <?php 
 	if (count($this->results) > 0) {
-		foreach ($this->results as $row) 
+		foreach ($this->results as $row)
 		{
-			$row->reports = (isset($row->reports)) ? $row->reports : 0;	
+			$row->reports = (isset($row->reports)) ? $row->reports : 0;
 			$row->points = $row->points ? $row->points : 0;
-			
+
 			//if (!$row->reports) {
 				// author name
 				$name = JText::_('COM_ANSWERS_ANONYMOUS');
@@ -162,7 +162,7 @@ if (!$this->filters['filterby']) {
 					//}
 					$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->userid).'">'.stripslashes($row->name).'</a>';
 				}
-				
+
 				/*$cls  = (isset($row->reward) && $row->reward == 1 && $this->banking) ? ' hasreward' : '';
 				$cls .= ($row->state == 1) ? ' answered' : '';
 				

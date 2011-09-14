@@ -75,7 +75,7 @@ if ($this->shownav) {
 $content .= EventsHtml::getMonthName($cal_month).'</caption>'."\n";
 $content .= ' <thead>'."\n";
 $content .= '  <tr>'."\n";
-for ($i=0;$i<7;$i++) 
+for ($i=0;$i<7;$i++)
 {
 	$content.='   <th scope="col">'.$day_name[($i+$startday)%7].'</th>'."\n";
 }
@@ -90,7 +90,7 @@ $start = (date("w",mktime(0,0,0,$cal_month,1,$cal_year))-$startday+7)%7;
 $d = date("t",mktime(0,0,0,$cal_month,0,$cal_year))-$start + 1;
 $kownt = 0;
 
-for ($a=$start; $a>0; $a--) 
+for ($a=$start; $a>0; $a--)
 {
 	$content .= '   <td';
 	if ($a == $start) {
@@ -105,8 +105,8 @@ $monthHasEvent = false;
 $eventCheck = new EventsRepeat;
 $lastDayOfMonth = date("t",mktime(0,0,0,$cal_month,1,$cal_year));
 $rd = 0;
-for ($d=1;$d<=$lastDayOfMonth;$d++) 
-{ 
+for ($d=1;$d<=$lastDayOfMonth;$d++)
+{
 	$do = ($d<10) ? "0$d" : "$d";
 	$selected_date = "$cal_year-$cal_month-$do";
 
@@ -120,12 +120,12 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 
-	$class = ($selected_date == $to_day) ? 'today' : '';       
+	$class = ($selected_date == $to_day) ? 'today' : '';
 	if ($d == $this->day) {
 		$class .= ' selected';
 	}
 	$hasevents = false;
-	for ($r = 0; $r < count($rows); $r++) 
+	for ($r = 0; $r < count($rows); $r++)
 	{
 		if ($eventCheck->EventsRepeat($rows[$r], $cal_year, $cal_month, $do)) {
 			$hasevents = true;
@@ -146,7 +146,7 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 	}
     $content .= '</td>'."\n";
 	$rd++;
-	
+
 	// Check if Next week row
 	if ((1 + $dayOfWeek++)%7 == $startday) {
 		$content .= '  </tr>'."\n";
@@ -155,7 +155,7 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 	}
 }
 
-for ($d=$rd;$d<=6;$d++) 
+for ($d=$rd;$d<=6;$d++)
 {
 	$content .= '   <td';
 	if ($d == 6) {

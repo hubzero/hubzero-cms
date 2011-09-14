@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class HelloHtml 
+class HelloHtml
 {
 	public function alert( $msg )
 	{

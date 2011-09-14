@@ -90,8 +90,8 @@ if ($juser->get('guest')) {
 <?php 
 if (count($this->appTools) > 0) {
 	ximport('Hubzero_View_Helper_Html');
-	
-	foreach ($this->appTools as $project) 
+
+	foreach ($this->appTools as $project)
 	{
 		//if ($project->state == 1 || $project->state == 3) {
 		if ($project->tool_state != 8) {

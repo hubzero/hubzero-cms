@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Comment database class
 //----------------------------------------------------------
 
-class ResourcesRecommendation extends JTable 
+class ResourcesRecommendation extends JTable
 {
 	var $fromID       = NULL;  // @var int(11) Primary key
 	var $toID         = NULL;  // @var int(11)
@@ -41,17 +41,15 @@ class ResourcesRecommendation extends JTable
 	var $tagScore     = NULL;  // @var float
 	var $titleScore   = NULL;  // @var float
 	var $timestamp    = NULL;  // @var datetime (0000-00-00 00:00:00)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__recommendation', 'fromID', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->comment ) == '' or trim( $this->comment ) == JText::_('Enter your comments...')) {
 			$this->setError( JText::_('Please provide a comment') );
@@ -59,17 +57,15 @@ class ResourcesRecommendation extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getResults( $filters=array() ) 
+
+	public function getResults( $filters=array() )
 	{
 		$query = "SELECT *, (10*titleScore + 5*contentScore+2*tagScore)/(10+5+2) AS rec_score 
 		FROM #__recommendation AS rec, #__resources AS r 
 		WHERE (rec.fromID ='".$filters['id']."' AND r.id = rec.toID AND r.standalone=1) 
 		OR (rec.toID ='".$filters['id']."' AND r.id = rec.fromID AND r.standalone=1) having rec_score > ".$filters['threshold']." 
 		ORDER BY rec_score DESC LIMIT ".$filters['limit'];
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

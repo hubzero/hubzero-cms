@@ -32,7 +32,6 @@ defined('JPATH_BASE') or die();
 
 jimport('joomla.event.dispatcher');
 
-
 class Hubzero_Wiki_Editor extends JObservable
 {
 	/**
@@ -107,7 +106,7 @@ class Hubzero_Wiki_Editor extends JObservable
 
 		$return = '';
 		$results[] = $this->_editor->update($args);
-		foreach ($results as $result) 
+		foreach ($results as $result)
 		{
 			if (trim($result)) {
 				$return = $result;
@@ -138,7 +137,7 @@ class Hubzero_Wiki_Editor extends JObservable
 		if (!$this->_name) {
 			return '<textarea id="'.$name.'" name="'.$id.'" cols="'.$col.'" rows="'.$row.'" class="'.$cls.'">'.$html.'</textarea>'."\n";
 		}
-		
+
 		$this->_loadEditor($params);
 
 		// Check if editor is already loaded
@@ -187,7 +186,7 @@ class Hubzero_Wiki_Editor extends JObservable
 
 		$return = '';
 		$results[] = $this->_editor->update($args);
-		foreach ($results as $result) 
+		foreach ($results as $result)
 		{
 			if (trim($result)) {
 				$return .= $result;
@@ -210,7 +209,7 @@ class Hubzero_Wiki_Editor extends JObservable
 
 		$return = '';
 		$results[] = $this->_editor->update($args);
-		foreach ($results as $result) 
+		foreach ($results as $result)
 		{
 			if (trim($result)) {
 				$return .= $result;
@@ -235,7 +234,7 @@ class Hubzero_Wiki_Editor extends JObservable
 
 		$return = '';
 		$results[] = $this->_editor->update($args);
-		foreach ($results as $result) 
+		foreach ($results as $result)
 		{
 			if (trim($result)) {
 				$return .= $result;
@@ -259,7 +258,7 @@ class Hubzero_Wiki_Editor extends JObservable
 		}
 
 		jimport('joomla.filesystem.file');
-		
+
 		// Build the path to the needed editor plugin
 		$name = JFilterInput::clean($this->_name, 'cmd');
 		$path = JPATH_SITE.DS.'plugins'.DS.'hubzero'.DS.$name.'.php';

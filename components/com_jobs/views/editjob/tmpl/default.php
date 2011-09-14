@@ -27,22 +27,22 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
+
 	/* Post New Job / Edit Job Form */
-	
+
 	// load some classes
 	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	$juser 	  =& JFactory::getUser();
-	
+
 	$job = $this->job;
 	$employer = $this->employer;
 	$profile = $this->profile;
 	$id = $this->jobid;
-	
+
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%Y-%m-%d',0) : '';
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%Y-%m-%d',0) : '';
-	
+
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode	
 ?>
 <div id="content-header" class="full">
@@ -64,9 +64,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 	if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
-	<?php } 
+	<?php }
 		$html = '';
-		
+
 		$job->title = trim(stripslashes($job->title));
 		$job->description = trim(stripslashes($job->description));
 		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
@@ -76,10 +76,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$job->companyName = $id ? $job->companyName : $employer->companyName;
 		$job->companyWebsite = $id ? $job->companyWebsite : $employer->companyWebsite;
 		$usonly = (isset($this->config->parameters['usonly'])) ? $this->config->parameters['usonly'] : 0;
-		
+
 		$html .= '<div class="main section">'.n;
 		$html .= $this->getError() ? '<p class="error">'.$this->getError().'</p>' : '';
-					
+
 		$html .= t.t.t.' <form id="hubForm" method="post" action="index.php?option='.$this->option.'">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('EDITJOB_OVERVIEW_INFO').'</p>'.n;
@@ -87,7 +87,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= t.t.t.'	 <fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_OVERVIEW').'</h3>'.n;
 		$html .= t.t.t.'	  <input type="hidden"  name="task" value="savejob" />'.n;
-		$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$id.'" />'.n;	
+		$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$id.'" />'.n;
 		$html .= t.t.t.'	  <input type="hidden" name="status" value="'.$status.'" />'.n;
 		$html .= t.t.t.'	  <input type="hidden" name="employerid" value="'.$this->uid.'" />'.n;
 		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_JOB_TITLE').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
@@ -96,7 +96,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= t.t.t.'	  <input name="companyLocation" maxlength="190" id="companyLocation" type="text" value="'.$job->companyLocation.'" /></label>'.n;
 		if(!$usonly) {
 			$html .= t.t.t.'	 <label>'.JText::_('EDITJOB_COUNTRY').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
-			$html .= "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";	
+			$html .= "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";
 			$html .= "\t\t\t\t".' <option value="">'.JText::_('OPTION_SELECT_FROM_LIST').'</option>'."\n";
 			$countries = Hubzero_Geo::getcountries();
 				foreach($countries as $country) {
@@ -109,29 +109,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= t.t.t.t.'</select></label>'.n;
 		}
 		else {
-			$html .= t.t.t.'	  <p class="hint">'.JText::_('EDITJOB_US_ONLY').'</p>'.n;	
-			$html .= t.t.t.'	  <input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />'.n;	
+			$html .= t.t.t.'	  <p class="hint">'.JText::_('EDITJOB_US_ONLY').'</p>'.n;
+			$html .= t.t.t.'	  <input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />'.n;
 		}
 		$html .= t.t.t.'	  <label>'.JText::_('EMPLOYER_COMPANY_NAME').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
 		$html .= t.t.t.'	  <input name="companyName" maxlength="120" id="companyName" type="text" value="'.$job->companyName.'" /></label>'.n;
 		$html .= t.t.t.'	  <label>'.JText::_('EMPLOYER_COMPANY_WEBSITE').': '.n;
 		$html .= t.t.t.'	  <input name="companyWebsite" maxlength="190" id="companyWebsite" type="text" value="'.$job->companyWebsite.'" /></label>'.n;
-		$html .= t.t.t.'	  <p class="hint">'.JText::_('EDITJOB_HINT_COMPANY').'</p>'.n;			
+		$html .= t.t.t.'	  <p class="hint">'.JText::_('EDITJOB_HINT_COMPANY').'</p>'.n;
 		$html .= t.t.t.'	 </fieldset>'.n;
-				
+
 		$html .= t.t.t.'	 <fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_DESCRIPTION').' <br/> <span class="required">'.JText::_('REQUIRED').'</span></h3>'.n;
-		$html .= t.t.t.'	  <label><span class="hint"> ('.JText::_('EDITJOB_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('WIKI_FORMATTING').'</a> '.JText::_('EDITJOB_TO_COMPOSE').')</span> '.n;	
+		$html .= t.t.t.'	  <label><span class="hint"> ('.JText::_('EDITJOB_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('WIKI_FORMATTING').'</a> '.JText::_('EDITJOB_TO_COMPOSE').')</span> '.n;
 		$html .= t.t.t.'		<textarea name="description" id="description" rows="40" cols="35">';
 		$html .= 					$job->description;
 		$html .= '				</textarea>'.n;
 		$html .= '</label>'.n;
 		$html .= t.t.t.'	 </fieldset>'.n;
-		
+
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('EDITJOB_DESC_INFO').'</p>'.n;
 		$html .= JobsHtml::wikiHelp();
-		$html .= t.'</div>'.n;	
+		$html .= t.'</div>'.n;
 		$html .= t.t.t.'	 <fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_SPECIFICS').'</h3>'.n;
 		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_CATEGORY').': '.n;
@@ -156,16 +156,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= JText::_('EDITJOB_ALLOW_INTERNAL_APPLICATION').n;
 		$html .= t.t.t.'</label>'.n;
 		$html .= t.t.t.'	 </fieldset>'.n;
-		
+
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('EDITJOB_SPECIFICS_INFO').'</p>'.n;
-		$html .= t.'</div>'.n;						
+		$html .= t.'</div>'.n;
 		$html .= t.t.t.'	 <fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('EDITJOB_CONTACT_INFO').'<br /><span>('.JText::_('OPTIONAL').')</span></h3>'.n;
 		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_CONTACT_NAME').': '.n;
 		$html .= t.t.t.'	  <input name="contactName" maxlength="100"  type="text" value="';
 		$html .= $job->contactName ? $job->contactName : $profile->get('name');
-		$html .='" /></label>'.n;	
+		$html .='" /></label>'.n;
 		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_CONTACT_EMAIL').': '.n;
 		$html .= t.t.t.'	  <input name="contactEmail" maxlength="100"  type="text" value="';
 		$html .= $job->contactEmail ? $job->contactEmail : $profile->get('email');
@@ -179,13 +179,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= '" />';
 		$html .= '<span class="cancelaction">';
 		$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=dashboard').'">';
-		$html .= JText::_('CANCEL').'</a></span></p>'.n;					
+		$html .= JText::_('CANCEL').'</a></span></p>'.n;
 		$html .= t.t.t.'	 </fieldset>'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('EDITJOB_CONTACT_DETAILS').'</p>'.n;
-		$html .= t.'</div>'.n;			
+		$html .= t.'</div>'.n;
 		$html .= t.t.t.' </form>'.n;
 		$html .= t.'</div>'.n;
-			
+
 		echo $html;
 ?>

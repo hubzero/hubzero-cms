@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_supportingdocs' );
-	
-//-----------
 
 class plgResourcesSupportingDocs extends JPlugin
 {
@@ -46,13 +42,11 @@ class plgResourcesSupportingDocs extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'supportingdocs' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onResourcesAreas( $resource, $archive = 0 ) 
+
+	public function &onResourcesAreas( $resource, $archive = 0 )
 	{
 		if ($archive) {
-			$areas = array();			
+			$areas = array();
 		} else if ($resource->_type->_params->get('plg_supportingdocs')) {
 			$areas = array(
 				'supportingdocs' => JText::_('PLG_RESOURCES_SUPPORTINGDOCS')
@@ -60,11 +54,9 @@ class plgResourcesSupportingDocs extends JPlugin
 		} else {
 			$areas = array();
 		}
-		
+
 		return $areas;
 	}
-
-	//-----------
 
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
@@ -72,30 +64,30 @@ class plgResourcesSupportingDocs extends JPlugin
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
+			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) )
 			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				// do nothing
 				return;
 			}
 		}
-		
+
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('resources', 'supportingdocs');
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $resource->id, $database );
 		//$excludeFirstChild = $resource->type == 7 ? 0 : 1;
 		$helper->getChildren( $resource->id, 0, 'all', 0 );
-		
+
 		$config =& JComponentHelper::getParams( $option );
 
 		$xhub =& Hubzero_Factory::getHub();
-		
+
 		// Instantiate a view
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(

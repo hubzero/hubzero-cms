@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_events' );
-
-//-----------
 
 class plgXSearchEvents extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgXSearchEvents extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'events' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
 
-	public function &onXSearchAreas() 
+	public function &onXSearchAreas()
 	{
 		$areas = array(
 			'events' => JText::_('PLG_XSEARCH_EVENTS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -72,7 +64,7 @@ class plgXSearchEvents extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		// Build the query
@@ -108,7 +100,6 @@ class plgXSearchEvents extends JPlugin
 		$order_by  = " ORDER BY relevance DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-
 		if (!$limit) {
 			// Get a count
 			$database->setQuery( $e_count.$e_from ." WHERE ". $e_where );
@@ -117,17 +108,17 @@ class plgXSearchEvents extends JPlugin
 			if (count($areas) > 1) {
 				ximport('Hubzero_Document');
 				Hubzero_Document::addComponentStylesheet('com_events');
-				
+
 				return $e_fields.$e_rel.$e_from ." WHERE ". $e_where;
 			}
-			
+
 			// Get results
 			$query = $e_fields.$e_rel.$e_from ." WHERE ". $e_where. " GROUP BY id". $order_by;
 			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_($row->href);
 				}
@@ -136,35 +127,31 @@ class plgXSearchEvents extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_events');
 	}
-	
-	//-----------
-	
+
 	/*public function before()
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row, $keyword )
 	{
 		$month = JHTML::_('date', $row->publish_up, '%b');
 		$day = JHTML::_('date', $row->publish_up, '%d');
 		$year = JHTML::_('date', $row->publish_up, '%Y');
-		
+
 		$words = explode(' ', $keyword);
-		
+
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
 		}
@@ -172,7 +159,7 @@ class plgXSearchEvents extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		// Start building the HTML
 		$html  = "\t".'<li class="event">'."\n";
 		$html .= "\t\t".'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'."\n";
@@ -183,13 +170,11 @@ class plgXSearchEvents extends JPlugin
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

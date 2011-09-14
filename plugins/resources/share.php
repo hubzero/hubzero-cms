@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_share' );
-	
-//-----------
 
 class plgResourcesShare extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgResourcesShare extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'share' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onResourcesAreas( $resource )
 	{
-		static $areas = array(	
+		static $areas = array(
 		);
-		
+
 		return $areas;
 	}
-
-	//-----------
 
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
@@ -65,7 +57,7 @@ class plgResourcesShare extends JPlugin
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		$juri =& JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$option.'&id='.$resource->id);
 		if (substr($sef,0,1) == '/') {
@@ -79,16 +71,16 @@ class plgResourcesShare extends JPlugin
 			$this->share($sharewith, $url, $resource);
 			return;
 		}
-		
+
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('resources', 'share');
-		
+
 		// Push some scripts to the template
 		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'share'.DS.'share.js')) {
 			$document =& JFactory::getDocument();
 			$document->addScript('plugins'.DS.'resources'.DS.'share'.DS.'share.js');
 		}
-		
+
 		// Email form
 		if ($sharewith == 'email') {
 			// Instantiate a view
@@ -115,7 +107,7 @@ class plgResourcesShare extends JPlugin
 			$view->display();
 			exit();
 		}
-		
+
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
 			// Instantiate a view
@@ -143,45 +135,43 @@ class plgResourcesShare extends JPlugin
 
 		return $arr;
 	}
-	
-	//-----------
-	
+
 	public function share($with, $url, $resource)
 	{
 		$jconfig =& JFactory::getConfig();
-		
+
 		$link = '';
-		switch ($with) 
+		switch ($with)
 		{
-			case 'facebook':   	
-				$link = 'http://www.facebook.com/sharer.php?u='.$url;		
+			case 'facebook':
+				$link = 'http://www.facebook.com/sharer.php?u='.$url;
 			break;
-			
-			case 'twitter':   	
+
+			case 'twitter':
 				$link = 'http://twitter.com/home?status='.JText::sprintf('PLG_RESOURCES_SHARE_VIEWING',$jconfig->getValue('config.sitename'),stripslashes($resource->title));
 			break;
-			
-			case 'google':   	
-				$link = 'http://www.google.com/bookmarks/mark?op=edit&bkmk='.$url.'&title='.$jconfig->getValue('config.sitename').': '.JText::_('PLG_RESOURCES_SHARE_RESOURCE').' '.$resource->id.' - '.stripslashes($resource->title).'&labels='.$jconfig->getValue('config.sitename');	
+
+			case 'google':
+				$link = 'http://www.google.com/bookmarks/mark?op=edit&bkmk='.$url.'&title='.$jconfig->getValue('config.sitename').': '.JText::_('PLG_RESOURCES_SHARE_RESOURCE').' '.$resource->id.' - '.stripslashes($resource->title).'&labels='.$jconfig->getValue('config.sitename');
 			break;
-			
-			case 'digg':   	
+
+			case 'digg':
 				$link = 'http://digg.com/submit?phase=2&url='.$url.'&title='.$jconfig->getValue('config.sitename').': '.JText::_('PLG_RESOURCES_SHARE_RESOURCE').' '.$resource->id.' - '.stripslashes($resource->title);
 			break;
-			
-			case 'technorati':   	
+
+			case 'technorati':
 				$link = 'http://www.technorati.com/faves?add='.$url;
 			break;
-			
-			case 'delicious':   	
+
+			case 'delicious':
 				$link = 'http://del.icio.us/post?url='.$url.'&title='.$jconfig->getValue('config.sitename').': '.JText::_('PLG_RESOURCES_SHARE_RESOURCE').' '.$resource->id.' - '.stripslashes($resource->title);
 			break;
-			
-			case 'reddit':   	
+
+			case 'reddit':
 				$link = 'http://reddit.com/submit?url='.$url.'&title='.$jconfig->getValue('config.sitename').': '.JText::_('PLG_RESOURCES_SHARE_RESOURCE').' '.$resource->id.' - '.stripslashes($resource->title);
 			break;
 		}
-		
+
 		if ($link) {
 			$app =& JFactory::getApplication();
 			$app->redirect($link, '', '');

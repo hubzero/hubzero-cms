@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_wiki' );
-
-//-----------
 
 class plgGroupsWiki extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgGroupsWiki extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'groups', 'wiki' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -56,41 +50,39 @@ class plgGroupsWiki extends JPlugin
 			'title' => JText::_('PLG_GROUPS_WIKI'),
 			'default_access' => $this->_params->get('plugin_access','members')
 		);
-		
+
 		return $area;
 	}
-
-	//-----------
 
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
 		$active = 'wiki';
-		
+
 		// The output array we're returning
 		$arr = array(
 			'html'=>''
 		);
-		
+
 		//get this area details
 		$this_area = $this->onGroupAreas();
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			if(!in_array($this_area['name'],$areas)) {
 				return;
 			}
 		}
-		
+
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') {
-			
+
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
-			
+
 			//Create user object
 			$juser =& JFactory::getUser();
-		
+
 			//get the group members
 			$members = $group->get('members');
 
@@ -99,7 +91,7 @@ class plgGroupsWiki extends JPlugin
 				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active))."</p>";
 				return $arr;
 			}
-			
+
 			//check if guest and force login if plugin access is registered or members
 			if ($juser->get('guest') && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) {
 				ximport('Hubzero_Module_Helper');
@@ -107,34 +99,34 @@ class plgGroupsWiki extends JPlugin
 				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 				return $arr;
 			}
-			
+
 			//check to see if user is member and plugin access requires members
 			if(!in_array($juser->get('id'),$members) && $group_plugin_acl == 'members' && $authorized != 'admin') {
 				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))."</p>";
 				return $arr;
 			}
-			
+
 			// Set some variables for the wiki
 			$_REQUEST['task'] = $action;
 			$scope = trim(JRequest::getVar( 'scope', '' ));
 			if (!$scope) {
 				$_REQUEST['scope'] = $group->get('cn').DS.$active;
 			}
-			
+
 			// Initiate the wiki code
 			//$arr['html'] = $this->wiki( $group );
 			global $mainframe;
 
 			// Import some needed libraries
 			ximport('Hubzero_User_Helper');
-			
+
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'attachment.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'author.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'comment.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'log.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'revision.php');
-			
+
 			//include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'config.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'differenceengine.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'html.php');
@@ -146,78 +138,72 @@ class plgGroupsWiki extends JPlugin
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'stringutils.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'tags.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'utfnormalutil.php');
-			
+
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'controller.php');
 
 			// Instantiate controller
 			$controller = new WikiController( array('name'=>'groups','sub'=>'wiki','group'=>$group->get('cn')) );
 			$controller->mainframe = $mainframe;
-			
+
 			// Catch any echoed content with ob
 			ob_start();
 			$controller->execute();
 			$controller->redirect();
 			$content = ob_get_contents();
 			ob_end_clean();
-			
+
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', 'wiki');
 
 			// Return the content
 			$arr['html'] = $content;
 		}
-		
+
 		// Return the output
 		return $arr;
 	}
-	
-	//-----------
-	
-	public function onGroupDelete( $group ) 
+
+	public function onGroupDelete( $group )
 	{
 		// Get all the IDs for pages associated with this group
 		$ids = $this->getPageIDs( $group->get('cn') );
 
 		// Import needed libraries
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
-		
+
 		// Instantiate a WikiPage object
 		$database =& JFactory::getDBO();
 		$wp = new WikiPage( $database );
 
 		// Start the log text
 		$log = JText::_('PLG_GROUPS_WIKI_LOG').': ';
-		
+
 		if (count($ids) > 0) {
 			// Loop through all the IDs for pages associated with this group
 			foreach ($ids as $id)
 			{
 				// Delete all items linked to this page
 				$wp->deleteBits( $id->id );
-				
+
 				// Delete the wiki page last in case somehting goes wrong
 				$wp->delete( $id->id );
-				
+
 				// Add the page ID to the log
 				$log .= $id->id.' '."\n";
 			}
 		} else {
 			$log .= JText::_('PLG_GROUPS_WIKI_NO_RESULTS_FOUND')."\n";
 		}
-		
+
 		// Return the log
 		return $log;
 	}
-	
-	//-----------
-	
-	public function onGroupDeleteCount( $group ) 
+
+	public function onGroupDeleteCount( $group )
 	{
 		return JText::_('PLG_GROUPS_WIKI_LOG').': '.count( $this->getPageIDs( $group->get('cn') ));
 	}
-	
-	//-----------
-	
+
 	public function getPageIDs( $gid=NULL )
 	{
 		if (!$gid) {

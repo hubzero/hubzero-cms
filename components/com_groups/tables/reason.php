@@ -33,24 +33,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class GroupsReason extends JTable 
+class GroupsReason extends JTable
 {
 	var $id       = NULL;  // @var int(11) Primary key
 	var $uidNumber = NULL;  // @var int(11)
 	var $gidNumber      = NULL;  // @var int(11)
 	var $reason   = NULL;  // @var text
 	var $date     = NULL;  // @var datetime
-	
+
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xgroups_reasons', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function loadReason( $uid, $gid ) 
+
+	public function loadReason( $uid, $gid )
 	{
 		if ($uid === NULL || $gid === NULL) {
 			return false;
@@ -63,10 +61,8 @@ class GroupsReason extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
 
-	public function deleteReason( $uid, $gid ) 
+	public function deleteReason( $uid, $gid )
 	{
 		if ($uid === NULL || $gid === NULL) {
 			return false;
@@ -79,20 +75,18 @@ class GroupsReason extends JTable
 		return true;
 	}
 
-	//-----------
-	
-	public function check() 
+	public function check()
 	{
 		if (trim( $this->gidNumber ) == '') {
 			$this->setError( JText::_('GROUPS_REASON_MUST_HAVE_GROUPID') );
 			return false;
 		}
-		
+
 		if (trim( $this->uidNumber ) == '') {
 			$this->setError( JText::_('GROUPS_REASON_MUST_HAVE_USERNAME') );
 			return false;
 		}
-		
+
 		return true;
 	}
 }

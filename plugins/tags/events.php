@@ -29,19 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_events' );
-
-//-----------
 
 class plgTagsEvents extends JPlugin
 {
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgTagsEvents(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,17 +45,13 @@ class plgTagsEvents extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
-	public function onTagAreas() 
+	public function onTagAreas()
 	{
 		$areas = array(
 			'events' => JText::_('PLG_TAGS_EVENTS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
@@ -75,18 +65,18 @@ class plgTagsEvents extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$ids = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ids[] = $tag->id;
 		}
 		$ids = implode(',',$ids);
-		
+
 		$now = date( 'Y-m-d H:i:s', time() + 0 * 60 * 60 );
-		
+
 		// Build the query
 		/*$e_count = "SELECT e.id, COUNT(DISTINCT t.tag) AS uniques";
 		$e_fields = "SELECT e.id, e.title, e.content AS text, COUNT(DISTINCT t.tag) AS uniques, CONCAT( 'index.php?option=com_events&task=details&id=', e.id ) AS href, e.publish_up, 'events' AS section";
@@ -97,20 +87,19 @@ class plgTagsEvents extends JPlugin
 		$e_fields = "SELECT e.id, e.title, NULL AS alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, NULL AS modified, e.publish_up, e.publish_down, CONCAT( 'index.php?option=com_events&task=details&id=', e.id ) AS href, 'events' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__events AS e, #__tags_object AS t";
 		$e_where = " WHERE e.state=1 AND t.objectid=e.id AND t.tbl='events' AND t.tagid IN ($ids)";
-		
+
 		//$e_where .= " AND (e.publish_up = '0000-00-00 00:00:00' OR e.publish_up <= '".$now."') ";
 		//$e_where .= " AND (e.publish_down = '0000-00-00 00:00:00' OR e.publish_down >= '".$now."') ";
 		$e_where .= " GROUP BY e.id HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
-		switch ($sort) 
+		switch ($sort)
 		{
 			case 'title': $order_by .= 'title ASC, publish_up';  break;
 			case 'id':    $order_by .= "id DESC";                break;
-			case 'date':  
+			case 'date':
 			default:      $order_by .= 'publish_up DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
-
 
 		if (!$limit) {
 			// Get a count
@@ -121,22 +110,22 @@ class plgTagsEvents extends JPlugin
 			if (count($areas) > 1) {
 				ximport('Hubzero_Document');
 				Hubzero_Document::addComponentStylesheet('com_events');
-				
+
 				return $e_fields . $e_from . $e_where;
 			}
-			
+
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
 				}
 			}
-			
+
 			// Get results
 			$database->setQuery( $e_fields . $e_from . $e_where. $order_by );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_($row->href);
 				}
@@ -145,33 +134,29 @@ class plgTagsEvents extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_events');
 	}
-	
-	//-----------
-	
+
 	/*public function before()
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row )
 	{
 		$month = JHTML::_('date', $row->publish_up, '%b');
 		$day = JHTML::_('date', $row->publish_up, '%d');
 		$year = JHTML::_('date', $row->publish_up, '%Y');
-		
+
 		// Start building the HTML
 		$html  = "\t".'<li class="event">'."\n";
 		$html .= "\t\t".'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'."\n";
@@ -181,13 +166,11 @@ class plgTagsEvents extends JPlugin
 			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
 		}
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

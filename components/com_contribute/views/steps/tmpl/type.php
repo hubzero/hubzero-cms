@@ -44,7 +44,7 @@ $jconfig =& JFactory::getConfig();
 		<ul>
 			<?php
 			if ($this->types) {
-				foreach ($this->types as $type) 
+				foreach ($this->types as $type)
 				{
 					if ($type->contributable == 1) {
 						if ($type->id == 7) {

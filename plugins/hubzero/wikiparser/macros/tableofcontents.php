@@ -29,20 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class TableOfContentsMacro extends WikiMacro 
+class TableOfContentsMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Outputs a Table of Contents based off the page headers';
 		$txt['html'] = '<p>Outputs a Table of Contents based off the page headers</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		return 'MACRO'.$this->uniqPrefix.'[[TableOfContents]]';
 	}

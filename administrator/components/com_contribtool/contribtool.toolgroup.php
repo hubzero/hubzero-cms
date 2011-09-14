@@ -38,20 +38,17 @@ class ToolGroup extends  JTable
 	var $cn      	   = NULL;  // @var varchar (255)
 	var $toolid        = NULL;  // @var int (11)
 	var $role      	   = NULL;  // @var tinyint(2)
-	
-	
+
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool_groups', 'cn', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
-		
+
 		if (!$this->cn) {
 			$this->setError( JText::_('CONTRIBTOOL_ERROR_GROUP_NO_CN') );
 			return false;
@@ -61,33 +58,31 @@ class ToolGroup extends  JTable
 			$this->setError( JText::_('CONTRIBTOOL_ERROR_GROUP_NO_ID') );
 			return false;
 		}
-		
+
 		return true;
 	}
 	//-----------
 
-	public function save($cn, $toolid, $role) 
+	public function save($cn, $toolid, $role)
 	{
 		$query = "INSERT INTO $this->_tbl (cn, toolid, role) VALUES ('".$cn."','".$toolid."','".$role."')";
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
-	
-	//-----------
-	
+
 	public function saveGroup($toolid=NULL, $devgroup, $members, $exist)
 	{
 		ximport('Hubzero_Group');
-		
+
 		if (!$toolid or !$devgroup) {
 			return false;
 		}
-		
+
 		$members = ContribtoolHelper::transform($members, 'uidNumber');
 		$group = new Hubzero_Group();
 
 		if(Hubzero_Group::exists($devgroup)) {
-			$group->select($devgroup);		
+			$group->select($devgroup);
 			$existing_members = ContribtoolHelper::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
 			$group->set('members',$existing_members);
 			$group->set('managers',$existing_managers);
@@ -101,17 +96,17 @@ class ToolGroup extends  JTable
 			$group->set('cn', $devgroup );
 			$group->set('members',$existing_members);
 			$group->set('managers',$existing_managers);
-		}		
+		}
 
 		$group->update();
 
 		if(!$exist) { $this->save($devgroup, $toolid, '1'); }
-		
+
 		return true;
-	
+
 	}
 	//-----------
-	
+
 	public function saveMemberGroups($toolid=NULL, $newgroups, $editversion='dev', $membergroups=array())
 	{
 		ximport('Hubzero_Tool');
@@ -125,43 +120,40 @@ class ToolGroup extends  JTable
 		$membergroups = ContribtoolHelper::transform($membergroups, 'cn');
 		$newgroups = ContribtoolHelper::transform($newgroups, 'cn');
 		$to_delete = array_diff($membergroups, $newgroups);
-		
-		if(count($to_delete) > 0 && $editversion!='current' ) {		
+
+		if(count($to_delete) > 0 && $editversion!='current' ) {
 			foreach($to_delete as $del) {
 				$query = "DELETE FROM $this->_tbl WHERE cn='". $del."' AND toolid='".$toolid."' AND role=0";
 				$this->_db->setQuery( $query );
 				$this->_db->query();
 			}
 		}
-		
+
 		if(count($newgroups) > 0) {
 			foreach($newgroups as $newgroup) {
 				if(Hubzero_Group::exists($newgroup) && !in_array($newgroup, $membergroups)) {
 					// create an entry in tool_groups table
 					$this->save($newgroup, $toolid, '0');
-				
+
 				}
 			}
 		}
-		
+
 		return true;
-	
+
 	}
-	
-	
-	//-----------
-	
-	public function writeMemberGroups($new, $id, $database, &$err='') 
+
+	public function writeMemberGroups($new, $id, $database, &$err='')
 	{
 		ximport('Hubzero_Group');
-		
+
 		$toolhelper = new ContribtoolHelper();
-		
+
 		$groups 	= is_array($new) ? $new : $toolhelper->makeArray($new);
 		$grouplist 	= array();
 		$invalid	= '';
 		$i = 0;
-		
+
 		if(count($groups) > 0) {
 			 foreach($groups as $group) {
 			 	if(Hubzero_Group::exists($group)) {
@@ -176,23 +168,20 @@ class ToolGroup extends  JTable
 			 }
 		}
 		if($err) { $err.= $invalid; }
-				
+
 		return $grouplist;
-	
+
 	}
-	
-	//-----------
-	
+
 	public function writeTeam($new, $id, $database, &$err='') {
-	
-		
+
 		$toolhelper = new ContribtoolHelper();
-		
+
 		$members 	= is_array($new) ? $new : $toolhelper->makeArray($new);
 		$teamlist	= array();
 		$invalid	= '';
 		$i = 0;
-		
+
 		if(count($members) > 0) {
 			 foreach($members as $member) {
 			 	$juser =& JUser::getInstance ($member);
@@ -208,14 +197,11 @@ class ToolGroup extends  JTable
 			 }
 		}
 		if($err) { $err.= $invalid; }
-					
+
 		return $teamlist;
-	
+
 	}
-	
-	//-----------
 
 }
-
 
 ?>

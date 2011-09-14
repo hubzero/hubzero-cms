@@ -36,19 +36,17 @@ class WhatsnewController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'browse':   $this->browse(); break;
 			case 'feed.rss': $this->feed();   break;
 			case 'feed':     $this->feed();   break;
-			
+
 			default: $this->browse(); break;
 		}
 	}
-	
-	//-----------
-	
+
 	public function browse()
 	{
 		// Determine if user has admin privledges
@@ -56,7 +54,7 @@ class WhatsnewController extends Hubzero_Controller
 
 		// Incoming
 		$period = JRequest::getVar( 'period', 'month' );
-		
+
 		// Paging variables
 		$start = JRequest::getInt( 'limitstart', 0 );
 		$limit = JRequest::getInt( 'limit', 25 );
@@ -66,14 +64,14 @@ class WhatsnewController extends Hubzero_Controller
 
 		// Get categories
 		$areas = $this->_getAreas();
-		
+
 		// Was there a category passed in the querystring?
 		$area = trim(JRequest::getWord('category', ''));
 
 		// Check the search string for a category prefix
 		if ($period != NULL) {
 			$searchstring = strtolower($period);
-			foreach ($areas as $c=>$t) 
+			foreach ($areas as $c=>$t)
 			{
 				$regexp = "/" . $c . ":/";
 		    	if (strpos($searchstring, $c . ":") !== false) {
@@ -87,7 +85,7 @@ class WhatsnewController extends Hubzero_Controller
 				// Does the category contain sub-categories?
 				if (is_array($t) && !empty($t)) {
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc=>$st) 
+					foreach ($t as $sc=>$st)
 					{
 						$regexp = "/" . $sc . ":/";
 				    	if (strpos($searchstring, $sc . ":") !== false) {
@@ -122,18 +120,18 @@ class WhatsnewController extends Hubzero_Controller
 
 		// Get the search result totals
 		$totals = $dispatcher->trigger( 'onWhatsnew', array(
-				$p, 
-				0, 
+				$p,
+				0,
 				0,
 				$activeareas)
 			);
-		
+
 		$limit = ($limit == 0) ? 'all' : $limit;
 
 		// Get the search results
 		$results = $dispatcher->trigger( 'onWhatsnew', array(
-				$p, 
-				$limit, 
+				$p,
+				$limit,
 				$start,
 				$activeareas)
 			);
@@ -142,10 +140,10 @@ class WhatsnewController extends Hubzero_Controller
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($areas as $c=>$t) 
+		foreach ($areas as $c=>$t)
 		{
 			$cats[$i]['category'] = $c;
-			
+
 			// Do sub-categories exist?
 			if (is_array($t) && !empty($t)) {
 				// They do - do some processing
@@ -154,7 +152,7 @@ class WhatsnewController extends Hubzero_Controller
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st) 
+				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
@@ -172,7 +170,7 @@ class WhatsnewController extends Hubzero_Controller
 				$cats[$i]['title'] = $t;
 				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
 			}
-			
+
 			// Add to the overall total
 			$total = $total + intval($cats[$i]['total']);
 			$i++;
@@ -184,11 +182,11 @@ class WhatsnewController extends Hubzero_Controller
 		} else {
 			$active = '';
 		}
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_option)).': '.$this->_jtext($period) );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -196,28 +194,28 @@ class WhatsnewController extends Hubzero_Controller
 			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
 		}
 		$pathway->addItem($this->_jtext($period),'index.php?option='.$this->_option.'&period='.$period);
-		
+
 		// Build some options for the time period <select>
 		$periodlist = array();
 		$periodlist[] = JHTMLSelect::option('week',JText::_('COM_WHATSNEW_OPT_WEEK'));
 		$periodlist[] = JHTMLSelect::option('month',JText::_('COM_WHATSNEW_OPT_MONTH'));
 		$periodlist[] = JHTMLSelect::option('quarter',JText::_('COM_WHATSNEW_OPT_QUARTER'));
 		$periodlist[] = JHTMLSelect::option('year',JText::_('COM_WHATSNEW_OPT_YEAR'));
-	
+
 		$thisyear = strftime("%Y",time());
-		for ($y = $thisyear; $y >= 2002; $y--) 
+		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('10/1/'.$y)) {
 				$periodlist[] = JHTMLSelect::option($y, JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR').' '.$y);
 			}
 		}
-		for ($y = $thisyear; $y >= 2002; $y--) 
+		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('01/01/'.$y)) {
 				$periodlist[] = JHTMLSelect::option('c_'.$y, JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR').' '.$y);
 			}
 		}
-		
+
 		$view = new JView( array('name'=>'results') );
 		$view->title = JText::_(strtoupper($this->_option)).': '.$this->_jtext($period);
 		$view->option = $this->_option;
@@ -235,15 +233,13 @@ class WhatsnewController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function feed() 
+
+	protected function feed()
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
-		
+
 		$mainframe =& $this->mainframe;
-		
+
 		// Set the mime encoding for the document
 		$jdoc =& JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
@@ -255,21 +251,21 @@ class WhatsnewController extends Hubzero_Controller
 
 		// Incoming
 		$period = JRequest::getVar( 'period', 'month' );
-		
+
 		// Paging variables
 		$start = JRequest::getInt( 'limitstart', 0 );
 		$limit = JRequest::getInt( 'limit', 25 );
 
 		// Get categories
 		$areas = $this->_getAreas();
-		
+
 		// Was there a category passed in the querystring?
 		$area = trim(JRequest::getWord('category', ''));
 
 		// Check the search string for a category prefix
 		if ($period != NULL) {
 			$searchstring = strtolower($period);
-			foreach ($areas as $c=>$t) 
+			foreach ($areas as $c=>$t)
 			{
 				$regexp = "/" . $c . ":/";
 		    	if (strpos($searchstring, $c . ":") !== false) {
@@ -283,7 +279,7 @@ class WhatsnewController extends Hubzero_Controller
 				// Does the category contain sub-categories?
 				if (is_array($t) && !empty($t)) {
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc=>$st) 
+					foreach ($t as $sc=>$st)
 					{
 						$regexp = "/" . $sc . ":/";
 				    	if (strpos($searchstring, $sc . ":") !== false) {
@@ -311,25 +307,25 @@ class WhatsnewController extends Hubzero_Controller
 		// Load plugins
 		JPluginHelper::importPlugin( 'whatsnew' );
 		$dispatcher =& JDispatcher::getInstance();
-	
+
 		// Process the keyword for exact phrase matches, etc.
 		$p = new WhatsnewPeriod( $period );
 		$p->process();
-	
+
 		// Fetch results
 		$results = $dispatcher->trigger( 'onWhatsNew', array(
-				$p, 
-				$limit, 
-				$start, 
+				$p,
+				$limit,
+				$start,
 				$activeareas)
 			);
-		
+
 		$jconfig =& JFactory::getConfig();
-		
+
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();
 		if ($results) {
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				if (is_array($result) && !empty($result)) {
 					$rows = $result;
@@ -348,7 +344,7 @@ class WhatsnewController extends Hubzero_Controller
 		// Start outputing results if any found
 		if (count($rows) > 0) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
-			
+
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -392,16 +388,16 @@ class WhatsnewController extends Hubzero_Controller
 				$doc->addItem( $item );
 			}
 		}
-		
+
 		// Output the feed
 		echo $doc->render();
 	}
-	
+
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
-	
-	private function _jtext($period) 
+
+	private function _jtext($period)
 	{
 		switch ($period)
 		{
@@ -411,7 +407,7 @@ class WhatsnewController extends Hubzero_Controller
 			case 'year':    return JText::_('COM_WHATSNEW_OPT_YEAR');    break;
 			default:
 				$thisyear = strftime("%Y",time());
-				for ($y = $thisyear; $y >= 2002; $y--) 
+				for ($y = $thisyear; $y >= 2002; $y--)
 				{
 					if (time() >= strtotime('10/1/'.$y)) {
 						if ($y == $period) {
@@ -419,7 +415,7 @@ class WhatsnewController extends Hubzero_Controller
 						}
 					}
 				}
-				for ($y = $thisyear; $y >= 2002; $y--) 
+				for ($y = $thisyear; $y >= 2002; $y--)
 				{
 					if (time() >= strtotime('01/01/'.$y)) {
 						if ('c_'.$y == $period) {
@@ -430,30 +426,28 @@ class WhatsnewController extends Hubzero_Controller
 			break;
 		}
 	}
-	
-	//-----------
-	
+
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
 		if (!isset($this->searchareas) || empty($this->searchareas)) {
 			// No - so we'll need to get it
-			
+
 			$areas = array();
 
 			// Load the XSearch plugins
 			JPluginHelper::importPlugin( 'whatsnew' );
 			$dispatcher =& JDispatcher::getInstance();
-			
+
 			// Trigger the functions that return the areas we'll be searching
 			$searchareas = $dispatcher->trigger( 'onWhatsNewAreas' );
 
 			// Build an array of the areas
-			foreach ($searchareas as $area) 
+			foreach ($searchareas as $area)
 			{
 				$areas = array_merge( $areas, $area );
 			}
-			
+
 			// Save the array for use elsewhere
 			$this->searchareas = $areas;
 		}

@@ -35,47 +35,43 @@ class modMyFavorites
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
 			return $this->attributes[$property];
 		}
 	}
-	
+
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
 		$this->moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 5;
-		
+
 		$this->error = false;
-		
+
 		// Check for the existence of required tables that should be
 		// installed with the com_support component
 		$database->setQuery("SHOW TABLES");
 		$tables = $database->loadResultArray();
-		
+
 		if ($tables && array_search($database->_table_prefix.'xfavorites', $tables)===false) {
 			// Support tickets table not found!
 			$this->error = true;
@@ -86,11 +82,11 @@ class modMyFavorites
 
 		JPluginHelper::importPlugin( 'members' );
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();
 		$searchareas = $dispatcher->trigger( 'onMembersFavoritesAreas', array($authorized) );
-		foreach ($searchareas as $area) 
+		foreach ($searchareas as $area)
 		{
 			$areas = array_merge( $areas, $area );
 		}
@@ -101,7 +97,7 @@ class modMyFavorites
 		$activeareas = $areas;
 
 		$option = 'com_members';
-		
+
 		ximport('Hubzero_User_Profile');
 		$member = new Hubzero_User_Profile();
 		$member->load( $juser->get('id') );
@@ -130,7 +126,7 @@ class modMyFavorites
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($areas as $c=>$t) 
+		foreach ($areas as $c=>$t)
 		{
 			$cats[$i]['category'] = $c;
 
@@ -142,7 +138,7 @@ class modMyFavorites
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st) 
+				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
@@ -172,9 +168,9 @@ class modMyFavorites
 		} else {
 			$this->active = '';
 		}
-		
+
 		$this->cats = $cats;
-		
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_myfavorites');

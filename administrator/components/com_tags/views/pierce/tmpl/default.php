@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 			
 			<ul>
 			<?php
-			foreach ($this->tags as $tag) 
+			foreach ($this->tags as $tag)
 			{
 				echo '<li>'.stripslashes($tag->raw_tag).' ('.$tag->tag.' - '.$tag->total.')</li>'."\n";
 			}

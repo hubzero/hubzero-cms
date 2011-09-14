@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class ResourceChildSorter
 {
 	private $order;
@@ -59,7 +58,7 @@ class plgYSearchResources extends YSearchPlugin
 	public static function onYSearch($request, &$results, $authz)
 	{
 		$dbg = isset($_GET['dbg']);
-	
+
 		if ($authz->is_guest())
 			$access = 'access = 0';
 		else if ($authz->is_super_admin())
@@ -70,15 +69,15 @@ class plgYSearchResources extends YSearchPlugin
 			if ($groups)
 			{
 				$group_list = '(\''.join('\', \'', $groups).'\')';
-				$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN '.$group_list.'))';		
+				$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN '.$group_list.'))';
 			}
-			else 
+			else
 				$access = '(access = 0 OR access = 1)';
 		}
 
 		$term_parser = $request->get_terms();
 		$terms = $request->get_term_ar();
-		
+
 		$quoted_terms = array();
 		foreach ($terms['optional'] as $idx=>$term)
 			if ($term_parser->is_quoted($idx))
@@ -99,12 +98,12 @@ class plgYSearchResources extends YSearchPlugin
 		$weight = $terms['stemmed'] ? 'match(r.title, r.introtext, r.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')' : '0';
 		foreach ($quoted_terms as $term)
 			$weight .= " + (CASE WHEN r.title LIKE '%$term%' OR r.introtext LIKE '%$term%' OR r.`fulltext` LIKE '%$term%' THEN 1 ELSE 0 END)";
-			
+
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 			$addtl_where[] = "(r.title LIKE '%$mand%' OR r.introtext LIKE '%$mand%' OR r.`fulltext` LIKE '%$mand%')";
 		foreach ($terms['forbidden'] as $forb)
-			$addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltext` NOT LIKE '%$forb%')";		
+			$addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltext` NOT LIKE '%$forb%')";
 
 		$sql = new YSearchResultSQL(
 			"SELECT
@@ -136,10 +135,10 @@ class plgYSearchResources extends YSearchPlugin
 		$id_assoc = array();
 		foreach ($assoc as $row)
 			$id_assoc[$row->get('id')] = $row;
-	
+
 		$placed = array();
 		if (!$quoted_terms)
-		{	
+		{
 			// Find ids of tagged resources that did not match regular fulltext searching
 			foreach ($assoc as $row)
 			{
@@ -203,7 +202,7 @@ class plgYSearchResources extends YSearchPlugin
 					}
 				}
 		}
-	
+
 		$sorter = new ResourceChildSorter($placed);
 		$rows = array();
 		foreach ($id_assoc as $id=>$row)

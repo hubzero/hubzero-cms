@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_messages' );
-
-//-----------
 
 class plgMembersMessages extends JPlugin
 {
@@ -46,10 +42,8 @@ class plgMembersMessages extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'messages' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onMembersAreas( $authorized ) 
+
+	public function &onMembersAreas( $authorized )
 	{
 		if (!$authorized) {
 			$areas = array();
@@ -61,52 +55,50 @@ class plgMembersMessages extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
-		
+
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Is the user logged in?
 		if (!$authorized) {
 			return $arr;
 		}
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) ) 
+			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
 			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
 				$returnhtml = false;
 			}
 		}
-		
+
 		// Get our database object
 		$database =& JFactory::getDBO();
 
 		// Load some needed libraries
 		ximport('Hubzero_Message');
-		
+
 		// Are we returning HTML?
 		if ($returnhtml) {
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', 'messages');
-			
+
 			$task = JRequest::getVar('action','');
 			if (!$task) {
 				$task = JRequest::getVar('inaction','');
 			}
-			
+
 			$mid = JRequest::getInt('msg',0);
 			if ($mid) {
 				$task = 'view';
 			}
-			
-			switch ($task) 
+
+			switch ($task)
 			{
 				case 'sendtoarchive': $arr['html'] = $this->sendtoarchive($database, $option, $member); break;
 				case 'sendtotrash':   $arr['html'] = $this->sendtotrash($database, $option, $member);   break;
@@ -115,39 +107,37 @@ class plgMembersMessages extends JPlugin
 				case 'savesettings':  $arr['html'] = $this->savesettings($database, $option, $member);  break;
 				case 'emptytrash':    $arr['html'] = $this->emptytrash($database, $option, $member);    break;
 				case 'delete':        $arr['html'] = $this->delete($database, $option, $member);        break;
-				
+
 				case 'send':          $arr['html'] = $this->send($database, $option, $member);          break;
 				case 'new':           $arr['html'] = $this->create($database, $option, $member);        break;
-				
+
 				case 'view':          $arr['html'] = $this->view($database, $option, $member, $mid);    break;
 				case 'sent':          $arr['html'] = $this->sent($database, $option, $member);          break;
 				case 'settings':      $arr['html'] = $this->settings($database, $option, $member);      break;
 				case 'archive':       $arr['html'] = $this->archive($database, $option, $member);       break;
 				case 'trash':         $arr['html'] = $this->trash($database, $option, $member);         break;
-				case 'inbox': 
+				case 'inbox':
 				default: $arr['html'] = $this->inbox($database, $option, $member); break;
 			}
 		} else {
 			$recipient = new Hubzero_Message_Recipient( $database );
 			$rows = $recipient->getUnreadMessages( $member->get('uidNumber'), 0 );
-			
+
 			$arr['metadata'] = '<p class="messages"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=messages').'">'.JText::sprintf('PLG_MEMBERS_MESSAGES_UNREAD', count($rows)).'</a></p>'.n;
 		}
 
 		// Return data
 		return $arr;
 	}
-	
-	//-----------
-	
-	public function inbox($database, $option, $member) 
+
+	public function inbox($database, $option, $member)
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
 			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
-		
+
 		// Filters for returning results
 		$filters = array();
 		$filters['limit'] = JRequest::getInt('limit', 25);
@@ -155,11 +145,11 @@ class plgMembersMessages extends JPlugin
 		$filters['state'] = 0;
 		$filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($filter) ? 'com_'.$filter : '';
-		
+
 		$recipient = new Hubzero_Message_Recipient( $database );
-		
+
 		$total = $recipient->getMessagesCount( $member->get('uidNumber'), $filters );
-		
+
 		$rows = $recipient->getMessages( $member->get('uidNumber'), $filters );
 
 		jimport('joomla.html.pagination');
@@ -195,17 +185,15 @@ class plgMembersMessages extends JPlugin
 		}
 		return $view->loadTemplate();
 	}
-	
-	//-----------
-	
-	public function archive($database, $option, $member) 
+
+	public function archive($database, $option, $member)
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
 			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
-		
+
 		// Filters for returning results
 		$filters = array();
 		$filters['limit'] = JRequest::getInt('limit', 10);
@@ -213,11 +201,11 @@ class plgMembersMessages extends JPlugin
 		$filters['state'] = 1;
 		$filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($filter) ? 'com_'.$filter : '';
-		
+
 		$recipient = new Hubzero_Message_Recipient( $database );
-		
+
 		$total = $recipient->getMessagesCount( $member->get('uidNumber'), $filters );
-		
+
 		$rows = $recipient->getMessages( $member->get('uidNumber'), $filters );
 
 		jimport('joomla.html.pagination');
@@ -254,16 +242,14 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
-	//-----------
-	
-	public function trash($database, $option, $member) 
+	public function trash($database, $option, $member)
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
 			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
-		
+
 		// Filters for returning results
 		$filters = array();
 		$filters['limit'] = JRequest::getInt('limit', 10);
@@ -271,11 +257,11 @@ class plgMembersMessages extends JPlugin
 		$filters['state'] = 2;
 		$filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($filter) ? 'com_'.$filter : '';
-		
+
 		$recipient = new Hubzero_Message_Recipient( $database );
-		
+
 		$total = $recipient->getMessagesCount( $member->get('uidNumber'), $filters );
-		
+
 		$rows = $recipient->getMessages( $member->get('uidNumber'), $filters );
 
 		jimport('joomla.html.pagination');
@@ -312,26 +298,24 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
-	//-----------
-	
-	public function sent($database, $option, $member) 
+	public function sent($database, $option, $member)
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
 			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
-		
+
 		// Filters for returning results
 		$filters = array();
 		$filters['limit'] = JRequest::getInt('limit', 10);
 		$filters['start'] = JRequest::getInt('limitstart', 0);
 		$filters['created_by'] = $member->get('uidNumber');
-		
+
 		$recipient = new Hubzero_Message_Message( $database );
-		
+
 		$total = $recipient->getSentMessagesCount( $filters );
-		
+
 		$rows = $recipient->getSentMessages( $filters );
 
 		jimport('joomla.html.pagination');
@@ -344,7 +328,7 @@ class plgMembersMessages extends JPlugin
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
 		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$pagenavhtml = str_replace('href="<li class=limit','href="members/'.$member->get('uidNumber').'/messages/inbox/?limit',$pagenavhtml);
-		
+
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -363,14 +347,12 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
-	//-----------
-	
-	public function sendtoarchive($database, $option, $member) 
+	public function sendtoarchive($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
-		
+
 		if (count($mids) > 0) {
-			foreach ($mids as $mid) 
+			foreach ($mids as $mid)
 			{
 				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
@@ -380,7 +362,7 @@ class plgMembersMessages extends JPlugin
 				if (!$recipient->store()) {
 					$this->setError( $recipient->getError() );
 				}
-				
+
 				$xseen = new Hubzero_Message_Seen( $database );
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
@@ -391,18 +373,16 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 		}
-		
+
 		return $this->inbox($database, $option, $member);
 	}
 
-	//-----------
-	
-	public function sendtoinbox($database, $option, $member) 
+	public function sendtoinbox($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
-		
+
 		if (count($mids) > 0) {
-			foreach ($mids as $mid) 
+			foreach ($mids as $mid)
 			{
 				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
@@ -414,24 +394,22 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 		}
-		
+
 		return $this->inbox($database, $option, $member);
 	}
 
-	//-----------
-	
-	public function sendtotrash($database, $option, $member) 
+	public function sendtotrash($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
-		
+
 		if (count($mids) > 0) {
-			foreach ($mids as $mid) 
+			foreach ($mids as $mid)
 			{
 				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
-				
+
 				$xseen = new Hubzero_Message_Seen( $database );
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
@@ -440,7 +418,7 @@ class plgMembersMessages extends JPlugin
 					$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
 					$xseen->store( true );
 				}
-				
+
 				$recipient->state = 2;
 				$recipient->expires = date( 'Y-m-d H:i:s', time()+(10*60*60*60) );
 				if (!$recipient->store()) {
@@ -448,31 +426,27 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 		}
-		
+
 		return $this->inbox($database, $option, $member);
 	}
-	
-	//-----------
-	
-	public function emptytrash($database, $option, $member) 
+
+	public function emptytrash($database, $option, $member)
 	{
 		$recipient = new Hubzero_Message_Recipient( $database );
 		$recipient->uid = $member->get('uidNumber');
 		if (!$recipient->deleteTrash()) {
 			$this->setError( $recipient->getError() );
 		}
-		
+
 		return $this->trash($database, $option, $member);
 	}
-	
-	//-----------
-	
-	public function delete($database, $option, $member) 
+
+	public function delete($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
-		
+
 		if (count($mids) > 0) {
-			foreach ($mids as $mid) 
+			foreach ($mids as $mid)
 			{
 				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
@@ -483,18 +457,16 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 		}
-		
+
 		return $this->trash($database, $option, $member);
 	}
-	
-	//-----------
-	
-	public function markasread($database, $option, $member) 
+
+	public function markasread($database, $option, $member)
 	{
 		$ids = JRequest::getVar('mid',array(0));
-		
+
 		if (count($ids) > 0) {
-			foreach ($ids as $mid) 
+			foreach ($ids as $mid)
 			{
 				$xseen = new Hubzero_Message_Seen( $database );
 				$xseen->mid = $mid;
@@ -506,18 +478,16 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 		}
-		
+
 		return $this->inbox($database, $option, $member);
 	}
-	
-	//-----------
-	
-	public function view($database, $option, $member, $mid) 
+
+	public function view($database, $option, $member, $mid)
 	{
 		$xmessage = new Hubzero_Message_Message( $database );
 		$xmessage->load( $mid );
 		$xmessage->message = stripslashes($xmessage->message);
-		
+
 		$xmr = new Hubzero_Message_Recipient( $database );
 		$xmr->loadRecord( $mid, $member->get('uidNumber') );
 
@@ -526,11 +496,11 @@ class plgMembersMessages extends JPlugin
 		$xmessage->message = preg_replace_callback("/$UrlPtrn/", array('plgMembersMessages','autolink'), $xmessage->message);
 		$xmessage->message = nl2br($xmessage->message);
 		$xmessage->message = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$xmessage->message);
-		
+
 		if (substr($xmessage->component,0,4) == 'com_') {
 			$xmessage->component = substr($xmessage->component,4);
 		}
-		
+
 		$xseen = new Hubzero_Message_Seen( $database );
 		$xseen->mid = $mid;
 		$xseen->uid = $member->get('uidNumber');
@@ -542,14 +512,14 @@ class plgMembersMessages extends JPlugin
 				$xseen->store( true );
 			}
 		}
-		
+
 		if (substr($xmessage->type, -8) == '_message') {
 			$u =& JUser::getInstance($xmessage->created_by);
 			$from = '<a href="'.JRoute::_('index.php?option='.$option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>'.n;
 		} else {
 			$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $xmessage->component);
 		}
-		
+
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -568,21 +538,19 @@ class plgMembersMessages extends JPlugin
 		}
 		return $view->loadTemplate();
 	}
-	
-	//-----------
 
-	public function autolink($matches) 
+	public function autolink($matches)
 	{
 		$href = $matches[0];
 
 		if (substr($href, 0, 1) == '!') {
 			return substr($href, 1);
 		}
-		
+
 		$href = str_replace('"','',$href);
 		$href = str_replace("'",'',$href);
 		$href = str_replace('&#8221','',$href);
-		
+
 		$h = array('h','m','f','g','n');
 		if (!in_array(substr($href,0,1), $h)) {
 			$href = substr($href, 1);
@@ -599,28 +567,24 @@ class plgMembersMessages extends JPlugin
 		);
 		return $l;
 	}
-	
-	//-----------
-	
+
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
-		for ($i = 0; $i < $length; $i++) 
+		for ($i = 0; $i < $length; $i++)
 		{
 			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
 		}
-		
+
 		return $obfuscatedEmail;
 	}
-	
-	//-----------
 
 	public function selectMethod($notimethods, $name, $values=array(), $ids=array())
 	{
 		$out = '';
 		$i = 0;
-		foreach ($notimethods as $notimethod) 
+		foreach ($notimethods as $notimethod)
 		{
 			$out .= t.t.t.t.t.'<td>'.n;
 			$out .= t.t.t.t.t.t.'<input type="checkbox" name="settings['.$name.'][]" class="opt-'.$notimethod.'" value="'.$notimethod.'"';
@@ -640,20 +604,18 @@ class plgMembersMessages extends JPlugin
 		}
 		return $out;
 	}
-	
-	//-----------
-	
-	public function settings($database, $option, $member) 
+
+	public function settings($database, $option, $member)
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
 			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
-		
+
 		$xmc = new Hubzero_Message_Component( $database );
 		$components = $xmc->getRecords();
-		
+
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -671,30 +633,30 @@ class plgMembersMessages extends JPlugin
 			}
 			return $view->loadTemplate();
 		}
-		
+
 		$settings = array();
-		foreach ($components as $component) 
+		foreach ($components as $component)
 		{
 			$settings[$component->action] = array();
 		}
-		
+
 		// Load plugins
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Fetch message methods
 		$notimethods = $dispatcher->trigger( 'onMessageMethods', array() );
-		
+
 		// A var for storing the default notification method
 		$default_method = null;
-		
+
 		// Instantiate our notify object
 		$notify = new Hubzero_Message_Notify( $database );
-		
+
 		// Get the user's selected methods
 		$methods = $notify->getRecords( $member->get('uidNumber') );
 		if ($methods) {
-			foreach ($methods as $method) 
+			foreach ($methods as $method)
 			{
 				$settings[$method->type]['methods'][] = $method->method;
 				$settings[$method->type]['ids'][$method->method] = $method->id;
@@ -719,7 +681,7 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 		}
-		
+
 		$view->settings = $settings;
 		$view->notimethods = $notimethods;
 		if ($this->getError()) {
@@ -727,22 +689,20 @@ class plgMembersMessages extends JPlugin
 		}
 		return $view->loadTemplate();
 	}
-	
-	//-----------
-	
-	public function savesettings($database, $option, $member) 
+
+	public function savesettings($database, $option, $member)
 	{
 		// Incoming
 		//$override = JRequest::getInt('override',0);
 		$settings = JRequest::getVar('settings',array());
 		$ids = JRequest::getVar('ids',array());
-		
+
 		// Ensure we have data to work with
 		if ($settings && count($settings) > 0) {
 			// Loop through each setting
-			foreach ($settings as $key=>$value) 
+			foreach ($settings as $key=>$value)
 			{
-				foreach ($value as $v) 
+				foreach ($value as $v)
 				{
 					if ($v) {
 						// Instantiate a Notify object and set its values
@@ -769,9 +729,9 @@ class plgMembersMessages extends JPlugin
 			}
 
 			$notify = new Hubzero_Message_Notify( $database );
-			foreach ($ids as $key=>$value) 
+			foreach ($ids as $key=>$value)
 			{
-				foreach ($value as $k=>$v) 
+				foreach ($value as $k=>$v)
 				{
 					if ($v > 0) {
 						$notify->delete( $v );
@@ -779,11 +739,11 @@ class plgMembersMessages extends JPlugin
 					}
 				}
 			}
-			
+
 			// If they previously had everything turned off, we need to remove that entry saying so
 			$records = $notify->getRecords( $member->get('uidNumber'), 'all' );
 			if ($records) {
-				foreach ($records as $record) 
+				foreach ($records as $record)
 				{
 					$notify->delete( $record->id );
 				}
@@ -794,7 +754,7 @@ class plgMembersMessages extends JPlugin
 			// and someone who purposely wants everything turned off.
 			$notify = new Hubzero_Message_Notify( $database );
 			$notify->uid = $member->get('uidNumber');
-			
+
 			$records = $notify->getRecords( $member->get('uidNumber'), 'all' );
 			if (!$records) {
 				$notify->clearAll();
@@ -806,14 +766,12 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 		}
-		
+
 		// Push through to the settings view
 		return $this->settings($database, $option, $member);
 	}
-	
-	//-----------
-	
-	private function create($database, $option, $member) 
+
+	private function create($database, $option, $member)
 	{
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -830,12 +788,10 @@ class plgMembersMessages extends JPlugin
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		return $view->loadTemplate();
 	}
-	
-	//-----------
-	
+
 	public function send($database, $option, $member)
 	{
 		// Ensure the user is logged in
@@ -843,31 +799,31 @@ class plgMembersMessages extends JPlugin
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Incoming array of users to message
 		$mbrs = JRequest::getVar( 'users', array(0), 'post' );
-		
+
 		// Incoming message and subject
 		$subject = JRequest::getVar( 'subject', JText::_('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE') );
 		$message = JRequest::getVar( 'message', '' );
 		$no_html = JRequest::getInt( 'no_html', 0 );
-		
+
 		if (!$subject || !$message) {
 			return false;
 		}
-		
+
 		// Build the "from" data for the e-mail
 		$from = array();
 		$from['name']  = $member->get('name');
 		$from['email'] = $member->get('email');
-		
+
 		// Send the message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'member_message', $subject, $message, $from, $mbrs, $option ))) {
 			$this->setError( JText::_('PLG_MEMBERS_MESSAGES_ERROR_MSG_USER_FAILED') );
 		}
-		
+
 		// Determine if we're returning HTML or not
 		// (if no - this is an AJAX call)
 		if (!$no_html) {

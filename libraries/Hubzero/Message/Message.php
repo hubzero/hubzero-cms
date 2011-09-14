@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class Hubzero_Message_Message extends JTable 
+class Hubzero_Message_Message extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
@@ -40,17 +39,15 @@ class Hubzero_Message_Message extends JTable
 	var $component  = NULL;  // @var varchar(100)
 	var $type       = NULL;  // @var varchar(100)
 	var $group_id   = NULL;  // @var int(11)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xmessage', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->message ) == '') {
 			$this->setError( JText::_('Please provide a message.') );
@@ -58,30 +55,24 @@ class Hubzero_Message_Message extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query = "SELECT COUNT(*) FROM $this->_tbl";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array() ) 
+
+	public function getRecords( $filters=array() )
 	{
 		$query = "SELECT * FROM $this->_tbl ORDER BY created DESC";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	private function buildQuery( $filters=array() ) 
+
+	private function buildQuery( $filters=array() )
 	{
 		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
 			$query  = "FROM $this->_tbl AS m, 
@@ -100,7 +91,7 @@ class Hubzero_Message_Message extends JTable
 		if (isset($filters['daily_limit']) && $filters['daily_limit'] != 0) {
 			$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
 			$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
-			
+
 			$query .= " AND m.created >= '$start' AND m.created <= '$end'";
 		}
 		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
@@ -112,10 +103,8 @@ class Hubzero_Message_Message extends JTable
 		}
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getSentMessages( $filters=array() ) 
+
+	public function getSentMessages( $filters=array() )
 	{
 		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
 			$query = "SELECT m.*, u.name ".$this->buildQuery( $filters );
@@ -126,15 +115,13 @@ class Hubzero_Message_Message extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getSentMessagesCount( $filters=array() ) 
+
+	public function getSentMessagesCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
-		
+
 		$query = "SELECT COUNT(*) ".$this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}

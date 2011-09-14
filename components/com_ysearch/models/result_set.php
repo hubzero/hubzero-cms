@@ -36,7 +36,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 	private static $plugin_weights;
 	private $tags = array(), $total_list_count, $limit, $widgets, $custom_title = NULL, $custom_mode = false, $offset, $pos = 0, $results = array(), $custom = array(), $processed_results = array(), $highlighter, $current_plugin, $total_count, $tag_mode = false, $result_counts = array(), $shown_results = array(), $sorters = array();
 
-	public function get_tags() 
+	public function get_tags()
 	{
 		return is_a($this->tags, 'YSearchResultEmpty') ? array() : $this->tags;
 	}
@@ -57,7 +57,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 
 	public function collect($force_generic = false)
 	{
-		if (!$this->terms->any() || !($positive_terms = $this->terms->get_positive_chunks())) 
+		if (!$this->terms->any() || !($positive_terms = $this->terms->get_positive_chunks()))
 			return;
 
 		$authz = new YSearchAuthorization();
@@ -87,20 +87,20 @@ class YSearchModelResultSet extends JModel implements Iterator
 		{
 			if (!JPluginHelper::isEnabled('ysearch', $plugin->name))
 				continue;
-			
+
 			$refl = new ReflectionClass("plgYSearch$plugin->name");
 			$this->current_plugin = $plugin->name;
 			$weighters[$plugin->name] = array();
-				
+
 			// generic resource plugin
 			if ($refl->hasMethod('onYSearch'))
 				$refl->getMethod('onYSearch')->invokeArgs(NULL, array($req, &$this, $authz));
-				
+
 			$this->result_counts[$plugin->name] = array(
-				'friendly_name' => 
-					$refl->hasMethod('getName') 
+				'friendly_name' =>
+					$refl->hasMethod('getName')
 						? $refl->getMethod('getName')->invoke(NULL)
-						: ucwords($plugin->name), 
+						: ucwords($plugin->name),
 				'plugin_name' => $plugin->name,
 				'count' => 0
 			);
@@ -108,7 +108,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 			// custom results like Google does when you enter a stock symbol. tags used to be implemented this way, but they got moved into the core so other plugins could use them to find tagged results
 			if ($refl->hasMethod('onYSearchWidget'))
 				$refl->getMethod('onYSearchWidget')->invokeArgs(NULL, array($req, &$this->widgets, $authz));
-				
+
 			if ($refl->hasMethod('onYSearchSort'))
 				$this->sorters[$plugin->name] = $refl->getMethod('onYSearchSort');
 		}
@@ -124,13 +124,13 @@ class YSearchModelResultSet extends JModel implements Iterator
 			$refl = new ReflectionClass($class);
 			if ($refl->hasMethod('onYSearchWeightAll'))
 				$weighters['all'][] = array($plugin->name, $refl->getMethod('onYSearchWeightAll'));
-		
+
 			foreach ($plugin_types as $type)
 				if ($refl->hasMethod("onYSearchWeight$type"))
 					$weighters[$type][] = array($plugin->name, $refl->getMethod("onYSearchWeight$type"));
 		}
 		$this->current_plugin = NULL;
-		
+
 		$this->highlighter = $this->terms->get_word_regex();
 		foreach ($this->results as $res)
 			$this->process_result($res);
@@ -146,7 +146,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 				foreach ($res->get_children() as $child)
 					$flat_results[] = $child;
 		}
-		
+
 		foreach ($flat_results as $res)
 		{
 			$plugin = $res->get_plugin();
@@ -176,11 +176,11 @@ class YSearchModelResultSet extends JModel implements Iterator
 			}
 		}
 		usort($this->shown_results, array($this, 'sort_results'));
-		
+
 		$links = array();
 		foreach ($this->shown_results as $res)
 			$links[] = array(spl_object_hash($res), $res->has_parent(), $res->get_links());
-		
+
 		$link_map = array();
 		foreach ($links as $row)
 		{
@@ -188,7 +188,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 			foreach ($rlinks as $link)
 				if (array_key_exists($id, $link_map))
 					$link_map[$link] = array(array($id, $has_parent));
-				else 
+				else
 					$link_map[$link][] = array($id, $has_parent);
 		}
 		$dont_show_because_nested_elsewhere = array();
@@ -208,7 +208,6 @@ class YSearchModelResultSet extends JModel implements Iterator
 				unset($this->shown_results[$idx]);
 				++$this->total_count;
 			}
-
 
 		if ($this->custom)
 		{
@@ -257,7 +256,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 
 			if (!array_key_exists('sections', $this->result_counts[$plugin]))
 				$this->result_counts[$plugin]['sections'] = array();
-		
+
 			foreach (array_merge(array($parent), $parent->get_children()) as $idx=>$res)
 			{
 				if ($idx > 0)
@@ -265,8 +264,8 @@ class YSearchModelResultSet extends JModel implements Iterator
 					--$this->total_list_count;
 					--$this->result_counts[$plugin]['list_count'];
 				}
-				
-				$section = $res->get_section();	
+
+				$section = $res->get_section();
 				if (!trim($section))
 					$section = 'Uncategorized';
 				$section_key = strtolower(str_replace(' ', '_', trim($section)));
@@ -285,7 +284,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 	private function sort_results($a, $b)
 	{
 		$weight = array(
-			'a' => 0, 
+			'a' => 0,
 			'b' => 0
 		);
 		if (($relevance_diff = $a->get_weight() - $b->get_weight()))
@@ -297,7 +296,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 		{
 			if (!($res = $sorter->invoke(NULL, $a, $b)))
 				continue;
-			
+
 			$weight[$res > 0 ? 'a' : 'b'] += array_key_exists($plugin, self::$plugin_weights) ? self::$plugin_weights[$plugin] : 1;
 		}
 
@@ -305,7 +304,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 		return $diff == 0 ? 0 : $diff > 0 ? -1 : 1;
 	}
 
-	public function __construct($terms) 
+	public function __construct($terms)
 	{
 		parent::__construct();
 		if (is_null(self::$plugin_weights) && $terms->any())
@@ -315,7 +314,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 			foreach ($this->_db->loadAssocList() as $weight)
 				self::$plugin_weights[$weight['plugin']] = $weight['weight'];
 		}
-		
+
 		$this->terms = $terms;
 		$this->widgets = array();
 	}
@@ -335,7 +334,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 	private function process_result($res)
 	{
 		$res = $res->to_associative();
-		
+
 		if (is_a($res, 'YSearchResultEmpty'))
 			return;
 
@@ -344,7 +343,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 			$res->highlight($this->highlighter);
 			$this->processed_results[] = $res;
 		}
-		else 
+		else
 			foreach ($res as $subres)
 				$this->process_result($subres);
 	}
@@ -366,7 +365,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 			return $this->result_counts[$term_plugin]['sections'][$term_section]['count'];
 		if ($term_plugin)
 			return $this->result_counts[$term_plugin]['list_count'];
-		
+
 		return $this->total_list_count;
 	}
 

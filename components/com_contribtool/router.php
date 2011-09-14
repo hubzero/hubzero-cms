@@ -45,7 +45,7 @@ function ContribtoolBuildRoute(&$query)
 		$segments[] = $query['alias'];
 		unset($query['alias']);
 	}
-		
+
 	if (!empty($query['rid'])) {
 		$segments[] = $query['rid'];
 		unset($query['rid']);
@@ -54,7 +54,6 @@ function ContribtoolBuildRoute(&$query)
 		$segments[] = $query['step'];
 		unset($query['step']);
 	}
-	
 
     return $segments;
 }
@@ -84,7 +83,7 @@ function ContribtoolParseRoute($segments)
         $vars['toolid'] = $segments[1];
         return $vars;
     }
-	
+
 	if ($segments[0] == 'create')
 	{
 		$vars['task'] = 'create';
@@ -178,8 +177,7 @@ function ContribtoolParseRoute($segments)
 		$vars['task'] = 'movess';
 		return $vars;
 	}
-	
-	
+
     return $vars;
 }
 

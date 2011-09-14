@@ -62,7 +62,7 @@ class YSearchModelRequest
 	private function load_tags()
 	{
 		$weight = 'match(t.raw_tag, t.alias, t.description) against (\''.join(' ', $this->term_ar['stemmed']).'\')';
-			
+
 		$addtl_where = array();
 		foreach ($this->term_ar['mandatory'] as $mand)
 			$addtl_where[] = "(t.raw_tag LIKE '%$mand%' OR t.alias LIKE '%$mand%' OR t.description LIKE '%$mand%')";

@@ -63,7 +63,7 @@ $types = array(
 				<?php echo JText::_('COM_FEATURES_OBJECT_TYPE'); ?>: <span class="required">*</span>
 				<select name="tbl" id="tbl">
 <?php 
-				foreach ($types as $avalue => $alabel) 
+				foreach ($types as $avalue => $alabel)
 				{
 ?>
 					<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->tbl || $alabel == $this->row->tbl) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>

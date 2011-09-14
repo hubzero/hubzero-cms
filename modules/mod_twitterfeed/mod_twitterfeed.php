@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Include the helper file  
 require_once(dirname(__FILE__).DS.'helper.php');
-  
+
 // Get a parameter from the module's configuration
 $moduleTitle = $params->get('moduleTitle');
 $twitterID  = $params->get('twitterID');
@@ -41,7 +41,7 @@ $displayIcon = $params->get('displayIcon');
 
 // Get the items to display from the helper
 $tweets = modTwitterFeedHelper::getTweets($twitterID, $tweetCount);
-  
+
 // Include the template for display  
 require(JModuleHelper::getLayoutPath('mod_twitterfeed'));
 

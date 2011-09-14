@@ -35,7 +35,7 @@ $wikiconfig = array(
 	'pagename' => $this->question->id,
 	'pageid'   => $this->question->id,
 	'filepath' => '',
-	'domain'   => '' 
+	'domain'   => ''
 );
 if (!$this->parser) {
 	ximport('Hubzero_Wiki_Parser');

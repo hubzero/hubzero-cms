@@ -32,21 +32,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 /* Add/Edit Wish */
 
 		$wishlist = $this->wishlist;
-		$wish = $this->wish; 
+		$wish = $this->wish;
 		$title = $this->title;
 		$option = $this->option;
 		$task = $this->task;
 		$admin = $this->admin;
 		$error = $this->getError();
-		$infolink = $this->infolink; 
+		$infolink = $this->infolink;
 		$juser = $this->juser;
 		$funds = $this->funds;
 		$banking = $this->banking;
-		
+
 		$html = '';
-		
+
 		if($wishlist) {
-		
+
 			// what is submitter name?
 			if($task=='editwish') {
 				$login  = JText::_('UNKNOWN');
@@ -55,22 +55,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$login = $ruser->get('username');
 				}
 			}
-			
+
 			$wish->subject = stripslashes($wish->subject);
 			$wish->subject = str_replace('&quote;','&quot;',$wish->subject);
 			$wish->subject = htmlspecialchars($wish->subject);
-					
+
 			$wish->about = trim(stripslashes($wish->about));
 			$wish->about = preg_replace('/<br\\s*?\/??>/i', "", $wish->about);
 			$wish->about = WishlistHtml::txt_unpee($wish->about);
-	
+
 			$html .= Hubzero_View_Helper_Html::div( Hubzero_View_Helper_Html::hed( 2, $title ), '', 'content-header' );
 			$html .= '<div id="content-header-extra">'.n;
 			$html .= t.'<ul id="useroptions">'.n;
 			$html .= t.t.'<li class="last"><a class="nav_wishlist" href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('WISHES_ALL').'</a></li>'.n;
 			$html .= t.'</ul>'.n;
 			$html .= '</div><!-- / #content-header-extra -->'.n;
-			$html .= '<div class="main section">'.n;	
+			$html .= '<div class="main section">'.n;
 			$html .= t.'<div class="aside">'.n;
 			$html .= t.'<p>'.JText::_('TEXT_ADD_WISH').'</p>'.n;
 			if($banking && $task!='editwish') {
@@ -85,7 +85,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if($task=='editwish') {
 				$html .= t.t.t.'	  <label>'.JText::_('WISH_PROPOSED_BY').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
 				$html .= t.t.t.'	  <input name="by" maxlength="50" id="by" type="text" value="'.$login.'" /></label>'.n;
-			}			
+			}
 			$html .= t.t.t.'	  <input type="hidden" id="proposed_by" name="proposed_by" value="'.$wish->proposed_by.'" />'.n;
 			$html .= t.t.t.'	  <label><input class="option" type="checkbox" name="anonymous" value="1" ';
 			$html .= ($wish->anonymous) ? 'checked="checked"' : '';
@@ -95,10 +95,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= ($wish->private) ? 'checked="checked"' : '';
 				$html .= '/>'.JText::_('WISH_MAKE_PRIVATE').'</label>'.n;
 			}
-			$html .= t.t.t.'	  <input type="hidden"  name="task" value="savewish" />'.n;					
+			$html .= t.t.t.'	  <input type="hidden"  name="task" value="savewish" />'.n;
 			$html .= t.t.t.'	  <input type="hidden" id="wishlist" name="wishlist" value="'.$wishlist->id.'" />'.n;
 			$html .= t.t.t.'	  <input type="hidden" id="status" name="status"  value="'.$wish->status.'" />'.n;
-			$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$wish->id.'" />'.n;	
+			$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$wish->id.'" />'.n;
 			$html .= t.t.t.'	  <label>Summary of your wish: <span class="required">'.JText::_('REQUIRED').'</span>'.n;
 			$html .= t.t.t.'	  <input name="subject" maxlength="120" id="subject" type="text" value="'.$wish->subject.'" /></label>'.n;
 			$html .= t.t.t.'	  <label>'.JText::_('WISH_EXPLAIN_IN_DETAIL').': '.n;
@@ -107,7 +107,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// Tag editor plug-in
 			JPluginHelper::importPlugin( 'hubzero' );
 			$dispatcher =& JDispatcher::getInstance();
-			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$wish->tags)) );			
+			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$wish->tags)) );
 			if (count($tf) > 0) {
 				$html .= $tf[0];
 			} else {
@@ -118,15 +118,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= t.t.'<label>'.JText::_('ASSIGN_REWARD').':<br />'.n;
 				$html .= t.t.'<input type="text" name="reward" value="" size="5" ';
 				if ($funds <= 0 ) {
-					$html .= 'disabled style="background:#e2e2e2;" ';		
+					$html .= 'disabled style="background:#e2e2e2;" ';
 				}
 				$html .= '/> <span class="subtext">'.JText::_('YOU_HAVE').' <strong>'.$funds.'</strong> '.JText::_('POINTS_TO_SPEND').'.</span></label>'.n;
 				$html .= t.t.t.'	  <input type="hidden"  name="funds" value="'.$funds.'" />'.n;
-			}		
+			}
 			$html .= t.t.t.'      <p class="submit"><input type="submit" value="'.JText::_('FORM_SUBMIT').'" /></p>'.n;
-			$html .= t.t.t.'	 </fieldset>'.n;			
-			$html .= t.t.t.' </form>'.n;			
-			$html .= '</div><div class="clear"></div></div>'.n;					
+			$html .= t.t.t.'	 </fieldset>'.n;
+			$html .= t.t.t.' </form>'.n;
+			$html .= '</div><div class="clear"></div></div>'.n;
 		}
 		else {
 			$html  = Hubzero_View_Helper_Html::error('ERROR_WISHLIST_NOT_FOUND').n;

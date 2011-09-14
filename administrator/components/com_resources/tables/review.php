@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourcesReview extends JTable 
+class ResourcesReview extends JTable
 {
 	var $resource_id = NULL;  // @var int(11)
 	var $user_id     = NULL;  // @var int(11)
@@ -39,17 +38,15 @@ class ResourcesReview extends JTable
 	var $created     = NULL;  // @var datetime(0000-00-00 00:00:00)
 	var $anonymous   = NULL;  // @var int(3)
 	var $id          = NULL;  // @var int(11) primary key
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_ratings', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->rating ) == '') {
 			$this->setError( JText::_('Your review must have a rating.') );
@@ -57,13 +54,11 @@ class ResourcesReview extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadUserReview( $resourceid, $userid ) 
+
+	public function loadUserReview( $resourceid, $userid )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE resource_id=".$resourceid." AND user_id=".$userid." LIMIT 1" );
-		
+
 		//return $this->_db->loadObject( $this );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -72,21 +67,17 @@ class ResourcesReview extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function loadUserRating( $resourceid, $userid ) 
+
+	public function loadUserRating( $resourceid, $userid )
 	{
 		$this->_db->setQuery( "SELECT rating FROM $this->_tbl WHERE resource_id=".$resourceid." AND user_id=".$userid." LIMIT 1" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getRatings( $id=NULL )
 	{
 		$juser =& JFactory::getUser();
-		
+
 		if (!$id) {
 			$id = $this->resource_id;
 		}
@@ -99,16 +90,14 @@ class ResourcesReview extends JTable
 			."\n WHERE rr.resource_id=".$id."  ORDER BY rr.created DESC" );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getRating( $id=NULL, $userid )
 	{
 		if (!$userid) {
 			$juser =& JFactory::getUser();
 			$userid = $juser->get('id');
 		}
-		
+
 		if (!$id) {
 			$id = $this->resource_id;
 		}
@@ -121,19 +110,17 @@ class ResourcesReview extends JTable
 			."\n WHERE rr.id=".$id." " );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getVote( $id, $category = 'review', $uid )
 	{
 		if (!$id) {
 			$id = $this->id;
 		}
-		
+
 		if ($id === NULL or $uid === NULL) {
 			return false;
 		}
-		
+
 		$query  = "SELECT v.helpful ";
 		$query .= "FROM #__vote_log as v  ";
 		$query .= "WHERE v.referenceid = '".$id."' AND v.category='".$category."' AND v.voter='".$uid."' LIMIT 1";

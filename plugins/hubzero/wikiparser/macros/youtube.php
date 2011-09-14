@@ -29,11 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-class YoutubeMacro extends WikiMacro 
+class YoutubeMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = "Embeds a Youtube Video into the Page";
@@ -46,34 +44,32 @@ class YoutubeMacro extends WikiMacro
 						</ul>
 						<p>Displays:</p>
 						<iframe src="http://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0"></iframe>';
-		
+
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		//get the args passed in
 		$content = $this->args;
-		
+
 		//declare the partial youtube embed url
 		$youtube_url = "http://www.youtube.com/embed/";
-		
+
 		// args will be null if the macro is called without parenthesis.
 		if (!$content) {
 			return '';
 		}
-		
+
 		//check is user entered full youtube url or just Video Id
 		if (strstr($content,'http')) {
 			//split the string into two parts 
 			//uri and query string
 			$full_url_parts = explode("?",$content);
-			
+
 			//split apart any key=>value pairs in query string
 			$query_string_parts = explode("%26%2338%3B",urlencode($full_url_parts[1]));
-			
+
 			//foreach query string parts
 			//explode at equals sign
 			//check to see if v is the first part and if it is set the second part to the video id
@@ -87,10 +83,10 @@ class YoutubeMacro extends WikiMacro
 		} else {
 			$video_id = $content;
 		}
-		
+
 		//append to the youtube url
 		$youtube_url .= $video_id;
-		
+
 		//return the emdeded youtube video
 		return "<iframe src=\"{$youtube_url}\" width=\"640\" height=\"380\"></iframe>";
 	}

@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class CitationsCitation extends JTable
 {
 	var $id             	= NULL;  // @var int(11) Primary key
@@ -78,14 +77,12 @@ class CitationsCitation extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__citations', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->title ) == '') {
 			$this->setError( JText::_('CITATION_MUST_HAVE_TITLE') );
@@ -93,27 +90,25 @@ class CitationsCitation extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getCount( $filter=array(), $admin=true ) 
+
+	public function getCount( $filter=array(), $admin=true )
 	{
 		$filter['sort'] = '';
 		$filter['limit'] = 0;
-		
+
 		$query = "SELECT count(DISTINCT r.id) FROM $this->_tbl AS r";
 		if (isset($filter['geo']) || isset($filter['aff'])) {
 			$q = false;
 			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
-			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) 
-			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) 
+			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
+			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
 			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) {
 				// Show all
 			} else {
 				$q = true;
 			}
 			if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
-			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1) 
+			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
 			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) {
 				// Show all
 			} else {
@@ -128,10 +123,8 @@ class CitationsCitation extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filter=array(), $admin=true ) 
+
+	public function buildQuery( $filter=array(), $admin=true )
 	{
 		$query = "";
 		if ($admin) {
@@ -166,23 +159,23 @@ class CitationsCitation extends JTable
 				$query .= " AND r.year='".$filter['year']."'";
 			}
 			if (isset($filter['search']) && $filter['search']!='') {
-				$query .= ($filter['search']) 
+				$query .= ($filter['search'])
 						? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' 
 							OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%' 
-							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')" 
+							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')"
 						: "";
 			}
 			if (isset($filter['reftype'])) {
 				if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
-				 && (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1) 
-				 && (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1) 
+				 && (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
+				 && (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
 				 && (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1)) {
 					// Show all
 				} else {
 					$query .= " AND";
 					$multi = 0;
 					$o = 0;
-					foreach ($filter['reftype'] as $g) 
+					foreach ($filter['reftype'] as $g)
 					{
 						if ($g == 1) {
 							$multi++;
@@ -225,14 +218,14 @@ class CitationsCitation extends JTable
 			}
 			if (isset($filter['aff'])) {
 				if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
-				 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1) 
+				 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
 				 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) {
 					// Show all
 				} else {
 					$query .= " AND ca.cid=r.id AND";
 					$multi = 0;
 					$o = 0;
-					foreach ($filter['aff'] as $g) 
+					foreach ($filter['aff'] as $g)
 					{
 						if ($g == 1) {
 							$multi++;
@@ -268,18 +261,18 @@ class CitationsCitation extends JTable
 			}
 			if (isset($filter['geo'])) {
 				if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
-				 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) 
-				 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) 
+				 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
+				 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
 				 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) {
 					// Show all
 				} else {
 					ximport('Hubzero_Geo');
-					
+
 					$query .= " AND ca.cid=r.id AND";
-					
+
 					$multi = 0;
 					$o = 0;
-					foreach ($filter['geo'] as $g) 
+					foreach ($filter['geo'] as $g)
 					{
 						if ($g == 1) {
 							$multi++;
@@ -335,10 +328,8 @@ class CitationsCitation extends JTable
 		}
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getRecords( $filter=array(), $admin=true ) 
+
+	public function getRecords( $filter=array(), $admin=true )
 	{
 		$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
 					FROM $this->_tbl AS r 
@@ -346,15 +337,15 @@ class CitationsCitation extends JTable
 		if (isset($filter['geo']) || isset($filter['aff'])) {
 			$q = false;
 			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
-			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) 
-			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) 
+			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
+			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
 			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) {
 				// Show all
 			} else {
 				$q = true;
 			}
 			if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
-			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1) 
+			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
 			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) {
 				// Show all
 			} else {
@@ -369,33 +360,29 @@ class CitationsCitation extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getStats() 
+
+	public function getStats()
 	{
 		$stats = array();
-		
-		for ($i=date("Y"), $n=1998; $i > $n; $i--) 
+
+		for ($i=date("Y"), $n=1998; $i > $n; $i--)
 		{
 			$stats[$i] = array();
-			
+
 			$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year='".$i."' AND affiliated=1" );
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
-			
+
 			$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year='".$i."' AND affiliated=0" );
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
-		
+
 		return $stats;
 	}
-	
-	//-----------
-	
+
 	public function getCitations( $tbl, $oid )
 	{
 		$ca = new CitationsAssociation( $this->_db );
-		
+
 		$sql = "SELECT DISTINCT c.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
 				FROM $this->_tbl AS c 
 				LEFT JOIN #__citations_secondary as CS ON c.id=CS.cid, $ca->_tbl AS a 
@@ -405,18 +392,16 @@ class CitationsCitation extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getLastCitationDate( $tbl, $oid )
 	{
 		$ca = new CitationsAssociation( $this->_db );
-		
+
 		$sql = "SELECT c.created "
 			 . "\n FROM $this->_tbl AS c, $ca->_tbl AS a"
 			 . "\n WHERE c.published=1 AND a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
 			 . "\n ORDER BY created DESC LIMIT 1";
-	
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}

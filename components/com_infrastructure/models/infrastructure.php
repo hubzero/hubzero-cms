@@ -62,7 +62,7 @@ jimport( 'joomla.application.component.model' );
 				$result[] = $file;
 		}
 	}
-	
+
 	closedir($dh);
 	return $result;
     }

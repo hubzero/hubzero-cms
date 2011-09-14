@@ -32,39 +32,39 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class modTwitterFeedHelper
 {
-	public function getTweets( $twitterID, $tweetCount ) 
+	public function getTweets( $twitterID, $tweetCount )
 	{
 		//declare variables
 		$i = 0;
 		$tweets = array();
 		$tweets['error'] = '';
 		$subtract = strlen($twitterID) + 2;
-		
+
 		//Check to make sure a twitter ID has been entered
 		if ($twitterID == null || $twitterID == '') {
 			$tweets['error'] = JText::_('MOD_TWITTERFEED_MISSING_ID');
 		}
-		
+
 		//Check to make sure admin didnt set # of Tweets to display too high or too low
 		if ($tweetCount > 10 || $tweetCount < 0 || $tweetCount == '') {
 			$tweetCount = 3;
 		}
-		
+
 		//Declare Twitter user rss feed with TwitterID from Module Manager
 		$tweetURL = 'http://twitter.com/statuses/user_timeline/'.$twitterID.'.rss';
-		
+
 		//set options for parsing feed
 		$options = array();
 		$options['rssUrl'] = $tweetURL;
-		
+
 		//Parse the rss feed
 		$twitter =& JFactory::getXMLparser('rss', $options);
-		
+
 		// Check to make sure the RSS feed was parsed corectly
 		if (!isset($twitter) && $tweets['error'] == '') {
 			$tweets['error'] = JText::_('MOD_TWITTERFEED_INVALID_ID');
 		}
-		
+
 		//Check to make sure there are no errors before obtaining tweets
 		if ($tweets['error'] == '')  {
 			// For each slice of pie we've got to get the goods

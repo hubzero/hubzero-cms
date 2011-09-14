@@ -54,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<select class="option" name="action">
 					<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
 <?php 
-			switch ($this->xmr->state) 
+			switch ($this->xmr->state)
 			{
 				case 2:
 ?>

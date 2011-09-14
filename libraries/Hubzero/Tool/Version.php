@@ -1191,7 +1191,7 @@ class Hubzero_Tool_Version
                     {
                         $query .= '(' . $db->Quote($this->toolname) . ',' .
                             $db->Quote($this->revision) . ',' . $db->Quote($value['uid']) . ',' .
-                            $db->Quote($order) . ',' . $db->Quote($this->id) . ',' . 
+                            $db->Quote($order) . ',' . $db->Quote($this->id) . ',' .
                             $db->Quote($value['name']) . ',' . $db->Quote($value['organization']) . ')';
 		            }
                     else if ($property == 'member')
@@ -1433,13 +1433,13 @@ class Hubzero_Tool_Version
 
 		if ($this->state == 3)
 		{
-        	$db->setQuery("DELETE FROM #__trac_user_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name=" . 
+        	$db->setQuery("DELETE FROM #__trac_user_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name=" .
 				$db->Quote($this->toolname));
         	$db->query();
-        	$db->setQuery("DELETE FROM #__trac_group_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name=" . 
+        	$db->setQuery("DELETE FROM #__trac_group_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name=" .
 				$db->Quote($this->toolname));
         	$db->query();
-        	$db->setQuery("DELETE FROM #__trac as t WHERE t.scope='tool' AND t.name=" . 
+        	$db->setQuery("DELETE FROM #__trac as t WHERE t.scope='tool' AND t.name=" .
 				$db->Quote($this->toolname));
         	$db->query();
 		}
@@ -1600,7 +1600,7 @@ class Hubzero_Tool_Version
             $this->$property = array_map("strtolower",
                 array_values(array_unique(array_diff((array) $value, array('')))));
         }
-		else if ($property == 'xauthor') 
+		else if ($property == 'xauthor')
 		{
 			if (array_key_exists('uid',$value))
 				$value = array($value);

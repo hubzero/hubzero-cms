@@ -41,7 +41,7 @@ function whatsnewBuildRoute(&$query)
         $segments[] = $query['task'];
         unset($query['task']);
     }
- 
+
     return $segments;
 }
 
@@ -58,7 +58,7 @@ function whatsnewParseRoute($segments)
 	if (isset($segments[1])) {
 		$vars['task'] = $segments[1];
 	}
-	
+
     return $vars;
 }
 

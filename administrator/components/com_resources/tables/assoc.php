@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourcesAssoc extends JTable 
+class ResourcesAssoc extends JTable
 {
 	var $parent_id = NULL;  // @var int(11)
 	var $child_id  = NULL;  // @var int(11)
 	var $ordering  = NULL;  // @var int(11)
 	var $grouping  = NULL;  // @var int(11)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_assoc', 'parent_id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->child_id ) == '') {
 			$this->setError( JText::_('Your resource association must have a child.') );
@@ -54,10 +51,8 @@ class ResourcesAssoc extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadAssoc( $pid, $cid ) 
+
+	public function loadAssoc( $pid, $cid )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE parent_id=".$pid." AND child_id=".$cid );
 		if ($result = $this->_db->loadAssoc()) {
@@ -67,17 +62,15 @@ class ResourcesAssoc extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function getNeighbor( $move ) 
+
+	public function getNeighbor( $move )
 	{
-		switch ($move) 
+		switch ($move)
 		{
 			case 'orderup':
 				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=".$this->parent_id." AND ordering < ".$this->ordering." ORDER BY ordering DESC LIMIT 1";
 				break;
-			
+
 			case 'orderdown':
 				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=".$this->parent_id." AND ordering > ".$this->ordering." ORDER BY ordering LIMIT 1";
 				break;
@@ -91,10 +84,8 @@ class ResourcesAssoc extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function getLastOrder( $pid=NULL ) 
+
+	public function getLastOrder( $pid=NULL )
 	{
 		if (!$pid) {
 			$pid = $this->parent_id;
@@ -102,10 +93,8 @@ class ResourcesAssoc extends JTable
 		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl WHERE parent_id=".$pid." ORDER BY ordering DESC LIMIT 1" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function delete( $pid=NULL, $cid=NULL ) 
+
+	public function delete( $pid=NULL, $cid=NULL )
 	{
 		if (!$pid) {
 			$pid = $this->parent_id;
@@ -121,10 +110,8 @@ class ResourcesAssoc extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
 
-	public function store( $new=false ) 
+	public function store( $new=false )
 	{
 		if (!$new) {
 			$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=".$this->ordering.", grouping=".$this->grouping." WHERE child_id=".$this->child_id." AND parent_id=".$this->parent_id);
@@ -143,10 +130,8 @@ class ResourcesAssoc extends JTable
 			return true;
 		}
 	}
-	
-	//-----------
-	
-	public function getCount( $pid=NULL ) 
+
+	public function getCount( $pid=NULL )
 	{
 		if (!$pid) {
 			$pid = $this->parent_id;

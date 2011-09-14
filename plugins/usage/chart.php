@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_chart' );
-
-//-----------
 
 class plgUsageChart extends JPlugin
 {
@@ -47,8 +43,6 @@ class plgUsageChart extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -56,31 +50,29 @@ class plgUsageChart extends JPlugin
 		);
 		return $areas;
 	}
-	
+
 	//-------------------------------------------------
 	//  Returns TRUE if there is data in the database
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
-	
-	private function check_for_data(&$db, $yearmonth, $period) 
+
+	private function check_for_data(&$db, $yearmonth, $period)
 	{
 	   	$sql = "SELECT COUNT(datetime) FROM totalvals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
 		$db->setQuery( $sql );
-		$result = $db->loadResult();   	
+		$result = $db->loadResult();
 
 	   	if ($result && $result > 0) {
 			return(true);
 	   	}
 	   	return(false);
 	}
-	
-	//-----------
-	
-	private function getChartData($db, $id, $period, $datetime) 
+
+	private function getChartData($db, $id, $period, $datetime)
 	{
 		$data = array();
-		
-		switch ($period) 
+
+		switch ($period)
 		{
 			case '0':
 				$thisyear = date("Y");
@@ -111,7 +103,7 @@ class plgUsageChart extends JPlugin
 
 			// Find the highest value
 			$vals = array();
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				$vals[] = $result->value;
 			}
@@ -141,7 +133,7 @@ class plgUsageChart extends JPlugin
 				$t = round($highest,-1);
 			}
 			$data['range']['step'] = $t/10;
-			
+
 			$e = end($results);
 			$data['title'] = JHTML::_('date', $results[0]->datetime, "%b. %Y").' - '.JHTML::_('date', $e->datetime, "%b. %Y");
 
@@ -149,10 +141,10 @@ class plgUsageChart extends JPlugin
 			$data['points'] = array();
 			$data['dates'] = array();
 			$data['datetime'] = array();
-			switch ($period) 
+			switch ($period)
 			{
 				case '13':
-					foreach ($results as $result) 
+					foreach ($results as $result)
 					{
 						$data['datetime'][] = $result->datetime;
 						$data['dates'][] = JHTML::_('date', $result->datetime, "%b. %Y");
@@ -160,7 +152,7 @@ class plgUsageChart extends JPlugin
 					}
 				break;
 				case '12':
-					foreach ($results as $result) 
+					foreach ($results as $result)
 					{
 						$data['datetime'][] = $result->datetime;
 						$data['dates'][] = JHTML::_('date', $result->datetime, "%b. %Y");
@@ -172,7 +164,7 @@ class plgUsageChart extends JPlugin
 					$data['datetime'][] = $results[0]->datetime;
 					$data['dates'][] = JHTML::_('date', $results[0]->datetime, "%b. %Y");
 					$data['points'][] = intval($results[0]->value);
-					foreach ($results as $result) 
+					foreach ($results as $result)
 					{
 						$i++;
 						if ($i == 4) {
@@ -188,7 +180,7 @@ class plgUsageChart extends JPlugin
 					$data['datetime'][] = $results[0]->datetime;
 					$data['dates'][] = JHTML::_('date', $results[0]->datetime, "%b. %Y");
 					$data['points'][] = intval($results[0]->value);
-					foreach ($results as $result) 
+					foreach ($results as $result)
 					{
 						$i++;
 						if ($i == 12) {
@@ -201,7 +193,7 @@ class plgUsageChart extends JPlugin
 				break;
 				case '1':
 				default:
-					foreach ($results as $result) 
+					foreach ($results as $result)
 					{
 						$data['datetime'][] = $result->datetime;
 						$data['dates'][] = JHTML::_('date', $result->datetime, "%b. %Y");
@@ -210,18 +202,16 @@ class plgUsageChart extends JPlugin
 				break;
 			}
 		}
-		
+
 		return $data;
 	}
-	
-	//-----------
-	
-	private function getPieData(&$db, $id, $period, $datetime, $group='residence') 
+
+	private function getPieData(&$db, $id, $period, $datetime, $group='residence')
 	{
 		$data = array();
 		$data['title'] = '';
 		$data['values'] = array();
-		
+
 		$labels = array();
 		$labels[] = JText::_('Totals');
 		$labels[] = JText::_('Identified');
@@ -234,17 +224,17 @@ class plgUsageChart extends JPlugin
 		$labels[] = JText::_('Ind.');
 		$labels[] = JText::_('Gov.');
 		$labels[] = JText::_('Other');
-		
+
 		$sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid='".$id."' AND period='".$period."' AND datetime ='".$datetime."' ORDER BY colid";
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
 		if ($results) {
 			$i = 0;
 			$t = 0;
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$i++;
-				switch ($group) 
+				switch ($group)
 				{
 					case 'residence':
 						if ($i == 2) {
@@ -256,7 +246,7 @@ class plgUsageChart extends JPlugin
 							$data['values'][] = new pie_value($v, $labels[$i-1]);
 						}
 					break;
-					
+
 					case 'organization':
 						if ($i == 7) {
 							$data['title'] = JText::_('by Organization');
@@ -274,9 +264,7 @@ class plgUsageChart extends JPlugin
 		return $data;
 	}
 
-	//-----------
-
-	private function fmt_result($value, $fmt) 
+	private function fmt_result($value, $fmt)
 	{
 		$valfmt[0]='-'; // blank. for future use
 		$valfmt[1]=' '; // no units
@@ -306,33 +294,31 @@ class plgUsageChart extends JPlugin
 		}
 	}
 
-	//-----------
-
-	private function navlinks($option, $task, $period='prior12') 
+	private function navlinks($option, $task, $period='prior12')
 	{
 		$html  = '<div id="sub-sub-menu">'."\n";
 		$html .= "\t".'<ul>'."\n";
-		$html .= "\t\t".'<li';    
+		$html .= "\t\t".'<li';
 		if ($period == 'prior12') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=prior12').'"><span>'.JText::_('USAGE_PERIOD_PRIOR12').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 	    if ($period == 'month') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=month').'"><span>'.JText::_('USAGE_PERIOD_MONTH').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 	    if ($period == 'qtr') {
 			$html .= ' class="active"';
 		}
 	    $html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=qtr').'"><span>'.JText::_('USAGE_PERIOD_QTR').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 		if ($period == 'year') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=year').'"><span>'.JText::_('USAGE_PERIOD_YEAR').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 		if ($period == 'fiscal') {
 			$html .= ' class="active"';
 		}
@@ -343,15 +329,13 @@ class plgUsageChart extends JPlugin
 	    return $html;
 	}
 
-	//-----------
-
-	protected function outputData($option, $label, $db, $id, $period, $datetime) 
+	protected function outputData($option, $label, $db, $id, $period, $datetime)
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'ofc'.DS.'php-ofc-library'.DS.'open-flash-chart.php' );
-		
+
 		// ------
 		// Chart 1
-		
+
 		$data = $this->getChartData($db, $id, $period, $datetime);
 
 		$title1 = new title( $data['title'] );
@@ -374,12 +358,12 @@ class plgUsageChart extends JPlugin
 		$chart1->set_bg_colour( '#ffffff' );
 		$chart1->set_title( $title1 );
 		$chart1->add_element( $line );
-		
+
 		$x_labels = new x_axis_labels();
 		$x_labels->set_vertical();
 		$x_labels->set_colour( '#A2ACBA' );
 		$x_labels->set_labels( $data['dates'] );
-		
+
 		$x = new x_axis();
 		$x->set_grid_colour( '#f1f1f1' );
 		$x->set_offset( false );
@@ -390,22 +374,22 @@ class plgUsageChart extends JPlugin
 		$y->set_grid_colour( '#f1f1f1' );
 		$y->set_colour( '#000000' );
 		$y->set_range( $data['range']['start'], $data['range']['end'], $data['range']['step'] );
-		
+
 		$chart1->set_x_axis( $x );
 		$chart1->set_y_axis( $y );
-		
+
 		// ------
 		// Chart 2
-		
+
 		$datetimes = $data['datetime'];
-		
+
 		//$pd = array();
 		$piecharts1 = array();
 		$piecharts2 = array();
-		foreach ($datetimes as $dt) 
+		foreach ($datetimes as $dt)
 		{
 			$piedata1 = $this->getPieData($db, $id, $period, $dt, 'residence');
-			
+
 			$title = new title( JHTML::_('date', $dt, "%b. %Y").' '.$piedata1['title'] );
 
 			$pie = new pie();
@@ -419,9 +403,9 @@ class plgUsageChart extends JPlugin
 			$pchart1->set_bg_colour( '#ffffff' );
 			$pchart1->add_element( $pie );
 			$pchart1->x_axis = null;
-			
+
 			$piecharts1[] = $pchart1;
-			
+
 			$piedata2 = $this->getPieData($db, $id, $period, $dt, 'organization');
 
 			$title3 = new title( JHTML::_('date', $dt, "%b. %Y").' '.$piedata2['title'] );
@@ -437,13 +421,13 @@ class plgUsageChart extends JPlugin
 			$pchart2->set_bg_colour( '#ffffff' );
 			$pchart2->add_element( $pie );
 			$pchart2->x_axis = null;
-			
+
 			$piecharts2[] = $pchart2;
 		}
-		
+
 		// ------
 		// Output
-		
+
 		$js = '
 		window.addEvent("domready", function(){
 			swfobject.embedSWF("/libraries/ofc/open-flash-chart.swf", "chart1", "600", "350", "9.0.0", "expressInstall.swf", {"get-data":"get_data_1"});
@@ -483,32 +467,30 @@ class plgUsageChart extends JPlugin
 		
 		';
 		$n = count($data['points']);
-		for ($i = 0; $n > $i; $i++) 
+		for ($i = 0; $n > $i; $i++)
 		{
 			$js .= 'data[1]['.$i.'] = '.$piecharts1[$i]->toPrettyString().';'."\n";
 			$js .= 'data[2]['.$i.'] = '.$piecharts2[$i]->toPrettyString().';'."\n";
 		}
-		
+
 		$document =& JFactory::getDocument();
 		$document->addScriptDeclaration( $js );
 	}
 
-	//-----------
-
-	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate ) 
+	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for
 		if ($task) {
-			if (!in_array( $task, $this->onUsageAreas() ) 
+			if (!in_array( $task, $this->onUsageAreas() )
 			 && !in_array( $task, array_keys( $this->onUsageAreas() ) )) {
 				return '';
 			}
 		}
-		
+
 		// Incoming
 		$period = JRequest::getVar('period', 'prior12');
 		$selectedPeriod = JRequest::getVar('selectedPeriod', '');
-		
+
 		if (!$selectedPeriod) {
 	        $sql = "SELECT MAX(datetime) FROM summary_collab_vals";
 			$db->setQuery( $sql );
@@ -537,12 +519,12 @@ class plgUsageChart extends JPlugin
 	    } else {
 	        $page = 'new';
 	    }
-	
+
 		if ($period == 'nice') {
 			$page = 'old';
 			$selectedPeriod = '2007-09';
 		}
-		
+
 		// Get and set some vars
 		$cur_year = floor(date("Y"));
 		$cur_month = floor(date("n"));
@@ -572,7 +554,7 @@ class plgUsageChart extends JPlugin
 
 		$html  = $this->navlinks($option, $task, $period);
 		//$html .= '<div class="main section overview" id="statistics">'."\n";
-		
+
 		//$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.'&task='.$task.'&period='.$period) .'">'."\n";
 		//$html .= t.'<fieldset class="filters"><label>'.JText::_('USAGE_SHOW_DATA_FOR').': ';
 		$html .= '<div class="aside">'."\n";
@@ -581,14 +563,14 @@ class plgUsageChart extends JPlugin
 		$html .= '<div class="subject">'."\n";
 		$html .= '<input type="hidden" name="period" id="period" value="'.$period.'" />'."\n";
 		//$html .= '<select name="selectedPeriod">'."\n";
-		switch ($period) 
+		switch ($period)
 		{
 			case '12':
 			case 'prior12':
 			case 'nice':
 				//$option = 'prior12';
 				$period = '12';
-				
+
 				/*$arrayMonths = array_values($months);
 				for ($i = $cur_year; $i >= $year_data_start; $i--) 
 				{
@@ -616,12 +598,12 @@ class plgUsageChart extends JPlugin
 					}
 				}*/
 			break;
-			
+
 			case '1':
 			case 'month':
 				//$option = 'month';
 				$period = '1';
-				
+
 				/*for ($i = $cur_year; $i >= $year_data_start; $i--) 
 				{
 					foreach ($monthsReverse as $key => $month) 
@@ -637,12 +619,12 @@ class plgUsageChart extends JPlugin
 					}
 				}*/
 			break;
-			
+
 			case '3':
 			case 'qtr':
 				//$option = 'qtr';
 				$period = '3';
-				
+
 				/*$qtd_found = 0;
 				foreach ($monthsReverse as $key => $month) 
 				{
@@ -710,12 +692,12 @@ class plgUsageChart extends JPlugin
 					}
 				}*/
 			break;
-			
+
 			case '13':
 			case 'fiscal':
 				//$option = 'fiscal';
 				$period = '13';
-				
+
 				/*$ytd_found = 0;
 				foreach ($monthsReverse as $key => $month) 
 				{
@@ -751,12 +733,12 @@ class plgUsageChart extends JPlugin
 					}
 				}*/
 			break;
-			
+
 			case '0':
 			case 'year':
 				//$option = 'year';
 				$period = '0';
-				
+
 				/*$ytd_found = 0;
 				foreach ($monthsReverse as $key => $month) 
 				{
@@ -785,8 +767,6 @@ class plgUsageChart extends JPlugin
 		}
 		/*$html .= '</select></label> <input type="submit" value="'.JText::_('USAGE_VIEW').'" /></fieldset>'."\n";
 		$html .= '</form>'."\n";*/
-		
-		//--------------------------------
 
 		$html .= '<div id="chart1"></div><br />'."\n";
 		$html .= '<div id="chart2"></div>'."\n";
@@ -805,7 +785,7 @@ class plgUsageChart extends JPlugin
 		//}
 		$html .= '</div><!-- / .subject -->'."\n";
 		//$html .= '</div><!-- / .main section -->'."\n";
-		
+
 		return $html;
 	}
 }

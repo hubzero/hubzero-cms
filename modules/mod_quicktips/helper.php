@@ -35,21 +35,18 @@ class modQuickTips
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,7 +55,6 @@ class modQuickTips
 	}
 
 	//-----------
-
 	public function display()
 	{
 		$database =& JFactory::getDBO();

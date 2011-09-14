@@ -90,15 +90,15 @@ class Hubzero_User_Profile extends JObject
 
 	// static class variables
 	static $_s_propertyattrmap = array('username' => 'uid', 'name' => 'cn', 'uidNumber' => 'uidNumber',
-			'gidNumber' => 'gidNumber', 'homeDirectory' => 'homeDirectory', 'email' => 'mail', 
-			'registerDate' => 'regDate', 'loginShell' => 'loginShell', 'ftpShell' => 'ftpShell', 
-			'userPassword' => 'userPassword', 'gid' => 'gid', 'orgtype' => 'orgtype', 
+			'gidNumber' => 'gidNumber', 'homeDirectory' => 'homeDirectory', 'email' => 'mail',
+			'registerDate' => 'regDate', 'loginShell' => 'loginShell', 'ftpShell' => 'ftpShell',
+			'userPassword' => 'userPassword', 'gid' => 'gid', 'orgtype' => 'orgtype',
 			'organization' => 'o', 'countryresident' => 'countryresident', 'countryorigin' => 'countryorigin',
-			'gender' => 'sex', 'url' => 'url', 'reason' => 'description', 
-			'mailPreferenceOption' => 'mailPreferenceOption', 'usageAgreement' => 'usageAgreement', 
-			'jobsAllowed' => 'jobsAllowed', 'modifiedDate' => 'modDate', 'emailConfirmed' => 'emailConfirmed', 
+			'gender' => 'sex', 'url' => 'url', 'reason' => 'description',
+			'mailPreferenceOption' => 'mailPreferenceOption', 'usageAgreement' => 'usageAgreement',
+			'jobsAllowed' => 'jobsAllowed', 'modifiedDate' => 'modDate', 'emailConfirmed' => 'emailConfirmed',
 			'regIP' => 'regIP', 'regHost' => 'regHost', 'nativeTribe' => 'nativeTribe', 'phone' => 'homePhone',
-			'proxyUidNumber' => 'proxyUidNumber', 'proxyPassword' => 'proxyPassword', 'disability' => 'disability', 
+			'proxyUidNumber' => 'proxyUidNumber', 'proxyPassword' => 'proxyPassword', 'disability' => 'disability',
 			'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel',
 			'role' => 'role', 'shadowExpire' => 'shadowExpire');
 
@@ -127,7 +127,7 @@ class Hubzero_User_Profile extends JObject
 		{
 			if ('_s_' == substr($property, 0, 3)) // don't touch static variables
 				continue;
-			
+
 			unset($this->$property);
 			$this->$property = $value;
 		}
@@ -162,7 +162,7 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 
-		if (is_numeric($username) && $username >= 0) 
+		if (is_numeric($username) && $username >= 0)
 		{
 			$dn = 'ou=users,' . $hubLDAPBaseDN;
 			$filter = '(uidNumber=' . $username . ')';
@@ -259,7 +259,7 @@ class Hubzero_User_Profile extends JObject
 	private function _ldap_load($username = null)
 	{
 		$userinfo = $this->_ldap_get_user($username);
-		
+
 		if ($userinfo == false)
 			return false;
 
@@ -334,7 +334,7 @@ class Hubzero_User_Profile extends JObject
 		static $_propertyauthormap = array('uidNumber' => 'id', 'givenName' => 'firstname', 'middleName' => 'middlename',
 			'surname' => 'lastname', 'organization' => 'org', 'bio' => 'bio', 'url' => 'url', 'picture' => 'picture',
 			'vip' => 'principal_investigator');
-		
+
 		$db = & JFactory::getDBO();
 		$xhub = &Hubzero_Factory::getHub();
 
@@ -370,10 +370,10 @@ class Hubzero_User_Profile extends JObject
 		static $_propertyregmap = array('username' => 'login', 'name' => 'name', 'email' => 'email', 'orgtype' => 'orgtype',
 			'organization' => 'org', 'countryresident' => 'countryresident', 'countryorigin' => 'countryorigin',
 			'gender' => 'sex', 'url' => 'web', 'reason' => 'reason', 'mailPreferenceOption' => 'mailPreferenceOption',
-			'usageAgreement' => 'usageAgreement', 'nativeTribe' => 'nativeTribe', 'phone' => 'phone', 
-			'disability' => 'disability', 'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 
+			'usageAgreement' => 'usageAgreement', 'nativeTribe' => 'nativeTribe', 'phone' => 'phone',
+			'disability' => 'disability', 'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin',
 			'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role');
-		
+
 		if (!is_object($registration))
 		{
 			$this->setError("Invalid XRegistration object");
@@ -383,10 +383,10 @@ class Hubzero_User_Profile extends JObject
 		foreach($_propertyregmap as $property => $rproperty)
 			if ($registration->get($rproperty) !== null)
 				$this->set($property, $registration->get($rproperty));
-		
+
 		$this->set('mailPreferenceOption', $this->get('mailPreferenceOption') ? '2' : '0');
 		$this->set('usageAgreement', $this->get('usageAgreement') ? '1' : '0');
-	
+
 		return true;
 	}
 
@@ -471,7 +471,7 @@ class Hubzero_User_Profile extends JObject
 		}
 
 		$dn = 'uid=' . $this->get('username') . ',ou=users,' . $hubLDAPBaseDN;
-		
+
 		$entry = array();
 		$entry['objectclass'][] = 'top';
 		$entry['objectclass'][] = 'person';
@@ -516,7 +516,7 @@ class Hubzero_User_Profile extends JObject
 		{
 			$query = "INSERT INTO #__xprofiles (uidNumber,username,modifiedDate) VALUE ("
 				. $db->Quote($this->get('uidNumber')) . ','
-				. $db->Quote($this->get('username')) . ',' 
+				. $db->Quote($this->get('username')) . ','
 				. $db->Quote($modifiedDate) . ");";
 
 			$db->setQuery( $query );
@@ -526,13 +526,13 @@ class Hubzero_User_Profile extends JObject
 				$errno = $db->getErrorNum();
 
 				if ($errno == 1062)
-					$this->setError('uidNumber (' . $this->get('uidNumber') 
+					$this->setError('uidNumber (' . $this->get('uidNumber')
 						. ') already exists'
 						. ' in xprofiles table');
 				else
-					$this->setError('Error inserting user data to xprofiles table: ' 
+					$this->setError('Error inserting user data to xprofiles table: '
 						. $db->getErrorMsg());
-			
+
 				return false;
 			}
 		}
@@ -541,16 +541,16 @@ class Hubzero_User_Profile extends JObject
 			$token = uniqid();
 
 			$query = "INSERT INTO #__xprofiles (uidNumber,username,modifiedDate) SELECT "
-				. "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1)," 
+				. "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1),"
 				. $db->Quote($token) . ',' . $db->Quote($modifiedDate) . " FROM #__xprofiles;";
 
 			$db->setQuery( $query );
 
 			if (!$db->query())
 			{
-				$this->setError('Error inserting non-user data to xprofiles table: ' 
+				$this->setError('Error inserting non-user data to xprofiles table: '
 					. $db->getErrorMsg());
-	
+
 				return false;
 			}
 
@@ -563,7 +563,7 @@ class Hubzero_User_Profile extends JObject
 
 			if ($result === false)
 			{
-				$this->setError('Error adding data to xprofiles table: ' 
+				$this->setError('Error adding data to xprofiles table: '
 					. $db->getErrorMsg());
 
 				return false;
@@ -571,7 +571,7 @@ class Hubzero_User_Profile extends JObject
 
 			if (count($result) > 1)
 			{
-				$this->setError('Error adding data to xprofiles table: ' 
+				$this->setError('Error adding data to xprofiles table: '
 					. $db->getErrorMsg());
 
 				return false;
@@ -596,7 +596,7 @@ class Hubzero_User_Profile extends JObject
 
 		$mconfig = & JComponentHelper::getParams( 'com_members' );
 		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
-		
+
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 		$this->set('modifiedDate', $modifiedDate);
 
@@ -632,7 +632,7 @@ class Hubzero_User_Profile extends JObject
 
 		if ($userinfo === false)
 			return false;
-		
+
 		$dn = 'uid=' . $this->get('username') . ',ou=users,' . $hubLDAPBaseDN;
 
 		$replace_attr = array();
@@ -686,7 +686,7 @@ class Hubzero_User_Profile extends JObject
 		{
 			$current = $this->get($property);
 
-			if ($current == array() || $current === null) 
+			if ($current == array() || $current === null)
 				$current = '';
 
 			if ($userinfo[$attribute] !== false && $current == '')
@@ -701,7 +701,7 @@ class Hubzero_User_Profile extends JObject
 			$replace_attr['sn'] = $this->get('name');
 		elseif ($userinfo['sn'] === false && $this->get('name') != '')
 			$add_attr['sn'] = $this->get('name');
-			
+
 		if (isset($replace_attr['usageAgreement']))
 			$replace_attr['usageAgreement'] = $replace_attr['usageAgreement'] ? 'TRUE' : 'FALSE';
 		if (isset($add_attr['usageAgreement']))
@@ -727,7 +727,7 @@ class Hubzero_User_Profile extends JObject
 
 		if ($errno != 0)
 			return false;
-		
+
 		return true;
 	}
 
@@ -745,7 +745,7 @@ class Hubzero_User_Profile extends JObject
 			$property = substr($property,6);
 			$first = true;
 			$query = "REPLACE INTO #__xprofiles_" . $property . " (uidNumber, " . $property . ") VALUES ";
-			
+
 			$list = $this->get($property);
 
 			if (!empty($list))
@@ -783,9 +783,9 @@ class Hubzero_User_Profile extends JObject
 				if (empty($valuelist))
 				    	$valuelist = "''";
 
-				$query = "DELETE FROM #__xprofiles_" . $property . " WHERE uidNumber=" 
+				$query = "DELETE FROM #__xprofiles_" . $property . " WHERE uidNumber="
 					. $this->get('uidNumber') . " AND $property NOT IN ($valuelist);";
-				
+
 				$db->setQuery( $query );
 
 				if (!$db->query())
@@ -806,7 +806,7 @@ class Hubzero_User_Profile extends JObject
 	{
 		if (!is_numeric($this->get('uidNumber')))
 			return false;
-		
+
 		$db = &JFactory::getDBO();
 
 		$query = "UPDATE #__xprofiles SET ";
@@ -829,7 +829,7 @@ class Hubzero_User_Profile extends JObject
 			else
 				$query .= "$property=" . $db->Quote($this->get($property));
 		}
- 
+
 		$query .= " WHERE uidNumber=" . $db->Quote($this->get('uidNumber')) . ";";
 
 		$db->setQuery( $query );
@@ -908,14 +908,14 @@ class Hubzero_User_Profile extends JObject
 
 			if (!$updateOnly)
 			{
-				$query = "SELECT uidNumber FROM #__xprofiles WHERE uidNumber=" . 
+				$query = "SELECT uidNumber FROM #__xprofiles WHERE uidNumber=" .
 					$db->Quote($this->get('uidNumber'));
 
 				$db->setQuery($query);
 
 				if (!$db->query())
 				{
-					$this->setError("Error retrieving data from xprofiles table: " 
+					$this->setError("Error retrieving data from xprofiles table: "
 						. $db->getErrorMsg());
 
 					return false;
@@ -970,7 +970,7 @@ class Hubzero_User_Profile extends JObject
 		$property_name = substr($property,6);
 
 		$query = "SELECT $property_name FROM #__xprofiles AS x,#__xprofiles_$property_name AS xp WHERE "
-				. "x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->Quote($this->get('uidNumber')) 
+				. "x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->Quote($this->get('uidNumber'))
 				. " ORDER BY $property_name ASC;";
 
 		$db->setQuery($query);
@@ -978,7 +978,7 @@ class Hubzero_User_Profile extends JObject
 
 		if ($result === false)
 		{
-			$this->setError("Error retrieving data from xprofiles $property table: " 
+			$this->setError("Error retrieving data from xprofiles $property table: "
 				. $db->getErrorMsg());
 
 			return false;
@@ -1010,7 +1010,7 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 
-		if (!property_exists('Hubzero_User_Profile',$property)) 
+		if (!property_exists('Hubzero_User_Profile',$property))
 		{
 			if (property_exists('Hubzero_User_Profile','_auxs_' . $property))
 				$property = '_auxs_' . $property;
@@ -1029,7 +1029,7 @@ class Hubzero_User_Profile extends JObject
 		return $this->$property;
 	}
 
-	public function set($property,$value) 
+	public function set($property,$value)
 	{
 		if ($property == 'password')
 		{
@@ -1082,7 +1082,7 @@ class Hubzero_User_Profile extends JObject
 			$value = strval($value);
 
 		$this->$property = $value;
-		
+
 		if ($property == 'userPassword')
 			$this->_password = '';
 
@@ -1184,7 +1184,7 @@ class Hubzero_User_Profile extends JObject
 		return $this->_params->def( $key, $value );
 	}
 
-	public function &getParameters($loadsetupfile = false, $path = null) 
+	public function &getParameters($loadsetupfile = false, $path = null)
 	{
 		static $parampath;
 
@@ -1213,11 +1213,11 @@ class Hubzero_User_Profile extends JObject
                 }
 
 		*/
-		
+
 		return $this->_params;
 	}
 
-	public function setParameters($params) 
+	public function setParameters($params)
 	{
 		$this->_params = $params;
 	}
@@ -1240,22 +1240,22 @@ class Hubzero_User_Profile extends JObject
 			$this->setError("missing parameter 'uid'");
 			return false;
 		}
-		
+
 		$dn = "uid=" . $uid . ",ou=users," . $hubLDAPBaseDN;
-		
+
 		if (!@ldap_delete($conn, $dn))
 		{
 			$this->setError("ldap_delete() failed: " . ldap_error($conn));
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	private function _mysql_delete()
 	{
 		$db = & JFactory::getDBO();
-		
+
 		if (!is_numeric($this->get('uidNumber')))
 		{
 			$this->setError("missing required field 'uidNumber'");
@@ -1270,7 +1270,7 @@ class Hubzero_User_Profile extends JObject
 				continue;
 
 			$property = substr($property, 6);
-			
+
 			$query = "DELETE FROM #__xprofiles_$property WHERE uidNumber = '" . $this->get('uidNumber') . "'";
 			$db->setQuery( $query );
 
@@ -1292,7 +1292,7 @@ class Hubzero_User_Profile extends JObject
 		}
 
 		$this->clear();
-		
+
 		return true;
 	}
 
@@ -1308,7 +1308,7 @@ class Hubzero_User_Profile extends JObject
 		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
 
 		$uid = $this->username;
-		
+
 		if (empty($storage))
 			$storage = ($ldapProfileMirror) ? 'all' : 'mysql';
 
@@ -1322,8 +1322,8 @@ class Hubzero_User_Profile extends JObject
 
 		return true;
 	}
-	
-	public function loadRegistration(&$registration) 
+
+	public function loadRegistration(&$registration)
 	{
 		if (!is_object($registration)) {
 			return false;
@@ -1335,66 +1335,63 @@ class Hubzero_User_Profile extends JObject
                         'phone', 'reason', 'edulevel',
                         'role');
 
-		foreach ($keys as $key) 
+		foreach ($keys as $key)
 		{
 			if ($registration->get($key) !== null) {
 				$this->set($key, $registration->get($key));
 			}
 		}
-		
+
 		if ($registration->get('login') !== null) {
 			$this->set('username', $registration->get('login'));
 		}
-		
+
 		if ($registration->get('password') !== null) {
 			$this->set('password', $registration->get('password'));
 		}
-		
+
 		if ($registration->get('org') !== null) {
 			$this->set('organization', $registration->get('org'));
 		}
-		
+
 		if ($registration->get('sex') !== null) {
 			$this->set('gender', $registration->get('sex'));
 		}
-		
+
 		if ($registration->get('nativetribe') !== null) {
 			$this->set('nativeTribe', $registration->get('nativetribe'));
 		}
-		
+
 		if ($registration->get('web') !== null) {
 			$this->set('url', $registration->get('web'));
 		}
-		
+
 		if ($registration->get('mailPreferenceOption') !== null) {
 			$this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
 		}
-		
+
 		if ($registration->get('usageAgreement') !== null) {
 			$this->set('usageAgreement', $registration->get('usageAgreement') ? true : false);
 		}
-		
+
 		return true;
 	}
-	
-	
-	
+
 	/* Member Roles */
 	public function getGroupMemberRoles( $uid, $gid )
 	{
 		$user_roles = '';
-		
+
 		$db = & JFactory::getDBO();
 		$sql = "SELECT r.id, r.role FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.role AND m.uidNumber='".$uid."' AND r.gidNumber='".$gid."'";
 		$db->setQuery($sql);
-		
+
 		$roles = $db->loadAssocList();
-		
+
 		if($roles) {
 			return $roles;
 		}
 	}
-	
-	
+
 }
 

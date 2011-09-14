@@ -35,21 +35,18 @@ class modQuotes
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,15 +55,14 @@ class modQuotes
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_feedback'.DS.'tables'.DS.'selectedquotes.php' );
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
-		
+
 		//Get the admin configured settings
 		$filters = array();
 		$filters['limit'] = trim($params->get( 'maxquotes'));

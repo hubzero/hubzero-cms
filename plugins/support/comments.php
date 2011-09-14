@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_support_comments' );
-
-//-----------
 
 class plgSupportComments extends JPlugin
 {
@@ -46,25 +42,23 @@ class plgSupportComments extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'support', 'comments' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function getReportedItem($refid, $category, $parent) 
+
+	public function getReportedItem($refid, $category, $parent)
 	{
 		if ($category != 'comment') {
 			return null;
 		}
-		
+
 		$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, NULL as subject, rc.anonymous as anon";
 		$query .= ", CASE rc.category WHEN 'reviewcomment' THEN 'reviewcomment' WHEN 'review' THEN 'reviewcomment' WHEN 'answer' THEN 'answercomment' WHEN 'answercomment' THEN 'answercomment' WHEN 'wishcomment' THEN 'wishcomment' WHEN 'wish' THEN 'wishcomment' END AS parent_category";
 		$query .= " FROM #__comments AS rc";
 		$query .= " WHERE rc.id=".$refid;
-		
+
 		$database =& JFactory::getDBO();
 		$database->setQuery( $query );
 		$rows = $database->loadObjectList();
 		if ($rows) {
-			foreach ($rows as $key => $row) 
+			foreach ($rows as $key => $row)
 			{
 				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_resources&id='.$parent.'&active=reviews') : '';
 				if ($rows[$key]->parent_category == 'answercomment') {

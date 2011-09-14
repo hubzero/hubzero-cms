@@ -36,7 +36,7 @@ class ContributeController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
-		
+
 		// Load the com_resources component config
 		$config =& JComponentHelper::getParams( 'com_resources' );
 		$this->config = $config;
@@ -54,18 +54,18 @@ class ContributeController extends Hubzero_Controller
 
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
 
 		// Build the title
 		$this->_buildTitle();
-		
+
 		// Build the pathway
 		$this->_buildPathway();
 
 		// Execute the task
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'rename':       $this->attach_rename();  break;
 			case 'saveattach':   $this->attach_save();    break;
@@ -73,13 +73,13 @@ class ContributeController extends Hubzero_Controller
 			case 'attach':       $this->attachments();    break;
 			case 'orderupa':     $this->reorder_attach(); break;
 			case 'orderdowna':   $this->reorder_attach(); break;
-			
+
 			case 'saveauthor':   $this->author_save();    break;
 			case 'removeauthor': $this->author_remove();  break;
 			case 'authors':      $this->authors();        break;
 			case 'orderupc':     $this->reorder_author(); break;
 			case 'orderdownc':   $this->reorder_author(); break;
-			
+
 			/*case 'new':     $this->edit();   break;
 			case 'edit':    $this->edit();   break;*/
 			case 'save':    $this->save();   break;
@@ -88,7 +88,7 @@ class ContributeController extends Hubzero_Controller
 			case 'cancel':  $this->delete(); break;
 			case 'discard': $this->delete(); break;
 			case 'retract': $this->retract(); break;
-			
+
 			case 'start':   $this->steps();  break;
 			case 'login':   $this->login();  break;
 
@@ -96,13 +96,11 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
-	protected function _buildPathway() 
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -122,10 +120,8 @@ class ContributeController extends Hubzero_Controller
 			);
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle() 
+
+	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task) {
@@ -138,7 +134,7 @@ class ContributeController extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
@@ -155,8 +151,6 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function intro()
 	{
 		// Output HTML
@@ -168,17 +162,15 @@ class ContributeController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	protected function check_progress($id)
 	{
 		$steps = $this->steps;
 		$laststep = (count($steps) - 1);
 		$stepchecks = array();
-		
+
 		$progress['submitted'] = 0;
-		for ($i=1, $n=count( $steps ); $i < $n; $i++) 
+		for ($i=1, $n=count( $steps ); $i < $n; $i++)
 		{
 			$check = 'step_'.$steps[$i].'_check';
 			$stepchecks[$steps[$i]] = $this->$check( $id );
@@ -195,46 +187,44 @@ class ContributeController extends Hubzero_Controller
 		$this->progress = $progress;
 	}
 
-	//-----------
-
-	protected function steps() 
+	protected function steps()
 	{
 		$steps = $this->steps;
 		$step  = $this->step;
 		if ($step > count($steps)) {
 			$step = count($steps);
 		}
-		
+
 		$pre = ($step > 0) ? $step - 1 : 0;
 		$preprocess = 'step_'.strtolower($steps[$pre]).'_process';
 		$activestep = 'step_'.strtolower($steps[$step]);
-		
+
 		if (isset($_POST['step'])) {
 			$this->$preprocess();
 		}
-		
+
 		if (!$this->getError()) {
 			$id = JRequest::getInt( 'id', 0 );
-		
+
 			$this->check_progress($id);
 
 			$this->$activestep();
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Steps
 	//----------------------------------------------------------
-	
+
 	protected function step_type()
 	{
 		$step = $this->step;
 		$step++;
-		
+
 		// Get available resource types
 		$rt = new ResourcesType( $this->database );
 		$types = $rt->getMajorTypes();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'type') );
 		$view->option = $this->_option;
@@ -247,9 +237,7 @@ class ContributeController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	protected function step_compose($row=null)
 	{
 		$xhub = Hubzero_Factory::getHub();
@@ -262,10 +250,10 @@ class ContributeController extends Hubzero_Controller
 
 		$step = $this->step;
 		$next_step = $step+1;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Instantiate a new resource object
 		$row = new ResourcesResource( $this->database );
 		if ($id) {
@@ -276,7 +264,7 @@ class ContributeController extends Hubzero_Controller
 			$row->type = JRequest::getVar( 'type', '' );
 			$row->published = 2;
 		}
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'compose') );
 		$view->option = $this->_option;
@@ -295,27 +283,25 @@ class ContributeController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	protected function step_attach()
 	{
 		$step = $this->step;
 		$next_step = $step+1;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
-		
+
 		// Load the resource
 		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'attach') );
 		$view->option = $this->_option;
@@ -335,31 +321,29 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function step_authors()
 	{
 		$step = $this->_data['step'];
 		$next_step = $step+1;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
-		
+
 		// Load the resource
 		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
-		
+
 		// Get groups
 		ximport('Hubzero_User_Helper');
-			
+
 		$groups = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members', 1 );
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'authors') );
 		$view->option = $this->_option;
@@ -379,22 +363,20 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function step_tags()
 	{
 		$step = $this->step;
 		$next_step = $step+1;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
-		
+
 		// Get any HUB focus areas
 		// These are used where any resource is required to have one of these tags
 		$tconfig =& JComponentHelper::getParams( 'com_tags' );
@@ -408,7 +390,7 @@ class ContributeController extends Hubzero_Controller
 		$fa8 = $tconfig->get('focus_area_08');
 		$fa9 = $tconfig->get('focus_area_09');
 		$fa10 = $tconfig->get('focus_area_10');
-		
+
 		// Instantiate our tag object
 		$tagcloud = new ResourcesTags($this->database);
 
@@ -423,7 +405,7 @@ class ContributeController extends Hubzero_Controller
 		$tagfa8 = $tagcloud->normalize_tag($fa8);
 		$tagfa9 = $tagcloud->normalize_tag($fa9);
 		$tagfa10 = $tagcloud->normalize_tag($fa10);
-		
+
 		// Get all the tags on this resource
 		$tags_men = $tagcloud->get_tags_on_object($id, 0, 0, 0, 0);
 		$mytagarray = array();
@@ -502,32 +484,30 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function step_review()
 	{
 		$step = $this->step;
 		$next_step = $step+1;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
-		
+
 		// Push some needed styles to the tmeplate
 		$this->_getStyles('com_resources');
-		
+
 		// Get some needed libraries
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 
 		// Load resource info
 		$resource = new ResourcesResource( $this->database );
 		$resource->load( $id );
-		
+
 		if (!$this->juser->get('guest')) {
 			ximport('Hubzero_User_Helper');
 			$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
@@ -556,8 +536,6 @@ class ContributeController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
 
 	private function _getUsersGroups($groups)
 	{
@@ -576,15 +554,13 @@ class ContributeController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Pre Processing
 	//----------------------------------------------------------
-	
+
 	protected function step_type_process()
 	{
 		// do nothing
 	}
-	
-	//-----------
-	
-	protected function step_compose_process() 
+
+	protected function step_compose_process()
 	{
 		// Initiate extended database class
 		$row = new ResourcesResource( $this->database );
@@ -611,11 +587,11 @@ class ContributeController extends Hubzero_Controller
 		// Get custom areas, add wrapper tags, and compile into fulltext
 		$type = new ResourcesType( $this->database );
 		$type->load( $row->type );
-		
+
 		$fields = array();
 		if (trim($type->customFields) != '') {
 			$fs = explode("\n", trim($type->customFields));
-			foreach ($fs as $f) 
+			foreach ($fs as $f)
 			{
 				$fields[] = explode('=', $f);
 			}
@@ -626,12 +602,12 @@ class ContributeController extends Hubzero_Controller
 				$flds = $this->config->get('tagsothr');
 			}
 			$flds = explode(',',$flds);
-			foreach ($flds as $fld) 
+			foreach ($flds as $fld)
 			{
 				$fields[] = array($fld, $fld, 'textarea', 0);
 			}
 		}
-		
+
 		$nbtag = $_POST['nbtag'];
 		$nbtag = array_map('trim',$nbtag);
 		foreach ($nbtag as $tagname=>$tagcontent)
@@ -639,7 +615,7 @@ class ContributeController extends Hubzero_Controller
 			if ($tagcontent != '') {
 				$row->fulltext .= "\n".'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'."\n";
 			} else {
-				foreach ($fields as $f) 
+				foreach ($fields as $f)
 				{
 					if ($f[0] == $tagname && end($f) == 1) {
 						$this->setError( JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $f[1]) );
@@ -653,7 +629,7 @@ class ContributeController extends Hubzero_Controller
 
 		$row->title = preg_replace('/\s+/', ' ',$row->title);
 		$row->title = $this->_txtClean($row->title);
-		
+
 		// Strip any scripting there may be
 		if (trim($row->fulltext)) {
 			$row->fulltext   = $this->_txtClean($row->fulltext);
@@ -661,7 +637,7 @@ class ContributeController extends Hubzero_Controller
 			$row->footertext = $this->_txtClean($row->footertext);
 			$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
 		}
-		
+
 		// Check content
 		if (!$row->check()) {
 			JError::raiseError( 500, $row->getError() );
@@ -673,60 +649,56 @@ class ContributeController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		// Checkin the resource
 		$row->checkin();
-	
+
 		// Is it a new resource?
 		if ($isNew) {
 			// Get the resource ID
 			if (!$row->id) {
 				$row->id = $row->insertid();
 			}
-			
+
 			// Automatically attach this user as the first author
 			$_REQUEST['pid'] = $row->id;
 			$_POST['authid'] = $this->juser->get('id');
 			$_REQUEST['id'] = $row->id;
-			
+
 			$this->author_save(0);
 		}
 	}
-
-	//-----------
 
 	protected function step_attach_process()
 	{
 		// do nothing
 	}
 
-	//-----------
-
 	protected function step_authors_process()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			return;
 		}
-		
+
 		// Load the resource
 		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
-		
+
 		// Set the group and access level
 		$row->group_owner = JRequest::getVar( 'group_owner', '' );
 		$row->access = JRequest::getInt( 'access', 0 );
-		
+
 		if ($row->access > 0 && !$row->group_owner) {
 			$this->setError( JText::_('Please select a group to restrict access to.') );
 			$this->step--;
 			$this->step_authors();
 			return;
 		}
-		
+
 		// Check content
 		if (!$row->check()) {
 			JError::raiseError( 500, $row->getError() );
@@ -739,8 +711,6 @@ class ContributeController extends Hubzero_Controller
 			return;
 		}
 	}
-
-	//-----------
 
 	protected function step_tags_process()
 	{
@@ -748,7 +718,7 @@ class ContributeController extends Hubzero_Controller
 		$id    = JRequest::getInt( 'id', 0, 'post' );
 		$tags  = JRequest::getVar( 'tags', '', 'post' );
 		$tagfa = JRequest::getVar( 'tagfa', '', 'post' );
-		
+
 		$tagcloud = new ResourcesTags($this->database);
 
 		$tconfig =& JComponentHelper::getParams( 'com_tags' );
@@ -764,7 +734,7 @@ class ContributeController extends Hubzero_Controller
 		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_09'));
 		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_10'));
 		$required = false;
-		foreach ($fa as $r) 
+		foreach ($fa as $r)
 		{
 			if ($r != '') {
 				$required = true;
@@ -780,7 +750,7 @@ class ContributeController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		if ($tags) {
 			$tags = $tagfa.', '.$tags;
 		} else {
@@ -800,13 +770,13 @@ class ContributeController extends Hubzero_Controller
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
-	
+
 		// Load resource info
 		$resource = new ResourcesResource( $this->database );
 		$resource->load( $id );
@@ -816,7 +786,7 @@ class ContributeController extends Hubzero_Controller
 		if ($resource->published != 2) {
 			$published = 1;
 		}
-	
+
 		// Check if a newly submitted resource was authorized to be published
 		$authorized = JRequest::getInt( 'authorization', 0 );
 		if (!$authorized && !$published) {
@@ -825,7 +795,7 @@ class ContributeController extends Hubzero_Controller
 			$this->step_review();
 			return;
 		}
-		
+
 		// Is this a newly submitted resource?
 		if (!$published) {
 			// 0 = unpublished, 1 = published, 2 = composing, 3 = pending (submitted), 4 = deleted
@@ -837,7 +807,7 @@ class ContributeController extends Hubzero_Controller
 				$apu = $this->config->get('autoapproved_users');
 				$apu = explode(',', $apu);
 				$apu = array_map('trim',$apu);
-				
+
 				if (in_array($this->juser->get('username'),$apu)) {
 					// Set status to published
 					$resource->published = 1;
@@ -846,7 +816,7 @@ class ContributeController extends Hubzero_Controller
 					$resource->published = 3;
 				}
 			}
-			
+
 			// Get the resource's contributors
 			$helper = new ResourcesHelper( $id, $this->database );
 			$helper->getCons();
@@ -860,7 +830,7 @@ class ContributeController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		// Is this resource licensed under Creative Commons?
 		if ($this->config->get('cc_license')) {
 			$license = JRequest::getInt( 'license', 0 );
@@ -890,11 +860,11 @@ class ContributeController extends Hubzero_Controller
 				$resource->params = implode("\n",$newparams);
 			}
 		}
-		
+
 		// Save and checkin the resource
 		$resource->store();
 		$resource->checkin();
-		
+
 		// If a previously published resource, redirect to the resource page
 		if ($published == 1) {
 			if ($resource->alias) {
@@ -931,7 +901,7 @@ class ContributeController extends Hubzero_Controller
 				}
 			}
 		}*/
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'thanks') );
 		$view->option = $this->_option;
@@ -944,13 +914,11 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function delete() 
+	protected function delete()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
@@ -959,20 +927,20 @@ class ContributeController extends Hubzero_Controller
 
 		// Incoming step
 		$step = JRequest::getVar( 'step', 1 );
-		
+
 		// Perform step
-		switch ($step) 
+		switch ($step)
 		{
 			case 1:
 				$steps = $this->steps;
-				
+
 				$progress = array();
 				$progress['submitted'] = 0;
-				for ($i = 1, $n = count( $steps ); $i < $n; $i++) 
+				for ($i = 1, $n = count( $steps ); $i < $n; $i++)
 				{
 					$progress[$steps[$i]] = 0;
 				}
-				
+
 				// Load the resource
 				$row = new ResourcesResource( $this->database );
 				$row->load( $id );
@@ -992,11 +960,11 @@ class ContributeController extends Hubzero_Controller
 				}
 				$view->display();
 			break;
-			
+
 			case 2:
 				// Incoming confirmation flag
 				$confirm = JRequest::getVar( 'confirm', '', 'post' );
-				
+
 				// Did they confirm the deletion?
 				if ($confirm != 'confirmed') {
 					$this->redirect = JRoute::_('index.php?option='.$this->_option);
@@ -1006,7 +974,7 @@ class ContributeController extends Hubzero_Controller
 				// Load the resource
 				$resource = new ResourcesResource( $this->database );
 				$resource->load( $id );
-				
+
 				// Check if the resource was "published"
 				if ($resource->published == 1) {
 					// It was, so we can only mark it as "deleted"
@@ -1021,30 +989,28 @@ class ContributeController extends Hubzero_Controller
 						return;
 					}
 				}
-				
+
 				// Redirect to the start page
 				$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			break;
 		}
 	}
-	
-	//-----------
-	
-	protected function retract() 
+
+	protected function retract()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
+
 		// Load the resource
 		$resource = new ResourcesResource( $this->database );
 		$resource->load( $id );
-		
+
 		// Check if it's in pending status
 		if ($resource->published == 3) {
 			// Set it back to "draft" status
@@ -1052,12 +1018,10 @@ class ContributeController extends Hubzero_Controller
 			// Save changes
 			$resource->store();
 		}
-		
+
 		// Redirect
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
-	
-	//-----------
 
 	protected function markRemovedContribution( $id )
 	{
@@ -1066,11 +1030,11 @@ class ContributeController extends Hubzero_Controller
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			return false;
 		}
-		
+
 		// Load resource info
 		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
-		
+
 		// Mark resource as deleted
 		$row->published = 4;
 		if (!$row->store()) {
@@ -1082,8 +1046,6 @@ class ContributeController extends Hubzero_Controller
 		return true;
 	}
 
-	//-----------
-
 	protected function deleteContribution( $id )
 	{
 		// Make sure we have a record to pull
@@ -1091,28 +1053,28 @@ class ContributeController extends Hubzero_Controller
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			return false;
 		}
-		
+
 		jimport('joomla.filesystem.folder');
-		
+
 		// Load resource info
 		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
-		
+
 		// Get the resource's children
 		$helper = new ResourcesHelper( $id, $this->database );
 		$helper->getChildren();
 		$children = $helper->children;
-		
+
 		// Were there any children?
 		if ($children) {
 			// Loop through each child and delete its files and associations
-			foreach ($children as $child) 
+			foreach ($children as $child)
 			{
 				// Skip standalone children
 				if ($child->standalone == 1) {
 					continue;
 				}
-				
+
 				// Get path and delete directories
 				if ($child->path != '') {
 					$listdir = $child->path;
@@ -1125,8 +1087,8 @@ class ContributeController extends Hubzero_Controller
 				$path = $this->_buildUploadPath( $listdir, '' );
 
 				// Check if the folder even exists
-				if (!is_dir($path) or !$path) { 
-					$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') ); 
+				if (!is_dir($path) or !$path) {
+					$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') );
 				} else {
 					// Attempt to delete the folder
 					if (!JFolder::delete($path)) {
@@ -1141,7 +1103,7 @@ class ContributeController extends Hubzero_Controller
 				$row->delete( $child->id );
 			}
 		}
-		
+
 		// Get path and delete directories
 		if ($row->path != '') {
 			$listdir = $row->path;
@@ -1149,23 +1111,23 @@ class ContributeController extends Hubzero_Controller
 			// No stored path, derive from created date		
 			$listdir = $this->_buildPathFromDate( $row->created, $id, '' );
 		}
-		
+
 		// Build the path
 		$path = $this->_buildUploadPath( $listdir, '' );
 
 		// Check if the folder even exists
-		if (!is_dir($path) or !$path) { 
-			$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') ); 
+		if (!is_dir($path) or !$path) {
+			$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') );
 		} else {
 			// Attempt to delete the folder
 			if (!JFolder::delete($path)) {
 				$this->setError( JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY') );
 			}
 		}
-		
+
 		// Delete associations to the resource
 		$row->deleteExistence();
-		
+
 		// Delete the resource
 		$row->delete();
 
@@ -1176,14 +1138,14 @@ class ContributeController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Attachments
 	//----------------------------------------------------------
-	
+
 	protected function attach_rename()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$name = trim(JRequest::getVar( 'name', '' ));
@@ -1195,12 +1157,10 @@ class ContributeController extends Hubzero_Controller
 			$r->title = $name;
 			$r->store();
 		}
-		
+
 		// Echo the name
 		echo $name;
 	}
-
-	//-----------
 
 	protected function attach_save()
 	{
@@ -1223,7 +1183,7 @@ class ContributeController extends Hubzero_Controller
 			$this->attachments( $pid );
 			return;
 		}
-		
+
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
@@ -1257,11 +1217,11 @@ class ContributeController extends Hubzero_Controller
 			$this->attachments( $pid );
 			return;
 		}
-		
+
 		if (!$row->id) {
 			$row->id = $row->insertid();
 		}
-		
+
 		// Build the path
 		$listdir = $this->_buildPathFromDate( $row->created, $row->id, '' );
 		$path = $this->_buildUploadPath( $listdir, '' );
@@ -1281,7 +1241,7 @@ class ContributeController extends Hubzero_Controller
 			$this->setError( JText::_('COM_CONTRIBUTE_ERROR_UPLOADING') );
 		} else {
 			// File was uploaded
-			
+
 			// Check the file type
 			$row->type = $this->_getChildType($file['name']);
 
@@ -1294,22 +1254,22 @@ class ContributeController extends Hubzero_Controller
 					$this->setError( JText::_('Could not extract package.') );
 				}*/
 				require_once( JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php' );
-		
+
 				if (!extension_loaded('zlib')) {
 					$this->setError( JText::_('COM_CONTRIBUTE_ZLIB_PACKAGE_REQUIRED') );
 				} else {
 					// Check the table of contents and look for a Breeze viewer.swf file
 					$isbreeze = 0;
-					
+
 					$zip = new PclZip( $path.DS.$file['name'] );
-						
+
 					$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $path.DS.$file['name']);
-					
+
 					if (($list = $zip->listContent()) == 0) {
 						die('Error: '.$zip->errorInfo(true));
 					}
-					
-					for ($i=0; $i<sizeof($list); $i++) 
+
+					for ($i=0; $i<sizeof($list); $i++)
 					{
 						if (substr($list[$i]['filename'], strlen($list[$i]['filename']) - 10, strlen($list[$i]['filename'])) == 'viewer.swf') {
 							$isbreeze = $list[$i]['filename'];
@@ -1318,9 +1278,9 @@ class ContributeController extends Hubzero_Controller
 						//$this->setError( substr($list[$i]['filename'], strlen($list[$i]['filename']), -4).' '.substr($file['name'], strlen($file['name']), -4) );
 					}
 					if (!$isbreeze) {
-						for ($i=0; $i<sizeof($list); $i++) 
+						for ($i=0; $i<sizeof($list); $i++)
 						{
-							if (strtolower(substr($list[$i]['filename'], -3)) == 'swf' 
+							if (strtolower(substr($list[$i]['filename'], -3)) == 'swf'
 							 && substr($list[$i]['filename'], strlen($list[$i]['filename']), -4) == substr($file['name'], strlen($file['name']), -4)) {
 								$isbreeze = $list[$i]['filename'];
 								break;
@@ -1346,7 +1306,7 @@ class ContributeController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		if (!$row->path) {
 			$row->path = $listdir.DS.$file['name'];
 		}
@@ -1360,17 +1320,17 @@ class ContributeController extends Hubzero_Controller
 			$this->attachments( $pid );
 			return;
 		}
-		
+
 		// Instantiate a ResourcesAssoc object
 		$assoc = new ResourcesAssoc( $this->database );
 
 		// Get the last child in the ordering
 		$order = $assoc->getLastOrder( $pid );
 		$order = ($order) ? $order : 0;
-		
+
 		// Increase the ordering - new items are always last
 		$order = $order + 1;
-		
+
 		// Create new parent/child association
 		$assoc->parent_id = $pid;
 		$assoc->child_id = $row->id;
@@ -1387,36 +1347,34 @@ class ContributeController extends Hubzero_Controller
 		$this->attachments( $pid );
 	}
 
-	//-----------
-
-	protected function attach_delete() 
+	protected function attach_delete()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Incoming parent ID
 		$pid = JRequest::getInt( 'pid', 0 );
 		if (!$pid) {
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
 		}
-		
+
 		// Incoming child ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_CHILD_ID') );
 			$this->attachments( $pid );
 		}
-		
+
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
-	
+
 		// Load resource info
 		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
-		
+
 		// Get path and delete directories
 		if ($row->path != '') {
 			$listdir = $row->path;
@@ -1424,20 +1382,20 @@ class ContributeController extends Hubzero_Controller
 			// No stored path, derive from created date		
 			$listdir = $this->_buildPathFromDate( $row->created, $id, '' );
 		}
-		
+
 		// Build the path
 		$path = $this->_buildUploadPath( $listdir, '' );
 
 		// Check if the file even exists
-		if (!is_file($path) or !$path) { 
-			$this->setError( JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND') ); 
+		if (!is_file($path) or !$path) {
+			$this->setError( JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND') );
 		} else {
 			// Attempt to delete the file
 			if (!JFile::delete($path)) {
 				$this->setError( JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_FILE') );
 			}
 		}
-		
+
 		if (!$this->getError()) {
 			$file = basename($path);
 			$path = substr($path, 0, (strlen($path) - strlen($file)));
@@ -1449,7 +1407,7 @@ class ContributeController extends Hubzero_Controller
 			$p = array();
 			$b = '';
 			$g = array_pop($bits);
-			foreach ($bits as $bit) 
+			foreach ($bits as $bit)
 			{
 				if ($bit == '/' || $bit == $year || $bit == $month || $bit == Hubzero_View_Helper_Html::niceidformat($id)) {
 					$b .= ($bit != '/') ? DS.$bit : '';
@@ -1459,13 +1417,13 @@ class ContributeController extends Hubzero_Controller
 			}
 			if (count($p) > 1) {
 				$p = array_reverse($p);
-				foreach ($p as $v) 
+				foreach ($p as $v)
 				{
 					$npath = JPATH_ROOT.$this->config->get('uploadpath').$b.DS.$v;
 
 					// Check if the folder even exists
-					if (!is_dir($npath) or !$npath) { 
-						$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') ); 
+					if (!is_dir($npath) or !$npath) {
+						$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') );
 					} else {
 						// Attempt to delete the folder
 						if (!JFolder::delete($npath)) {
@@ -1475,7 +1433,7 @@ class ContributeController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		if (!$this->getError()) {
 			// Delete associations to the resource
 			$row->deleteExistence();
@@ -1488,30 +1446,28 @@ class ContributeController extends Hubzero_Controller
 		$this->attachments( $pid );
 	}
 
-	//-----------
-
-	protected function attachments( $id=null ) 
+	protected function attachments( $id=null )
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Incoming
 		if (!$id) {
 			$id = JRequest::getInt( 'id', 0 );
 		}
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
-		
+
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $id, $this->database );
 		$helper->getChildren();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'attachments') );
 		$view->option = $this->_option;
@@ -1525,40 +1481,38 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	private function _buildUploadPath( $listdir, $subdir='' ) 
+	private function _buildUploadPath( $listdir, $subdir='' )
 	{
 		if ($subdir) {
 			// Make sure the path doesn't end with a slash
-			if (substr($subdir, -1) == DS) { 
+			if (substr($subdir, -1) == DS) {
 				$subdir = substr($subdir, 0, strlen($subdir) - 1);
 			}
 			// Ensure the path starts with a slash
-			if (substr($subdir, 0, 1) != DS) { 
+			if (substr($subdir, 0, 1) != DS) {
 				$subdir = DS.$subdir;
 			}
 		}
-		
+
 		// Get the configured upload path
 		$base_path = $this->config->get('uploadpath');
 		if ($base_path) {
 			// Make sure the path doesn't end with a slash
-			if (substr($base_path, -1) == DS) { 
+			if (substr($base_path, -1) == DS) {
 				$base_path = substr($base_path, 0, strlen($base_path) - 1);
 			}
 			// Ensure the path starts with a slash
-			if (substr($base_path, 0, 1) != DS) { 
+			if (substr($base_path, 0, 1) != DS) {
 				$base_path = DS.$base_path;
 			}
 		}
-		
+
 		// Make sure the path doesn't end with a slash
-		if (substr($listdir, -1) == DS) { 
+		if (substr($listdir, -1) == DS) {
 			$listdir = substr($listdir, 0, strlen($listdir) - 1);
 		}
 		// Ensure the path starts with a slash
-		if (substr($listdir, 0, 1) != DS) { 
+		if (substr($listdir, 0, 1) != DS) {
 			$listdir = DS.$listdir;
 		}
 		// Does the beginning of the $listdir match the config path?
@@ -1573,16 +1527,14 @@ class ContributeController extends Hubzero_Controller
 		return JPATH_ROOT.$listdir.$subdir;
 	}
 
-	//-----------
-
 	private function _getChildType($filename)
 	{
 		$filename_arr = explode('.',$filename);
 		$ftype = end($filename_arr);
 		$ftype = (strlen($ftype) > 3) ? substr($ftype, 0, 3) : $ftype;
 		$ftype = strtolower($ftype);
-	
-		switch ($ftype) 
+
+		switch ($ftype)
 		{
 			case 'mov': $type = 15; break;
 			case 'swf': $type = 32; break;
@@ -1595,13 +1547,11 @@ class ContributeController extends Hubzero_Controller
 			case 'pdf': $type = 33; break;
 			default:    $type = 13; break;
 		}
-	
+
 		return $type;
 	}
-	
-	//-----------
 
-	protected function reorder_attach() 
+	protected function reorder_attach()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -1613,7 +1563,7 @@ class ContributeController extends Hubzero_Controller
 			$this->attachments( $pid );
 			return;
 		}
-		
+
 		// Ensure we have a parent ID to work with
 		if (!$pid) {
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
@@ -1631,31 +1581,31 @@ class ContributeController extends Hubzero_Controller
 		$resource2 = clone( $resource1 );
 		$resource2->getNeighbor( $move );
 
-		switch ($move) 
+		switch ($move)
 		{
-			case 'orderup':				
+			case 'orderup':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $resource2->ordering;
 				$orderdn = $resource1->ordering;
-				
+
 				$resource1->ordering = $orderup;
 				$resource2->ordering = $orderdn;
 				break;
-			
+
 			case 'orderdown':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $resource1->ordering;
 				$orderdn = $resource2->ordering;
-				
+
 				$resource1->ordering = $orderdn;
 				$resource2->ordering = $orderup;
 				break;
 		}
-		
+
 		// Save changes
 		$resource1->store();
 		$resource2->store();
-		
+
 		// Push through to the attachments view
 		$this->attachments( $pid );
 	}
@@ -1673,9 +1623,9 @@ class ContributeController extends Hubzero_Controller
 			$this->authors( $id );
 			return;
 		}
-		
+
 		ximport('Hubzero_User_Profile');
-		
+
 		// Incoming authors
 		$authid = JRequest::getInt( 'authid', 0, 'post' );
 		$authorsNewstr = JRequest::getVar( 'new_authors', '', 'post' );
@@ -1684,11 +1634,11 @@ class ContributeController extends Hubzero_Controller
 		$rc = new ResourcesContributor( $this->database );
 		$rc->subtable = 'resources';
 		$rc->subid = $id;
-		
+
 		// Get the last child in the ordering
 		$order = $rc->getLastOrder( $id, 'resources' );
 		$order = $order + 1; // new items are always last
-		
+
 		// Was there an ID? (this will come from the author <select>)
 		if ($authid) {
 			// Check if they're already linked to this resource
@@ -1719,21 +1669,21 @@ class ContributeController extends Hubzero_Controller
 		if ($authorsNewstr) {
 			// Turn the string into an array of usernames
 			$authorsNew = split(',',$authorsNewstr);
-			
+
 			jimport('joomla.user.helper');
-			
+
 			// loop through each one
 			for ($i=0, $n=count( $authorsNew ); $i < $n; $i++)
 			{
 				$cid = strtolower(trim($authorsNew[$i]));
-			
+
 				// Find the user's account info
 				$uid = JUserHelper::getUserId($cid);
 				if (!$uid) {
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
-				
+
 				$juser =& JUser::getInstance( $uid );
 				if (!is_object($juser)) {
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
@@ -1741,12 +1691,12 @@ class ContributeController extends Hubzero_Controller
 				}
 
 				$uid = $juser->get('id');
-		
+
 				if (!$uid) {
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
-				
+
 				// Check if they're already linked to this resource
 				$rcc = new ResourcesContributor( $this->database );
 				$rcc->loadAssociation( $uid, $id, 'resources' );
@@ -1754,9 +1704,9 @@ class ContributeController extends Hubzero_Controller
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid) );
 					continue;
 				}
-				
+
 				$this->_author_check($juser->get('id'));
-				
+
 				// New record
 				$xprofile = Hubzero_User_Profile::getInstance($juser->get('id'));
 				$rcc->subtable = 'resources';
@@ -1766,7 +1716,7 @@ class ContributeController extends Hubzero_Controller
 				$rcc->name = $xprofile->get('name');
 				$rcc->organization = $xprofile->get('organization');
 				$rcc->createAssociation();
-				
+
 				$order++;
 			}
 		}
@@ -1776,8 +1726,6 @@ class ContributeController extends Hubzero_Controller
 			$this->authors( $id );
 		}
 	}
-
-	//-----------
 
 	private function _author_check($id)
 	{
@@ -1794,21 +1742,19 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
 	protected function author_remove()
 	{
 		// Incoming
 		$id  = JRequest::getInt( 'id', 0 );
 		$pid = JRequest::getInt( 'pid', 0 );
-		
+
 		// Ensure we have a resource ID ($pid) to work with
 		if (!$pid) {
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->authors();
 			return;
 		}
-		
+
 		// Ensure we have the contributor's ID ($id)
 		if ($id) {
 			$rc = new ResourcesContributor( $this->database );
@@ -1816,14 +1762,12 @@ class ContributeController extends Hubzero_Controller
 				$this->setError( $rc->getError() );
 			}
 		}
-		
+
 		// Push through to the authors view
 		$this->authors( $pid );
 	}
 
-	//-----------
-
-	protected function reorder_author() 
+	protected function reorder_author()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -1835,7 +1779,7 @@ class ContributeController extends Hubzero_Controller
 			$this->authors( $pid );
 			return;
 		}
-		
+
 		// Ensure we have a parent ID to work with
 		if (!$pid) {
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
@@ -1853,61 +1797,59 @@ class ContributeController extends Hubzero_Controller
 		$author2 = clone( $author1 );
 		$author2->getNeighbor( $move );
 
-		switch ($move) 
+		switch ($move)
 		{
-			case 'orderup':				
+			case 'orderup':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $author2->ordering;
 				$orderdn = $author1->ordering;
-				
+
 				$author1->ordering = $orderup;
 				$author2->ordering = $orderdn;
 				break;
-			
+
 			case 'orderdown':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $author1->ordering;
 				$orderdn = $author2->ordering;
-				
+
 				$author1->ordering = $orderdn;
 				$author2->ordering = $orderup;
 				break;
 		}
-		
+
 		// Save changes
 		$author1->updateAssociation();
 		$author2->updateAssociation();
-		
+
 		// Push through to the attachments view
 		$this->authors( $pid );
 	}
 
-	//-----------
-
-	protected function authors( $id=null ) 
+	protected function authors( $id=null )
 	{
 		// Incoming
 		if (!$id) {
 			$id = JRequest::getInt( 'id', 0 );
 		}
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
-		
+
 		// Get all contributors of this resource
 		$helper = new ResourcesHelper( $id, $this->database );
 		$helper->getCons();
-		
+
 		// Get a list of all existing contributors
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
-		
+
 		// Initiate a members object
 		$mp = new MembersProfile( $this->database );
-		
+
 		$filters = array();
 		$filters['search'] = '';
 		$filters['show']   = '';
@@ -1915,7 +1857,7 @@ class ContributeController extends Hubzero_Controller
 		$filters['limit']  = 'all';
 		$filters['sortby'] = 'name';
 		$filters['authorized'] = false;
-		
+
 		// Get all members
 		$rows = $mp->getRecords( $filters, false );
 
@@ -1935,21 +1877,17 @@ class ContributeController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Checks
 	//----------------------------------------------------------
-	
+
 	protected function step_type_check( $id )
 	{
 		// do nothing
 	}
-	
-	//-----------
-	
+
 	protected function step_compose_check( $id )
 	{
 		return $id;
 	}
 
-	//-----------
-	
 	protected function step_attach_check( $id )
 	{
 		if ($id) {
@@ -1961,8 +1899,6 @@ class ContributeController extends Hubzero_Controller
 		return $total;
 	}
 
-	//-----------
-	
 	protected function step_authors_check( $id )
 	{
 		if ($id) {
@@ -1974,9 +1910,7 @@ class ContributeController extends Hubzero_Controller
 
 		return $contributors;
 	}
-	
-	//-----------
-	
+
 	protected function step_tags_check( $id )
 	{
 		$rt = new ResourcesTags( $this->database );
@@ -1988,32 +1922,30 @@ class ContributeController extends Hubzero_Controller
 			return 0;
 		}
 	}
-	
-	//-----------
 
-	protected function step_review_check( $id ) 
+	protected function step_review_check( $id )
 	{
 		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
-	
+
 		if ($row->published == 1) {
 			return 1;
 		} else {
 			return 0;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Misc
 	//----------------------------------------------------------
 
-	private function _txtClean( &$text ) 
+	private function _txtClean( &$text )
 	{
 		$text = str_replace('“','"', $text);
 		$text = str_replace('”','"', $text);
 		$text = str_replace("’","'", $text);
 		$text = str_replace("‘","'", $text);
-		
+
 		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
 		$text = preg_replace( '/{.+?}/', '', $text );
 		$text = preg_replace( "'<style[^>]*>.*?</style>'si", '', $text );
@@ -2022,34 +1954,32 @@ class ContributeController extends Hubzero_Controller
 		return $text;
 	}
 
-	//-----------
-
-	private function _txtAutoP($pee, $br = 1) 
+	private function _txtAutoP($pee, $br = 1)
 	{
 		$trans_tbl = get_html_translation_table(HTML_ENTITIES);
-		foreach ($trans_tbl as $k => $v) 
+		foreach ($trans_tbl as $k => $v)
 		{
 			if ($k != '<' && $k != '>' && $k != '"' && $k != "'") {
 				$ttr[utf8_encode($k)] = $v;
 			}
 		}
 		$pee = strtr($pee, $ttr);
-		
-		$ent = array( 
-		    'Ć'=>'&#262;', 
-		    'ć'=>'&#263;', 
-		    'Č'=>'&#268;', 
-		    'č'=>'&#269;', 
-		    'Đ'=>'&#272;', 
-		    'đ'=>'&#273;', 
-		    'Š'=>'&#352;', 
-		    'š'=>'&#353;', 
-		    'Ž'=>'&#381;', 
-		    'ž'=>'&#382;' 
+
+		$ent = array(
+		    'Ć'=>'&#262;',
+		    'ć'=>'&#263;',
+		    'Č'=>'&#268;',
+		    'č'=>'&#269;',
+		    'Đ'=>'&#272;',
+		    'đ'=>'&#273;',
+		    'Š'=>'&#352;',
+		    'š'=>'&#353;',
+		    'Ž'=>'&#381;',
+		    'ž'=>'&#382;'
 		);
-		
+
 		$pee = strtr($pee, $ent);
-		
+
 		// converts paragraphs of text into xhtml
 		$pee = $pee . "\n"; // just to make things a little easier, pad the end
 		$pee = preg_replace('|<br />\s*<br />|', "\n\n", $pee);
@@ -2063,17 +1993,15 @@ class ContributeController extends Hubzero_Controller
 		$pee = preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $pee);
 		$pee = str_replace('</blockquote></p>', '</p></blockquote>', $pee);
 		$pee = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $pee);
-		$pee = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $pee); 
+		$pee = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $pee);
 		if ($br) $pee = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $pee); // optionally make line breaks
 		$pee = preg_replace('!(</?(?:table|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*<br />!', "$1", $pee);
 		$pee = preg_replace('!<br />(\s*</?(?:p|li|div|th|pre|td|ul|ol)>)!', '$1', $pee);
 		//$pee = preg_replace('/&([^#])(?![a-z]{1,8};)/', '&#038;$1', $pee);
-		
-		return $pee; 
+
+		return $pee;
 	}
 
-	//-----------
-	
 	public function _txtUnpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
@@ -2082,11 +2010,9 @@ class ContributeController extends Hubzero_Controller
 		$pee = str_replace('</p>', "\n", $pee);
 		$pee = str_replace('<br />', '', $pee);
 		$pee = trim($pee);
-		return $pee; 
+		return $pee;
 	}
-	
-	//-----------
-	
+
 	private function _buildPathFromDate( $date, $id, $base='' )
 	{
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
@@ -2100,9 +2026,9 @@ class ContributeController extends Hubzero_Controller
 			$dir_month = date('m');
 		}
 		$dir_id = Hubzero_View_Helper_Html::niceidformat( $id );
-		
+
 		$path = $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
-	
+
 		return $path;
 	}
 }

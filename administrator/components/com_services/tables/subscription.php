@@ -29,7 +29,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class Subscription extends JTable
 {
 	var $id       		= NULL;  // @var int(11) Primary key
@@ -48,23 +47,21 @@ class Subscription extends JTable
 	var $totalpaid 		= NULL;  //	@var int(11)
 	var $notes 			= NULL;  //	@var text
 	var $usepoints 		= NULL;  //	@var tinyint
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__users_points_subscriptions', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->uid ) == '') {
 			$this->setError( JText::_('Entry must have a user ID.') );
 			return false;
 		}
-		
+
 		if (trim( $this->serviceid ) == '') {
 			$this->setError( JText::_('Entry must have a service ID.') );
 			return false;
@@ -72,10 +69,8 @@ class Subscription extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadSubscription( $id = NULL, $oid=NULL, $serviceid = NULL, $status = array(0, 1, 2) ) 
+
+	public function loadSubscription( $id = NULL, $oid=NULL, $serviceid = NULL, $status = array(0, 1, 2) )
 	{
 		if ($id == 0 or  ($oid === NULL && $serviceid === NULL)) {
 			return false;
@@ -94,9 +89,9 @@ class Subscription extends JTable
 			$tquery .= "'".$tagg."',";
 		}
 		$tquery = substr($tquery,0,strlen($tquery) - 1);
-		
+
 		$query .= $tquery.")";
-		
+
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -105,18 +100,16 @@ class Subscription extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function cancelSubscription( $subid = NULL, $refund=0, $unitsleft=0) 
+
+	public function cancelSubscription( $subid = NULL, $refund=0, $unitsleft=0)
 	{
 		if ($subid === NULL ) {
 			return false;
 		}
-		
+
 		// status quo if now money back is expected
 		$unitsleft = $refund ? $unitsleft : 0;
-	
+
 		$query  = "UPDATE $this->_tbl SET status='2', pendingpayment='$refund', pendingunits='$unitsleft' WHERE id='$subid'" ;
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
@@ -125,27 +118,23 @@ class Subscription extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getSubscriptionsCount( $filters=array(), $admin=false ) 
+
+	public function getSubscriptionsCount( $filters=array(), $admin=false )
 	{
 		$filters['exlcudeadmin'] = 1;
-		$filter = $this->buildQuery( $filters, $admin );		
-		
+		$filter = $this->buildQuery( $filters, $admin );
+
 		$sql = "SELECT count(*) FROM $this->_tbl AS u JOIN #__users_points_services as s ON s.id=u.serviceid $filter";
 
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getSubscriptions($filters, $admin=false)
 	{
 		$filter = $this->buildQuery( $filters, $admin );
 		$filters['exlcudeadmin'] = 1;
-		
+
 		$sql  = "SELECT u.*, s.title, s.category, s.unitprice, s.currency, s.unitsize, s.unitmeasure, s.minunits, s.maxunits ";
 		$sql .= " FROM $this->_tbl AS u JOIN #__users_points_services as s ON s.id=u.serviceid ";
 		$sql .= $this->buildQuery( $filters, $admin );
@@ -154,52 +143,48 @@ class Subscription extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getSubscription($id)
 	{
 		if ($id === NULL ) {
 			return false;
-		}	
-	
+		}
+
 		$sql  = "SELECT u.*, s.id as serviceid, s.title, s.category, s.unitprice, s.pointsprice, s.currency, s.unitsize, s.unitmeasure, s.minunits, s.maxunits, e.companyLocation, e.companyName, e.companyWebsite ";
 		$sql .= " FROM $this->_tbl AS u JOIN #__users_points_services as s ON s.id=u.serviceid ";
 		$sql .= " JOIN #__jobs_employers as e ON e.uid=u.uid ";
-		$sql .= " WHERE u.id='$id' ";		
+		$sql .= " WHERE u.id='$id' ";
 
 		$this->_db->setQuery( $sql );
 		$result = $this->_db->loadObjectList();
-		
+
 		$result = $result ? $result[0] : NULL;
 		return $result;
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array(), $admin=false ) 
+
+	public function buildQuery( $filters=array(), $admin=false )
 	{
 		$juser =& JFactory::getUser();
 		$now = date( 'Y-m-d H:i:s', time() );
-		
+
 		$query  = "";
 		$query .= "WHERE 1=1 ";
 		if (isset($filters['filterby'])) {
-			switch ($filters['filterby']) 
+			switch ($filters['filterby'])
 			{
 				case 'pending':    $query .= "AND (u.status=0 OR u.pendingpayment > 0 OR u.pendingunits > 0) "; break;
 				case 'cancelled':  $query .= "AND u.status=2 ";             break;
 				default:  		   $query .= '';   							break;
 			}
 		}
-		
+
 		if (isset($filters['exlcudeadmin'])) {
 			$query .= "AND u.uid!=1 ";
 		}
-		
+
 		$query .= " ORDER BY ";
 		if (isset($filters['sortby'])) {
-			switch ($filters['sortby']) 
+			switch ($filters['sortby'])
 			{
 				case 'date':
 				case 'date_added':      $query .= 'u.added DESC';      		break;
@@ -207,18 +192,16 @@ class Subscription extends JTable
 				case 'date_updated':    $query .= 'u.updated DESC';        	break;
 				case 'category':    	$query .= 's.category DESC';        break;
 				case 'status':    		$query .= 'u.status ASC';        	break;
-				case 'pending':    		
+				case 'pending':
 				default:  $query .= 'u.pendingunits DESC, u.pendingpayment DESC, u.status ASC, u.updated DESC ';   break;
 			}
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
+
 	public function generateCode($minlength = 6, $maxlength = 6, $usespecial = 0, $usenumbers = 1, $useletters = 1 )
-	{	
+	{
 		$key = '';
 		$charset = '';
 		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -229,30 +212,27 @@ class Subscription extends JTable
 		for ($i=0; $i<$length; $i++) $key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
 		return $key;
 	}
-	 
-	
-	//-----------
-	
-	public function getRemaining( $type='unit', $subscription = NULL, $maxunits = 24, $unitsize=1 ) 
+
+	public function getRemaining( $type='unit', $subscription = NULL, $maxunits = 24, $unitsize=1 )
 	{
 		if ($subscription === NULL ) {
 			return false;
 		}
-		
+
 		$current_time = time();
-			
+
 		$limits = array();
 		$starttime = $subscription->added;
 		$lastunit = 0;
 		$today = date('Y-m-d H:i:s', time() - (24 * 60 * 60));
-						
-		for ($i = 0; $i < $maxunits; $i++) 
+
+		for ($i = 0; $i < $maxunits; $i++)
 		{
 			$starttime = date('Y-m-d', strtotime("+".$unitsize."month", strtotime($starttime)));
 			$limits[$i] = $starttime;
 		}
-			
-		for ($j = 0; $j < count($limits); $j++) 
+
+		for ($j = 0; $j < count($limits); $j++)
 		{
 			if (strtotime($current_time) < strtotime($limits[$j])) {
 				$lastunit = $j + 1;
@@ -262,7 +242,7 @@ class Subscription extends JTable
 					return ($remaining);
 				}
 			}
-		}	
+		}
 	}
 }
 

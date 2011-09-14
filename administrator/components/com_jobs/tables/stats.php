@@ -29,7 +29,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class JobStats extends JTable
 {
 	var $id         	= NULL;  // @var int(11) Primary key
@@ -39,23 +38,19 @@ class JobStats extends JTable
 	var $total_shared	= NULL;
 	var $viewed_today	= NULL;
 	var $lastviewed		= NULL;
-	
-	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_stats', 'id', $db );
 	}
-		
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (intval( $this->itemid ) == 0) {
 			$this->setError( JText::_('Missing item id.') );
 			return false;
 		}
-		
+
 		if (intval( $this->category ) == '') {
 			$this->setError( JText::_('Missing category.') );
 			return false;
@@ -63,36 +58,32 @@ class JobStats extends JTable
 
 		return true;
 	}
-	
-	//--------
-	
+
 	public function loadStat($itemid = NULL, $category = NULL, $type = "viewed")
 	{
 		if ($itemid === NULL or $category === NULL) {
 			return false;
 		}
-		
+
 		$query  = "SELECT * FROM $this->_tbl WHERE itemid='$itemid' AND category='$category' ORDER BY ";
 		$query .= $type=='shared' ? "lastshared": "lastviewed";
 		$query .= " DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
-		
+
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
 		} else {
 			return false;
 		}
 	}
-	
-	//--------
-	
+
 	public function getStats($itemid = NULL, $category = 'employer', $admin = 0)
 	{
 		if ($itemid === NULL) {
 			return false;
 		}
-		
+
 		$stats = array();
 		$stats = array('total_resumes'=> 0,
 						'shortlisted' => 0,
@@ -104,22 +95,22 @@ class JobStats extends JTable
 						'viewed_thisweek' => 0,
 						'viewed_thismonth' => 0,
 						'lastviewed' => '');
-		
+
 		// get total resumes in the pool
 		$row = new JobSeeker( $this->_db );
 		$filters = array('filterby'=>'all', 'sortby'=>'', 'search'=>'', 'category'=>'', 'type'=>'');
 		$stats['total_resumes'] = $row->countSeekers( $filters);
-		
+
 		// get stats for employer
 		if ($category == 'employer') {
 			$filters['filterby'] = 'shortlisted';
 			$stats['shortlisted'] = $row->countSeekers( $filters, $itemid);
-			
+
 			$filters['filterby'] = 'applied';
 			$itemid = $admin ? 1 : $itemid;
 			$stats['applied'] = $row->countSeekers( $filters, $itemid);
 		}
-		
+
 		// get stats for seeker
 		if ($category == 'seeker') {
 			$stats['totalviewed'] = $this->getView($itemid, $category);
@@ -128,18 +119,16 @@ class JobStats extends JTable
 			$stats['viewed_thismonth'] = $this->getView($itemid, $category, 'viewed', 'thismonth');
 			$stats['shortlisted'] = $row->countShortlistedBy($itemid);
 		}
-		
-		return $stats;	
+
+		return $stats;
 	}
-	
-	//--------------
-	
-	public function getView( $itemid=NULL, $category=NULL, $type='viewed', $when ='') 
+
+	public function getView( $itemid=NULL, $category=NULL, $type='viewed', $when ='')
 	{
 		$lastweek = date('Y-m-d H:i:s', time() - (7 * 24 * 60 * 60));
 		$lastmonth = date('Y-m-d H:i:s', time() - (30 * 24 * 60 * 60));
 		$today = date('Y-m-d H:i:s', time() - (24 * 60 * 60));
-		
+
 		$query  = "SELECT ";
 		if ($type == 'viewed') {
 			$query .= $when ? " SUM(viewed_today) AS times " : " MAX(total_viewed) AS times ";
@@ -147,7 +136,7 @@ class JobStats extends JTable
 			$query .= " MAX(p.total_shared) AS times ";
 		}
 		$query .= " FROM $this->_tbl WHERE itemid='$itemid' AND category='$category' AND ";
-	
+
 		if ($when == 'thisweek') {
 			$query .= " lastviewed > '".$lastweek."' ";
 		} else if($when == 'thismonth') {
@@ -156,21 +145,19 @@ class JobStats extends JTable
 			$query .= " lastviewed > '".$today."' ";
 		} else {
 			$query .= " 1=1 ";
-		}			
-		$query .= "GROUP BY itemid, category ";		
+		}
+		$query .= "GROUP BY itemid, category ";
 		$query .= "ORDER BY times DESC ";
 		$query .= "LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		$result =  $this->_db->loadResult();
-		
+
 		$result = $result ? $result : 0;
-		return $result;		
+		return $result;
 	}
-	
-	//--------------
-	
-	public function saveView( $itemid=NULL, $category=NULL, $type='viewed') 
+
+	public function saveView( $itemid=NULL, $category=NULL, $type='viewed')
 	{
 		if ($itemid=== NULL) {
 			$itemid = $this->itemid;
@@ -178,17 +165,17 @@ class JobStats extends JTable
 		if ($category === NULL) {
 			$category = $this->category;
 		}
-		
+
 		if ($itemid === NULL or $category === NULL) {
 			return false;
 		}
-		
+
 		$today = date( 'Y-m-d');
 		$now = date( 'Y-m-d H:i:s' );
 
 		// load existing entry
 		$this->loadStat( $itemid, $category);
-		
+
 		// create new entry for another day
 		if (substr($this->lastviewed, 0, 10) != $today ) {
 			$this->id = 0;
@@ -198,41 +185,37 @@ class JobStats extends JTable
 		} else {
 			$this->viewed_today = $this->viewed_today + 1;
 		}
-		
+
 		$this->total_viewed = $this->total_viewed + 1;
-		
+
 		// avoid duplicates
 		if ($this->lastviewed != $now) {
 			$this->lastviewed = $now;
-			
+
 			if (!$this->store()) {
 				$this->setError( JText::_('Failed to store item view.') );
 				return false;
 			} else {
 				// clean-up views older than 30 days
 				$this->cleanup();
-			}			
-		}			
+			}
+		}
 	}
-	
-	//--------------
-	
-	public function cleanup() 
+
+	public function cleanup()
 	{
 		$lastmonth = date('Y-m-d H:i:s', time() - (30 * 24 * 60 * 60));
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE lastviewed < '".$lastmonth."'");
 		$this->_db->query();
 	}
-	
-	//--------------
-	
-	public function deleteStats($itemid, $category) 
+
+	public function deleteStats($itemid, $category)
 	{
 		if ($itemid === NULL or $category === NULL) {
 			return false;
 		}
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE itemid ='$itemid' AND category ='$category'");
 		$this->_db->query();
-	}	
+	}
 }
 

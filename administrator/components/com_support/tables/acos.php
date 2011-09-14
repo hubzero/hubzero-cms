@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class SupportAco extends JTable 
+class SupportAco extends JTable
 {
 	var $id    = NULL;  // @var int(11) Primary key
 	var $model = NULL;  // @var varchar(255)
@@ -38,14 +37,12 @@ class SupportAco extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_acl_acos', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->model ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD').': model' );
@@ -58,31 +55,25 @@ class SupportAco extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	private function _buildQuery( $filters=array() ) 
+
+	private function _buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl ORDER BY id";
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->_buildQuery( $filters );
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT *";

@@ -29,22 +29,19 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class Prefs extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $uid		= NULL;  // @var int(11)
 	var $filters	= NULL;  // @var text
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_prefs', 'id', $db );
 	}
-	
-	//--------
-	
+
 	public function loadPrefs( $uid, $category = 'resume' )
 	{
 		if ($uid === NULL) {

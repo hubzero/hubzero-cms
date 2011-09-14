@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xmessage_rss' );
-
-//-----------
 
 class plgXMessageRss extends JPlugin
 {
@@ -46,22 +42,18 @@ class plgXMessageRss extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xmessage', 'rss' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function onMessageMethods()
 	{
 		return 'rss';
 	}
-
-	//-----------
 
 	public function onMessage( $from, $xmessage, $user, $action )
 	{
 		if ($this->onMessageMethods() != $action) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }

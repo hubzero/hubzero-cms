@@ -78,7 +78,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 			$feed.= "		<itunes:category text=\"".htmlspecialchars($data->itunes_category, ENT_COMPAT, 'UTF-8')."\">\n";
 			if ($data->itunes_subcategories!=null) {
 				$cats = $data->itunes_subcategories;
-				foreach ($cats as $cat) 
+				foreach ($cats as $cat)
 				{
 					$feed.= "			<itunes:category text=\"".htmlspecialchars($cat, ENT_COMPAT, 'UTF-8')."\" />\n";
 				}
@@ -183,7 +183,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 			$feed.= "			<title>".htmlspecialchars(strip_tags($data->items[$i]->title), ENT_COMPAT, 'UTF-8')."</title>\n";
 			$feed.= "			<link>".$url.$data->items[$i]->link."</link>\n";
 			$feed.= "			<description>".$this->_relToAbs($data->items[$i]->description)."</description>\n";
-			
+
 			// iTunes specific tags
 			if ($data->items[$i]->itunes_summary!="") {
 				$feed.= "			<itunes:summary>".htmlspecialchars($data->items[$i]->itunes_summary, ENT_COMPAT, 'UTF-8')."</itunes:summary>\n";
@@ -204,7 +204,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 				$feed.= "			<itunes:category text=\"".htmlspecialchars($data->items[$i]->itunes_category, ENT_COMPAT, 'UTF-8')."\">\n";
 				if ($data->items[$i]->itunes_subcategories!="") {
 					$icats = $data->items[$i]->itunes_subcategories;
-					foreach ($icats as $icat) 
+					foreach ($icats as $icat)
 					{
 						$feed.= "				<itunes:category text=\"".htmlspecialchars($icat, ENT_COMPAT, 'UTF-8')."\">\n";
 					}
@@ -232,7 +232,7 @@ class Hubzero_Document_Renderer_Rss extends JDocumentRenderer
 				$feed.= "			</itunes:image>\n";
 			}
 			// end iTunes specific tags
-			
+
 			if ($data->items[$i]->author!="") {
 				$feed.= "			<author>".htmlspecialchars($data->items[$i]->author, ENT_COMPAT, 'UTF-8')."</author>\n";
 			}

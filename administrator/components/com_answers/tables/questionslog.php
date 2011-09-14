@@ -29,25 +29,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class AnswersQuestionsLog extends JTable 
+class AnswersQuestionsLog extends JTable
 {
 	var $id      = NULL;  // @var int(11) Primary key
 	var $qid     = NULL;  // @var int(11)
 	var $expires = NULL;  // @var datetime (0000-00-00 00:00:00)
 	var $voter   = NULL;  // @var int(11)
 	var $ip      = NULL;  // @var varchar(15)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__answers_questions_log', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->qid ) == '') {
 			$this->setError( JText::_('Missing question ID') );
@@ -55,10 +52,8 @@ class AnswersQuestionsLog extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function checkVote($qid=null, $ip=null, $voter=null) 
+
+	public function checkVote($qid=null, $ip=null, $voter=null)
 	{
 		if ($qid == null) {
 			$qid = $this->qid;
@@ -66,12 +61,12 @@ class AnswersQuestionsLog extends JTable
 		if ($qid == null) {
 			return false;
 		}
-		
+
 		$now = date( 'Y-m-d H:i:s', time() );
-		
+
 		//$query = "SELECT count(*) FROM $this->_tbl WHERE qid='".$qid."' AND expires > '".$now."' AND (ip='".$ip."' OR voter='".$voter."')";
 		$query = "SELECT count(*) FROM $this->_tbl WHERE qid='".$qid."' AND (ip='".$ip."' OR voter='".$voter."')";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}

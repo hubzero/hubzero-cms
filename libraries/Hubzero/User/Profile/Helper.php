@@ -46,7 +46,7 @@ class Hubzero_User_Profile_Helper
 			$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
 
 			$dn = 'ou=users,' . $hubLDAPBaseDN;
-			$filter = '(objectclass=posixAccount)'; 
+			$filter = '(objectclass=posixAccount)';
 
 			$attributes[] = 'uid';
 
@@ -85,7 +85,7 @@ class Hubzero_User_Profile_Helper
 				return false;
 			}
 
-			while ($row = mysql_fetch_row( $result )) 
+			while ($row = mysql_fetch_row( $result ))
 				$func($row[0]);
 
 			mysql_free_result( $result );
@@ -104,7 +104,7 @@ class Hubzero_User_Profile_Helper
 
 		if (empty($storage))
 			$storage = ($ldapProfileMirror) ? 'all' : 'mysql';
-		
+
 		ximport('Hubzero_User_Profile');
 		$profile = new Hubzero_User_Profile();
 
@@ -120,30 +120,30 @@ class Hubzero_User_Profile_Helper
 			$profile->delete('ldap');
 		}
 	}
-	
+
 	public function find_by_email($email)
 	{
 		if (empty($email))
 			return false;
 
 		$db = &JFactory::getDBO();
-		
+
 		$query = "SELECT username FROM #__xprofiles WHERE email=" . $db->Quote($email);
-		
+
 		$db->setQuery($query);
 
 		$result = $db->loadResultArray();
-		
+
 		if (empty($result))
 			return false;
-			
+
 		return $result;
 	}
-	
+
 	public function getMemberPhoto( $member, $anonymous=0 )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
-		
+
 		if (!$anonymous && $member->get('picture')) {
 			$thumb  = $config->get('webpath');
 			if (substr($thumb, 0, 1) != DS) {
@@ -153,28 +153,26 @@ class Hubzero_User_Profile_Helper
 				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 			}
 			$thumb .= DS.Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
-			
+
 			$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
 		} else {
 			$thumb = '';
 		}
-		
+
 		$dfthumb = $config->get('defaultpic');
 		if (substr($dfthumb, 0, 1) != DS) {
 			$dfthumb = DS.$dfthumb;
 		}
 		$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
-		
+
 		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
 			return $thumb;
 		} else if (is_file(JPATH_ROOT.$dfthumb)) {
 			return $dfthumb;
 		}
 	}
-	
-	//-----------
-	
-	public function thumbit($thumb) 
+
+	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -182,15 +180,13 @@ class Hubzero_User_Profile_Helper
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		return $thumb;
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}

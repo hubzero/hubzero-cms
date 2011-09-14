@@ -83,7 +83,7 @@ $first = end($this->revisions);
 					<th><?php echo JText::_('WIKI_HISTORY_COL_MADE_BY'); ?></th>
 					<th><?php echo JText::_('WIKI_HISTORY_COL_STATUS'); ?></th>
 <?php 
-if (($this->page->state == 1 && $this->authorized === 'admin') 
+if (($this->page->state == 1 && $this->authorized === 'admin')
  || ($this->page->state != 1 && $this->authorized)) { ?>
 					<th>&nbsp;</th>
 <?php } ?>
@@ -94,24 +94,24 @@ if (($this->page->state == 1 && $this->authorized === 'admin')
 $i = 0;
 $cur = 0;
 $cls = 'even';
-foreach ($this->revisions as $revision) 
+foreach ($this->revisions as $revision)
 {
 	$i++;
 	$cls = ($cls == 'odd') ? 'even' : 'odd';
 	$level = ($revision->minor_edit) ? 'minor' : 'major';
-	
-	switch ($revision->approved) 
+
+	switch ($revision->approved)
 	{
 		case 1: $status = 'approved'; break;
 		case 0:
-		default: 
+		default:
 			$status = 'suggested';
 			if ($this->authorized) {
 				$status .= '<br /><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=approve&oldid='.$revision->id).'">'.JText::_('WIKI_ACTION_APPROVED').'</a>';
 			}
 			break;
 	}
-	
+
 	$html  = "\t\t".'<tr class="'.$cls.'">'."\n";
 	$html .= "\t\t\t".'<td>';
 	if ($i == 1) {
@@ -137,31 +137,31 @@ foreach ($this->revisions as $revision)
 			$html .= ' checked="checked"';
 		}
 		$html .= ' /></td>'."\n";
-		$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";		
+		$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";
 	}
-	
+
 	$xname = JText::_('WIKI_AUTHOR_UNKNOWN');
 	$juser =& JUser::getInstance( $revision->created_by );
 	if (is_object($juser)) {
 		$xname = $juser->get('name');
 	}
-	
+
 	if ($revision->summary) {
 		$summary = WikiHtml::encode_html($revision->summary);
 	} else {
 		$summary = JText::_('WIKI_REVISION_NO_SUMMARY');
 	}
-	
+
 	$html .= "\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version).'" class="tooltips" title="'.JText::_('WIKI_REVISION_SUMMARY').' :: '.$summary.'">'.$revision->created.'</a></td>'."\n";
 	$html .= "\t\t\t".'<td>'.$xname.'</td>'."\n";
 	$html .= "\t\t\t".'<td>'.$status.'</td>'."\n";
-	if (($this->page->state == 1 && $this->authorized === 'admin') 
+	if (($this->page->state == 1 && $this->authorized === 'admin')
 	 || ($this->page->state != 1 && $this->authorized)) {
 		$html .= "\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=deleterevision&oldid='.$revision->id).'" title="'.JText::_('WIKI_REVISION_DELETE').'">'."\n";
 		if($this->option == 'com_groups') {
 			$group_config = JComponentHelper::getParams( $this->option );
 			$html .= "\t\t\t\t".'<img src="'.$group_config->get('iconpath').'/trash.gif" alt="'.JText::_('DELETE').'" />'."\n";
-		} else { 
+		} else {
 			$html .= "\t\t\t\t".'<img src="/components/'.$this->option.'/images/icons/trash.gif" alt="'.JText::_('DELETE').'" />'."\n";
 		}
 		$html .= "\t\t\t".'</a></td>'."\n";

@@ -134,7 +134,6 @@ if (0) {
 		}
 	}
 
-
     die();
 
     $group_projects = array( 'alam_group','group_p_in_si','klimeck','koslowski','mse597g','piezo_frg','strachangroup' );
@@ -166,7 +165,6 @@ if (0) {
 		}
 	}
 
-
     die();
 }
 	$query = "SELECT jt.toolname,jtv.toolid,p.tool_version_id,p.tracperm FROM jos_tool_version_tracperm AS p, jos_tool_version AS jtv, jos_tool AS jt WHERE p.tool_version_id=jtv.id AND jtv.state=3 AND jt.id=jtv.toolid";
@@ -196,7 +194,6 @@ if (0) {
 		}
 		else
 			$trac_project_id = $projects[$entry['toolid']];
-
 
 		$query = "INSERT IGNORE INTO jos_trac_user_permission (user_id,action,trac_project_id) VALUE ('0'," . $db->Quote($entry['tracperm'])  . "," . $db->Quote($trac_project_id) . ");";
 		$db->setQuery($query);

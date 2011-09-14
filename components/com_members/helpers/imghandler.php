@@ -44,39 +44,37 @@ class MembersImgHandler extends JObject
 	var $color = false;
 	var $overwrite = true;
 	var $outputName = NULL;
-	
+
 	var $_MEMORY_TO_ALLOCATE = '100M';
-	
-	//-----------
-	
-	public function process() 
+
+	public function process()
 	{
 		$docRoot = $this->path;
 		$image = $this->image;
 		$cropratio = $this->cropratio;
 		$quality = $this->quality;
 		$color = $this->color;
-		
+
 		// Make sure that the requested file is actually an image
 		if (!$image) {
 			$this->setError( JText::_('No image set.') );
 			return false;
 		}
-		
+
 		// Make sure that the requested file is actually an image
 		if (!$docRoot) {
 			$this->setError( JText::_('No image path set.') );
 			return false;
 		}
-		
+
 		// Strip the possible trailing slash off the document root
 		//$docRoot = preg_replace('/\/$/', '', $docRoot);
-		
+
 		if (!is_file($docRoot . $image)) {
 			$this->setError( JText::_('File/path not found.') );
 			return false;
 		}
-		
+
 		// Get the size and MIME type of the requested image
 		$size = GetImageSize($docRoot . $image);
 		$mime = $size['mime'];
@@ -86,23 +84,23 @@ class MembersImgHandler extends JObject
 			$this->setError( JText::_('File is not an image.') );
 			return false;
 		}
-		
+
 		$width  = $size[0];
 		$height = $size[1];
 
 		$maxWidth = $this->maxWidth;
 		$maxHeight = $this->maxHeight;
-		
+
 		if ($maxWidth >= $width && $maxHeight >= $height) {
 			return true;
 		}
-		
+
 		if ($color) {
 			$color = preg_replace('/[^0-9a-fA-F]/', '', (string) $color);
 		} else {
 			$color = FALSE;
 		}
-		
+
 		// Ratio cropping
 		$offsetX = 0;
 		$offsetY = 0;
@@ -190,7 +188,7 @@ class MembersImgHandler extends JObject
 				$doSharpen			= TRUE;
 			break;
 		}
-		
+
 		// Read in the original image
 		$src = $creationFunction($docRoot . $image);
 
@@ -217,7 +215,7 @@ class MembersImgHandler extends JObject
 				}
 			}
 		}
-		
+
 		// Resample the original image into the resized canvas we set up earlier
 		ImageCopyResampled($dst, $src, 0, 0, $offsetX, $offsetY, $tnWidth, $tnHeight, $width, $height);
 
@@ -238,10 +236,10 @@ class MembersImgHandler extends JObject
 				imageconvolution($dst, $sharpenMatrix, $divisor, $offset);
 			}
 		}
-		
+
 		// Write the resized image to the cache
 		$outputFunction($dst, $resized, $quality);
-		
+
 		// Yes - remove it
 		$overwrite = $this->overwrite;
 		if ($overwrite) {
@@ -249,7 +247,7 @@ class MembersImgHandler extends JObject
 			if ($outputName) {
 				$image = $outputName;
 			}
-			
+
 			jimport('joomla.filesystem.file');
 			if (file_exists($resized)) {
 				if (file_exists($docRoot.$image)) {
@@ -264,11 +262,9 @@ class MembersImgHandler extends JObject
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
-	//-----------
 
 	public function createThumbName( $image=null, $tn='_thumb' )
 	{
@@ -279,28 +275,26 @@ class MembersImgHandler extends JObject
 			$this->setError( JText::_('No image set.') );
 			return false;
 		}
-		
+
 		$image = explode('.',$image);
 		$n = count($image);
 		$image[$n-2] .= $tn;
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		return $thumb;
 	}
-	
-	//-----------
-	
+
 	private function findSharp($orig, $final)
 	{
 		$final = $final * (750.0 / $orig);
 		$a = 52;
 		$b = -0.27810650887573124;
 		$c = .00047337278106508946;
-		
+
 		$result = $a + $b * $final + $c * $final * $final;
-		
+
 		return max(round($result), 0);
 	}
 }

@@ -57,14 +57,14 @@ $juser =& JFactory::getUser();
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
-	
+
 	$task  = $row->published ? 'unpublish' : 'publish';
 	$class = $row->published ? 'published' : 'unpublished';
 	$alt   = $row->published ? JText::_('PUBLISHED') : JText::_('UNPUBLISHED');
-	
+
 	$task2  = ($row->open == 1) ? 'close' : 'open';
 	$class2 = ($row->open == 1) ? 'published' : 'unpublished';
 	$alt2   = ($row->open == 1) ? JText::_('OPEN') : JText::_('CLOSED');
@@ -84,8 +84,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><?php echo $row->editor; ?></td>
 			</tr>
 <?php	
-	$k = 1 - $k; 
-} 
+	$k = 1 - $k;
+}
 ?>
 		</tbody>
 	</table>

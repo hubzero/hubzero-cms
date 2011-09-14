@@ -29,10 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ChildrenMacro extends WikiMacro 
+class ChildrenMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Inserts an alphabetic list of all sub-pages (children) of the current page into the output. Accepts two parameters:
@@ -46,18 +45,16 @@ class ChildrenMacro extends WikiMacro
 		<p>Example usage: <code>[[Children(depth=3)]]</code></p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$depth = 1;
 		$description = 0;
-		
+
 		if ($this->args) {
 			$args = split(',', $this->args);
 			if (is_array($args)) {
-				foreach ($args as $arg) 
+				foreach ($args as $arg)
 				{
 					$arg = trim($arg);
 					if (substr($arg, 0, 6) == 'depth=') {
@@ -85,25 +82,23 @@ class ChildrenMacro extends WikiMacro
 		}
 
 		$scope = ($this->scope) ? $this->scope.DS.$this->pagename : $this->pagename;
-		
+
 		return $this->listChildren( 1, $depth, $scope );
 	}
-	
-	//-----------
-	
-	private function listChildren( $currentDepth, $targetDepth, $scope='' ) 
+
+	private function listChildren( $currentDepth, $targetDepth, $scope='' )
 	{
 		$html = '';
-		
+
 		if ($currentDepth > $targetDepth) {
 			return $html;
 		}
-		
+
 		$rows = $this->getchildren( $scope );
-		
+
 		if ($rows) {
 			$html = '<ul>';
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
 				$title = ($row->title) ? $row->title : $row->pagename;
 
@@ -126,13 +121,11 @@ class ChildrenMacro extends WikiMacro
 			//return '(TitleIndex('.$et.') failed)';
 			return '<p>(No sub-pages to display)</p>';
 		}
-		
+
 		return $html;
 	}
-	
-	//-----------
-	
-	private function getChildren($scope) 
+
+	private function getChildren($scope)
 	{
 		// Get all pages
 		$sql = "SELECT * FROM #__wiki_page WHERE scope='".$scope."' AND `group`='".$this->domain."' ORDER BY pagename ASC";

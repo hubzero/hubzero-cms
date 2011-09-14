@@ -34,7 +34,7 @@ if ($modfeaturedresource->error) {
 	$html .= '<p class="error">'.JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS').'</p>'."\n";
 } else {
 	ximport('Hubzero_View_Helper_Html');
-	
+
 	if ($modfeaturedresource->row) {
 		$html .= '<div class="'.$modfeaturedresource->cls.'">'."\n";
 		$html .= '<h3>'.JText::_('MOD_FEATUREDRESOURCE_FEATURED').' '.$modfeaturedresource->row->typetitle.'</h3>'."\n";

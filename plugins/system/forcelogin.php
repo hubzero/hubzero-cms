@@ -33,7 +33,7 @@ jimport('joomla.event.plugin');
 
 class plgSystemForceLogin extends JPlugin
 {
-	function plgSystemForceLogin(& $subject) 
+	function plgSystemForceLogin(& $subject)
 	{
 		parent::__construct($subject, NULL);
 	}
@@ -45,7 +45,7 @@ class plgSystemForceLogin extends JPlugin
 		if ($mainframe->isAdmin()) {
 			return;
 		}
-	
+
 		$juser = JFactory::getUser();
 
 		if ($juser->get('guest') != '1') {

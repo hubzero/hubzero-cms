@@ -29,26 +29,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-class SefEntry extends JTable 
+class SefEntry extends JTable
 {
 	var $id	     = null;  // @var int
 	var $cpt     = null;  // @var int
 	var $oldurl	 = null;  // @var string
 	var $newurl	 = null;  // @var string
 	var $dateadd = null;  // @var date
-	
+
 	//-----------
-	
-	public function __construct( &$_db ) 
+
+	public function __construct( &$_db )
 	{
 		parent::__construct( '#__redirection', 'id', $_db );
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array(), $admin=false ) 
+
+	public function getCount( $filters=array(), $admin=false )
 	{
 		$sql  = "SELECT COUNT(*) ";
 		$sql .= $this->buildQuery( $filters, $admin );
@@ -56,21 +52,17 @@ class SefEntry extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array(), $admin=false ) 
+
+	public function getRecords( $filters=array(), $admin=false )
 	{
 		$sql  = "SELECT * ";
 		$sql .= $this->buildQuery( $filters, $admin );
 		$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function buildQuery( $filters=array(), $admin=false )
 	{
 		$query = "FROM $this->_tbl WHERE ";

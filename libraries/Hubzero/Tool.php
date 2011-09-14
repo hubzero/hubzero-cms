@@ -670,7 +670,6 @@ class Hubzero_Tool
         // @FIXME Check for empty strings, use delete instead of replace as
         // LDAP disallows empty values
 
-
         foreach ($currentinfo as $key=>$value)
         {
             if (!$all && !in_array($_attrpropertymap[$key], $this->_updatedkeys))
@@ -1489,7 +1488,7 @@ class Hubzero_Tool
 	{
 		$db = &JFactory::getDBO();
 
-		if (isset($this) && is_a($this,'Hubzero_Tool')) 
+		if (isset($this) && is_a($this,'Hubzero_Tool'))
 		{
 			$toolname = $this->toolname;
 			$id = $this->id;
@@ -1542,7 +1541,7 @@ class Hubzero_Tool
 			' r.alias = t.toolname WHERE ' . "$clause ;";
 
 		$db->setQuery($query);
-		 
+
 		return $db->loadResult();
 	}
 
@@ -1568,7 +1567,7 @@ class Hubzero_Tool
 		{
 			$err['toolname'] = JText::_('ERR_TOOLNAME_EXISTS');
         }
-        else if (ereg('^[a-zA-Z0-9]{3,15}$',$tool['toolname']) == '' && !$id ) 
+        else if (ereg('^[a-zA-Z0-9]{3,15}$',$tool['toolname']) == '' && !$id )
 		{
 			$err['toolname'] = JText::_('ERR_TOOLNAME');
         }
@@ -1621,18 +1620,18 @@ class Hubzero_Tool
             $err['exec'] = JText::_('ERR_EXEC');
         }
 
-        if ($tool['exec']=='@GROUP' && empty($tool['membergroups'])) 
+        if ($tool['exec']=='@GROUP' && empty($tool['membergroups']))
 		{
             $err['membergroups'] = JText::_('ERR_GROUPS_EMPTY');
         }
-        else if(empty($tool['membergroups']) or $tool['exec']!='@GROUP') 
+        else if(empty($tool['membergroups']) or $tool['exec']!='@GROUP')
 		{
         }
-        else if($tool['exec']=='@GROUP') 
+        else if($tool['exec']=='@GROUP')
 		{
         }
 
-        if (empty($tool['code'])) 
+        if (empty($tool['code']))
 		{
             $err['code'] = JText::_('ERR_CODE');
         }
@@ -1646,16 +1645,16 @@ class Hubzero_Tool
 		{
             $err['developers'] =  JText::_('ERR_TEAM_EMPTY');
         }
-        else 
+        else
 		{
         }
 
-		if(empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || ereg('[^0-9]' , $tool['vncGeometryX']) || ereg('[^0-9]' , $tool['vncGeometryY']) ) 
+		if(empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || ereg('[^0-9]' , $tool['vncGeometryX']) || ereg('[^0-9]' , $tool['vncGeometryY']) )
 		{
 			$err['vncGeometry'] = JText::_('ERR_VNCGEOMETRY');
         }
 
-        if (count($err) > 0) 
+        if (count($err) > 0)
 		{
 			return false;
 		}
@@ -1683,7 +1682,7 @@ class Hubzero_Tool
             $query = "SELECT v.id FROM #__tool AS t, #__tool_version AS v WHERE v.toolid=t.id AND t.id=" . $db->Quote($id) . " AND LOWER(v.version)=LOWER(" . $db->Quote($newversion) . ") AND v.state!='3' LIMIT 1;";
 
             $db->setQuery($query);
-         
+
             $result = $db->loadResult();
 			$xlog->logDebug("validateVersion($newversion,$id) = $result");
             if (!empty($result))
@@ -1697,9 +1696,9 @@ class Hubzero_Tool
 	static public function validateLicense($license, $code, &$err)
 	{
         preg_replace( '/\[([^]]+)\]/', ' ', $license['text'], -1, $bingo );
-		
+
 		$result = 0;
-        
+
 		if(!$license['text']) {
             $err = JText::_('ERR_LICENSE_EMPTY') ;
         }

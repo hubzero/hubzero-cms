@@ -35,21 +35,18 @@ class modTopTags
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,22 +55,21 @@ class modTopTags
 	}
 
 	//-----------
-
 	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php' );
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		// Get some initial parameters
 		$params =& $this->params;
 		$numtags = $params->get( 'numtags', 25 );
 		$this->message = $params->get( 'message' );
 		$this->sortby  = $params->get( 'sortby' );
 		$this->morelnk = $params->get( 'morelnk' );
-		
+
 		$obj = new TagsTag( $database );
-		
+
 		$this->tags = $obj->getTopTags( $numtags );
 	}
 }

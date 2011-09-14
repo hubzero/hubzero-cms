@@ -113,27 +113,27 @@ $filterstring .= ($this->filters['type'])   ? '&amp;type='.$this->filters['type'
 $database =& JFactory::getDBO();
 $rt = new ResourcesTags( $database );
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
-	
+
 	$rparams = new JParameter( $row->params );
 	$license = $rparams->get('license');
-	
+
 	// Build some publishing info
 	$info  = JText::_('Created').': '.$row->created.'<br />';
 	$info .= JText::_('Created by').': '.$row->created_by.'<br />';
-	
+
 	// Get the published status
 	$now = date( "Y-m-d H:i:s" );
-	switch ($row->published) 
+	switch ($row->published)
 	{
-		case 0: 
+		case 0:
 			$alt   = 'Unpublish';
 			$class = 'unpublished';
 			$task  = 'publish';
 			break;
-		case 1: 
+		case 1:
 			if ($now <= $row->publish_up) {
 				$alt   = 'Pending';
 				$class = 'pending';
@@ -149,22 +149,22 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			}
 			$info .= JText::_('Published').': '.$row->publish_up.'<br />';
 			break;
-		case 2: 
+		case 2:
 			$alt   = 'Draft (user created)';
 			$class = 'draftexternal';
 			$task  = 'publish';
 			break;
-		case 3: 
+		case 3:
 			$alt   = 'New';
 			$class = 'new';
 			$task  = 'publish';
 			break;
-		case 4: 
+		case 4:
 			$alt   = 'Delete';
 			$class = 'deleted';
 			$task  = 'publish';
 			break;
-		case 5: 
+		case 5:
 			$alt   = 'Draft (internal production)';
 			$class = 'draftinternal';
 			$task  = 'publish';
@@ -175,14 +175,14 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$task  = '';
 			break;
 	}
-	
+
 	switch ($row->access)
 	{
-		case 0: 
+		case 0:
 			$color_access = 'style="color: green;"';
 			$task_access  = 'accessregistered';
 			break;
-		case 1: 
+		case 1:
 			$color_access = 'style="color: red;"';
 			$task_access  = 'accessspecial';
 			break;
@@ -201,15 +201,15 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$row->groupname = 'Private';
 			break;
 	}
-	
+
 	// Get the tags on this item
 	$tags = count($rt->getTags($row->id, 0, 0, 1));
-	
+
 	// See if it's checked out or not
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') {
 		$checked = JHTMLGrid::_checkedOut( $row );
-		$info .= ($row->checked_out_time != '0000-00-00 00:00:00') 
-				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, '%d %b, %Y').'<br />' 
+		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, '%d %b, %Y').'<br />'
 				 : '';
 		if ($row->editor) {
 			$info .= JText::_('Checked out by').': '.$row->editor;

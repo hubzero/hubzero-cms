@@ -172,14 +172,14 @@ $fstring = urlencode(trim($this->filters['_find']));
 			ximport('Hubzero_User_Profile');
 			$o = 'even';
 			$i = 0;
-			foreach ($this->comments as $comment) 
+			foreach ($this->comments as $comment)
 			{
 				if (!$this->acl->check('read','private_comments') && $comment->access == 1) {
 					continue;
 				}
 				$i++;
-				
-				if ($comment->access == 1) { 
+
+				if ($comment->access == 1) {
 					$access = 'private';
 				} else {
 					$access = 'public';
@@ -187,7 +187,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 				if ($comment->created_by == $this->row->login && $comment->access != 1) {
 					$access = 'submitter';
 				}
-				
+
 				$name = JText::_('Unknown');
 				if ($comment->created_by) {
 					//$juseri =& JUser::getInstance( $comment->created_by );
@@ -197,7 +197,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$juseri->get('uidNumber')).'">'.stripslashes($juseri->get('name')).'</a>';
 					}
 				}
-				
+
 				$o = ($o == 'odd') ? 'even' : 'odd';
 ?>
 			<li class="comment <?php echo $access.' '.$o; ?>" id="c<?php echo $comment->id; ?>">
@@ -340,7 +340,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 						}
 						$html .= '>'.JText::_('COMMENT_OPT_CLOSED').'</option>'."\n";
 						if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
-							foreach ($this->lists['resolutions'] as $anode) 
+							foreach ($this->lists['resolutions'] as $anode)
 							{
 								$selected = ($anode->alias == $this->row->resolved)
 										  ? ' selected="selected"'

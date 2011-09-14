@@ -29,28 +29,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Log_FileHandler
 {
 	var $_filename = null;
 	var $_fp = null;
 
-	//-----------
-
-	public function __construct($filename) 
+	public function __construct($filename)
 	{
 		$this->_filename = $filename;
 		$this->_fp = null;
 	}
-	
-	//-----------
 
 	public function log($priority, $message, $trace = false)
 	{
 		if (empty($this->_fp)) {
 			if (is_null($this->_fp))
 				$this->_fp = fopen($this->_filename, "ab");
-		
+
 			if (empty($this->_fp)) {
 				return;
 			}
@@ -63,15 +58,13 @@ class Hubzero_Log_FileHandler
 		if ($trace) {
 			fwrite($this->_fp, Hubzero_Log::getSimpleTrace() );
 		}
-		
+
 		fwrite($this->_fp, "\n");
 		fflush($this->_fp);
 		flock($this->_fp, LOCK_UN);
 
 		return;
 	}
-
-	//-----------
 
 	public function close()
 	{

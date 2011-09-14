@@ -40,7 +40,7 @@ JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '.JText::_( 'ST
 	</thead>
 	<tbody>
 <?php
-	foreach ($this->stats as $year=>$amt) 
+	foreach ($this->stats as $year=>$amt)
 	{
 ?>
 		<tr>

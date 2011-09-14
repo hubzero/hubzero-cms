@@ -50,10 +50,10 @@ $entry_month = substr($this->row->publish_up, 5, 2);//intval(JHTML::_('date',$th
 		<h4><?php echo JText::_('Entries By Year'); ?></h4>
 		<ol>
 <?php 
-if ($this->firstentry) { 
+if ($this->firstentry) {
 	$start = intval(substr($this->firstentry,0,4));
 	$now = date("Y");
-	for ($i=$now, $n=$start; $i >= $n; $i--) 
+	for ($i=$now, $n=$start; $i >= $n; $i--)
 	{
 ?>
 			<li>
@@ -89,8 +89,8 @@ if ($this->firstentry) {
 		<h4><?php echo JText::_('Popular Entries'); ?></h4>
 		<ol>
 <?php 
-if ($this->popular) { 
-	foreach ($this->popular as $row) 
+if ($this->popular) {
+	foreach ($this->popular as $row)
 	{
 ?>
 			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
@@ -104,8 +104,8 @@ if ($this->popular) {
 		<h4><?php echo JText::_('Recent Entries'); ?></h4>
 		<ol>
 <?php 
-if ($this->recent) { 
-	foreach ($this->recent as $row) 
+if ($this->recent) {
+	foreach ($this->recent as $row)
 	{
 ?>
 			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
@@ -121,7 +121,7 @@ if ($this->recent) {
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 <?php 
-if ($this->row) { 
+if ($this->row) {
 ?>
 
 	<div class="entry" id="e<?php echo $this->row->id; ?>">
@@ -138,7 +138,7 @@ if ($this->row) {
 			<?php echo stripslashes($this->row->title); ?>
 <?php if ($juser->get('id') == $this->row->created_by) { ?>
 			<span class="state"><?php 
-switch ($this->row->state) 
+switch ($this->row->state)
 {
 	case 1:
 		echo JText::_('Public');
@@ -150,19 +150,19 @@ switch ($this->row->state)
 	default:
 		echo JText::_('Private');
 	break;
-} 
+}
 ?></span>
 			<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&entry='.$this->row->id); ?>" title="<?php echo JText::_('Edit'); ?>"><?php echo JText::_('Edit'); ?></a>
 			<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&entry='.$this->row->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a>
 <?php } ?>
 		</h2>
 <?php 
-if ($this->config->get('show_authors')) { 
+if ($this->config->get('show_authors')) {
 	$creator =& JUser::getInstance( $this->row->created_by );
 ?>
 		<p class="entry-author">Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by); ?>"><?php echo stripslashes($creator->get('name')); ?></a></cite></p>
 <?php 
-} 
+}
 ?>
 		<div class="entry-content">
 			<?php echo $this->row->content; ?>
@@ -204,26 +204,26 @@ if ($this->comments) {
 <?php 
 	$cls = 'even';
 	ximport('Hubzero_User_Profile');
-	
+
 	$wikiconfig = array(
 		'option'   => $this->option,
 		'scope'    => 'blog',
 		'pagename' => $this->row->alias,
 		'pageid'   => 0,
 		'filepath' => $this->config->get('uploadpath'),
-		'domain'   => '' 
+		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$p =& Hubzero_Wiki_Parser::getInstance();
-	
-	foreach ($this->comments as $comment) 
+
+	foreach ($this->comments as $comment)
 	{
 		$cls = ($cls == 'even') ? 'odd' : 'even';
-		
+
 		if ($this->row->created_by == $comment->created_by) {
 			$cls .= ' author';
 		}
-		
+
 		$name = JText::_('COM_BLOG_ANONYMOUS');
 		if (!$comment->anonymous) {
 			//$xuser =& JUser::getInstance( $comment->created_by );
@@ -233,7 +233,7 @@ if ($this->comments) {
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 			}
 		}
-		
+
 		if ($comment->reports) {
 			$content = '<p class="warning">'.JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 		} else {
@@ -271,7 +271,7 @@ if ($juser->get('guest')) {
 ?>
 			<ol class="comments">
 <?php
-			foreach ($comment->replies as $reply) 
+			foreach ($comment->replies as $reply)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 
@@ -318,7 +318,7 @@ if ($juser->get('guest')) {
 ?>
 					<ol class="comments">
 <?php
-					foreach ($reply->replies as $response) 
+					foreach ($reply->replies as $response)
 					{
 						$cls = ($cls == 'even') ? 'odd' : 'even';
 
@@ -385,7 +385,7 @@ if ($juser->get('guest')) {
 ?>
 	<p class="no-comments">There are no comments at this time.</p>
 <?php
-} 
+}
 ?>
 </div><!-- / .subject -->
 
@@ -480,7 +480,7 @@ if ($juser->get('guest')) {
 				ximport('Hubzero_Wiki_Editor');
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('comment[content]', 'commentcontent', '', '', '40', '15');
-			} else { 
+			} else {
 				$rtrn = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment');
 ?>
 				<p class="warning">

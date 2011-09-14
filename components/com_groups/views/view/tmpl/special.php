@@ -85,16 +85,16 @@ $links = array(
 	$temp_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.php';
 	$css_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.css';
 	$js_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.js';
-	
+
 	//start the output buffer
 	ob_start();
-	
+
 	//if the template file exists use their custom template
 	if(is_file(JPATH_ROOT . DS . $temp_path)) {
-		
+
 		//partner template exists
 		$tmpl = true;
-		
+
 		//get the document
 		$doc =& JFactory::getDocument();
 
@@ -107,24 +107,24 @@ $links = array(
 		if(is_file(JPATH_ROOT . DS . $js_path)) {
 			$doc->addScript( DS . $js_path );
 		}
-		
+
 		//include the groups template
 		include JPATH_ROOT . DS . $temp_path;
-		
+
 	} else {
 		//partner template doesnt exist
 		$tmpl = false;
-		
+
 		//include the default template
 		include JPATH_ROOT . DS . $default_path;
 	}
-	
+
 	//get the buffer contents
 	$content = ob_get_contents();
-	
+
 	//clean the buffer
 	ob_end_clean();
-	
+
 	//display the content
 	echo $content;
 ?>

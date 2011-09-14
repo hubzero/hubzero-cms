@@ -29,8 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 $config = JFactory::getConfig();
 
 if ($config->getValue('config.debug')) {
@@ -72,7 +70,6 @@ $controller = new ContribtoolController();
 $controller->mainframe = $mainframe;
 $controller->execute();
 $controller->redirect();
-
 
 //----------------------------------------------------------
 ?>

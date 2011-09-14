@@ -29,33 +29,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class SpanMacro extends WikiMacro 
+class SpanMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = "Wraps text or other elements inside a `<span>` tag.";
 		$txt['html'] = "<p>Wraps text or other elements inside a <code>&lt;span&gt;</code> tag.</p>";
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
-		
+
 		if (!$et) {
 			return '';
 		}
-		
+
 		$attribs = explode(',', $et);
 		$text = array_shift($attribs);
-		
+
 		$atts = array();
 		if (!empty($attribs) && count($attribs) > 0) {
-			foreach ($attribs as $a) 
+			foreach ($attribs as $a)
 			{
 				$a = split('=',$a);
 				$key = $a[0];
@@ -64,11 +61,11 @@ class SpanMacro extends WikiMacro
 				$atts[] = $key.'="'.$val.'"';
 			}
 		}
-		
+
 		$span  = '<span';
 		$span .= (!empty($atts)) ? ' '.implode(' ',$atts).'>' : '>';
 		$span .= trim($text).'</span>';
-			
+
 		return $span;
 	}
 }

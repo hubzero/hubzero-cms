@@ -37,14 +37,14 @@ $status_changed = (intval( $this->row->status_changed ) <> 0) ? JHTML::_('date',
 
 switch ($this->row->status)
 {
-	case 0: 
+	case 0:
 		$status = "<span class='yes'>".strtolower(JText::_('NEW'))."</span>";
 		break;
-	case 1: 
+	case 1:
 		$status = "completed";
 		break;
 	case 2:
-	default: 
+	default:
 		$status = "cancelled";
 		break;
 }
@@ -79,7 +79,7 @@ public function submitbutton(pressbutton)
 						<td class="key"><label><?php echo JText::_('ITEMS'); ?>:</label></td>
 						<td><p><?php 
 		    $k=1;
-			foreach ($this->orderitems as $o) 
+			foreach ($this->orderitems as $o)
 			{
 				$avail = ($o->available) ?  'available' : 'unavailable';
 				$html  = $k.') ';
@@ -91,7 +91,7 @@ public function submitbutton(pressbutton)
 				}
 				$html .= '. '.JText::_('CURRENT_PRICE').': '.$o->price.'</span><br />';
 				$k++;
-				echo $html;				   
+				echo $html;
 		   	}
 ?></p>
 						</td>

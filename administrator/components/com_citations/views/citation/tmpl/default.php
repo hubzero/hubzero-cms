@@ -68,7 +68,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="type"><?php echo JText::_('TYPE'); ?>:</label></td>
-						<td colspan="3"><select name="citation[type]" id="type"><?php  
+						<td colspan="3"><select name="citation[type]" id="type"><?php 
 						for ($i=0, $n=count( $types ); $i < $n; $i++)
 						{
 							echo '<option value="'.$types[$i].'"';
@@ -233,7 +233,7 @@ function submitbutton(pressbutton)
 						} else {
 							$n = 5;
 						}
-						for ($i=0; $i < $n; $i++) 
+						for ($i=0; $i < $n; $i++)
 						{
 							if ($r == 0 || !isset($assocs[$i])) {
 								$assocs[$i] = new stdClass;

@@ -40,12 +40,12 @@ class modFeedYoutubeHelper
 
 		// if ordered, get only limited number of items
 		//$rssurl			.= $pick_random ? '' : '&max-results='.$limit;
-		
+
 		//  get RSS parsed object
 		$options = array();
 		$options['rssUrl'] 		= $rssurl;
 		$options['cache_time'] = null;
-		
+
 		$rssDoc =& JFactory::getXMLparser('RSS', $options);
 
 		$feed = new stdclass();
@@ -75,5 +75,5 @@ class modFeedYoutubeHelper
 		}
 
 		return $feed;
-	}	
+	}
 }

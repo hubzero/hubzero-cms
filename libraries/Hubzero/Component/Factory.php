@@ -29,20 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class Hubzero_Component_Factory 
+class Hubzero_Component_Factory
 {
 	var $_name;
 
-	//-----------
-
-	public function __construct($name) 
+	public function __construct($name)
 	{
 		$this->_name = $name;
 		$this->loadConfig();
 	}
-	
-	//-----------
 
 	public function loadConfig($file = '')
 	{
@@ -63,8 +58,6 @@ class Hubzero_Component_Factory
 			$registry->loadObject($config, $namespace);
 		}
 	}
-	
-	//-----------
 
 	public function getCfg( $varname, $default = '' )
 	{
@@ -72,8 +65,6 @@ class Hubzero_Component_Factory
 
 		return $registry->getValue('hubzero_' . $this->_name . '.' . $varname, $default);
 	}
-	
-	//-----------
 
 	public function &getDBO()
 	{

@@ -90,21 +90,21 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	$group = new Hubzero_Group();
 	//$group->gidNumber = $row->gidNumber;
 	//$group->cn = $row->cn;
 	$group->read($row->gidNumber);
-	
+
 	$applicants = count($group->get('applicants'));
 	$invitees   = count($group->get('invitees'));
 	$managers   = count($group->get('managers'));
 	$members    = count($group->get('members'));
-	
-	switch ($row->type) 
+
+	switch ($row->type)
 	{
 		case '0': $type = 'system';  break;
 		case '1': $type = 'hub';     break;

@@ -34,14 +34,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 //----------------------------------------------------------
 jimport('fpdf16.fpdf');
 
-class PDF extends FPDF 
+class PDF extends FPDF
 {
-	public function set( $property, $value=NULL ) 
+	public function set( $property, $value=NULL )
 	{
 		$this->$property = $value;
 	}
-	
-	//-----------
 
 	public function get( $property, $default=NULL )
 	{
@@ -50,29 +48,29 @@ class PDF extends FPDF
 		}
 		return $default;
 	}
-	
+
 	//-----------
 	// Page header
 	public function Header()
 	{
-		$app =& JFactory::getApplication();	
+		$app =& JFactory::getApplication();
 		$database =& JFactory::getDBO();
-		
+
 		// Get front-end temlate name
 		$sql = "SELECT template FROM #__templates_menu WHERE client_id=0";
 		$database->setQuery( $sql );
 		$tmpl = $database->loadResult();
-		
+
 		// Logo
 		$this->Image(JPATH_ROOT.DS.'templates'.DS.$tmpl.DS.'images'.DS.'hub-store-logo.png',10,10,'',15);
-		
+
 		$this->SetDrawColor(65,72,100);
 		$this->SetLineWidth(0.4);
 		$this->Line(10, 25, 200, 25);
-		
+
 		$this->SetFont('Helvetica','B',8);
 		$this->SetTextColor(65,72,100);
-		
+
 		// Address
 		$this->Ln(5);
 		$this->Cell(190,5,$this->headertext_ln1,0,2,'R');
@@ -81,23 +79,23 @@ class PDF extends FPDF
 		}
 		$this->Ln(5);
 		$this->SetFont('Helvetica','',8);
-		for ($i=0;$i< count($this->hubaddress);$i++) 
+		for ($i=0;$i< count($this->hubaddress);$i++)
 		{
 			if ($this->hubaddress[$i]) {
 				$this->Cell(0,5,$this->hubaddress[$i],0,1);
 			}
 		}
-			
+
 		if ($this->url) {
-			$this->Ln(5);	
+			$this->Ln(5);
 			$this->Cell(0,5,$this->url,0,1);
 		}
-			
+
 		$this->SetLineWidth(0.1);
 		$this->Ln(5);
 		$this->Line(10, $this->GetY(), 200, $this->GetY());
 	}
-	
+
 	//-----------
 	// Page footer
 	public function Footer()
@@ -119,7 +117,7 @@ class PDF extends FPDF
 			$this->Cell(0,0,$this->receipt_note,0,0,'C');
 		}
 	}
-	
+
 	//-----------
 	// Page title
 	public function mainTitle()
@@ -129,17 +127,17 @@ class PDF extends FPDF
 		$this->Ln(10);
 		$this->Cell(0,0,$this->receipt_title,0,0,'L');
 	}
-	
+
 	//-----------
 	// Warning 
-	public function warning($text) 
+	public function warning($text)
 	{
 		$this->Ln(10);
 		$this->SetFont('Helvetica','',8);
 		$this->SetTextColor(225,0,0);
 		$this->Cell(0,0,JText::_($text),0,0);
 	}
-	
+
 	//-----------
 	// Order Details
 	public function orderDetails($customer, $row, $orderitems)
@@ -170,15 +168,15 @@ class PDF extends FPDF
 		$this->Ln(5);
 		$this->Line(10, $this->GetY(), 200, $this->GetY());
 		$this->Ln(5);
-		
+
 		if ($orderitems) {
 			$k=1;
-			foreach ($orderitems as $o) 
+			foreach ($orderitems as $o)
 			{
 				$html ='';
 				$html  = $k.'. ['.$o->category.$o->itemid.'] ';
 				$html .= $o->title. ' (x'.$o->quantity.')';
-				$html .= ($o->selectedsize) ? '- size '.$o->selectedsize : '';	
+				$html .= ($o->selectedsize) ? '- size '.$o->selectedsize : '';
 				$this->Cell(0,5,$html,0,0, 'L');
 				$this->SetX(-100);
 				$this->Cell(0,5,$o->price*$o->quantity.' '.JText::_('points'),0,2,'R');
@@ -189,7 +187,7 @@ class PDF extends FPDF
 			$this->Line(10, $this->GetY(), 200, $this->GetY());
 			$this->Ln(5);
 		}
-		
+
 		$this->SetX(100);
 		$this->SetFont('Helvetica','B',8);
 		$this->Cell(0,5,JText::_('Total').': ',0,0);

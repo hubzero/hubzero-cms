@@ -38,25 +38,21 @@ Class Hubzero_Group_Invite_Email extends JTable
 	var $email = NULL;
 	var $gidNumber = NULL;
 	var $token = NULL;
-	
-	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xgroups_inviteemails', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function getInviteEmails( $gid, $email_only = false )
 	{
 		$final = array();
 		$db =& JFactory::getDBO();
-		
+
 		$sql = "SELECT * FROM $this->_tbl WHERE gidNumber=".$db->Quote($gid);
 		$db->setQuery($sql);
 		$invitees = $db->loadAssocList();
-		
+
 		if($email_only) {
 			foreach($invitees as $invitee) {
 				$final[] = $invitee['email'];
@@ -64,10 +60,10 @@ Class Hubzero_Group_Invite_Email extends JTable
 		} else {
 			$final = $invitees;
 		}
-		
+
 		return $final;
 	}
-	
+
 	//-----------
 }
 

@@ -42,8 +42,6 @@ include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'mw.class.php' );
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//-------------------------------------------------------------
-
 $modmysessions = new modMySessions( $params );
 $modmysessions->specapp = (isset($specapp)) ? $specapp : '';
 $modmysessions->display();

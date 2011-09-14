@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 <?php
 	$k = 0;
 	$i = 0;
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 ?>
 				<tr class="<?php echo "row$k"; ?>">

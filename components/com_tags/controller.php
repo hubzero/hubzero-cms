@@ -37,7 +37,7 @@ class TagsController extends Hubzero_Controller
 	{
 		$this->_task = strtolower(JRequest::getVar('task', ''));
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'autocomplete': $this->autocomplete(); break;
 			case 'cancel': $this->cancel(); break;
@@ -59,29 +59,29 @@ class TagsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-	
-	protected function intro() 
+
+	protected function intro()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'intro') );
 		$view->title = JText::_(strtoupper($this->_option));
 		$view->showsizes = 0;
 		$view->config = $this->config;
-		
+
 		// Set some variables
 		$view->min_font_size = 1;
 		$view->max_font_size = 1.8;
-		
+
 		// Check authorization
 		$view->authorized = $this->_authorize();
-		
+
 		// Find all tags
 		$t = new TagsTag( $this->database );
 
 		$view->tags = $t->getTopTags( 100 );
-		
+
 		$view->newtags = $t->getRecentTags( 25 );
-		
+
 		// Load plugins
 		JPluginHelper::importPlugin('tags');
 		$dispatcher =& JDispatcher::getInstance();
@@ -89,7 +89,7 @@ class TagsController extends Hubzero_Controller
 		// Trigger the functions that return the areas we'll be using
 		$view->categories = array();
 		$view->tagpile = array();
-		
+
 		if ($view->tags) {
 			$retarr = array();
 			foreach ($view->tags as $tag)
@@ -114,10 +114,10 @@ class TagsController extends Hubzero_Controller
 
 		// Set the page title
 		$this->_buildTitle(null);
-		
+
 		// Set the pathway
 		$this->_buildPathway(null);
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
 
@@ -128,25 +128,23 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function view()
 	{
 		$title = JText::_(strtoupper($this->_option));
-		
+
 		// Incoming
 		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
-		
+
 		$addtag = trim(JRequest::getVar('addtag', ''));
-		
+
 		//$search = trim(JRequest::getVar('tags', ''));
-		
+
 		// Ensure we were passed a tag
 		if (!$tagstring && !$addtag && !$search) {
 			JError::raiseError( 404, JText::_('COM_TAGS_NO_TAG') );
 			return;
 		}
-		
+
 		if ($tagstring) {
 			// Break the string into individual tags
 			$tgs = explode(' ', $tagstring);
@@ -167,7 +165,7 @@ class TagsController extends Hubzero_Controller
 				$tgs[] = $stg;
 			}
 		}*/
-		
+
 		// See if we're adding any tags to the search list
 		if ($addtag && !in_array($addtag,$tgs)) {
 			$tgs[] = $addtag;
@@ -175,19 +173,19 @@ class TagsController extends Hubzero_Controller
 
 		// Sanitize the tag
 		$t = new TagsHandler( $this->database );
-		
+
 		$tags = array();
 		$added = array();
-		foreach ($tgs as $tag) 
+		foreach ($tgs as $tag)
 		{
 			$tag = $t->normalize_tag( $tag );
-			
+
 			if (in_array($tag,$added)) {
 				continue;
 			}
-			
+
 			$added[] = $tag;
-			
+
 			// Load the tag
 			$tagobj = new TagsTag( $this->database );
 			$tagobj->loadTag( $tag );
@@ -203,15 +201,15 @@ class TagsController extends Hubzero_Controller
 			JError::raiseError( 404, JText::_('COM_TAGS_NOT_FOUND') );
 			return;
 		}
-	
+
 		// Does the user have edit permissions?
 		$authorized = $this->_authorize();
-		
+
 		// Set the page title
 		$title .= ': ';
 		$tagname = array();
 		$tagstring = array();
-		for ($i=0, $n=count( $tags ); $i < $n; $i++) 
+		for ($i=0, $n=count( $tags ); $i < $n; $i++)
 		{
 			if ($i > 0) {
 				$title .= '+ ';
@@ -220,7 +218,7 @@ class TagsController extends Hubzero_Controller
 			$tagstring[] = $tags[$i]->tag;
 			$title .= $tags[$i]->raw_tag.' ';
 		}
-		
+
 		// Load plugins
 		JPluginHelper::importPlugin('tags');
 		$dispatcher =& JDispatcher::getInstance();
@@ -233,7 +231,7 @@ class TagsController extends Hubzero_Controller
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();
 		$searchareas = $dispatcher->trigger( 'onTagAreas' );
-		foreach ($searchareas as $area) 
+		foreach ($searchareas as $area)
 		{
 			$areas = array_merge( $areas, $area );
 		}
@@ -278,7 +276,7 @@ class TagsController extends Hubzero_Controller
 				);
 			if ($sqls) {
 				$s = array();
-				foreach ($sqls as $sql) 
+				foreach ($sqls as $sql)
 				{
 					if (trim($sql) != '') {
 						$s[] = $sql;
@@ -287,11 +285,11 @@ class TagsController extends Hubzero_Controller
 				$query  = "(";
 				$query .= implode(") UNION (", $s);
 				$query .= ") ORDER BY ";
-				switch ($sort) 
+				switch ($sort)
 				{
 					case 'title': $query .= 'title ASC, publish_up';  break;
 					case 'id':    $query .= "id DESC";                break;
-					case 'date':  
+					case 'date':
 					default:      $query .= 'publish_up DESC, title'; break;
 				}
 				$query .= ($limit != 'all' && $limit > 0) ? " LIMIT $limitstart, $limit" : "";
@@ -312,7 +310,7 @@ class TagsController extends Hubzero_Controller
 		$i = 0;
 		$total = 0;
 
-		foreach ($areas as $c=>$t) 
+		foreach ($areas as $c=>$t)
 		{
 			$cats[$i]['category'] = $c;
 
@@ -324,7 +322,7 @@ class TagsController extends Hubzero_Controller
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st) 
+				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
@@ -354,28 +352,28 @@ class TagsController extends Hubzero_Controller
 		} else {
 			$active = '';
 		}
-		
+
 		$related = null;
 		if (count($tags) == 1) {
 			$tagstring = $tags[0]->tag;
 		} else {
 			$tagstring = array();
-			foreach ($tags as $tag) 
+			foreach ($tags as $tag)
 			{
 				$tagstring[] = $tag->tag;
 			}
 			$tagstring = implode('+',$tagstring);
 		}
-		
+
 		// Set the pathway
 		$this->_buildPathway($tags);
 
 		// Set the page title
 		$this->_buildTitle($tags);
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$format = JRequest::getVar('format', '');
 		if ($format == 'xml') {
@@ -404,40 +402,36 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function autocomplete() 
+	protected function autocomplete()
 	{
 		$filters = array();
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
 		$filters['search'] = trim(JRequest::getString( 'value', '' ));
-		
+
 		// Create a Tag object
 		$obj = new TagsTag( $this->database );
-		
+
 		// Fetch results
 		$rows = $obj->getAutocomplete( $filters );
 
 		// Output search results in JSON format
 		$json = array();
 		if (count($rows) > 0) {
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
 				//$json[] = '"'.$row->raw_tag.'"';
 				$json[] = '["'.htmlentities(stripslashes($row->raw_tag),ENT_COMPAT,'UTF-8').'","'.$row->tag.'"]';
 			}
 		}
-		
+
 		echo '['.implode(',',$json).']';
 	}
 
-	//-----------
-
-	protected function feed() 
+	protected function feed()
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
-		
+
 		global $mainframe;
 
 		// Set the mime encoding for the document
@@ -451,24 +445,24 @@ class TagsController extends Hubzero_Controller
 
 		// Incoming
 		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
-		
+
 		// Ensure we were passed a tag
 		if (!$tagstring) {
 			JError::raiseError( 404, JText::_('COM_TAGS_NO_TAG') );
 			return;
 		}
-		
+
 		// Break the string into individual tags
 		$tgs = explode(' ', $tagstring);
-		
+
 		// Sanitize the tag
 		$t = new TagsHandler( $this->database );
-		
+
 		$tags = array();
-		foreach ($tgs as $tag) 
+		foreach ($tgs as $tag)
 		{
 			$tag = $t->normalize_tag( $tag );
-			
+
 			// Load the tag
 			$tagobj = new TagsTag( $this->database );
 			$tagobj->loadTag( $tag );
@@ -478,7 +472,7 @@ class TagsController extends Hubzero_Controller
 				$tags[] = $tagobj;
 			}
 		}
-		
+
 		// Paging variables
 		$limitstart = JRequest::getInt( 'limitstart', 0 );
 		$limit = JRequest::getInt( 'limit', 25 );
@@ -489,7 +483,7 @@ class TagsController extends Hubzero_Controller
 
 		$areas = array();
 		$searchareas = $dispatcher->trigger( 'onTagAreas' );
-		foreach ($searchareas as $area) 
+		foreach ($searchareas as $area)
 		{
 			$areas = array_merge( $areas, $area );
 		}
@@ -536,7 +530,7 @@ class TagsController extends Hubzero_Controller
 				);
 			if ($sqls) {
 				$s = array();
-				foreach ($sqls as $sql) 
+				foreach ($sqls as $sql)
 				{
 					if (trim($sql) != '') {
 						$s[] = $sql;
@@ -545,11 +539,11 @@ class TagsController extends Hubzero_Controller
 				$query  = "(";
 				$query .= implode(") UNION (", $s);
 				$query .= ") ORDER BY ";
-				switch ($sort) 
+				switch ($sort)
 				{
 					case 'title': $query .= 'title ASC, publish_up';  break;
 					case 'id':    $query .= "id DESC";                break;
-					case 'date':  
+					case 'date':
 					default:      $query .= 'publish_up DESC, title'; break;
 				}
 				$query .= ($limit != 'all' && $limit > 0) ? " LIMIT $limitstart, $limit" : "";
@@ -567,11 +561,11 @@ class TagsController extends Hubzero_Controller
 		}
 
 		$jconfig =& JFactory::getConfig();
-		
+
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();
 		if ($results) {
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				if (is_array($result) && !empty($result)) {
 					$rows = $result;
@@ -582,7 +576,7 @@ class TagsController extends Hubzero_Controller
 
 		// Build some basic RSS document information
 		$title = JText::_(strtoupper($this->_option)) .': ';
-		for ($i=0, $n=count( $tags ); $i < $n; $i++) 
+		for ($i=0, $n=count( $tags ); $i < $n; $i++)
 		{
 			if ($i > 0) {
 				$title .= '+ ';
@@ -591,7 +585,7 @@ class TagsController extends Hubzero_Controller
 		}
 		$title = trim($title);
 		$title .= ': '.$area;
-		
+
 		$doc->title = $jconfig->getValue('config.sitename').' - '.$title;
 		$doc->description = JText::sprintf('COM_TAGS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), $title);
 		$doc->copyright = JText::sprintf('COM_TAGS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
@@ -600,7 +594,7 @@ class TagsController extends Hubzero_Controller
 		// Start outputing results if any found
 		if (count($rows) > 0) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
-			
+
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -637,7 +631,7 @@ class TagsController extends Hubzero_Controller
 				$doc->addItem( $item );
 			}
 		}
-		
+
 		// Output the feed
 		echo $doc->render();
 	}
@@ -657,25 +651,25 @@ class TagsController extends Hubzero_Controller
 		}
 		$view->option = $this->_option;
 		$view->title = JText::_(strtoupper($this->_option)) .': '. JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
-		
+
 		// Check that the user is authorized
 		$view->authorized = $this->_authorize();
-		
+
 		// Get configuration
 		$config = JFactory::getConfig();
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$view->filters['search'] = urldecode(JRequest::getString('search'));
 		$view->total = 0;
-		
+
 		$t = new TagsTag( $this->database );
-		
+
 		$order = JRequest::getVar('order', '');
 		if ($order == 'usage') {
 			$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));
-			
+
 			$view->rows = $t->getTopTags( $limit );
 		} else {
 			// Record count
@@ -696,7 +690,7 @@ class TagsController extends Hubzero_Controller
 
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
 
@@ -707,14 +701,10 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function create() 
+	protected function create()
 	{
 		$this->edit();
 	}
-
-	//-----------
 
 	protected function edit($tag=NULL)
 	{
@@ -723,25 +713,25 @@ class TagsController extends Hubzero_Controller
 			JError::raiseWarning( 404, JText::_('ALERTNOTAUTH') );
 			return;
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
-		
+
 		// Load a tag object if one doesn't already exist
 		if (!$tag) {
 			$tag = new TagsTag( $this->database );
 			$tag->load( $id );
 		}
-		
+
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'edit') );
 		$view->option = $this->_option;
@@ -753,15 +743,11 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function cancel()
 	{
 		$return = JRequest::getVar('return', 'index.php?option='.$this->_option.'&task=browse', 'get');
 		$this->_redirect = JRoute::_( $return );
 	}
-
-	//-----------
 
 	protected function save()
 	{
@@ -771,9 +757,9 @@ class TagsController extends Hubzero_Controller
 			$this->edit($row);
 			return;
 		}
-		
+
 		$row->raw_tag = trim($row->raw_tag);
-		
+
 		$t = new TagsHandler($this->database);
 		$row->tag = $t->normalize_tag($row->raw_tag);
 
@@ -799,11 +785,9 @@ class TagsController extends Hubzero_Controller
 			$this->edit($row);
 			return;
 		}
-	
+
 		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
 	}
-
-	//-----------
 
 	protected function delete()
 	{
@@ -812,45 +796,45 @@ class TagsController extends Hubzero_Controller
 			JError::raiseWarning( 404, JText::_('ALERTNOTAUTH') );
 			return;
 		}
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
 			$ids = array();
 		}
-		
+
 		// Make sure we have an ID
 		if (empty($ids)) {
 			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
 			return;
 		}
-		
+
 		// Get Tags plugins
 		JPluginHelper::importPlugin('tags');
 		$dispatcher =& JDispatcher::getInstance();
-		
-		foreach ($ids as $id) 
+
+		foreach ($ids as $id)
 		{
 			// Remove references to the tag
 			$dispatcher->trigger( 'onTagDelete', array($id) );
-			
+
 			// Remove the tag
 			$tag = new TagsTag( $this->database );
 			$tag->delete( $id );
 		}
-	
+
 		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
 	}
-	
+
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
 
-	protected function _buildPathway($tags=null) 
+	protected function _buildPathway($tags=null)
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -866,7 +850,7 @@ class TagsController extends Hubzero_Controller
 		if (is_array($tags) && count($tags) > 0) {
 			$t = array();
 			$l = array();
-			foreach ($tags as $tag) 
+			foreach ($tags as $tag)
 			{
 				$t[] = stripslashes($tag->raw_tag);
 				$l[] = $tag->tag;
@@ -879,10 +863,8 @@ class TagsController extends Hubzero_Controller
 			);
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle($tags=null) 
+
+	protected function _buildTitle($tags=null)
 	{
 		$title = JText::_(strtoupper($this->_option));
 		if ($this->_task && $this->_task != 'view') {
@@ -891,7 +873,7 @@ class TagsController extends Hubzero_Controller
 		if (is_array($tags) && count($tags) > 0) {
 			$title .= ': ';
 			$t = array();
-			foreach ($tags as $tag) 
+			foreach ($tags as $tag)
 			{
 				$t[] = stripslashes($tag->raw_tag);
 			}

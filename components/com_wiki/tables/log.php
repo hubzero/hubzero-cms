@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiLog extends JTable 
+class WikiLog extends JTable
 {
 	var $id        = NULL;  // @var int(11) Primary key
 	var $pid       = NULL;  // @var int(11)
@@ -39,34 +38,30 @@ class WikiLog extends JTable
 	var $action    = NULL;  // @var varchar(50)
 	var $comments  = NULL;  // @var text
 	var $actorid   = NULL;  // @var int(11)
-	
+
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_log', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->pid ) == '') {
 			$this->setError( JText::_('WIKI_LOGS_MUST_HAVE_PAGE_ID') );
 			return false;
 		}
-		
+
 		if (trim( $this->uid ) == '') {
 			$this->setError( JText::_('WIKI_LOGS_MUST_HAVE_USER_ID') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	//-----------
-	
-	public function getLogs( $pid=null ) 
+
+	public function getLogs( $pid=null )
 	{
 		if (!$pid) {
 			$pid = $this->pid;
@@ -78,10 +73,8 @@ class WikiLog extends JTable
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE pid=$pid ORDER BY `timestamp` DESC" );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function deleteLogs( $pid=null ) 
+
+	public function deleteLogs( $pid=null )
 	{
 		if (!$pid) {
 			$pid = $this->pid;
@@ -89,7 +82,7 @@ class WikiLog extends JTable
 		if (!$pid) {
 			return null;
 		}
-		
+
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE pid=".$pid );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );

@@ -57,7 +57,7 @@ class SearchPages
 		foreach (array_merge($_GET, array('limit' => $this->limit, 'limitstart' => $this->offset), $update) as $k=>$v)
 			if (!in_array($k, array('option', 'Itemid')))
 				$get[] = $k.'='.urlencode($v);
-			
+
 		return '/'.preg_replace('/^com_/', '', $_GET['option']).'/?'.join('&amp;', $get);
 	}
 
@@ -78,7 +78,7 @@ class SearchPages
 			$html[] = '</p>';
 		}
 		$html[] = '</div>';
-	
+
 		$html[] = '<div class="search-per-page">';
 		$html[] = '<form action="'.$this->link_to(array()).'" method="get">';
 		$html[] = '<p>';
@@ -92,7 +92,7 @@ class SearchPages
 		$html[] = '</p>';
 		$html[] = '</form>';
 		$html[] = '</div>';
-		
+
 		return join("\n", $html);
 	}
 }

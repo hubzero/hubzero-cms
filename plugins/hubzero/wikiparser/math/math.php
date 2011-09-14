@@ -21,7 +21,7 @@ define( 'MW_MATH_SOURCE', 3 );
 define( 'MW_MATH_MODERN', 4 );
 define( 'MW_MATH_MATHML', 5 );
 
-class MathRenderer 
+class MathRenderer
 {
 	var $mode = MW_MATH_MODERN;
 	var $tex = '';
@@ -31,26 +31,20 @@ class MathRenderer
 	var $mathml = '';
 	var $conservativeness = 0;
 
-	//-----------
-
-	public function __construct( $tex, $params=array() ) 
+	public function __construct( $tex, $params=array() )
 	{
 		$this->tex = $tex;
 		$this->params = $params;
-		
+
 		$this->config = JComponentHelper::getParams( 'com_wiki' );
  	}
 
-	//-----------
-
-	public function setOutputMode( $mode ) 
+	public function setOutputMode( $mode )
 	{
 		$this->mode = $mode;
 	}
-	
-	//-----------
-	
-	private function _makePath( $path, $mode=0777 ) 
+
+	private function _makePath( $path, $mode=0777 )
 	{
 		if (file_exists( $path )) {
 		    return true;
@@ -58,13 +52,13 @@ class MathRenderer
 		$path = str_replace( '\\', '/', $path );
 		$path = str_replace( '//', '/', $path );
 		$parts = explode( '/', $path );
-	
+
 		$n = count( $parts );
 		if ($n < 1) {
 		    return mkdir( $path, $mode );
 		} else {
 			$path = '';
-			for ($i = 0; $i < $n; $i++) 
+			for ($i = 0; $i < $n; $i++)
 			{
 				$path .= $parts[$i] . '/';
 				if (!file_exists( $path )) {
@@ -76,10 +70,8 @@ class MathRenderer
 			return true;
 		}
 	}
-	
-	//-----------
 
-	public function render() 
+	public function render()
 	{
 		$tmpDirectory = JPATH_ROOT.$this->config->get('tmppath');
 		$inputEncoding = 'UTF-8';
@@ -189,7 +181,7 @@ class MathRenderer
 				$this->conservativeness = 0;
 			} else {
 				$errbit = htmlspecialchars( substr($contents, 1) );
-				switch ($retval) 
+				switch ($retval)
 				{
 					case 'E': $errmsg = $this->_error( 'math_lexing_error', $errbit );
 					case 'S': $errmsg = $this->_error( 'math_syntax_error', $errbit );
@@ -215,7 +207,7 @@ class MathRenderer
 			}
 
 			$hashpath = $this->_getHashPath();
-			
+
 			if (!file_exists( $hashpath )) {
 				//if (!@wfMkdirParents( $hashpath, 0755 )) {
 				if (!$this->_makePath( $hashpath )) {
@@ -250,10 +242,8 @@ class MathRenderer
 
 		return $this->_doRender();
 	}
-	
-	//-----------
 
-	private function _error( $msg, $append = '' ) 
+	private function _error( $msg, $append = '' )
 	{
 		$mf = htmlspecialchars( 'math_failure' );
 		$errmsg = htmlspecialchars( $msg );
@@ -261,12 +251,10 @@ class MathRenderer
 		return '<p class="error">'.$mf.' ('.$errmsg.$append.'): '.$source.'</p>'."\n";
 	}
 
-	//-----------
-
-	private function _recall() 
+	private function _recall()
 	{
 		$this->md5 = md5( $this->tex );
-		
+
 		$database =& JFactory::getDBO();
 		$wm = new WikiPageMath( $database );
 		$wm->loadByInput( $this->_encodeBlob(pack("H32", $this->md5)) );
@@ -305,11 +293,9 @@ class MathRenderer
 		// Missing from the database and/or the render cache
 		return false;
 	}
-	
-	//-----------
 
 	// Select among PNG, HTML, or MathML output depending on
-	private function _doRender() 
+	private function _doRender()
 	{
 		if ($this->mode == MW_MATH_MATHML && $this->mathml != '') {
 			return '<math xmlns="http://www.w3.org/1998/Math/MathML">'.$this->mathml.'</math>';
@@ -323,41 +309,31 @@ class MathRenderer
 			return '<span class="texhtml">'.$this->html.'</span>';
 		}
 	}
-	
-	//-----------
-	
-	private function _linkToMathImage() 
+
+	private function _linkToMathImage()
 	{
 		$url = $this->config->get('mathpath') .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1) .DS. "{$this->hash}.png";
 
 		return '<img src="'.$url.'" class="tex" alt="'.$this->tex.'" />';
 	}
 
-	//-----------
-
-	private function _getHashPath() 
+	private function _getHashPath()
 	{
 		$path = JPATH_ROOT.$this->config->get('mathpath') .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1);
 		return $path;
 	}
-	
-	//-----------
 
-	private function _encodeBlob($b) 
-	{
-		return $b;
-	}
-	
-	//-----------
-
-	private function _decodeBlob($b) 
+	private function _encodeBlob($b)
 	{
 		return $b;
 	}
 
-	//-----------
+	private function _decodeBlob($b)
+	{
+		return $b;
+	}
 
-	public static function renderMath( $tex, $params=array() ) 
+	public static function renderMath( $tex, $params=array() )
 	{
 		$math = new MathRenderer( $tex, $params );
 		return $math->render();

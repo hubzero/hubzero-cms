@@ -34,11 +34,11 @@ jimport('joomla.html.pagination');
 class YSearchViewYSearch extends JView
 {
 	protected $terms, $debug = array(), $results, $app;
-	
+
 	public function set_terms($terms) { $this->terms = $terms; }
 	public function set_results($results) { $this->results = $results; }
 	public function set_application(&$app) { $this->app =& $app; }
-	
+
 	public function display()
 	{
 		$this->url_terms = urlencode($this->terms->get_raw_without_section());

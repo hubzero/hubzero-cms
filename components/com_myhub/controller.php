@@ -36,16 +36,16 @@ class MyhubController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->num_default = 6;
-		
+
 		$this->_task = JRequest::getVar( 'task', '' );
-		
+
 		if ($this->juser->get('guest')) {
 			$this->_task = '';
 		} else {
 			$this->_task = ($this->_task) ? $this->_task : 'view';
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'refresh':    $this->refresh();    break;
 			case 'rebuild':    $this->rebuild();    break;
@@ -54,18 +54,16 @@ class MyhubController extends Hubzero_Controller
 			case 'saveparams': $this->saveparams(); break;
 			case 'addmodule':  $this->addmodule();  break;
 			case 'view':       $this->view();       break;
-	
+
 			default: $this->restricted(); break;
 		}
 	}
 
-	//-----------
-
-	protected function _buildPathway($question=null) 
+	protected function _buildPathway($question=null)
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -79,14 +77,12 @@ class MyhubController extends Hubzero_Controller
 			);
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle($question=null) 
+
+	protected function _buildTitle($question=null)
 	{
 		$juser =& JFactory::getUser();
 		$jconfig =& JFactory::getConfig();
-		
+
 		$this->_title = JText::sprintf(strtoupper($this->_option).'_TITLE',$jconfig->getValue('config.sitename'));
 		if (!$juser->get('guest')) {
 			$this->_title .= ': '.$juser->get('name');
@@ -102,16 +98,16 @@ class MyhubController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-	
+
 	// Display a login form
 	protected function restricted()
 	{
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Instantiate a view
 		$view = new JView( array('name'=>'login') );
 		$view->title = JText::_(strtoupper($this->_option)).': '.JText::_('COM_MYHUB_LOGIN');
@@ -140,7 +136,7 @@ class MyhubController extends Hubzero_Controller
 				$this->setError( $myhub->getError() );
 			}
 		}
-		
+
 		$this->view();
 	}
 
@@ -151,7 +147,7 @@ class MyhubController extends Hubzero_Controller
 		// Add the CSS
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet($this->_option);
-		
+
 		// Add the Javascript if in "personalize" mode
 		$this->_act = JRequest::getVar( 'act', '' );
 	    if ($this->_act == 'customize') {
@@ -159,23 +155,23 @@ class MyhubController extends Hubzero_Controller
 			$document->addScript('components'.DS.$this->_option.DS.'xsortables.js');
 			$document->addScript('components'.DS.$this->_option.DS.'myhub.js');
 		}
-		
+
 		// Set the title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Make sure we actually loaded someone
 		if ($this->juser->get('guest')) {
 			JError::raiseError( 404, JText::_('COM_MY_HUB_ERROR_NO_USER') );
 			return;
 		}
-		
+
 		// Select user's list of modules from database
 		$myhub = new MyhubPrefs( $this->database );
 		$myhub->load( $this->juser->get('id') );
-		
+
 		// No preferences found
 		if (trim($myhub->prefs) == '') {
 			// Create a default set of preferences
@@ -190,14 +186,14 @@ class MyhubController extends Hubzero_Controller
 				}
 			}
 		}
-	
+
 		// Splits string into columns
 		$mymods = explode(';',$myhub->prefs);
 		// Save array of columns for later work
 		$usermods = $mymods;
-	
+
 		// Splits each column into modules, listed by the order they should appear
-		for ( $i = 0; $i < count($mymods); $i++ ) 
+		for ( $i = 0; $i < count($mymods); $i++ )
 		{
 			$mymods[$i] = explode(',',$mymods[$i]);
 		}
@@ -205,7 +201,7 @@ class MyhubController extends Hubzero_Controller
 		// Build a list of all modules being used by this user 
 		// so we know what to exclude from the list of modules they can still add
 		$allmods = array();
-		for ( $i = 0; $i < count($mymods); $i++ ) 
+		for ( $i = 0; $i < count($mymods); $i++ )
 		{
 			$allmods = array_merge($allmods, $mymods[$i]);
 		}
@@ -221,19 +217,19 @@ class MyhubController extends Hubzero_Controller
 		$view->config = $this->config;
 		$view->usermods = $usermods;
 		$view->juser = $this->juser;
-		
+
 		if ($this->_act == 'customize' && $this->config->get('allow_customization') != 1) {
 			$view->availmods = $this->_getUnusedModules($allmods);
 		} else {
 			$view->availmods = null;
 		}
-		
+
 		$view->columns = array();
-		for ($c = 0; $c < $cols; $c++) 
+		for ($c = 0; $c < $cols; $c++)
 		{
 			$view->columns[$c] = $this->output_modules($mymods[$c], $this->juser->get('id'), $this->_act);
 		}
-		
+
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -243,20 +239,20 @@ class MyhubController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// AJAX calls
 	//----------------------------------------------------------
-	
+
 	// Rebuild the "available modules" list
 	protected function rebuild()
 	{
 		$id  = $this->save(1);
-		
+
 		$ids = explode(';',$id);
-		for ( $i = 0; $i < count($ids); $i++ ) 
+		for ( $i = 0; $i < count($ids); $i++ )
 		{
 			$ids[$i] = explode(',',$ids[$i]);
 		}
-		
+
 		$allmods = array();
-		for ( $i = 0; $i < count($ids); $i++ ) 
+		for ( $i = 0; $i < count($ids); $i++ )
 		{
 			$allmods = array_merge($allmods, $ids[$i]);
 		}
@@ -275,14 +271,14 @@ class MyhubController extends Hubzero_Controller
 		// Incoming
 		$uid = JRequest::getInt( 'uid', 0 );
 		$ids = JRequest::getVar( 'ids', '' );
-	
+
 		// Ensure we have a user ID ($uid)
 		if (!$uid) {
 			if ($rtrn) {
 				return $ids;
 			}
 		}
-		
+
 		// Instantiate object, bind data, and save
 		$myhub = new MyhubPrefs( $this->database );
 		$myhub->load( $uid );
@@ -308,7 +304,7 @@ class MyhubController extends Hubzero_Controller
 		$mid = JRequest::getVar( 'id', '' );
 		$update = JRequest::getInt( 'update', 0 );
 		$params = JRequest::getVar( 'params', array() );
-		
+
 		// Process parameters
 		$newparams = array();
 		foreach ($params as $aKey => $aValue)
@@ -333,23 +329,21 @@ class MyhubController extends Hubzero_Controller
 		if (!$myparams->storeParams($new)) {
 			$this->setError( $myparams->getError() );
 		}
-		
+
 		if ($update) {
 			$this->getmodule();
 		}
 	}
-	
-	//-----------
 
-	protected function getmodule( $extras=false, $act='' ) 
+	protected function getmodule( $extras=false, $act='' )
 	{
 		// Instantiate a view
 		$view = new JView( array('name'=>'view','layout'=>'modulecontainer') );
-		
+
 		// Incoming
 		$mid = JRequest::getInt( 'id', 0 );
 		$uid = JRequest::getInt( 'uid', 0 );
-		
+
 		// Make sure we have a module ID to load
 		if (!$mid) {
 			$view->setError( JText::_('COM_MYHUB_ERROR_NO_MOD_ID') );
@@ -368,7 +362,7 @@ class MyhubController extends Hubzero_Controller
 		} else {
 			$params = new JParameter( $module->params );
 		}
-		
+
 		if ($params) {
 			$rendered = false; //$this->render( $params, $mainframe->getPath( 'mod0_xml', $module->module ), 'module' );
 		}
@@ -386,14 +380,14 @@ class MyhubController extends Hubzero_Controller
 		$view->rendered = $rendered;
 		$view->display();
 	}
-	
+
 	//-----------
 	// Reload the contents of a module
 	protected function refresh()
 	{
 		$this->getmodule( false, '' );
 	}
-	
+
 	//-----------
 	// Builds the HTML for a module
 	// NOTE: this is different from the method above in that
@@ -408,11 +402,11 @@ class MyhubController extends Hubzero_Controller
 	// outputs a group of modules, each contained in a list item
 	//----------------------------------------------------------
 
-	protected function output_modules($mods, $uid, $act='') 
+	protected function output_modules($mods, $uid, $act='')
 	{
 		// Get the modules
 		$modules = array();
-		for ($i=0, $n=count( $mods ); $i < $n; $i++) 
+		for ($i=0, $n=count( $mods ); $i < $n; $i++)
 		{
 			$myparams = new MyhubParams( $this->database );
 			$modules[] = $myparams->loadModule( $uid, $mods[$i] );
@@ -421,13 +415,13 @@ class MyhubController extends Hubzero_Controller
 		$html = '';
 
 		// Loop through the modules and output
-		foreach ($modules as $module) 
+		foreach ($modules as $module)
 		{
 			if (isset($module->published)) {
 				if ($module->published != 1) {
 					continue;
 				}
-				
+
 				$rendered = false;
 				// if the user has special prefs, load them. Otherwise, load default prefs
 				if ($module->myparams != '') {
@@ -455,7 +449,7 @@ class MyhubController extends Hubzero_Controller
 				$html .= $view->loadTemplate();
 			}
 		}
-		
+
 		return $html;
 	}
 
@@ -467,14 +461,14 @@ class MyhubController extends Hubzero_Controller
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
 		$jmodule = new JTableModule( $this->database );
-	
+
 		$position = ($this->config->get('position')) ? $this->config->get('position') : 'myhub';
-	
+
 		$querym = '';
 		$query = "SELECT id, title, module"
 				. " FROM ".$jmodule->getTableName()." AS m"
 				. " WHERE m.position='".$position."' AND m.published='1' AND m.client_id='0' AND (";
-		for ($i=0, $n=count( $mods ); $i < $n; $i++) 
+		for ($i=0, $n=count( $mods ); $i < $n; $i++)
 		{
 			$querym .= " id!='".$mods[$i]."' AND";
 		}
@@ -484,24 +478,22 @@ class MyhubController extends Hubzero_Controller
 
 		$this->database->setQuery( $query );
 		$modules = $this->database->loadObjectList();
-	
+
 		return $modules;
 	}
-
-	//-----------
 
 	private function _getDefaultModules()
 	{
 		$string = '';
-		
+
 		if ($this->config->get('defaults')) {
 			$string = $this->config->get('defaults');
 		} else {
 			$position = ($this->config->get('position')) ? $this->config->get('position') : 'myhub';
-			
+
 			include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
 			$jmodule = new JTableModule( $this->database );
-			
+
 			$query = "SELECT m.id 
 						FROM ".$jmodule->getTableName()." AS m 
 						WHERE m.position='".$position."' AND m.published='1' AND m.client_id='0' 
@@ -525,7 +517,7 @@ class MyhubController extends Hubzero_Controller
 				$string = substr($string, 0, strlen($string)-1);
 			}
 		}
-		
+
 		return $string;
 	}
 }

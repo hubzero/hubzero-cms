@@ -38,7 +38,6 @@ if ($this->task == 'customize') {
 	JToolBarHelper::preferences('com_myhub', '550');
 }
 
-
 $html  = '<div class="main section">'."\n";
 if ($this->task != 'customize') {
 	$html .= '<form action="index.php?option='.$this->option.'" method="post" name="adminForm" id="cpnlc">'."\n";
@@ -72,18 +71,18 @@ if ($this->task == 'customize') {
 	$html .= "\t".'<h3>'.JText::_('MODULES').'</h3>'."\n";
 	$html .= "\t".'<p>Click on a module name from the list to add it to your page.</p>'."\n";
 	$html .= "\t".'<div id="available">'."\n";
-	
+
 	$view = new JView( array('name'=>'manage', 'layout'=>'list') );
 	$view->modules = $this->availmods;
 	$html .= $view->loadTemplate();
-	
+
 	$html .= "\t".'</div>'."\n";
 	$html .= "\t".'<div class="clear"></div>'."\n";
 	$html .= '</form>'."\n";
 	$html .= "\t\t\t".'</td>'."\n";
 }
 // Loop through each column and output modules assigned to each one
-for ( $c = 0; $c < $this->cols; $c++ ) 
+for ( $c = 0; $c < $this->cols; $c++ )
 {
 	$html .= "\t\t\t".'<td class="sortable" id="sortcol_'.$c.'">'."\n";
 	$html .= MyhubController::outputModules($this->mymods[$c], $this->juser->get('id'), $this->task);

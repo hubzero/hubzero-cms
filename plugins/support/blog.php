@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_support_blog' );
-
-//-----------
 
 class plgSupportBlog extends JPlugin
 {
@@ -46,30 +42,28 @@ class plgSupportBlog extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'support', 'blog' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function getReportedItem($refid, $category, $parent) 
+
+	public function getReportedItem($refid, $category, $parent)
 	{
 		if ($category != 'blog') {
 			return null;
 		}
-		
+
 		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category 
 					FROM #__blog_comments AS rc 
 					WHERE rc.id=".$refid;
-		
+
 		$database =& JFactory::getDBO();
 		$database->setQuery( $query );
 
 		$rows = $database->loadObjectList();
 		if ($rows) {
 			ximport('xblog');
-			foreach ($rows as $key => $row) 
+			foreach ($rows as $key => $row)
 			{
 				$entry = new BlogEntry( $database );
 				$entry->load($rows[$key]->entry_id);
-				
+
 				$rows[$key]->href = JRoute::_('index.php?option=com_members&id='.$entry->created_by.'&active=blog&task='.JHTML::_('date',$entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$entry->publish_up, '%m', 0).'/'.$entry->alias.'#c'.$rows[$key]->id);
 			}
 		}

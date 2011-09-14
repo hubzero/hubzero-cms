@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPluginHelper::loadLanguage( 'plg_whatsnew_kb' );
-
-//-----------
 
 class plgWhatsnewKb extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgWhatsnewKb extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'whatsnew', 'kb' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onWhatsnewAreas() 
+
+	public function &onWhatsnewAreas()
 	{
 		$areas = array(
 			'kb' => JText::_('PLG_WHATSNEW_KB')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
@@ -71,7 +63,7 @@ class plgWhatsnewKb extends JPlugin
 		if (!is_object($period)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		// Build the query
@@ -99,7 +91,7 @@ class plgWhatsnewKb extends JPlugin
 			$database->setQuery( $f_fields.$f_from ." WHERE ". $f_where . $order_by );
 			$rows = $database->loadObjectList();
 
-			foreach ($rows as $key => $row) 
+			foreach ($rows as $key => $row)
 			{
 				$rows[$key]->href = JRoute::_($row->href);
 			}
@@ -107,7 +99,7 @@ class plgWhatsnewKb extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use

@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class MwSession extends JTable 
+class MwSession extends JTable
 {
 	var $sessnum    = null;
 	var $username   = null;
@@ -43,16 +43,12 @@ class MwSession extends JTable
 	var $sessname   = null;
 	var $sesstoken  = null;
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( 'session', 'sessnum', $db );
 	}
-	
-	//-----------
-	
-	public function load( $sess=null, $username=null ) 
+
+	public function load( $sess=null, $username=null )
 	{
 		if ($sess == null) {
 			$sess = $this->sessnum;
@@ -60,13 +56,13 @@ class MwSession extends JTable
 		if ($sess === null) {
 			return false;
 		}
-		
+
 		$query = "SELECT * FROM $this->_tbl WHERE sessnum='$sess'";
-		
+
 		if ($username) {
 			$query .= " AND username='$username'";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -75,10 +71,8 @@ class MwSession extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function loadSession( $sess=null, $authorized=null ) 
+
+	public function loadSession( $sess=null, $authorized=null )
 	{
 		if ($sess == null) {
 			$sess = $this->sessnum;
@@ -86,9 +80,9 @@ class MwSession extends JTable
 		if ($sess === null) {
 			return false;
 		}
-		
+
 		$mv = new MwViewperm( $this->_db );
-		
+
 		if ($authorized === 'admin') {
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
@@ -101,17 +95,15 @@ class MwSession extends JTable
 					  WHERE v.sessnum=".$sess." 
 					  AND v.viewuser='".$juser->get('username')."'";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		$rows = $this->_db->loadObjectList();
 		if (count($rows) > 0) {
 			return $rows[0];
 		}
 	}
-	
-	//-----------
-	
-	public function checkSession($sess=null, $authorized=null) 
+
+	public function checkSession($sess=null, $authorized=null)
 	{
 		if ($sess == null) {
 			$sess = $this->sessnum;
@@ -121,7 +113,7 @@ class MwSession extends JTable
 		}
 
 		$mv = new MwViewperm( $this->_db );
-		
+
 		if ($authorized === 'admin') {
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
@@ -137,17 +129,15 @@ class MwSession extends JTable
 					  AND s.username='".$juser->get('username')."'
 					  AND v.viewuser='".$juser->get('username')."'";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		$rows = $this->_db->loadObjectList();
 		if (count($rows) > 0) {
 			return $rows[0];
 		}
 	}
-	
-	//-----------
-	
-	public function getCount( $username=NULL, $appname=NULL ) 
+
+	public function getCount( $username=NULL, $appname=NULL )
 	{
 		if ($username == null) {
 			$username = $this->username;
@@ -155,26 +145,24 @@ class MwSession extends JTable
 		if ($username === null) {
 			return false;
 		}
-		
+
 		$a = "";
 		if ($appname) {
 			$a = "AND s.appname='$appname'";
 		}
-		
+
 		$mv = new MwViewperm( $this->_db );
-		
+
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 				  ON v.sessnum = s.sessnum 
 				  WHERE v.viewuser='".$username."' AND s.username='".$username."' $a
 				  ORDER BY s.start";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $username=null, $appname=null, $authorized=null) 
+
+	public function getRecords( $username=null, $appname=null, $authorized=null)
 	{
 		if ($username == null) {
 			$username = $this->username;
@@ -182,14 +170,14 @@ class MwSession extends JTable
 		if ($username === null) {
 			return false;
 		}
-		
+
 		$a = "";
 		if ($appname) {
 			$a = "AND s.appname='$appname'";
 		}
-		
+
 		$mv = new MwViewperm( $this->_db );
-		
+
 		if ($authorized === 'admin') {
 			$query = "SELECT * FROM $this->_tbl AS s ORDER BY s.start";
 		} else {
@@ -205,9 +193,7 @@ class MwSession extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getTimeout( $sess )
 	{
 		if ($sess == null) {
@@ -216,23 +202,23 @@ class MwSession extends JTable
 		if ($sess === null) {
 			return false;
 		}
-		
+
 		$mv = new MwView( $this->_db );
 		$mj = new MwJob( $this->_db );
-		
+
 		$query = "SELECT timeout-TIME_TO_SEC(TIMEDIFF(NOW(), accesstime)) AS remaining
 			FROM $this->_tbl AS s
 			LEFT JOIN $mv->_tbl AS v ON s.sessnum = v.sessnum
 			LEFT JOIN $mj->_tbl AS j ON s.sessnum = j.sessnum
 			WHERE viewid IS NULL AND jobid IS NULL
 			AND s.sessnum=".$sess;
-			
+
 		$this->_db->setQuery( $query );
 		return $mwdb->loadResult();
 	}
 }
 
-class MwJob extends JTable 
+class MwJob extends JTable
 {
 	var $sessnum   = null;
 	var $jobid     = null;
@@ -243,15 +229,13 @@ class MwJob extends JTable
 	var $start     = null;
 	var $heartbeat = null;
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( 'job', 'jobid', $db );
 	}
 }
 
-class MwView extends JTable 
+class MwView extends JTable
 {
 	var $viewid    = null;
 	var $sessnum   = null;
@@ -260,15 +244,13 @@ class MwView extends JTable
 	var $start     = null;
 	var $heartbeat = null;
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( 'view', 'viewid', $db );
 	}
 }
 
-class MwViewperm extends JTable 
+class MwViewperm extends JTable
 {
 	var $sessnum   = null;
 	var $viewuser  = null;
@@ -279,16 +261,12 @@ class MwViewperm extends JTable
 	var $vncpass   = null;
 	var $readonly  = null;
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( 'viewperm', 'sessnum', $db );
 	}
-	
-	//-----------
-	
-	public function loadViewperm( $sess=null, $username=null ) 
+
+	public function loadViewperm( $sess=null, $username=null )
 	{
 		if ($sess == null) {
 			$sess = $this->sessnum;
@@ -303,9 +281,7 @@ class MwViewperm extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function deleteViewperm( $sess=null, $username=null )
 	{
 		if ($sess == null) {
@@ -324,9 +300,7 @@ class MwViewperm extends JTable
 			die( $err );
 		}
 	}
-	
-	//-----------
-	
+
 	public function update( $updateNulls=false )
 	{
 		$ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
@@ -338,9 +312,7 @@ class MwViewperm extends JTable
 			return true;
 		}
 	}
-	
-	//-----------
-	
+
 	public function insert()
 	{
 		$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
@@ -358,7 +330,7 @@ class MwViewperm extends JTable
 // Narwhal class
 //----------------------------------------------------------
 
-class MiddlewareApp 
+class MiddlewareApp
 {
 	var $appname;
 	var $geometry;
@@ -368,16 +340,16 @@ class MiddlewareApp
 	var $timeout;
 	var $command;
 	var $description;
-	
-	public function __construct( $a,$g,$d,$h,$u,$t,$c,$desc ) 
+
+	public function __construct( $a,$g,$d,$h,$u,$t,$c,$desc )
 	{
-		$this->appname  = $a; 
-		$this->geometry = $g; 
+		$this->appname  = $a;
+		$this->geometry = $g;
 		$this->depth    = $d;
-		$this->hostreq  = $h; 
+		$this->hostreq  = $h;
 		$this->userreq  = $u;
 		$this->timeout  = $t;
-		$this->command  = $c; 
+		$this->command  = $c;
 		$this->description = $desc;
 	}
 }
@@ -386,16 +358,16 @@ class MiddlewareApp
 // Host class
 //----------------------------------------------------------
 
-class Host 
+class Host
 {
 	var $hostname;
 	var $provisions;
 	var $status;
-	
-	public function Description($h,$p,$s) 
+
+	public function Description($h,$p,$s)
 	{
-		$this->hostname = $h; 
-		$this->provisions = $p; 
+		$this->hostname = $h;
+		$this->provisions = $p;
 		$this->status = $s;
 	}
 }
@@ -404,16 +376,16 @@ class Host
 // Hosttype class
 //----------------------------------------------------------
 
-class Hosttype 
+class Hosttype
 {
 	var $name;
 	var $value;
 	var $description;
-	
-	public function Description($n,$v,$d) 
+
+	public function Description($n,$v,$d)
 	{
-		$this->name = $n; 
-		$this->value = $v; 
+		$this->name = $n;
+		$this->value = $v;
 		$this->description = $d;
 	}
 }
@@ -422,23 +394,19 @@ class Hosttype
 // Recent tools class
 //----------------------------------------------------------
 
-class RecentTool extends JTable 
+class RecentTool extends JTable
 {
 	var $id      = NULL;
 	var $uid     = NULL;
 	var $tool    = NULL;
 	var $created = NULL;
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__recent_tools', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function getRecords( $uid=null ) 
+
+	public function getRecords( $uid=null )
 	{
 		if ($uid == null) {
 			$uid = $this->uid;

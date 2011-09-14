@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_kb' );
-
-//-----------
 
 class plgXSearchKb extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgXSearchKb extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'kb' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onXSearchAreas() 
+
+	public function &onXSearchAreas()
 	{
 		$areas = array(
 			'kb' => JText::_('PLG_XSEARCH_KNOWLEDGEBASE')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -72,7 +64,7 @@ class plgXSearchKb extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		// Build the query
@@ -119,13 +111,13 @@ class plgXSearchKb extends JPlugin
 			if (count($areas) > 1) {
 				return $f_fields.$f_rel.$f_from ." WHERE ". $f_where;
 			}
-			
+
 			// Get results
 			$database->setQuery( $f_fields.$f_rel.$f_from ." WHERE ". $f_where . $order_by );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_('index.php?option=com_kb&section='.$row->area.'&category='.$row->category.'&alias='.$row->alias);
 				}
@@ -134,7 +126,7 @@ class plgXSearchKb extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
@@ -151,9 +143,7 @@ class plgXSearchKb extends JPlugin
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row, $keyword )
 	{
 		if (strstr( $row->href, 'index.php' )) {
@@ -163,7 +153,7 @@ class plgXSearchKb extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		// Start building the HTML
 		$html  = "\t".'<li>'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
@@ -174,13 +164,11 @@ class plgXSearchKb extends JPlugin
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

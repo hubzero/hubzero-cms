@@ -62,7 +62,7 @@ function submitbutton(pressbutton)
 			</thead>
 			<tbody>
 <?php
-foreach ($this->a as $field => $value) 
+foreach ($this->a as $field => $value)
 {
 	if (substr($field, 0, strlen('registration')) == 'registration') {
 		$create = strtoupper(substr($value, 0, 1));
@@ -117,7 +117,7 @@ foreach ($this->a as $field => $value)
 	</td>
 </tr>
 <?php
-	}	
+	}
 }
 ?>
 			</tbody>

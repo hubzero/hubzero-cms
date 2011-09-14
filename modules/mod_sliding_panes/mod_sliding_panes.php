@@ -36,8 +36,6 @@ $modSlidingPanesMultiple = 0;
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//-------------------------------------------------------------
-
 $modslidingpanes = new modSlidingPanes( $params );
 $modslidingpanes->multiple_instances = $modSlidingPanesMultiple;
 $modslidingpanes->display();

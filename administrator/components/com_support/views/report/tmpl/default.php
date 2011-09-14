@@ -37,14 +37,14 @@ $link = '';
 
 if (is_object($this->reported)) {
 	$author =& JUser::getInstance($this->reported->author);
-	
+
 	if (is_object($author) && $author->get('username')) {
-		$this->title .= ' by '.$author->get('username'); 
+		$this->title .= ' by '.$author->get('username');
 	} else {
-		$this->title .= ' by '.JText::_('UNKNOWN'); 
+		$this->title .= ' by '.JText::_('UNKNOWN');
 	}
 	$this->title .= ($this->reported->anon) ? '('.JText::_('ANONYMOUS').')':'';
-	
+
 	$link = '../'.$this->reported->href;
 }
 

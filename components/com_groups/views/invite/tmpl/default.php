@@ -70,7 +70,7 @@ $dispatcher =& JDispatcher::getInstance();
 			<label>
 				<?php echo JText::_('GROUPS_INVITE_LOGINS'); ?>
 				<?php 
-					$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'logins', 'acmembers')) ); 
+					$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'logins', 'acmembers')) );
 					if (count($mc) > 0) {
 						echo $mc[0];
 					} else { ?>

@@ -35,21 +35,18 @@ class modResourceMenu
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,20 +55,19 @@ class modResourceMenu
 	}
 
 	//-----------
-
-	private function _xHubTags( $ctext ) 
+	private function _xHubTags( $ctext )
 	{
 		// Expression to search for
 		$regex = "/\{xhub:\s*[^\}]*\}/i";
 
 		// Find all instances of plugin and put in $matches
 		$count = preg_match_all( $regex, $ctext, $matches );
-		
+
 		if ($count) {
 			for ( $i=0; $i < $count; $i++ )
 			{
 				$regex = "/\{xhub:\s*([^\s]+)\s*(.*)/i";
-				if ( preg_match($regex, $matches[0][$i], $tag) ) 
+				if ( preg_match($regex, $matches[0][$i], $tag) )
 				{
 					if ($tag[1] == 'module') {
 						$text = $this->_xHubTagsModules($tag[2]);
@@ -82,12 +78,11 @@ class modResourceMenu
 				}
 			}
 		}
-		
+
 		return $ctext;
 	}
-	
+
 	//-----------
-	
 	private function _xHubTagsModules($options)
 	{
 	    global $mainframe;
@@ -108,7 +103,6 @@ class modResourceMenu
 	}
 
 	//-----------
-
 	public function display()
 	{
 		// Get the module parameters
@@ -118,11 +112,11 @@ class modResourceMenu
 
 		// Build the HTML
 		$this->html = $this->_xHubTags( $params->get('content') );
-		
+
 		// Push some CSS to the tmeplate
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet('mod_resourcemenu');
-		
+
 		// Push some javascript to the tmeplate
 		$jdocument =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.'/modules/mod_resourcemenu/mod_resourcemenu.js')) {

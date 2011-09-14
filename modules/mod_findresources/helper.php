@@ -33,21 +33,15 @@ class modFindResources
 {
 	private $attributes = array();
 
-	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
-
-	//-----------
 
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-
-	//-----------
 
 	public function __get($property)
 	{
@@ -55,20 +49,18 @@ class modFindResources
 			return $this->attributes[$property];
 		}
 	}
-	
-	//-----------
 
-	public function display() 
+	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
-			
+
 		$database =& JFactory::getDBO();
-					
+
 		$obj = new TagsTag( $database );
-			
+
 		$this->tags = $obj->getTopTags( $this->params->get( 'numtags', 25 ) );
-			
+
 		// Get major types
 		$t = new ResourcesType( $database );
 		$this->categories = $t->getMajorTypes();

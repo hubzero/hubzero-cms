@@ -52,7 +52,7 @@ if($this->module) {
 	$form_btn = "Update Module";
 	$form_title = "Update the Group Module";
 	$new = '';
-	
+
 	$id = $this->module['id'];
 	$gid = $this->module['gid'];
 	$order = $this->module['morder'];
@@ -140,7 +140,7 @@ if($type) {
 						echo $editor->display('module[content]', 'module[content]', stripslashes($content), '', '50', '15');
 						echo "<a href=\"\">Wiki Formatting</a> is allowed.";
 					} else {
-						echo str_replace('{{VALUE}}',$content,$module_details['input']); 
+						echo str_replace('{{VALUE}}',$content,$module_details['input']);
 					}
 				?>
 			</label>

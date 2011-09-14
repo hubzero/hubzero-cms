@@ -31,11 +31,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $mainframe->registerEvent( 'onPrepareContent', 'plgContentXHubTags' );
 
-function plgContentXHubTags( &$row, &$params, $page=0 ) 
+function plgContentXHubTags( &$row, &$params, $page=0 )
 {
 	// expression to search for
 	$regex = "/\{xhub:\s*[^\}]*\}/i";
-    
+
 	if (!is_object($params)) // weblinks is somehow calling this with null params
 		return false;
 
@@ -58,7 +58,7 @@ function plgContentXHubTagsProcess( &$row, &$matches, $count, $regex )
 	for ( $i=0; $i < $count; $i++ )
 	{
 		$regex = "/\{xhub:\s*([^\s]+)\s*(.*)/i";
-		if ( preg_match($regex, $matches[0][$i], $tag) ) 
+		if ( preg_match($regex, $matches[0][$i], $tag) )
 		{
 			if ($tag[1] == "include")
 				$text = plgContentXHubTagsInclude($tag[2]);
@@ -87,7 +87,7 @@ function plgContentXHubTagsModules($options)
     global $mainframe;
 
     $regex = "/position\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
-    
+
 	if (!preg_match($regex, $options, $position))
         return "";
 
@@ -129,12 +129,12 @@ function plgContentXHubTagsInclude($options)
 		return "";
 
 	$regex = "/filename\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
-    
+
 	if (!preg_match($regex, $options, $file))
 		return "";
 
 	$regex = "/component\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
-	
+
 	$template = $mainframe->getTemplate();
 
 	if ($file[2][0] == '/')
@@ -197,7 +197,7 @@ function plgContentXHubTagsImage($options)
 		return substr(Hubzero_Document::getComponentImage($component[2], $file[2]),1);
 	else if (!empty($module))
 		return substr(Hubzero_Dcoument::getModuleImage($module[2],$file[2]),1);
-	
+
 	return "";
 }
 
@@ -211,5 +211,5 @@ function plgContentXhubTagsGetCfg($options)
 
 	return $xhub->getCfg($options);
 }
-		
+
 ?>

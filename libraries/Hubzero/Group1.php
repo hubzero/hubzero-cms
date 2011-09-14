@@ -50,15 +50,15 @@ class Hubzero_Group
 	private $applicants = array();
 	private $invitees = array();
 	private $tracperm = array();
-	
+
 	private $_list_keys = array('members', 'managers', 'applicants', 'invitees', 'tracperm');
-	
+
 	private $_ldapMirror = false;
 	private $_ldapLegacy = true;
 	private $_updateAll = false;
-	
+
 	private $_propertyattrmap = array('gidNumber'=>'gidNumber', 'cn'=>'cn', 'members'=>'memberUid');
-	
+
 	private $_updatedkeys = array();
 
 	public function __construct()
@@ -81,13 +81,13 @@ class Hubzero_Group
 	public function clear()
 	{
 		$cvars = get_class_vars(__CLASS__);
-		
+
 		$this->_updatedkeys = array();
-		
+
 		foreach ($cvars as $key=>$value) {
 			if ($key{0} != '_') {
 				unset($this->$key);
-				
+
 				if (!in_array($key, $this->_list_keys)) {
 					$this->$key = null;
 				}
@@ -96,10 +96,10 @@ class Hubzero_Group
 				}
 			}
 		}
-		
+
 		$this->_updateAll = false;
 		$this->_updatedkeys = array();
-		
+
 		return true;
 	}
 
@@ -114,33 +114,33 @@ class Hubzero_Group
 		$xhub = &Hubzero_Factory::getHub();
 		$result = array();
 		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-		
+
 		if ($format == 'mysql') {
 			$cvars = get_class_vars(__CLASS__);
-			
+
 			foreach ($cvars as $key=>$value) {
 				if ($key{0} == '_') {
 					continue;
 				}
-				
+
 				$current = $this->__get($key);
-				
+
 				$result[$key] = $current;
 			}
-			
+
 			return $result;
 		}
 		else if ($format == 'ldap') {
 
 			foreach ($this->_propertyattrmap as $key=>$value) {
 				$current = $this->__get($key);
-				
+
 				$result[$value] = $current;
 			}
-			
+
 			if ($this->_ldapLegacy) {
 				$current = $this->__get('type');
-			
+
 				if ($current == '0') {
 					$result['closed'] = 'FALSE';
 					$result['system'] = 'TRUE';
@@ -157,9 +157,9 @@ class Hubzero_Group
 					$result['closed'] = null;
 					$result['system'] = null;
 				}
-			
+
 				$current = $this->__get('access');
-			
+
 				if ($current == '0') {
 					$result['privacy'] = '0';
 				}
@@ -172,9 +172,9 @@ class Hubzero_Group
 				else {
 					$result['privacy'] = null;
 				}
-			
+
 				$current = $this->__get('published');
-			
+
 				if ($current == '1') {
 					$result['public'] = 'TRUE';
 				}
@@ -186,13 +186,13 @@ class Hubzero_Group
 				}
 
 				// $result['owner'] = $this->_usernames($result['owner']);
-			
+
 				foreach ($result['owner'] as $key=>$owner) {
 					if (!empty($owner)) {
 						$result['owner'][$key] = "uid=$owner,ou=users," . $hubLDAPBaseDN;
 					}
 				}
-			
+
 				foreach ($result['applicant'] as $key=>$applicant) {
 					if (!empty($applicant)) {
 						$result['applicant'][$key] = "uid=$applicant,ou=users," . $hubLDAPBaseDN;
@@ -210,24 +210,24 @@ class Hubzero_Group
 
 				if (!isset($result['memberUid']))
 					$result['memberUid'] = array();
-				
+
 				// $result['memberUid'] = $this->_usernames($result['memberUid']);
 			}
 
 			return $result;
 		}
-		
+
 		return false;
 	}
 
 	public function getInstance($instance, $storage = null)
 	{
 		$hzg = new Hubzero_Group();
-		
+
 		if ($hzg->read($instance, $storage) === false) {
 			return false;
 		}
-		
+
 		return $hzg;
 	}
 
@@ -236,15 +236,15 @@ class Hubzero_Group
 		if (empty($name)) {
 			return false;
 		}
-		
+
 		$instance = new Hubzero_Group();
-		
+
 		$instance->cn = $name;
-		
+
 		if ($instance->create()) {
 			return $instance;
 		}
-		
+
 		return false;
 	}
 
@@ -252,17 +252,17 @@ class Hubzero_Group
 	{
 		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
-		
+
 		if (empty($conn) || empty($xhub)) {
 			return false;
 		}
-		
+
 		if (empty($this->cn)) {
 			return false;
 		}
-		
+
 		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-		
+
 		if ($this->_ldapLegacy) {
 			$dn = 'gid=' . $this->cn . ',ou=groups,' . $hubLDAPBaseDN;
 		}
@@ -280,52 +280,52 @@ class Hubzero_Group
 		$attr['gid'] = $this->cn;
 		$attr['gidNumber'] = $this->gidNumber;
 		$attr['cn'] = $this->cn;
-		
+
 		if (!ldap_add($conn, $dn, $attr) && @ldap_errno($conn) != 68) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	private function _mysql_create()
 	{
 		$db = &JFactory::getDBO();
-		
+
 		if (empty($db)) {
 			return false;
 		}
-		
+
 		if (is_numeric($this->gidNumber)) {
 			$query = "INSERT INTO #__xgroups (gidNumber,cn) VALUES ( " . $db->Quote($this->gidNumber) . "," . $db->Quote($this->cn) .
 				 ");";
-			
+
 			$db->setQuery($query);
-			
+
 			$result = $db->query();
-			
+
 			if ($result !== false || $db->getErrorNum() == 1062) {
 				return true;
 			}
 		}
 		else {
 			$query = "INSERT INTO #__xgroups (cn) VALUES ( " . $db->Quote($this->cn) . ");";
-			
+
 			$db->setQuery($query);
-			
+
 			$result = $db->query();
-			
+
 			if ($result === false && $db->getErrorNum() == 1062) {
 				$query = "SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($this->cn) . ";";
-				
+
 				$db->setQeury($query);
-				
+
 				$result = $db->loadResult();
-				
+
 				if ($result == null) {
 					return false;
 				}
-				
+
 				$this->gidNumber = $result;
 				return true;
 			}
@@ -334,7 +334,7 @@ class Hubzero_Group
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -343,30 +343,30 @@ class Hubzero_Group
 		if (is_null($storage)) {
 			$storage = ($this->_ldapMirror) ? 'all' : 'mysql';
 		}
-		
+
 		if (!is_string($storage)) {
 			$this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
 			die();
 		}
-		
+
 		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
 			$this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value", E_USER_ERROR);
 			die();
 		}
-		
+
 		$result = true;
-		
+
 		if ($storage == 'mysql' || $storage == 'all') {
 			$result = $this->_mysql_create();
 		}
-		
+
 		if ($result === true && ($storage == 'ldap' || $storage == 'all')) {
 			$result = $this->_ldap_create();
-			
+
 			if ($result == false)
 				die('ldap group create');
 		}
-		
+
 		return $result;
 	}
 
@@ -374,17 +374,17 @@ class Hubzero_Group
 	{
 		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
-		
+
 		if (empty($conn) || empty($xhub)) {
 			return false;
 		}
-		
+
 		if (empty($cn)) {
 			return false;
 		}
-		
+
 		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-		
+
 		if (is_numeric($cn))
 		{
 			$gidNumber = $cn;
@@ -413,33 +413,33 @@ class Hubzero_Group
 		else {
 			$oclass = 'posixGroup';
 		}
-		
+
 		if (!empty($gidNumber)) {
 			$filter = "(&(objectClass=$oclass)(gidNumber=" . $gidNumber . "))";
 		}
 		else {
 			$filter = "(objectClass=$oclass)";
 		}
-		
+
 		$entry = ldap_search($conn, $dn, $filter, array("*"), 0, 0, 0, 3);
-		
+
 		if (empty($entry)) {
 			return false;
 		}
-		
+
 		$count = ldap_count_entries($conn, $entry);
-		
+
 		if ($count <= 0) {
 			return false;
 		}
 
 		$firstentry = ldap_first_entry($conn, $entry);
 		$attr = ldap_get_attributes($conn, $firstentry);
-		
+
 		for ($i = 0; $i < $attr['count']; $i++) {
 			$key = $attr[$i];
 			$value = $attr[$key];
-			
+
 			for ($j = 0; $j < $value['count']; $j++) {
 				if ($value['count'] > 1) {
 					$info[$key][$j] = $value[$j];
@@ -460,42 +460,42 @@ class Hubzero_Group
 	{
 		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
-		
+
 		if (empty($conn) || empty($xhub)) {
 			return false;
 		}
-		
+
 		if (empty($this->cn) && empty($this->gidNumber)) {
 			return false;
 		}
-		
+
 		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-	
+
 		$info = $this->_ldap_load($this->cn);
-	
+
 		if (empty($info))
 			return $info;
-		
+
 		if ($this->_ldapLegacy) {
 			if (empty($info['system'])) {
 				$info['system'] = false;
 			}
-		
+
 			if (empty($info['closed'])) {
 				$info['closed'] = false;
 			}
-		
+
 			if (isset($info['public']) && $info['public'] == 'FALSE') {
 				$info['public'] = '0';
 			}
-		
+
 			if (isset($info['public']) && $info['public'] == 'TRUE') {
 				$info['public'] = '1';
 			}
 		}
-		
+
 		$this->clear();
-		
+
 		foreach ($this->_propertyattrmap as $key=>$value) {
 			if (isset($info[$value])) {
 				$this->__set($key, $info[$value]);
@@ -504,7 +504,7 @@ class Hubzero_Group
 				$this->__set($key, null);
 			}
 		}
-		
+
 		if ($this->_ldapLegacy) {
 			if ($info['system'] == 'TRUE' || ($info['closed'] === false && $info['system'] === false)) {
 				$this->__set('type', '0'); // system
@@ -519,7 +519,7 @@ class Hubzero_Group
 			else {
 				$this->__set('type', '1'); // hub
 			}
-		
+
 			if (!isset($info['privacy'])) {
 				$this->__set('access', null);
 			}
@@ -544,42 +544,42 @@ class Hubzero_Group
 	public function _mysql_read()
 	{
 		$db = &JFactory::getDBO();
-		
+
 		$lazyloading = false;
-		
+
 		if (empty($db)) {
 			return false;
 		}
-		
+
 		if (is_numeric($this->gidNumber)) {
 			$query = "SELECT * FROM #__xgroups WHERE gidNumber = " . $db->Quote($this->gidNumber) . ";";
 		}
 		else {
 			$query = "SELECT * FROM #__xgroups WHERE cn = " . $db->Quote($this->cn) . ";";
 		}
-		
+
 		$db->setQuery($query);
-		
+
 		$result = $db->loadAssoc();
-		
+
 		if (empty($result)) {
 			return false;
 		}
-		
+
 		$this->clear();
-		
+
 		foreach ($result as $key=>$value) {
 			if (property_exists(__CLASS__, $key) && $key{0} != '_') {
 				$this->__set($key, $value);
 			}
 		}
-		
+
 		$this->__unset('members');
 		$this->__unset('invitees');
 		$this->__unset('applicants');
 		$this->__unset('managers');
 		$this->__unset('tracperm');
-		
+
 		if (!$lazyloading) {
 			$this->__get('members');
 			$this->__get('invitees');
@@ -587,9 +587,9 @@ class Hubzero_Group
 			$this->__get('managers');
 			$this->__get('tracperm');
 		}
-		
+
 		$this->_updatedkeys = array();
-		
+
 		return true;
 	}
 
@@ -599,20 +599,20 @@ class Hubzero_Group
 			$this->_error(__FUNCTION__ . ": Argument #1 is not a valid string or integer", E_USER_ERROR);
 			die();
 		}
-		
+
 		if (!is_null($storage) && !is_string($storage)) {
 			$this->_error(__FUNCTION__ . ": Argument #2 is not a string", E_USER_ERROR);
 			die();
 		}
-		
+
 		if (!in_array($storage, array('mysql', 'ldap', null))) {
 			$this->_error(__FUNCTION__ . ": Argument #2 [$storage] is not a valid value", E_USER_ERROR);
 			die();
 		}
-		
+
 		if (!is_null($name)) {
 			$this->clear();
-			
+
 			if (Hubzero_Validate::is_positive_integer($name)) {
 				$this->gidNumber = $name;
 			}
@@ -620,9 +620,9 @@ class Hubzero_Group
 				$this->cn = $name;
 			}
 		}
-		
+
 		$result = true;
-		
+
 		if (is_null($storage) || $storage == 'mysql') {
 			$result = $this->_mysql_read();
 		}
@@ -632,11 +632,11 @@ class Hubzero_Group
 		else {
 			$result = false;
 		}
-		
+
 		if ($result === false) {
 			$this->clear();
 		}
-		
+
 		return $result;
 	}
 
@@ -645,33 +645,33 @@ class Hubzero_Group
 		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 		$errno = 0;
-		
+
 		if (empty($conn) || empty($xhub)) {
 			return false;
 		}
-		
+
 		if (empty($this->cn)) {
 			return false;
 		}
-		
+
 		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-		
+
 		$info = $this->toArray('ldap');
-		
+
 		$current_hzg = Hubzero_Group::getInstance($this->cn, 'ldap');
-		
+
 		if (!is_object($current_hzg)) {
 			if ($this->_ldap_create() == false) {
 				return false;
 			}
-			
+
 			$current_hzg = Hubzero_Group::getInstance($this->cn, 'ldap');
-			
+
 			if (!is_object($current_hzg)) {
 				return false;
 			}
 		}
-		
+
 		$currentinfo = $this->_ldap_load($this->cn);
 
 		if ($this->_ldapLegacy) {
@@ -708,54 +708,54 @@ class Hubzero_Group
 				$replace_attr[$key] = $info[$key];
 			}
 		}
-		
+
 		if (isset($replace_attr) && !ldap_mod_replace($conn, $dn, $replace_attr)) {
 			$errno = ldap_errno($conn);
 		}
-		
+
 		if (isset($add_attr) && !ldap_mod_add($conn, $dn, $add_attr)) {
 			$errno = ldap_errno($conn);
 		}
-		
+
 		if (isset($delete_attr) && !ldap_mod_del($conn, $dn, $delete_attr)) {
 			$errno = ldap_errno($conn);
 		}
-		
+
 		if ($errno != 0) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	function _mysql_update($all = false)
 	{
 		$db = &JFactory::getDBO();
-		
+
 		$query = "UPDATE #__xgroups SET ";
-		
+
 		$classvars = get_class_vars(__CLASS__);
-		
+
 		$first = true;
-		
+
 		foreach ($classvars as $property=>$value) {
 			if (($property{0} == '_') || in_array($property, $this->_list_keys)) {
 				continue;
 			}
-			
+
 			if (!$all && !in_array($property, $this->_updatedkeys)) {
 				continue;
 			}
-			
+
 			if (!$first) {
 				$query .= ',';
 			}
 			else {
 				$first = false;
 			}
-			
+
 			$value = $this->__get($property);
-			
+
 			if ($value === null) {
 				$query .= "`$property`=NULL";
 			}
@@ -763,69 +763,69 @@ class Hubzero_Group
 				$query .= "`$property`=" . $db->Quote($value);
 			}
 		}
-		
+
 		$query .= " WHERE `gidNumber`=" . $db->Quote($this->__get('gidNumber')) . ";";
-		
+
 		if ($first == true) {
 			$query = '';
 		}
-		
+
 		if (!empty($query)) {
 			$db->setQuery($query);
-			
+
 			$result = $db->query();
-			
+
 			if ($result === false) {
 				return false;
 			}
-			
+
 			$affected = mysql_affected_rows($db->_resource);
-			
+
 			if ($affected < 1) {
 				$this->_mysql_create();
-				
+
 				$db->setQuery($query);
-				
+
 				$result = $db->query();
-				
+
 				if ($result === false) {
 					return false;
 				}
-				
+
 				$affected = mysql_affected_rows($db->_resource);
-				
+
 				if ($affected < 1) {
 					return false;
 				}
 			}
 		}
-		
+
 		foreach ($this->_list_keys as $property) {
 			if (!$all && !in_array($property, $this->_updatedkeys)) {
 				continue;
 			}
-			
+
 			$aux_table = "#__xgroups_" . $property;
-			
+
 			$list = $this->__get($property);
-			
+
 			if (!is_null($list) && !is_array($list)) {
 				$list = array($list);
 			}
-			
+
 			$ulist = null;
 			$tlist = null;
-			
+
 			foreach ($list as $value) {
 				if (!is_null($ulist)) {
 					$ulist .= ',';
 					$tlist .= ',';
 				}
-				
+
 				$ulist .= $db->Quote($value);
 				$tlist .= '(' . $db->Quote($this->gidNumber) . ',' . $db->Quote($value) . ')';
 			}
-			
+
 			if (is_array($list) && count($list) > 0) {
 				if ($property == 'tracperm') {
 					$query = "REPLACE INTO $aux_table (group_id, action) VALUES $tlist;";
@@ -834,15 +834,15 @@ class Hubzero_Group
 					$query = "REPLACE INTO $aux_table (gidNumber,uidNumber) SELECT " . $db->Quote($this->gidNumber) . ",id FROM #__users WHERE " .
 						 " username IN ($ulist);";
 				}
-				
+
 				$db->setQuery($query);
-				
+
 				if (!$db->query()) {
 					return false;
 				}
-			
+
 			}
-			
+
 			if (!is_array($list) || count($list) == 0) {
 				if ($property == 'tracperm') {
 					$query = "DELETE FROM $aux_table WHERE group_id=" . $db->Quote($this->gidNumber) . ";";
@@ -860,28 +860,28 @@ class Hubzero_Group
 						 " AND m.uidNumber=u.id AND u.username NOT IN (" . $ulist . ");";
 				}
 			}
-			
+
 			$db->setQuery($query);
-			
+
 			if (!$db->query()) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	public function sync()
 	{
 		$this->_updateAll = true;
-		
+
 		return $this->update();
 	}
 
 	public function syncldap()
 	{
 		$this->_updateAll = true;
-		
+
 		return $this->update('ldap');
 	}
 
@@ -890,35 +890,35 @@ class Hubzero_Group
 		if (is_null($storage)) {
 			$storage = ($this->_ldapMirror) ? 'all' : 'mysql';
 		}
-		
+
 		if (!is_string($storage)) {
 			$this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
 			die();
 		}
-		
+
 		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
 			$this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value", E_USER_ERROR);
 			die();
 		}
-		
+
 		$result = true;
-		
+
 		if ($storage == 'mysql' || $storage == 'all') {
 			$result = $this->_mysql_update($this->_updateAll);
-			
+
 			if ($result === false) {
 				$this->_error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
 			}
 		}
-		
+
 		if ($result === true && ($storage == 'ldap' || $storage == 'all')) {
 			$result = $this->_ldap_update($this->_updateAll);
-			
+
 			if ($result === false) {
 				$this->_error(__FUNCTION__ . ": LDAP update failed", E_USER_WARNING);
 			}
 		}
-		
+
 		$this->_updateAll = false;
 		return $result;
 	}
@@ -927,26 +927,26 @@ class Hubzero_Group
 	{
 		$conn = &Hubzero_Factory::getPLDC();
 		$xhub = &Hubzero_Factory::getHub();
-		
+
 		if (empty($conn) || empty($xhub)) {
 			return false;
 		}
-		
+
 		if (!isset($this->instance)) {
 			return false;
 		}
-		
+
 		if ($this->_ldapLegacy) {
 			$dn = "gid=" . $this->cn . ",ou=groups," . $xhub->getCfg('hubLDAPBaseDN');
 		}
 		else {
 			$dn = "cn=" . $this->cn . ",ou=groups," . $xhub->getCfg('hubLDAPBaseDN');
 		}
-		
+
 		if (!@ldap_delete($conn, $dn)) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -955,29 +955,29 @@ class Hubzero_Group
 		if (!isset($this->cn) && !isset($this->gidNumber)) {
 			return false;
 		}
-		
+
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db)) {
 			return false;
 		}
-		
+
 		if (!isset($this->gidNumber)) {
 			$db->setQuery("SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($this->cn) . ";");
-			
+
 			$this->gidNumber = $db->loadResult();
 		}
-		
+
 		if (empty($this->gidNumber)) {
 			return false;
 		}
-		
+
 		$db->setQuery("DELETE FROM #__xgroups WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
-		
+
 		if (!$db->query()) {
 			return false;
 		}
-		
+
 		$db->setQuery("DELETE FROM #__xgroups_applicants WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
 		$db->setQuery("DELETE FROM #__xgroups_invitees WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
@@ -988,75 +988,75 @@ class Hubzero_Group
 		$db->query();
 		$db->setQuery("DELETE FROM #__xgroups_tracperm WHERE group_id=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
-		
+
 		return true;
 	}
 
 	public function delete($storage = null)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
-		
+
 		if (func_num_args() > 1) {
 			$this->_error(__FUNCTION__ . ": Invalid number of arguments", E_USER_ERROR);
 			die();
 		}
-		
+
 		if (is_null($storage)) {
 			$storage = ($this->_ldapMirror) ? 'all' : 'mysql';
 		}
-		
+
 		if (!is_string($storage)) {
 			$this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
 			die();
 		}
-		
+
 		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
 			$this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value", E_USER_ERROR);
 			die();
 		}
-		
+
 		if ($storage == 'mysql' || $storage == 'all') {
 			$result = $this->_mysql_delete();
-			
+
 			if ($result === false) {
 				$this->_error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
 				return false;
 			}
 		}
-		
+
 		if ($result === true && ($storage == 'ldap' || $storage == 'all')) {
 			$result = $this->_ldap_delete();
-			
+
 			if ($result === false) {
 				$this->_error(__FUNCTION__ . ": LDAP deletion failed", E_USER_WARNING);
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	private function __get($property = null)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
-		
+
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
 			if (empty($property)) {
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		if (in_array($property, $this->_list_keys)) {
 			if (!array_key_exists($property, get_object_vars($this))) {
 				$db = &JFactory::getDBO();
-				
+
 				if (is_object($db)) {
 					if (in_array($property, array('tracperm'))) {
 						$aux_table = "#__xgroups_tracperm";
-						
+
 						$query = "SELECT action FROM $aux_table AS aux WHERE aux.group_id=" . $db->Quote($this->gidNumber) . " ORDER BY action" .
 							 " ASC;";
 					}
@@ -1068,28 +1068,28 @@ class Hubzero_Group
 					else {
 						$query = null;
 					}
-					
+
 					$db->setQuery($query);
-					
+
 					$result = $db->loadResultArray();
-					
+
 					if ($result !== false) {
 						$this->__set($property, $result);
 					}
 				}
 			}
 		}
-		
+
 		if (isset($this->$property)) {
 			return $this->$property;
 		}
-		
+
 		if (array_key_exists($property, get_object_vars($this))) {
 			return null;
 		}
-		
+
 		$this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
-		
+
 		return null;
 	}
 
@@ -1099,11 +1099,11 @@ class Hubzero_Group
 			if (empty($property)) {
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		if (in_array($property, $this->_list_keys)) {
 			$value = array_diff((array) $value, array(''));
 
@@ -1119,7 +1119,7 @@ class Hubzero_Group
 		else {
 			$this->$property = $value;
 		}
-		
+
 		if (!in_array($property, $this->_updatedkeys)) {
 			$this->_updatedkeys[] = $property;
 		}
@@ -1131,11 +1131,11 @@ class Hubzero_Group
 			if (empty($property)) {
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		return isset($this->$property);
 	}
 
@@ -1145,20 +1145,20 @@ class Hubzero_Group
 			if (empty($property)) {
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		$this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
-		
+
 		unset($this->$property);
 	}
 
 	private function _error($message, $level = E_USER_NOTICE)
 	{
 		$caller = next(debug_backtrace());
-		
+
 		switch ($level)
 		{
 			case E_USER_NOTICE:
@@ -1171,7 +1171,7 @@ class Hubzero_Group
 				echo "Unknown error: ";
 				break;
 		}
-		
+
 		echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
 	}
 
@@ -1185,15 +1185,14 @@ class Hubzero_Group
 		return $this->__set($key, $value);
 	}
 
-
 	private function _usernames($users)
 	{
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db)) {
 			return false;
 		}
-		
+
 		$usernames = array();
 		$userids = array();
 
@@ -1268,7 +1267,6 @@ class Hubzero_Group
         return $result;
     }
 
-
 	public function add($key = null, $value = array())
 	{
 		$users = $this->_usernames($value);
@@ -1288,36 +1286,36 @@ class Hubzero_Group
 	static function iterate($func, $storage = 'mysql')
 	{
 		$db = &JFactory::getDBO();
-		
+
 		if (!in_array($storage, array('mysql', 'ldap', null))) {
 			return false;
 		}
-		
+
 		if ($storage == 'ldap') {
 			$xhub = &Hubzero_Factory::getHub();
 			$conn = &Hubzero_Factory::getPLDC();
-			
+
 			$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-			
+
 			$dn = 'ou=groups,' . $hubLDAPBaseDN;
 			$filter = '(objectclass=hubGroup)';
-			
+
 			$attributes[] = 'cn';
-			
+
 			$sr = ldap_search($conn, $dn, $filter, $attributes, 0, 0, 0);
-			
+
 			if ($sr === false) {
 				return false;
 			}
-			
+
 			$count = ldap_count_entries($conn, $sr);
-			
+
 			if ($count === false) {
 				return false;
 			}
-			
+
 			$entry = ldap_first_entry($conn, $sr);
-			
+
 			while ($entry !== false) {
 				$attributes = ldap_get_attributes($conn, $entry);
 				call_user_func($func, $attributes['cn'][0]);
@@ -1326,57 +1324,57 @@ class Hubzero_Group
 		}
 		else if ($storage == 'mysql' || is_null($storage)) {
 			$query = "SELECT cn FROM #__xgroups;";
-			
+
 			$db->setQuery($query);
-			
+
 			$result = $db->query();
-			
+
 			if ($result === false) {
 				return false;
 			}
-			
+
 			while ($row = mysql_fetch_row($result)) {
 				call_user_func($func, $row[0]);
 			}
-			
+
 			mysql_free_result($result);
 		}
-		
+
 		return true;
 	}
 
 	static public function exists($group, $storage = 'mysql')
 	{
 		$db = &JFactory::getDBO();
-		
+
 		if (empty($group))
 			return false;
-		
+
 		if (is_numeric($group))
 			$query = 'SELECT gidNumber FROM #__xgroups WHERE gidNumber=' . $db->Quote($group);
 		else
 			$query = 'SELECT gidNumber FROM #__xgroups WHERE cn=' . $db->Quote($group);
-		
+
 		$db->setQuery($query);
-		
+
 		if (!$db->query())
 			return false;
-		
+
 		if ($db->loadResult() > 0)
 			return true;
-		
+
 		return false;
 	}
 
 	static function find($filters = array())
 	{
 		$db = &JFactory::getDBO();
-		
+
 		$type = !empty($filters['type']) ? $filters['type'] : 'all';
-		
+
 		if (!in_array($type, array('system', 'hub', 'project', 'all', '0', '1', '2')))
 			return false;
-		
+
 		if ($type == 'all')
 			$where_clause = '';
 		else {
@@ -1386,10 +1384,10 @@ class Hubzero_Group
 				$type = '1';
 			elseif ($type == 'project')
 				$type = '2';
-			
+
 			$where_clause = 'WHERE type=' . $db->Quote($type);
 		}
-		
+
 		if (isset($filters['search']) && $filters['search'] != '') {
 			if ($where_clause != '') {
 				$where_clause .= " AND";
@@ -1400,7 +1398,7 @@ class Hubzero_Group
 			$where_clause .= " (LOWER(description) LIKE '%" . $filters['search'] . "%' OR LOWER(cn) LIKE '%" . $filters['search'] .
 				 "%')";
 		}
-		
+
 		if (isset($filters['index']) && $filters['index'] != '') {
 			if ($where_clause != '') {
 				$where_clause .= " AND";
@@ -1410,7 +1408,7 @@ class Hubzero_Group
 			}
 			$where_clause .= " (LOWER(description) LIKE '" . $filters['index'] . "%') ";
 		}
-		
+
 		if (isset($filters['authorized']) && $filters['authorized']) {
 			if ($filters['authorized'] === 'admin') {
 				$where_clause .= "";
@@ -1434,12 +1432,12 @@ class Hubzero_Group
 			}
 			$where_clause .= " privacy=0";
 		}
-		
+
 		if (empty($filters['fields']))
 			$filters['fields'][] = 'cn';
-		
+
 		$field = implode(',', $filters['fields']);
-		
+
 		$query = "SELECT $field FROM #__xgroups $where_clause";
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
 			$query .= " ORDER BY " . $filters['sortby'];
@@ -1448,24 +1446,22 @@ class Hubzero_Group
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		$query .= ";";
-		
+
 		$db->setQuery($query);
-		
+
 		if (!in_array('COUNT(*)', $filters['fields'])) {
 			$result = $db->loadObjectList();
 		}
 		else {
 			$result = $db->loadResult();
 		}
-		
+
 		if (empty($result))
 			return false;
-		
+
 		return $result;
 	}
-	
-	//-----------
-	
+
 	public function is_member_of($table, $uid)
 	{
 		$db =& JFactory::getDBO();
@@ -1509,14 +1505,14 @@ class Hubzero_Group
 	{
 		return $this->is_member_of('invitees',$uid);
 	}
-	
-	public function getEmails($key='managers') 
+
+	public function getEmails($key='managers')
 	{
 		ximport('Hubzero_User_Profile');
 		$emails = array();
 		$users = $this->get($key);
 		if ($users) {
-			foreach ($users as $user) 
+			foreach ($users as $user)
 			{
 				$u =& Hubzero_User_Profile::getInstance($user);
 				if (is_object($u)) {
@@ -1526,22 +1522,22 @@ class Hubzero_Group
 		}
 		return $emails;
 	}
-	
-	public function search($tbl='', $q='') 
+
+	public function search($tbl='', $q='')
 	{
 		if (!in_array($tbl, array('applicants','members','managers','invitees')))
 			return false;
 
 		$table = '#__xgroups_' . $tbl;
-		
+
 		$db = & JFactory::getDBO();
-		
+
 		$query = "SELECT u.id FROM $table AS t,#__users AS u WHERE t.gidNumber=" . $db->Quote($this->gidNumber) . " AND u.id=t.uidNumber AND LOWER(u.name) LIKE '%".strtolower($q)."%';";
 
 		$db->setQuery($query);
 		return $db->loadResultArray();
 	}
-	
+
 	public function select($group)
 	{
 		$db = &JFactory::getDBO();

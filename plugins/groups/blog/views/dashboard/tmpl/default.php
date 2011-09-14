@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<tbody>
 <?php 
 if ($this->entries) {
-	foreach ($this->entries as $entry) 
+	foreach ($this->entries as $entry)
 	{
 ?>
 		<tr>

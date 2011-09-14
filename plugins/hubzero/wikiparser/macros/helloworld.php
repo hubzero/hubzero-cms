@@ -29,20 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class HelloWorldMacro extends WikiMacro 
+class HelloWorldMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Outputs "Hello world"';
 		$txt['html'] = '<p>Outputs "Hello world"</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		return 'Hello World, args = '.$this->args;
 	}

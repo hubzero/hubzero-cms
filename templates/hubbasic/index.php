@@ -81,7 +81,7 @@ if (!$juser->get('guest')) {
 	$database =& JFactory::getDBO();
 	$recipient = new Hubzero_Message_Recipient( $database );
 	$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
-	
+
 	echo "\t\t\t\t".'<li id="logout"><a href="/logout"><span>Logout</span></a></li>'."\n";
 	echo "\t\t\t\t".'<li id="myaccount"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>My Account</span></a></li>'."\n";
 	echo "\t\t\t\t".'<li id="username"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>'.$juser->get('name').' ('.$juser->get('username').')</span></a></li>'."\n";
@@ -126,10 +126,10 @@ if (!$juser->get('guest')) {
 		You are here: <?php
 	$app =& JFactory::getApplication();
 	$pathway =& $app->getPathway();
-	
+
 	$items = $pathway->getPathWay();
 	$l = array();
-	foreach ($items as $item) 
+	foreach ($items as $item)
 	{
 		$text = trim(stripslashes($item->name));
 		if (strlen($text) > 50) {

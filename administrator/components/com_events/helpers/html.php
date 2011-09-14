@@ -37,33 +37,29 @@ if (!defined("n")) {
 	define("a","&amp;");
 }
 
-class EventsHtml 
+class EventsHtml
 {
 	public function error( $msg )
 	{
 		return '<p class="error">'.$msg.'</p>';
 	}
-	
-	//-----------
-	
+
 	public function alert( $msg )
 	{
 		return "<script> alert('".$msg."'); window.history.go(-1); </script>";
 	}
-	
-	//-----------
-	
-	public function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected ) 
-	{  
+
+	public function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected )
+	{
 		$html = '';
-		for ($i=0, $n=count( $arr ); $i < $n; $i++ ) 
+		for ($i=0, $n=count( $arr ); $i < $n; $i++ )
 		{
 			$k = $arr[$i]->$key;
 			$t = $arr[$i]->$text;
-			
+
 			$sel = '';
 			if (is_array( $selected )) {
-				foreach ($selected as $obj) 
+				foreach ($selected as $obj)
 				{
 					$k2 = $obj->$key;
 					if ($k == $k2) {
@@ -78,28 +74,24 @@ class EventsHtml
 		}
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function buildCategorySelect($catid, $args, $gid, $option)
 	{
 		$database =& JFactory::getDBO();
 
 		$catsql = "SELECT id AS value, name AS text FROM #__categories "
-				. "WHERE section='$option' AND access<='$gid' AND published='1' ORDER BY ordering";	
+				. "WHERE section='$option' AND access<='$gid' AND published='1' ORDER BY ordering";
 
 		$categories[] = JHTML::_('select.option', '0', JText::_('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
 
 		$database->setQuery($catsql);
 		$categories = array_merge( $categories, $database->loadObjectList() );
 		$clist = JHTML::_('select.genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false );
-		
+
 		echo $clist;
 	}
-	
-	//-----------
-	
-	public function buildReccurDaySelect($reccurday, $tag_name, $args) 
+
+	public function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
 							JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
@@ -107,9 +99,9 @@ class EventsHtml
 							JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));        
+							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));
 		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;'.JText::_('EVENTS_CAL_LANG_BYDAYNUMBER').'<br />', 'value', 'text');
-		for ($a=0; $a<7; $a++) 
+		for ($a=0; $a<7; $a++)
 		{
 			$name_of_day = '&nbsp;'.$day_name[$a];
 			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day, 'value', 'text');
@@ -118,9 +110,7 @@ class EventsHtml
 		echo $tosend;
     }
 
-	//-----------
-
-	public function buildWeekDaysCheck($reccurweekdays, $args) 
+	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
 							JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
@@ -128,7 +118,7 @@ class EventsHtml
 							JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));    
+							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));
 		$tosend = '';
 		if ($reccurweekdays == '') {
 			$split = array();
@@ -137,11 +127,11 @@ class EventsHtml
 			$split = explode("|", $reccurweekdays);
 			$countsplit = count($split);
 		}
-        
-		for ($a=0; $a<7; $a++) 
+
+		for ($a=0; $a<7; $a++)
 		{
 			$checked = '';
-			for ($x = 0; $x < $countsplit; $x++) 
+			for ($x = 0; $x < $countsplit; $x++)
 			{
 				if ($split[$x] == $a) {
 					$checked = 'checked="checked"';
@@ -152,19 +142,17 @@ class EventsHtml
 		echo $tosend;
 	}
 
-	//-----------
-
-	public function buildWeeksCheck($reccurweeks, $args) 
+	public function buildWeeksCheck($reccurweeks, $args)
 	{
 		$week_name = array('',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 1<br />',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 2<br />',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 3<br />',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 4<br />',
-							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 5<br />');        
+							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 5<br />');
 		$tosend = '';
 		$checked = '';
-    
+
 		if ($reccurweeks == '') {
 			$split = array();
 			$countsplit = 0;
@@ -172,30 +160,28 @@ class EventsHtml
 			$split = explode("|", $reccurweeks);
 			$countsplit = count($split);
 		}
-        
-		for ($a=1; $a<6; $a++) 
+
+		for ($a=1; $a<6; $a++)
 		{
 			$checked = '';
-			if ($reccurweeks == '') { 
+			if ($reccurweeks == '') {
 				$checked = 'checked="checked"';
 			}
-			for ($x = 0; $x < $countsplit; $x++) 
+			for ($x = 0; $x < $countsplit; $x++)
 			{
 				if ($split[$x] == $a) {
 					$checked = 'checked="checked"';
 				}
 			}
-			$tosend .= '<input type="checkbox" id="cb_wn'.$a.'" name="reccurweeks" value="'.$a.'" '.$args.' '.$checked.'/>&nbsp;'.$week_name[$a].n;     
+			$tosend .= '<input type="checkbox" id="cb_wn'.$a.'" name="reccurweeks" value="'.$a.'" '.$args.' '.$checked.'/>&nbsp;'.$week_name[$a].n;
 		}
 		echo $tosend;
 	}
-	
-	//-----------
 
-	public function getLongDayName($daynb) 
+	public function getLongDayName($daynb)
 	{
 		$dayname = '';
-		switch ($daynb) 
+		switch ($daynb)
 		{
 			case '0': $dayname = JText::_('EVENTS_CAL_LANG_SUNDAY');    break;
 			case '1': $dayname = JText::_('EVENTS_CAL_LANG_MONDAY');    break;
@@ -208,12 +194,10 @@ class EventsHtml
 		return $dayname;
 	}
 
-	//-----------
-
 	public function getColorBar($event_id=NULL,$newcolor)
 	{
 		$database =& JFactory::getDBO();
-		
+
 		if ($event_id != NULL) {
 			$database->setQuery( "SELECT color_bar FROM #__events WHERE id = '$event_id'" );
 			$rows = $database->loadResultList();
@@ -229,7 +213,7 @@ class EventsHtml
 		} else {
 			// dmcd May 20/04  check the new config parameter to see what the default
 			// color should be
-			switch (_CAL_CONF_DEFCOLOR) 
+			switch (_CAL_CONF_DEFCOLOR)
 			{
 				case 'none':
 					return '';
@@ -247,7 +231,7 @@ class EventsHtml
 					$event_id = rand(1,50);
 					// BAR COLOR GENERATION
 					//$start_publish = mktime (0, 0, 0, date("m"),date("d"),date("Y"));
-	                             
+
 					//$colorgenerate = intval(($start_publish/$event_id));
 					//$bg1color = substr($colorgenerate, 5, 1);
 					//$bg2color = substr($colorgenerate, 3, 1);
@@ -256,30 +240,24 @@ class EventsHtml
 					$bg2color = rand(0,9);
 					$bg3color = rand(0,9);
 					$newcolorgen = "#".$bg1color."F".$bg2color."F".$bg3color."F";
-       
+
 					return $newcolorgen;
 			}
 		}
 	}
-	
-	//-----------
 
 	private static $field_ordering = array(
-		'name' => 0, 'email' => 1, 'telephone' => 2, 'affiliation' => 3, 'position' => 4, 'address' => 5, 
-		'arrival' => 6, 'departure' => 7, 'website' => 8, 'gender' => 9, 'disability' => 10, 
+		'name' => 0, 'email' => 1, 'telephone' => 2, 'affiliation' => 3, 'position' => 4, 'address' => 5,
+		'arrival' => 6, 'departure' => 7, 'website' => 8, 'gender' => 9, 'disability' => 10,
 		'dietary' => 11, 'dinner' => 12, 'abstract' => 13, 'comments' => 14, 'degree' => 15,
-		'race' => 16, 
+		'race' => 16,
 		'fax' => 17, 'title' => 18 // folded into previous entries
 	);
-
-	//-----------
 
 	public function fieldSorter($a, $b)
 	{
 		return EventsHtml::$field_ordering[$a] < EventsHtml::$field_ordering[$b] ? -1 : 1;
 	}
-
-	//-----------
 
 	public function quoteCsv($val)
 	{
@@ -290,14 +268,10 @@ class EventsHtml
 		return $val;
 	}
 
-	//-----------
-
 	public function quoteCsvRow($vals)
 	{
 		return implode(',', array_map(array('EventsHtml', 'quoteCsv'), $vals))."\n";
 	}
-	
-	//-----------
 
 	public function downloadlist($resp, $option)
 	{
@@ -309,22 +283,22 @@ class EventsHtml
 		// Output header
 		usort($fields, array('EventsHtml', 'fieldSorter'));
 		echo EventsHtml::quoteCsvRow(array_map('ucfirst', $fields));
-		
+
 		$rows = $resp->getRecords();
-		
+
 		// Get a list of IDs to query the race identification for all of them at once to avoid
 		// querying for it in a loop later
 		$race_ids = array();
-		foreach ($rows as $re) 
+		foreach ($rows as $re)
 		{
 			$race_ids[$re->id] = array('identification' => '');
 		}
-			
-		foreach (EventsRespondent::getRacialIdentification(array_keys($race_ids)) as $id=>$val) 
+
+		foreach (EventsRespondent::getRacialIdentification(array_keys($race_ids)) as $id=>$val)
 		{
 			$race_ids[$id] = $val;
 		}
-		
+
 		// Output rows
 		foreach ($rows as $re)
 		{
@@ -332,7 +306,7 @@ class EventsHtml
 				$re->last_name . ', ' . $re->first_name
 			);
 			// TODO: Oops, I should have made these fields match up better in the first place.
-			foreach ($fields as $field) 
+			foreach ($fields as $field)
 			{
 				switch ($field)
 				{
@@ -341,7 +315,7 @@ class EventsHtml
 					case 'comments': $row[] = $re->comment; break;
 					case 'degree': $row[] = $re->highest_degree; break;
 					case 'race': $row[] = $race_ids[$re->id]['identification']; break;
-					case 'address': 
+					case 'address':
 						$address = array();
 						if ($re->city) $address[] = $re->city;
 						if ($re->state) $address[] = $re->state;

@@ -51,7 +51,7 @@ $browsers = array(
 	'amaya' => 'Amaya',
 	'other' => 'Other'
 );
-				  
+
 $oses = array(
 	'[unspecified]' => JText::_('COM_FEEDBACK_TROUBLE_SELECT_OS'),
 	'Windows' => 'Windows',
@@ -134,7 +134,7 @@ $topics = array(
 					<?php echo JText::_('COM_FEEDBACK_OS'); ?>
 					<select name="problem[os]" id="problem_os">
 <?php
-					foreach ($oses as $avalue => $alabel) 
+					foreach ($oses as $avalue => $alabel)
 					{
 ?>
 						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->problem['os'] || $alabel == $this->problem['os']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
@@ -148,7 +148,7 @@ $topics = array(
 					<?php echo JText::_('COM_FEEDBACK_BROWSER'); ?>
 					<select name="problem[browser]" id="problem_browser">
 <?php
-					foreach ($browsers as $avalue => $alabel) 
+					foreach ($browsers as $avalue => $alabel)
 					{
 ?>
 						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->problem['browser'] || $alabel == $this->problem['browser']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>

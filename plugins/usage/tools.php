@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_tools' );
-
-//-----------
 
 class plgUsageTools extends JPlugin
 {
@@ -47,8 +43,6 @@ class plgUsageTools extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -56,17 +50,15 @@ class plgUsageTools extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
-	
-	private function gettoplist($database, $period, $dthis, $s_top) 
+
+	private function gettoplist($database, $period, $dthis, $s_top)
 	{
 		$html = '';
-		
+
 		$sql = "SELECT * FROM #__stats_topvals WHERE top = '".$s_top."' AND datetime = '".$dthis."-00' AND period = '".$period."' ORDER BY rank";
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
-		
+
 		$cls = 'even';
 		$html .= "\t".'<thead>'."\n";
 		$html .= "\t\t".'<tr>'."\n";
@@ -76,7 +68,7 @@ class plgUsageTools extends JPlugin
 		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('Percent').'</th>'."\n";
 		$html .= "\t\t".'</tr>'."\n";
 		$html .= "\t".'</thead>'."\n";
-		
+
 		if ($results) {
 			foreach ($results as $row)
 			{
@@ -118,21 +110,19 @@ class plgUsageTools extends JPlugin
 			$html .= "\t\t".'</tr>'."\n";
 		}
 		$html .= "\t".'</tbody>'."\n";
-		
+
 		return $html;
 	}
-	
-	//-----------
 
-	private function gettoprank_tools($database) 
+	private function gettoprank_tools($database)
 	{
 		$html = '';
 		$count = 1;
-		
+
 		$sql = 'SELECT DISTINCT id, title, published, ranking FROM #__resources WHERE published = "1" AND standalone = "1" AND type = "7" AND access != "4" AND access != "1" ORDER BY ranking DESC';
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
-		
+
 		if ($results) {
 			$cls = 'even';
 			$html .= "\t".'<thead>'."\n";
@@ -143,7 +133,7 @@ class plgUsageTools extends JPlugin
 			$html .= "\t\t".'</tr>'."\n";
 			$html .= "\t".'</thead>'."\n";
 			$html .= "\t".'<tbody>'."\n";
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				$ranking = round($row->ranking,2);
@@ -164,20 +154,18 @@ class plgUsageTools extends JPlugin
 			}
 			$html .= "\t".'</tbody>'."\n";
 		}
-		
+
 		return $html;
 	}
 
-	//-----------
-
-	private function gettopcited_tools($database) 
+	private function gettopcited_tools($database)
 	{
 		$html = '';
-		
+
 		$sql = 'SELECT COUNT(DISTINCT c.id) FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1"';
 		$database->setQuery( $sql );
 		$result = $database->loadResult();
-		
+
 		$html .= "\t".'<thead>'."\n";
 		$html .= "\t\t".'<tr>'."\n";
 		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('#').'</th>'."\n";
@@ -185,7 +173,7 @@ class plgUsageTools extends JPlugin
 		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('Citations').'</th>'."\n";
 		$html .= "\t\t".'</tr>'."\n";
 		$html .= "\t".'</thead>'."\n";
-		
+
 		if ($result) {
 			$html .= "\t".'<tfoot>'."\n";
 			$html .= "\t\t".'<tr class="summary">'."\n";
@@ -194,19 +182,19 @@ class plgUsageTools extends JPlugin
 			$html .= "\t\t".'</tr>'."\n";
 			$html .= "\t".'</tfoot>'."\n";
 		}
-		
+
 		$count = 1;
 		$sql = 'SELECT DISTINCT r.id, r.title, r.published, COUNT(c.id) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1" GROUP BY r.id ORDER BY citations DESC';
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
-		
+
 		if ($results) {
 			$cls = 'even';
 			$html .= "\t".'<tbody>'."\n";
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
-				
+
 				if ($row->published == "1") {
 					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
 					$html .= "\t\t\t".'<td>'.$count.'</td>'."\n";
@@ -224,13 +212,11 @@ class plgUsageTools extends JPlugin
 	    	}
 			$html .= "\t".'</tbody>'."\n";
 		}
-		
+
 		return $html;
 	}
-	
-	//-----------
-	
-	private function time_units($time) 
+
+	private function time_units($time)
 	{
 		if ($time < 60) {
 			$data = $time." seconds";
@@ -244,10 +230,8 @@ class plgUsageTools extends JPlugin
 
 		return $data;
 	}
-	
-	//-----------
 
-	private function drop_down_dates(&$db, $period, $s_top, $dthis) 
+	private function drop_down_dates(&$db, $period, $s_top, $dthis)
 	{
 		$months = array( "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec");
 		$monthsReverse = array_reverse($months, TRUE);
@@ -256,11 +240,11 @@ class plgUsageTools extends JPlugin
 		$year_data_start = 2000;
 
 		$html = '<select name="dthis">'."\n";
-		switch ($period) 
+		switch ($period)
 		{
 			case '3':
 				$qtd_found = 0;
-				foreach ($monthsReverse as $key => $month) 
+				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$qtd_found && $this->check_for_data($value, 3)) {
@@ -286,9 +270,9 @@ class plgUsageTools extends JPlugin
 						$qtd_found = 1;
 					}
 				}
-				for ($j = $cur_year; $j >= $year_data_start; $j--) 
+				for ($j = $cur_year; $j >= $year_data_start; $j--)
 				{
-					for ($i = 12; $i > 0; $i = $i - 3) 
+					for ($i = 12; $i > 0; $i = $i - 3)
 					{
 						$value = $j . '-' . sprintf("%02d", $i);
 						if ($this->check_for_data($value, 3)) {
@@ -297,7 +281,7 @@ class plgUsageTools extends JPlugin
 								$html .= ' selected="selected"';
 							}
 							$html .= '>';
-							switch ($i) 
+							switch ($i)
 							{
 								case 3:  $html .= 'Jan'; break;
 								case 6:  $html .= 'Apr'; break;
@@ -305,7 +289,7 @@ class plgUsageTools extends JPlugin
 								default: $html .= 'Oct'; break;
 							}
 							$html .= ' ' . $j . ' - ';
-							switch ($i) 
+							switch ($i)
 							{
 								case 3:  $html .= 'Mar'; break;
 								case 6:  $html .= 'Jun'; break;
@@ -317,12 +301,12 @@ class plgUsageTools extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '12':
 				$arrayMonths = array_values($months);
-				for ($i = $cur_year; $i >= $year_data_start; $i--) 
+				for ($i = $cur_year; $i >= $year_data_start; $i--)
 				{
-					foreach ($monthsReverse as $key => $month) 
+					foreach ($monthsReverse as $key => $month)
 					{
 						if ($key == '12') {
 							$nextmonth = 'Jan';
@@ -346,12 +330,12 @@ class plgUsageTools extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '1':
 			case '14':
-				for ($i = $cur_year; $i >= $year_data_start; $i--) 
+				for ($i = $cur_year; $i >= $year_data_start; $i--)
 				{
-					foreach ($monthsReverse as $key => $month) 
+					foreach ($monthsReverse as $key => $month)
 					{
 						$value = $i . '-' . $key;
 						if ($this->check_for_data($value, 1)) {
@@ -364,10 +348,10 @@ class plgUsageTools extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '0':
 				$ytd_found = 0;
-				foreach ($monthsReverse as $key => $month) 
+				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$ytd_found && $this->check_for_data($value, 0)) {
@@ -379,7 +363,7 @@ class plgUsageTools extends JPlugin
 						$ytd_found = 1;
 					}
 				}
-				for ($i = $cur_year - 1; $i >= $year_data_start; $i--) 
+				for ($i = $cur_year - 1; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-12';
 					if ($this->check_for_data($value, 0)) {
@@ -391,10 +375,10 @@ class plgUsageTools extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '13':
 				$ytd_found = 0;
-				foreach ($monthsReverse as $key => $month) 
+				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$ytd_found && $this->check_for_data($value, 0)) {
@@ -414,7 +398,7 @@ class plgUsageTools extends JPlugin
 						$ytd_found = 1;
 					}
 				}
-				for ($i = $full_year; $i >= $year_data_start; $i--) 
+				for ($i = $full_year; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-09';
 					if ($this->check_for_data($value, 0)) {
@@ -430,7 +414,7 @@ class plgUsageTools extends JPlugin
 			break;
 		}
 		$html .= '</select>'."\n";
-		
+
 		return $html;
 	}
 
@@ -438,54 +422,52 @@ class plgUsageTools extends JPlugin
 	//  Returns TRUE if there is data in the database
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
-	
-	private function check_for_data($yearmonth, $period) 
+
+	private function check_for_data($yearmonth, $period)
 	{
 		$database =& JFactory::getDBO();
-		
+
 	    $sql = "SELECT COUNT(datetime) FROM #__stats_topvals WHERE LEFT(datetime,7) = '" . mysql_escape_string($yearmonth) . "' AND period = '" . mysql_escape_string($period) . "'";
 		$database->setQuery( $sql );
 		$result = $database->loadResult();
-		
+
 		if ($result && $result > 0) {
 			return(true);
 		}
-	
+
 		return(false);
 	}
 
-	//-----------
-
-	private function navlinks($period='12',$top='') 
+	private function navlinks($period='12',$top='')
 	{
 		$html  = '<div id="sub-sub-menu">'."\n";
 		$html .= "\t".'<ul>'."\n";
-		$html .= "\t\t".'<li';    
+		$html .= "\t\t".'<li';
 		if ($period == 'prior12' || $period == '12') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=12&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_PRIOR12').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 	    if ($period == 'month' || $period == '1') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=1&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_MONTH').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 	    if ($period == 'qtr' || $period == '3') {
 			$html .= ' class="active"';
 		}
 	    $html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=3&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_QTR').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 		if ($period == 'year' || $period == '0') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=0&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_YEAR').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 		if ($period == 'fiscal' || $period == '13') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=13&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_FISCAL').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 		if ($period == '14') {
 			$html .= ' class="active"';
 		}
@@ -495,32 +477,30 @@ class plgUsageTools extends JPlugin
 
 	    return $html;
 	}
-	
-	//-----------
 
-	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate ) 
+	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for
 		if ($task) {
-			if (!in_array( $task, $this->onUsageAreas() ) 
+			if (!in_array( $task, $this->onUsageAreas() )
 			 && !in_array( $task, array_keys( $this->onUsageAreas() ) )) {
 				return '';
 			}
 		}
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();
 		$table = $database->_table_prefix.'stats_tops';
 		if (!in_array($table,$tables)) {
 			return '<p class="error">'. JText::_('Error: Required database table not found.') .'</p>';
 		}
-		
+
 		// Set some vars
 		$this->_option = $option;
 		$this->_task = $task;
-		
+
 		// Incoming
 		$period = JRequest::getVar( 'period', '12' );
 		$dthis  = JRequest::getVar( 'dthis', date('Y').'-'.date('m') );
@@ -535,11 +515,11 @@ class plgUsageTools extends JPlugin
 		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR').': '."\n";
 		$html .= "\t\t\t".'<select name="top">'."\n";
 
-		$sql = "SELECT DISTINCT id, name FROM #__stats_tops ORDER BY id"; 
+		$sql = "SELECT DISTINCT id, name FROM #__stats_tops ORDER BY id";
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
 		if ($results) {
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$top = $row->id;
 				$data[$top]['id'] = $row->id;
@@ -551,7 +531,7 @@ class plgUsageTools extends JPlugin
 				}
 			}
 		}
-		
+
 		$html .= "\t\t\t".'</select>'."\n";
 		$html .= "\t\t".'</label> '."\n";
 		if ($s_top < 9)
@@ -574,7 +554,7 @@ class plgUsageTools extends JPlugin
 		} else {
 			$html .= '<p>'.JText::_('Please make a selection to view data.').'</p>'."\n";
 		}
-		
+
 		return $html;
 	}
 }

@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_usages' );
-
-//-----------
 
 class plgMembersUsages extends JPlugin
 {
@@ -46,16 +42,14 @@ class plgMembersUsages extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'usages' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onMembersAreas( $authorized ) 
+
+	public function &onMembersAreas( $authorized )
 	{
 		$areas = $this->_authorize() ? array('usages' => JText::_('PLG_MEMBERS_USAGES')) : array();
 		return $areas;
 	}
-	
-	private function _authorize() 
+
+	private function _authorize()
 	{
 		// Check if the user is logged in
 		$juser =& JFactory::getUser();
@@ -82,10 +76,10 @@ class plgMembersUsages extends JPlugin
 		} else {
 			$groups = array($groups);
 		}
-		
+
 		if ($ugs && is_array($ugs)) {
 			// See if the user is any of the groups this plugin is restricted to
-			foreach ($ugs as $u) 
+			foreach ($ugs as $u)
 			{
 				if (in_array($u->cn, $groups)) {
 					return true;
@@ -95,8 +89,6 @@ class plgMembersUsages extends JPlugin
 		}
 		return false;
 	}
-	
-	//-----------
 
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
@@ -104,19 +96,19 @@ class plgMembersUsages extends JPlugin
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) ) 
+			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
 			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
 				return $arr;
 			}
 		}
-		
+
 		if (!$this->_authorize()) {
 			return $arr;
 		}
-		
+
 		$arr['html'] = '<p class="passed">You can see this.</p>';
 
 		return $arr;

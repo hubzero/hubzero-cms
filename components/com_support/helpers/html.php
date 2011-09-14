@@ -36,35 +36,27 @@ if (!defined('n')) {
 	define('a','&amp;');
 }
 
-class SupportHtml 
+class SupportHtml
 {
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
-	
-	//-----------
-	
+
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
 
-	//-----------
-	
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
-	//-----------
-	
 	public function hed($level, $txt)
 	{
 		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
 	}
-
-	//-----------
 
 	public function div($txt, $cls='', $id='')
 	{
@@ -84,8 +76,6 @@ class SupportHtml
 		return $html;
 	}
 
-	//-----------
-	
 	public function getStatus($int)
 	{
 		switch ($int)
@@ -96,14 +86,12 @@ class SupportHtml
 		}
 		return $status;
 	}
-	
-	//-----------
 
-	public function shortenText($text, $chars=500) 
+	public function shortenText($text, $chars=500)
 	{
 		$text = strip_tags($text);
 		$text = trim($text);
-		
+
 		if (strlen($text) > $chars) {
 			$text = $text.' ';
 			$text = substr($text,0,$chars);
@@ -114,13 +102,11 @@ class SupportHtml
 		return $text;
 	}
 
-	//-----------
-	
 	public function selectArray($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
 		$html .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
-		foreach ($array as $anode) 
+		foreach ($array as $anode)
 		{
 			$selected = ($anode == $value)
 					  ? ' selected="selected"'
@@ -131,13 +117,11 @@ class SupportHtml
 		return $html;
 	}
 
-	//-----------
-
 	public function selectObj($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
 		$html .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
-		foreach ($array as $anode) 
+		foreach ($array as $anode)
 		{
 			$selected = ($anode->txt == $value)
 					  ? ' selected="selected"'
@@ -147,8 +131,6 @@ class SupportHtml
 		$html .= '</select>'.n;
 		return $html;
 	}
-	
-	//-----------
 
 	public function collapseFilters( $filters )
 	{
@@ -164,8 +146,6 @@ class SupportHtml
 		$fstring = implode(' ',$fstring);
 		return trim($fstring);
 	}
-	
-	//-----------
 
 	public function mkt($stime)
 	{
@@ -174,71 +154,65 @@ class SupportHtml
 		}
 		return $stime;
 	}
-	
-	//-----------
-	
+
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
 		$current_time = time();
-		
+
 		// Determine the difference, between the time now and the timestamp
 		$difference = $current_time - $timestamp;
-		
+
 		// Set the periods of time
 		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		
+
 		// Set the number of seconds per period
 		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		
+
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-		
+
 		// Ensure the script has found a match
 		if ($val < 0) $val = 0;
-		
+
 		// Determine the minor value, to recurse through
 		$new_time = $current_time - ($difference % $lengths[$val]);
-		
+
 		// Set the current value to be floored
 		$number = floor($number);
 
 		// If required create a plural
 		if ($number != 1) $periods[$val].= "s";
-		
+
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
+
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
 		if (($val >= 1) && (($current_time - $new_time) > 0)){
 			$text .= SupportHtml::timeAgoo($new_time);
 		}
-		
+
 		return $text;
 	}
-	
-	//-----------
-	
-	public function timeAgo($timestamp) 
+
+	public function timeAgo($timestamp)
 	{
 		$timestamp = SupportHtml::mkt($timestamp);
 		$text = SupportHtml::timeAgoo($timestamp);
-		
+
 		$parts = explode(' ',$text);
 
 		$text  = $parts[0].' '.$parts[1];
 
 		return $text;
 	}
-	
-	//-----------
-	
+
 	public function getMemberPhoto( $member, $anonymous=0 )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
-		
+
 		if (!$anonymous && $member->get('picture')) {
 			$thumb  = $config->get('webpath');
 			if (substr($thumb, 0, 1) != DS) {
@@ -248,28 +222,26 @@ class SupportHtml
 				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 			}
 			$thumb .= DS.SupportHtml::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
-			
+
 			$thumb = SupportHtml::thumbit($thumb);
 		} else {
 			$thumb = '';
 		}
-		
+
 		$dfthumb = $config->get('defaultpic');
 		if (substr($dfthumb, 0, 1) != DS) {
 			$dfthumb = DS.$dfthumb;
 		}
 		$dfthumb = SupportHtml::thumbit($dfthumb);
-		
+
 		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
 			return $thumb;
 		} else if (is_file(JPATH_ROOT.$dfthumb)) {
 			return $dfthumb;
 		}
 	}
-	
-	//-----------
-	
-	public function thumbit($thumb) 
+
+	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -277,15 +249,13 @@ class SupportHtml
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		return $thumb;
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}

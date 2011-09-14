@@ -51,7 +51,7 @@ if($this->page) {
 	$form_btn = "Update Page";
 	$form_title = "Update the Group Page";
 	$new = '';
-	
+
 	$id = $this->page['id'];
 	$gid = $this->page['gid'];
 	$title = $this->page['title'];

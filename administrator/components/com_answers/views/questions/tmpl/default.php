@@ -88,10 +88,10 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 {
 	$row =& $this->results[$i];
-	switch ($row->state) 
+	switch ($row->state)
 	{
 		case '1':
 			$task = 'open';

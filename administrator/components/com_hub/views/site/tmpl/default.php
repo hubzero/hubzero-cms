@@ -121,7 +121,7 @@ function submitbutton(pressbutton)
 		<table class="admintable">
 			<tbody>
 <?php
-foreach ($this->arr as $field => $value) 
+foreach ($this->arr as $field => $value)
 {
 if (substr($field, 0, strlen('forge')) == 'forge') {
 ?>
@@ -132,7 +132,7 @@ if (substr($field, 0, strlen('forge')) == 'forge') {
 	</td>
 </tr>
 <?php
-}	
+}
 }
 ?>
 			</tbody>
@@ -145,7 +145,7 @@ if (substr($field, 0, strlen('forge')) == 'forge') {
 			<table class="admintable">
 				<tbody>
 <?php
-foreach ($this->arr as $field => $value) 
+foreach ($this->arr as $field => $value)
 {
 if (substr($field, 0, strlen('hubLDAP')) == 'hubLDAP') {
 	?>
@@ -156,7 +156,7 @@ if (substr($field, 0, strlen('hubLDAP')) == 'hubLDAP') {
 		</td>
 	</tr>
 	<?php
-}	
+}
 }
 ?>
 				</tbody>

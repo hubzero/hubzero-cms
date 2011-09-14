@@ -74,26 +74,26 @@ function ResourcesParseRoute($segments)
 		$vars['task'] = $segments[0];
 	} else {
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		$t = new ResourcesType( $database );
 		$types = $t->getMajorTypes();
-		
+
 		// Normalize the title
 		// This is so we can determine the type of resource to display from the URL
 		// For example, /resources/learningmodules => Learning Modules
-		for ($i = 0; $i < count($types); $i++) 
-		{	
+		for ($i = 0; $i < count($types); $i++)
+		{
 			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $types[$i]->type);
 			$normalized = strtolower($normalized);
-			
+
 			if (trim($segments[0]) == $normalized) {
 				$vars['type'] = $segments[0];
 				$vars['task'] = 'browsetags';
 			}
 		}
-		
+
 		if ($segments[0] == 'license') {
 			$vars['task'] = $segments[0];
 		} else {
@@ -104,7 +104,7 @@ function ResourcesParseRoute($segments)
 	}
 
 	if (!empty($segments[1])) {
-		switch ($segments[1]) 
+		switch ($segments[1])
 		{
 			case 'download': $vars['task'] = 'download'; break;
 			case 'play':     $vars['task'] = 'play';     break;
@@ -112,7 +112,7 @@ function ResourcesParseRoute($segments)
 			case 'citation': $vars['task'] = 'citation'; break;
 			case 'feed.rss': $vars['task'] = 'feed';     break;
 			case 'feed':     $vars['task'] = 'feed';     break;
-			
+
 			default: $vars['active'] = $segments[1]; break;
 		}
 	}

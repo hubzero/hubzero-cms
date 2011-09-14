@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_content' );
-
-//-----------
 
 class plgXSearchContent extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgXSearchContent extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'content' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onXSearchAreas()
 	{
 		$areas = array(
@@ -56,9 +50,7 @@ class plgXSearchContent extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
-	
+
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
 		if (is_array( $areas ) && $limit) {
@@ -117,13 +109,13 @@ class plgXSearchContent extends JPlugin
 			if (count($areas) > 1) {
 				return $c_fields.$c_rel.$c_from ." WHERE ". $c_where;
 			}
-			
+
 			// Get results
 			$database->setQuery( $c_fields.$c_rel.$c_from ." WHERE ". $c_where . $order_by );
 			$rows = $database->loadObjectList();
-			
+
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$database->setQuery( "SELECT alias, parent FROM #__menu WHERE link='index.php?option=com_content&view=article&id=".$row->id."' AND published=1 LIMIT 1" );
 					$menuitem = $database->loadRow();
@@ -157,7 +149,7 @@ class plgXSearchContent extends JPlugin
 					$rows[$key]->href = $path;
 				}
 			}
-			
+
 			return $rows;
 		} else {
 			// Get a count
@@ -165,12 +157,10 @@ class plgXSearchContent extends JPlugin
 			return $database->loadResult();
 		}
 	}
-	
-	//-----------
 
-	public function _recursiveMenuLookup($id, $startnew=true) 
+	public function _recursiveMenuLookup($id, $startnew=true)
 	{
-	    static $aliases = array(); 
+	    static $aliases = array();
 
 		if ($startnew) {
 			unset($aliases);
@@ -179,15 +169,15 @@ class plgXSearchContent extends JPlugin
 		$database =& JFactory::getDBO();
 		$database->setQuery( "SELECT alias, parent FROM #__menu WHERE id='$id' LIMIT 1" );
 		$level = $database->loadRow();
-		
+
 		$aliases[] = $level[0];
 		if ($level[1]) {
 			$a = plgXSearchContent::_recursiveMenuLookup($level[1], false);
 		}
 
-	    return $aliases; 
+	    return $aliases;
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
@@ -204,9 +194,7 @@ class plgXSearchContent extends JPlugin
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row, $keyword )
 	{
 		if (strstr( $row->href, 'index.php' )) {
@@ -245,7 +233,7 @@ class plgXSearchContent extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		// Start building the HTML
 		$html  = "\t".'<li>'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
@@ -256,13 +244,11 @@ class plgXSearchContent extends JPlugin
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

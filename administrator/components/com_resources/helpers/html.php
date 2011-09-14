@@ -29,29 +29,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourcesHtml 
+class ResourcesHtml
 {
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
-	
-	//-----------
-	
+
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 
-	//-----------
-	
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
-	
-	//-----------
 
 	public function statusKey()
 	{
@@ -69,10 +62,8 @@ class ResourcesHtml
 			</ul>
 		<?php
 	}
-	
-	//-----------
-	
-	public function shortenText($text, $chars=300, $p=1) 
+
+	public function shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
 		$text = trim($text);
@@ -92,8 +83,6 @@ class ResourcesHtml
 
 		return $text;
 	}
-	
-	//-----------
 
 	public function parseTag($text, $tag)
 	{
@@ -107,20 +96,16 @@ class ResourcesHtml
 		}
 		return $match;
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $someid;
 	}
-	
-	//-----------
-	
+
 	public function build_path( $date, $id, $base='' )
 	{
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
@@ -134,18 +119,16 @@ class ResourcesHtml
 			$dir_month = date('m');
 		}
 		$dir_id = ResourcesHtml::niceidformat( $id );
-		
+
 		$path = $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
-	
+
 		//return $base.DS.$dir_id;
 		return $path;
 	}
-	
-	//-----------
 
-	public function writeRating( $rating ) 
+	public function writeRating( $rating )
 	{
-		switch ($rating) 
+		switch ($rating)
 		{
 			case 0.5: $class = ' half';      break;
 			case 1:   $class = ' one';       break;
@@ -157,17 +140,17 @@ class ResourcesHtml
 			case 4:   $class = ' four';      break;
 			case 4.5: $class = ' fourhalf';  break;
 			case 5:   $class = ' five';      break;
-			case 0:   
+			case 0:
 			default:  $class = ' none';      break;
 		}
 
-		return '<p class="avgrating'.$class.'"><span>Rating: '.$rating.' out of 5 stars</span></p>';		
+		return '<p class="avgrating'.$class.'"><span>Rating: '.$rating.' out of 5 stars</span></p>';
 	}
 
 	//----------------------------------------------------------
 	// Form <select> builders
 	//----------------------------------------------------------
-	
+
 	public function selectAccess($as, $value)
 	{
 		$as = explode(',',$as);
@@ -183,9 +166,7 @@ class ResourcesHtml
 		$html .= '</select>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner"';
@@ -208,8 +189,6 @@ class ResourcesHtml
 		return $html;
 	}
 
-	//-----------
-
 	public function selectSection($name, $array, $value, $class='', $id)
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'" onchange="return listItemTask(\'cb'. $id .'\',\'regroup\')"';
@@ -217,7 +196,7 @@ class ResourcesHtml
 		$html .= ' <option value="0"';
 		$html .= ($id == $value || $value == 0) ? ' selected="selected"' : '';
 		$html .= '>'.JText::_('[ none ]').'</option>'."\n";
-		foreach ($array as $anode) 
+		foreach ($array as $anode)
 		{
 			$selected = ($anode->id == $value || $anode->type == $value)
 					  ? ' selected="selected"'
@@ -227,8 +206,6 @@ class ResourcesHtml
 		$html .= '</select>'."\n";
 		return $html;
 	}
-
-	//-----------
 
 	public function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
 	{
@@ -244,7 +221,7 @@ class ResourcesHtml
 		} else {
 			$skips = array();
 		}
-		foreach ($arr as $anode) 
+		foreach ($arr as $anode)
 		{
 			if (!in_array($anode->id, $skips)) {
 				$selected = ($value && ($anode->id == $value || $anode->type == $value))
@@ -256,17 +233,15 @@ class ResourcesHtml
 		$html .= '</select>'."\n";
 		return $html;
 	}
-	
-	//-----------
 
 	public function selectAuthors($rows, $authnames, $attribs, $option)
 	{
 		$authIDs = array();
-		
+
 		$document =& JFactory::getDocument();
 		$document->addScript('components/'.$option.'/xsortables.js');
 		$document->addScript('components/'.$option.'/resources.js');
-		
+
 		$html  = 'User ID: <input type="text" name="authid" id="authid" value="" /> ';
 		$html .= "\t\t".'<select name="authrole" id="authrole">'."\n";
 		$html .= "\t\t\t".'<option value="">Role...</option>'."\n";
@@ -276,7 +251,7 @@ class ResourcesHtml
 		$html .= '<input type="button" name="addel" id="addel" onclick="HUB.Resources.addAuthor();" value="'.JText::_('Add').'" />';
 		$html .= '<ul id="author-list">'."\n";
 		if ($authnames != NULL) {
-			foreach ($authnames as $authname) 
+			foreach ($authnames as $authname)
 			{
 				if ($authname->name) {
 					$name = $authname->name;
@@ -287,11 +262,11 @@ class ResourcesHtml
 					}
 					$name .= $authname->surname;
 				}
-			
+
 				$authIDs[] = $authname->id;
-				
+
 				$org = ($authname->organization) ? htmlentities($authname->organization,ENT_COMPAT,'UTF-8') : $attribs->get( $authname->id, '' );
-				
+
 				$html .= "\t".'<li id="author_'.$authname->id.'"><span class="handle">'.JText::_('DRAG HERE').'</span> '. $name .' ('.$authname->id.') [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;">'.JText::_('remove').'</a> ]';
 				//$html .= '<br />'.JText::_('Affiliation').': <input type="text" name="attrib['.$authname->id.']" value="'. $attribs->get( $authname->id, '' ) .'" />';
 				$html .= '<br />'.JText::_('Affiliation').': <input type="text" name="'.$authname->id.'_organization" value="'. $org .'" />';
@@ -313,13 +288,11 @@ class ResourcesHtml
 		$html .= '</ul>'."\n";
 		$html .= '<input type="hidden" name="old_authors" id="old_authors" value="'.$authIDs.'" />'."\n";
 		$html .= '<input type="hidden" name="new_authors" id="new_authors" value="'.$authIDs.'" />'."\n";
-		
+
 		return $html;
 	}
 
-	//-----------
-	
-	public function dateToPath( $date ) 
+	public function dateToPath( $date )
 	{
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
 			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
@@ -328,11 +301,11 @@ class ResourcesHtml
 		$dir_month = date('m', $date);
 		return $dir_year.DS.$dir_month;
 	}
-	
+
 	//-------------------------------------------------------------
 	// Media manager functions
 	//-------------------------------------------------------------
-	
+
 	public function dir_name($dir)
 	{
 		$lastSlash = intval(strrpos($dir, '/'));
@@ -342,8 +315,6 @@ class ResourcesHtml
 			return dirname($dir);
 		}
 	}
-
-	//-----------
 
 	public function parse_size($size)
 	{
@@ -355,8 +326,6 @@ class ResourcesHtml
 			return sprintf('%01.2f',$size/(1024.0*1024)).' <abbr title="megabytes">Mb</abbr>';
 		}
 	}
-
-	//-----------
 
 	public function num_files($dir)
 	{

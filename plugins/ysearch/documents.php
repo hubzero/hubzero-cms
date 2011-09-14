@@ -29,10 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchDocuments extends YSearchPlugin
 {
-	public static function onYSearch($request, &$results) 
+	public static function onYSearch($request, &$results)
 	{
 		$terms = $request->get_term_ar();
 		$weight = '(match(d.text_content) AGAINST (\''.join(' ', $terms['stemmed']).'\'))';

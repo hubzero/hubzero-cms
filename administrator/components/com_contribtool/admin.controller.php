@@ -32,20 +32,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Tool');
 ximport('Hubzero_Tool_Version');
 class ContribtoolController extends JObject
-{	
+{
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
 	private $error  = NULL;
 
-	//-----------
-	
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
 		$this->_message = NULL;
 		$this->_messageType = 'message';
-		
+
 		// Set the controller name
 		if (empty( $this->_name )) {
 			if (isset($config['name'])) {
@@ -58,20 +56,16 @@ class ContribtoolController extends JObject
 				$this->_name = strtolower( $r[1] );
 			}
 		}
-		
+
 		// Set the component name
 		$this->_option = 'com_'.$this->_name;
 	}
-
-	//-----------
 
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -79,51 +73,49 @@ class ContribtoolController extends JObject
 		}
 	}
 	//-----------
-	
+
 	private function getTask()
 	{
 		$task = JRequest::getVar( 'task', 'view' );
 		$this->_task = $task;
 		return $task;
 	}
-	
-	//-----------
 
 	public function execute()
 	{
 		$database =& JFactory::getDBO();
-		
+
 		// Check if component entry is there
 		$database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='".$this->_option."'" );
 		$found = $database->loadResult();
-		
+
 		if(!$found) {
 			// Make component entry
 			$params = $this->defaultParams();
 			$obj->createComponentEntry($this->_option, $this->_name, $params);
 		}
-		
+
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
-		
-		switch ( $this->getTask() ) 
+
+		switch ( $this->getTask() )
 		{
 		    	case  'edit': $this->edit();					break;
-			case  'apply': $this->apply();				break;	
-			case  'save': $this->save();				break;	
-			case  'cancel': $this->cancel();				break;	
-			case  'editToolVersion': $this->editToolVersion();				break;	
-			case  'view': $this->view();				break;	
+			case  'apply': $this->apply();				break;
+			case  'save': $this->save();				break;
+			case  'cancel': $this->cancel();				break;
+			case  'editToolVersion': $this->editToolVersion();				break;
+			case  'view': $this->view();				break;
 			case  'editTool': $this->editTool();			break;
 			default: 		$this->pipeline(); 				break;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Setup component
 	//----------------------------------------------------------
-	
+
 	public function defaultParams()
 	{
 		$params = 'contribtool_on=0
@@ -145,9 +137,9 @@ class ContribtoolController extends JObject
 					usedoi=0
 					exec_pu=0
 					screenshot_edit=1';
-	
+
 		return $params;
-	
+
 	}
 	//-------------
 
@@ -173,7 +165,6 @@ class ContribtoolController extends JObject
 	{
 	    $this->save(0);
 	}
-
 
 	protected function saveToolVersion($redirect = true)
 	{
@@ -205,7 +196,6 @@ class ContribtoolController extends JObject
 
 		if (is_null($vnc_timeout))
 			die('no timeout value returned by form');
-
 
 		if ($vnc_timeout == "0")
 		    $vnc_timeout = '0';
@@ -321,7 +311,7 @@ class ContribtoolController extends JObject
           }
 
 	   	$hzt = Hubzero_Tool::getInstance( $toolid );
-		
+
 		$data['toolid'] = $hzt->id;
 		$data['toolname'] = $hzt->toolname;
 		$data['title'] = $hzt->title;
@@ -357,7 +347,7 @@ class ContribtoolController extends JObject
           $database =& JFactory::getDBO();
 
 	   	$hzt = Hubzero_Tool_Version::getInstance( $id );
-		
+
 		$data['toolid'] = $hzt->toolid;
 		$data['id'] = $hzt->id;
 		$data['instance'] = $hzt->instance;
@@ -367,7 +357,7 @@ class ContribtoolController extends JObject
 
 		ContribtoolHtml::editToolVersion($data, $this->_option);
 	}
-	
+
      protected function view($toolid = null, $id = null)
      {
           $app =& JFactory::getApplication();
@@ -389,7 +379,6 @@ class ContribtoolController extends JObject
           // Get configuration
           $config = JFactory::getConfig();
 
-
           jimport('joomla.html.pagination');
 
 		if (empty($toolid))
@@ -402,7 +391,7 @@ class ContribtoolController extends JObject
           	// Get paging variables
           	$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
           	$filters['start'] = JRequest::getInt('limitstart', 0);
-          	
+
 			// Get a record count
 			$total = Hubzero_Tool::getToolCount($filters, true);
 
@@ -411,7 +400,6 @@ class ContribtoolController extends JObject
 
           	// Initiate paging
           	$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
-
 
 			if (empty($filters['search_field']))
 			    	$filters['search_field'] = 'all';
@@ -441,9 +429,9 @@ class ContribtoolController extends JObject
           	// Get paging variables
           	$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit2', 'limit', $config->getValue('config.list_limit'), 'int');
           	$filters['start'] = JRequest::getInt('limitstart', 0);
-          	
+
 			$data['version'] = $hzt->getToolVersionSummaries($filters, true);
-          	
+
           	// Initiate paging
 			$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 
@@ -452,8 +440,6 @@ class ContribtoolController extends JObject
 		}
 	}
 
-	//-----------
-	
 	protected function createResPage($toolid, $tool)
 	{
 		$juser =& JFactory::getUser();
@@ -485,7 +471,7 @@ class ContribtoolController extends JObject
 		$row->attribs = 'marknew=0';
 		$row->standalone = '1';
 		$row->type = '7';
-		
+
 		$binditems = array('title'=>$tool['title'], 'introtext'=>$tool['description'],  'alias'=>strtolower($tool['toolname']) );
 
 		if (!$row->bind($binditems)) {
@@ -510,7 +496,6 @@ class ContribtoolController extends JObject
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 
-	
 		$st = new SupportTags( $database );
 		$row = new SupportTicket( $database );
 		$row->status = 0;
@@ -547,9 +532,7 @@ class ContribtoolController extends JObject
 
 		return $row->id;
 	}
-	
-	//-----------
-	
+
 	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $changelog=array())
 	{
 		ximport('Hubzero_Tool');
@@ -612,7 +595,7 @@ class ContribtoolController extends JObject
 				$changelog[] = '<li><strong>'.JText::_('DEVELOPMENT_TEAM').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.ContribtoolHtml::getDevTeam($oldstuff['developers']).'</em> '.JText::_('TO').' <em>'.ContribtoolHtml::getDevTeam($newstuff['developers']).'</em></li>';
 				$summary .= ', '.strtolower(JText::_('DEVELOPMENT_TEAM'));
-			}			
+			}
 			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry']) {
 				$changelog[] = '<li><strong>'.JText::_('VNC_GEOMETRY').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['vncGeometry'].'</em> '.JText::_('TO').' <em>'.$newstuff['vncGeometry'].'</em></li>';
@@ -622,7 +605,7 @@ class ContribtoolController extends JObject
 			if($summary) {
 				$summary .= ' '.JText::_('INFO_CHANGED');
 			}
-			
+
 			// tool status/priority changes
 			if ($oldstuff['priority'] != $newstuff['priority']) {
 				$changelog[] = '<li><strong>'.JText::_('PRIORITY').'</strong> '.JText::_('TICKET_CHANGED_FROM')
@@ -658,12 +641,10 @@ class ContribtoolController extends JObject
 			$this->_error = $rowc->getError();
 			return false;
 		}
-		
 
 		return true;
 
 	}
-	
 
 	//----------------------------------------------------------
 	// Views
@@ -674,8 +655,6 @@ class ContribtoolController extends JObject
 		// Output HTML
 		ContribtoolHtml::summary( $this->error, $this->_option, $this->config,  0);
 	}
-
-	//-----------
 
 	public function redirect()
 	{

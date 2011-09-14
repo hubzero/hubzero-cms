@@ -35,30 +35,26 @@ class modMyResources
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
 			return $this->attributes[$property];
 		}
 	}
-	
+
 	//-----------
-	
 	public function display()
 	{
 		$no_html = JRequest::getInt( 'no_html', 0 );
@@ -71,7 +67,7 @@ class modMyResources
 			$document =& JFactory::getDocument();
 			$document->addScript('/modules/mod_myresources/mod_myresources.js');
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
@@ -80,7 +76,7 @@ class modMyResources
 
 		$this->sort = $this->params->get( 'sort' );
 		$this->sort = ($this->sort) ? $this->sort : 'publish_up';
-		
+
 		// Get "published" contributions
 		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
 							AA.subtable, R.created, R.created_by, R.modified, R.published, R.publish_up, R.standalone, 
@@ -96,7 +92,7 @@ class modMyResources
 		$query .= "AND R.standalone=1 AND R.type=rt.id AND R.published=1 ";
 		$query .= "ORDER BY ";
 
-		switch ($this->sort) 
+		switch ($this->sort)
 		{
 			case 'usage':
 				$query .= "users DESC";
@@ -114,7 +110,7 @@ class modMyResources
 		}
 
 		$database->setQuery($query);
-		
+
 		$this->contributions = $database->loadObjectList();
 	}
 }

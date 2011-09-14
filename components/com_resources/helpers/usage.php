@@ -38,16 +38,14 @@ class ResourcesUsage
 	var $_db      = NULL;
 	var $_resid   = NULL;
 	var $_type    = NULL;
-	
+
 	var $rating   = NULL;
 	var $users    = 'unavailable';
 	var $datetime = NULL;
-	
+
 	var $cites    = NULL;
 	var $lastcite = NULL;
-	
-	//-----------
-	
+
 	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
 	{
 		$this->_db = $db;
@@ -58,25 +56,23 @@ class ResourcesUsage
 		$this->lastcite = $lastcite;
 	}
 
-	//-----------
-
-	public function fetch( $disp ) 
+	public function fetch( $disp )
 	{
 		switch (strtoupper($disp))
 		{
-			case 'CURR': 
+			case 'CURR':
 				$period  = 1;
 				$caption = JText::_('Current Month');
 				break;
-			case 'LAST': 
+			case 'LAST':
 				$period  = 2;
 				$caption = JText::_('Last Month');
 				break;
-			case 'YEAR': 
+			case 'YEAR':
 				$period  = 12;
 				$caption = JText::_('Last 12 Months');
 				break;
-			case 'ALL': 
+			case 'ALL':
 				$period  = 14;
 				$caption = JText::_('Total');
 				break;
@@ -92,19 +88,15 @@ class ResourcesUsage
 		return array($caption, $period);
 	}
 
-	//-----------
-
-	public function display( $disp ) 
+	public function display( $disp )
 	{
 		return true;
 	}
 
-	//-----------
-
 	public function display_substats()
 	{
 		$cls = $this->getRatingClass($this->rating);
-		
+
 		$html  = '<table class="usagestats" summary="Review and Citation statistics for this resource">'."\n";
 		$html .= ' <caption>Reviews &amp; Citations</caption>'."\n";
 		$html .= ' <tfoot>'."\n";
@@ -130,16 +122,12 @@ class ResourcesUsage
 		return $html;
 	}
 
-	//-----------
-
-	public function process( $results ) 
+	public function process( $results )
 	{
 		return true;
 	}
 
-	//-----------
-	
-	public function valfmt($val) 
+	public function valfmt($val)
 	{
 		if ($val != 'unavailable') {
 			if ($val <= 60) {
@@ -155,11 +143,9 @@ class ResourcesUsage
 		return $val;
 	}
 
-	//-----------
-
 	public function getRatingClass($rating=0)
 	{
-		switch ($rating) 
+		switch ($rating)
 		{
 			case 0.5: $class = ' half-stars';      break;
 			case 1:   $class = ' one-stars';       break;
@@ -171,7 +157,7 @@ class ResourcesUsage
 			case 4:   $class = ' four-stars';      break;
 			case 4.5: $class = ' fourhalf-stars';  break;
 			case 5:   $class = ' five-stars';      break;
-			case 0:   
+			case 0:
 			default:  $class = ' no-stars';      break;
 		}
 		return $class;
@@ -192,19 +178,15 @@ class ToolStats extends ResourcesUsage
 	var $avg_exec = 'unavailable';
 	var $tot_exec = 'unavailable';
 
-	//-----------
-	
-	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' ) 
+	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
 	{
 		parent::__construct( $db, $resid, $type, $rating, $cites, $lastcite );
 	}
 
-	//-----------
-
 	public function display( $disp='ALL' )
 	{
 		list($caption, $period) = $this->fetch($disp);
-		
+
 		$html = '';
 		if ($this->users != 'unavailable' && $this->jobs != 'unavailable' && $this->avg_exec != 'unavailable') {
 			$html .= '<table class="usagestats" summary="'.JText::_('Statistics for this resource').'">'."\n";
@@ -241,13 +223,11 @@ class ToolStats extends ResourcesUsage
 			$html .= '</table>'."\n";
 		}
 		$html .= $this->display_substats();
-		
+
 		return $html;
 	}
 
-	//-----------
-
-	public function process( &$result ) 
+	public function process( &$result )
 	{
 		if ($result) {
 			foreach ($result as $row)
@@ -259,7 +239,7 @@ class ToolStats extends ResourcesUsage
 				$this->avg_cpu  = $row->avg_cpu;
 				$this->tot_cpu  = $row->tot_cpu;
 				$this->datetime = $row->datetime;
-			
+
 				// Changed by Swaroop on 06/25/2007: Avg. exec. time = Avg. wall time
 				if ($this->avg_cpu == 0) {
 					$this->avg_exec = $this->avg_wall;
@@ -267,7 +247,7 @@ class ToolStats extends ResourcesUsage
 			    	$this->avg_exec = $this->avg_cpu;
 				}
 				# $this->avg_exec = $this->avg_wall;
-				
+
 				if ($this->tot_cpu == 0) {
 					$this->tot_exec = $this->tot_wall;
 				} else {
@@ -288,19 +268,15 @@ class AndmoreStats extends ResourcesUsage
 	var $avg_view = 'unavailable';
 	var $tot_view = 'unavailable';
 
-	//-----------
-	
-	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' ) 
+	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
 	{
 		parent::__construct( $db, $resid, $type, $rating, $cites, $lastcite );
 	}
 
-	//-----------
-
 	public function display( $disp='ALL' )
 	{
 		list($caption, $period) = $this->fetch($disp);
-		
+
 		if ($this->_type == 1) {
 			$vlabel  = JText::_('Views');
 			$avlabel = JText::_('Avg. view time');
@@ -308,7 +284,7 @@ class AndmoreStats extends ResourcesUsage
 			$vlabel = JText::_('Downloads');
 			$avlabel = JText::_('Avg. downloads');
 		}
-		
+
 		$html = '';
 		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable') {
 			$html .= '<table class="usagestats" summary="'.JText::_('Statistics for this resource').'">'."\n";
@@ -345,13 +321,11 @@ class AndmoreStats extends ResourcesUsage
 			$html .= '</table>'."\n";
 		}
 		$html .= $this->display_substats();
-		
+
 		return $html;
 	}
 
-	//-----------
-
-	public function process( &$result ) 
+	public function process( &$result )
 	{
 		if ($result) {
 			foreach ($result as $row)
@@ -359,13 +333,13 @@ class AndmoreStats extends ResourcesUsage
 				$this->users    = $row->users;
 				$this->views    = $row->jobs;
 				$this->datetime = $row->datetime;
-				
+
 				if ($row->avg_cpu == 0) {
 					$this->avg_view = $row->avg_wall;
 				} else {
 					$this->avg_view = $row->avg_cpu;
 				}
-				
+
 				if ($row->tot_cpu == 0) {
 					$this->tot_view = $row->tot_wall;
 				} else {

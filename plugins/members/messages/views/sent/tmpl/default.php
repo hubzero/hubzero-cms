@@ -64,7 +64,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 if ($this->rows) {
 	$cls = 'even';
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		if (substr($row->component,0,4) == 'com_') {
 			$row->component = substr($row->component,4);
@@ -75,7 +75,7 @@ if ($this->rows) {
 			$fh = array_pop($fg);
 			$row->subject = implode(' ',$fg);
 		}
-		
+
 		$cls = (($cls == 'even') ? 'odd' : 'even');
 ?>
 					<tr class="<?php echo $cls; ?>">

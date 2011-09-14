@@ -44,7 +44,7 @@ $role_id = '';
 $role_name = '';
 
 if($this->role_filter) {
-	foreach($this->member_roles as $role) { 
+	foreach($this->member_roles as $role) {
 		if($role['id'] == $this->role_filter) {
 			$role_id = $role['id'];
 			$role_name = $role['role'];
@@ -211,10 +211,10 @@ if($this->role_filter) {
 							if ($this->limit == 0) {
 								$this->limit = 500;
 							}
-							for ($i=0, $n=$this->limit; $i < $n; $i++) 
+							for ($i=0, $n=$this->limit; $i < $n; $i++)
 							{
 								$inviteemail = false;
-								
+
 								if (($i+$this->start) >= count($this->groupusers)) {
 									break;
 								}
@@ -227,7 +227,7 @@ if($this->role_filter) {
 								} elseif(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $guser)) {
 									$inviteemail = true;
 								}
-								
+
 								$cls = '';
 								//$cls = (($cls == 'even') ? 'odd' : 'even');
 
@@ -267,7 +267,7 @@ if($this->role_filter) {
 										}
 									break;
 								}
-								
+
 								if ($juser->get('id') == $u->get('uidNumber')) {
 									$cls .= ' me';
 								}
@@ -275,28 +275,28 @@ if($this->role_filter) {
 								$html .= "\t\t\t".'<tr class="'.$cls.'">'."\n";
 								$html .= "\t\t\t\t".'<td class="photo"><img width="50" height="50" src="'.$p.'" alt="Photo for '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'" /></td>'."\n";
 								$html .= "\t\t\t\t".'<td>';
-								
-								if($inviteemail) { 
+
+								if($inviteemail) {
 									$html .= '<span class="name"><a href="mailto:'.$guser.'">'.$guser.'</a></span>';
 									$html .= '<span class="status">Invite Sent to Email</span><br />';
 								} else {
 									$html .= '<span class="name"><a href="'.JRoute::_('index.php?option=com_members&id='.$u->get('uidNumber')).'">'.$u->get('name').'</a></span> <span class="status">'.$status.'</span><br />';
-								
+
 									if ($u->get('organization')) {
 										$html .= '<span class="organization">'.$u->get('organization').'</span><br />';
 									}
 								}
-								
+
 								if($this->filter == 'members' || $this->filter == 'managers') {
 									$html .= '<span class="roles">';
 									$all_roles = '';
 									$roles = $u->getGroupMemberRoles($u->get('uidNumber'),$this->group->gidNumber);
-								
+
 									if($roles) {
 										$html .= '<strong>Member Roles:</strong> ';
 										foreach($roles as $role) {
 											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['role'].'</a>';
-										
+
 											if($this->authorized == 'manager' || $this->authorized == 'admin') {
 												if($this->membership_control == 1) {
 													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=members&task=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
@@ -305,17 +305,17 @@ if($this->role_filter) {
 												$all_roles .= '</span>';
 											}
 										}
-									
+
 										$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'">'.substr($all_roles,2).'</span>';
-									
+
 										if ($this->authorized == 'manager' || $this->authorized == 'admin') {
 											if($this->membership_control == 1) {
 												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=members&task=assignrole&uid='.$u->get('uidNumber')).'">Assign Role &rsaquo;</a>';
 											}
 										}
-									
-									} 
-									
+
+									}
+
 									if($this->membership_control == 1) {
 										if(($this->authorized == 'manager' || $this->authorized == 'admin') && !$roles) {
 											$html .= '<strong>Member Roles:</strong> ';
@@ -324,9 +324,9 @@ if($this->role_filter) {
 										}
 									}
 									$html .= '</span>';
-								
+
 								}
-								
+
 								if ($this->filter == 'pending') {
 									$database =& JFactory::getDBO();
 									$row = new GroupsReason( $database );
@@ -368,7 +368,7 @@ if($this->role_filter) {
 												} else {
 													$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 												}
-											
+
 												if (in_array($guser,$this->managers)) {
 													//force admins to use backend to demote manager if only 1
 													//if ($this->authorized == 'admin' || count($this->managers) > 1) {

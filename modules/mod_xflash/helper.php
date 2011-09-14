@@ -35,21 +35,19 @@ class modXFlash
 	private $params;
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		$params =& $this->params;
 		$noflash_link = $params->get('noflash_link');
 
 		ximport('Hubzero_Document');
-		
+
 		$dynamic = ($params->get('dynamic')) ? $params->get('dynamic') : 0 ;
 
 		if ($dynamic) {

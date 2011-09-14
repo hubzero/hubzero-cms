@@ -40,9 +40,9 @@ $database =& JFactory::getDBO();
 switch ($this->resource->type)
 {
 	case 7:
-		$dls = ResourcesHtml::writeChildren( $this->config, $this->option, $database, $this->resource, $this->helper->children, '', '', '', $this->resource->id, 0 );									
+		$dls = ResourcesHtml::writeChildren( $this->config, $this->option, $database, $this->resource, $this->helper->children, '', '', '', $this->resource->id, 0 );
 	break;
-		
+
 	case 4:
 		$dls = '';
 
@@ -78,18 +78,18 @@ switch ($this->resource->type)
 			$dls .= '<p>'.JText::_('PLG_RESOURCES_SUPPORTINGDOCS_NONE').'</p>';
 		}
 	break;
-		
+
 	case 8:
 		// show no docs
 	break;
-	
+
 	case 6:
 	case 31:
-	case 2:					
+	case 2:
 		$this->helper->getChildren( $this->resource->id, 0, 'no' );
 		$dls = ResourcesHtml::writeChildren( $this->config, $this->option, $database, $this->resource, $this->helper->children, $this->live_site, '', '', $this->resource->id, 0 );
 	break;
-		
+
 	default:
 		$dls = ResourcesHtml::writeChildren( $this->config, $this->option, $database, $this->resource, $this->helper->children, '', '', '', $this->resource->id, 0 );
 	break;

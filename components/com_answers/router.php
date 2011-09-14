@@ -80,16 +80,16 @@ function AnswersParseRoute($segments)
 
 	        $vars['id'] = $segments[1];
 		break;
-		
+
 		case 'tags':
 			$vars['task'] = 'tags';
         	$vars['tag'] = $segments[1];
 		break;
-		
+
 		case 'myquestions':
 			$vars['task'] = 'myquestions';
 		break;
-		
+
 		case 'search':
 			$vars['task'] = 'search';
 		break;
@@ -98,13 +98,13 @@ function AnswersParseRoute($segments)
 			$vars['task'] = 'answer';
 			$vars['id'] = $segments[1];
 		break;
-		
+
 		case 'delete':
 			$vars['task'] = 'delete';
 			$vars['id'] = $segments[1];
 		break;
-		
-		case 'delete_q': 
+
+		case 'delete_q':
 			$vars['task'] = 'delete_q';
 			$vars['id'] = $segments[1];
 		break;
@@ -117,16 +117,16 @@ function AnswersParseRoute($segments)
 			$vars['task'] = 'reply';
 			$vars['id'] = $segments[1];
 		break;
-		
+
 		case 'math':
 			$vars['task'] = 'math';
 			$vars['id'] = $segments[1];
 		break;
-		
+
 		case 'savereply':
 			$vars['task'] = 'reply';
 		break;
-		
+
 		case 'accept':
 			$vars['task'] = 'accept';
 			$vars['id'] = $segments[1];

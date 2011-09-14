@@ -35,21 +35,18 @@ class modFeaturedmember
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
-
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,15 +55,14 @@ class modFeaturedmember
 	}
 
 	//-----------
-
-	private function niceidformat($someid) 
+	private function niceidformat($someid)
 	{
 		$pre = '';
 		if ($someid < 0) {
 			$pre = 'n';
 			$someid = abs($someid);
 		}
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
@@ -74,7 +70,6 @@ class modFeaturedmember
 	}
 
 	//-----------
-
 	public function encode_html($str, $quotes=1)
 	{
 		$str = $this->ampersands($str);
@@ -93,8 +88,7 @@ class modFeaturedmember
 	}
 
 	//-----------
-
-	private function ampersands( $str ) 
+	private function ampersands( $str )
 	{
 		$str = stripslashes($str);
 		$str = str_replace('&#','*-*', $str);
@@ -105,8 +99,7 @@ class modFeaturedmember
 	}
 
 	//-----------
-
-	private function thumb( $thumb ) 
+	private function thumb( $thumb )
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -114,51 +107,50 @@ class modFeaturedmember
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		return $thumb;
 	}
 
 	//-----------
-
-	public function display() 
+	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
 		ximport('Hubzero_User_Profile');
-		
+
 		$this->error = false;
 		if (!class_exists('FeaturesHistory')) {
 			$this->error = true;
 			return false;
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$params =& $this->params;
-		
+
 		$filters = array();
 		$filters['limit'] = 1;
 		$filters['show']  = trim($params->get( 'show' ));
-		
+
 		$this->cls = trim($params->get( 'moduleclass_sfx' ));
 		$this->txt_length = trim($params->get( 'txt_length' ));
 		$catid = trim($params->get( 'catid' ));
 		$min = trim($params->get( 'min_contributions' ));
 		$show = trim($params->get( 'show' ));
-		
+
 		$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
 		$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
-		
+
 		$row = null;
-		
+
 		$fh = new FeaturesHistory( $database );
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		// Is a specific content category set?
 		if ($catid) {
 			// Yes - so we need to check if there's an active article to display
 			$aid = $juser->get('aid', 0);
-			
+
 			$contentConfig =& JComponentHelper::getParams( 'com_content' );
 			$noauth = !$contentConfig->get('shownoauth');
 
@@ -166,7 +158,7 @@ class modFeaturedmember
 			$now = $date->toMySQL();
 
 			$nullDate = $database->getNullDate();
-			
+
 			// Load an article
 			$query = 'SELECT a.*,' .
 				' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.
@@ -193,14 +185,13 @@ class modFeaturedmember
 		// Do we have an article to display?
 		if (!$row) {
 			// No - so we need to display a member
-			
 			// Load some needed libraries
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
-			
+
 			// Check the feature history for today's feature
 			$fh->loadActive($start, 'profiles');
-			
+
 			// Did we find a feature for today?
 			if ($fh->id && $fh->tbl == 'profiles') {
 				// Yes - load the member profile
@@ -216,18 +207,18 @@ class modFeaturedmember
 				if ($min) {
 					$filters['contributions'] = $min;
 				}
-				
+
 				$mp = new MembersProfile( $database );
 
 				$rows = $mp->getRecords( $filters, false );
 				if (count($rows) > 0) {
 					$row = $rows[0];
 				}
-				
+
 				// Load their bio
 				$profile = new Hubzero_User_Profile();
 				$profile->load( $row->uidNumber );
-				
+
 				if (trim(strip_tags($profile->get('bio'))) == '') {
 					return $this->display();
 				}
@@ -237,20 +228,20 @@ class modFeaturedmember
 		// Did we have a result to display?
 		if ($row) {
 			$this->row = $row;
-			
+
 			$config =& JComponentHelper::getParams( 'com_members' );
-			
+
 			// Is this a content article or a member profile?
 			if (isset($row->catid)) {
 				// Content article
 				$this->title = $row->title;
 				$this->id = $row->created_by_alias;
 				$this->txt = $row->introtext;
-				
+
 				$profile = new Hubzero_User_Profile();
 				$profile->load( $id );
 				$row->picture = $profile->get('picture');
-				
+
 				// Check if the article has been saved in the feature history
 				$fh->loadObject($row->id, 'content');
 				if (!$fh->id) {
@@ -264,26 +255,26 @@ class modFeaturedmember
 					$profile = new Hubzero_User_Profile();
 					$profile->load( $row->uidNumber );
 				}
-				
+
 				$rparams = new JParameter( $profile->get('params') );
 				$params = $config;
 				$params->merge( $rparams );
 
-				if ($params->get('access_bio') == 0 
+				if ($params->get('access_bio') == 0
 				 || ($params->get('access_bio') == 1 && !$juser->get('guest'))
 				) {
 					$this->txt = $profile->get('bio');
 				} else {
 					$this->txt = '';
 				}
-				
+
 				// Member profile
 				$this->title = $row->name;
 				if (!trim($this->title)) {
 					$this->title = $row->givenName.' '.$row->surname;
 				}
 				$this->id = $row->uidNumber;
-				
+
 				// Check if this has been saved in the feature history
 				if (!$fh->id) {
 					$fh->featured = $start;
@@ -292,7 +283,7 @@ class modFeaturedmember
 					$fh->store();
 				}
 			}
-			
+
 			// Do we have a picture?
 			$thumb = '';
 			if (isset($row->picture) && $row->picture != '') {
@@ -305,12 +296,12 @@ class modFeaturedmember
 					$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 				}
 				$thumb .= DS.$this->niceidformat($row->uidNumber).DS.$row->picture;
-				
+
 				// No - use default picture
 				if (is_file(JPATH_ROOT.$thumb)) {
 					// Build a thumbnail filename based off the picture name
 					$thumb = $this->thumb( $thumb );
-					
+
 					if (!is_file(JPATH_ROOT.$thumb)) {
 						// Create a thumbnail image
 						include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'imghandler.php' );
@@ -337,7 +328,7 @@ class modFeaturedmember
 				// Build a thumbnail filename based off the picture name
 				$thumb = $this->thumb( $thumb );
 			}
-			
+
 			$this->thumb = $thumb;
 			$this->filters = $filters;
 		}

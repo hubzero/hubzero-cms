@@ -54,9 +54,9 @@ if ($modeventslatest->eventsByRelDay) {
 			$year = date('Y', $startDate);
 			$month = date('m', $startDate);
 			$day = date('d', $startDate);
-			
+
 			$cls = ($cls == 'even') ? 'odd' : 'even';
-			
+
 			if ($dayEvent->announcement == 1) {
 				$cls .= ' announcement';
 			}

@@ -27,9 +27,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
+
 	/* Resume List */
-	
+
 	$title 		= $this->title;
 	$option 	= $this->option;
 	$seekers 	= $this->seekers;
@@ -66,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= '<div class="main section">'.n;
 		$html .= t.'<form method="post" action="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'">'.n;
 		$html .= t.'<div class="aside">'.n;
-		
+
 		// search
 		if($filters['filterby']!='shortlisted') {
 			$html .= t.t.'<fieldset id="matchsearch">'.n;
@@ -110,7 +110,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		if($filters['filterby']== 'shortlisted') {
 			$html .= t.'<h4>'.JText::_('ALL_CANDIDATES').'</h4>'.n;
 		}
-		
+
 		if(count($seekers) > 0) {
 			// show how many
 			$html .= t.t.t.'<p class="note_total" >'.JText::_('NOTICE_DISPLAYING').' ';
@@ -127,13 +127,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= $filters['filterby']=='shortlisted' ? JText::_('shortlisted').' ' : '';
 			$html .= strtolower(JText::_('CANDIDATES'));
 			$html .='</p>'.n;
-			
+
 			$html  .= t.'<ul id="candidates">'.n;
-			
+
 			JPluginHelper::importPlugin( 'members','resume' );
-			$dispatcher =& JDispatcher::getInstance();	
+			$dispatcher =& JDispatcher::getInstance();
 			foreach ($seekers as $seeker) {
-				$html  .= t.'<li>'.n;				
+				$html  .= t.'<li>'.n;
 				// show seeker info
 				$out   = $dispatcher->trigger( 'showSeeker', array($seeker, $emp, $admin, 'com_members', $list=1) );
 				if (count($out) > 0) {
@@ -141,8 +141,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 				$html  .= t.'</li>'.n;
 			}
-			$html  .= t.'</ul>'.n;			
-		} 
+			$html  .= t.'</ul>'.n;
+		}
 		else {
 			// no candidates found
 			$html  .= t.'<p>'.n;
@@ -151,17 +151,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html  .= $filters['filterby'] != 'shortlisted' && $filters['filterby'] != 'applied' ? JText::_('RESUMES_NONE_FOUND') : '';
 			$html  .= t.'</p>'.n;
 		}
-		
+
 		// Insert page navigation
 		$pagenavhtml = $pageNav->getListFooter();
 		$pagenavhtml = str_replace('jobs/?','jobs/resumes/?',$pagenavhtml);
 		$html .= t.t.$pagenavhtml;
-		
+
 		$html .= t.'</div><!-- / .subject -->'.n;
 		$html .= t.'<div class="clear"></div>';
-		
+
 		$html .= t.'</form>'.n;
-		$html .= '</div>'.n;	
-		
+		$html .= '</div>'.n;
+
 		echo $html;
 ?>

@@ -73,7 +73,7 @@ $app =& JFactory::getApplication();
 		// loop through children and build list
 		if ($this->children) {
 			$base = $this->config->get('uploadpath');
-			
+
 			$k = 0;
 			$i = 0;
 			$files = array(13,15,26,33,35,38);
@@ -83,23 +83,23 @@ $app =& JFactory::getApplication();
 		<table class="list">
 			<tbody>
 <?php
-			foreach ($this->children as $child) 
+			foreach ($this->children as $child)
 			{
 				$k++;
-			
+
 				// figure ou the URL to the file
-				switch ($child->type) 
+				switch ($child->type)
 				{
 					case 12:
 						if ($child->path) {
 							// internal link, not a resource
-							$url = $child->path; 
+							$url = $child->path;
 						} else {
 							// internal link but a resource
 							$url = '/index.php?option=com_resources&id='. $child->id;
 						}
 						break;
-					default: 
+					default:
 						$url = $child->path;
 						break;
 				}

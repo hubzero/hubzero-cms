@@ -25,8 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class Hubzero_Content_Mimetypes 
+class Hubzero_Content_Mimetypes
 {
 	# Define some private variables
 	private $mimeTypes;
@@ -35,7 +34,7 @@ class Hubzero_Content_Mimetypes
 	* @desc   Initiate variables and include mime types
 	* @return Nothing
 	*/
-	public function __construct() 
+	public function __construct()
 	{
 		$this->mimeTypes = array(
 		'3dm'		=> 'x-world/x-3dmf',
@@ -740,7 +739,7 @@ class Hubzero_Content_Mimetypes
 	* @param   None
 	* @returns Nothing
 	*/
-	public function __destruct() 
+	public function __destruct()
 	{
 		unset($this);
 	}
@@ -750,7 +749,7 @@ class Hubzero_Content_Mimetypes
 	* @param  String $file File Name (relative location such as "image_test.jpg" or full "http://site.com/path/to/image_test.jpg")
 	* @return String $MIMEType - The type of the file passed in the argument
 	*/
-	public function getMimeType($file = NULL) 
+	public function getMimeType($file = NULL)
 	{
 		if (is_file($file)) {
 			/**
@@ -785,7 +784,7 @@ class Hubzero_Content_Mimetypes
 	* @param  String $file The full file name
 	* @return String $ext The file extension
 	*/
-	private function getExtension($file = NULL) 
+	private function getExtension($file = NULL)
 	{
 		if (!is_null($file)) {
 			$ext = strtolower(array_pop(explode('.', $file)));

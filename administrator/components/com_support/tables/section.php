@@ -33,21 +33,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class SupportSection extends JTable 
+class SupportSection extends JTable
 {
 	var $id      = NULL;  // @var int(11) Primary key
 	var $section = NULL;  // @var varchar(50)
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_sections', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->section ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -56,40 +54,32 @@ class SupportSection extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getSections() 
+
+	public function getSections()
 	{
 		$this->_db->setQuery( "SELECT id, section AS txt FROM $this->_tbl ORDER BY id");
 		return $this->_db->loadObjectList();
 	}
 
-	//-----------
-
-	public function buildQuery( $filters=array() ) 
+	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY section";
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT id, section";

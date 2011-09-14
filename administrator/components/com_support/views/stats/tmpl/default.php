@@ -64,7 +64,7 @@ JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
 <?php
 			$y = date("Y");
 			$y++;
-			for ($i=2004, $n=$y; $i < $n; $i++) 
+			for ($i=2004, $n=$y; $i < $n; $i++)
 			{
 ?>
 				<option value="<?php echo $i; ?>"<?php if ($this->year == $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
@@ -147,7 +147,7 @@ $mcd = max($this->closedmonths);
 
 $openeddata = '';
 if ($this->openedmonths) {
-	foreach ($this->openedmonths as $k=>$v) 
+	foreach ($this->openedmonths as $k=>$v)
 	{
 		$o[$k] = $this->openedmonths[$k]; // - $this->closedmonths[$k];
 	}
@@ -217,7 +217,7 @@ $max = ceil($number/10)*10;
 <?php
 if ($this->users) {
 	$cls = 'even';
-	foreach ($this->users as $user) 
+	foreach ($this->users as $user)
 	{
 		$cls = ($cls == 'even') ? 'odd' : 'even';
 ?>

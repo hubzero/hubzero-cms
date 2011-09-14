@@ -41,8 +41,6 @@ if (!defined('n')) {
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//-------------------------------------------------------------
-
 $modspotlight = new modSpotlight( $params );
 $modspotlight->display();
 

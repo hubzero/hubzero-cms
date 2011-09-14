@@ -29,23 +29,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiAuthor extends JTable 
+class WikiAuthor extends JTable
 {
 	var $id  = NULL;  // @var int(11) Primary key
 	var $pid = NULL;  // @var int(11)
 	var $uid = NULL;  // @var int(11)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_authors', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function getID( $pid=NULL, $uid=NULL ) 
+
+	public function getID( $pid=NULL, $uid=NULL )
 	{
 		if ($pid == NULL) {
 			$pid = $this->pid;
@@ -56,9 +53,7 @@ class WikiAuthor extends JTable
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE pid='". $pid ."' AND uid='".$uid."'" );
 		$this->id = $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getAuthors( $pid=NULL )
 	{
 		if ($pid == NULL) {
@@ -66,19 +61,17 @@ class WikiAuthor extends JTable
 		}
 		$this->_db->setQuery( "SELECT uid FROM $this->_tbl WHERE pid='". $pid ."'" );
 		$authors = $this->_db->loadObjectList();
-		
+
 		$auths = array();
 		if (count($authors) > 0) {
-			foreach ($authors as $auth) 
+			foreach ($authors as $auth)
 			{
 				$auths[] = $auth->uid;
 			}
 		}
 		return $auths;
 	}
-	
-	//-----------
-	
+
 	public function deleteAuthors( $pid=NULL )
 	{
 		if ($pid == NULL) {
@@ -91,10 +84,8 @@ class WikiAuthor extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
 
-	public function check() 
+	public function check()
 	{
 		if ($this->pid == '') {
 			$this->setError( 'Author entry must have a page ID.' );

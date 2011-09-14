@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class OrderItem extends JTable 
+class OrderItem extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $oid    	= NULL;  // @var int(11)
@@ -39,17 +38,15 @@ class OrderItem extends JTable
 	var $price    	= NULL;  // @var int(11)
 	var $quantity   = NULL;  // @var int(11)
 	var $selections = NULL;  // @var text
-	
+
 	//----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__order_items', 'id', $db );
 	}
-	
-	//----------
-	
-	public function getOrderItems($oid) 
+
+	public function getOrderItems($oid)
 	{
 		if ($oid == null) {
 			return false;
@@ -61,10 +58,8 @@ class OrderItem extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//----------
-	
-	public function countAllItemOrders($oid) 
+
+	public function countAllItemOrders($oid)
 	{
 		if ($oid == null) {
 			return false;
@@ -76,10 +71,8 @@ class OrderItem extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//----------
-	
-	public function countActiveItemOrders($oid) 
+
+	public function countActiveItemOrders($oid)
 	{
 		if ($oid == null) {
 			return false;

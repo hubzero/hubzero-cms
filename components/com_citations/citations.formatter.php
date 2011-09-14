@@ -29,18 +29,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class CitationsFormatter 
+class CitationsFormatter
 {
-	public function cleanUrl($url) 
+	public function cleanUrl($url)
 	{
 		$url = stripslashes($url);
 		$url = str_replace('&amp;', '&', $url);
 		$url = str_replace('&', '&amp;', $url);
-		
+
 		return $url;
 	}
-	
-	//-----------
 
 	public function keyExistsOrIsNotEmpty($key,$row)
 	{
@@ -54,10 +52,8 @@ class CitationsFormatter
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function grammarCheck($html, $punct=',') 
+
+	public function grammarCheck($html, $punct=',')
 	{
 		if (substr($html,-1) == '"') {
 			$html = substr($html,0,strlen($html)-1).$punct.'"';
@@ -66,20 +62,18 @@ class CitationsFormatter
 		}
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function formatReference(&$row, $link='none', $highlight='')
 	{
 		ximport('Hubzero_View_Helper_Html');
-		
+
 		$html = "\t".'<p>';
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('author',$row)) {
 			$xprofile =& Hubzero_Factory::getProfile();
 			$app   =& JFactory::getApplication();
 			$auths = explode(';',$row->author);
 			$a = array();
-			foreach ($auths as $auth) 
+			foreach ($auths as $auth)
 			{
 				preg_match('/{{(.*?)}}/s',$auth, $matches);
 				if (isset($matches[0]) && $matches[0]!='') {
@@ -109,7 +103,7 @@ class CitationsFormatter
 				}
 			}
 			$row->author = implode('; ', $a);
-	
+
 			$html .= stripslashes($row->author);
 		} elseif (CitationsFormatter::keyExistsOrIsNotEmpty('editor',$row)) {
 			$html .= stripslashes($row->editor);
@@ -118,7 +112,7 @@ class CitationsFormatter
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('year',$row)) {
 			$html .= ' ('.$row->year.')';
 		}
-		
+
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('title',$row)) {
 			if (!$row->url) {
 				$html .= ', "'.stripslashes($row->title);
@@ -126,7 +120,7 @@ class CitationsFormatter
 				$html .= ', "<a href="'.CitationsFormatter::cleanUrl($row->url).'">'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->title),array($highlight)).'</a>';
 			}
 		}
-		if (CitationsFormatter::keyExistsOrIsNotEmpty('journal',$row) 
+		if (CitationsFormatter::keyExistsOrIsNotEmpty('journal',$row)
 		|| CitationsFormatter::keyExistsOrIsNotEmpty('edition',$row)
 		|| CitationsFormatter::keyExistsOrIsNotEmpty('booktitle',$row)) {
 			$html .= ',';
@@ -138,7 +132,7 @@ class CitationsFormatter
 			$html .= ' <i>'.stripslashes($row->booktitle).'</i>';
 		}
 		if ($row->type) {
-			switch ($row->type) 
+			switch ($row->type)
 			{
 				case 'phdthesis': $html .= ' ('.JText::_('PhD Thesis').')'; break;
 				case 'mastersthesis': $html .= ' ('.JText::_('Masters Thesis').')'; break;

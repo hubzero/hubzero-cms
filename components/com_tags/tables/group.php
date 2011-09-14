@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class TagsGroup extends JTable
 {
 	var $id      = NULL;  // int(11)
 	var $groupid = NULL;  // int(11)
 	var $tagid   = NULL;  // int(11)
 	var $priority = NULL;  // int(11)
-	
+
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__tags_group', 'id', $db );
 	}
 
-	//-----------
-	
-	public function getCount() 
+	public function getCount()
 	{
 		$query = "SELECT COUNT(*) 
 					FROM $this->_tbl AS tg,
@@ -58,10 +55,8 @@ class TagsGroup extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-		
-	//-----------
-	
-	public function getRecords() 
+
+	public function getRecords()
 	{
 		$query = "SELECT tg.id, t.tag, g.cn, g.description, tg.tagid, tg.groupid, tg.priority 
 					FROM $this->_tbl AS tg,
@@ -73,17 +68,15 @@ class TagsGroup extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getNeighbor( $move ) 
+
+	public function getNeighbor( $move )
 	{
-		switch ($move) 
+		switch ($move)
 		{
 			case 'orderup':
 				$sql = "SELECT * FROM $this->_tbl WHERE priority < ".$this->priority." ORDER BY priority DESC LIMIT 1";
 				break;
-			
+
 			case 'orderdown':
 				$sql = "SELECT * FROM $this->_tbl WHERE priority > ".$this->priority." ORDER BY priority ASC LIMIT 1";
 				break;

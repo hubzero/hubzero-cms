@@ -29,15 +29,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Hub
 {
 	public function __construct()
 	{
 		$this->loadConfig();
 	}
-	
-	//-----------
 
 	public function loadConfig()
 	{
@@ -47,7 +44,7 @@ class Hubzero_Hub
 		if (file_exists($file))
 			include_once($file);
 
-		if ( class_exists('HubConfig') ) 
+		if ( class_exists('HubConfig') )
 		{
 			$config = new HubConfig();
 			$registry->loadObject($config, 'xhub');
@@ -58,14 +55,12 @@ class Hubzero_Hub
 		if (file_exists($file))
 			include_once($file);
 
-		if ( class_exists('HubConfigOverride') ) 
+		if ( class_exists('HubConfigOverride') )
 		{
 			$config = new HubConfigOverride();
 			$registry->loadObject($config, 'xhub');
 		}
 	}
-	
-	//-----------
 
 	public function getCfg( $varname, $default = '' )
 	{
@@ -75,14 +70,12 @@ class Hubzero_Hub
 
 		return $value;
 	}
-	
-	//-----------
 
 	public function redirect($url, $permanent = false)
 	{
 		// check for relative internal links
 
-		if (preg_match( '#^index[2]?.php#', $url )) 
+		if (preg_match( '#^index[2]?.php#', $url ))
 		{
 			$url = JURI::base() . $url;
 		}
@@ -97,11 +90,11 @@ class Hubzero_Hub
 		 * so we will output a javascript redirect statement.
 		 */
 
-		if (headers_sent()) 
+		if (headers_sent())
 		{
 			echo "<script>document.location.href='$url';</script>\n";
-		} 
-		else 
+		}
+		else
 		{
 			//@ob_end_clean(); // clear output buffer
 
@@ -113,8 +106,6 @@ class Hubzero_Hub
 
 		exit(0);
 	}
-	
-	//-----------
 
 	public function getComponentViewFilename($component, $view)
 	{

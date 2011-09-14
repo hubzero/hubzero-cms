@@ -75,7 +75,7 @@ $step = $this->step;
 						JPluginHelper::importPlugin( 'hubzero' );
 						$dispatcher =& JDispatcher::getInstance();
 						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tag', 'actags','','')) );
-						
+
 						if (count($tf) > 0) {
 							echo $tf[0];
 						} else { ?>

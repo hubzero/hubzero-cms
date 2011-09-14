@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Report Abuse database class
 //----------------------------------------------------------
 
-class ReportAbuse extends JTable 
+class ReportAbuse extends JTable
 {
 	var $id         	= NULL;  // @var int(11) Primary key
 	var $report   		= NULL;  // @var text
@@ -43,17 +43,15 @@ class ReportAbuse extends JTable
 	var $referenceid    = NULL;  // @var int(11)
 	var $category		= NULL;  // @var varchar(50)
 	var $subject		= NULL;  // @var varchar(150)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__abuse_reports', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->report ) == '' && trim( $this->subject ) == JText::_('OTHER')) {
 			$this->setError( JText::_('Please describe the issue.') );
@@ -61,13 +59,11 @@ class ReportAbuse extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl AS a WHERE";
-					
+
 		if (isset($filters['state']) && $filters['state'] == 1) {
 			$query .= " a.state=1";
 		} else {
@@ -82,30 +78,26 @@ class ReportAbuse extends JTable
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
 			$query .= " ORDER BY ".$filters['sortby']." LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$filters['sortby'] = '';
-		
+
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array() ) 
+
+	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT *";
 		$query .= $this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

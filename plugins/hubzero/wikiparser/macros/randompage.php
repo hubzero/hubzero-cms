@@ -29,29 +29,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class RandomPageMacro extends WikiMacro 
+class RandomPageMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Generates a link to a random page.';
 		$txt['html'] = '<p>Generates a link to a random page.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		// Perform query
 		$this->_db->setQuery( "SELECT pagename, scope, title FROM #__wiki_page ORDER BY rand() LIMIT 1" );
 		$a = $this->_db->loadRow();
-		
+
 		// Did we get a result from the database?
 		if ($a) {
 			$title = ($a[2]) ? stripslashes($a[2]) : $a[0];
-			
+
 			// Build and return the link
 			//return '['.JRoute::_('index.php?option='.$this->option.a.'scope='.$a[1].a.'pagename='.$a[0]).' '.$title.']';
 			return '<a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$a[1].'&pagename='.$a[0]).'">'.$title.'</a>';

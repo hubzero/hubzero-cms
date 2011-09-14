@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class TagsObject extends JTable
 {
 	var $id       = NULL;  // int(11)
@@ -42,14 +41,12 @@ class TagsObject extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__tags_object', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function deleteObjects( $tagid=null, $tbl=null, $objectid=null, $taggerid=null, $admin=false ) 
+
+	public function deleteObjects( $tagid=null, $tbl=null, $objectid=null, $taggerid=null, $admin=false )
 	{
 		if (!$tagid) {
 			$tagid = $this->tagid;
@@ -76,10 +73,8 @@ class TagsObject extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function removeAllTags( $tbl=null, $objectid=null ) 
+
+	public function removeAllTags( $tbl=null, $objectid=null )
 	{
 		if (!$tbl) {
 			$tbl = $this->tbl;
@@ -100,10 +95,8 @@ class TagsObject extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getCount( $tagid=null ) 
+
+	public function getCount( $tagid=null )
 	{
 		if (!$tagid) {
 			$tagid = $this->tagid;
@@ -111,14 +104,12 @@ class TagsObject extends JTable
 		if (!$tagid) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE tagid='$tagid'" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getTagsOnObject($objectid=null, $tbl=null, $state=0, $offset=0, $limit=10) 
+
+	public function getTagsOnObject($objectid=null, $tbl=null, $state=0, $offset=0, $limit=10)
 	{
 		if (!$objectid) {
 			$objectid = $this->objectid;
@@ -135,7 +126,7 @@ class TagsObject extends JTable
 				FROM $this->_tbl AS rt 
 				INNER JOIN #__tags AS t ON (rt.tagid = t.id)
 				WHERE rt.objectid='$objectid' AND rt.tbl='$tbl'";
-		switch ($state)	
+		switch ($state)
 		{
 			case 0: $sql .= " AND t.admin=0"; break;
 			case 1: $sql .= ""; break;
@@ -148,10 +139,8 @@ class TagsObject extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadAssocList();
 	}
-	
-	//-----------
-	
-	public function getCountForObject( $tagid=null, $objectid=null, $tbl=null ) 
+
+	public function getCountForObject( $tagid=null, $objectid=null, $tbl=null )
 	{
 		if (!$tagid) {
 			$tagid = $this->tagid;
@@ -165,14 +154,12 @@ class TagsObject extends JTable
 		if (!$tagid || !$tbl || !$objectid) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE tagid='$tagid' AND objectid='$objectid' AND tbl='$tbl'" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function moveObjects( $oldtagid=null, $newtagid=null ) 
+
+	public function moveObjects( $oldtagid=null, $newtagid=null )
 	{
 		if (!$oldtagid) {
 			$oldtagid = $this->tagid;
@@ -191,10 +178,8 @@ class TagsObject extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function copyObjects( $oldtagid=null, $newtagid=null ) 
+
+	public function copyObjects( $oldtagid=null, $newtagid=null )
 	{
 		if (!$oldtagid) {
 			$oldtagid = $this->tagid;
@@ -209,7 +194,7 @@ class TagsObject extends JTable
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE tagid='$oldtagid'" );
 		$rows = $this->_db->loadObjectList();
 		if ($rows) {
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
 				$to = new TagsObject($this->_db);
 				$to->objectid = $row->objectid;

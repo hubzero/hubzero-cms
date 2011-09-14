@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_favorites' );
-
-//-----------
 
 class plgMembersFavorites extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgMembersFavorites extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'favorites' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onMembersAreas( $authorized )
 	{
 		$areas = array(
@@ -57,20 +51,18 @@ class plgMembersFavorites extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) ) 
+			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
 			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
 				$returnhtml = false;
 			}
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
 
@@ -81,7 +73,7 @@ class plgMembersFavorites extends JPlugin
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();
 		$searchareas = $dispatcher->trigger( 'onMembersFavoritesAreas', array($authorized) );
-		foreach ($searchareas as $area) 
+		foreach ($searchareas as $area)
 		{
 			$areas = array_merge( $areas, $area );
 		}
@@ -115,7 +107,7 @@ class plgMembersFavorites extends JPlugin
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($areas as $c=>$t) 
+		foreach ($areas as $c=>$t)
 		{
 			$cats[$i]['category'] = $c;
 
@@ -127,7 +119,7 @@ class plgMembersFavorites extends JPlugin
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st) 
+				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
@@ -159,7 +151,7 @@ class plgMembersFavorites extends JPlugin
 		// Build the HTML
 		if ($returnhtml) {
 			$limit = ($limit == 0) ? 'all' : $limit;
-			
+
 			// Get the search results
 			$results = $dispatcher->trigger( 'onMembersFavorites', array(
 				$member,
@@ -169,14 +161,14 @@ class plgMembersFavorites extends JPlugin
 				$limitstart,
 				$activeareas)
 			);
-			
+
 			// Do we have an active area?
 			if (count($activeareas) == 1 && !is_array(current($activeareas))) {
 				$active = $activeareas[0];
 			} else {
 				$active = '';
 			}
-			
+
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -198,20 +190,20 @@ class plgMembersFavorites extends JPlugin
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
-			
+
 			$arr['html'] = $view->loadTemplate();
 		} else {
 			// Build the metadata
 			$html = '';
 
 			// Loop through each category
-			foreach ($cats as $cat) 
+			foreach ($cats as $cat)
 			{
 				if ($cat['total'] > 0) {
 					$html .= '<p class="'.strtolower($cat['title']).'"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=favorites').'">'.$cat['total'].' '.JText::_('PLG_MEMBERS_FAVORITE').' '.strtolower($cat['title']).'</a></p>'.n;
 				}
 			}
-			
+
 			$arr['metadata'] = $html;
 		}
 

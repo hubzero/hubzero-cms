@@ -32,7 +32,6 @@ JToolBarHelper::title( JText::_( 'Ticket' ).': <small><small>[ '. $text.' ]</sma
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-
 $juser =& JFactory::getUser();
 
 jimport('joomla.html.editor');
@@ -138,9 +137,9 @@ if ($this->filters['_show'] != '') {
 <?php
 			$o = 'even';
 			$html  = "\t\t\t\t".'<ol class="comments">'."\n";
-			foreach ($this->comments as $comment) 
+			foreach ($this->comments as $comment)
 			{
-				if ($comment->access == 1) { 
+				if ($comment->access == 1) {
 					$access = 'private';
 				} else {
 					$access = 'public';
@@ -148,7 +147,7 @@ if ($this->filters['_show'] != '') {
 				if ($comment->created_by == $this->row->login && $comment->access != 1) {
 					$access = 'submitter';
 				}
-				
+
 				$name = 'Unknown';
 				if ($comment->created_by) {
 					$juseri =& JUser::getInstance( $comment->created_by );
@@ -156,9 +155,9 @@ if ($this->filters['_show'] != '') {
 						$name = $juseri->get('name');
 					}
 				}
-				
+
 				$o = ($o == 'odd') ? 'even' : 'odd';
-				
+
 				$html .= "\t\t\t\t\t".'<li class="';
 				$html .= $access.' comment '.$o.'" id="c'.$comment->id.'">'."\n";
 				$html .= "\t\t\t\t\t\t".'<dl class="comment-details">'."\n";
@@ -176,7 +175,7 @@ if ($this->filters['_show'] != '') {
 					//$comment->comment = htmlentities($comment->comment);
 					$comment->comment = nl2br($comment->comment);
 					$comment->comment = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$comment->comment);
-					
+
 					$html .= "\t\t\t\t\t\t\t".'<blockquote cite="'. $comment->created_by .'">'."\n";
 					$html .= "\t\t\t\t\t\t\t\t".'<p>'.preg_replace('/  /', ' &nbsp;', $comment->comment).'</p>'."\n";
 					$html .= "\t\t\t\t\t\t\t".'</blockquote>'."\n";
@@ -267,7 +266,7 @@ if ($this->filters['_show'] != '') {
 								<?php echo JText::_('COMMENT_SEVERITY'); ?>:<br />
 								<select name="severity" id="severity">
 								<?php 
-								foreach ($this->lists['severities'] as $anode) 
+								foreach ($this->lists['severities'] as $anode)
 								{
 									$selected = ($anode == $this->row->severity)
 											  ? ' selected="selected"'
@@ -326,7 +325,7 @@ if ($this->filters['_show'] != '') {
 								}
 								$html .= '>'.JText::_('COMMENT_OPT_CLOSED').'</option>'."\n";
 								if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
-									foreach ($this->lists['resolutions'] as $anode) 
+									foreach ($this->lists['resolutions'] as $anode)
 									{
 										$selected = ($anode->alias == $this->row->resolved)
 												  ? ' selected="selected"'

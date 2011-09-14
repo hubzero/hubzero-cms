@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key" style="vertical-align: top;"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></td>
 						<td><?php
-						echo $editor->display('description', stripslashes($this->row->description), '360px', '200px', '50', '10'); 
+						echo $editor->display('description', stripslashes($this->row->description), '360px', '200px', '50', '10');
 						?></td>
 					</tr>
 				</tbody>

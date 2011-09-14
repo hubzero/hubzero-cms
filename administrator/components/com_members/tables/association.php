@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class MembersAssociation extends JTable 
+class MembersAssociation extends JTable
 {
 	var $subtable = NULL;  // @var varchar(50) Primary Key
 	var $subid    = NULL;  // @var int(11) Primary Key
@@ -40,20 +39,18 @@ class MembersAssociation extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__author_assoc', 'authorid', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (!$this->authorid) {
 			$this->setError( JText::_('Must have an author ID.') );
 			return false;
 		}
-		
+
 		if (!$this->subid) {
 			$this->setError( JText::_('Must have an item ID.') );
 			return false;
@@ -61,15 +58,13 @@ class MembersAssociation extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function deleteAssociations( $id=NULL ) 
+
+	public function deleteAssociations( $id=NULL )
 	{
 		if (!$id) {
 			$id = $this->authorid;
 		}
-		
+
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE authorid='".$id."'" );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );

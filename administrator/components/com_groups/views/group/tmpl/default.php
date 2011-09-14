@@ -37,7 +37,6 @@ jimport('joomla.html.editor');
 
 $editor =& JEditor::getInstance();
 
-
 $gparams = new JParameter( $this->group->params );
 
 $membership_control = $gparams->get('membership_control', 1);

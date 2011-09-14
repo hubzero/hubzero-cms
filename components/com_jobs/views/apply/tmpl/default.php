@@ -27,19 +27,19 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
+
 	/* Application Form */
-	
+
 	// load some classes
 	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	$juser 	  =& JFactory::getUser();
-	
+
 	$job = $this->job;
 	$seeker = $this->seeker;
-	$application = $this->application;	
-	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;	
-	
+	$application = $this->application;
+	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
+
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -67,32 +67,32 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php echo '<a href="'. JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=resume').'" class="add">'.JText::_('ACTION_CREATE_PROFILE').'</a>'; ?>
         </p>
 	<?php 
-	return; 
-	}		
+	return;
+	}
 		$html = '';
-		
+
 		$job->title = trim(stripslashes($job->title));
 		$appid = $application->status!=2 ? $application->id : 0;
 		$html .= '<div class="main section">'.n;
-		
+
 		if((!$this->admin && $juser->get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) {
 		 $html .= t.'<p class="warning">'.JText::_('APPLY_WARNING_OWN_AD').'</p>'.n;
 		}
-				
-		$html .= t.'<div id="applyinfo">'.n;	
+
+		$html .= t.'<div id="applyinfo">'.n;
 		$html .= t.t.'<h3>'.$job->title.' - ';
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName;
 		$html .= ', '.$job->companyLocation.', '.$job->companyLocationCountry.'<span>'.JText::_('JOB_REFERENCE_CODE').': '.$job->code.'</span></h3>'.n;
 		$html .= t.'</div>'.n;
-				
+
 		// message to employer
 		$html .= t.t.' <form id="hubForm" method="post" action="index.php?option='.$this->option.'">'.n;
 		$html .= t.t.t.'<fieldset>'.n;
 		$html .= t.t.t.'	  <input type="hidden"  name="task" value="saveapp" />'.n;
-		$html .= t.t.t.'	  <input type="hidden" id="code" name="code" value="'.$job->code.'" />'.n;	
-		$html .= t.t.t.'	  <input type="hidden" id="jid" name="jid" value="'.$job->id.'" />'.n;	
-		$html .= t.t.t.'	  <input type="hidden" id="appid" name="appid" value="'.$appid.'" />'.n;	
-		$html .= t.t.t.'	  <input type="hidden" id="uid" name="uid" value="'.$juser->get('id').'" />'.n;	
+		$html .= t.t.t.'	  <input type="hidden" id="code" name="code" value="'.$job->code.'" />'.n;
+		$html .= t.t.t.'	  <input type="hidden" id="jid" name="jid" value="'.$job->id.'" />'.n;
+		$html .= t.t.t.'	  <input type="hidden" id="appid" name="appid" value="'.$appid.'" />'.n;
+		$html .= t.t.t.'	  <input type="hidden" id="uid" name="uid" value="'.$juser->get('id').'" />'.n;
 		$html .= t.t.t.'	  <h3>'.JText::_('APPLY_MSG_TO_EMPLOYER').' <span class="opt">('.JText::_('OPTIONAL').')</span></h3>'.n;
 		$html .= t.t.t.'	  <label>'.n;
 		$html .= t.t.t.'	  <textarea name="cover" id="cover" rows="10" cols="15">'.$application->cover.'</textarea>'.n;
@@ -100,10 +100,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= t.t.t.'</fieldset>'.n;
 		$html .= t.t.t.'<div class="explaination">'.n;
 		$html .= t.t.t.t.'<p>'.JText::_('APPLY_HINT_COVER_LETTER').'</p>'.n;
-		$html .= t.t.t.'</div>'.n;		
-		$html .= t.t.t.' <div class="clear"></div>'.n; 	
-		
-		$html .= t.t.t.' <div class="subject custom">'.n; 	
+		$html .= t.t.t.'</div>'.n;
+		$html .= t.t.t.' <div class="clear"></div>'.n;
+
+		$html .= t.t.t.' <div class="subject custom">'.n;
 		// profile info
 		if($seeker) {
 			JPluginHelper::importPlugin( 'members','resume' );
@@ -114,7 +114,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= $out[0];
 			}
 		}
-		$html .= t.t.t.'</div>'.n;			
+		$html .= t.t.t.'</div>'.n;
 		$html .= t.'<p class="submit"><input type="submit" name="submit" value="';
 		$html .= $this->task=='editapp' ? JText::_('ACTION_SAVE_CHANGES_APPLICATION') : JText::_('ACTION_APPLY_THIS_JOB');
 		$html .= '" />';
@@ -123,6 +123,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= JText::_('CANCEL').'</a></span></p>'.n;
 		$html .= t.t.t.' </form>'.n;
 		$html .= '</div>'.n;
-		
+
 		echo $html;
  ?>

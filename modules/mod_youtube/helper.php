@@ -31,43 +31,41 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class modYoutubeHelper
 {
-	
+
 	function __construct( $params, $module )
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-	
-	//-----
-	
+
 	function render()
 	{
 		//get the document
 		$jdocument =& JFactory::getDocument();
-		
+
 		//get the module id
 		$id = $this->module->id;
-		
+
 		//define the base youtube url
 		$youtube_url = "https://gdata.youtube.com/feeds/api/";
-		
+
 		//default # of videos to display
 		$default_num_videos = 3;
-		
+
 		//get the user defined num of videos
 		$user_num_videos = $this->params->get('videos');
-		
+
 		//determine the final num of videos to show
 		$num_videos = ($user_num_videos != '' && is_numeric($user_num_videos)) ? $user_num_videos : $default_num_videos;
-		
+
 		//get the type of feed we are displaying
 		$type = $this->params->get('type');
-		
+
 		//get the username/playlist/search term
 		$content = $this->params->get('q');
-		
+
 		//build the youtube url based on the type
-		switch($type) 
+		switch($type)
 		{
 			case 'playlists':
 				$youtube_url .= "playlists/".$content."?v=2";
@@ -79,9 +77,9 @@ class modYoutubeHelper
 				$youtube_url .= "videos?q=".$content."&v=2";
 				break;
 		}
-		
+
 		//get title,desc,logo and link params
-		$show_title = $this->params->get('title'); 
+		$show_title = $this->params->get('title');
 		$alt_title = $this->params->get('alttitle');
 		$show_desc = $this->params->get('desc');
 		$alt_desc = $this->params->get('altdesc');
@@ -89,21 +87,21 @@ class modYoutubeHelper
 		$alt_image = $this->params->get('altimage');
 		$show_link = $this->params->get('link');
 		$alt_link = $this->params->get('altlink');
-		
+
 		//are we randomizing videos
 		$random = $this->params->get('random');
-		
+
 		//are we using js or PHP
 		$lazy_loading = $this->params->get('lazy');
-		
+
 		//Push some CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet('mod_youtube');
-		
+
 		//push the container that the feed with loaded in
 		$this->id = $id;
 		$this->lazy = $lazy_loading;
-		
+
 		//if we are lazy loading
 		if($lazy_loading) {
 			$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.js');
@@ -130,18 +128,18 @@ class modYoutubeHelper
 		} else {
 			//append the the return type and the callback function
 			$youtube_url .= "&alt=json";
-			
+
 			//get the youtube url's headers
 			$headers = get_headers($youtube_url);
-			
+
 			//load joomla folder and file libraries
 			jimport('joomla.filesystem.folder');
 			jimport('joomla.filesystem.file');
-			
+
 			//cache path
 			$path = JPATH_ROOT.DS.'cache'.DS.'mod_youtube'.DS.$id;
 			$data = $path.DS.$type.'.txt';
-			
+
 			//check if we have cached already
 			if($this->params->get('cache') && is_file($data) && filemtime($data) > strtotime("-".$this->params->get('cache_time')." MINUTES")) {
 				$feed = file_get_contents($data);
@@ -151,23 +149,23 @@ class modYoutubeHelper
 				$this->html = "<p class=\"error\">An Error occured while trying to parse the Youtube Feed.</p>";
 				return;
 			}
-			
+
 			$full_feed = json_decode($feed, true);
 			$feed = $full_feed['feed'];
-			
+
 			//get the entries from the feed
 			$entries = $feed['entry'];
-			
+
 			//start building the html content
 			$html = "";
-			
+
 			//get the title, subtitle, logo
 			$title = $feed['title']['$t'];
 			if($type == 'playlists') {
 				$desc = $feed['subtitle']['$t'];
 			}
 			$logo = $feed['logo']['$t'];
-			
+
 			//show title based on params
 			if($show_title) {
 				if($alt_title != '') {
@@ -176,7 +174,7 @@ class modYoutubeHelper
 					$html .= "<h3>{$title}</h3>";
 				}
 			}
-			
+
 			//show the description based on params
 			if($show_desc) {
 				if($alt_desc != '') {
@@ -185,7 +183,7 @@ class modYoutubeHelper
 					$html .= "<p class=\"description\">{$desc}</p>";
 				}
 			}
-			
+
 			//show the logo based on your
 			if($show_image) {
 				if($alt_image != '' && is_file(JPATH_ROOT.DS.$alt_image)) {
@@ -194,12 +192,12 @@ class modYoutubeHelper
 					$html .= "<img class=\"logo\" src=\"{$logo}\" alt=\"Youtube\" />";
 				}
 			}
-			
+
 			//are we supposed to randomize
 			if($random) {
 				shuffle($entries);
 			}
-			
+
 			//display the videos
 			$html .= "<ul>";
 			$counter = 1;
@@ -215,7 +213,7 @@ class modYoutubeHelper
 				$counter++;
 			}
 			$html .= "</ul>";
-			
+
 			//show the view more link based on params
 			if($show_link) {
 				if($alt_link != '') {
@@ -236,34 +234,32 @@ class modYoutubeHelper
 					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$link}\">More Videos</a></p><br class=\"clear\" />";
 				}
 			}
-			
+
 			//if we want to use caching
 			if($this->params->get('cache')) {
 				//write to the cache folder
 				if(!is_dir($path)) {
 					JFolder::create($path, 0777);
 				}
-			
+
 				$full_feed = json_encode($full_feed);
 				JFile::write($data,$full_feed);
 			}
-			
+
 			$this->html = $html;
 		}
 	}
-	
-	//-----
-	
-	function formatTime( $seconds )  
+
+	function formatTime( $seconds )
 	{
 		$minutes = floor($seconds / 60);
 		$seconds = $seconds % 60;
-		
+
 		if($seconds < 10) {
 			$seconds = "0{$seconds}";
 		}
-		
+
 		return "<span>{$minutes}:{$seconds}</span>";
 	}
-	
+
 }

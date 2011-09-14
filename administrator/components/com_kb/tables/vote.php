@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class KbVote extends JTable 
+class KbVote extends JTable
 {
 	var $id        = NULL;  // @var int(11) Primary key
 	var $object_id = NULL;  // @var int(11)
@@ -39,17 +38,15 @@ class KbVote extends JTable
 	var $user_id   = NULL;  // @var int(11)
 	//var $voted     = NULL;  // @var datetime(0000-00-00 00:00:00)
 	var $type      = NULL;  // @var varchar(255)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq_helpful_log', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->object_id ) == '') {
 			$this->setError( JText::_('COM_KB_ERROR_MISSING_ARTICLE_ID') );
@@ -57,9 +54,7 @@ class KbVote extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function getVote( $object_id=NULL, $user_id=NULL, $ip=NULL, $type=NULL )
 	{
 		if ($object_id == NULL) {
@@ -77,10 +72,8 @@ class KbVote extends JTable
 		$this->_db->setQuery( "SELECT vote FROM $this->_tbl WHERE object_id='$object_id' AND (user_id='$user_id' OR ip='$ip') AND type='$type'" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function deleteVote( $object_id=NULL, $user_id=NULL ) 
+
+	public function deleteVote( $object_id=NULL, $user_id=NULL )
 	{
 		if ($object_id == NULL) {
 			$object_id = $this->object_id;
@@ -88,10 +81,10 @@ class KbVote extends JTable
 		if ($user_id == NULL) {
 			$user_id = $this->user_id;
 		}
-		
+
 		$sql = "DELETE FROM $this->_tbl WHERE object_id='$object_id'";
 		$sql .= ($user_id) ? " AND user_id='$user_id'" : "";
-		
+
 		$this->_db->setQuery( $sql );
 		if ($this->_db->query()) {
 			return true;

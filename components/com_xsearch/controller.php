@@ -36,22 +36,22 @@ class XSearchController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_stemming = 1;
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_('COM_XSEARCH_TITLE') );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(JText::_('COM_XSEARCH_TITLE'),'index.php?option=com_search');
 		}
-		
+
 		// Add some needed CSS and JS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet($this->_option);
-		
+
 		// Push some JS to the tmeplate
 		$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 
@@ -73,21 +73,21 @@ class XSearchController extends Hubzero_Controller
 
 		// Get configuration
 		$config = JFactory::getConfig();
-		
+
 		// Get the pagination request variables
 		$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 		$limitstart = JRequest::getInt('limitstart', 0);
-		
+
 		// Get categories
 		$areas = $this->_getAreas();
-		
+
 		// Was there a category passed in the querystring?
 		$area = trim(JRequest::getWord('category', ''));
-		
+
 		// Check the search string for a category prefix
 		if ($keyword != NULL) {
 			$searchstring = strtolower($keyword);
-			foreach ($areas as $c=>$t) 
+			foreach ($areas as $c=>$t)
 			{
 				$regexp = "/" . $c . ":/";
 		    	if (strpos($searchstring, $c . ":") !== false) {
@@ -101,7 +101,7 @@ class XSearchController extends Hubzero_Controller
 				// Does the category contain sub-categories?
 				if (is_array($t) && !empty($t)) {
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc=>$st) 
+					foreach ($t as $sc=>$st)
 					{
 						$regexp = "/" . $sc . ":/";
 				    	if (strpos($searchstring, $sc . ":") !== false) {
@@ -117,7 +117,7 @@ class XSearchController extends Hubzero_Controller
 			}
 			$keyword = trim( $searchstring );
 		}
-	
+
 		// Get the active category
 		if ($area) {
 			$activeareas = array($area);
@@ -141,7 +141,7 @@ class XSearchController extends Hubzero_Controller
 				0,
 				$activeareas)
 			);
-			
+
 		$limit = ($limit == 0) ? 'all' : $limit;
 
 		// Get the search results
@@ -154,7 +154,7 @@ class XSearchController extends Hubzero_Controller
 				);
 			if ($sqls) {
 				$s = array();
-				foreach ($sqls as $sql) 
+				foreach ($sqls as $sql)
 				{
 					if (trim($sql) != '') {
 						$s[] = $sql;
@@ -183,10 +183,10 @@ class XSearchController extends Hubzero_Controller
 		$i = 0;
 		$total = 0;
 
-		foreach ($areas as $c=>$t) 
+		foreach ($areas as $c=>$t)
 		{
 			$cats[$i]['category'] = $c;
-			
+
 			// Do sub-categories exist?
 			if (is_array($t) && !empty($t)) {
 				// They do - do some processing
@@ -195,7 +195,7 @@ class XSearchController extends Hubzero_Controller
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st) 
+				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
@@ -213,7 +213,7 @@ class XSearchController extends Hubzero_Controller
 				$cats[$i]['title'] = $t;
 				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
 			}
-			
+
 			// Add to the overall total
 			$total = $total + intval($cats[$i]['total']);
 			$i++;
@@ -225,7 +225,7 @@ class XSearchController extends Hubzero_Controller
 		} else {
 			$active = 'all';
 		}
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'results') );
 		$view->title = JText::_('COM_XSEARCH_TITLE');
@@ -244,15 +244,13 @@ class XSearchController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	private function _highlight( $searchquery, $results )
 	{
 		// Get all the search words and phrases to highlight
 		$toks = $searchquery->searchTokens;
 		$words = array();
 		if (count($toks) > 0) {
-			foreach ($toks as $w) 
+			foreach ($toks as $w)
 			{
 				if (strlen($w) > 2) {
 					$words[] = $w;
@@ -260,23 +258,23 @@ class XSearchController extends Hubzero_Controller
 			}
 		}
 		$toks = $words;
-		
+
 		$resultback = 60;
 		$resultlen  = 200;
-		
+
 		// Loop through all results
-		for ($i = 0, $n = count($results); $i < $n; $i++) 
+		for ($i = 0, $n = count($results); $i < $n; $i++)
 		{
-			for ($k=0; $k < count($results[$i]); $k++) 
+			for ($k=0; $k < count($results[$i]); $k++)
 			{
 				$row =& $results[$i][$k];
-				
+
 				// Clean the text up a bit first
 				$row->itext = Hubzero_View_Helper_Html::purifyText( $row->itext );
 				$lowerrow = strtolower( $row->itext );
-				
+
 				// Find first occurrence of a search word
-				foreach ($toks as $tok) 
+				foreach ($toks as $tok)
 				{
 					$pos = strpos( $lowerrow, $tok );
 					if ($pos !== false) break;
@@ -289,7 +287,7 @@ class XSearchController extends Hubzero_Controller
 				}
 
 				// Highlight each word/phrase found
-				foreach ($toks as $tok) 
+				foreach ($toks as $tok)
 				{
 					if (($tok == 'class') || ($tok == 'span') || ($tok == 'highlight')) {
 						continue;
@@ -297,37 +295,35 @@ class XSearchController extends Hubzero_Controller
 					$row->itext = eregi_replace( $tok, "<span class=\"highlight\">\\0</span>", $row->itext);
 					$row->title = eregi_replace( $tok, "<span class=\"highlight\">\\0</span>", $row->title);
 				}
-				
+
 				$row->itext = trim($row->itext);
 			}
 		}
-		
+
 		return $results;
 	}
-
-	//-----------
 
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
 		if (!isset($this->searchareas) || empty($this->searchareas)) {
 			// No - so we'll need to get it
-			
+
 			$areas = array();
 
 			// Load the XSearch plugins
 			JPluginHelper::importPlugin( 'xsearch' );
 			$dispatcher =& JDispatcher::getInstance();
-			
+
 			// Trigger the functions that return the areas we'll be searching
 			$searchareas = $dispatcher->trigger( 'onXSearchAreas' );
 
 			// Build an array of the areas
-			foreach ($searchareas as $area) 
+			foreach ($searchareas as $area)
 			{
 				$areas = array_merge( $areas, $area );
 			}
-			
+
 			// Save the array for use elsewhere
 			$this->searchareas = $areas;
 		}

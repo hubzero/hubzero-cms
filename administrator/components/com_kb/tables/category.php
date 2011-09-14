@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class KbCategory extends JTable 
+class KbCategory extends JTable
 {
 	var $id           = NULL;  // @var int(11) Primary key
 	var $title        = NULL;  // @var varchar(250)
@@ -39,17 +38,15 @@ class KbCategory extends JTable
 	var $state        = NULL;  // @var int(3)
 	var $access       = NULL;  // @var int(3)
 	var $alias        = NULL;  // @var varchar(200)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq_categories', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->title ) == '') {
 			$this->setError( JText::_('KB_ERROR_EMPTY_TITLE') );
@@ -57,10 +54,8 @@ class KbCategory extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadAlias( $oid=NULL ) 
+
+	public function loadAlias( $oid=NULL )
 	{
 		if (empty($oid)) {
 			return false;
@@ -73,9 +68,7 @@ class KbCategory extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
+
 	public function getCategories( $noauth, $empty_cat=0, $catid=0 )
 	{
         $juser =& JFactory::getUser();
@@ -85,13 +78,13 @@ class KbCategory extends JTable
 		} else {
 			$empty = "\n HAVING COUNT( b.id ) > 0";
 		}
-		
+
 		if ($catid) {
 			$sect = "b.category";
 		} else {
 			$sect = "b.section";
 		}
-		
+
 		$query = "SELECT a.*, COUNT( b.id ) AS numitems"
 				. " FROM $this->_tbl AS a"
 				. " LEFT JOIN #__faq AS b ON ".$sect." = a.id AND b.state=1 AND b.access=0"
@@ -103,10 +96,8 @@ class KbCategory extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function deleteSef( $option, $id=NULL ) 
+
+	public function deleteSef( $option, $id=NULL )
 	{
 		if ($id == NULL) {
 			$id = $this->id;
@@ -119,37 +110,29 @@ class KbCategory extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function getAllSections() 
+
+	public function getAllSections()
 	{
 		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section=0 ORDER BY m.title" );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getAllCategories() 
+
+	public function getAllCategories()
 	{
 		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section!=0 ORDER BY m.title" );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getCategoriesCount( $filters=array() ) 
+
+	public function getCategoriesCount( $filters=array() )
 	{
 		$query  = "SELECT count(*) FROM $this->_tbl WHERE section=";
 		$query .= (isset($filters['id'])) ? $filters['id'] : "0";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getCategoriesAll( $filters=array() ) 
+
+	public function getCategoriesAll( $filters=array() )
 	{
 		if (isset($filters['id']) && $filters['id']) {
 			$sect = $filters['id'];
@@ -158,7 +141,7 @@ class KbCategory extends JTable
 			$sect = 0;
 			$sfield = "section";
 		}
-		
+
 		$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.name AS groupname, 
 				(SELECT count(*) FROM #__faq AS fa WHERE fa.".$sfield."=m.id) AS total, 
 				(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"

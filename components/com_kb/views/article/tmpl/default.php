@@ -54,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		$html .= "\t".'<li><a'.$cls.' href="'.JRoute::_('index.php?option='.$this->option.'&section=all').'">'.JText::_('All Articles').'</a></li>'."\n";
 		if (count($this->categories) > 0) {
-			foreach ($this->categories as $row) 
+			foreach ($this->categories as $row)
 			{
 				$html .= "\t".'<li><a ';
 				if ($this->catid == $row->id) {
@@ -64,7 +64,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) {
 					//$html .= '<h4>'.JText::_('SUBCATEGORIES').'</h4>'."\n";
 					$html .= "\t".'<ul class="categories">'."\n";
-					foreach ($this->subcategories as $cat) 
+					foreach ($this->subcategories as $cat)
 					{
 						$html .= "\t\t".'<li><a ';
 						if ($this->article->category == $cat->id) {
@@ -78,7 +78,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		}
 		$html .= '</ul>'."\n";
-		
+
 		echo $html;
 ?>
 		</div><!-- / .container -->
@@ -91,7 +91,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<?php echo stripslashes( $this->article->fulltext ); ?>
 				</div>
 <?php 
-		if (count($this->tags) > 0) { 
+		if (count($this->tags) > 0) {
 ?>
 				<div class="entry-tags">
 					<p>Tags:</p>			
@@ -101,7 +101,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					{
 						$tag['raw_tag'] = str_replace( '&amp;', '&', $tag['raw_tag'] );
 						$tag['raw_tag'] = str_replace( '&', '&amp;', $tag['raw_tag'] );
-						
+
 						echo "\t\t\t\t\t\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$tag['raw_tag'].'</a></li>'."\n";
 					}
 ?>
@@ -132,18 +132,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
 <?php 
-if ($this->config->get('allow_comments')) { 
+if ($this->config->get('allow_comments')) {
 	$d = ($this->article->modified) ? $this->article->modified : $this->article->created;
 	$year = intval(substr($d,0,4));
 	$month = intval(substr($d,5,2));
 	$day = intval(substr($d,8,2));
 
-	switch ($this->config->get('close_comments')) 
+	switch ($this->config->get('close_comments'))
 	{
-		case 'day': 
+		case 'day':
 			$dt = mktime(0,0,0,$month,($day+1),$year);
 		break;
-		case 'week': 
+		case 'week':
 			$dt = mktime(0,0,0,$month,($day+7),$year);
 		break;
 		case 'month':
@@ -155,14 +155,14 @@ if ($this->config->get('allow_comments')) {
 		case 'year':
 			$dt = mktime(0,0,0,$month,$day,($year+1));
 		break;
-		case 'never': 
+		case 'never':
 		default:
 			$dt =mktime(0,0,0,$month,$day,$year);
 		break;
 	}
 
 	$pdt = strftime("%Y", $dt ).'-'.strftime("%m", $dt ).'-'.strftime("%d", $dt ).' 00:00:00';
-	
+
 	$today = date( 'Y-m-d H:i:s', time() );
 ?>		
 <div class="below">
@@ -184,7 +184,7 @@ if ($this->config->get('feeds_enabled')) {
 ?>
 		<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('Comments Feed'); ?>"><?php echo JText::_('Comments Feed'); ?></a>
 <?php 
-	} 
+	}
 }
 ?>
 	</h3>
@@ -203,19 +203,19 @@ if ($this->comments) {
 		'pagename' => $this->article->alias,
 		'pageid'   => $this->article->id,
 		'filepath' => '',
-		'domain'   => '' 
+		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$p =& Hubzero_Wiki_Parser::getInstance();
-	
-	foreach ($this->comments as $comment) 
+
+	foreach ($this->comments as $comment)
 	{
 		$cls = ($cls == 'even') ? 'odd' : 'even';
-		
+
 		if ($this->article->created_by == $comment->created_by) {
 			$cls .= ' author';
 		}
-		
+
 		$name = JText::_('COM_KB_ANONYMOUS');
 		if (!$comment->anonymous) {
 			//$xuser =& JUser::getInstance( $comment->created_by );
@@ -225,13 +225,13 @@ if ($this->comments) {
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 			}
 		}
-		
+
 		if ($comment->reports) {
 			$content = '<p class="warning">'.JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 		} else {
 			$content = $p->parse($comment->content, $wikiconfig);
 		}
-		
+
 		$comment->like = 0;
 		$comment->dislike = 0;
 ?>
@@ -261,7 +261,7 @@ if ($this->comments) {
 				<p class="comment-options">
 					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$comment->id.'&parent='.$this->article->id); ?>">Report abuse</a> | 
 <?php
-if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { 
+if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) {
 	$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'?reply='.$comment->id.'#post-comment');
 	if ($this->juser->get('guest')) {
 		$lnk = '/login?return='. base64_encode($rtrn);
@@ -279,7 +279,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 ?>
 			<ol class="comments">
 <?php
-			foreach ($comment->replies as $reply) 
+			foreach ($comment->replies as $reply)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 
@@ -302,7 +302,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				} else {
 					$content = $p->parse($reply->content, $wikiconfig);
 				}
-				
+
 				$reply->like = 0;
 				$reply->dislike = 0;
 ?>
@@ -342,7 +342,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 ?>
 					<ol class="comments">
 <?php
-					foreach ($reply->replies as $response) 
+					foreach ($reply->replies as $response)
 					{
 						$cls = ($cls == 'even') ? 'odd' : 'even';
 
@@ -365,7 +365,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						} else {
 							$content = $p->parse($response->content, $wikiconfig);
 						}
-						
+
 						$response->like = 0;
 						$response->dislike = 0;
 ?>
@@ -423,7 +423,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 ?>
 	<p class="no-comments">There are no comments on this entry.</p>
 <?php
-} 
+}
 ?>
 		</div><!-- / .below -->
 	</div><!-- / .subject -->
@@ -513,7 +513,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 <?php
 				}
 			}
-			
+
 			if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) {
 ?>
 				<label>
@@ -523,7 +523,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
 					echo $editor->display('comment[content]', 'commentcontent', '', '', '40', '15');
-				} else { 
+				} else {
 					$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
 ?>
 					<p class="warning">

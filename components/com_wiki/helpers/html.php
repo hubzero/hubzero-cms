@@ -29,43 +29,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiHtml 
+class WikiHtml
 {
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
-	
-	//-----------
-	
+
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
-	
-	//-----------
 
 	public function passed( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'."\n";
 	}
-	
-	//-----------
-	
+
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
-	
-	//-----------
-	
-	public function subMenu($sub, $option, $pagename, $scope, $state, $task, $params, $authorized) 
+
+	public function subMenu($sub, $option, $pagename, $scope, $state, $task, $params, $authorized)
 	{
 		$html = '';
-		
+
 		$mode = $params->get( 'mode' );
-		
+
 		if ($sub) {
 			$hid = 'sub-content-header-extra';
 			$uid = 'section-useroptions';
@@ -75,12 +66,12 @@ class WikiHtml
 			$uid = 'useroptions';
 			$sid = 'sub-menu';
 		}
-		
+
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			$html .= '<div id="'.$hid.'">'."\n";
 			$html .= "\t".'<ul id="'.$uid.'">'."\n";
-	
+
 			if (($state == 0 && $authorized) || ($state == 1 && $authorized === 'admin')) {
 				$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename.'&task=delete').'">'.JText::_('WIKI_DELETE_PAGE').'</a></li>';
 			}
@@ -88,18 +79,18 @@ class WikiHtml
 			$html .= "\t".'</ul>'."\n";
 			$html .= '</div><!-- / #content-header-extra -->'."\n";
 		}
-		
+
 		$html .= '<div id="'.$sid.'">'."\n";
 		$html .= "\t".'<ul>'."\n";
 		$html .= "\t\t".'<li';
-		if ($task == 'view' || !$task) { 
+		if ($task == 'view' || !$task) {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename).'"><span>'.JText::_('WIKI_TAB_ARTICLE').'</span></a></li>'."\n";
 		if (($state == 1 && ($authorized === 'admin' || ($sub && $authorized === 'manager'))) || $state != 1) {
 			if (($mode == 'knol' && $params->get( 'allow_changes' )) || $authorized || $mode != 'knol') {
 				$html .= "\t\t".'<li';
-				if ($task == 'edit') { 
+				if ($task == 'edit') {
 					$html .= ' class="active"'."\n";
 				}
 				$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename.'&task=edit').'"><span>'.JText::_('WIKI_TAB_EDIT').'</span></a></li>'."\n";
@@ -108,13 +99,13 @@ class WikiHtml
 		if (($mode == 'knol' && $params->get( 'allow_comments' )) || $mode != 'knol') {
 			$html .= "\t\t".'<li';
 			$ctasks = array('comments','addcomment','savecomment','reportcomment','removecomment');
-			if (in_array($task,$ctasks)) { 
+			if (in_array($task,$ctasks)) {
 				$html .= ' class="active"'."\n";
 			}
 			$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename.'&task=comments').'"><span>'.JText::_('WIKI_TAB_COMMENTS').'</span></a></li>'."\n";
 		}
 		$html .= "\t\t".'<li';
-		if ($task == 'history' || $task == 'compare') { 
+		if ($task == 'history' || $task == 'compare') {
 			$html .= ' class="active"'."\n";
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename.'&task=history').'"><span>'.JText::_('WIKI_TAB_HISTORY').'</span></a></li>'."\n";
@@ -123,8 +114,6 @@ class WikiHtml
 		$html .= '</div><!-- / #sub-menu -->'."\n";
 		return $html;
     }
-
-	//-----------
 
 	public function tagCloud($tags)
 	{
@@ -150,15 +139,13 @@ class WikiHtml
 		return $html;
 	}
 
-	//-----------
-
 	public function ranking( $stats, $page, $option )
 	{
 		$r = (10*$page->ranking);
 		if (intval($r) < 10) {
 			$r = '0'.$r;
 		}
-		
+
 		$html  = '<dl class="rankinfo">'."\n";
 		$html .= "\t".'<dt class="ranking"><span class="rank-'.$r.'">This page has a</span> '.number_format($page->ranking,1).' Ranking</dt>'."\n";
 		$html .= "\t".'<dd>'."\n";
@@ -171,14 +158,12 @@ class WikiHtml
 		return $html;
 	}
 
-	//-----------
-
 	public function authors( $page, $params, $contributors=array() )
 	{
 		$html = '';
 		if ($params->get( 'mode' ) == 'knol' && !$params->get( 'hide_authors', 0 )) {
 			$authors = $page->getAuthors();
-			
+
 			$author = 'Unknown';
 			$ausername = '';
 			$auser =& JUser::getInstance($page->created_by);
@@ -186,10 +171,10 @@ class WikiHtml
 				$author = $auser->get('name');
 				$ausername = $auser->get('username');
 			}
-			
+
 			$auths = array();
 			$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$page->created_by).'">'.$author.'</a>';
-			foreach ($authors as $auth) 
+			foreach ($authors as $auth)
 			{
 				if ($auth != $ausername && trim($auth) != '') {
 					$zuser =& JUser::getInstance($auth);
@@ -200,10 +185,10 @@ class WikiHtml
 			}
 			$auths = implode(', ',$auths);
 			$html .= '<p class="topic-authors">'. JText::_('by') .' '. $auths.'</p>'."\n";
-			
+
 			if (count($contributors) > 0) {
 				$cons = array();
-				foreach ($contributors as $contributor) 
+				foreach ($contributors as $contributor)
 				{
 					if ($contributor != $page->created_by) {
 						$zuser =& JUser::getInstance($contributor);
@@ -220,19 +205,15 @@ class WikiHtml
 		}
 		return $html;
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $someid;
 	}
-
-	//-----------
 
 	public function encode_html($str, $quotes=1)
 	{

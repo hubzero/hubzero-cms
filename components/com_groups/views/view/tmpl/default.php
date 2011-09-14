@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 $no_html = JRequest::getInt( 'no_html', 0 );
-if (!$no_html) { 
+if (!$no_html) {
 ?>
 	<div class="innerwrap">
 	<div id="page_container">
@@ -40,9 +40,9 @@ if (!$no_html) {
 					<?php
 						//default logo
 						$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
-						
+
 						//logo link - links to group overview page
-						$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn')); 
+						$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn'));
 
 						//path to group uploaded logo
 						$path = '/site/groups/'.$this->group->get('gidNumber').DS.$this->group->get('logo');
@@ -69,7 +69,7 @@ if (!$no_html) {
 									$plugin['name'],
 									$plugin['title']
 								);
-							} 
+							}
 						?>
 					</ul><!-- //end page menu -->
 
@@ -92,8 +92,8 @@ if (!$no_html) {
 				</div>
 				<div id="page_content" class="group_<?php echo $this->tab; ?>">
 					<?php
-			 			} 
-			
+			 			}
+
 						echo JHTML::_(
 							'view_html.displayContent',
 							$this->user,
@@ -103,8 +103,8 @@ if (!$no_html) {
 							$this->hub_group_plugins,
 							$this->group_plugin_access
 						);
-						
-						if (!$no_html) { 
+
+						if (!$no_html) {
 					?>
 				</div>
 			</div> <!-- //close page main -->

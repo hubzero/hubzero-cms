@@ -56,7 +56,7 @@ $app =& JFactory::getApplication();
 			<select name="gid" style="width: 15em;">
 				<option value=""><?php echo JText::_('Select...'); ?></option>
 				<?php
-				foreach ($this->rows as $row) 
+				foreach ($this->rows as $row)
 				{
 					echo '<option value="'.$row->gidNumber.'">'.$row->description.' ('.$row->cn.')</option>'."\n";
 				}
@@ -78,7 +78,7 @@ $app =& JFactory::getApplication();
 			<tbody>
 		<?php
 		ximport('Hubzero_User_Helper');
-		
+
 		$applicants = Hubzero_User_Helper::getGroups( $this->id, 'applicants' );
 		$invitees = Hubzero_User_Helper::getGroups( $this->id, 'invitees' );
 		$members = Hubzero_User_Helper::getGroups( $this->id, 'members' );
@@ -91,18 +91,18 @@ $app =& JFactory::getApplication();
 
 		$groups = array_merge($applicants, $invitees);
 		$managerids = array();
-		foreach ($managers as $manager) 
+		foreach ($managers as $manager)
 		{
 			$groups[] = $manager;
 			$managerids[] = $manager->cn;
 		}
-		foreach ($members as $mem) 
+		foreach ($members as $mem)
 		{
 			if (!in_array($mem->cn,$managerids)) {
 				$groups[] = $mem;
 			}
 		}
-		
+
 		if (count($groups) > 0) {
 			foreach ($groups as $group)
 			{
@@ -111,7 +111,7 @@ $app =& JFactory::getApplication();
 					<td class="paramlist_key"><a href="index.php?option=com_groups&amp;task=manage&amp;gid=<?php echo $group->cn; ?>" target="_parent"><?php echo $group->description.' ('.$group->cn.')'; ?></a></td>
 					<td class="paramlist_value"><?php 
 					$seen[] = $group->cn;
-					
+
 					if ($group->registered) {
 						$status = JText::_('applicant');
 						if ($group->regconfirmed) {

@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiPageComment extends JTable 
+class WikiPageComment extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $pageid     = NULL;  // @var int(11)
@@ -43,25 +42,21 @@ class WikiPageComment extends JTable
 	var $anonymous  = NULL;  // @var int(1)
 	var $parent     = NULL;  // @var int(11)
 	var $status     = NULL;  // @var int(1)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_comments', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function getResponses() 
+
+	public function getResponses()
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE parent='$this->id'" );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function report( $oid=null ) 
+
+	public function report( $oid=null )
 	{
 		$k = $this->_tbl_key;
 		if ($oid) {
@@ -77,10 +72,8 @@ class WikiPageComment extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function getComments( $id, $parent, $ver='', $limit='' ) 
+
+	public function getComments( $id, $parent, $ver='', $limit='' )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE pageid='".$id."' AND parent=".$parent." $ver ORDER BY created DESC $limit" );
 		return $this->_db->loadObjectList();

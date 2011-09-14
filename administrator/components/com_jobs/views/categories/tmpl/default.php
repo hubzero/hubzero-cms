@@ -57,10 +57,10 @@ JToolBarHelper::deleteList( '', 'deletecat', 'Delete' );
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
-	
+
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>

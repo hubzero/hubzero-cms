@@ -29,9 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class Hubzero_Toolbox 
+class Hubzero_Toolbox
 {
-	public function send_email($email, $subject, $message) 
+	public function send_email($email, $subject, $message)
 	{
 		$jconfig =& JFactory::getConfig();
 
@@ -46,32 +46,30 @@ class Hubzero_Toolbox
 		$headers .= "X-Priority: 3\n";
 		$headers .= "X-MSMail-Priority: High\n";
 		$headers .= "X-Mailer: " . $jconfig->getValue('config.sitename') . "\n";
-		
+
 		if (mail($email, $subject, $message, $headers, $args)) {
 			return(1);
 		}
-    
+
 		return(0);
 	}
-	
-	//-----------
 
-	public function thisurl($cutgetvars = 0) 
+	public function thisurl($cutgetvars = 0)
 	{
 		if (!empty($_SERVER['REDIRECT_URL'])) {
 			$thisurl = $_SERVER['REDIRECT_URL'];
 		} else {
 			$thisurl = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], "/") + 1);
 		}
-		
+
 		if ($cutgetvars) {
 			$pvar = strpos($thisurl, "?");
-		
+
 			if ($pvar) {
 				$thisurl = substr($thisurl, 0, $pvar);
 			}
 		}
-    
+
 		return($thisurl);
 	}
 }

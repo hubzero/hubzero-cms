@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
 <?php
 			if ($this->components) {
-				foreach ($this->components as $component) 
+				foreach ($this->components as $component)
 				{
 					$component = substr($component, 4);
 					$sbjt  = "\t\t\t".'<option value="'.$component.'"';
@@ -97,7 +97,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->rows) {
 	$database =& JFactory::getDBO();
 	$cls = 'even';
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		if ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') {
 			$status = '<span class="read status"></span>';
@@ -106,7 +106,7 @@ if ($this->rows) {
 			$status = '<span class="unread status">*</span>';
 			$lnkcls = 'class="unread" ';
 		}
-		
+
 		if (substr($row->component,0,4) == 'com_') {
 			$row->component = substr($row->component,4);
 		}
@@ -116,9 +116,9 @@ if ($this->rows) {
 			$fh = array_pop($fg);
 			$row->subject = implode(' ',$fg);
 		}
-		
+
 		$url = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id);
-		
+
 		$cls = (($cls == 'even') ? 'odd' : 'even');
 		if ($row->actionid) {
 			$xma = new Hubzero_Message_Action( $database );
@@ -127,7 +127,7 @@ if ($this->rows) {
 				$url = JRoute::_(stripslashes($xma->description));
 			}
 		}
-		
+
 		if ($row->actionid) {
 			$cls .= ' actionitem';
 		}

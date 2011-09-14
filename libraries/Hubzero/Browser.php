@@ -44,7 +44,7 @@ class Hubzero_Browser
 	 * @var string
 	 */
 	private $_user_agent = null;
-	
+
 	/**
 	 * OS determined from user agent string
 	 *
@@ -52,7 +52,7 @@ class Hubzero_Browser
 	 * @var string
 	 */
 	private $_os = null;
-	
+
 	/**
 	 * OS version determined from user agent string
 	 *
@@ -60,7 +60,7 @@ class Hubzero_Browser
 	 * @var string
 	 */
 	private $_os_version = null;
-	
+
 	/**
 	 * Browser determined from user agent string
 	 *
@@ -68,7 +68,7 @@ class Hubzero_Browser
 	 * @var string
 	 */
 	private $_browser = null;
-	
+
 	/**
 	 * Browser version determined from user agent string
 	 *
@@ -76,7 +76,7 @@ class Hubzero_Browser
 	 * @var string
 	 */
 	private $_browser_version = null;
-	
+
 	/**
 	 * Determines the user's Browser, Browser version, OS, and OS version from 
 	 * the browser user agent string.
@@ -84,13 +84,13 @@ class Hubzero_Browser
 	 * @access public
 	 * @param	string	$sagent 	User's browser user agent string
 	 */
-	public function __construct($sagent=null) 
+	public function __construct($sagent=null)
 	{
 		if (!$sagent) {
 			$sagent = JRequest::getVar('HTTP_USER_AGENT','','server');
 			$this->_user_agent = $sagent;
 		}
-		
+
 		unset($os);
 		unset($os_version);
 		unset($browser);
@@ -152,15 +152,15 @@ class Hubzero_Browser
 			$browser = 'Other';
 		}*/
 		$browsers = array(
-			'firefox', 'msie', 'opera', 'chrome', 'icab', 'safari',  
+			'firefox', 'msie', 'opera', 'chrome', 'icab', 'safari',
 			'mozilla', 'seamonkey', 'konqueror', 'netscape',
-			'gecko', 'navigator', 'mosaic', 'lynx', 'amaya', 
+			'gecko', 'navigator', 'mosaic', 'lynx', 'amaya',
 			'omniweb', 'avant', 'camino', 'flock', 'aol'
 		);
-		
+
 		$browser = null;
 		$browser_ver = null;
-		
+
 		foreach ($browsers as $b)
 		{
 			if (preg_match("#($b)[/ ]?([0-9.]*)#", strtolower($sagent), $match)) {
@@ -178,8 +178,8 @@ class Hubzero_Browser
 		*/
 		$a_mac = array( 'mac68k', 'macppc' );// this is not used currently
 		// same logic, check in order to catch the os's in order, last is always default item
-		$a_unix = array( 'unixware', 'solaris', 'sunos', 'sun4', 'sun5', 'suni86', 'sun', 
-			'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9', 'hpux10', 'hpux11', 'hpux', 'hp-ux', 
+		$a_unix = array( 'unixware', 'solaris', 'sunos', 'sun4', 'sun5', 'suni86', 'sun',
+			'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9', 'hpux10', 'hpux11', 'hpux', 'hp-ux',
 			'aix1', 'aix2', 'aix3', 'aix4', 'aix5', 'aix', 'sco', 'unixware', 'mpras', 'reliant',
 			'dec', 'sinix', 'unix' );
 		// only sometimes will you get a linux distro to id itself...
@@ -193,13 +193,13 @@ class Hubzero_Browser
 		{
 			//unpacks os array, assigns to variable
 			$s_os = $a_os[$i];
-		
+
 			//assign os to global os variable, os flag true on success
 			//!stristr($browser_string, "linux" ) corrects a linux detection bug
 			if ( !is_array( $s_os ) && stristr( $sagent, $s_os ) && !stristr( $sagent, "linux" ) )
 			{
 				$os = $s_os;
-	
+
 				switch ( $os )
 				{
 					case 'win':
@@ -266,14 +266,14 @@ class Hubzero_Browser
 						break;
 					case 'mac':
 						$os = 'Mac OS';
-						if ( stristr( $sagent, 'os x' ) ) 
+						if ( stristr( $sagent, 'os x' ) )
 						{
 							$os_version = 10;
 						}
 						// this is a crude test for os x, since safari, camino, ie 5.2, & moz >= rv 1.3 
 						// are only made for os x
-						elseif ( ( $browser == 'safari' ) || ( $browser == 'camino' ) || ( $browser == 'shiira' ) || 
-							( ( $browser == 'mozilla' ) && ( $browser_ver >= 1.3 ) ) || 
+						elseif ( ( $browser == 'safari' ) || ( $browser == 'camino' ) || ( $browser == 'shiira' ) ||
+							( ( $browser == 'mozilla' ) && ( $browser_ver >= 1.3 ) ) ||
 							( ( $browser == 'msie' ) && ( $browser_ver >= 5.2 ) ) )
 						{
 							$os_version = 10;
@@ -297,7 +297,7 @@ class Hubzero_Browser
 						break;
 					}
 				}
-			} 
+			}
 			// check that it's an array, check it's the last item 
 			// in the main os array, the linux one that is
 			elseif ( is_array( $s_os ) && ( $i == ( count( $a_os ) - 1 ) ) ) {
@@ -311,7 +311,7 @@ class Hubzero_Browser
 						break;
 					}
 				}
-			} 
+			}
 		}
 
 		// pack the os data array for return to main function
@@ -320,58 +320,58 @@ class Hubzero_Browser
 		$this->_browser = ($browser) ? $browser : 'unknown';
 		$this->_browser_version = ($browser_ver) ? $browser_ver : '';
 	}
-	
+
 	/**
 	 * Return the user's browser
 	 *
 	 * @access public
 	 * @return string
 	 */
-	public function getBrowser() 
+	public function getBrowser()
 	{
 		return $this->_browser;
 	}
-	
+
 	/**
 	 * Return the user's browser version
 	 *
 	 * @access public
 	 * @return string
 	 */
-	public function getBrowserVersion() 
+	public function getBrowserVersion()
 	{
 		return $this->_browser_version;
 	}
-	
+
 	/**
 	 * Return the user's OS
 	 *
 	 * @access public
 	 * @return string
 	 */
-	public function getOs() 
+	public function getOs()
 	{
 		return $this->_os;
 	}
-	
+
 	/**
 	 * Return the user's OS version
 	 *
 	 * @access public
 	 * @return string
 	 */
-	public function getOsVersion() 
+	public function getOsVersion()
 	{
 		return $this->_os_version;
 	}
-	
+
 	/**
 	 * Return the user's browser user agent string
 	 *
 	 * @access public
 	 * @return string
 	 */
-	public function getUserAgent() 
+	public function getUserAgent()
 	{
 		return $this->_user_agent;
 	}

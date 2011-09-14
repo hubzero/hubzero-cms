@@ -68,19 +68,19 @@ if ($this->getError()) {
 	$view->task = $this->task;
 	$view->gid = $this->group->cn;
 	$view->authorized = $this->authorized;
-	
+
 	$view->groupusers = $this->invitees;
 	$view->table = 'invitees';
 	$view->display();
-	
+
 	$view->groupusers = $this->pending;
 	$view->table = 'pending';
 	$view->display();
-	
+
 	$view->groupusers = $this->managers;
 	$view->table = 'managers';
 	$view->display();
-	
+
 	$view->groupusers = $this->members;
 	$view->table = 'members';
 	$view->display();

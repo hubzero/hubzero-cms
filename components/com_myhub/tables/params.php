@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class MyhubParams extends JTable
 {
 	var $uid    = NULL;  // int(11)
@@ -38,31 +37,27 @@ class MyhubParams extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__myhub_params', 'uid', $db );
 	}
-	
-	//-----------
 
-	public function check() 
+	public function check()
 	{
 		if (!$this->uid) {
 			$this->setError( JText::_('ERROR_NO_USER_ID') );
 			return false;
 		}
-		
+
 		if (!$this->mid) {
 			$this->setError( JText::_('ERROR_NO_MOD_ID') );
 			return false;
 		}
-		
+
 		return true;
 	}
 
-	//-----------
-	
-	public function loadParams( $uid=NULL, $mid=NULL ) 
+	public function loadParams( $uid=NULL, $mid=NULL )
 	{
 		if ($uid === NULL) {
 			return false;
@@ -70,7 +65,7 @@ class MyhubParams extends JTable
 		if ($mid === NULL) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid='$uid' AND mid='$mid' LIMIT 1" );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -79,10 +74,8 @@ class MyhubParams extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
 
-	public function storeParams( $new=false ) 
+	public function storeParams( $new=false )
 	{
 		if (!$new) {
 			$this->_db->setQuery( "UPDATE $this->_tbl SET params='$this->params' WHERE uid=".$this->uid." AND mid=".$this->mid);
@@ -106,10 +99,8 @@ class MyhubParams extends JTable
 			return true;
 		}
 	}
-	
-	//-----------
-	
-	public function loadModule( $uid=NULL, $mid=NULL ) 
+
+	public function loadModule( $uid=NULL, $mid=NULL )
 	{
 		if ($uid === NULL) {
 			return false;
@@ -117,10 +108,10 @@ class MyhubParams extends JTable
 		if ($mid === NULL) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
 		$jmodule = new JTableModule( $this->_db );
-		
+
 		$query = "SELECT m.*, p.params AS myparams"
 				. " FROM ".$jmodule->getTableName()." AS m"
 				. " LEFT JOIN $this->_tbl AS p ON m.id=p.mid AND p.uid=".$uid.""

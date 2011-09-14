@@ -37,21 +37,21 @@ $type->load( $this->row->type );
 $fields = array();
 if (trim($type->customFields) != '') {
 	$fs = explode("\n", trim($type->customFields));
-	foreach ($fs as $f) 
+	foreach ($fs as $f)
 	{
 		$fields[] = explode('=', $f);
 	}
 } else {
 	$flds = $this->config->get('tagstool');
 	$flds = explode(',',$flds);
-	foreach ($flds as $fld) 
+	foreach ($flds as $fld)
 	{
 		$fields[] = array($fld, $fld, 'textarea', 0);
 	}
 }
 
 if (!empty($fields)) {
-	for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+	for ($i=0, $n=count( $fields ); $i < $n; $i++)
 	{
 		preg_match("#<nb:".$fields[$i][0].">(.*?)</nb:".$fields[$i][0].">#s", $this->row->fulltext, $matches);
 		if (count($matches) > 0) {
@@ -61,10 +61,10 @@ if (!empty($fields)) {
 		} else {
 			$match = '';
 		}
-		
+
 		// Explore the text and pull out all matches
 		array_push($fields[$i], $match);
-		
+
 		// Clean the original text of any matches
 		$this->row->fulltext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$this->row->fulltext);
 	}
@@ -115,7 +115,7 @@ $view->display();
 <?php 
 //foreach ($allnbtags as $tagname => $tagcontent) 
 foreach ($fields as $field)
-{ 
+{
 	$tagcontent = preg_replace('/<br\\s*?\/??>/i', "", end($field));
 ?>
 			<label>
@@ -127,7 +127,7 @@ foreach ($fields as $field)
 				<?php } ?>
 			</label>
 <?php 
-} 
+}
 ?>
 			<input type="hidden" name="published" value="<?php echo $this->row->published; ?>" />
 			<input type="hidden" name="standalone" value="1" />

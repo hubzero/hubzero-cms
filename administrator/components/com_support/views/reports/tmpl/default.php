@@ -80,12 +80,12 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	$status = '';
-	switch ($row->state) 
+	switch ($row->state)
 	{
 		case '1':
 			$status = JText::_('RELEASED');

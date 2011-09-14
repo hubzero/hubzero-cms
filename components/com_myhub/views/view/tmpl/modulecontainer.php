@@ -78,7 +78,7 @@ if ($this->getError()) {
 	}
 
 	// Is it a custom module (i.e., HTML)?
-	if ($this->module->module == 'mod_custom') { 
+	if ($this->module->module == 'mod_custom') {
 		$html .= $this->module->content;
 	} else {
 		$rparams = array();

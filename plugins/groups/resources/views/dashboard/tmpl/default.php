@@ -33,9 +33,9 @@ if ($this->results) {
 	ximport('Hubzero_View_Helper_Html');
 
 	include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
-	
+
 	plgGroupsResources::documents();
-	
+
 	$database =& JFactory::getDBO();
 	$juser =& JFactory::getUser();
 ?>
@@ -44,7 +44,7 @@ if ($this->results) {
 <?php
 	foreach ($this->results as $line)
 	{
-		switch ($line->rating) 
+		switch ($line->rating)
 		{
 			case 0.5: $class = ' half-stars';      break;
 			case 1:   $class = ' one-stars';       break;
@@ -59,7 +59,7 @@ if ($this->results) {
 			case 0:
 			default:  $class = ' no-stars';      break;
 		}
-		
+
 		$helper = new ResourcesHelper( $line->id, $database );
 		$helper->getContributors();
 
@@ -70,7 +70,7 @@ if ($this->results) {
 		} else {
 			$myrating = 0;
 		}
-		switch ($myrating) 
+		switch ($myrating)
 		{
 			case 0.5: $myclass = ' half-stars';      break;
 			case 1:   $myclass = ' one-stars';       break;
@@ -85,7 +85,7 @@ if ($this->results) {
 			case 0:
 			default:  $myclass = ' no-stars';      break;
 		}
-		
+
 		// Encode some potentially troublesome characters
 		$line->title = Hubzero_View_Helper_Html::xhtml( $line->title );
 
@@ -95,7 +95,7 @@ if ($this->results) {
 		} else {
 			$d = '?';
 		}
-		
+
 		// Format the ranking
 		$line->ranking = round($line->ranking, 1);
 		$r = (10*$line->ranking);

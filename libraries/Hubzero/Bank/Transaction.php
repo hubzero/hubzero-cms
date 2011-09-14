@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class Hubzero_Bank_Transaction extends JTable 
+class Hubzero_Bank_Transaction extends JTable
 {
 	var $id          = NULL;  // @var int(11) Primary key
 	var $uid         = NULL;  // @var int(11)
@@ -43,15 +42,13 @@ class Hubzero_Bank_Transaction extends JTable
 	var $balance     = NULL;  // @var int(11)
 
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__users_transactions', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->uid ) == '') {
 			$this->_error = 'Entry must have a user ID.';
@@ -59,9 +56,7 @@ class Hubzero_Bank_Transaction extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function history( $limit=50, $uid=null )
 	{
 		if ($uid == null) {
@@ -77,10 +72,8 @@ class Hubzero_Bank_Transaction extends JTable
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid=".$uid." ORDER BY created DESC, id DESC".$lmt );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function deleteRecords( $category=null, $type=null, $referenceid=null ) 
+
+	public function deleteRecords( $category=null, $type=null, $referenceid=null )
 	{
 		if ($referenceid == null) {
 			$referenceid = $this->referenceid;
@@ -94,20 +87,18 @@ class Hubzero_Bank_Transaction extends JTable
 		if ($category == null) {
 			$category = $this->category;
 		}
-		
+
 		$query = "DELETE FROM $this->_tbl WHERE category='".$category."' AND type='".$type."' AND referenceid=".$referenceid;
-		
+
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$err = $this->_db->getErrorMsg();
 			die( $err );
 		}
 	}
-	
-	//-----------
-	
-	public function getTransactions( $category=null, $type=null, $referenceid=null, $uid=null ) 
-	{ 
+
+	public function getTransactions( $category=null, $type=null, $referenceid=null, $uid=null )
+	{
 		if ($referenceid == null) {
 			$referenceid = $this->referenceid;
 		}
@@ -127,12 +118,10 @@ class Hubzero_Bank_Transaction extends JTable
 		$query .= " GROUP BY referenceid";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
-	
+
 	}
-	
-	//-----------
-	
-	public function getAmount( $category=null, $type=null, $referenceid=null, $uid=null ) 
+
+	public function getAmount( $category=null, $type=null, $referenceid=null, $uid=null )
 	{
 		if ($referenceid == null) {
 			$referenceid = $this->referenceid;
@@ -146,7 +135,7 @@ class Hubzero_Bank_Transaction extends JTable
 		if ($category == null) {
 			$category = $this->category;
 		}
-		
+
 		$query = "SELECT amount FROM $this->_tbl WHERE category='".$category."' AND type='".$type."' AND referenceid=".$referenceid;
 		if ($uid) {
 			$query .= " AND uid=".$uid;
@@ -154,10 +143,8 @@ class Hubzero_Bank_Transaction extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getTotals( $category=null, $type=null, $referenceid=null, $royalty=0, $action=null, $uid=null, $allusers = 0, $when=null, $calc=0 ) 
+
+	public function getTotals( $category=null, $type=null, $referenceid=null, $royalty=0, $action=null, $uid=null, $allusers = 0, $when=null, $calc=0 )
 	{
 		if ($referenceid == null) {
 			$referenceid = $this->referenceid;
@@ -168,12 +155,12 @@ class Hubzero_Bank_Transaction extends JTable
 		if ($category == null) {
 			$category = $this->category;
 		}
-		
+
 		if ($uid == null) {
 			$juser =& JFactory::getUser();
 			$uid = $juser->get('id');
 		}
-		
+
 		$query = "SELECT ";
 		if ($calc==0) {
 			$query .= " SUM(amount)";
@@ -208,7 +195,7 @@ class Hubzero_Bank_Transaction extends JTable
 		if ($when) {
 			$query .= " AND created LIKE '".$when."%' ";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		/*$results = $this->_db->loadObjectList();
 		

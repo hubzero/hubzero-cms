@@ -239,7 +239,6 @@ class Hubzero_Document_Feed extends JDocument
 		$file = strtolower( str_replace( '.', '', $type ) );
 		$file = $cache_path.DS.$file.'_'.$option.'.xml';
 
-
 		// Instantiate feed renderer and set the mime encoding
 		$renderer =& $this->loadXRenderer(($type) ? $type : 'Rss');
 		if (!is_a($renderer, 'JDocumentRenderer')) {

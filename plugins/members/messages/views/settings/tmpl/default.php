@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<tr>
 						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SENT_WHEN'); ?></th>
 <?php
-	foreach ($this->notimethods as $notimethod) 
+	foreach ($this->notimethods as $notimethod)
 	{
 ?>
 						<th scope="col"><input type="checkbox" name="override[<?php echo $notimethod; ?>]" value="all" onclick="HUB.MembersMsg.checkAll(this, 'opt-<?php echo $notimethod; ?>');" /> <?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_'.strtoupper($notimethod)); ?></th>
@@ -78,7 +78,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$cls = 'even';
 
 				$sheader = '';
-				foreach ($this->components as $component) 
+				foreach ($this->components as $component)
 				{
 					if ($component->name != $sheader) {
 						$sheader = $component->name;
@@ -86,7 +86,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<tr class="section-header">
 						<th scope="col"><?php echo $component->name; ?></th>
 <?php
-						foreach ($this->notimethods as $notimethod) 
+						foreach ($this->notimethods as $notimethod)
 						{
 ?>
 						<th scope="col"><span class="<?php echo $notimethod; ?> iconed"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_'.strtoupper($notimethod)); ?></span></th>

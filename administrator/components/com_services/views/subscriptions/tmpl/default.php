@@ -89,10 +89,10 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-		
+
 	$name = JText::_('UNKNOWN');
 	$login = JText::_('UNKNOWN');
 	$ruser =& JUser::getInstance($row->uid);
@@ -100,13 +100,13 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 		$name = $ruser->get('name');
 		$login = $ruser->get('username');
 	}
-	
+
 	$status='';
 	$pending = $row->currency.' '.$row->pendingpayment.' - '.JText::_('for').' '.$row->pendingunits.' '.JText::_('units(s)');
-	
+
 	$expires = (intval($row->expires) <> 0) ? JHTML::_('date', $row->expires, '%d %b, %Y') : 'N/A';
-		
-	switch ($row->status) 
+
+	switch ($row->status)
 	{
 		case '1':
 			$status = ($row->expires > $now) ? '<span style="color:#197f11;">'.strtolower(JText::_('Active')).'</span>' : '<span style="color:#ef721e;">'.strtolower(JText::_('Expired')).'</span>';

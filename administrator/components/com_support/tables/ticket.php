@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class SupportTicket extends JTable 
+class SupportTicket extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $status     = NULL;  // @var int(3)  --  0 = new, 1 = accepted, 2 = closed
@@ -61,14 +61,12 @@ class SupportTicket extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_tickets', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (!$this->id && trim( $this->report ) == '') {
 			$this->setError( JText::_('SUPPORt_ERROR_BLANK_REPORT') );
@@ -77,13 +75,11 @@ class SupportTicket extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters, $admin ) 
+
+	public function buildQuery( $filters, $admin )
 	{
 		//$juser =& JFactory::getUser();
-		
+
 		$filter = " WHERE report!=''";
 		//$filter = " WHERE (section=1 OR section=0)";
 		/*if ($admin) {
@@ -108,7 +104,7 @@ class SupportTicket extends JTable
 				case '3': $filter .= " AND type=3"; break;
 				case '2': $filter .= ""; break;
 				case '1': $filter .= " AND type=1"; break;
-				case '0': 
+				case '0':
 				default:  $filter .= " AND type=0"; break;
 			}
 		} else {
@@ -155,7 +151,7 @@ class SupportTicket extends JTable
 			$groups = '';
 			if ($xgroups) {
 				$g = array();
-				foreach ($xgroups as $xgroup) 
+				foreach ($xgroups as $xgroup)
 				{
 					$g[] = $xgroup->cn;
 				}
@@ -166,7 +162,7 @@ class SupportTicket extends JTable
 		/*if ($admin == false) {
 			$filter .= ")";
 		}*/
-		
+
 		/*switch ($filters['searchin'])
 		{
 			case 'reporter':
@@ -237,18 +233,16 @@ class SupportTicket extends JTable
 				$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
 			}
 		}
-		
+
 		$query = $from." ".$filter;
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getTicketsCount( $filters=array(), $admin=false ) 
+
+	public function getTicketsCount( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
-		
+
 		if (isset($filters['search']) && $filters['search'] != '') {
 			$sql = "SELECT count(DISTINCT id) FROM $filter";
 		} else {
@@ -258,13 +252,11 @@ class SupportTicket extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getTickets( $filters=array(), $admin=false ) 
+
+	public function getTickets( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
-		
+
 		if (isset($filters['search']) && $filters['search'] != '') {
 			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`";
 		} else {
@@ -277,13 +269,11 @@ class SupportTicket extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getTicketId($which, $filters, $authorized=false)
 	{
 		$filter = $this->buildQuery( $filters, $authorized );
-		
+
 		if ($which == 'prev') {
 			$filter .= " AND id < $this->id";
 			$filters['sortby'] = "id DESC";
@@ -291,17 +281,15 @@ class SupportTicket extends JTable
 			$filter .= " AND id > $this->id";
 			$filters['sortby'] = "id ASC";
 		}
-	
+
 		$this->_db->setQuery( "SELECT id FROM $filter ORDER BY ".$filters['sortby']." LIMIT 1" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null) 
+
+	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
-		
+
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
 				WHERE report!='' 
@@ -312,17 +300,15 @@ class SupportTicket extends JTable
 			$sql .= " AND `group`='$group'";
 		}
 		$sql .= " AND created>='".$year."-".$month."-".$day." 00:00:00'";
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null) 
+
+	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
-		
+
 		$sql = "SELECT COUNT(DISTINCT k.ticket) 
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
@@ -338,14 +324,12 @@ class SupportTicket extends JTable
 		if ($username) {
 			$sql .= " AND k.created_by='".$username."'";
 		}
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getCountOfOpenTickets($type=0, $unassigned=false, $group=null) 
+
+	public function getCountOfOpenTickets($type=0, $unassigned=false, $group=null)
 	{
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
@@ -360,20 +344,18 @@ class SupportTicket extends JTable
 		if ($unassigned) {
 			$sql .= " AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='')";
 		}
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null) 
+
+	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
-		
+
 		$nextyear = (intval($month) == 12) ? $year+1 : $year;
 		$nextmonth = (intval($month) == 12) ? '01' : sprintf( "%02d",intval($month)+1);
-		
+
 		$sql = "SELECT COUNT(DISTINCT k.ticket) 
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
@@ -387,20 +369,18 @@ class SupportTicket extends JTable
 		} else {
 			$sql .= " AND f.`group`='$group'";
 		}
-			
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null) 
+
+	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
-		
+
 		$nextyear = (intval($month) == 12) ? $year+1 : $year;
 		$nextmonth = (intval($month) == 12) ? '01' : sprintf( "%02d",intval($month)+1);
-		
+
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
 				WHERE report!='' 
@@ -412,15 +392,15 @@ class SupportTicket extends JTable
 		} else {
 			$sql .= " AND `group`='$group'";
 		}
-			
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	public function getAverageLifeOfTicket($type=0, $year='', $group=null) 
+
+	public function getAverageLifeOfTicket($type=0, $year='', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
-		
+
 		$sql = "SELECT k.ticket, UNIX_TIMESTAMP(f.created) AS t_created, UNIX_TIMESTAMP(MAX(k.created)) AS c_created
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
@@ -436,13 +416,13 @@ class SupportTicket extends JTable
 		$sql .= " GROUP BY k.ticket";
 		$this->_db->setQuery( $sql );
 		$times = $this->_db->loadObjectList();
-		
+
 		$lifetime = array();
-		
+
 		if ($times) {
 			$count = 0;
 			$lt = 0;
-			foreach ($times as $tim) 
+			foreach ($times as $tim)
 			{
 				$lt += $tim->c_created - $tim->t_created;
 				$count++;
@@ -453,10 +433,10 @@ class SupportTicket extends JTable
 			$days = floor($difference/60/60/24);
 			$hours = floor(($difference - $days*60*60*24)/60/60);
 			$minutes = floor(($difference - $days*60*60*24 - $hours*60*60)/60);
-			
+
 			$lifetime = array($days, $hours, $minutes);
 		}
-		
+
 		return $lifetime;
 	}
 }

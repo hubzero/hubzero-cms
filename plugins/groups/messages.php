@@ -29,16 +29,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_messages' );
 
-//-----------
-
 class plgGroupsMessages extends JPlugin
 {
-	
+
 	public function plgGroupsMessages(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -47,54 +43,50 @@ class plgGroupsMessages extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'groups', 'messages' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onGroupAreas() 
+
+	public function &onGroupAreas()
 	{
 		$area = array(
 			'name' => 'messages',
 			'title' => JText::_('PLG_GROUPS_MESSAGES'),
 			'default_access' => $this->_params->get('plugin_access','members')
 		);
-				
+
 		return $area;
 	}
-
-	//-----------
 
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
 		$active = 'messages';
-		
+
 		// The output array we're returning
 		$arr = array(
 			'html'=>''
 		);
-		
+
 		//get this area details
 		$this_area = $this->onGroupAreas();
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			if(!in_array($this_area['name'],$areas)) {
 				return;
 			}
 		}
-		
+
 		// Are we returning HTML?
 		if ($return == 'html') {
-		
+
 			//get group members plugin access level
 			$group_plugin_acl = $access[$active];
-			
+
 			//Create user object
 			$juser =& JFactory::getUser();
-		
+
 			//get the group members
 			$members = $group->get('members');
-			
+
 			// Set some variables so other functions have access
 			$this->juser = $juser;
 			$this->authorized = $authorized;
@@ -102,13 +94,13 @@ class plgGroupsMessages extends JPlugin
 			$this->group = $group;
 			$this->_option = $option;
 			$this->action = $action;
-		
+
 			//if set to nobody make sure cant access
 			if($group_plugin_acl == 'nobody') {
 				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active))."</p>";
 				return $arr;
 			}
-			
+
 			//check if guest and force login if plugin access is registered or members
 			if ($juser->get('guest') && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) {
 				ximport('Hubzero_Module_Helper');
@@ -116,64 +108,62 @@ class plgGroupsMessages extends JPlugin
 				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 				return $arr;
 			}
-			
+
 			//check to see if user is member and plugin access requires members
 			if(!in_array($juser->get('id'),$members) && $group_plugin_acl == 'members' && $authorized != 'admin') {
 				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))."</p>";
 				return $arr;
 			}
-			
+
 			//push styles to the view
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups','messages');
-		
-		
+
 			// Load some needed libraries
 			ximport('Hubzero_Message');
-			
+
 			$task = strtolower(trim($action));
 
-			switch ($task) 
+			switch ($task)
 			{
 				case 'send': 		$arr['html'] = $this->_send();     break;
 				case 'new':  		$arr['html'] = $this->_create();   break;
 				case 'viewmessage': $arr['html'] = $this->_view(); 	   break;
-				case 'sent':          
+				case 'sent':
 				default:     		$arr['html'] = $this->_sent();     break;
 			}
-		
+
 		}
 
 		// Return data
 		return $arr;
 	}
 
-
 	//---------------------------------
 	// Views
 	//---------------------------------
-	
-	protected function _sent() 
+
+	protected function _sent()
 	{
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_MESSAGES_SENT') );
-		
+
 		// Filters for returning results
 		$filters = array();
 		$filters['limit'] = JRequest::getInt('limit', 10);
 		$filters['start'] = JRequest::getInt('limitstart', 0);
 		$filters['group_id'] = $this->group->get('gidNumber');
-		
+
 		// Instantiate our message object
 		$database =& JFactory::getDBO();
 		$recipient = new Hubzero_Message_Message( $database );
-		
+
 		// Retrieve data
 		$total = $recipient->getSentMessagesCount( $filters );
-		
+
 		$rows = $recipient->getSentMessages( $filters );
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
@@ -187,7 +177,7 @@ class plgGroupsMessages extends JPlugin
 				'name'=>'sent'
 			)
 		);
-		
+
 		// Pass some info to the view
 		$view->option = $this->_option;
 		$view->group = $this->group;
@@ -197,26 +187,24 @@ class plgGroupsMessages extends JPlugin
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Return the output
 		return $view->loadTemplate();
 	}
-	
-	//-----------
-	
-	protected function _view() 
+
+	protected function _view()
 	{
 		//get the message id
 		$message = JRequest::getVar('msg','','get');
-		
+
 		//if there is no message id show all sent messages
 		if(!$message) {
 			return $this->_sent();
 		}
-		
+
 		//insantiate db
 		$database =& JFactory::getDBO();
-		
+
 		// Load the message and parse it
 		$xmessage = new Hubzero_Message_Message( $database );
 		$xmessage->load( $message );
@@ -225,11 +213,11 @@ class plgGroupsMessages extends JPlugin
 		$xmessage->message = preg_replace_callback("/[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])/", array('plgGroupsMessages','autolink'), $xmessage->message);
 		$xmessage->message = nl2br($xmessage->message);
 		$xmessage->message = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$xmessage->message);
-		
+
 		if (substr($xmessage->component,0,4) == 'com_') {
 			$xmessage->component = substr($xmessage->component,4);
 		}
-		
+
 		// Instantiate the view
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -239,7 +227,7 @@ class plgGroupsMessages extends JPlugin
 				'name'=>'message'
 			)
 		);
-		
+
 		// Pass the view some info
 		$view->option = $this->_option;
 		$view->group = $this->group;
@@ -248,24 +236,22 @@ class plgGroupsMessages extends JPlugin
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Return the output
 		return $view->loadTemplate();
 	}
-	
-	//-----------
-	
-	protected function _create() 
+
+	protected function _create()
 	{
 		// Ensure only admins and group managers can create messages
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
 			return false;
 		}
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_MESSAGES_SEND') );
-		
+
 		// Instantiate a vew
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -275,21 +261,21 @@ class plgGroupsMessages extends JPlugin
 				'name'=>'create'
 			)
 		);
-		
+
 		//get all member roles
 		$db =& JFactory::getDBO();
 		$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber='".$this->group->get('gidNumber')."'";
 		$db->setQuery($sql);
 		$member_roles = $db->loadAssocList();
-		
+
 		//get all group members
 		$members = $this->group->get('members');
-		
+
 		// Pass the view some info
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
-		
+
 		$view->member_roles = $member_roles;
 		$view->members = $members;
 		$view->users = JRequest::getVar( 'users', array('all') );
@@ -297,13 +283,11 @@ class plgGroupsMessages extends JPlugin
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Return the output
 		return $view->loadTemplate();
 	}
-	
-	//-----------
-	
+
 	protected function _send()
 	{
 		// Ensure the user is logged in
@@ -311,10 +295,10 @@ class plgGroupsMessages extends JPlugin
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Incoming array of users to message
 		$mbrs = JRequest::getVar( 'users', array(0), 'post' );
-		switch ($mbrs[0]) 
+		switch ($mbrs[0])
 		{
 			case 'invitees':
 				$mbrs = $this->group->get('invitees');
@@ -358,18 +342,18 @@ class plgGroupsMessages extends JPlugin
 				}
 			break;
 		}
-		
+
 		// Incoming message and subject
 		$subject = JRequest::getVar( 'subject', JText::_('PLG_GROUPS_MESSAGES_SUBJECT') );
 		$message = JRequest::getVar( 'message', '' );
-		
+
 		// Ensure we have a message
 		if (!$subject || !$message) {
 			$html  = "<p class=\"error\">You must enter all required fields</p>";
 			$html .= $this->_create();
 			return $html;
 		}
-		
+
 		// Add a link to the group page to the bottom of the message
 		$juri =& JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$this->_option.'&gid='. $this->group->get('cn'));
@@ -377,13 +361,12 @@ class plgGroupsMessages extends JPlugin
 			$sef = substr($sef,1,strlen($sef));
 		}
 		$message .= "\r\n\r\n------------------------------------------------\r\n". $juri->base().$sef . "\r\n";
-		
+
 		// Build the "from" data for the e-mail
 		$from = array();
 		$from['name']  = $juser->get('name').' ('.JText::_(strtoupper($this->_name)).': '.$this->group->get('cn').')';
 		$from['email'] = $juser->get('email');
-		
-		
+
 		// Send the message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
@@ -403,7 +386,7 @@ class plgGroupsMessages extends JPlugin
 				$this->setError( $log->getError() );
 			}
 		}
-		
+
 		// Determine if we're returning HTML or not
 		// (if no - this is an AJAX call)
 		$no_html = JRequest::getInt( 'no_html', 0 );
@@ -417,24 +400,23 @@ class plgGroupsMessages extends JPlugin
 			return $html;
 		}
 	}
-	
-	
+
 	//---------------------------------
 	// Functions 
 	//---------------------------------
-	
-	public function autolink($matches) 
+
+	public function autolink($matches)
 	{
 		$href = $matches[0];
 
 		if (substr($href, 0, 1) == '!') {
 			return substr($href, 1);
 		}
-		
+
 		$href = str_replace('"','',$href);
 		$href = str_replace("'",'',$href);
 		$href = str_replace('&#8221','',$href);
-		
+
 		$h = array('h','m','f','g','n');
 		if (!in_array(substr($href,0,1), $h)) {
 			$href = substr($href, 1);
@@ -451,22 +433,18 @@ class plgGroupsMessages extends JPlugin
 		);
 		return $l;
 	}
-	
-	//-----------
-	
+
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
-		for ($i = 0; $i < $length; $i++) 
+		for ($i = 0; $i < $length; $i++)
 		{
 			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
 		}
-		
+
 		return $obfuscatedEmail;
 	}
 
-	//-----------
-	
 }
 

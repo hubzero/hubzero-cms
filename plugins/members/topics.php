@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_topics' );
-
-//-----------
 
 class plgMembersTopics extends JPlugin
 {
@@ -46,8 +42,6 @@ class plgMembersTopics extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'topics' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
 
 	public function &onMembersContributionsAreas( $authorized )
 	{
@@ -57,14 +51,12 @@ class plgMembersTopics extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
-	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' ) 
+	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' )
 	{
 		//$query  = "SELECT COUNT(*) FROM #__wiki_page AS w WHERE (w.created_by='".$user_id."' OR w.authors LIKE '%".$username."%')";
 		$username = ($username == 'm.username') ? $username : "'".$username."'";
 		$query = "SELECT COUNT(*) FROM #__wiki_page AS w
-					WHERE ((".$user_id." > 0 AND (w.created_by = ".$user_id." OR w.authors LIKE CONCAT('%', ".$username.", '%'))) OR (".$user_id." <= 0 AND w.created_by = ".$user_id."))"; 
+					WHERE ((".$user_id." > 0 AND (w.created_by = ".$user_id." OR w.authors LIKE CONCAT('%', ".$username.", '%'))) OR (".$user_id." <= 0 AND w.created_by = ".$user_id."))";
 		if (!$authorized) {
 			$query .= " AND w.access!=1";
 		}
@@ -80,8 +72,6 @@ class plgMembersTopics extends JPlugin
 		) AS f";*/
 		return $query;
 	}
-
-	//-----------
 
 	public function onMembersContributions( $member, $option, $authorized, $limit=0, $limitstart=0, $sort, $areas=null )
 	{
@@ -111,10 +101,10 @@ class plgMembersTopics extends JPlugin
 		}
 
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
-		
+
 		// Instantiate some needed objects
 		$wp = new WikiPage( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['author'] = $uidNumber;
@@ -133,14 +123,14 @@ class plgMembersTopics extends JPlugin
 			$filters['select'] = 'records';
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
-			
+
 			$database->setQuery( $wp->buildPluginQuery( $filters ) );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
 				ximport('Hubzero_View_Helper_Html');
-				
-				foreach ($rows as $key => $row) 
+
+				foreach ($rows as $key => $row)
 				{
 					if ($row->area != '' && $row->category != '') {
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->category.'&pagename='.$row->alias);
@@ -154,10 +144,8 @@ class plgMembersTopics extends JPlugin
 			return $rows;
 		}
 	}
-	
-	//-----------
-	
-	public function out( $row, $authorized=false ) 
+
+	public function out( $row, $authorized=false )
 	{
 		$database =& JFactory::getDBO();
 
@@ -180,15 +168,11 @@ class plgMembersTopics extends JPlugin
 		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function &onMembersFavoritesAreas( $authorized )
 	{
 		return $this->onMembersContributionsAreas( $authorized );
 	}
-
-	//-----------
 
 	public function onMembersFavorites( $member, $option, $authorized, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -245,8 +229,8 @@ class plgMembersTopics extends JPlugin
 
 			if ($rows) {
 				ximport('Hubzero_View_Helper_Html');
-				
-				foreach ($rows as $key => $row) 
+
+				foreach ($rows as $key => $row)
 				{
 					if ($row->group != '' && $row->scope != '') {
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->scope.'&pagename='.$row->pagename);

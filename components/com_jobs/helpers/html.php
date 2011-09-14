@@ -38,7 +38,7 @@ if (!defined('n')) {
 	define('a','&amp;');
 }
 
-class JobsHtml 
+class JobsHtml
 {
 	public function txt_unpee($pee)
 	{
@@ -50,9 +50,7 @@ class JobsHtml
 		$pee = trim($pee);
 		return $pee;
 	}
-	
-	//-----------
-	
+
 	public function confirmscreen($returnurl, $actionurl, $action='cancelsubscription')
 	{
 		$html  = '<div class="confirmwrap">'.n;
@@ -63,31 +61,29 @@ class JobsHtml
 		} else if ($action=='withdrawapp') {
 			$html .=  JText::_('APPLICATION_WITHDRAW');
 		} else {
-			$html .= JText::_('ACTION_PERFORM_THIS'); 
+			$html .= JText::_('ACTION_PERFORM_THIS');
 		}
 		$yes  = strtoupper(JText::_('YES'));
 		$yes .= $action=='cancelsubscription' ? ', '.JText::_('ACTION_CANCEL_IT') : '';
 		$yes .= $action=='withdrawapp' ? ', '.JText::_('ACTION_WITHDRAW') : '';
-		
+
 		$no  = strtoupper(JText::_('NO'));
 		$no .= $action=='cancelsubscription' ? ', '.JText::_('ACTION_DO_NOT_CANCEL') : '';
 		$no .= $action=='withdrawapp' ? ', '.JText::_('ACTION_DO_NOT_WITHDRAW') : '';
-		
+
 		$html .= '?</p>'.n;
 		$html .= t.'<p><span class="yes"><a href="'.$actionurl.'">'.$yes.'</a></span> <span class="no"><a href="'.$returnurl.'">'.$no.'</a></span></p>';
 		$html .= t.'</div>'.n;
 		$html .= '</div>'.n;
-		
+
 		return $html;
 	}
-	
-	//-----------
 
 	public function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
 		$out .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
-		foreach ($array as $avalue => $alabel) 
+		foreach ($array as $avalue => $alabel)
 		{
 			$selected = ($avalue == $value || $alabel == $value)
 					  ? ' selected="selected"'
@@ -97,11 +93,9 @@ class JobsHtml
 		$out .= '</select>'.n;
 		return $out;
 	}
-	
-	//------------
-	
-	public function wikiHelp() 
-	{	
+
+	public function wikiHelp()
+	{
 		$out  = '<table class="wiki-reference" summary="Wiki Syntax Reference">'.n;
 		$out .= '<caption>Wiki Syntax Reference</caption>'.n;
 		$out .= '	<tbody>'.n;
@@ -135,7 +129,7 @@ class JobsHtml
 		$out .= '		</tr>'.n;
 		$out .= '	</tbody>'.n;
 		$out .= '</table>'.n;
-		
+
 		return $out;
 	}
 }

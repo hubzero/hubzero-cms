@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Message_Component extends JTable
 {
 	var $id        = NULL;  // @var int(11) Primary key
 	var $component = NULL;  // @var varchar(50)
 	var $action    = NULL;  // @var varchar(100)
 	var $title     = NULL;  // @var varchar(255)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xmessage_component', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->component ) == '') {
 			$this->setError( JText::_('Please provide a component.') );
@@ -58,28 +55,24 @@ class Hubzero_Message_Component extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getRecords() 
+
+	public function getRecords()
 	{
 		$query  = "SELECT x.*, c.name 
 					FROM $this->_tbl AS x, #__components AS c
 					WHERE x.component=c.option AND c.parent=0
 					ORDER BY x.component, x.action DESC";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getComponents() 
+
+	public function getComponents()
 	{
 		$query  = "SELECT DISTINCT x.component 
 					FROM $this->_tbl AS x
 					ORDER BY x.component ASC";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResultArray();
 	}

@@ -67,7 +67,6 @@ function submitbutton(pressbutton)
 $k = 0;
 $keys =  array_keys($this->rows);
 
-
 $i = $this->pageNav->limitstart;
 $n = $this->pageNav->limit;
 $count = count($keys);
@@ -75,7 +74,7 @@ $end = $i + $n;
 if ($end > $count)
     $end = $count;
 
-for (; $i < $end; $i++) 
+for (; $i < $end; $i++)
 {
 	$value = $this->rows[$keys[$i]];
 	$name = $keys[$i];

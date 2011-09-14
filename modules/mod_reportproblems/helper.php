@@ -35,21 +35,18 @@ class modReportProblems
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,23 +55,21 @@ class modReportProblems
 	}
 
 	//-----------
-
 	private function _generate_hash($input, $day)
-	{	
+	{
 		// Add date:
 		$input .= $day . date('ny');
-	
+
 		// Get MD5 and reverse it
 		$enc = strrev(md5($input));
-	
+
 		// Get only a few chars out of the string
 		$enc = substr($enc, 26, 1) . substr($enc, 10, 1) . substr($enc, 23, 1) . substr($enc, 3, 1) . substr($enc, 19, 1);
-	
+
 		return $enc;
 	}
 
 	//-----------
-	
 	public function display()
 	{
 		$this->juser = JFactory::getUser();
@@ -83,27 +78,27 @@ class modReportProblems
 		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
 		$this->referrer = str_replace( '&amp;', '&', $this->referrer );
 		$this->referrer = str_replace( '&', '&amp;', $this->referrer );
-		
+
 		$problem = array();
 		$problem['operand1'] = rand(0,10);
 		$problem['operand2'] = rand(0,10);
 		$this->problem = $problem;
 		$this->sum = $problem['operand1'] + $problem['operand2'];
 		$this->krhash = $this->_generate_hash($this->sum,date('j'));
-		
+
 		ximport('Hubzero_Browser');
 		$browser = new Hubzero_Browser();
-		
+
 		$this->os = $browser->getOs();
 		$this->os_version = $browser->getOsVersion();
 		$this->browser = $browser->getBrowser();
 		$this->browser_ver = $browser->getBrowserVersion();
-		
+
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet('mod_reportproblems');
-		
+
 		$this->feedback_params = JComponentHelper::getParams( 'com_feedback' );
-		
+
 		$jdocument =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.'/modules/mod_reportproblems/mod_reportproblems.js')) {
 			$jdocument->addScript('/modules/mod_reportproblems/mod_reportproblems.js');

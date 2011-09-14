@@ -88,8 +88,8 @@ if ($this->authorized) {
 }
 
 if ($this->registration->Organization != REG_HIDE) {
-	if ($this->params->get('access_org') == 0 
-	 || ($this->params->get('access_org') == 1 && $loggedin) 
+	if ($this->params->get('access_org') == 0
+	 || ($this->params->get('access_org') == 1 && $loggedin)
 	 || ($this->params->get('access_org') == 2 && $this->authorized)
 	) {
 		$html .= "\t\t\t".'<tr';
@@ -105,8 +105,8 @@ if ($this->registration->Organization != REG_HIDE) {
 }
 
 if ($this->registration->Employment != REG_HIDE) {
-	if ($this->params->get('access_orgtype') == 0 
-	 || ($this->params->get('access_orgtype') == 1 && $loggedin) 
+	if ($this->params->get('access_orgtype') == 0
+	 || ($this->params->get('access_orgtype') == 1 && $loggedin)
 	 || ($this->params->get('access_orgtype') == 2 && $this->authorized)
 	) {
 		$html .= "\t\t\t".'<tr';
@@ -170,8 +170,8 @@ if ($this->registration->Employment != REG_HIDE) {
 }
 
 if ($this->profile->get('email')) {
-	if ($this->params->get('access_email') == 0 
-	 || ($this->params->get('access_email') == 1 && $loggedin) 
+	if ($this->params->get('access_email') == 0
+	 || ($this->params->get('access_email') == 1 && $loggedin)
 	 || ($this->params->get('access_email') == 2 && $this->authorized)
 	) {
 		$html .= "\t\t\t".'<tr';
@@ -187,8 +187,8 @@ if ($this->profile->get('email')) {
 }
 
 if ($this->registration->URL != REG_HIDE) {
-	if ($this->params->get('access_url') == 0 
-	 || ($this->params->get('access_url') == 1 && $loggedin) 
+	if ($this->params->get('access_url') == 0
+	 || ($this->params->get('access_url') == 1 && $loggedin)
 	 || ($this->params->get('access_url') == 2 && $this->authorized)
 	) {
 		$url = stripslashes($this->profile->get('url'));
@@ -197,7 +197,7 @@ if ($this->registration->URL != REG_HIDE) {
 		} else {
 			$href = JText::_('None');
 		}
-		
+
 		$html .= "\t\t\t".'<tr';
 		$html .= ($this->params->get('access_url') == 2) ? ' class="private"' : '';
 		$html .= '>'."\n";
@@ -211,13 +211,13 @@ if ($this->registration->URL != REG_HIDE) {
 }
 
 if ($this->registration->Phone != REG_HIDE) {
-	if ($this->params->get('access_phone') == 0 
-	 || ($this->params->get('access_phone') == 1 && $loggedin) 
+	if ($this->params->get('access_phone') == 0
+	 || ($this->params->get('access_phone') == 1 && $loggedin)
 	 || ($this->params->get('access_phone') == 2 && $this->authorized)
 	) {
 		$phone = htmlentities($this->profile->get('phone'),ENT_COMPAT,'UTF-8');
 		$phone = ($phone) ? $phone : JText::_('None');
-		
+
 		$html .= "\t\t\t".'<tr';
 		$html .= ($this->params->get('access_phone') == 2) ? ' class="private"' : '';
 		$html .= '>'."\n";
@@ -230,8 +230,8 @@ if ($this->registration->Phone != REG_HIDE) {
 	}
 }
 
-if ($this->params->get('access_bio') == 0 
- || ($this->params->get('access_bio') == 1 && $loggedin) 
+if ($this->params->get('access_bio') == 0
+ || ($this->params->get('access_bio') == 1 && $loggedin)
  || ($this->params->get('access_bio') == 2 && $this->authorized)
 ) {
 	if ($this->profile->get('bio')) {
@@ -242,7 +242,7 @@ if ($this->params->get('access_bio') == 0
 			'pagename' => 'member',
 			'pageid'   => 0,
 			'filepath' => '',
-			'domain'   => '' 
+			'domain'   => ''
 		);
 		ximport('Hubzero_Wiki_Parser');
 		$p =& Hubzero_Wiki_Parser::getInstance();
@@ -262,8 +262,8 @@ if ($this->params->get('access_bio') == 0
 }
 
 if ($this->registration->Interests != REG_HIDE) {
-	if ($this->params->get('access_tags') == 0 
-	 || ($this->params->get('access_tags') == 1 && $loggedin) 
+	if ($this->params->get('access_tags') == 0
+	 || ($this->params->get('access_tags') == 1 && $loggedin)
 	 || ($this->params->get('access_tags') == 2 && $this->authorized)
 	) {
 		$database =& JFactory::getDBO();
@@ -285,8 +285,8 @@ if ($this->registration->Interests != REG_HIDE) {
 }
 
 if ($this->registration->Citizenship != REG_HIDE) {
-	if ($this->params->get('access_countryorigin') == 0 
-	 || ($this->params->get('access_countryorigin') == 1 && $loggedin) 
+	if ($this->params->get('access_countryorigin') == 0
+	 || ($this->params->get('access_countryorigin') == 1 && $loggedin)
 	 || ($this->params->get('access_countryorigin') == 2 && $this->authorized)
 	) {
 		$img = '';
@@ -305,8 +305,8 @@ if ($this->registration->Citizenship != REG_HIDE) {
 	}
 }
 if ($this->registration->Residency != REG_HIDE) {
-	if ($this->params->get('access_countryresident') == 0 
-	 || ($this->params->get('access_countryresident') == 1 && $loggedin) 
+	if ($this->params->get('access_countryresident') == 0
+	 || ($this->params->get('access_countryresident') == 1 && $loggedin)
 	 || ($this->params->get('access_countryresident') == 2 && $this->authorized)
 	) {
 		$img = '';
@@ -325,8 +325,8 @@ if ($this->registration->Residency != REG_HIDE) {
 	}
 }
 if ($this->registration->Sex != REG_HIDE) {
-	if ($this->params->get('access_gender') == 0 
-	 || ($this->params->get('access_gender') == 1 && $loggedin) 
+	if ($this->params->get('access_gender') == 0
+	 || ($this->params->get('access_gender') == 1 && $loggedin)
 	 || ($this->params->get('access_gender') == 2 && $this->authorized)
 	) {
 		$html .= "\t\t\t".'<tr';
@@ -343,8 +343,8 @@ if ($this->registration->Sex != REG_HIDE) {
 if ($this->registration->Disability != REG_HIDE) {
 	$dis = MembersHtml::propercase_multiresponse($this->profile->get('disability'));
 	if ($dis) {
-		if ($this->params->get('access_disability') == 0 
-		 || ($this->params->get('access_disability') == 1 && $loggedin) 
+		if ($this->params->get('access_disability') == 0
+		 || ($this->params->get('access_disability') == 1 && $loggedin)
 		 || ($this->params->get('access_disability') == 2 && $this->authorized)
 		) {
 			$html .= "\t\t\t".'<tr';
@@ -362,8 +362,8 @@ if ($this->registration->Disability != REG_HIDE) {
 if ($this->registration->Hispanic != REG_HIDE) {
 	$his = MembersHtml::propercase_multiresponse($this->profile->get('hispanic'));
 	if ($his) {
-		if ($this->params->get('access_hispanic') == 0 
-		 || ($this->params->get('access_hispanic') == 1 && $loggedin) 
+		if ($this->params->get('access_hispanic') == 0
+		 || ($this->params->get('access_hispanic') == 1 && $loggedin)
 		 || ($this->params->get('access_hispanic') == 2 && $this->authorized)
 		) {
 			$html .= "\t\t\t".'<tr';
@@ -381,8 +381,8 @@ if ($this->registration->Hispanic != REG_HIDE) {
 if ($this->registration->Race != REG_HIDE) {
 	$rac = MembersHtml::propercase_multiresponse($this->profile->get('race'));
 	if ($rac) {
-		if ($this->params->get('access_race') == 0 
-		 || ($this->params->get('access_race') == 1 && $loggedin) 
+		if ($this->params->get('access_race') == 0
+		 || ($this->params->get('access_race') == 1 && $loggedin)
 		 || ($this->params->get('access_race') == 2 && $this->authorized)
 		) {
 			$html .= "\t\t\t".'<tr';
@@ -398,8 +398,8 @@ if ($this->registration->Race != REG_HIDE) {
 	}
 }
 if ($this->registration->OptIn != REG_HIDE) {
-	if ($this->params->get('access_optin') == 0 
-	 || ($this->params->get('access_optin') == 1 && $loggedin) 
+	if ($this->params->get('access_optin') == 0
+	 || ($this->params->get('access_optin') == 1 && $loggedin)
 	 || ($this->params->get('access_optin') == 2 && $this->authorized)
 	) {
 		$html .= "\t\t\t".'<tr';

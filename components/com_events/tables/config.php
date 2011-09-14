@@ -29,21 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class EventsConfig extends JTable 
+class EventsConfig extends JTable
 {
 	var $param = NULL;
 	var $value = NULL;
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__events_config', 'param', $db );
 	}
 
-	//-----------
-	
-	public function check() 
+	public function check()
 	{
 		// check for valid name
 		if (trim( $this->param ) == '') {
@@ -54,30 +50,24 @@ class EventsConfig extends JTable
 	}
 }
 
-class EventsConfigs 
+class EventsConfigs
 {
 	private $_tbl   = NULL;
 	private $_db    = NULL;
 	private $_data  = array();
 	private $_error = NULL;
 
-	//-----------
-	
 	public function __construct( &$db )
 	{
 		$this->_tbl = '#__events_config';
 		$this->_db = $db;
 	}
 
-	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -85,42 +75,38 @@ class EventsConfigs
 		}
 	}
 
-	//-----------
-	
 	public function load()
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl" );
 		$configs = $this->_db->loadObjectList();
-		
+
 		if (empty($configs) || count($configs) <= 0) {
 			if ($this->loadDefaults()) {
 				$this->_db->setQuery( "SELECT * FROM $this->_tbl" );
 				$configs = $this->_db->loadObjectList();
 			}
 		}
-		
+
 		if (!empty($configs)) {
-			foreach ($configs as $config) 
+			foreach ($configs as $config)
 			{
 				$b = $config->param;
 				$this->$b = trim($config->value);
 			}
 		}
-		
+
 		$fields = array();
 		if (trim($this->fields) != '') {
 			$fs = explode("\n", trim($this->fields));
-			foreach ($fs as $f) 
+			foreach ($fs as $f)
 			{
 				$fields[] = explode('=', $f);
 			}
 		}
 		$this->fields = $fields;
 	}
-	
-	//-----------
-	
-	public function loadDefaults() 
+
+	public function loadDefaults()
 	{
 		$config = array(
 				'adminmail'=>'',
@@ -140,7 +126,7 @@ class EventsConfigs
 				'calForceCatColorEventForm'=>'NO',
 				'fields'=>''
 			);
-		foreach ($config as $p=>$v) 
+		foreach ($config as $p=>$v)
 		{
 			$this->_db->setQuery( "INSERT INTO $this->_tbl (param, value) VALUES ('$p', '$v')" );
 			if (!$this->_db->query()) {
@@ -149,10 +135,8 @@ class EventsConfigs
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getCfg( $f='' ) 
+
+	public function getCfg( $f='' )
 	{
 		if ($f) {
 			return $this->$f;

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class XGroupLog extends JTable 
+class XGroupLog extends JTable
 {
 	var $id        = NULL;  // @var int(11) Primary key
 	var $gid       = NULL;  // @var int(11)
@@ -42,34 +42,30 @@ class XGroupLog extends JTable
 	var $action    = NULL;  // @var varchar(50)
 	var $comments  = NULL;  // @var text
 	var $actorid   = NULL;  // @var int(11)
-	
+
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xgroups_log', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->gid ) == '') {
 			$this->setError( JText::_('GROUPS_LOGS_MUST_HAVE_GROUP_ID') );
 			return false;
 		}
-		
+
 		if (trim( $this->uid ) == '') {
 			$this->setError( JText::_('GROUPS_LOGS_MUST_HAVE_USER_ID') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	//-----------
-	
-	public function getLogs( $gid=null, $limit=5 ) 
+
+	public function getLogs( $gid=null, $limit=5 )
 	{
 		if (!$gid) {
 			$gid = $this->gid;
@@ -77,19 +73,17 @@ class XGroupLog extends JTable
 		if (!$gid) {
 			return null;
 		}
-		
+
 		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ORDER BY `timestamp` DESC";
 		if ($limit) {
 			$query .= " LIMIT ".$limit;
 		}
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getLog( $gid=null, $which='first' ) 
+
+	public function getLog( $gid=null, $which='first' )
 	{
 		if (!$gid) {
 			$gid = $this->gid;
@@ -97,14 +91,14 @@ class XGroupLog extends JTable
 		if (!$gid) {
 			return null;
 		}
-		
+
 		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ";
 		if ($which == 'first') {
 			$query .= "ORDER BY `timestamp` ASC LIMIT 1";
 		} else {
 			$query .= "ORDER BY `timestamp` DESC LIMIT 1";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -113,10 +107,8 @@ class XGroupLog extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function deleteLogs( $gid=null ) 
+
+	public function deleteLogs( $gid=null )
 	{
 		if (!$gid) {
 			$gid = $this->gid;
@@ -124,17 +116,15 @@ class XGroupLog extends JTable
 		if (!$gid) {
 			return null;
 		}
-		
+
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE gid=".$gid );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function logCount( $gid=null, $action='' ) 
+
+	public function logCount( $gid=null, $action='' )
 	{
 		if (!$gid) {
 			$gid = $this->gid;
@@ -142,12 +132,12 @@ class XGroupLog extends JTable
 		if (!$gid) {
 			return null;
 		}
-		
+
 		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE gid=$gid";
 		if ($action) {
 			$query .= " AND action='$action'";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}

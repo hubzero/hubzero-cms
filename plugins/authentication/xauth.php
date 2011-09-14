@@ -96,11 +96,11 @@ class plgAuthenticationXauth extends JPlugin
 
 				$response->email = '-' . $domain_id . '-' . bin2hex($response->email) . '@' . bin2hex($response->username) . '.localhost.invalid';
 				$response->username = '-' . $domain_id . ':' . bin2hex($response->username) . ':';
-				
+
 				return;
 			}
 		}
-		
+
 		$response->type = 'xauth';
 		$response->status = JAUTHENTICATE_STATUS_FAILURE;
 		$response->error_message = 'Invalid domain';
@@ -116,8 +116,8 @@ class plgAuthenticationXauth extends JPlugin
 				$options['domain'] = $plugin->name;
 
 			$className = 'plg'.$plugin->type.$plugin->name;
-			
-			if (($options['domain'] == $plugin->name) && class_exists( $className )) 
+
+			if (($options['domain'] == $plugin->name) && class_exists( $className ))
 			{
 				$plugin = new $className($this, (array)$plugin);
 				$plugin->onAuthenticate($credentials, $options, $response);

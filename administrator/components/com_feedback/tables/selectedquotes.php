@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class SelectedQuotes extends JTable 
+class SelectedQuotes extends JTable
 {
 	var $id             = NULL;  // @var int(11) Primary key
 	var $userid         = NULL;  // @var int(11)
@@ -47,15 +47,13 @@ class SelectedQuotes extends JTable
 	var $notes          = NULL;	 // @var string
 
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__selected_quotes', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->quote ) == '') {
 			$this->setError( JText::_('Quote must contain text.') );
@@ -64,10 +62,8 @@ class SelectedQuotes extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters ) 
+
+	public function buildQuery( $filters )
 	{
 		/*$query = "FROM $this->_tbl ";
 		if ((isset($filters['search']) && $filters['search'] != '') 
@@ -103,7 +99,7 @@ class SelectedQuotes extends JTable
 		if (isset($filters['search']) && $filters['search'] != '' ) {
 			$words = explode(' ', $filters['search']);
 			$sqlsearch = "";
-			foreach ($words as $word) 
+			foreach ($words as $word)
 			{
 				$sqlsearch .= " (LOWER(fullname) LIKE '%$word%') OR";
 			}
@@ -130,47 +126,41 @@ class SelectedQuotes extends JTable
 		}
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*) ".$this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getResults( $filters=array() ) 
+
+	public function getResults( $filters=array() )
 	{
 		$query  = "SELECT * ".$this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function deletePicture( $config=null )
 	{
 		// Load the component config
 		if (!$config) {
 			$config =& JComponentHelper::getParams( 'com_feedback' );
 		}
-		
+
 		// Incoming member ID
 		if (!$this->id) {
 			$this->setError( JText::_('FEEDBACK_NO_ID') );
 			return false;
 		}
-		
+
 		// Incoming file
 		if (!$this->picture) {
 			return true;
 		}
-		
+
 		// Build the file path
 		ximport('Hubzero_View_Helper_Html');
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $this->id );
@@ -183,7 +173,7 @@ class SelectedQuotes extends JTable
 		}
 		$path .= $config->get('uploadpath').DS.$dir;
 
-		if (!file_exists($path.DS.$this->picture) or !$this->picture) { 
+		if (!file_exists($path.DS.$this->picture) or !$this->picture) {
 			return true;
 		} else {
 			// Attempt to delete the file
@@ -193,7 +183,7 @@ class SelectedQuotes extends JTable
 				return false;
 			}
 		}
-	
+
 		return true;
 	}
 }

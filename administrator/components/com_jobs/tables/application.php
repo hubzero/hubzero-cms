@@ -29,7 +29,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class JobApplication extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
@@ -41,39 +40,33 @@ class JobApplication extends JTable
 	var $resumeid	= NULL;
 	var $status		= NULL;
 	var $reason		= NULL;
-		
-	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_applications', 'id', $db );
 	}
-	
-	//----------
-	 
-	public function getApplications ($jobid) 
-	{	 	
+
+	public function getApplications ($jobid)
+	{
 		if ($jobid === NULL) {
 			return false;
 		}
-		
+
 		$sql = "SELECT a.* FROM  #__jobs_applications AS a ";
 		$sql.= "JOIN #__jobs_seekers as s ON s.uid=a.uid";
 		$sql.= "\n WHERE  a.jid='$jobid' AND s.active=1 ";
 		$sql.= " ORDER BY a.applied DESC";
-		
+
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();	 
+		return $this->_db->loadObjectList();
 	}
-	
-	//--------
-	
+
 	public function loadApplication( $uid = NULL, $jid = NULL, $jobcode = NULL )
-	{		
+	{
 		if ($uid === NULL or ($jid === NULL && $jobcode === NULL)) {
 			return false;
 		}
-		
+
 		$query  = "SELECT * FROM $this->_tbl as A ";
 		$query .= $jid ? "" : " JOIN #__jobs_openings as J ON J.id=A.jid ";
 		$query .= " WHERE A.uid='$uid' ";
@@ -85,6 +78,6 @@ class JobApplication extends JTable
 		} else {
 			return false;
 		}
-	}	
+	}
 }
 

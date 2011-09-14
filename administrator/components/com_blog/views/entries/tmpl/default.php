@@ -83,10 +83,10 @@ $db		=& JFactory::getDBO();
 
 $nullDate = $db->getNullDate();
 $rows = $this->rows;
-for ($i=0, $n=count( $rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $rows ); $i < $n; $i++)
 {
 	$row =& $rows[$i];
-	
+
 	$publish_up =& JFactory::getDate($row->publish_up);
 	$publish_down =& JFactory::getDate($row->publish_down);
 	$publish_up->setOffset($config->getValue('config.offset'));
@@ -122,7 +122,7 @@ for ($i=0, $n=count( $rows ); $i < $n; $i++)
 			$times .= "<br />". JText::_( 'Finish' ) .": ". $publish_down->toFormat();
 		}
 	}
-	
+
 	if ($row->allow_comments == 0 ) {
 		$cimg = 'publish_x.png';
 		$calt = JText::_( 'Off' );

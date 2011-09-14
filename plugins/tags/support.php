@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_support' );
-
-//-----------
 
 class plgTagsSupport extends JPlugin
 {
@@ -46,8 +42,6 @@ class plgTagsSupport extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'tags', 'support' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-
-	//-----------
 
 	/*public function onTagAreas()
 	{

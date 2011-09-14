@@ -53,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		$html = "\t".'<li><a'.$cls.' href="'.JRoute::_('index.php?option='.$this->option.'&section=all').'">'.JText::_('All Articles').'</a></li>'."\n";
 		if (count($this->categories) > 0) {
-			foreach ($this->categories as $row) 
+			foreach ($this->categories as $row)
 			{
 				$html .= "\t".'<li><a ';
 				if ($this->catid == $row->id) {
@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) {
 					//$html .= '<h4>'.JText::_('SUBCATEGORIES').'</h4>'."\n";
 					$html .= "\t".'<ul class="categories">'."\n";
-					foreach ($this->subcategories as $cat) 
+					foreach ($this->subcategories as $cat)
 					{
 						$html .= "\t\t".'<li><a ';
 						if ($this->filters['category'] == $cat->id) {
@@ -118,7 +118,7 @@ if ($this->filters['search'] != '') {
 					<tbody>
 <?php
 if (count($this->articles) > 0) {
-	foreach ($this->articles as $row) 
+	foreach ($this->articles as $row)
 	{
 		$link  = 'index.php?option='.$this->option.'&section='.$row->calias;
 		$link .= ($row->ccalias) ? '&category='.$row->ccalias : '';

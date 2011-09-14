@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xmessage_im' );
-
-//-----------
 
 class plgXMessageIm extends JPlugin
 {
@@ -46,22 +42,18 @@ class plgXMessageIm extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xmessage', 'im' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function onMessageMethods()
 	{
 		return 'im';
 	}
-
-	//-----------
 
 	public function onMessage( $from, $xmessage, $user, $action )
 	{
 		if ($this->onMessageMethods() != $action) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }

@@ -61,7 +61,6 @@ if (substr($sef,0,1) == '/') {
 }
 $message .= "1. ".$juri->base().$sef."\n\n";
 
-
 $sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept&token='.$this->token);
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));

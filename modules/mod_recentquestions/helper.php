@@ -35,30 +35,26 @@ class modRecentQuestions
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
 			return $this->attributes[$property];
 		}
 	}
-	
-	//-----------
 
+	//-----------
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -66,82 +62,79 @@ class modRecentQuestions
 		}
 		return $stime;
 	}
-	
+
 	//-----------
-	
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
 		$current_time = time();
-		
+
 		// Determine the difference, between the time now and the timestamp
 		$difference = $current_time - $timestamp;
-		
+
 		// Set the periods of time
 		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
-		
+
 		// Set the number of seconds per period
 		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		
+
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-		
+
 		// Ensure the script has found a match
 		if ($val < 0) $val = 0;
-		
+
 		// Determine the minor value, to recurse through
 		$new_time = $current_time - ($difference % $lengths[$val]);
-		
+
 		// Set the current value to be floored
 		$number = floor($number);
 
 		// If required create a plural
 		if ($number != 1) $periods[$val].= 's';
-		
+
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
+
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
 		if (($val >= 1) && (($current_time - $new_time) > 0)) {
 			$text .= $this->timeAgoo($new_time);
 		}
-		
+
 		return $text;
 	}
-	
+
 	//-----------
-	
-	public function timeAgo($timestamp) 
+	public function timeAgo($timestamp)
 	{
 		$text = $this->timeAgoo($timestamp);
-		
+
 		$parts = explode(' ',$text);
 
 		$text  = $parts[0].' '.$parts[1];
 		$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
 		return $text;
 	}
-	
-	//-----------
 
+	//-----------
 	public function display()
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
 		$state = $params->get( 'state' );
 		$limit = intval( $params->get( 'limit' ) );
-		
-		switch ($state) 
+
+		switch ($state)
 		{
 			case 'open': $st = "a.state=0"; break;
 			case 'closed': $st = "a.state=1"; break;
 			case 'both': $st = "a.state<2"; break;
 			default: $st = ""; break;
 		}
-		
+
 		$tag = JRequest::getVar( 'tag', '', 'get' );
 		$this->style = JRequest::getVar( 'style', '', 'get' );
 		if ($tag) {
@@ -160,10 +153,10 @@ class modRecentQuestions
 		}
 		$query .= "\n ORDER BY a.created DESC";
 		$query .= ($limit) ? "\n LIMIT ".$limit : "";
-		
+
 		$database->setQuery( $query );
 		$this->rows = $database->loadObjectList();
-		
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_recentquestions');

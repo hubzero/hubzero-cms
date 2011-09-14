@@ -42,9 +42,7 @@ class ResourcesTags extends TagsHandler
 		$this->_db  = $db;
 		$this->_tbl = 'resources';
 	}
-	
-	//-----------
-	
+
 	public function getTags($id, $tagger_id=0, $strength=0, $admin=0)
 	{
 		$sql = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t, $this->_obj_tbl AS rt WHERE rt.objectid=$id AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
@@ -63,26 +61,24 @@ class ResourcesTags extends TagsHandler
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function get_tags_with_objects($id=0, $type=0, $tag='') 
+
+	public function get_tags_with_objects($id=0, $type=0, $tag='')
 	{
 		$juser =& JFactory::getUser();
 		$now  = date( 'Y-m-d H:i:s', time() );
-		
+
 		$this->_db->setQuery( "SELECT objectid FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'" );
 		$objs = $this->_db->loadObjectList();
 		$ids = '';
 		if ($objs) {
 			$s = array();
-			foreach ($objs as $obj) 
+			foreach ($objs as $obj)
 			{
 				$s[] = $obj->objectid;
 			}
 			$ids = implode(",",$s);
 		}
-		
+
 		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids 
 				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, #__resources AS r
 				WHERE o.tbl='$this->_tbl' 
@@ -128,10 +124,10 @@ class ResourcesTags extends TagsHandler
 
 		$this->_db->setQuery( $sql );
 		$results = $this->_db->loadObjectList();
-		
+
 		$rows = array();
 		if ($results) {
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				if (!isset($rows[$result->id])) {
 					$rows[$result->id] = $result;
@@ -147,9 +143,7 @@ class ResourcesTags extends TagsHandler
 		}
 		return $rows;
 	}
-	
-	//-----------
-	
+
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
@@ -163,14 +157,12 @@ class ResourcesTags extends TagsHandler
 		}
 		return $arr;
 	}
-	
-	//-----------
-	
-	public function get_objects_on_tag( $tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array() ) 
+
+	public function get_objects_on_tag( $tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array() )
 	{
 		$juser =& JFactory::getUser();
 		$now  = date( 'Y-m-d H:i:s', time() );
-		
+
 		if ($tag || $tag2) {
 			$query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
 			if ($type == 7) {
@@ -178,7 +170,7 @@ class ResourcesTags extends TagsHandler
 			} else {
 				$query.= "C.title ";
 			}
-			switch ($sortby) 
+			switch ($sortby)
 			{
 				case 'users':
 					$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
@@ -209,7 +201,7 @@ class ResourcesTags extends TagsHandler
 			} else {
 				$query.= "C.title ";
 			}
-			switch ($sortby) 
+			switch ($sortby)
 			{
 				case 'users':
 					$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=12 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
@@ -229,7 +221,7 @@ class ResourcesTags extends TagsHandler
 				$query .= ", #__tool_version as TV ";
 			}
 		}
-		
+
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
 		if ($type) {
 			$query .= "AND C.type=".$type." ";
@@ -239,13 +231,13 @@ class ResourcesTags extends TagsHandler
 		}
 		if (!empty($filterby) && $type == 7) {
 			$fquery = " AND ((";
-			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++)
 			{
 				$fquery .= " TTA.".$filterby[$i]." = '1'";
 				$fquery .= ($i + 1) == $n ? "" : " OR ";
 			}
 			$fquery .= ") OR (";
-			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++)
 			{
 				$fquery .= " TTA.".$filterby[$i]." IS NULL";
 				$fquery .= ($i + 1) == $n ? "" : " OR ";
@@ -292,7 +284,7 @@ class ResourcesTags extends TagsHandler
 				$query .= " GROUP BY C.id HAVING uniques=2";
 			}
 		}
-		switch ($sortby) 
+		switch ($sortby)
 		{
 			case 'ranking':
 				$sort = "ranking DESC";
@@ -315,7 +307,7 @@ class ResourcesTags extends TagsHandler
 		//echo '<!-- '.$query.' -->';
 		$this->_db->setQuery( $query );
 		$rows = $this->_db->loadObjectList();
-		
+
 		/*if ($rows) {
 			if (!empty($filterby) && $type == 7) {
 				$results = array();
@@ -335,13 +327,11 @@ class ResourcesTags extends TagsHandler
 				$rows = $results;
 			}
 		}*/
-		
+
 		return $rows;
 	}
-	
-	//-----------
-	
-	public function checkTagUsage( $tag, $id=0, $alias='' ) 
+
+	public function checkTagUsage( $tag, $id=0, $alias='' )
 	{
 		if (!$id && !$alias) {
 			return false;
@@ -358,14 +348,12 @@ class ResourcesTags extends TagsHandler
 						AND ta.objectid=r.id 
 						AND r.alias='".$alias."'";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getTagUsage( $tag, $rtrn='id' ) 
+
+	public function getTagUsage( $tag, $rtrn='id' )
 	{
 		if (!$tag) {
 			return array();
@@ -377,7 +365,7 @@ class ResourcesTags extends TagsHandler
 					AND t.tag='".$tag."' 
 					AND ta.tbl='resources' 
 					AND ta.objectid=r.id";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResultArray();
 	}

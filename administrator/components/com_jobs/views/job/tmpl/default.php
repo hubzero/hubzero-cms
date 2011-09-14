@@ -35,7 +35,6 @@ JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-
 $usonly = $this->config->get('usonly');
 $this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : htmlentities(JText::_('United States'));
 $this->row->code = !$this->isnew ? $this->row->code : JText::_('N/A (new job)');
@@ -52,29 +51,29 @@ $this->row->description = JobsHtml::txt_unpee($this->row->description);
 $employerid = $this->isnew ? 1 : $this->job->employerid;
 
 // Get the published status			
-	switch ($this->row->status) 
+	switch ($this->row->status)
 	{
-		case 0: 
+		case 0:
 			$alt   = 'Pending approval';
 			$class = 'post_pending';
 			break;
-		case 1: 
-			$alt 	= $this->job->inactive 
-					? JText::_('Invalid Subscription') 
-					: JText::_('Active'); 
-			$class  = $this->job->inactive 
+		case 1:
+			$alt 	= $this->job->inactive
+					? JText::_('Invalid Subscription')
+					: JText::_('Active');
+			$class  = $this->job->inactive
 					? 'post_invalidsub'
-					: 'post_active';  
+					: 'post_active';
 			break;
-		case 2: 
+		case 2:
 			$alt   = 'Deleted';
 			$class = 'post_deleted';
 			break;
-		case 3: 
+		case 3:
 			$alt   = 'Inactive';
 			$class = 'post_inactive';
 			break;
-		case 4: 
+		case 4:
 			$alt   = 'Draft';
 			$class = 'post_draft';
 			break;
@@ -145,13 +144,13 @@ function submitbutton(pressbutton)
                     	<?php echo JText::_('United States'); ?>
                     	<p class="hint"><?php echo JText::_('Only US-based jobs can be advertised on this site.'); ?></p>
                         <input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
-                     <?php } else { 
+                     <?php } else {
 					 	$out  = "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";
 					 	$out .= "\t\t\t\t".' <option value="">(select from list)</option>'."\n";
 					 	//$countries = getcountries();
 						ximport('Hubzero_Geo');
 						$countries = Hubzero_Geo::getcountries();
-						foreach ($countries as $country) 
+						foreach ($countries as $country)
 						{
 							$out .= "\t\t\t\t".' <option value="' . htmlentities($country['name']) . '"';
 							if ($country['name'] == $this->row->companyLocationCountry) {
@@ -259,7 +258,7 @@ function submitbutton(pressbutton)
                 <tr>
 					<td class="key"><label><?php echo JText::_('User subscription'); ?>:</label></td>
 					<td>
-						<?php echo $this->subscription->code; 
+						<?php echo $this->subscription->code;
 						if (!$this->job->inactive) { echo ' '.JText::_('(active').' '.JText::_(', expires').' '.$this->subscription->expires.')';  } ?>
                     </td>
 				</tr>

@@ -34,13 +34,13 @@ if ($modrandomquote->quote) {
 	$html .= '<div class="frontquote">'."\n";
 	$html .= ' <blockquote cite="'.$modrandomquote->quote->fullname.'"><p>'."\n";
 	$html .= Hubzero_View_Helper_Html::shortenText(stripslashes($modrandomquote->quote_to_show), $modrandomquote->charlimit, 0)."\n" ;
-	$html .= strlen($modrandomquote->quote->quote) > $modrandomquote->charlimit 
-	? '<a href="/about/quotes/?quoteid='.$modrandomquote->quote->id.'" title="'.JText::_('View the full quote by').' '.$modrandomquote->quote->fullname.'" class="showfullquote">...&raquo;</a>'."\n" 
+	$html .= strlen($modrandomquote->quote->quote) > $modrandomquote->charlimit
+	? '<a href="/about/quotes/?quoteid='.$modrandomquote->quote->id.'" title="'.JText::_('View the full quote by').' '.$modrandomquote->quote->fullname.'" class="showfullquote">...&raquo;</a>'."\n"
 	: '' ;
 	$html .= ' </p></blockquote>'."\n";
 	$html .= '<p class="cite"><cite>'.$modrandomquote->quote->fullname.'</cite>, '.$modrandomquote->quote->org.' <span>-</span> <span>'.JText::_('in').'&nbsp;<a href="/about/quotes">'.JText::_('Notable&nbsp;Quotes').'</a></span></p>'."\n";
 	//$html .= ' <p class="cite"><cite>'.$modrandomquote->quote->fullname.'</cite> - '.JText::_('in').'&nbsp;<a href="/about/quotes">'.JText::_('Quotes').'</a></p>'."\n";
 	$html .= '</div>'."\n";
-	
+
 	echo $html;
 }

@@ -35,14 +35,12 @@ class modMyWishes
 	private $attributes = array();
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -51,7 +49,6 @@ class modMyWishes
 	}
 
 	//-----------
-
 	private function _convertTime($stime)
 	{
 		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
@@ -60,60 +57,58 @@ class modMyWishes
 		}
 		return $stime;
 	}
-	
+
 	//-----------
-	
 	private function _calculateTime($timestamp)
 	{
 		// Store the current time
 		$current_time = time();
-		
+
 		// Determine the difference, between the time now and the timestamp
 		$difference = $current_time - $timestamp;
-		
+
 		// Set the periods of time
 		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		
+
 		// Set the number of seconds per period
 		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		
+
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-		
+
 		// Ensure the script has found a match
 		if ($val < 0) $val = 0;
-		
+
 		// Determine the minor value, to recurse through
 		$new_time = $current_time - ($difference % $lengths[$val]);
-		
+
 		// Set the current value to be floored
 		$number = floor($number);
 
 		// If required create a plural
 		if ($number != 1) $periods[$val] .= "s";
-		
+
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
+
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
 		if (($val >= 1) && (($current_time - $new_time) > 0)){
 			$text .= $this->_calculateTime($new_time);
 		}
-		
+
 		return $text;
 	}
-	
+
 	//-----------
-	
-	private function _timeAgo($timestamp) 
+	private function _timeAgo($timestamp)
 	{
 		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
 		$timestamp = $this->_convertTime($timestamp);
 		// Find out how long ago that was as a human readable string
 		$text = $this->_calculateTime($timestamp);
-		
+
 		// Return only the first portions of the string
 		// e.g. return '2 months' rather than '2 months, 3 weeks, 5 days, 4 hours, 2 minutes, 12 seconds'
 		$parts = explode(' ',$text);
@@ -121,10 +116,9 @@ class modMyWishes
 		$text  = $parts[0].' '.$parts[1];
 		return $text;
 	}
-	
+
 	//-----------
-	
-	private function _shortenText($text, $chars=300) 
+	private function _shortenText($text, $chars=300)
 	{
 		$text = strip_tags($text);
 		$text = str_replace("\n",' ',$text);
@@ -139,16 +133,15 @@ class modMyWishes
 			$text = substr($text,0,strrpos($text,' '));
 			$text = $text.' &#8230;';
 		}
-		
+
 		if ($text == '') {
 			$text = '&#8230;';
 		}
 
 		return $text;
 	}
-	
+
 	//-----------
-	
 	private function _wishlist( $rows)
 	{
 		if (count($rows) <= 0) {
@@ -158,7 +151,7 @@ class modMyWishes
 			foreach ($rows as $row)
 			{
 				$when = $this->_timeAgo($row->proposed);
-		
+
 				$html .= "\t\t".'<li class="wishlist">'."\n";
 				$html .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_wishlist&task=wish&id='.$row->wishlist.'&wishid='.$row->id).'" class="tooltips" title="'.htmlentities(stripslashes($row->subject), ENT_QUOTES).' :: '.$this->_shortenText(htmlentities(stripslashes($row->about), ENT_QUOTES), 160).'">#'.$row->id.': '.$this->_shortenText(stripslashes($row->subject), 35).'</a>'."\n";
 				$html .= "\t\t\t".'<span><span class="';
@@ -172,27 +165,26 @@ class modMyWishes
 			}
 			$html .= "\t".'</ul>'."\n";
 		}
-		
+
 		return $html;
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
 		$moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 10;
-		
+
 		// Check for the existence of required tables that should be
 		// installed with the com_wishlist component
 		$database->setQuery("SHOW TABLES");
 		$tables = $database->loadResultArray();
-		
+
 		if ($tables && array_search($database->_table_prefix.'wishlist', $tables)===false) {
 			// Wishlist table not found!
 			echo 'Required database table not found.';
@@ -211,9 +203,7 @@ class modMyWishes
 			echo $database->stderr();
 			return false;
 		}
-		
-		
-		
+
 		// Find assigned wishes
 		$database->setQuery( "SELECT id, wishlist, subject, about, proposed, status, accepted "
 			. " ,(SELECT wl.title FROM #__wishlist as wl WHERE wl.id=w.wishlist) as listtitle"
@@ -254,18 +244,18 @@ class modMyWishes
 		}
 		
 		*/
-		
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_mywishes');
-		
+
 		// Build the HTML
 		$html  = '<div';
 		$html .= ($moduleclass) ? ' class="'.$moduleclass.'">'."\n" : '>'."\n";
 		$html .= "\t".'<h4>Submitted Wishes</h4>'."\n";
 		$html .= $this->_wishlist( $rows1 );
 		$html .= "\t".'<h4>Assigned Wishes</h4>'."\n";
-		
+
 		$html .= $this->_wishlist( $rows2 );
 		/*
 		$html .= "\t".'<h4>Wishes On My Contributions</h4>'."\n";
@@ -276,7 +266,7 @@ class modMyWishes
 		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_wishlist&task=add&category=general&rid=1').'">'.JText::_('NEW_WISH').'</a></li>'."\n";
 		$html .= "\t".'</ul>'."\n";
 		$html .= '</div>'."\n";
-		
+
 		// Output the HTML
 		echo $html;
 	}

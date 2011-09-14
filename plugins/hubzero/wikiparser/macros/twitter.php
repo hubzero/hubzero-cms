@@ -25,11 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-class TwitterMacro extends WikiMacro 
+class TwitterMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = "Embeds a Twitter Feed into the page";
@@ -54,25 +52,23 @@ class TwitterMacro extends WikiMacro
 										});
 						</script>
 						<div id="twitterMacroList" class="twitter_feed_container">Loading Twitter Feed...</div><br><br>';
-		
+
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		//get the args passed in
 		$args = explode(',', $this->args);
-		
+
 		//get the type of twitter feed based on the first arg
 		$start = substr($args[0], 0, 1);
-		
+
 		//if
 		if($start != "@" && $start != "#") {
 			return "(Please enter a valid Twitter Username or trend)";
 		}
-		
+
 		if($start == "@") {
 			$type = "user";
 			$username = $args[0];
@@ -82,17 +78,17 @@ class TwitterMacro extends WikiMacro
 			$username = "";
 			$trend = $args[0];
 		}
-		
+
 		//set default for num tweets
 		$num_tweets = 3;
-		
+
 		//
 		if(is_numeric(trim($args[1]))) {
 			$num_tweets = $args[1];
 		}
-		
+
 		$uniqid = uniqid();
-		
+
 		$doc =& JFactory::getDocument();
 		$doc->addStyleSheet('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.css');
 		$doc->addScript('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.js');
@@ -108,7 +104,7 @@ class TwitterMacro extends WikiMacro
 			});
 			
 		");
-	
+
 		return "<div id=\"twitter{$uniqid}\" class=\"twitter_feed_container\">Loading Twitter Feed....</div>";
 	}
 }

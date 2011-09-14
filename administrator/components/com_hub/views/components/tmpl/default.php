@@ -51,7 +51,7 @@ JHTML::_('behavior.tooltip');
 			<h3><?php echo JText::_('HUB Components'); ?></h3>
 			<ul>
 				<?php
-				foreach ($this->components as $com) 
+				foreach ($this->components as $com)
 				{
 					echo '<li><a href="index.php?option='.$this->option.'&amp;task=components&amp;component='.$com.'">'.$com.'</a></li>'."\n";
 				}

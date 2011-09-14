@@ -29,8 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 $lat = 20;
 $long = 0;
 $zoom = 2;

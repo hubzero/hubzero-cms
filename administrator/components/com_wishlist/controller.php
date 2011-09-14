@@ -38,15 +38,15 @@ class WishlistController extends Hubzero_Controller
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
-		
+
 		$this->_task = JRequest::getVar( 'task', '' );
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			default: $this->wishes(); break;
 		}
-	}	
-	
+	}
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
@@ -57,12 +57,12 @@ class WishlistController extends Hubzero_Controller
 		$view = new JView( array('name'=>'wishes') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}

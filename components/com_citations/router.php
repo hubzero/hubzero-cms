@@ -45,7 +45,7 @@ function CitationsBuildRoute(&$query)
 		$segments[] = $query['format'];
 		unset($query['format']);
 	}
- 
+
     return $segments;
 }
 

@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_domainclass' );
-
-//-----------
 
 class plgUsageDomainclass extends JPlugin
 {
@@ -47,8 +43,6 @@ class plgUsageDomainclass extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -56,10 +50,8 @@ class plgUsageDomainclass extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
 
-	private function classlist(&$db, $class, $t=0, $enddate=0) 
+	private function classlist(&$db, $class, $t=0, $enddate=0)
 	{
 		// Set class list parameters...
 		$hub = 1;
@@ -109,7 +101,7 @@ class plgUsageDomainclass extends JPlugin
 			// Process each different date/time periods/range...
 			$maxrank = 0;
 			$classlist = array();
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				// Calculate the total value for this classlist...
 				$classlistset = array();
@@ -139,10 +131,10 @@ class plgUsageDomainclass extends JPlugin
 				$db->setQuery( $sql );
 				$results = $db->loadObjectList();
 				if ($results) {
-					foreach ($results as $row) 
+					foreach ($results as $row)
 					{
 						if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
-							while ($rank < $row->rank) 
+							while ($rank < $row->rank)
 							{
 								array_push($classlistset, array("n/a", 0, "n/a", "n/a"));
 								$rank++;
@@ -163,7 +155,7 @@ class plgUsageDomainclass extends JPlugin
 						}
 					}
 				}
-				while ($rank <= $size || $rank == 1) 
+				while ($rank <= $size || $rank == 1)
 				{
 					array_push($classlistset, array("n/a", 0, "n/a", "n/a"));
 					$rank++;
@@ -181,7 +173,7 @@ class plgUsageDomainclass extends JPlugin
 			$html .= "\t".'<caption>Table '.$t.': '.$classname.'</caption>'."\n";
 			$html .= "\t".'<thead>'."\n";
 			$html .= "\t\t".'<tr>'."\n";
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				$html .= '<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'."\n";
 			}
@@ -189,7 +181,7 @@ class plgUsageDomainclass extends JPlugin
 			$html .= "\t".'</thead>'."\n";
 			$html .= "\t".'<tbody>'."\n";
 			$html .= "\t\t".'<tr class="summary">'."\n";
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				$tdcls = ($pidx != 1) ? ' class="group"' : '';
 				$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $classlist[$pidx][0][0] .'</th>'."\n";
@@ -197,12 +189,12 @@ class plgUsageDomainclass extends JPlugin
 				$html .= "\t\t\t".'<td'.$tdcls.'>'. $classlist[$pidx][0][3] .'</td>'."\n";
 			}
 			$html .= "\t\t".'</tr>'."\n";
-			for ($i = 1; $i < $maxrank; $i++) 
+			for ($i = 1; $i < $maxrank; $i++)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 
 				$html .= "\t\t".'<tr class="'. $cls .'">'."\n";
-				for ($pidx = 0; $pidx < count($period); $pidx++) 
+				for ($pidx = 0; $pidx < count($period); $pidx++)
 				{
 					$tdcls = ($pidx != 1) ? ' class="group"' : '';
 					$html .= "\t\t\t".'<th'.$tdcls.' scope="row">';
@@ -223,22 +215,20 @@ class plgUsageDomainclass extends JPlugin
 		}
 		return $html;
 	}
-	
-	//-----------
-	
-	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate ) 
+
+	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for
 		if ($task) {
-			if (!in_array( $task, $this->onUsageAreas() ) 
+			if (!in_array( $task, $this->onUsageAreas() )
 			 && !in_array( $task, array_keys( $this->onUsageAreas() ) )) {
 				return '';
 			}
 		}
-		
+
 		// Set some vars
 		$thisyear = date("Y");
-		
+
 		$o = UsageHelper::options( $db, $enddate, $thisyear, $monthsReverse, 'check_for_classdata' );
 
 		// Build HTML

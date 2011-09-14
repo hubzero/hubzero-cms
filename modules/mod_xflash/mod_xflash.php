@@ -35,8 +35,6 @@ header ("Pragma: public");
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//-------------------------------------------------------------
-
 $modxflash = new modXFlash( $params );
 
 require( JModuleHelper::getLayoutPath('mod_xflash') );

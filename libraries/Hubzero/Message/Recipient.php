@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Message_Recipient extends JTable
 {
 	var $id       = NULL;  // @var int(11) Primary key
@@ -39,17 +38,15 @@ class Hubzero_Message_Recipient extends JTable
 	var $expires  = NULL;  // @var datetime (0000-00-00 00:00:00)
 	var $actionid = NULL;  // @var int(11)
 	var $state    = NULL;  // @var tinyint(2)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xmessage_recipient', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->mid ) == '') {
 			$this->setError( JText::_('Please provide a message ID.') );
@@ -58,9 +55,7 @@ class Hubzero_Message_Recipient extends JTable
 		return true;
 	}
 
-	//-----------
-	
-	public function loadRecord( $mid=NULL, $uid=NULL ) 
+	public function loadRecord( $mid=NULL, $uid=NULL )
 	{
 		if (!$mid) {
 			$mid = $this->mid;
@@ -71,7 +66,7 @@ class Hubzero_Message_Recipient extends JTable
 		if (!$mid || !$uid) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'" );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -81,9 +76,7 @@ class Hubzero_Message_Recipient extends JTable
 		}
 	}
 
-	//-----------
-	
-	private function buildQuery( $uid, $filters=array() ) 
+	private function buildQuery( $uid, $filters=array() )
 	{
 		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid='$uid', $this->_tbl AS r 
 					WHERE r.uid='$uid' 
@@ -100,10 +93,8 @@ class Hubzero_Message_Recipient extends JTable
 		}
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getMessages( $uid=null, $filters=array() ) 
+
+	public function getMessages( $uid=null, $filters=array() )
 	{
 		if (!$uid) {
 			$uid = $this->uid;
@@ -111,17 +102,15 @@ class Hubzero_Message_Recipient extends JTable
 		if (!$uid) {
 			return false;
 		}
-		
+
 		$query = "SELECT m.*, s.whenseen, r.expires, r.actionid, r.state,
 		 			(CASE WHEN r.actionid > 0 AND s.whenseen IS NULL THEN 1 ELSE 0 END) AS importance ".$this->buildQuery( $uid, $filters );
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getMessagesCount( $uid=null, $filters=array() ) 
+
+	public function getMessagesCount( $uid=null, $filters=array() )
 	{
 		if (!$uid) {
 			$uid = $this->uid;
@@ -129,18 +118,16 @@ class Hubzero_Message_Recipient extends JTable
 		if (!$uid) {
 			return false;
 		}
-		
+
 		$filters['limit'] = 0;
-		
+
 		$query = "SELECT COUNT(*) ".$this->buildQuery( $uid, $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getUnreadMessages( $uid=null, $limit=null ) 
+
+	public function getUnreadMessages( $uid=null, $limit=null )
 	{
 		if (!$uid) {
 			$uid = $this->uid;
@@ -148,7 +135,7 @@ class Hubzero_Message_Recipient extends JTable
 		if (!$uid) {
 			return false;
 		}
-		
+
 		$query = "SELECT DISTINCT m.*, r.expires, r.actionid 
 				FROM #__xmessage AS m, $this->_tbl AS r
 				WHERE m.id = r.mid AND r.uid='$uid' AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid='$uid')";
@@ -158,10 +145,8 @@ class Hubzero_Message_Recipient extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function deleteTrash( $uid=null ) 
+
+	public function deleteTrash( $uid=null )
 	{
 		if (!$uid) {
 			$uid = $this->uid;
@@ -169,9 +154,9 @@ class Hubzero_Message_Recipient extends JTable
 		if (!$uid) {
 			return false;
 		}
-		
+
 		$query = "DELETE FROM $this->_tbl WHERE uid='$uid' AND state='2'";
-		
+
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getError() );
@@ -179,18 +164,16 @@ class Hubzero_Message_Recipient extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function setState( $state=0, $ids=array() ) 
+
+	public function setState( $state=0, $ids=array() )
 	{
 		if (count($ids) <= 0) {
 			return false;
 		}
-		
+
 		$ids = implode(',',$ids);
 		$query = "UPDATE $this->_tbl SET state='$state' WHERE id IN ($ids)";
-		
+
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getError() );

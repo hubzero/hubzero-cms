@@ -37,10 +37,10 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 	{
 		$html = "\t".'<p>';
 		if ($this->keyExistsOrIsNotEmpty('author',$row)) {
-			
+
 			$auths = explode(';',$row->author);
 			$a = array();
-			foreach ($auths as $auth) 
+			foreach ($auths as $auth)
 			{
 				preg_match('/{{(.*?)}}/s',$auth, $matches);
 				if (isset($matches[0]) && $matches[0]!='') {
@@ -75,7 +75,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 		if ($this->keyExistsOrIsNotEmpty('year',$row)) {
 			$html .= ' ('.$row->year.')';
 		}
-		
+
 		if ($this->keyExistsOrIsNotEmpty('title',$row)) {
 			if (!$row->url) {
 				$html .= ', "'.stripslashes($row->title);
@@ -85,7 +85,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 				$html .= '</a>';
 			}
 		}
-		if ($this->keyExistsOrIsNotEmpty('journal',$row) 
+		if ($this->keyExistsOrIsNotEmpty('journal',$row)
 		 || $this->keyExistsOrIsNotEmpty('edition',$row)
 		 || $this->keyExistsOrIsNotEmpty('booktitle',$row)) {
 			$html .= ',';
@@ -99,7 +99,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 			$html .= ' <i>'.stripslashes($row->booktitle).'</i>';
 		}
 		if ($row->type) {
-			switch ($row->type) 
+			switch ($row->type)
 			{
 				case 'phdthesis': $html .= ' (PhD Thesis)'; break;
 				case 'mastersthesis': $html .= ' (Masters Thesis)'; break;

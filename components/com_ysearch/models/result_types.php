@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-abstract class YSearchResult 
+abstract class YSearchResult
 {
 	private static $intro_excerpt_len = 350;
 	private static $types = array();
@@ -58,7 +58,7 @@ abstract class YSearchResult
 	public function get_title() { return $this->title; }
 	public function get_highlighted_title() { return $this->title_highlighted; }
 	public function get_raw_link() { return $this->link; }
-	public function get_link() 
+	public function get_link()
 	{
 		if (!$this->canonicalized_link)
 			if (preg_match('/^https?:\/\//', $this->link))
@@ -66,7 +66,7 @@ abstract class YSearchResult
 			else
 				$this->canonicalized_link = (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://'.
 					$_SERVER['HTTP_HOST'].(substr($this->link, 0, 1) == '/' ? $this->link : '/' . $this->link);
-		return $this->canonicalized_link; 
+		return $this->canonicalized_link;
 	}
 	public function get_links()
 	{
@@ -90,28 +90,28 @@ abstract class YSearchResult
 
 	public function get_highlighted_excerpt() { return $this->get_excerpt(); }
 
-	public function adjust_weight($weight, $reason = 'unknown') 
-	{ 
-		$this->weight *= $weight; 
+	public function adjust_weight($weight, $reason = 'unknown')
+	{
+		$this->weight *= $weight;
 		$this->weight_log[] = 'adjusting by '.$weight.' to '.$this->weight.': '.$reason;
 	}
 	public function scale_weight($scale, $reason = 'unknown')
-	{ 
+	{
 		if ($scale != 0)
 		{
-			$this->weight /= $scale; 
+			$this->weight /= $scale;
 			$this->weight_log[] = 'scaling by '.$scale.' to '.$this->weight.': '.$reason;
 		}
 	}
 	public function add_weight($weight, $reason='unknown')
-	{ 
-		$this->weight += $weight; 
+	{
+		$this->weight += $weight;
 		$this->weight_log[] = 'adding '.$weight.', total '.$this->weight.': '.$reason;
 	}
 
 	public function get_plugin() { return $this->plugin; }
-	public function set_plugin($plg, $skip_cleanup = false) 
-	{ 
+	public function set_plugin($plg, $skip_cleanup = false)
+	{
 		$this->plugin = $skip_cleanup ? $plg : strtolower(preg_replace('/^plgYSearch/i', '', $plg));
 		foreach ($this->children as $child)
 			$child->set_plugin($this->plugin, true);
@@ -184,17 +184,17 @@ class YSearchResultAssocList extends YSearchResultAssoc implements Iterator
 				$row = new YSearchResultAssocScalar($row);
 				$row->set_plugin($plugin);
 			}
-			
+
 			if ($idx == 0 && ($weight = $row->get_weight()) > 1)
 				$scale = $weight;
-			
+
 			if ($scale > 1)
 			{
 				$row->scale_weight($scale, 'normalizing within plugin');
 			}
 		}
 	}
-	
+
 	public function &at($idx) { return $this->rows[$idx]; }
 
 	public function to_associative() { return $this; }
@@ -208,7 +208,7 @@ class YSearchResultAssocList extends YSearchResultAssoc implements Iterator
 	public function valid() { return isset($this->rows[$this->pos]); }
 }
 
-class YSearchResultAssocScalar extends YSearchResult 
+class YSearchResultAssocScalar extends YSearchResult
 {
 	private static $tag_weight_modifier;
 	private $row;
@@ -222,8 +222,8 @@ class YSearchResultAssocScalar extends YSearchResult
 				throw new YSearchPluginError("Result plugin did not define key '$key'");
 	}
 
-	public function __construct($row) 
-	{ 
+	public function __construct($row)
+	{
 		if (is_null(self::$tag_weight_modifier))
 			self::$tag_weight_modifier = YSearchModelResultSet::get_tag_weight_modifier();
 
@@ -231,7 +231,7 @@ class YSearchResultAssocScalar extends YSearchResult
 		foreach ($row as $key=>$val)
 			$this->$key = is_array($val) ? array_map('stripslashes', array_map('strip_tags', $val)) : stripslashes(strip_tags($val));
 
-		if ($this->weight === NULL) 
+		if ($this->weight === NULL)
 		{
 			if ($this->tag_count)
 				$this->weight = $this->tag_count * (self::$tag_weight_modifier / 2);
@@ -243,7 +243,7 @@ class YSearchResultAssocScalar extends YSearchResult
 			$this->weight_log[] = 'plugin suggested weight of '.$this->weight;
 			$this->adjust_weight($this->tag_count * self::$tag_weight_modifier, 'tag count of '.$this->tag_count);
 		}
-		
+
 		$this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : split("\n", $row['contributors'])) : array();
 		$this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : split("\n", $row['contributor_ids'])) : array();
 
@@ -253,13 +253,13 @@ class YSearchResultAssocScalar extends YSearchResult
 	public function to_associative() { return $this; }
 }
 
-class YSearchResultSql extends YSearchResult 
+class YSearchResultSql extends YSearchResult
 {
 	public function __construct($sql = NULL) { $this->sql = $sql; }
 
 	public function get_sql() { return $this->sql; }
 
-	public function to_associative() 
+	public function to_associative()
 	{
 		$dbh =& JFactory::getDBO();
 		$dbh->setQuery($this->sql);

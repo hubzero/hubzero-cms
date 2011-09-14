@@ -47,41 +47,34 @@ define('HUBZERO_LOG_AUTH', 256);
 
 include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Log'.DS.'FileHandler.php');
 
-
 class Hubzero_Log
 {
 	var $_handler = array();
 
-	//-----------
-
-	public function getSimpleTrace() 
+	public function getSimpleTrace()
 	{
 		$backtrace = debug_backtrace();
-		
+
 		foreach ($backtrace as $file)
 		{
 			$filename = (!empty($file['file'])) ? basename( $file['file'] ) : 'unknown';
 			$line     = (!empty($file['line'])) ? $file['line'] : 'unknown';
-			
+
 			if ($filename == 'Log.php') {// supress the trace through the xlog class
 				continue;
 			}
-			
+
 			$files[] = "($filename:$line)";
 		}
 		return " [" . implode(',', $files) . "]";
 	}
-	
-	//-----------
 
-	public function __construct() 
+	public function __construct()
 	{
 		$this->_handler = array();
 	}
-	
-	//-----------
-	
-	public function detach($priority, $handler) 
+
+	public function detach($priority, $handler)
 	{
 		if (!is_array($this->_handler[$priority]) ) {
 			return false;
@@ -96,84 +89,62 @@ class Hubzero_Log
 
 		return false;
 	}
-	
-	//-----------
 
-	public function attach($priority, $handler) 
+	public function attach($priority, $handler)
 	{
 		$this->_handler[$priority][] = $handler;
 		return;
 	}
-	
-	//-----------
-	
-	public function log($priority, $message, $trace = false) 
+
+	public function log($priority, $message, $trace = false)
 	{
-		foreach ($this->_handler[$priority] as $handler) 
+		foreach ($this->_handler[$priority] as $handler)
 		{
 			$handler->log($priority, $message, $trace);
 		}
 	}
-	
-	//-----------
 
-	public function logEmergency($message, $trace = false) 
+	public function logEmergency($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_EMERG, $message, $trace);
 	}
-	
-	//-----------
 
-	public function logAlert($message, $trace = false) 
+	public function logAlert($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_ALERT, $message, $trace);
 	}
-	
-	//-----------
 
-	public function logCrit($message, $trace = false) 
+	public function logCrit($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_CRIT, $message, $trace);
 	}
-	
-	//-----------
 
-	public function logError($message, $trace = false) 
+	public function logError($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_ERR, $message, $trace);
 	}
-	
-	//-----------
 
-	public function logWarning($message, $trace = false) 
+	public function logWarning($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_WARNING, $message, $trace);
 	}
-	
-	//-----------
 
-	public function logNotice($messsage, $trace = false) 
+	public function logNotice($messsage, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_NOTICE, $message, $trace);
 	}
-	
-	//-----------
 
-	public function logInfo($message, $trace = false) 
+	public function logInfo($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_INFO, $message, $trace);
 	}
 
-	//-----------
-
-	public function logDebug($message, $trace = false) 
+	public function logDebug($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_DEBUG, $message, $trace);
 	}
-	
-	//-----------
 
-	public function logAuth($message, $trace = false) 
+	public function logAuth($message, $trace = false)
 	{
 		Hubzero_Log::log(HUBZERO_LOG_AUTH, $message, $trace);
 	}

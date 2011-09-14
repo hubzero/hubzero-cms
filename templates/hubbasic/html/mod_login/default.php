@@ -1,5 +1,5 @@
 <?php // no direct access
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off'):
 JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );

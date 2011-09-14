@@ -38,26 +38,26 @@ class StoreController extends Hubzero_Controller
 		// Get the component parameters
 		$aconfig =& JComponentHelper::getParams( 'com_answers' );
 		$this->infolink =  $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
-		
+
 		if (!$this->config->get('store_enabled')) {
 			// Redirect to home page
 			$this->_redirect = '/';
 			return;
 		}
-		
+
 		$this->_task = JRequest::getVar( 'task', '', 'post' );
 		if (!$this->_task) {
 			$this->_task = JRequest::getVar( 'task', '', 'get' );
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'cart':     $this->cart();     break;
 			case 'checkout': $this->checkout(); break;
 			case 'process':  $this->process();  break;
 			case 'finalize': $this->finalize(); break;
 			case 'accept':   $this->accept();   break;
-			
+
 			default: $this->storefront(); break;
 		}
 	}
@@ -66,11 +66,11 @@ class StoreController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
-	protected function _buildPathway() 
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -78,16 +78,16 @@ class StoreController extends Hubzero_Controller
 			);
 		}
 		if ($this->_task) {
-			switch ($this->_task) 
+			switch ($this->_task)
 			{
 				case 'finalize':
-					$pathway->addItem( 
-						JText::_(strtoupper($this->_option).'_CART'), 
-						'index.php?option='.$this->_option.'&task=cart' 
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_CART'),
+						'index.php?option='.$this->_option.'&task=cart'
 					);
-					$pathway->addItem( 
-						JText::_(strtoupper($this->_option).'_CHECKOUT'), 
-						'index.php?option='.$this->_option.'&task=checkout' 
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_CHECKOUT'),
+						'index.php?option='.$this->_option.'&task=checkout'
 					);
 					$pathway->addItem(
 						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
@@ -95,9 +95,9 @@ class StoreController extends Hubzero_Controller
 					);
 				break;
 				case 'process':
-					$pathway->addItem( 
-						JText::_(strtoupper($this->_option).'_CART'), 
-						'index.php?option='.$this->_option.'&task=cart' 
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_CART'),
+						'index.php?option='.$this->_option.'&task=cart'
 					);
 				break;
 				default:
@@ -109,10 +109,8 @@ class StoreController extends Hubzero_Controller
 			}
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle() 
+
+	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task) {
@@ -121,24 +119,20 @@ class StoreController extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
-	
-	//-----------
-	
-	private function _getPurchaseType($num) 
+
+	private function _getPurchaseType($num)
 	{
-		switch ($num) 
+		switch ($num)
 		{
 			case '1': $out = JText::_('COM_STORE_MERCHANDISE'); break;
 			case '2': $out = JText::_('COM_STORE_SERVICE');     break;
 			default:  $out = JText::_('COM_STORE_MERCHANDISE'); break;
-			
+
 		}
 		return $out;
 	}
 
-	//-----------
-
-	private function _checkValidEmail($email) 
+	private function _checkValidEmail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
 			return(1);
@@ -146,12 +140,12 @@ class StoreController extends Hubzero_Controller
 			return(0);
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	protected function login() 
+	protected function login()
 	{
 		$view = new JView( array('name'=>'login') );
 		$view->title = $this->_title;
@@ -161,34 +155,32 @@ class StoreController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function storefront() 
+	protected function storefront()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'storefront') );
 		$view->option = $this->_option;
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']  = JRequest::getInt( 'limit', 25 );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
 		$view->filters['sortby'] = JRequest::getVar( 'sortby', '' );
-		
+
 		// Get the most recent store items
 		$obj = new Store($this->database);
 		$view->rows = $obj->getItems('retrieve', $view->filters, $this->config);
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
 		//$this->_getScripts("resources");
-		
+
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -201,19 +193,17 @@ class StoreController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function cart() 
+	protected function cart()
 	{
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
-		
+
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -237,7 +227,7 @@ class StoreController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
-		
+
 		// Incoming
 		$view->action = JRequest::getVar( 'action', '');
 		$view->id = JRequest::getInt( 'item', 0 );
@@ -256,14 +246,14 @@ class StoreController extends Hubzero_Controller
 
 		// Get cart object
 		$item = new Cart( $this->database );
-				
+
 		switch ($view->action)
 		{
-			case 'add': 
+			case 'add':
 				// Check if item is already there, then update quantity or save new
-				$found = $item->checkCartItem($view->id, $this->juser->get('id'));		
-		
-				if (!$found && $view->id) {					
+				$found = $item->checkCartItem($view->id, $this->juser->get('id'));
+
+				if (!$found && $view->id) {
 					$item->itemid = $view->id;
 					$item->uid = $this->juser->get('id');
 					$item->type = $purchasetype;
@@ -276,43 +266,43 @@ class StoreController extends Hubzero_Controller
 						JError::raiseError( 500, $item->getError() );
 						return;
 					}
-					
-					$view->msg = JText::_('COM_STORE_MSG_ADDED_TO_CART');	
+
+					$view->msg = JText::_('COM_STORE_MSG_ADDED_TO_CART');
 				}
 			break;
-			
-			case 'update': 
+
+			case 'update':
 				// Update quantaties and selections					
 				$item->saveCart(array_map('trim',$_POST), $this->juser->get('id'));
 			break;
-			
-			case 'remove': 
+
+			case 'remove':
 				// Update quantaties and selections
 				if ($view->id) {
-					$item->deleteCartItem($view->id, $this->juser->get('id'));	
-				}			
+					$item->deleteCartItem($view->id, $this->juser->get('id'));
+				}
 			break;
-			
-			case 'empty': 
+
+			case 'empty':
 				// Empty all
 				$item->deleteCartItem('', $this->juser->get('id'), 'all');
 			break;
-			
-			default:  
+
+			default:
 				// Do nothing      		
 			break;
 		}
-		
+
 		// Check available user funds		
 		$BTL = new Hubzero_Bank_Teller( $this->database, $this->juser->get('id') );
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
-		$funds   = $balance - $credit;			
+		$funds   = $balance - $credit;
 		$view->funds = ($funds > 0) ? $funds : 0;
-	
+
 		// Calculate total
 		$view->cost = $item->getCartItems($this->juser->get('id'), 'cost');
-		
+
 		// Get cart items		
 		$view->rows = $item->getCartItems($this->juser->get('id'));
 
@@ -323,66 +313,64 @@ class StoreController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function checkout() 
+
+	protected function checkout()
 	{
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
-		
+
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Check authorization
 		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'checkout') );
 		$view->option = $this->_option;
 		$view->title = $this->_title;
 		$view->infolink = $this->infolink;
 		$view->final = false;
-		
+
 		// Get cart object
 		$item = new Cart( $this->database );
-			
+
 		// Update quantaties and selections					
 		$item->saveCart(array_map('trim',$_POST), $this->juser->get('id'));
-		
+
 		// Calculate total
 		$view->cost = $item->getCartItems($this->juser->get('id'), 'cost');
-		
+
 		// Check available user funds		
 		$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
-		$funds   = $balance - $credit;			
+		$funds   = $balance - $credit;
 		$view->funds = ($funds > 0) ? $funds : '0';
-		
+
 		if ($view->cost > $view->funds) {
-			$this->cart(); 
+			$this->cart();
 			return;
 		}
-		
+
 		// Get cart items		
 		$view->items = $item->getCartItems($this->juser->get('id'));
-		
+
 		// Clean-up unavailable items
 		$item->deleteUnavail($this->juser->get('id'), $view->items);
-				
+
 		// Updated item list		
 		$view->items = $item->getCartItems($this->juser->get('id'));
-		
+
 		// Output HTML
 		$view->juser = $this->juser;
 		$view->xprofile = new Hubzero_User_Profile;
@@ -397,21 +385,21 @@ class StoreController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-	
-	protected function finalize() 
+
+	protected function finalize()
 	{
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
-		
+
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Check authorization
 		if ($this->juser->get('guest')) {
 			$this->login();
@@ -419,39 +407,39 @@ class StoreController extends Hubzero_Controller
 		}
 
 		$now = date( 'Y-m-d H:i:s', time() );
-		
+
 		// Get cart object
 		$item = new Cart( $this->database );
-		
+
 		// Calculate total
 		$cost = $item->getCartItems($this->juser->get('id'),'cost');
-		
+
 		// Check available user funds		
 		$BTL = new Hubzero_Bank_Teller( $this->database, $this->juser->get('id') );
 		$balance = $BTL->summary();
 		$credit = $BTL->credit_summary();
-		$funds = $balance - $credit;			
+		$funds = $balance - $credit;
 		$funds = ($funds > 0) ? $funds : '0';
-		
+
 		// Get cart items		
 		$items = $item->getCartItems($this->juser->get('id'));
 		if (!$items or $cost > $funds ) {
 			$this->cart();
 			return;
 		}
-				
+
 		// Get shipping info 
 		$shipping = array_map('trim',$_POST);
-	
+
 		// make sure email address is valid
 		$validemail = $this->_checkValidEmail($shipping['email']);
 		$email = ($validemail) ? $shipping['email'] : $this->juser->get('email');
-			
+
 		// Format posted info
 		$details  = JText::_('COM_STORE_SHIP_TO').':'."\r\n";
 		$details .= $shipping['name'] ."\r\n";
 		$details .= Hubzero_View_Helper_Html::purifyText($shipping['address'])."\r\n";
-		$details .= JText::_('COM_STORE_COUNTRY').': '. $shipping['country']."\r\n";			
+		$details .= JText::_('COM_STORE_COUNTRY').': '. $shipping['country']."\r\n";
 		$details .= '----------------------------------------------------------'."\r\n";
 		$details .= JText::_('COM_STORE_CONTACT').': '."\r\n";
 		if ($shipping['phone']) {
@@ -461,7 +449,7 @@ class StoreController extends Hubzero_Controller
 		$details .= '----------------------------------------------------------'."\r\n";
 		$details .= JText::_('COM_STORE_DETAILS').': ';
 		$details .= ($shipping['comments']) ? "\r\n".(Hubzero_View_Helper_Html::purifyText($shipping['comments'])) : 'N/A';
-			
+
 		// Register a new order
 		$order = new Order($this->database);
 		$order->uid     = $this->juser->get('id');
@@ -470,20 +458,20 @@ class StoreController extends Hubzero_Controller
 		$order->ordered = $now;
 		$order->email   = $email;
 		$order->details = $details;
-		
+
 		// Store new content
 		if (!$order->store()) {
 			JError::raiseError( 500, $order->getError() );
 			return;
 		}
-		
+
 		// Get order ID
 		$objO = new Order($this->database);
 		$orderid = $objO->getOrderID($this->juser->get('id'), $now);
-			
+
 		if ($orderid) {
 			// Transfer cart items to order
-			foreach ($items as $itm) 
+			foreach ($items as $itm)
 			{
 				$orderitem = new OrderItem( $this->database );
 				$orderitem->uid        = $this->juser->get('id');
@@ -492,29 +480,29 @@ class StoreController extends Hubzero_Controller
 				$orderitem->price      = $itm->price;
 				$orderitem->quantity   = $itm->quantity;
 				$orderitem->selections = $itm->selections;
-									
+
 				// Save order item
 				if (!$orderitem->store()) {
 					JError::raiseError( 500, $orderitem->getError() );
 					return;
 				}
 			}
-			
+
 			// Put the purchase amount on hold
 			$BTL = new Hubzero_Bank_Teller( $this->database, $this->juser->get('id') );
 			$BTL->hold($order->total, JText::_('COM_STORE_BANKING_HOLD'), 'store', $orderid);
-			
+
 			$jconfig =& JFactory::getConfig();
-			
+
 			// Compose confirmation "from"
 			$hub = array(
-				'email' => $jconfig->getValue('config.mailfrom'), 
+				'email' => $jconfig->getValue('config.mailfrom'),
 				'name' => $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_option))
 			);
-			
+
 			// Compose confirmation subject
 			$subject = JText::_(strtoupper($this->_name)).': '.JText::_('COM_STORE_ORDER').' #'.$orderid;
-				
+
 			// Compose confirmation message
 			$eview = new JView( array('name'=>'emails','layout'=>'confirmation') );
 			$eview->option = $this->_option;
@@ -525,7 +513,7 @@ class StoreController extends Hubzero_Controller
 			$eview->details = $details;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
-			
+
 			// Send confirmation
 			JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher =& JDispatcher::getInstance();
@@ -533,16 +521,16 @@ class StoreController extends Hubzero_Controller
 				$this->setError( JText::_('COM_STORE_ERROR_MESSAGE_FAILED') );
 			}
 		}
-		
+
 		// Empty cart
 		$item->deleteCartItem('', $this->juser->get('id'), 'all');
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'completed') );
 		$view->option = $this->_option;
 		$view->title = $this->_title;
 		$view->infolink = $this->infolink;
-		
+
 		// Output HTML
 		$view->juser = $this->juser;
 		$view->orderid = $orderid;
@@ -551,63 +539,61 @@ class StoreController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//------------
-	
-	protected function process() 
+
+	protected function process()
 	{
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Push some scripts to the template
 		$this->_getScripts();
-		
+
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Check authorization
 		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
-		
+
 		// Get cart object
 		$item = new Cart( $this->database );
-		
+
 		// Calculate total
 		$cost = $item->getCartItems($this->juser->get('id'),'cost');
-		
+
 		if (!$cost) {
 			$this->setError( JText::_('COM_STORE_ERR_EMPTY_ORDER') );
 		}
-		
+
 		// Check available user funds		
 		$BTL = new Hubzero_Bank_Teller( $this->database, $this->juser->get('id') );
 		$balance = $BTL->summary();
 		$credit = $BTL->credit_summary();
-		$funds = $balance - $credit;			
+		$funds = $balance - $credit;
 		$funds = ($funds > 0) ? $funds : '0';
-		
-		if ($cost > $funds) { 
+
+		if ($cost > $funds) {
 			$this->setError( JText::_('COM_STORE_MSG_NO_FUNDS') );
 		}
-		
+
 		// Get cart items		
 		$items = $item->getCartItems($this->juser->get('id'));
-				
+
 		// Get shipping info 
 		$posted = array_map('trim',$_POST);
 
 		if (!$posted['name'] || !$posted['address'] || !$posted['country']) {
 			$this->setError( JText::_('COM_STORE_ERR_BLANK_FIELDS') );
 		}
-		
+
 		// Incoming
 		$action = JRequest::getVar( 'action', '');
-		
+
 		// Output HTML
 		if (!$this->getError() && $action != 'change') {
 			// Instantiate a new view
@@ -618,7 +604,7 @@ class StoreController extends Hubzero_Controller
 			$view = new JView( array('name'=>'checkout') );
 			$view->final = false;
 		}
-		
+
 		// Output HTML
 		$view->cost = $cost;
 		$view->funds = $funds;

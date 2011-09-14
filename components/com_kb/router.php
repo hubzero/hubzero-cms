@@ -69,7 +69,7 @@ function kbBuildRoute(&$query)
 		}
 		unset($query['id']);
 	}
-	
+
 	if (isset($query['vote'])) {
 		if (!empty($query['vote'])) {
 			$segments[] = $query['vote'];
@@ -83,14 +83,14 @@ function kbBuildRoute(&$query)
 function kbParseRoute($segments)
 {
 	$vars  = array();
-	
+
 	$vars['task'] = 'categories';
 
 	if (empty($segments[0]))
 		return $vars;
 
 	$count = count($segments);
-	
+
 	// section/
 	if ($count == 1) {
 		$vars['task'] = 'category';
@@ -109,7 +109,7 @@ function kbParseRoute($segments)
 
 		$category = new KbCategory( $db );
 		$category->loadAlias( $title2 );
-		
+
 		if ($category->id) {
 			// section/category
 			$vars['task'] = 'category';
@@ -121,7 +121,7 @@ function kbParseRoute($segments)
 
 		$article = new KbArticle( $db );
 		$article->loadAlias( $title2, $category->id );
-		
+
 		if ($article->id) {
 			// section/article
 			$vars['id'] = $article->id;

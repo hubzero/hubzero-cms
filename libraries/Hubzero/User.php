@@ -42,35 +42,27 @@ class Hubzero_User extends JObject
 {
 	var $_xuser;
 
-	//-----------
-
 	public function logDebug($msg)
 	{
 		$xlog =& Hubzero_Factory::getLogger();
 		$xlog->logDebug($msg);
 	}
-	
-	//-----------
 
 	public function clear()
 	{
 		$this->_xuser = array();
 		$this->normalize();
 	}
-	
-	//-----------
 
 	public function __construct($login = null)
 	{
 		//$this->logDebug("Hubzero_User::__construct($login)");
 
-		if (is_null($login)) 
+		if (is_null($login))
 			$this->clear();
 		else
 			$this->load($login);
 	}
-	
-	//-----------
 
 	public function getInstance($login = null)
 	{
@@ -84,7 +76,6 @@ class Hubzero_User extends JObject
 			if (!$juser->get('guest'))
 				$login = $juser->get('id');
 		}
-
 
 		if (empty($login))
 		{
@@ -105,10 +96,8 @@ class Hubzero_User extends JObject
 		//$xlog->logDebug("Hubzero_User::getInstance($login)");
 		return $instance;
 	}
-	
-	//-----------
 
-	public function normalize() 
+	public function normalize()
 	{
 		//$this->logDebug("Hubzero_User::normalize()");
 
@@ -132,8 +121,6 @@ class Hubzero_User extends JObject
 			if (!array_key_exists($key, $this->_xuser))
 				$this->_xuser[$key] = array();
 	}
-	
-	//-----------
 
 	public function get($key)
 	{
@@ -141,16 +128,14 @@ class Hubzero_User extends JObject
 
 		if (!is_array($this->_xuser))
 			$this->normalize();
-		
+
 		if (!array_key_exists($key, $this->_xuser))
 			die("Hubzero_User::get() Unknown key: $key \n");
 
 		return $this->_xuser[$key];
 	}
-	
-	//-----------
 
-	public function set($key,$value) 
+	public function set($key,$value)
 	{
 		//$this->logDebug("Hubzero_User::set($key,$value)");
 
@@ -161,23 +146,19 @@ class Hubzero_User extends JObject
 			die("Hubzero_User::set() Unknown key: $key \n");
 
 		$this->_xuser[$key] = $value;
-		
+
 		if ($key == 'password')
 			$this->_xuser['encrypt_password'] = Hubzero_User_Helper::encrypt_password($value);
 		else if ($key == 'encrypt_password')
 			$this->_xuser['password'] = '';
 	}
 
-	//-----------
-	
 	public function getuser()
 	{
 		//$this->logDebug("Hubzero_User::getuser()");
 
 		return $this->_xuser;
 	}
-	
-	//-----------
 
 	public function reload()
 	{
@@ -186,8 +167,6 @@ class Hubzero_User extends JObject
 		$this->clear();
 		$this->load($login);
 	}
-	
-	//-----------
 
 	public function deactivate() // in the future this will mark the record inactive, maybe clear host/admin flags from ldap
 	{
@@ -220,8 +199,6 @@ class Hubzero_User extends JObject
 
 		return true;
 	}
-	
-	//-----------
 
 	public function delete($login)
 	{
@@ -239,9 +216,7 @@ class Hubzero_User extends JObject
 		return $result;
 
 	}
-	
-	//-----------
-	
+
 	public function load($login = null)
 	{
 		//$this->logDebug("Hubzero_User::load($login)");
@@ -274,7 +249,7 @@ class Hubzero_User extends JObject
 		if (strlen($login) == 0)
 			return false;
 
-		if (!is_numeric($login)) 
+		if (!is_numeric($login))
 		{
 				$base_dn = 'uid=' . $login . ',ou=users,' . $hubLDAPBaseDN;
 			$filter = '(objectclass=*)';
@@ -333,7 +308,7 @@ class Hubzero_User extends JObject
 			return false;
 
 		$attributes = ldap_get_attributes($ldapconn, $entry);
-		
+
 		$this->set('login', isset($attributes['uid'][0]) ? $attributes['uid'][0] : '');
 		$this->set('uid', isset($attributes['uidNumber'][0]) ? $attributes['uidNumber'][0] : '');
 		$this->set('encrypt_password', isset($attributes['userPassword'][0]) ? $attributes['userPassword'][0] : '');
@@ -373,7 +348,7 @@ class Hubzero_User extends JObject
 		$this->set('web', isset($attributes['url'][0]) ? $attributes['url'][0] : '');
 		$this->set('phone', isset($attributes['homePhone'][0]) ? $attributes['homePhone'][0] : '');
 		$this->set('reason', isset($attributes['description'][0]) ? $attributes['description'][0] : '');
-		
+
 		if (isset($attributes['usageAgreement'][0]))
 		{
 			if (strcasecmp($attributes['usageAgreement'][0],'TRUE') == 0)
@@ -404,7 +379,7 @@ class Hubzero_User extends JObject
 		$this->set('mailPreferenceOption', isset($attributes['mailPreferenceOption'][0]) ? $attributes['mailPreferenceOption'][0] : '');
 		$this->set('proxy_uid', isset($attributes['proxyUidNumber'][0]) ? $attributes['proxyUidNumber'][0] : '');
 		$this->set('proxy_password', isset($attributes['proxyPassword'][0]) ? $attributes['proxyPassword'][0] : '');
-		
+
 		$attributes = array();
 		$attributes[] = 'gid';
 		$attributes[] = 'groupName';
@@ -414,9 +389,9 @@ class Hubzero_User extends JObject
 		foreach(array('applicant','member','owner') as $type)
 		{
 			$filter = '(&(objectclass=hubGroup)(' . $type . '=uid=' . $this->get('login') . ',ou=users,' . $hubLDAPBaseDN . '))';
-			
+
 			$dn = 'ou=groups,' . $hubLDAPBaseDN;
-			$sr = ldap_search($ldapconn, $dn, $filter, $attributes, 0, 0, 0, 3); 
+			$sr = ldap_search($ldapconn, $dn, $filter, $attributes, 0, 0, 0, 3);
 
 			if (empty($sr))
 				continue;
@@ -444,8 +419,6 @@ class Hubzero_User extends JObject
 
 		$this->set('groups', isset($groups) ? $groups : '');
 	}
-	
-	//-----------
 
 	public function create()
 	{
@@ -475,7 +448,7 @@ class Hubzero_User extends JObject
 
 		if (strlen($this->get('name')) > 0)
 			$entry['cn'] = $this->get('name');
-	
+
 		if (strlen($this->get('login')) > 0)
 			$entry['uid'] = $this->get('login');
 
@@ -485,22 +458,22 @@ class Hubzero_User extends JObject
 		$entry['gidNumber'] = '3000';
 		$entry['homeDirectory'] = $this->get('home');
 		$entry['gid'] = 'public';
-		
+
 		if (strlen($this->get('password')) > 0)
 			$entry['userPassword'] = Hubzero_User_Helper::encrypt_password($this->get('password'));
-		
+
 		if (strlen($this->get('name')) > 0)
 			$entry['sn'] = $this->get('name');
 
 		if (strlen($this->get('orgtype')) > 0)
 			$entry['orgtype'] = $this->get('orgtype');
-		
+
 		if (strlen($this->get('countryresident')) > 0)
 			$entry['countryresident'] = $this->get('countryresident');
-		
+
 		if (strlen($this->get('countryorigin')) > 0)
 			$entry['countryorigin'] = $this->get('countryorigin');
-		
+
 		if (strlen($this->get('sex')) > 0)
 			$entry['sex'] = $this->get('sex');
 
@@ -515,7 +488,7 @@ class Hubzero_User extends JObject
 		$attributes = $this->get('race');
 		foreach($attributes as $attribute)
 			$entry['race'][] = $attribute;
-		
+
 		$attributes = $this->get('edulevel');
 		foreach($attributes as $attribute)
 			$entry['edulevel'][] = $attribute;
@@ -523,53 +496,53 @@ class Hubzero_User extends JObject
 		$attributes = $this->get('role');
 		foreach($attributes as $attribute)
 			$entry['role'][] = $attribute;
-		
+
 		if (strlen($this->get('nativetribe')) > 0)
 			$entry['nativeTribe'] = $this->get('nativetribe');
-		
+
 		if (strlen($this->get('email')) > 0)
 			$entry['mail'] = $this->get('email');
 
 		if (strlen($this->get('email_confirmed')) > 0)
 			$entry['emailConfirmed'] = $this->get('email_confirmed');
-		
+
 		if (strlen($this->get('web')) > 0)
 			$entry['url'] = $this->get('web');
-		
+
 		if (strlen($this->get('phone')) > 0)
 			$entry['homePhone'] = $this->get('phone');
-		
+
 		if (strlen($this->get('reason')) > 0)
 			$entry['description'] = $this->get('reason');
-		
+
 		if (strlen($this->get('mailPreferenceOption')) > 0)
 			$entry['mailPreferenceOption'] = $this->get('mailPreferenceOption');
 
 		if ($this->get('usageagreement') !== null)
 			$entry['usageAgreement'] = $this->get('usageagreement') ? 'TRUE' : 'FALSE';
-		
+
 		if (strlen($this->get('reg_ip')) > 0)
 			$entry['regIp'] = $this->get('reg_ip');
-		
+
 		if (strlen($this->get('reg_date')) > 0)
 			$entry['regDate'] = $this->get('reg_date');
-		
+
 		if (strlen($this->get('reg_host')) > 0)
 			$entry['regHost'] = $this->get('reg_host');
-		
+
 		if (strlen($this->get('jobs_allowed')) > 0)
 			$entry['jobsAllowed'] = $this->get('jobs_allowed');
-		
+
 		$entry['loginShell'] = '/bin/bash';
 		$entry['ftpShell'] = '/usr/lib/sftp-server';
 
 		$juser = JFactory::getUser();
-		
+
 		if (!$juser->get('guest'))
 		{
 			if (strlen($juser->get('id')) > 0)
 				$entry['proxyUidNumber'] = $juser->get('id');
-			
+
 			if (strlen($this->get('password')) > 0)
 				$entry['proxyPassword'] = $this->get('password');
 		}
@@ -590,7 +563,7 @@ class Hubzero_User extends JObject
 
         $xprofile = new Hubzero_User_Profile();
 		$xprofile->load($this->get('uid'), 'ldap');
-		
+
 		$bits = explode(' ', $xprofile->get('name'));
 		$xprofile->set('surname', array_pop($bits));
 		if (count($bits) >= 1) {
@@ -599,7 +572,7 @@ class Hubzero_User extends JObject
 		if (count($bits) >= 1) {
 			$xprofile->set('middleName', implode(' ',$bits));
 		}
-		
+
 		// Load the com_members config if available
 		$component =& JComponentHelper::getComponent( 'com_members' );
 		if (!trim($component->params)) {
@@ -610,7 +583,7 @@ class Hubzero_User extends JObject
 			$jconfig = new JParameter( $component->params, $path );
 			$data = $jconfig->renderToArray();
 			$c = array();
-			foreach ($data as $d=>$info) 
+			foreach ($data as $d=>$info)
 			{
 				if ($d != '@spacer') {
 					$c[] = $d.'='.$info[4];
@@ -624,14 +597,11 @@ class Hubzero_User extends JObject
 		if ($config->get('privacy') == 1) {
 			$xprofile->set('public', 1);
 		}
-		
-		$xprofile->store(false,'mysql');
 
+		$xprofile->store(false,'mysql');
 
 		return 0;
 	}
-	
-	//-----------
 
 	public function _renameUid($olduid, $newuid)
 	{
@@ -639,7 +609,7 @@ class Hubzero_User extends JObject
 		$xhub =& Hubzero_Factory::getHub();
 
 		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-		
+
 		if (!$ldapconn)
 			return false;
 
@@ -648,8 +618,6 @@ class Hubzero_User extends JObject
 
 		ldap_rename($ldapconn, $dn, $rdn, 'ou=users,' . $hubLDAPBaseDN,true);
 	}
-	
-	//-----------
 
 	public function update()
 	{
@@ -666,14 +634,13 @@ class Hubzero_User extends JObject
 		$dn = 'uid=' . $this->get('login') . ',ou=users,' . $hubLDAPBaseDN;
 
 		$xuser = new Hubzero_User( $this->get('uid') );
-		
+
 		if ($this->get('uid') !== $xuser->get('uid'))
 		{
 			// INDEX FIELD, CAN'T MODIFY WITH THIS PROCEDURE
 
 			die('can\'t change ldap uidNumber with regular update procedure');
 		}
-
 
 		if ($this->get('login') !== $xuser->get('login'))
 			$this->_renameUid($xuser->get('login'), $this->get('login') );
@@ -691,7 +658,7 @@ class Hubzero_User extends JObject
 			$attributes['emailConfirmed'] = strlen($this->get('email_confirmed')) > 0 ? $this->get('email_confirmed') : array();
 
 		if ($this->get('home') !== $xuser->get('home'))
-		{ 
+		{
 			// REQUIRED FIELD, CAN'T DELETE
 
 			if (strlen($this->get('home')) > 0)
@@ -746,8 +713,8 @@ class Hubzero_User extends JObject
 		if ($this->get('usageagreement') !== $xuser->get('usageagreement'))
 		{
 			$attributes['usageAgreement'] = array();
-			
-			if (strlen($this->get('usageagreement')) > 0) 
+
+			if (strlen($this->get('usageagreement')) > 0)
 			{
 				if ($this->get('usageagreement') === true)
 					$attributes['usageAgreement'] = 'TRUE';
@@ -758,9 +725,9 @@ class Hubzero_User extends JObject
 
 		if ($this->get('mod_date') !== $xuser->get('mod_date'))
 			$attributes['modDate'] = (strlen($this->get('mod_date')) > 0) ? $this->get('mod_date') : array();
-		
+
 		if ($this->get('mailPreferenceOption') !== $xuser->get('mailPreferenceOption'))
-			$attributes['mailPreferenceOption'] = (strlen($this->get('mailPreferenceOption')) > 0) ? 
+			$attributes['mailPreferenceOption'] = (strlen($this->get('mailPreferenceOption')) > 0) ?
 				$this->get('mailPreferenceOption') : array();
 
 		if ($this->get('proxy_password') !== $xuser->get('proxy_password'))
@@ -768,7 +735,7 @@ class Hubzero_User extends JObject
 
 		if ($this->get('proxy_uid') !== $xuser->get('proxy_uid'))
 			$attributes['proxyUidNumber'] = (strlen($this->get('proxy_uid')) > 0) ? $this->get('proxy_uid') : array();
-	
+
 		$keys = array('disability','hispanic','race','admin','hosts','edulevel','role');
 
 		foreach($keys as $key)
@@ -778,7 +745,7 @@ class Hubzero_User extends JObject
 			if ($values !== $xuser->get($key)) {
 				if (!empty($values)) {
 					if (is_array($values)) {
-						foreach ($values as $value) 
+						foreach ($values as $value)
 						{
 							$attributes[$key][] = $value;
 						}
@@ -797,12 +764,12 @@ class Hubzero_User extends JObject
 		{
 			//die('groups can not be changed through the xuser object');
 		}
-		
+
 		if (empty($attributes))
 			return 0;
 
 		$result = ldap_modify($ldapconn, $dn, $attributes);
-		
+
 		if ($result == false) {
 			$errno = @ldap_errno($conn);
 			return $errno;
@@ -847,34 +814,30 @@ class Hubzero_User extends JObject
 
 		return true;
 	}
-	
-	//-----------
 
 	public function loadRegistration(&$registration)
 	{
 		if (!is_object($registration))
 			return false;
 
-		$keys = array('login', 'password', 'email', 'name', 'org', 'orgtype', 
+		$keys = array('login', 'password', 'email', 'name', 'org', 'orgtype',
 				'countryresident', 'countryorigin',
 				'sex', 'disability', 'hispanic', 'race', 'nativetribe',
 				'web', 'phone', 'reason', 'edulevel',
 				'role');
-		
+
 		foreach($keys as $key)
 			if ($registration->get($key) !== null)
 				$this->set($key, $registration->get($key));
 
 		if ($registration->get('mailPreferenceOption') !== null)
 			$this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
-		
+
 		if ($registration->get('usageAgreement') !== null)
 			$this->set('usageagreement', $registration->get('usageAgreement') ? true : false);
-	
+
 		return true;
 	}
-	
-	//-----------
 
 	public function hasTransientUsername()
 	{
@@ -883,8 +846,6 @@ class Hubzero_User extends JObject
 		if ( count($parts) == 3 && intval($parts[0]) < 0 )
 			return true;
 	}
-	
-	//-----------
 
 	public function getTransientUsername()
 	{
@@ -893,16 +854,12 @@ class Hubzero_User extends JObject
 		if ( count($parts) == 3 && intval($parts[0]) < 0 )
 			return pack("H*", $parts[1]);
 	}
-	
-	//-----------
 
 	public function hasTransientEmail()
 	{
 		if (eregi( "\.localhost\.invalid$", $this->get('email')))
 			return true;
 	}
-	
-	//-----------
 
 	public function getTransientEmail()
 	{

@@ -29,8 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 ximport('Hubzero_Controller');
 
 class BlogController extends Hubzero_Controller
@@ -39,7 +37,7 @@ class BlogController extends Hubzero_Controller
 	{
 		$this->_task = JRequest::getVar('task','');
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			// File manager for uploading images/files to be used in group descriptions
 			case 'media':        $this->_media();        break;
@@ -47,42 +45,40 @@ class BlogController extends Hubzero_Controller
 			case 'upload':       $this->_upload();       break;
 			case 'deletefolder': $this->_deletefolder(); break;
 			case 'deletefile':   $this->_deletefile();   break;
-			
+
 			// Feeds
 			case 'feed.rss': $this->_feed();   break;
 			case 'feed':     $this->_feed();   break;
 			case 'comments.rss': $this->_commentsFeed();   break;
 			case 'comments':     $this->_commentsFeed();   break;
-			
+
 			// Comments
 			case 'savecomment':   $this->_saveComment();   break;
 			//case 'newcomment':    $this->_newComment();    break;
 			//case 'editcomment':   $this->_editComment();   break;
 			case 'deletecomment': $this->_deleteComment(); break;
-			
+
 			// Entry
 			case 'save':   $this->_save();   break;
 			case 'new':    $this->_new();    break;
 			case 'edit':   $this->_edit();   break;
 			case 'delete': $this->_delete(); break;
 			case 'entry':  $this->_entry();  break;
-			
+
 			// Entries
 			case 'archive':
-			case 'browse': 
+			case 'browse':
 			default: $this->_browse(); break;
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildPathway() 
+
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		$title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				$title,
@@ -118,10 +114,8 @@ class BlogController extends Hubzero_Controller
 			}
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle() 
+
+	protected function _buildTitle()
 	{
 		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 		if ($this->_task) {
@@ -143,10 +137,8 @@ class BlogController extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
-	
-	//-----------
-	
-	private function _browse() 
+
+	private function _browse()
 	{
 		// Instantiate a new view
 		$view = new JView(array('name'=>'browse'));
@@ -154,7 +146,7 @@ class BlogController extends Hubzero_Controller
 		$view->task = $this->_task;
 		$view->authorized = $this->_authorize();
 		$view->config = $this->config;
-		
+
 		// Filters for returning results
 		$view->filters = array();
 		$view->filters['limit'] = JRequest::getInt('limit', 25);
@@ -164,7 +156,7 @@ class BlogController extends Hubzero_Controller
 		$view->filters['scope'] = 'site';
 		$view->filters['group_id'] = 0;
 		$view->filters['search'] = JRequest::getVar('search','');
-		
+
 		if ($this->juser->get('guest')) {
 			$view->filters['state'] = 'public';
 		} else {
@@ -172,21 +164,21 @@ class BlogController extends Hubzero_Controller
 				$view->filters['state'] = 'registered';
 			}
 		}
-		
+
 		// Instantiate the BlogEntry object
 		$be = new BlogEntry($this->database);
-		
+
 		// Get a record count
 		$view->total = $be->getCount($view->filters);
-		
+
 		// Get the records
 		$view->rows = $be->getRecords($view->filters);
-		
+
 		// Highlight search results
 		if ($view->filters['search']) {
 			$view->rows = $this->_highlight($view->filters['search'], $view->rows);
 		}
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
@@ -200,41 +192,39 @@ class BlogController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		$this->_buildTitle();
 		$this->_buildPathway();
 		$this->_getStyles();
 		$this->_getScripts();
-		
+
 		$view->popular = $be->getPopularEntries($view->filters);
 		$view->recent = $be->getRecentEntries($view->filters);
-		
+
 		$view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-		
+
 		// Output HTML
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	private function _highlight( $searchquery, $results )
 	{
 		$toks = array($searchquery);
-		
+
 		$resultback = 60;
 		$resultlen  = 300;
-		
+
 		// Loop through all results
-		for ($i = 0, $n = count($results); $i < $n; $i++) 
+		for ($i = 0, $n = count($results); $i < $n; $i++)
 		{
 			$row =& $results[$i];
-			
+
 			// Clean the text up a bit first
 			$lowerrow = strtolower( $row->content );
-			
+
 			// Find first occurrence of a search word
 			$pos = 0;
-			foreach ($toks as $tok) 
+			foreach ($toks as $tok)
 			{
 				$pos = strpos( $lowerrow, $tok );
 				if ($pos !== false) break;
@@ -247,7 +237,7 @@ class BlogController extends Hubzero_Controller
 			}
 
 			// Highlight each word/phrase found
-			foreach ($toks as $tok) 
+			foreach ($toks as $tok)
 			{
 				if (($tok == 'class') || ($tok == 'span') || ($tok == 'highlight')) {
 					continue;
@@ -258,44 +248,42 @@ class BlogController extends Hubzero_Controller
 
 			$row->content = trim($row->content).' &#8230;';
 		}
-		
+
 		return $results;
 	}
-	
-	//-----------
-	
-	private function _entry() 
+
+	private function _entry()
 	{
 		$view = new JView(array('name'=>'entry'));
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->authorized = $this->_authorize();
 		$view->config = $this->config;
-		
+
 		$alias = JRequest::getVar( 'alias', '' );
-		
+
 		if (!$alias) {
 			return $this->_browse();
 		}
 
 		$view->row = new BlogEntry($this->database);
 		$view->row->loadAlias($alias, 'site');
-		
+
 		if (!$view->row->id) {
 			return $this->_browse();
 		}
 		$this->row = $view->row;
-		
+
 		// Check authorization
 		if (($view->row->state == 2 && $this->juser->get('guest')) || ($view->row->state == 0 && !$view->authorized)) {
 			JError::raiseError( 403, JText::_('COM_BLOG_NOT_AUTH') );
 			return;
 		}
-		
-		if ($this->juser->get('id') != $view->row->created_by) { 
+
+		if ($this->juser->get('id') != $view->row->created_by) {
 			$view->row->hit();
 		}
-		
+
 		if ($view->row->content) {
 			$wikiconfig = array(
 				'option'   => $this->_option,
@@ -303,24 +291,24 @@ class BlogController extends Hubzero_Controller
 				'pagename' => $view->row->alias,
 				'pageid'   => 0,
 				'filepath' => $this->config->get('uploadpath'),
-				'domain'   => '' 
+				'domain'   => ''
 			);
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
 			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig);
 		}
-		
+
 		$bc = new BlogComment($this->database);
 		$view->comments = $bc->getAllComments($view->row->id);
-		
+
 		//count($this->comments, COUNT_RECURSIVE)
 		$view->comment_total = 0;
 		if ($view->comments) {
-			foreach ($view->comments as $com) 
+			foreach ($view->comments as $com)
 			{
 				$view->comment_total++;
 				if ($com->replies) {
-					foreach ($com->replies as $rep) 
+					foreach ($com->replies as $rep)
 					{
 						$view->comment_total++;
 						if ($rep->replies) {
@@ -330,14 +318,14 @@ class BlogController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		$r = JRequest::getInt( 'reply', 0 );
 		$view->replyto = new BlogComment($this->database);
 		$view->replyto->load($r);
 
 		$bt = new BlogTags($this->database);
 		$view->tags = $bt->get_tag_cloud(0,0,$view->row->id);
-		
+
 		// Filters for returning results
 		$filters = array();
 		$filters['limit'] = 10;
@@ -345,7 +333,7 @@ class BlogController extends Hubzero_Controller
 		//$filters['created_by'] = $this->member->get('uidNumber');
 		$filters['scope'] = 'site';
 		$filters['group_id'] = 0;
-		
+
 		if ($this->juser->get('guest')) {
 			$filters['state'] = 'public';
 		} else {
@@ -356,44 +344,40 @@ class BlogController extends Hubzero_Controller
 		$view->popular = $view->row->getPopularEntries($filters);
 		$view->recent = $view->row->getRecentEntries($filters);
 		$view->firstentry = $view->row->getDateOfFirstEntry($filters);
-		
+
 		// Push some scripts to the template
 		$this->_buildTitle();
 		$this->_buildPathway();
 		$this->_getStyles();
 		$this->_getScripts();
-		
+
 		$view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-		
+
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	private function _new() 
+
+	private function _new()
 	{
 		return $this->_edit();
 	}
-	
-	//-----------
-	
-	private function _edit() 
+
+	private function _edit()
 	{
 		if ($this->juser->get('guest')) {
 			$this->setError( JText::_('COM_BLOG_LOGIN_NOTICE') );
 			return $this->_login();
 		}
-		
+
 		$view = new JView(array('name'=>'edit'));
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->authorized = $this->_authorize();
-		
+
 		$id = JRequest::getInt('entry', 0);
-		
+
 		$view->entry = new BlogEntry($this->database);
 		$view->entry->load($id);
 		if (!$view->entry->id) {
@@ -402,36 +386,32 @@ class BlogController extends Hubzero_Controller
 			$view->entry->scope = 'site';
 			$view->entry->created_by = $this->juser->get('id');
 		}
-		
+
 		$bt = new BlogTags($this->database);
 		$view->tags = $bt->get_tag_string($view->entry->id);
-		
+
 		// Push some scripts to the template
 		$this->_buildTitle();
 		$this->_buildPathway();
 		$this->_getStyles();
 		$this->_getScripts();
-		
+
 		$view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-		
+
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	private function _normalizeTitle($title) 
+
+	private function _normalizeTitle($title)
 	{
 		$title = str_replace(' ', '-', $this->_shortenTitle($title));
 		$title = preg_replace("/[^a-zA-Z0-9\-]/", '', $title);
 		return strtolower($title);
 	}
-	
-	//-----------
-	
-	public function _shortenTitle($text, $chars=100) 
+
+	public function _shortenTitle($text, $chars=100)
 	{
 		$text = strip_tags($text);
 		$text = trim($text);
@@ -442,36 +422,34 @@ class BlogController extends Hubzero_Controller
 		}
 		return $text;
 	}
-	
-	//-----------
-	
-	private function _save() 
+
+	private function _save()
 	{
 		if ($this->juser->get('guest')) {
 			$this->setError( JText::_('COM_BLOG_LOGIN_NOTICE') );
 			return $this->_login();
 		}
-		
+
 		$entry = JRequest::getVar( 'entry', array(), 'post' );
-		
+
 		$row = new BlogEntry( $this->database );
 		if (!$row->bind( $entry )) {
 			$this->setError( $row->getError() );
 			return $this->_edit();
 		}
-		
+
 		//$row->id = JRequest::getInt( 'entry_id', 0 );
-		
+
 		if (!$row->id) {
 			$row->alias = $this->_normalizeTitle($row->title);
 			$row->created = date( 'Y-m-d H:i:s', time() );  // use gmdate() ?
 			$row->publish_up = date( 'Y-m-d H:i:s', time() );
 		}
-		
+
 		if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') {
 			$row->publish_up = $row->created;
 		}
-		
+
 		// Check content
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
@@ -483,7 +461,7 @@ class BlogController extends Hubzero_Controller
 			$this->setError( $row->getError() );
 			return $this->_edit();
 		}
-		
+
 		// Process tags
 		$tags = trim(JRequest::getVar( 'tags', '' ));
 		$bt = new BlogTags( $this->database );
@@ -492,40 +470,38 @@ class BlogController extends Hubzero_Controller
 		//return $this->_entry();
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias);
 	}
-	
-	//-----------
-	
-	private function _delete() 
+
+	private function _delete()
 	{
 		if ($this->juser->get('guest')) {
 			$this->setError( JText::_('COM_BLOG_LOGIN_NOTICE') );
 			return;
 		}
-		
+
 		if (!$this->_authorize()) {
 			$this->setError( JText::_('COM_BLOG_NOT_AUTHORIZED') );
 			return $this->_browse();
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'entry', 0 );
 		if (!$id) {
 			return $this->_browse();
 		}
-		
+
 		$process = JRequest::getVar( 'process', '' );
 		$confirmdel = JRequest::getVar( 'confirmdel', '' );
-		
+
 		// Initiate a blog entry object
 		$entry = new BlogEntry( $this->database );
 		$entry->load( $id );
-		
+
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) {
 			if ($process && !$confirmdel) {
 				$this->setError( JText::_('COM_BLOG_ERROR_CONFIRM_DELETION') );
 			}
-			
+
 			// Push some scripts to the template
 			$this->_buildTitle();
 			$this->_buildPathway();
@@ -545,19 +521,19 @@ class BlogController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
-		
+
 		// Delete all comments on an entry
 		if (!$entry->deleteComments( $id )) {
 			$this->setError( $entry->getError() );
 			return $this->_browse();
 		}
-		
+
 		// Delete all associated content
 		if (!$entry->deleteTags( $id )) {
 			$this->setError( $entry->getError() );
 			return $this->_browse();
 		}
-		
+
 		// Delete all associated content
 		if (!$entry->deleteFiles( $id )) {
 			$this->setError( $entry->getError() );
@@ -572,32 +548,30 @@ class BlogController extends Hubzero_Controller
 		// Return the topics list
 		return $this->_browse();
 	}
-	
-	//-----------
-	
-	private function _saveComment() 
+
+	private function _saveComment()
 	{
 		// Ensure the user is logged in
 		if ($this->juser->get('guest')) {
 			$this->setError( JText::_('COM_BLOG_LOGIN_NOTICE') );
 			return $this->_login();
 		}
-		
+
 		// Incoming
 		$comment = JRequest::getVar( 'comment', array(), 'post' );
-		
+
 		// Instantiate a new comment object and pass it the data
 		$row = new BlogComment( $this->database );
 		if (!$row->bind( $comment )) {
 			$this->setError( $row->getError() );
 			return $this->_entry();
 		}
-		
+
 		// Set the created time
 		if (!$row->id) {
 			$row->created = date( 'Y-m-d H:i:s', time() );  // use gmdate() ?
 		}
-		
+
 		// Check content
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
@@ -609,7 +583,7 @@ class BlogController extends Hubzero_Controller
 			$this->setError( $row->getError() );
 			return $this->_entry();
 		}
-		
+
 		/*
 		if ($row->created_by != $this->member->get('uidNumber)) {
 			$this->entry = new BlogEntry($this->database);
@@ -646,34 +620,32 @@ class BlogController extends Hubzero_Controller
 			}
 		}
 		*/
-		
+
 		return $this->_entry();
 	}
-	
-	//-----------
-	
-	private function _deleteComment() 
+
+	private function _deleteComment()
 	{
 		// Ensure the user is logged in
 		if ($this->juser->get('guest')) {
 			$this->setError( JText::_('COM_BLOG_LOGIN_NOTICE') );
 			return;
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'comment', 0 );
 		if (!$id) {
 			return $this->_entry();
 		}
-		
+
 		// Initiate a blog comment object
 		$comment = new BlogComment( $this->database );
 		$comment->load( $id );
-		
+
 		if ($this->juser->get('id') != $comment->created_by && !$this->authorized) {
 			return $this->_entry();
 		}
-		
+
 		// Delete all comments on an entry
 		if (!$comment->deleteChildren( $id )) {
 			$this->setError( $comment->getError() );
@@ -684,25 +656,23 @@ class BlogController extends Hubzero_Controller
 		if (!$comment->delete( $id )) {
 			$this->setError( $comment->getError() );
 		}
-		
+
 		// Return the topics list
 		return $this->_entry();
 	}
-	
-	//-----------
-	
-	protected function _feed() 
+
+	protected function _feed()
 	{
 		if (!$this->config->get('feeds_enabled')) {
 			$this->_browse();
 			return;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
-		
+
 		//$mainframe =& $this->mainframe;
 		$database =& JFactory::getDBO();
-		
+
 		// Set the mime encoding for the document
 		$jdoc =& JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
@@ -731,10 +701,10 @@ class BlogController extends Hubzero_Controller
 				$filters['state'] = 'registered';
 			}
 		}
-		
+
 		// Instantiate the BlogEntry object
 		$be = new BlogEntry($this->database);
-		
+
 		// Get the records
 		$rows = $be->getRecords($filters);
 
@@ -743,7 +713,7 @@ class BlogController extends Hubzero_Controller
 		$doc->title  = $jconfig->getValue('config.sitename').' - '.JText::_(strtoupper($this->_option));
 		$doc->title .= ($filters['year']) ? ': '.$year : '';
 		$doc->title .= ($filters['month']) ? ': '.sprintf("%02d",$filters['month']) : '';
-		
+
 		$doc->description = JText::sprintf('COM_BLOG_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'));
 		$doc->copyright = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category = JText::_('COM_BLOG_RSS_CATEGORY');
@@ -756,11 +726,11 @@ class BlogController extends Hubzero_Controller
 				'pagename' => '',
 				'pageid'   => 0,
 				'filepath' => $this->config->get('uploadpath'),
-				'domain'   => '' 
+				'domain'   => ''
 			);
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
-			
+
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -772,7 +742,7 @@ class BlogController extends Hubzero_Controller
 
 				$cuser =& JUser::getInstance($row->created_by);
 				$author = $cuser->get('name');
-				
+
 				// Strip html from feed item description text
 				$description = $p->parse(stripslashes($row->content), $wikiconfig);
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
@@ -781,7 +751,7 @@ class BlogController extends Hubzero_Controller
 				}
 
 				@$date = ( $row->publish_up ? date( 'r', strtotime($row->publish_up) ) : '' );
-				
+
 				// Load individual item creator class
 				$item = new JFeedItem();
 				$item->title       = $title;
@@ -795,26 +765,24 @@ class BlogController extends Hubzero_Controller
 				$doc->addItem( $item );
 			}
 		}
-		
+
 		// Output the feed
 		echo $doc->render();
 	}
 
-	//-----------
-	
-	protected function _commentsFeed() 
+	protected function _commentsFeed()
 	{
 		if (!$this->config->get('feeds_enabled')) {
 			$this->_task = 'entry';
 			$this->_entry();
 			return;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
-		
+
 		//$mainframe =& $this->mainframe;
 		$database =& JFactory::getDBO();
-		
+
 		// Set the mime encoding for the document
 		$jdoc =& JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
@@ -828,22 +796,22 @@ class BlogController extends Hubzero_Controller
 
 		// Incoming
 		$alias = JRequest::getVar( 'alias', '' );
-		
+
 		if (!$alias) {
 			return $this->_browse();
 		}
 
 		$entry = new BlogEntry($this->database);
 		$entry->loadAlias($alias, 'site');
-		
+
 		if (!$entry->id) {
 			$this->_task = 'browse';
 			return $this->_browse();
 		}
-		
+
 		$bc = new BlogComment($this->database);
 		$rows = $bc->getAllComments($entry->id);
-		
+
 		$year = JRequest::getInt( 'year', date("Y") );
 		$month = JRequest::getInt( 'month', 0 );
 
@@ -854,7 +822,7 @@ class BlogController extends Hubzero_Controller
 		$doc->title .= ($month) ? ': '.sprintf("%02d",$month) : '';
 		$doc->title .= ($entry->title) ? ': '.stripslashes($entry->title) : '';
 		$doc->title .= ': '.JText::_('Comments');
-		
+
 		$doc->description = JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), stripslashes($entry->title));
 		$doc->copyright = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		//$doc->category = JText::_('COM_BLOG_RSS_CATEGORY');
@@ -867,7 +835,7 @@ class BlogController extends Hubzero_Controller
 				'pagename' => $entry->alias,
 				'pageid'   => 0,
 				'filepath' => $this->config->get('uploadpath'),
-				'domain'   => '' 
+				'domain'   => ''
 			);
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
@@ -882,10 +850,10 @@ class BlogController extends Hubzero_Controller
 					$cuser =& JUser::getInstance($row->created_by);
 					$author = $cuser->get('name');
 				}
-				
+
 				// Prepare the title
 				$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date',$row->created, '%I:%M %p', 0).' on '.JHTML::_('date',$row->created, '%d %b, %Y', 0);
-				
+
 				// Strip html from feed item description text
 				if ($row->reports) {
 					$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
@@ -898,7 +866,7 @@ class BlogController extends Hubzero_Controller
 				}*/
 
 				@$date = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
-				
+
 				// Load individual item creator class
 				$item = new JFeedItem();
 				$item->title       = $title;
@@ -910,10 +878,10 @@ class BlogController extends Hubzero_Controller
 
 				// Loads item info into rss array
 				$doc->addItem( $item );
-				
+
 				// Check for any replies
 				if ($row->replies) {
-					foreach ($row->replies as $reply) 
+					foreach ($row->replies as $reply)
 					{
 						// URL link to article
 						$link = JRoute::_('index.php?option='.$this->_option.'&task='.JHTML::_('date',$entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$entry->publish_up, '%m', 0).'/'.$entry->alias.'#c'.$reply->id);
@@ -951,9 +919,9 @@ class BlogController extends Hubzero_Controller
 
 						// Loads item info into rss array
 						$doc->addItem( $item );
-						
+
 						if ($reply->replies) {
-							foreach ($reply->replies as $response) 
+							foreach ($reply->replies as $response)
 							{
 								// URL link to article
 								$link = JRoute::_('index.php?option='.$this->_option.'&task='.JHTML::_('date',$entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$entry->publish_up, '%m', 0).'/'.$entry->alias.'#c'.$response->id);
@@ -988,7 +956,7 @@ class BlogController extends Hubzero_Controller
 								$item->date        = $date;
 								$item->category    = '';
 								$item->author      = $author;
-								
+
 								// Loads item info into rss array
 								$doc->addItem( $item );
 							}
@@ -997,11 +965,11 @@ class BlogController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Output the feed
 		echo $doc->render();
 	}
-	
+
 	//----------------------------------------------------------
 	// media manager
 	//----------------------------------------------------------
@@ -1014,7 +982,7 @@ class BlogController extends Hubzero_Controller
 			$this->_media();
 			return;
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
@@ -1026,10 +994,10 @@ class BlogController extends Hubzero_Controller
 		// Incoming
 		$scope = JRequest::getVar( 'scope', 'site' );
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Build the file path
 		$path = $this->_getUploadPath($scope, $id);
-		
+
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( $path, 0777 )) {
@@ -1038,7 +1006,7 @@ class BlogController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
@@ -1048,14 +1016,12 @@ class BlogController extends Hubzero_Controller
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('COM_BLOG_ERROR_UPLOADING') );
 		}
-		
+
 		// Push through to the media view
 		$this->_media();
 	}
 
-	//-----------
-
-	protected function _deletefolder() 
+	protected function _deletefolder()
 	{
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
@@ -1063,7 +1029,7 @@ class BlogController extends Hubzero_Controller
 			$this->_media();
 			return;
 		}
-		
+
 		// Incoming file
 		$file = trim(JRequest::getVar( 'folder', '', 'get' ));
 		if (!$file) {
@@ -1071,32 +1037,30 @@ class BlogController extends Hubzero_Controller
 			$this->_media();
 			return;
 		}
-		
+
 		// Incoming
 		$scope = JRequest::getVar( 'scope', 'site' );
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Build the file path
 		$path = $this->_getUploadPath($scope, $id);
-		
+
 		$del_folder = $path.DS.$file;
-		
+
 		// Delete the folder
-		if (is_dir($del_folder)) { 
+		if (is_dir($del_folder)) {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFolder::delete($del_folder)) {
 				$this->setError( JText::_('COM_BLOG_UNABLE_TO_DELETE_DIRECTORY') );
 			}
 		}
-		
+
 		// Push through to the media view
 		$this->_media();
 	}
 
-	//-----------
-
-	protected function _deletefile() 
+	protected function _deletefile()
 	{
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
@@ -1104,7 +1068,7 @@ class BlogController extends Hubzero_Controller
 			$this->_media();
 			return;
 		}
-		
+
 		// Incoming file
 		$file = trim(JRequest::getVar( 'file', '', 'get' ));
 		if (!$file) {
@@ -1112,15 +1076,15 @@ class BlogController extends Hubzero_Controller
 			$this->_media();
 			return;
 		}
-		
+
 		// Incoming
 		$scope = JRequest::getVar( 'scope', 'site' );
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Build the file path
 		$path = $this->_getUploadPath($scope, $id);
 
-		if (!file_exists($path.DS.$file) or !$file) { 
+		if (!file_exists($path.DS.$file) or !$file) {
 			$this->setError( JText::_('COM_BLOG_FILE_NOT_FOUND') );
 			$this->_media();
 			return;
@@ -1131,19 +1095,17 @@ class BlogController extends Hubzero_Controller
 				$this->setError( JText::_('COM_BLOG_UNABLE_TO_DELETE_FILE') );
 			}
 		}
-		
+
 		// Push through to the media view
 		$this->_media();
 	}
 
-	//-----------
-
-	protected function _media() 
+	protected function _media()
 	{
 		// Incoming
 		$scope = JRequest::getVar( 'scope', 'site' );
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'edit', 'layout'=>'filebrowser') );
 		$view->option = $this->_option;
@@ -1156,13 +1118,11 @@ class BlogController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
 
-	protected function _getUploadPath($scope, $id) 
+	protected function _getUploadPath($scope, $id)
 	{
 		$path = JPATH_ROOT;
-		switch ($scope) 
+		switch ($scope)
 		{
 			case 'member':
 				jimport( 'joomla.plugin.plugin' );
@@ -1171,7 +1131,7 @@ class BlogController extends Hubzero_Controller
 				$p = $params->get('uploadpath');
 				$p = str_replace('{{uid}}',BlogHelperMember::niceidformat($id),$p);
 			break;
-			
+
 			case 'group':
 				jimport( 'joomla.plugin.plugin' );
 				$plugin = JPluginHelper::getPlugin( 'groups', 'blog' );
@@ -1179,7 +1139,7 @@ class BlogController extends Hubzero_Controller
 				$p = $params->get('uploadpath');
 				$p = str_replace('{{gid}}',BlogHelperMember::niceidformat($id),$p);
 			break;
-			
+
 			case 'site':
 			default:
 				$p = $this->config->get('uploadpath');
@@ -1192,36 +1152,32 @@ class BlogController extends Hubzero_Controller
 		return $path;
 	}
 
-	//-----------
+	protected function _recursiveListdir($base)
+	{
+	    static $filelist = array();
+	    static $dirlist  = array();
 
-	protected function _recursiveListdir($base) 
-	{ 
-	    static $filelist = array(); 
-	    static $dirlist  = array(); 
+	    if (is_dir($base)) {
+	       $dh = opendir($base);
+	       while (false !== ($dir = readdir($dh)))
+		   {
+	           if (is_dir($base .DS. $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
+	                $subbase    = $base .DS. $dir;
+	                $dirlist[]  = $subbase;
+	                $subdirlist = $this->_recursiveListdir($subbase);
+	            }
+	        }
+	        closedir($dh);
+	    }
+	    return $dirlist;
+	}
 
-	    if (is_dir($base)) { 
-	       $dh = opendir($base); 
-	       while (false !== ($dir = readdir($dh))) 
-		   { 
-	           if (is_dir($base .DS. $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') { 
-	                $subbase    = $base .DS. $dir; 
-	                $dirlist[]  = $subbase; 
-	                $subdirlist = $this->_recursiveListdir($subbase); 
-	            } 
-	        } 
-	        closedir($dh); 
-	    } 
-	    return $dirlist; 
-	} 
-
-	//-----------
- 
-	protected function _listfiles() 
+	protected function _listfiles()
 	{
 		// Incoming
 		$scope = JRequest::getVar( 'scope', 'site' );
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		$path = $this->_getUploadPath($scope, $id);
 
 		// Get the directory we'll be reading out of
@@ -1230,12 +1186,12 @@ class BlogController extends Hubzero_Controller
 		$images  = array();
 		$folders = array();
 		$docs    = array();
-		
+
 		if ($d) {
 			// Loop through all files and separate them into arrays of images, folders, and other
-			while (false !== ($entry = $d->read())) 
+			while (false !== ($entry = $d->read()))
 			{
-				$img_file = $entry; 
+				$img_file = $entry;
 				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|jpeg|jpe|tif|tiff|png", $img_file )) {
 						$images[$entry] = $img_file;
@@ -1246,7 +1202,7 @@ class BlogController extends Hubzero_Controller
 					$folders[$entry] = $img_file;
 				}
 			}
-			$d->close();	
+			$d->close();
 
 			ksort($images);
 			ksort($folders);

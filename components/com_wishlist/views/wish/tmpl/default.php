@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 		/* Wish view */
-		
+
 		$title 		= $this->title;
 		$option 	= $this->option;
 		$config 	= $this->config;
@@ -44,27 +44,27 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$error		= $this->getError();
 		$abuse		= $this->abuse;
 		$plan		= $item->plan;
-		
+
 		$html = '';
-		
+
 		if($wishlist && $item) {
-		
+
 			// What name should we dispay for the submitter?
 			$name = JText::_('ANONYMOUS');
 			if ($item->anonymous != 1) {
 				$name = $item->authorname;
 			}
-			
-			$assigned = ($item->assigned && ($admin==2 or $admin==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].a.'action=editplan#plan">'.$item->assignedto.'</a>' : '';	
-			
+
+			$assigned = ($item->assigned && ($admin==2 or $admin==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].a.'action=editplan#plan">'.$item->assignedto.'</a>' : '';
+
 			if(!$assigned && ($admin==2 or $admin==1) && $item->status==0) {
 			$assigned = '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].a.'action=editplan#plan">'.JText::_('unassigned').'</a>';
 			}
-				
+
 			$item->status = ($item->accepted==1 && $item->status==0) ? 6 : $item->status;
 			$due  = ($item->due !='0000-00-00 00:00:00') ? JHTML::_('date',$item->due, '%Y-%m-%d') : '';
-				
-			switch( $item->status) 
+
+			switch( $item->status)
 			{
 				case 0:    	$status = strtolower(JText::_('WISH_STATUS_PENDING'));
 							$statusnote = JText::_('WISH_STATUS_PENDING_INFO');
@@ -84,35 +84,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$statusnote = $item->granted!='0000-00-00 00:00:00' ? strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b %y').' '.strtolower(JText::_('BY')).' '.$item->grantedby : '';
 				break;
 			}
-			
+
 			// Can't view wishes on a private list if not list admin
 			if(!$wishlist->public	 &&  !$admin) {
 				$html .= Hubzero_View_Helper_Html::div( Hubzero_View_Helper_Html::hed( 2, JText::_('PRIVATE_LIST') ), '', 'content-header' );
 				$html .= '<div class="main section">'.n;
 				$html .= Hubzero_View_Helper_Html::error(JText::_('WARNING_NOT_AUTHORIZED_PRIVATE_LIST')).n;
-				$html .= '</div>'.n;	
+				$html .= '</div>'.n;
 			 }
-			
+
 			 else  {
 				$html .='<div id="content-header">'.n;
 				$html .='	<h2>'.$title.'</h2>'.n;
 				$html .='	<h3>'.JText::_('PROPOSED_ON').' '.JHTML::_('date',$item->proposed, '%d %b %Y').' ';
 				$html .= JText::_('AT').' '.JHTML::_('date', $item->proposed, '%I:%M %p').' '.JText::_('BY').' '.$name;
 				$html .= $assigned ? '; '.$assigned : '';
-				$html .='  </h3>'.n;			
-				$html .='</div><!-- / #content-header -->'.n;			
-				
+				$html .='  </h3>'.n;
+				$html .='</div><!-- / #content-header -->'.n;
+
 				if($item->saved==3 && !$error) {
 					$html  .= '<p class="passed">'.JText::_('New wish successfully posted. Thank you!').'</p>'.n;
 				}
-				
+
 				if($item->saved==2 && !$error && $admin) {
 					$html  .= '<p class="passed">'.JText::_('Changes to the wish successfully saved.').'</p>'.n;
 				}
-				
+
 				// Navigation
 				$html .= '<div id="content-header-extra">'.n;
-				$html .= t.'<ul id="useroptions">'.n;				
+				$html .= t.'<ul id="useroptions">'.n;
 				$html .= t.t.'<li>'.n;
 				if($item->prev) {
 					$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->prev.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].'"><span>&lsaquo; '.JText::_('PREV').'</span></a>'.n;
@@ -120,7 +120,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .=t.t.t.'<span>&lsaquo; '.JText::_('PREV').'</span>'.n;
 				}
 				$html .= t.t.'</li>'.n;
-				
+
 				$html .= t.t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag']).'" ><span>'.JText::_('All').'</span></a></li>'.n;
 				$html .= t.t.'<li class="last">';
 				if($item->next) {
@@ -129,11 +129,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 				else {
 					$html .=t.t.t.'<span>'.JText::_('NEXT').' &rsaquo; </span>'.n;
 				}
-				
+
 				$html .= t.t.'</li>'.n;
 				$html .= t.'</ul>'.n;
 				$html .= '</div>'.n;
-				
+
 				// Status bar
 				$html .='  <div id="topstatusbar" class="'.strtolower($status).'">'.n;
 				$html .='  '.strtoupper(JText::_('STATUS')).': <span class="'.strtolower($status).'">';
@@ -142,18 +142,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= $admin==2 ? '</a>' : '';
 				$html .= '</span>'.n;
 				$html .=' - '.$statusnote.n;
-				$html .='  </div>'.n;		
-				$html .= '<div class="clear"></div>'.n;	
+				$html .='  </div>'.n;
+				$html .= '<div class="clear"></div>'.n;
 				$html .= '<div class="main section noborder">'.n;
 				if ($item->reports) {
 					// this wish is abusive
-					$html  .= Hubzero_View_Helper_Html::error(JText::_('NOTICE_POSTING_REPORTED')).n;	
+					$html  .= Hubzero_View_Helper_Html::error(JText::_('NOTICE_POSTING_REPORTED')).n;
 				}
 				else {
 					// Wish content starts
 					$html .= t.'<div id="wishitem"';
-					$html .= '>'.n;	
-				
+					$html .= '>'.n;
+
 					// Wish title and description	
 					$html .= t.t.'<div class="wishcontentarea';
 					if(!$admin) {
@@ -178,10 +178,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 					else {
 						$html .= 'outstanding';
-					}	
+					}
 					$html .='"';
 					$html .= '>'.$item->subject.'</h3>'.n;
-				
+
 					if($item->about) {
 						$item->about = trim(stripslashes($item->about));
 						$item->about = preg_replace('/<br\\s*?\/??>/i', "", $item->about);
@@ -189,7 +189,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$item->about = str_replace("\n",'<br />',$item->about);
 						$html .= t.t.t.'<p>'.$item->about.'</p>'.n;
 					}
-				
+
 					// Show tags
 					if (count($item->tags) > 0) {
 						$tagarray = array();
@@ -202,7 +202,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$tagarray[] = ' <li><a href="'.JRoute::_('index.php?option=com_tags'.a.'tag='.$tag['tag']).'" rel="tag">'.$tag['raw_tag'].'</a></li>';
 						}
 						$tagarray[] = '</ol>';
-			
+
 						$tags = implode( "\n", $tagarray );
 					} else {
 						$tags = '';
@@ -210,9 +210,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if($tags ) {
 						$html .= t.t.'<div class="tagcontainer">Tags:'.$tags.'</div>'.n;
 					}
-			
+
 					$html .= t.t.'</div>'.n;
-									
+
 					if(!$admin) {
 						// only show thumbs ranking
 						$html .= t.t.'<div class="intermed" style="padding-top:5px;">'.n;
@@ -226,13 +226,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$view->admin = $admin;
 						$view->page = 'wish';
 						$view->filters = $filters;
-						$html .= $view->loadTemplate();																
+						$html .= $view->loadTemplate();
 						$html .= t.t.t.'</p>'.n;
 						$html .= t.t.'</div>'.n;
-						
+
 						// Points				
 						if($wishlist->banking) {
-							$html .= t.t.t.'<div class="assign_bonus">'.n;				
+							$html .= t.t.t.'<div class="assign_bonus">'.n;
 							if(isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) {
 								$html .= t.t.t.'<a class="bonus tooltips" href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=addbonus#action" title="'.JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS').'">+ '.$item->bonus.'</a>'.n;
 							}
@@ -243,7 +243,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 								$html .= t.t.t.'<span class="bonus_inactive" title="'.JText::_('WISH_BONUS_NOT_ACCEPTED').'">&nbsp;</span>'.n;
 							}
 							$html .= t.t.t.'</div>'.n; // end assign bonus
-						}				
+						}
 					} else {
 						// Show priority and ratings
 						$html .= t.t.'<div class="wishranked ';
@@ -258,53 +258,53 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$html .= '</a></span>';
 						}
 						$html .= '</div>'.n;
-						
+
 						// My opinion is available for list owners/advisory committee only
 						if($admin==2 or $admin==3) {
 							$html .= t.t.t.'<div class="rankingarea">'.n;
-							$html .= t.t.t.t.'<div>'.n;					
+							$html .= t.t.t.t.'<div>'.n;
 							$html .= t.t.t.t.'<h4>'.JText::_('MY_OPINION').':</h4>';
-							
+
 							if(isset($item->ranked) && !$item->ranked && ($item->status==0 or $item->status==6) or $item->action=='editvote') {
 								// need to rank it
-								$html .= t.t.t.t.WishlistHtml::rankingForm($option, $wishlist, 'savevote', $item, $admin).n;							
-							} else if(isset($item->ranked) && $item->ranked ) {						
+								$html .= t.t.t.t.WishlistHtml::rankingForm($option, $wishlist, 'savevote', $item, $admin).n;
+							} else if(isset($item->ranked) && $item->ranked ) {
 								// already ranked						
-								$html .= ($item->status==0 or $item->status==6) ? '<span class="editbutton"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'action=editvote" class="editopinion">['.JText::_('EDIT').']</a></span>' : '';						
+								$html .= ($item->status==0 or $item->status==6) ? '<span class="editbutton"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'action=editvote" class="editopinion">['.JText::_('EDIT').']</a></span>' : '';
 								$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote ($item->myvote_imp, 'importance').'</p>'.n;
 								if($admin == 2) {
-								$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote ($item->myvote_effort, 'effort').'</p>'.n;	
-								}	
+								$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote ($item->myvote_effort, 'effort').'</p>'.n;
+								}
 								else {
 								$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;
-								}			
+								}
 							}
 							else {
-								$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;	
+								$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;
 							}
-							$html .= t.t.t.t.'</div>'.n;	
+							$html .= t.t.t.t.'</div>'.n;
 							$html .= t.t.t.'</div>'.n;
-						} 
-						
+						}
+
 						// Consensus area, show to all admins	
 						$html .= t.t.'<div class="consensusarea">'.n;
 						$html .= t.t.t.'<div>'.n;
 						$html .= t.t.t.t.'<h4>'.JText::_('CONSENSUS').':</h4>'.n;
 						if((isset($item->num_votes) && $item->num_votes==0) or !isset($item->num_votes)) {
 							// no ranking available
-							$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;	
+							$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;
 						}
-						else { 
+						else {
 							// have ranking	
 							if(isset($item->num_votes) && isset($item->num_skipped_votes) && $item->num_votes==$item->num_skipped_votes) {
 								$item->average_effort = 7;
-							}							
+							}
 							$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote($item->average_imp, 'importance').'</p>'.n;
-							$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote($item->average_effort,'effort').'</p>'.n;				
+							$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote($item->average_effort,'effort').'</p>'.n;
 						}
 						$html .= t.t.t.'</div>'.n;
 						$html .= t.t.'</div>'.n;
-						
+
 						$html .= t.t.'<div class="votingarea">'.n;
 						$html .= t.t.t.'<div>'.n;
 						$html .= t.t.t.t.'<h4>'.JText::_('COMMUNITY_VOTE').':</h4>'.n;
@@ -318,11 +318,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$view->admin = $admin;
 						$view->page = 'wish';
 						$view->filters = $filters;
-						$html .= $view->loadTemplate();												
+						$html .= $view->loadTemplate();
 						$html .= t.t.t.t.'</div>'.n;
 						// Points				
 						if($wishlist->banking) {
-							$html .= t.t.t.'<div class="assign_bonus">'.n;				
+							$html .= t.t.t.'<div class="assign_bonus">'.n;
 							if(isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) {
 								$html .= t.t.t.'<a class="bonus tooltips" href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=addbonus#action" title="'.JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS').'">+ '.$item->bonus.'</a>'.n;
 							}
@@ -333,18 +333,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 								$html .= t.t.t.'<span class="bonus_inactive" title="'.JText::_('WISH_BONUS_NOT_ACCEPTED').'">&nbsp;</span>'.n;
 							}
 							$html .= t.t.t.'</div>'.n; // end assign bonus
-						}				
-						
+						}
+
 						$html .= t.t.t.'</div>'.n;
-						$html .= t.t.'</div>'.n;		
+						$html .= t.t.'</div>'.n;
 						$html .= t.'</div>'.n;
 					} // end admin						
 					$html .= t.'<div class="clear"></div>'.n;
 					$html .= t.'</div>'.n;
-					
-					$html .= t.t.t.'<p class="comment-options">';					
+
+					$html .= t.t.t.'<p class="comment-options">';
 					// some extra admin options
-					if($admin && $admin!=3) {				
+					if($admin && $admin!=3) {
 						if($item->status!=1) {
 							$html .= t.t.t.t.'<a class="changestatus" href="';
 							$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=changestatus#action">'.JText::_('ACTION_CHANGE_STATUS').'</a>  '.n;
@@ -353,15 +353,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=move#action">'.JText::_('MOVE').'</a>'.n;
 						if($item->private) {
 							$html .= t.t.t.t.'  <a class="makepublic" href="';
-							$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=0">'.JText::_('MAKE_PUBLIC').'</a>'.n;	
+							$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=0">'.JText::_('MAKE_PUBLIC').'</a>'.n;
 						}
 						else {
 							$html .= t.t.t.t.'  <a class="makeprivate" href="';
-							$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=1">'.JText::_('MAKE_PRIVATE').'</a>'.n;	
+							$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=1">'.JText::_('MAKE_PRIVATE').'</a>'.n;
 						}
 
 						$html .= t.t.t.t.'<a class="editwish" href="';
-						$html .= JRoute::_('index.php?option='.$option.a.'task=editwish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">'.ucfirst(JText::_('ACTION_EDIT')).'</a>  '.n;					
+						$html .= JRoute::_('index.php?option='.$option.a.'task=editwish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">'.ucfirst(JText::_('ACTION_EDIT')).'</a>  '.n;
 					}
 					// Report abuse option is for everyone
 					$html .= '<a href="index.php?option=com_support'.a.'task=reportabuse'.a.'category=wish'.a.'id='.$item->id.a.'parent='.$wishlist->id.'" class="abuse">'.JText::_('REPORT_ABUSE').'</a>'.n;
@@ -369,9 +369,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if($juser->get('id') == $item->proposed_by && $item->status==0) {
 						$html .= t.t.t.t.' | <a class="deletewish" href="';
 						$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=delete#action">'.JText::_('ACTION_WITHDRAW_WISH').'</a>'.n;
-					}								
-					$html .= t.t.t.'</p>'.n;			
-		
+					}
+					$html .= t.t.t.'</p>'.n;
+
 					// delete wish?
 					if($item->action == 'delete') {
 						$html .= t.'<a name="action"></a>'.n;
@@ -442,12 +442,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 						}
 						$html .= t.t.t.'	  </label>'.n;
 						$html .= t.t.t.'	 </fieldset>'.n;
-					
+
 						$html .= t.t.t.'	 <fieldset>'.n;
 						$html .= t.t.t.'     <input type="submit" value="'.strtolower(JText::_('ACTION_CHANGE_STATUS')).'" /> <span class="cancelaction">';
 						$html .= '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">';
 						$html .= JText::_('CANCEL').'</a></span>'.n;
-						$html .= t.t.t.'	 </fieldset>'.n;			
+						$html .= t.t.t.'	 </fieldset>'.n;
 						$html .= t.t.t.' </form>'.n;
 						$html .= t.t.'</div>'.n;
 					}
@@ -458,7 +458,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$html .= t.t.'<div class="aside_note">'.n;
 						$html .= t.t.'<p>'.JText::_('WHY_ADDBONUS').'</p>'.n;
 						$html .= t.t.'</div>'.n;
-						$bonus = $item->bonus ? $item->bonus : 0; 
+						$bonus = $item->bonus ? $item->bonus : 0;
 						$html .= t.t.'<h4>'.JText::_('WISH_ADD_BONUS').'</h4>'.n;
 						$html .= t.t.'<h4 class="summary">'.$item->bonusgivenby.' '.JText::_('user(s)').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$bonus.' '.JText::_('points ').' '.JText::_('WISH_BONUS_AS_BONUS').'</h4>'.n;
 						$html .= t.t.t.' <form id="addBonus" method="post" action="index.php?option='.$option.'">'.n;
@@ -477,7 +477,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$html .= t.t.t.'<span class="cancelaction">';
 						$html .= '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">';
 						$html .= JText::_('CANCEL').'</a></span>'.n;
-						$html .= t.t.t.'	 </fieldset>'.n;			
+						$html .= t.t.t.'	 </fieldset>'.n;
 						$html .= t.t.t.' </form>'.n;
 						$html .= ($item->funds <= 0) ? t.t.t.'<p class="nofunds">'.JText::_('SORRY_NO_FUNDS').'</p>'.n : '';
 						$html .= t.t.'<div class="clear"></div>'.n;
@@ -501,7 +501,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$html .= ($wishlist->category=='general') ? 'checked="checked"' : '';
 						$html .= ' /> '.JText::_('WISHLIST_MAIN_NAME').n;
 						$html .= t.t.t.'	  </label>'.n;
-						$html .= t.t.t.'	 </fieldset>'.n;						
+						$html .= t.t.t.'	 </fieldset>'.n;
 						$html .= t.t.t.'	 <fieldset>'.n;
 						$html .= t.t.t.'	  <label>'.n;
 						$html .= t.t.t.'      <input class="option" type="radio" name="type" value="resource" ';
@@ -524,12 +524,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$html .=' /> '.JText::_('WISHLIST_GROUP_NAME').n;
 							$html .= t.t.t.'	  </label>'.n;
 							$html .= t.t.t.'	  <label>'.n;
-						
+
 							$document =& JFactory::getDocument();
 							$document->addScript('components'.DS.'com_wishlist'.DS.'observer.js');
 							$document->addScript('components'.DS.'com_wishlist'.DS.'autocompleter.js');
 							$document->addStyleSheet('components'.DS.'com_wishlist'.DS.'autocompleter.css');
-						
+
 							$html .= t.t.t.'<input type="text" name="group" value="';
 							if($wishlist->category=='group') {
 								$html .= $wishlist->cn;
@@ -567,11 +567,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$html .= t.t.t.'     <input type="submit" value="'.strtolower(JText::_('ACTION_MOVE_THIS_WISH')).'" /> <span class="cancelaction">';
 						$html .= '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">';
 						$html .= JText::_('CANCEL').'</a></span>'.n;
-						$html .= t.t.t.'	 </fieldset>'.n;			
-						$html .= t.t.t.' </form>'.n;		
-						$html .= t.t.'</div>'.n;						
+						$html .= t.t.t.'	 </fieldset>'.n;
+						$html .= t.t.t.' </form>'.n;
+						$html .= t.t.'</div>'.n;
 					}
-								
+
 					// Display comments block
 					$html .= t.'<a name="comments"></a>'.n;
 					$html .= t.'<div id="section-comments">'.n;
@@ -587,7 +587,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .= t.t.'</div><!-- / .aside -->'.n;
 					$html .= t.t.'<div class="section-content ';
 					$html .= '" id="full_com">'.n;
-				
+
 					// Add Comment
 					$view = new JView( array('name'=>'wish', 'layout'=>'addcomment') );
 					$view->option = $option;
@@ -604,7 +604,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$o = 'even';
 						if (count($item->replies) > 0) {
 							$html .= '<ol class="comments pass2">';
-							foreach ($item->replies as $reply) 
+							foreach ($item->replies as $reply)
 							{
 								$o = ($o == 'odd') ? 'even' : 'odd';
 								if($reply->state==4) {
@@ -618,7 +618,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 										$html .= ' abusive';
 									}
 									$html .= '" id="c'.$reply->id.'r">';
-			
+
 									$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
 									$view->option = $option;
 									$view->reply = $reply;
@@ -631,11 +631,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 									$view->addcomment = $addcomment;
 									$html .= $view->loadTemplate();
 								}
-								
+
 								// Another level? 
 								if (count($reply->replies) > 0) {
 									$html .= '<ol class="comments pass3">';
-									foreach ($reply->replies as $r) 
+									foreach ($reply->replies as $r)
 									{
 										$o = ($o == 'odd') ? 'even' : 'odd';
 										if($r->state==4) {
@@ -648,7 +648,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 												$html .= ' abusive';
 											}
 											$html .= '" id="c'.$r->id.'r">';
-											
+
 											$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
 											$view->option = $option;
 											$view->reply = $r;
@@ -661,11 +661,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 											$view->addcomment = $addcomment;
 											$html .= $view->loadTemplate();
 										}
-		
+
 										// Yet another level?? 
 										if (count($r->replies) > 0) {
 											$html .= '<ol class="comments pass4">';
-											foreach ($r->replies as $rr) 
+											foreach ($r->replies as $rr)
 											{
 												$o = ($o == 'odd') ? 'even' : 'odd';
 												if($rr->state==4) {
@@ -709,7 +709,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 					$html .= t.t.'</div>'.n;
 					$html .= t.'</div>'.n;
-				
+
 					// Implementation plan block for list administrators
 					if($admin) {  // let advisory committee view this too
 						$html .=t.t.'<a name="plan"></a>'.n;
@@ -723,19 +723,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$html .= '<p class="add"><a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=editplan#plan">'.JText::_('ADD_TO_THE_PLAN').'</a></p>'.n;
 						$html .= '</div><!-- / .aside -->'.n;
 						$html .=t.t.t.'<div class="section-content" id="full_plan">'.n;
-						
+
 						// we are editing
-						if($item->action=='editplan') {							
+						if($item->action=='editplan') {
 							$document =& JFactory::getDocument();
 							$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'calendar.rc4.js');
 							$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'events.js');
-			
+
 							$html .= '<form action="index.php" method="post" id="hubForm">'.n;
 							$html .= t.'<div class="explaination">'.n;
 							$html .= t.'	 <p>'.JText::_('You can set a deadline and describe the implementation plan for this wish.').'</p>'.n;
 							$html .= t.'</div>'.n;
 							$html .= t.'<fieldset style="padding-top:1.5em;">'.n;
-							
+
 							// due date						
 							$html .= t.t.t.'<label style="display:inline;">'.JText::_('DUE').': '.n;
 							$html .= t.t.t.t.'<input class="option" type="radio" name="isdue" id="nodue" value="0" ';
@@ -751,14 +751,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$html .= t.t.t.'<label  style="display:inline;">'.JText::_('ON').n;
 							$html .= t.t.t.t.'<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="'.$due.'" />'.n;
 							$html .= t.t.t.'</label>'.n;
-							
+
 							// Assigned to
 							$html .= '<label>'.JText::_('WISH_ASSIGNED_TO').':'.n;
 							$html .= $item->assignlist;
 							$html .= '</label>'.n;
-							
+
 							$html .= t.t.'<label>'.n;
-							$html .= t.t.t.JText::_('ACTION_INSERT_TEXT').' ('.JText::_('ACTION_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('WIKI_FORMATTING').'</a>) '.n;	
+							$html .= t.t.t.JText::_('ACTION_INSERT_TEXT').' ('.JText::_('ACTION_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('WIKI_FORMATTING').'</a>) '.n;
 							if($plan) {
 								$html .= t.t.'<div class="newrev">'.n;
 								$html .= '<input type="checkbox" class="option" name="create_revision" value="1" />';
@@ -788,7 +788,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$html .= t.'<p class="submit"><input type="submit" name="submit" value="'.JText::_('SAVE').'" /><span class="cancelaction">';
 							$html .= '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">';
 							$html .= JText::_('CANCEL').'</a></span></p>'.n;
-							$html .= t.'</fieldset>'.n;						
+							$html .= t.'</fieldset>'.n;
 							$html .= '</form>'.n;
 							$html .= t.'<div class="clear"></div>'.n;
 						}
@@ -814,30 +814,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 								$html .= '</a>.';
 								$html .=t.t.t.'</p>'.n;
 							}
-							
+
 							$html .=t.t.t.'<div class="planbody">'.n;
 							$html .=t.t.t.'<p class="plannote">'.JText::_('PLAN_LAST_EDIT').' '.JHTML::_('date', $plan->created, '%d %b %Y').' at '.JHTML::_('date',$plan->created, '%I:%M %p').' '.JText::_('by').' '.$plan->authorname.'</p>'.n;
-				
+
 							$wikiconfig = array(
 								'option'   => $this->_option,
 								'scope'    => 'wishlist'.DS.$wishlist->id,
 								'pagename' => $wishlist->id,
 								'pageid'   => $wishlist->id,
 								'filepath' => '',
-								'domain'   => '' 
+								'domain'   => ''
 							);
 							ximport('Hubzero_Wiki_Parser');
 							$p =& Hubzero_Wiki_Parser::getInstance();
 							$maintext = $p->parse($plan->pagetext, $wikiconfig);
-							
+
 							$html .=t.t.t.$maintext.n;
 							$html .=t.t.t.'</div>'.n;
 						}
 						$html .=t.t.t.'</div>'.n;
-						$html .=t.t.'</div>'.n;		
+						$html .=t.t.'</div>'.n;
 					}
 				  } // end if not abusive
-				
+
 				$html .= t.'<div class="clear"></div></div>'.n;
 			}	// end if not private	
 		}
@@ -845,6 +845,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// throw error, shouldn't be here
 			$html = Hubzero_View_Helper_Html::error(JText::_('ERROR_WISH_NOT_FOUND')).n;
 		}
-		
-		echo $html;	
+
+		echo $html;
 ?>

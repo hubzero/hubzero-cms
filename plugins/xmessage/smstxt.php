@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xmessage_smstxt' );
-
-//-----------
 
 class plgXMessageSmstxt extends JPlugin
 {
@@ -46,22 +42,18 @@ class plgXMessageSmstxt extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xmessage', 'smstxt' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function onMessageMethods()
 	{
 		return 'smstxt';
 	}
-
-	//-----------
 
 	public function onMessage( $from, $xmessage, $user, $action )
 	{
 		if ($this->onMessageMethods() != $action) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }

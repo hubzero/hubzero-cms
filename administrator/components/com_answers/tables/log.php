@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class AnswersLog extends JTable 
+class AnswersLog extends JTable
 {
 	var $id      = NULL;  // @var int(11) Primary key
 	var $rid     = NULL;  // @var int(11)
 	var $ip      = NULL;  // @var varchar(15)
 	var $helpful = NULL;  // @var varchar(10)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__answers_log', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->rid ) == '') {
 			$this->setError( JText::_('Missing response ID') );
@@ -54,10 +51,8 @@ class AnswersLog extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function checkVote($rid=null, $ip=null) 
+
+	public function checkVote($rid=null, $ip=null)
 	{
 		if ($rid == null) {
 			$rid = $this->rid;
@@ -65,16 +60,14 @@ class AnswersLog extends JTable
 		if ($rid == null) {
 			return false;
 		}
-		
+
 		$query = "SELECT helpful FROM $this->_tbl WHERE rid='".$rid."' AND ip='".$ip."'";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function deleteLog($rid=null) 
+
+	public function deleteLog($rid=null)
 	{
 		if ($rid == null) {
 			$rid = $this->rid;
@@ -82,13 +75,13 @@ class AnswersLog extends JTable
 		if ($rid == null) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE rid=".$rid );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		
+
 		return true;
 	}
 }

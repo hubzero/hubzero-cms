@@ -29,33 +29,27 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-class XSearchPhrase 
+class XSearchPhrase
 {
 	private $_text  = NULL;     // The original search text - should NEVER BE CHANGED
 	private $_stem  = NULL;     // A flag for if we should stem words or not
 	private $_data  = array();  // Processed text
 	private $_error = NULL;     // Error holder
-	
+
 	//-----------
-	
+
 	public function __construct( $text=NULL, $stem=false )
-	{		
+	{
 		$this->_text = $text;
 		$this->_stem = $stem;
 		$this->searchTokens = array();
 	}
 
-	//-----------
-	
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -63,38 +57,36 @@ class XSearchPhrase
 		}
 	}
 
-	//-----------
-	
-	public function process() 
+	public function process()
 	{
 		if (trim($this->_text) == '') {
 			return;
 		}
-		
+
 		// An array for all the keywords
 		$words = array();
 		$phrases = array();
-		
+
 		$keyword = stripslashes($this->_text);
 		// Look for anything in quotes, indicating an exact phrase search
 		if (preg_match_all('/"([^"]*)"|\'([^\']*)\'/', $keyword, $matches)) {
 			// Find all the matches and store them in the phrases array
 			// then remove them from the keyword string
-			foreach ($matches[0] as $match) 
+			foreach ($matches[0] as $match)
 			{
 				$keyword = str_replace($match, '', $keyword);
-				
+
 				$phrases[] = trim(substr($match, 1, -1));
 			}
-			
+
 			$keyword = trim($keyword);
 		}
 
 		// Explode the remaining keyword string into individual words
 		$bits = explode(' ', $keyword);
-		
+
 		// Loop through each word
-		foreach ($bits as $bit) 
+		foreach ($bits as $bit)
 		{
 			// Trim it and make sure it's actually a word
 			// Prevents cases with double spaces between words. example: Joe  Smith
@@ -112,7 +104,7 @@ class XSearchPhrase
 				}
 			}
 		}
-		
+
 		$this->searchPhrases = $phrases;
 		$this->searchWords   = $words;
 		$this->searchTokens  = array_merge($phrases, $words);

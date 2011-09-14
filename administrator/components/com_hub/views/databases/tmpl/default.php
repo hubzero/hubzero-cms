@@ -53,7 +53,7 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<?php
-					foreach ($this->arr as $field => $value) 
+					foreach ($this->arr as $field => $value)
 					{
 						if (substr($field, 0, strlen('ipDB')) == 'ipDB') {
 							?>
@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<?php
-						}	
+						}
 					}
 					?>
 				</tbody>

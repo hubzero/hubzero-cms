@@ -41,7 +41,7 @@ echo '<root>' . "\n";
 // Output the data.
 echo "\t" . '<tags>' . "\n";
 if ($this->rows) {
-	foreach ($this->rows as $datum) 
+	foreach ($this->rows as $datum)
 	{
 		echo "\t\t" . '<tag>' . "\n";
 		echo "\t\t\t" . '<raw>' . htmlspecialchars( stripslashes($datum->raw_tag) ) . '</raw>' . "\n";

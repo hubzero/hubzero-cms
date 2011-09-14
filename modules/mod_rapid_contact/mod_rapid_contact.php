@@ -34,7 +34,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
-
 $modrapidcontact = new modRapidContact($params);
 $modrapidcontact->display();
 

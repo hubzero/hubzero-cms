@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->picture != '' && file_exists( $this->picture )) {
 	$file = DS.$picture;
-} else {  
+} else {
 	$file = DS.$this->config->get('defaultpic');
 }
 if ($file && file_exists( JPATH_ROOT.$file )) {

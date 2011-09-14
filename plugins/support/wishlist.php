@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_support_wishlist' );
-
-//-----------
 
 class plgSupportWishlist extends JPlugin
 {
@@ -46,15 +42,13 @@ class plgSupportWishlist extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'support', 'wishlist' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function getReportedItem($refid, $category, $parent) 
+
+	public function getReportedItem($refid, $category, $parent)
 	{
 		if ($category != 'wish' && $category != 'wishcomment') {
 			return null;
 		}
-		
+
 		if ($category == 'wish') {
 			$query  = "SELECT ws.id, ws.about as text, ws.proposed_by as author, ws.subject as subject";
 			$query .= ", 'wish' as parent_category, ws.anonymous as anon";
@@ -71,9 +65,9 @@ class plgSupportWishlist extends JPlugin
 		$database->setQuery( $query );
 		$rows = $database->loadObjectList();
 		if ($rows) {
-			foreach ($rows as $key => $row) 
+			foreach ($rows as $key => $row)
 			{
-			
+
 				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_wishlist&task=wishlist&id='.$parent) : '';
 				if ($rows[$key]->parent_category == 'wishcomment') {
 					$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid='.$parent);
@@ -82,21 +76,19 @@ class plgSupportWishlist extends JPlugin
 		}
 		return $rows;
 	}
-	
-	//-----------
-	
-	public function getParentId( $parentid, $category ) 
+
+	public function getParentId( $parentid, $category )
 	{
 		ximport('Hubzero_Comment');
-		
+
 		$database =& JFactory::getDBO();
 		$refid = $parentid;
-		
+
 		if ($category == 'wishcomment') {
 			$pdata = $this->parent($parentid);
 			$category = $pdata->category;
 			$refid = $pdata->referenceid;
-			
+
 			if ($pdata->category == 'wishcomment') {
 				// Yet another level?
 				$pdata = $this->parent($pdata->referenceid);
@@ -111,58 +103,52 @@ class plgSupportWishlist extends JPlugin
 				}
 			}
 		}
-		
+
 		if ($category == 'wish') {
 			$database->setQuery( "SELECT wishlist FROM #__wishlist_item WHERE id=".$refid);
 			$pid = $database->loadResult();
 		 	return $pid;
 		}
 	}
-	
-	//-----------
-	
-	public function parent($parentid) 
+
+	public function parent($parentid)
 	{
 		$database =& JFactory::getDBO();
 		$parent = new Hubzero_Comment( $database );
 		$parent->load( $parentid );
-		
+
 		return $parent;
 	}
-	
-	//-----------
-	
-	public function getTitle($category, $parentid) 
+
+	public function getTitle($category, $parentid)
 	{
 		if ($category != 'wish' && $category != 'wishcomment') {
 			return null;
 		}
-		
-		switch ($category) 
+
+		switch ($category)
 		{
-			case 'wish': 
-				return JText::sprintf('Wish from list #%s', $parentid);		
+			case 'wish':
+				return JText::sprintf('Wish from list #%s', $parentid);
          	break;
-			
-			case 'wishcomment': 
+
+			case 'wishcomment':
 				return JText::sprintf('Comment to wish  #%s', $parentid);
          	break;
 		}
 	}
-	
-	//-----------
-	
-	public function deleteReportedItem($referenceid, $parentid, $category, $message) 
+
+	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
 		if ($category != 'wish' && $category != 'wishcomment') {
 			return null;
 		}
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		switch ($category)
 		{
-			case 'wish': 
+			case 'wish':
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php' );
@@ -170,21 +156,21 @@ class plgSupportWishlist extends JPlugin
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php' );
-					
+
 				// Delete the wish
 				$wish = new Wish( $database );
 				$wish->delete_wish( $referenceid );
-		
+
 				// also delete all votes for this wish
 				$objR = new WishRank( $database );
 				$objR->remove_vote($referenceid);
-				
+
 				$message .= JText::sprintf('This is to notify you that your wish on wish list #%s '.$parentid.' was removed from the site due to granted complaint received from a user.',$parentid);
 			break;
-			
+
 			case 'wishcomment':
 				ximport('Hubzero_Comment');
-				
+
 				$comment = new Hubzero_Comment( $database );
 				$comment->load( $referenceid );
 				$comment->state = 2;
@@ -192,11 +178,11 @@ class plgSupportWishlist extends JPlugin
 					echo SupportHtml::alert( $comment->getError() );
 					exit();
 				}
-				
+
 				$message .= JText::sprintf('This is to notify you that your comment on wish #%s '.$parentid.' was removed from the site due to granted complaint received from a user.', $parentid);
 			break;
 		}
-		
+
 		return $message;
 	}
 }

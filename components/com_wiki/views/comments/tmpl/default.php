@@ -70,7 +70,7 @@ if ($this->sub) {
 						<option value=""><?php echo JText::_('ALL'); ?></option>
 <?php
 if (count($this->versions) > 1) {
-	foreach ($this->versions as $ver) 
+	foreach ($this->versions as $ver)
 	{
 ?>
 						<option value="<?php echo $ver->version; ?>"<?php echo ($this->v == $ver->version) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->version; ?></option>

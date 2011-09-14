@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class Vote extends JTable 
+class Vote extends JTable
 {
 	var $id      		= NULL;  // @var int(11) Primary key
 	var $referenceid    = NULL;  // @var int(11)
@@ -39,34 +38,30 @@ class Vote extends JTable
 	var $helpful     	= NULL;  // @var varchar(11)
 	var $ip      		= NULL;  // @var varchar(15)
 	var $category     	= NULL;  // @var varchar(50)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__vote_log', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->referenceid ) == '') {
 			$this->setError( JText::_('Missing reference ID') );
 			return false;
 		}
 		return true;
-		
+
 		if (trim( $this->category ) == '') {
 			$this->setError( JText::_('Missing category') );
 			return false;
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function checkVote($refid=null, $category=null, $voter=null) 
+
+	public function checkVote($refid=null, $category=null, $voter=null)
 	{
 		if ($refid == null) {
 			$refid = $this->referenceid;
@@ -80,23 +75,21 @@ class Vote extends JTable
 		if ($category == null) {
 			return false;
 		}
-		
+
 		$now = date( 'Y-m-d H:i:s', time() );
-		
+
 		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid='".$refid."' AND category = '".$category."' AND voter='".$voter."'";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getResults( $filters=array() ) 
+
+	public function getResults( $filters=array() )
 	{
 		$query = "SELECT c.* 
 				FROM $this->_tbl AS c 
 				WHERE c.referenceid=".$filters['id']." AND category='".$filters['category']."' ORDER BY c.voted DESC";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

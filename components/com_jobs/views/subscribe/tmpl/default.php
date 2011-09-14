@@ -29,11 +29,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Subscription screen */
-	
+
 	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	$juser 	  =& JFactory::getUser();
-	
+
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
 	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
@@ -100,13 +100,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php 
 				$html = '';
 				$now = date( 'Y-m-d H:i:s', time() );
-				for ($i=0, $n=count( $this->services ); $i < $n; $i++)  {					
+				for ($i=0, $n=count( $this->services ); $i < $n; $i++)  {
 					// do we have an active subscription?
 					$thissub = ($this->services[$i]->id == $this->subscription->serviceid) ? 1 : 0;
-													
+
 					// Determine expiration date
 					if($thissub) {
-						$length = $this->subscription->status==0 ? $this->subscription->pendingunits : $this->subscription->units;						
+						$length = $this->subscription->status==0 ? $this->subscription->pendingunits : $this->subscription->units;
 						$expires  = $this->subscription->expires > $now && $this->subscription->status==1 ?  '<p class="yes">' : '<p class="no">';
 						$expires .= JText::_( 'YOUR' ).' '.$length.'-'.$this->services[$i]->unitmeasure.' '.JText::_( 'SUBSCRIPTION' ).' ';
 						if($this->subscription->status==1) {
@@ -116,24 +116,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 						else {
 						$expires .= JText::_( 'SUBSCRIPTION_IS_PENDING' ) ;
 						}
-						
+
 						$expires .= '</p>'.n;
 						$expires .= $this->subscription->expires > $now ? ' <a href="'.JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid).'" class="cancelit" id="showconfirm">[ '.JText::_( 'SUBSCRIPTION_CANCEL_THIS' ).' ]</a>' : '';
 						$expires .= $this->subscription->pendingunits > 0 && $this->subscription->status==1  ? '<p class="no">'.JText::_( 'SUBSCRIPTION_EXTEND_REQUEST_PENDING' ).'</p>' :'';
-						
+
 					}
-					
+
 					$units_select = array();
-					$numunits = $this->services[$i]->maxunits / $this->services[$i]->unitsize;															
+					$numunits = $this->services[$i]->maxunits / $this->services[$i]->unitsize;
 					$unitsize = $this->services[$i]->unitsize;
-					
+
 					if ($thissub) { $units_select[0] = 0; }
 					for ($p=1; $p <= $numunits; $p++)
-					{						
+					{
 						$units_select[$unitsize] = $unitsize;
-						$unitsize = $unitsize + $this->services[$i]->unitsize;					
+						$unitsize = $unitsize + $this->services[$i]->unitsize;
 					}
-					
+
 					$unitsChoice = JobsHtml::formSelect('units_'.$this->services[$i]->id, $units_select, '', "option units");
 					$iniprice = $thissub ? 0 : $this->services[$i]->unitprice;
 
@@ -145,10 +145,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .= ' /> ';
 					$html .= $this->services[$i]->title.' - <span class="priceline">'.$this->services[$i]->currency.' '.$this->services[$i]->unitprice.'  '.JText::_( 'PER' ).' '.$this->services[$i]->unitmeasure.'</span>'.n;
 					$html .= '<span> '.$this->services[$i]->description.'</span>'.n;
-					
+
 					$html .= '<div class="subdetails" id="plan_'.$this->services[$i]->id.'">'.n;
-					$html .= $thissub ? $expires : '';	
-					$html .= JobsHtml::confirmscreen(JRoute::_('index.php?option='.$option.a.'task=dashboard'.a.'uid='.$this->uid), JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid));		
+					$html .= $thissub ? $expires : '';
+					$html .= JobsHtml::confirmscreen(JRoute::_('index.php?option='.$option.a.'task=dashboard'.a.'uid='.$this->uid), JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid));
 					$html .= t.t.t.'<label> ';
 					$html .= $thissub ? JText::_( 'SUBSCRIPTION_EXTEND_OR_RENEW' ) : JText::_( 'ACTION_SIGN_UP' );
 					$html .= ' '.JText::_( 'for' ).' '.n;
@@ -158,15 +158,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .= $thissub ? strtolower(JText::_( 'NEW' )).' ' : '';
 					$html .= JText::_( 'SUBSCRIBE_PAYMENT_WILL_BE' ).' <span class="no">'.$this->services[$i]->currency.'</span> <span id="injecttotal_'.$this->services[$i]->id.'"> '.$iniprice.'</span>';
 					$html .= '.</span>'.n;
-					
+
 					// GOOGLE Checkout (TBD)
 					$html .= '<input type="hidden" class="product-price" value="'.$this->services[$i]->unitprice.'" />'.n;
 					$html .= '<input type="hidden" class="product-title" value="'.$this->services[$i]->title.'" />'.n;
 					//$html .= '<div  role="button" alt="Add to cart" tabindex="0" class="googlecart-add-button"> </div>';
-					
+
 					$html .= '</div>'.n;
 					$html .= '</div>'.n;
-					$html .= '<input type="hidden" name="price_'.$this->services[$i]->id.'" id="price_'.$this->services[$i]->id.'" value="'.$this->services[$i]->unitprice.'" />'.n;					
+					$html .= '<input type="hidden" name="price_'.$this->services[$i]->id.'" id="price_'.$this->services[$i]->id.'" value="'.$this->services[$i]->unitprice.'" />'.n;
 				}
 				echo $html;
 				$btn = $this->subscription->id ? JText::_( 'SUBSCRIPTION_SAVE' ) : JText::_( 'SUBSCRIPTION_PROCESS_ORDER' );

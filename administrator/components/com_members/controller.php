@@ -38,11 +38,11 @@ class MembersController extends Hubzero_Controller
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
-		
+
 		$default = 'browse';
-		
+
 		$task = strtolower(JRequest::getVar('task', $default, 'default'));
-		
+
 		$thisMethods = get_class_methods( get_class( $this ) );
 		if (!in_array($task, $thisMethods)) {
 			$task = $default;
@@ -58,18 +58,18 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Views
 	//----------------------------------------------------------
-	
+
 	protected function browse()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'members') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Get configuration
 		$config = JFactory::getConfig();
 		$app =& JFactory::getApplication();
-		
+
 		// Get filters
 		$view->filters = array();
 		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
@@ -80,9 +80,9 @@ class MembersController extends Hubzero_Controller
 		$view->filters['show']   = '';
 		$view->filters['scope']  = '';
 		$view->filters['authorized'] = true;
-		
+
 		$view->filters['sortby'] = $view->filters['sort'].' '.$view->filters['sort_Dir'];
-		
+
 		// Get paging variables
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
@@ -91,7 +91,7 @@ class MembersController extends Hubzero_Controller
 
 		// Get a record count
 		$view->total = $obj->getCount( $view->filters, true );
-		
+
 		// Get records
 		$view->rows = $obj->getRecords( $view->filters, true );
 
@@ -103,12 +103,10 @@ class MembersController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function add()
 	{
@@ -116,25 +114,23 @@ class MembersController extends Hubzero_Controller
 		$view = new JView( array('name'=>'add') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function edit($id=0) 
+	protected function edit($id=0)
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'member') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		if (!$id) {
 			// Incoming
 			$ids = JRequest::getVar( 'id', array() );
@@ -146,56 +142,52 @@ class MembersController extends Hubzero_Controller
 				$id = 0;
 			}
 		}
-		
+
 		// Initiate database class and load info
 		$view->profile = new Hubzero_User_Profile();
 		$view->profile->load( $id );
-		
+
 		// Get the user's interests (tags)
 		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'helpers'.DS.'tags.php' );
-		
+
 		$mt = new MembersTags( $this->database );
 		$view->tags = $mt->get_tag_string( $id );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function apply() 
+	protected function apply()
 	{
 		$this->save(0);
 	}
-	
-	//-----------
-	
-	protected function save($redirect=1) 
+
+	protected function save($redirect=1)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
-		
+
 		// Do we have an ID?
 		if (!$id) {
 			JError::raiseError( 500, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
-		
+
 		// Incoming profile edits
 		$p = JRequest::getVar( 'profile', array(), 'post' );
-		
+
 		// Load the profile
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-		
+
 		// Set the new info
 		$profile->set('givenName', trim($p['givenName']));
 		$profile->set('middleName', trim($p['middleName']));
@@ -220,9 +212,9 @@ class MembersController extends Hubzero_Controller
 			$profile->set('public',0);
 		}
 		$profile->set('modifiedDate', date( 'Y-m-d H:i:s', time() ));
-		
+
 		$profile->set('jobsAllowed', intval(trim($p['jobsAllowed'])));
-		
+
 		$ec = JRequest::getInt( 'emailConfirmed', 0, 'post' );
 		if ($ec) {
 			$profile->set('emailConfirmed', 1);
@@ -245,7 +237,7 @@ class MembersController extends Hubzero_Controller
 		} else {
 			$profile->set('mailPreferenceOption', 0);
 		}
-		
+
 		if (!empty($p['gender'])) {
 			$profile->set('gender', trim($p['gender']));
 		}
@@ -277,7 +269,7 @@ class MembersController extends Hubzero_Controller
 				$profile->set('disability',array($p['disability']));
 			}
 		}
-		
+
 		/*if (is_array($p['hispanic'])) {
 			$hises = $p['hispanic'];
 			$hispanic = array();
@@ -305,11 +297,11 @@ class MembersController extends Hubzero_Controller
 				$profile->set('hispanic',array($p['hispanic']));
 			}
 		}
-		
+
 		if (isset($p['race']) && is_array($p['race'])) {
 			$profile->set('race',$p['race']);
 		}
-		
+
 		// Do we have a new pass?
 		$newpass = trim(JRequest::getVar( 'newpass', '', 'post' ));
 		if ($newpass != '') {
@@ -324,16 +316,16 @@ class MembersController extends Hubzero_Controller
 			JError::raiseWarning('', $profile->getError() );
 			return false;
 		}
-		
+
 		// Get the user's interests (tags)
 		$tags = trim(JRequest::getVar( 'tags', '' ));
-		
+
 		// Process tags
 		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'helpers'.DS.'tags.php' );
-		
+
 		$mt = new MembersTags( $this->database );
 		$mt->tag_object($id, $id, $tags, 1, 1);
-		
+
 		// Make sure certain changes make it back to the Joomla user table
 		$juser =& JUser::getInstance($id);
 		$juser->set('name', $name);
@@ -342,7 +334,7 @@ class MembersController extends Hubzero_Controller
 			JError::raiseWarning('', JText::_( $juser->getError() ));
 			return false;
 		}
-		
+
 		if ($redirect) {
 			// Redirect
 			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option );
@@ -351,9 +343,7 @@ class MembersController extends Hubzero_Controller
 			$this->edit($id);
 		}
 	}
-	
-	//-----------
-	
+
 	/*protected function resetpass() 
 	{
 		// Incoming user ID
@@ -385,17 +375,15 @@ class MembersController extends Hubzero_Controller
 		// Push through to the edit view
 		$this->edit($id);
 	}*/
-	
-	//-----------
 
-	protected function remove() 
+	protected function remove()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Load the component config
 		$config = $this->config;
-		
+
 		// Incoming
 		$ids = JRequest::getVar( 'ids', array() );
 
@@ -403,45 +391,43 @@ class MembersController extends Hubzero_Controller
 		if (!is_array($ids)) {
 			$ids = array();
 		}
-		
+
 		// Do we have any IDs?
 		if (!empty($ids)) {
 			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Delete any associated pictures
 				$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 				$path = JPATH_ROOT.DS.$config->get('webpath').DS.$dir;
-				if (!file_exists($path.DS.$file) or !$file) { 
-					$this->setError( JText::_('FILE_NOT_FOUND') ); 
+				if (!file_exists($path.DS.$file) or !$file) {
+					$this->setError( JText::_('FILE_NOT_FOUND') );
 				} else {
 					unlink($path.DS.$file);
 				}
-				
+
 				// Remove any contribution associations
 				$assoc = new MembersAssociation( $this->database );
 				$assoc->authorid = $id;
 				$assoc->deleteAssociations();
-				
+
 				// Remove the profile
 				$profile = new Hubzero_User_Profile();
 				$profile->load( $id );
 				$profile->delete();
 			}
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('MEMBER_REMOVED');
 	}
-	
-	//-----------
 
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
-	
+
 	//----------------------------------------------------------
 	//  Image handling
 	//----------------------------------------------------------
@@ -450,10 +436,10 @@ class MembersController extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Load the component config
 		$config = $this->config;
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -461,7 +447,7 @@ class MembersController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
@@ -469,7 +455,7 @@ class MembersController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Build upload path
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
@@ -477,7 +463,7 @@ class MembersController extends Hubzero_Controller
 			$path .= DS;
 		}
 		$path .= $config->get('webpath').DS.$dir;
-	
+
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( $path, 0777 )) {
@@ -486,22 +472,22 @@ class MembersController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
-		
+
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('ERROR_UPLOADING') );
 			$file = $curfile;
 		} else {
 			$ih = new MembersImgHandler();
-			
+
 			// Do we have an old file we're replacing?
 			$curfile = JRequest::getVar( 'currentfile', '' );
-			
+
 			if ($curfile != '') {
 				// Yes - remove it
 				if (file_exists($path.DS.$curfile)) {
@@ -520,7 +506,7 @@ class MembersController extends Hubzero_Controller
 					}
 				}
 			}
-			
+
 			// Instantiate a profile, change some info and save
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
@@ -528,7 +514,7 @@ class MembersController extends Hubzero_Controller
 			if (!$profile->update()) {
 				$this->setError( $profile->getError() );
 			}
-			
+
 			// Resize the image if necessary
 			$ih->set('image',$file['name']);
 			$ih->set('path',$path.DS);
@@ -537,7 +523,7 @@ class MembersController extends Hubzero_Controller
 			if (!$ih->process()) {
 				$this->setError( $ih->getError() );
 			}
-			
+
 			// Create a thumbnail image
 			$ih->set('maxWidth', 50);
 			$ih->set('maxHeight', 50);
@@ -546,24 +532,22 @@ class MembersController extends Hubzero_Controller
 			if (!$ih->process()) {
 				$this->setError( $ih->getError() );
 			}
-			
+
 			$file = $file['name'];
 		}
-	
+
 		// Push through to the image view
 		$this->img( $file, $id );
 	}
-
-	//-----------
 
 	protected function deleteimg()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Load the component config
 		$config = $this->config;
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -571,7 +555,7 @@ class MembersController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'file', '' );
 		if (!$file) {
@@ -579,7 +563,7 @@ class MembersController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Build the file path
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
@@ -588,11 +572,11 @@ class MembersController extends Hubzero_Controller
 		}
 		$path .= $config->get('webpath').DS.$dir;
 
-		if (!file_exists($path.DS.$file) or !$file) { 
-			$this->setError( JText::_('FILE_NOT_FOUND') ); 
+		if (!file_exists($path.DS.$file) or !$file) {
+			$this->setError( JText::_('FILE_NOT_FOUND') );
 		} else {
 			$ih = new MembersImgHandler();
-			
+
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path.DS.$file)) {
@@ -600,7 +584,7 @@ class MembersController extends Hubzero_Controller
 				$this->img( $file, $id );
 				return;
 			}
-			
+
 			$curthumb = $ih->createThumbName($file);
 			if (file_exists($path.DS.$curthumb)) {
 				if (!JFile::delete($path.DS.$curthumb)) {
@@ -609,7 +593,7 @@ class MembersController extends Hubzero_Controller
 					return;
 				}
 			}
-			
+
 			// Instantiate a profile, change some info and save
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
@@ -620,11 +604,9 @@ class MembersController extends Hubzero_Controller
 
 			$file = '';
 		}
-	
+
 		$this->img( $file, $id );
 	}
-
-	//-----------
 
 	protected function img( $file='', $id=0 )
 	{
@@ -632,23 +614,23 @@ class MembersController extends Hubzero_Controller
 		$view = new JView( array('name'=>'member', 'layout'=>'image') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Load the component config
 		$view->config = $this->config;
-		
+
 		// Incoming
 		if (!$id) {
 			$view->id = JRequest::getInt( 'id', 0 );
 		} else {
 			$view->id = $id;
 		}
-		
+
 		if (!$file) {
 			$view->file = JRequest::getVar( 'file', '' );
 		} else {
 			$view->file = $file;
 		}
-		
+
 		// Build the file path
 		$view->dir = Hubzero_View_Helper_Html::niceidformat( $id );
 		$view->path = JPATH_ROOT;
@@ -656,62 +638,58 @@ class MembersController extends Hubzero_Controller
 			$view->path .= DS;
 		}
 		$view->path .= $this->config->get('webpath').DS.$view->dir;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function addgroup()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('MEMBERS_NO_ID') );
 			$this->group( $id );
 		}
-		
+
 		// Incoming group table
 		$tbl = JRequest::getVar( 'tbl', '' );
 		if (!$tbl) {
 			$this->setError( JText::_('MEMBERS_NO_GROUP_TABLE') );
 			$this->group( $id );
 		}
-		
+
 		// Incoming group ID
 		$gid = JRequest::getInt( 'gid', 0 );
 		if (!$gid) {
 			$this->setError( JText::_('MEMBERS_NO_GROUP_ID') );
 			$this->group( $id );
 		}
-		
+
 		// Load the group page
 		ximport('Hubzero_Group');
 		$group = Hubzero_Group::getInstance( $gid );
-		
+
 		// Add the user to the group table
 		$group->add( $tbl, array($id) );
 		if ($tbl == 'managers') {
 			// Ensure they're added to the members list as well if they're a manager
 			$group->add( 'members', array($id) );
 		}
-		
+
 		$group->update();
-		
+
 		// Push through to the groups view
 		$this->group( $id );
 	}
-	
-	//-----------
 
 	protected function group( $id=0 )
 	{
@@ -719,7 +697,7 @@ class MembersController extends Hubzero_Controller
 		$view = new JView( array('name'=>'member', 'layout'=>'groups') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		ximport('Hubzero_Group');
 
 		// Incoming
@@ -728,7 +706,7 @@ class MembersController extends Hubzero_Controller
 		} else {
 			$view->id = $id;
 		}
-		
+
 		// Get a list of all groups
 		$filters = array();
 		$filters['type'] = array('all');
@@ -736,7 +714,7 @@ class MembersController extends Hubzero_Controller
 		$filters['search'] = '';
 		$filters['limit'] = 'all';
 		$filters['fields'] = array('cn','description','published','gidNumber','type');
-		
+
 		// Get a list of all groups
 		$view->rows = Hubzero_Group::find($filters);
 
@@ -744,96 +722,92 @@ class MembersController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
+
 	//----------------------------------------------------------
 	//  Hosts
 	//----------------------------------------------------------
-	
+
 	protected function addhost()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('MEMBERS_NO_ID') );
 			$this->hosts();
 		}
-		
+
 		// Load the profile
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-		
+
 		// Incoming host
 		$host = JRequest::getVar( 'host', '' );
 		if (!$host) {
 			$this->setError( JText::_('MEMBERS_NO_HOST') );
 			$this->hosts( $id );
 		}
-		
+
 		$hosts = $profile->get('host');
 		$hosts[] = $host;
-		
+
 		// Update the hosts list
 		$profile->set('host', $hosts);
 		if (!$profile->update()) {
 			$this->setError( $profile->getError() );
 		}
-		
+
 		// Push through to the hosts view
 		$this->hosts( $profile );
 	}
-	
-	//-----------
-	
+
 	protected function deletehost()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('MEMBERS_NO_ID') );
 			$this->hosts();
 		}
-		
+
 		// Load the profile
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-		
+
 		// Incoming host
 		$host = JRequest::getVar( 'host', '' );
 		if (!$host) {
 			$this->setError( JText::_('MEMBERS_NO_HOST') );
 			$this->hosts( $profile );
 		}
-		
+
 		$hosts = $profile->get('host');
 		$a = array();
-		foreach ($hosts as $h) 
+		foreach ($hosts as $h)
 		{
 			if ($h != $host) {
 				$a[] = $h;
 			}
 		}
-		
+
 		// Update the hosts list
 		$profile->set('host', $a);
 		if (!$profile->update()) {
 			$this->setError( $profile->getError() );
 		}
-		
+
 		// Push through to the hosts view
 		$this->hosts( $profile );
 	}
-	
-	//-----------
 
 	protected function hosts( $profile=null )
 	{
@@ -841,114 +815,110 @@ class MembersController extends Hubzero_Controller
 		$view = new JView( array('name'=>'member', 'layout'=>'hosts') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-	
+
 		// Incoming
 		if (!$profile) {
 			$id = JRequest::getInt('id', 0, 'get');
-			
+
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 		}
-		
+
 		// Get a list of all hosts
 		$view->rows = $profile->get('host');
-		
+
 		$view->id = $profile->get('uidNumber');
 
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
+
 	//----------------------------------------------------------
 	//  Managers
 	//----------------------------------------------------------
-	
+
 	protected function addmanager()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('MEMBERS_NO_ID') );
 			$this->managers();
 		}
-		
+
 		// Load the profile
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-		
+
 		// Incoming host
 		$manager = JRequest::getVar( 'manager', '' );
 		if (!$manager) {
 			$this->setError( JText::_('MEMBERS_NO_MANAGER') );
 			$this->managers( $id );
 		}
-		
+
 		$managers = $profile->get('manager');
 		$managers[] = $manager;
-		
+
 		// Update the hosts list
 		$profile->set('manager', $managers);
 		if (!$profile->update()) {
 			$this->setError( $profile->getError() );
 		}
-		
+
 		// Push through to the hosts view
 		$this->managers( $profile );
 	}
-	
-	//-----------
-	
+
 	protected function deletemanager()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('MEMBERS_NO_ID') );
 			$this->managers();
 		}
-		
+
 		// Load the profile
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-		
+
 		// Incoming host
 		$manager = JRequest::getVar( 'manager', '' );
 		if (!$manager) {
 			$this->setError( JText::_('MEMBERS_NO_MANAGER') );
 			$this->managers( $profile );
 		}
-		
+
 		$managers = $profile->get('manager');
 		$a = array();
-		foreach ($managers as $h) 
+		foreach ($managers as $h)
 		{
 			if ($h != $manager) {
 				$a[] = $h;
 			}
 		}
-		
+
 		// Update the hosts list
 		$profile->set('manager', $a);
 		if (!$profile->update()) {
 			$this->setError( $profile->getError() );
 		}
-		
+
 		// Push through to the hosts view
 		$this->managers( $profile );
 	}
-	
-	//-----------
 
 	protected function managers( $profile=null )
 	{
@@ -956,25 +926,25 @@ class MembersController extends Hubzero_Controller
 		$view = new JView( array('name'=>'member', 'layout'=>'managers') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming
 		if (!$profile) {
 			$id = JRequest::getInt( 'id', 0, 'get' );
-			
+
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 		}
-		
+
 		// Get a list of all hosts
 		$view->rows = $profile->get('manager');
-		
+
 		$view->id = $profile->get('uidNumber');
 
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}

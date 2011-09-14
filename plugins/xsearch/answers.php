@@ -28,12 +28,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_answers' );
-
-//-----------
 
 class plgXSearchAnswers extends JPlugin
 {
@@ -45,18 +41,14 @@ class plgXSearchAnswers extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'answers' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onXSearchAreas() 
+
+	public function &onXSearchAreas()
 	{
 		$areas = array(
 			'answers' => JText::_('PLG_XSEARCH_ANSWERS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -83,7 +75,7 @@ class plgXSearchAnswers extends JPlugin
 
 		$words   = $searchquery->searchTokens;
 		$f_where = " WHERE f.state!=2 ";
-		foreach ($words as $word) 
+		foreach ($words as $word)
 		{
 			$f_where .= "AND ( (LOWER(f.subject) LIKE '%$word%') 
 				OR (LOWER(f.question) LIKE '%$word%') 
@@ -101,13 +93,13 @@ class plgXSearchAnswers extends JPlugin
 			if (count($areas) > 1) {
 				return $f_fields . $f_from . $f_where;
 			}
-			
+
 			// Get results
 			$database->setQuery( $f_fields. $f_from . $f_where . $order_by );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id='.$row->id);
 				}
@@ -116,7 +108,7 @@ class plgXSearchAnswers extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
@@ -133,9 +125,7 @@ class plgXSearchAnswers extends JPlugin
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row, $keyword )
 	{
 		if (strstr( $row->href, 'index.php' )) {
@@ -145,7 +135,7 @@ class plgXSearchAnswers extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		// Start building the HTML
 		$html  = "\t".'<li>'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
@@ -156,13 +146,11 @@ class plgXSearchAnswers extends JPlugin
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

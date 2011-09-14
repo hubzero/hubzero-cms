@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class MyhubPrefs extends JTable
 {
 	var $uid   = NULL;  // int(11)
@@ -38,26 +37,22 @@ class MyhubPrefs extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__myhub', 'uid', $db );
 	}
-	
-	//-----------
 
-	public function check() 
+	public function check()
 	{
 		if (!$this->uid) {
 			$this->setError( JText::_('ERROR_NO_USER_ID') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	//-----------
-	
-	public function create() 
+
+	public function create()
 	{
 		$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
 		if (!$ret) {
@@ -67,15 +62,13 @@ class MyhubPrefs extends JTable
 			return true;
 		}
 	}
-	
-	//-----------
-	
-	public function getPrefs( $module=NULL ) 
+
+	public function getPrefs( $module=NULL )
 	{
 		if (!$module) {
 			return false;
 		}
-		
+
 		$sql = "SELECT * 
 				FROM $this->_tbl 
 				WHERE `prefs` NOT LIKE '%,$module,%' 
@@ -86,7 +79,7 @@ class MyhubPrefs extends JTable
 				AND `prefs` NOT LIKE '%;$module,%' 
 				AND `prefs` NOT LIKE '%;$module;%'
 				AND `prefs` NOT LIKE '%;$module'";
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}

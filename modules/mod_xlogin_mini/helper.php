@@ -30,20 +30,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class modXLoginMini 
+class modXLoginMini
 {
 	var $_objects = array();
 	var $debug = 0;
 
 	//-----------
-
 	function setObject($name, &$object)
 	{
 		$this->_objects[$name] =& $object;
 	}
 
 	//-----------
-
 	function &getObject($name)
 	{
 		return $this->_objects[$name];
@@ -55,7 +53,7 @@ class modXLoginMini
 
 		if ( !isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off' )
 		{
-			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); 
+			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 			die('insecure connection and redirection failed');
 		}
 
@@ -76,24 +74,24 @@ class modXLoginMini
 				$realms[$plugin->name] = $realm;
 		}
 
-		if (count($realms) == 0) 
-			return JError::raiseError( '500', 'xHUB Configuration Error: No XAuthentication Plugins Enabled.'); 
+		if (count($realms) == 0)
+			return JError::raiseError( '500', 'xHUB Configuration Error: No XAuthentication Plugins Enabled.');
 
 		$hubShortName = $xhub->getCfg('hubShortName');
 
 		$return = base64_decode( JRequest::getVar('return', '', 'method', 'base64') );
 
-		if(empty($return)) 
+		if(empty($return))
 			$return = JRequest::getVar( 'REQUEST_URI', null, 'server' );
 
 		if ($return == '/login')
 			$return = '/';
-			
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_xlogin_mini');
-			
-		if (count($realms) == 1) 
+
+		if (count($realms) == 1)
 		{
 			$realmName = current($realms);
 			$realm = key($realms);

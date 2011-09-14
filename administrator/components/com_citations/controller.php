@@ -36,9 +36,9 @@ class CitationsController extends Hubzero_Controller
 	public function execute()
 	{
 		$default = 'browse';
-		
+
 		$task = strtolower(JRequest::getVar('task', $default, 'default'));
-		
+
 		$thisMethods = get_class_methods( get_class( $this ) );
 		if (!in_array($task, $thisMethods)) {
 			$task = $default;
@@ -76,7 +76,7 @@ class CitationsController extends Hubzero_Controller
 		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.limitstart', 'limitstart', 0, 'int');
 
 		$obj = new CitationsCitation( $this->database );
-		
+
 		// Get a record count
 		$view->total = $obj->getCount( $view->filters );
 
@@ -91,112 +91,106 @@ class CitationsController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-	
-	private function add() 
+	private function add()
 	{
 		$this->edit();
 	}
-	
-	//-----------
-	
+
 	private function edit()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'citation') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getVar( 'id', array() );
-		
+
 		// Get the single ID we're working with
 		if (is_array($id) && !empty($id)) {
 			$id = $id[0];
 		} else {
 			$id = 0;
 		}
-		
+
 		// Load the object
 		$view->row = new CitationsCitation( $this->database );
 		$view->row->load( $id );
-		
+
 		// Load the associations object
 		$assoc = new CitationsAssociation( $this->database );
-		
+
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
 		if (!$id) {
 			$juser =& JFactory::getUser();
 			$view->row->uid = $juser->get('id');
-			
+
 			// It's new - no associations to get
 			$view->assocs = array();
 		} else {
 			// Get the associations
 			$view->assocs = $assoc->getRecords( array('cid'=>$id) );
 		}
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
-	private function stats() 
+
+	private function stats()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'stats') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Load the object
 		$row = new CitationsCitation( $this->database );
 		$view->stats = $row->getStats();
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
+
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-	
+
 	protected function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$citation = JRequest::getVar('citation', array(), 'post');
 		$citation = array_map('trim', $citation);
-		
+
 		// Bind incoming data to object
 		$row = new CitationsCitation( $this->database );
 		if (!$row->bind( $citation )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-	
+
 		// New entry so set the created date
 		if (!$row->id) {
 			$row->created = date( 'Y-m-d H:i:s', time() );
 		}
-		
+
 		// Check content for missing required data
 		if (!$row->check()) {
 			JError::raiseError( 500, $row->getError() );
@@ -208,28 +202,28 @@ class CitationsController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		// Incoming associations
 		$arr = JRequest::getVar( 'assocs', array(), 'post' );
-		
+
 		$ignored = array();
-		
+
 		foreach ($arr as $a)
 		{
 			$a = array_map('trim',$a);
 
 			// Initiate extended database class
 			$assoc = new CitationsAssociation( $this->database );
-			
+
 			if (!$this->_isempty($a, $ignored)) {
 				$a['cid'] = $row->id;
-			
+
 				// bind the data
 				if (!$assoc->bind( $a )) {
 					JError::raiseError( 500, $assoc->getError() );
 					return;
 				}
-		
+
 				// Check content
 				if (!$assoc->check()) {
 					JError::raiseError( 500, $assoc->getError() );
@@ -249,14 +243,12 @@ class CitationsController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_( 'CITATION_SAVED' );
 	}
 
-	//-----------
-	
 	private function _isEmpty($b, $ignored=array())
 	{
 		foreach ($ignored as $ignore)
@@ -270,7 +262,7 @@ class CitationsController extends Hubzero_Controller
 		}
 		$values = array_values($b);
 		$e = true;
-		foreach ($values as $v) 
+		foreach ($values as $v)
 		{
 			if ($v) {
 				$e = false;
@@ -279,8 +271,6 @@ class CitationsController extends Hubzero_Controller
 		return $e;
 	}
 
-	//-----------
-	
 	protected function remove()
 	{
 		// Incoming (we're expecting an array)
@@ -295,31 +285,31 @@ class CitationsController extends Hubzero_Controller
 			$citation = new CitationsCitation( $this->database );
 			$assoc = new CitationsAssociation( $this->database );
 			$author = new CitationsAuthor( $this->database );
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Fetch and delete all the associations to this citation
 				$assocs = $assoc->getRecords( array('cid'=>$id) );
-				foreach ($assocs as $a) 
+				foreach ($assocs as $a)
 				{
 					$assoc->delete( $a->id );
 				}
-				
+
 				// Fetch and delete all the authors to this citation
 				$authors = $author->getRecords( array('cid'=>$id) );
-				foreach ($authors as $a) 
+				foreach ($authors as $a)
 				{
 					$author->delete( $a->id );
 				}
-				
+
 				// Delete the citation
 				$citation->delete( $id );
 			}
-			
+
 			$this->_message = JText::_('CITATION_REMOVED');
 		} else {
 			$this->_message = JText::_('NO_SELECTION');
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}

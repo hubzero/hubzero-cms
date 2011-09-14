@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class EventsRepeat 
+class EventsRepeat
 {
 	var $row      = NULL;
 	var $year     = NULL;
@@ -37,18 +37,16 @@ class EventsRepeat
 	var $day      = NULL;
 	var $viewable = NULL;
 
-	//-----------
-
-	public function EventsRepeat( $row=NULL, $year=NULL, $month=NULL, $day=NULL ) 
+	public function EventsRepeat( $row=NULL, $year=NULL, $month=NULL, $day=NULL )
 	{
 		if (is_null($row)) return false;
-	
+
 		$select_date = sprintf( "%4d-%02d-%02d", $year, $month, $day );
 		$numero_du_jour = date("w",mktime(0,0,0,$month,$day,$year));
-		
+
 		if ($numero_du_jour == 0) {
 		}
-		
+
 		$end_of_month = date("t",mktime(0,0,0,($month+1),0,$year));
 		$event_up = new EventsDate( $row->publish_up );
 		$start_publish = sprintf( "%4d-%02d-%02d",$event_up->year,$event_up->month,$event_up->day);
@@ -57,23 +55,23 @@ class EventsRepeat
 		$event_day     = $event_up->day;
 		$event_month   = $event_up->month;
 		$event_year    = $event_up->year;
-	        
+
 		$event_down   = new EventsDate( $row->publish_down );
 		$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
 		$end_hours    = $event_down->hour;
 		$end_minutes  = $event_down->minute;
-	                     
+
 		$repeat_event_type = $row->reccurtype;
 		$repeat_event_day = $row->reccurday;
 		$repeat_event_weekdays = $row->reccurweekdays;
 		$repeat_event_weeks = $row->reccurweeks;
-    
+
 		$this->viewable = false;
 		$is_the_event_period = false;
 		$is_the_event_day = false;
 		$is_the_event_daynumber = false;
 		$is_the_event_dayname = false;
-        
+
 		// Week begin day and finish day
 		$startday = _CAL_CONF_STARDAY;
 		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
@@ -108,7 +106,7 @@ class EventsRepeat
 		} elseif ( (intval($day) >= 28) ) {
 			$is_week_5 = true;
 		}
-  
+
 		// Check event time parametres
 		if (($select_date <= $stop_publish) && ($select_date >= $start_publish)) {
 			$is_the_event_period = true;
@@ -118,13 +116,13 @@ class EventsRepeat
 		}
 		if ($numero_du_jour == $repeat_event_day) {
 			$is_the_event_dayname = true;
-		} 
+		}
 		$viewable_day = 0;
 		if ($repeat_event_weekdays <> '') {
 			$reccurweekdays = explode( '|', $repeat_event_weekdays );
 			$countdays = count($reccurweekdays);
 			for ($x=0; $x < $countdays; $x++)
-			{ 		    	                                                                                       
+			{
 				if ($reccurweekdays[$x] == $numero_du_jour) {
 					$viewable_day = 1;
 				}
@@ -135,7 +133,7 @@ class EventsRepeat
 		$pair_weeks = 0;
 		$impair_weeks = 0;
 		$viewable_week = 0;
-        
+
 		if ($repeat_event_weeks <> "") {
 			$reccurweeks = explode( '|', $repeat_event_weeks );
 			$countweeks = count($reccurweeks);
@@ -155,8 +153,8 @@ class EventsRepeat
 					$viewable_week = 1;
 				} elseif (($reccurweeks[$x] == 4) && ($is_week_4)) {
 					$viewable_week = 1;
-				} elseif (($reccurweeks[$x] == 5) && ($is_week_5)) {      
-					$viewable_week = 1;    
+				} elseif (($reccurweeks[$x] == 5) && ($is_week_5)) {
+					$viewable_week = 1;
 				}
 			}
 		} else {
@@ -164,8 +162,8 @@ class EventsRepeat
 		}
 
 		// Check repeat
-		if ($is_the_event_period) { 
-			switch ($repeat_event_type) 
+		if ($is_the_event_period) {
+			switch ($repeat_event_type)
 			{
 				case 0: // All days 
 					$this->viewable = true;
@@ -213,7 +211,7 @@ class EventsRepeat
 						if ($is_the_event_dayname) {
 							$this->viewable = true;
 						}
-					}                                                
+					}
 					return $this->viewable;
 				break;
 
@@ -230,15 +228,15 @@ class EventsRepeat
 							$this->viewable = true;
 						}
 					} elseif ($repeat_event_day >=0 ) { //by day name                               
-						if ($is_the_event_dayname 
-							&& (($day >= $event_day) && ($day <= $event_day+6)) 
+						if ($is_the_event_dayname
+							&& (($day >= $event_day) && ($day <= $event_day+6))
 							&& ($month == $event_month)) {
 							$this->viewable = true;
 						}
 					}
 					return $this->viewable;
 				break;
-                           
+
 				default:
 					return $this->viewable;
 				break;

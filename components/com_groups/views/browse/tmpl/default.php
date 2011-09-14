@@ -93,7 +93,7 @@ $juser =& JFactory::getUser();
 
 <?php
 $qs = array();
-foreach ($this->filters as $f=>$v) 
+foreach ($this->filters as $f=>$v)
 {
 	$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'type' && $f != 'fields') ? $f.'='.$v : '';
 }
@@ -114,7 +114,7 @@ foreach ($letters as $letter)
 {
 	$url  = 'index.php?option='.$this->option.'&task=browse&index='.strtolower($letter);
 	$url .= ($qs) ? '&'.$qs : '';
-	
+
 	$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
 	if ($this->filters['index'] == strtolower($letter)) {
 		$html .= ' class="active-index"';
@@ -152,7 +152,7 @@ foreach ($letters as $letter)
 					<tbody>
 <?php
 if ($this->groups) {
-	foreach ($this->groups as $group) 
+	foreach ($this->groups as $group)
 	{
 		$status = '';
 		if ($this->authorized) {
@@ -175,7 +175,7 @@ if ($this->groups) {
 					}
 				}
 			}
-		}	
+		}
 ?>
 						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
 							<th>
@@ -189,7 +189,7 @@ if ($this->groups) {
 							</td>
 							<td>
 								<?php
-								switch ($group->join_policy) 
+								switch ($group->join_policy)
 								{
 									case 3: echo '<span class="closed join-policy">'.JText::_('Closed').'</span>'."\n"; break;
 									case 2: echo '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'."\n"; break;
@@ -202,7 +202,7 @@ if ($this->groups) {
 <?php if ($this->authorized) { ?>
 							<td>
 								<span class="<?php echo $status; ?> status"><?php
-									switch ($status) 
+									switch ($status)
 									{
 										case 'manager': echo JText::_('GROUPS_STATUS_MANAGER'); break;
 										case 'new': echo JText::_('GROUPS_STATUS_NEW_GROUP'); break;

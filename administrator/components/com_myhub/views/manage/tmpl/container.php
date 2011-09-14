@@ -45,7 +45,7 @@ if ($this->extras) {
 	// Add the module title
 	$html .= "\t\t".'<h3 class="handle">'.$this->module->title.'</h3>'."\n";
 	$html .= "\t\t".'<div class="body">'."\n";
-	
+
 	if ($this->rendered != '') {
 		$html .= "\t\t\t".'<p class="modcontrols">';
 		// Add the 'edit' button
@@ -63,7 +63,7 @@ if ($this->extras) {
 }
 
 // Is it a custom module (i.e., HTML)?
-if ($this->module->module == 'mod_custom') { 
+if ($this->module->module == 'mod_custom') {
 	$html .= $this->module->content;
 } else {
 	$this->rparams['style'] = 'none';

@@ -38,7 +38,7 @@ class Hubzero_Auth_Link
 	private $params;
 	private $_updatedkeys = array();
 	private $_updateAll = false;
-   
+
 	private function __construct()
     {
     }
@@ -74,7 +74,7 @@ class Hubzero_Auth_Link
         $hzal = new Hubzero_Auth_Link();
 		$hzal->auth_domain_id = $auth_domain_id;
 		$hzal->username = $username;
-		
+
         $hzal->read();
  		if (!$hzal->id)
         {
@@ -83,19 +83,19 @@ class Hubzero_Auth_Link
 
         return $hzal;
     }
-    
+
     public function find_by_id($id)
     {
 		$hzal = new Hubzero_Auth_Link();
 		$hzal->id = $id;
-		
+
         $hzal->read();
-        
+
         if (empty($hzal->auth_domain_id))
 			return false;
-			
+
         return $hzal;
-    	
+
     }
 
     public function createInstance($auth_domain_id,$username)
@@ -111,7 +111,7 @@ class Hubzero_Auth_Link
         $instance->username = $username;
 
         $instance->create();
-        
+
         if (!$instance->id)
         {
             return false;
@@ -119,7 +119,7 @@ class Hubzero_Auth_Link
 
         return $instance;
     }
-    
+
     public function create()
     {
         $db = &JFactory::getDBO();
@@ -128,17 +128,17 @@ class Hubzero_Auth_Link
         {
             return false;
         }
-        
+
         if (is_numeric($this->id))
         {
-            $query = "INSERT INTO #__auth_link (id,user_id,auth_domain_id,username,email,password,params) VALUES ( " 
+            $query = "INSERT INTO #__auth_link (id,user_id,auth_domain_id,username,email,password,params) VALUES ( "
             	. $db->Quote($this->id) .
-                "," . $db->Quote($this->user_id) . 
-                "," . $db->Quote($this->auth_domain_id) . 
-                "," . $db->Quote($this->username) . 
-            	"," . $db->Quote($this->email) . 
-            	"," . $db->Quote($this->password) . 
-            	"," . $db->Quote($this->params) . 
+                "," . $db->Quote($this->user_id) .
+                "," . $db->Quote($this->auth_domain_id) .
+                "," . $db->Quote($this->username) .
+            	"," . $db->Quote($this->email) .
+            	"," . $db->Quote($this->password) .
+            	"," . $db->Quote($this->params) .
 				");";
 
             $db->setQuery();
@@ -152,15 +152,15 @@ class Hubzero_Auth_Link
         }
         else
         {
-            $query = "INSERT INTO #__auth_link (user_id,auth_domain_id,username,email,password,params) VALUES ( " 
-            	. $db->Quote($this->user_id) . 
-                "," . $db->Quote($this->auth_domain_id) . 
-                "," . $db->Quote($this->username) . 
-            	"," . $db->Quote($this->email) . 
-            	"," . $db->Quote($this->password) . 
-            	"," . $db->Quote($this->params) . 
+            $query = "INSERT INTO #__auth_link (user_id,auth_domain_id,username,email,password,params) VALUES ( "
+            	. $db->Quote($this->user_id) .
+                "," . $db->Quote($this->auth_domain_id) .
+                "," . $db->Quote($this->username) .
+            	"," . $db->Quote($this->email) .
+            	"," . $db->Quote($this->password) .
+            	"," . $db->Quote($this->params) .
 				");";
-            	
+
             $db->setQuery($query);
 
             $result = $db->query();
@@ -192,7 +192,7 @@ class Hubzero_Auth_Link
 
         return false;
     }
-		
+
 	public function read()
     {
         $db = JFactory::getDBO();
@@ -216,13 +216,13 @@ class Hubzero_Auth_Link
         {
         	$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
                 " username=" . $db->Quote($this->username) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";";
-        	
+
         }
-        
+
         if (empty($query)) {
         	return false;
         }
-        
+
         $db->setQuery($query);
 
         $result = $db->loadAssoc();
@@ -243,7 +243,7 @@ class Hubzero_Auth_Link
 
         return true;
     }
-		
+
  	function update($all = false)
     {
         $db = &JFactory::getDBO();
@@ -308,7 +308,7 @@ class Hubzero_Auth_Link
 
         return true;
     }
-		
+
 	public function delete()
     {
         if (!isset($this->toolname) && !isset($this->id))
@@ -388,7 +388,7 @@ class Hubzero_Auth_Link
         }
 
         $this->$property = $value;
-  
+
         if (!in_array($property, $this->_updatedkeys))
             $this->_updatedkeys[] = $property;
     }
@@ -442,19 +442,19 @@ class Hubzero_Auth_Link
 
         echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
     }
-    
+
     public function delete_by_user_id($uid = null)
     {
     	if (empty($uid))
     		return true;
-    		
+
 		$db = JFactory::getDBO();
 
         if (empty($db))
         {
             return false;
         }
-    	
+
     	$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->Quote($uid) . ";");
 
         if (!$db->query())
@@ -464,17 +464,17 @@ class Hubzero_Auth_Link
 
         return true;
     }
-      
+
     public function find_or_create($type,$authenticator,$domain,$username)
     {
     	$hzad = Hubzero_Auth_Domain::find_or_create($type,$authenticator,$domain);
-    	
+
     	if (!is_object($hzad))
     		return false;
-    		
+
     	if (empty($username))
     		return false;
-    		 	
+
     	$hzal = new Hubzero_Auth_Link();
     	$hzal->username = $username;
     	$hzal->auth_domain_id = $hzad->id;
@@ -482,34 +482,34 @@ class Hubzero_Auth_Link
 
 		if (empty($hzal->id) && !$hzal->create())
 			return false;
-			
+
 		return $hzal;
 	}
-	
+
 	public function find_trusted_emails( $user_id )
 	{
 		if (empty($user_id))
 			return false;
-			
+
 		if (!is_numeric($user_id))
 			return false;
-			
+
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db))
 			return false;
-			
+
 		$sql = "SELECT email FROM #__auth_link WHERE user_id = " . $db->Quote($user_id) . ";";
 
 		$db->setQuery($sql);
-		
+
         $result = $db->loadResultArray();
 
         if (empty($result))
         {
             return false;
         }
-        
+
         return $result;
 	}
 }

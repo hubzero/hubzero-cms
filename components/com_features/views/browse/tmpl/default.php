@@ -52,7 +52,7 @@ $types = array(
 					<?php echo JText::_('COM_FEATURES_TYPE'); ?>
 					<select name="type" id="type">
 <?php 
-					foreach ($types as $avalue => $alabel) 
+					foreach ($types as $avalue => $alabel)
 					{
 ?>
 						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->filters['type'] || $alabel == $this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
@@ -73,7 +73,7 @@ $types = array(
 if (count($this->rows) > 0) {
 		$txt_length = 300;
 		$database =& JFactory::getDBO();
-		switch ($this->filters['type']) 
+		switch ($this->filters['type'])
 		{
 			case 'profiles':
 				ximport('Hubzero_User_Profile');
@@ -113,13 +113,13 @@ if (count($this->rows) > 0) {
 				$rconfig =& JComponentHelper::getParams( 'com_resources' );
 			break;
 		}
-		
+
 		$now = date( 'Y-m-d H:i:s' );
 ?>
 			<ul class="features results">
 <?php
 		$html = '';
-		foreach ($this->rows as $fh) 
+		foreach ($this->rows as $fh)
 		{
 			if ($fh->note == 'tools') {
 				$fh->tbl = 'tools';
@@ -163,7 +163,7 @@ if (count($this->rows) > 0) {
 					}
 
 					$href  = 'index.php?option=com_resources&id='.$row->id;
-					
+
 					if (is_file(JPATH_ROOT.$thumb)) {
 						$html .= '<p class="featured-img"><img width="50" height="50" src="'.$thumb.'" alt="" /></p>'."\n";
 					}
@@ -176,7 +176,7 @@ if (count($this->rows) > 0) {
 					$html .= '</p>'."\n";
 					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->introtext)), $txt_length, 1)."\n";
 				break;
-				
+
 				case 'nontools':
 				case 'resources':
 					$row = new ResourcesResource( $database );
@@ -206,7 +206,7 @@ if (count($this->rows) > 0) {
 					}
 
 					$href  = 'index.php?option=com_resources&id='.$row->id;
-					
+
 					if (is_file(JPATH_ROOT.$thumb)) {
 						$html .= '<p class="featured-img"><img width="50" height="50" src="'.$thumb.'" alt="" /></p>'."\n";
 					}
@@ -219,15 +219,15 @@ if (count($this->rows) > 0) {
 					$html .= '</p>'."\n";
 					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->introtext)), $txt_length, 1)."\n";
 				break;
-				
+
 				case 'questions':
 				case 'answers':
 					$row = new AnswersQuestion( $database );
 					$row->load( $fh->objectid );
-				
+
 					$ar = new AnswersResponse( $database );
 					$row->rcount = count($ar->getIds( $row->id ));
-				
+
 					$thumb = '/modules/mod_featuredquestion/question_thumb.gif'; //trim($params->get( 'defaultpic' ));
 
 					$name = JText::_('COM_FEATURES_ANONYMOUS');
@@ -240,7 +240,7 @@ if (count($this->rows) > 0) {
 
 					$row->created = FeaturesHtml::mkt($row->created);
 					$when = FeaturesHtml::timeAgo($row->created);
-					
+
 					if (is_file(JPATH_ROOT.$thumb)) {
 						$html .= '<p class="featured-img"><img width="50" height="50" src="'.$thumb.'" alt="" /></p>'."\n";
 					}
@@ -256,7 +256,7 @@ if (count($this->rows) > 0) {
 					$html .= '</span></p>'."\n";
 					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->question)), $txt_length, 1)."\n";
 				break;
-				
+
 				case 'xprofiles':
 				case 'profiles':
 					$row = new MembersProfile( $database );
@@ -321,9 +321,9 @@ if (count($this->rows) > 0) {
 		}
 		$html .= '</ul>'."\n";
 		echo $html;
-		
+
 		$qs = '';
-		foreach ($this->filters as $key=>$value) 
+		foreach ($this->filters as $key=>$value)
 		{
 			$qs .= ($key != 'limit' && $key != 'start') ? $key.'='.$value.'&' : '';
 		}

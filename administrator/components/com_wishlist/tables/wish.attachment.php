@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WishAttachment extends JTable 
+class WishAttachment extends JTable
 {
 	var $id = NULL;  // @var int(11) Primary key
 	var $wish = NULL;  // @var int(11)
@@ -39,14 +38,12 @@ class WishAttachment extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wish_attachments', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if ($this->wish == NULL) {
 			$this->setError( JText::_('Error: wish not found.') );
@@ -59,35 +56,29 @@ class WishAttachment extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getID() 
+
+	public function getID()
 	{
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE filename='".$this->filename."' AND description='".$this->description."' AND wish=".$this->wish );
 		$id = $this->_db->loadResult();
 		$this->id = $id;
 	}
-	
-	//-----------
 
 	public function parse($text)
 	{
 		$f = '/\{attachment#[0-9]*\}/sU';
 		return preg_replace_callback($f, array(&$this,'getAttachment'), $text);
 	}
-	
-	//-----------
-	
+
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
 		$tokens = split('#',$match);
 		$id = intval(end($tokens));
-		
+
 		$this->_db->setQuery( "SELECT filename, description FROM $this->_tbl WHERE id=".$id );
 		$a = $this->_db->loadRow();
-		
+
 		if ($this->output == 'web') {
 			if (is_file($this->uppath.DS.$a[0])) {
 				if (eregi( "bmp|gif|jpg|jpe|jpeg|tif|tiff|png", $a[0] )) {
@@ -111,10 +102,8 @@ class WishAttachment extends JTable
 			return $this->webpath.'/'.$a[0];
 		}
 	}
-	
-	//-----------
-	
-	public function deleteAttachment( $filename, $wish ) 
+
+	public function deleteAttachment( $filename, $wish )
 	{
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND wish=".$wish );
 		if (!$this->_db->query()) {
@@ -122,9 +111,7 @@ class WishAttachment extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function loadAttachment($filename=NULL, $wish=NULL)
 	{
 		if ($filename === NULL) {

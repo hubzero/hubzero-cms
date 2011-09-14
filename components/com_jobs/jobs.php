@@ -29,9 +29,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
-//----------------------------------------------------------
-
 $config = JFactory::getConfig();
 
 if ($config->getValue('config.debug')) {

@@ -67,10 +67,10 @@ $juser =& JFactory::getUser();
 		<h4><?php echo JText::_('Entries By Year'); ?></h4>
 		<ol>
 <?php 
-	if ($this->firstentry) { 
+	if ($this->firstentry) {
 		$start = intval(substr($this->firstentry,0,4));
 		$now = date("Y");
-		for ($i=$now, $n=$start; $i >= $n; $i--) 
+		for ($i=$now, $n=$start; $i >= $n; $i--)
 		{
 ?>
 			<li>
@@ -100,7 +100,7 @@ $juser =& JFactory::getUser();
 							$months = 12;
 						}
 
-						for ($k=0, $z=$months; $k < $z; $k++) 
+						for ($k=0, $z=$months; $k < $z; $k++)
 						{
 ?>
 							<li><a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task='.$i.'/'.sprintf( "%02d",($k+1),1)); ?>"><?php echo JText::_($m[$k]); ?></a></li>
@@ -122,8 +122,8 @@ $juser =& JFactory::getUser();
 		<h4><?php echo JText::_('Popular Entries'); ?></h4>
 		<ol>
 <?php 
-if ($this->popular) { 
-	foreach ($this->popular as $row) 
+if ($this->popular) {
+	foreach ($this->popular as $row)
 	{
 ?>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
@@ -137,8 +137,8 @@ if ($this->popular) {
 		<h4><?php echo JText::_('Recent Entries'); ?></h4>
 		<ol>
 <?php 
-if ($this->recent) { 
-	foreach ($this->recent as $row) 
+if ($this->recent) {
+	foreach ($this->recent as $row)
 	{
 ?>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
@@ -155,13 +155,13 @@ if ($this->recent) {
 <?php } ?>
 		<ol class="blog-entries">
 <?php 
-if ($this->rows) { 
+if ($this->rows) {
 	ximport('Hubzero_View_Helper_Html');
 	$cls = 'even';
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		$cls = ($cls == 'even') ? 'odd' : 'even';
-		switch ($row->state) 
+		switch ($row->state)
 		{
 			case 1:
 				$cls .= ' public';
@@ -187,7 +187,7 @@ if ($this->rows) {
 <?php } ?>
 <?php if ($juser->get('id') == $row->created_by) { ?>
 					<dd class="state"><?php 
-switch ($row->state) 
+switch ($row->state)
 {
 	case 1:
 		echo JText::_('Public');
@@ -199,7 +199,7 @@ switch ($row->state)
 	default:
 		echo JText::_('Private');
 	break;
-} 
+}
 ?></dd>
 <?php } ?>
 				</dl>
@@ -216,7 +216,7 @@ switch ($row->state)
 			</li>
 <?php
 	}
-} 
+}
 ?>
 		</ol>
 		<?php echo $this->pagenavhtml; ?>

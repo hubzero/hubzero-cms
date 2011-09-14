@@ -33,28 +33,28 @@ abstract class CitationsDownloadAbstract
 {
 	protected $_mime = '';
 	protected $_extension = '';
-	
-	public function setMimeType($mime) 
+
+	public function setMimeType($mime)
 	{
 		$this->_mime = trim($mime);
 	}
-	
-	public function getMimeType() 
+
+	public function getMimeType()
 	{
 		return $this->_mime;
 	}
-	
-	public function setExtension($ext) 
+
+	public function setExtension($ext)
 	{
 		$this->_extension = trim($ext);
 	}
-	
-	public function getExtension() 
+
+	public function getExtension()
 	{
 		return $this->_extension;
 	}
-	
-	public function format() 
+
+	public function format()
 	{
 		return '';
 	}

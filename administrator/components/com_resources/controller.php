@@ -36,8 +36,8 @@ class ResourcesController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			// Media manager
 			case 'media':        $this->media();         break;
@@ -45,7 +45,7 @@ class ResourcesController extends Hubzero_Controller
 			case 'upload':       $this->upload();        break;
 			case 'deletefolder': $this->deletefolder();  break;
 			case 'deletefile':   $this->deletefile();    break;
-			
+
 			// Resource management
 			// Creation, editing, saving, deleting
 			case 'add':          $this->edit(1);         break;
@@ -55,11 +55,11 @@ class ResourcesController extends Hubzero_Controller
 			case 'getauthor':    $this->getauthor();     break;
 			case 'edittags':     $this->edittags();      break;
 			case 'savetags':     $this->savetags();      break;
-			
+
 			// Resource child management
 			case 'addchild':     $this->addchild();      break;
 			case 'removechild':  $this->removechild();   break;
-			
+
 			// Resource processors
 			// these only change one or two fields at a time
 			case 'checkin':      $this->checkin();       break;
@@ -77,7 +77,7 @@ class ResourcesController extends Hubzero_Controller
 			case 'orderup':      $this->reorder();       break;
 			case 'orderdown':    $this->reorder();       break;
 			case 'regroup':      $this->regroup();       break;
-			
+
 			// Resource type management
 			case 'canceltype':   $this->viewtypes();     break;
 			case 'viewtypes':    $this->viewtypes();     break;
@@ -85,13 +85,13 @@ class ResourcesController extends Hubzero_Controller
 			case 'edittype':     $this->edittype();      break;
 			case 'savetype':     $this->savetype();      break;
 			case 'deletetype':   $this->deletetype();    break;
-			
+
 			// Resource views
 			case 'orphans':      $this->orphans();       break;
 			case 'children':     $this->children();      break;
 			case 'browse':       $this->resources();     break;
 			case 'ratings':      $this->ratings();       break;
-	
+
 			default: $this->resources(); break;
 		}
 	}
@@ -106,7 +106,7 @@ class ResourcesController extends Hubzero_Controller
 		$view = new JView( array('name'=>'resources') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components'.DS.$this->_option.DS.'resources.css');
@@ -114,7 +114,7 @@ class ResourcesController extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-	
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']    = $app->getUserStateFromRequest($this->_option.'.resources.limit', 'limit', $config->getValue('config.list_limit'), 'int');
@@ -130,7 +130,7 @@ class ResourcesController extends Hubzero_Controller
 		$sqlcount .= "WHERE r.standalone=1";
 		if ($view->filters['status'] != 'all') {
 			$sqlcount .= " AND r.published=".$view->filters['status'];
-		} 
+		}
 		if ($view->filters['type']) {
 			$sqlcount .= "\n AND r.type=".$view->filters['type'];
 		}
@@ -155,12 +155,12 @@ class ResourcesController extends Hubzero_Controller
 					(SELECT count(*) FROM #__resource_assoc AS ra WHERE ra.parent_id=r.id) AS children, 
 					(SELECT count(*) FROM #__citations_assoc AS ct WHERE ct.oid=r.id AND ct.table='resource') AS citations,
 					(SELECT count(*) FROM #__resource_tags AS rt WHERE rt.resourceid=r.id) AS tags";*/
-					
+
 		$query  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, 
 					r.published, r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.params, u.name AS editor, 
 					g.name AS groupname, t.type AS typetitle, 
 					(SELECT count(*) FROM #__resource_assoc AS ra WHERE ra.parent_id=r.id) AS children";
-		
+
 		$query .= "\n FROM #__resources AS r";
 		$query .= "\n LEFT JOIN #__users AS u ON u.id = r.checked_out";
 		$query .= "\n LEFT JOIN #__groups AS g ON g.id = r.access";
@@ -168,7 +168,7 @@ class ResourcesController extends Hubzero_Controller
 		$query .= "\n WHERE r.standalone=1";
 		if ($view->filters['status'] != 'all') {
 			$query .= " AND r.published=".$view->filters['status'];
-		} 
+		}
 		if ($view->filters['type']) {
 			$query .= "\n AND r.type=".$view->filters['type'];
 		}
@@ -180,7 +180,7 @@ class ResourcesController extends Hubzero_Controller
 			$query .= ")";
 		}
 		$query .= " ORDER BY ".$view->filters['sort']." ".$view->filters['sort_Dir']." LIMIT ".$view->pageNav->limitstart.",".$view->pageNav->limit;
-		
+
 		$this->database->setQuery( $query );
 		$view->rows = $this->database->loadObjectList();
 		if ($this->database->getErrorNum()) {
@@ -196,12 +196,10 @@ class ResourcesController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function children()
 	{
@@ -213,14 +211,14 @@ class ResourcesController extends Hubzero_Controller
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components/'.$this->_option.'/resources.css');
-		
+
 		// Resource's parent ID
 		$view->pid = JRequest::getInt( 'pid', 0 );
 
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-	
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']    = $app->getUserStateFromRequest($this->_option.'.children.limit', 'limit', $config->getValue('config.list_limit'), 'int');
@@ -262,7 +260,7 @@ class ResourcesController extends Hubzero_Controller
 		$query .= "\n WHERE r.type=t.id AND ra.child_id=r.id AND ra.parent_id=".$view->pid;
 		if ($view->filters['status'] != 'all') {
 			$query .= " AND r.published=".$view->filters['status'];
-		} 
+		}
 		if ($view->filters['search']) {
 			$query .= "\n AND (LOWER( r.title ) LIKE '%".$view->filters['search']."%'";
 			if (is_numeric($view->filters['search'])) {
@@ -293,12 +291,10 @@ class ResourcesController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function orphans()
 	{
@@ -306,17 +302,17 @@ class ResourcesController extends Hubzero_Controller
 		$view = new JView( array('name'=>'children') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components/'.$this->_option.'/resources.css');
-		
+
 		$view->pid = '-1';
-		
+
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-	
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']    = $app->getUserStateFromRequest($this->_option.'.orphans.limit', 'limit', $config->getValue('config.list_limit'), 'int');
@@ -325,13 +321,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->filters['sort']     = trim($app->getUserStateFromRequest($this->_option.'.orphans.sort', 'filter_order', 'title'));
 		$view->filters['sort_Dir'] = trim($app->getUserStateFromRequest($this->_option.'.orphans.sortdir', 'filter_order_Dir', 'DESC'));
 		$view->filters['status']   = trim($app->getUserStateFromRequest($this->_option.'.orphans.status', 'status', 'all' ));
-	
+
 		// Get record count
 		$sqlcount  = "SELECT count(*) FROM #__resources AS r ";
 		$sqlcount .= "WHERE standalone!=1";
 		if ($view->filters['status'] != 'all') {
 			$sqlcount .= " AND r.published=".$view->filters['status'];
-		} 
+		}
 		if ($view->filters['search']) {
 			$sqlcount .= "\n AND (LOWER( r.title ) LIKE '%".$view->filters['search']."%'";
 			if (is_numeric($view->filters['search'])) {
@@ -358,7 +354,7 @@ class ResourcesController extends Hubzero_Controller
 		$query .= "\n WHERE r.standalone!=1";
 		if ($view->filters['status'] != 'all') {
 			$query .= " AND r.published=".$view->filters['status'];
-		} 
+		}
 		if ($view->filters['search']) {
 			$query .= "\n AND (LOWER( r.title ) LIKE '%".$view->filters['search']."%'";
 			if (is_numeric($view->filters['search'])) {
@@ -374,7 +370,7 @@ class ResourcesController extends Hubzero_Controller
 			echo $this->database->stderr();
 			return false;
 		}
-	
+
 		// Get sections
 		$rt = new ResourcesType( $this->database );
 		$view->sections = $rt->getTypes( 29 );
@@ -383,33 +379,31 @@ class ResourcesController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function ratings()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-	
+
 		// Do we have an ID to work with?
 		if (!$id) {
 			return false;
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'resource', 'layout'=>'ratings') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		$rr = new ResourcesReview( $this->database );
 		$view->rows = $rr->getRatings( $id );
 
 		$view->id = $id;
-			
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -434,14 +428,14 @@ class ResourcesController extends Hubzero_Controller
 			$pid = $id[0];
 			$id = 0;
 		}
-		
+
 		// Make sure we have a prent ID
 		if (!$pid) {
 			$this->_redirect = 'index.php?option='.$this->_option;
 			$this->_message = JText::_('Missing parent resource ID');
 			return;
 		}
-	
+
 		switch ($step)
 		{
 			case 1:
@@ -450,15 +444,15 @@ class ResourcesController extends Hubzero_Controller
 				$view->option = $this->_option;
 				$view->task = $this->_task;
 				$view->pid = $pid;
-				
+
 				// Get the available types
 				$rt = new ResourcesType( $this->database );
 				$view->types = $rt->getTypes( 30 );
-				
+
 				// Load the parent resource
 				$view->parent = new ResourcesResource( $this->database );
 				$view->parent->load( $view->pid );
-				
+
 				// Set any errors
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
@@ -467,11 +461,11 @@ class ResourcesController extends Hubzero_Controller
 				// Output the HTML
 				$view->display();
 			break;
-			
+
 			case 2:
 				// Get the creation method
 				$method = JRequest::getVar( 'method', '' );
-			
+
 				if ($method == 'create') {
 					// We're starting from scratch
 					$this->edit( 1 );
@@ -482,7 +476,7 @@ class ResourcesController extends Hubzero_Controller
 					if ($cid) {
 						$child = new ResourcesResource( $this->database );
 						$child->load( $cid );
-						
+
 						if ($child && $child->title != '') {
 							// Link 'em up!
 							$this->attachchild( $cid, $pid );
@@ -518,18 +512,18 @@ class ResourcesController extends Hubzero_Controller
 						$view->option = $this->_option;
 						$view->task = $this->_task;
 						$view->pid = $pid;
-						
+
 						// No child ID! Throw an error and present the form from the previous step
 						$this->setError( JText::_('Please provide an ID #')) ;
-						
+
 						// Get the available types
 						$rt = new ResourcesType( $this->database );
 						$view->types = $rt->getTypes( 30 );
-					
+
 						// Load the parent resource
 						$view->parent = new ResourcesResource( $this->database );
 						$view->parent->load( $pid );
-						
+
 						// Set any errors
 						if ($this->getError()) {
 							$view->setError( $this->getError() );
@@ -543,8 +537,6 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
 	protected function attachchild( $id, $pid )
 	{
 		// Make sure we have both parent and child IDs
@@ -552,19 +544,19 @@ class ResourcesController extends Hubzero_Controller
 			echo ResourcesHtml::alert( JText::_('Error: Missing parent ID') );
 			exit();
 		}
-		
+
 		if (!$id) {
 			echo ResourcesHtml::alert( JText::_('Error: Missing child ID') );
 			exit();
 		}
-		
+
 		// Instantiate a ResourcesAssoc object
 		$assoc = new ResourcesAssoc( $this->database );
-			
+
 		// Get the last child in the ordering
 		$order = $assoc->getLastOrder( $pid );
 		$order = ($order) ? $order : 0;
-			
+
 		// Increase the ordering - new items are always last
 		$order = $order + 1;
 
@@ -585,34 +577,32 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Child successfully added');
 	}
 
-	//-----------
-
 	protected function removechild()
 	{
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 		$pid = JRequest::getInt( 'pid', 0 );
-		
+
 		// Make sure we have a parent ID
 		if (!$pid) {
 			echo ResourcesHtml::alert( JText::_('Error: Missing parent ID') );
 			exit();
 		}
-		
+
 		// Make sure we have children IDs
 		if (!$ids || count($ids) < 1) {
 			echo ResourcesHtml::alert( JText::_('Error: Missing child ID') );
 			exit();
 		}
-		
+
 		$assoc = new ResourcesAssoc( $this->database );
-		
+
 		// Multiple IDs - loop through and delete them
 		foreach ($ids as $id)
 		{
 			$assoc->delete( $pid, $id );
 		}
-		
+
 		// Redirect
 		$this->_redirect = $this->buildRedirectURL( $pid );
 		$this->_message = JText::sprintf('%s children successfully removed', count($ids));
@@ -622,7 +612,7 @@ class ResourcesController extends Hubzero_Controller
 	// Resource Functions
 	//----------------------------------------------------------
 
-	protected function edit( $isnew=0 ) 
+	protected function edit( $isnew=0 )
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'resource') );
@@ -635,13 +625,13 @@ class ResourcesController extends Hubzero_Controller
 		// Push some needed styles to the tmeplate
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components/'.$this->_option.'/resources.css');
-		
+
 		// Incoming resource ID
 		$id = JRequest::getVar( 'id', array(0) );
 		if (is_array( $id )) {
 			$id = $id[0];
 		}
-		
+
 		// Incoming parent ID - this determines if the resource is standalone or not
 		$view->pid = JRequest::getInt( 'pid', 0 );
 
@@ -661,7 +651,7 @@ class ResourcesController extends Hubzero_Controller
 			$this->_message = JText::_( 'This resource is currently being edited by another administrator' );
 			return;
 		}
-		
+
 		// Is this a new resource?
 		if (!$id) {
 			$view->row->created      = date( 'Y-m-d H:i:s', time() );
@@ -701,7 +691,7 @@ class ResourcesController extends Hubzero_Controller
 		} else {
 			$view->row->modified_by_name = '';
 		}
-		
+
 		// Get params definitions
 		$view->params  = new JParameter( $view->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'resources.xml' );
 		$view->attribs = new JParameter( $view->row->attribs );
@@ -716,13 +706,13 @@ class ResourcesController extends Hubzero_Controller
 			$view->lists['type'] = ResourcesHtml::selectType( $rt->getTypes( 27 ), 'type', $view->row->type, '', '', '', '');
 			$view->lists['logical_type'] = ResourcesHtml::selectType( $rt->getTypes( 21 ), 'logical_type', $view->row->logical_type, '[ none ]', '', '', '');
 		}
-	
+
 		// Build the <select> of admin users
 		$view->lists['created_by'] = $this->userSelect( 'created_by', 0, 1 );
-	
+
 		// Build the <select> for the group access
 		$view->lists['access'] = ResourcesHtml::selectAccess($view->rconfig->get('accesses'), $view->row->access);
-	
+
 		// Is this a standalone resource?
 		if ($view->row->standalone == 1) {
 			// Get groups
@@ -754,10 +744,10 @@ class ResourcesController extends Hubzero_Controller
 					ORDER BY a.ordering";
 			$this->database->setQuery( $sql );
 			$authnames = $this->database->loadObjectList();
-			
+
 			// Build <select> of contributors
 			$view->lists['authors'] = ResourcesHtml::selectAuthors($members, $authnames, $view->attribs, $this->_option);
-			
+
 			// Get the tags on this item
 			$rt = new ResourcesTags( $this->database );
 			$view->lists['tags'] = $rt->get_tag_string($view->row->id, 0, 0, NULL, 0, 1);
@@ -772,20 +762,18 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function save() 
+	protected function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Initiate extended database class
 		$row = new ResourcesResource( $this->database );
 		if (!$row->bind( $_POST )) {
 			echo ResourcesHtml::alert( $row->getError() );
 			exit();
 		}
-		
+
 		$isNew = 0;
 		if ($row->id < 1) {
 			$isNew = 1;
@@ -798,9 +786,9 @@ class ResourcesController extends Hubzero_Controller
 		} else {
 			$old = new ResourcesResource( $this->database );
 			$old->load( $row->id );
-			
+
 			$created_by_id = JRequest::getInt( 'created_by_id', 0 );
-		
+
 			// Updating entry
 			$row->modified    = date( "Y-m-d H:i:s" );
 			$row->modified_by = $this->juser->get('id');
@@ -814,12 +802,12 @@ class ResourcesController extends Hubzero_Controller
 		if (trim( $row->publish_down ) == 'Never') {
 			$row->publish_down = '0000-00-00 00:00:00';
 		}
-		
+
 		// Get parameters
 		$params = JRequest::getVar( 'params', '', 'post' );
 		if (is_array( $params )) {
 			$txt = array();
-			foreach ( $params as $k=>$v) 
+			foreach ( $params as $k=>$v)
 			{
 				$txt[] = "$k=$v";
 			}
@@ -830,7 +818,7 @@ class ResourcesController extends Hubzero_Controller
 		$attribs = JRequest::getVar( 'attrib', '', 'post' );
 		if (is_array( $attribs )) {
 			$txta = array();
-			foreach ( $attribs as $k=>$v) 
+			foreach ( $attribs as $k=>$v)
 			{
 				$txta[] = "$k=$v";
 			}
@@ -841,11 +829,11 @@ class ResourcesController extends Hubzero_Controller
 		if (isset($_POST['nbtag'])) {
 			$type = new ResourcesType( $this->database );
 			$type->load( $row->type );
-			
+
 			$fields = array();
 			if (trim($type->customFields) != '') {
 				$fs = explode("\n", trim($type->customFields));
-				foreach ($fs as $f) 
+				foreach ($fs as $f)
 				{
 					$fields[] = explode('=', $f);
 				}
@@ -856,12 +844,12 @@ class ResourcesController extends Hubzero_Controller
 					$flds = $this->config->get('tagsothr');
 				}
 				$flds = explode(',',$flds);
-				foreach ($flds as $fld) 
+				foreach ($flds as $fld)
 				{
 					$fields[] = array($fld, $fld, 'textarea', 0);
 				}
 			}
-			
+
 			$nbtag = $_POST['nbtag'];
 			$nbtag = array_map('trim',$nbtag);
 			foreach ($nbtag as $tagname=>$tagcontent)
@@ -869,7 +857,7 @@ class ResourcesController extends Hubzero_Controller
 				if ($tagcontent != '') {
 					$row->fulltext .= "\n".'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'."\n";
 				} else {
-					foreach ($fields as $f) 
+					foreach ($fields as $f)
 					{
 						if ($f[0] == $tagname && end($f) == 1) {
 							echo ResourcesHtml::alert( JText::sprintf('RESOURCES_REQUIRED_FIELD_CHECK', $f[1]) );
@@ -898,36 +886,36 @@ class ResourcesController extends Hubzero_Controller
 
 		// Checkin resource
 		$row->checkin();
-	
+
 		// Rename the temporary upload directory if it exist
 		$tmpid = JRequest::getInt( 'tmpid', 0, 'post' );
 		if ($tmpid != ResourcesHtml::niceidformat($row->id)) {
 			jimport('joomla.filesystem.folder');
-			
+
 			// Build the full paths
 			$path = ResourcesHtml::dateToPath( $row->created );
 			$dir_id = ResourcesHtml::niceidformat( $row->id );
-			
+
 			$tmppath = $this->buildUploadPath($path.DS.$tmpid);
 			$newpath = $this->buildUploadPath($path.DS.$dir_id);
-			
+
 			// Attempt to rename the temp directory
 			$result = JFolder::move($tmppath, $newpath);
 			if ($result !== true) {
 				$this->setError( $result );
 			}
-			
+
 			$row->path = str_replace($tmpid,ResourcesHtml::niceidformat($row->id),$row->path);
 			$row->store();
 		}
-	
+
 		// Incoming tags
 		$tags = JRequest::getVar( 'tags', '', 'post' );
-		
+
 		// Save the tags
 		$rt = new ResourcesTags($this->database);
 		$rt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 1);
-	
+
 		// Incoming authors
 		$authorsOldstr = JRequest::getVar( 'old_authors', '', 'post' );
 		$authorsNewstr = JRequest::getVar( 'new_authors', '', 'post' );
@@ -936,7 +924,7 @@ class ResourcesController extends Hubzero_Controller
 		}
 		//if ($authorsNewstr != $authorsOldstr) {
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'contributor.php');
-			
+
 			$authorsNew = split(',',$authorsNewstr);
 			$authorsOld = split(',',$authorsOldstr);
 
@@ -964,7 +952,7 @@ class ResourcesController extends Hubzero_Controller
 			// Run through previous author list and check to see if any IDs had been dropped
 			if ($authorsOldstr) {
 				$rc = new ResourcesContributor( $this->database );
-				
+
 				for ($i=0, $n=count( $authorsOld ); $i < $n; $i++)
 				{
 					if (!in_array($authorsOld[$i], $authorsNew)) {
@@ -992,17 +980,15 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = $this->buildRedirectURL( $pid );
 		$this->_message = JText::_('Item successfully saved');
 	}
-	
-	//-----------
-	
-	private function email_contributors($row, $database) 
+
+	private function email_contributors($row, $database)
 	{
 		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'helpers'.DS.'helper.php' );
 		$helper = new ResourcesHelper( $row->id, $database );
 		$helper->getContributorIDs();
-		
+
 		$contributors = $helper->contributorIDs;
-		
+
 		if ($contributors && count($contributors) > 0) {
 			// Email all the contributors
 			$jconfig =& JFactory::getConfig();
@@ -1020,7 +1006,7 @@ class ResourcesController extends Hubzero_Controller
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
-			
+
 			// Build message
 			$message  = JText::sprintf('EMAIL_MESSAGE', $jconfig->getValue('config.sitename'))."\r\n";
 			$message .= $jconfig->getValue('config.sitename').DS.'resources'.DS.$row->id;
@@ -1034,30 +1020,28 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
-	protected function remove() 
+	protected function remove()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
-		
+
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1) {
 			echo ResourcesHtml::alert( JText::_('Select a resource to delete') );
 			exit;
 		}
-		
+
 		jimport('joomla.filesystem.folder');
 
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Load resource info
 			$row = new ResourcesResource( $this->database );
 			$row->load( $id );
-			
+
 			// Get path and delete directories
 			if ($row->path != '') {
 				$listdir = $row->path;
@@ -1065,29 +1049,29 @@ class ResourcesController extends Hubzero_Controller
 				// No stored path, derive from created date		
 				$listdir = ResourcesHtml::build_path( $row->created, $id, '' );
 			}
-			
+
 			// Build the path
 			$path = $this->buildUploadPath( $listdir, '' );
 
 			// Check if the folder even exists
-			if (!is_dir($path) or !$path) { 
-				$this->setError( JText::_('DIRECTORY_NOT_FOUND') ); 
+			if (!is_dir($path) or !$path) {
+				$this->setError( JText::_('DIRECTORY_NOT_FOUND') );
 			} else {
 				// Attempt to delete the folder
 				if (!JFolder::delete($path)) {
 					$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
 				}
 			}
-			
+
 			// Delete associations to the resource
 			$row->deleteExistence();
-			
+
 			// Delete the resource
 			$row->delete();
 		}
-	
+
 		$pid = JRequest::getInt( 'pid', 0 );
-	
+
 		// Redirect
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
@@ -1100,29 +1084,29 @@ class ResourcesController extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-	
+
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
 		$pid = JRequest::getInt( 'pid', 0 );
-		
+
 		if (is_array($ids)) {
 			$id = $ids[0];
 		} else {
 			$id = 0;
 		}
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			echo ResourcesHtml::alert( JText::_('No resource ID found.') );
 			exit;
 		}
-		
+
 		// Ensure we have an ID to work with
 		if (!$pid) {
 			echo ResourcesHtml::alert( JText::_('No parent resource ID found.') );
 			exit;
 		}
-		
+
 		// Load the Association, set its new grouping, save
 		$assoc = new ResourcesAssoc( $this->database );
 		$assoc->loadAssoc( $pid, $id );
@@ -1133,25 +1117,23 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
 
-	//-----------
-
-	protected function access() 
+	protected function access()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id  = JRequest::getInt( 'id', 0 );
 		$pid = JRequest::getInt( 'pid', 0 );
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) {
 			echo ResourcesHtml::alert( JText::_('No Resource ID found.') );
 			exit;
 		}
-		
+
 		// Choose access level
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'accesspublic':     $access = 0; break;
 			case 'accessregistered': $access = 1; break;
@@ -1159,7 +1141,7 @@ class ResourcesController extends Hubzero_Controller
 			case 'accessprotected':  $access = 3; break;
 			case 'accessprivate':    $access = 4; break;
 			default: $access = 0; break;
-		} 
+		}
 
 		// Load resource info
 		$row = new ResourcesResource( $this->database );
@@ -1175,20 +1157,18 @@ class ResourcesController extends Hubzero_Controller
 			echo ResourcesHtml::alert( $row->getError() );
 			exit;
 		}
-		
+
 		// Redirect
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
 
-	//-----------
-
-	protected function publish() 
+	protected function publish()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$publish = ($this->_task == 'publish') ? 1 : 0;
-		
+
 		// Incoming
 		$pid = JRequest::getInt( 'pid', 0 );
 		$ids = JRequest::getVar( 'id', array() );
@@ -1198,26 +1178,26 @@ class ResourcesController extends Hubzero_Controller
 			echo ResourcesHtml::alert( JText::sprintf('Select a resource to %s',$this->_task) );
 			exit();
 		}
-		
+
 		// Loop through all the IDs
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Load the resource
 			$resource = new ResourcesResource( $this->database );
 			$resource->load( $id );
-			
+
 			// Only allow changes if the resource isn't checked out or
 			// is checked out by the user requesting changes
 			if (!$resource->checked_out || $resource->checked_out == $this->juser->get('id')) {
 				$old = $resource->published;
-				
+
 				$resource->published = $publish;
-				
+
 				// If we're publishing, set the UP date
 				if ($publish) {
 					$resource->publish_up = date( "Y-m-d H:i:s" );
 				}
-				
+
 				// Is this a standalone resource and we need to email approved submissions?
 				if ($resource->standalone == 1 && $this->config->get('email_when_approved')) {
 					// If the state went from pending to published
@@ -1225,13 +1205,13 @@ class ResourcesController extends Hubzero_Controller
 						$this->email_contributors($resource, $this->database);
 					}
 				}
-				
+
 				// Store and checkin the resource
 				$resource->store();
 				$resource->checkin();
 			}
 		}
-		
+
 		if ($publish == '-1') {
 			$this->_message = JText::sprintf('%s Item(s) successfully Archived', count($ids));
 		} elseif ($publish == '1') {
@@ -1239,18 +1219,16 @@ class ResourcesController extends Hubzero_Controller
 		} elseif ($publish == '0') {
 			$this->_message = JText::sprintf('%s Item(s) successfully Unpublished', count($ids));
 		}
-		
+
 		// Redirect
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
-
-	//-----------
 
 	protected function cancel()
 	{
 		// Check for request forgeries
 		//JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id  = JRequest::getInt( 'id', 0 );
 		$pid = JRequest::getInt( 'pid', 0 );
@@ -1259,18 +1237,16 @@ class ResourcesController extends Hubzero_Controller
 		$row = new ResourcesResource($this->database);
 		$row->bind( $_POST );
 		$row->checkin();
-		
+
 		// Redirect
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
 
-	//-----------
-
-	protected function resethits() 
+	protected function resethits()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
@@ -1289,13 +1265,11 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Successfully reset Hit count');
 	}
 
-	//-----------
-
-	protected function resetrating() 
+	protected function resetrating()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
@@ -1308,20 +1282,18 @@ class ResourcesController extends Hubzero_Controller
 			$row->store();
 			$row->checkin();
 		}
-		
+
 		// Redirect
 		//$this->_redirect = $this->buildRedirectURL();
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&id[]='.$id;
 		$this->_message = JText::_('Successfully reset Rating count');
 	}
 
-	//-----------
-
-	protected function resetranking() 
+	protected function resetranking()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
@@ -1333,20 +1305,18 @@ class ResourcesController extends Hubzero_Controller
 			$row->store();
 			$row->checkin();
 		}
-		
+
 		// Redirect
 		//$this->_redirect = $this->buildRedirectURL();
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&id[]='.$id;
 		$this->_message = JText::_('Successfully reset Ranking');
 	}
 
-	//-----------
-
 	protected function checkin()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 
@@ -1364,18 +1334,16 @@ class ResourcesController extends Hubzero_Controller
 			$row->load( $id );
 			$row->checkin();
 		}
-	
+
 		// Redirect
 		$this->_redirect = $this->buildRedirectURL();
 	}
 
-	//-----------
-
-	protected function reorder() 
+	protected function reorder()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getVar( 'id', array() );
 		$id = $id[0];
@@ -1386,7 +1354,7 @@ class ResourcesController extends Hubzero_Controller
 			echo ResourcesHtml::alert( JText::_('No resource ID found.') );
 			exit;
 		}
-		
+
 		// Ensure we have a parent ID to work with
 		if (!$pid) {
 			echo ResourcesHtml::alert( JText::_('No parent resource ID found.') );
@@ -1401,31 +1369,31 @@ class ResourcesController extends Hubzero_Controller
 		$resource2 = clone( $resource1 );
 		$resource2->getNeighbor( $this->_task );
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
-			case 'orderup':				
+			case 'orderup':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $resource2->ordering;
 				$orderdn = $resource1->ordering;
-				
+
 				$resource1->ordering = $orderup;
 				$resource2->ordering = $orderdn;
 				break;
-			
+
 			case 'orderdown':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $resource1->ordering;
 				$orderdn = $resource2->ordering;
-				
+
 				$resource1->ordering = $orderdn;
 				$resource2->ordering = $orderup;
 				break;
 		}
-		
+
 		// Save changes
 		$resource1->store();
 		$resource2->store();
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option .'&task=children&pid='. $pid;
 	}
@@ -1440,7 +1408,7 @@ class ResourcesController extends Hubzero_Controller
 		$view = new JView( array('name'=>'types') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
@@ -1452,10 +1420,10 @@ class ResourcesController extends Hubzero_Controller
 		$view->filters['sort']  = trim($app->getUserStateFromRequest($this->_option.'.types.sort', 'filter_order', 'category'));
 		$view->filters['sort_Dir'] = trim($app->getUserStateFromRequest($this->_option.'.types.sortdir', 'filter_order_Dir', 'DESC'));
 		$view->filters['category'] = $app->getUserStateFromRequest($this->_option.'.types.category', 'category', 0, 'int');
-		
+
 		// Instantiate an object
 		$rt = new ResourcesType( $this->database );
-		
+
 		// Get a record count
 		$view->total = $rt->getAllCount( $view->filters );
 
@@ -1468,24 +1436,20 @@ class ResourcesController extends Hubzero_Controller
 
 		// Get the category names
 		$view->cats = $rt->getTypes('0');
-	
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function newtype() 
+	protected function newtype()
 	{
 		$this->edittype();
 	}
-	
-	//-----------
 
 	protected function edittype()
 	{
@@ -1493,7 +1457,7 @@ class ResourcesController extends Hubzero_Controller
 		$view = new JView( array('name'=>'type') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-	
+
 		// Incoming (expecting an array)
 		$id = JRequest::getVar( 'id', array(0) );
 		if (is_array($id)) {
@@ -1501,24 +1465,22 @@ class ResourcesController extends Hubzero_Controller
 		} else {
 			$id = 0;
 		}
-		
+
 		// Load the object
 		$view->row = new ResourcesType( $this->database );
 		$view->row->load( $id );
 
 		// Get the categories
 		$view->categories = $view->row->getTypes( 0 );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function savetype()
 	{
@@ -1532,7 +1494,7 @@ class ResourcesController extends Hubzero_Controller
 			exit();
 		}
 		$row->contributable = ($row->contributable) ? $row->contributable : '0';
-	
+
 		// Get the custom fields
 		$fields = JRequest::getVar('fields', array(), 'post');
 		if (is_array($fields)) {
@@ -1550,18 +1512,18 @@ class ResourcesController extends Hubzero_Controller
 			$field = implode( "\n", $txta );
 			$row->customFields = $field;
 		}
-	
+
 		// Get parameters
 		$params = JRequest::getVar( 'params', '', 'post' );
 		if (is_array( $params )) {
 			$txt = array();
-			foreach ( $params as $k=>$v) 
+			foreach ( $params as $k=>$v)
 			{
 				$txt[] = "$k=$v";
 			}
 			$row->params = implode( "\n", $txt );
 		}
-	
+
 		// Check content
 		if (!$row->check()) {
 			echo ResourcesHtml::alert( $row->getError() );
@@ -1579,21 +1541,17 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Type successfully saved');
 	}
 
-	//-----------
-	
-	private function normalize($txt) 
+	private function normalize($txt)
 	{
 		// Strip any non-alphanumeric characters
 		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $txt));
 	}
 
-	//-----------
-
 	protected function deletetype()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar( 'id', array() );
 
@@ -1603,10 +1561,10 @@ class ResourcesController extends Hubzero_Controller
 			$this->_redirect = 'index.php?option='.$this->_option.'&task=viewtypes';
 			return;
 		}
-		
+
 		$rt = new ResourcesType( $this->database );
-		
-		foreach ($ids as $id) 
+
+		foreach ($ids as $id)
 		{
 			// Check if the type is being used
 			$total = $rt->checkUsage( $id );
@@ -1615,11 +1573,11 @@ class ResourcesController extends Hubzero_Controller
 				echo ResourcesHtml::alert( JText::sprintf('There are resources with type %s. Please reassign them before deleting this type.', $id) );
 				exit();
 			}
-			
+
 			// Delete the type
 			$rt->delete( $id );
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=viewtypes';
 		$this->_message = JText::_('Type(s) successfully removed');
@@ -1633,7 +1591,7 @@ class ResourcesController extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar( 'listdir', '', 'post' );
 		if (!$listdir) {
@@ -1641,13 +1599,13 @@ class ResourcesController extends Hubzero_Controller
 			$this->media();
 			return;
 		}
-		
+
 		// Incoming sub-directory
 		$subdir = JRequest::getVar( 'dirPath', '', 'post' );
 
 		// Build the path
 		$path = $this->buildUploadPath( $listdir, $subdir );
-		
+
 		// Are we creating a new folder?
 		$foldername = JRequest::getVar( 'foldername', '', 'post' );
 		if ($foldername != '') {
@@ -1675,7 +1633,7 @@ class ResourcesController extends Hubzero_Controller
 					return;
 				}
 			}
-			
+
 			// Incoming file
 			$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 			if (!$file['name']) {
@@ -1683,7 +1641,7 @@ class ResourcesController extends Hubzero_Controller
 				$this->media();
 				return;
 			}
-			
+
 			// Make the filename safe
 			jimport('joomla.filesystem.file');
 			$file['name'] = JFile::makeSafe($file['name']);
@@ -1694,12 +1652,12 @@ class ResourcesController extends Hubzero_Controller
 				$this->setError( JText::_('ERROR_UPLOADING') );
 			} else {
 				// File was uploaded
-				
+
 				// Was the file an archive that needs unzipping?
 				$batch = JRequest::getInt( 'batch', 0, 'post' );
 				if ($batch) {
 					//$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $file['name']);
-					
+
 					/*jimport('joomla.filesystem.archive');
 
 					// Extract the files
@@ -1728,45 +1686,43 @@ class ResourcesController extends Hubzero_Controller
 				} // if ($batch) {
 			}
 		}
-		
+
 		// Push through to the media view
 		$this->media();
 	}
 
-	//-----------
-
-	protected function deletefolder() 
+	protected function deletefolder()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar( 'listdir', '' );
 		if (!$listdir) {
 			$this->setError( JText::_('RESOURCES_NO_LISTDIR') );
 			$this->media();
 		}
-		
+
 		// Incoming sub-directory
 		$subdir = JRequest::getVar( 'subdir', '' );
 
 		// Build the path
 		$path = $this->buildUploadPath( $listdir, $subdir );
-		
+
 		// Incoming directory to delete
 		$folder = JRequest::getVar( 'delFolder', '' );
 		if (!$folder) {
 			$this->setError( JText::_('RESOURCES_NO_DIRECTORY') );
 			$this->media();
 		}
-		
+
 		if (substr($folder,0,1) != DS) {
 			$folder = DS.$folder;
 		}
-		
+
 		// Check if the folder even exists
-		if (!is_dir($path.$folder) or !$folder) { 
-			$this->setError( JText::_('DIRECTORY_NOT_FOUND') ); 
+		if (!is_dir($path.$folder) or !$folder) {
+			$this->setError( JText::_('DIRECTORY_NOT_FOUND') );
 		} else {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.folder');
@@ -1774,41 +1730,39 @@ class ResourcesController extends Hubzero_Controller
 				$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
 			}
 		}
-		
+
 		// Push through to the media view
 		$this->media();
 	}
 
-	//-----------
-
-	protected function deletefile() 
+	protected function deletefile()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar( 'listdir', '' );
 		if (!$listdir) {
 			$this->setError( JText::_('RESOURCES_NO_LISTDIR') );
 			$this->media();
 		}
-		
+
 		// Incoming sub-directory
 		$subdir = JRequest::getVar( 'subdir', '' );
 
 		// Build the path
 		$path = $this->buildUploadPath( $listdir, $subdir );
-		
+
 		// Incoming file to delete
 		$file = JRequest::getVar( 'delFile', '' );
 		if (!$file) {
 			$this->setError( JText::_('RESOURCES_NO_FILE') );
 			$this->media();
 		}
-		
+
 		// Check if the file even exists
-		if (!file_exists($path.DS.$file) or !$file) { 
-			$this->setError( JText::_('FILE_NOT_FOUND') ); 
+		if (!file_exists($path.DS.$file) or !$file) {
+			$this->setError( JText::_('FILE_NOT_FOUND') );
 		} else {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
@@ -1816,27 +1770,25 @@ class ResourcesController extends Hubzero_Controller
 				$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
 			}
 		}
-		
+
 		// Push through to the media view
 		$this->media();
 	}
 
-	//-----------
-
-	protected function media() 
+	protected function media()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'resource', 'layout'=>'media') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$view->listdir = JRequest::getVar( 'listdir', '' );
 		if (!$view->listdir) {
 			echo ResourcesHtml::error( JText::_('No list directory provided.') );
 			return;
 		}
-		
+
 		// Incoming sub-directory
 		$view->subdir = JRequest::getVar( 'subdir', '' );
 		if (!$view->subdir) {
@@ -1845,14 +1797,14 @@ class ResourcesController extends Hubzero_Controller
 
 		// Build the path
 		$view->path = $this->buildUploadPath( $view->listdir, $view->subdir );
-	
+
 		// Get list of directories
 		$dirs = $this->recursive_listdir( $view->path );
-		
+
 		$folders   = array();
 		$folders[] = JHTML::_('select.option', '/');
 		if ($dirs) {
-			foreach ($dirs as $dir) 
+			foreach ($dirs as $dir)
 			{
 				$folders[] = JHTML::_('select.option', substr($dir,strlen($view->path)));
 			}
@@ -1863,19 +1815,17 @@ class ResourcesController extends Hubzero_Controller
 
 		// Create folder <select> list
 		$view->dirPath = JHTML::_('select.genericlist', $folders, 'dirPath', 'onchange="goUpDir()" ','value', 'text', $view->subdir );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
- 
-	protected function listfiles() 
+	protected function listfiles()
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar( 'listdir', '' );
@@ -1883,7 +1833,7 @@ class ResourcesController extends Hubzero_Controller
 			echo ResourcesHtml::error( JText::_('No list directory provided.') );
 			return;
 		}
-		
+
 		// Incoming sub-directory
 		$subdir = JRequest::getVar( 'subdir', '' );
 
@@ -1898,9 +1848,9 @@ class ResourcesController extends Hubzero_Controller
 
 		if ($d) {
 			// Loop through all files and separate them into arrays of images, folders, and other
-			while (false !== ($entry = $d->read())) 
+			while (false !== ($entry = $d->read()))
 			{
-				$img_file = $entry; 
+				$img_file = $entry;
 
 				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png", $img_file )) {
@@ -1912,13 +1862,13 @@ class ResourcesController extends Hubzero_Controller
 					$folders[$entry] = $img_file;
 				}
 			}
-			$d->close();	
+			$d->close();
 
 			ksort($images);
 			ksort($folders);
 			ksort($docs);
 		}
-		
+
 		$view = new JView( array('name'=>'resource', 'layout'=>'filelist') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
@@ -1933,41 +1883,39 @@ class ResourcesController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	private function buildUploadPath( $listdir, $subdir='' ) 
+
+	private function buildUploadPath( $listdir, $subdir='' )
 	{
 		if ($subdir) {
 			// Make sure the path doesn't end with a slash
-			if (substr($subdir, -1) == DS) { 
+			if (substr($subdir, -1) == DS) {
 				$subdir = substr($subdir, 0, strlen($subdir) - 1);
 			}
 			// Ensure the path starts with a slash
-			if (substr($subdir, 0, 1) != DS) { 
+			if (substr($subdir, 0, 1) != DS) {
 				$subdir = DS.$subdir;
 			}
 		}
-		
+
 		// Get the configured upload path
 		$base_path = $this->config->get('uploadpath');
 		if ($base_path) {
 			// Make sure the path doesn't end with a slash
-			if (substr($base_path, -1) == DS) { 
+			if (substr($base_path, -1) == DS) {
 				$base_path = substr($base_path, 0, strlen($base_path) - 1);
 			}
 			// Ensure the path starts with a slash
-			if (substr($base_path, 0, 1) != DS) { 
+			if (substr($base_path, 0, 1) != DS) {
 				$base_path = DS.$base_path;
 			}
 		}
-		
+
 		// Make sure the path doesn't end with a slash
-		if (substr($listdir, -1) == DS) { 
+		if (substr($listdir, -1) == DS) {
 			$listdir = substr($listdir, 0, strlen($listdir) - 1);
 		}
 		// Ensure the path starts with a slash
-		if (substr($listdir, 0, 1) != DS) { 
+		if (substr($listdir, 0, 1) != DS) {
 			$listdir = DS.$listdir;
 		}
 		// Does the beginning of the $listdir match the config path?
@@ -1982,26 +1930,24 @@ class ResourcesController extends Hubzero_Controller
 		return JPATH_ROOT.$listdir.$subdir;
 	}
 
-	//-----------
+	private function recursive_listdir($base)
+	{
+	    static $filelist = array();
+	    static $dirlist  = array();
 
-	private function recursive_listdir($base) 
-	{ 
-	    static $filelist = array(); 
-	    static $dirlist  = array(); 
-
-	    if (is_dir($base)) { 
-	       $dh = opendir($base); 
-	       while (false !== ($dir = readdir($dh))) 
-		   { 
-	           if (is_dir($base .DS. $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') { 
-	                $subbase    = $base .DS. $dir; 
-	                $dirlist[]  = $subbase; 
-	                $subdirlist = $this->recursive_listdir($subbase); 
-	            } 
-	        } 
-	        closedir($dh); 
-	    } 
-	    return $dirlist; 
+	    if (is_dir($base)) {
+	       $dh = opendir($base);
+	       while (false !== ($dir = readdir($dh)))
+		   {
+	           if (is_dir($base .DS. $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
+	                $subbase    = $base .DS. $dir;
+	                $dirlist[]  = $subbase;
+	                $subdirlist = $this->recursive_listdir($subbase);
+	            }
+	        }
+	        closedir($dh);
+	    }
+	    return $dirlist;
 	}
 
 	//----------------------------------------------------------
@@ -2012,11 +1958,11 @@ class ResourcesController extends Hubzero_Controller
 	{
 		// Get configuration
 		$config = JFactory::getConfig();
-	
+
 		// Paging variables
 		$limit  = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 		$start  = JRequest::getInt('limitstart', 0);
-		
+
 		// Filters
 		$vtask  = JRequest::getVar( 'viewtask', '' );
 		$search = JRequest::getVar( 'search', '' );
@@ -2034,11 +1980,11 @@ class ResourcesController extends Hubzero_Controller
 			$status = JRequest::getVar( 'status', '' );
 			$type   = JRequest::getVar( 'type', 0 );
 		}
-		
+
 		if ($status !== 0) {
 			$status = 'all';
 		}
-		
+
 		$url  = 'index.php?option='.$this->_option;
 		if ($pid == '-1') {
 			$vtask = 'orphans';
@@ -2052,13 +1998,11 @@ class ResourcesController extends Hubzero_Controller
 		$url .= ($sort_Dir) ? '&filter_order_Dir='.$sort_Dir        : '';
 		$url .= '&status='.$status;
 		$url .= ($type)   ? '&type='.$type        : '';
-	
+
 		return $url;
 	}
 
-	//-----------
-
-	private function userSelect( $name, $active, $nouser=0, $javascript=NULL, $order='a.name' ) 
+	private function userSelect( $name, $active, $nouser=0, $javascript=NULL, $order='a.name' )
 	{
 		$database =& JFactory::getDBO();
 
@@ -2087,13 +2031,11 @@ class ResourcesController extends Hubzero_Controller
 
 		return $users;
 	}
-	
-	//-----------
-	
-	protected function getauthor() 
+
+	protected function getauthor()
 	{
 		$u = JRequest::getInt('u', 0);
-		
+
 		// Get the member's info
 		ximport('Hubzero_User_Profile');
 		$profile = new Hubzero_User_Profile();
@@ -2106,10 +2048,10 @@ class ResourcesController extends Hubzero_Controller
 		} else {
 			$name  = $profile->get('name');
 		}
-		
+
 		echo $name .' ('.$profile->get('uidNumber').')';
 	}
-	
+
 	//----------------------------------------------------------
 	// Functions for tagging a resource
 	//----------------------------------------------------------
@@ -2120,7 +2062,7 @@ class ResourcesController extends Hubzero_Controller
 		$view = new JView( array('name'=>'tags') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		$view->id = JRequest::getInt( 'id', 0 );
 
 		// Get resource title
@@ -2154,23 +2096,21 @@ class ResourcesController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function savetags()
 	{
 	    // Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$t_tags = JRequest::getVar( 'tags', '' );
 		$c_tags = JRequest::getVar( 'tgs', array(0) );
-	
+
 		// Process tags
 		$tagging = new ResourcesTags( $this->database );
 		$tagArray  = $tagging->_parse_tags($t_tags);
@@ -2182,7 +2122,7 @@ class ResourcesController extends Hubzero_Controller
 		}
 		$tags = implode( ',', $c_tags );
 		$tagging->tag_object($this->juser->get('id'), $id, $tags, 0, 1);
-	
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}

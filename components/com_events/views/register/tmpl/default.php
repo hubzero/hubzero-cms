@@ -64,7 +64,7 @@ $params = new JParameter( $this->event->params );
 		}
 		$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->event->id) .'"><span>'.JText::_('EVENTS_OVERVIEW').'</span></a></li>'."\n";
 		if ($this->pages) {
-			foreach ($this->pages as $p) 
+			foreach ($this->pages as $p)
 			{
 				$html .= "\t".'<li';
 				if ($this->page->alias == $p->alias) {
@@ -157,8 +157,8 @@ $params = new JParameter( $this->event->params );
 				<?php } ?>
 			</div>
 		</fieldset>
-	<?php if ($params->get('show_position') 
-			|| $params->get('show_degree') 
+	<?php if ($params->get('show_position')
+			|| $params->get('show_degree')
 			|| $params->get('show_gender')
 			|| $params->get('show_race')) { ?>
 		<fieldset>

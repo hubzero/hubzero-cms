@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 $config = JFactory::getConfig();
 
 //if ($config->getValue('config.debug')) {

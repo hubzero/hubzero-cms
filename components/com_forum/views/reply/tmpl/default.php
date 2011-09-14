@@ -29,7 +29,7 @@ $juser =& JFactory::getUser();
 			if ($this->rows) {
 				ximport('Hubzero_User_Profile');
 				ximport('Hubzero_Wiki_Parser');
-				
+
 				$wikiconfig = array(
 					'option'   => $this->option,
 					'scope'    => 'forum',
@@ -40,8 +40,8 @@ $juser =& JFactory::getUser();
 				);
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
-				
-				foreach ($this->rows as $row) 
+
+				foreach ($this->rows as $row)
 				{
 					$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 					$huser = '';
@@ -52,7 +52,7 @@ $juser =& JFactory::getUser();
 							$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($huser->get('name')).'</a>';
 						}
 					}
-					
+
 					$comment = $p->parse( "\n".stripslashes($row->comment), $wikiconfig );
 			?>
 				<li class="comment" id="c<?php echo $row->id; ?>">

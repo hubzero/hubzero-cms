@@ -42,7 +42,7 @@ if ($this->sub) {
 <div id="<?php echo $hid; ?>">
 	<h2><?php echo $this->title; ?></h2>
 <?php 
-if ($this->page->id) { 
+if ($this->page->id) {
 	echo WikiHtml::authors( $this->page, $params );
 }
 ?>
@@ -154,7 +154,7 @@ if ($templates) {
 				$this->tags = $tmpltags;
 			}
 		}
-		
+
 		echo "\t".'<option value="t'.$template->id.'"';
 		if (strtolower($this->tplate) == strtolower($template->pagename)) {
 			echo ' selected="selected"';
@@ -166,7 +166,7 @@ if ($templates) {
 
 		$j  = '<input type="hidden" name="t'.$template->id.'" id="t'.$template->id.'" value="'.htmlentities(stripslashes($temprev->pagetext), ENT_QUOTES).'" />'."\n";
 		$j .= '<input type="hidden" name="t'.$template->id.'_tags" id="t'.$template->id.'_tags" value="'.htmlentities(stripslashes($tmpltags), ENT_QUOTES).'" />'."\n";
-		
+
 		$hi[] = $j;
 	}
 }
@@ -250,7 +250,7 @@ if (count($mc) > 0) {
 				<input class="option" type="checkbox" name="access" id="access"<?php if ($this->page->access == 1) { echo ' checked="checked"'; } ?> value="1" />
 				<?php echo JText::_('WIKI_FIELD_ACCESS'); ?>
 			</label>
-<?php } 
+<?php }
 	if ($this->authorized === 'admin' || $this->authorized === 'manager') { ?>
 			<label>
 				<input class="option" type="checkbox" name="state" id="state"<?php if ($this->page->state == 1) { echo ' checked="checked"'; } ?> value="1" />

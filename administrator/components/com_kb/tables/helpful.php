@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class KbHelpful extends JTable 
+class KbHelpful extends JTable
 {
 	var $id      = NULL;  // @var int(11) Primary key
 	var $fid     = NULL;  // @var int(11)
 	var $ip      = NULL;  // @var varchar(15)
 	var $helpful = NULL;  // @var varchar(10)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq_helpful_log', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->fid ) == '') {
 			$this->_error = JText::_('KB_ERROR_MISSING_ARTICLE_ID');
@@ -54,9 +51,7 @@ class KbHelpful extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function getHelpful( $fid=NULL, $ip=NULL )
 	{
 		if ($fid == NULL) {
@@ -68,10 +63,8 @@ class KbHelpful extends JTable
 		$this->_db->setQuery( "SELECT helpful FROM $this->_tbl WHERE fid =".$fid." AND ip='".$ip."'" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function deleteHelpful( $fid=NULL ) 
+
+	public function deleteHelpful( $fid=NULL )
 	{
 		if ($fid == NULL) {
 			$fid = $this->fid;

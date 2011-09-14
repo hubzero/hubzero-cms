@@ -29,19 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_hubzero_wikieditortoolbar' );
-
-//-----------
 
 class plgHubzeroWikiEditorToolbar extends JPlugin
 {
 	private $_pushscripts = true;
-	
-	//-----------
-	
+
 	public function plgHubzeroWikiEditorToolbar(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -50,8 +44,6 @@ class plgHubzeroWikiEditorToolbar extends JPlugin
 		//$this->_plugin = JPluginHelper::getPlugin( 'hubzero', 'wikieditortoolbar' );
 		//$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
 
 	public function onInitEditor()
 	{
@@ -59,15 +51,13 @@ class plgHubzeroWikiEditorToolbar extends JPlugin
 			$document =& JFactory::getDocument();
 			$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'wikieditortoolbar'.DS.'wikieditortoolbar.js');
 			$document->addStyleSheet(DS.'plugins'.DS.'hubzero'.DS.'wikieditortoolbar'.DS.'wikieditortoolbar.css');
-			
+
 			$this->_pushscripts = false;
 		}
-		
+
 		return '';
 	}
-	
-	//-----------
-	
+
 	public function onDisplayEditor( $name, $id, $content, $cls='wiki-toolbar-content', $col=10, $row=35)
 	{
 		$cls = ($cls) ? 'wiki-toolbar-content '.$cls : 'wiki-toolbar-content';
@@ -76,24 +66,18 @@ class plgHubzeroWikiEditorToolbar extends JPlugin
 
 		return $editor;
 	}
-	
-	//-----------
-	
-	public function onGetEditorContent( $editor ) 
+
+	public function onGetEditorContent( $editor )
 	{
 		return "";
 	}
 
-	//-----------
-
-	public function onSetEditorContent( $editor, $html ) 
+	public function onSetEditorContent( $editor, $html )
 	{
 		return "";
 	}
-	
-	//-----------
 
-	public function onSaveEditorContent( $editor ) 
+	public function onSaveEditorContent( $editor )
 	{
 		return "";
 	}

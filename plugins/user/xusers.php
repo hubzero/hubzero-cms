@@ -58,7 +58,7 @@ class plgUserXusers extends JPlugin
 	function onLoginUser($user, $options = array())
 	{
 		jimport('joomla.user.helper');
-		
+
 		$juser = &JFactory::getUser();   // get user from session (might be tmp_user, can't fetch from db)
 
 		if ($juser->get('guest') == '1') // joomla user plugin hasn't run or something went very badly
@@ -67,24 +67,24 @@ class plgUserXusers extends JPlugin
 			$xuser_order = false;
 			$joomla_order = false;
 			$i = 0;
-			
+
 			foreach ($plugins as $plugin)
 			{
 				if ($plugin->name == 'xusers') {
 					$xuser_order = $i;
 				}
-				
+
 				if ($plugin->name == 'joomla') {
 					$joomla_order = $i;
 				}
-				
+
 				$i++;
 			}
-			
+
 			if ($joomla_order === false) {
 				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'));
 			}
-			
+
 			if ($xuser_order <= $joomla_order) {
 				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'));
 			}
@@ -105,7 +105,7 @@ class plgUserXusers extends JPlugin
 			$authlog->logAuth( $juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
 			apache_note('auth','login');
 		}
-		
+
 		// drop a hub cookie
 
 		jimport('joomla.utilities.simplecrypt');
@@ -123,7 +123,7 @@ class plgUserXusers extends JPlugin
 		setcookie( JUtility::getHash('XHUB_REMEMBER'), $rcookie, $lifetime, '/' );
 
 		/* Mark registration as incomplete so it gets checked on next page load */
-		
+
 		$username = $juser->get('username');
 
 		if (isset($user['auth_link']) && is_object($user['auth_link'])) {
@@ -132,10 +132,10 @@ class plgUserXusers extends JPlugin
 		else {
 			$hzal = null;
 		}
-		
+
 		if ($juser->get('tmp_user')) {
 			$email = $juser->get('email');
-			
+
 			if ($username[0] == '-') {
 				$username = trim($username,'-');
 				if ($hzal) {
@@ -152,16 +152,16 @@ class plgUserXusers extends JPlugin
 					$hzal->user_id = $juser->get('id');
 					$hzal->update();
 				}
-			}			
+			}
 		}
-		
+
 		if ($hzal)
 			$juser->set('auth_link_id',$hzal->id);
-		
+
 		$session =& JFactory::getSession();
 		$session->set('registration.incomplete', true);
 
-		return true; 
+		return true;
 	}
 
 	/**
@@ -213,19 +213,19 @@ class plgUserXusers extends JPlugin
 		else
 		{
 			$update = false;
-			
+
 			if ($xprofile->get('username') != $user['username'])
 			{
 				$xprofile->set('username', $user['username']);
 				$update = true;
 			}
-	
+
 			if ($xprofile->get('name') != $user['name'])
 			{
 				$xprofile->set('name', $user['name']);
 				$update = true;
 			}
-	
+
 			if ($xprofile->get('email') != $user['email'])
 			{
 				$xprofile->set('email', $user['email']);
@@ -263,7 +263,7 @@ class plgUserXusers extends JPlugin
 			$xprofile->delete();
 
 		Hubzero_Auth_Link::delete_by_user_id($user['id']);
-			
+
 		return true;
 	}
 

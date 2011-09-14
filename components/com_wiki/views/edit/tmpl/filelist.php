@@ -86,7 +86,7 @@ $app =& JFactory::getApplication();
 				<tbody>
 <?php
 $folders = $this->folders;
-for ($i=0; $i<count($folders); $i++) 
+for ($i=0; $i<count($folders); $i++)
 {
 	$folder_name = key($folders);
 
@@ -102,7 +102,7 @@ for ($i=0; $i<count($folders); $i++)
 		}
 		$d->close();
 	}
-	
+
 	if ($listdir == '/') {
 		$listdir = '';
 	}
@@ -116,9 +116,9 @@ for ($i=0; $i<count($folders); $i++)
 	next($folders);
 }
 $docs = $this->docs;
-for ($i=0; $i<count($docs); $i++) 
+for ($i=0; $i<count($docs); $i++)
 {
-	$doc_name = key($docs);	
+	$doc_name = key($docs);
 	$iconfile = '/components/'.$this->option.'/images/icons/'.substr($doc_name,-3).'.png';
 	if (file_exists(JPATH_ROOT.$iconfile))	{
 		$icon = $iconfile;
@@ -135,7 +135,7 @@ for ($i=0; $i<count($docs); $i++)
 	next($docs);
 }
 $images = $this->images;
-for ($i=0; $i<count($images); $i++) 
+for ($i=0; $i<count($images); $i++)
 {
 	$image_name = key($images);
 	$iconfile = '/components/'.$this->option.'/images/icons/'.substr($image_name,-3).'.png';

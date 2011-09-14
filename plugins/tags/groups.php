@@ -29,19 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_groups' );
-
-//-----------
 
 class plgTagsGroups extends JPlugin
 {
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgTagsGroups(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,8 +45,6 @@ class plgTagsGroups extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onTagAreas()
 	{
 		$areas = array(
@@ -60,8 +52,6 @@ class plgTagsGroups extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
 
 	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
@@ -76,11 +66,11 @@ class plgTagsGroups extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$ids = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ids[] = $tag->id;
 		}
@@ -97,11 +87,11 @@ class plgTagsGroups extends JPlugin
 					AND t.tagid IN ($ids)";
 		$f_from .= " GROUP BY a.gidNumber HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
-		switch ($sort) 
+		switch ($sort)
 		{
 			case 'title': $order_by .= 'title ASC, publish_up';  break;
 			case 'id':    $order_by .= "id DESC";                break;
-			case 'date':  
+			case 'date':
 			default:      $order_by .= 'publish_up DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
@@ -115,20 +105,20 @@ class plgTagsGroups extends JPlugin
 			if (count($areas) > 1) {
 				return $f_fields . $f_from;
 			}
-			
+
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
 				}
 			}
-			
+
 			$database->setQuery( $f_fields . $f_from .  $order_by );
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
 			if ($rows) {
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_('index.php?option=com_groups&gid='.$row->alias);
 				}
@@ -138,7 +128,7 @@ class plgTagsGroups extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use

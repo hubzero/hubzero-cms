@@ -51,15 +51,13 @@ class Hubzero_Factory
 
 		return $instances[0];
 	}
-	
-	//-----------
 
 	public static function loadArrayList(&$arraylist, $namespace = null)
 	{
 		$config = &JFactory::getConfig();
 		// If namespace is not set, get the default namespace
-		
-		if ($namespace == null) 
+
+		if ($namespace == null)
 			$namespace = $config->_defaultNameSpace;
 
 		if (!isset($config->_registry[$namespace])) {
@@ -67,7 +65,7 @@ class Hubzero_Factory
 			$config->makeNameSpace($namespace);
 		}
 
-		foreach($arraylist as $array) 
+		foreach($arraylist as $array)
 		{
 			// Load the variables into the registry's default namespace.
 			$k = $array['var'];
@@ -77,8 +75,6 @@ class Hubzero_Factory
 
 		return true;
 	}
-	
-	//-----------
 
 	public static function &getHub()
 	{
@@ -94,17 +90,15 @@ class Hubzero_Factory
 
 		 return $instances[0];
 	}
-	
-	//-----------
 
 	public static function &getComponentFactory($component)
 	{
 		static $instances;
 
-		if (!isset($instances[$component]) || !is_object($instances[$component])) 
+		if (!isset($instances[$component]) || !is_object($instances[$component]))
 		{
 			ximport('Hubzero_Component_Factory');
-			
+
 			$file = JPATH_SITE . '/administrator/components/com_' . $component . '/factory.php';
 			$factoryclass = 'Hubzero_' . $component . '_Factory';
 
@@ -115,14 +109,12 @@ class Hubzero_Factory
 				$factory = new $factoryclass($component);
 			else
 				$factory = new Hubzero_Component_Factory($component);
-		
+
 			$instances[$component] = $factory;
 		}
 
 		return $instances[$component];
 	}
-	
-	//-----------
 
 	public static function &getLDC($primary = 0)
 	{
@@ -139,7 +131,7 @@ class Hubzero_Factory
 		if (empty($primary) && empty($aldap))
 			$primary = 1;
 
-		if (!empty($primary)) 
+		if (!empty($primary))
 		{
 			if (empty($instances[1]))
 			{
@@ -193,7 +185,6 @@ class Hubzero_Factory
 
 				if ($debug) $xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
 
-				
 				if ( $use_ldapV3 && !@ldap_set_option($_ldc, LDAP_OPT_REFERRALS, $no_referrals ? false : true) )
 				{
 					if ($debug) $xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_REFERRALS, " . ($no_referrals ? 'false' : 'true') . ") failed: " . ldap_error($instances[1]));
@@ -223,14 +214,14 @@ class Hubzero_Factory
 				}
 
 				if ($debug) $xlog->logDebug("getLDC($primary): ldap_bind() success.");
-				
+
 				if (empty($instances[0]))
 					$instances[0] = $instances[1];
 			}
 
 			return $instances[1];
 		}
-		else 
+		else
 		{
 			if (empty($instances[0]))
 			{
@@ -259,7 +250,7 @@ class Hubzero_Factory
 				}
 
 				if ($debug) $xlog->logDebug("getLDC($primary): ldap_set_option(protocol v3) success.");
-				
+
 				if (@ldap_bind($instances[0], $acctman, $acctmanPW) == false)
 				{
 					if ($debug) $xlog->logDebug("getLDC($primary): ldap_bind failed: " . ldap_error($instances[0]));
@@ -276,8 +267,6 @@ class Hubzero_Factory
 		}
 
 	}
-	
-	//-----------
 
 	public static function &getPLDC()
 	{
@@ -290,14 +279,12 @@ class Hubzero_Factory
 
 		return $instances[0];
 	}
-	
-	//-----------
 
 	public static function &getLogger()
 	{
 		static $instances;
 
-		if ( !is_object($instances[0]) ) 
+		if ( !is_object($instances[0]) )
 		{
 			ximport('Hubzero_Log');
 
@@ -308,14 +295,12 @@ class Hubzero_Factory
 
 		return $instances[0];
 	}
-	
-	//-----------
 
 	public static function &getAuthLogger()
 	{
 		static $instances;
 
-		if (!is_object($instances[0]) ) 
+		if (!is_object($instances[0]) )
 		{
 			ximport('Hubzero_Log');
 

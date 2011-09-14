@@ -39,7 +39,7 @@ switch ($this->level)
 		$type = $this->bits['type'];
 		$id = $this->bits['id'];
 		$d = 0;
-		
+
 		if ($tg2) {
 			$html .= '<h3>'.JText::_('COM_RESOURCES_TAG').' + '.$tg2.'</h3>';
 		} else {
@@ -64,13 +64,13 @@ switch ($this->level)
 				$i = 0;
 			}
 			$li .= '><a id="col1_'.$tag->tag.'" class="';
-			if ($tg == $tag->tag) { 
-				$li .= 'open'; 
+			if ($tg == $tag->tag) {
+				$li .= 'open';
 				$d = $i;
 			}
 
 			$li .= '" href="javascript:HUB.TagBrowser.nextLevel(\''.$type.'\',\''.$tag->tag.'\',\''.$tg2.'\',2,\'col1_'.$tag->tag.'\',\''.$id.'\');">'.stripslashes($tag->raw_tag).' ('.$tag->ucount.')</a></li>';
-			
+
 			if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag']) {
 				$html .= $li;
 			} else {
@@ -83,15 +83,15 @@ switch ($this->level)
 		$html .= $lis;
 		$html .= '</ul><input type="hidden" name="atg" id="atg" value="'.$tg.'" /><input type="hidden" name="d" id="d" value="'.$d.'" />';
 	break;
-	
-	case 2:			
+
+	case 2:
 		$tools = $this->bits['tools'];
 		$typetitle = $this->bits['typetitle'];
 		$type = $this->bits['type'];
 		$rt = $this->bits['rt'];
 		$params = $this->bits['params'];
 		$filters = $this->bits['filters'];
-		
+
 		$sortbys = array(
 			'date'=>JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_DATE'),
 			'title'=>JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_TITLE'),
@@ -101,7 +101,7 @@ switch ($this->level)
 			$sortbys['users'] = JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_USERS');
 			$sortbys['jobs'] = JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_JOBS');
 		}
-		
+
 		$html .= '<h3>'.JText::_('COM_RESOURCES').' '.ResourcesHtml::formSelect('sortby', $sortbys, $this->bits['sortby'], '" onchange="javascript:HUB.TagBrowser.changeSort();"').'</h3>';
 		$html .= '<ul id="ulitems">';
 		if ($tools && count($tools) > 0) {
@@ -109,7 +109,7 @@ switch ($this->level)
 			foreach ($tools as $tool)
 			{
 				$tool->title = Hubzero_View_Helper_Html::shortenText($tool->title, 40, 0);
-				
+
 				$supported = null;
 				if ($this->bits['supportedtag']) {
 					if (in_array($tool->id, $this->bits['supportedtagusage'])) {
@@ -117,7 +117,7 @@ switch ($this->level)
 					}
 					//$supported = $rt->checkTagUsage( $this->bits['supportedtag'], $tool->id );
 				}
-				
+
 				$html .= '<li ';
 				if ($this->bits['supportedtag'] && ($this->bits['tag'] == $this->bits['supportedtag'] || $supported)) {
 					$html .= 'class="supported" ';
@@ -132,8 +132,8 @@ switch ($this->level)
 			$this->bits['filter'] = is_array ($this->bits['filter']) ? $this->bits['filter'] : array();
 			if(!empty($filters)) {
 				$html .= '<div id="filteroptions">';
-				$html .= ' <div>'.JText::_('Show:');			
-				foreach ($filters as $avalue => $alabel) 
+				$html .= ' <div>'.JText::_('Show:');
+				foreach ($filters as $avalue => $alabel)
 				{
 					$html .= ' <label class="skill_'.$avalue.'"><input type="checkbox" class="option" name="filter" value="'.$avalue.'" onchange="javascript:HUB.TagBrowser.changeSort();" ';
 					$html .= in_array($avalue, $this->bits['filter']) ? 'checked="checked"' : '';
@@ -147,7 +147,7 @@ switch ($this->level)
 			}
 		}
 	break;
-	
+
 	case 3:
 		$resource = $this->bits['resource'];
 		$helper = $this->bits['helper'];
@@ -158,13 +158,13 @@ switch ($this->level)
 		$rt = $this->bits['rt'];
 		$config = $this->bits['config'];
 		$authorized = $this->bits['authorized'];
-	
+
 		$statshtml = '';
 		if ($params->get('show_ranking')) {
 			$helper->getLastCitationDate();
-			
+
 			$database =& JFactory::getDBO();
-			
+
 			if ($resource->type == 7) {
 				$stats = new ToolStats($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
 			} else {
@@ -173,7 +173,7 @@ switch ($this->level)
 
 			$statshtml = $stats->display();
 		}
-		
+
 		$html .= '<h3>'.JText::_('COM_RESOURCES_INFO').'</h3>';
 		$html .= '<ul id="ulinfo">';
 		$html .= '<li>';
@@ -203,7 +203,7 @@ switch ($this->level)
 		if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
 			$ghtml = JText::_('You must be logged in and a member of one of the following groups to access the full resource:').' ';
 			$allowedgroups = $resource->getGroups();
-			foreach ($allowedgroups as $allowedgroup) 
+			foreach ($allowedgroups as $allowedgroup)
 			{
 				$ghtml .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='.$allowedgroup).'">'.$allowedgroup.'</a>, ';
 			}
@@ -214,18 +214,18 @@ switch ($this->level)
 				$html .= $primary_child;
 			}
 		}
-		
+
 		$supported = null;
 		if ($this->bits['supportedtag']) {
 			$supported = $rt->checkTagUsage( $this->bits['supportedtag'], $resource->id );
 		}
 		$xtra = '';
-		
+
 		if ($params->get('show_audience')) {
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audience.php');
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audience.level.php');
 			$ra = new ResourceAudience( $database );
-			$audience = $ra->getAudience($resource->id, 0, 1, 4);					
+			$audience = $ra->getAudience($resource->id, 0, 1, 4);
 			$xtra .= ResourcesHtml::showSkillLevel($audience, 0, 4, $params->get('audiencelink'));
 		}
 		if ($this->bits['supportedtag'] && $supported) {
@@ -242,7 +242,7 @@ switch ($this->level)
 
 			$xtra .= '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
 		}
-		
+
 		if ($params->get('show_metadata')) {
 			$html .= ResourcesHtml::metadata($params, $resource->ranking, $statshtml, $resource->id, $sections, $xtra);
 		}

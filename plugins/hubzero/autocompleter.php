@@ -29,8 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 //JPlugin::loadLanguage( 'plg_hubzero_autocompleter' );
 
@@ -39,9 +37,7 @@ jimport( 'joomla.plugin.plugin' );
 class plgHubzeroAutocompleter extends JPlugin
 {
 	private $_pushscripts = true;
-	
-	//-----------
-	
+
 	public function plgHubzeroAutocompleter(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -50,16 +46,14 @@ class plgHubzeroAutocompleter extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'hubzero', 'autocompleter' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function onGetAutocompleter( $atts ) 
+
+	public function onGetAutocompleter( $atts )
 	{
 		// Ensure we have an array
 		if (!is_array($atts)) {
 			$atts = array();
 		}
-		
+
 		// Set some parameters
 		$opt   = (isset($atts[0])) ? $atts[0] : 'tags';  // The component to call
 		$name  = (isset($atts[1])) ? $atts[1] : 'tags';  // Name of the input field
@@ -77,7 +71,7 @@ class plgHubzeroAutocompleter extends JPlugin
 			$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'observer.js');
 			$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.js');
 			$document->addStyleSheet(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.css');
-			
+
 			$this->_pushscripts = false;
 		}
 
@@ -92,10 +86,8 @@ class plgHubzeroAutocompleter extends JPlugin
 		// Return the Input tag
 		return $html;
 	}
-	
-	//-----------
-	
-	public function onGetMultiEntry( $atts ) 
+
+	public function onGetMultiEntry( $atts )
 	{
 		if (!is_array($atts)) {
 			$atts = array();
@@ -112,10 +104,8 @@ class plgHubzeroAutocompleter extends JPlugin
 
 		return $this->onGetAutocompleter( $params );
 	}
-	
-	//-----------
-	
-	public function onGetSingleEntry( $atts ) 
+
+	public function onGetSingleEntry( $atts )
 	{
 		if (!is_array($atts)) {
 			$atts = array();
@@ -132,10 +122,8 @@ class plgHubzeroAutocompleter extends JPlugin
 
 		return $this->onGetAutocompleter( $params );
 	}
-	
-	//-----------
-	
-	public function onGetSingleEntryWithSelect( $atts ) 
+
+	public function onGetSingleEntryWithSelect( $atts )
 	{
 		if (!is_array($atts)) {
 			$atts = array();

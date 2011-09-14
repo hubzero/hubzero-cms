@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_overview' );
-
-//-----------
 
 class plgUsageOverview extends JPlugin
 {
@@ -47,8 +43,6 @@ class plgUsageOverview extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -60,8 +54,8 @@ class plgUsageOverview extends JPlugin
 	//-----------------------------//
 	//  Strip Usage GET variables  //
 	//-----------------------------//
-	
-	private function _usageurlstrip($url) 
+
+	private function _usageurlstrip($url)
 	{
 	   	$pvar = strpos($url, "period=");
 	    if ($pvar) {
@@ -69,37 +63,35 @@ class plgUsageOverview extends JPlugin
 	 	 	$url = substr($url, 0, $pvar);
 	   	}
 	   	return($url);
-	}	
+	}
 
 	//-------------------------------------------------
 	//  Returns TRUE if there is data in the database
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
-	
-	private function _check_for_data(&$db, $yearmonth, $period) 
+
+	private function _check_for_data(&$db, $yearmonth, $period)
 	{
 	   	$sql = "SELECT COUNT(datetime) FROM summary_user_vals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
 		$db->setQuery( $sql );
-		$result = $db->loadResult();   	
+		$result = $db->loadResult();
 
 	   	if ($result && $result > 0) {
 			return(true);
 	   	}
 	   	return(false);
 	}
-	
-	//-----------
 
-	private function _print_user_row(&$db, $id, $period, $datetime) 
+	private function _print_user_row(&$db, $id, $period, $datetime)
 	{
 		$html = '';
-		
+
 		$sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid='".$id."' AND period='".$period."' AND datetime ='".$datetime."' ORDER BY colid";
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
 		if ($results) {
 			$i = 0;
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$i++;
 				$cls = ($i >= 7) ? ' class="group"' : '';
@@ -126,30 +118,28 @@ class plgUsageOverview extends JPlugin
 		}
 		return $html;
 	}
-	
-	//-----------
-	
-	private function _getSparkline($db, $id, $period, $datetime) 
+
+	private function _getSparkline($db, $id, $period, $datetime)
 	{
 		$sparkline = '';
-		
+
 		$thisyear = date("Y");
 		$tp = $thisyear - 2000;
 		$limit = $tp * 12;
 		$limit = 12;
-		
+
 		// Pull results
 		$sql = "SELECT value, valfmt, datetime FROM summary_user_vals WHERE rowid='$id' AND period='$period' AND datetime<='$datetime' AND colid='$id' ORDER BY datetime DESC LIMIT ".$limit;
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
-		
+
 		if ($results) {
 			// Reverse the array (we'll be getting back data in DESC order, we need it in ASC order)
 			$results = array_reverse($results);
 
 			// Find the highest value
 			$vals = array();
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				$vals[] = $result->value;
 			}
@@ -159,34 +149,30 @@ class plgUsageOverview extends JPlugin
 
 			// Generate the sparkline	
 			$sparkline .= '<span class="sparkline">'."\n";
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				$height = round(($result->value / $highest)*100);
 				$sparkline .= "\t".'<span class="index"><span class="count" style="height: '.$height.'%;" title="'.JHTML::_('date', $result->datetime, '%d %b. %Y').': '.trim($this->_fmt_result($result->value,$result->valfmt)).'">'.trim($this->_fmt_result($result->value,$result->valfmt)).'</span> </span>'."\n";
 			}
 			$sparkline .= '</span>'."\n";
 		}
-		
+
 		return $sparkline;
 	}
-	
-	//-----------
-	
-	private function _empty_rows($n) 
+
+	private function _empty_rows($n)
 	{
 		$html = '';
 		$i = 0;
-		for ($i=0, $n; $i < $n; $i++) 
+		for ($i=0, $n; $i < $n; $i++)
 		{
 			$cls = ($i >= 5) ? ' class="group"' : '';
 			$html .= "\t\t\t".'<td'.$cls.'>-</td>'."\n";
 		}
 		return $html;
 	}
-	
-	//-----------
 
-	private function _fmt_result($value, $fmt) 
+	private function _fmt_result($value, $fmt)
 	{
 		$valfmt[0]='-'; // blank. for future use
 		$valfmt[1]=' '; // no units
@@ -226,33 +212,31 @@ class plgUsageOverview extends JPlugin
 		}
 	}
 
-	//-----------
-
-	private function _navlinks($option, $task, $period='prior12') 
+	private function _navlinks($option, $task, $period='prior12')
 	{
 		$html  = '<div id="sub-sub-menu">'."\n";
 		$html .= "\t".'<ul>'."\n";
-		$html .= "\t\t".'<li';    
+		$html .= "\t\t".'<li';
 		if ($period == 'prior12') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=prior12').'"><span>'.JText::_('PLG_USAGE_PERIOD_PRIOR12').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 	    if ($period == 'month') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=month').'"><span>'.JText::_('PLG_USAGE_PERIOD_MONTH').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 	    if ($period == 'qtr') {
 			$html .= ' class="active"';
 		}
 	    $html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=qtr').'"><span>'.JText::_('PLG_USAGE_PERIOD_QTR').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 		if ($period == 'year') {
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=year').'"><span>'.JText::_('PLG_USAGE_PERIOD_YEAR').'</span></a></li>'."\n";
-		$html .= "\t\t".'<li';  
+		$html .= "\t\t".'<li';
 		if ($period == 'fiscal') {
 			$html .= ' class="active"';
 		}
@@ -263,24 +247,22 @@ class plgUsageOverview extends JPlugin
 	    return $html;
 	}
 
-	//-----------
-
-	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate ) 
+	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for
 		if ($task) {
-			if (!in_array( $task, $this->onUsageAreas() ) 
+			if (!in_array( $task, $this->onUsageAreas() )
 			 && !in_array( $task, array_keys( $this->onUsageAreas() ) )) {
 				return '';
 			}
 		}
-		
+
 		$config =& JComponentHelper::getParams( $option );
-		
+
 		// Incoming
 		$period = JRequest::getVar('period', 'prior12');
 		$selectedPeriod = JRequest::getVar('selectedPeriod', '');
-		
+
 		if (!$selectedPeriod) {
 	        $sql = "SELECT MAX(datetime) FROM summary_misc_vals";
 			$db->setQuery( $sql );
@@ -309,12 +291,12 @@ class plgUsageOverview extends JPlugin
 	    } else {
 	        $page = 'new';
 	    }
-	
+
 		if ($period == 'nice') {
 			$page = 'old';
 			$selectedPeriod = '2007-09';
 		}
-		
+
 		// Get and set some vars
 		$cur_year = floor(date("Y"));
 		$cur_month = floor(date("n"));
@@ -330,20 +312,20 @@ class plgUsageOverview extends JPlugin
 		$html  = $this->_navlinks($option, $task, $period);
 		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.'&task='.$task.'&period='.$period) .'">'."\n";
 		$html .= "\t".'<fieldset class="filters"><label>'.JText::_('PLG_USAGE_SHOW_DATA_FOR').': ';
-		
+
 		$html .= '<select name="selectedPeriod">'."\n";
-		switch ($period) 
+		switch ($period)
 		{
 			case '12':
 			case 'prior12':
 			case 'nice':
 				$option = 'prior12';
 				$period = '12';
-				
+
 				$arrayMonths = array_values($months);
-				for ($i = $cur_year; $i >= $year_data_start; $i--) 
+				for ($i = $cur_year; $i >= $year_data_start; $i--)
 				{
-					foreach ($monthsReverse as $key => $month) 
+					foreach ($monthsReverse as $key => $month)
 					{
 						if ($key == '12') {
 							$nextmonth = 'Jan';
@@ -367,15 +349,15 @@ class plgUsageOverview extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '1':
 			case 'month':
 				$option = 'month';
 				$period = '1';
-				
-				for ($i = $cur_year; $i >= $year_data_start; $i--) 
+
+				for ($i = $cur_year; $i >= $year_data_start; $i--)
 				{
-					foreach ($monthsReverse as $key => $month) 
+					foreach ($monthsReverse as $key => $month)
 					{
 						$value = $i . '-' . $key;
 						if ($this->_check_for_data($db, $value, 1)) {
@@ -388,14 +370,14 @@ class plgUsageOverview extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '3':
 			case 'qtr':
 				$option = 'qtr';
 				$period = '3';
-				
+
 				$qtd_found = 0;
-				foreach ($monthsReverse as $key => $month) 
+				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$qtd_found && $this->_check_for_data($db, $value, 3)) {
@@ -422,9 +404,9 @@ class plgUsageOverview extends JPlugin
 					}
 				}
 				$qtr_found = 0;
-				for ($j = $cur_year; $j >= $year_data_start; $j--) 
+				for ($j = $cur_year; $j >= $year_data_start; $j--)
 				{
-					for ($i = 12; $i > 0; $i = $i - 3) 
+					for ($i = 12; $i > 0; $i = $i - 3)
 					{
 						if ($qtr_found && $key) {
 							$i = $key;
@@ -461,15 +443,15 @@ class plgUsageOverview extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '13':
 			case 'fiscal':
 				$option = 'fiscal';
 				$period = '13';
-				
+
 				$ytd_found = 0;
 				$full_year = $cur_year - 1;
-				foreach ($monthsReverse as $key => $month) 
+				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$ytd_found && $this->_check_for_data($db, $value, 0)) {
@@ -489,7 +471,7 @@ class plgUsageOverview extends JPlugin
 						$ytd_found = 1;
 					}
 				}
-				for ($i = $full_year; $i >= $year_data_start; $i--) 
+				for ($i = $full_year; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-09';
 					if ($this->_check_for_data($db, $value, 0)) {
@@ -503,14 +485,14 @@ class plgUsageOverview extends JPlugin
 					}
 				}
 			break;
-			
+
 			case '0':
 			case 'year':
 				$option = 'year';
 				$period = '0';
-				
+
 				$ytd_found = 0;
-				foreach ($monthsReverse as $key => $month) 
+				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$ytd_found && $this->_check_for_data($db, $value, 0)) {
@@ -522,7 +504,7 @@ class plgUsageOverview extends JPlugin
 						$ytd_found = 1;
 					}
 				}
-				for ($i = $cur_year - 1; $i >= $year_data_start; $i--) 
+				for ($i = $cur_year - 1; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-12';
 					if ($this->_check_for_data($db, $value, 0)) {
@@ -569,17 +551,17 @@ class plgUsageOverview extends JPlugin
 		if ($results) {
 			$i = 0;
 			$cls = 'even';
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				if ($i == 0) {
 					$cls = 'summary';
 				}
-				
+
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
-				
+
 				$sparkline = $this->_getSparkline($db, $row->id, $period, $datetime);
-				
+
 				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
 				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
 				if ($row->plot == '1') {
@@ -622,9 +604,9 @@ class plgUsageOverview extends JPlugin
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
-				
+
 				//$sparkline = $this->_getSparkline($db, $row->id, $period, $datetime);
-				
+
 				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
 				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
 				$html .= "\t\t\t".'<td>'. $this->_fmt_result($row->value,$row->valfmt) .'</td>'."\n";
@@ -643,7 +625,7 @@ class plgUsageOverview extends JPlugin
 					$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";
 				}
 				$html .= "\t\t".'</tr>'."\n";
-				
+
 				$i++;
 	       	}
 		} else {
@@ -670,7 +652,7 @@ class plgUsageOverview extends JPlugin
 				//$label = str_replace('{','<sup>',$row->label);
 				//$label = str_replace('}','</sup>',$label);
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
-				
+
 				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
 				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
 				$html .= "\t\t\t".'<td>'. $this->_fmt_result($row->value, $row->valfmt) .'</td>'."\n";
@@ -683,7 +665,7 @@ class plgUsageOverview extends JPlugin
 		}
 		$html .= "\t".'</tbody>'."\n";
 		$html .= '</table>'."\n";
-		
+
 	/*	
 		// "and more" Usage
 		$html .= '<table summary="'.JText::_('&quot;and more&quot; Usage').'">'."\n";
@@ -838,14 +820,14 @@ class plgUsageOverview extends JPlugin
 				//$label = str_replace('{','<sup>',$row->label);
 				//$label = str_replace('}','</sup>',$label);
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
-				
+
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				if ($i == 5) {
 					$cls = 'summary';
 				}
-				
+
 				$sparkline = $this->_getSparkline($db, $row->id, $period, $datetime);
-				
+
 				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
 				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
 				if ($row->plot == '1') {
@@ -877,15 +859,15 @@ class plgUsageOverview extends JPlugin
 		$html .= '<div class="footnotes">'."\n";
 		$html .= "\t".'<hr />'."\n";
 		$html .= "\t".'<ol>'."\n";
-		$html .= "\t\t".'<li id="fn1"><a name="fn1"></a>Sum of Registered Users<sup><a href="#fn2">2</a></sup>, Unregistered Interactive Users<sup><a href="#fn3">3</a></sup> and Unregistered Download Users<sup><a href="#fn4">4</a></sup></li>'."\n";									
+		$html .= "\t\t".'<li id="fn1"><a name="fn1"></a>Sum of Registered Users<sup><a href="#fn2">2</a></sup>, Unregistered Interactive Users<sup><a href="#fn3">3</a></sup> and Unregistered Download Users<sup><a href="#fn4">4</a></sup></li>'."\n";
 		$html .= "\t\t".'<li id="fn2"><a name="fn2"></a>Number of Users that logged in. User registration assigns a unique login to each individual user.</li>'."\n";
 		$html .= "\t\t".'<li id="fn3"><a name="fn3"></a>Number of Unregistered Users, identified by unique hosts/IPs, that had an active Session <sup><a href="#fn10">10</a></sup> without logging in. Does not include known web bots/crawlers.</li>'."\n";
-		$html .= "\t\t".'<li id="fn4"><a name="fn4"></a>Number of Unregistered users, identified by unique hosts/IPs, that had an active session of less than 15 minutes without logging in and downloaded a non-interactive resource such as PDF or podcast. Does not include web bots/crawlers.</li>'."\n";	
+		$html .= "\t\t".'<li id="fn4"><a name="fn4"></a>Number of Unregistered users, identified by unique hosts/IPs, that had an active session of less than 15 minutes without logging in and downloaded a non-interactive resource such as PDF or podcast. Does not include web bots/crawlers.</li>'."\n";
 		$html .= "\t\t".'<li id="fn5"><a name="fn5"></a>Number of Registered Users<sup><a href="#fn2">2</a></sup> that ran one or more simulation runs.</li>'."\n";
 		$html .= "\t\t".'<li id="fn6"><a name="fn6"></a>All Unregistered Users, identified by unique hosts/IPs, that had an active Session <sup><a href="#fn10">10</a></sup>. Does not include known web bots/crawlers.</li>'."\n";
-		$html .= "\t\t".'<li id="fn7"><a name="fn7"></a>All Unregistered users, identified by unique hosts/IPs that downloaded a non-interactive resource such as PDF or podcast. Does not include known web bots/crawlers.</li>'."\n";					
+		$html .= "\t\t".'<li id="fn7"><a name="fn7"></a>All Unregistered users, identified by unique hosts/IPs that downloaded a non-interactive resource such as PDF or podcast. Does not include known web bots/crawlers.</li>'."\n";
 		$html .= "\t\t".'<li id="fn8"><a name="fn8"></a>Sum of Simulation Users <sup><a href="#fn5">5</a></sup> + Unregistered Interactive Users <sup><a href="#fn3">3</a></sup> including web bots/crawlers.</li>'."\n";
-		$html .= "\t\t".'<li id="fn9"><a name="fn9"></a>Number of Simulation users that returned after a gap of 3 months.</li>'."\n";						
+		$html .= "\t\t".'<li id="fn9"><a name="fn9"></a>Number of Simulation users that returned after a gap of 3 months.</li>'."\n";
 		$html .= "\t\t".'<li id="fn10"><a name="fn10"></a>Begins when an IP is active on the site for at least 15 minutes. Ends when inactive for more than 30 minutes, including time spent viewing videos.</li>'."\n";
 		$html .= "\t\t".'<li id="fn11"><a name="fn11"></a>Identified by a unique IP address / hostname.</li>'."\n";
 		$html .= "\t\t".'<li id="fn12"><a name="fn12"></a>Based on MIT OCW metric of Visits: A visit is activity by a unique visitor delimitated by a 30 minute absence from the site on either side of the activity.<br />These visits correspond to unique visitors <sup><a href="#fn11">11</a></sup>. Does not include known web bots/crawlers</li>'."\n";

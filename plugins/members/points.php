@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_points' );
-
-//-----------
 
 class plgMembersPoints extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgMembersPoints extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'points' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onMembersAreas( $authorized )
 	{
 		if (!$authorized) {
@@ -62,8 +56,6 @@ class plgMembersPoints extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
@@ -71,26 +63,26 @@ class plgMembersPoints extends JPlugin
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) ) 
+			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
 			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
 				$returnhtml = false;
 			}
 		}
-		
+
 		if (!$authorized) {
 			$returnhtml = false;
 			$returnmeta = false;
 		}
-		
+
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		$database =& JFactory::getDBO();
 		$tables = $database->getTableList();
 		$table = $database->_table_prefix.'users_points';
-		
+
 		if (!in_array($table,$tables)) {
 			ximport('Hubzero_View_Helper_Html');
 			$arr['html'] = Hubzero_View_Helper_Html::error( JText::_('PLG_MEMBERS_POINTS_ERROR_MISSING_TABLE') );
@@ -105,7 +97,7 @@ class plgMembersPoints extends JPlugin
 		if ($returnhtml) {
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', 'points');
-			
+
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -125,10 +117,10 @@ class plgMembersPoints extends JPlugin
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
-			
+
 			$arr['html'] = $view->loadTemplate();
 		}
-		
+
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($returnmeta) {
 			$arr['metadata'] = '<p class="points"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=points').'">'.JText::sprintf('PLG_MEMBERS_POINTS_NUMBER_POINTS',$BTL->summary()).'</a></p>'."\n";

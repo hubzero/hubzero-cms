@@ -36,12 +36,12 @@ class XFlashController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'edit': 		 $this->edit();   		 break;
 			case 'savedata': 	 $this->save();   		 break;
-			
+
 			case 'media':		 $this->media();		 break;
 			case 'list':         $this->list_files();    break;
 			case 'upload':       $this->upload();        break;
@@ -56,7 +56,7 @@ class XFlashController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-	protected function edit() 
+	protected function edit()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'edit') );
@@ -66,7 +66,7 @@ class XFlashController extends Hubzero_Controller
 		// Get front-end temlate name
 		$this->database->setQuery( "SELECT template FROM #__templates_menu WHERE client_id=0" );
 		$view->template = $this->database->loadResult();
-		
+
 		$uploadpath = $this->config->get('uploadpath');
 		if (substr($uploadpath, 0, 1) != DS) {
 			$uploadpath = DS.$uploadpath;
@@ -74,7 +74,7 @@ class XFlashController extends Hubzero_Controller
 		if (substr($uploadpath, -1, 1) == DS) {
 			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
 		}
-	
+
 		$dom = new domDocument;
 		$xml_file = is_file(JPATH_ROOT.$uploadpath.DS.'flashdata.xml') ?  JPATH_ROOT.$uploadpath.DS.'flashdata.xml':'../components/'.$this->_option.'/flashdata.xml';
 		$dom->load($xml_file);
@@ -82,15 +82,15 @@ class XFlashController extends Hubzero_Controller
 			JError::raiseError( 500, JText::_('Error while parsing the document') );
 			return;
 		}
-		
+
 		$xhub =& Hubzero_Factory::getHub();
-		 
+
 		// Store XML data in array 
 		$view->xml = simplexml_import_dom($dom);
-		
+
 		$view->num_featured = ($this->config->get('num_featured')) ? intval($this->config->get('num_featured')) : 3;
 		$view->url = $xhub->getCfg('hubLongURL');
-		
+
 		// Default settings
 		$view->defaults = array ('sBorderCol' => '000000',
 						  'bAlphaOff' => '30',
@@ -115,12 +115,12 @@ class XFlashController extends Hubzero_Controller
 						  'headerSize' => '24',
 						  'subtitleSize' => '12',
 						  'bodySize' => '12' );
-		
+
 		// Push some styles and scripts to the template
 		$document =& JFactory::getDocument();
 		$noflashfile = $uploadpath.DS.'noflash.jpg';
 		$swffile = '/components'.DS.$this->_option.DS.'flashrotation';
-		
+
 		$document->addScript('../modules/mod_xflash/mod_xflash.js');
 		$document->addScriptDeclaration('HUB.ModXflash.admin="1"; HUB.ModXflash.src="'.$swffile.'";');
 		$document->addStyleSheet('/administrator/components'.DS.$this->_option.DS.'admin.xflash.css');
@@ -129,25 +129,25 @@ class XFlashController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
+
 	//----------------------------------------------------------
 	// Save 
 	//----------------------------------------------------------
-	
+
 	protected function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$prefs = array_map('trim', $_POST['prefs']);
 		$cols = array('sBorderCol','bColOff','bColOn','bSelected', 'bTextOff','bTextOn','transitionCol','headerCol','subtitleCol','bodyCol','linkCol');
 		$slides = $_POST['slide'];
 		$res = $_POST['res'];
-		
+
 		$uploadpath = $this->config->get('uploadpath');
 		if (substr($uploadpath, 0, 1) != DS) {
 			$uploadpath = DS.$uploadpath;
@@ -155,28 +155,28 @@ class XFlashController extends Hubzero_Controller
 		if (substr($uploadpath, -1, 1) == DS) {
 			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
 		}
-	
+
 		// Start xml output
 		$xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 		$xml .= " <flashdata>\n";
-		
+
 		// Preferences
 		$xml .= "  <Prefs>\n";
-		while (list($key, $val) = each($prefs)) 
-		{	
+		while (list($key, $val) = each($prefs))
+		{
 			$xml .=" 	<$key>";
 			if (in_array($key, $cols) && $val!='') {
 				$xml .="0x"; // Colors only, needed for Flash
 			}
 			$xml .="$val";
 			$xml .="</$key>\n";
-			
+
 		}
 		$xml .= "  </Prefs>\n";
-		
+
 		// Slides
 		$xml .= "  <Slides>\n";
-		foreach ($slides as $slide) 
+		foreach ($slides as $slide)
 		{
 			if (($slide['sType']=="regular" && $slide['header'] or $slide['bg']) or $slide['sType']!="regular" ) { // check that slide has some meaningful information
 				$xml .=" 	<Slide>\n";
@@ -212,14 +212,14 @@ class XFlashController extends Hubzero_Controller
 			}
 		}
 		$xml .= "  </Slides>\n";
-		
+
 		// Get selected quotes in random order
 		$this->database->setQuery( "SELECT * FROM #__selected_quotes WHERE flash_rotation=1 ORDER BY RAND()" );
 		$quotes = $this->database->loadObjectList();
-		
+
 		$xml .= "  <Quotes>\n";
-		if ($quotes) {			
-			foreach ($quotes as $quote) 
+		if ($quotes) {
+			foreach ($quotes as $quote)
 			{
 				$xml .= " 	<Quote>\n";
 				$xml .= " 		<author>".htmlspecialchars($quote->fullname)."</author>\n";
@@ -227,13 +227,13 @@ class XFlashController extends Hubzero_Controller
 				$xml .= " 		<body>".htmlspecialchars($quote->short_quote)."</body>\n";
 				$xml .= " 		<ima>".htmlspecialchars($quote->picture)."</ima>\n";
 				$xml .= " 	</Quote>\n";
-			}	
+			}
 		}
-		$xml .= "  </Quotes>\n";	
-		
+		$xml .= "  </Quotes>\n";
+
 		// Featured resources
 		$xml .= "  <Resources>\n";
-		foreach ($res as $r) 
+		foreach ($res as $r)
 		{
 			if (($r['rTitle'] && $r['body'] && ($r['rid']) or $r['alias'] && $r['category'])) { // check that resource has some meaningful information
 				$xml .= " 	<Resource>\n";
@@ -250,15 +250,14 @@ class XFlashController extends Hubzero_Controller
 		$xml .= "  </Resources>\n";
 
 		$xml .= " </flashdata>\n";
-		
 
 		$fh=fopen(JPATH_ROOT.$uploadpath.DS.'flashdata.xml', "w");
-		fwrite($fh,utf8_encode($xml)); 
+		fwrite($fh,utf8_encode($xml));
 		fclose($fh);
-		
-		$this->edit();	
+
+		$this->edit();
 	}
-	
+
 	//----------------------------------------------------------
 	// media manager
 	//----------------------------------------------------------
@@ -267,15 +266,15 @@ class XFlashController extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$uploadpath = $this->config->get('uploadpath');
 		if (substr($uploadpath, 0, 1) != DS) {
 			$uploadpath = DS.$uploadpath;
 		}
 		if (substr($uploadpath, -1, 1) == DS) {
 			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
-		}	
-	
+		}
+
 		if (!is_dir( JPATH_ROOT.$uploadpath )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( JPATH_ROOT.$uploadpath, 0777 )) {
@@ -284,65 +283,59 @@ class XFlashController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
-		
+
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
-		
+
 		if (!JFile::upload($file['tmp_name'], JPATH_ROOT.$uploadpath.DS.$file['name'])) {
 			$this->setError( JText::_('Error uploading.') );
 		}
-		
+
 		$this->media();
 	}
 
-	//-----------
-
-	protected function delete_file() 
+	protected function delete_file()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		$delFile = trim(JRequest::getVar( 'delFile', '','get'));
-		
+
 		$uploadpath = $this->config->get('uploadpath');
 		if (substr($uploadpath, 0, 1) != DS) {
 			$uploadpath = DS.$uploadpath;
 		}
 		if (substr($uploadpath, -1, 1) == DS) {
 			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
-		}	
+		}
 
 		$del_file = JPATH_ROOT.$uploadpath.DS.$delFile;
 		unlink($del_file);
-	
+
 		$this->media();
 	}
 
-	//-----------
-
-	protected function media() 
+	protected function media()
 	{
 		$view = new JView( array('name'=>'edit', 'layout'=>'media') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->config = $this->config;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
- 
-	protected function list_files() 
+	protected function list_files()
 	{
 		$uploadpath = $this->config->get('uploadpath');
 		if (substr($uploadpath, 0, 1) != DS) {
@@ -350,8 +343,8 @@ class XFlashController extends Hubzero_Controller
 		}
 		if (substr($uploadpath, -1, 1) == DS) {
 			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
-		}	
-		
+		}
+
 		$d = @dir(JPATH_ROOT.$uploadpath);
 
 		$images  = array();
@@ -360,9 +353,9 @@ class XFlashController extends Hubzero_Controller
 
 		if ($d) {
 			// Loop through all files and separate them into arrays of images, folders, and other
-			while (false !== ($entry = $d->read())) 
+			while (false !== ($entry = $d->read()))
 			{
-				$img_file = $entry; 
+				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$uploadpath.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "gif|jpg|png", $img_file )) {
 						$images[$entry] = $img_file;
@@ -373,13 +366,13 @@ class XFlashController extends Hubzero_Controller
 					$folders[$entry] = $img_file;
 				}
 			}
-			$d->close();	
+			$d->close();
 
 			ksort($images);
 			ksort($folders);
 			ksort($docs);
 		}
-		
+
 		$view = new JView( array('name'=>'edit', 'layout'=>'filelist') );
 		$view->option = $this->_option;
 		$view->docs = $docs;

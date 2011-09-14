@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchSortEvents extends YSearchPlugin
 {
 	public static function onYSearchSort($a, $b)
@@ -39,7 +38,7 @@ class plgYSearchSortEvents extends YSearchPlugin
 
 		if ($a->get_plugin() !== 'events' || $b->get_plugin() !== 'events' || $a->get_date() === $b->get_date())
 			return 0;
-	
+
 		return $a->get_date() > $b->get_date() ? 1 : -1;
 	}
 }

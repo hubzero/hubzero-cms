@@ -45,7 +45,7 @@ if ($this->isNew) {
 } else {
 	$message .= JText::sprintf('GROUPS_USER_HAS_CHANGED_GROUP', $this->hubShortName) .':'."\n\n";
 	$message .= JText::_('GROUPS_TITLE').': '. $this->group->get('description') ."\n";
-	switch ($this->group->get('join_policy')) 
+	switch ($this->group->get('join_policy'))
 	{
 		case 3: $policy = JText::_('GROUPS_POLICY_CLOSED');   break;
 		case 2: $policy = JText::_('GROUPS_POLICY_INVITE');   break;
@@ -53,14 +53,14 @@ if ($this->isNew) {
 		case 0: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
 	}
 	$message .= JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
-	switch ($this->group->get('privacy')) 
+	switch ($this->group->get('privacy'))
 	{
 		case 4: $privacy = JText::_('GROUPS_ACCESS_PRIVATE');   break;
 		case 3: $privacy = JText::_('GROUPS_ACCESS_PROTECTED'); break;
 		case 0: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 	}
 	$message .= JText::_('GROUPS_PRIVACY').': '. $privacy ."\n";
-	
+
 	/*
 	switch ($this->group->get('access')) 
 	{
@@ -70,12 +70,12 @@ if ($this->isNew) {
 	}
 	$message .= JText::_('GROUPS_CONTENT_PRIVACY').': '. $access ."\n";
 	*/
-	
+
 	$message .= "\n";
 	$message .= JText::_('GROUPS_NOW_DEFINED_AS').':'."\n";
 }
 $message .= JText::_('GROUPS_TITLE').': '. $this->g_description ."\n";
-switch ($this->g_join_policy) 
+switch ($this->g_join_policy)
 {
 	case 3: $policy = JText::_('GROUPS_POLICY_CLOSED');   break;
 	case 2: $policy = JText::_('GROUPS_POLICY_INVITE');   break;
@@ -83,7 +83,7 @@ switch ($this->g_join_policy)
 	case 0: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
 }
 $message .= JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
-switch ($this->g_privacy) 
+switch ($this->g_privacy)
 {
 	case 4: $privacy = JText::_('GROUPS_ACCESS_PRIVATE');   break;
 	case 3: $privacy = JText::_('GROUPS_ACCESS_PROTECTED'); break;

@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
   </tr>
  </thead>
  <tbody>
-<?php foreach($rows as $row) { 
+<?php foreach($rows as $row) {
 if (intval( $row->created ) <> 0) {
 	$thedate = JHTML::_('date', $row->created );
 }
@@ -57,7 +57,7 @@ $juser =& JUser::getInstance($row->user_id);
    <th style="border-bottom: 2px solid #999;vertical-align:top;">Comment:</th>
    <td style="border-bottom: 2px solid #999;" class="aLeft"><?php 
   if($row->comment) {
-   echo stripslashes($row->comment); 
+   echo stripslashes($row->comment);
   } else {
   	echo '[ no comment ]';
   }

@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class WishlistPlan extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
@@ -42,22 +41,18 @@ class WishlistPlan extends JTable
 	var $pagehtml	= NULL;
 	var $approved   = NULL;
 	var $summary	= NULL;
-	
-	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist_implementation', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function getPlan($wishid)
 	{
 		if ($wishid == NULL) {
 			return false;
 		}
-		
+
 		$query  = "SELECT *, xp.name AS authorname ";
 		$query .= "FROM #__wishlist_implementation AS p  ";
 		$query .= "JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
@@ -65,10 +60,8 @@ class WishlistPlan extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function load( $oid=NULL ) 
+
+	public function load( $oid=NULL )
 	{
 		if ($oid == NULL or !is_numeric($oid)) {
 			return false;
@@ -83,15 +76,13 @@ class WishlistPlan extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
+
 	public function deletePlan($wishid)
 	{
 		if ($wishid == NULL) {
 			return false;
 		}
-		
+
 		$query = "DELETE FROM $this->_tbl WHERE wishid='". $wishid."'";
 		$this->_db->setQuery( $query );
 		$this->_db->query();

@@ -55,7 +55,7 @@ function _comparelicenses()
 			echo "<table>";
 
                do
-               {	
+               {
                     $attributes = ldap_get_attributes($conn, $entry);
 				$rowhtml = '';
 					$showrow = false;
@@ -64,12 +64,12 @@ function _comparelicenses()
 				{
 					$key = $attributes[$i];
 					$value = $attributes[$key];
-	
+
 					for($j = 0; $j < $value['count']; $j++)
 					{
 						if (in_array($key,array('objectClass','structuralObjectClass','entryUUID','entryCSN','creatorsName','modifiersName','entryDN','subschemaSubentry','hasSubordinates')))
 							continue; // don't care about these
-					
+
 						//if (in_array($key,array('member')))
 						//	continue; // don't care about these for the moment
 
@@ -114,7 +114,7 @@ function _comparelicenses()
 
 								$db->setQuery($query);
 								$result = $db->loadObject();
-								
+
 								if (!is_object($result))
 								{
 									$query = "INSERT INTO #__licenses_tools (license_id,tool_id) VALUES (" . $db->Quote($license_id) . "," . $db->Quote($tool_id) . ");";
@@ -131,7 +131,7 @@ function _comparelicenses()
 									$showrow = false;
 									$rowhtml .= "<td>Already exists</td>";
 								}
-								
+
 							}
 							$rowhtml .= "</tr>";
 						}
@@ -142,7 +142,6 @@ function _comparelicenses()
                                    $ldate = strftime("%F %T",strtotime($myvalue));
                                    $dts = strtotime($ddate);
                                    $lts = strtotime($ldate);
-
 
                                    if (($ddate == "0000-00-00 00:00:00") || ($lts < $dts))
                                    {
@@ -155,7 +154,7 @@ function _comparelicenses()
 
 								$query = "UPDATE #__licenses SET created=" . $db->Quote($ldate) . " WHERE alias=" . $db->Quote( $attributes['license'][0] );
 								$result = $db->execute($query);
-                                   	
+
 								if ($result)
 									$rowhtml .= "<td>FIXED</td></tr>";
 								else
@@ -171,7 +170,6 @@ function _comparelicenses()
                                    $dts = strtotime($ddate);
                                    $lts = strtotime($ldate);
 
-
                                    if (($ddate == "0000-00-00 00:00:00") || ($lts > $dts))
                                    {
                                    	$showrow = true;
@@ -183,7 +181,7 @@ function _comparelicenses()
 
 								$query = "UPDATE #__licenses SET modified=" . $db->Quote($ldate) . " WHERE alias=" . $db->Quote( $attributes['license'][0] );
 								$result = $db->execute($query);
-                                   	
+
 								if ($result)
 									$rowhtml .= "<td>FIXED</td></tr>";
 								else

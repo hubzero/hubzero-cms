@@ -42,7 +42,7 @@ if ($this->rows) {
 		if (is_object($juser) && $juser->get('name')) {
 			$name = $juser->get('name');
 		}
-		
+
 		if ($row->version > 1) {
 			$t = JText::_('WIKI_EDITED');
 			$c = 'wiki-edited';
@@ -50,7 +50,7 @@ if ($this->rows) {
 			$t = JText::_('WIKI_CREATED');
 			$c = 'wiki-created';
 		}
-		
+
 		$cls = ($cls == 'even') ? 'odd' : 'even';
 ?>
 			<tr class="<?php echo $cls; ?>">

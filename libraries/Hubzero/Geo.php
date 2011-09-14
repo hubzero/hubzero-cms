@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Geo
 {
 	// Get a list of existing application sessions.
@@ -39,7 +38,7 @@ class Hubzero_Geo
 
 		if (!is_object($instance)) {
 			$xhub =& Hubzero_Factory::getHub();
-			
+
 			$options = array();
 			$options['driver']   = $xhub->getCfg('ipDBDriver');
 			$options['host']     = $xhub->getCfg('ipDBHost');
@@ -62,9 +61,7 @@ class Hubzero_Geo
 		return $instance;
 	}
 
-	//-----------
-	
-	public function getcountries() 
+	public function getcountries()
 	{
 		$countries = array();
 
@@ -76,7 +73,7 @@ class Hubzero_Geo
 		$results = $gdb->loadObjectList();
 
 		if ($results) {
-			foreach ($results as $row) 
+			foreach ($results as $row)
 			{
 				if ($row->code <> "-" && $row->name <> "-") {
 					array_push($countries, array('code' => strtolower($row->code), 'id' => $row->code, 'name' => $row->name));
@@ -86,15 +83,13 @@ class Hubzero_Geo
 
 		return $countries;
 	}
-	
-	//-----------
-	
-	public function getCountriesByContinent($continent='') 
+
+	public function getCountriesByContinent($continent='')
 	{
 		if (!$continent) {
 			return array();
 		}
-		
+
 		$gdb =& Hubzero_Geo::getGODBO();
 
 		$sql = 'SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) = "'.strtolower($continent).'"';
@@ -102,14 +97,12 @@ class Hubzero_Geo
 		return $gdb->loadResultArray();
 	}
 
-	//-----------
-
-	public function getcountry($code='') 
+	public function getcountry($code='')
 	{
 		$name = '';
 		if ($code) {
 			$gdb =& Hubzero_Geo::getGODBO();
-			
+
 			$sql = "SELECT name FROM countries WHERE code = '" . $code . "'";
 			$gdb->setQuery( $sql );
 			$name = stripslashes($gdb->loadResult());
@@ -117,9 +110,7 @@ class Hubzero_Geo
 		return $name;
 	}
 
-	//-----------
-
-	public function ipcountry($ip='') 
+	public function ipcountry($ip='')
 	{
 		$country = '';
 		if ($ip) {
@@ -132,14 +123,12 @@ class Hubzero_Geo
 		return $country;
 	}
 
-	//-----------
-
-	public function is_d1nation($country) 
+	public function is_d1nation($country)
 	{
 		$d1nation = false;
 		if ($country) {
 			$gdb =& Hubzero_Geo::getGODBO();
-			
+
 			$sql = "SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER('" . $country . "') AND countrygroup = 'D1'";
 			$gdb->setQuery( $sql );
 			$c = $gdb->loadResult();
@@ -150,14 +139,12 @@ class Hubzero_Geo
 		return $d1nation;
 	}
 
-	//-----------
-
-	public function is_iplocation($ip, $location) 
+	public function is_iplocation($ip, $location)
 	{
 		$iplocation = false;
 		if ($ip && $location) {
 			$gdb =& Hubzero_Geo::getGODBO();
-			
+
 			$sql = "SELECT COUNT(*) FROM iplocation WHERE ipfrom <= INET_ATON('" . $ip . "') AND ipto >= INET_ATON('" . $ip . "') AND LOWER(location) = LOWER('" . $location . "')";
 			$gdb->setQuery( $sql );
 			$c = $gdb->loadResult();

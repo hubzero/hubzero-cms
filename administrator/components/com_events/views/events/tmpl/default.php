@@ -81,16 +81,16 @@ JHTML::_('behavior.tooltip');
 $k = 0;
 $database =& JFactory::getDBO();
 $p = new EventsPage( $database );
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 $row = &$this->rows[$i];
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $row->id; ?></td>
 				<td><?php 
-				if ($row->checked_out && $row->checked_out != $juser->get('id')) { 
-					echo '&nbsp;'; 
-				} else { 
+				if ($row->checked_out && $row->checked_out != $juser->get('id')) {
+					echo '&nbsp;';
+				} else {
 					?><input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /><?php 
 				} ?></td>
 				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo stripslashes($row->title); ?></a></td>
@@ -98,7 +98,7 @@ $row = &$this->rows[$i];
 
 <td><?php
 	if ($row->reccurtype > 0) {
-		switch ($row->reccurtype) 
+		switch ($row->reccurtype)
 		{
 			case "1": $reccur = JText::_('EVENTS_CAL_LANG_REP_WEEK');  break;
 			case "2": $reccur = JText::_('EVENTS_CAL_LANG_REP_WEEK');  break;
@@ -108,14 +108,14 @@ $row = &$this->rows[$i];
 		}
 		if ($row->reccurday >= 0) {
 			$dayname = EventsHtml::getLongDayName($row->reccurday);
-			
+
 			if (($row->reccurtype == 1) || ($row->reccurtype == 2)) {
 				//$pairorimpair = $row->reccurweeks == "pair" ? _CAL_LANG_REP_WEEKPAIR : ($row->reccurweeks == "impair" ? _CAL_LANG_REP_WEEKIMPAIR : _CAL_LANG_REP_WEEK);
-				
+
 				if (trim($row->reccurweeks) == 'pair') {
 					$pairorimpair = JText::_('EVENTS_CAL_LANG_REP_WEEKPAIR');
 				} else if ($row->reccurweeks == 'impair') {
-					$pairorimpair = JText::_('EVENTS_CAL_LANG_REP_WEEKIMPAIR'); 
+					$pairorimpair = JText::_('EVENTS_CAL_LANG_REP_WEEKIMPAIR');
 				} else {
 					$pairorimpair = JText::_('EVENTS_CAL_LANG_REP_WEEK');
 				}
@@ -172,9 +172,9 @@ $row = &$this->rows[$i];
 			$times .= JText::_('EVENTS_CAL_LANG_TO').' : '.$row->publish_down.'<br />';
 		}
 	}
-	
+
 	$pages = $p->getCount(array('event_id'=>$row->id));
-	
+
 	if ($times) {
         ?><span class="editlinktip hasTip" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $times; ?>">
 			<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')">
@@ -185,7 +185,7 @@ $row = &$this->rows[$i];
 ?></td>
 				<td><?php 
 				if ($row->announcement == 0) {
-					$class = 'unpublished'; 
+					$class = 'unpublished';
 					$tsk = 'announcement';
 					$alt = 'event';
 				} else {
@@ -196,9 +196,9 @@ $row = &$this->rows[$i];
 				?><a class="<?php echo $class;?>" href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','make_<?php echo $tsk;?>')" title="Click to make into an <?php echo $tsk;?>"><span><?php echo $alt; ?></span></a></td>
 				<td><?php echo $times; ?></td>
 				<td><?php
-				if ($row->checked_out) { 
+				if ($row->checked_out) {
 					echo $row->editor;
-				} else { 
+				} else {
 					echo '&nbsp;';
 				} ?></td>
 				<td><?php echo $row->groupname;?></td>

@@ -36,26 +36,26 @@ include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Message'.DS.'Notify.php'
 include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Message'.DS.'Recipient.php');
 include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Message'.DS.'Seen.php');
 
-class Hubzero_Message_Helper extends JObject 
+class Hubzero_Message_Helper extends JObject
 {
-	public function takeAction( $type, $uids=array(), $component='', $element=null ) 
+	public function takeAction( $type, $uids=array(), $component='', $element=null )
 	{
 		// Do we have the proper bits?
 		if (!$element || !$component || !$type) {
 			return false;
 		}
-		
+
 		// Do we have any user IDs?
 		if (count($uids) > 0) {
 			$database =& JFactory::getDBO();
-			
+
 			// Loop through each ID
-			foreach ($uids as $uid) 
+			foreach ($uids as $uid)
 			{
 				// Find any actions the user needs to take for this $component and $element
 				$action = new Hubzero_Message_Action( $database );
 				$mids = $action->getActionItems( $component, $element, $uid, $type );
-				
+
 				// Check if the user has any action items
 				if (count($mids) > 0) {
 					$recipient = new Hubzero_Message_Recipient( $database );
@@ -65,19 +65,17 @@ class Hubzero_Message_Helper extends JObject
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
-	//-----------
-	
-	public function sendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0 ) 
+
+	public function sendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0 )
 	{
 		// Do we have a message?
 		if (!$message) {
 			return false;
 		}
-		
+
 		// Do we have a subject line? If not, create it from the message
 		if (!$subject && $message) {
 			$subject = substr($message, 0, 70);
@@ -85,10 +83,10 @@ class Hubzero_Message_Helper extends JObject
 				$subject .= '...';
 			}
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-		
+
 		// Create the message object and store it in the database
 		$xmessage = new Hubzero_Message_Message( $database );
 		$xmessage->subject    = $subject;
@@ -101,7 +99,7 @@ class Hubzero_Message_Helper extends JObject
 		if (!$xmessage->store()) {
 			return $xmessage->getError();
 		}
-		
+
 		// Does this message require an action?
 		$action = new Hubzero_Message_Action( $database );
 		if ($element || $description) {
@@ -112,11 +110,11 @@ class Hubzero_Message_Helper extends JObject
 				return $action->getError();
 			}
 		}
-		
+
 		// Do we have any recipients?
 		if (count($to) > 0) {
 			// Loop through each recipient
-			foreach ($to as $uid) 
+			foreach ($to as $uid)
 			{
 				// Create a recipient object that ties a user to a message
 				$recipient = new Hubzero_Message_Recipient( $database );
@@ -128,7 +126,7 @@ class Hubzero_Message_Helper extends JObject
 				if (!$recipient->store()) {
 					return $recipient->getError();
 				}
-				
+
 				// Get the user's methods for being notified
 				$notify = new Hubzero_Message_Notify( $database );
 				$methods = $notify->getRecords( $uid, $type );
@@ -138,11 +136,11 @@ class Hubzero_Message_Helper extends JObject
 				// Load plugins
 				JPluginHelper::importPlugin( 'xmessage' );
 				$dispatcher =& JDispatcher::getInstance();
-				
+
 				// Do we have any methods?
 				if ($methods) {
 					// Loop through each method
-					foreach ($methods as $method) 
+					foreach ($methods as $method)
 					{
 						$action = strtolower($method->method);
 
@@ -153,7 +151,7 @@ class Hubzero_Message_Helper extends JObject
 				}
 			}
 		}
-		
+
 		return true;
 	}
 }

@@ -43,16 +43,12 @@ class ToolsHtml
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
-	
-	//-----------
-	
+
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
-	
-	//-----------
-	
+
 	public function hInput($name, $value='', $id='')
 	{
 		$html  = '<input type="hidden" name="'.$name.'" value="'.$value.'"';
@@ -61,14 +57,10 @@ class ToolsHtml
 		return $html;
 	}
 
-	//-----------
-
 	public function sInput($name, $value='')
 	{
 		return '<input type="submit" name="'.$name.'" value="'.$value.'" />'."\n";
 	}
-
-	//-----------
 
 	public function td($content, $attribs='')
 	{
@@ -77,18 +69,18 @@ class ToolsHtml
 		$html .= '>'.$content.'</td>'."\n";
 		return $html;
 	}
-	
+
 	//----------------------------------------------------------
 	// An administrative active link.
 	//----------------------------------------------------------
 
-	public function admlink( $name, $vars, $text, $option ) 
+	public function admlink( $name, $vars, $text, $option )
 	{
 		$html = '';
 		if (0) { // use POST
 			$html .= '<a href="#"'."\n";
 			$html .= '   onclick="document.adm.action=\'index.php\';'."\n";
-			foreach ($vars as $k => $v) 
+			foreach ($vars as $k => $v)
 			{
 				$html .= '            document.adm.'.$k.'.value=\''.$v.'\';'."\n";
 			}
@@ -96,7 +88,7 @@ class ToolsHtml
 			$html .= '   title="'.$text.'">'.$name.'</a>';
 		} else { // use GET
 			$url = 'index.php?option='.$option;
-			foreach ($vars as $k => $v) 
+			foreach ($vars as $k => $v)
 			{
 				$url .= ($option != $v) ? '&'.$k.'='.$v : '';
 			}
@@ -104,25 +96,25 @@ class ToolsHtml
 		}
 		return $html;
 	}
-	
+
 	//----------------------------------------------------------
 	// ListEdit widget.
 	//----------------------------------------------------------
-	
-	public function listedit( $list, $hidden ) 
+
+	public function listedit( $list, $hidden )
 	{
 		$html = '<ul class="ntools">'."\n";
-		foreach ($list as $key => $value) 
+		foreach ($list as $key => $value)
 		{
 			$html .= ' <li>';
-			if ($value != '0') { 
-				$html .= '<b>'; 
+			if ($value != '0') {
+				$html .= '<b>';
 			}
 			if (0) { // POST
 				$html .= "<a href='#'\n";
 				$html .= "onclick=\"document.adm.action='index.php';\n";
 				$html .= "         document.adm.item.value='$key';\n";
-				foreach ($hidden as $k => $v) 
+				foreach ($hidden as $k => $v)
 				{
 					$html .= "         document.adm.$k.value='$v';\n";
 				}
@@ -130,7 +122,7 @@ class ToolsHtml
 			} else { // GET
 				$html .= '<a href="index.php';
 				$prefix = '?';
-				foreach ($hidden as $k => $v) 
+				foreach ($hidden as $k => $v)
 				{
 					if ($v != '') {
 						$html .= $prefix.$k.'='.$v;
@@ -140,8 +132,8 @@ class ToolsHtml
 				$html .= $prefix.'item='.$key.'" ';
 			}
 			$html .= 'title="Toggle '.$key.' ('.$value.')">'.$key.'</a>';
-			if ($value != '0') { 
-				$html .= '</b>'; 
+			if ($value != '0') {
+				$html .= '</b>';
 			}
 			$html .= '</li>'."\n";
 		}
@@ -153,31 +145,29 @@ class ToolsHtml
 	// Table widget.
 	//----------------------------------------------------------
 
-	public function table( $rows, $header, $middle, $trailer, $tail_row ) 
+	public function table( $rows, $header, $middle, $trailer, $tail_row )
 	{
 		$html  = '<table>'."\n";
-		$html .= '  <tr>'."\n"; 
-		$html .= $header(); 
+		$html .= '  <tr>'."\n";
+		$html .= $header();
 		$html .= '  </tr>'."\n";
-		$html .= ' <tbody>'."\n"; 
-		for($i=0; $i < count($rows); $i++) 
+		$html .= ' <tbody>'."\n";
+		for($i=0; $i < count($rows); $i++)
 		{
 			$html .= '  <tr>'."\n";
-			$html .= $middle($rows[$i]); 
+			$html .= $middle($rows[$i]);
 			$html .= '  </tr>'."\n";
 		}
 		if ($tail_row != '') {
 			$html .= '  <tr>'."\n";
-			$html .= $trailer($tail_row); 
+			$html .= $trailer($tail_row);
 			$html .= '  </tr>'."\n";
 		}
-		$html .= ' </tbody>'."\n"; 
+		$html .= ' </tbody>'."\n";
 		$html .= '</table>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function updateform($table, $bit, $refs, &$row, $option)
 	{
 		$html  = '<tr>'."\n";
@@ -194,17 +184,15 @@ class ToolsHtml
 		$html .= '<td><input type="submit" name="update" value="Update" />'."\n";
 		$html .= '<form>'."\n";
 		$html .= '</tr>'."\n";
-		
+
 		return $html;
 	}
-	
-	//-----------
 
 	public function tableHeader($headers)
 	{
 		$html  = ' <thead>'."\n";
 		$html .= '  <tr>'."\n";
-		for ($i=0, $n=count( $headers ); $i < $n; $i++) 
+		for ($i=0, $n=count( $headers ); $i < $n; $i++)
 		{
 			$html .= '   <th>'.$headers[$i].'</th>'."\n";
 		}
@@ -212,9 +200,7 @@ class ToolsHtml
 		$html .= ' </thead>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function delete_button($name, $table, $value, $option)
 	{
 		$html  = '<form name="delete_'.$value.'" method="get" action="index.php">'."\n";

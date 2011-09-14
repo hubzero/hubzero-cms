@@ -35,21 +35,18 @@ class modEventsCalendar
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,22 +55,21 @@ class modEventsCalendar
 	}
 
 	//-----------
-	
 	public function display()
 	{
 		$lang =& JFactory::getLanguage();
 		$Config_lang = $lang->getBackwardLang();
 
 		// Check the events component
-		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' ) ) { 
+		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' ) ) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' );
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'date.php');
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'repeat.php');
-		} else { 
+		} else {
 			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
 			return;
 		}
-		
+
 		// Display last month?
 		$displayLastMonth = $this->params->get( 'display_last_month' );
 		switch ($displayLastMonth)
@@ -103,7 +99,7 @@ class modEventsCalendar
 
 		// Display next month?
 		$displayNextMonth = $this->params->get( 'display_next_month' );
-		switch ($displayNextMonth) 
+		switch ($displayNextMonth)
 		{
 			case 'YES_stop':
 				$disp_nextMonthDays = abs(intval( $this->params->get( 'display_next_month_days' ) ));
@@ -127,7 +123,7 @@ class modEventsCalendar
 				$disp_nextMonth = 0;
 				break;
 		}
-		
+
 		// Get the time with offset
 		$config = JFactory::getConfig();
 		$timeWithOffset = time() + ($config->getValue('config.offset')*60*60);
@@ -158,7 +154,6 @@ class modEventsCalendar
 
 		// Display a calendar. Want to show 1,2, or 3 calendars optionally
 		// depending upon module parameters. (IE. Last Month, This Month, or Next Month)
-
 		$thisDayOfMonth = date("j", $timeWithOffset);
 		$daysLeftInMonth = date("t", $timeWithOffset) - date("j", $timeWithOffset) + 1;
 
@@ -167,22 +162,21 @@ class modEventsCalendar
 			// Build last month calendar
 			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0,0,0,date("n")-1,1,date("Y")), JText::_('_CAL_LANG_LAST_MONTH'), $day_name, $disp_lastMonth == 2);
 		}
-		
+
 		// Build this month
 		$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0,0,0,date("n"),1,date("Y")), JText::_('EVENTS_CAL_LANG_THIS_MONTH'), $day_name);
-		
+
 		// Display next month?
 		if ($disp_nextMonth && (!$disp_nextMonthDays || $daysLeftInMonth <= $disp_nextMonthDays)) {
 			// Build next month calendar
 			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0,0,0,date("n")+1,1,date("Y")), JText::_('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
 		}
-		
+
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_events_cal');
 	}
-	
+
 	//-----------
-	
 	private function _calendar( $timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent=false )
 	{
 		$database =& JFactory::getDBO();
@@ -194,14 +188,14 @@ class modEventsCalendar
 		$cal_month = date("m",$time);
 		$calmonth  = date("n",$time);
 		$to_day    = date("Y-m-d", $timeWithOffset);
-		
+
 		// Start building the table
 		$content  = '<table class="mod_events_calendar" summary="'.JText::_('TABLE_SUMMARY').'">'."\n";
 		$content .= ' <caption><a class="monthyear" href="'.JRoute::_('index.php?option=com_events&amp;year='.$cal_year.'&amp;month='.$cal_month).'">'.EventsHtml::getMonthName($cal_month).'</a></caption>'."\n";
 		$content .= ' <thead>'."\n";
 	    $content .= '  <tr>'."\n";
 		// Days name rows
-		for ($i=0;$i<7;$i++) 
+		for ($i=0;$i<7;$i++)
 		{
 			$content.='   <th>'.$day_name[($i+$startday)%7].'</th>'."\n";
 		}
@@ -215,7 +209,7 @@ class modEventsCalendar
 		$start = (date("w",mktime(0,0,0,$cal_month,1,$cal_year))-$startday+7)%7;
 		$d = date("t",mktime(0,0,0,$cal_month,0,$cal_year))-$start + 1;
 		$kownt = 0;
-		for ($a=$start; $a>0; $a--) 
+		for ($a=$start; $a>0; $a--)
 		{
 			$content .= '   <td class="daylink">&nbsp;</td>'."\n";
 			$dayOfWeek++;
@@ -226,8 +220,8 @@ class modEventsCalendar
 		$eventCheck = new EventsRepeat;
 		$lastDayOfMonth = date("t",mktime(0,0,0,$cal_month,1,$cal_year));
 		$rd = 0;
-		for ($d=1;$d<=$lastDayOfMonth;$d++) 
-		{ 
+		for ($d=1;$d<=$lastDayOfMonth;$d++)
+		{
 			$do = ($d<10) ? "0$d" : "$d";
 			$selected_date = "$cal_year-$cal_month-$do";
 
@@ -242,9 +236,9 @@ class modEventsCalendar
 			$rows = $database->loadObjectList();
 			$mark_bold = '';
 			$mark_close_bold = '';
-			$class = ($selected_date == $to_day) ? 'todaynoevents' : 'daynoevents';       
+			$class = ($selected_date == $to_day) ? 'todaynoevents' : 'daynoevents';
 
-			for ($r = 0; $r < count($rows); $r++) 
+			for ($r = 0; $r < count($rows); $r++)
 			{
 				if ($eventCheck->EventsRepeat($rows[$r], $cal_year, $cal_month, $do)) {
 					$monthHasEvent = true;
@@ -264,16 +258,16 @@ class modEventsCalendar
 			}
 	        $content .= '</td>'."\n";
 			$rd++;
-			
+
 			// Check if Next week row
 			if ((1 + $dayOfWeek++)%7 == $startday) {
 				$content .= '  </tr>'."\n".'  <tr>'."\n";
 				$rd = ($rd >= 7) ? 0 : $rd;
 			}
 		}
-		
+
 		// Fill in any blank days for the rest of the row
-		for ($d=$rd;$d<=6;$d++) 
+		for ($d=$rd;$d<=6;$d++)
 		{
 			$content .= '   <td>&nbsp;</td>'."\n";
 		}
@@ -282,7 +276,7 @@ class modEventsCalendar
 		$content .= '  </tr>'."\n";
 		$content .= ' </tbody>'."\n";
 		$content .= '</table>'."\n";
-		
+
 		// Now check to see if this month needs to have at least 1 event in order to display
 	    if (!$monthMustHaveEvent || $monthHasEvent) {
 			return $content;

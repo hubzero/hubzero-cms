@@ -40,8 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 		<h3><?php echo stripslashes($this->poll->title); ?></h3>
 		<ul class="poll">
 <?php
-		for ($i=0, $n=count( $this->options ); $i < $n; $i++) 
-		{ 
+		for ($i=0, $n=count( $this->options ); $i < $n; $i++)
+		{
 ?>
 			<li>
 				<input type="radio" name="voteid" id="voteid<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->options[$i]->id; ?>" alt="<?php echo $this->options[$i]->id; ?>" />

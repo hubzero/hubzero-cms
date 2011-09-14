@@ -94,16 +94,16 @@ function pagination_list_footer($list)
 	return $html;
 }
 
-function pagination_list_render2($list, $pages) 
+function pagination_list_render2($list, $pages)
 {
 	$pages = explode("\n",$pages);
-	
+
 	$link = '';
 	if (count($pages) > 1) {
 		$html  = $pages[0]."\n";
 		$html .= $pages[1]."\n";
-		
-		if (strstr( $pages[2], 'href' )) { 
+
+		if (strstr( $pages[2], 'href' )) {
 			$link = $pages[2];
 		} else {
 			$link = $pages[3];
@@ -121,11 +121,11 @@ function pagination_list_render2($list, $pages)
 		$html  = "\t".'<li class="start">'.JText::_('Start').'</li>'."\n";
 		$html .= "\t".'<li class="prev">'.JText::_('Prev').'</li>'."\n";
 	}
-	
+
 	$displayed_pages = 10;
 	$total_pages = ($list['limit'] > 0) ? ceil( $list['total'] / $list['limit'] ) : 1;
 	$this_page = ($list['limit'] > 0) ? ceil( ($list['limitstart']+1) / $list['limit'] ) : $list['limitstart']+1;
-	
+
 	$pager_middle = ceil($displayed_pages / 2);
 	$start_loop = $this_page - $pager_middle + 1;
 	$stop_loop = $this_page + $displayed_pages - $pager_middle;
@@ -142,8 +142,8 @@ function pagination_list_render2($list, $pages)
 	if ($i > 1) {
 		$html .= "\t".'<li class="page">...</li>'."\n";
 	}
-	
-	for (; $i <= $stop_loop && $i <= $total_pages; $i++) 
+
+	for (; $i <= $stop_loop && $i <= $total_pages; $i++)
 	{
 		$page = ($i - 1) * $list['limit'];
 		if ($i == $this_page) {
@@ -152,7 +152,7 @@ function pagination_list_render2($list, $pages)
 			$html .= "\t".'<li class="page"><a href="'.$link.'limit='.$list['limit'].'&amp;limitstart='. $page  .'">'. $i .'</a></li>'."\n";
 		}
 	}
-	
+
 	if (($i - 1) < $total_pages) {
 		$html .= "\t".'<li class="page">...</li>'."\n";
 	}
@@ -165,7 +165,7 @@ function pagination_list_render2($list, $pages)
 		$html .= "\t".'<li class="next">'.JText::_('Next').'</li>'."\n";
 		$html .= "\t".'<li class="end">'.JText::_('End').'</li>'."\n";
 	}
-	
+
 	return $html;
 }
 
@@ -174,7 +174,7 @@ function pagination_list_render($list)
 	// Initialize variables
 	$html  = "\t".'<li class="start">'.$list['start']['data'].'</li>'."\n";
 	$html .= "\t".'<li class="prev">'.$list['previous']['data'].'</li>'."\n";
-	
+
 	foreach ( $list['pages'] as $page )
 	{
 		$html .= "\t".'<li class="page">';
@@ -189,17 +189,17 @@ function pagination_list_render($list)
 		}
 		$html .= '</li>'."\n";
 	}
-	
+
 	$html .= "\t".'<li class="next">'.$list['next']['data'].'</li>'."\n";
 	$html .= "\t".'<li class="end">'.$list['end']['data'].'</li>'."\n";
-	
+
 	return $html;
 }
 
-function pagination_item_active(&$item) 
+function pagination_item_active(&$item)
 {
 	global $mainframe;
-	
+
 	$option = JRequest::getVar('option','');
 	$task = JRequest::getVar('task','');
 	$limit = JRequest::getInt('limit',25);
@@ -241,7 +241,7 @@ function pagination_item_active(&$item)
 	}
 }
 
-function pagination_item_inactive(&$item) 
+function pagination_item_inactive(&$item)
 {
 	return '<span>'.$item->text.'</span>';
 }

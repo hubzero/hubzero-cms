@@ -47,17 +47,17 @@ if ($this->reviews) {
 		'pagename' => $this->resource->id,
 		'pageid'   => $this->resource->id,
 		'filepath' => '',
-		'domain'   => '' 
+		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$parser =& Hubzero_Wiki_Parser::getInstance();
-	
+
 	$admin = false;
 	// Check if they're a site admin (from Joomla)
 	if ($juser->authorize($this->option, 'manage')) {
 		$admin = true;
 	}
-	
+
 	// Set the abuse flag
 	// Determines if we're using abuse reports or not
 	$abuse = false;
@@ -65,27 +65,27 @@ if ($this->reviews) {
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
 		$abuse = true;
 	}
-	
+
 	// Set the reply flag
 	// Determines if we're allowing replies to reviews
 	$reply = false;
 	if (is_file(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Comment.php')) {
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Comment.php' );
 		$reply = true;
-	
+
 		// See if we have a comment (comeone clicked a "reply" link)
 		$addcomment = new Hubzero_Comment( $database );
 		$addcomment->referenceid = JRequest::getInt( 'refid', 0 );
 		$addcomment->category = JRequest::getVar( 'category', '' );
 	}
-	
+
 	$o = 'even';
 
 	$html = "\t".'<ol class="comments">'."\n";
 	foreach ($this->reviews as $review)
 	{
 		// Get the rating
-		switch ($review->rating) 
+		switch ($review->rating)
 		{
 			case 0.5: $class = ' half-stars';      break;
 			case 1:   $class = ' one-stars';       break;
@@ -112,7 +112,7 @@ if ($this->reviews) {
 				$name = $ruser->get('name');
 			}
 		}
-		
+
 		$replies = null;
 		if ($reply) {
 			// Get the replies to this review
@@ -123,7 +123,7 @@ if ($this->reviews) {
 		if ($abuse) {
 			$abuse_reports = plgResourcesReviews::getAbuseReports($review->id, 'review');
 		}
-		
+
 		$o = ($o == 'odd') ? 'even' : 'odd';
 
 		// Build the list item
@@ -158,7 +158,7 @@ if ($this->reviews) {
 					$view->option = $this->option;
 					$view->item = $review;
 					$view->rid = $this->resource->id;
-					
+
 					$html .= $view->loadTemplate();
 					$html .= "\t\t".'</p>'."\n";
 				}
@@ -166,8 +166,7 @@ if ($this->reviews) {
 			} else {
 				$html .= "\t\t\t".'<p class="comment-none">'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
 			}
-			
-			
+
 			//if ((($abuse || $reply) && $review->comment) || $admin) {
 			if (($abuse || $reply) || $admin) {
 				$html .= "\t\t\t".'<p class="comment-options">'."\n";
@@ -188,7 +187,7 @@ if ($this->reviews) {
 				}
 				$html .= "\t\t\t".'</p>'."\n";
 			}
-			
+
 			// Add the comment form
 			if ($reply) {
 				//$html .= $this->addcomment($review->id, 0, $juser, $this->option, $addcomment, $this->resource->id);
@@ -206,16 +205,16 @@ if ($this->reviews) {
 				$view->juser = $juser;
 				$view->level = 0;
 				$view->addcomment = $addcomment;
-				
+
 				$html .= $view->loadTemplate();
 			}
 			$html .= "\t\t".'</div>'."\n";
-			
+
 			// Display comments
 			if ($replies) {
 				//$html .= $this->comments($replies, $review->id, $juser, $this->resource->id, $this->option, $addcomment, $abuse, $admin)."\n";
 				$html .= "\t\t".'<ol class="comments pass2">'."\n";
-				foreach ($replies as $reply) 
+				foreach ($replies as $reply)
 				{
 					$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -247,7 +246,7 @@ if ($this->reviews) {
 					// Another level? 
 					if (count($reply->replies) > 0) {
 						$html .= "\t\t\t".'<ol class="comments pass3">'."\n";
-						foreach ($reply->replies as $r) 
+						foreach ($reply->replies as $r)
 						{
 							$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -275,11 +274,11 @@ if ($this->reviews) {
 							$view->addcomment = $addcomment;
 							$view->parser = $parser;
 							$html .= $view->loadTemplate();
-							
+
 							// Yet another level?? 
 							if (count($r->replies) > 0) {
 								$html .= "\t\t\t".'<ol class="comments pass4">'."\n";
-								foreach ($r->replies as $rr) 
+								foreach ($r->replies as $rr)
 								{
 									$o = ($o == 'odd') ? 'even' : 'odd';
 
@@ -307,7 +306,7 @@ if ($this->reviews) {
 									$view->addcomment = $addcomment;
 									$view->parser = $parser;
 									$html .= $view->loadTemplate();
-									
+
 									$html .= "\t\t\t\t".'</li>'."\n";
 								}
 								$html .= "\t\t\t".'</ol><!-- end pass4 -->'."\n";

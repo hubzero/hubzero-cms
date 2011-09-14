@@ -85,7 +85,7 @@ var HUB = {};
 						<td><input type="text" name="extra_info" size="45" maxlength="240" value="<?php echo htmlentities(stripslashes($this->row->extra_info), ENT_COMPAT, 'UTF-8'); ?>" /></td>
 					</tr>
 					<?php
-					foreach ($this->fields as $field) 
+					foreach ($this->fields as $field)
 					{
 					?>
 					<tr>

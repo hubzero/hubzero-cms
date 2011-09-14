@@ -29,7 +29,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class Employer extends JTable
 {
 	var $id         		= NULL;  // @var int(11) Primary key
@@ -39,23 +38,21 @@ class Employer extends JTable
 	var $companyName		= NULL;  // @var varchar (250)
 	var $companyLocation	= NULL;  // @var varchar (250)
 	var $companyWebsite		= NULL;  // @var varchar (250)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_employers', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function isEmployer($uid, $admin=0)
 	{
 		if ($uid === NULL) {
 			return false;
 		}
-		
-		$now = date( 'Y-m-d H:i:s', time() );			
+
+		$now = date( 'Y-m-d H:i:s', time() );
 		$query  = "SELECT e.id ";
 		$query .= "FROM #__jobs_employers AS e  ";
 		if (!$admin) {
@@ -70,13 +67,11 @@ class Employer extends JTable
 			return true;
 		} else {
 			return false;
-		}		
+		}
 	}
-		
-	//--------
-	
+
 	public function loadEmployer( $uid=NULL )
-	{		
+	{
 		if ($uid === NULL) {
 			return false;
 		}
@@ -88,11 +83,9 @@ class Employer extends JTable
 			return false;
 		}
 	}
-	
-	//--------
-	
+
 	public function getEmployer( $uid = NULL, $subscriptioncode = NULL )
-	{		
+	{
 		if ($uid === NULL or $subscriptioncode === NULL) {
 			return false;
 		}
@@ -113,6 +106,6 @@ class Employer extends JTable
 		} else {
 			return false;
 		}
-	}					
+	}
 }
 

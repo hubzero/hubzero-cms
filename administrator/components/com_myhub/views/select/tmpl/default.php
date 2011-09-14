@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 						<select name="module" id="module">
 							<option value="">Select...</option>
 							<?php
-							foreach ($this->modules as $module) 
+							foreach ($this->modules as $module)
 							{
 								echo '<option value="'.$module->id.'">'.stripslashes($module->title).'</option>'."\n";
 							}

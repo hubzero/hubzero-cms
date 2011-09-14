@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_blogs' );
-
-//-----------
 
 class plgXSearchBlogs extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgXSearchBlogs extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'blogs' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
 
-	public function &onXSearchAreas() 
+	public function &onXSearchAreas()
 	{
 		$areas = array(
 			'blogs' => JText::_('PLG_XSEARCH_BLOGS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -72,7 +64,7 @@ class plgXSearchBlogs extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$now = date( 'Y-m-d H:i:s', time() + 0 * 60 * 60 );
@@ -120,7 +112,6 @@ class plgXSearchBlogs extends JPlugin
 		$order_by  = " ORDER BY relevance DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-
 		if (!$limit) {
 			// Get a count
 			$database->setQuery( $e_count.$e_from ." WHERE ". $e_where );
@@ -129,19 +120,19 @@ class plgXSearchBlogs extends JPlugin
 			if (count($areas) > 1) {
 				//ximport('Hubzero_Document');
 				//Hubzero_Document::addComponentStylesheet('com_events');
-				
+
 				return $e_fields.$e_rel.$e_from ." WHERE ". $e_where;
 			}
-			
+
 			// Get results
 			$query = $e_fields.$e_rel.$e_from ." WHERE ". $e_where. " GROUP BY id". $order_by;
 			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
-					switch ($row->area) 
+					switch ($row->area)
 					{
 						case 'site':
 							$rows[$key]->href = JRoute::_('index.php?option=com_blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias);
@@ -159,7 +150,7 @@ class plgXSearchBlogs extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
@@ -177,14 +168,12 @@ class plgXSearchBlogs extends JPlugin
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row, $keyword )
 	{
 		//$words = explode(' ', $keyword);
 		if (!$row->href) {
-			switch ($row->area) 
+			switch ($row->area)
 			{
 				case 'site':
 					$row->href = JRoute::_('index.php?option=com_blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias);
@@ -196,7 +185,7 @@ class plgXSearchBlogs extends JPlugin
 				break;
 			}
 		}
-		
+
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
 		}
@@ -204,7 +193,7 @@ class plgXSearchBlogs extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		// Start building the HTML
 		$html  = "\t".'<li class="blog-entry">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
@@ -214,13 +203,11 @@ class plgXSearchBlogs extends JPlugin
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

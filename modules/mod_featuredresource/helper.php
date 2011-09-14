@@ -35,21 +35,18 @@ class modFeaturedresource
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
-
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,18 +55,16 @@ class modFeaturedresource
 	}
 
 	//-----------
-
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $someid;
 	}
-	
-	//-----------
 
+	//-----------
 	public function encode_html($str, $quotes=1)
 	{
 		$str = $this->ampersands($str);
@@ -88,8 +83,7 @@ class modFeaturedresource
 	}
 
 	//-----------
-
-	public function ampersands( $str ) 
+	public function ampersands( $str )
 	{
 		$str = stripslashes($str);
 		$str = str_replace('&#','*-*', $str);
@@ -100,18 +94,17 @@ class modFeaturedresource
 	}
 
 	//-----------
-
-	public function display() 
+	public function display()
 	{
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
-		
+
 		$this->error = false;
 		if (!class_exists('FeaturesHistory')) {
 			$this->error = true;
 			return false;
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$params =& $this->params;
@@ -125,16 +118,16 @@ class modFeaturedresource
 		$filters['minranking'] = trim($params->get( 'minranking' ));
 		$filters['tag'] = trim($params->get( 'tag' ));
 		$filters['access'] = 'public';
-		
+
 		$this->cls = trim($params->get( 'moduleclass_sfx' ));
 		$this->txt_length = trim($params->get( 'txt_length' ));
 		$catid = trim($params->get( 'catid' ));
-		
+
 		$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
 		$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
 
 		$row = null;
-		
+
 		$fh = new FeaturesHistory( $database );
 
 		// Is a specific content category set?
@@ -142,7 +135,7 @@ class modFeaturedresource
 			// Yes - so we need to check if there's an active article to display
 			$juser =& JFactory::getUser();
 			$aid = $juser->get('aid', 0);
-			
+
 			$contentConfig =& JComponentHelper::getParams( 'com_content' );
 			$noauth = !$contentConfig->get('shownoauth');
 
@@ -150,7 +143,7 @@ class modFeaturedresource
 			$now = $date->toMySQL();
 
 			$nullDate = $database->getNullDate();
-			
+
 			// Load an article
 			$query = 'SELECT a.*,' .
 				' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.
@@ -173,14 +166,13 @@ class modFeaturedresource
 				$row = $rows[0];
 			}
 		}
-		
+
 		// Do we have an article to display?
 		if (!$row) {
 			// No - so we need to display a resource
-			
 			// Check the feature history for today's feature
 			$fh->loadActive($start, 'resources', $filters['type']);
-			
+
 			// Did we find a feature for today?
 			if ($fh->id && $fh->tbl == 'resources') {
 				// Yes - load the resource
@@ -191,7 +183,6 @@ class modFeaturedresource
 				}
 			} else {
 				// No - so we need to randomly choose one
-				
 				// Initiate a resource object
 				$rr = new ResourcesResource( $database );
 
@@ -202,16 +193,16 @@ class modFeaturedresource
 				}
 			}
 		}
-		
+
 		// Did we get any results?
 		if ($row) {
 			$config =& JComponentHelper::getParams( 'com_resources' );
-			
+
 			// Is this a content article or a member profile?
 			if (isset($row->catid)) {
 				// Content article
 				$id = $row->created_by_alias;
-				
+
 				// Check if the article has been saved in the feature history
 				$fh->loadObject($row->id, 'content');
 				if (!$fh->id) {
@@ -230,7 +221,7 @@ class modFeaturedresource
 			} else {
 				// Resource
 				$id = $row->id;
-				
+
 				// Check if this has been saved in the feature history
 				if (!$fh->id) {
 					$fh->featured = $start;
@@ -240,7 +231,7 @@ class modFeaturedresource
 					$fh->store();
 				}
 			}
-			
+
 			$path = $config->get('uploadpath');
 			if (substr($path, 0, 1) != DS) {
 				$path = DS.$path;
@@ -249,7 +240,7 @@ class modFeaturedresource
 				$path = substr($path, 0, (strlen($path) - 1));
 			}
 			$path = $this->build_path( $row->created, $row->id, $path );
-			
+
 			if ($row->type == 7) {
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 
@@ -261,7 +252,7 @@ class modFeaturedresource
 			} else {
 				$picture = $this->getImage( $path );
 			}
-			
+
 			$thumb = $path.DS.$picture;
 
 			if (!is_file(JPATH_ROOT.$thumb)) {
@@ -272,12 +263,11 @@ class modFeaturedresource
 			}
 
 			//$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($row->typetitle));
-
 			$row->typetitle = trim(stripslashes($row->typetitle));
 			if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies') {
 				$row->typetitle = substr($row->typetitle, 0, strlen($row->typetitle) - 1);
 			}
-			
+
 			$this->id = $id;
 			$this->thumb = $thumb;
 			$this->row = $row;
@@ -285,19 +275,18 @@ class modFeaturedresource
 			$this->row = null;
 		}
 	}
-	
+
 	//-----------
-	
-	private function getImage( $path ) 
+	private function getImage( $path )
 	{
 		$d = @dir(JPATH_ROOT.$path);
 
 		$images = array();
-		
+
 		if ($d) {
-			while (false !== ($entry = $d->read())) 
-			{			
-				$img_file = $entry; 
+			while (false !== ($entry = $d->read()))
+			{
+				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png", $img_file )) {
 						$images[] = $img_file;
@@ -310,28 +299,27 @@ class modFeaturedresource
 
 		$b = 0;
 		if ($images) {
-			foreach ($images as $ima) 
+			foreach ($images as $ima)
 			{
 				$bits = explode('.',$ima);
 				$type = array_pop($bits);
 				$img = implode('.',$bits);
-				
+
 				if ($img == 'thumb') {
 					return $ima;
 				}
 			}
 		}
 	}
-	
+
 	//-----------
-	
-	private function getToolImage( $path, $versionid=0 ) 
+	private function getToolImage( $path, $versionid=0 )
 	{
 		// Get contribtool parameters
 		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
 		$allowversions = $tconfig->get('screenshot_edit');
-		
-		if ($versionid && $allowversions) { 
+
+		if ($versionid && $allowversions) {
 			// Add version directory
 			//$path .= DS.$versionid;
 		}
@@ -345,9 +333,9 @@ class modFeaturedresource
 		$html = '';
 
 		if ($d) {
-			while (false !== ($entry = $d->read())) 
-			{			
-				$img_file = $entry; 
+			while (false !== ($entry = $d->read()))
+			{
+				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png", $img_file )) {
 						$images[] = $img_file;
@@ -360,12 +348,12 @@ class modFeaturedresource
 
 		$b = 0;
 		if ($images) {
-			foreach ($images as $ima) 
+			foreach ($images as $ima)
 			{
 				$bits = explode('.',$ima);
 				$type = array_pop($bits);
 				$img = implode('.',$bits);
-				
+
 				if ($img == 'thumb') {
 					return $ima;
 				}
@@ -374,7 +362,6 @@ class modFeaturedresource
 	}
 
 	//-----------
-
 	private function thumbnail($pic)
 	{
 		$pic = explode('.',$pic);
@@ -385,9 +372,8 @@ class modFeaturedresource
 		$tn = implode('.',$pic);
 		return $tn;
 	}
-	
-	//-----------
 
+	//-----------
 	private function build_path( $date, $id, $base='' )
 	{
 		if ( $date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs ) ) {

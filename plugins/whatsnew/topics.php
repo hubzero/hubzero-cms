@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPluginHelper::loadLanguage( 'plg_whatsnew_topics' );
-
-//-----------
 
 class plgWhatsnewTopics extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgWhatsnewTopics extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'whatsnew', 'topics' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function onWhatsnewAreas() 
+
+	public function onWhatsnewAreas()
 	{
 		$areas = array(
 			'topics' => JText::_('PLG_WHATSNEW_TOPICS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
@@ -66,7 +58,7 @@ class plgWhatsnewTopics extends JPlugin
 				return array();
 			}
 		}
-		
+
 		// Do we have a time period?
 		if (!is_object($period)) {
 			return array();
@@ -75,10 +67,10 @@ class plgWhatsnewTopics extends JPlugin
 		$database =& JFactory::getDBO();
 
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
-		
+
 		// Instantiate some needed objects
 		$wp = new WikiPage( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['startdate'] = $period->cStartDate;
@@ -92,7 +84,7 @@ class plgWhatsnewTopics extends JPlugin
 		if (!$limit) {
 			// Get a count
 			$filters['select'] = 'count';
-			
+
 			$database->setQuery( $wp->buildPluginQuery( $filters ) );
 			return $database->loadResult();
 		} else {
@@ -100,12 +92,12 @@ class plgWhatsnewTopics extends JPlugin
 			$filters['select'] = 'records';
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
-			
+
 			$database->setQuery( $wp->buildPluginQuery( $filters ) );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					if ($row->area != '' && $row->category != '') {
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->category.'&pagename='.$row->alias);
@@ -122,20 +114,18 @@ class plgWhatsnewTopics extends JPlugin
 			return $rows;
 		}
 	}
-	
-	//-----------
 
-	private function _authorize() 
+	private function _authorize()
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use

@@ -29,20 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class TimestampMacro extends WikiMacro 
+class TimestampMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Displays a time-stamp in the following format: YYYY-MM-DD HH:MM:SS';
 		$txt['html'] = '<p>Displays a time-stamp in the following format: YYYY-MM-DD HH:MM:SS</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		return date("Y-m-d H:i:s");
 	}

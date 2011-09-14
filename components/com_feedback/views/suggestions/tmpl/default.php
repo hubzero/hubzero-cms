@@ -97,7 +97,7 @@ $selects = array(
 				<?php echo JText::_('COM_FEEDBACK_SUGGESTION_TOPIC'); ?>
 				<select name="suggestion[for]" id="suggestion_for">
 <?php
-				foreach ($selects as $avalue => $alabel) 
+				foreach ($selects as $avalue => $alabel)
 				{
 ?>
 					<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->suggestion['for'] || $alabel == $this->suggestion['for']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>

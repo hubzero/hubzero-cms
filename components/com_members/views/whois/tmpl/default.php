@@ -87,10 +87,10 @@ defined('_JEXEC') or die('Restricted access');
 		<tbody>
 		<?php
 		$cls = 'even';
-		for ($i = 0; $i < count($this->summaries); $i++) 
+		for ($i = 0; $i < count($this->summaries); $i++)
 		{
 			$cls = ($cls == 'odd') ? 'even' : 'odd';
-			
+
 			$html  = t.t.'<tr class="'. $cls .'">'.n;
 			$html .= t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$this->option.a.'id='. $this->summaries[$i]->uidNumber).'">';
 			$html .= $this->summaries[$i]->username .'</a> (' . $this->summaries[$i]->uidNumber .') </td>'.n;
@@ -210,7 +210,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td><?php
 				$hosts = $xprofile->get('host');
 				$count = (!empty($hosts)) ? count($hosts) : 0;
-				for ($i = 0;$i < $count; $i++) 
+				for ($i = 0;$i < $count; $i++)
 				{
 					echo htmlentities($hosts[$i]) .' ';
 				}
@@ -263,8 +263,8 @@ defined('_JEXEC') or die('Restricted access');
 				$reg_ip   = $xprofile->get('regIP');
 				$reg_host = (empty($reg_host)) ? "n/a" : $reg_host;
 				$reg_ip   = (empty($reg_ip)) ? "n/a" : $reg_ip;
-				
-				echo $reg_host .'<br />('. $reg_ip .')'; 
+
+				echo $reg_host .'<br />('. $reg_ip .')';
 				?></td>
 			</tr>
 			<tr class="odd">

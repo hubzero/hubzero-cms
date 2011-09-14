@@ -55,15 +55,13 @@ class EventsRespondent extends JTable
 	public $comment = NULL;
 	public $arrival = NULL;
 	public $departure = NULL;
-	
+
 	private $filters      = array();
 	private $order        = NULL;
 	private $order_desc   = NULL;
 	private $search_terms = '';
 	private $limit        = 0;
 	private $offset       = 0;
-
-	//-----------
 
 	public static function getRacialIdentification($resp_id)
 	{
@@ -76,31 +74,23 @@ class EventsRespondent extends JTable
 			return $dbh->loadResult();
 		}
 	}
-	
-	//-----------
 
-	public function getSearchTerms() 
-	{ 
+	public function getSearchTerms()
+	{
 		return $this->search_terms;
 	}
-	
-	//-----------
-	
-	public function getOrdering() 
+
+	public function getOrdering()
 	{
 		return $this->order_desc;
 	}
-	
-	//-----------
-	
-	public function getPaginator() 
-	{ 
+
+	public function getPaginator()
+	{
 		jimport('joomla.html.pagination');
-		return new JPagination($this->getCount(), $this->limit, $this->offset); 
+		return new JPagination($this->getCount(), $this->limit, $this->offset);
 	}
-	
-	//-----------
-	
+
 	public function __construct($filters)
 	{
 		parent::__construct('#__events_respondents', 'id', JFactory::getDBO());
@@ -122,7 +112,7 @@ class EventsRespondent extends JTable
 				throw new Exception('Invalid sorting criterium: '.$filters['sortby']);
 			}
 		}
-		
+
 		if (array_key_exists('limit', $filters)) {
 			$this->limit = intval($filters['limit']);
 			$this->offset = array_key_exists('offset', $filters) ? intval($filters['offset']) : 0;
@@ -157,8 +147,6 @@ class EventsRespondent extends JTable
 		$this->filters = implode(' AND ', array_values($this->filters));
 	}
 
-	//-----------
-
 	public function fetch($bounded = true)
 	{
 		$this->_db->setQuery(
@@ -168,23 +156,17 @@ class EventsRespondent extends JTable
 		return $bounded ? $this->_db->loadObjectList() : $this->_db->loadResult();
 	}
 
-	//-----------
-
-	public function getRecords() 
+	public function getRecords()
 	{
 		return $this->fetch();
 	}
-	
-	//-----------
-	
-	public function getCount() 
+
+	public function getCount()
 	{
 		return $this->fetch(false);
 	}
-	
-	//-----------
-	
-	public function deleteRespondents( $event_id=NULL ) 
+
+	public function deleteRespondents( $event_id=NULL )
 	{
 		if ($event_id === NULL) {
 			return false;

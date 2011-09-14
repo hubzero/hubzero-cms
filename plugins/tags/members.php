@@ -29,19 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_members' );
-
-//-----------
 
 class plgTagsMembers extends JPlugin
 {
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgTagsMembers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,8 +45,6 @@ class plgTagsMembers extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onTagAreas()
 	{
 		$areas = array(
@@ -60,8 +52,6 @@ class plgTagsMembers extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
 
 	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
@@ -80,7 +70,7 @@ class plgTagsMembers extends JPlugin
 		$database =& JFactory::getDBO();
 
 		$ids = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ids[] = $tag->id;
 		}
@@ -100,11 +90,11 @@ class plgTagsMembers extends JPlugin
 					AND t.tagid IN ($ids)";
 		$f_from .= " GROUP BY a.uidNumber HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
-		switch ($sort) 
+		switch ($sort)
 		{
 			case 'title': $order_by .= 'title ASC, publish_up';  break;
 			case 'id':    $order_by .= "id DESC";                break;
-			case 'date':  
+			case 'date':
 			default:      $order_by .= 'publish_up DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
@@ -121,20 +111,20 @@ class plgTagsMembers extends JPlugin
 
 				return $f_fields.$f_from;
 			}
-			
+
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
 				}
 			}
-			
+
 			$database->setQuery( $f_fields . $f_from .  $order_by );
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
 			if ($rows) {
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_('index.php?option=com_members&id='.$row->id);
 				}
@@ -144,33 +134,29 @@ class plgTagsMembers extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_members');
 	}
-	
-	//-----------
-	
+
 	/*public function before()
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
-		
+
 		$row->picture = $row->publish_down;
-		
+
 		if ($row->picture) {
 			$thumb  = $config->get('webpath');
 			if (substr($thumb, 0, 1) != DS) {
@@ -191,14 +177,14 @@ class plgTagsMembers extends JPlugin
 				$thumb = DS.$thumb;
 			}
 		}
-		
+
 		$image = explode('.',$thumb);
 		$n = count($image);
 		$image[$n-2] .= '_thumb';
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
 		}
@@ -206,7 +192,7 @@ class plgTagsMembers extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		$html  = "\t".'<li class="member">'."\n";
 		if (is_file(JPATH_ROOT.$thumb)) {
 			$html .= "\t\t".'<p class="photo"><img width="50" height="50" src="'.$thumb.'" alt="" /></p>'."\n";
@@ -219,20 +205,16 @@ class plgTagsMembers extends JPlugin
 		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $someid;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

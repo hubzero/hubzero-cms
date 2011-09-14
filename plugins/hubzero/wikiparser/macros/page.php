@@ -29,36 +29,33 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class PageMacro extends WikiMacro 
+class PageMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.';
 		$txt['html'] = '<p>This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
-		
+
 		if (!$et) {
 			return '';
 		}
-		
+
 		$p = split(',', $et);
 		$page = array_shift($p);
 
 		$nolink = false;
 		$p = explode(' ',end($p));
-		foreach ($p as $a) 
+		foreach ($p as $a)
 		{
 			$a = trim($a);
-			
+
 			if ($a == 'nolink') {
 				$nolink = true;
 			}
@@ -86,7 +83,7 @@ class PageMacro extends WikiMacro
 		if ($this->domain != '' && $scope == '') {
 			$scope = $this->scope;
 		}
-		
+
 		// No, get resource by alias
 		$g = new WikiPage( $this->_db );
 		$g->load( $page, $scope );

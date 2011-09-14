@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		Your new password has been emailed to you at "<?php echo htmlentities($this->xprofile->get('email'),ENT_COMPAT,'UTF-8'); ?>". If you do not receive it or have any questions, please contact administrators at <a href="mailto:<?php echo htmlentities($this->jconfig->getValue('config.mailfrom'),ENT_COMPAT,'UTF-8'); ?>"><?php echo htmlentities($this->jconfig->getValue('config.mailfrom'),ENT_COMPAT,'UTF-8'); ?></a>.
 	</p>
 <?php 
-} else { 
+} else {
 	$login_valid = true;
 	$email_valid = true;
 
@@ -110,7 +110,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				?><p class="error"><?php echo JText::_('Please provide a valid e-mail address.'); ?></p><?php
 			} elseif (!$email_valid) {
 				?><p class="error"><?php echo JText::_('Invalid email address. Example: someone@somewhere.com'); ?></p><?php
-			}			
+			}
 			?>
 		</fieldset>
 		<div class="clear"></div>

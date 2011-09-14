@@ -30,19 +30,17 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 class HubController extends JObject
-{	
+{
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	
-	//-----------
-	
+
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
 		$this->_message = NULL;
 		$this->_messageType = 'message';
-		
+
 		//Set the controller name
 		if (empty( $this->_name ))
 		{
@@ -58,19 +56,15 @@ class HubController extends JObject
 				$this->_name = strtolower( $r[1] );
 			}
 		}
-		
+
 		$this->_option = 'com_'.$this->_name;
 	}
-	
-	//-----------
-	
+
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -78,8 +72,6 @@ class HubController extends JObject
 		}
 	}
 
-	//-----------
-	
 	private function _cookie_check()
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -91,8 +83,8 @@ class HubController extends JObject
 				$juri = JURI::getInstance();
 				$juri->setVar('cookie','no');
 				return $xhub->redirect($juri->toString());
-			}       
-			        
+			}
+
 			echo HubHtml::error(
 				'It seems cookies are disabled on your browser! Cookies are required for login.<br /><br />'.
 				'<a href="/support/cookies">Click here to learn how to enable cookies.</a>'
@@ -108,27 +100,23 @@ class HubController extends JObject
 
 		return true;
 	}
-	
-	//-----------
 
 	protected function invalidRequest()
 	{
 		return JError::raiseError( 404, "Invalid Request" );
 	}
-	
-	//-----------
 
 	public function execute()
 	{
 		$this->_view = JRequest::getVar('view','','method');
 		$this->_task = JRequest::getVar('task','','method');
 		$this->_act  = JRequest::getVar('act','','method');
-		
+
 		$xhub =& Hubzero_Factory::getHub();
 
 		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off') {
-			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); 
-			die('insecure connection and redirection failed'); 
+			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+			die('insecure connection and redirection failed');
 		}
 
 		switch ($this->_view)
@@ -141,7 +129,7 @@ class HubController extends JObject
 				}
 				switch ($this->_task)
 				{
-					case 'login':   
+					case 'login':
 						$this->login($this->_act);
 						break;
 					case 'realm':
@@ -164,7 +152,7 @@ class HubController extends JObject
 						break;
 				}
 				break;
-			
+
 			// Account recovery
 			case 'lostpassword':
 				$this->lostpassword();
@@ -184,13 +172,13 @@ class HubController extends JObject
 	//----------------------------------------------------------
 
 	public function logout()
-	{       
+	{
 		$app  =& JFactory::getApplication();
 		$xhub =& Hubzero_Factory::getHub();
-		
+
 		// Preform the logout action
 		$error = $app->logout();
-		
+
 		if (!JError::isError($error)) {
 			if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
 				$return = base64_decode($return);
@@ -206,8 +194,6 @@ class HubController extends JObject
 
 		JError::raiseError( 500, $error->get('message') );
 	}
-	
-	//-----------
 
 	public function login($action = 'show')
 	{
@@ -239,7 +225,7 @@ class HubController extends JObject
 			$credentials = array();
 			$credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
 			$credentials['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
-	
+
 			$options = array();
 			$options['remember'] = JRequest::getBool('remember', false);
 			$options['domain'] = JRequest::getString('realm','','post');
@@ -263,7 +249,7 @@ class HubController extends JObject
 				$error_message = JText::_('E_LOGIN_AUTHENTICATE');
 			else
 				$error_message = '';
-		
+
 			$usrnm = $credentials['username'];
 		}
 		else
@@ -291,7 +277,7 @@ class HubController extends JObject
 		}
 
 		$login_attempts++;
-		
+
 		$realm = JRequest::getVar('realm', '', 'method');
 
 		if (empty($realm) && count($realms) == 1)
@@ -309,12 +295,12 @@ class HubController extends JObject
 			$app =& JFactory::getApplication();
 			$realmName = $app->getCfg('sitename') . ' Account';
 		}
-		
+
 		$usersConfig = &JComponentHelper::getParams( 'com_users' );
 		$registration_enabled = $usersConfig->get( 'allowUserRegistration' );
-		
+
 		unset($credentials,$options,$realms,$params,$plugins,$plugin,$action,$usersConfig,$app,$error);
-		
+
 		$hubShortName = $xhub->getCfg('hubShortName');
 
 		echo HubHtml::div( HubHtml::hed(2, JText::_('Login')), 'full', 'content-header' );
@@ -322,13 +308,11 @@ class HubController extends JObject
 		include $xhub->getComponentViewFilename($this->_option, 'login');
 		echo '</div><!-- / .main section -->'.n;
 	}
-	
-	//-----------
 
 	protected function realm($action = null)
 	{
 		$xhub =& Hubzero_Factory::getHub();
-		
+
 		if (!$this->_cookie_check()) {
 			return;
 		}
@@ -336,7 +320,7 @@ class HubController extends JObject
 		if (empty($action)) {
 			$action = 'show';
 		}
-		
+
 		$plugins = JPluginHelper::getPlugin('xauthentication');
 
 		$realms = array();
@@ -358,10 +342,10 @@ class HubController extends JObject
 			return $this->login('show');
 
 		if (count($realms) == 0)
-			return JError::raiseError( '500', 'xHUB Configuration Error: No XAuthentication Plugins Enabled.'); 
+			return JError::raiseError( '500', 'xHUB Configuration Error: No XAuthentication Plugins Enabled.');
 
 		if ($action == 'submit') {
-			if (JRequest::getVar('create', '', 'method')) 
+			if (JRequest::getVar('create', '', 'method'))
 				return $this->create('show');
 
 			if (JRequest::getVar('realm', '', 'method'))
@@ -374,36 +358,34 @@ class HubController extends JObject
 
 		include $xhub->getComponentViewFilename($this->_option, 'realm');
 	}
-	
-	//-----------
-	
-	protected function lostusername() 
+
+	protected function lostusername()
 	{
 		// Load some needed libraries
 		ximport('Hubzero_Registration_Helper');
 
 		$this->_view = $this->_task;
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_('Lost Username') );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		$pathway->addItem(JText::_('Lost Username'),'index.php?option='.$this->_option.'&task='.$this->_task);
-		
+
 		// Incoming
 		$email  = JRequest::getVar('email', NULL, 'post');
 		$resend = JRequest::getVar('resend', NULL, 'post');
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'lostusername') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->email = $email;
 		$view->passed = false;
-		
+
 		// Was the form submitted?
 		if ($resend) {
 			if (empty($email)) {
@@ -418,22 +400,20 @@ class HubController extends JObject
 				$view->passed = true;
 			}
 		}
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
-	//-----------
 
 	private function send_account_recovery($email)
 	{
 		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_User_Helper');
 		ximport('Hubzero_Toolbox');
-		
+
 		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 		$hubLongURL = $xhub->getCfg('hubLongURL');
@@ -442,7 +422,7 @@ class HubController extends JObject
 
 		// Attempt to load an account with this email address
 		$emailusers = Hubzero_User_Profile_Helper::find_by_email($email);
-		
+
 		if (empty($emailusers)) {
 			return JError::raiseError(403, 'Request Invalid: Error locating an account with the email address [' . $email . '].');
 		}
@@ -458,7 +438,7 @@ class HubController extends JObject
 			$message .= "s";
 		}
 		$message .= " registered to this address:\r\n";
-		foreach ($emailusers as $emailuser) 
+		foreach ($emailusers as $emailuser)
 		{
 			$xprofile =& Hubzero_User_Profile::getInstance($emailuser);
 
@@ -481,32 +461,30 @@ class HubController extends JObject
 		if (Hubzero_Toolbox::send_email($email, $subject, $message)) {
 			// Admin email subject
 			$subject = $hubShortName . " Account Recovery";
-			
+
 			// Admin email message
 			$message = "A user has recovered account login information for the email address:\r\n";
 			$message .= "\t" . $email . "\r\n\r\n";
 			$message .= "Click the following link to look up this user's account(s):\r\n";
 			$message .= $hubLongURL . '/members/whois/?email=' . $email . "\r\n";
-			
+
 			// Send the admin email
 			Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
-		} else { 
+		} else {
 			return JError::raiseError(500, 'Internal Error: Error emailing your account information to the email address [' . $email . '].');
 		}
-		
+
 		return 0;
 	}
 
-	//-----------
-	
-	protected function lostpassword() 
+	protected function lostpassword()
 	{
 		// Load some needed libraries
 		ximport('Hubzero_Registration_Helper');
 		ximport('Hubzero_User_Helper');
 		ximport('Hubzero_Toolbox');
 		ximport('Hubzero_User_Profile');
-		
+
 		$xprofile =& Hubzero_Factory::getProfile();
 
 		$this->_view = $this->_task;
@@ -514,7 +492,7 @@ class HubController extends JObject
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_('Reset Password') );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -540,7 +518,7 @@ class HubController extends JObject
 		$view->login = JRequest::getVar('login', '', 'post');
 		$view->email = JRequest::getVar('email', '', 'post');
 		$view->reset = JRequest::getVar('reset', '', 'post');
-		
+
 		// Was the form submitted?
 		if ($view->reset) {
 			// Attempt to load a user with the given username
@@ -579,7 +557,7 @@ class HubController extends JObject
 
 			$jconfig =& JFactory::getConfig();
 			$juri =& JURI::getInstance();
-			
+
 			// Email subject
 			$subject = $jconfig->getValue('config.sitename') . " Account Password Reset";
 
@@ -627,7 +605,7 @@ class HubController extends JObject
 			$view->jconfig = $jconfig;
 			$view->passed = true;
 		}
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );

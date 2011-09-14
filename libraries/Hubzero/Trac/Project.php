@@ -92,7 +92,7 @@ class Hubzero_Trac_Project
 	public function find($name)
 	{
 		$hztp = new Hubzero_Trac_Project();
-		
+
 		if (is_numeric($name))
 			$hztp->id = $name;
 		else
@@ -562,7 +562,7 @@ class Hubzero_Trac_Project
 		}
 
 		$query = "DELETE FROM  #__trac_user_permission WHERE trac_project_id=$quoted_project_id AND user_id=$quoted_user_id";
-	   
+
 		if (!$all)
 			$query .= " AND action IN (" .  $values . ");";
 
@@ -605,7 +605,7 @@ class Hubzero_Trac_Project
 		}
 
 		$query = "DELETE FROM  #__trac_group_permission WHERE trac_project_id=$quoted_project_id AND group_id=$quoted_group_id";
-	   
+
 		if (!$all)
 			$query .= " AND action IN (" .  $values . ");";
 

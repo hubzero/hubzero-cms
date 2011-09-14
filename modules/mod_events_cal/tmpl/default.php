@@ -33,6 +33,6 @@ if ($modeventscalendar->error) { ?>
 	<p class="error"><?php echo $modeventscalendar->error; ?></p>
 <?php 
 } else {
-	echo $modeventscalendar->content; 
-} 
+	echo $modeventscalendar->content;
+}
 ?>

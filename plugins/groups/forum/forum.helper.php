@@ -33,12 +33,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Forum helper class
 //----------------------------------------------------------
 
-class ForumHelper 
+class ForumHelper
 {
 	public function getMemberPhoto( $member, $anonymous=0 )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
-		
+
 		if (!$anonymous && $member->get('picture')) {
 			$thumb  = $config->get('webpath');
 			if (substr($thumb, 0, 1) != DS) {
@@ -48,28 +48,26 @@ class ForumHelper
 				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 			}
 			$thumb .= DS.ForumHelper::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
-			
+
 			$thumb = ForumHelper::thumbit($thumb);
 		} else {
 			$thumb = '';
 		}
-		
+
 		$dfthumb = $config->get('defaultpic');
 		if (substr($dfthumb, 0, 1) != DS) {
 			$dfthumb = DS.$dfthumb;
 		}
 		$dfthumb = ForumHelper::thumbit($dfthumb);
-		
+
 		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
 			return $thumb;
 		} else if (is_file(JPATH_ROOT.$dfthumb)) {
 			return $dfthumb;
 		}
 	}
-	
-	//-----------
-	
-	public function thumbit($thumb) 
+
+	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -77,15 +75,13 @@ class ForumHelper
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		return $thumb;
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}

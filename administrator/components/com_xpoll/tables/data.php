@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class XPollData extends JTable 
+class XPollData extends JTable
 {
 	var $id     = NULL; // @var int(11) Primary key
 	var $pollid = NULL; // @var int(11)
@@ -39,14 +38,12 @@ class XPollData extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xpoll_data', 'id', $db );
 	}
 
-	//-----------
-
-	public function check() 
+	public function check()
 	{
 		// Check for pollid
 		if ($this->pollid == '') {
@@ -61,10 +58,8 @@ class XPollData extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getPollData( $poll_id=NULL ) 
+
+	public function getPollData( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {
 			$poll_id = $this->pollid;
@@ -80,10 +75,8 @@ class XPollData extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getPollOptions( $poll_id=NULL, $blanks=false ) 
+
+	public function getPollOptions( $poll_id=NULL, $blanks=false )
 	{
 		if ($poll_id == NULL) {
 			$poll_id = $this->pollid;
@@ -94,7 +87,7 @@ class XPollData extends JTable
 			$query .= " AND text <> ''";
 		}
 		$query .= " ORDER BY id";
-				
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

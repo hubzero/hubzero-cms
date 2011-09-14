@@ -29,9 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-class WikiPage extends JTable 
+class WikiPage extends JTable
 {
 	var $id          = NULL;  // @var int(11) Primary key
 	var $pagename    = NULL;  // @var varchar(100) Unique key
@@ -47,17 +45,15 @@ class WikiPage extends JTable
 	var $access      = NULL;  // @var tinyint(2)
 	var $group       = NULL;  // @var varchar(255)
 	var $state       = NULL;  // @var tinyint(2)
-	
+
 	//-----------
-	
-	function __construct( &$db ) 
+
+	function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_page', 'id', $db );
 	}
-	
-	//-----------
-	
-	function load( $oid=NULL, $scope='' ) 
+
+	function load( $oid=NULL, $scope='' )
 	{
 		$s = "";
 		if ($oid !== NULL && !is_numeric($oid)) {
@@ -82,17 +78,13 @@ class WikiPage extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	function getID() 
+
+	function getID()
 	{
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE pagename='". $this->pagename ."' AND scope='".$this->scope."'" );
 		$this->id = $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	function exist()
 	{
 		if ($this->id !== NULL) {
@@ -101,8 +93,6 @@ class WikiPage extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
 
 	function calculateRating()
 	{
@@ -111,98 +101,86 @@ class WikiPage extends JTable
 
 		$totalcount = count($ratings);
 		$totalvalue = 0;
-		
+
 		// Add the ratings up
 		foreach ($ratings as $item)
 		{
 			$totalvalue = $totalvalue + $item->rating;
 		}
-	
+
 		// Find the average of all ratings
 		$newrating = $totalvalue / $totalcount;
-	
+
 		// Round to the nearest half
 		$newrating = round($newrating*2)/2;
-	
+
 		// Update page with new rating
 		$this->rating = $newrating;
 		$this->times_rated = $totalcount;
 	}
-	
-	//-----------
-	
-	function getTags($admin=0) 
+
+	function getTags($admin=0)
 	{
 		$obj = new WikiTags( $this->_db );
 		$tags = $obj->get_tags_on_object($this->id, 0, 0, '', 0, $admin);
 		return $tags;
 	}
-	
-	//-----------
-	
+
 	function getRevision($version)
 	{
 		$obj = new WikiPageRevision( $this->_db );
 		$obj->loadByVersion( $this->id, $version );
 		return $obj;
 	}
-	
-	public function getRevisionCount() 
+
+	public function getRevisionCount()
 	{
 		$obj = new WikiPageRevision( $this->_db );
 		$obj->pageid = $this->id;
 		return $obj->getRevisionCount();
 	}
-	
-	//-----------
-	
+
 	function getCurrentRevision()
 	{
 		$obj = new WikiPageRevision( $this->_db );
 		$obj->loadByVersion( $this->id );
 		return $obj;
 	}
-	
-	//-----------
-	
+
 	function getTemplates()
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group`='$this->group' ORDER BY `pagename`" );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
 
-	function _check($pagename) 
+	function _check($pagename)
 	{
 		// Compress internal white-space to single space character.
 		$pagename = preg_replace('/[\s\xa0]+/', ' ', $orig = $pagename);
-		
+
 		// Strip leading and trailing white-space.
 		$pagename = trim($pagename);
-	
+
 		$orig = $pagename;
-		while ($pagename and $pagename[0] == WIKI_SUBPAGE_SEPARATOR) 
+		while ($pagename and $pagename[0] == WIKI_SUBPAGE_SEPARATOR)
 		{
 			$pagename = substr($pagename, 1);
 		}
-		
+
 		if ($pagename != $orig) {
 			$this->setError( sprintf("Pagename: Leading %s not allowed", WIKI_SUBPAGE_SEPARATOR) );
 		}
-			
+
 		// not only for SQL, also to restrict url length
 		if (strlen($pagename) > WIKI_MAX_PAGENAME_LENGTH) {
 			$pagename = substr($pagename, 0, WIKI_MAX_PAGENAME_LENGTH);
 			$this->setError( 'Pagename too long' );
 		}
-		
+
 		return $pagename;
 	}
 
-	//-----------
-
-	function check() 
+	function check()
 	{
 		if (is_string($this->pagename) && trim($this->pagename) == '') {
 			$this->setError( 'Your page must have a name.' );
@@ -215,28 +193,24 @@ class WikiPage extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	function getAuthors()
 	{
 		$auths = explode(',',$this->authors);
-		for ($i=0, $n=count( $auths ); $i < $n; $i++) 
+		for ($i=0, $n=count( $auths ); $i < $n; $i++)
 		{
 			$auths[$i] = trim($auths[$i]);
 		}
-		
+
 		return $auths;
 	}
-	
-	//-----------
-	
-	function deleteBits( $id=NULL ) 
+
+	function deleteBits( $id=NULL )
 	{
 		if (!$id) {
 			$id = $this->id;
 		}
-		
+
 		// Delete the page's version history
 		$this->_db->setQuery( "DELETE FROM #__wiki_version WHERE pageid='".$id."'" );
 		if (!$this->_db->query()) {
@@ -268,32 +242,30 @@ class WikiPage extends JTable
 			die( $err );
 		}*/
 	}
-	
-	//-----------
-	
+
 	function count( $filters=array() )
 	{
 		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl" );
 		return $this->_db->loadResult();
 	}
-	
+
 	public function getPagesCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
 		$filters['count'] = true;
-		
+
 		$this->_db->setQuery( $this->buildQuery( $filters ) );
 		return $this->_db->loadResult();
 	}
-	
+
 	public function getPages( $filters=array() )
 	{
 		//echo $this->buildQuery( $filters );
 		$this->_db->setQuery( $this->buildQuery( $filters ) );
 		return $this->_db->loadObjectList();
 	}
-	
-	public function buildQuery($filters) 
+
+	public function buildQuery($filters)
 	{
 		if (isset($filters['count']) && $filters['count']) {
 			$query = "SELECT count(*)";
@@ -315,14 +287,12 @@ class WikiPage extends JTable
 
 		return $query;
 	}
-	
-	//-----------
-	
-	function buildPluginQuery( $filters=array() ) 
+
+	function buildPluginQuery( $filters=array() )
 	{
 		//$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-		
+
 		//include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'wiki'.DS.'revision.php' );
 		//$wr = new WikiPageRevision( $database );
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -368,7 +338,7 @@ class WikiPage extends JTable
 					//$text3 = str_replace(' ','',$text2);
 					$text2 = preg_replace("/[^a-zA-Z0-9\s]/", "", strtolower($searchquery->searchText));
 					$text3 = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($searchquery->searchText));
-					
+
 					$query .= ", ("
 							. "  MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') +"
 							. "  MATCH(w.title) AGAINST ('+$text -\"$text2\"') +"
@@ -399,7 +369,7 @@ class WikiPage extends JTable
 				$exactphrase = addslashes('"'.$phrases[0].'"');
 				$query .= "AND ( (MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR"
 						 . " (MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) ) ";
-						
+
 			} else {
 				/*$words = array();
 				if (count($searchquery->searchWords) > 0) {
@@ -417,16 +387,16 @@ class WikiPage extends JTable
 				//$text2 = str_replace('+','',$text);
 				$text2 = preg_replace("/[^a-zA-Z0-9\s]/", "", strtolower($searchquery->searchText));
 				$text3 = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($searchquery->searchText));
-				
+
 				$query .= "AND ( ( MATCH(w.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
 						 . " ( MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') > 0) ) ";
-						
+
 			}
 		}
 		if (isset($filters['group']) && $filters['group'] != '') {
 			$query .= "AND (r.group_owner='".$filters['group']."') ";
 			if (!$filters['authorized']) {
-				switch ($filters['access']) 
+				switch ($filters['access'])
 				{
 					case 'public':    $query .= "AND r.access = 0 ";  break;
 					case 'protected': $query .= "AND r.access = 3 ";  break;
@@ -435,7 +405,7 @@ class WikiPage extends JTable
 					default:          $query .= "AND r.access != 4 "; break;
 				}
 			} else {
-				switch ($filters['access']) 
+				switch ($filters['access'])
 				{
 					case 'public':    $query .= "AND r.access = 0 ";  break;
 					case 'protected': $query .= "AND r.access = 3 ";  break;
@@ -454,7 +424,7 @@ class WikiPage extends JTable
 					$ugs = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
 					$groups = array();
 					if ($ugs && count($ugs) > 0) {
-						foreach ($ugs as $ug) 
+						foreach ($ugs as $ug)
 						{
 							$groups[] = $ug->cn;
 						}
@@ -480,7 +450,7 @@ class WikiPage extends JTable
 		if (isset($filters['select']) && $filters['select'] != 'count') {
 			if (isset($filters['sortby'])) {
 				$query .= "ORDER BY ";
-				switch ($filters['sortby']) 
+				switch ($filters['sortby'])
 				{
 					case 'title':   $query .= 'title ASC';         break;
 					case 'id':  $query .= "id DESC"; break;

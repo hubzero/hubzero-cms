@@ -36,8 +36,8 @@ class HubController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->_task = Jrequest::getVar( 'task', '' );
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'save':       $this->save();      break;
 			case 'remove':     $this->delete();    break;
@@ -46,27 +46,27 @@ class HubController extends Hubzero_Controller
 			case 'edit':       $this->edit();      break;
 			case 'cancel':     $this->cancel();    break;
 			case 'misc':       $this->misc();      break;
-			
+
 			case 'components':   $this->components();          break;
 			case 'savecom':      $this->savecom();             break;
-			
+
 			case 'registration': $this->settings();            break;
 			case 'savereg':      $this->saveReg(); break;
 			case 'databases':    $this->settings();            break;
 			case 'savedb':       $this->_save('databases');    break;
 			case 'site':         $this->settings();            break;
 			case 'savesite':     $this->_save('site');         break;
-			
+
 			case 'addorg': $this->addorg(); break;
 			case 'editorg': $this->editorg(); break;
 			case 'removeorg': $this->removeorg(); break;
 			case 'saveorg': $this->saveorg(); break;
 			case 'cancelorg': $this->cancelorg(); break;
 			case 'orgs': $this->orgs(); break;
-			
+
 			default: $this->settings(); break;
 		}
-		
+
 		// Load the component
 		/*$component = new JTableComponent( $this->database );
 		$component->loadByOption( $this->_option );
@@ -129,42 +129,40 @@ class HubController extends Hubzero_Controller
 			$menucom->store();
 		}*/
 	}
-	
+
 	//----------------------------------------------------------
 	// Config functions
 	//----------------------------------------------------------
-	
+
 	protected function &loadConfiguration()
 	{
 		$arr = array();
-		
+
 		if (!is_readable(JPATH_CONFIGURATION.DS.'hubconfiguration.php')) {
 			return $arr;
 		}
-		
+
 		require_once(JPATH_CONFIGURATION.DS.'hubconfiguration.php');
-		
+
 		$object = new HubConfig();
-		
+
 		if (is_object( $object )) {
-			foreach (get_object_vars($object) as $k => $v) 
+			foreach (get_object_vars($object) as $k => $v)
 			{
 				if (substr($k, 0,1) != '_' || $k == '_name') {
 					$arr[$k] = $v;
 				}
 			}
 		}
-		
+
 		return $arr;
 	}
-	
-	//-----------
-	
+
 	protected function saveConfiguration(&$arr)
 	{
 		$handle = fopen(JPATH_CONFIGURATION.DS.'hubconfiguration.php', "wb");
 		fwrite($handle, "<?php\nclass HubConfig {\n");
-		foreach ($arr as $key => $value ) 
+		foreach ($arr as $key => $value )
 		{
 			if (strstr($value, "'")) {
 				$value = addslashes($value);
@@ -175,21 +173,19 @@ class HubController extends Hubzero_Controller
 		fclose($handle);
 	}
 
-	//-----------
-	
-	protected function settings() 
+	protected function settings()
 	{
 		$arr =& $this->loadConfiguration();
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
-			case 'registration': 
+			case 'registration':
 				$a = array();
 				$component =& JComponentHelper::getComponent( $this->_option );
 				$params = trim($component->params);
 				if ($params) {
 					$params = explode("\n", $params);
-					foreach ($params as $p) 
+					foreach ($params as $p)
 					{
 						$b = explode("=",$p);
 						$a[$b[0]] = trim(end($b));
@@ -217,15 +213,15 @@ class HubController extends Hubzero_Controller
 				    $a['registrationOptIn'] = 'OOUU';
 				    $a['registrationTOU'] = 'RHRH';
 				}
-				
+
 				$view = new JView( array('name'=>'registration') );
 				$view->a = $a;
 			break;
-			case 'databases': 
+			case 'databases':
 				$view = new JView( array('name'=>'databases') );
 			break;
 			case 'site':
-			default: 
+			default:
 				$view = new JView( array('name'=>'site') );
 			break;
 		}
@@ -233,7 +229,7 @@ class HubController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->arr = $arr;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -242,26 +238,24 @@ class HubController extends Hubzero_Controller
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function _save( $task='' ) 
+
+	protected function _save( $task='' )
 	{
 		if ($task == 'registration') {
 			$this->saveReg();
 			return;
 		}
-		
+
 		$settings = JRequest::getVar( 'settings', array(), 'post' );
-		
+
 		if (!is_array($settings) || empty($settings)) {
 			$this->_redirect = 'index.php?option='.$this->_option.'&task='.$task;
 			return;
 		}
-		
+
 		$arr =& $this->loadConfiguration();
-		
-		foreach ($settings as $name=>$value) 
+
+		foreach ($settings as $name=>$value)
 		{
 			if ($task == 'registration') {
 				$r = $value['create'].$value['proxy'].$value['update'].$value['edit'];
@@ -271,20 +265,18 @@ class HubController extends Hubzero_Controller
 				$arr[$name] = $value;
 			}
 		}
-		
+
 		$this->saveConfiguration($arr);
-		
+
 		$this->_redirect = 'index.php?option='.$this->_option.'&task='.$task;
 		$this->_message = JText::_('Configuration saved');
 	}
-	
-	//-----------
-	
-	protected function saveReg() 
+
+	protected function saveReg()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$settings = JRequest::getVar( 'settings', array(), 'post' );
 
 		if (!is_array($settings) || empty($settings)) {
@@ -295,20 +287,20 @@ class HubController extends Hubzero_Controller
 		$arr = array();
 
 		$database =& JFactory::getDBO();
-		
+
 		$component = new JTableComponent( $database );
 		$component->loadByOption( $this->_option );
 		//$component->params = $params;
 		$params = trim($component->params);
 		if ($params) {
 			$params = explode("\n", $params);
-			foreach ($params as $p) 
+			foreach ($params as $p)
 			{
 				$b = explode("=",$p);
 				$arr[$b[0]] = trim(end($b));
 			}
 		}
-		foreach ($settings as $name=>$value) 
+		foreach ($settings as $name=>$value)
 		{
 			$r = $value['create'].$value['proxy'].$value['update'].$value['edit'];
 
@@ -316,18 +308,16 @@ class HubController extends Hubzero_Controller
 			$arr['registration'.trim($name)] = trim($r);
 		}
 		$a = array();
-		foreach ($arr as $k=>$v) 
+		foreach ($arr as $k=>$v)
 		{
 			$a[] = $k.'='.$v;
 		}
 		$component->params = implode("\n",$a);
 		$component->store();
-		
+
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=registration';
 		$this->_message = JText::_('Configuration saved');
 	}
-	
-	//-----------
 
 	protected function misc()
 	{
@@ -336,10 +326,10 @@ class HubController extends Hubzero_Controller
 		$view->task = $this->_task;
 
 		$f = array('hubShortName','hubShortURL','hubLongURL','hubSupportEmail','hubMonitorEmail','hubHomeDir');
-		
+
 		$arr =& $this->loadConfiguration();
 		$view->rows = array();
-		foreach ($arr as $field => $value) 
+		foreach ($arr as $field => $value)
 		{
 			if ((substr($field, 0, strlen('registration')) != 'registration')
 			 && (substr($field, 0, strlen('hubLDAP')) != 'hubLDAP')
@@ -352,21 +342,21 @@ class HubController extends Hubzero_Controller
 				$view->rows[$field] = $value;
 			}
 		}
-		
+
 		// Get Joomla configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get paging variables
 		$limit = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$start = JRequest::getInt('limitstart', 0);
-		
+
 		$total = count($view->rows);
 
 		// initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $total, $start, $limit );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -376,23 +366,21 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function edit()
 	{
 		$arr =& $this->loadConfiguration();
-		
+
 		$view = new JView( array('name'=>'configuration') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		$name = JRequest::getVar( 'name', 0 );
 
 		if (empty($name)) {
 			$ids = JRequest::getVar( 'id', array(0) );
-			
+
 			if (is_array($ids)) {
-				foreach ($ids as $id) 
+				foreach ($ids as $id)
 				{
 					if (array_key_exists($id,$arr)) {
 						$name = $id;
@@ -401,7 +389,7 @@ class HubController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		if (empty($name)) {
 			$view->name = null;
 			$view->value = null;
@@ -409,11 +397,11 @@ class HubController extends Hubzero_Controller
 			if (!array_key_exists($name, $arr)) {
 				$arr[$name] = null;
 			}
-			
+
 			$view->name = $name;
 			$view->value = $arr[$name];
 		}
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -423,26 +411,22 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
-	//-----------
-
 	protected function save( $redirect=1 )
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$arr =& $this->loadConfiguration();
-		
+
 		$name = JRequest::getVar( 'editname', 0, 'post' );
-		
+
 		$editsave = !empty($name);
-		
+
 		if (!$editsave) {
 			$name = JRequest::getVar( 'name', 0, 'post' );
 		}
@@ -453,9 +437,9 @@ class HubController extends Hubzero_Controller
             $this->_message = JText::_('Variable already exists');
 		} else {
 			$arr[$name] = $value;
-			
+
 			$this->saveConfiguration($arr);
-			
+
 			if ($redirect) {
 				$this->_redirect = 'index.php?option='.$this->_option.'&task=misc';
 				$this->_message = JText::_('Configuration variable saved');
@@ -463,13 +447,11 @@ class HubController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
 	protected function delete()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$modified = false;
 
 		$arr =& $this->loadConfiguration();
@@ -484,7 +466,7 @@ class HubController extends Hubzero_Controller
 					$modified = true;
 				}
 			}
-			
+
 			if ($modified) {
 				$this->saveConfiguration($arr);
 			}
@@ -493,37 +475,35 @@ class HubController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=misc';
 		$this->_message = JText::_('Configuration variable deleted');
 	}
-	
-	//-----------
-	
-	protected function components() 
+
+	protected function components()
 	{
 		// Get the list of components
 		$arr =& $this->loadConfiguration();
-		
+
 		$components = (isset($arr['hubComponentList'])) ? $arr['hubComponentList'] : 'com_answers,com_blog,com_citations,com_contribtool,com_events,com_feedback,com_groups,com_meetings,com_members,com_resources,com_support,com_tags,com_tools,com_userpoints,com_wishlist';
 		$components = explode(',',$components);
 		$components = array_map('trim',$components);
 
 		sort($components);
-		
+
 		$view = new JView( array('name'=>'components') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->components = $components;
-		
+
 		// Get the active component
 		$com = JRequest::getVar( 'component', '' );
 		if (!$com) {
 			$com = $components[0];
 		}
-		
+
 		// Load the component
 		$view->component = new JTableComponent( $this->database );
 		$view->component->loadByOption( $com );
-		
+
 		$view->msg = $this->_message;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -532,48 +512,46 @@ class HubController extends Hubzero_Controller
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	protected function savecom()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming component ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
-		
+
 		// Load the component
 		$component = new JTableComponent( $this->database );
 		$component->load( $id );
-		
+
 		// Incoming parameters
 		$params = JRequest::getVar( 'params', array(), 'post' );
 		if (is_array( $params )) {
 			$txt = array();
-			foreach ( $params as $k=>$v) 
+			foreach ( $params as $k=>$v)
 			{
 				$txt[] = "$k=$v";
 			}
-			
+
 			$component->params = implode( "\n", $txt );
-			
+
 			// Save the changes
 			if (!$component->store()) {
 				$this->setError( $component->getError() );
 			}
-			
+
 			$this->_message = JText::_('Configuration successfully saved.');
 		}
-		
+
 		// Push through to the components view
 		$this->components();
 	}
-	
+
 	//----------------------------------------------------------
 	//  Organizations
 	//----------------------------------------------------------
-	
+
 	protected function orgs()
 	{
 		$view = new JView( array('name'=>'organizations') );
@@ -583,12 +561,12 @@ class HubController extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get filters
 		$view->filters = array();
 		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.orgsearch', 'search', ''));
 		$view->filters['show']   = '';
-		
+
 		// Get paging variables
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
@@ -597,7 +575,7 @@ class HubController extends Hubzero_Controller
 
 		// Get a record count
 		$view->total = $obj->getCount( $view->filters );
-		
+
 		// Get records
 		$view->rows = $obj->getRecords( $view->filters );
 
@@ -613,22 +591,18 @@ class HubController extends Hubzero_Controller
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function addorg()
 	{
 		$this->editorg();
 	}
 
-	//-----------
-
-	protected function editorg() 
+	protected function editorg()
 	{
 		$view = new JView( array('name'=>'organization') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
 
@@ -638,11 +612,11 @@ class HubController extends Hubzero_Controller
 		} else {
 			$id = 0;
 		}
-		
+
 		// Initiate database class and load info
 		$view->org = new RegisterOrganization( $this->database );
 		$view->org->load( $id );
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -651,14 +625,12 @@ class HubController extends Hubzero_Controller
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function saveorg() 
+
+	protected function saveorg()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Load the tag object and bind the incoming data to it
 		$row = new RegisterOrganization( $this->database );
 		if (!$row->bind( $_POST )) {
@@ -677,19 +649,17 @@ class HubController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-	
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgs';
 		$this->_message = JText::_( 'HUB_ORG_SAVED' );
 	}
-	
-	//-----------
 
-	protected function removeorg() 
+	protected function removeorg()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
 
@@ -701,21 +671,19 @@ class HubController extends Hubzero_Controller
 		// Do we have any IDs?
 		if (!empty($ids)) {
 			$org = new RegisterOrganization( $this->database );
-			
+
 			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Remove the organization
 				$org->delete( $id );
 			}
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgs';
 		$this->_message = JText::_('HUB_ORG_REMOVED');
 	}
-	
-	//-----------
 
 	protected function cancelorg()
 	{

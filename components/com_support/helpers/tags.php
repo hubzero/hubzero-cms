@@ -42,15 +42,13 @@ class SupportTags extends TagsHandler
 		$this->_db  = $db;
 		$this->_tbl = 'support';
 	}
-	
-	//-----------
-	
+
 	public function get_tag_cloud($showsizes=0, $admin=0, $oid=NULL)
 	{
 		// set some variables
 		$min_font_size = 1;
 		$max_font_size = 1.8;
-		
+
 		$filter = "";
 		if ($oid) {
 			$filter .= "WHERE rt.objectid=".$oid;
@@ -64,7 +62,7 @@ class SupportTags extends TagsHandler
 		} else {
 			$filter .= "";
 		}
-		
+
 		// find all tags
 		$sql = "SELECT t.tag, t.raw_tag, t.admin, COUNT(*) as count
 				FROM #__tags AS t INNER JOIN #__tags_object AS rt ON (rt.tagid = t.id) AND rt.tbl='$this->_tbl' $filter
@@ -72,9 +70,9 @@ class SupportTags extends TagsHandler
 				ORDER BY raw_tag ASC";
 		$this->_db->setQuery( $sql );
 		$tags = $this->_db->loadObjectList();
-	
+
 		$html = '';
-		
+
 		if ($tags && count($tags) > 0) {
 			if ($showsizes) {
 				$retarr = array();
@@ -94,7 +92,7 @@ class SupportTags extends TagsHandler
 				}
 				$step = ($max_font_size - $min_font_size)/($spread);
 			}
-			
+
 			// build HTML
 			if ($showsizes == 3) {
 				$bits = array();
@@ -111,21 +109,21 @@ class SupportTags extends TagsHandler
 				$tag->raw_tag = str_replace( '&amp;', '&', $tag->raw_tag );
 				$tag->raw_tag = str_replace( '&', '&amp;', $tag->raw_tag );
 
-				switch ($showsizes) 
+				switch ($showsizes)
 				{
 					case 3:
 						$bits[] = '<a'.$class.' href="'.JRoute::_('index.php?option=com_support&amp;task=tickets&amp;find=status:open tag:'.$tag->tag).'">'.$tag->raw_tag.'</a>';
 					break;
-					
+
 					case 2:
 						$html .= ' <li'.$class.'><a href="javascript:void(0);" onclick="addtag(\''.$tag->tag.'\');">'.$tag->raw_tag.'</a></li>'."\n";
 					break;
-					
+
 					case 1:
 						$size = $min_font_size + ($tag->count - $min_qty) * $step;
 						$html .= "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.$tag->raw_tag.'</a></span></li>'."\n";
 					break;
-					
+
 					default:
 						$html .= "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.$tag->raw_tag.'</a></li>'."\n";
 					break;

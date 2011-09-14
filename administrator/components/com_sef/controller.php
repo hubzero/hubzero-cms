@@ -38,18 +38,18 @@ class SefController extends Hubzero_Controller
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
-		
+
 		$this->_task = JRequest::getVar( 'task', '' );
 		$section = JRequest::getVar( 'section', '' );
 		if ($section) {
 			$this->_task = $section;
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'config': $this->config(); break;
 			case 'saveconfig': $this->saveconfig(); break;
-			
+
 			case 'add':    $this->add();    break;
 			case 'new':    $this->add();    break;
 			case 'edit':   $this->edit();   break;
@@ -58,7 +58,7 @@ class SefController extends Hubzero_Controller
 			case 'cancel': $this->cancel(); break;
 			case 'info':   $this->info();   break;
 			case 'browse': $this->browse(); break;
-			
+
 			default: $this->browse(); break;
 		}
 	}
@@ -66,36 +66,34 @@ class SefController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Tag functions
 	//----------------------------------------------------------
-	
-	protected function info() 
+
+	protected function info()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'info') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	protected function browse()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'entries') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Get Joomla configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']      = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
@@ -103,7 +101,7 @@ class SefController extends Hubzero_Controller
 		$view->filters['catid']      = $app->getUserStateFromRequest($this->_option.'.catid', 'catid', 0, 'int');
 		$view->filters['ViewModeId'] = $app->getUserStateFromRequest($this->_option.'.viewmode', 'viewmode', 0, 'int');
 		$view->filters['SortById']   = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 0, 'int');
-		
+
 		// Determine the mode
 		$view->is404mode = false;
 		if ($view->filters['ViewModeId'] == 1) {
@@ -111,14 +109,14 @@ class SefController extends Hubzero_Controller
 		}
 
 		$lists = array();
-		
+
 		// Make the select list for the filter
 		$viewmode = array();
 		$viewmode[] = JHTML::_('select.option', '0', JText::_('Show SEF Urls'), 'value', 'text');
 		$viewmode[] = JHTML::_('select.option', '1', JText::_('Show 404 Log'), 'value', 'text');
 		$viewmode[] = JHTML::_('select.option', '2', JText::_('Show Custom Redirects'), 'value', 'text');
-		
-		$view->lists['viewmode'] = JHTML::_('select.genericlist', $viewmode, 'viewmode', '', 'value', 'text', $view->filters['ViewModeId'], false, false );  	
+
+		$view->lists['viewmode'] = JHTML::_('select.genericlist', $viewmode, 'viewmode', '', 'value', 'text', $view->filters['ViewModeId'], false, false );
 
 		// Make the select list for the filter
 		$orderby = array();
@@ -132,13 +130,13 @@ class SefController extends Hubzero_Controller
 		$orderby[] = JHTML::_('select.option', '5', JText::_('Hits (desc)'), 'value', 'text');
 
 		$view->lists['sortby'] = JHTML::_('select.genericlist', $orderby, 'sortby', '', 'value', 'text', $view->filters['SortById'], false, false );
-		
+
 		// Instantiate a new SefEntry
 		$s = new SefEntry( $this->database );
 
 		// Record count
 		$view->total = $s->getCount( $view->filters );
-		
+
 		// Get records
 		$view->rows = $s->getRecords( $view->filters );
 
@@ -150,19 +148,15 @@ class SefController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function add() 
+	protected function add()
 	{
 		$this->edit();
 	}
-
-	//-----------
 
 	protected function edit($row=null)
 	{
@@ -170,7 +164,7 @@ class SefController extends Hubzero_Controller
 		$view = new JView( array('name'=>'entry') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Load a tag object if one doesn't already exist
 		if (!$row) {
 			// Incoming
@@ -180,7 +174,7 @@ class SefController extends Hubzero_Controller
 			}
 
 			$id = (!empty($ids)) ? $ids[0] : 0;
-			
+
 			$view->row = new SefEntry( $this->database );
 			$view->row->load( $id );
 
@@ -196,25 +190,21 @@ class SefController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
-	//-----------
-	
 	protected function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Load the tag object and bind the incoming data to it
 		$row = new SefEntry( $this->database );
 		if (!$row->bind( $_POST )) {
@@ -222,11 +212,11 @@ class SefController extends Hubzero_Controller
 			$this->edit($row);
 			return;
 		}
-		
+
 		if (substr($row->oldurl,-1) == DS) {
 			$row->oldurl = substr($row->oldurl,0,strlen($row->oldurl)-1);
 		}
-		
+
 		// Check content
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
@@ -240,39 +230,37 @@ class SefController extends Hubzero_Controller
 			$this->edit($row);
 			return;
 		}
-	
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_( 'SEF saved' );
 	}
 
-	//-----------
-
 	protected function remove()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
 			$ids = array();
 		}
-		
+
 		// Make sure we have an ID
 		if (empty($ids)) {
 			$this->_redirect = 'index.php?option='.$this->_option;
 			return;
 		}
-		
+
 		// Load some needed objects
 		$sef = new SefEntry( $this->database );
-		
-		foreach ($ids as $id) 
+
+		foreach ($ids as $id)
 		{
 			// Remove the SEF
 			$sef->delete( $id );
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_( 'SEF removed' );

@@ -29,12 +29,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchWeightContributor
 {
   public static function onYSearchWeightAll($terms, $res)
   {
-    $pos_terms = $terms->get_positive_chunks(); 
+    $pos_terms = $terms->get_positive_chunks();
 
     foreach (array_map('strtolower', $res->get_contributors()) as $contributor)
       foreach ($pos_terms as $term)

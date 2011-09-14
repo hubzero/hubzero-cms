@@ -89,7 +89,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="order_summary">
 			<h4><span class="coin">&nbsp;</span><?php echo JText::_('COM_STORE_ORDER_SUMMARY'); ?></h4>
 <?php
-	foreach ($this->items as $item) 
+	foreach ($this->items as $item)
 	{
 ?>
 			<p>

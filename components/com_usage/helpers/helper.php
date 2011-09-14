@@ -38,7 +38,7 @@ class UsageHelper
 
 		if (!is_object($instance)) {
 			$config =& JComponentHelper::getParams( 'com_usage' );
-			
+
 			$options['driver']   = $config->get('statsDBDriver');
 			$options['host']     = $config->get('statsDBHost');
 			$options['port']     = $config->get('statsDBPort');
@@ -50,22 +50,22 @@ class UsageHelper
 			if ((!isset($options['host']) || $options['host'] == '') && (!isset($options['user']) || $options['user'] == '')) {
 				return null;
 			}
-			
+
 			$instance =& JDatabase::getInstance($options);
 		}
 
 		if (JError::isError($instance)) {
 			return null;
 		}
-		
+
 		return $instance;
 	}
 
 	//----------------------------------//
 	//  Print Top X List from Database  //
 	//----------------------------------//
-	
-	public function toplist(&$db, $top, $t=0, $enddate=0, $raw=0) 
+
+	public function toplist(&$db, $top, $t=0, $enddate=0, $raw=0)
 	{
 		// Set top list parameters...
 		$hub = 1;
@@ -119,7 +119,7 @@ class UsageHelper
 
 			// Process each different date/time periods/range...
 			$toplist = array();
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				// Calculate the total value for this toplist...
 				$toplistset = array();
@@ -167,7 +167,7 @@ class UsageHelper
 					foreach ($results as $row)
 					{
 						if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
-							while ($rank < $row->rank) 
+							while ($rank < $row->rank)
 							{
 								array_push($toplistset, array("n/a", 0, "n/a", "n/a"));
 								$rank++;
@@ -188,7 +188,7 @@ class UsageHelper
 						}
 					}
 				}
-				while ($rank <= $size || $rank == 1) 
+				while ($rank <= $size || $rank == 1)
 				{
 					array_push($toplistset, array("n/a", 0, "n/a", "n/a"));
 					$rank++;
@@ -203,7 +203,7 @@ class UsageHelper
 			$html .= "\t".'<caption>Table '.$t.': '.$topname.'</caption>'."\n";
 			$html .= "\t".'<thead>'."\n";
 			$html .= "\t\t".'<tr>'."\n";
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				$html .= "\t\t\t".'<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'."\n";
 			}
@@ -211,20 +211,20 @@ class UsageHelper
 			$html .= "\t".'</thead>'."\n";
 			$html .= "\t".'<tbody>'."\n";
 			$html .= "\t\t".'<tr class="summary">'."\n";
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				$tdcls = ($pidx != 1) ? ' class="group"' : '';
-				
+
 				$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $toplist[$pidx][0][0] .'</th>'."\n";
 				$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][0][2] .'</td>'."\n";
 				$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][0][3] .'</td>'."\n";
 			}
 			$html .= "\t\t".'</tr>'."\n";
-			for ($i = 1; $i < $rank; $i++) 
+			for ($i = 1; $i < $rank; $i++)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				$html .= "\t\t".'<tr class="'. $cls .'">'."\n";
-				for ($pidx = 0; $pidx < count($period); $pidx++) 
+				for ($pidx = 0; $pidx < count($period); $pidx++)
 				{
 					$tdcls = ($pidx != 1) ? ' class="group"' : '';
 					$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $toplist[$pidx][$i][0] .'</th>'."\n";
@@ -243,12 +243,12 @@ class UsageHelper
 	//  Create New Array, Dropping All Duplicates and 
 	//  Reindexing All Elements
 	//----------------------------------------------------------
-	
-	public function array_unique_reindex($somearray) 
+
+	public function array_unique_reindex($somearray)
 	{
 		$tmparr = array_unique($somearray);
 		$i = 0;
-		foreach ($tmparr as $v) 
+		foreach ($tmparr as $v)
 		{
 			$newarr[$i] = $v;
 			$i++;
@@ -261,8 +261,8 @@ class UsageHelper
 	//  Returns TRUE if there is data in the database
 	//  for the date passed to it, FALSE otherwise.
 	//----------------------------------------------------------
-	
-	public function check_for_data(&$db, $yearmonth, $period) 
+
+	public function check_for_data(&$db, $yearmonth, $period)
 	{
 		$sql = "SELECT COUNT(datetime) 
 				FROM totalvals 
@@ -276,9 +276,7 @@ class UsageHelper
 		return(false);
 	}
 
-	//-----------
-	
-	public function check_for_classdata(&$db, $yearmonth) 
+	public function check_for_classdata(&$db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime) 
 				FROM classvals 
@@ -291,9 +289,7 @@ class UsageHelper
 		return(false);
 	}
 
-	//-----------
-	
-	public function check_for_regiondata(&$db, $yearmonth) 
+	public function check_for_regiondata(&$db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime)
 				FROM regionvals 
@@ -310,7 +306,7 @@ class UsageHelper
 	// Date Format functions
 	//----------------------------------------------------------
 
-	public function dateformat($seldate, $period='month') 
+	public function dateformat($seldate, $period='month')
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -349,9 +345,7 @@ class UsageHelper
 		}
 	}
 
-	//-----------
-
-	public function dateformat_plot($seldate) 
+	public function dateformat_plot($seldate)
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -367,10 +361,10 @@ class UsageHelper
 	// Selected Date functions
 	//----------------------------------------------------------
 
-	public function seldate_value($valarray, $seldate, $valkey='value') 
+	public function seldate_value($valarray, $seldate, $valkey='value')
 	{
 		if ($valarray) {
-			foreach ($valarray as $val) 
+			foreach ($valarray as $val)
 			{
 				if (substr($val['date'], 0, strlen($seldate)) == $seldate) {
 					return($val[$valkey]);
@@ -380,47 +374,37 @@ class UsageHelper
 		return(0);
 	}
 
-	//-----------
-
-	public function seldate_next($seldate, $period) 
+	public function seldate_next($seldate, $period)
 	{
 		return(UsageHelper::seldate_shift($seldate, $period, 1));
 	}
 
-	//-----------
-
-	public function seldate_prev($seldate, $period) 
+	public function seldate_prev($seldate, $period)
 	{
 		return(UsageHelper::seldate_shift($seldate, $period, 0));
 	}
 
-	//-----------
-
-	public function seldate_nextyear($seldate) 
+	public function seldate_nextyear($seldate)
 	{
 		$date = $seldate;
-		for ($i = 0; $i < 12; $i++) 
+		for ($i = 0; $i < 12; $i++)
 		{
 			$date = UsageHelper::seldate_shift($date, 'month', 1);
 		}
 		return($date);
 	}
 
-	//-----------
-
-	public function seldate_prevyear($seldate) 
+	public function seldate_prevyear($seldate)
 	{
 		$date = $seldate;
-		for ($i = 0; $i < 12; $i++) 
+		for ($i = 0; $i < 12; $i++)
 		{
 			$date = UsageHelper::seldate_shift($date, 'month', 0);
 		}
 		return($date);
 	}
 
-	//-----------
-
-	public function seldate_fix($seldate, $period) 
+	public function seldate_fix($seldate, $period)
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -451,9 +435,7 @@ class UsageHelper
 		return(sprintf("%04d-%02d-%02d", $year, $month, $day));
 	}
 
-	//-----------
-	
-	public function seldate_shift($seldate, $period, $right) 
+	public function seldate_shift($seldate, $period, $right)
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
@@ -510,17 +492,15 @@ class UsageHelper
 		return(sprintf("%04d-%02d-%02d", $year, $month, $day));
 	}
 
-	//-----------
-
-	public function seldate_valuedescsortkey(&$arr, $date) 
+	public function seldate_valuedescsortkey(&$arr, $date)
 	{
-		$reversealpha = array(',' => '', '.' => '', 'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V', 
-								'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O', 
-								'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H', 
+		$reversealpha = array(',' => '', '.' => '', 'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
+								'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O',
+								'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H',
 								'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A');
 		$dmax = 0;
 		$tmax = 0;
-		for ($i = 0; $i < count($arr); $i++) 
+		for ($i = 0; $i < count($arr); $i++)
 		{
 			$dateval = UsageHelper::seldate_value($arr[$i], $date);
 			$len = strlen($dateval);
@@ -533,7 +513,7 @@ class UsageHelper
 			}
 		}
 		$format = "%0" . $dmax . "d%0" . $tmax . "d";
-		for ($i = 0; $i < count($arr); $i++) 
+		for ($i = 0; $i < count($arr); $i++)
 		{
 			$arr[$i]['sortkey'] = '';
 			$dateval = UsageHelper::seldate_value($arr[$i], $date);
@@ -545,16 +525,12 @@ class UsageHelper
 		return($arr);
 	}
 
-	//-----------
-
-	public function seldate_valuedescsort(&$arr) 
+	public function seldate_valuedescsort(&$arr)
 	{
 		return(usort($arr, "arraykeyeddesccmp"));
 	}
-	
-	//-----------
-	
-	public function valformat($value, $format) 
+
+	public function valformat($value, $format)
 	{
 		if ($format == 1) {
 			return(number_format($value));
@@ -585,15 +561,13 @@ class UsageHelper
 			return($value);
 		}
 	}
-	
-	//-----------
-	
+
 	public function options( &$db, $enddate, $thisyear, $monthsReverse, $func='' )
 	{
 		$o = '';
-		for ($i = $thisyear; $i >= 2004; $i--) 
+		for ($i = $thisyear; $i >= 2004; $i--)
 		{
-			foreach ($monthsReverse as $key => $month) 
+			foreach ($monthsReverse as $key => $month)
 			{
 				$value = $i . '-' . $key;
 				if (UsageHelper::$func($db, $value) ) {

@@ -43,8 +43,6 @@ include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'mw.class.php');
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//----------------------------------------------------------
-
 $modtoollist = new modToolList( $params );
 $modtoollist->display();
 

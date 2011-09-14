@@ -65,7 +65,7 @@ $wikiconfig = array(
 				if ($this->rows) {
 					$o = 'even';
 					$k = 0;
-					foreach ($this->rows as $row) 
+					foreach ($this->rows as $row)
 					{
 						$huser = "";
 						$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
@@ -76,9 +76,9 @@ $wikiconfig = array(
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($huser->get('name')).'</a>';
 							}
 						}
-				
+
 						$comment = $p->parse( "\n".stripslashes($row->comment), $wikiconfig );
-				
+
 						$o = ($o == 'odd') ? 'even' : 'odd';
 			?>
 			<li class="comment <?php echo $o; if ($k == 0) { echo ' author'; } ?>" id="c<?php echo $row->id; ?>">

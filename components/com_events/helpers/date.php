@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class EventsDate 
+class EventsDate
 {
 	var $year   = NULL;
 	var $month  = NULL;
@@ -38,19 +38,17 @@ class EventsDate
 	var $minute = NULL;
 	var $second = NULL;
 
-	//-----------
-
-    public function EventsDate( $datetime='' ) 
+    public function EventsDate( $datetime='' )
 	{
 		if (ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})",$datetime,$regs)) {
 			$this->setDate( $regs[1], $regs[2], $regs[3] );
 			$this->hour   = intval( $regs[4] );
 			$this->minute = intval( $regs[5] );
 			$this->second = intval( $regs[6] );
-			
+
 			$this->month = max( 1, $this->month );
 			$this->month = min( 12, $this->month );
-			
+
 			$this->day = max( 1, $this->day );
 			$this->day = min( $this->daysInMonth(), $this->day );
 		} else {
@@ -61,9 +59,7 @@ class EventsDate
 		}
 	}
 
-	//-----------
-
-	public function setDate( $year=0, $month=0, $day=0 ) 
+	public function setDate( $year=0, $month=0, $day=0 )
 	{
 		$this->year  = intval( $year );
 		$this->month = intval( $month );
@@ -76,30 +72,22 @@ class EventsDate
 		$this->day = min( $this->daysInMonth(), $this->day );
     }
 
-	//-----------
-
-	public function getYear( $asString=false ) 
+	public function getYear( $asString=false )
 	{
 		return $asString ? sprintf( "%04d", $this->year ) : $this->year;
     }
 
-	//-----------
-
-	public function getMonth( $asString=false ) 
+	public function getMonth( $asString=false )
 	{
 		return $asString ? sprintf( "%02d", $this->month ) : $this->month;
     }
 
-	//-----------
-
-	public function getDay( $asString=false ) 
+	public function getDay( $asString=false )
 	{
 		return $asString ? sprintf( "%02d", $this->day ) : $this->day;
     }
 
-	//-----------
-
-	public function get12hrTime( ) 
+	public function get12hrTime( )
 	{
 		$hour=$this->hour;
 		if ($hour > 12) {
@@ -111,20 +99,16 @@ class EventsDate
 		return ($this->hour >= 12) ? $time.'pm' : $time.'am';
 	}
 
-	//-----------
-
 	public function get24hrTime( )
 	{
 		return sprintf("%02d:%02d", $this->hour, $this->minute);
 	}
 
-	//-----------
-
-	public function toDateURL($task='') 
+	public function toDateURL($task='')
 	{
-		switch ($task) 
+		switch ($task)
 		{
-			case 'year': 
+			case 'year':
 				$url = 'year=' . $this->getYear( 1 );
 				break;
 			case 'month':
@@ -138,13 +122,11 @@ class EventsDate
 				$url = 'year=' . $this->getYear( 1 ) . '&amp;month=' . $this->getMonth( 1 ) . '&amp;day=' . $this->getDay( 1 );
 				break;
 		}
-		
+
 		return $url;
     }
 
-	//-----------
-
-	public function daysInMonth( $month=0, $year=0 ) 
+	public function daysInMonth( $month=0, $year=0 )
 	{
 		$month = intval( $month );
 		$year = intval( $year );
@@ -174,10 +156,8 @@ class EventsDate
 			return 31;
 		}
 	}
-	
-	//-----------
-	
-	public function addMonths( $n=0 ) 
+
+	public function addMonths( $n=0 )
 	{
 		$an = abs( $n );
 		$years = floor( $an / 12 );
@@ -200,17 +180,13 @@ class EventsDate
 		}
 	}
 
-	//-----------
-
-	public function addDays( $n=0 ) 
+	public function addDays( $n=0 )
 	{
 		$days = $this->toDays();
 		$this->fromDays( $days + $n );
 	}
 
-	//-----------
-
-	public function toDays( $day=0, $month=0, $year=0) 
+	public function toDays( $day=0, $month=0, $year=0)
 	{
 		if (!$day) {
 			if (isset( $this )) {
@@ -252,9 +228,7 @@ class EventsDate
 		return ( floor( (146097 * $century) / 4 ) + floor( (1461 * $year) / 4 ) + floor( (153 * $month + 2) / 5 ) + $day + 1721119);
 	}
 
-	//-----------
-	
-	public function fromDays( $days ) 
+	public function fromDays( $days )
 	{
 		$days -= 1721119;
 		$century = floor( ( 4 * $days - 1) /  146097 );

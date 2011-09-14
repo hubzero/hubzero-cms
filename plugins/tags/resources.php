@@ -29,21 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_resources' );
-
-//-----------
 
 class plgTagsResources extends JPlugin
 {
 	private $_areas = null;
 	private $_cats  = null;
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgTagsResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,12 +45,10 @@ class plgTagsResources extends JPlugin
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'tags', 'resources' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
-	
-	//-----------
 
 	public function onTagAreas()
 	{
@@ -64,7 +56,7 @@ class plgTagsResources extends JPlugin
 		if (is_array($areas)) {
 			return $areas;
 		}
-		
+
 		$categories = $this->_cats;
 		if (!is_array($categories)) {
 			// Get categories
@@ -78,8 +70,8 @@ class plgTagsResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$normalized_valid_chars = 'a-zA-Z0-9';
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -93,15 +85,13 @@ class plgTagsResources extends JPlugin
 		$this->_areas = $areas;
 		return $areas;
 	}
-	
-	//-----------
-	
+
 	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			$ars = $this->onTagAreas();
-			if (!array_intersect( $areas, $ars ) 
+			if (!array_intersect( $areas, $ars )
 			&& !array_intersect( $areas, array_keys( $ars ) )
 			&& !array_intersect( $areas, array_keys( $ars['resources'] ) )) {
 				return array();
@@ -112,25 +102,25 @@ class plgTagsResources extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$ids = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ids[] = $tag->id;
 		}
-		
+
 		// Instantiate some needed objects
 		$rr = new ResourcesResource( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['tags'] = $ids;
 		$filters['now'] = date( 'Y-m-d H:i:s', time() + 0 * 60 * 60 );
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
-		
+
 		ximport('Hubzero_User_Helper');
 		$juser =& JFactory::getUser();
 		$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
@@ -146,8 +136,8 @@ class plgTagsResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
 		$normalized_valid_chars = 'a-zA-Z0-9';
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -159,27 +149,27 @@ class plgTagsResources extends JPlugin
 			if ($this->_total != null) {
 				$total = 0;
 				$t = $this->_total;
-				foreach ($t as $l) 
+				foreach ($t as $l)
 				{
 					$total += $l;
 				}
-				
+
 				if ($total == 0) {
 					return array();
 				}
 			}
-			
+
 			$filters['select'] = 'records';
 			$filters['limit'] = (count($areas) > 1) ? 'all' : $limit;
 			$filters['limitstart'] = $limitstart;
 			$filters['sortby'] = ($sort) ? $sort : 'date';
-			
+
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
 			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources') {
 				$filters['type'] = $cats[$areas[0]]['id'];
 			}
-			
+
 			// Get results
 			/*if (count($areas) > 1) {
 				$filters['groupby'] = true;
@@ -198,7 +188,7 @@ class plgTagsResources extends JPlugin
 			// Did we get any results?
 			if ($rows) {
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					if ($row->alias) {
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias='.$row->alias);
@@ -212,14 +202,14 @@ class plgTagsResources extends JPlugin
 			return $rows;
 		} else {
 			$filters['select'] = 'count';
-			
+
 			// Get a count
 			$counts = array();
 			$ares = $this->onTagAreas();
-			foreach ($ares as $area=>$val) 
+			foreach ($ares as $area=>$val)
 			{
 				if (is_array($val)) {
-					foreach ($val as $a=>$t) 
+					foreach ($val as $a=>$t)
 					{
 						$filters['type'] = $cats[$a]['id'];
 
@@ -236,15 +226,15 @@ class plgTagsResources extends JPlugin
 			return $counts;
 		}
 	}
-	
+
 	private function _buildPluginQuery( $filters=array() )
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
 		$rt = new ResourcesType( $database );
-		
+
 		if (isset($filters['select']) && $filters['select'] == 'count') {
 			if (isset($filters['tags'])) {
 				$query = "SELECT count(f.id) FROM (SELECT r.id, COUNT(DISTINCT t.tagid) AS uniques ";
@@ -288,7 +278,7 @@ class plgTagsResources extends JPlugin
 		if (isset($filters['type']) && $filters['type'] != '') {
 			$query .= "AND r.type=".$filters['type']." ";
 		}
-		
+
 		if (isset($filters['tags'])) {
 			$query .= " GROUP BY r.id HAVING uniques=".count($filters['tags'])." ";
 		}
@@ -298,7 +288,7 @@ class plgTagsResources extends JPlugin
 					$query .= "GROUP BY r.id ";
 				}
 				$query .= "ORDER BY ";
-				switch ($filters['sortby']) 
+				switch ($filters['sortby'])
 				{
 					case 'date':    $query .= 'publish_up DESC';               break;
 					case 'title':   $query .= 'title ASC, publish_up DESC';         break;
@@ -328,7 +318,7 @@ class plgTagsResources extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 		ximport('Hubzero_Document');
@@ -338,19 +328,15 @@ class plgTagsResources extends JPlugin
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 	}
 
-	//-----------
-	
 	/*public function before()
 	{
 		// ...
 	}*/
 
-	//-----------
-
-	public function out( $row ) 
+	public function out( $row )
 	{
 		$database =& JFactory::getDBO();
-		
+
 		// Instantiate a helper object
 		$helper = new ResourcesHelper($row->id, $database);
 		$helper->getContributors();
@@ -367,7 +353,7 @@ class plgTagsResources extends JPlugin
 		$row->ranking = $row->data3;
 
 		// Set the display date
-		switch ($params->get('show_date')) 
+		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
 			case 1: $thedate = JHTML::_('date', $row->created, '%d %b %Y');    break;
@@ -399,16 +385,16 @@ class plgTagsResources extends JPlugin
 		if ($params->get('show_ranking')) {
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
-			
+
 			if ($row->category == 'Tools') {
 				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			} else {
 				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			$statshtml = $stats->display();
-			
+
 			$row->ranking = round($row->ranking, 1);
-			
+
 			$html .= "\t\t".'<div class="metadata">'."\n";
 			$r = (10*$row->ranking);
 			if (intval($r) < 10) {
@@ -425,7 +411,7 @@ class plgTagsResources extends JPlugin
 			$html .= "\t\t\t".'</dl>'."\n";
 			$html .= "\t\t".'</div>'."\n";
 		} elseif ($params->get('show_rating')) {
-			switch ($row->rating) 
+			switch ($row->rating)
 			{
 				case 0.5: $class = ' half-stars';      break;
 				case 1:   $class = ' one-stars';       break;
@@ -457,13 +443,11 @@ class plgTagsResources extends JPlugin
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
 
-	//-----------
-	
 	/*public function after()
 	{
 		// ...

@@ -94,7 +94,7 @@ $database =& JFactory::getDBO();
 $to = new TagsObject( $database );
 
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 	$now = date( "Y-m-d H:i:s" );
@@ -102,7 +102,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	if ($row->admin == 1) {
 		$check = '<span class="check">'.strToLower( JText::_('ADMIN') ).'</span>';
 	}
-	
+
 	/*$totals = $dispatcher->trigger( 'onTagCount', array($row->id) );
 	$total = 0;
 	foreach ($totals as $t) 

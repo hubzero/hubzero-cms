@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class MembersProfile extends JTable 
+class MembersProfile extends JTable
 {
 	var $uidNumber = null;
 	var $name = null;
@@ -68,23 +67,19 @@ class MembersProfile extends JTable
 	var $vip = null;
 	var $public = null;
 	var $params = null;
-	
-	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xprofiles', 'uidNumber', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->givenName ) == '') {
 			$this->setError( JText::_('MEMBER_MUST_HAVE_FIRST_NAME') );
 			return false;
 		}
-		
+
 		if (trim( $this->surname ) == '') {
 			$this->setError( JText::_('MEMBER_MUST_HAVE_LAST_NAME') );
 			return false;
@@ -92,32 +87,30 @@ class MembersProfile extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array(), $admin ) 
+
+	public function buildQuery( $filters=array(), $admin )
 	{
 		// Get plugins
 		JPluginHelper::importPlugin( 'members' );
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Trigger the functions that return the areas we'll be using
 		$bits = $dispatcher->trigger( 'onMembersContributionsCount', array($filters['authorized']) );
-		
+
 		$select = "";
 		if (!isset($filters['count'])) {
 			$select .= ', COALESCE(cv.total_count, 0) AS rcount, COALESCE(cv.resource_count, 0) AS resource_count, COALESCE(cv.wiki_count, 0) AS wiki_count ';
 		}
-		
+
 		// Build the query
 		$sqlsearch = "";
 		if (isset($filters['index']) && $filters['index'] != '') {
 			$sqlsearch = " ( (LEFT(m.surname, 1) = '".$filters['index']."') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '".$filters['index']."%') ) ";
 		}
-		
+
 		if (isset($filters['contributions']))
 			$sqlsearch .= ($sqlsearch ? ' AND ' : ' ') . 'cv.resource_count + cv.wiki_count >= '. $filters['contributions'];
-	
+
 		if (isset($filters['search']) && $filters['search'] != '') {
 			//$show = '';
 			$words = explode(' ', $filters['search']);
@@ -127,44 +120,44 @@ class MembersProfile extends JTable
 			if (!isset($filters['search_field'])) {
 				$filters['search_field'] = 'name';
 			}
-			switch ($filters['search_field']) 
+			switch ($filters['search_field'])
 			{
 				case 'email':
 					$sqlsearch .= " m.email='".$filters['search']."' ";
 				break;
-				
+
 				case 'uidNumber':
 					$sqlsearch .= " m.uidNumber='".$filters['search']."' ";
 				break;
-				
+
 				case 'username':
 					$sqlsearch .= " m.username='".$filters['search']."' ";
 				break;
-				
+
 				case 'giveName':
 					$sqlsearch .= " (";
-					foreach ($words as $word) 
+					foreach ($words as $word)
 					{
 						$sqlsearch .= " (LOWER(m.givenName) LIKE '%$word%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
 				break;
-				
+
 				case 'surname':
 					$sqlsearch .= " (";
-					foreach ($words as $word) 
+					foreach ($words as $word)
 					{
 						$sqlsearch .= " (LOWER(m.surname) LIKE '%$word%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
 				break;
-				
+
 				case 'name':
 				default:
 					$sqlsearch .= " (";
-					foreach ($words as $word) 
+					foreach ($words as $word)
 					{
 						$sqlsearch .= ' MATCH (m.name) AGAINST (\''.$word.'\' IN BOOLEAN MODE) OR'; //" (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
 					}
@@ -177,7 +170,7 @@ class MembersProfile extends JTable
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 			$select .= ", b.bio ";
 		}
-		
+
 		$query  = $select."FROM $this->_tbl AS m ".($filters['show'] == 'contributors' ? 'INNER' : 'LEFT').' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
 		//$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
@@ -209,9 +202,7 @@ class MembersProfile extends JTable
 
 		return $query;
 	}
-	
-	//-----------
-	
+
 	public function getCount( $filters=array(), $admin=false )
 	{
 		$filters['count'] = true;
@@ -224,19 +215,17 @@ class MembersProfile extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array(), $admin=false ) 
+
+	public function getRecords( $filters=array(), $admin=false )
 	{
 		if ($admin) {
 			$filters['authorized'] = true;
 		}
-		
+
 		if ($filters['sortby'] == 'fullname ASC') {
 			$filters['sortby'] = 'lname ASC, fname ASC';
 		}
-		
+
 		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, NULL AS lastvisitDate, ";
 		/*$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
 		   CONCAT(m.surname, ', ', m.givenName, COALESCE(CONCAT(' ', m.middleName), ''))
@@ -250,7 +239,7 @@ class MembersProfile extends JTable
 		$query .= " GROUP BY m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
 			$query .= " ORDER BY ";
-			switch ($filters['sortby']) 
+			switch ($filters['sortby'])
 			{
 				case 'organization':
 					$query .= "organization ASC";
@@ -274,10 +263,8 @@ class MembersProfile extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function selectWhere( $select, $where ) 
+
+	public function selectWhere( $select, $where )
 	{
 		$query = "SELECT $select FROM $this->_tbl WHERE $where";
 

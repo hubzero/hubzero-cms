@@ -39,19 +39,19 @@ class FeedbackController extends Hubzero_Controller
 		if (!$this->_task) {
 			$this->_task = JRequest::getVar( 'task', '', 'get' );
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			// Image management
 			case 'upload':          $this->upload();          break;
 			case 'img':             $this->img();             break;
 			case 'delete':          $this->delete();          break;
-			
+
 			// Processors
 			case 'sendsuggestions': $this->sendsuggestions(); break;
 			case 'sendstory':       $this->sendstory();       break;
 			case 'sendreport':      $this->sendreport();      break;
-			
+
 			// Views
 			case 'suggestions':     $this->suggestions();     break;
 			case 'success_story':   $this->success_story();   break;
@@ -63,13 +63,11 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-	
-	protected function _buildPathway() 
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -83,10 +81,8 @@ class FeedbackController extends Hubzero_Controller
 			);
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle() 
+
+	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task) {
@@ -99,8 +95,8 @@ class FeedbackController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-	
-	public function login() 
+
+	public function login()
 	{
 		$view = new JView( array('name'=>'login') );
 		$view->title = $this->_title;
@@ -110,16 +106,14 @@ class FeedbackController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function main() 
+
+	protected function main()
 	{
 		// Check if wishlist component entry is there
 		$this->database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_wishlist' AND enabled=1" );
 		$wishlist = $this->database->loadResult();
 		$wishlist = $wishlist ? 1 : 0;
-		
+
 		// Check if xpoll component entry is there
 		$this->database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_xpoll' AND enabled=1" );
 		$xpoll = $this->database->loadResult();
@@ -127,13 +121,13 @@ class FeedbackController extends Hubzero_Controller
 
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'main') );
 		$view->title = $this->_title;
@@ -147,37 +141,35 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function success_story()
 	{
 		// Incoming
 		$quote = array();
 		$quote['long'] = JRequest::getVar('quote', '', 'post');
 		$quote['short'] = JRequest::getVar('short_quote', '', 'post');
-		
+
 		// Generate a CAPTCHA
 		$captcha = array();
 		$captcha['operand1'] = rand(0,10);
 		$captcha['operand2'] = rand(0,10);
 		$captcha['sum'] = $captcha['operand1'] + $captcha['operand2'];
 		$captcha['key'] = $this->_generate_hash($captcha['sum'],date('j'));
-		
+
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		if ($this->juser->get('guest')) {
 			$this->_msg = JText::_('To submit a success story, you need to be logged in. Please login using the form below:');
 			$this->login();
 			return;
 		}
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'story') );
 		$view->title = $this->_title;
@@ -193,19 +185,17 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function poll()
 	{
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'poll') );
 		$view->title = $this->_title;
@@ -217,15 +207,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function suggestions() 
+	protected function suggestions()
 	{
 		// Incoming
 		$suggestion = array();
 		$suggestion['for'] = JRequest::getVar( 'for', '' );
 		$suggestion['idea'] = '';
-	
+
 		// Generate a CAPTCHA
 		$suggestion['operand1'] = rand(0,10);
 		$suggestion['operand2'] = rand(0,10);
@@ -234,13 +222,13 @@ class FeedbackController extends Hubzero_Controller
 
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'suggestions') );
 		$view->title = $this->_title;
@@ -255,26 +243,24 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function report_problems() 
+	protected function report_problems()
 	{
 		// Get browser info
 		ximport('Hubzero_Browser');
 		$browser = new Hubzero_Browser();
-		
+
 		$problem = array(
-			'os' => $browser->getOs(), 
-			'osver' => $browser->getOsVersion(), 
-			'browser' => $browser->getBrowser(), 
-			'browserver' => $browser->getBrowserVersion(), 
+			'os' => $browser->getOs(),
+			'osver' => $browser->getOsVersion(),
+			'browser' => $browser->getBrowser(),
+			'browserver' => $browser->getBrowserVersion(),
 			'topic' => '',
-			'short' => '', 
-			'long' => '', 
-			'referer' => JRequest::getVar( 'HTTP_REFERER', NULL, 'server' ), 
+			'short' => '',
+			'long' => '',
+			'referer' => JRequest::getVar( 'HTTP_REFERER', NULL, 'server' ),
 			'tool' => JRequest::getVar( 'tool', '' )
 		);
-					 
+
 		// Generate a CAPTCHA
 		$problem['operand1'] = rand(0,10);
 		$problem['operand2'] = rand(0,10);
@@ -283,13 +269,13 @@ class FeedbackController extends Hubzero_Controller
 
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'report') );
 		$view->title = $this->_title;
@@ -309,14 +295,14 @@ class FeedbackController extends Hubzero_Controller
 	// Processors
 	//----------------------------------------------------------
 
-	public function sendstory() 
+	public function sendstory()
 	{
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-	
+
 		// Push some styles to the template
 		$this->_getStyles();
 
@@ -326,20 +312,20 @@ class FeedbackController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		$user = array('uid'=>$row->userid, 'name'=>$row->fullname, 'org'=>$row->org, 'email'=>$row->useremail );
-		
+
 		// Check that a story was entered
 		if (!$row->quote) {
 			$this->setError(JText::_('COM_FEEDBACK_ERROR_MISSING_STORY'));
-			
+
 			// Generate a CAPTCHA
 			$captcha = array();
 			$captcha['operand1'] = rand(0,10);
 			$captcha['operand2'] = rand(0,10);
 			$captcha['sum'] = $captcha['operand1'] + $captcha['operand2'];
 			$captcha['key'] = $this->_generate_hash($captcha['sum'],date('j'));
-			
+
 			// Output HTML
 			$view = new JView( array('name'=>'story') );
 			$view->title = $this->_title;
@@ -355,13 +341,13 @@ class FeedbackController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
-			
+
 		// Code cleaner for xhtml transitional compliance
 		$row->quote = Hubzero_View_Helper_Html::purifyText($row->quote);
 		$row->quote = str_replace( '<br>', '<br />', $row->quote );
 		$row->date  = date( 'Y-m-d H:i:s', time() );
 		$row->picture = basename($row->picture);
-		
+
 		// Check content
 		if (!$row->check()) {
 			JError::raiseError( 500, $row->getError() );
@@ -373,7 +359,7 @@ class FeedbackController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'story', 'layout'=>'thanks') );
 		$view->title = $this->_title;
@@ -389,35 +375,33 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function sendsuggestions() 
+	protected function sendsuggestions()
 	{
 		// Set page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Incoming
 		$suggester  = array_map('trim', $_POST['suggester']);
 		$suggestion = array_map('trim', $_POST['suggestion']);
 		$suggester  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $suggester);
 		$suggestion = array_map(array('Hubzero_View_Helper_Html','purifyText'), $suggestion);
-	
+
 		// Make sure email address is valid
 		$validemail = $this->_check_validEmail($suggester['email']);
-	
+
 		// Prep a new math question and hash in case any form validation fails
 		$suggestion['operand1'] = rand(0,10);
 		$suggestion['operand2'] = rand(0,10);
 		$sum = $suggestion['operand1'] + $suggestion['operand2'];
 		$suggestion['key'] = $this->_generate_hash($sum,date('j'));
-		
-		if ($suggester['name'] && $suggestion['for'] && $suggestion['idea'] && $validemail) {			
+
+		if ($suggester['name'] && $suggestion['for'] && $suggestion['idea'] && $validemail) {
 			// Are the logged in?
 			if ($this->juser->get('guest')) {
 				// No - don't trust user
@@ -439,11 +423,11 @@ class FeedbackController extends Hubzero_Controller
 					return;
 				}
 			}
-			
+
 			// Get user's IP and domain
 			$ip = $this->_ip_address();
 			$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
-			
+
 			// Quick spam filter
 			$spam = $this->_detect_spam($suggestion['idea'], $ip);
 			if ($spam) {
@@ -459,15 +443,15 @@ class FeedbackController extends Hubzero_Controller
 				$view->display();
 				return;
 			}
-			
+
 			// Get some email settings
 			$jconfig =& JFactory::getConfig();
-			
+
 			$admin   = $jconfig->getValue('config.mailfrom');
 			$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_FEEDBACK_SUGGESTIONS');
 			$from    = $jconfig->getValue('config.sitename').' '.JText::_('COM_FEEDBACK_SUGGESTIONS_FORM');
 			$hub     = array('email' => $suggester['email'], 'name' => $from);
-			
+
 			// Generate e-mail message
 			$message  = (!$this->juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n" : '';
 			$message .= ($suggester['login']) ? JText::_('COM_FEEDBACK_USERNAME').': '. $suggester['login'] ."\r\n" : '';
@@ -476,11 +460,11 @@ class FeedbackController extends Hubzero_Controller
 			$message .= JText::_('COM_FEEDBACK_EMAIL').': '. $suggester['email'] ."\r\n";
 			$message .= JText::_('COM_FEEDBACK_FOR').': '. $suggestion['for'] ."\r\n";
 			$message .= JText::_('COM_FEEDBACK_IDEA').': '. $suggestion['idea'] ."\r\n";
-	
+
 			// Send e-mail
 			ximport('Hubzero_Toolbox');
 			Hubzero_Toolbox::send_email($admin, $subject, $message);
-			
+
 			// Get their browser and OS
 			ximport('Hubzero_Browser');
 			$hbrowser = new Hubzero_Browser();
@@ -489,10 +473,10 @@ class FeedbackController extends Hubzero_Controller
 			$os_version = $hbrowser->getOsVersion();
 			$browser = $hbrowser->getBrowser();
 			$browser_ver = $hbrowser->getBrowserVersion();
-		
+
 			// Create new support ticket
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
-			
+
 			$data = array();
 			$data['id']        = NULL;
 			$data['status']    = 0;
@@ -515,7 +499,7 @@ class FeedbackController extends Hubzero_Controller
 			$data['cookies']   = (JRequest::getVar('sessioncookie','','cookie')) ? 1 : 0;
 			$data['instances'] = 1;
 			$data['section']   = 1;
-			
+
 			$row = new SupportTicket( $this->database );
 			if (!$row->bind( $data )) {
 				$this->setError( $row->getError() );
@@ -542,7 +526,7 @@ class FeedbackController extends Hubzero_Controller
 			if ($validemail == 0) {
 				$this->setError(2);
 			}
-		
+
 			// Output form with error messages
 			$view = new JView( array('name'=>'suggestions') );
 			$view->title = $this->_title;
@@ -558,9 +542,7 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
-	protected function sendreport() 
+	protected function sendreport()
 	{
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
@@ -587,7 +569,7 @@ class FeedbackController extends Hubzero_Controller
 		// tell if the Joomla  _cleanvar function does enough to allow us to remove the purifyText call
 		$reporter = array_map(array('Hubzero_View_Helper_Html','purifyText'), $reporter);
 		//$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
-	
+
 		// Make sure email address is valid
 		$validemail = $this->_check_validEmail($reporter['email']);
 
@@ -599,13 +581,13 @@ class FeedbackController extends Hubzero_Controller
 
 		// Push some styles to the template
 		$this->_getStyles();
-	
+
 		// Prep a new math question and hash in case any form validation fails
 		$problem['operand1'] = rand(0,10);
 		$problem['operand2'] = rand(0,10);
 		$sum = $problem['operand1'] + $problem['operand2'];
 		$problem['key'] = $this->_generate_hash($sum,date('j'));
-	
+
 		// Trigger any events that need to be called
 		$customValidation = true;
 		$result = $dispatcher->trigger( 'onValidateTicketSubmission', array($reporter, $problem) );
@@ -625,11 +607,11 @@ class FeedbackController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
-		
+
 		// Get the user's IP
 		$ip = $this->_ip_address();
 		$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
-			
+
 		// Are the logged in?
 		if ($this->juser->get('guest')) {
 			// No - don't trust user
@@ -637,7 +619,7 @@ class FeedbackController extends Hubzero_Controller
 			$key = JRequest::getVar( 'krhash', 0 );
 			$answer = JRequest::getInt( 'answer', 0 );
 			$answer = $this->_generate_hash($answer,date('j'));
-				
+
 			// Quick spam filter
 			$spam = $this->_detect_spam($problem['long'], $ip);
 
@@ -670,7 +652,7 @@ class FeedbackController extends Hubzero_Controller
 		$source_city    = 'unknown';
 		$source_region  = 'unknown';
 		$source_country = 'unknown';
-		
+
 		ximport('Hubzero_Geo');
 		$gdb =& Hubzero_Geo::getGODBO();
 		if (is_object($gdb)) {
@@ -682,7 +664,7 @@ class FeedbackController extends Hubzero_Controller
 				$source_country = $rows[0]->countryLONG;
 			}
 		}
-		
+
 		// Cut suggestion at 70 characters
 		if (!$problem['short'] && $problem['long']) {
 			$problem['short'] = substr($problem['long'], 0, 70);
@@ -690,14 +672,14 @@ class FeedbackController extends Hubzero_Controller
 				$problem['short'] .= '...';
 			}
 		}
-		
+
 		$tool = $this->_getTool( $problem['referer'] );
 		if ($tool) {
 			$group = $this->_getTicketGroup( trim($tool) );
 		} else {
 			$group = '';
 		}
-		
+
 		// Build an array of ticket data
 		$data = array();
 		$data['id']        = NULL;
@@ -722,7 +704,7 @@ class FeedbackController extends Hubzero_Controller
 		$data['instances'] = 1;
 		$data['section']   = 1;
 		$data['group']     = $group;
-		
+
 		// Initiate class and bind data to database fields
 		$row = new SupportTicket( $this->database );
 		if (!$row->bind( $data )) {
@@ -740,31 +722,31 @@ class FeedbackController extends Hubzero_Controller
 		if (!$row->id) {
 			$row->getId();
 		}
-		
+
 		$sconfig = JComponentHelper::getParams( 'com_support' );
 		$attachment = $this->_uploadAttachment( $row->id, $sconfig );
 		$row->report .= ($attachment) ? "\n\n".$attachment : '';
 		$problem['long'] .= ($attachment) ? "\n\n".$attachment : '';
-		
+
 		// Save the data
 		if (!$row->store()) {
 			$this->setError( $row->getError() );
 		}
-		
+
 		// Get some email settings
 		$jconfig =& JFactory::getConfig();
 		$admin   = $jconfig->getValue('config.mailfrom');
 		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_FEEDBACK_SUPPORT').', '.JText::sprintf('COM_FEEDBACK_TICKET_NUMBER',$row->id);
 		$from    = $jconfig->getValue('config.sitename').' web-robot';
 		$hub     = array('email' => $reporter['email'], 'name' => $from);
-		
+
 		// Parse comments for attachments
 		$xhub =& Hubzero_Factory::getHub();
 		$attach = new SupportAttachment( $this->database );
 		$attach->webpath = $xhub->getCfg('hubLongURL').$sconfig->get('webpath').DS.$row->id;
 		$attach->uppath  = JPATH_ROOT.$sconfig->get('webpath').DS.$row->id;
 		$attach->output  = 'email';
-		
+
 		// Generate e-mail message
 		$message  = (!$this->juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n\r\n" : '';
 		$message .= ($reporter['login']) ? JText::_('COM_FEEDBACK_USERNAME').': '. $reporter['login'] ."\r\n" : '';
@@ -792,10 +774,10 @@ class FeedbackController extends Hubzero_Controller
 		// Send e-mail
 		ximport('Hubzero_Toolbox');
 		Hubzero_Toolbox::send_email($admin, $subject, $message);
-		
+
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger( 'onTicketSubmission', array($row) );
-		
+
 		// Output Thank You message
 		$view = new JView( array('name'=>'report', 'layout'=>'thanks') );
 		$view->title = $this->_title;
@@ -808,8 +790,6 @@ class FeedbackController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
 
 	private function _uploadAttachment( $listdir, $sconfig )
 	{
@@ -817,19 +797,19 @@ class FeedbackController extends Hubzero_Controller
 			$this->setError( JText::_('SUPPORT_NO_UPLOAD_DIRECTORY') );
 			return '';
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
 			return '';
 		}
-		
+
 		// Incoming
 		$description = ''; //JRequest::getVar( 'description', '' );
-		
+
 		// Construct our file path
 		$path = JPATH_ROOT.$sconfig->get('webpath').DS.$listdir;
-		
+
 		// Build the path if it doesn't exist
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
@@ -844,7 +824,7 @@ class FeedbackController extends Hubzero_Controller
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
 		$ext = strtolower(JFile::getExt($file['name']));
-		
+
 		//make sure that file is acceptable type
 		if ( !in_array($ext, explode(',',$this->config->get('file_ext'))) ) {
 			$this->setError( JText::_('Incorrect file type.') );
@@ -859,7 +839,7 @@ class FeedbackController extends Hubzero_Controller
 			// File was uploaded
 			// Create database entry
 			$description = htmlspecialchars($description);
-			
+
 			$row = new SupportAttachment( $this->database );
 			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$file['name'],'description'=>$description) );
 			if (!$row->check()) {
@@ -871,21 +851,19 @@ class FeedbackController extends Hubzero_Controller
 			if (!$row->id) {
 				$row->getID();
 			}
-			
+
 			return '{attachment#'.$row->id.'}';
 		}
 	}
 
-	//-----------
-
-	private function _getTool( $referrer ) 
+	private function _getTool( $referrer )
 	{
 		$tool = '';
-		
+
 		if (!$referrer) {
 			return $tool;
 		}
-		
+
 		if (substr($referrer,0,3) == '/mw') {
 			$bits = explode('/', $referrer);
 			if ($bits[2] == 'invoke') {
@@ -921,10 +899,8 @@ class FeedbackController extends Hubzero_Controller
 
 		return $tool;
 	}
-	
-	//-----------
 
-	private function _getTicketGroup($tool) 
+	private function _getTicketGroup($tool)
 	{
 		// Do we have a tool?
 		if (!$tool) {
@@ -935,11 +911,11 @@ class FeedbackController extends Hubzero_Controller
 		$resource = new ResourcesResource( $this->database );
 		$tool = str_replace(':','-',$tool);
 		$resource->loadAlias( $tool );
-		
+
 		if (!$resource || $resource->type != 7) {
 			return '';
 		}
-			
+
 		// Get tags on the tools
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 		$rt = new ResourcesTags($this->database);
@@ -953,19 +929,19 @@ class FeedbackController extends Hubzero_Controller
 		//include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php' );
 		$tt = new TagsGroup( $this->database );
 		$tgas = $tt->getRecords();
-			
+
 		if (!$tgas) {
 			return 'app-'.$tool;
 		}
 
 		// Loop through the tags and make a flat array so we can search quickly
 		$ts = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ts[] = $tag->tag;
 		}
 		// Loop through the tag/group array and see if one of them is in the tags list
-		foreach ($tgas as $tga) 
+		foreach ($tgas as $tga)
 		{
 			if (in_array($tga->tag, $ts)) {
 				// We found one! So set the group
@@ -987,7 +963,7 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', 0 );
 			return;
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -995,7 +971,7 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
@@ -1014,7 +990,7 @@ class FeedbackController extends Hubzero_Controller
 			$path = substr($this->config->get('uploadpath'), 0, (strlen($this->config->get('uploadpath')) - 1));
 		}
 		$path .= $this->config->get('uploadpath').DS.$dir;
-		
+
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( $path, 0777 )) {
@@ -1028,7 +1004,7 @@ class FeedbackController extends Hubzero_Controller
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
-		
+
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('COM_FEEDBACK_ERROR_UPLOADING') );
@@ -1036,7 +1012,7 @@ class FeedbackController extends Hubzero_Controller
 		} else {
 			// Do we have an old file we're replacing?
 			$curfile = JRequest::getVar( 'currentfile', '' );
-			
+
 			if ($curfile != '') {
 				// Yes - remove it
 				if (file_exists($path.DS.$curfile)) {
@@ -1055,8 +1031,6 @@ class FeedbackController extends Hubzero_Controller
 		$this->img( $file, $id );
 	}
 
-	//-----------
-
 	protected function delete()
 	{
 		if ($this->juser->get('guest')) {
@@ -1064,7 +1038,7 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', 0 );
 			return;
 		}
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -1072,13 +1046,13 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		if ($this->juser->get('id') != $id) {
 			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
 			$this->img( '', $this->juser->get('id') );
 			return;
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'file', '' );
 		if (!$file) {
@@ -1086,9 +1060,9 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		$file = basename($file);
-		
+
 		// Build the file path
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
@@ -1100,8 +1074,8 @@ class FeedbackController extends Hubzero_Controller
 		}
 		$path .= $this->config->get('uploadpath').DS.$dir;
 
-		if (!file_exists($path.DS.$file) or !$file) { 
-			$this->setError( JText::_('COM_FEEDBACK_FILE_NOT_FOUND') ); 
+		if (!file_exists($path.DS.$file) or !$file) {
+			$this->setError( JText::_('COM_FEEDBACK_FILE_NOT_FOUND') );
 		} else {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
@@ -1113,12 +1087,10 @@ class FeedbackController extends Hubzero_Controller
 
 			$file = '';
 		}
-	
+
 		// Push through to the image view
 		$this->img( $file, $id );
 	}
-
-	//-----------
 
 	protected function img( $file='', $id=0 )
 	{
@@ -1127,12 +1099,12 @@ class FeedbackController extends Hubzero_Controller
 			$id = JRequest::getInt( 'id', 0 );
 		}
 		$dir = Hubzero_View_Helper_Html::niceidformat( $id );
-		
+
 		// Do we have a file or do we need to get one?
-		$file = ($file) 
-			  ? $file 
+		$file = ($file)
+			  ? $file
 			  : JRequest::getVar( 'file', '' );
-			  
+
 		// Build the directory path
 		$path = $this->config->get('uploadpath').DS.$dir;
 
@@ -1157,7 +1129,7 @@ class FeedbackController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
-	private function _getUser() 
+	private function _getUser()
 	{
 		$user = array();
 		$user['login'] = '';
@@ -1168,10 +1140,10 @@ class FeedbackController extends Hubzero_Controller
 
 		if (!$this->juser->get('guest')) {
 			ximport('Hubzero_User_Profile');
-			
+
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $this->juser->get('id') );
-			
+
 			if (is_object($profile)) {
 				$user['login'] = $profile->get('username');
 				$user['name']  = $profile->get('name');
@@ -1182,8 +1154,6 @@ class FeedbackController extends Hubzero_Controller
 		}
 		return $user;
 	}
-	
-	//-----------
 
 	private function _detect_spam($text, $ip)
 	{
@@ -1195,7 +1165,7 @@ class FeedbackController extends Hubzero_Controller
 		} else {
 			$bl = array();
 		}
-		
+
 		// Bad words
 		$words = $this->config->get('badwords');
 		if ($words) {
@@ -1212,10 +1182,10 @@ class FeedbackController extends Hubzero_Controller
 			if (!empty($badword))
 			    	$patterns[] = '/(.*?)'.trim($badword).'(.*?)/s';
 		}
-	
+
 		// Set the splam flag
 		$spam = false;
-	
+
 		// Check the text against bad words
 		foreach ($patterns as $pattern)
 		{
@@ -1224,7 +1194,7 @@ class FeedbackController extends Hubzero_Controller
 				$spam = true;
 			}
 		}
-		
+
 		// Check the number of links in the text
 		// Very unusual to have 5 or more - usually only spammers
 		if (!$spam) {
@@ -1233,16 +1203,14 @@ class FeedbackController extends Hubzero_Controller
         	    $spam = true;
 			}
 		}
-		
+
 		// Check the user's IP against the blacklist
 		if (in_array($ip, $bl)) {
 			$spam = true;
 		}
-		
+
 		return $spam;
 	}
-
-	//-----------
 
 	private function _generate_hash($input, $day)
 	{
@@ -1251,16 +1219,14 @@ class FeedbackController extends Hubzero_Controller
 
 		// Get MD5 and reverse it
 		$enc = strrev(md5($input));
-	
+
 		// Get only a few chars out of the string
 		$enc = substr($enc, 26, 1) . substr($enc, 10, 1) . substr($enc, 23, 1) . substr($enc, 3, 1) . substr($enc, 19, 1);
-	
+
 		return $enc;
 	}
 
-	//-----------
-
-	private function _check_validLogin($login) 
+	private function _check_validLogin($login)
 	{
 		if (eregi("^[_0-9a-zA-Z]+$", $login)) {
 			return(1);
@@ -1269,9 +1235,7 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
-	private function _check_validEmail($email) 
+	private function _check_validEmail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
 			return(1);
@@ -1280,25 +1244,19 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
 	private function _server($index = '')
-	{		
+	{
 		if (!isset($_SERVER[$index])) {
 			return FALSE;
 		}
-		
+
 		return TRUE;
 	}
-	
-	//-----------
-	
+
 	private function _valid_ip($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
 	}
-	
-	//-----------
 
 	private function _ip_address()
 	{
@@ -1311,21 +1269,21 @@ class FeedbackController extends Hubzero_Controller
 		} elseif ($this->_server('HTTP_X_FORWARDED_FOR')) {
 			 $ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR','','server');
 		}
-		
+
 		if ($ip_address === FALSE) {
 			$ip_address = '0.0.0.0';
 			return $ip_address;
 		}
-		
+
 		if (strstr($ip_address, ',')) {
 			$x = explode(',', $ip_address);
 			$ip_address = end($x);
 		}
-		
+
 		if (!$this->_valid_ip($ip_address)) {
 			$ip_address = '0.0.0.0';
 		}
-				
+
 		return $ip_address;
 	}
 }

@@ -31,18 +31,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class EventsHtml
 {
-	public function autolink($matches) 
+	public function autolink($matches)
 	{
 		$href = $matches[0];
 
 		if (substr($href, 0, 1) == '!') {
 			return substr($href, 1);
 		}
-		
+
 		$href = str_replace('"','',$href);
 		$href = str_replace("'",'',$href);
 		$href = str_replace('&#8221','',$href);
-		
+
 		$h = array('h','m','f','g','n');
 		if (!in_array(substr($href,0,1), $h)) {
 			$href = substr($href, 1);
@@ -62,34 +62,30 @@ class EventsHtml
 		);
 		return $l;
 	}
-	
-	//-----------
-	
+
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
-		for ($i = 0; $i < $length; $i++) 
+		for ($i = 0; $i < $length; $i++)
 		{
 			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
 		}
-		
+
 		return $obfuscatedEmail;
 	}
 
-	//-----------
-
-	public function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected ) 
-	{  
+	public function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected )
+	{
 		$html = '';
-		for ($i=0, $n=count( $arr ); $i < $n; $i++ ) 
+		for ($i=0, $n=count( $arr ); $i < $n; $i++ )
 		{
 			$k = $arr[$i]->$key;
 			$t = $arr[$i]->$text;
-			
+
 			$sel = '';
 			if (is_array( $selected )) {
-				foreach ($selected as $obj) 
+				foreach ($selected as $obj)
 				{
 					$k2 = $obj->$key;
 					if ($k == $k2) {
@@ -105,9 +101,7 @@ class EventsHtml
 		return $html;
 	}
 
-	//-----------
-
-	public function buildReccurDaySelect($reccurday, $tag_name, $args) 
+	public function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
 							JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
@@ -115,9 +109,9 @@ class EventsHtml
 							JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));        
+							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));
 		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;'.JText::_('EVENTS_CAL_LANG_BYDAYNUMBER').'<br />', 'value', 'text');
-		for ($a=0; $a<7; $a++) 
+		for ($a=0; $a<7; $a++)
 		{
 			$name_of_day = '&nbsp;'.$day_name[$a];
 			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day, 'value', 'text');
@@ -126,11 +120,9 @@ class EventsHtml
 		return $tosend;
     }
 
-	//-----------
-
-	public function buildMonthSelect($month, $args) 
+	public function buildMonthSelect($month, $args)
 	{
-		for ($a=1; $a<13; $a++) 
+		for ($a=1; $a<13; $a++)
 		{
 			$mnh = $a;
 			if ($mnh<="9"&ereg("(^[0-9]{1})",$mnh)) {
@@ -140,15 +132,13 @@ class EventsHtml
 			$monthslist[] = JHTML::_('select.option', $mnh, $name_of_month, 'value', 'text');
 		}
 		$tosend = JHTML::_('select.genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false );
-		return $tosend;		        
+		return $tosend;
     }
 
-	//-----------
-
-	public function buildDaySelect($year, $month, $day, $args) 
+	public function buildDaySelect($year, $month, $day, $args)
 	{
 		$nbdays = date("d",mktime(0,0,0,($month + 1),0,$year));
-		for ($a=1; $a<=$nbdays; $a++) 
+		for ($a=1; $a<=$nbdays; $a++)
 		{
 			$dys = $a;
 			if ($dys<="9"&ereg("(^[1-9]{1})",$dys)) {
@@ -160,16 +150,14 @@ class EventsHtml
 		return $tosend;
     }
 
-	//-----------
-
-	public function buildYearSelect($year, $args) 
+	public function buildYearSelect($year, $args)
 	{
 		$y = date("Y");
 		if ($year<$y-2) {
 			$yearslist[] = JHTML::_('select.option', $year, $year, 'value', 'text');
         }
-		for ($i=$y-2;$i<=$y+5;$i++) 
-		{           	    				
+		for ($i=$y-2;$i<=$y+5;$i++)
+		{
 			$yearslist[] = JHTML::_('select.option', $i, $i, 'value', 'text');
         }
 		if ($year>$y+5) {
@@ -179,9 +167,7 @@ class EventsHtml
 		return $tosend;
     }
 
-	//-----------
-
-	public function buildViewSelect($viewtype, $args) 
+	public function buildViewSelect($viewtype, $args)
 	{
 		$viewlist[] = JHTML::_('select.option', 'view_week', JText::_('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
 		$viewlist[] = JHTML::_('select.option', 'view_month', JText::_('EVENTS_CAL_LANG_VIEWBYMONTH'), 'value', 'text');
@@ -193,16 +179,14 @@ class EventsHtml
 		return $tosend;
 	}
 
-	//-----------
-
-	public function buildHourSelect( $start, $end, $inc, $tag_name, $tag_attribs, $selected, $format='' ) 
+	public function buildHourSelect( $start, $end, $inc, $tag_name, $tag_attribs, $selected, $format='' )
 	{
 		$start = intval( $start );
 		$end = intval( $end );
 		$inc = intval( $inc );
 		$arr = array();
 		$tmpi = '';
-		for ($i=$start; $i <= $end; $i+=$inc) 
+		for ($i=$start; $i <= $end; $i+=$inc)
 		{
 			if (_CAL_CONF_DATEFORMAT == 1) { // US time
 				if ($i > 11) {
@@ -219,27 +203,23 @@ class EventsHtml
 		return JHTML::_('select.genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected, false, false );
 	}
 
-	//-----------
-
 	public function buildCategorySelect($catid, $args, $gid, $option)
 	{
 		$database =& JFactory::getDBO();
 
 		$catsql = "SELECT id AS value, name AS text FROM #__categories "
-				. "WHERE section='$option' AND access<='$gid' AND published='1' ORDER BY ordering";	
+				. "WHERE section='$option' AND access<='$gid' AND published='1' ORDER BY ordering";
 
 		$categories[] = JHTML::_('select.option', '0', JText::_('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
 
 		$database->setQuery($catsql);
 		$categories = array_merge( $categories, $database->loadObjectList() );
 		$clist = JHTML::_('select.genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false );
-		
+
 		return $clist;
 	}
 
-	//-----------
-
-	public function buildWeekDaysCheck($reccurweekdays, $args) 
+	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
 							JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
@@ -247,7 +227,7 @@ class EventsHtml
 							JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
 							JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));    
+							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));
 		$tosend = '';
 		if ($reccurweekdays == '') {
 			$split = array();
@@ -256,11 +236,11 @@ class EventsHtml
 			$split = explode("|", $reccurweekdays);
 			$countsplit = count($split);
 		}
-        
-		for ($a=0; $a<7; $a++) 
+
+		for ($a=0; $a<7; $a++)
 		{
 			$checked = '';
-			for ($x = 0; $x < $countsplit; $x++) 
+			for ($x = 0; $x < $countsplit; $x++)
 			{
 				if ($split[$x] == $a) {
 					$checked = 'checked="checked"';
@@ -271,19 +251,17 @@ class EventsHtml
 		return $tosend;
 	}
 
-	//-----------
-
-	public function buildWeeksCheck($reccurweeks, $args) 
+	public function buildWeeksCheck($reccurweeks, $args)
 	{
 		$week_name = array('',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 1',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 2',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 3',
 							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 4',
-							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 5');        
+							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 5');
 		$tosend = '';
 		$checked = '';
-    
+
 		if ($reccurweeks == '') {
 			$split = array();
 			$countsplit = 0;
@@ -291,32 +269,30 @@ class EventsHtml
 			$split = explode("|", $reccurweeks);
 			$countsplit = count($split);
 		}
-        
-		for ($a=1; $a<6; $a++) 
+
+		for ($a=1; $a<6; $a++)
 		{
 			$checked = '';
-			if ($reccurweeks == '') { 
+			if ($reccurweeks == '') {
 				$checked = 'checked="checked"';
 			}
-			for ($x = 0; $x < $countsplit; $x++) 
+			for ($x = 0; $x < $countsplit; $x++)
 			{
 				if ($split[$x] == $a) {
 					$checked = 'checked="checked"';
 				}
 			}
-			$tosend .= '<label class="option"><input class="option" type="checkbox" id="cb_wn'.$a.'" name="reccurweeks" value="'.$a.'" '.$args.' '.$checked.'/>&nbsp;'.$week_name[$a].'</label><br />'."\n";     
+			$tosend .= '<label class="option"><input class="option" type="checkbox" id="cb_wn'.$a.'" name="reccurweeks" value="'.$a.'" '.$args.' '.$checked.'/>&nbsp;'.$week_name[$a].'</label><br />'."\n";
 		}
 		return $tosend;
 	}
-
-	//-----------
 
     public function getUserMailtoLink($agid, $userid)
 	{
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
 		if ($userid) {
 			$juser =& JUser::getInstance( $userid );
-			
+
 			if ($juser) {
 				if (($juser->get('email')) && ($agenda_viewmail=='YES')) {
 					$contactlink = '<a href="mailto:'.$juser->get('email').'">'.$juser->get('name').'</a>';
@@ -334,14 +310,12 @@ class EventsHtml
 				$contactlink = JText::_('EVENTS_CAL_LANG_ANONYME');
 			}
 		}
-		
+
 		return $contactlink;
 	}
 
-	//-----------
-
-	public function getMonthName($month) 
-	{        
+	public function getMonthName($month)
+	{
 		$monthname = '';
 		switch ($month)
 		{
@@ -361,12 +335,10 @@ class EventsHtml
 		return $monthname;
 	}
 
-	//-----------
-
-	public function getLongDayName($daynb) 
+	public function getLongDayName($daynb)
 	{
 		$dayname = '';
-		switch ($daynb) 
+		switch ($daynb)
 		{
 			case '0': $dayname = JText::_('EVENTS_CAL_LANG_SUNDAY');    break;
 			case '1': $dayname = JText::_('EVENTS_CAL_LANG_MONDAY');    break;
@@ -379,14 +351,12 @@ class EventsHtml
 		return $dayname;
 	}
 
-	//-----------
-
 	public function getDateFormat($year,$month,$day, $type)
 	{
 		if (empty($year)) $year = 0;
 		if (empty($month)) $month = 0;
 		if (empty($day)) $day = 1;
-        
+
 		$format_type = _CAL_CONF_DATEFORMAT;
 		$datestp     = (mktime(0,0,0,$month,$day,$year));
 		$jour_fr     = date("j", $datestp);
@@ -395,7 +365,7 @@ class EventsHtml
 		$mois_0      = date("m", $datestp);
 		$annee       = date("Y", $datestp);
 		$newdate     = '';
-		
+
 		switch ($type)
 		{
 			case '0':
@@ -404,7 +374,7 @@ class EventsHtml
 					$newdate = EventsHtml::getLongDayName($numero_jour).'&nbsp;'.$jour_fr.'&nbsp;'.EventsHtml::getMonthName($mois_0).'&nbsp;'.$annee;
 				} else if ($format_type == 1) {
 					// Us style : Monday, July 23 2003
-					$newdate = EventsHtml::getLongDayName($numero_jour).',&nbsp;'.EventsHtml::getMonthName($mois_0).'&nbsp;'.$jour_fr.'&nbsp;'.$annee; 
+					$newdate = EventsHtml::getLongDayName($numero_jour).',&nbsp;'.EventsHtml::getMonthName($mois_0).'&nbsp;'.$jour_fr.'&nbsp;'.$annee;
 				} else {
 					// De style : Montag, 23 Juli 2003
 					$newdate = EventsHtml::getLongDayName($numero_jour).',&nbsp;'.$jour_fr.'.&nbsp;'.EventsHtml::getMonthName($mois_0).'&nbsp;'.$annee;
@@ -475,17 +445,17 @@ class EventsHtml
 					$newdate = $jour_fr.'.'.$mois_0.'.';
 				}
 			break;
-      
+
 			case '6':
 				if ($format_type == 0) {
 					// Fr style : 07/2003
-					$newdate = $mois_0.'/'.$annee; 
+					$newdate = $mois_0.'/'.$annee;
 				} else if ($format_type == 1) {
 					// Us style : 07/2003
-					$newdate = $mois_0.'/'.$annee; 
+					$newdate = $mois_0.'/'.$annee;
 				} else {
 					// De style : 07/2003
-					$newdate = $mois_0.'/'.$annee; 
+					$newdate = $mois_0.'/'.$annee;
 				}
 			break;
 

@@ -30,43 +30,33 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class Hubzero_Validate 
+class Hubzero_Validate
 {
 	static public function is_any_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x);
 	}
-	
-	//-----------
 
 	static public function is_positive_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x > 0);
 	}
-	
-	//-----------
 
 	static public function is_nonnegative_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x >= 0);
 	}
-	
-	//-----------
 
 	static public function is_nonpositive_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x <= 0);
 	}
-	
-	//-----------
 
 	static public function is_negative_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x < 0);
 	}
-	
-	//-----------
-	
+
 	static public function is_reserved_username($x)
 	{
 		$reserved_users = array(
@@ -134,10 +124,8 @@ class Hubzero_Validate
 
 		return false;
 	}
-	
-	//-----------
-	
-	public function validlogin($login) 
+
+	public function validlogin($login)
 	{
 		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $login)) {
 			if (Hubzero_Validate::is_positive_integer($login)) {
@@ -149,10 +137,8 @@ class Hubzero_Validate
 			return(0);
 		}
 	}
-	
-	//-----------
-	
-	public function validpassword($password) 
+
+	public function validpassword($password)
 	{
 		if (eregi("^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$", $password)) {
 			return true;
@@ -160,10 +146,8 @@ class Hubzero_Validate
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function validemail($email) 
+
+	public function validemail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
 			return true;
@@ -171,10 +155,8 @@ class Hubzero_Validate
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function validurl($url) 
+
+	public function validurl($url)
 	{
 		if (eregi("^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]*$", $url)) {
 			return(1);
@@ -182,10 +164,8 @@ class Hubzero_Validate
 			return(0);
 		}
 	}
-	
-	//-----------
 
-	public function validphone($phone) 
+	public function validphone($phone)
 	{
 		if (eregi("^[\ \#\*\+\:\,\.0-9-]*$", $phone)) {
 			return(1);
@@ -193,10 +173,8 @@ class Hubzero_Validate
 			return(0);
 		}
 	}
-	
-	//-----------
 
-	public function validtext($text) 
+	public function validtext($text)
 	{
 		if (!strchr($text, "	")) {
 			return(1);
@@ -204,9 +182,7 @@ class Hubzero_Validate
 			return(0);
 		}
 	}
-	
-	//-----------
-	
+
 	public function validateOrgType($org)
     {
 		$orgtypes = array(
@@ -223,7 +199,7 @@ class Hubzero_Validate
 			'military',
 			'unemployed'
 		);
-        
+
 		if (in_array($org,$orgtypes))
             return true;
 

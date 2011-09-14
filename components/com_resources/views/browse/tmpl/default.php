@@ -68,7 +68,7 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 					<?php echo JText::_('COM_RESOURCES_SORT_BY'); ?>:
 					<select name="sortby" id="sortby">
 <?php
-						foreach ($sortbys as $avalue => $alabel) 
+						foreach ($sortbys as $avalue => $alabel)
 						{
 ?>
 						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->filters['sortby'] || $alabel == $this->filters['sortby']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
@@ -83,7 +83,7 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 		<div class="subject">
 <?php
 if ($this->results) {
-	switch ($this->filters['sortby']) 
+	switch ($this->filters['sortby'])
 	{
 		case 'date_created': $show_date = 1; break;
 		case 'date_modified': $show_date = 2; break;
@@ -99,7 +99,7 @@ if ($this->results) {
 $pn = $this->pageNav->getListFooter();
 $pn = str_replace('/?/&amp;','/?',$pn);
 $f = 'task=browse';
-foreach ($this->filters as $k=>$v) 
+foreach ($this->filters as $k=>$v)
 {
 	$f .= ($v && $k != 'authorized' && $k != 'limit' && $k != 'start') ? '&amp;'.$k.'='.$v : '';
 }

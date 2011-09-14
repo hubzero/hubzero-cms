@@ -60,7 +60,7 @@ $app =& JFactory::getApplication();
 					<select name="authid" id="authid">
 						<option value=""><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_SELECT'); ?></option>
 					<?php
-					foreach ($this->rows as $row) 
+					foreach ($this->rows as $row)
 					{
 						if ($row->lname || $row->fname) {
 							$name  = stripslashes($row->lname).', ';
@@ -71,7 +71,7 @@ $app =& JFactory::getApplication();
 						} else {
 							$name = stripslashes($row->name);
 						}
-						
+
 						echo '<option value="'.$row->uidNumber.'">'.$name.'</option>'."\n";
 					}
 					?> 
@@ -94,17 +94,17 @@ $app =& JFactory::getApplication();
 				<input type="hidden" name="task" value="saveauthor" />
 			</fieldset>
 		</form>
-<?php		
+<?php	
 // Do we have any contributors associated with this resource?
 if ($this->contributors) {
 	$i = 0;
 	$n = count( $this->contributors );
-	
+
 ?>
 		<table class="list">
 			<tbody>
 <?php
-	foreach ($this->contributors as $contributor) 
+	foreach ($this->contributors as $contributor)
 	{
 		if ($contributor->lastname || $contributor->firstname) {
 			$name  = stripslashes($contributor->firstname) .' ';

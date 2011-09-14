@@ -81,8 +81,8 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
-{ 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+{
 	$row =& $this->rows[$i];
 ?>
 			<tr class="<?php echo 'row'. $k; ?>">
@@ -92,7 +92,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><?php 
 				if ($this->is404mode == true) {
    					echo $row->dateadd;
-				} else { 
+				} else {
 					?><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl;?></a><?php 
 				} ?></td>
 				<td><?php 

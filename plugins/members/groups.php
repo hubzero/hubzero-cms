@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_groups' );
-
-//-----------
 
 class plgMembersGroups extends JPlugin
 {
@@ -46,9 +42,7 @@ class plgMembersGroups extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'groups' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onMembersAreas( $authorized )
 	{
 		if (!$authorized) {
@@ -62,21 +56,19 @@ class plgMembersGroups extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
 		$returnmeta = true;
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) ) 
+			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
 			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
 				$returnhtml = false;
 			}
 		}
-		
+
 		if (!$authorized) {
 			$returnhtml = false;
 			$returnmeta = false;
@@ -92,20 +84,20 @@ class plgMembersGroups extends JPlugin
 		$invitees = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'invitees', 1);
 		$members = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'members', 1);
 		$managers = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'managers', 1);
-		
+
 		$applicants = (is_array($applicants)) ? $applicants : array();
 		$invitees = (is_array($invitees)) ? $invitees : array();
 		$members = (is_array($members)) ? $members : array();
 		$managers = (is_array($managers)) ? $managers : array();
-		
+
 		$groups = array_merge($applicants, $invitees);
 		$managerids = array();
-		foreach ($managers as $manager) 
+		foreach ($managers as $manager)
 		{
 			$groups[] = $manager;
 			$managerids[] = $manager->cn;
 		}
-		foreach ($members as $mem) 
+		foreach ($members as $mem)
 		{
 			if (!in_array($mem->cn,$managerids)) {
 				$groups[] = $mem;
@@ -116,7 +108,7 @@ class plgMembersGroups extends JPlugin
 		if ($returnhtml) {
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', 'groups');
-			
+
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -131,7 +123,7 @@ class plgMembersGroups extends JPlugin
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
-			
+
 			$arr['html'] = $view->loadTemplate();
 		}
 

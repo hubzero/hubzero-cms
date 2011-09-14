@@ -104,11 +104,11 @@ $database =& JFactory::getDBO();
 //$sc = new SupportComment( $database );
 $st = new KbTags( $database );
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	switch ($row->state) 
+	switch ($row->state)
 	{
 		case '1':
 			$class = 'published';
@@ -126,7 +126,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$alt = JText::_('UNPUBLISHED');
 			break;
 	}
-	
+
 	$tags = $st->get_tag_cloud( 3, 1, $row->id );
 ?>
 			<tr class="<?php echo "row$k"; ?>">

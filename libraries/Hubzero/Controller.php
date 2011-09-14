@@ -41,13 +41,13 @@ jimport('joomla.application.component.view');
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 class Hubzero_Controller extends JObject
-{	
+{
 	/**
 	 * Container for component messages
 	 * @var		array
 	 */
 	public $componentMessageQueue = array();
-	
+
 	/**
 	 * The name of the component derived from the controller class name
 	 * @var		string
@@ -78,7 +78,7 @@ class Hubzero_Controller extends JObject
 		$this->_redirect = NULL;
 		$this->_message = NULL;
 		$this->_messageType = 'message';
-		
+
 		// Set the controller name
 		if (empty( $this->_name )) {
 			if (isset($config['name'])) {
@@ -91,14 +91,14 @@ class Hubzero_Controller extends JObject
 				$this->_name = strtolower( $r[1] );
 			}
 		}
-		
+
 		// Set the component name
 		$this->_option = 'com_'.$this->_name;
 
 		$this->juser = JFactory::getUser();
 		$this->database = JFactory::getDBO();
 		$this->config = JComponentHelper::getParams( $this->_option );
-		
+
 		// Clear component messages - for cross component messages
 		$this->getComponentMessage();
 	}
@@ -114,7 +114,7 @@ class Hubzero_Controller extends JObject
 	{
 		$this->_data[$property] = $value;
 	}
-	
+
 	/**
 	 * Method to get an overloaded variable of the component
 	 *
@@ -127,7 +127,7 @@ class Hubzero_Controller extends JObject
 			return $this->_data[$property];
 		}
 	}
-	
+
 	/**
 	 * Overloadable method
 	 *
@@ -136,7 +136,7 @@ class Hubzero_Controller extends JObject
 	public function execute()
 	{
 	}
-	
+
 	/**
 	 * Method to redirect the application to a new URL and optionally include a message
 	 *
@@ -149,7 +149,7 @@ class Hubzero_Controller extends JObject
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
-	
+
 	/**
 	 * Method to add a message to the component message que
 	 *
@@ -163,11 +163,11 @@ class Hubzero_Controller extends JObject
 		if ($message != '') {
 			$this->componentMessageQueue[] = array('message' => $message, 'type' => strtolower($type), 'option' => $this->_option);
 		}
-		
+
 		$session =& JFactory::getSession();
 		$session->set('component.message.queue', $this->componentMessageQueue);
 	}
-	
+
 	/**
 	 * Method to get component messages
 	 *
@@ -183,16 +183,16 @@ class Hubzero_Controller extends JObject
 				$session->set('component.message.queue', null);
 			}
 		}
-		
+
 		foreach ($this->componentMessageQueue as $k => $cmq) {
 			if ($cmq['option'] != $this->_option) {
 				$this->componentMessageQueue[$k] = array();
 			}
-		} 
-		
+		}
+
 		return $this->componentMessageQueue;
 	}
-	
+
 	/**
 	 * Method to add stylesheets to the document.
 	 * Defaults to current component and stylesheet name the same as component.
@@ -201,7 +201,7 @@ class Hubzero_Controller extends JObject
 	 * @param	string	$script 	Name of the stylesheet to load
 	 * @return	void
 	 */
-	protected function _getStyles($option='', $stylesheet='') 
+	protected function _getStyles($option='', $stylesheet='')
 	{
 		ximport('Hubzero_Document');
 		$option = ($option) ? $option : $this->_option;
@@ -219,7 +219,7 @@ class Hubzero_Controller extends JObject
 	protected function _getScripts($script='', $option='')
 	{
 		$document =& JFactory::getDocument();
-		
+
 		$option = ($option) ? $option : $this->_option;
 		$script = ($script) ? $script : $this->_name;
 
@@ -227,17 +227,17 @@ class Hubzero_Controller extends JObject
 			$document->addScript('components'.DS.$option.DS.$script.'.js');
 		}
 	}
-	
+
 	/**
 	 * Method to set the document path
 	 *
 	 * @return	void
 	 */
-	protected function _buildPathway() 
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -251,13 +251,13 @@ class Hubzero_Controller extends JObject
 			);
 		}
 	}
-	
+
 	/**
 	 * Method to build and set the document title
 	 *
 	 * @return	void
 	 */
-	protected function _buildTitle() 
+	protected function _buildTitle()
 	{
 		$title = JText::_(strtoupper($this->_option));
 		if ($this->_task) {
@@ -266,7 +266,7 @@ class Hubzero_Controller extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 	}
-	
+
 	/**
 	 * Method to check admin access permission
 	 *
@@ -278,7 +278,7 @@ class Hubzero_Controller extends JObject
 		if ($this->juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Check if they're a site admin (from Joomla)
 		if ($this->juser->authorize($this->_option, 'manage')) {
 			return true;

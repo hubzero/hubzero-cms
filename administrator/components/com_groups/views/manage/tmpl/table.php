@@ -112,13 +112,13 @@ $row = 0;
 
 $cls = 'even';
 if ($this->groupusers) {
-	foreach ($this->groupusers as $guser) 
+	foreach ($this->groupusers as $guser)
 	{
 		$u =& JUser::getInstance($guser);
 		if (!is_object($u)) {
 			continue;
 		}
-		
+
 		$row = new GroupsReason( $database );
 		$row->loadReason($u->get('username'), $this->gid);
 
@@ -127,9 +127,9 @@ if ($this->groupusers) {
 		} else {
 			$reasonforjoin = '';
 		}
-			
+
 		$cls = (($cls == 'even') ? 'odd' : 'even');
-		
+
 		$html .= "\t\t\t".'<tr class="'.$cls.'">'."\n";
 		if ($hidecheckbox == 1) {
 			//$html .= "\t\t\t\t".'<td><input type="hidden" name="users[]" value="'.$u->get('id').'" /> ';

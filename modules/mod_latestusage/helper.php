@@ -35,21 +35,18 @@ class modLatestusage
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
-
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,12 +55,11 @@ class modLatestusage
 	}
 
 	//-----------
-	
-	private function _getOnlineCount() 
+	private function _getOnlineCount()
 	{
 	    $db =& JFactory::getDBO();
 		$sessions = null;
-		
+
 		// calculate number of guests and members
 		$result = array();
 		$user_array = 0;
@@ -78,7 +74,7 @@ class modLatestusage
 		}
 
 		if (count($sessions)) {
-			foreach ($sessions as $session) 
+			foreach ($sessions as $session)
 			{
 				// If guest increase guest count by 1
 				if ($session->guest == 1 && !$session->usertype) {
@@ -96,38 +92,36 @@ class modLatestusage
 
 		return $result;
 	}
-	
-	//-----------
 
-	public function display() 
+	//-----------
+	public function display()
 	{
 		$database =& JFactory::getDBO();
 
 		$params =& $this->params;
-		
+
 		//$count = $this->_getOnlineCount();
-		
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_usage'.DS.'usage.helper.php' );
 		$udb =& UsageHelper::getUDBO();
-		
+
 		$this->cls = trim($params->get( 'moduleclass_sfx' ));
-		
+
 		if ($udb) {
 			$udb->setQuery( 'SELECT value FROM summary_user_vals WHERE datetime = (SELECT MAX(datetime) FROM summary_user_vals) AND period = "12" AND colid = "1" AND rowid = "1"' );
 			$this->users = $udb->loadResult();
-			
+
 			$udb->setQuery( 'SELECT value FROM summary_simusage_vals WHERE datetime  = (SELECT MAX(datetime) FROM summary_simusage_vals) AND period = "12" AND colid = "1" AND rowid = "2"' );
 			$this->sims = $udb->loadResult();
 		} else {
 			$database->setQuery( "SELECT COUNT(*) FROM #__users" );
 			$this->users = $database->loadResult();
-			
+
 			$this->sims = 0;
 		}
-		
+
 		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4" );
 		$this->resources = $database->loadResult();
-		
+
 		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7" );
 		$this->tools = $database->loadResult();
 	}

@@ -60,7 +60,7 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	 <tbody>
 	<?php
 	$k = 0;
-	for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+	for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	{
 		$row = &$this->rows[$i];
 		$class = $row->published ? 'published' : 'unpublished';
@@ -78,9 +78,9 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	  <tr class="<?php echo "row$k"; ?>">
 	   <td><?php echo $i+$this->pageNav->limitstart+1;?></td>
 	   <td><?php 
-	   	if ($row->checked_out && $row->checked_out != $myid) { 
+	   	if ($row->checked_out && $row->checked_out != $myid) {
 			?>&nbsp;<?php	
-		} else { 
+		} else {
 			?><input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /><?php 
 		} ?></td>
 	   <td width="35%"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=editcat&amp;id=<?php echo $row->id;?>"><?php echo "$row->name ($row->title)"; ?></a></td>
@@ -90,18 +90,18 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	   <td><?php echo $row->editor; ?></td>
 	   <td><span <?php echo $color_access;?>><?php echo $row->groupname;?></span></td>
 	   <td><?php	
-		if ($i > 0 || ($i+$this->pageNav->limitstart > 0)) { 
+		if ($i > 0 || ($i+$this->pageNav->limitstart > 0)) {
 			?><a href="#reorder" class="order up" onclick="return listItemTask('cb<?php echo $i;?>','orderup')" title="Move Up"><img src="images/uparrow.png" alt="Move up" /></a><?php
-		} else { 
+		} else {
 			?>&nbsp;<?php 
-		} 
+		}
 		?></td>
 	   <td><?php	
-		if ($i < $n-1 || $i+$this->pageNav->limitstart < $this->pageNav->total-1) { 
+		if ($i < $n-1 || $i+$this->pageNav->limitstart < $this->pageNav->total-1) {
 			?><a href="#reorder" class="order down" onclick="return listItemTask('cb<?php echo $i;?>','orderdown')" title="Move Down"><img src="images/downarrow.png" alt="Move down" /></a><?php 
-		} else { 
+		} else {
 			?>&nbsp;<?php
-		} 
+		}
 		?></td>
 	  </tr>
 	<?php

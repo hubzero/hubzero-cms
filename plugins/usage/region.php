@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_region' );
-
-//-----------
 
 class plgUsageRegion extends JPlugin
 {
@@ -47,8 +43,6 @@ class plgUsageRegion extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -56,12 +50,12 @@ class plgUsageRegion extends JPlugin
 		);
 		return $areas;
 	}
-	
+
 	//----------------------------------------------------------
 	//  Print Region List from Database
 	//----------------------------------------------------------
-	
-	private function regionlist(&$db, $region, $t=0, $enddate = 0) 
+
+	private function regionlist(&$db, $region, $t=0, $enddate = 0)
 	{
 		// Set region list parameters...
 		$hub = 1;
@@ -111,7 +105,7 @@ class plgUsageRegion extends JPlugin
 			// Process each different date/time periods/range...
 			$maxrank = 0;
 			$regionlist = array();
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				// Calculate the total value for this regionlist...
 				$regionlistset = array();
@@ -119,7 +113,7 @@ class plgUsageRegion extends JPlugin
 				$db->setQuery( $sql );
 				$results = $db->loadObjectList();
 				if ($results) {
-					foreach ($results as $row) 
+					foreach ($results as $row)
 					{
 						$formattedval = UsageHelper::valformat($row->value, $valfmt);
 						if (strstr($formattedval, "day") !== FALSE) {
@@ -144,7 +138,7 @@ class plgUsageRegion extends JPlugin
 					foreach ($results as $row)
 					{
 						if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
-							while ($rank < $row->rank) 
+							while ($rank < $row->rank)
 							{
 								array_push($regionlistset, array("n/a", 0, "n/a", "n/a"));
 								$rank++;
@@ -165,7 +159,7 @@ class plgUsageRegion extends JPlugin
 						}
 					}
 				}
-				while ($rank <= $size || $rank == 1) 
+				while ($rank <= $size || $rank == 1)
 				{
 					array_push($regionlistset, array("n/a", 0, "n/a", "n/a"));
 					$rank++;
@@ -175,26 +169,26 @@ class plgUsageRegion extends JPlugin
 					$maxrank = $rank;
 				}
 			}
-			
+
 			$cls = 'even';
-			
+
 			// Print region list table...
 			$html .= '<table summary="'.$regionname.'">'."\n";
 			$html .= "\t".'<caption>'.JText::_('Table').' '.$t.': '.$regionname.'</caption>'."\n";
 			$html .= "\t".'<thead>'."\n";
 			$html .= "\t\t".'<tr>'."\n";
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				$html .= "\t\t\t".'<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'."\n";
 			}
 			$html .= "\t\t".'</tr>'."\n";
 			$html .= "\t".'</thead>'."\n";
 			$html .= "\t".'<tbody>'."\n";
-			
+
 			$cls = ($cls == 'even') ? 'odd' : 'even';
 			$html .= "\t\t".'<tr class="summary">'."\n";
 			$k = 0;
-			for ($pidx = 0; $pidx < count($period); $pidx++) 
+			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				$k++;
 				$tdcls = ($k != 2) ? ' class="group"' : '';
@@ -203,18 +197,18 @@ class plgUsageRegion extends JPlugin
 				$html .= "\t\t\t".'<td'.$tdcls.'>'. $regionlist[$pidx][0][3] .'</td>'."\n";
 			}
 			$html .= "\t\t".'</tr>'."\n";
-			
-			for ($i = 1; $i < $maxrank; $i++) 
+
+			for ($i = 1; $i < $maxrank; $i++)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				$k = 0;
 				$html .= "\t\t".'<tr class="'. $cls .'">'."\n";
-				for ($pidx = 0; $pidx < count($period); $pidx++) 
+				for ($pidx = 0; $pidx < count($period); $pidx++)
 				{
 					$k++;
 					$tdcls = ($k != 2) ? ' class="group"' : '';
 					$html .= "\t\t\t".'<th'.$tdcls.' scope="row">';
-					$html .= (isset($regionlist[$pidx][$i][0])) ? $regionlist[$pidx][$i][0] : ''; 
+					$html .= (isset($regionlist[$pidx][$i][0])) ? $regionlist[$pidx][$i][0] : '';
 					$html .= '</th>'."\n";
 					$html .= "\t\t\t".'<td'.$tdcls.'>';
 					$html .= (isset($regionlist[$pidx][$i][2])) ? $regionlist[$pidx][$i][2] : '';
@@ -230,22 +224,20 @@ class plgUsageRegion extends JPlugin
 		}
 		return $html;
 	}
-	
-	//-----------
-	
-	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate ) 
+
+	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for
 		if ($task) {
-			if (!in_array( $task, $this->onUsageAreas() ) 
+			if (!in_array( $task, $this->onUsageAreas() )
 			 && !in_array( $task, array_keys( $this->onUsageAreas() ) )) {
 				return '';
 			}
 		}
-		
+
 		// Set tome vars
 		$thisyear = date("Y");
-		
+
 		$o = UsageHelper::options( $db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata' );
 
 		// Build HTML

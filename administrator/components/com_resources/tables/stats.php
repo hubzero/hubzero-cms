@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class ResourcesStats extends JTable 
+class ResourcesStats extends JTable
 {
 	var $id       = NULL;  // @var int(11) Primary key
 	var $resid    = NULL;  // @var varchar(250)
@@ -42,17 +42,13 @@ class ResourcesStats extends JTable
 	var $tot_cpu  = NULL;
 	var $datetime = NULL;
 	var $period   = NULL;
-	
-	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_stats', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->resid ) == '') {
 			$this->setError( JText::_('Your entry must have a resource ID.') );
@@ -60,10 +56,8 @@ class ResourcesStats extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadStats( $resid=NULL, $period=NULL, $dthis=NULL ) 
+
+	public function loadStats( $resid=NULL, $period=NULL, $dthis=NULL )
 	{
 		if ($resid == NULL) {
 			$resid = $this->resid;
@@ -71,11 +65,11 @@ class ResourcesStats extends JTable
 		if ($resid == NULL) {
 			return false;
 		}
-		
+
 		$sql = "SELECT * 
 				FROM $this->_tbl
 				WHERE datetime='".$dthis."-01 00:00:00' AND period = '".$period."' AND resid = '".$resid."'";
-		
+
 		$this->_db->setQuery( $sql );
 		//return $this->_db->loadObject( $this );
 		if ($result = $this->_db->loadAssoc()) {
@@ -87,8 +81,7 @@ class ResourcesStats extends JTable
 	}
 }
 
-
-class ResourcesStatsTools extends JTable 
+class ResourcesStatsTools extends JTable
 {
 	var $id       = NULL;  // @var int(11) Primary key
 	var $resid    = NULL;  // @var varchar(250)
@@ -107,17 +100,13 @@ class ResourcesStatsTools extends JTable
 	var $tot_cpus = NULL;
 	var $datetime = NULL;
 	var $period   = NULL;
-	
-	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_stats_tools', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->resid ) == '') {
 			$this->setError( JText::_('Your entry must have a resource ID.') );
@@ -125,10 +114,8 @@ class ResourcesStatsTools extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadStats( $resid=NULL, $period=NULL, $dthis=NULL ) 
+
+	public function loadStats( $resid=NULL, $period=NULL, $dthis=NULL )
 	{
 		if ($resid == NULL) {
 			$resid = $this->resid;
@@ -136,11 +123,11 @@ class ResourcesStatsTools extends JTable
 		if ($resid == NULL) {
 			return false;
 		}
-		
+
 		$sql = "SELECT id, users, sessions, simulations, jobs, avg_wall, tot_wall, avg_cpu, tot_cpu, avg_view, tot_view, avg_wait, tot_wait, avg_cpus, tot_cpus, period, LEFT(datetime,7) as datetime 
 				FROM $this->_tbl
 				WHERE datetime='".$dthis."-00 00:00:00' AND period = '".$period."' AND resid = '".$resid."'";
-		
+
 		$this->_db->setQuery( $sql );
 		//return $this->_db->loadObject( $this );
 		if ($result = $this->_db->loadAssoc()) {
@@ -152,24 +139,21 @@ class ResourcesStatsTools extends JTable
 	}
 }
 
-
-class ResourcesStatsToolsTop extends JTable 
+class ResourcesStatsToolsTop extends JTable
 {
 	var $top    = NULL;  // @var tinyint(4) Primary key
 	var $name   = NULL;  // @var varchar(128)
 	var $valfmt = NULL;  // @var tinyint(4)
 	var $size   = NULL;  // @var tinyint(4)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_stats_tools_tops', 'top', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->name ) == '') {
 			$this->setError( JText::_('Your entry must have a name.') );
@@ -179,25 +163,22 @@ class ResourcesStatsToolsTop extends JTable
 	}
 }
 
-
-class ResourcesStatsToolsTopvals extends JTable 
+class ResourcesStatsToolsTopvals extends JTable
 {
 	var $id    = NULL;  // @var int(20)
 	var $top   = NULL;  // @var tinyint(4)
 	var $rank  = NULL;  // @var tinyint(4)
 	var $name  = NULL;  // @var varchar(255)
 	var $value = NULL;  // @var int(20)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_stats_tools_topvals', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->name ) == '') {
 			$this->setError( JText::_('Your entry must have a name.') );
@@ -205,9 +186,7 @@ class ResourcesStatsToolsTopvals extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
+
 	public function getTopCountryRes( $id=NULL, $top=NULL )
 	{
 		if ($id == NULL) {
@@ -222,14 +201,13 @@ class ResourcesStatsToolsTopvals extends JTable
 		if ($top == NULL) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE id = '".$id."' AND top = '".$top."' ORDER BY rank" );
 		return $this->_db->loadObjectList();
 	}
 }
 
-
-class ResourcesStatsToolsUsers extends JTable 
+class ResourcesStatsToolsUsers extends JTable
 {
 	var $id          = NULL;  // @var int(20) Primary key
 	var $resid       = NULL;  // @var int(20)
@@ -243,17 +221,15 @@ class ResourcesStatsToolsUsers extends JTable
 	var $tot_view    = NULL;  // @var double
 	var $datetime    = NULL;  // @var datetime(0000-00-00 00:00:00)
 	var $period      = NULL;  // @var tinyint(4)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_stats_tools_users', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->resid ) == '') {
 			$this->setError( JText::_('Your entry must have a resource ID.') );
@@ -261,10 +237,8 @@ class ResourcesStatsToolsUsers extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getTopUsersRes($resid, $dthis, $period, $top) 
+
+	public function getTopUsersRes($resid, $dthis, $period, $top)
 	{
 		$sql = "SELECT u.name, s.user, u.email, u.organization, s.jobs, s.sessions, s.simulations, s.tot_wall, s.tot_cpu, s.tot_view 
 				FROM $this->_tbl AS s, user AS u 
@@ -275,7 +249,7 @@ class ResourcesStatsToolsUsers extends JTable
 	}
 }
 
-class ResourcesStatsClusters extends JTable 
+class ResourcesStatsClusters extends JTable
 {
 	var $id       		= NULL;	// @var bigint(20) Primary key
 	var $cluster  		= NULL;	// @var varchar(255)
@@ -291,15 +265,13 @@ class ResourcesStatsClusters extends JTable
 	var $users		= NULL;
 	var $classes 	= NULL;
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_stats_clusters', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->resid ) == '') {
 			$this->setError( JText::_('Your entry must have a resource ID.') );
@@ -307,10 +279,8 @@ class ResourcesStatsClusters extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadStats( $resid=NULL ) 
+
+	public function loadStats( $resid=NULL )
 	{
 		if ($resid == NULL) {
 			$resid = $this->resid;
@@ -318,7 +288,7 @@ class ResourcesStatsClusters extends JTable
 		if ($resid == NULL) {
 			return false;
 		}
-	
+
 		$sql = "SELECT COUNT(DISTINCT uidNumber, username) AS users, COUNT(DISTINCT cluster) AS classes 
 				FROM $this->_tbl
 				WHERE resid = '".$resid."'";

@@ -38,7 +38,7 @@ $juser =& JFactory::getUser();
 				<tbody>
 					<?php if($this->rows) { ?>
 						<?php 
-							$counter = 0; 
+							$counter = 0;
 							if($this->limit == 0) {
 								$this->limit = count($this->rows);
 							}
@@ -50,7 +50,7 @@ $juser =& JFactory::getUser();
 									if(is_object($creator)) {
 										$creator_link = "<a href=\"/members/{$creator->get('id')}\">{$creator->get('name')}</a>";
 									}
-						
+
 									$lastpost = $this->forum->getLastPost( $row->id );
 									if(count($lastpost) > 0) {
 										$lastpost = $lastpost[0];
@@ -76,7 +76,7 @@ $juser =& JFactory::getUser();
 												<span class="created_on"><?php echo date("d M, Y", strtotime($row->created)); ?></span>
 												<?php 
 													echo "<span class=\"created_by\">Created by: ";
-													echo ($row->anonymous) ? JText::_('Anonymous') : $creator_link; 
+													echo ($row->anonymous) ? JText::_('Anonymous') : $creator_link;
 													echo "</span>";
 												?>
 											</span>
@@ -88,7 +88,7 @@ $juser =& JFactory::getUser();
 													<span class="lastpost_on"><?php echo date("d M, Y", strtotime($lastpost->created)); ?></span>
 													<?php 
 														echo "<span class=\"lastpost_by\"> by: ";
-														echo ($lastpost->anonymous) ? JText::_('Anonymous') : $lastposter_link; 
+														echo ($lastpost->anonymous) ? JText::_('Anonymous') : $lastposter_link;
 														echo "</span>";
 													?>
 												

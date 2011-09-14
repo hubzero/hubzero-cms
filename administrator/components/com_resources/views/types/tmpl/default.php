@@ -60,12 +60,12 @@ JToolBarHelper::deleteList( '', 'deletetype', 'Delete' );
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	$cat_title = '';
-	
+
 	foreach ($this->cats as $cat)
 	{
 		if ($row->category == $cat->id) {

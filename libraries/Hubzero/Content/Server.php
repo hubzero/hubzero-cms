@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Content_Server
 {
 	var $_filename;
@@ -37,33 +36,25 @@ class Hubzero_Content_Server
 	var $_disposition;
 	var $_saveas;
 
-	//-----------
-
 	public function __construct()
 	{
 	}
 
-	//-----------
-
 	public function saveas($saveas = null)
 	{
-		if (!is_null($saveas)) 
+		if (!is_null($saveas))
 			$this->_saveas = basename($saveas);
 
 		return($this->_saveas);
 	}
-	
-	//-----------
 
 	public function filename($filename = null)
 	{
-		if (!is_null($filename)) 
+		if (!is_null($filename))
 			$this->_filename = $filename;
 
 		return($this->_filename);
 	}
-	
-	//-----------
 
 	public function acceptranges($acceptranges = null)
 	{
@@ -72,8 +63,6 @@ class Hubzero_Content_Server
 
 		return($this->_acceptranges);
 	}
-	
-	//-----------
 
 	public function disposition($disposition = null)
 	{
@@ -90,29 +79,21 @@ class Hubzero_Content_Server
 
 		return($this->_disposition);
 	}
-	
-	//-----------
 
 	public function serve()
 	{
 		return Hubzero_Content_Server::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
 	}
-	
-	//-----------
 
 	public function serve_attachment($filename, $saveas = null, $acceptranges = true)
 	{
 		return Hubzero_Content_Server::serve_file($filename, $saveas, 'attachment', $acceptranges);
 	}
-	
-	//-----------
 
 	public function serve_inline($filename, $acceptranges = true)
 	{
 		return Hubzero_Content_Server::serve_file($filename, null, 'inline', $acceptranges);
 	}
-	
-	//-----------
 
 	public function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true)
 	{
@@ -133,19 +114,19 @@ class Hubzero_Content_Server
 		$filesize = filesize($filename);
 
 		$extension =  $fileinfo['extension'];
-		
+
 		include_once(dirname(__FILE__).DS.'Mimetypes.php');
-		
+
 		$mime = new Hubzero_Content_Mimetypes();
 		$type = $mime->getMimeType($filename);
-		
+
 		if ($type == '##INVALID_FILE##') {
 			$type = 'application/octet-stream';
 		}
 
-		if ($acceptranges 
-		 && $_SERVER['REQUEST_METHOD']=='GET' 
-		 && isset($_SERVER['HTTP_RANGE']) 
+		if ($acceptranges
+		 && $_SERVER['REQUEST_METHOD']=='GET'
+		 && isset($_SERVER['HTTP_RANGE'])
 		 && $range=stristr(trim($_SERVER['HTTP_RANGE']),'bytes=')) {
     		$range=substr($range,6);
     		$boundary='g45d64df96bmdf4sdgh45hf5';//set a random boundary
@@ -171,15 +152,15 @@ class Hubzero_Content_Server
 			{
 				if (($last >= $filesize) || ($last == ''))
 					$last = $filesize - 1;
-			}		
+			}
 			else if ($last != '') // suffix-byte-range-set
 			{
     				$first = $filesize - $last;
     				$last  = $filesize - 1;
 
-    				if ($first < 0) 	
+    				if ($first < 0)
 					$first = 0;
-  			} 
+  			}
 
   			if ( ($first > $last) || ($last == '') ) // unsatisfiable range
 			{
@@ -197,7 +178,7 @@ class Hubzero_Content_Server
 				$content_length+=strlen("Content-range: bytes $first-$last/$filesize\r\n\r\n");
 			}
 
-			$content_length+=$last-$first+1;          
+			$content_length+=$last-$first+1;
 		}
 
 		if ($multipart)
@@ -213,7 +194,7 @@ class Hubzero_Content_Server
 		} else {
 			$msie = false;
 		}
-		
+
 		if (!$partial && ($disposition=="attachment")) {
 			if ($msie && ($matches[1] < 6) ) // untested IE 5.5 workaround
 				header("Content-Disposition: filename=" . $saveas);
@@ -232,7 +213,7 @@ class Hubzero_Content_Server
 
 		if (!$msie)
 			header("Pragma: no-cache");
-		
+
 		header("Expires: 0");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 
@@ -273,7 +254,7 @@ class Hubzero_Content_Server
 				$bytes_left=$last-$first+1;
 
 				while($bytes_left>0 && !feof($fp)) {
-    
+
 					if($bytes_left>$buffer_size)
 						$bytes_to_read=$buffer_size;
 					else
@@ -287,7 +268,7 @@ class Hubzero_Content_Server
 				}
 			}
 		}
-				
+
 		if ($multipart)
 			echo "\r\n--$boundary--\r\n";
 

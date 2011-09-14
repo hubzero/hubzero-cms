@@ -30,12 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_members' );
-
-//-----------
 
 class plgXSearchMembers extends JPlugin
 {
@@ -47,9 +43,7 @@ class plgXSearchMembers extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'members' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
+
 	public function &onXSearchAreas()
 	{
 		$areas = array(
@@ -57,8 +51,6 @@ class plgXSearchMembers extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -73,7 +65,7 @@ class plgXSearchMembers extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		// An array for all the words and phrases
@@ -84,7 +76,7 @@ class plgXSearchMembers extends JPlugin
 		// Build the query
 		$c_count = "SELECT COUNT(*) ";
 		$b = '';
-		foreach ($words as $word) 
+		foreach ($words as $word)
 		{
 			if (trim($word) != '') {
 				$word = addslashes($word);
@@ -101,7 +93,7 @@ class plgXSearchMembers extends JPlugin
 					CONCAT( 'index.php?option=com_members&id=', m.uidNumber ) as href, 'members' AS section, m.organization AS area, m.picture AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking, NULL AS access, ($b) AS relevance ";
 		$c_from = "FROM #__xprofiles AS m LEFT JOIN #__xprofiles_bio AS b ON m.uidNumber=b.uidNumber 
 				WHERE m.public=1 AND (";
-		foreach ($words as $word) 
+		foreach ($words as $word)
 		{
 			if (trim($word) != '') {
 				$word = addslashes($word);
@@ -133,12 +125,12 @@ class plgXSearchMembers extends JPlugin
 
 				return $c_fields.$c_from;
 			}
-			
+
 			// Get results
 			$database->setQuery( $c_fields.$c_from.$c_order.$c_limit );
 			$rows = $database->loadObjectList();
 
-			foreach ($rows as $key => $row) 
+			foreach ($rows as $key => $row)
 			{
 				$rows[$key]->href = JRoute::_('index.php?option=com_members&id='.$row->id);
 			}
@@ -152,25 +144,21 @@ class plgXSearchMembers extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_members');
 	}
-
-	//-----------
 
 	/*public function before()
 	{
 		// ...
 	}*/
 
-	//-----------
-
 	public function out( $row, $keyword )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
-		
+
 		if ($row->category) {
 			$thumb  = $config->get('webpath');
 			if (substr($thumb, 0, 1) != DS) {
@@ -185,18 +173,18 @@ class plgXSearchMembers extends JPlugin
 			} else {
 				$thumb .= DS.plgXSearchMembers::niceidformat($row->id).DS.$row->category;
 			}
-			
+
 			$thumb = plgXSearchMembers::thumbit($thumb);
 		} else {
 			$thumb = '';
 		}
-		
+
 		$dfthumb = $config->get('defaultpic');
 		if (substr($dfthumb, 0, 1) != DS) {
 			$dfthumb = DS.$dfthumb;
 		}
 		$dfthumb = plgXSearchMembers::thumbit($dfthumb);
-		
+
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
 		}
@@ -204,10 +192,10 @@ class plgXSearchMembers extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		$juser =& JFactory::getUser();
 		$params = new JParameter( $row->params );
-		
+
 		$html  = "\t".'<li class="member">'."\n";
 		if (is_file(JPATH_ROOT.$thumb)) {
 			$p = $thumb;
@@ -227,10 +215,8 @@ class plgXSearchMembers extends JPlugin
 		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
-	public function thumbit($thumb) 
+
+	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -238,22 +224,18 @@ class plgXSearchMembers extends JPlugin
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.',$image);
-		
+
 		return $thumb;
 	}
-	
-	//-----------
 
-	public function niceidformat($someid) 
+	public function niceidformat($someid)
 	{
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $someid;
 	}
-
-	//-----------
 
 	/*public function after()
 	{

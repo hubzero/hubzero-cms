@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_favorite' );
-	
-//-----------
 
 class plgResourcesFavorite extends JPlugin
 {
@@ -47,38 +43,34 @@ class plgResourcesFavorite extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
-	public function &onResourcesAreas( $resource ) 
+	public function &onResourcesAreas( $resource )
 	{
 		$areas = array();
 		return $areas;
 	}
 
-	//-----------
-
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
+			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) )
 			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				$rtrn = 'metadata';
 			}
 		}
-		
+
 		// Incoming action
 		$action = JRequest::getVar( 'action', '' );
 		if ($action && $action == 'favorite') {
 			// Check the user's logged-in status
 			$this->fav( $resource->id );
 		}
-		
+
 		$arr = array(
 				'html'=>'',
 				'metadata'=>''
 			);
-		
+
 		// Build the HTML meant for the "about" tab's metadata overview
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
@@ -88,14 +80,14 @@ class plgResourcesFavorite extends JPlugin
 					$document =& JFactory::getDocument();
 					$document->addScript('plugins'.DS.'resources'.DS.'favorite'.DS.'favorite.js');
 				}
-				
+
 				ximport('Hubzero_Favorite');
 				if (!class_exists('Hubzero_Favorite')) {
 					return $arr;
 				}
-				
+
 				$database =& JFactory::getDBO();
-				
+
 				$fav = new Hubzero_Favorite( $database );
 				$fav->loadFavorite( $juser->get('id'), $resource->id, 'resources' );
 				if (!$fav->id) {
@@ -105,28 +97,24 @@ class plgResourcesFavorite extends JPlugin
 					$txt = JText::_('PLG_RESOURCES_FAVORITES_UNFAVORITE_THIS');
 					$cls = 'faved';
 				}
-				
+
 				$arr['metadata'] = '<p class="favorite"><a id="fav-this" class="'.$cls.'" href="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id.'&action=favorite').'">'.$txt.'</a></p>';
 			}
 		}
 
 		return $arr;
 	}
-	
-	//-----------
-	
-	public function onResourcesFavorite( $option ) 
+
+	public function onResourcesFavorite( $option )
 	{
 		$rid = JRequest::getInt( 'rid', 0 );
-		
+
 		if ($rid) {
 			$this->fav( $rid );
 		}
 	}
-	
-	//-----------
-	
-	public function fav( $oid ) 
+
+	public function fav( $oid )
 	{
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
@@ -144,11 +132,11 @@ class plgResourcesFavorite extends JPlugin
 				$fav->faved = date( 'Y-m-d H:i:s');
 				$fav->check();
 				$fav->store();
-				
+
 				echo JText::_('PLG_RESOURCES_FAVORITES_UNFAVORITE_THIS');
 			} else {
 				$fav->delete();
-				
+
 				echo JText::_('PLG_RESOURCES_FAVORITES_FAVORITE_THIS');
 			}
 		}

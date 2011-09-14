@@ -30,8 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'contribtool.config.php' );
 $tconfig = new ContribtoolConfig('com_contribtool');
@@ -54,7 +52,7 @@ switch($task)
 	   	$toolid = JRequest::getInt('toolid',null,'method');
 	   	if (!is_null($toolid))
 	   		ContribtoolToolbar::_VIEWTOOLVERSIONS(1,$toolid);
-		else 
+		else
 			ContribtoolToolbar::_VIEWTOOLS(1);
 	   	break;
      case 'apply':
@@ -68,7 +66,7 @@ switch($task)
 		else
 			ContribtoolToolbar::_DEFAULT($enabled);
 	   	break;
-    default:	
+    default:
 	   ContribtoolToolbar::_DEFAULT($enabled);
 	   break;
 }

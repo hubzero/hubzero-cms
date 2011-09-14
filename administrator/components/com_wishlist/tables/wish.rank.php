@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class WishRank extends JTable
 {
 	var $id         	= NULL;  // @var int(11) Primary key
@@ -39,17 +38,15 @@ class WishRank extends JTable
 	var $importance     = NULL;  // @var int(3)
 	var $effort		    = NULL;  // @var int(3)
 	var $due    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist_vote', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->wishid ) == '') {
 			$this->setError( JText::_('WISHLIST_ERROR_NO_WISHID') );
@@ -58,10 +55,8 @@ class WishRank extends JTable
 
 		return true;
 	}
-	
-	//--------------
-	
-	public function load_vote( $oid=NULL, $wishid=NULL ) 
+
+	public function load_vote( $oid=NULL, $wishid=NULL )
 	{
 		if ($oid === NULL) {
 			$oid = $this->userid;
@@ -69,7 +64,7 @@ class WishRank extends JTable
 		if ($wishid === NULL) {
 			$wishid = $this->wishid;
 		}
-		
+
 		if ($oid === NULL or $wishid === NULL) {
 			return false;
 		}
@@ -81,25 +76,21 @@ class WishRank extends JTable
 			return false;
 		}
 	}
-	
-	//--------------
-	
-	public function get_votes( $wishid=NULL ) 
+
+	public function get_votes( $wishid=NULL )
 	{
 		if ($wishid === NULL) {
 			$wishid = $this->wishid;
 		}
-		
+
 		if ($wishid === NULL) {
 			return false;
 		}
 		$this->_db->setQuery( "SELECT * FROM #__wishlist_vote WHERE wishid='$wishid'");
 		return $this->_db->loadObjectList();
 	}
-	
-	//--------------
-	
-	public function remove_vote( $wishid=NULL, $oid=NULL ) 
+
+	public function remove_vote( $wishid=NULL, $oid=NULL )
 	{
 		if ($oid === NULL) {
 			$oid = $this->userid;
@@ -107,11 +98,11 @@ class WishRank extends JTable
 		if ($wishid === NULL) {
 			$wishid = $this->wishid;
 		}
-		
+
 		if ($wishid === NULL) {
 			return false;
 		}
-		
+
 		$query = "DELETE FROM #__wishlist_vote WHERE wishid='$wishid'";
 		if ($oid) {
 			$query .= " AND userid=".$oid;
@@ -121,7 +112,7 @@ class WishRank extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		
+
 		return true;
 	}
 }

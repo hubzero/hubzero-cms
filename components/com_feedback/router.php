@@ -37,7 +37,7 @@ function FeedbackBuildRoute(&$query)
         $segments[] = $query['task'];
         unset($query['task']);
     }
- 
+
     return $segments;
 }
 

@@ -103,12 +103,12 @@ function submitbutton(pressbutton)
 			$fields = array();
 			if (trim($this->row->customFields) != '') {
 				$fs = explode("\n", trim($this->row->customFields));
-				foreach ($fs as $f) 
+				foreach ($fs as $f)
 				{
 					$fields[] = explode('=', $f);
 				}
 			}
-			
+
 			$r = count($fields);
 			if ($r > 10) {
 				$n = $r;
@@ -152,9 +152,9 @@ function submitbutton(pressbutton)
 			</thead>
 			<tbody>
 			<?php 
-			
+
 			$params = new JParameter( $this->row->params );
-			
+
 			$database =& JFactory::getDBO();
 			$database->setQuery( "SELECT * FROM #__plugins WHERE folder='resources'" );
 			$plugins = $database->loadObjectList();

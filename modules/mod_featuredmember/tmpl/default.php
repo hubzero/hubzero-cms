@@ -35,7 +35,7 @@ if ($modfeaturedmember->error) {
 } else {
 	if ($modfeaturedmember->row) {
 		ximport('Hubzero_View_Helper_Html');
-		
+
 		$html .= '<div class="'.$modfeaturedmember->cls.'">'."\n";
 		if ($modfeaturedmember->filters['show'] == 'contributors') {
 			$html .= '<h3>'.JText::_('MOD_FEATUREDMEMBER_PROFILE').'</h3>'."\n";

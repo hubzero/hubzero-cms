@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-class SupportResolution extends JTable 
+class SupportResolution extends JTable
 {
 	var $id    = NULL;  // @var int(11) Primary key
 	var $title = NULL;  // @var varchar(100)
@@ -41,14 +41,12 @@ class SupportResolution extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_resolutions', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->alias ) == '' || trim( $this->title ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -57,18 +55,14 @@ class SupportResolution extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getResolutions() 
+
+	public function getResolutions()
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl ORDER BY title");
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl";
 		if (isset($filters['order']) && $filters['order'] != '') {
@@ -77,26 +71,22 @@ class SupportResolution extends JTable
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getRecords( $filters=array() )
 	{
 		$filters['order'] = 'title, alias';
-		
+
 		$query  = "SELECT *";
 		$query .= $this->buildQuery( $filters );
 		$this->_db->setQuery( $query );

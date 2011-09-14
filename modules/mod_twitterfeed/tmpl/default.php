@@ -27,7 +27,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' ); 
+defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <h3><?php echo $moduleTitle; ?></h3>  
 <?php if (isset($tweets['error']) && $tweets['error'] != '') {  ?>

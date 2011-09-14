@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class XPollDate extends JTable 
+class XPollDate extends JTable
 {
 	var $id       = NULL; // @var int(11) Primary key
 	var $date     = NULL; // @var datetime(0000-00-00 00:00:00)
@@ -40,21 +39,19 @@ class XPollDate extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xpoll_date', 'id', $db );
 	}
-	
-	//-----------
 
-	public function check() 
+	public function check()
 	{
 		// Check for pollid
 		if ($this->vote_id == '') {
 			$this->setError( JText::_('XPOLL_ERROR_MISSING_VOTE_ID') );
 			return false;
 		}
-		
+
 		// Check for pollid
 		if ($this->poll_id == '') {
 			$this->setError( JText::_('XPOLL_ERROR_MISSING_POLL_ID') );
@@ -63,10 +60,8 @@ class XPollDate extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function getMinMaxDates( $poll_id=NULL ) 
+
+	public function getMinMaxDates( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {
 			$poll_id = $this->poll_id;
@@ -77,15 +72,13 @@ class XPollDate extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function deleteEntries( $poll_id=NULL ) 
+
+	public function deleteEntries( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {
 			$poll_id = $this->poll_id;
 		}
-		
+
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE poll_id='$poll_id'" );
 		if (!$this->_db->query()) {
 			echo $this->_db->getErrorMsg();

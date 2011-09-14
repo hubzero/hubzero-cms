@@ -54,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->filters['tag'])) );
-		
+
 if (count($tf) > 0) {
 	echo $tf[0];
 } else { ?>

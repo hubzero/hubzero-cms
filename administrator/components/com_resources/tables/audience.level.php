@@ -28,38 +28,35 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourceAudienceLevel extends JTable 
+class ResourceAudienceLevel extends JTable
 {
 	var $id       		= NULL;  // @var int(11) Primary key
 	var $label 			= NULL;  // @var 
 	var $title 			= NULL;  // @var
 	var $description 	= NULL;  // @var
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_taxonomy_audience_levels', 'id', $db );
 	}
-	
-	//-----------
-	 
-	public function getLevels ($numlevels = 4, $levels = array()) 
-	{	
+
+	public function getLevels ($numlevels = 4, $levels = array())
+	{
 		$sql  = "SELECT label, title FROM #__resource_taxonomy_audience_levels ";
 		$sql .= $numlevels == 4 ? " WHERE label != 'level5' " : "";
 		$sql .= " ORDER BY label ASC";
-		
+
 		$this->_db->setQuery( $sql );
 		$result = $this->_db->loadObjectList();
 		if ($result) {
-			foreach ($result as $r) 
+			foreach ($result as $r)
 			{
 				$levels[$r->label] = $r->title;
 			}
 		}
-		return $levels;		
+		return $levels;
 	}
 }
 

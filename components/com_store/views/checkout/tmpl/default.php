@@ -62,7 +62,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php 
 	$countries = Hubzero_Geo::getcountries();
 	$mycountry = (isset($this->posted['country'])) ? htmlentities(($this->posted['country'])) : htmlentities(Hubzero_Geo::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8');
-	foreach ($countries as $country) 
+	foreach ($countries as $country)
 	{
 ?>
 						<option value="<?php echo htmlentities($country['name']); ?>"<?php echo ($country['name'] == $mycountry) ? ' selected="selected"' : ''; ?>><?php echo htmlentities($country['name']); ?></option>
@@ -103,7 +103,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="order_summary">
 			<h4><span class="coin">&nbsp;</span><?php echo JText::_('COM_STORE_ORDER_SUMMARY'); ?></h4>
 <?php
-	foreach ($this->items as $item) 
+	foreach ($this->items as $item)
 	{
 ?>
 			<p>

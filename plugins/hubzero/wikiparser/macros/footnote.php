@@ -29,20 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class FootNoteMacro extends WikiMacro 
+class FootNoteMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Add a footnote, or explicitly display collected footnotes when no args (footnote text) are given.';
 		$txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes when no args (footnote text) are given.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$note = $this->args;
 
@@ -59,29 +56,29 @@ class FootNoteMacro extends WikiMacro
 			if (!isset($fn)) {
 				$fn = array();
 			}
-			
+
 			$p = new WikiParser( 'Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain );
-			
+
 			$note = $p->parse(trim($note));
-			
+
 			$wm->footnotes_count++;
-			
+
 			if (in_array($note,$notes)) {
 				$i = array_search($note, $notes) + 1;
 				$k = $wm->footnotes_count;
 				//return '<sup><a name="fndef-'.$k.'"></a>['.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'#fnref-'.$i.' &#91;'.$i.'&#93;]</sup>';
 				return '<sup><a name="fndef-'.$k.'"></a><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->scope.'&pagename='.$this->pagename).'#fnref-'.$i.'">&#91;'.$i.'&#93;</a></sup>';
 			}
-			
+
 			//$i = $wm->footnotes_count;
 			$i = count($fn) + 1;
 			$notes[] = $note;
 			$fn[] = '<li><a name="fnref-'.$i.'"></a>'.$note.'</li>';
 			//$fn[] = ' # <a name="fnref-'.$i.'"></a>'.$note;
-			
+
 			$wm->footnotes_notes = $notes;
 			$wm->footnotes = $fn;
-			
+
 			//return '<sup><a name="fndef-'.$i.'"></a>['.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'#fnref-'.$i.' &#91;'.$i.'&#93;]</sup>';
 			//return '^[[Anchor(fndef-'.$i.'")]]['.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'#fnref-'.$i.' '.$i.']^';
 			return '<sup><a name="fndef-'.$i.'"></a><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->scope.'&pagename='.$this->pagename).'#fnref-'.$i.'">&#91;'.$i.'&#93;</a></sup>';
@@ -89,7 +86,7 @@ class FootNoteMacro extends WikiMacro
 			$html  = '<ol class="footnotes">';
 			$html .= implode("\n",$wm->footnotes);
 			$html .= '</ol>';
-			
+
 			return $html;
 		}
 	}

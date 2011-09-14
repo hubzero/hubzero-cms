@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_topics' );
-
-//-----------
 
 class plgXSearchTopics extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgXSearchTopics extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'topics' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onXSearchAreas() 
+
+	public function &onXSearchAreas()
 	{
 		$areas = array(
 			'topics' => JText::_('PLG_XSEARCH_TOPICS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -66,20 +58,20 @@ class plgXSearchTopics extends JPlugin
 				return array();
 			}
 		}
-		
+
 		// Do we have a search term?
 		$t = $searchquery->searchTokens;
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
-		
+
 		// Instantiate some needed objects
 		$wp = new WikiPage( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['search'] = $searchquery;
@@ -88,7 +80,7 @@ class plgXSearchTopics extends JPlugin
 		if (!$limit) {
 			// Get a count
 			$filters['select'] = 'count';
-			
+
 			$database->setQuery( $wp->buildPluginQuery( $filters ) );
 			return $database->loadResult();
 		} else {
@@ -97,17 +89,17 @@ class plgXSearchTopics extends JPlugin
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
 			$filters['sortby'] = 'relevance';
-			
+
 			$query = $wp->buildPluginQuery( $filters );
 			if (count($areas) > 1) {
 				return $query;
 			}
-			
+
 			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					if ($row->group != '' && $row->scope != '') {
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->category.'&pagename='.$row->alias);
@@ -121,16 +113,14 @@ class plgXSearchTopics extends JPlugin
 		}
 	}
 
-	//-----------
-
-	private function _authorize() 
+	private function _authorize()
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -151,9 +141,7 @@ class plgXSearchTopics extends JPlugin
 		// ...
 	}*/
 
-	//-----------
-
-	public function out( $row, $keyword ) 
+	public function out( $row, $keyword )
 	{
 		if (strstr( $row->href, 'index.php' )) {
 			if ($row->area != '' && $row->category != '') {
@@ -166,7 +154,7 @@ class plgXSearchTopics extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-			
+
 		$html  = "\t".'<li class="topic">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		$html .= "\t\t".'<p class="details">';
@@ -183,8 +171,6 @@ class plgXSearchTopics extends JPlugin
 		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
-
-	//-----------
 
 	/*public function after()
 	{

@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $tags = $modfindresources->tags;
 $categories = $modfindresources->categories;
-			
+
 // search
 $html  = '<form action="/search/" method="get" class="search">'."\n";
 $html .= ' <fieldset>'."\n";
@@ -52,7 +52,7 @@ if (count($tags) > 0) {
 	{
 		$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
 	}
-	$html .= implode('',$tl);	
+	$html .= implode('',$tl);
 	$html .= "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags').'" class="showmore">'.JText::_('More tags').' &rsaquo;</a></li>'."\n";
 	$html .= '</ol>'."\n";
 } else {
@@ -62,12 +62,12 @@ if (count($tags) > 0) {
 if (count($categories) > 0) {
 	$html  .= '<p>'."\n";
 	$i = 0;
-	foreach ($categories as $category) 
+	foreach ($categories as $category)
 	{
 		$i++;
 		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
 		$normalized = strtolower($normalized);
-		
+
 		if (substr($normalized, -3) == 'ies') {
 			$cls = $normalized;
 		} else {

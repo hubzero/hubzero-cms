@@ -94,12 +94,12 @@ public function submitbutton(pressbutton)
 <?php
 ximport('Hubzero_View_Helper_Html');
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	$status='';
-	switch ($row->available) 
+	switch ($row->available)
 	{
 		case '1':
 			$a_class = 'published';
@@ -112,7 +112,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$a_alt = JText::_('TIP_MARK_AVAIL');
 			break;
 	}
-	switch ($row->published) 
+	switch ($row->published)
 	{
 		case '1':
 			$p_class = 'published';

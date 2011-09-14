@@ -115,7 +115,7 @@ class Hubzero_Auth_Domain
 		if (is_numeric($this->id))
 		{
 			$query = "INSERT INTO #__auth_domain (id,type,authenticator,domain,params) VALUES ( " . $db->Quote($this->id) .
-				"," . $db->Quote($this->type) . "," . $db->Quote($this->authenticator) . "," . $db->Quote($this->domain) . "," 
+				"," . $db->Quote($this->type) . "," . $db->Quote($this->authenticator) . "," . $db->Quote($this->domain) . ","
 				. $db->Quote($this->params) . ");";
 
 			$db->setQuery();
@@ -180,9 +180,9 @@ class Hubzero_Auth_Domain
 		else
 		{
 			$query = "SELECT id,type,authenticator,domain,params FROM #__auth_domain WHERE "
-				. " type=" . $db->Quote($this->type)  
-				. " AND authenticator=" . $db->Quote($this->authenticator) 
-				. " AND domain=" . $db->Quote($this->domain) 
+				. " type=" . $db->Quote($this->type)
+				. " AND authenticator=" . $db->Quote($this->authenticator)
+				. " AND domain=" . $db->Quote($this->domain)
 				. ";";
 		}
 

@@ -59,9 +59,9 @@ $juser =& JFactory::getUser();
 			$bits = explode('_',$app->appname);
 			$bit = (count($bits) > 1) ? array_pop($bits) : '';
 			$appname = implode('_',$bits);
-			
+
 			$cls = ($is_even) ? '' : 'even ';
-			
+
 			if ($modmysessions->supportedtag) {
 				if ($modmysessions->rt->checkTagUsage( $modmysessions->supportedtag, 0, $appname )) {
 					$cls .= 'supported';
@@ -121,7 +121,7 @@ $juser =& JFactory::getUser();
 			if ($modmysessions->specapp && $app->appname != $modmysessions->specapp) {
 				continue;
 			}
-			
+
 			$bits = explode('_',$app->appname);
 			$bit = (count($bits) > 1) ? array_pop($bits) : '';
 			$appname = implode('_',$bits);

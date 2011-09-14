@@ -54,7 +54,7 @@ JToolBarHelper::deleteList( '', 'deletetype', 'Delete' );
 <?php
 $k = 0;
 $i = 0;
-foreach ($this->rows as $avalue => $alabel) 
+foreach ($this->rows as $avalue => $alabel)
 {
 ?>
 			<tr class="<?php echo "row$k"; ?>">

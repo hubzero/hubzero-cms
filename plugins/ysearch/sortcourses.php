@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class plgYSearchSortCourses extends YSearchPlugin
 {
 	public static function onYSearchSort($a, $b)
@@ -37,7 +36,7 @@ class plgYSearchSortCourses extends YSearchPlugin
 		if ($a->get_plugin() !== 'resources' || $b->get_plugin() !== 'resources' ||
 			$a->get_section() !== 'Courses' || $b->get_section() !== 'Courses')
 			return 0;
-		
+
 		// Compare the leading parts of the resources to guess whether they
 		// refer to the same course
 		$title_a = preg_replace('/[^a-z]/', '', strtolower($a->get_title()));
@@ -52,7 +51,7 @@ class plgYSearchSortCourses extends YSearchPlugin
 			}
 		if (!$match)
 			return 0;
-		
+
 		return $a->get_date() > $b->get_date() ? 1 : -1;
 	}
 }

@@ -30,26 +30,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class modPollTitle 
+class modPollTitle
 {
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,19 +55,18 @@ class modPollTitle
 	}
 
 	//-----------
-	
 	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'poll.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'data.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'date.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'menu.php' );
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
 		$this->message = $params->get( 'message' );
-		
+
 		// Load the latest poll
 		$poll = new XPollPoll( $database );
 		$poll->getLatestPoll();

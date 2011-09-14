@@ -34,11 +34,11 @@ if (count($rows) > 0) {
 	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 	$database =& JFactory::getDBO();
 	$tagging = new AnswersTags( $database );
-	
+
 	ximport('Hubzero_View_Helper_Html');
-	
+
 	$html  = "\t\t".'<ul class="questions">'."\n";
-	foreach ($rows as $row) 
+	foreach ($rows as $row)
 	{
 		$name = JText::_('MOD_RECENTQUESTIONS_ANONYMOUS');
 		if ($row->anonymous == 0) {
@@ -49,9 +49,9 @@ if (count($rows) > 0) {
 		}
 
 		//$when = $modrecentquestions->timeAgo($modrecentquestions->mkt($row->created));
-		
+
 		$tags = $tagging->get_tag_cloud(0, 0, $row->id);
-		
+
 		$html .= "\t\t".' <li>'."\n";
 		if ($modrecentquestions->style == 'compact') {
 			$html .= "\t\t\t".'<a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) .'">'.$row->subject.'</a>'."\n";

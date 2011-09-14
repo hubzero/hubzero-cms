@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class Order extends JTable 
+class Order extends JTable
 {
 	var $id         		= NULL;  // @var int(11) Primary key
 	var $uid    			= NULL;  // @var int(11)
@@ -42,64 +41,60 @@ class Order extends JTable
 	var $ordered  			= NULL;  // @var datetime
 	var $status_changed  	= NULL;  // @var datetime
 	var $notes  			= NULL;  // @var text
-	
+
 	//----------
 	// order status:
 	// 0 - 'placed (newly received)'
 	// 1 - 'processed' (account debited)
 	// 2 - 'cancelled'
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__orders', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function getOrderID( $uid, $ordered)
-	{	
+	{
 		if ($uid == null) {
 			return false;
 		}
 		if ($ordered == null) {
 			return false;
 		}
-		
+
 		$sql = "SELECT id FROM $this->_tbl WHERE uid='".$uid."' AND ordered='".$ordered."' ";
 		$this->_db->setQuery( $sql);
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function getOrders( $rtrn='count', $filters)
 	{
 		switch ($filters['filterby'])
 		{
-			case 'all': 
+			case 'all':
 				$where = "1=1";
 				break;
-			case 'new': 
+			case 'new':
 				$where = "m.status=0";
 				break;
-			case 'processed': 
+			case 'processed':
 				$where = "m.status=1";
 				break;
 			case 'cancelled':
-			default: 
+			default:
 				$where = "m.status=2";
 				break;
 		}
-		
+
 		// build count query (select only ID)
 		$query_count  = "SELECT count(*) FROM $this->_tbl AS m WHERE ".$where;
-	
+
 		$query_fetch = "SELECT m.id, m.uid, m.total, m.status, m.ordered, m.status_changed,  
 				(SELECT count(*) FROM #__order_items AS r WHERE r.oid=m.id) AS items"
 			. "\n FROM $this->_tbl AS m"
 			. "\n WHERE ".$where
 			. "\n ORDER BY ".$filters['sortby'];
-		
+
 		if ($filters['limit'] && $filters['start']) {
 			$query_fetch .= " LIMIT " . $start . ", " . $limit;
 		}

@@ -35,15 +35,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class ToolsToolbar
 {
-	public function _CANCEL() 
+	public function _CANCEL()
 	{
 		JToolBarHelper::title( JText::_( 'Middleware' ).': <small><small>[ New ]</small></small>', 'user.png' );
 		JToolBarHelper::cancel();
 	}
 
-	//-----------
-	
-	public function _DEFAULT() 
+	public function _DEFAULT()
 	{
 		JToolBarHelper::title( JText::_( 'Middleware' ), 'user.png' );
 		JToolBarHelper::preferences('com_tools', '550');

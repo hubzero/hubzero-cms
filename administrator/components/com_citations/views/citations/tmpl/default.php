@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 $k = 0;
 $filterstring = ($this->filters['sort']) ? '&amp;sort='.$this->filters['sort'] : '';
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 ?>

@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Message_Action extends JTable
 {
 	var $id          = NULL;  // @var int(11) Primary key
 	var $class       = NULL;  // @var varchar(20)
 	var $element     = NULL;  // @var int(11)
 	var $description = NULL;  // @var text
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xmessage_action', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->element ) == '') {
 			$this->setError( JText::_('Please provide an element.') );
@@ -54,10 +51,8 @@ class Hubzero_Message_Action extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getActionItems( $type=null, $component=null, $element=null, $uid=null ) 
+
+	public function getActionItems( $type=null, $component=null, $element=null, $uid=null )
 	{
 		if (!$uid) {
 			return false;
@@ -77,7 +72,7 @@ class Hubzero_Message_Action extends JTable
 		if (!$element) {
 			return false;
 		}
-		
+
 		$query = "SELECT m.id 
 				FROM #__xmessage_recipient AS r, $this->_tbl AS a, #__xmessage AS m
 				WHERE m.id=r.mid AND r.actionid = a.id AND m.type='$type' AND r.uid='$uid' AND a.class='$component' AND a.element='$element'";

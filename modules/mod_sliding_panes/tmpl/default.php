@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($modslidingpanes->content) {
 	$i = 1;
 	$panes = $modslidingpanes->content;
-	foreach ($panes as $pane) 
+	foreach ($panes as $pane)
 	{
 ?>
 			<div class="pane" id="<?php echo $modslidingpanes->container.'-pane'.$i; ?>">

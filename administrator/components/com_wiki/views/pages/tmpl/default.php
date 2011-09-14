@@ -89,10 +89,10 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
-	switch ($row->state) 
+	switch ($row->state)
 	{
 		case 1:
 			$color_access = 'style="color: red;"';
@@ -108,7 +108,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$alt = JText::_('Open');
 			break;
 	}
-	
+
 	/*if (!$row->access) {
 		$color_access = 'style="color: green;"';
 		$task_access = 'accessregistered';

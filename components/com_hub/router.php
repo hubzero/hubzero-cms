@@ -50,7 +50,7 @@ function hubBuildRoute(&$query)
 			break;
 			default:
 				if (isset($query['view'])) {
-					if ($query['view'] == 'resend' 
+					if ($query['view'] == 'resend'
 					 || $query['view'] == 'change'
 					 || $query['view'] == 'confirm'
 					 || $query['view'] == 'unconfirmed') {
@@ -81,7 +81,7 @@ function hubParseRoute($segments)
 	$vars = array();
 	$count = count($segments);
 
-	if (empty($segments)) 
+	if (empty($segments))
 	{
 		return JError::raiseError( 404, "Invalid Request" );
 	}
@@ -108,7 +108,7 @@ function hubParseRoute($segments)
 			$vars['act'] = 'show';
 		}
 	}
-	else if ($segments[0] == 'logout') 
+	else if ($segments[0] == 'logout')
 	{
 		if ($count > 1)
 			return JError::raiseError( 404, "Invalid Request" );

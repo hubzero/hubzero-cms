@@ -37,20 +37,18 @@ class ContribtoolConfig
 {
 	public $paramaters = array();
 	public $option = NULL;
-	
-	//-----------
-	
+
 	public function __construct( $option )
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$database->setQuery( "SELECT params FROM #__components WHERE `option`='".$option."' AND parent=0 LIMIT 1" );
 		$parameters = $database->loadResult();
-		
+
 		$params = array();
 		if ($parameters) {
 			$ps = explode(n,$parameters);
-			foreach ($ps as $p) 
+			foreach ($ps as $p)
 			{
 				$m = explode('=',$p);
 				if (trim($m[0])) {
@@ -58,10 +56,10 @@ class ContribtoolConfig
 				}
 			}
 		}
-		
+
 		$this->option = $option;
 		$this->parameters = $params;
 	}
-	
+
 }
 ?>

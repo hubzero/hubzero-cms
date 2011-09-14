@@ -61,11 +61,11 @@ defined('_JEXEC') or die('Restricted access');
 			if (count($this->users) > 0) {
 				$cls = 'even';
 				$users = $this->users;
-				foreach (array_keys($users) as $userkey) 
+				foreach (array_keys($users) as $userkey)
 				{
 					$cls = (($cls == 'even') ? 'odd' : 'even');
 
-					for ($i = 0; $i < count($users[$userkey]) - 4; $i++) 
+					for ($i = 0; $i < count($users[$userkey]) - 4; $i++)
 					{
 						if ($i) {
 							$cls .=  ' sameuser';
@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 							$html .= t.t.t.'<td class="textual-data">'. stripslashes($users[$userkey]['name']) .'</td>'.n;
 							$html .= t.t.t.'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.'username='.$userkey).'">'.$userkey.'</td>'.n;
 							$html .= t.t.t.'<td class="textual-data">';
-							switch ($users[$userkey]['orgtype']) 
+							switch ($users[$userkey]['orgtype'])
 							{
 								case 'universitystudent':
 									$html .= JText::_('University / College Student');
@@ -89,7 +89,7 @@ defined('_JEXEC') or die('Restricted access');
 								case 'universitystaff':
 									$html .= JText::_('University / College Staff');
 									break;
-								case 'precollege':  
+								case 'precollege':
 								case 'precollegefacultystaff': $html .= JText::_('K - 12 (Pre-College) Faculty or Staff'); break;
 								case 'precollegestudent':  $html .= JText::_('K - 12 (Pre-College) Student'); break;
 								case 'educational': $html .= JText::_('Educational');          break;
@@ -143,13 +143,13 @@ defined('_JEXEC') or die('Restricted access');
 		if (count($this->guests) > 0) {
 			$guests = $this->guests;
 			$cls = 'even';
-			foreach ($guests as $guest) 
+			foreach ($guests as $guest)
 			{
 				$cls = (($cls == 'even') ? 'odd' : 'even');
-				
+
 				$guest['host'] = ($guest['host']) ? $guest['host'] : JText::_('Unknown');
 				$guest['ip'] = ($guest['ip']) ? $guest['ip'] : JText::_('Unknown');
-				
+
 				$html .= t.t.'<tr class="'.$cls.'">'.n;
 				$html .= t.t.t.'<td class="textual-data">'.JText::_('(guest)').'</td>'.n;
 				$html .= t.t.t.'<td class="textual-data">'.$guest['host'].'</td>'.n;

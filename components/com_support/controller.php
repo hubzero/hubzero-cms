@@ -35,13 +35,13 @@ class SupportController extends Hubzero_Controller
 	public function execute()
 	{
 		$this->acl = SupportACL::getACL();
-		
+
 		$this->_task = JRequest::getVar( 'task', '', 'post' );
 		if (!$this->_task) {
 			$this->_task = JRequest::getVar( 'task', '', 'get' );
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'download':   $this->download();   break;
 			case 'upload':     $this->upload();     break;
@@ -54,21 +54,19 @@ class SupportController extends Hubzero_Controller
 			case 'delete':     $this->delete();     break;
 			case 'index':      $this->index();      break;
 			case 'stats':      $this->stats();      break;
-			
+
 			case 'reportabuse': $this->reportabuse(); break;
 			case 'savereport':  $this->savereport();  break;
-			
+
 			default: $this->index(); break;
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildPathway($ticket=null) 
+
+	protected function _buildPathway($ticket=null)
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
@@ -91,10 +89,8 @@ class SupportController extends Hubzero_Controller
 			);
 		}
 	}
-	
-	//-----------
-	
-	protected function _buildTitle($ticket=null) 
+
+	protected function _buildTitle($ticket=null)
 	{
 		$this->_title = JText::_(strtoupper($this->_name));
 		if ($this->_task) {
@@ -106,42 +102,42 @@ class SupportController extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-	
-	protected function stats() 
+
+	protected function stats()
 	{
 		// Check authorization
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'stats') );
 		$view->option = $this->_option;
 		$view->title = JText::_(strtoupper($this->_name));
-		
+
 		$view->authorized = $this->authorize();
 		//if ($view->authorized != 'admin') {
 		if (!$this->acl->check('read','tickets')) {
 			$this->_return = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 		}
-		
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		$type = JRequest::getVar('type', 'submitted');
 		$view->type = ($type == 'automatic') ? 1 : 0;
-		
+
 		$view->group = JRequest::getVar('group', '');
 
         if (!$view->group && trim($this->config->get('group'))) {
@@ -149,11 +145,11 @@ class SupportController extends Hubzero_Controller
         }
 
 		$view->sort = JRequest::getVar('sort', 'name');
-		
+
 		// Set up some dates
 		$jconfig =& JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
-		
+
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 		$day   = strftime("%d", time()+($this->offset*60*60));
@@ -163,44 +159,44 @@ class SupportController extends Hubzero_Controller
 		if ($month<="9"&ereg("(^[1-9]{1})",$month)) {
 			$month = "0$month";
 		}
-		
+
 		$startday = 0;
 		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
 		if ($numday == -1) {
 			$numday = 6;
-		} 
+		}
 		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year );
 		$week = strftime("%d", $week_start );
-		
+
 		$view->year = $year;
 		$view->opened = array();
 		$view->closed = array();
-		
+
 		$st = new SupportTicket( $this->database );
-		
+
 		// Get opened ticket information
 		$view->opened['year'] = $st->getCountOfTicketsOpened($view->type, $year, '01', '01', $view->group);
-		
+
 		$view->opened['month'] = $st->getCountOfTicketsOpened($view->type, $year, $month, '01', $view->group);
-		
+
 		$view->opened['week'] = $st->getCountOfTicketsOpened($view->type, $year, $month, $week, $view->group);
-		
+
 		// Currently open tickets
 		$view->opened['open'] = $st->getCountOfOpenTickets($view->type, false, $view->group);
-		
+
 		// Currently unassigned tickets
 		$view->opened['unassigned'] = $st->getCountOfOpenTickets($view->type, true, $view->group);
-		
+
 		// Get closed ticket information
 		$view->closed['year'] = $st->getCountOfTicketsClosed($view->type, $year, '01', '01', null, $view->group);
-		
+
 		$view->closed['month'] = $st->getCountOfTicketsClosed($view->type, $year, $month, '01', null, $view->group);
-		
+
 		$view->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, null, $view->group);
-		
+
 		// Users
 		$view->users = null;
-		
+
 		if ($view->group) {
 			$query = "SELECT a.username, a.name, a.id"
 				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
@@ -215,26 +211,26 @@ class SupportController extends Hubzero_Controller
 				. "\n WHERE a.block = '0' AND g.id=25"
 				. "\n ORDER BY a.name";
 		}
-		
+
 		$this->database->setQuery( $query );
 		$users = $this->database->loadObjectList();
 		if ($users) {
 			$u = array();
 			$p = array();
 			$g = array();
-			foreach ($users as $user) 
+			foreach ($users as $user)
 			{
 				$user->closed = array();
-				
+
 				// Get closed ticket information
 				$user->closed['year'] = $st->getCountOfTicketsClosed($view->type, $year, '01', '01', $user->username, $view->group);
 
 				$user->closed['month'] = $st->getCountOfTicketsClosed($view->type, $year, $month, '01', $user->username, $view->group);
 
 				$user->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, $user->username, $view->group);
-				
+
 				$p[$user->id] = $user;
-				switch ($view->sort) 
+				switch ($view->sort)
 				{
 					case 'year':
 						$u[$user->id] = $user->closed['year'];
@@ -256,69 +252,30 @@ class SupportController extends Hubzero_Controller
 			} else {
 				asort($u);
 			}
-			foreach ($u as $k=>$v) 
+			foreach ($u as $k=>$v)
 			{
 				$g[] = $p[$k];
 			}
-			
+
 			$view->users = $g;
 		}
-		
+
 		// Get avgerage lifetime
 		$view->lifetime = $st->getAverageLifeOfTicket($view->type, $year, $view->group);
-		
+
 		// Tickets over time
 		$view->closedmonths = array();
-		for ($i = 1; $i <= 12; $i++) 
+		for ($i = 1; $i <= 12; $i++)
 		{
 			$view->closedmonths[$i] = $st->getCountOfTicketsClosedInMonth($view->type, $year, sprintf( "%02d",$i), $view->group);
 		}
-		
+
 		$view->openedmonths = array();
-		for ($i = 1; $i <= 12; $i++) 
+		for ($i = 1; $i <= 12; $i++)
 		{
 			$view->openedmonths[$i] = $st->getCountOfTicketsOpenedInMonth($view->type, $year, sprintf( "%02d",$i), $view->group);
 		}
-		
-		// Output HTML
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-	}
-	
-	//-----------
-	
-	protected function index() 
-	{
-		// Instantiate a new view
-		$view = new JView( array('name'=>'index') );
-		$view->title = JText::_(strtoupper($this->_name));
-		
-		// Set the page title
-		$this->_buildTitle();
-		
-		// Set the pathway
-		$this->_buildPathway();
-		
-		// Push some styles to the template
-		$this->_getStyles();
-		
-		// Output HTML
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-	}
-	
-	//-----------
-	
-	protected function login()
-	{
-		// Instantiate a new view
-		$view = new JView( array('name'=>'login') );
-		$view->title = ucfirst($this->_name).': '.ucfirst($this->_task);
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -326,9 +283,42 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function tickets() 
+	protected function index()
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'index') );
+		$view->title = JText::_(strtoupper($this->_name));
+
+		// Set the page title
+		$this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Push some styles to the template
+		$this->_getStyles();
+
+		// Output HTML
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+
+	protected function login()
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'login') );
+		$view->title = ucfirst($this->_name).': '.ucfirst($this->_task);
+
+		// Output HTML
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+
+	protected function tickets()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'tickets') );
@@ -344,7 +334,7 @@ class SupportController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
-	
+
 		if (!$this->acl->check('read','tickets')) {
 			$view->filters['owner'] = $juser->get('username');
 			$view->filters['reportedby'] = $juser->get('username');
@@ -363,21 +353,21 @@ class SupportController extends Hubzero_Controller
 		// Initiate paging class
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $total, $view->filters['start'], $view->filters['limit'] );
-		
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Get some needed styles
 		$this->_getStyles();
-		
+
 		// Get some needed scripts
 		$this->_getScripts();
-		
+
 		$view->acl = $this->acl;
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -385,42 +375,40 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function ticket() 
+	protected function ticket()
 	{
 		// Check authorization
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
-	
+
 		// Get the ticket ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			JError::raiseError( 404, JText::_('SUPPORT_NO_TICKET_ID') );
 			return;
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'ticket') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		$view->option = $this->_option;
 		$view->database = $this->database;
-		
+
 		// Incoming
 		$view->filters = $this->_getFilters();
 
 		// Initiate database class and load info
 		$view->row = new SupportTicket( $this->database );
 		$view->row->load( $id );
-		
+
 		if (!$view->row->report) {
 			JError::raiseError( 404, JText::_('SUPPORT_TICKET_NOT_FOUND') );
 			return;
 		}
-		
-		if ($view->row->login == $juser->get('username') 
+
+		if ($view->row->login == $juser->get('username')
 		 || $view->row->owner == $juser->get('username')) {
 			if (!$this->acl->check('read','tickets')) {
 				$this->acl->setAccess('read','tickets',1);
@@ -435,7 +423,7 @@ class SupportController extends Hubzero_Controller
 				$this->acl->setAccess('read','comments',1);
 			}
 		}
-		
+
 		if ($this->acl->authorize($view->row->group)) {
 			$this->acl->setAccess('read','tickets',1);
 			$this->acl->setAccess('update','tickets',1);
@@ -445,7 +433,7 @@ class SupportController extends Hubzero_Controller
 			$this->acl->setAccess('create','private_comments',1);
 			$this->acl->setAccess('read','private_comments',1);
 		}
-		
+
 		// Ensure the user is authorized to view this ticket
 		$view->authorized = $this->authorize($view->row->group);
 		/*if ($view->row->login != $juser->get('username') 
@@ -459,7 +447,7 @@ class SupportController extends Hubzero_Controller
 			JError::raiseError( 403, JText::_('SUPPORT_NOT_AUTH') );
 			return;
 		}
-		
+
 		// Get the next and previous support tickets
 		$view->row->prev = $view->row->getTicketId('prev', $view->filters, $view->authorized);
 		$view->row->next = $view->row->getTicketId('next', $view->filters, $view->authorized);
@@ -476,7 +464,7 @@ class SupportController extends Hubzero_Controller
 			$view->row->summary = str_replace('&quote;','&quot;',$view->row->summary);
 			$view->row->summary = htmlentities($view->row->summary, ENT_COMPAT, 'UTF-8');
 		}
-		
+
 		$view->row->report = html_entity_decode(stripslashes($view->row->report), ENT_COMPAT, 'UTF-8');
 		$view->row->report = str_replace('&quote;','&quot;',$view->row->report);
 		if (!strstr( $view->row->report, '</p>' ) && !strstr( $view->row->report, '<pre class="wiki">' )) {
@@ -486,13 +474,13 @@ class SupportController extends Hubzero_Controller
 			$view->row->report = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$view->row->report);
 			$view->row->report = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$view->row->report);
 		}
-		
+
 		$view->lists = array();
-		
+
 		// Get resolutions
 		$sr = new SupportResolution( $this->database );
 		$view->lists['resolutions'] = $sr->getResolutions();
-		
+
 		// Get messages
 		$sm = new SupportMessage( $this->database );
 		$view->lists['messages'] = $sm->getMessages();
@@ -501,14 +489,14 @@ class SupportController extends Hubzero_Controller
 		$st = new SupportTags( $this->database );
 		$view->lists['tags'] = $st->get_tag_string( $view->row->id, 0, 0, NULL, 0, 1 );
 		$view->lists['tagcloud'] = $st->get_tag_cloud( 3, 1, $view->row->id );
-		
+
 		// Get comments
 		$sc = new SupportComment( $this->database );
 		$view->comments = $sc->getComments( $this->acl->check('read','private_comments'), $view->row->id );
 
 		// Parse comment text for attachment tags
 		$juri =& JURI::getInstance();
-		
+
 		$webpath = str_replace('//','/',$juri->base().$this->config->get('webpath').DS.$id);
 		if (isset( $_SERVER['HTTPS'] )) {
 			$webpath = str_replace('http:','https:',$webpath);
@@ -516,12 +504,12 @@ class SupportController extends Hubzero_Controller
 		if (!strstr( $webpath, '://' )) {
 			$webpath = str_replace(':/','://',$webpath);
 		}
-		
+
 		$attach = new SupportAttachment( $this->database );
 		$attach->webpath = $webpath;
 		$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 		$attach->output  = 'web';
-		for ($i=0; $i < count($view->comments); $i++) 
+		for ($i=0; $i < count($view->comments); $i++)
 		{
 			$comment =& $view->comments[$i];
 			$comment->comment = stripslashes($comment->comment);
@@ -533,12 +521,12 @@ class SupportController extends Hubzero_Controller
 			}
 			$comment->comment = $attach->parse($comment->comment);
 		}
-		
+
 		$view->row->report = $attach->parse($view->row->report);
-		
+
 		// Get severities
 		$view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
-		
+
 		// Populate the list of assignees based on if the ticket belongs to a group or not
 		if (trim($view->row->group)) {
 			$view->lists['owner'] = $this->_userSelectGroup( 'ticket[owner]', $view->row->owner, 1, '', trim($view->row->group) );
@@ -547,34 +535,32 @@ class SupportController extends Hubzero_Controller
 		} else {
 			$view->lists['owner'] = $this->_userSelect( 'ticket[owner]', $view->row->owner, 1 );
 		}
-		
+
 		// Set the pathway
 		$this->_buildPathway($view->row);
-		
+
 		// Set the page title
 		$this->_buildTitle($view->row);
-		
+
 		// Get some needed styles
 		$this->_getStyles();
-		
+
 		// Get some needed scripts
 		$this->_getScripts();
-		
+
 		$view->acl = $this->acl;
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	protected function feed() 
+
+	protected function feed()
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php' );
-		
+
 		global $mainframe;
 
 		$jdoc =& JFactory::getDocument();
@@ -590,12 +576,12 @@ class SupportController extends Hubzero_Controller
 
 		// Create a Ticket object
 		$obj = new SupportTicket( $this->database );
-	
+
 		// Fetch results
 		$rows = $obj->getTickets( $filters, true );
 
 		$xhub =& Hubzero_Factory::getHub();
-		
+
 		$doc->title = $xhub->getCfg('hubShortName').' '.JText::_('SUPPORT_RSS_TITLE');
 		$doc->description = JText::sprintf('SUPPORT_RSS_DESCRIPTION',$xhub->getCfg('hubShortName'));
 		$doc->copyright = JText::sprintf('SUPPORT_RSS_COPYRIGHT', date("Y"), $xhub->getCfg('hubShortURL'));
@@ -634,48 +620,46 @@ class SupportController extends Hubzero_Controller
 		echo $doc->render();
 	}
 
-	//-----------
-
-	protected function save() 
+	protected function save()
 	{
 	    $juser =& JFactory::getUser();
-		
+
 		// Make sure we are still logged in
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
-		
+
 		// Incoming
 		$incoming = JRequest::getVar('ticket', array(), 'post');
-		
+
 		// Trim all posted items
 		$incoming = array_map('trim',$incoming);
-	
+
 		$id = JRequest::getInt('id', 0, 'post');
 		if (!$id) {
 			JError::raiseError( 500, JText::_('No Ticket ID provided.') );
 			return;
 		}
-	
+
 		// Instantiate the tagging class - we'll need this a few times
 		$st = new SupportTags( $this->database );
-	
+
 		// Load the old ticket so we can compare for the changelog
 		if ($id) {
 			$old = new SupportTicket( $this->database );
 			$old->load( $id );
-			
+
 			// Get Tags
 			$oldtags = $st->get_tag_string( $id, 0, 0, NULL, 0, 1 );
 		}
-	
+
 		// Initiate class and bind posted items to database fields
 		$row = new SupportTicket( $this->database );
 		if (!$row->bind( $incoming )) {
 			echo SupportHtml::alert( $row->getError() );
 			exit();
 		}
-		
+
 		// Set the status of the ticket
 		if ($row->resolved) {
 			if ($row->resolved == 1) {
@@ -688,12 +672,12 @@ class SupportController extends Hubzero_Controller
 		} else {
 			$row->status = 0;
 		}
-		
+
 		// Set the status to just "open" if no owner and no resolution
 		if (!$row->resolved) {
 			$row->status = 0;
 		}
-		
+
 		// If status is "open" or "waiting", ensure the resolution is empty
 		if ($row->status == 0 || $row->status == 1) {
 			$row->resolved = '';
@@ -710,9 +694,9 @@ class SupportController extends Hubzero_Controller
 			echo SupportHtml::alert( $row->getError() );
 			exit();
 		}
-		
+
 		$row->load( $id );
-		
+
 		// Save the tags
 		$tags = trim(JRequest::getVar( 'tags', '', 'post' ));
 		//if ($tags) {
@@ -738,7 +722,7 @@ class SupportController extends Hubzero_Controller
 					$row->store();
 				}
 			}
-			
+
 			// Compare fields to find out what has changed for this ticket and build a changelog
 			$changelog = array();
 
@@ -777,10 +761,10 @@ class SupportController extends Hubzero_Controller
 			if ($log != '') {
 				$log = '<ul class="changelog">'."\n".$log.'</ul>'."\n";
 			}
-			
+
 			$attachment = $this->upload( $row->id );
 			$comment .= ($attachment) ? "\n\n".$attachment : '';
-			
+
 			// Create a new support comment object and populate it
 			$rowc = new SupportComment( $this->database );
 			$rowc->ticket     = $id;
@@ -801,13 +785,13 @@ class SupportController extends Hubzero_Controller
 					echo SupportHtml::alert( $rowc->getError() );
 					exit();
 				}
-			
+
 				// Only do the following if a comment was posted
 				// otherwise, we're only recording a changelog
 				if ($comment || $row->owner != $old->owner) {
 					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
-					
+
 					// Parse comments for attachments
 					$attach = new SupportAttachment( $this->database );
 					$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->get('webpath').DS.$id;
@@ -816,13 +800,13 @@ class SupportController extends Hubzero_Controller
 
 					// Build e-mail components
 					$admin_email = $jconfig->getValue('config.mailfrom');
-					
+
 					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('TICKET').' #'.$row->id.' comment '.md5($row->id);
-					
+
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 					$from['email'] = $jconfig->getValue('config.mailfrom');
-		
+
 					$message  = '----------------------------'."\r\n";
 					$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
 					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
@@ -851,11 +835,11 @@ class SupportController extends Hubzero_Controller
 					// An array for all the addresses to be e-mailed
 					$emails = array();
 					$emaillog = array();
-					
+
 					// Send e-mail to admin?
 					JPluginHelper::importPlugin( 'xmessage' );
 					$dispatcher =& JDispatcher::getInstance();
-					
+
 					// Send e-mail to ticket submitter?
 					$email_submitter = JRequest::getInt( 'email_submitter', 0 );
 					if ($email_submitter == 1) {
@@ -888,7 +872,7 @@ class SupportController extends Hubzero_Controller
 							}
 						}
 					}
-					
+
 					// Send e-mail to ticket owner?
 					$email_owner = JRequest::getInt( 'email_owner', 0 );
 					if ($email_owner == 1) {
@@ -901,7 +885,7 @@ class SupportController extends Hubzero_Controller
 							}
 						}
 					}
-					
+
 					// Add any CCs to the e-mail list
 					$cc = JRequest::getVar( 'cc', '' );
 					if (trim($cc)) {
@@ -909,7 +893,7 @@ class SupportController extends Hubzero_Controller
 						foreach ($cc as $acc)
 						{
 							$acc = trim($acc);
-							
+
 							// Is this a username or email address?
 							if (!strstr( $acc, '@' )) {
 								// Username or user ID - load the user
@@ -939,12 +923,12 @@ class SupportController extends Hubzero_Controller
 					{
 						SupportUtilities::sendEmail($email, $subject, $message, $from);
 					}
-					
+
 					// Were there any changes?
 					$elog = implode("\n",$emaillog);
 					if ($elog != '') {
 						$rowc->changelog .= '<ul class="emaillog">'."\n".$elog.'</ul>'."\n";
-						
+
 						// Save the data
 						if (!$rowc->store()) {
 							echo SupportHtml::alert( $rowc->getError() );
@@ -960,36 +944,32 @@ class SupportController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='.$id);
 	}
 
-	//-----------
-
-	protected function delete() 
+	protected function delete()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-	
+
 		// Check for an ID
 		if (!$id) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 			return;
 		}
-		
+
 		// Delete tags
 		$tags = new SupportTags( $this->database );
 		$tags->remove_all_tags( $id );
-		
+
 		// Delete comments
 		$comment = new SupportComment( $this->database );
 		$comment->deleteComments( $id );
-			
+
 		// Delete ticket
 		$ticket = new SupportTicket( $this->database );
 		$ticket->delete( $id );
-		
+
 		// Output messsage and redirect
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 	}
-
-	//-----------
 
 	protected function create()
 	{
@@ -1016,24 +996,24 @@ class SupportController extends Hubzero_Controller
 		cookies  (optional) default: 1 (since it's coming from rappture we assume they're already logged in and thus have cookies enabled)
 		section  (optional)
 		*/
-		
+
 		// trim and addslashes all posted items
 		$incoming = array_map('trim',$_POST);
 		$incoming = array_map('addslashes',$incoming);
-	
+
 		// initiate class and bind posted items to database fields
 		$row = new SupportTicket( $this->database );
 		if (!$row->bind( $incoming )) {
 			return $row->getError();
 		}
-		
+
 		// Check for a session token
 		$sess = JRequest::getVar( 'sesstoken', '' );
 		$sessnum = '';
 		if ($sess) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'mw.utils.php' );
 			$mwdb =& MwUtils::getMWDBO();
-			
+
 			// retrieve the username and IP from session with this session token
 			$query = "SELECT * FROM session WHERE session.sesstoken='".$sess."' LIMIT 1";
 			$mwdb->setQuery($query);
@@ -1046,14 +1026,14 @@ class SupportController extends Hubzero_Controller
 					$row->ip    = $sinfo->remoteip;
 					$sessnum    = $sinfo->sessnum;
 				}
-				
+
 				// get user's infor from login
 				$juser =& JUser::getInstance( $row->login );
 				$row->name  = $juser->get('name');
 				$row->email = $juser->get('email');
 			}
 		}
-			
+
 		$row->login = ($row->login) ? $row->login : 'automated';
 
 		if (strstr($row->summary, '"') || strstr($row->summary, "'")) {
@@ -1069,10 +1049,10 @@ class SupportController extends Hubzero_Controller
 		if ($this->database->getErrorNum()) {
 			return $this->database->stderr();
 		}
-		
+
 		if ($ticket) {
 			$log = '';
-			
+
 			// open existing ticket if closed
 			$oldticket = new SupportTicket( $this->database );
 			$oldticket->load( $ticket );
@@ -1089,7 +1069,7 @@ class SupportController extends Hubzero_Controller
 					$log = '<ul>'."\n".$log.'</ul>'."\n";
 				}
 			}
-			
+
 			// check content
 			if (!$oldticket->check()) {
 				return $oldticket->getError();
@@ -1099,7 +1079,7 @@ class SupportController extends Hubzero_Controller
 			if (!$oldticket->store()) {
 				return $oldticket->getError();
 			}
-			
+
 			// make a log note if we had to reopen the ticket
 			if ($log) {
 				$rowc = new SupportComment( $this->database );
@@ -1116,7 +1096,7 @@ class SupportController extends Hubzero_Controller
 					}
 				}
 			}
-			
+
 			$status = ($oldticket->resolved) ? $oldticket->resolved : 'open';
 			$count  = $oldticket->instances;
 		} else {
@@ -1136,14 +1116,14 @@ class SupportController extends Hubzero_Controller
 			if (!$row->summary) {
 				$row->summary = $this->txt_shorten($row->report, 75);
 			}
-			
+
 			// clean any cross-site scripting from report
 			ximport('Hubzero_Filter');
 			$row->summary = Hubzero_Filter::cleanXss($row->summary);
 			$row->report  = Hubzero_Filter::cleanXss($row->report);
 			$row->report  = str_replace( '<br>', '<br />', $row->report );
 			$row->report  = ''.$row->report;
-			
+
 			// check content
 			if (!$row->check()) {
 				return $row->getError();
@@ -1165,15 +1145,15 @@ class SupportController extends Hubzero_Controller
 				$this->database->setQuery( $query );
 				$row->id = $this->database->loadResult();
 			}
-			
+
 			$ticket = $row->id;
 			$status = 'new';
 			$count  = 1;
 		}
-		
+
 		echo 'Ticket #'.$ticket.' ('.$status.') '.$count.' times';
 	}
-	
+
 	//----------------------------------------------------------
 	// Report abuse
 	//----------------------------------------------------------
@@ -1186,52 +1166,52 @@ class SupportController extends Hubzero_Controller
 			$this->login();
 			return;
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'reportabuse') );
 		$view->title = ucfirst($this->_name).': '.ucfirst($this->_task);
 		$view->option = $this->_option;
 		$view->juser = $juser;
-		
+
 		// Incoming
 		$view->refid = JRequest::getInt( 'id', 0 );
 		$view->parentid = JRequest::getInt( 'parent', 0 );
 		$view->cat = JRequest::getVar( 'category', '' );
-		
+
 		// Check for a reference ID
 		if (!$view->refid) {
 			JError::raiseError( 404, JText::_('REFERENCE_ID_NOT_FOUND') );
 			return;
 		}
-		
+
 		// Check for a category
 		if (!$view->cat) {
 			JError::raiseError( 404, JText::_('CATEGORY_NOT_FOUND') );
 			return;
 		}
-		
+
 		// Load plugins
 		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Get the search result totals
 		$results = $dispatcher->trigger( 'getReportedItem', array(
 				$view->refid,
 				$view->cat,
 				$view->parentid)
 			);
-		
+
 		// Check the results returned for a reported item
 		$report = null;
 		if ($results) {
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
 				if ($result) {
 					$view->report = $result[0];
 				}
 			}
 		}
-		
+
 		// Ensure we found a reported item
 		if (!$view->report) {
 			$this->setError( JText::_('ERROR_REPORTED_ITEM_NOT_FOUND') );
@@ -1239,41 +1219,39 @@ class SupportController extends Hubzero_Controller
 
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Add the CSS to the template and set the page title
 		$this->_getStyles();
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
+
 	private function savereport()
 	{
 		$juser =& JFactory::getUser();
-		
+
 		$email = 0; // turn off
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'thanks') );
 		$view->title = ucfirst($this->_name).': '.ucfirst($this->_task);
 		$view->option = $this->_option;
-		
+
 		// Incoming
 		$view->cat = JRequest::getVar( 'category', '' );
 		$view->refid = JRequest::getInt( 'referenceid', 0 );
 		$view->returnlink = JRequest::getVar( 'link', '' );
-			
+
 		// Trim and addslashes all posted items
 		$incoming = array_map('trim',$_POST);
-	
+
 		// Initiate class and bind posted items to database fields
 		$row = new ReportAbuse( $this->database );
 		if (!$row->bind( $incoming )) {
@@ -1299,28 +1277,28 @@ class SupportController extends Hubzero_Controller
 			echo SupportHtml::alert( $row->getError() );
 			exit();
 		}
-		
+
 		// Send notification email 
 		if ($email) {
 			$jconfig =& JFactory::getConfig();
-			
+
 			$from = array();
 			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('REPORTABUSE');
 			$from['email'] = $jconfig->getValue('config.mailfrom');
-			
+
 			$subject = $jconfig->getValue('config.sitename').' '.JText::_('REPORTABUSE');
-			
+
 			$message = '';
-			
+
 			$tos = array();
-			
+
 			// Get administration e-mail
 			$tos[] = $jconfig->getValue('config.mailfrom');
-			
+
 			// Get the user's e-mail
 			$tos[] = $juser->get('email');
-			
-			foreach ($tos as $to) 
+
+			foreach ($tos as $to)
 			{
 				if (SupportUtilities::checkValidEmail($to)) {
 					if (!SupportUtilities::sendEmail($from, $to, $subject, $message)) {
@@ -1329,16 +1307,16 @@ class SupportController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Push some needed styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -1365,22 +1343,22 @@ class SupportController extends Hubzero_Controller
 		//$filters['section'] = 0;
 		//$filters['category'] = '';
 		$filters['severity'] = '';
-		
+
 		// Paging vars
 		$filters['limit'] = JRequest::getInt( 'limit', 25 );
 		$filters['start'] = JRequest::getInt( 'limitstart', 0 );
-		
+
 		// Incoming
 		$filters['_find'] = urldecode(trim(JRequest::getVar( 'find', '', 'post' )));
 		$filters['_show'] = urldecode(trim(JRequest::getVar( 'show', '', 'post' )));
-		
+
 		if ($filters['_find'] != '' || $filters['_show'] != '') {
 			$filters['start'] = 0;
 		} else {
 			$filters['_find'] = urldecode(trim(JRequest::getVar( 'find', '', 'get' )));
 			$filters['_show'] = urldecode(trim(JRequest::getVar( 'show', '', 'get' )));
 		}
-		
+
 		// Break it apart so we can get our filters
 		// Starting string hsould look like "filter:option filter:option"
 		if ($filters['_find'] != '') {
@@ -1389,14 +1367,14 @@ class SupportController extends Hubzero_Controller
 		} else {
 			$chunks = explode(' ', $filters['_show']);
 		}
-		
+
 		// Loop through each chunk (filter:option)
-		foreach ($chunks as $chunk) 
+		foreach ($chunks as $chunk)
 		{
 			if (!strstr($chunk,':')) {
-				if ((substr($chunk, 0, 1) == '"' 
-				 || substr($chunk, 0, 1) == "'") 
-				 && (substr($chunk, -1) == '"' 
+				if ((substr($chunk, 0, 1) == '"'
+				 || substr($chunk, 0, 1) == "'")
+				 && (substr($chunk, -1) == '"'
 				 || substr($chunk, -1) == "'")) {
 					$chunk = substr($chunk, 1, -1);  // Remove any surrounding quotes
 				}
@@ -1404,10 +1382,10 @@ class SupportController extends Hubzero_Controller
 				$filters['search'] = $chunk;
 				continue;
 			}
-			
+
 			// Break each chunk into its pieces (filter, option)
 			$pieces = explode(':', $chunk);
-			
+
 			// Find matching filters and ensure the vaule provided is valid
 			switch ($pieces[0])
 			{
@@ -1415,9 +1393,9 @@ class SupportController extends Hubzero_Controller
 					$pieces[0] = 'search';
 					if (isset($pieces[1])) {
 						// Queries must be in quotes. If they're not, we ignore it
-						if ((substr($pieces[1], 0, 1) == '"' 
-						|| substr($pieces[1], 0, 1) == "'") 
-						&& (substr($pieces[1], -1) == '"' 
+						if ((substr($pieces[1], 0, 1) == '"'
+						|| substr($pieces[1], 0, 1) == "'")
+						&& (substr($pieces[1], -1) == '"'
 						|| substr($pieces[1], -1) == "'")) {
 							$pieces[1] = substr($pieces[1], 1, -1);  // Remove any surrounding quotes
 						}
@@ -1454,7 +1432,7 @@ class SupportController extends Hubzero_Controller
 					}
 				break;
 			}
-			
+
 			$filters[$pieces[0]] = (isset($pieces[1])) ? $pieces[1] : '';
 		}
 
@@ -1466,14 +1444,12 @@ class SupportController extends Hubzero_Controller
 			$filters['category'] = end($bits);
 			$filters['section'] = $bits[0];
 		}*/
-		
+
 		// Return the array
 		return $filters;
 	}
-	
-	//-----------
 
-	private function _userSelect( $name, $active, $nouser=0, $javascript=NULL, $order='a.name' ) 
+	private function _userSelect( $name, $active, $nouser=0, $javascript=NULL, $order='a.name' )
 	{
 		$query = "SELECT a.username AS value, a.name AS text, g.name AS groupname"
 			. "\n FROM #__users AS a"
@@ -1490,27 +1466,25 @@ class SupportController extends Hubzero_Controller
 		} else {
 			$users = $this->database->loadObjectList();
 		}
-		
+
 		$users = JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false );
 
 		return $users;
 	}
-	
-	//-----------
-	
-	private function _userSelectGroup( $name, $active, $nouser=0, $javascript=NULL, $group='' ) 
+
+	private function _userSelectGroup( $name, $active, $nouser=0, $javascript=NULL, $group='' )
 	{
 		$users = array();
 		if ($nouser) {
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 		}
-		
+
 		ximport('Hubzero_Group');
-		
+
 		if (strstr($group,',')) {
 			$groups = explode(',',$group);
 			if (is_array($groups)) {
-				foreach ($groups as $g) 
+				foreach ($groups as $g)
 				{
 					$hzg = Hubzero_Group::getInstance( trim($g) );
 
@@ -1519,7 +1493,7 @@ class SupportController extends Hubzero_Controller
 
 						//$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
 						$users[] = JHTML::_('select.optgroup', stripslashes($hzg->description) );
-						foreach ($members as $member) 
+						foreach ($members as $member)
 						{
 							$u =& JUser::getInstance($member);
 							if (!is_object($u)) {
@@ -1544,7 +1518,7 @@ class SupportController extends Hubzero_Controller
 			if ($hzg && $hzg->get('gidNumber')) {
 				$members = $hzg->get('members');
 
-				foreach ($members as $member) 
+				foreach ($members as $member)
 				{
 					$u =& JUser::getInstance($member);
 					if (!is_object($u)) {
@@ -1560,12 +1534,12 @@ class SupportController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		$users = JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false );
 
 		return $users;
 	}
-	
+
 	//----------------------------------------------------------
 	// media manager
 	//----------------------------------------------------------
@@ -1581,7 +1555,7 @@ class SupportController extends Hubzero_Controller
 		if ($this->juser->get('guest')) {
 			return $this->login();
 		}
-		
+
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
 
@@ -1590,7 +1564,7 @@ class SupportController extends Hubzero_Controller
 			JError::raiseError(500, JText::_('SUPPORT_DATABASE_NOT_FOUND'));
 			return;
 		}
-		
+
 		// Get the ID of the file requested
 		$id = JRequest::getInt('id', 0);
 
@@ -1602,7 +1576,7 @@ class SupportController extends Hubzero_Controller
 			return;
 		}
 		$file = $attach->filename;
-		
+
 		// Get the parent ticket the file is attached to
 		$row = new SupportTicket($this->database);
 		$row->load($attach->ticket);
@@ -1613,7 +1587,7 @@ class SupportController extends Hubzero_Controller
 		}
 
 		// Load ACL
-		if ($row->login == $this->juser->get('username') 
+		if ($row->login == $this->juser->get('username')
 		 || $row->owner == $this->juser->get('username')) {
 			if (!$this->acl->check('read', 'tickets')) {
 				$this->acl->setAccess('read', 'tickets', 1);
@@ -1628,7 +1602,7 @@ class SupportController extends Hubzero_Controller
 			JError::raiseError(403, JText::_('SUPPORT_NOT_AUTH_FILE'));
 			return;
 		}
-		
+
 		// Ensure we have a path
 		if (empty($file)) {
 			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND'));
@@ -1657,23 +1631,23 @@ class SupportController extends Hubzero_Controller
 			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
 			return;
 		}
-		
+
 		// Get the configured upload path
 		$basePath = $this->config->get('webpath');
 		if ($basePath) {
 			// Make sure the path doesn't end with a slash
-			if (substr($basePath, -1) == DS) { 
+			if (substr($basePath, -1) == DS) {
 				$basePath = substr($basePath, 0, strlen($basePath) - 1);
 			}
 			// Ensure the path starts with a slash
-			if (substr($basePath, 0, 1) != DS) { 
+			if (substr($basePath, 0, 1) != DS) {
 				$basePath = DS . $basePath;
 			}
 		}
 		$basePath .= DS . $attach->ticket;
-		
+
 		// Does the path start with a slash?
-		if (substr($file, 0, 1) != DS) { 
+		if (substr($file, 0, 1) != DS) {
 			$file = DS . $file;
 			// Does the beginning of the $attachment->path match the config path?
 			if (substr($file, 0, strlen($basePath)) == $basePath) {
@@ -1683,10 +1657,10 @@ class SupportController extends Hubzero_Controller
 				$file = $basePath . $file;
 			}
 		}
-		
+
 		// Add JPATH_ROOT
 		$filename = JPATH_ROOT . $file;
-		
+
 		// Ensure the file exist
 		if (!file_exists($filename)) {
 			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND') . ' ' . $filename);
@@ -1698,7 +1672,7 @@ class SupportController extends Hubzero_Controller
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
-		
+
 		if (!$xserver->serve()) {
 			// Should only get here on error
 			JError::raiseError(404, JText::_('SUPPORT_SERVER_ERROR'));
@@ -1715,25 +1689,25 @@ class SupportController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return '';
 		}
-		
+
 		if (!$listdir) {
 			$this->setError( JText::_('SUPPORT_NO_UPLOAD_DIRECTORY') );
 			return '';
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
 			//$this->setError( JText::_('SUPPORT_NO_FILE') );
 			return '';
 		}
-		
+
 		// Incoming
 		$description = JRequest::getVar( 'description', '' );
-		
+
 		// Construct our file path
 		$path = JPATH_ROOT.$this->config->get('webpath').DS.$listdir;
-		
+
 		// Build the path if it doesn't exist
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
@@ -1756,7 +1730,7 @@ class SupportController extends Hubzero_Controller
 			// File was uploaded
 			// Create database entry
 			$description = htmlspecialchars($description);
-			
+
 			$row = new SupportAttachment( $this->database );
 			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$file['name'],'description'=>$description) );
 			if (!$row->check()) {
@@ -1768,37 +1742,37 @@ class SupportController extends Hubzero_Controller
 			if (!$row->id) {
 				$row->getID();
 			}
-			
+
 			return '{attachment#'.$row->id.'}';
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// misc.
 	//----------------------------------------------------------
 
-	private function authorize($toolgroup='') 
+	private function authorize($toolgroup='')
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
 			return 'admin';
 		}
-		
+
 		// Was a specific group set in the config?
 		$group = trim($this->config->get('group'));
 		if ($group or $toolgroup) {
 			ximport('Hubzero_User_Helper');
-			
+
 			// Check if they're a member of this group
 			$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
 			if ($ugs && count($ugs) > 0) {
-				foreach ($ugs as $ug) 
+				foreach ($ugs as $ug)
 				{
 					if ($group && $ug->cn == $this->gid) {
 						return true;
@@ -1809,7 +1783,7 @@ class SupportController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		return false;
 	}
 }

@@ -29,10 +29,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ImageMacro extends WikiMacro 
+class ImageMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = "Embed an image in wiki-formatted text.
 
@@ -109,26 +108,24 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 <li><code>[[Image(photo.jpg, align=right)]]</code>  # aligned by attribute</li>
 <li><code>[[Image(photo.jpg, 120px, class=mypic)]]</code> # with image width size and a CSS class</li>
 </ul>';
-		
+
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$content = $this->args;
-		
+
 		// args will be null if the macro is called without parenthesis.
 		if (!$content) {
 			return '';
 		}
-		
+
 		// parse arguments
         // we expect the 1st argument to be a filename (filespec)
 		$args = split(',', $content);
 		$file = array_shift($args);
-		
+
 		// style information
         $size_re = '/[0-9+](%|px)?$/';
         $attr_re = '/(align|border|width|height|alt|title|longdesc|class|id|usemap)=(.+)/';
@@ -138,8 +135,8 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		$href = '';
         $link = '';
 		$rel = 'lightbox';
-		
-		foreach ($args as $arg) 
+
+		foreach ($args as $arg)
 		{
 			$arg = trim($arg);
 			if (preg_match($size_re, $arg, $matches)) {
@@ -205,12 +202,12 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		} else {
 			return '(Image('.$content.') failed - No file given)';
 		}
-		
+
 		if (substr($file,0,1) == DS) {
 			//$file = substr($file,1);
-			
+
 			$path = JPATH_ROOT.$file;
-			
+
 			$link = ($link) ? $link : $file;
 			$href = ($href) ? $href : $file;
 		} else {
@@ -222,7 +219,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$path  = JPATH_ROOT.$config->get('filepath');
 			$path .= ($this->pageid) ? DS.$this->pageid : '';
 			$path .= DS.$filename;
-			
+
 			/*
 			$link  = $config->get('filepath');
 			$link .= ($this->pageid) ? DS.$this->pageid : '';
@@ -234,30 +231,28 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 			$href = ($href) ? $href : $link;
 		}
-		
-		
+
 		if (!is_file($path)) {
 			return '(Image('.$content.') failed - File not found)<!-- '.$path.' -->';
 		}
-		
-		
+
 		if (count($style) > 0) {
 			$s = array();
-			foreach ($style as $k=>$v) 
+			foreach ($style as $k=>$v)
 			{
 				$s[] = $k.':'.$v;
 			}
 			$attr['style'] = implode('; ',$s);
 		}
-		
+
 		$attribs = array();
-		foreach ($attr as $k=>$v) 
+		foreach ($attr as $k=>$v)
 		{
 			$attribs[] = $k.'="'.$v.'"';
 		}
-		
+
 		$img = '<img src="'.$link.'" '.implode(' ',$attribs).' alt="'.$filename.'" />';
-			
+
 		if (!$href || $href == 'none') {
 			return $img;
 		} else {

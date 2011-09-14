@@ -29,28 +29,27 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 function JobsBuildRoute(&$query)
 {
     $segments = array();
-	
+
 	if (!empty($query['task'])) {
-		if ($query['task'] != 'all') {			
+		if ($query['task'] != 'all') {
         	$segments[] = $query['task'];
         }
 		unset($query['task']);
     }
-	
+
 	if (!empty($query['id'])) {
         $segments[] = $query['id'];
         unset($query['id']);
     }
-	
+
 	if (!empty($query['code'])) {
         $segments[] = $query['code'];
         unset($query['code']);
     }
-	
+
 	if (!empty($query['employer'])) {
         $segments[] = $query['employer'];
         unset($query['employer']);
@@ -76,14 +75,14 @@ function JobsParseRoute($segments)
 		$vars['task'] = $segments[0];
 		return $vars;
 	}
-	
+
  	if (!empty($segments[1]))
-    {		
+    {
 			if($segments[0]=='job') {
 				$vars['task'] = 'job';
 				$vars['code'] = $segments[1];
 				return $vars;
-			}			
+			}
 			else if($segments[0]=='editjob') {
 				$vars['task'] = 'editjob';
 				$vars['code'] = $segments[1];
@@ -128,14 +127,14 @@ function JobsParseRoute($segments)
 				$vars['task'] = 'remove';
 				$vars['code'] = $segments[1];
 				return $vars;
-			}	
+			}
 			else if($segments[0]=='browse' or $segments[0]=='all') {
 				$vars['task'] = 'browse';
 				$vars['employer'] = $segments[1];
 				return $vars;
-			}		
+			}
     }
-	    
+
     return $vars;
 }
 ?>

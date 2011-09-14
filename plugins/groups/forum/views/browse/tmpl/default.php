@@ -70,7 +70,7 @@ $juser =& JFactory::getUser();
 					<tbody>
 						<?php if($this->rows) { ?>
 							<?php 
-								$counter = 0; 
+								$counter = 0;
 								if($this->limit == 0) {
 									$this->limit = count($this->rows);
 								}
@@ -108,7 +108,7 @@ $juser =& JFactory::getUser();
 													<span class="created_on"><?php echo date("d M, Y", strtotime($row->created)); ?></span>
 													<?php 
 														echo "<span class=\"created_by\">Created by: ";
-														echo ($row->anonymous) ? JText::_('Anonymous') : $creator_link; 
+														echo ($row->anonymous) ? JText::_('Anonymous') : $creator_link;
 														echo "</span>";
 													?>
 												</span>
@@ -119,7 +119,7 @@ $juser =& JFactory::getUser();
 													<span class="lastpost">Last Post by:
 														<?php 
 															echo "<span class=\"lastpost_by\">";
-															echo ($lastpost->anonymous) ? JText::_('Anonymous') : $lastposter_link; 
+															echo ($lastpost->anonymous) ? JText::_('Anonymous') : $lastposter_link;
 															echo "</span>";
 														?>
 														~ <span class="lastpost_on"><?php echo date("d M, Y", strtotime($lastpost->created)); ?></span>

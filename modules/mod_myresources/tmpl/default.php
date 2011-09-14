@@ -94,9 +94,9 @@ if (!$contributions) {
 } else {
 	ximport('Hubzero_View_Helper_Html');
 	//$config =& JComponentHelper::getParams( 'com_resources' );
-	
+
 	$html .= '<ul class="expandedlist">'."\n";
-	for ($i=0; $i < count($contributions); $i++) 
+	for ($i=0; $i < count($contributions); $i++)
 	{
 		// Determine css class
 		switch ($contributions[$i]->published)
@@ -106,7 +106,7 @@ if (!$contributions) {
 			case 3:  $class = 'pending';    break;  // pending
 			case 0:  $class = 'deleted';    break;  // pending
 		}
-			
+
 		/*$rparams = new JParameter( $contributions[$i]->params );
 		$params = $config;
 		$params->merge( $rparams );
@@ -120,7 +120,7 @@ if (!$contributions) {
 			case 3: $thedate = JHTML::_('date', $contributions[$i]->publish_up, '%d %b %Y'); break;
 		}*/
 		$thedate = JHTML::_('date', $contributions[$i]->publish_up, '%d %b %Y');
-		
+
 		$html .= "\t".'<li class="'.$class.'">'."\n";
 		$html .= "\t\t".'<a href="'.JRoute::_('index.php?option=com_resources&id='.$contributions[$i]->id).'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($contributions[$i]->title), 40, 0).'</a>'."\n";
 		$html .= "\t\t".'<span class="under">'.$thedate.' &nbsp; '.stripslashes($contributions[$i]->typetitle).'</span>'."\n";

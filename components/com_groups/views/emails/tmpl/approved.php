@@ -39,7 +39,7 @@ if (substr($sef,0,1) == '/') {
 $message  = JText::sprintf('GROUPS_EMAIL_MSG_APPROVED', $this->hubShortName)."\n\n";
 $message .= JText::_('GROUPS_ID').': '. $this->group->get('cn') ."\n";
 $message .= JText::_('GROUPS_TITLE').': '. $this->group->get('description') ."\n";
-switch ($this->group->get('access')) 
+switch ($this->group->get('access'))
 {
 	case 4: $privacy = JText::_('GROUPS_ACCESS_PRIVATE');   break;
 	case 3: $privacy = JText::_('GROUPS_ACCESS_PROTECTED'); break;

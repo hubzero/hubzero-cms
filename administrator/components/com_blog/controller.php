@@ -37,7 +37,7 @@ class BlogController extends Hubzero_Controller
 	{
 		$this->_task = strtolower(JRequest::getVar('task', ''));
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'add':    $this->edit();   break;
 			case 'edit':   $this->edit();   break;
@@ -52,7 +52,7 @@ class BlogController extends Hubzero_Controller
 			default: $this->entries(); break;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Our tasks
 	//----------------------------------------------------------
@@ -65,7 +65,7 @@ class BlogController extends Hubzero_Controller
 
 		// Instantiate a new view
 		$view = new JView( array('name'=>'entries') );
-		
+
 		// Get paging variables
 		$filters = array();
 		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $jconfig->getValue('config.list_limit'), 'int');
@@ -73,7 +73,7 @@ class BlogController extends Hubzero_Controller
 
 		// Instantiate our HelloEntry object
 		$obj = new BlogEntry( $this->database );
-		
+
 		// Get record count
 		$view->total = $obj->getEntriesCount( $filters );
 
@@ -83,26 +83,24 @@ class BlogController extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $filters['start'], $filters['limit'] );
-		
+
 		// Pass the view any data it may need
 		$view->option = $this->_option;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function edit() 
+	protected function edit()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'edit') );
-		
+
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 		if (is_array($ids) && !empty($ids)) {
@@ -112,23 +110,21 @@ class BlogController extends Hubzero_Controller
 		// Load the article
 		$view->row = new BlogEntry( $this->database );
 		$view->row->load( $id );
-		
+
 		// Pass the view any data it may need
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function save() 
+	protected function save()
 	{
 		// Initiate extended database class
 		$row = new BlogEntry( $this->database );
@@ -136,7 +132,7 @@ class BlogController extends Hubzero_Controller
 			echo BlogHtml::alert( $row->getError() );
 			exit();
 		}
-		
+
 		// Check content
 		if (!$row->check()) {
 			echo BlogHtml::alert( $row->getError() );
@@ -154,9 +150,7 @@ class BlogController extends Hubzero_Controller
 		$this->_message = JText::_('Entry saved!');
 	}
 
-	//-----------
-
-	protected function delete() 
+	protected function delete()
 	{
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
@@ -164,7 +158,7 @@ class BlogController extends Hubzero_Controller
 		if (!empty($ids)) {
 			// Create a category object
 			$entry = new BlogEntry( $this->database );
-			
+
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
@@ -172,15 +166,13 @@ class BlogController extends Hubzero_Controller
 				$entry->delete( $id );
 			}
 		}
-		
+
 		// Set the redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('Entries deleted!');
 	}
-	
-	//-----------
 
-	protected function setState() 
+	protected function setState()
 	{
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
@@ -192,13 +184,13 @@ class BlogController extends Hubzero_Controller
 		}
 
 		// Loop through all the IDs
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Load the article
 			$row = new BlogEntry( $this->database );
 			$row->load( $id );
-			
-			switch ($this->_task) 
+
+			switch ($this->_task)
 			{
 				case 'publish': $row->state = 1; break;
 				case 'unpublish': $row->state = 0; break;
@@ -210,27 +202,25 @@ class BlogController extends Hubzero_Controller
 				exit();
 			}
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
-			case 'publish': 
+			case 'publish':
 				$this->_message = JText::sprintf('%s Item(s) successfully Published', count($ids));
 			break;
 			case 'unpublish':
 				$this->_message = JText::sprintf('%s Item(s) successfully Unpublished', count($ids));
 			break;
-			case 'archive': 
+			case 'archive':
 				$this->_message = JText::sprintf('%s Item(s) successfully Archived', count($ids));
 			break;
 		}
-		
+
 		// Set the redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
-	
-	//-----------
 
-	protected function setComments() 
+	protected function setComments()
 	{
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
@@ -242,13 +232,13 @@ class BlogController extends Hubzero_Controller
 		}
 
 		// Loop through all the IDs
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Load the article
 			$row = new BlogEntry( $this->database );
 			$row->load( $id );
-			
-			switch ($this->_task) 
+
+			switch ($this->_task)
 			{
 				case 'allow': $row->allow_comments = 1; break;
 				case 'disallow': $row->allow_comments = 0; break;
@@ -260,22 +250,20 @@ class BlogController extends Hubzero_Controller
 				exit();
 			}
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
-			case 'allow': 
+			case 'allow':
 				$this->_message = JText::sprintf('%s Item(s) successfully turned on Comments', count($ids));
 			break;
 			case 'disallow':
 				$this->_message = JText::sprintf('%s Item(s) successfully turned off Comments', count($ids));
 			break;
 		}
-		
+
 		// Set the redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
-	
-	//-----------
 
 	protected function cancel()
 	{

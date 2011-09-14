@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATIONS'); ?><br />
 <?php 
 $names = array();
-foreach ($this->users as $user) 
+foreach ($this->users as $user)
 {
 	if(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $user)) {
 		$names[] = $user;

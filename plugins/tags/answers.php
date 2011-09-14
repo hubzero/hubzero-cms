@@ -29,19 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_answers' );
-
-//-----------
 
 class plgTagsAnswers extends JPlugin
 {
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgTagsAnswers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,8 +45,6 @@ class plgTagsAnswers extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-	
 	public function onTagAreas()
 	{
 		$areas = array(
@@ -60,8 +52,6 @@ class plgTagsAnswers extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
 
 	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
@@ -76,11 +66,11 @@ class plgTagsAnswers extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$ids = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ids[] = $tag->id;
 		}
@@ -105,11 +95,11 @@ class plgTagsAnswers extends JPlugin
 		$f_from  = " FROM #__answers_questions AS a, #__tags_object AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids)";
 		$f_from .= " GROUP BY a.id HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
-		switch ($sort) 
+		switch ($sort)
 		{
 			case 'title': $order_by .= 'title ASC, created';    break;
 			case 'id':    $order_by .= "id DESC";               break;
-			case 'date':  
+			case 'date':
 			default:      $order_by .= 'created DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
@@ -123,20 +113,20 @@ class plgTagsAnswers extends JPlugin
 			if (count($areas) > 1) {
 				return $f_fields . $f_from;
 			}
-			
+
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
 				}
 			}
-			
+
 			$database->setQuery( $f_fields . $f_from .  $order_by );
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
 			if ($rows) {
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id='.$row->id);
 				}
@@ -146,7 +136,7 @@ class plgTagsAnswers extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
@@ -163,10 +153,8 @@ class plgTagsAnswers extends JPlugin
 	{
 		// ...
 	}*/
-	
-	//-----------
 
-	public function out( $row ) 
+	public function out( $row )
 	{
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
@@ -175,7 +163,7 @@ class plgTagsAnswers extends JPlugin
 		if (substr($row->href,0,1) == '/') {
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
-		
+
 		$html  = "\t".'<li class="resource">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		$html .= "\t\t".'<p class="details">';
@@ -193,9 +181,7 @@ class plgTagsAnswers extends JPlugin
 		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

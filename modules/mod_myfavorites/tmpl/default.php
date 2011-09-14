@@ -33,11 +33,11 @@ if ($modmyfavorites->error) {
 	echo '<p class="error">'.JText::_('MOD_MYFAVORITES_MISSING_TABLE').'</p>'."\n";
 } else {
 	$juser =& JFactory::getUser();
-	
+
 	$results = $modmyfavorites->results;
 	$cats = $modmyfavorites->cats;
 	$active = $modmyfavorites->active;
-	
+
 	// Build the HTML
 	$foundresults = false;
 	$dopaging = false;
@@ -65,7 +65,7 @@ if ($modmyfavorites->error) {
 				// It is not - does this category have sub-categories?
 				if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
 					// It does - loop through them and see if one is the active category
-					foreach ($cats[$k]['_sub'] as $sub) 
+					foreach ($cats[$k]['_sub'] as $sub)
 					{
 						if ($active == $sub['category']) {
 							// Found an active category
@@ -81,8 +81,8 @@ if ($modmyfavorites->error) {
 			// Build the category HTML
 			$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.$name.' <span>'.JText::sprintf('MOD_MYFAVORITES_RESULTS',$total).'</span></h4>'."\n";
 			$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
-			$html .= '<ol class="compactlist">'."\n";			
-			foreach ($category as $row) 
+			$html .= '<ol class="compactlist">'."\n";
+			foreach ($category as $row)
 			{
 				$row->href = str_replace('&amp;', '&', $row->href);
 				$row->href = str_replace('&', '&amp;', $row->href);
@@ -102,7 +102,7 @@ if ($modmyfavorites->error) {
 				} else {
 					$seff .= '?'.$qs;
 				}
-				
+
 				$html .= '<p class="more">'.JText::sprintf('MOD_MYFAVORITES_NUMBER_FAVORITES_SHOWN', $amt);
 				$html .= ' | <a href="'.$seff.'">'.JText::_('MOD_MYFAVORITES_MORE_FAVORITES').'</a>';
 				$html .= '</p>';

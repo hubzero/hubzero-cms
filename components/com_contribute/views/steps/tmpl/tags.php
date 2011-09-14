@@ -62,7 +62,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<fieldset>
 				<legend><?php echo JText::_('COM_CONTRIBUTE_TAGS_SELECT_FOCUS_AREA'); ?>: <span class="required">required</span></legend>
 				<?php
-				foreach ($this->fats as $key => $value) 
+				foreach ($this->fats as $key => $value)
 				{
 					if ($key && $value) {
 						echo '<label><input class="option" type="radio" name="tagfa" value="' . $value . '"';
@@ -80,9 +80,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php
 				JPluginHelper::importPlugin( 'hubzero' );
 				$dispatcher =& JDispatcher::getInstance();
-				
+
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
-				
+
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else {

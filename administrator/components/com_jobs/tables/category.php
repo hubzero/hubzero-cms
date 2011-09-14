@@ -29,26 +29,23 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 class JobCategory extends JTable
 {
 	var $id         	= NULL;  // @var int(11) Primary key
 	var $category		= NULL;  // @var varchar(150)
 	var $description	= NULL;  // @var varchar(255)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_categories', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function getCats ($sortby = 'ordernum', $sortdir = 'ASC', $getobject = 0)
 	{
 		$cats = array();
-		
+
 		$query  = $getobject ? "SELECT * " : "SELECT id, category ";
 		$query .= "FROM #__jobs_categories   ";
 		$query .= " ORDER BY $sortby $sortdir";
@@ -57,19 +54,17 @@ class JobCategory extends JTable
 		if ($getobject) {
 			return $result;
 		}
-		
+
 		if ($result) {
-			foreach ($result as $r) 
+			foreach ($result as $r)
 			{
 				$cats[$r->id] = $r->category;
 			}
 		}
-		
-		return $cats;		
+
+		return $cats;
 	}
-	
-	//-----------
-	
+
 	public function getCat($id = NULL, $default = 'unspecified' )
 	{
 		if ($id === NULL) {
@@ -78,28 +73,26 @@ class JobCategory extends JTable
 		if ($id == 0 ) {
 			return $default;
 		}
-		
+
 		$query  = "SELECT category ";
 		$query .= "FROM #__jobs_categories WHERE id='".$id."'  ";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();		
+		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
+
 	public function updateOrder($id = NULL, $ordernum = 1 )
 	{
 		if ($id === NULL or !intval($ordernum)) {
 			 return false;
 		}
-	
-		$query  = "UPDATE $this->_tbl SET ordernum=$ordernum WHERE id=".$id;		
+
+		$query  = "UPDATE $this->_tbl SET ordernum=$ordernum WHERE id=".$id;
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		return true;		
-	}		
+		return true;
+	}
 }
 

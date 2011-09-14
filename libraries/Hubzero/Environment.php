@@ -29,25 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class Hubzero_Environment 
+class Hubzero_Environment
 {
 	public function server($index = '')
-	{		
+	{
 		if (!isset($_SERVER[$index])) {
 			return FALSE;
 		}
-		
+
 		return TRUE;
 	}
-	
-	//-----------
-	
+
 	public function validIp($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
 	}
-	
-	//-----------
 
 	public function ipAddress()
 	{
@@ -60,21 +56,21 @@ class Hubzero_Environment
 		} elseif (Hubzero_Environment::server('HTTP_X_FORWARDED_FOR')) {
 			$ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR','','server');
 		}
-		
+
 		if ($ip_address === FALSE) {
 			$ip_address = '0.0.0.0';
 			return $ip_address;
 		}
-		
+
 		if (strstr($ip_address, ',')) {
 			$x = explode(',', $ip_address);
 			$ip_address = end($x);
 		}
-		
+
 		if (!Hubzero_Environment::validIp($ip_address)) {
 			$ip_address = '0.0.0.0';
 		}
-				
+
 		return $ip_address;
 	}
 }

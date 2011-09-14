@@ -56,8 +56,8 @@ if (!empty($error_message))
 		<p class="hint">
 			<?php if (($realm == 'hzldap') || ($realm == 'hubzero')) { ?>
 				<a href="<?php echo JRoute::_('index.php?option=com_hub&task=lostusername'); ?>"><?php echo JText::_('_LOST_USERNAME');?></a><br />
-			<?php } 
-			echo JText::_('_NO_USERNAME'); 
+			<?php }
+			echo JText::_('_NO_USERNAME');
 			?>
 			<a href="/register"><?php echo JText::_('_CREATE_ACCOUNT'); ?></a>
 		</p>
@@ -87,7 +87,7 @@ if (!empty($error_message))
 		<?php echo JHTML::_( 'form.token' ); ?>
 	</fieldset>
 <?php
-		if (!empty($login_attempts) && $login_attempts >= 2) 
+		if (!empty($login_attempts) && $login_attempts >= 2)
 			echo '<p class="hint">Having trouble logging in? <a href="support/report_problems/">Report problems to Support</a>.</p>';
 ?>
 	<p class="submit"><input type="submit" name="Submit" value="<?php echo JText::_('_BUTTON_LOGIN'); ?>" /></p>

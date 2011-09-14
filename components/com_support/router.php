@@ -39,7 +39,7 @@ function supportBuildRoute(&$query)
 	}
 
 	if (!empty($query['task'])) {
-		switch ($query['task']) 
+		switch ($query['task'])
 		{
 			case 'delete':
 			case 'download':
@@ -49,7 +49,7 @@ function supportBuildRoute(&$query)
 			case 'reportabuse':
 				$segments[] = $query['task'];
 				unset($query['task']);
-				
+
 				if (!empty($query['id'])) {
 					$segments[] = $query['id'];
 					unset($query['id']);
@@ -77,13 +77,13 @@ function supportBuildRoute(&$query)
 					unset($query['id']);
 				}*/
 			break;
-			
+
 			case 'feed':
 				$segments[] = 'tickets';
 				$segments[] = 'feed';
 				unset($query['task']);
 			break;
-			
+
 			default:
 				$segments[] = $query['task'];
 				unset($query['task']);
@@ -106,14 +106,14 @@ function supportParseRoute($segments)
 		$vars['task'] = '';
 		return $vars;
 	}
-	
+
 	switch ($segments[0])
 	{
 		case 'report_problems':
 	    	$vars['option'] = 'com_feedback';
 	    	$vars['task'] = 'report';
 		break;
-		
+
 		case 'tickets':
 			if (isset($segments[1])) {
 				$vars['task'] = 'feed';
@@ -123,7 +123,7 @@ function supportParseRoute($segments)
 				$vars['task'] = 'tickets';
 			}
 		break;
-		
+
 		case 'ticket':
 		case 'delete':
 		case 'reportabuse':

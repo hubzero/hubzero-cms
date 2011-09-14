@@ -29,21 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_resources' );
-
-//-----------
 
 class plgMembersResources extends JPlugin
 {
 	private $_areas = null;
 	private $_cats  = null;
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgMembersResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,12 +45,10 @@ class plgMembersResources extends JPlugin
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'resources' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
-	
-	//-----------
 
 	public function onMembersContributionsAreas( $authorized )
 	{
@@ -64,7 +56,7 @@ class plgMembersResources extends JPlugin
 		if (is_array($areas)) {
 			return $areas;
 		}
-		
+
 		$categories = $this->_cats;
 		if (!is_array($categories)) {
 			// Get categories
@@ -78,8 +70,8 @@ class plgMembersResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$normalized_valid_chars = 'a-zA-Z0-9';
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -93,15 +85,11 @@ class plgMembersResources extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
-	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' ) 
+	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' )
 	{
 		$query = "SELECT COUNT(R.id) FROM #__resources AS R, #__author_assoc AS AA WHERE AA.authorid=".$user_id." AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
 		return $query;
 	}
-
-	//-----------
 
 	public function onMembersContributions( $member, $option, $authorized, $limit=0, $limitstart=0, $sort, $areas=null )
 	{
@@ -109,7 +97,7 @@ class plgMembersResources extends JPlugin
 
 		if (is_array( $areas ) && $limit) {
 			$ars = $this->onMembersContributionsAreas( $authorized );
-			if (!array_intersect( $areas, $ars ) 
+			if (!array_intersect( $areas, $ars )
 			&& !array_intersect( $areas, array_keys( $ars ) )
 			&& !array_intersect( $areas, array_keys( $ars['resources'] ) )) {
 				return array();
@@ -133,7 +121,7 @@ class plgMembersResources extends JPlugin
 
 		// Instantiate some needed objects
 		$rr = new ResourcesResource( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['author'] = $uidNumber;
@@ -154,8 +142,8 @@ class plgMembersResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
 		$normalized_valid_chars = 'a-zA-Z0-9';
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -167,7 +155,7 @@ class plgMembersResources extends JPlugin
 			if ($this->_total != null) {
 				$total = 0;
 				$t = $this->_total;
-				foreach ($t as $l) 
+				foreach ($t as $l)
 				{
 					$total += $l;
 				}
@@ -175,11 +163,11 @@ class plgMembersResources extends JPlugin
 			if ($total == 0) {
 				return array();
 			}
-			
+
 			$filters['select'] = 'records';
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
-			
+
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
 			//if (count($areas) == 1 && key($areas[0]) != 'resources') {
@@ -194,9 +182,9 @@ class plgMembersResources extends JPlugin
 			// Did we get any results?
 			if ($rows) {
 				ximport('Hubzero_View_Helper_Html');
-				
+
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					if ($row->alias) {
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias='.$row->alias);
@@ -214,11 +202,11 @@ class plgMembersResources extends JPlugin
 			// Get a count
 			$counts = array();
 			$ares = $this->onMembersContributionsAreas( $authorized );
-			foreach ($ares as $area=>$val) 
+			foreach ($ares as $area=>$val)
 			{
 				if (is_array($val)) {
 					$i = 0;
-					foreach ($val as $a=>$t) 
+					foreach ($val as $a=>$t)
 					{
 						if ($limitstart == -1) {
 							if ($i == 0) {
@@ -229,7 +217,7 @@ class plgMembersResources extends JPlugin
 							}
 						} else {
 							$filters['type'] = $cats[$a]['id'];
-						
+
 							// Execute a count query for each area/category
 							$database->setQuery( $rr->buildPluginQuery( $filters ) );
 							$counts[] = $database->loadResult();
@@ -242,12 +230,10 @@ class plgMembersResources extends JPlugin
 			// Return the counts
 			$this->_total = $counts;
 			return $counts;
-		}	
+		}
 	}
 
-	//-----------
-
-	public function out( $row, $authorized=false ) 
+	public function out( $row, $authorized=false )
 	{
 		$database =& JFactory::getDBO();
 
@@ -260,16 +246,16 @@ class plgMembersResources extends JPlugin
 		$rparams = new JParameter( $row->params );
 		$params = $config;
 		$params->merge( $rparams );
-		
+
 		// Set the display date
-		switch ($params->get('show_date')) 
+		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
 			case 1: $thedate = JHTML::_('date', $row->created, '%d %b %Y');    break;
 			case 2: $thedate = JHTML::_('date', $row->modified, '%d %b %Y');   break;
 			case 3: $thedate = JHTML::_('date', $row->publish_up, '%d %b %Y'); break;
 		}
-		
+
 		$html  = "\t".'<li class="';
 		switch ($row->access)
 		{
@@ -283,7 +269,7 @@ class plgMembersResources extends JPlugin
 		$html .= ' resource">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a>';
 		if ($authorized) {
-			switch ($row->state) 
+			switch ($row->state)
 			{
 				case 5: $html .= ' <span class="resource-status internal">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL').'</span>'; break;
 				case 4: $html .= ' <span class="resource-status deleted">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_DELETED').'</span>'; break;
@@ -298,16 +284,16 @@ class plgMembersResources extends JPlugin
 		if ($params->get('show_ranking')) {
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
-			
+
 			if ($row->category == 7) {
 				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			} else {
 				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			$statshtml = $stats->display();
-			
+
 			$row->ranking = round($row->ranking, 1);
-			
+
 			$html .= "\t\t".'<div class="metadata">'."\n";
 
 			$r = (10*$row->ranking);
@@ -328,7 +314,7 @@ class plgMembersResources extends JPlugin
 			$html .= '</dl>'."\n";
 			$html .= "\t\t".'</div>'."\n";
 		} elseif ($params->get('show_rating')) {
-			switch ($row->rating) 
+			switch ($row->rating)
 			{
 				case 0.5: $class = ' half-stars';      break;
 				case 1:   $class = ' one-stars';       break;
@@ -343,7 +329,7 @@ class plgMembersResources extends JPlugin
 				case 0:
 				default:  $class = ' no-stars';      break;
 			}
-			
+
 			$html .= "\t\t".'<div class="metadata">'."\n";
 			$html .= "\t\t\t".'<p class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_MEMBERS_RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'."\n";
 			$html .= "\t\t".'</div>'."\n";
@@ -362,9 +348,7 @@ class plgMembersResources extends JPlugin
 		return $html;
 	}
 
-	//-----------
-
-	public function documents() 
+	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 	 	//$document =& JFactory::getDocument();
@@ -376,15 +360,11 @@ class plgMembersResources extends JPlugin
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 	}
-	
-	//-----------
 
 	public function onMembersFavoritesAreas( $authorized )
 	{
 		return $this->onMembersContributionsAreas( $authorized );
 	}
-
-	//-----------
 
 	public function onMembersFavorites( $member, $option, $authorized, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -392,7 +372,7 @@ class plgMembersResources extends JPlugin
 
 		if (is_array( $areas ) && $limit) {
 			$ars = $this->onMembersFavoritesAreas( $authorized );
-			if (!array_intersect( $areas, $ars ) 
+			if (!array_intersect( $areas, $ars )
 			&& !array_intersect( $areas, array_keys( $ars ) )
 			&& !array_intersect( $areas, array_keys( $ars['resources'] ) )) {
 				return array();
@@ -413,15 +393,15 @@ class plgMembersResources extends JPlugin
 				$uidNumber = $member->get('uidNumber');
 			}
 		}
-		
+
 		// Instantiate some needed objects
 		$rr = new ResourcesResource( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['favorite'] = $uidNumber;
 		$filters['sortby'] = 'date';
-		
+
 		ximport('Hubzero_User_Helper');
 		$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
 
@@ -436,8 +416,8 @@ class plgMembersResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
 		$normalized_valid_chars = 'a-zA-Z0-9';
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -449,7 +429,7 @@ class plgMembersResources extends JPlugin
 			if ($this->_total != null) {
 				$total = 0;
 				$t = $this->_total;
-				foreach ($t as $l) 
+				foreach ($t as $l)
 				{
 					$total += $l;
 				}
@@ -457,11 +437,11 @@ class plgMembersResources extends JPlugin
 			if ($total == 0) {
 				return array();
 			}
-			
+
 			$filters['select'] = 'records';
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
-			
+
 			if (count($areas) == 1 && key($areas) != 'resources') {
 				$filters['type'] = $cats[$areas[0]]['id'];
 			}
@@ -472,8 +452,8 @@ class plgMembersResources extends JPlugin
 
 			if ($rows) {
 				ximport('Hubzero_View_Helper_Html');
-				
-				foreach ($rows as $key => $row) 
+
+				foreach ($rows as $key => $row)
 				{
 					if ($row->alias) {
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias='.$row->alias);
@@ -487,15 +467,15 @@ class plgMembersResources extends JPlugin
 			return $rows;
 		} else {
 			$filters['select'] = 'count';
-			
+
 			// Get a count
 			$counts = array();
 			$ares = $this->onMembersFavoritesAreas( $authorized );
-			foreach ($ares as $area=>$val) 
+			foreach ($ares as $area=>$val)
 			{
 				if (is_array($val)) {
 					$i = 0;
-					foreach ($val as $a=>$t) 
+					foreach ($val as $a=>$t)
 					{
 						if ($limitstart == -1) {
 							if ($i == 0) {
@@ -506,7 +486,7 @@ class plgMembersResources extends JPlugin
 							}
 						} else {
 							$filters['type'] = $cats[$a]['id'];
-						
+
 							// Execute a count query for each area/category
 							$database->setQuery( $rr->buildPluginQuery( $filters ) );
 							$counts[] = $database->loadResult();
@@ -515,10 +495,10 @@ class plgMembersResources extends JPlugin
 					}
 				}
 			}
-			
+
 			// Return the counts
 			$this->_total = $counts;
 			return $counts;
-		}	
+		}
 	}
 }

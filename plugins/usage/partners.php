@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_partners' );
-
-//-----------
 
 class plgUsagePartners extends JPlugin
 {
@@ -47,8 +43,6 @@ class plgUsagePartners extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -56,22 +50,20 @@ class plgUsagePartners extends JPlugin
 		);
 		return $areas;
 	}
-	
-	//-----------
-	
-	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate ) 
+
+	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for
 		if ($task) {
-			if (!in_array( $task, $this->onUsageAreas() ) 
+			if (!in_array( $task, $this->onUsageAreas() )
 			 && !in_array( $task, array_keys( $this->onUsageAreas() ) )) {
 				return '';
 			}
 		}
-		
+
 		// Set some vars
 		$thisyear = date("Y");
-		
+
 		$o = UsageHelper::options( $db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata' );
 
 		// Build HTML

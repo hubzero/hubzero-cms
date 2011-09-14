@@ -29,13 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class CitationsHtml 
+class CitationsHtml
 {
 	public function select($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
 		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
-		foreach ($array as $avalue => $alabel) 
+		foreach ($array as $avalue => $alabel)
 		{
 			$selected = ($avalue == $value || $alabel == $value)
 					  ? ' selected="selected"'

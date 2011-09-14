@@ -147,7 +147,7 @@ class Hubzero_Plugin_View extends JObject
 				$this->_folder = $this->getFolder();
 			}
 		}
-		
+
 		//set the view name
 		if (empty( $this->_element ))
 		{
@@ -157,7 +157,7 @@ class Hubzero_Plugin_View extends JObject
 				$this->_element = $this->getElement();
 			}
 		}
-		
+
 		//set the view name
 		if (empty( $this->_name ))
 		{
@@ -310,7 +310,6 @@ class Hubzero_Plugin_View extends JObject
 		// $arg0 was not object, array, or string.
 		return false;
 	}
-
 
 	/**
 	* Assign variable for the view (by reference).

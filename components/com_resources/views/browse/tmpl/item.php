@@ -59,14 +59,14 @@ if ($this->show_edit != 0) {
 	}
 }
 $html .= '</p>'."\n";
-	
+
 if ($this->params->get('show_ranking')) {
 	$database =& JFactory::getDBO();
-	
+
 	// Get statistics info
 	$this->helper->getCitationsCount();
 	$this->helper->getLastCitationDate();
-	
+
 	if ($this->line->type == 7) {
 		$stats = new ToolStats($database, $this->line->id, $this->line->type, $this->line->rating, $this->helper->citationsCount, $this->helper->lastCitationDate);
 	} else {
@@ -92,7 +92,7 @@ if ($this->params->get('show_ranking')) {
 	$html .= "\t\t\t".'</dl>'."\n";
 	$html .= "\t\t".'</div>'."\n";
 } elseif ($this->params->get('show_rating')) {
-	switch ($this->line->rating) 
+	switch ($this->line->rating)
 	{
 		case 0.5: $class = ' half-stars';      break;
 		case 1:   $class = ' one-stars';       break;
@@ -107,7 +107,7 @@ if ($this->params->get('show_ranking')) {
 		case 0:
 		default:  $class = ' no-stars';      break;
 	}
-	
+
 	$html .= "\t\t".'<div class="metadata">'."\n";
 	$html .= "\t\t\t".'<p class="rating"><span title="'.JText::sprintf('COM_RESOURCES_OUT_OF_5_STARS',$this->line->rating).'" class="avgrating'.$class.'"><span>'.JText::sprintf('COM_RESOURCES_OUT_OF_5_STARS',$this->line->rating).'</span>&nbsp;</span></p>'."\n";
 	$html .= "\t\t".'</div>'."\n";

@@ -51,7 +51,7 @@ if ($this->rows) {
 	</thead>
 	<tbody>
 <?php
-	foreach ($this->rows as $v) 
+	foreach ($this->rows as $v)
 	{
 		$handle = ($v->doi) ? $hubDOIpath.'r'.$this->resource->id.'.'.$v->doi : '' ;
 

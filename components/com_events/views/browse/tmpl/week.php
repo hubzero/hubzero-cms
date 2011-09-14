@@ -60,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<option value=""><?php echo JText::_('EVENTS_ALL_CATEGORIES'); ?></option>
 <?php
 			if ($this->categories) {
-				foreach ($this->categories as $id=>$title) 
+				foreach ($this->categories as $id=>$title)
 				{
 ?>
 					<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>
@@ -129,9 +129,9 @@ if (count($this->rows) > 0) {
 ?>
 			<ul class="events">
 <?php
-	foreach ($this->rows as $rows) 
+	foreach ($this->rows as $rows)
 	{
-			if ($rows['week']['month'] == strftime( "%m", time()+($this->offset*60*60) ) 
+			if ($rows['week']['month'] == strftime( "%m", time()+($this->offset*60*60) )
 			 && $rows['week']['year'] == strftime( "%Y", time()+($this->offset*60*60) )
 			 && $rows['week']['day'] == strftime( "%d", time()+($this->offset*60*60) )) {
 				$cls = ' class="today"';
@@ -149,8 +149,8 @@ if (count($this->rows) > 0) {
 <?php
 			if (count($rows['events']) > 0) {
 				$e = array();
-				
-				foreach ($rows['events'] as $row) 
+
+				foreach ($rows['events'] as $row)
 				{
 					/*$event_up = new EventsDate( $row->publish_up );
 					$event_up->day   = sprintf( "%02d", $event_up->day);

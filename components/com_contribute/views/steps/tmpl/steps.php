@@ -37,10 +37,10 @@ if ($this->progress['submitted'] == 1) {
 } else {
 	$html .= "\t".'<li id="start"><a href="'. JRoute::_('index.php?option='.$this->option) .'">'.JText::_('COM_CONTRIBUTE_START').'</a></li>'."\n";
 }
-for ($i=1, $n=count( $this->steps ); $i < $n; $i++) 
+for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
 {
 	$html .= "\t".'<li';
-	if ($this->step == $i) { 
+	if ($this->step == $i) {
 		$html .= ' class="active"';
 	} elseif ($this->progress[$this->steps[$i]] == 1) {
 		$html .= ' class="completed"';
@@ -61,8 +61,8 @@ for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
 }
 if ($this->progress['submitted'] != 1) {
 	$html .= "\t".'<li id="trash"';
-	if ($this->step == 'discard') { 
-		$html .= ' class="active">'.JText::_('COM_CONTRIBUTE_CANCEL'); 
+	if ($this->step == 'discard') {
+		$html .= ' class="active">'.JText::_('COM_CONTRIBUTE_CANCEL');
 	} else {
 		$html .= '><a href="'.JRoute::_('index.php?option='.$this->option.'&task=discard');
 		$html .= ($this->id) ? '&amp;id='.$this->id : '';

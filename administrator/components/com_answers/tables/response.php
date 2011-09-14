@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class AnswersResponse extends JTable 
+class AnswersResponse extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $qid        = NULL;  // @var int(11)
@@ -40,17 +40,15 @@ class AnswersResponse extends JTable
 	var $nothelpful = NULL;  // @var int(11)
 	var $state      = NULL;  // @var int(3)
 	var $anonymous  = NULL;  // @var int(2)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__answers_responses', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->answer ) == '') {
 			$this->setError( JText::_('Your response must contain text.') );
@@ -58,10 +56,8 @@ class AnswersResponse extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getRecords($filters=array()) 
+
+	public function getRecords($filters=array())
 	{
 		$juser =& JFactory::getUser();
 
@@ -86,14 +82,12 @@ class AnswersResponse extends JTable
 			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.qid=".$qid;
 		}
 		$query .= " ORDER BY r.state DESC, r.created DESC";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getActions( $qid=null ) 
+
+	public function getActions( $qid=null )
 	{
 		if ($qid == null) {
 			$qid = $this->qid;
@@ -101,16 +95,14 @@ class AnswersResponse extends JTable
 		if ($qid == null) {
 			return false;
 		}
-		
+
 		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE qid=".$qid." AND state!='2'";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getResponse( $id=null, $ip = null ) 
+
+	public function getResponse( $id=null, $ip = null )
 	{
 		if ($id == null) {
 			$id = $this->id;
@@ -124,16 +116,14 @@ class AnswersResponse extends JTable
 		if ($ip == null) {
 			return false;
 		}
-		
+
 		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip='".$ip."' WHERE r.state!=2 AND r.id=".$id;
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//------------
-	
-	public function deleteResponse( $id=null) 
+
+	public function deleteResponse( $id=null)
 	{
 		if ($id == null) {
 			$id = $this->id;
@@ -141,16 +131,14 @@ class AnswersResponse extends JTable
 		if ($id == null) {
 			return false;
 		}
-		
+
 		$query  = "UPDATE $this->_tbl SET state='2' WHERE id=".$id;
-		
+
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
-	
-	//------------
-	
-	public function getIds( $qid=null) 
+
+	public function getIds( $qid=null)
 	{
 		if ($qid == null) {
 			$qid = $this->qid;
@@ -158,28 +146,24 @@ class AnswersResponse extends JTable
 		if ($qid == null) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE qid=".$qid );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getCount($filters=array()) 
+
+	public function getCount($filters=array())
 	{
 		$filters['sortby'] = '';
 		$filters['limit'] = 0;
-		
+
 		$query  = "SELECT COUNT(*) ";
 		$query .= $this->buildQuery( $filters );
-	
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getResults($filters=array()) 
+
+	public function getResults($filters=array())
 	{
 		$query  = "SELECT m.id, m.answer, m.created, m.created_by, m.helpful, m.nothelpful, m.state, m.anonymous, u.name ";
 		$query .= $this->buildQuery( $filters );
@@ -187,39 +171,37 @@ class AnswersResponse extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function buildQuery($filters=array()) 
+
+	public function buildQuery($filters=array())
 	{
 		$query = "FROM $this->_tbl AS m, #__users AS u WHERE m.created_by=u.username";
-		
+
 		switch ($filters['filterby'])
 		{
-			case 'all': 
+			case 'all':
 				$query .= " AND (m.state=1 OR m.state=0)";
 				break;
-			case 'accepted': 
+			case 'accepted':
 				$query .= " AND m.state=1";
 				break;
 			case 'rejected':
-			default: 
+			default:
 				$query .= " AND m.state=0";
 				break;
 		}
-		
+
 		if (isset($filters['qid']) && $filters['qid'] > 0) {
 			$query .= " AND m.qid=" . $filters['qid'];
 		}
-		
+
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
 			$query .= " ORDER BY " . $filters['sortby'];
 		}
-		
+
 		if (isset($filters['limit']) && $filters['limit'] > 0) {
 			$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
-		
+
 		return $query;
 	}
 }

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $document =& JFactory::getDocument();
 $document->addStyleSheet('/components/com_ysearch/ysearch.css');
 $document->addScript('/components/com_ysearch/ysearch.js');
-$show_weight = array_key_exists('show_weight', $_GET); 
+$show_weight = array_key_exists('show_weight', $_GET);
 ?>
 <div id="content-header" class="full">
 	<h2>Search</h2>
@@ -60,7 +60,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<?php endif; ?>
 						<?php 
 						$fc_child_flag = 'plgYSearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
-						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1): 
+						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1):
 						?>
 							<ul>
 							<?php foreach ($def['sections'] as $section_key=>$sdef): ?>
@@ -163,7 +163,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			</div>
 			<?php 
 				$last_type = NULL;
-				if (($children = $res->get_children())): 
+				if (($children = $res->get_children())):
 					$ctypec = array();
 					foreach ($children as $child)
 					{
@@ -180,7 +180,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<?php 
 							if (!($current_type = $child->get_section()))
 								continue;
-							if (!$last_type): 
+							if (!$last_type):
 						?>
 							<li>
 								<h4><span class="expand"></span><?php echo $current_type == 'Questions' ? 'Answers' : $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
@@ -192,7 +192,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								<h4><span class="expand"></span><?php echo $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
 								<ul class="child-result">
 						<?php 
-							endif; 
+							endif;
 							$last_type = $current_type;
 						?>
 							<li class="<?php echo $idx&1 ? 'odd' : 'even'; ?>">
@@ -215,7 +215,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<p>No results were found for '<?php echo htmlspecialchars($raw); ?>'</p>
 	<?php 
 		# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
-		if (!$this->terms->any()): 
+		if (!$this->terms->any()):
 	?>
 		<p><em>Note: Due to technical limitations, we are unable to search the site for very common or very short words.</em></p>
 	<?php endif; ?>

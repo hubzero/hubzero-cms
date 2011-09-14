@@ -29,19 +29,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tags_blogs' );
-
-//-----------
 
 class plgTagsBlogs extends JPlugin
 {
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgTagsBlogs(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,17 +45,13 @@ class plgTagsBlogs extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-
-	public function onTagAreas() 
+	public function onTagAreas()
 	{
 		$areas = array(
 			'blogs' => JText::_('PLG_TAGS_BLOGS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
@@ -75,18 +65,18 @@ class plgTagsBlogs extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		$ids = array();
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$ids[] = $tag->id;
 		}
 		$ids = implode(',',$ids);
-		
+
 		$now = date( 'Y-m-d H:i:s', time() + 0 * 60 * 60 );
-		
+
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 		$e_fields = "SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, NULL AS modified, e.publish_up, e.publish_down, CONCAT( 'index.php?option=com_blog&task=view&id=', e.id ) AS href, 'blog' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1, NULL AS data2, NULL AS data3 ";
@@ -102,15 +92,14 @@ class plgTagsBlogs extends JPlugin
 		$e_where .= " AND (e.publish_down = '0000-00-00 00:00:00' OR e.publish_down >= '".$now."') ";
 		$e_where .= " GROUP BY e.id HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
-		switch ($sort) 
+		switch ($sort)
 		{
 			case 'title': $order_by .= 'title ASC, publish_up';  break;
 			case 'id':    $order_by .= "id DESC";                break;
-			case 'date':  
+			case 'date':
 			default:      $order_by .= 'publish_up DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
-
 
 		if (!$limit) {
 			// Get a count
@@ -121,21 +110,21 @@ class plgTagsBlogs extends JPlugin
 			if (count($areas) > 1) {
 				return $e_fields . $e_from . $e_where;
 			}
-			
+
 			if ($this->_total != null) {
 				if ($this->_total == 0) {
 					return array();
 				}
 			}
-			
+
 			// Get results
 			$database->setQuery( $e_fields . $e_from . $e_where . $order_by );
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
-					switch ($row->scope) 
+					switch ($row->scope)
 					{
 						case 'site':
 							$rows[$key]->href = JRoute::_('index.php?option=com_blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias);
@@ -153,7 +142,7 @@ class plgTagsBlogs extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
@@ -171,9 +160,7 @@ class plgTagsBlogs extends JPlugin
 	{
 		// ...
 	}*/
-	
-	//-----------
-	
+
 	public function out( $row )
 	{
 		// Start building the HTML
@@ -184,13 +171,11 @@ class plgTagsBlogs extends JPlugin
 			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
 		}
 		$html .= "\t".'</li>'."\n";
-		
+
 		// Return output
 		return $html;
 	}
-	
-	//-----------
-	
+
 	/*public function after()
 	{
 		// ...

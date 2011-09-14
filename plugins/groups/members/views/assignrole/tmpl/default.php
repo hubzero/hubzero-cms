@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php
 				$u = new Hubzero_User_Profile();
 				$u->load( $this->uid );
-				
+
 				$current_roles = array();
 				$roles = $u->getGroupMemberRoles($u->get('uidNumber'), $this->group->get('gidNumber'));
 				if($roles) {

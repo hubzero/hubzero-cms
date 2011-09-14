@@ -35,21 +35,18 @@ class modMyGroups
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,7 +55,6 @@ class modMyGroups
 	}
 
 	//-----------
-
 	private function _getGroups($uid, $type='all')
 	{
 		$db =& JFactory::getDBO();
@@ -68,8 +64,8 @@ class modMyGroups
 		$query2 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
 		$query3 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
 		$query4 = "SELECT g.published, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		
-		switch ($type) 
+
+		switch ($type)
 		{
 			case 'all':
 				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
@@ -87,7 +83,7 @@ class modMyGroups
 				$query = $query4;
 			break;
 		}
-		
+
 		$db->setQuery($query);
 		$db->query();
 
@@ -98,10 +94,9 @@ class modMyGroups
 
 		return $result;
 	}
-	
+
 	//-----------
-	
-	public function getStatus( $group ) 
+	public function getStatus( $group )
 	{
 		if ($group->manager) {
 			$status = 'manager';
@@ -124,11 +119,10 @@ class modMyGroups
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		$juser =& JFactory::getUser();
-		
+
 		// Get the module parameters
 		$params =& $this->params;
 		$this->moduleclass = $params->get( 'moduleclass' );
@@ -143,21 +137,21 @@ class modMyGroups
 
 		$groups = array_merge($applicants, $invitees);
 		$managerids = array();
-		foreach ($managers as $manager) 
+		foreach ($managers as $manager)
 		{
 			$groups[] = $manager;
 			$managerids[] = $manager->cn;
 		}
-		foreach ($members as $mem) 
+		foreach ($members as $mem)
 		{
 			if (!in_array($mem->cn,$managerids)) {
 				$groups[] = $mem;
 			}
 		}
-		
+
 		$this->limit = $limit;
 		$this->groups = $groups;
-		
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_mygroups');

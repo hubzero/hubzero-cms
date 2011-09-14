@@ -36,7 +36,7 @@ jimport('joomla.event.plugin');
 
 class plgSystemXFeed extends JPlugin
 {
-	function plgSystemXFeed(& $subject) 
+	function plgSystemXFeed(& $subject)
 	{
 		parent::__construct($subject, NULL);
 	}

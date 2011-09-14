@@ -29,19 +29,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Bank_Config extends JObject
 {
 	var $_db = NULL;
 
-	//-----------
-
-	public function set( $property, $value=NULL ) 
+	public function set( $property, $value=NULL )
 	{
 		$this->$property = $value;
 	}
-	
-	//-----------
 
 	public function get( $property, $default=NULL )
 	{
@@ -51,12 +46,10 @@ class Hubzero_Bank_Config extends JObject
 		return $default;
 	}
 
-	//-----------
-
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		$this->_db = $db;
-		
+
 		$this->_db->setQuery( "SELECT * FROM #__users_points_config" );
 		$pc = $this->_db->loadObjectList();
 		foreach ($pc as $p)

@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class Hubzero_Bank_Teller extends JObject
 {
 	var $_db      = NULL;  // Database
@@ -39,17 +38,17 @@ class Hubzero_Bank_Teller extends JObject
 	var $credit   = NULL;  // Credit point balance 
 	var $_error   = NULL;  // Errors
 	//var $_id      = NULL;  // ID for #__users_points record
-	
+
 	//-----------
 	// Constructor
 	// Find the balance from the most recent transaction.
 	// If no balance is found, create an initial transaction.
-	
+
 	public function __construct( &$db, $uid )
 	{
 		$this->_db = $db;
 		$this->uid = $uid;
-		
+
 		$BA = new Hubzero_Bank_Account( $this->_db );
 
 		if ($BA->load_uid( $this->uid )) {
@@ -65,58 +64,58 @@ class Hubzero_Bank_Teller extends JObject
 			$this->_saveBalance( 'creation' );
 		}
 	}
-	
+
 	//-----------
 	// Get the current balance
-	
+
 	public function summary()
 	{
 		return $this->balance;
 	}
-	
+
 	//-----------
 	// Get the current credit balance
-	
+
 	public function credit_summary()
 	{
 		return $this->credit;
 	}
-	
+
 	//-----------
 	// Add points
-	
+
 	public function deposit($amount, $desc='Deposit', $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
-		
+
 		if ($this->_error) {
 			echo $this->getError();
 			return;
 		}
-		
+
 		$this->balance  += $amount;
 		$this->earnings += $amount;
-		
+
 		if (!$this->_save( 'deposit', $amount, $desc, $cat, $ref )) {
 			echo $this->getError();
 		}
 	}
-	
+
 	//-----------
 	// Withdraw (spend) points
-	
+
 	public function withdraw($amount, $desc='Withdraw', $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
-		
+
 		if ($this->_error) {
 			echo $this->getError();
 			return;
 		}
-		
+
 		if ($this->_creditCheck($amount)) {
 			$this->balance -= $amount;
-			
+
 			if (!$this->_save( 'withdraw', $amount, $desc, $cat, $ref )) {
 				echo $this->getError();
 			}
@@ -124,22 +123,22 @@ class Hubzero_Bank_Teller extends JObject
 			echo $this->getError();
 		}
 	}
-	
+
 	//-----------
 	// Set points aside (credit)
-	
+
 	public function hold($amount, $desc='Hold', $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
-		
+
 		if ($this->_error) {
 			echo $this->getError();
 			return;
 		}
-		
+
 		if ($this->_creditCheck($amount)) {
 			$this->credit += $amount;
-			
+
 			if (!$this->_save( 'hold', $amount, $desc, $cat, $ref )) {
 				echo $this->getError();
 			}
@@ -147,20 +146,20 @@ class Hubzero_Bank_Teller extends JObject
 			echo $this->getError();
 		}
 	}
-	
+
 	//-------------
 	// Make credit adjustment
-	
+
 	public function credit_adjustment($amount)
-	{	
+	{
 		$amount = (intval($amount) > 0) ? intval($amount) : 0;
 		$this->credit = $amount;
 		$this->_saveBalance('update');
 	}
-	
+
 	//-----------
 	// Get a history of transactions
-	
+
 	public function history( $limit=20 )
 	{
 		$lmt = "";
@@ -170,10 +169,8 @@ class Hubzero_Bank_Teller extends JObject
 		$this->_db->setQuery( "SELECT * FROM #__users_transactions WHERE uid=".$this->uid." ORDER BY created DESC, id DESC".$lmt );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
 
-	public function getError() 
+	public function getError()
 	{
 		return $this->_error;
 	}
@@ -181,7 +178,7 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Check that they have enough in their account 
 	// to perform the transaction.
-	
+
 	public function _creditCheck($amount)
 	{
 		$b = $this->balance;
@@ -196,9 +193,7 @@ class Hubzero_Bank_Teller extends JObject
 			return false;
 		}
 	}
-	
-	//-----------
-	
+
 	public function _amountCheck($amount)
 	{
 		$amount = intval($amount);
@@ -207,9 +202,7 @@ class Hubzero_Bank_Teller extends JObject
 		}
 		return $amount;
 	}
-	
-	//-----------
-	
+
 	public function _save( $type, $amount, $desc, $cat, $ref )
 	{
 		if (!$this->_saveBalance( $type )) {
@@ -218,14 +211,13 @@ class Hubzero_Bank_Teller extends JObject
 		if (!$this->_saveTransaction( $type, $amount, $desc, $cat, $ref )) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
 	//-----------
 	// Save the current balance
-	
+
 	public function _saveBalance( $type )
 	{
 
@@ -243,10 +235,10 @@ class Hubzero_Bank_Teller extends JObject
 		}
 		return true;
 	}
-	
+
 	//-----------
 	// Record the transaction
-	
+
 	public function _saveTransaction( $type, $amount, $desc, $cat, $ref )
 	{
 		$data = array();
@@ -258,7 +250,7 @@ class Hubzero_Bank_Teller extends JObject
 		$data['referenceid'] = $ref;
 		$data['created'] = date( 'Y-m-d H:i:s', time() );
 		$data['balance'] = $this->balance;
-		
+
 		$BT = new Hubzero_Bank_Transaction( $this->_db );
 		if (!$BT->bind( $data )) {
 			$this->_error = $BT->getError();

@@ -39,47 +39,43 @@ ximport('Hubzero_Bank');
 class ResourcesEconomy extends JObject
 {
 	var $_db = NULL;  // Database
-	
+
 	//-----------
-	
+
 	public function __construct( &$db)
 	{
 		$this->_db = $db;
 	}
-	
-	//-----------
-	
-	public function getCons() 
+
+	public function getCons()
 	{
 		// get all eligible resource contributors
 		$sql = "SELECT DISTINCT aa.authorid, SUM(r.ranking) as ranking FROM jos_author_assoc AS aa "
 			."\n LEFT JOIN jos_resources AS r ON r.id=aa.subid "
 			."\n WHERE aa.authorid > 0 AND r.published=1 AND r.standalone=1 GROUP BY aa.authorid ";
-			
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function distribute_points($con, $type='royalty')
 	{
 		if (!is_object($con)) {
 			return false;
 		}
 		$cat = 'resource';
-		
+
 		$points = round($con->ranking);
-		
+
 		// Get qualifying users
 		$juser =& JUser::getInstance( $con->authorid );
-		
+
 		// Reward review author
 		if (is_object($juser)) {
 			$BTL = new Hubzero_Bank_Teller( $this->_db , $juser->get('id') );
-		
+
 			if (intval($points) > 0) {
-				$msg = ($type=='royalty') ? 'Royalty payment for your resource contributions' : '';	
+				$msg = ($type=='royalty') ? 'Royalty payment for your resource contributions' : '';
 				$BTL->deposit($points, $msg, $cat, 0);
 			}
 		}
@@ -94,18 +90,16 @@ class ResourcesEconomy extends JObject
 class ReviewsEconomy extends JObject
 {
 	var $_db = NULL;  // Database
-	
+
 	//-----------
-	
+
 	public function __construct( &$db)
 	{
 		$this->_db = $db;
-		
+
 	}
-	
-	//-----------
-	
-	public function getReviews() 
+
+	public function getReviews()
 	{
 		// get all eligible reviews
 		$sql = "SELECT r.id, r.user_id AS author, r.resource_id as rid, "
@@ -117,7 +111,7 @@ class ReviewsEconomy extends JObject
 		$result = $this->_db->loadObjectList();
 		$reviews = array();
 		if ($result) {
-			foreach ($result as $r) 
+			foreach ($result as $r)
 			{
 				// item is not abusive, got at least 3 votes, more positive than negative
 				if (!$r->reports && (($r->helpful + $r->nothelpful) >=3) && ($r->helpful > $r->nothelpful) ) {
@@ -127,52 +121,48 @@ class ReviewsEconomy extends JObject
 		}
 		return $reviews;
 	}
-	
-	//-----------
-	
+
 	public function calculate_marketvalue($review, $type='royalty')
 	{
 		if (!is_object($review)) {
 			return false;
 		}
-	
+
 		// Get point values for actions
 		$BC = new Hubzero_Bank_Config( $this->_db );
 		$p_R  = $BC->get('reviewvote') ? $BC->get('reviewvote') : 2;
 		//$positive_co = 2;
-		
+
 		$calc = 0;
 		if (isset($review->helpful) && isset($review->nothelpful)) {
 			$calc += ($review->helpful) * $p_R;
 			//$calc += ($review->helpful) * $p_R * $positive_co;
 			//$calc += ($review->nothelpful)*$p_R;
 		}
-		
+
 		($calc) ? $calc = $calc : $calc ='0';
-		
+
 		return $calc;
 	}
-	
-	//-----------
-	
+
 	public function distribute_points($review, $type='royalty')
 	{
 		if (!is_object($review)) {
 			return false;
 		}
 		$cat = 'review';
-		
+
 		$points = $this->calculate_marketvalue($review, $type);
-		
+
 		// Get qualifying users
 		$juser =& JUser::getInstance( $review->author );
-		
+
 		// Reward review author
 		if (is_object($juser)) {
 			$BTL = new Hubzero_Bank_Teller( $this->_db , $juser->get('id') );
-		
+
 			if (intval($points) > 0) {
-				$msg = ($type=='royalty') ? 'Royalty payment for posting a review on resource #'.$review->rid : 'Commission for posting a review on resource #'.$review->rid;	
+				$msg = ($type=='royalty') ? 'Royalty payment for posting a review on resource #'.$review->rid : 'Commission for posting a review on resource #'.$review->rid;
 				$BTL->deposit($points, $msg, $cat, $review->id);
 			}
 		}

@@ -44,30 +44,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 if ($this->rows) {
 	$i=1;
-	
+
 	$juser =& JFactory::getUser();
 	$database =& JFactory::getDBO();
 
 	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 	$tagging = new AnswersTags( $database );
-	
+
 	// Check for abuse reports on an item
 	$ra = new ReportAbuse( $database );
-	
-	foreach ($this->rows as $row) 
+
+	foreach ($this->rows as $row)
 	{
 		// Incoming
 		$filters = array();
 		$filters['id']  = $row->id;
 		$filters['category']  = 'question';
 		$filters['state']  = 0;
-		
+
 		$row->reports = $ra->getCount( $filters );
 		$row->points = $row->points ? $row->points : 0;
-		
+
 		if ($i<= $this->limit) {
 			$i++;
-			
+
 			// author name
 			$name = JText::_('PLG_RESOURCES_QUESTIONS_ANONYMOUS');
 			if ($row->anonymous == 0) {
@@ -78,7 +78,7 @@ if ($this->rows) {
 					$name = JText::_('PLG_RESOURCES_QUESTIONS_UNKNOWN');
 				}
 			}
-			
+
 			$cls = ($row->state == 1) ? 'answered' : '';
 			$cls = ($row->reports) ? 'flagged' : $cls;
 			$cls .= ($row->created_by == $juser->get('username')) ? ' mine' : '';

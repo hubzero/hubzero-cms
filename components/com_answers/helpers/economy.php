@@ -39,17 +39,15 @@ ximport('Hubzero_Bank');
 class AnswersEconomy extends JObject
 {
 	var $_db = NULL;  // Database
-	
+
 	//-----------
-	
+
 	public function __construct( &$db)
 	{
 		$this->_db = $db;
 	}
-	
-	//-----------
-	
-	public function getQuestions() 
+
+	public function getQuestions()
 	{
 		// get all closed questions
 		$sql = "SELECT q.id, q.created_by AS q_owner, a.created_by AS a_owner
@@ -58,9 +56,7 @@ class AnswersEconomy extends JObject
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function calculate_marketvalue($id, $type='regular')
 	{
 		if ($id === NULL) {
@@ -69,12 +65,12 @@ class AnswersEconomy extends JObject
 		if ($id === NULL) {
 			return false;
 		}
-		
+
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
-		
+
 		// Get point values for actions
 		$BC = new Hubzero_Bank_Config( $this->_db );
 		$p_Q  = $BC->get('ask');
@@ -82,24 +78,24 @@ class AnswersEconomy extends JObject
 		$p_R  = $BC->get('answervote');
 		$p_RQ = $BC->get('questionvote');
 		$p_A_accepted = $BC->get('accepted');
-		
+
 		$calc = 0;
-		
+
 		// Get actons and sum up
 		$ar = new AnswersResponse( $this->_db );
 		$result = $ar->getActions( $id );
-		
+
 		if ($type != 'royalty') {
 			$calc += $p_Q;  // ! this is different from version before code migration !			
 			$calc += (count($result))*$p_A;
 		}
-		
+
 		// Calculate as if there is at leat one answer
 		if ($type == 'maxaward' && count($result)==0) {
 			$calc += $p_A;
 		}
-		
-		for ($i=0, $n=count($result); $i < $n; $i++) 
+
+		for ($i=0, $n=count($result); $i < $n; $i++)
 		{
 			$calc += ($result[$i]->helpful)*$p_R;
 			$calc += ($result[$i]->nothelpful)*$p_R;
@@ -107,29 +103,27 @@ class AnswersEconomy extends JObject
 				$accepted = 1;
 			}
 		}
-		
+
 		if (isset($accepted) or $type=='maxaward') {
 			$calc += $p_A_accepted;
 		}
-		
+
 		// Add question votes
 		$aq = new AnswersQuestion( $this->_db );
 		$aq->load( $id );
 		if ($aq->state != 2) {
 			$calc += $aq->helpful * $p_RQ;
 		}
-		
+
 		($calc) ? $calc = $calc : $calc ='0';
-		
+
 		return $calc;
 	}
 
-	//-----------
-	
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
 		$juser =& JFactory::getUser();
-		
+
 		if ($qid === NULL) {
 			$qid = $this->qid;
 		}
@@ -137,36 +131,36 @@ class AnswersEconomy extends JObject
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );	
-		
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
+
 		$points = $this->calculate_marketvalue($qid, $type);
-		
+
 		$BT = new Hubzero_Bank_Transaction( $this->_db );
 		$reward = $BT->getAmount( $cat, 'hold', $qid );
-		$reward = ($reward) ? $reward : '0';		
+		$reward = ($reward) ? $reward : '0';
 		$share = $points/3;
-		
+
 		$BA_owner_share = $share + $reward;
 		$A_owner_share  = 0;
-		
+
 		// Get qualifying users
 		$juser =& JUser::getInstance( $Q_owner );
-		$ba_user =& JUser::getInstance( $BA_owner );	
-			
+		$ba_user =& JUser::getInstance( $BA_owner );
+
 		// Calculate commissions for other answers
 		$ar = new AnswersResponse( $this->_db );
 		$result = $ar->getActions( $qid );
-		
+
 		$n = count($result);
 		$eligible = array();
-		
+
 		if ($n > 1 ) {
 			// More than one answer found
-			for ($i=0; $i < $n; $i++) 
+			for ($i=0; $i < $n; $i++)
 			{
 				// Check if a regular answer has a good rating (at least 50% of positive votes)
-				if (($result[$i]->helpful + $result[$i]->nothelpful) >= 3 
-				 && ($result[$i]->helpful >= $result[$i]->nothelpful) 
+				if (($result[$i]->helpful + $result[$i]->nothelpful) >= 3
+				 && ($result[$i]->helpful >= $result[$i]->nothelpful)
 				 && $result[$i]->state=='0' ) {
 					$eligible[] = $result[$i]->created_by;
 				}
@@ -182,7 +176,7 @@ class AnswersEconomy extends JObject
 			// Best A owner gets remaining 3rd
 			$BA_owner_share += $share;
 		}
-			
+
 		// Reward asker
 		if (is_object($juser)) {
 			$BTL_Q = new Hubzero_Bank_Teller( $this->_db , $juser->get('id') );
@@ -192,9 +186,9 @@ class AnswersEconomy extends JObject
 			$credit = $BTL_Q->credit_summary();
 			$adjusted = $credit - $reward;
 			$BTL_Q->credit_adjustment($adjusted);
-			
+
 			if (intval($share) > 0) {
-				$share_msg = ($type=='royalty') ? 'Royalty payment for posting question #'.$qid : 'Commission for posting question #'.$qid;	
+				$share_msg = ($type=='royalty') ? 'Royalty payment for posting question #'.$qid : 'Commission for posting question #'.$qid;
 				$BTL_Q->deposit($share, $share_msg, $cat, $qid);
 			}
 			// withdraw reward amount
@@ -202,10 +196,10 @@ class AnswersEconomy extends JObject
 				$BTL_Q->withdraw($reward, 'Reward payment for your question #'.$qid, $cat, $qid);
 			}
 		}
-		
+
 		// Reward other responders
 		if (count($eligible) > 0) {
-			foreach ($eligible as $e) 
+			foreach ($eligible as $e)
 			{
 				$auser =& JUser::getInstance( $e );
 				if (is_object($auser) && is_object($ba_user) && $ba_user->get('id') != $auser->get('id')) {
@@ -213,7 +207,7 @@ class AnswersEconomy extends JObject
 					if (intval($A_owner_share) > 0) {
 						$A_owner_share_msg = ($type=='royalty') ? 'Royalty payment for answering question #'.$qid : 'Answered question #'.$qid.' that was recently closed';
 						$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
-					}	
+					}
 				}
 				// is best answer eligible for extra points?
 				if (is_object($auser) && is_object($ba_user) && ($ba_user->get('id') == $auser->get('id'))) {
@@ -221,21 +215,21 @@ class AnswersEconomy extends JObject
 				}
 			}
 		}
-		
+
 		// Reward best answer
 		if (is_object($ba_user)) {
 			$BTL_BA = new Hubzero_Bank_Teller( $this->_db , $ba_user->get('id') );
-			
-			if (isset($ba_extra)) { 
-				$BA_owner_share += $A_owner_share; 
+
+			if (isset($ba_extra)) {
+				$BA_owner_share += $A_owner_share;
 			}
-			
+
 			if (intval($BA_owner_share) > 0) {
 				$BA_owner_share_msg = ($type=='royalty') ? 'Royalty payment for answering question #'.$qid : 'Answer for question #'.$qid.' was accepted';
 				$BTL_BA->deposit($BA_owner_share, $BA_owner_share_msg, $cat, $qid);
 			}
 		}
-	
+
 		// Remove hold if exists
 		if ($reward) {
 			$BT = new Hubzero_Bank_Transaction( $this->_db  );

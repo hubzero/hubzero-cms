@@ -228,14 +228,14 @@ function submitbutton(pressbutton)
 				$dises = array('no','yes','refused','vocal','blind','deaf','physical','learning');
 				$dis = $this->profile->get('disability');
 				$disother = '';
-				foreach ($dis as $d) 
+				foreach ($dis as $d)
 				{
 					if (!in_array($d, $dises)) {
 						$disother = $d;
 					}
 				}
 				$dis_noanswer = (is_array($dis) && count($dis) <= 1 && empty($dis[0]));
-				
+
 				?>
 					<fieldset>
 						<legend><label><input type="radio" class="option" name="profile[disability]" id="disabilityyes" value="yes" <?php echo (!$dis_noanswer && !in_array('no',$this->profile->get('disability')) && !in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('YES'); ?></label></legend><br />
@@ -270,7 +270,7 @@ function submitbutton(pressbutton)
 					$hises = array('no','yes','refused','cuban','mexican','deaf','puertorican');
 					$his = $this->profile->get('disability');
 					$hisother = '';
-					foreach ($his as $h) 
+					foreach ($his as $h)
 					{
 						if (!in_array($h, $hises)) {
 							$hisother = $h;
@@ -392,7 +392,7 @@ function submitbutton(pressbutton)
 				$database->setQuery("SELECT du.*, d.domain FROM #__xdomain_users AS du, #__xdomains AS d WHERE du.domain_id=d.domain_id AND du.uidNumber=".$this->profile->get('uidNumber'));
 				$domains = $database->loadObjectList();
 				if ($domains) {
-					foreach ($domains as $d) 
+					foreach ($domains as $d)
 					{
 						?>
 						<tr>

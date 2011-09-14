@@ -29,21 +29,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiSetup 
+class WikiSetup
 {
 	public function initialize( $option )
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-	
+
 		$pages = WikiSetup::defaultPages();
-		
+
 		if (count($pages) <= 0) {
 			return JText::_('No default pages found');
 		}
-		
-		foreach ($pages as $f=>$c) 
+
+		foreach ($pages as $f=>$c)
 		{
 			$f = str_replace('_',':',$f);
 
@@ -92,13 +91,11 @@ class WikiSetup
 				exit();
 			}
 		}
-		
+
 		return null;
 	}
-	
-	//-----------
-	
-	public function defaultPages() 
+
+	public function defaultPages()
 	{
 		$path = dirname(__FILE__);
 		$d = @dir($path.DS.'default');
@@ -106,10 +103,10 @@ class WikiSetup
 
 		if ($d) {
 			jimport('joomla.filesystem.file');
-			
-			while (false !== ($entry = $d->read())) 
+
+			while (false !== ($entry = $d->read()))
 			{
-				$file = $entry; 
+				$file = $entry;
 				if (is_file($path.DS.'default'.DS.$file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "txt", $file )) {
 						$name = substr($file,0,(strlen($file) - 4));
@@ -119,7 +116,7 @@ class WikiSetup
 			}
 			$d->close();
 		}
-		
+
 		return $pages;
 	}
 }

@@ -38,14 +38,14 @@ class FeedbackController extends Hubzero_Controller
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
-		
+
 		$this->_task = strtolower(JRequest::getVar('task', '','request'));
 		$this->type = JRequest::getVar( 'type', '', 'post' );
 		if (!$this->type) {
 			$this->type = JRequest::getVar( 'type', 'regular', 'get' );
 		}
-		
-		switch ($this->_task) 
+
+		switch ($this->_task)
 		{
 			case 'new':       $this->edit();      break;
 			case 'add':       $this->edit();      break;
@@ -56,7 +56,7 @@ class FeedbackController extends Hubzero_Controller
 			case 'upload':    $this->upload();    break;
 			case 'img':       $this->img();       break;
 			case 'deleteimg': $this->deleteimg(); break;
-	
+
 			default: $this->quotes(); break;
 		}
 	}
@@ -72,7 +72,7 @@ class FeedbackController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->type = $this->type;
-		
+
 		// Get site configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
@@ -89,10 +89,10 @@ class FeedbackController extends Hubzero_Controller
 		} else {
 			$obj = new SelectedQuotes( $this->database );
 		}
-		
+
 		// Get a record count
 		$view->total = $obj->getCount( $view->filters );
-		
+
 		// Get records
 		$view->rows = $obj->getResults( $view->filters );
 
@@ -104,12 +104,10 @@ class FeedbackController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
-
-	//-----------
 
 	protected function create()
 	{
@@ -118,19 +116,17 @@ class FeedbackController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->type = $this->type;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
 
-	//-----------
-
-	protected function edit() 
+	protected function edit()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'quote') );
@@ -152,7 +148,7 @@ class FeedbackController extends Hubzero_Controller
 		$username = trim(JRequest::getVar( 'username', '' ));
 		if ($username) {
 			ximport('Hubzero_User_Profile');
-			
+
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $username );
 
@@ -160,11 +156,11 @@ class FeedbackController extends Hubzero_Controller
 			$view->row->org      = $profile->get('organization');
 			$view->row->userid   = $profile->get('uidNumber');
 		}
-		
+
 		if (!$id) {
 			$view->row->date = date( 'Y-m-d H:i:s');
 		}
-		
+
 		if ($this->type == 'regular') {
 			$view->row->notable_quotes = 0;
 			$view->row->flash_rotation = 0;
@@ -174,7 +170,7 @@ class FeedbackController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}
@@ -182,17 +178,17 @@ class FeedbackController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-	
-	protected function save() 
+
+	protected function save()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$replacequote   = JRequest::getInt( 'replacequote', 0 );
 		$notable_quotes = JRequest::getInt( 'notable_quotes', 0 );
 		$flash_rotation = JRequest::getInt( 'flash_rotation', 0 );
-	
+
 		if ($replacequote) {
 			// Replace original quote
 
@@ -202,24 +198,24 @@ class FeedbackController extends Hubzero_Controller
 				JError::raiseError( 500, $row->getError() );
 				return;
 			}
-	
+
 			// Code cleaner for xhtml transitional compliance
 			$row->quote = str_replace( '<br>', '<br />', $row->quote );
-	
+
 			$row->picture = basename($bits);
-	
+
 			// Check new content
 			if (!$row->check()) {
 				JError::raiseError( 500, $row->getError() );
 				return;
 			}
-			
+
 			// Store new content
 			if (!$row->store()) {
 				JError::raiseError( 500, $row->getError() );
 				return;
 			}
-	
+
 			$this->_message = JText::sprintf('FEEDBACK_QUOTE_SAVED',  $row->fullname);
 		}
 
@@ -230,10 +226,10 @@ class FeedbackController extends Hubzero_Controller
 				JError::raiseError( 500, $rowselected->getError() );
 				return;
 			}
-			
+
 			$rowselected->notable_quotes = $notable_quotes;
 			$rowselected->flash_rotation = $flash_rotation;
-			
+
 			// Use new id if already exists under selected quotes
 			if ($this->type == 'regular') {
 				$rowselected->id = 0;
@@ -241,21 +237,21 @@ class FeedbackController extends Hubzero_Controller
 
 			// Code cleaner for xhtml transitional compliance
 			$rowselected->quote = str_replace( '<br>', '<br />', $rowselected->quote );
-			
+
 			$rowselected->picture = basename($rowselected->picture);
-			
+
 			// Trim the text to create a short quote
 			$rowselected->short_quote = ($rowselected->short_quote) ? $rowselected->short_quote : substr($rowselected->quote, 0, 270);
 			if (strlen($rowselected->short_quote)>=271) {
 				$rowselected->short_quote .= '...';
 			}
-			
+
 			// Trim the text to create a mini quote
 			$rowselected->miniquote = ($rowselected->miniquote) ? $rowselected->miniquote : substr($rowselected->short_quote, 0, 150);
 			if (strlen($rowselected->miniquote)>=147) {
 				$rowselected->miniquote .= '...';
 			}
-			
+
 			// Store new content
 			if (!$rowselected->store()) {
 				JError::raiseError( 500, $rowselected->getError() );
@@ -264,27 +260,25 @@ class FeedbackController extends Hubzero_Controller
 
 			$this->_message = '';
 		}
-	
+
 		if ($flash_rotation) {
 			$this->_message .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_ROTATION');
 		}
 		if ($notable_quotes) {
 			$this->_message .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_QUOTES');
 		}
-		
+
 		$this->_redirect = 'index.php?option='.$this->_option.'&type='.$this->type;
 	}
-	
-	//-----------
 
-	protected function remove() 
+	protected function remove()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-	
+
 		// Check for an ID
 		if (!$id) {
 			JError::raiseError( 500, JText::_('FEEDBACK_SELECT_QUOTE_TO_DELETE') );
@@ -298,19 +292,17 @@ class FeedbackController extends Hubzero_Controller
 			$row = new SelectedQuotes( $this->database );
 		}
 		$row->load( $id );
-		
+
 		// Delete associated files
 		$row->deletePicture( $this->config );
-		
+
 		// Delete the quote
 		$row->delete();
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&type='.$type;
 		$this->_message = JText::_('FEEDBACK_REMOVED');
 	}
-
-	//-----------
 
 	protected function cancel()
 	{
@@ -325,7 +317,7 @@ class FeedbackController extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		// Load the component config
 		$config = $this->config;
 
@@ -336,7 +328,7 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
@@ -344,7 +336,7 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Build upload path
 		ximport('Hubzero_View_Helper_Html');
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
@@ -356,7 +348,7 @@ class FeedbackController extends Hubzero_Controller
 			$path = substr($config->get('uploadpath'), 0, (strlen($config->get('uploadpath')) - 1));
 		}
 		$path .= $config->get('uploadpath').DS.$dir;
-		
+
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( $path, 0777 )) {
@@ -370,9 +362,9 @@ class FeedbackController extends Hubzero_Controller
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
-		
+
 		$qid = JRequest::getInt( 'qid', 0 );
-		
+
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('ERROR_UPLOADING') );
@@ -380,11 +372,11 @@ class FeedbackController extends Hubzero_Controller
 		} else {
 			$row = new FeedbackQuotes( $this->database );
 			$row->load( $qid );
-			
+
 			// Do we have an old file we're replacing?
 			//$curfile = JRequest::getVar( 'currentfile', '' );
 			$curfile = $row->picture;
-			
+
 			if ($curfile != '' && $curfile != $file['name']) {
 				// Yes - remove it
 				if (file_exists($path.DS.$curfile)) {
@@ -397,7 +389,7 @@ class FeedbackController extends Hubzero_Controller
 			}
 
 			$file = $file['name'];
-			
+
 			$row->picture = $file;
 			if (!$row->store()) {
 				$this->setError( $row->getError() );
@@ -408,23 +400,21 @@ class FeedbackController extends Hubzero_Controller
 		$this->img( $file, $id, $qid );
 	}
 
-	//-----------
-
 	protected function deleteimg()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit( 'Invalid Token' );
-		
+
 		// Load the component config
 		$config = $this->config;
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('FEEDBACK_NO_ID') );
 			$this->img( '', $id );
 		}
-		
+
 		$qid = JRequest::getInt( 'qid', 0 );
 
 		$row = new FeedbackQuotes( $this->database );
@@ -437,7 +427,7 @@ class FeedbackController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Build the file path
 		ximport('Hubzero_View_Helper_Html');
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
@@ -450,8 +440,8 @@ class FeedbackController extends Hubzero_Controller
 		}
 		$path .= $config->get('uploadpath').DS.$dir;
 
-		if (!file_exists($path.DS.$row->picture) or !$row->picture) { 
-			$this->setError( JText::_('FILE_NOT_FOUND') ); 
+		if (!file_exists($path.DS.$row->picture) or !$row->picture) {
+			$this->setError( JText::_('FILE_NOT_FOUND') );
 		} else {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
@@ -465,12 +455,10 @@ class FeedbackController extends Hubzero_Controller
 				$this->setError( $row->getError() );
 			}
 		}
-	
+
 		// Push through to the image view
 		$this->img( $row->picture, $id, $qid );
 	}
-
-	//-----------
 
 	protected function img( $file='', $id=0, $qid=0 )
 	{
@@ -479,27 +467,27 @@ class FeedbackController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->type = $this->type;
-		
+
 		// Load the component config
 		$view->config = $this->config;
-		
+
 		// Do have an ID or do we need to get one?
 		if (!$id) {
 			$view->id = JRequest::getInt( 'id', 0 );
 		} else {
 			$view->id = $id;
 		}
-		
+
 		ximport('Hubzero_View_Helper_Html');
 		$view->dir = Hubzero_View_Helper_Html::niceidformat( $id );
-		
+
 		// Do we have a file or do we need to get one?
 		if (!$file) {
 			$view->file = JRequest::getVar( 'file', '' );
 		} else {
 			$view->file = $file;
 		}
-			  
+
 		// Build the directory path
 		$view->path = $this->config->get('uploadpath').DS.$view->dir;
 
@@ -508,12 +496,12 @@ class FeedbackController extends Hubzero_Controller
 		} else {
 			$view->qid = $qid;
 		}
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		
+
 		// Output the HTML
 		$view->display();
 	}

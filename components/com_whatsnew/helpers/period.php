@@ -29,29 +29,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 class WhatsnewPeriod extends JObject
 {
 	private $_period = NULL;     // The original search text - should NEVER BE CHANGED
 	private $_data   = array();  // Processed text
-	
+
 	//-----------
-	
+
 	public function __construct( $period=NULL )
-	{		
+	{
 		$this->_period = $period;
 	}
 
-	//-----------
-	
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -59,19 +53,17 @@ class WhatsnewPeriod extends JObject
 		}
 	}
 
-	//-----------
-	
-	public function process() 
+	public function process()
 	{
 		if (trim($this->_period) == '') {
 			return;
 		}
-		
+
 		$period = $this->_period;
-		
+
 		// Determine last week and last month date
 		$today = time();
-		switch ($period) 
+		switch ($period)
 		{
 			case 'week':
 				$endTime   = $today;
@@ -101,7 +93,7 @@ class WhatsnewPeriod extends JObject
 				}
 				break;
 		}
-		
+
 		$this->period    = $period;
 		$this->endTime   = $endTime;
 		$this->startTime = $startTime;

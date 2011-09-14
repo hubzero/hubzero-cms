@@ -37,17 +37,17 @@ if (!defined("n")) {
 	define("a","&amp;");
 }
 
-class MembersHtml 
+class MembersHtml
 {
 	public function selectAccess($name, $value, $class='', $id='')
 	{
 		$arr = array( JText::_('Public'), JText::_('Registered users'), JText::_('Private') );
-		
+
 		$html  = '<select name="'.$name.'"';
 		$html .= ($id) ? ' id="'.$id.'"' : '';
 		$html .= ($class) ? ' class="'.$class.'"' : '';
 		$html .= '>'."\n";
-		foreach ($arr as $k => $v) 
+		foreach ($arr as $k => $v)
 		{
 			$selected = ($k == $value)
 					  ? ' selected="selected"'
@@ -57,10 +57,8 @@ class MembersHtml
 		$html .= '</select>'."\n";
 		return $html;
 	}
-	
-	//-----------
-	
-	public function propercase_singleresponse($response) 
+
+	public function propercase_singleresponse($response)
 	{
 		$html = '';
 		switch ($response)
@@ -73,15 +71,13 @@ class MembersHtml
 		return $html;
 	}
 
-	//-----------
-
-	public function propercase_multiresponse($response_array) 
+	public function propercase_multiresponse($response_array)
 	{
 		$html = '';
 		if (count($response_array) == 0) {
 			$html .= JText::_('n/a');
 		} else {
-			for ($i = 0; $i < count($response_array); $i++) 
+			for ($i = 0; $i < count($response_array); $i++)
 			{
 				if ($i > 0) {
 					$html .= ', ';
@@ -97,24 +93,20 @@ class MembersHtml
 		}
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
-		for ($i = 0; $i < $length; $i++) 
+		for ($i = 0; $i < $length; $i++)
 		{
 			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
 		}
-		
+
 		return $obfuscatedEmail;
 	}
-	
-	//-----------
-	
-	public function date2epoch($datestr) 
+
+	public function date2epoch($datestr)
 	{
 		if (empty($datestr)) {
 			return null;
@@ -124,10 +116,8 @@ class MembersHtml
 		list ($h, $i, $s) = explode(':', $time);
 		return(mktime($h, $i, $s, $m, $d, $y));
 	}
-	
-	//-----------
-	
-	public function valformat($value, $format) 
+
+	public function valformat($value, $format)
 	{
 		if ($format == 1) {
 			return(number_format($value));

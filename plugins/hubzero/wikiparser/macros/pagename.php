@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class PageNameMacro extends WikiMacro 
+class PageNameMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = "Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) or title of the current page.";
 		$txt['html'] = "<p>Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) or title of the current page.</p>";
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
-		
-		switch (trim($et)) 
+
+		switch (trim($et))
 		{
 			case 'title':
 				$sql = "SELECT title FROM #__wiki_page WHERE pagename='".$this->pagename."' AND `group`='".$this->domain."' AND scope='".$this->scope."'";
@@ -54,7 +51,7 @@ class PageNameMacro extends WikiMacro
 				$this->_db->setQuery( $sql );
 				return stripslashes($this->_db->loadResult());
 			break;
-			
+
 			case 'alias':
 			default:
 				return $this->pagename;

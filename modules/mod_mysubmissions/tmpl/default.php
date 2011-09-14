@@ -35,8 +35,8 @@ if ($juser->get('guest')) {
 } else {
 	$rows = $modmysubmissions->rows;
 	$steps = $modmysubmissions->steps;
-	
-	$html = ''; 
+
+	$html = '';
 	if (!empty($rows)) {
 		$stepchecks = array();
 		$laststep = (count($steps) - 1);
@@ -52,7 +52,7 @@ if ($juser->get('guest')) {
 			$html .= "\t\t\t".'<td colspan="2">'.$row->typetitle.'</td>'."\n";
 			$html .= "\t\t".'</tr>'."\n";
 
-			for ($i=1, $n=count( $steps ); $i < $n; $i++) 
+			for ($i=1, $n=count( $steps ); $i < $n; $i++)
 			{
 				if ($i != $laststep) {
 					$check = 'step_'.$steps[$i].'_check';

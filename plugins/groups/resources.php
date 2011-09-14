@@ -29,21 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_resources' );
-
-//-----------
 
 class plgGroupsResources extends JPlugin
 {
 	private $_areas = null;
 	private $_cats  = null;
 	private $_total = null;
-	
-	//-----------
-	
+
 	public function plgGroupsResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,13 +45,11 @@ class plgGroupsResources extends JPlugin
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'groups', 'resources' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
 
-	//-----------
-	
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -65,38 +57,36 @@ class plgGroupsResources extends JPlugin
 			'title' => JText::_('PLG_GROUPS_RESOURCES'),
 			'default_access' => $this->_params->get('plugin_access','members')
 		);
-		
+
 		return $area;
 	}
-
-	//-----------
 
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
 		$active = 'resources';
-		
+
 		// The output array we're returning
 		$arr = array(
 			'html'=>''
 		);
-		
+
 		//get this area details
 		$this_area = $this->onGroupAreas();
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			if(!in_array($this_area['name'],$areas)) {
 				return;
 			}
 		}
-		
+
 		//set group members plugin access level
 		$group_plugin_acl = $access[$active];
-		
+
 		//Create user object
 		$juser =& JFactory::getUser();
-	
+
 		//get the group members
 		$members = $group->get('members');
 
@@ -105,7 +95,7 @@ class plgGroupsResources extends JPlugin
 			$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active))."</p>";
 			return $arr;
 		}
-		
+
 		//check if guest and force login if plugin access is registered or members
 		if ($juser->get('guest') && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) {
 			ximport('Hubzero_Module_Helper');
@@ -113,13 +103,13 @@ class plgGroupsResources extends JPlugin
 			$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 			return $arr;
 		}
-		
+
 		//check to see if user is member and plugin access requires members
 		if(!in_array($juser->get('id'),$members) && $group_plugin_acl == 'members' && $authorized != 'admin') {
 			$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))."</p>";
 			return $arr;
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
 
@@ -165,12 +155,12 @@ class plgGroupsResources extends JPlugin
 				$activeareas
 			);
 		$totals = array($ts);
-		
+
 		// Get the total results found (sum of all categories)
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($rareas as $c=>$t) 
+		foreach ($rareas as $c=>$t)
 		{
 			$cats[$i]['category'] = $c;
 
@@ -182,7 +172,7 @@ class plgGroupsResources extends JPlugin
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st) 
+				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
@@ -224,9 +214,9 @@ class plgGroupsResources extends JPlugin
 				$activeareas
 			);
 		$results = array($r);
-		
+
 		// Build the output
-		switch ($return) 
+		switch ($return)
 		{
 			case 'html':
 				// Instantiate a vew
@@ -238,7 +228,7 @@ class plgGroupsResources extends JPlugin
 						'name'=>'results'
 					)
 				);
-				
+
 				//push the stylesheet to the view
 				ximport('Hubzero_Document');
 				Hubzero_Document::addPluginStylesheet('groups', 'resources');
@@ -263,10 +253,10 @@ class plgGroupsResources extends JPlugin
 				// Return the output
 				$arr['html'] = $view->loadTemplate();
 			break;
-			
+
 			case 'metadata':
 				$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.'&gid='.$group->cn.'&active=resources').'">'.JText::sprintf('PLG_GROUPS_RESOURCES_NUMBER_RESOURCES',$total).'</a>'."\n";
-				
+
 				// Instantiate a vew
 				ximport('Hubzero_Plugin_View');
 				$view = new Hubzero_Plugin_View(
@@ -289,23 +279,21 @@ class plgGroupsResources extends JPlugin
 				$arr['dashboard'] = $view->loadTemplate();
 			break;
 		}
-		
+
 		// Return the output
 		return $arr;
 	}
 
-	//-----------
-	
-	public function onGroupDelete( $group ) 
+	public function onGroupDelete( $group )
 	{
 		// Get all the IDs for resources associated with this group
 		$ids = $this->getResourceIDs( $group->get('cn') );
-		
+
 		// Start the log text
 		$log = JText::_('PLG_GROUPS_RESOURCES_LOG').': ';
 		if (count($ids) > 0) {
 			$database =& JFactory::getDBO();
-			
+
 			// Loop through all the IDs for resources associated with this group
 			foreach ($ids as $id)
 			{
@@ -315,49 +303,43 @@ class plgGroupsResources extends JPlugin
 				$rr->group_owner = '';
 				$rr->published = 0;
 				$rr->store();
-				
+
 				// Add the page ID to the log
 				$log .= $id->id.' '."\n";
 			}
 		} else {
 			$log .= JText::_('PLG_GROUPS_RESOURCES_NONE')."\n";
 		}
-		
+
 		// Return the log
 		return $log;
 	}
 
-	//-----------
-	
-	public function onGroupDeleteCount( $group ) 
+	public function onGroupDeleteCount( $group )
 	{
 		return JText::_('PLG_GROUPS_RESOURCES_LOG').': '.count( $this->getResourceIDs( $group->get('cn') ));
 	}
 
-	//-----------
-	
 	private function getResourceIDs( $gid=NULL )
 	{
 		if (!$gid) {
 			return array();
 		}
 		$database =& JFactory::getDBO();
-		
+
 		$rr = new ResourcesResource( $database );
-		
+
 		$database->setQuery( "SELECT id FROM ".$rr->getTableName()." AS r WHERE r.group_owner='".$gid."'" );
 		return $database->loadObjectList();
 	}
-	
-	//-----------
-	
+
 	public function getResourcesAreas()
 	{
 		$areas = $this->_areas;
 		if (is_array($areas)) {
 			return $areas;
 		}
-		
+
 		$categories = $this->_cats;
 		if (!is_array($categories)) {
 			// Get categories
@@ -371,8 +353,8 @@ class plgGroupsResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$normalized_valid_chars = 'a-zA-Z0-9';
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -386,15 +368,13 @@ class plgGroupsResources extends JPlugin
 		$this->_areas = $areas;
 		return $areas;
 	}
-	
-	//-----------
-	
+
 	public function getResources( $group, $authorized, $limit=0, $limitstart=0, $sort='date', $access='all', $areas=null )
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			$ars = $this->getResourcesAreas();
-			if (!array_intersect( $areas, $ars ) 
+			if (!array_intersect( $areas, $ars )
 			&& !array_intersect( $areas, array_keys( $ars ) )
 			&& !array_intersect( $areas, array_keys( $ars['resources'] ) )) {
 				return array();
@@ -405,12 +385,12 @@ class plgGroupsResources extends JPlugin
 		if (!$group->get('cn')) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 
 		// Instantiate some needed objects
 		$rr = new ResourcesResource( $database );
-		
+
 		// Build query
 		$filters = array();
 		$filters['now'] = date( 'Y-m-d H:i:s', time() + 0 * 60 * 60 );
@@ -430,8 +410,8 @@ class plgGroupsResources extends JPlugin
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
 		$normalized_valid_chars = 'a-zA-Z0-9';
-		for ($i = 0; $i < count($categories); $i++) 
-		{	
+		for ($i = 0; $i < count($categories); $i++)
+		{
 			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
 			$normalized = strtolower($normalized);
 
@@ -443,7 +423,7 @@ class plgGroupsResources extends JPlugin
 			if ($this->_total != null) {
 				$total = 0;
 				$t = $this->_total;
-				foreach ($t as $l) 
+				foreach ($t as $l)
 				{
 					$total += $l;
 				}
@@ -451,11 +431,11 @@ class plgGroupsResources extends JPlugin
 			if ($total == 0) {
 				return array();
 			}
-			
+
 			$filters['select'] = 'records';
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
-			
+
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
 			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources') {
@@ -469,7 +449,7 @@ class plgGroupsResources extends JPlugin
 			// Did we get any results?
 			if ($rows) {
 				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					if ($row->alias) {
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias='.$row->alias);
@@ -487,11 +467,11 @@ class plgGroupsResources extends JPlugin
 			// Get a count
 			$counts = array();
 			$ares = $this->getResourcesAreas();
-			foreach ($ares as $area=>$val) 
+			foreach ($ares as $area=>$val)
 			{
 				if (is_array($val)) {
 					$i = 0;
-					foreach ($val as $a=>$t) 
+					foreach ($val as $a=>$t)
 					{
 						if ($limitstart == -1) {
 							if ($i == 0) {
@@ -502,7 +482,7 @@ class plgGroupsResources extends JPlugin
 							}
 						} else {
 							$filters['type'] = $cats[$a]['id'];
-						
+
 							// Execute a count query for each area/category
 							$database->setQuery( $rr->buildPluginQuery( $filters ) );
 							$counts[] = $database->loadResult();
@@ -517,42 +497,38 @@ class plgGroupsResources extends JPlugin
 			return $counts;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use
 	//----------------------------------------------------------
 
-	public function documents() 
+	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 	 	$document =& JFactory::getDocument();
 		$document->addScript('components'.DS.'com_resources'.DS.'resources.js');
-		
+
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_resources');
 
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 	}
-	
-	//-----------
-	
+
 	/*public function before()
 	{
 		// ...
 	}*/
-	
-	//-----------
 
-	public function out( $row, $authorized=false ) 
+	public function out( $row, $authorized=false )
 	{
 		$database =& JFactory::getDBO();
-		
+
 		// Instantiate a helper object
 		$RE = new ResourcesHelper($row->id, $database);
 		$RE->getContributors();
-		
+
 		// Get the component params and merge with resource params
 		$config =& JComponentHelper::getParams( 'com_resources' );
 		$rparams = new JParameter( $row->params );
@@ -560,7 +536,7 @@ class plgGroupsResources extends JPlugin
 		$params->merge( $rparams );
 
 		// Set the display date
-		switch ($params->get('show_date')) 
+		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
 			case 1: $thedate = JHTML::_('date', $row->created, '%d %b %Y');    break;
@@ -594,20 +570,20 @@ class plgGroupsResources extends JPlugin
 			$html .= 'protected ';
 		}*/
 		$html .= 'title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
-			
+
 		if ($params->get('show_ranking')) {
 			$RE->getCitationsCount();
 			$RE->getLastCitationDate();
-			
+
 			if ($row->category == 7) {
 				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $RE->citationsCount, $RE->lastCitationDate);
 			} else {
 				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $RE->citationsCount, $RE->lastCitationDate);
 			}
 			$statshtml = $stats->display();
-			
+
 			$row->ranking = round($row->ranking, 1);
-			
+
 			$html .= "\t\t".'<div class="metadata">'."\n";
 			$r = (10*$row->ranking);
 			if (intval($r) < 10) {
@@ -624,7 +600,7 @@ class plgGroupsResources extends JPlugin
 			$html .= "\t\t\t".'</dl>'."\n";
 			$html .= "\t\t".'</div>'."\n";
 		} elseif ($params->get('show_rating')) {
-			switch ($row->rating) 
+			switch ($row->rating)
 			{
 				case 0.5: $class = ' half-stars';      break;
 				case 1:   $class = ' one-stars';       break;
@@ -639,7 +615,7 @@ class plgGroupsResources extends JPlugin
 				case 0:
 				default:  $class = ' no-stars';      break;
 			}
-			
+
 			$html .= "\t\t".'<div class="metadata">'."\n";
 			$html .= "\t\t\t".'<p class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'."\n";
 			$html .= "\t\t".'</div>'."\n";
@@ -660,8 +636,6 @@ class plgGroupsResources extends JPlugin
 		return $html;
 	}
 
-	//-----------
-	
 	/*public function after()
 	{
 		// ...

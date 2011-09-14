@@ -35,21 +35,18 @@ class modNotices
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,30 +55,28 @@ class modNotices
 	}
 
 	//-----------
-
 	private function _countdown($year, $month, $day, $hour, $minute)
 	{
 		$config = JFactory::getConfig();
 
 		// make a unix timestamp for the given date
 		$the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year, -1);
-		
+
 		// get current unix timestamp
 		$now = time() + ($config->getValue('config.offset') * 60 * 60);
-	
+
 		$difference = $the_countdown_date - $now;
 		if ($difference < 0) $difference = 0;
-		
+
 		$days_left = floor($difference/60/60/24);
 		$hours_left = floor(($difference - $days_left*60*60*24)/60/60);
 		$minutes_left = floor(($difference - $days_left*60*60*24 - $hours_left*60*60)/60);
-  
+
 		$left = array($days_left, $hours_left, $minutes_left);
 		return $left;
 	}
 
 	//-----------
-
 	private function _mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -89,9 +84,8 @@ class modNotices
 		}
 		return $stime;
 	}
-	
+
 	//-----------
-	
 	private function _convert($stime)
 	{
 		$t = array();
@@ -105,7 +99,6 @@ class modNotices
 	}
 
 	//-----------
-
 	private function _timeto($stime)
 	{
 		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0) {
@@ -120,14 +113,13 @@ class modNotices
 	}
 
 	//-----------
-	
 	public function display()
 	{
 		$database =& JFactory::getDBO();
 
 		// Set today's time and date
 		$now = date( 'Y-m-d H:i:s', time() );
-		
+
 		// Get some initial parameters
 		$params = $this->params;
 		$start = $params->get( 'start_publishing' );
@@ -193,7 +185,7 @@ class modNotices
 			$message = str_replace('<notice:countdowntostart>', $time_cd_tostart, $message);
 			$message = str_replace('<notice:countdowntoreturn>', $time_cd_toreturn, $message);
 			$message = str_replace('<notice:timezone>', $timezone, $message);
-			
+
 			$this->message = $message;
 		}
 	}

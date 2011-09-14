@@ -25,11 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-class SliderMacro extends WikiMacro 
+class SliderMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = "Creates a slider with the images passed in.";
@@ -38,48 +36,46 @@ class SliderMacro extends WikiMacro
 						<ul>
 							<li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
 						</ul>';
-		
+
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		//get the args passed in
 		$content = $this->args;
-		
+
 		// args will be null if the macro is called without parenthesis.
 		if (!$content) {
 			return;
 		}
-		
+
 		//generate a unique id for the slider
 		$id = uniqid();
-		
+
 		//get the group
 		$gid = JRequest::getVar('gid');
-		
+
 		//import the Hubzero Group Library
 		ximport('Hubzero_Group');
-		
+
 		//get the group object based on gid
 		$group = Hubzero_Group::getInstance($gid);
-		
+
 		//check to make sure we have a valid group
 		if(!is_object($group)) {
 			return;
 		}
-		
+
 		//define a base url
 		$base_url = DS . "site" . DS . "groups" . DS . $group->get('gidNumber');
-		
+
 		//seperate image list into array of images
 		$slides = explode(",",$content);
-		
+
 		//array for checked slides
 		$final_slides = array();
-		
+
 		//check each passed in slide
 		foreach($slides as $slide) {
 			//check to see if image is external
@@ -95,7 +91,7 @@ class SliderMacro extends WikiMacro
 				}
 			}
 		}
-		
+
 		$html = "";
 		$html .= "<div class=\"wiki_slider\">";
 			$html .= "<div id=\"slider_{$id}\">";
@@ -105,8 +101,7 @@ class SliderMacro extends WikiMacro
 			$html .= "</div>";
 			$html .= "<div class=\"wiki_slider_pager\" id=\"slider_{$id}_pager\"></div>";
 		$html .= "</div>";
-		
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('plugins/hubzero/wikiparser/macros/macro-assets/slider/slider.css');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js');
@@ -122,9 +117,7 @@ class SliderMacro extends WikiMacro
 				});
 			});
 		');
-		
-		
-		
+
 		return $html;
 	}
 }

@@ -35,21 +35,18 @@ class modWishVoters
 	private $params;
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
-
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -58,7 +55,6 @@ class modWishVoters
 	}
 
 	//-----------
-	
 	private function _list( $rows, $limit)
 	{
 		if (count($rows) <= 0) {
@@ -76,7 +72,7 @@ class modWishVoters
 							$name = $auser->get('name');
 							$login = $auser->get('username');
 					}
-					
+
 					$html .= "\t\t".'<li>'."\n";
 					$html .= "\t\t".'<span class="lnum">'.$k.'.</span>'."\n";
 					$html .= "\t\t\t".$name.' <span class="wlogin">('.$login.')</span>'."\n";
@@ -87,22 +83,21 @@ class modWishVoters
 			}
 			$html .= "\t".'</ul>'."\n";
 		}
-		
+
 		return $html;
 	}
 
 	//-----------
-	
-	public function display() 
+	public function display()
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
-		
+
 		$params =& $this->params;
 		$moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 10;
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php' );
@@ -112,29 +107,26 @@ class modWishVoters
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php' );
 		$objWishlist = new Wishlist ( $database );
 		//$objOwner = new WishlistOwner( $database );
-		
 		// which list is being viewed?
 		$listid 	= JRequest::getInt( 'id', 0 );
 		$refid		= JRequest::getInt( 'rid', 0 );
 		$category 	= JRequest::getVar( 'category', '' );
-		
+
 		// figure list id
 		if ($category && $refid) {
 			$listid = $objWishlist->get_wishlistID($refid, $category);
 		}
-					
+
 		// cannot rank a wish if list/wish is not found
 		if (!$listid) {
 			echo JText::_('Cannot locate a wish or a wish list');
 			return;
-		}	
-		
+		}
+
 		//$wparams =& JComponentHelper::getParams( 'com_wishlist' );
 		//$admingroup = $wparams->get('group');
-		
 		//$wishlist = $objWishlist->get_wishlist($listid);			
 		//$owners = $objOwner->get_owners($listid, $admingroup, $wishlist);
-
 		$database->setQuery( "SELECT DISTINCT v.userid, SUM(v.importance) as imp, COUNT(v.wishid) as times "
 			. " FROM #__wishlist_vote as v JOIN #__wishlist_item as w ON w.id=v.wishid WHERE w.wishlist='".$listid."'"
 			. " GROUP BY v.userid ORDER BY times DESC, v.voted DESC ");
@@ -145,18 +137,18 @@ class modWishVoters
 			echo $database->stderr();
 			return false;
 		}
-		
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_wishvoters');
-		
+
 		// Build the HTML
 		$html  = '<div';
 		$html .= ($moduleclass) ? ' class="'.$moduleclass.'">'."\n" : '>'."\n";
 		$html .= "\t".'<h3>Giving the Most Input</h3>'."\n";
 		$html .= $this->_list( $rows, $limit);
 		$html .= '</div>'."\n";
-		
+
 		// Output the HTML
 		echo $html;
 	}

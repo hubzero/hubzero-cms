@@ -54,27 +54,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 //                   task which will display details of the event.
 //
 // displayYear = 1 (default is 0) display year when displaying dates in the non-customized event's listing.
-
 class modEventsLatest
 {
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
-
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -83,11 +79,10 @@ class modEventsLatest
 	}
 
 	//-----------
-
 	public function display()
 	{
 		// Check the events component
-		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' ) ) { 
+		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' ) ) {
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' );
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'date.php');
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'repeat.php');
@@ -104,7 +99,7 @@ class modEventsLatest
 
 	//-----------
 	// This custom sort compare function compares the start times of events that are refernced by the a & b vars
-	public function cmpByStartTime(&$a, &$b) 
+	public function cmpByStartTime(&$a, &$b)
 	{
 		list($date, $aStrtTime) = split(' ',$a->publish_up);
 		list($date, $bStrtTime) = split(' ',$b->publish_up);
@@ -117,7 +112,7 @@ class modEventsLatest
 	// except no actual output is performed.  Rather this function returns an array of references to
 	// $rows within the $rows (ie events) input array which occur on the input '$date'.  This
 	// is determined by the complicated com_event algorithm according to the event's repeatting type.
-	private function _getEventsByDate(&$rows, $date, &$seenThisEvent, $noRepeats) 
+	private function _getEventsByDate(&$rows, $date, &$seenThisEvent, $noRepeats)
 	{
     	$num_events = count($rows);
     	$new_rows_events = array();
@@ -129,7 +124,7 @@ class modEventsLatest
 	    	$month = date('m', $date);
 	    	$day = date('d', $date);
 
-			for ($r = 0; $r < count($rows); $r++) 
+			for ($r = 0; $r < count($rows); $r++)
 			{
 				$row = $rows[$r];
 				if (isset($seenThisEvent[$row->id]) && $noRepeats) continue;
@@ -146,11 +141,10 @@ class modEventsLatest
 	}
 
 	//-----------
-
 	private function _displayLatestEvents()
 	{
 		$database =& JFactory::getDBO();
-		
+
 		// Get the user GID (used in some queries)
 		$juser =& JFactory::getUser();
 		$gid = $juser->get('gid');
@@ -227,7 +221,7 @@ class modEventsLatest
 				break;
 		}
 
-		switch ($announcements) 
+		switch ($announcements)
 		{
 			case 2:
 				$ancmnt = "AND #__events.announcement='1'";

@@ -35,21 +35,18 @@ class modMySubmissions
 	private $attributes = array();
 
 	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
-
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
+
 	//-----------
-	
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -60,21 +57,18 @@ class modMySubmissions
 	//----------------------------------------------------------
 	// Checks
 	//----------------------------------------------------------
-	
 	public function step_type_check( $id )
 	{
 		// do nothing
 	}
-	
+
 	//-----------
-	
 	public function step_compose_check( $id )
 	{
 		return $id;
 	}
 
 	//-----------
-	
 	public function step_attach_check( $id )
 	{
 		if ($id) {
@@ -88,7 +82,6 @@ class modMySubmissions
 	}
 
 	//-----------
-	
 	public function step_authors_check( $id )
 	{
 		if ($id) {
@@ -101,9 +94,8 @@ class modMySubmissions
 
 		return $contributors;
 	}
-	
+
 	//-----------
-	
 	public function step_tags_check( $id )
 	{
 		$database =& JFactory::getDBO();
@@ -117,40 +109,38 @@ class modMySubmissions
 			return 0;
 		}
 	}
-	
-	//-----------
 
-	public function step_review_check( $id ) 
+	//-----------
+	public function step_review_check( $id )
 	{
 		return 0;
 	}
 
 	//-----------
-
 	public function display()
 	{
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
 
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		$rr = new ResourcesResource( $database );
 		$rt = new ResourcesType( $database );
-		
+
 		$query = "SELECT r.*, t.type AS typetitle 
 			FROM ".$rr->getTableName()." AS r 
 			LEFT JOIN ".$rt->getTableName()." AS t ON r.type=t.id 
 			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=".$juser->get('id');
 	    $database->setQuery( $query );
 	    $this->rows = $database->loadObjectList();
-	
+
 		if (!empty($this->rows)) {
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'assoc.php');
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'contributor.php');

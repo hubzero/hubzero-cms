@@ -53,18 +53,16 @@ class Hubzero_Session_Helper
 	public static function purge()
 	{
 		$db = JFactory::getDBO();
-		
+
 		$query = 'DELETE LOW_PRIORITY xs FROM jos_xsession AS xs LEFT OUTER JOIN jos_session AS s ON s.session_id = xs.session_id WHERE s.session_id IS NULL;';
 		$db->setQuery($query);
 		$db->query();
 	}
-	
-	//-----------
 
 	public static function set_ip($session_id, $ip)
 	{
 		$db = JFactory::getDBO();
-		
+
 		$query = 'INSERT INTO jos_xsession (session_id,ip) VALUES (' . $db->Quote($session_id) . ',' . $db->Quote($ip) . ') ON DUPLICATE KEY UPDATE ip=' . $db->Quote($ip) . ';';
 		$db->setQuery($query);
 		$db->query();
@@ -72,7 +70,7 @@ class Hubzero_Session_Helper
 		$db->setQuery($query);
 		$db->query();
 	}
-}	
+}
 
 /*  Rough drafts at a couple option to flesh out a proper Hubzero_Session class. Unneeded in core at this time. */
 /*

@@ -29,34 +29,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class DivMacro extends WikiMacro 
+class DivMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = "Allows content to be wrapped in a `div` tag. This macro must be used twice: `Div(start)` to indicate where to create the opening `div` tag and `Div(end)` to indicate where to close the resulting `div` tag. Attributes may be applied by separating name/value pairs with a comma. Example: Div(start, class=myclass)";
 		$txt['html'] = "<p>Allows content to be wrapped in a <code>&lt;div&gt;</code> tag. This macro must be used twice: <code>[[Div(start)]]</code> to indicate where to create the opening <code>&lt;div&gt;</code> tag and <code>[[Div(end)]]</code> to indicate where to close the resulting <code>&lt;div&gt;</code> tag. Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Div(start, class=myclass)]]</code>";
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
-		
+
 		if (!$et) {
 			return '';
 		}
-		
+
 		$attribs = explode(',', $et);
 		$text = array_shift($attribs);
-		
+
 		if (trim($text) == 'start') {
 			$atts = array();
 			if (!empty($attribs) && count($attribs) > 0) {
-				foreach ($attribs as $a) 
+				foreach ($attribs as $a)
 				{
 					$a = split('=',$a);
 					$key = $a[0];
@@ -65,13 +62,13 @@ class DivMacro extends WikiMacro
 					$atts[] = $key.'="'.$val.'"';
 				}
 			}
-			
+
 			$div  = '<div';
 			$div .= (!empty($atts)) ? ' '.implode(' ',$atts).'>' : '>';
 		} elseif (trim($text) == 'end') {
 			$div  = '</div>';
 		}
-		
+
 		return $div;
 	}
 }

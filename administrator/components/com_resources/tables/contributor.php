@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourcesContributor extends JTable 
+class ResourcesContributor extends JTable
 {
 	var $subtable = NULL;  // @var varchar(50) Primary Key
 	var $subid    = NULL;  // @var int(11) Primary Key
@@ -42,20 +41,18 @@ class ResourcesContributor extends JTable
 
 	//-----------
 
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__author_assoc', 'authorid', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (!$this->authorid) {
 			$this->setError( JText::_('Must have an author ID.') );
 			return false;
 		}
-		
+
 		if (!$this->subid) {
 			$this->setError( JText::_('Must have an item ID.') );
 			return false;
@@ -63,10 +60,8 @@ class ResourcesContributor extends JTable
 
 		return true;
 	}
-	
-	//-----------
-	
-	public function loadAssociation( $authorid=NULL, $subid=NULL, $subtable='' ) 
+
+	public function loadAssociation( $authorid=NULL, $subid=NULL, $subtable='' )
 	{
 		if (!$authorid) {
 			$authorid = $this->authorid;
@@ -80,7 +75,7 @@ class ResourcesContributor extends JTable
 		if (!$subtable) {
 			$subtable = $this->subtable;
 		}
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE subid=".$subid." AND subtable='$subtable' AND authorid=".$authorid );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -89,15 +84,13 @@ class ResourcesContributor extends JTable
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	public function deleteAssociations( $id=NULL ) 
+
+	public function deleteAssociations( $id=NULL )
 	{
 		if (!$id) {
 			$id = $this->authorid;
 		}
-		
+
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE authorid=".$id );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
@@ -105,10 +98,8 @@ class ResourcesContributor extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function deleteAssociation( $authorid=NULL, $subid=NULL, $subtable='' ) 
+
+	public function deleteAssociation( $authorid=NULL, $subid=NULL, $subtable='' )
 	{
 		if (!$authorid) {
 			$authorid = $this->authorid;
@@ -122,9 +113,9 @@ class ResourcesContributor extends JTable
 		if (!$subtable) {
 			$subtable = $this->subtable;
 		}
-		
+
 		$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=".$subid." AND authorid=".$authorid;
-		
+
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
@@ -132,10 +123,8 @@ class ResourcesContributor extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function createAssociation() 
+
+	public function createAssociation()
 	{
 		//$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering)";
 		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering, '$this->role', '$this->name', '$this->organization')";
@@ -146,10 +135,8 @@ class ResourcesContributor extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function updateAssociation() 
+
+	public function updateAssociation()
 	{
 		//$query = "UPDATE $this->_tbl SET ordering=$this->ordering WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
 		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, role='$this->role', name='$this->name', organization='$this->organization' WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
@@ -160,10 +147,8 @@ class ResourcesContributor extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function getCount( $subid=NULL, $subtable=null ) 
+
+	public function getCount( $subid=NULL, $subtable=null )
 	{
 		if (!$subid) {
 			$subid = $this->subid;
@@ -180,10 +165,8 @@ class ResourcesContributor extends JTable
 		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable'" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getLastOrder( $subid=NULL, $subtable=null ) 
+
+	public function getLastOrder( $subid=NULL, $subtable=null )
 	{
 		if (!$subid) {
 			$subid = $this->subid;
@@ -200,17 +183,15 @@ class ResourcesContributor extends JTable
 		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable' ORDER BY ordering DESC LIMIT 1" );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getNeighbor( $move ) 
+
+	public function getNeighbor( $move )
 	{
-		switch ($move) 
+		switch ($move)
 		{
 			case 'orderup':
 				$sql = "SELECT * FROM $this->_tbl WHERE subid=$this->subid AND subtable='$this->subtable' AND ordering < $this->ordering ORDER BY ordering DESC LIMIT 1";
 				break;
-			
+
 			case 'orderdown':
 				$sql = "SELECT * FROM $this->_tbl WHERE subid=$this->subid AND subtable='$this->subtable' AND ordering > $this->ordering ORDER BY ordering LIMIT 1";
 				break;

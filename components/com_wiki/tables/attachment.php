@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiPageAttachment extends JTable 
+class WikiPageAttachment extends JTable
 {
 	var $id          = NULL;  // @var int(11) Primary key
 	var $pageid      = NULL;  // @var int(11)
@@ -38,24 +37,20 @@ class WikiPageAttachment extends JTable
 	var $description = NULL;  // @var text
 	var $created     = NULL;  // @var datetime(0000-00-00 00:00:00)
 	var $created_by  = NULL;  // @var int(11)
-	
+
 	//-----------
-	
-	public function __construct( &$db ) 
+
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_attachments', 'id', $db );
 	}
-	
-	//-----------
-	
+
 	public function getID($name, $listdir)
 	{
 		$this->_db->setQuery( "SELECT id, description FROM $this->_tbl WHERE filename='".$name."' AND pageid=".$listdir );
 		return $this->_db->loadRow();
 	}
-	
-	//-----------
-	
+
 	public function deleteFile($filename, $pageid)
 	{
 		if (!$filename) {
@@ -70,27 +65,23 @@ class WikiPageAttachment extends JTable
 			die( $err );
 		}
 	}
-	
-	//-----------
-	
+
 	public function parse($text)
 	{
 		//$f = '/\{file#[0-9]*\}/sU';
 		$f = '/\[\[file#[0-9]*\]\]/sU';
 		return preg_replace_callback($f, array(&$this,'getAttachment'), $text);
 	}
-	
-	//-----------
-	
+
 	public function getAttachment($matches)
 	{
 		$match  = $matches[0];
 		$tokens = split('#',$match);
 		$id = intval(end($tokens));
-		
+
 		$this->_db->setQuery( "SELECT filename, description FROM $this->_tbl WHERE id=".$id );
 		$a = $this->_db->loadRow();
-		
+
 		if (is_file(JPATH_ROOT.$this->path.DS.$this->pageid.DS.$a[0])) {
 			if (eregi( "bmp|gif|jpg|jpe|jpeg|tif|tiff|png", $a[0] )) {
 				return '<img src="'.$this->path.DS.$this->pageid.DS.$a[0].'" alt="'.$a[1].'" />';
@@ -104,10 +95,8 @@ class WikiPageAttachment extends JTable
 			return '[file #'.$id.' not found]';
 		}
 	}
-	
-	//-----------
-	
-	public function setPageID( $oldid=null, $newid=null ) 
+
+	public function setPageID( $oldid=null, $newid=null )
 	{
 		if (!$oldid) {
 			return false;

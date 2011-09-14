@@ -41,12 +41,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<span><?php echo JText::_('COM_RESOURCES_TYPE'); ?>:</span> 
 				<select name="type">
 <?php 
-foreach ($this->types as $type) 
+foreach ($this->types as $type)
 {
 ?>
 					<option value="<?php echo $type->title; ?>"<?php if ($type->id == $this->filters['type']) { echo ' selected="selected"'; } ?>><?php echo $type->type; ?></option>
 <?php 
-} 
+}
 ?>
 				</select>
 			</label>
@@ -91,7 +91,7 @@ $database =& JFactory::getDBO();
 
 if ($this->supportedtag) {
 	include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-	
+
 	$tag = new TagsTag( $database );
 	$tag->loadTag($this->supportedtag);
 

@@ -29,27 +29,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourceMacro extends WikiMacro 
+class ResourceMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'This macro will insert a linked title to a resource. It can be passed wither an ID or alias.';
 		$txt['html'] = '<p>This macro will insert a linked title to a resource. It can be passed wither an ID or alias.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
-		
+
 		if (!$et) {
 			return '';
 		}
-		
+
 		$p = split(',', $et);
 		$resource = array_shift($p);
 
@@ -57,10 +54,10 @@ class ResourceMacro extends WikiMacro
 		$scrnshts = false;
 		$num = 1;
 		$p = explode(' ',end($p));
-		foreach ($p as $a) 
+		foreach ($p as $a)
 		{
 			$a = trim($a);
-			
+
 			if (substr($a,0,11) == 'screenshots') {
 				$bits = explode('=', $a);
 				$num = intval(end($bits));
@@ -79,7 +76,7 @@ class ResourceMacro extends WikiMacro
 			// No, get resource by alias
 			$sql = "SELECT id, title, alias FROM #__resources WHERE alias='".trim($resource)."'";
 		}
-	
+
 		// Perform query
 		$this->_db->setQuery( $sql );
 		$r = $this->_db->loadRow();
@@ -89,7 +86,7 @@ class ResourceMacro extends WikiMacro
 			if ($scrnshts && $r[2]) {
 				return $this->screenshots( $r[2], $num );
 			}
-			
+
 			// Build and return the link
 			if ($r[2]) {
 				$link = 'index.php?option=com_resources&amp;alias='.$r[2];
@@ -108,22 +105,20 @@ class ResourceMacro extends WikiMacro
 			return '(Resource('.$et.') failed)';
 		}
 	}
-	
-	//-----------
-	
+
 	public function screenshots( $alias, $num=1 )
 	{
 		$config =& JComponentHelper::getParams( 'com_resources' );
 		$path = $config->get('toolpath');
-		
+
 		$alias = strtolower($alias);
 		$d = @dir(JPATH_ROOT.$path.DS.$alias);
 		$images = array();
 
 		if ($d) {
-			while (false !== ($entry = $d->read())) 
+			while (false !== ($entry = $d->read()))
 			{
-				$img_file = $entry; 
+				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$path.DS.$alias.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png|swf", $img_file )) {
 						$images[] = $img_file;
@@ -133,19 +128,19 @@ class ResourceMacro extends WikiMacro
 			$d->close();
 		}
 		sort($images);
-		
+
 		$html = '';
 
 		if (count($images) > 0) {
 			$k = 0;
-			for ($i=0, $n=count($images); $i < $n; $i++) 
+			for ($i=0, $n=count($images); $i < $n; $i++)
 			{
 				$tn = $this->thumbnail($images[$i]);
 				$type = explode('.',$images[$i]);
 
 				if (is_file(JPATH_ROOT.$path.DS.$alias.DS.$tn) && $k < $num) {
 					$k++;
-					
+
 					$html .= '<a rel="lightbox" href="'.$path.DS.$alias.DS.$images[$i].'" title="Screenshot #'.$k.'">';
 					$html .= '<img src="'.$path.DS.$alias.DS.$tn.'" alt="Screenshot #'.$k.'" /></a>'.n;
 				}
@@ -154,9 +149,7 @@ class ResourceMacro extends WikiMacro
 
 		return $html;
 	}
-	
-	//-----------
-	
+
 	public function thumbnail($pic)
 	{
 		$pic = explode('.',$pic);

@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class CitationsSecondary extends JTable 
+class CitationsSecondary extends JTable
 {
 	var $id            = NULL;  // @var int(11) Primary key
 	var $cid           = NULL;  // @var int(11)
 	var $sec_cits_cnt  = NULL;  // @var int(11)
 	var $search_string = NULL;  // @var tinytext()
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__citations_secondary', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->cid ) == '') {
 			$this->setError( JText::_('SECONDARY_MUST_HAVE_CITATION_ID') );
@@ -58,10 +55,8 @@ class CitationsSecondary extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters ) 
+
+	public function buildQuery( $filters )
 	{
 		$query = "";
 		$ands = array();
@@ -81,26 +76,22 @@ class CitationsSecondary extends JTable
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
-		
+
 		return $query;
 	}
-	
-	//-----------
-	
+
 	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*) FROM $this->_tbl AS r" . $this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array() ) 
+
+	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT * FROM $this->_tbl AS r" . $this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

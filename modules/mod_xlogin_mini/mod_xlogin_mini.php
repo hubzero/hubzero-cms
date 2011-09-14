@@ -29,8 +29,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 

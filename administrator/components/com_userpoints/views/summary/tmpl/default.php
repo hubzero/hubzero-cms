@@ -76,14 +76,14 @@ JToolBarHelper::preferences('com_userpoints', '550');
 			<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 	$wuser =& Hubzero_User_Profile::getInstance( $row->uid );
 	if (is_object($wuser)) {
 		$name = $wuser->get('name');
 	} else {
-		$name = JText::_('UNKNOWN'); 
+		$name = JText::_('UNKNOWN');
 	}
 ?>
 				<tr class="<?php echo "row$k"; ?>">
@@ -126,14 +126,14 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			<tbody>
 <?php
 
-foreach ($this->stats as $stat) 
+foreach ($this->stats as $stat)
 {
 	if (isset($stat['class'])) {
-		switch ( $stat['class'] ) 
+		switch ( $stat['class'] )
 		{
-			case 'spendtotal':     
-				$class = ' style="color:red; background-color:#f2ede9;border-top:2px solid #ccc;"';   	
-			break;						
+			case 'spendtotal':
+				$class = ' style="color:red; background-color:#f2ede9;border-top:2px solid #ccc;"';
+			break;
 			case 'earntotal':
 				$class = ' style="color:green; background-color:#ecf9e9;"';
 			break;

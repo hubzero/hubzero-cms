@@ -48,7 +48,7 @@ function RegisterBuildRoute(&$query)
 function RegisterParseRoute($segments)
 {
 	$vars  = array();
-	
+
 	if (empty($segments)) {
 		return $vars;
 	}

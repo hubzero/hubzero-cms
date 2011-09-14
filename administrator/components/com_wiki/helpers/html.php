@@ -29,15 +29,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class WikiHtml 
+class WikiHtml
 {
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
-
-	//-----------
 
 	public function formSelect($name, $array, $value, $class='', $id)
 	{
@@ -46,7 +43,7 @@ class WikiHtml
 		$out .= ' <option value="0"';
 		$out .= ($value == 0 || $value == '') ? ' selected="selected"' : '';
 		$out .= '>'. JText::_('NONE') .'</option>'."\n";
-		foreach ($array as $anode) 
+		foreach ($array as $anode)
 		{
 			$selected = ($anode->id == $value || $anode->title == $value)
 					  ? ' selected="selected"'
@@ -56,14 +53,12 @@ class WikiHtml
 		$out .= '</select>'."\n";
 		return $out;
 	}
-	
-	//-----------
-	
-	public function sectionSelect( $categories, $val, $name ) 
+
+	public function sectionSelect( $categories, $val, $name )
 	{
 		$out  = '<select name="'.$name.'">'."\n";
 		$out .= "\t".'<option value="">'.JText::_('SELECT_CATEGORY') .'</option>'."\n";
-		foreach ($categories as $category) 
+		foreach ($categories as $category)
 		{
 			$selected = ($category->id == $val)
 					  ? ' selected="selected"'

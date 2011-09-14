@@ -35,7 +35,7 @@ if ($this->id == $this->item->id) {
 		case 'like':
 			$lcls = ' chosen';
 		break;
-	
+
 		case 'no':
 		case 'negative':
 		case 'dislike':

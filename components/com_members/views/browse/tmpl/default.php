@@ -67,7 +67,7 @@ $juser =& JFactory::getUser();
 			
 <?php 
 $qs = array();
-foreach ($this->filters as $f=>$v) 
+foreach ($this->filters as $f=>$v)
 {
 	$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'start') ? $f.'='.$v : '';
 }
@@ -87,7 +87,7 @@ foreach ($letters as $letter)
 {
 	$url  = 'index.php?option='.$this->option.'&index='.strtolower($letter);
 	$url .= ($qs != '') ? '&'.$qs : '';
-	
+
 	$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
 	if ($this->filters['index'] == strtolower($letter)) {
 		$html .= ' class="active-index"';
@@ -119,9 +119,9 @@ foreach ($letters as $letter)
 						}
 						?>
 						<?php if ($this->filters['show'] != 'contributors') {
-							echo JText::_('All Members'); 
+							echo JText::_('All Members');
 						} else {
-							echo JText::_('Contributors'); 
+							echo JText::_('Contributors');
 						}?> 
 						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
@@ -141,16 +141,16 @@ if (count($this->rows) > 0) {
 	// Get plugins
 	JPluginHelper::importPlugin( 'members' );
 	$dispatcher =& JDispatcher::getInstance();
-	
+
 	$areas = array();
 	$activeareas = $dispatcher->trigger( 'onMembersContributionsAreas', array($this->authorized) );
-	foreach ($activeareas as $area) 
+	foreach ($activeareas as $area)
 	{
 		$areas = array_merge( $areas, $area );
 	}
-	
+
 	$cols = 2;
-	
+
 	$cls = ''; //'even';
 
 	// Default thumbnail
@@ -170,11 +170,11 @@ if (count($this->rows) > 0) {
 
 	// User messaging
 	$messaging = false;
-	if ($this->config->get('user_messaging') > 0 
+	if ($this->config->get('user_messaging') > 0
 	 && !$juser->get('guest')) {
 		ximport('Hubzero_User_Helper');
 
-		switch ($this->config->get('user_messaging')) 
+		switch ($this->config->get('user_messaging'))
 		{
 			case 1:
 				// Get the groups the visiting user
@@ -205,23 +205,23 @@ if (count($this->rows) > 0) {
 		if ($row->public != 1) {
 			$cls = 'private';
 		}
-		
+
 		if ($row->uidNumber < 0) {
 			$id = 'n' . -$row->uidNumber;
 		} else {
 			$id = $row->uidNumber;
 		}
-		
+
 		if ($row->uidNumber == $juser->get('id')) {
 			$cls .= ($cls) ? ' me' : 'me';
 		}
-		
+
 		// User name
 		$row->name = stripslashes($row->name);
 		$row->surname = stripslashes($row->surname);
 		$row->givenName = stripslashes($row->givenName);
 		$row->middelName = stripslashes($row->middleName);
-		
+
 		if (!$row->surname) {
 			$bits = explode(' ', $row->name);
 			$row->surname = array_pop($bits);
@@ -232,7 +232,7 @@ if (count($this->rows) > 0) {
 				$row->middleName = implode(' ',$bits);
 			}
 		}
-		
+
 		$name = ($row->surname) ? stripslashes($row->surname) : '';
 		if ($row->givenName) {
 			$name .= ($row->surname) ? ', ' : '';
@@ -242,7 +242,7 @@ if (count($this->rows) > 0) {
 		if (!trim($name)) {
 			$name = 'Unknown ('.$row->username.')';
 		}
-		
+
 		// User picture
 		$uthumb = '';
 		if ($row->picture) {
@@ -255,11 +255,11 @@ if (count($this->rows) > 0) {
 		} else {
 			$p = $dfthumb;
 		}
-		
+
 		// User messaging
 		$messageuser = false;
 		if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) {
-			switch ($this->config->get('user_messaging')) 
+			switch ($this->config->get('user_messaging'))
 			{
 				case 1:
 					// Get the groups of the profile
@@ -329,7 +329,7 @@ if (count($this->rows) > 0) {
 	$pn = $this->pageNav->getListFooter();
 	$pn = str_replace('/?/&amp;','/?',$pn);
 	$f = '';
-	foreach ($this->filters as $k=>$v) 
+	foreach ($this->filters as $k=>$v)
 	{
 		$f .= ($v && $k != 'authorized' && $k != 'limit' && $k != 'start') ? $k.'='.$v.'&amp;' : '';
 	}

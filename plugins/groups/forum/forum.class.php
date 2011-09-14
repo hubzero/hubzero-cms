@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // XForum database class
 //----------------------------------------------------------
 
-class XForum extends JTable 
+class XForum extends JTable
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $topic      = NULL;  // @var varchar(255)
@@ -49,17 +49,15 @@ class XForum extends JTable
 	var $group      = NULL;  // @var int(11)
 	var $access     = NULL;  // @var tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
 	var $anonymous  = NULL;  // @var tinyint(2)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xforum', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->comment ) == '' or trim( $this->comment ) == JText::_('Enter your comments...')) {
 			$this->setError( JText::_('Please provide a comment') );
@@ -67,10 +65,8 @@ class XForum extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	
-	public function buildQuery( $filters=array() ) 
+
+	public function buildQuery( $filters=array() )
 	{
 		$query  = "FROM $this->_tbl AS c WHERE ";
 		if (isset($filters['parent']) && $filters['parent'] != 0) {
@@ -99,25 +95,21 @@ class XForum extends JTable
 					$query .= " ORDER BY c.sticky DESC, lastpost DESC, c.created DESC";
 				}
 			}
-		}	
+		}
 		return $query;
 	}
-	
-	//-----------
-	
-	public function getCount( $filters=array() ) 
+
+	public function getCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
-		
+
 		$query = "SELECT COUNT(*) ".$this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
-	//-----------
-	
-	public function getRecords( $filters=array() ) 
+
+	public function getRecords( $filters=array() )
 	{
 		$query = "SELECT c.*";
 		if (!isset($filters['parent']) || $filters['parent'] == 0) {
@@ -125,17 +117,15 @@ class XForum extends JTable
 			$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS lastpost ";
 		}
 		$query .= $this->buildQuery( $filters );
-		
+
 		if($filters['limit'] != 0) {
 			$query .= ' LIMIT '.$filters['start'].','.$filters['limit'];
 		}
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function getLastPost( $parent=null ) 
+
+	public function getLastPost( $parent=null )
 	{
 		if (!$parent) {
 			$parent = $this->parent;
@@ -143,16 +133,14 @@ class XForum extends JTable
 		if (!$parent) {
 			return null;
 		}
-		
+
 		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=$parent ORDER BY created DESC LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
-	//-----------
-	
-	public function deleteReplies( $parent=null ) 
+
+	public function deleteReplies( $parent=null )
 	{
 		if (!$parent) {
 			$parent = $this->parent;
@@ -160,7 +148,7 @@ class XForum extends JTable
 		if (!$parent) {
 			return null;
 		}
-		
+
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE parent=$parent" );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
@@ -288,13 +276,13 @@ class XForumPagination extends JObject
 		// Reverse output rendering for right-to-left display
 		if ($lang->isRTL()) {
 			$list['pages'] = array_reverse( $list['pages'] );
-			foreach ( $list['pages'] as $page ) 
+			foreach ( $list['pages'] as $page )
 			{
 				$html .= $page['data'];
 			}
 			$html .= $list['end']['data'];
 		} else {
-			foreach ( $list['pages'] as $page ) 
+			foreach ( $list['pages'] as $page )
 			{
 				$html .= $page['data'].' ';
 			}

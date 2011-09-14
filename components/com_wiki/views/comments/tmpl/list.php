@@ -35,20 +35,20 @@ $html = '';
 if (count($this->comments) > 0) {
 	ximport('Hubzero_User_Profile_Helper');
 	ximport('Hubzero_User_Profile');
-	
+
 	$wikiconfig = array(
 		'option'   => $this->option,
 		'scope'    => $this->page->scope,
 		'pagename' => $this->page->pagename,
 		'pageid'   => $this->page->id,
 		'filepath' => '',
-		'domain'   => $this->page->group 
+		'domain'   => $this->page->group
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$parser =& Hubzero_Wiki_Parser::getInstance();
-	
+
 	$html .= '<ol class="comments">'."\n";
-	foreach ($this->comments as $comment) 
+	foreach ($this->comments as $comment)
 	{
 		$author = JText::_('WIKI_AUTHOR_ANONYMOUS');
 		$cuser = new Hubzero_User_Profile();
@@ -68,7 +68,7 @@ if (count($this->comments) > 0) {
 		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
 		$html .= "\t\t".'<div class="comment-content">'."\n";
 		if ($comment->rating) {
-			switch ($comment->rating) 
+			switch ($comment->rating)
 			{
 				case 0:   $cls = ' no-stars';        break;
 				case 0.5: $cls = ' half-stars';      break;

@@ -46,20 +46,20 @@ class MembersController extends Hubzero_Controller
 
 		// Get the view
 		$this->_view = strtolower(JRequest::getVar('view', 'members'));
-		
+
 		// Get The task
 		$this->_task = strtolower(JRequest::getVar('task', ''));
-		
+
 		$id = JRequest::getInt( 'id', 0 );
 		if ($id && !$this->_task) {
 			$this->_task = 'view';
 		}
 
 		// Execute the task
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
 			case 'autocomplete': $this->autocomplete(); break;
-			
+
 			case 'upload':     $this->upload();     break;
 			case 'deleteimg':  $this->deleteimg();  break;
 			case 'img':        $this->img();        break;
@@ -78,22 +78,22 @@ class MembersController extends Hubzero_Controller
 			default: $this->browse(); break;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	protected function autocomplete() 
+	protected function autocomplete()
 	{
 		if ($this->juser->get('guest')) {
 			return;
 		}
-		
+
 		$filters = array();
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
 		$filters['search'] = strtolower(trim(JRequest::getString( 'value', '' )));
-		
+
 		// Fetch results
 		/*$query = "SELECT u.id, u.name, u.username 
 				FROM #__users AS u 
@@ -112,18 +112,16 @@ class MembersController extends Hubzero_Controller
 		// Output search results in JSON format
 		$json = array();
 		if (count($rows) > 0) {
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
 				$json[] = '["'.htmlentities(stripslashes($row->name),ENT_COMPAT,'UTF-8').'","'.$row->id.'"]';
 			}
 		}
-		
+
 		echo '['.implode(',',$json).']';
 	}
 
-	//-----------
-
-	protected function abort() 
+	protected function abort()
 	{
 		// Set the page title
 		$document =& JFactory::getDocument();
@@ -135,7 +133,7 @@ class MembersController extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
 		}
-		
+
 		// Instantiate the view
 		$view = new JView( array('name'=>'abort') );
 		$view->option = $this->_option;
@@ -144,8 +142,6 @@ class MembersController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function browse()
 	{
@@ -174,11 +170,11 @@ class MembersController extends Hubzero_Controller
 			$title = JText::_('MEMBERS');
 		}
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
-		
+
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
@@ -197,15 +193,15 @@ class MembersController extends Hubzero_Controller
 			$admin = false;
 		}
 		$filters['authorized'] = $authorized;
-		
+
 		$database =& JFactory::getDBO();
-	
+
 		// Initiate a contributor object
 		$c = new MembersProfile( $database );
-	
+
 		// Get record count of ALL members
 		$total_members = $c->getCount( array('show'=>''), true );
-		
+
 		// Get record count of ALL members
 		$total_public_members = $c->getCount( array('show'=>'','authorized'=>false), false );
 
@@ -218,7 +214,7 @@ class MembersController extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
-	
+
 		// Instantiate the view
 		$view = new JView( array('name'=>'browse') );
 		$view->option = $this->_option;
@@ -238,9 +234,7 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function view() 
+	protected function view()
 	{
 		// Build the page title
 		if ($this->_task == 'saveaccess') {
@@ -248,17 +242,17 @@ class MembersController extends Hubzero_Controller
 		}
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
-		
+
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		
+
 		// Include some needed styles and scripts
 		$this->_getStyles();
 		$this->_getScripts();
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$tab = JRequest::getVar( 'active', 'profile' );  // The active tab (section)
@@ -266,7 +260,7 @@ class MembersController extends Hubzero_Controller
 		// Ensure we have an ID
 		if (!$id) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
-			
+
 			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
@@ -277,20 +271,20 @@ class MembersController extends Hubzero_Controller
 		// Get the member's info
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-		
+
 		// Check subscription to Employer Services
 		if ($this->config->get('employeraccess') && $tab == 'resume') {
 			JPluginHelper::importPlugin( 'members', 'resume' );
 			$dispatcher =& JDispatcher::getInstance();
 			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
-			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
+			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;
 			$authorized = $emp ? 1 : $authorized;
-		}		
+		}
 
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
-			
+
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
@@ -298,7 +292,7 @@ class MembersController extends Hubzero_Controller
 		// Check if the profile is public/private and the user has access
 		if ($profile->get('public') != 1 && !$authorized) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
-			
+
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_PUBLIC') );
 			/*
 			$view = new JView( array('name'=>'view', 'layout'=>'private') );
@@ -313,26 +307,26 @@ class MembersController extends Hubzero_Controller
 			*/
 			return;
 		}
-		
+
 		if (!$profile->get('name')) {
 			$name  = $profile->get('givenName').' ';
 			$name .= ($profile->get('middleName')) ? $profile->get('middleName').' ' : '';
 			$name .= $profile->get('surname');
 			$profile->set('name', $name);
 		}
-		
+
 		// Get plugins
 		JPluginHelper::importPlugin( 'members' );
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Get the active tab (section)
 		$tab = JRequest::getVar( 'active', 'profile' );
-		
+
 		// Trigger the functions that return the areas we'll be using
 		$cats = $dispatcher->trigger( 'onMembersAreas', array($authorized) );
-		
+
 		$available = array();
-		foreach ($cats as $cat) 
+		foreach ($cats as $cat)
 		{
 			$name = key($cat);
 			if ($name != '') {
@@ -342,14 +336,14 @@ class MembersController extends Hubzero_Controller
 		if ($tab != 'profile' && !in_array($tab, $available)) {
 			$tab = 'profile';
 		}
-		
+
 		// Get the sections
 		$sections = $dispatcher->trigger( 'onMembers', array($profile, $this->_option, $authorized, array($tab)) );
-		
+
 		$rparams = new JParameter( $profile->get('params') );
 		$params = $this->config;
 		$params->merge( $rparams );
-		
+
 		// Add the default "Profile" section to the beginning of the lists
 		$body = '';
 		if ($tab == 'profile') {
@@ -379,12 +373,12 @@ class MembersController extends Hubzero_Controller
 					$profile->set('picture', '');
 				} else {
 					$profile->set('picture', $config->get('defaultpic'));
-				}	
+				}
 			}
-			
+
 			// Load some needed libraries
 			ximport('Hubzero_Registration');
-			
+
 			// Find out which fields are hidden, optional, or required
 			$registration = new JObject();
 			$registration->Fullname = $this->_registrationField('registrationFullname','RRRR','edit');
@@ -416,16 +410,16 @@ class MembersController extends Hubzero_Controller
 			}
 			$body = $pview->loadTemplate();
 		}
-		
+
 		$cat = array();
 		$cat['profile'] = JText::_('MEMBERS_PROFILE');
 		array_unshift($cats, $cat);
 		array_unshift($sections, array('html'=>$body,'metadata'=>''));
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title.': '.stripslashes($profile->get('name')) );
-		
+
 		// Set the pathway
 		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
 
@@ -445,42 +439,40 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
-	protected function changepassword() 
+	protected function changepassword()
 	{
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
-		
+
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			$view = new JView( array('name'=>'login') );
 			$view->title = $title;
 			$view->display();
 			return;
 		}
-		
+
 		if (!$id) {
 			$id = $juser->get('id');
 		}
-		
+
 		// Ensure we have an ID
 		if (!$id) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
@@ -488,50 +480,50 @@ class MembersController extends Hubzero_Controller
 			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
-		
+
 		// Check authorization
 		$authorized = $this->_authorize( $id );
 		if (!$authorized) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_AUTH') );
 			return;
 		}
-		
+
 		// Initiate profile class
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-		
+
 		// Ensure we have a member
 		if (!$profile->get('name')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
-		
+
 		// Include some needed styles and scripts
 		$this->_getStyles();
-		
+
 		// Add to the pathway
 		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
 		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber').'&task='.$this->_task );
-		
+
 		// Load some needed libraries
 		ximport('Hubzero_Registration_Helper');
 		ximport('Hubzero_User_Helper');
-		
+
 		if (Hubzero_User_Helper::isXDomainUser($juser->get('id'))) {
 			JError::raiseError( 403, JText::_('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT') );
 			return;
 		}
-		
+
 		// Incoming data
 		$change   = JRequest::getVar('change', '', 'post');
 		$oldpass  = JRequest::getVar('oldpass', '', 'post');
 		$newpass  = JRequest::getVar('newpass', '', 'post');
 		$newpass2 = JRequest::getVar('newpass2', '', 'post');
-		
+
 		$view = new JView( array('name'=>'changepassword') );
 		$view->option = $this->_option;
 		$view->title = $title;
@@ -540,7 +532,7 @@ class MembersController extends Hubzero_Controller
 		$view->oldpass = $oldpass;
 		$view->newpass = $newpass;
 		$view->newpass2 = $newpass2;
-		
+
 		// Blank form request (no data submitted)
 		if (empty($change))  {
 			$view->display();
@@ -577,10 +569,8 @@ class MembersController extends Hubzero_Controller
 		// Redirect user back to main account page
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$id);
 	}
-	
-	//-----------
 
-	protected function raiselimit() 
+	protected function raiselimit()
 	{
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
@@ -588,52 +578,52 @@ class MembersController extends Hubzero_Controller
 
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			$view = new JView( array('name'=>'login') );
 			$view->title = $title;
 			$view->display();
 			return;
 		}
-		
+
 		// Ensure we have an ID
 		if (!$id) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
-		
+
 		$view = new JView( array('name'=>'raiselimit') );
 		$view->option = $this->_option;
 		$view->title = $title;
-		
+
 		// Check authorization
 		$view->authorized = $this->_authorize( $id );
 		if (!$view->authorized) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_AUTH') );
 			return;
 		}
-		
+
 		// Include some needed styles and scripts
 		$this->_getStyles();
-		
+
 		// Initiate profile class
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
@@ -641,13 +631,13 @@ class MembersController extends Hubzero_Controller
 		// Ensure we have a member
 		if (!$profile->get('name')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
-		
+
 		$view->profile = $profile;
-		
+
 		// Add to the pathway
 		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
 		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber').'&task='.$this->_task );
@@ -662,18 +652,18 @@ class MembersController extends Hubzero_Controller
 				$k = key($raiselimit);
 			}
 
-			switch ($k) 
+			switch ($k)
 			{
 				case 'sessions':
 					$oldlimit = intval( $profile->get('jobsAllowed') );
-					$newlimit = $oldlimit + 3; 
-					
+					$newlimit = $oldlimit + 3;
+
 					$resourcemessage = 'session limit from '. $oldlimit .' to '. $newlimit .' sessions ';
 
 					if ($view->authorized == 'admin') {
 						$profile->set('jobsAllowed', $newlimit);
 						$profile->update();
-						
+
 						$resourcemessage = 'The session limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . ' sessions.';
 					} else if ($request === null) {
 						$view->resource = $k;
@@ -692,7 +682,7 @@ class MembersController extends Hubzero_Controller
 					if ($view->authorized == 'admin') {
 						// $profile->set('quota', $newlimit);
 						// $profile->update();
-						
+
 						$resourcemessage = 'The storage limit for [' . $profile->get('username') . '] has been raised from '. $oldlimit .' to '. $newlimit .'.';
 					} else {
 						$view->resource = $k;
@@ -711,7 +701,7 @@ class MembersController extends Hubzero_Controller
 					if ($view->authorized == 'admin') {
 						// $profile->set('max_meetings', $newlimit);
 						// $profile->update();
-						
+
 						$resourcemessage = 'The meeting limit for [' . $profile->get('username') . '] has been raised from '. $oldlimit .' to '. $newlimit .'.';
 					} else {
 						$view->resource = $k;
@@ -728,17 +718,17 @@ class MembersController extends Hubzero_Controller
 				break;
 			}
 		}
-		
+
 		// Do we need to email admin?
 		if ($request !== null && !empty($resourcemessage)) {
 			$juri =& JURI::getInstance();
 			$xhub =& Hubzero_Factory::getHub();
 			$hubName = $xhub->getCfg('hubShortName');
 			$hubUrl = $xhub->getCfg('hubLongURL');
-			
+
 			// Email subject
 			$subject = $hubName . " Account Resource Request";
-			
+
 			// Email message
 			$message = 'Name: ' . $profile->get('name');
 			if ($profile->get('organization')) {
@@ -756,32 +746,32 @@ class MembersController extends Hubzero_Controller
 				$message .= $request . "\r\n\r\n";
 			}
 			$message .= "Click the following link to grant this request:\r\n";
-			
+
 			$sef = JRoute::_('index.php?option='.$this->_option.'&id='.$profile->get('uidNumber').'&task='.$this->_task);
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
 			$url = $juri->base().$sef;
-			
+
 			$message .= $url . "\r\n\r\n";
 			$message .= "Click the following link to review this user's account:\r\n";
-			
+
 			$sef = JRoute::_('index.php?option='.$this->_option.'&id='.$profile->get('uidNumber'));
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
 			$url = $juri->base().$sef;
-			
+
 			$message .= $url . "\r\n";
-			
+
 			// Get the administrator's email address
 			$emailadmin = $xhub->getCfg('hubSupportEmail');
-			
+
 			// Send an e-mail to admin
-			if (!Hubzero_Toolbox::send_email($emailadmin, $subject, $message)) { 
+			if (!Hubzero_Toolbox::send_email($emailadmin, $subject, $message)) {
 				return JError::raiseError(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
 			}
-			
+
 			// Output the view
 			$view->resourcemessage = $resourcemessage;
 			$view->setLayout('success');
@@ -794,66 +784,64 @@ class MembersController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
-		
+
 		// Output the view
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function edit($xregistration=null, $profile=null)
 	{
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
-		
+
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			$view = new JView( array('name'=>'login') );
 			$view->title = $title;
 			$view->display();
 			return;
 		}
-		
+
 		// Ensure we have an ID
 		if (!$id) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
-		
+
 		// Check authorization
 		$authorized = $this->_authorize( $id );
 		if (!$authorized) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_AUTH') );
 			return;
 		}
-		
+
 		// Include some needed styles and scripts
 		$this->_getStyles();
-		
+
 		// Initiate profile class if we don't already have one and load info
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($profile)) {
@@ -864,11 +852,11 @@ class MembersController extends Hubzero_Controller
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
-			
+
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
-		
+
 		// Get the user's interests (tags)
 		$database =& JFactory::getDBO();
 		$mt = new MembersTags( $database );
@@ -882,7 +870,7 @@ class MembersController extends Hubzero_Controller
 		ximport('Hubzero_Toolbox');
 		ximport('Hubzero_Registration');
 		ximport('Hubzero_Registration_Helper');
-		
+
 		// Instantiate an xregistration object if we don't already have one
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($xregistration)) {
@@ -927,11 +915,9 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	private function _registrationField($name, $default, $task = 'create')
 	{
-		switch ($task) 
+		switch ($task)
 		{
 			case 'register':
 			case 'create': $index = 0; break;
@@ -942,7 +928,7 @@ class MembersController extends Hubzero_Controller
 		}
 
 		$hconfig =& JComponentHelper::getParams('com_hub');
-		
+
 		$default = str_pad($default, '-', 4);
 		$configured = $hconfig->get($name);
 		if (empty($configured)) {
@@ -954,7 +940,7 @@ class MembersController extends Hubzero_Controller
 		} else {
 			$value = substr($default, $index, 1);
 		}
-		
+
 		switch ($value)
 		{
 			case 'R': return(REG_REQUIRED);
@@ -969,22 +955,22 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Processors
 	//----------------------------------------------------------
-	
-	protected function save() 
+
+	protected function save()
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		ximport('Hubzero_Toolbox');
 		ximport('Hubzero_Registration');
 		ximport('Hubzero_Registration_Helper');
 
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
-		
+
 		// Do we have an ID?
 		if (!$id) {
 			JError::raiseError( 500, JText::_('MEMBERS_NO_ID') );
@@ -994,12 +980,12 @@ class MembersController extends Hubzero_Controller
 		// Incoming profile edits
 		$p = JRequest::getVar( 'profile', array(), 'post' );
 		$n = JRequest::getVar( 'name', array(), 'post' );
-		
+
 		// Load the profile
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		$oldemail = $profile->get('email');
-		
+
 		$profile->set('givenName', trim($n['first']));
 		$profile->set('middleName', trim($n['middle']));
 		$profile->set('surname', trim($n['last']));
@@ -1007,7 +993,7 @@ class MembersController extends Hubzero_Controller
 		$name .= (trim($n['middle']) != '') ? trim($n['middle']).' ' : '';
 		$name .= trim($n['last']);
 		$profile->set('name', $name);
-		
+
 		$profile->set('bio', trim($p['bio']));
 
 		if (isset($p['vip'])) {
@@ -1021,22 +1007,22 @@ class MembersController extends Hubzero_Controller
 		} else {
 			$profile->set('public',0);
 		}
-		
+
 		// Get the user's interests (tags)
 		$tags = trim(JRequest::getVar( 'tags', '' ));
-		
+
 		// Set some post data for the xregistration class
 		JRequest::setVar('interests',$tags,'post');
 		JRequest::setVar('usageAgreement',1,'post');
-		
+
 		// Instantiate a new Hubzero_Registration
 		$xregistration = new Hubzero_Registration();
 		$xregistration->loadPOST();
-		
+
 		// Push the posted data to the profile
 		// Note: this is done before the required fields check so, if we need to display the edit form, it'll show all the new changes
 		$profile->set('email',$xregistration->_registration['email']);
-		
+
 		// Unconfirm if the email address changed
 		if ($oldemail != $xregistration->_registration['email']) {
 			// Get a new confirmation code
@@ -1044,7 +1030,7 @@ class MembersController extends Hubzero_Controller
 
 			$profile->set('emailConfirmed',$confirm);
 		}
-		
+
 		if (!is_null($xregistration->_registration['countryresident']))
 			$profile->set('countryresident',$xregistration->_registration['countryresident']);
 
@@ -1071,16 +1057,16 @@ class MembersController extends Hubzero_Controller
 
 		if (!is_null($xregistration->_registration['sex']))
 			$profile->set('gender',$xregistration->_registration['sex']);
-		
+
 		if (!is_null($xregistration->_registration['disability']))
 			$profile->set('disability',$xregistration->_registration['disability']);
-		
+
 		if (!is_null($xregistration->_registration['hispanic']))
 			$profile->set('hispanic',$xregistration->_registration['hispanic']);
 
 		if (!is_null($xregistration->_registration['race']))
 			$profile->set('race',$xregistration->_registration['race']);
-	
+
 		if (!is_null($xregistration->_registration['mailPreferenceOption']))
 			$profile->set('mailPreferenceOption',$xregistration->_registration['mailPreferenceOption']);
 
@@ -1090,7 +1076,7 @@ class MembersController extends Hubzero_Controller
 			$this->edit( $xregistration, $profile );
 			return;
 		}
-		
+
 		// Set the last modified datetime
 		$profile->set('modifiedDate', date( 'Y-m-d H:i:s', time() ));
 
@@ -1099,14 +1085,14 @@ class MembersController extends Hubzero_Controller
 			JError::raiseError(500, $profile->getError() );
 			return false;
 		}
-		
+
 		// Process tags
 		$database =& JFactory::getDBO();
 		$mt = new MembersTags( $database );
 		$mt->tag_object($id, $id, $tags, 1, 1);
-		
+
 		$email = $profile->get('email');
-		
+
 		// Make sure certain changes make it back to the Joomla user table
 		if ($id > 0) {
 			$juser =& JUser::getInstance($id);
@@ -1125,29 +1111,27 @@ class MembersController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
 		if ($email != $oldemail) {
 			$this->_message = $this->send_confirmation_code($profile->get('username'), $email, $confirm);
 		}
-		
+
 		// Redirect
 		$url  = 'index.php?option='.$this->_option;
 		$url .= ($id) ? '&id='.$id : '';
 
 		$this->_redirect = JRoute::_( $url );
 	}
-	
-	//-----------
-	
-	private function send_confirmation_code($login, $email, $confirm) 
+
+	private function send_confirmation_code($login, $email, $confirm)
 	{
 		$jconfig =& JFactory::getConfig();
 		$juri = JURI::getInstance();
-		
+
 		// Email subject
 		$subject = $jconfig->getValue('config.sitename') .' account email confirmation';
-		
+
 		// Email message
 		$eview = new JView( array('name'=>'emails','layout'=>'confirm') );
 		$eview->option = $this->_option;
@@ -1157,67 +1141,63 @@ class MembersController extends Hubzero_Controller
 		$eview->baseURL = $juri->base();
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
-		
+
 		// Send the email
 		if (Hubzero_Toolbox::send_email($email, $subject, $message)) {
 			$msg = 'A confirmation email has been sent to "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'". You must click the link in that email to re-activate your account.';
 		} else {
 			$msg = 'An error occurred emailing "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'" your confirmation.';
 		}
-		
+
 		return $msg;
 	}
-	
-	//-----------
-	
-	protected function saveaccess() 
+
+	protected function saveaccess()
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Do we have an ID?
 		if (!$id) {
 			JError::raiseError( 500, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
-		
+
 		// Incoming profile edits
 		$p = JRequest::getVar( 'access', array(), 'post' );
 		if (is_array( $p )) {
 			// Load the profile
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
-			
-			foreach ($p as $k=>$v) 
+
+			foreach ($p as $k=>$v)
 			{
 				$profile->setParam('access_'.$k, $v);
 			}
-			
+
 			// Save the changes
 			if (!$profile->update()) {
 				JError::raiseWarning('', $profile->getError() );
 				return false;
 			}
 		}
-		
+
 		// Push through to the profile view
 		$this->view();
 	}
-	
-	//-----------
-	
+
 	protected function activity()
 	{
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -1225,11 +1205,11 @@ class MembersController extends Hubzero_Controller
 			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
 		}
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
 		$this->_getStyles('usage');
-		
+
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
@@ -1241,9 +1221,9 @@ class MembersController extends Hubzero_Controller
 		if (!$juser->authorize($this->_option, 'manage')) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 		}
-		
+
 		$database =& JFactory::getDBO();
-		
+
 		// Get logged-in users
 		$prevuser = '';
 		$user  = array();
@@ -1264,7 +1244,7 @@ class MembersController extends Hubzero_Controller
 					if ($user) {
 						$xprofile = new Hubzero_User_Profile();
 						$xprofile->load($prevuser);
-						
+
 						$users[$prevuser] = $user;
 						$users[$prevuser]['name'] = $xprofile->get('name');
 						$users[$prevuser]['org'] = $xprofile->get('orginization');
@@ -1279,7 +1259,7 @@ class MembersController extends Hubzero_Controller
 			if ($user) {
 				$xprofile = new Hubzero_User_Profile();
 				$xprofile->load($prevuser);
-				
+
 				$users[$prevuser] = $user;
 				$users[$prevuser]['name'] = $xprofile->get('name');
 				$users[$prevuser]['org'] = $xprofile->get('orginization');
@@ -1287,7 +1267,7 @@ class MembersController extends Hubzero_Controller
 				$users[$prevuser]['countryresident'] = $xprofile->get('countryresident');
 			}
 		}
-		
+
 		$guests = array();
 		$sql = "SELECT x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
 				FROM #__session AS s, #__xsession AS x 
@@ -1298,13 +1278,13 @@ class MembersController extends Hubzero_Controller
 		$result = $database->loadObjectList();
 		if ($result) {
 			if (count($result) > 0) {
-				foreach($result as $row) 
+				foreach($result as $row)
 				{
 					array_push($guests, array('host' => $row->host, 'ip' => $row->ip, 'idle' => $row->idle));
 				}
 			}
 		}
-		
+
 		// Output View
 		$view = new JView( array('name'=>'activity') );
 		$view->title = JText::_('Active Users and Guests');
@@ -1316,15 +1296,13 @@ class MembersController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
 
 	protected function whois()
 	{
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
-		
+
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -1332,10 +1310,10 @@ class MembersController extends Hubzero_Controller
 			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
 		}
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
@@ -1347,12 +1325,12 @@ class MembersController extends Hubzero_Controller
 		if (!$juser->authorize($this->_option, 'manage')) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 		}
-		
+
 		// Incoming
 		$query = JRequest::getVar( 'query', '' );
 		$uid   = JRequest::getVar( 'username', '' );
 		$mail  = JRequest::getVar( 'email', '' );
-		
+
 		if ($uid) {
 			$search = 'uid=' . $uid;
 		} elseif ($mail) {
@@ -1365,16 +1343,16 @@ class MembersController extends Hubzero_Controller
 		$view->summaries = null;
 		$view->user = null;
 		$view->query = ($search) ? $search : '';
-		
+
 		// Do we have a query?
 		if ($search) {
 			// Parse the querystring
 			$result = $this->_parse_simplesearch($search);
 
 			// Perform the query
-			$logins = $this->_get_usernamesbyfilter($result); 
+			$logins = $this->_get_usernamesbyfilter($result);
 			$summaries = $this->_get_summarybyfilter($result);
-			
+
 			// Did we get any results?
 			if ((count($logins) <= 0) || ($logins == false))  {
 				$this->setError( JText::_('No results found matching the provided query.') );
@@ -1393,35 +1371,29 @@ class MembersController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
-	//-----------
-	
-	private function _get_summarybyfilter($args) 
+
+	private function _get_summarybyfilter($args)
 	{
 		return( $this->_get_attrsbyfilter('username uidNumber email name',$args) );
 	}
-	
-	//-----------
 
-	private function _get_usernamesbyfilter($args) 
+	private function _get_usernamesbyfilter($args)
 	{
 		return( $this->_get_attrsbyfilter('username',$args) );
 	}
 
-	//-----------
-
-	private function _get_attrsbyfilter($attrs, $filters) 
+	private function _get_attrsbyfilter($attrs, $filters)
 	{
 		$result = false;
 		$filter = '';
-		
+
 		$select = '*';
 		if ($attrs) {
 			$attr_req = explode(' ', $attrs);
 			$attr_req = array_map('trim', $attr_req);
 			$select = '`'.implode('`,`',$attr_req).'`';
 		}
-		
+
 		if ($filters) {
 			$filter = implode(' OR ', $filters);
 		}
@@ -1433,9 +1405,7 @@ class MembersController extends Hubzero_Controller
 		return $result;
 	}
 
-	//-----------
-
-	private function _parse_email_address($adrstring) 
+	private function _parse_email_address($adrstring)
 	{
 		$address = '';
 		// < > delimited email addresses override any others
@@ -1461,14 +1431,12 @@ class MembersController extends Hubzero_Controller
 		return( array($addr, $personal) );
 	}
 
-	//-----------
-
-	private function _parse_simplesearch($searchstr) 
+	private function _parse_simplesearch($searchstr)
 	{
 		$address = array();
 		$subs = preg_split("/\s*,\s*/", $searchstr);
 
-		for ($i=0; $i < count($subs); $i++) 
+		for ($i=0; $i < count($subs); $i++)
 		{
 			if (strlen($subs[$i]) <= 0) {
 				;
@@ -1587,7 +1555,7 @@ class MembersController extends Hubzero_Controller
 			}
 		}
 
-		for ($i = 0; $i < count($address); $i++) 
+		for ($i = 0; $i < count($address); $i++)
 		{
 			$addr = $this->_parse_email_address($address[$i]);
 			if ($addr[0])
@@ -1597,12 +1565,10 @@ class MembersController extends Hubzero_Controller
 		}
 		return( $result );
 	}
-	
-	//-----------
-	
-	private function _like($k, $v) 
+
+	private function _like($k, $v)
 	{
-		if ((substr($v, -1) == '*' || substr($v, -1) == '?') 
+		if ((substr($v, -1) == '*' || substr($v, -1) == '?')
 		 && (substr($v, 0, 1) == '*' || substr($v, 0, 1) == '?')) {
 			return $k." LIKE '%". substr($v, 1, -1) ."%'";
 		} elseif (substr($v, -1) == '*' || substr($v, -1) == '?') {
@@ -1614,17 +1580,15 @@ class MembersController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-
-	protected function cancel() 
+	protected function cancel()
 	{
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		
+
 		// Redirect
 		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&id='.$id );
 	}
-	
+
 	//----------------------------------------------------------
 	//  Image handling
 	//----------------------------------------------------------
@@ -1636,10 +1600,10 @@ class MembersController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Load the component config
 		$config = $this->config;
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -1647,7 +1611,7 @@ class MembersController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
@@ -1655,7 +1619,7 @@ class MembersController extends Hubzero_Controller
 			$this->img( '', $id );
 			return;
 		}
-		
+
 		// Build upload path
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
@@ -1663,7 +1627,7 @@ class MembersController extends Hubzero_Controller
 			$path .= DS;
 		}
 		$path .= $config->get('webpath').DS.$dir;
-		
+
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( $path, 0777 )) {
@@ -1677,17 +1641,17 @@ class MembersController extends Hubzero_Controller
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
-		
+
 		// Do we have an old file we're replacing?
 		$curfile = JRequest::getVar( 'currentfile', '' );
-		
+
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('ERROR_UPLOADING') );
 			$file = $curfile;
 		} else {
 			$ih = new MembersImgHandler();
-			
+
 			if ($curfile != '') {
 				// Yes - remove it
 				if (file_exists($path.DS.$curfile)) {
@@ -1714,7 +1678,7 @@ class MembersController extends Hubzero_Controller
 			if (!$profile->update()) {
 				$this->setError( $profile->getError() );
 			}
-			
+
 			// Resize the image if necessary
 			$ih->set('image',$file['name']);
 			$ih->set('path',$path.DS);
@@ -1723,7 +1687,7 @@ class MembersController extends Hubzero_Controller
 			if (!$ih->process()) {
 				$this->setError( $ih->getError() );
 			}
-			
+
 			// Create a thumbnail image
 			$ih->set('maxWidth', 50);
 			$ih->set('maxHeight', 50);
@@ -1732,15 +1696,13 @@ class MembersController extends Hubzero_Controller
 			if (!$ih->process()) {
 				$this->setError( $ih->getError() );
 			}
-			
+
 			$file = $file['name'];
 		}
-		
+
 		// Push through to the image view
 		$this->img( $file, $id );
 	}
-
-	//-----------
 
 	protected function deleteimg()
 	{
@@ -1749,24 +1711,24 @@ class MembersController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Load the component config
 		$config = $this->config;
-		
+
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('MEMBERS_NO_ID') );
 			$this->img( '', $id );
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar( 'file', '' );
 		if (!$file) {
 			$this->setError( JText::_('MEMBERS_NO_FILE') );
 			$this->img( '', $id );
 		}
-		
+
 		// Build the file path
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
@@ -1775,11 +1737,11 @@ class MembersController extends Hubzero_Controller
 		}
 		$path .= $config->get('webpath').DS.$dir;
 
-		if (!file_exists($path.DS.$file) or !$file) { 
-			$this->setError( JText::_('FILE_NOT_FOUND') ); 
+		if (!file_exists($path.DS.$file) or !$file) {
+			$this->setError( JText::_('FILE_NOT_FOUND') );
 		} else {
 			$ih = new MembersImgHandler();
-			
+
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path.DS.$file)) {
@@ -1787,7 +1749,7 @@ class MembersController extends Hubzero_Controller
 				$this->img( $file, $id );
 				return;
 			}
-			
+
 			$curthumb = $ih->createThumbName($file);
 			if (file_exists($path.DS.$curthumb)) {
 				if (!JFile::delete($path.DS.$curthumb)) {
@@ -1796,7 +1758,7 @@ class MembersController extends Hubzero_Controller
 					return;
 				}
 			}
-			
+
 			// Instantiate a profile, change some info and save
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
@@ -1807,18 +1769,16 @@ class MembersController extends Hubzero_Controller
 
 			$file = '';
 		}
-	
+
 		// Push through to the image view
 		$this->img( $file, $id );
 	}
-
-	//-----------
 
 	protected function img( $file='', $id=0 )
 	{
 		// Load the component config
 		$config = $this->config;
-		
+
 		// Incoming
 		if (!$id) {
 			$id = JRequest::getInt( 'id', 0, 'get' );
@@ -1826,11 +1786,11 @@ class MembersController extends Hubzero_Controller
 		if (!$file) {
 			$file = JRequest::getVar( 'file', '', 'get' );
 		}
-		
+
 		// Build the file path
 		$dir = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT.DS.$config->get('webpath').DS.$dir;
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'edit', 'layout'=>'filebrowser') );
 		$view->option = $this->_option;
@@ -1857,7 +1817,7 @@ class MembersController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
 			return 'admin';

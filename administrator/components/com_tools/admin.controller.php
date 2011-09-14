@@ -29,23 +29,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
 class ToolsController
-{	
+{
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
 	private $_error = NULL;
 
-	//-----------
-	
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
 		$this->_message = NULL;
 		$this->_messageType = 'message';
-		
+
 		// Set the controller name
 		if (empty( $this->_name )) {
 			if (isset($config['name'])) {
@@ -58,35 +54,29 @@ class ToolsController
 				$this->_name = strtolower( $r[1] );
 			}
 		}
-		
+
 		// Set the component name
 		$this->_option = 'com_'.$this->_name;
 	}
-
-	//-----------
 
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
-	//-----------
-	
+
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
 			return $this->_data[$property];
 		}
 	}
-	
-	//-----------
-	
+
 	public function execute()
 	{
 		$default = 'browse';
-		
+
 		$task = strtolower(JRequest::getVar('task', $default, 'default'));
-		
+
 		$thisMethods = get_class_methods( get_class( $this ) );
 		if (!in_array($task, $thisMethods)) {
 			$task = $default;
@@ -94,12 +84,10 @@ class ToolsController
 				return JError::raiseError( 404, JText::_('Task ['.$task.'] not found') );
 			}
 		}
-		
+
 		$this->_task = $task;
 		$this->$task();
 	}
-
-	//-----------
 
 	public function redirect()
 	{
@@ -112,7 +100,7 @@ class ToolsController
 	//----------------------------------------------------------
 	//  Views
 	//----------------------------------------------------------
-	
+
 	protected function middleware( $comm, &$fnoutput )
 	{
 		$retval = 1; // Assume success.
@@ -140,38 +128,36 @@ class ToolsController
 				$outln++;
 			}
 		}
-		
+
 		return $retval;
 	}
 
-	//-----------
-
-	protected function browse( ) 
+	protected function browse( )
 	{
 		$table = JRequest::getVar( 'table', '' );
-		
+
 		$html = ''.n;
-		
-		switch ($table) 
+
+		switch ($table)
 		{
-			case 'host': 
+			case 'host':
 				$html .= '<h3>The host table</h3>'.n;
 				$html .= $this->host_display('');
 				break;
-			case 'hosttype': 
+			case 'hosttype':
 				$html .= '<h3>The hosttype table</h3>'.n;
 				$html .= $this->type_display();
 				break;
 			default:
 				$html .= '<h3>Select a table to administer:</h3>'.n;
 				$html .= '<ul>'.n;
-				
+
 				$vars['table'] = 'host';
 				$html .= ' <li>'.ToolsHtml::admlink('host',$vars,'Modify host table', $this->_option).'</li>'.n;
-			
+
 				$vars['table'] = 'hosttype';
 				$html .= ' <li>'.ToolsHtml::admlink('hosttype',$vars,'Modify hosttype table', $this->_option).'</li>'.n;
-			
+
 				$html .= '</ul>'.n;
 			break;
 		}
@@ -179,25 +165,23 @@ class ToolsController
 		$html .= '<p>';
 		$html .= ToolsHtml::admlink('Back to administrative menu',array(),'Back to administrative menu', $this->_option);
 		$html .= '</p>'.n;
-		
+
 		echo $html;
 	}
 
-	//----------------------------------------------------------
-
-	private function table( $rows, $headers, $middle, $trailer, &$tail_row ) 
+	private function table( $rows, $headers, $middle, $trailer, &$tail_row )
 	{
 		$html  = '<table class="adminlist">'.n;
 		$html .= ToolsHtml::tableHeader($headers);
-		$html .= ' <tbody>'.n; 
-		for($i=0; $i < count($rows); $i++) 
+		$html .= ' <tbody>'.n;
+		for($i=0; $i < count($rows); $i++)
 		{
-			$html .= $this->$middle($rows[$i]); 
+			$html .= $this->$middle($rows[$i]);
 		}
 		if ($tail_row != '') {
-			$html .= $this->$trailer($tail_row); 
+			$html .= $this->$trailer($tail_row);
 		}
-		$html .= ' </tbody>'.n; 
+		$html .= ' </tbody>'.n;
 		$html .= '</table>'.n;
 		return $html;
 	}
@@ -206,7 +190,7 @@ class ToolsController
 	// History
 	//----------------------------------------------------------
 
-	private function history_body($row) 
+	private function history_body($row)
 	{
 		$html  = '  <tr>'.n;
 		$html .= ToolsHtml::td( $row->sessnum );
@@ -221,15 +205,13 @@ class ToolsController
 		return $html;
 	}
 
-	//----------------------------------------------------------
-
 	private function history()
 	{
 	    $juser =& JFactory::getUser();
-		
+
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		$headers = array('ID','Username','Appname','Start','Wall time','View time','CPU time','Status');
 
 		if ($this->_config['admin'] == 1) {
@@ -249,7 +231,7 @@ class ToolsController
 	// Host
 	//----------------------------------------------------------
 
-	private function host_body($row) 
+	private function host_body($row)
 	{
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
@@ -271,7 +253,7 @@ class ToolsController
 		$mwdb->setQuery( $query );
 		$result = $mwdb->loadObjectList();
 		$list = array();
-		for($i=0; $i<count($result); $i++) 
+		for($i=0; $i<count($result); $i++)
 		{
 			$r = $result[$i];
 			$list[$r->name] = (int)$r->value & (int)$provisions;
@@ -281,7 +263,7 @@ class ToolsController
                   'table'   => 'host',
                   'hostname' => $row->hostname,
                   'op'      => 'toggle_hosttype' );
-		
+
 		$html .= ToolsHtml::td( ToolsHtml::listedit($list, $hidden) );
 
 		// The status field.
@@ -298,17 +280,15 @@ class ToolsController
 		// A button to delete the whole thing.
 		$html .= ToolsHtml::td( ToolsHtml::delete_button('hostname', 'host', $hostname, $this->_option) );
 		$html .= '  </tr>'.n;
-		
+
 		return $html;
 	}
 
-	//----------------------------------------------------------
-
-	private function host_edit($row) 
+	private function host_edit($row)
 	{
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		$html  = '  <tr>'.n;
 		$html .= t.'<form name="insert_host" method="get" action="index.php">'.n;
 		$html .= t.ToolsHtml::hInput('option',$this->_option);
@@ -319,12 +299,12 @@ class ToolsController
 		$html .= t.ToolsHtml::hInput('status','check');
 		$html .= '   <td><input type="text" name="hostname" size="10" value="'.$row->hostname.'" />'.n;
 		$html .= '   <td><select multiple name="hosttype[]">'.n;
-		
+
 		$query = "SELECT * FROM hosttype ORDER BY value";
 		$mwdb->setQuery( $query );
 		$result = $mwdb->loadObjectList();
 		$list = array();
-		for($i=0; $i<count($result); $i++) 
+		for($i=0; $i<count($result); $i++)
 		{
 			$r = $result[$i];
 			if ((int)$r->value & (int)$row->provisions) {
@@ -333,7 +313,7 @@ class ToolsController
 				$html .= '    <option value="'.$r->name.'">'.$r->name.'</option>'.n;
 			}
 		}
-		
+
 		$html .= '</select></td>'.n;
 		$html .= ToolsHtml::td( $row->status );
 		$html .= ToolsHtml::td( 'uses' );
@@ -343,23 +323,21 @@ class ToolsController
 		return $html;
 	}
 
-	//----------------------------------------------------------
-
 	private function host_display()
 	{
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		$headers = array('Hostname','Provisions','Status','Uses','Action');
 		$op = JRequest::getVar( 'op', '', 'get' );
 		$hostname = JRequest::getVar( 'hostname', '', 'get' );
 		$hosttype = JRequest::getVar( 'hosttype', '', 'get' );
 		$status = JRequest::getVar( 'status', '', 'get' );
 		$item = JRequest::getVar( 'item', '', 'get' );
-		
+
 		$filter_hostname = JRequest::getVar( 'filter_hostname', '', 'get' );
 		$filter_hosttype = JRequest::getVar( 'filter_hosttype', '', 'get' );
-		
+
 		switch($op)
 		{
 			case 'edit':
@@ -371,14 +349,14 @@ class ToolsController
 				$rows = $mwdb->loadObjectList();
 				return $this->table(array(),$headers,'','host_edit',$rows[0]);
 				break;
-	
+
 			case 'update':
 				if ($hostname == '') {
 					echo ToolsHtml::error('You must specify a valid hostname.');
 				} else {
 					// Figure out the hosttype stuff.
 					$harr = array();
-					foreach($hosttype as $name => $value) 
+					foreach($hosttype as $name => $value)
 					{
 						$harr[$value] = 1;
 					}
@@ -388,7 +366,7 @@ class ToolsController
 					$result = $mwdb->query();
 					//$this->check_mysql($mwdb,$result,$query);
 					$rows = $mwdb->loadObjectList();
-					for($i=0; $i < count($rows); $i++) 
+					for($i=0; $i < count($rows); $i++)
 					{
 						$row = $rows[$i];
 						if (isset($harr[$row->name])) {
@@ -420,7 +398,7 @@ class ToolsController
 
 			case 'status':
 				$status = $this->middleware("check $hostname yes", $output);
-				foreach($output as $line) 
+				foreach($output as $line)
 				{
 					echo "$line<br />\n";
 				}
@@ -455,11 +433,11 @@ class ToolsController
 		$rows = $mwdb->loadObjectList();
 
 		$vars = new Host('', -1, 'offline');
-		
+
 		return $this->table($rows,$headers,'host_body','host_edit',$vars);
 	}
 
-	private function type_display() 
+	private function type_display()
 	{
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
@@ -482,7 +460,7 @@ class ToolsController
 			return;
 		}
 
-		switch($op) 
+		switch($op)
 		{
 			case 'edit':
 				$query = "SELECT * FROM $table WHERE name='$item'";
@@ -508,7 +486,7 @@ class ToolsController
 				if ($name == '') {
 					echo ToolsHtml::error('You must specify a valid name.');
 				} else {
-					if (($table == 'hosttype' && $filter_hosttype != '') 
+					if (($table == 'hosttype' && $filter_hosttype != '')
 						) {
 						$query = "UPDATE $table SET name='$name', description='$description' WHERE name='$filter_hosttype'";
 						$mwdb->setQuery( $query );
@@ -520,16 +498,16 @@ class ToolsController
 						$result = $mwdb->query();
 						//$this->check_mysql($mwdb,$result,$query);
 						$rows = $mwdb->loadObjectList();
-					
+
 						$value = 1;
-						for($i=0; $i<count($rows); $i++) 
+						for($i=0; $i<count($rows); $i++)
 						{
 							$row = $rows[$i];
 							if ($value == $row->value) {
 								$value = $value * 2;
 							}
 						}
-						for($i=0; $i<count($rows); $i++) 
+						for($i=0; $i<count($rows); $i++)
 						{
 							$row = $rows[$i];
 							if ($row->name == $name) {
@@ -560,16 +538,16 @@ class ToolsController
 			return;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Hosttype
 	//----------------------------------------------------------
-	
-	private function hosttype_refs($value) 
+
+	private function hosttype_refs($value)
 	{
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		$query = "SELECT count(*) AS count FROM host WHERE provisions & $value != 0";
 		$mwdb->setQuery( $query );
 		$elts = $mwdb->loadObjectList();
@@ -579,9 +557,7 @@ class ToolsController
 		return $refs;
 	}
 
-	//----------------------------------------------------------
-
-	private function hosttype_edit($row) 
+	private function hosttype_edit($row)
 	{
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
@@ -597,9 +573,7 @@ class ToolsController
 		return ToolsHtml::updateform('hosttype', $bit, $refs, &$row, $this->_option);
 	}
 
-	//----------------------------------------------------------
-
-	private function hosttype_body( $row ) 
+	private function hosttype_body( $row )
 	{
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
@@ -616,7 +590,7 @@ class ToolsController
 					  'filter_hosttype' => "$row->name");
 
 		$refs = $this->hosttype_refs($row->value);
-		
+
 		$html  = '  <tr>'."\n";
 		$html .= ToolsHtml::td( ToolsHtml::admlink($row->name,$vars,"Edit $row->name", $this->_option) );
 		$html .= ToolsHtml::td( $bit );
@@ -641,8 +615,6 @@ class ToolsController
 		$html .= '  </tr>'.n;
 		return $html;
 	}
-
-	//-----------
 
 	protected function cancel()
 	{

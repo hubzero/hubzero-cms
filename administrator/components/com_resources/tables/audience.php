@@ -28,8 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ResourceAudience extends JTable 
+class ResourceAudience extends JTable
 {
 	var $id       	= NULL;  // @var int(11) Primary key
 	var $rid 		= NULL;  // @var int(11)
@@ -43,17 +42,15 @@ class ResourceAudience extends JTable
 	var $comments 	= NULL;  // @var varchar(255)
 	var $addedBy	= NULL;  // @var int(11)
 	var $added		= NULL;  // @var datetime
-			
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_taxonomy_audience', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->rid ) == '') {
 			$this->setError( JText::_('Missing resource ID') );
@@ -61,15 +58,13 @@ class ResourceAudience extends JTable
 		}
 		return true;
 	}
-	
-	//-----------
-	 
-	public function getAudience($rid, $versionid = 0, $getlabels = 1, $numlevels = 5) 
+
+	public function getAudience($rid, $versionid = 0, $getlabels = 1, $numlevels = 5)
 	{
 		if ($rid === NULL) {
 			return false;
 		}
-		
+
 		$sql = "SELECT a.* ";
 		if ($getlabels) {
 			$sql .="\n, L0.title as label0, L1.title as label1, L2.title as label2, L3.title as label3, L4.title as label4 ";
@@ -91,9 +86,9 @@ class ResourceAudience extends JTable
 		$sql .= " WHERE  a.rid=$rid ";
 		$sql .= $versionid ? " AND  a.versionid=$versionid " : "";
 		$sql .= " LIMIT 1 ";
-		
+
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();	 
+		return $this->_db->loadObjectList();
 	}
 }
 

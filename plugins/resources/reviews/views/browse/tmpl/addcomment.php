@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!$this->juser->get('guest')) {
 	$category = ($this->level==0) ? 'review': 'reviewcomment';
-	
+
 	$class = ' hide';
 	if (is_object($this->addcomment)) {
 		$class = ($this->addcomment->referenceid == $this->row->id && $this->addcomment->category==$category) ? '' : ' hide';

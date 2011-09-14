@@ -32,7 +32,6 @@ defined('JPATH_BASE') or die();
 
 jimport('joomla.event.dispatcher');
 
-
 class Hubzero_Wiki_Parser extends JObservable
 {
 	/**
@@ -109,7 +108,7 @@ class Hubzero_Wiki_Parser extends JObservable
 
 		$return = '';
 		$results[] = $this->_parser->update($args);
-		foreach ($results as $result) 
+		foreach ($results as $result)
 		{
 			if (is_object($result)) {
 				$return = $result;
@@ -131,7 +130,7 @@ class Hubzero_Wiki_Parser extends JObservable
 		if (!$this->_name) {
 			return nl2br($text);
 		}
-		
+
 		$this->_loadParser($params, $config, $getnew);
 
 		// Check if parser is already loaded
@@ -176,7 +175,7 @@ class Hubzero_Wiki_Parser extends JObservable
 		}
 
 		jimport('joomla.filesystem.file');
-		
+
 		// Build the path to the needed parser plugin
 		$name = JFilterInput::clean($this->_name, 'cmd');
 		$path = JPATH_SITE.DS.'plugins'.DS.'hubzero'.DS.$name.'.php';

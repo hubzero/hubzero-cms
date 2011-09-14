@@ -34,66 +34,66 @@ class CitationsFormat
 	protected $_format = 'APA';
 	protected $_reference = null;
 	protected $_formatters = array();
-	
-	public function __construct($reference=null, $format='APA') 
+
+	public function __construct($reference=null, $format='APA')
 	{
 		$this->setFormat($format);
 		$this->setReference($reference);
 	}
-	
-	public function setFormat($format) 
+
+	public function setFormat($format)
 	{
 		$this->_format = trim($format);
 	}
-	
-	public function getFormat() 
+
+	public function getFormat()
 	{
 		return $this->_format;
 	}
-	
-	public function setReference($reference) 
+
+	public function setReference($reference)
 	{
 		$this->_reference = $reference;
 	}
-	
-	public function getReference() 
+
+	public function getReference()
 	{
 		return $this->_reference;
 	}
-	
-	public function setFormatter($formatter, $format='') 
+
+	public function setFormatter($formatter, $format='')
 	{
 		$format = ($format) ? $format : $this->_format;
-		
+
 		$this->_formatter[$format] = $formatter;
 	}
-	
-	public function getFormatter($format='') 
+
+	public function getFormatter($format='')
 	{
 		$format = ($format) ? $format : $this->_format;
-		
+
 		return (isset($this->_formatter[$format])) ? $this->_formatter[$format] : NULL;
 	}
-	
-	public function formatReference($reference=null, $highlight=null) 
+
+	public function formatReference($reference=null, $highlight=null)
 	{
 		if (!$reference) {
 			$reference = $this->getReference();
 		} else {
 			$this->setReference($reference);
 		}
-		
+
 		if (!$reference || (!is_array($reference) && !is_object($reference))) {
 			return '';
 		}
-		
+
 		$format = $this->getFormat();
 
 		$formatter = $this->getFormatter($format);
-		
+
 		if (!$formatter || !is_object($formatter)) {
 			$cls = 'CitationsFormat'.$format;
-			
+
 			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'format'.DS.strtolower($format).'.php')) {
 				include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'format'.DS.strtolower($format).'.php');
 			}
@@ -111,9 +111,9 @@ class CitationsFormat
 
 			$this->setFormatter($formatter, $format);
 		}
-		
+
 		ximport('Hubzero_View_Helper_Html');
-		
+
 		return $formatter->format($reference, 'none', $highlight);
 	}
 }

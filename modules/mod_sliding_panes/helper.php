@@ -33,21 +33,15 @@ class modSlidingPanes
 {
 	private $attributes = array();
 
-	//-----------
-
-	public function __construct( $params ) 
+	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
-
-	//-----------
 
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-
-	//-----------
 
 	public function __get($property)
 	{
@@ -55,8 +49,6 @@ class modSlidingPanes
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
 
 	private function _getList()
 	{
@@ -102,12 +94,10 @@ class modSlidingPanes
 		return $rows;
 	}
 
-	//-----------
-
-	public function display() 
+	public function display()
 	{
 		$jdocument =& JFactory::getDocument();
-		
+
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
 		if (!$this->multiple_instances) {
@@ -120,13 +110,13 @@ class modSlidingPanes
 				$jdocument->addScript('/modules/mod_sliding_panes/mod_sliding_panes.js');
 			}
 		}
-		
+
 		$id = rand();
-		
+
 		$this->content = $this->_getList();
-		
+
 		$this->container = $this->params->get('container', 'pane-sliders');
-		
+
 		$js = "window.addEvent('domready', function(){
 			if ($('".$this->container."')) {
 				myTabs".$id." = new ModSlidingPanes('".$this->container."', ".$this->params->get('rotate', 1).");
@@ -135,7 +125,7 @@ class modSlidingPanes
 				window.addEvent('resize', myTabs".$id.".recalcWidths.bind(myTabs".$id."));
 			}
 		});";
-		
+
 		$jdocument->addScriptDeclaration($js);
 	}
 }

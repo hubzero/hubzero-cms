@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_tags' );
-
-//-----------
 
 class plgXSearchTags extends JPlugin
 {
@@ -46,18 +42,14 @@ class plgXSearchTags extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'xsearch', 'tags' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function &onXSearchAreas() 
+
+	public function &onXSearchAreas()
 	{
 		$areas = array(
 			'tags' => JText::_('PLG_XSEARCH_TAGS')
 		);
 		return $areas;
 	}
-
-	//-----------
 
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
@@ -71,7 +63,7 @@ class plgXSearchTags extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
-		
+
 		$database =& JFactory::getDBO();
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 
@@ -111,7 +103,7 @@ class plgXSearchTags extends JPlugin
 			if (count($areas) > 1) {
 				return $query;
 			}
-			
+
 			$query .= " ORDER BY relevance";
 			$query .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -121,7 +113,7 @@ class plgXSearchTags extends JPlugin
 
 			// Go through results and set the HREF
 			if ($rows) {
-				foreach ($rows as $key => $row) 
+				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_('index.php?option=com_tags&tag='.$row->alias);
 				}
@@ -132,7 +124,7 @@ class plgXSearchTags extends JPlugin
 			return $rows;
 		}
 	}
-	
+
 	//----------------------------------------------------------
 	// Optional custom functions
 	// uncomment to use

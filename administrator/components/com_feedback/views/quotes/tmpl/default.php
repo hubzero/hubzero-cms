@@ -50,7 +50,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm">
 		
 <?php 
-if ($this->type == 'regular') {	
+if ($this->type == 'regular') {
 	echo ('<h3>'.JText::_('FEEDBACK_SUBMITTED_QUOTES').'</h3><p class="extranav"><a href="index.php?option='.$this->option.'&amp;type=selected">'.JText::_('FEEDBACK_SELECTED_QUOTES').'</a>.</p>');
 } else {
 	echo ('<h3>'.JText::_('FEEDBACK_SELECTED_QUOTES').'</h3><p class="extranav"><a href="index.php?option='.$this->option.'">'.JText::_('FEEDBACK_SUBMITTED_QUOTES').'</a>.</p>');
@@ -84,8 +84,8 @@ if ($this->type == 'regular') {
 				<th><?php echo JText::_('FEEDBACK_COL_ORGANIZATION'); ?></th>
 				<th><?php echo JText::_('FEEDBACK_COL_QUOTE'); ?></th>
 				<th><?php echo JText::_('FEEDBACK_COL_PICTURE'); ?></th>
-<?php 		
-if ($this->type == 'regular') {	
+<?php 
+if ($this->type == 'regular') {
 	echo ('<th>'.JText::_('FEEDBACK_COL_PUBLISH_CONSENT').'</th><th>'.JText::_('FEEDBACK_COL_UID').'</th>');
 } else {
 	echo ('<th>'.JText::_('FEEDBACK_COL_QUOTES').'</th><th>'.JText::_('FEEDBACK_COL_ROTATION').'</th>');
@@ -101,7 +101,7 @@ if ($this->type == 'regular') {
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 

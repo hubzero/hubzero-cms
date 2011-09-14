@@ -233,24 +233,20 @@ class ToolAuthor extends JTable
 }
 */
 
-class ToolLicense extends JTable 
+class ToolLicense extends JTable
 {
 	var $id  = NULL;  // @var int(11) Primary key
 	var $name     = NULL;  // @var varchar(250)
 	var $text = NULL;  // @var int(11)
 	var $title = NULL;
 	var $ordering = NULL;
-	
-	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool_licenses', 'id', $db );
 	}
-	
-	//-----------
-	
-	public function check() 
+
+	public function check()
 	{
 		if (trim( $this->name ) == '') {
 			$this->setError( JText::_('Your entry must have a name.') );

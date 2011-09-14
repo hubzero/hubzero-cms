@@ -49,7 +49,7 @@ function BlogBuildRoute(&$query)
 		$segments[] = $query['alias'];
 		unset($query['alias']);
 	}
- 
+
     return $segments;
 }
 

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //  A collection of static methods to play with strings.
 //-------------------------------------------------------------
 
-class StringUtils 
+class StringUtils
 {
 	// Perform an operation equivalent to 
 	//     preg_replace( "!$startDelim(.*?)$endDelim!", $replace, $subject );
@@ -41,11 +41,11 @@ class StringUtils
 	// Compared to delimiterReplace(), this implementation is fast but memory-
 	// hungry and inflexible. The memory requirements are such that I don't 
 	// recommend using it on anything but guaranteed small chunks of text.
-	static function hungryDelimiterReplace( $startDelim, $endDelim, $replace, $subject ) 
+	static function hungryDelimiterReplace( $startDelim, $endDelim, $replace, $subject )
 	{
 		$segments = explode( $startDelim, $subject );
 		$output = array_shift( $segments );
-		foreach ( $segments as $s ) 
+		foreach ( $segments as $s )
 		{
 			$endDelimPos = strpos( $s, $endDelim );
 			if ( $endDelimPos === false ) {
@@ -56,7 +56,7 @@ class StringUtils
 		}
 		return $output;
 	}
-	
+
 	// Perform an operation equivalent to 
 	//
 	//   preg_replace_callback( "!$startDelim(.*)$endDelim!s$flags", $callback, $subject )
@@ -71,7 +71,7 @@ class StringUtils
 	// regex. In this implementation, the end must share no characters with the 
 	// start, so e.g. /*/ is not considered to be both the start and end of a 
 	// comment. /*/xy/*/ is considered to be a single comment with contents /xy/. 
-	static function delimiterReplaceCallback( $startDelim, $endDelim, $callback, $subject, $flags = '' ) 
+	static function delimiterReplaceCallback( $startDelim, $endDelim, $callback, $subject, $flags = '' )
 	{
 		$inputPos = 0;
 		$outputPos = 0;
@@ -82,13 +82,13 @@ class StringUtils
 		$strcmp = strpos( $flags, 'i' ) === false ? 'strcmp' : 'strcasecmp';
 		$endLength = strlen( $endDelim );
 		$m = array();
-		
-		while ( $inputPos < strlen( $subject ) && 
-		  preg_match( "!($encStart)|($encEnd)!S$flags", $subject, $m, PREG_OFFSET_CAPTURE, $inputPos ) ) 
+
+		while ( $inputPos < strlen( $subject ) &&
+		  preg_match( "!($encStart)|($encEnd)!S$flags", $subject, $m, PREG_OFFSET_CAPTURE, $inputPos ) )
 		{
 			$tokenOffset = $m[0][1];
 			if ( $m[1][0] != '' ) {
-				if ( $foundStart && 
+				if ( $foundStart &&
 				  $strcmp( $endDelim, substr( $subject, $tokenOffset, $endLength ) ) == 0 )
 				{
 					// An end match is present at the same location
@@ -148,7 +148,7 @@ class StringUtils
 	//               replaced by the text between the delimiters
 	// @param string $subject String to search
 	// @return string The string with the matches replaced
-	static function delimiterReplace( $startDelim, $endDelim, $replace, $subject, $flags = '' ) 
+	static function delimiterReplace( $startDelim, $endDelim, $replace, $subject, $flags = '' )
 	{
 		$replacer = new RegexlikeReplacer( $replace );
 		return self::delimiterReplaceCallback( $startDelim, $endDelim, $replacer->cb(), $subject, $flags );
@@ -159,24 +159,24 @@ class StringUtils
 	// @param string $separator
 	// @param string $text
 	// @return array
-	static function explodeMarkup( $separator, $text ) 
+	static function explodeMarkup( $separator, $text )
 	{
 		$placeholder = "\x00";
-		
+
 		// Remove placeholder instances
 		$text = str_replace( $placeholder, '', $text );
-		
+
 		// Replace instances of the separator inside HTML-like tags with the placeholder
 		$replacer = new DoubleReplacer( $separator, $placeholder );
 		$cleaned = StringUtils::delimiterReplaceCallback( '<', '>', $replacer->cb(), $text );
 
 		// Explode, then put the replaced separators back in
 		$items = explode( $separator, $cleaned );
-		foreach( $items as $i => $str ) 
+		foreach( $items as $i => $str )
 		{
 			$items[$i] = str_replace( $placeholder, $separator, $str );
 		}
-		
+
 		return $items;
 	}
 
@@ -184,7 +184,7 @@ class StringUtils
 	// replacement parameter.
 	// @param string $string
 	// @return string
-	static function escapeRegexReplacement( $string ) 
+	static function escapeRegexReplacement( $string )
 	{
 		$string = str_replace( '\\', '\\\\', $string );
 		$string = str_replace( '$', '\\$', $string );
@@ -192,33 +192,31 @@ class StringUtils
 	}
 }
 
-
 //-------------------------------------------------------------
 //  Base class for "replacers", objects used in preg_replace_callback() and 
 //  StringUtils::delimiterReplaceCallback()
 //-------------------------------------------------------------
-class Replacer 
+class Replacer
 {
-	function cb() 
+	function cb()
 	{
 		return array( &$this, 'replace' );
 	}
 }
 
-
 //-------------------------------------------------------------
 //  Class to replace regex matches with a string similar to that used in preg_replace()
 //-------------------------------------------------------------
-class RegexlikeReplacer extends Replacer 
+class RegexlikeReplacer extends Replacer
 {
 	var $r;
-	
-	function __construct( $r ) 
+
+	function __construct( $r )
 	{
 		$this->r = $r;
 	}
 
-	function replace( $matches ) 
+	function replace( $matches )
 	{
 		$pairs = array();
 		foreach ( $matches as $i => $match ) {
@@ -228,30 +226,28 @@ class RegexlikeReplacer extends Replacer
 	}
 }
 
-
 //-------------------------------------------------------------
 //  Class to perform secondary replacement within each replacement string
 //-------------------------------------------------------------
-class DoubleReplacer extends Replacer 
+class DoubleReplacer extends Replacer
 {
-	function __construct( $from, $to, $index = 0 ) 
+	function __construct( $from, $to, $index = 0 )
 	{
 		$this->from = $from;
 		$this->to = $to;
 		$this->index = $index;
 	}
-	
-	function replace( $matches ) 
+
+	function replace( $matches )
 	{
 		return str_replace( $this->from, $this->to, $matches[$this->index] );
 	}
 }
 
-
 //-------------------------------------------------------------
 //  Class to perform replacement based on a simple hashtable lookup
 //-------------------------------------------------------------
-class HashtableReplacer extends Replacer 
+class HashtableReplacer extends Replacer
 {
 	var $table, $index;
 
@@ -265,65 +261,64 @@ class HashtableReplacer extends Replacer
 	}
 }
 
-
 //-------------------------------------------------------------
 //  Replacement array for FSS with fallback to strtr()
 //  Supports lazy initialisation of FSS resource
 //-------------------------------------------------------------
-class ReplacementArray 
+class ReplacementArray
 {
 	/*mostly private*/ var $data = false;
 	/*mostly private*/ var $fss = false;
 
 	// Create an object with the specified replacement array
 	// The array should have the same form as the replacement array for strtr()
-	function __construct( $data = array() ) 
+	function __construct( $data = array() )
 	{
 		$this->data = $data;
 	}
 
-	function __sleep() 
+	function __sleep()
 	{
 		return array( 'data' );
 	}
 
-	function __wakeup() 
+	function __wakeup()
 	{
 		$this->fss = false;
 	}
 
 	// Set the whole replacement array at once
-	function setArray( $data ) 
+	function setArray( $data )
 	{
 		$this->data = $data;
 		$this->fss = false;
 	}
 
-	function getArray() 
+	function getArray()
 	{
 		return $this->data;
 	}
 
 	// Set an element of the replacement array
-	function setPair( $from, $to ) 
+	function setPair( $from, $to )
 	{
 		$this->data[$from] = $to;
 		$this->fss = false;
 	}
 
-	function mergeArray( $data ) 
+	function mergeArray( $data )
 	{
 		$this->data = array_merge( $this->data, $data );
 		$this->fss = false;
 	}
 
-	function merge( $other ) 
+	function merge( $other )
 	{
 		$this->data = array_merge( $this->data, $other->data );
 		$this->fss = false;
 	}
 
-	function replace( $subject ) 
+	function replace( $subject )
 	{
 		if ( function_exists( 'fss_prep_replace' ) ) {
 			if ( $this->fss === false ) {

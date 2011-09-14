@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 			<?php
-					for ($i=0, $n=count( $this->options ); $i < $n; $i++ ) { 
+					for ($i=0, $n=count( $this->options ); $i < $n; $i++ ) {
 			?>
 					<tr>
 						<td class="key"><?php echo ($i+1); ?></td>
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 					</tr>
 			<?php	
 					}
-					for (; $i < 12; $i++) { 
+					for (; $i < 12; $i++) {
 			?>
 					<tr>
 						<td class="key"><?php echo ($i+1); ?></td>

@@ -163,10 +163,10 @@ $k = 0;
 $sc = new SupportComment( $this->database );
 $st = new SupportTags( $this->database );
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	$comments = $sc->countComments($this->acl->check('read','private_comments'), $row->id);
 	if ($comments > 0) {
 		$lastcomment = $sc->newestComment($this->acl->check('read','private_comments'), $row->id);
@@ -185,7 +185,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$status = 'open';
 		}
 	}
-	
+
 	$lnk = 'index.php?option=com_whois&amp;query=uid%3D'.$row->login;
 	$targetuser = null;
 	if ($row->login) {
@@ -194,19 +194,19 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$lnk = JRoute::_('index.php?option=com_members&id='.$targetuser->id);
 		}
 	}
-	
+
 	$when = SupportHtml::timeAgo($row->created);
-	
+
 	if ($row->owner == '') {
 		$row->owner = '&nbsp';
 	}
-	
+
 	//$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
 	$row->report = stripslashes($row->report);
 	//$row->report = str_replace(r,'',$row->report);
 	//$row->report = str_replace(n,'',$row->report);
 	//$row->report = str_replace(t,'',$row->report);
-	
+
 	$tags = $st->get_tag_cloud( 3, 1, $row->id );
 ?>
 					<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">

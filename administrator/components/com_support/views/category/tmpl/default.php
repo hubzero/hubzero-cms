@@ -61,7 +61,7 @@ function submitbutton(pressbutton)
 					<td>
 						<select name="cat[section]" id="section">
 <?php
-					foreach ($this->sections as $anode) 
+					foreach ($this->sections as $anode)
 					{
 						$selected = ($anode->txt == $this->row->section)
 								  ? ' selected="selected"'

@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 $this->item->helpful = ($this->item->helpful) ? $this->item->helpful : 0;
 $this->item->nothelpful = ($this->item->nothelpful) ? $this->item->nothelpful : 0;
 
@@ -44,7 +43,7 @@ if (isset($this->item->vote)) {
 		case 'like':
 			$lcls = ' chosen';
 		break;
-	
+
 		case 'no':
 		case 'negative':
 		case 'dislike':

@@ -47,7 +47,7 @@ class MwUtils
 			if (!$enabled) {
 				return null;
 			}
-			
+
 			$options['driver']   = $config->get('mwDBDriver');
 			$options['host']     = $config->get('mwDBHost');
 			$options['port']     = $config->get('mwDBPort');
@@ -70,8 +70,6 @@ class MwUtils
 		return $instance;
 	}
 
-	//-----------
-	
 	public function getDiskUsage($username)
 	{
 		$info = array();
@@ -86,7 +84,7 @@ class MwUtils
 			} else {
 				$msg = '';
 				fwrite($fp, "getquota user=".$username."\n");
-				while (!feof($fp)) 
+				while (!feof($fp))
 				{
 					$msg .= fgets($fp, 1024);
 				}

@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_support_answers' );
-
-//-----------
 
 class plgSupportAnswers extends JPlugin
 {
@@ -46,40 +42,38 @@ class plgSupportAnswers extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'support', 'answers' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
-	//-----------
-	
-	public function getReportedItem($refid, $category, $parent) 
+
+	public function getReportedItem($refid, $category, $parent)
 	{
 		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') {
 			return null;
 		}
-		
-		switch ($category) 
+
+		switch ($category)
 		{
 			case 'answer':
 				$query  = "SELECT r.id, r.answer as text, NULL as subject";
 				$query .= ", r.anonymous as anon, r.created_by as author, 'answer' as parent_category, NULL as href";
-				$query .= " FROM #__answers_responses AS r"; 
-				$query .= " WHERE r.state!=2 AND r.id=".$refid;    
+				$query .= " FROM #__answers_responses AS r";
+				$query .= " WHERE r.state!=2 AND r.id=".$refid;
 			break;
-				
+
 			case 'question':
 				$query  = "SELECT q.id, q.subject as text, q.created_by as author, q.question as subject";
 				$query .= ", 'question' as parent_category, q.anonymous as anon, NULL as href";
 				$query .= " FROM #__answers_questions AS q";
-				$query .= " WHERE q.id=".$refid;    
+				$query .= " WHERE q.id=".$refid;
 			break;
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$database->setQuery( $query );
 		//return $database->loadObjectList();
 		$rows = $database->loadObjectList();
 		if ($rows) {
-			foreach ($rows as $key => $row) 
+			foreach ($rows as $key => $row)
 			{
-				switch ($category) 
+				switch ($category)
 				{
 					case 'answer':
 						$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_answers&task=question&id='.$parent) : '';
@@ -92,16 +86,14 @@ class plgSupportAnswers extends JPlugin
 		}
 		return $rows;
 	}
-	
-	//-----------
-	
-	public function getParentId( $parentid, $category ) 
+
+	public function getParentId( $parentid, $category )
 	{
 		ximport('Hubzero_Comment');
-		
+
 		$database =& JFactory::getDBO();
 		$refid = $parentid;
-		
+
 		if ($category == 'answercomment') {
 			$pdata = $this->parent($parentid);
 			$category = $pdata->category;
@@ -121,64 +113,58 @@ class plgSupportAnswers extends JPlugin
 				}
 			}
 		}
-		
+
 		if ($category == 'answer') {
 			$database->setQuery( "SELECT qid FROM #__answers_responses WHERE id=".$refid );
 			$pid = $database->loadResult();
 		 	return $pid;
 		}
-		
+
 		if ($category == 'question') {
 		 	return $refid;
 		}
 	}
-	
-	//-----------
-	
-	public function parent($parentid) 
+
+	public function parent($parentid)
 	{
 		$database =& JFactory::getDBO();
 		$parent = new Hubzero_Comment( $database );
 		$parent->load( $parentid );
-		
+
 		return $parent;
 	}
-	
-	//-----------
-	
-	public function getTitle($category, $parentid) 
+
+	public function getTitle($category, $parentid)
 	{
 		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') {
 			return null;
 		}
-		
-		switch ($category) 
+
+		switch ($category)
 		{
-			case 'answer': 
-				return JText::sprintf('Answer to question #%s', $parentid);		
+			case 'answer':
+				return JText::sprintf('Answer to question #%s', $parentid);
          	break;
-			
-			case 'question': 
+
+			case 'question':
 				return JText::sprintf('Question #%s', $parentid);
          	break;
 
-			case 'answercomment': 
+			case 'answercomment':
 				return JText::sprintf('Comment to an answer for question #%s', $parentid);
          	break;
 		}
 	}
-	
-	//-----------
-	
-	public function deleteReportedItem($referenceid, $parentid, $category, $message) 
+
+	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
 		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') {
 			return null;
 		}
-		
+
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
-		
+
 		switch ($category)
 		{
 			case 'answer':
@@ -187,30 +173,30 @@ class plgSupportAnswers extends JPlugin
 					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
-				
+
 				$database->setQuery( "DELETE FROM #__answers_log WHERE rid=".$referenceid );
 				if (!$database->query()) {
 					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
-				
+
 				$message .= JText::sprintf('This is to notify you that your answer to question #%s was removed from the site due to granted complaint received from a user.', $parentid);
 			break;
-			
-			case 'question': 
+
+			case 'question':
 				$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
 				$banking = $upconfig->get('bankAccounts');
-				
+
 				$reward = 0;
 				if ($banking) {
 					$reward = $this->get_reward($parentid);
 				}
 				$responders = array();
-				
+
 				// Get all the answers for this question
 				$database->setQuery( "SELECT r.id, r.created_by FROM #__answers_responses AS r WHERE r.qid=".$referenceid );
 				$answers = $database->loadObjectList();
-	
+
 				if ($answers) {
 					foreach ($answers as $answer)
 					{
@@ -220,44 +206,44 @@ class plgSupportAnswers extends JPlugin
 							echo SupportHtml::alert( $database->getErrorMsg() );
 							exit;
 						}
-					
+
 						// Delete response
 						$database->setQuery( "UPDATE #__answers_responses SET state='2' WHERE id=".$answer->id );
 						if (!$database->query()) {
 							echo SupportHtml::alert( $database->getErrorMsg() );
 							exit;
 						}
-						
+
 						// Collect responders names
 						$responders[] = $answer->created_by;
 					}
 				}
-				
+
 				// Delete all tag associations
 				$database->setQuery( "DELETE FROM #__answers_tags WHERE questionid=".$referenceid );
 				if (!$database->query()) {
 					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
-	
+
 				$database->setQuery( "UPDATE #__answers_questions SET state='2', reward='0' WHERE id=".$referenceid );
 				if (!$database->query()) {
 					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
-				
+
 				if ($banking && $reward) {
 					ximport('Hubzero_Bank');
-					
+
 					// Send email to people who answered question with reward
 					if ($responders) {
-						foreach ($responders as $r) 
+						foreach ($responders as $r)
 						{
 							$zuser =& JUser::getInstance( $r );
 							if (is_object($zuser)) {
 								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email) {
 									$jconfig =& JFactory::getConfig();
-									
+
 									$admin_email = $jconfig->getValue('config.mailfrom');
 									$sub  = $jconfig->getValue('config.sitename').' Answers, Question #'.$referenceid.' was removed';
 									$from = $jconfig->getValue('config.sitename').' Answers';
@@ -273,17 +259,17 @@ class plgSupportAnswers extends JPlugin
 							}
 						}
 					}
-					
+
 					// get id of asker
 					$database->setQuery( "SELECT created_by FROM #__answers_questions WHERE id=".$parentid );
 					$asker = $database->loadResult();
-						
+
 					if ($asker) {
 						$quser =& JUser::getInstance( $asker );
 						if (is_object($quser)) {
 							$asker_id = $quser->get('id');
 						}
-							
+
 						if (isset($asker_id) ) {
 							// Remove hold 
 							$sql = "DELETE FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=".$parentid." AND uid='".$asker_id."'";
@@ -292,22 +278,22 @@ class plgSupportAnswers extends JPlugin
 								echo SupportHtml::alert( $database->getErrorMsg() );
 								exit;
 							}
-									
+
 							// Make credit adjustment
 							$BTL_Q = new Hubzero_Bank_Teller( $database, $asker_id );
 							$credit = $BTL_Q->credit_summary();
 							$adjusted = $credit - $reward;
-							$BTL_Q->credit_adjustment($adjusted);		
+							$BTL_Q->credit_adjustment($adjusted);
 						}
 					}
 				}
-				
+
 				$message .= JText::sprintf('This is to notify you that your question #%s was removed from the site due to granted complaint received from a user.', $parentid);
 			break;
-			
+
 			case 'answercomment':
 				ximport('Hubzero_Comment');
-				
+
 				$comment = new Hubzero_Comment( $database );
 				$comment->load( $referenceid );
 				$comment->state = 2;
@@ -315,25 +301,23 @@ class plgSupportAnswers extends JPlugin
 					echo SupportHtml::alert( $comment->getError() );
 					exit();
 				}
-				
+
 				$message .= JText::sprintf('This is to notify you that your comment on an answer to question #%s was removed from the site due to granted complaint received from a user.', $parentid);
 			break;
 		}
-		
+
 		return $message;
 	}
-	
-	//-----------
-	
+
 	public function get_reward($id)
 	{
 		$database =& JFactory::getDBO();
-		
+
 		// check if question owner assigned a reward for answering his Q 
 		$sql = "SELECT amount FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=".$id;
 		$database->setQuery( $sql );
 		$reward = $database->loadResult();
-			
+
 		return $reward;
 	}
 }

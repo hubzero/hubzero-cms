@@ -34,7 +34,7 @@ $content = '';
 if ($modxwhosonline->online) {
 	$guest_array = $modxwhosonline->guest_array;
 	$user_array = $modxwhosonline->user_array;
-	
+
 	if ($modxwhosonline->admin) {
 		$content .= '<a href="/users/">';
 	}
@@ -89,7 +89,7 @@ if ($modxwhosonline->users) {
 	$rows = $modxwhosonline->rows;
 	if ($rows) {
 		$content .= '<ul>'."\n";
-		foreach ($rows as $row) 
+		foreach ($rows as $row)
 		{
 			$content .= '<li><strong>'. $row->username .'</strong></li>'."\n";
 		}

@@ -29,27 +29,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class FileMacro extends WikiMacro 
+class FileMacro extends WikiMacro
 {
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Works similar to the Image macro but, instead, generates a link to a file. The first argument is the filename.';
 		$txt['html'] = '<p>Works similar to the Image macro but, instead, generates a link to a file. The first argument is the filename.</p>';
 		return $txt['html'];
 	}
-	
-	//-----------
-	
-	public function render() 
+
+	public function render()
 	{
 		$et = $this->args;
-		
+
 		if (!$et) {
 			return '';
 		}
-		
+
 		$config = JComponentHelper::getParams( 'com_wiki' );
 		if ($this->filepath != '') {
 			$config->set('filepath', $this->filepath);
@@ -58,15 +55,15 @@ class FileMacro extends WikiMacro
 		// Is it numeric?
 		if (is_numeric($et)) {
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'attachment.php');
-			
+
 			// Yes, then get resource by ID
 			$id = intval($et);
 			$attach = new WikiPageAttachment( $this->_db );
 			$attach->load( $id );
-			
+
 			// Did we get a result from the database?
 			$fp  = JPATH_ROOT.$config->get('filepath');
-			$fp .= ($attach->pageid) ? DS.$attach->pageid : ''; 
+			$fp .= ($attach->pageid) ? DS.$attach->pageid : '';
 			$fp .= DS.$attach->filename;
 			if ($attach->filename && is_file($fp)) {
 				/*
