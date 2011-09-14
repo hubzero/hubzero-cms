@@ -116,8 +116,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="clear"></div>
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="view" value="<?php echo $this->task; ?>" />
-		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+		<input type="hidden" name="view" value="<?php echo htmlentities($this->task); ?>" />
+		<input type="hidden" name="task" value="<?php echo htmlentities($this->task); ?>" />
 		
 		<p class="submit"><input type="submit" name="reset" value="Send Email with New Password" /></p>
 	</form>

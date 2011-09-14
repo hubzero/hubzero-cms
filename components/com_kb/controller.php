@@ -96,7 +96,7 @@ class KbController extends Hubzero_Controller
 		$view->filters = array();
 		$view->filters['limit'] = JRequest::getInt('limit', 25);
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
-		$view->filters['order'] = JRequest::getVar('order', 'recent');
+		$view->filters['order'] = JRequest::getWord('order', 'recent');
 		$view->filters['section'] = 'all';
 		$view->filters['category'] = 0;
 		$view->filters['search'] = JRequest::getVar('search','');
@@ -181,7 +181,7 @@ class KbController extends Hubzero_Controller
 		$view->filters = array();
 		$view->filters['limit'] = JRequest::getInt('limit', 25);
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
-		$view->filters['order'] = JRequest::getVar('order', 'recent');
+		$view->filters['order'] = JRequest::getWord('order', 'recent');
 		$view->filters['section'] = $sect;
 		$view->filters['category'] = $cat;
 		$view->filters['search'] = JRequest::getVar('search','');

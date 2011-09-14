@@ -157,10 +157,10 @@ class MembersController extends Hubzero_Controller
 		$filters = array();
 		$filters['limit']  = JRequest::getVar( 'limit', 25, 'request' );
 		$filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
-		$filters['show']   = JRequest::getVar( 'show', $this->_view );
-		$filters['sortby'] = JRequest::getVar( 'sortby', 'name' );
+		$filters['show']   = JRequest::getWord( 'show', $this->_view );
+		$filters['sortby'] = JRequest::getWord( 'sortby', 'name' );
 		$filters['search'] = JRequest::getVar( 'search', '' );
-		$filters['index']  = JRequest::getVar( 'index', '' );
+		$filters['index']  = JRequest::getWord( 'index', '' );
 
 		if ($filters['limit'] == 0) {
 			$filters['limit'] = 100;

@@ -138,7 +138,8 @@ class CitationsController extends Hubzero_Controller
 		$view->filters['filter'] = JRequest::getVar( 'filter', '' );
 		$view->filters['year']   = JRequest::getInt( 'year', 0 );
 		$view->filters['sort']   = JRequest::getVar( 'sort', 'sec_cnt DESC' );
-		$view->filters['search'] = JRequest::getVar( 'search', '' );
+//		$view->filters['search'] = JRequest::getVar( 'search', '' );
+		$view->filters['search'] = $this->database->getEscaped( JRequest::getVar( 'search', '' ));
 		$view->filters['reftype'] = JRequest::getVar( 'reftype', array('research'=>1,'education'=>1,'eduresearch'=>1,'cyberinfrastructure'=>1) );
 		$view->filters['geo']    = JRequest::getVar( 'geo', array('us'=>1,'na'=>1,'eu'=>1,'as'=>1) );
 		$view->filters['aff']    = JRequest::getVar( 'aff', array('university'=>1,'industry'=>1,'government'=>1) );

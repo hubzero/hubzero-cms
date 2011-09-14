@@ -526,8 +526,8 @@ class AnswersController extends Hubzero_Controller
 		$view->filters['tag']      = JRequest::getVar( 'tags', '' );
 		$view->filters['tag']      = ($view->filters['tag']) ? $view->filters['tag'] : JRequest::getVar( 'tag', '' );
 		$view->filters['q']        = JRequest::getVar( 'q', '' );
-		$view->filters['filterby'] = JRequest::getVar( 'filterby', '' );
-		$view->filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
+		$view->filters['filterby'] = JRequest::getWord( 'filterby', '' );
+		$view->filters['sortby']   = JRequest::getWord( 'sortby', 'rewards' );
 		
 		// Instantiate a Questions object
 		$aq = new AnswersQuestion( $this->database );

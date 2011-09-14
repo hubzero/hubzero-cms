@@ -193,7 +193,7 @@ class ResourcesController extends Hubzero_Controller
 		// Incoming
 		$view->filters = array();
 		$view->filters['tag']    = JRequest::getVar( 'tag', '' );
-		$view->filters['type']   = JRequest::getVar( 'type', '' );
+		$view->filters['type']   = JRequest::getInt( 'type', '' );
 		$view->filters['sortby'] = JRequest::getVar( 'sortby', $default_sort );
 		$view->filters['limit']  = JRequest::getInt( 'limit', 25 );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
@@ -241,7 +241,7 @@ class ResourcesController extends Hubzero_Controller
 		// Get type if not given
 		$this->_title = JText::_(strtoupper($this->_option)).': ';
 		if ($view->filters['type'] != '') {
-			$t->load( $view->filters['type'] );
+			$t->load( $database->getEscaped($view->filters['type']) );
 			$this->_title .= $t->type;
 			$this->_task_title = $t->type;
 		} else {

@@ -52,7 +52,7 @@ $item->negative = ($item->negative > 0) ? '-'.$item->negative: '&nbsp;&nbsp;'.$i
 // import filters
 $filterln  = isset($filters['filterby']) ? a.'filterby='.$filters['filterby'] : '';
 $filterln .= isset($filters['sortby']) ? a.'sortby='.$filters['sortby'] : '';
-$filterln .= isset($filters['tag']) ? a.'tags='.$filters['tag'] : '';
+$filterln .= isset($filters['tag']) ? a.'tags=' . htmlentities($filters['tag']) : '';
 $filterln .= isset($filters['limit']) ? a.'limit='.$filters['limit'] : '';
 $filterln .= isset($filters['start']) ? a.'limitstart='.$filters['start'] : '';
 				

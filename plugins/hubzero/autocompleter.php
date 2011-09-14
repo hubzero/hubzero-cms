@@ -86,7 +86,7 @@ class plgHubzeroAutocompleter extends JPlugin
 		$html .= ($id)    ? ' id="'.$id.'"'       : '';
 		$html .= ($class) ? ' class="'.$class.'"' : '';
 		$html .= ($size)  ? ' size="'.$size.'"'   : '';
-		$html .= ' value="'.$value.'" autocomplete="off" />';
+		$html .= ' value="'. htmlentities($value, ENT_QUOTES) .'" autocomplete="off" />';
 		//$html .= '<div style="display: none;" class="autocompleter-loading"></div>';
 
 		// Return the Input tag
