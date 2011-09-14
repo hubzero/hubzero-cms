@@ -2811,7 +2811,7 @@ class WishlistController extends JObject
 		$juser =& JFactory::getUser();
 
 		// Incoming		
-		$id 	 = JRequest::getInt( 'refid', 0 );
+		$id 	 = JRequest::getInt( 'refid', 1 );
 		$ajax 	 = JRequest::getInt( 'ajax', 0 );
 		$page 	 = JRequest::getVar( 'page', 'wishlist' );
 		$cat 	 = 'wish';

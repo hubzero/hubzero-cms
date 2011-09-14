@@ -218,7 +218,7 @@ class TagsController extends Hubzero_Controller
 
 			// Load the tag
 			$tagobj = new TagsTag( $this->database );
-			$tagobj->loadTag( $tag );
+			$tagobj->loadTag( $this->database->getEscaped($tag) );
 
 			// Ensure we loaded the tag's info from the database
 			if ($tagobj->id) {

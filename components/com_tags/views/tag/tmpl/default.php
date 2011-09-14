@@ -137,7 +137,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// No - nothing to output
 			$html = '';
 		}
-		$html .= "\t".'<input type="hidden" name="area" value="'.$this->active.'" />'."\n";
+		$html .= "\t".'<input type="hidden" name="area" value=" . htmlspecialchars($this->active, ENT_QUOTES) . '" />'."\n";
 
 		echo $html;
 		?>

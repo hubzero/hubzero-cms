@@ -66,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<legend>Search for articles</legend>
 					<label for="entry-search-field">Enter keyword or phrase</label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
-					<input type="hidden" name="order" value="<?php echo $this->filters['order']; ?>" />
+					<input type="hidden" name="order" value="<?php echo htmlentities($this->filters['order']); ?>" />
 					<input type="hidden" name="section" value="all" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
@@ -130,7 +130,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$filters = array();
 			$filters['limit'] = JRequest::getInt('limit', 3);
 			$filters['start'] = JRequest::getInt('limitstart', 0);
-			$filters['order'] = JRequest::getVar('order', 'recent');
+			$filters['order'] = JRequest::getWord('order', 'recent');
 			$filters['category'] = 0;
 			$filters['search'] = JRequest::getVar('search','');
 

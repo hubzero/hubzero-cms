@@ -75,7 +75,7 @@ $this->filters['sort'] = '';
 							<th>
 								<?php
 													if ($this->filters['search'] != '') {
-														echo 'Search for "'.$this->filters['search'].'" in ';
+														echo 'Search for "' . htmlentities($this->filters['search']) . '" in ';
 													}
 								?>
 								<?php echo JText::_('COM_TAGS'); ?>

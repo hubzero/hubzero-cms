@@ -64,7 +64,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<label for="trLogin">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 <?php if (!$modreportproblems->juser->get('guest')) { ?>
-							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo $modreportproblems->juser->get('username'); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('username'); ?></span>
+							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo htmlentities($modreportproblems->juser->get('username'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('username'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[login]" id="trLogin" value="" />
 <?php } ?>
@@ -82,7 +82,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<label for="trEmail">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_EMAIL'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
 <?php if (!$modreportproblems->juser->get('guest')) { ?>
-							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo $modreportproblems->juser->get('email'); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('email'); ?></span>
+							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo htmlspecialchars($modreportproblems->juser->get('email'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('email'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[email]" id="trEmail" value="" />
 <?php } ?>
@@ -126,7 +126,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<input type="hidden" name="problem[browser]" value="<?php echo $modreportproblems->browser; ?>" />
 						<input type="hidden" name="problem[browserver]" value="<?php echo $modreportproblems->browser_ver; ?>" />
 						<input type="hidden" name="verified" value="<?php echo $modreportproblems->verified; ?>" />
-						<input type="hidden" name="reporter[org]" value="<?php echo (!$modreportproblems->juser->get('guest')) ? $modreportproblems->juser->get('org') : ''; ?>" />
+						<input type="hidden" name="reporter[org]" value="<?php echo (!$modreportproblems->juser->get('guest')) ? htmlentities($modreportproblems->juser->get('org'),ENT_QUOTES) : ''; ?>" />
 						<input type="hidden" name="option" value="com_feedback" />
 						<input type="hidden" name="task" value="sendreport" />
 						<input type="hidden" name="no_html" value="1" />

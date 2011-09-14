@@ -90,7 +90,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<input type="text" name="search" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
-					<input type="hidden" name="order" value="<?php echo $this->filters['order']; ?>" />
+					<input type="hidden" name="order" value="<?php echo htmlentities($this->filters['order']); ?>" />
 					<input type="hidden" name="section" value="<?php echo $this->category->alias; ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>

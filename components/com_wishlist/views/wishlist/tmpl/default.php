@@ -136,9 +136,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$filters['tag'])) );
 
 			if (count($tf) > 0) {
-				$html .= $tf[0];
+				$html .= $tf[0] . '??????1';
 			} else {
-				$html .= t.t.t.'<input type="text" name="tags" id="tags-men" value="'.$filters['tag'].'" />'.n;
+				$html .= t.t.t.'??????2<input type="text" name="tags" id="tags-men" value="'. htmlentities($filters['tag'], ENT_QUOTES ) .'" />'.n;
 			}
 			$html .= '</label>';
 			// get popular tags
@@ -262,7 +262,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					// wish title & text details				
 					$html .= t.t.'<div class="ensemble_left">'.n;
 					if(!$item->reports) {
-						$html .= t.t.t.'<p class="wishcontent"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].'" class="wishtitle" title="'.htmlspecialchars(Hubzero_View_Helper_Html::xhtml($item->about)).'" >'.Hubzero_View_Helper_Html::shortenText($item->subject, 160, 0).'</a></p>'.n;
+						$html .= t.t.t.'<p class="wishcontent"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.htmlentities($filters['filterby']).a.'sortby='.htmlentities($filters['sortby']).a.'tags='.htmlentities($filters['tag']).'" class="wishtitle" title="'.htmlspecialchars(Hubzero_View_Helper_Html::xhtml($item->about)).'" >'.Hubzero_View_Helper_Html::shortenText($item->subject, 160, 0).'</a></p>'.n;
 						$html .= t.t.t.'<p class="proposed">#'.$item->id.' '.JText::_('WISH_PROPOSED_BY').' '.$name.' '.JText::_('ON').' '.JHTML::_('date',$item->proposed, '%d %b %Y');
 						$html .= ', <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?com=1'.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].'#comments">'.$item->numreplies;
 						$html .= '<span class="nobreak">';

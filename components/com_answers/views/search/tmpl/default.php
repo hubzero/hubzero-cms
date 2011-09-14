@@ -102,8 +102,8 @@ if (!$this->filters['filterby']) {
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<input type="text" name="q" value="<?php echo htmlentities($this->filters['q'], ENT_COMPAT, 'UTF-8'); ?>" />
-					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
-					<input type="hidden" name="filterby" value="<?php echo $this->filters['filterby']; ?>" />
+					<input type="hidden" name="sortby" value="<?php echo htmlentities($this->filters['sortby']); ?>" />
+					<input type="hidden" name="filterby" value="<?php echo htmlentities($this->filters['filterby']); ?>" />
 					<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 <?php if (isset($this->filters['interest'])) { ?>
