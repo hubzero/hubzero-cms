@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,8 +36,23 @@ defined('JPATH_BASE') or die();
 
 jimport('joomla.event.plugin');
 
+/**
+ * Short description for 'plgXMessageHandler'
+ * 
+ * Long description (if any) ...
+ */
 class plgXMessageHandler extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgXMessageHandler'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgXMessageHandler(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -45,6 +62,17 @@ class plgXMessageHandler extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onTakeAction'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      array $uids Parameter description (if any) ...
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function onTakeAction( $type, $uids=array(), $component='', $element=null )
 	{
 		ximport('Hubzero_Message');
@@ -89,6 +117,22 @@ class plgXMessageHandler extends JPlugin
 		return true;
 	}
 
+	/**
+	 * Short description for 'onSendMessage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $subject Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @param      array $from Parameter description (if any) ...
+	 * @param      array $to Parameter description (if any) ...
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @param      string $description Parameter description (if any) ...
+	 * @param      integer $group_id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function onSendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0 )
 	{
 		ximport('Hubzero_Message');

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,20 +21,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'EventsDate'
+ * 
+ * Long description (if any) ...
+ */
 class EventsDate
 {
+
+	/**
+	 * Description for 'year'
+	 * 
+	 * @var number
+	 */
 	var $year   = NULL;
+
+	/**
+	 * Description for 'month'
+	 * 
+	 * @var number
+	 */
 	var $month  = NULL;
+
+	/**
+	 * Description for 'day'
+	 * 
+	 * @var unknown
+	 */
 	var $day    = NULL;
+
+	/**
+	 * Description for 'hour'
+	 * 
+	 * @var integer
+	 */
 	var $hour   = NULL;
+
+	/**
+	 * Description for 'minute'
+	 * 
+	 * @var integer
+	 */
 	var $minute = NULL;
+
+	/**
+	 * Description for 'second'
+	 * 
+	 * @var integer
+	 */
 	var $second = NULL;
 
+	/**
+	 * Short description for 'EventsDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $datetime Parameter description (if any) ...
+	 * @return     void
+	 */
     public function EventsDate( $datetime='' )
 	{
 		if (ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})",$datetime,$regs)) {
@@ -59,6 +110,16 @@ class EventsDate
 		}
 	}
 
+	/**
+	 * Short description for 'setDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $year Parameter description (if any) ...
+	 * @param      integer $month Parameter description (if any) ...
+	 * @param      integer $day Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setDate( $year=0, $month=0, $day=0 )
 	{
 		$this->year  = intval( $year );
@@ -72,21 +133,52 @@ class EventsDate
 		$this->day = min( $this->daysInMonth(), $this->day );
     }
 
+	/**
+	 * Short description for 'getYear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $asString Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getYear( $asString=false )
 	{
 		return $asString ? sprintf( "%04d", $this->year ) : $this->year;
     }
 
+	/**
+	 * Short description for 'getMonth'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $asString Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getMonth( $asString=false )
 	{
 		return $asString ? sprintf( "%02d", $this->month ) : $this->month;
     }
 
+	/**
+	 * Short description for 'getDay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $asString Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getDay( $asString=false )
 	{
 		return $asString ? sprintf( "%02d", $this->day ) : $this->day;
     }
 
+	/**
+	 * Short description for 'get12hrTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get12hrTime( )
 	{
 		$hour=$this->hour;
@@ -99,11 +191,26 @@ class EventsDate
 		return ($this->hour >= 12) ? $time.'pm' : $time.'am';
 	}
 
+	/**
+	 * Short description for 'get24hrTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get24hrTime( )
 	{
 		return sprintf("%02d:%02d", $this->hour, $this->minute);
 	}
 
+	/**
+	 * Short description for 'toDateURL'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $task Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function toDateURL($task='')
 	{
 		switch ($task)
@@ -126,6 +233,15 @@ class EventsDate
 		return $url;
     }
 
+	/**
+	 * Short description for 'daysInMonth'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $month Parameter description (if any) ...
+	 * @param      integer $year Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function daysInMonth( $month=0, $year=0 )
 	{
 		$month = intval( $month );
@@ -157,6 +273,14 @@ class EventsDate
 		}
 	}
 
+	/**
+	 * Short description for 'addMonths'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $n Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function addMonths( $n=0 )
 	{
 		$an = abs( $n );
@@ -180,12 +304,30 @@ class EventsDate
 		}
 	}
 
+	/**
+	 * Short description for 'addDays'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $n Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function addDays( $n=0 )
 	{
 		$days = $this->toDays();
 		$this->fromDays( $days + $n );
 	}
 
+	/**
+	 * Short description for 'toDays'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $day Parameter description (if any) ...
+	 * @param      number $month Parameter description (if any) ...
+	 * @param      number $year Parameter description (if any) ...
+	 * @return     number Return description (if any) ...
+	 */
 	public function toDays( $day=0, $month=0, $year=0)
 	{
 		if (!$day) {
@@ -228,6 +370,14 @@ class EventsDate
 		return ( floor( (146097 * $century) / 4 ) + floor( (1461 * $year) / 4 ) + floor( (153 * $month + 2) / 5 ) + $day + 1721119);
 	}
 
+	/**
+	 * Short description for 'fromDays'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $days Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function fromDays( $days )
 	{
 		$days -= 1721119;

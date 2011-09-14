@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'TagsController'
+ * 
+ * Long description (if any) ...
+ */
 class TagsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = strtolower(JRequest::getVar('task', ''));
@@ -60,6 +75,14 @@ class TagsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'intro'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function intro()
 	{
 		// Instantiate a new view
@@ -128,6 +151,13 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		$title = JText::_(strtoupper($this->_option));
@@ -402,6 +432,13 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'autocomplete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function autocomplete()
 	{
 		$filters = array();
@@ -428,6 +465,13 @@ class TagsController extends Hubzero_Controller
 		echo '['.implode(',',$json).']';
 	}
 
+	/**
+	 * Short description for 'feed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function feed()
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
@@ -640,6 +684,14 @@ class TagsController extends Hubzero_Controller
 	//  Administrative Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		// Instantiate a new view
@@ -701,11 +753,26 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function create()
 	{
 		$this->edit();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $tag Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit($tag=NULL)
 	{
 		// Check that the user is authorized
@@ -743,12 +810,26 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		$return = JRequest::getVar('return', 'index.php?option='.$this->_option.'&task=browse', 'get');
 		$this->_redirect = JRoute::_( $return );
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		$row = new TagsTag( $this->database );
@@ -789,6 +870,13 @@ class TagsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		// Check that the user is authorized
@@ -830,6 +918,15 @@ class TagsController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $tags Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildPathway($tags=null)
 	{
 		$app =& JFactory::getApplication();
@@ -864,6 +961,14 @@ class TagsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $tags Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildTitle($tags=null)
 	{
 		$title = JText::_(strtoupper($this->_option));

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2008-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2008-2011 Purdue University. All rights reserved.
  *
@@ -24,17 +21,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2008-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'XImportController'
+ * 
+ * Long description (if any) ...
+ */
 class XImportController extends JObject
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var string
+	 */
         private $_name  = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
         private $_data  = array();
+
+	/**
+	 * Description for '_task'
+	 * 
+	 * @var unknown
+	 */
         private $_task  = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
         public function __construct( $config=array() )
         {
                 $this->_redirect = NULL;
@@ -60,11 +93,28 @@ class XImportController extends JObject
                 $this->_option = 'com_'.$this->_name;
         }
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
         public function __set($property, $value)
         {
                 $this->_data[$property] = $value;
         }
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
         public function __get($property)
         {
                 if (isset($this->_data[$property])) {
@@ -72,6 +122,13 @@ class XImportController extends JObject
                 }
         }
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 		public function execute()
         {
 			// Load the component config
@@ -142,6 +199,14 @@ class XImportController extends JObject
         // Redirect functions
         //----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
         public function redirect()
         {
                 if ($this->_redirect != NULL) {
@@ -150,6 +215,13 @@ class XImportController extends JObject
                 }
         }
 
+	/**
+	 * Short description for 'authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function authorize()
         {
                 // Check if they are logged in
@@ -164,6 +236,13 @@ class XImportController extends JObject
                 return false;
         }
 
+	/**
+	 * Short description for 'showlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function showlist()
 	{
 	     $upconfig =& JComponentHelper::getParams( 'com_userpoints' );
@@ -188,6 +267,14 @@ class XImportController extends JObject
 		echo '<a href="/ximport/groupcreated">Take group create date from group logs</a><br>' . "\n";
 	}
 
+	/**
+	 * Short description for 'fixname'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function fixname($name)
 	{
 		$xprofile = new Hubzero_User_Profile();
@@ -251,6 +338,13 @@ class XImportController extends JObject
     		}
 	}
 
+	/**
+	 * Short description for 'fixnames'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function fixnames()
 	{
 		$db = JFactory::getDBO();
@@ -275,6 +369,15 @@ class XImportController extends JObject
                 mysql_free_result( $result );
 	}
 
+	/**
+	 * Short description for 'import_author'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      boolean $override Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function import_author($row = null, $override = false)
 	{
 		if ($row == 0)
@@ -349,6 +452,14 @@ class XImportController extends JObject
 		return;
 	}
 
+	/**
+	 * Short description for 'import_authors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $override Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function import_authors($override = false)
 	{
 		$db = JFactory::getDBO();
@@ -404,6 +515,14 @@ class XImportController extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'importuser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function importuser($name)
 	{
        		$profile = new Hubzero_User_Profile();
@@ -417,6 +536,13 @@ class XImportController extends JObject
                 	echo "Imported $name<br>";
 	}
 
+	/**
+	 * Short description for 'importusers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
         public function importusers()
         {
                 $db = JFactory::getDBO();
@@ -441,22 +567,51 @@ class XImportController extends JObject
                 mysql_free_result( $result );
         }
 
+	/**
+	 * Short description for 'importgroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     void
+	 */
 	function importgroup($group)
 	{
 		die('this function is now in groups admin component');
 	}
 
+	/**
+	 * Short description for 'importgroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function importgroups()
 	{
 		die('this function is now in groups admin component');
 	}
 
+	/**
+	 * Short description for 'importtrac'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function importtrac()
 	{
 		include 'itrac.php';
 		_importtrac();
 	}
 
+	/**
+	 * Short description for 'showusers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function showusers()
 	{
 		include 'iuser.php';
@@ -464,6 +619,13 @@ class XImportController extends JObject
 		_showusers();
 	}
 
+	/**
+	 * Short description for 'compareusers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function compareusers()
 	{
 		include 'iuser.php';
@@ -471,12 +633,26 @@ class XImportController extends JObject
 		_compareusers();
 	}
 
+	/**
+	 * Short description for 'comparelicenses'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function comparelicenses()
 	{
 	    	include 'ilicense.php';
 		_comparelicenses();
 	}
 
+	/**
+	 * Short description for 'comparegroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     function comparegroups()
     {
         include 'igroups.php';
@@ -487,6 +663,14 @@ class XImportController extends JObject
 	//take this data from xgroups_logs table
 	//Added May 3, 2011 by Chris Smoak
 
+
+	/**
+	 * Short description for 'moveGroupCreatedDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function moveGroupCreatedDate()
 	{
 		//instatiate database

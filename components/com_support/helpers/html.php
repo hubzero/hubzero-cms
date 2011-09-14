@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,40 +21,112 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined('n')) {
+
+/**
+ * Description for ''n''
+ */
 	define('n',"\n");
+
+/**
+ * Description for ''t''
+ */
 	define('t',"\t");
+
+/**
+ * Description for ''r''
+ */
 	define('r',"\r");
+
+/**
+ * Description for ''a''
+ */
 	define('a','&amp;');
 }
 
+/**
+ * Short description for 'SupportHtml'
+ * 
+ * Long description (if any) ...
+ */
 class SupportHtml
 {
+
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
 
+	/**
+	 * Short description for 'warning'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
+	/**
+	 * Short description for 'hed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $level Parameter description (if any) ...
+	 * @param      string $txt Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function hed($level, $txt)
 	{
 		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
 	}
 
+	/**
+	 * Short description for 'div'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $txt Parameter description (if any) ...
+	 * @param      string $cls Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function div($txt, $cls='', $id='')
 	{
 		$html  = '<div';
@@ -76,6 +145,14 @@ class SupportHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'getStatus'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $int Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getStatus($int)
 	{
 		switch ($int)
@@ -87,6 +164,15 @@ class SupportHtml
 		return $status;
 	}
 
+	/**
+	 * Short description for 'shortenText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function shortenText($text, $chars=500)
 	{
 		$text = strip_tags($text);
@@ -102,6 +188,18 @@ class SupportHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'selectArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $js Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectArray($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
@@ -117,6 +215,18 @@ class SupportHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'selectObj'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $js Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectObj($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
@@ -132,6 +242,14 @@ class SupportHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'collapseFilters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function collapseFilters( $filters )
 	{
 		$fstring = array();
@@ -147,6 +265,14 @@ class SupportHtml
 		return trim($fstring);
 	}
 
+	/**
+	 * Short description for 'mkt'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $stime Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -155,6 +281,14 @@ class SupportHtml
 		return $stime;
 	}
 
+	/**
+	 * Short description for 'timeAgoo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
@@ -197,6 +331,14 @@ class SupportHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'timeAgo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timestamp Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function timeAgo($timestamp)
 	{
 		$timestamp = SupportHtml::mkt($timestamp);
@@ -209,6 +351,15 @@ class SupportHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'getMemberPhoto'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      integer $anonymous Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getMemberPhoto( $member, $anonymous=0 )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
@@ -241,6 +392,14 @@ class SupportHtml
 		}
 	}
 
+	/**
+	 * Short description for 'thumbit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
@@ -253,6 +412,14 @@ class SupportHtml
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)

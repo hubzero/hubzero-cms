@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2009-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2009-2011 Purdue University. All rights reserved.
  *
@@ -24,23 +21,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_View_Helper_Html'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_View_Helper_Html
 {
+
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function error($msg, $tag='p')
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'warning'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function warning($msg, $tag='p')
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'div'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $txt Parameter description (if any) ...
+	 * @param      string $cls Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function div($txt, $cls='', $id='')
 	{
 		$html  = '<div';
@@ -61,6 +97,16 @@ class Hubzero_View_Helper_Html
 		return $html;
 	}
 
+	/**
+	 * Short description for 'hed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $level Parameter description (if any) ...
+	 * @param      string $words Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function hed( $level, $words, $class='' )
 	{
 		$html  = '<h'.$level;
@@ -69,6 +115,14 @@ class Hubzero_View_Helper_Html
 		return $html;
 	}
 
+	/**
+	 * Short description for 'xhtml'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public static function xhtml( $text )
 	{
 		$text = stripslashes($text);
@@ -82,6 +136,16 @@ class Hubzero_View_Helper_Html
 		return $text;
 	}
 
+	/**
+	 * Short description for 'shortenText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @param      integer $p Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
@@ -106,6 +170,14 @@ class Hubzero_View_Helper_Html
 		return $text;
 	}
 
+	/**
+	 * Short description for 'purifyText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$text Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public static function purifyText( &$text )
 	{
 		$text = stripslashes($text);
@@ -124,6 +196,15 @@ class Hubzero_View_Helper_Html
 		return $text;
 	}
 
+	/**
+	 * Short description for 'str_highlight'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      array $needles Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public static function str_highlight($text, $needles)
 	{
 		$highlight = '<span class="highlight">\1</span>';
@@ -140,6 +221,14 @@ class Hubzero_View_Helper_Html
 		return $text;
 	}
 
+	/**
+	 * Short description for 'ampReplace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public static function ampReplace( $text )
 	{
 		$text = str_replace( '&&', '*--*', $text );
@@ -152,6 +241,14 @@ class Hubzero_View_Helper_Html
 		return $text;
 	}
 
+	/**
+	 * Short description for 'mkt'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $stime Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public static function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -160,6 +257,14 @@ class Hubzero_View_Helper_Html
 		return $stime;
 	}
 
+	/**
+	 * Short description for 'timeAgoo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function timeAgoo($timestamp)
 	{
 		// Store the current time
@@ -202,6 +307,14 @@ class Hubzero_View_Helper_Html
 		return $text;
 	}
 
+	/**
+	 * Short description for 'timeAgo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function timeAgo($timestamp)
 	{
 		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
@@ -213,6 +326,14 @@ class Hubzero_View_Helper_Html
 		return $text;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public static function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
@@ -222,6 +343,14 @@ class Hubzero_View_Helper_Html
 		return $someid;
 	}
 
+	/**
+	 * Short description for 'thumbit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public static function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
@@ -234,6 +363,15 @@ class Hubzero_View_Helper_Html
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'getFileAttribs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      string $base_path Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function getFileAttribs( $path, $base_path='' )
 	{
 		// Return nothing if no path provided
@@ -294,6 +432,14 @@ class Hubzero_View_Helper_Html
 		return $html;
 	}
 
+	/**
+	 * Short description for 'formatSize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $file_size Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function formatSize($file_size)
 	{
 		if ($file_size >= 1073741824) {
@@ -308,6 +454,14 @@ class Hubzero_View_Helper_Html
 		return $file_size;
 	}
 
+	/**
+	 * Short description for 'filesize_r'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function filesize_r($path)
 	{
 		if (!file_exists($path)) {

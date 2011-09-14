@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,19 +35,84 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Base class for resource usage
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'ResourcesUsage'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesUsage
 {
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	var $_db      = NULL;
+
+	/**
+	 * Description for '_resid'
+	 * 
+	 * @var string
+	 */
 	var $_resid   = NULL;
+
+	/**
+	 * Description for '_type'
+	 * 
+	 * @var unknown
+	 */
 	var $_type    = NULL;
 
+	/**
+	 * Description for 'rating'
+	 * 
+	 * @var string
+	 */
 	var $rating   = NULL;
+
+	/**
+	 * Description for 'users'
+	 * 
+	 * @var string
+	 */
 	var $users    = 'unavailable';
+
+	/**
+	 * Description for 'datetime'
+	 * 
+	 * @var unknown
+	 */
 	var $datetime = NULL;
 
+	/**
+	 * Description for 'cites'
+	 * 
+	 * @var string
+	 */
 	var $cites    = NULL;
+
+	/**
+	 * Description for 'lastcite'
+	 * 
+	 * @var unknown
+	 */
 	var $lastcite = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      unknown $resid Parameter description (if any) ...
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      integer $rating Parameter description (if any) ...
+	 * @param      integer $cites Parameter description (if any) ...
+	 * @param      string $lastcite Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
 	{
 		$this->_db = $db;
@@ -56,6 +123,14 @@ class ResourcesUsage
 		$this->lastcite = $lastcite;
 	}
 
+	/**
+	 * Short description for 'fetch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $disp Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function fetch( $disp )
 	{
 		switch (strtoupper($disp))
@@ -88,11 +163,26 @@ class ResourcesUsage
 		return array($caption, $period);
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $disp Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function display( $disp )
 	{
 		return true;
 	}
 
+	/**
+	 * Short description for 'display_substats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function display_substats()
 	{
 		$cls = $this->getRatingClass($this->rating);
@@ -122,11 +212,27 @@ class ResourcesUsage
 		return $html;
 	}
 
+	/**
+	 * Short description for 'process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $results Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function process( $results )
 	{
 		return true;
 	}
 
+	/**
+	 * Short description for 'valfmt'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $val Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function valfmt($val)
 	{
 		if ($val != 'unavailable') {
@@ -143,6 +249,14 @@ class ResourcesUsage
 		return $val;
 	}
 
+	/**
+	 * Short description for 'getRatingClass'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $rating Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getRatingClass($rating=0)
 	{
 		switch ($rating)
@@ -168,21 +282,90 @@ class ResourcesUsage
 // Extended resource stats class (Tools)
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class ToolStats extends ResourcesUsage
 {
+
+	/**
+	 * Description for 'jobs'
+	 * 
+	 * @var string
+	 */
 	var $jobs     = 'unavailable';
+
+	/**
+	 * Description for 'avg_wall'
+	 * 
+	 * @var string
+	 */
 	var $avg_wall = 'unavailable';
+
+	/**
+	 * Description for 'tot_wall'
+	 * 
+	 * @var string
+	 */
 	var $tot_wall = 'unavailable';
+
+	/**
+	 * Description for 'avg_cpu'
+	 * 
+	 * @var mixed
+	 */
 	var $avg_cpu  = 'unavailable';
+
+	/**
+	 * Description for 'tot_cpu'
+	 * 
+	 * @var mixed
+	 */
 	var $tot_cpu  = 'unavailable';
+
+	/**
+	 * Description for 'avg_exec'
+	 * 
+	 * @var string
+	 */
 	var $avg_exec = 'unavailable';
+
+	/**
+	 * Description for 'tot_exec'
+	 * 
+	 * @var string
+	 */
 	var $tot_exec = 'unavailable';
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      unknown $resid Parameter description (if any) ...
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      integer $rating Parameter description (if any) ...
+	 * @param      integer $cites Parameter description (if any) ...
+	 * @param      string $lastcite Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
 	{
 		parent::__construct( $db, $resid, $type, $rating, $cites, $lastcite );
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $disp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function display( $disp='ALL' )
 	{
 		list($caption, $period) = $this->fetch($disp);
@@ -227,6 +410,14 @@ class ToolStats extends ResourcesUsage
 		return $html;
 	}
 
+	/**
+	 * Short description for 'process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$result Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function process( &$result )
 	{
 		if ($result) {
@@ -262,17 +453,62 @@ class ToolStats extends ResourcesUsage
 // Extended resource stats class (And More)
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'AndmoreStats'
+ * 
+ * Long description (if any) ...
+ */
 class AndmoreStats extends ResourcesUsage
 {
+
+	/**
+	 * Description for 'views'
+	 * 
+	 * @var string
+	 */
 	var $views    = 'unavailable';
+
+	/**
+	 * Description for 'avg_view'
+	 * 
+	 * @var string
+	 */
 	var $avg_view = 'unavailable';
+
+	/**
+	 * Description for 'tot_view'
+	 * 
+	 * @var string
+	 */
 	var $tot_view = 'unavailable';
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      unknown $resid Parameter description (if any) ...
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      integer $rating Parameter description (if any) ...
+	 * @param      integer $cites Parameter description (if any) ...
+	 * @param      string $lastcite Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
 	{
 		parent::__construct( $db, $resid, $type, $rating, $cites, $lastcite );
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $disp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function display( $disp='ALL' )
 	{
 		list($caption, $period) = $this->fetch($disp);
@@ -325,6 +561,14 @@ class AndmoreStats extends ResourcesUsage
 		return $html;
 	}
 
+	/**
+	 * Short description for 'process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$result Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function process( &$result )
 	{
 		if ($result) {

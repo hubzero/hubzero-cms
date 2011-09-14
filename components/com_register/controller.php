@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'RegisterController'
+ * 
+ * Long description (if any) ...
+ */
 class RegisterController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->jconfig = JFactory::getConfig();
@@ -74,6 +89,14 @@ class RegisterController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function edit()
 	{
 		if ($this->juser->get('guest')) {
@@ -261,6 +284,14 @@ class RegisterController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'proxycreate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $action Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function proxycreate($action='show')
 	{
 		$action = ($action) ? $action : 'show';
@@ -387,6 +418,13 @@ class RegisterController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function update()
 	{
 		ximport('Hubzero_Auth_Link');
@@ -592,6 +630,13 @@ class RegisterController extends Hubzero_Controller
 		return $this->_show_registration_form($xregistration, 'update');
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function create()
 	{
 		ximport('Hubzero_Auth_Link');
@@ -821,6 +866,13 @@ class RegisterController extends Hubzero_Controller
 		return $this->_show_registration_form($xregistration, 'create');
 	}
 
+	/**
+	 * Short description for 'raceethnic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function raceethnic()
 	{
 		// Add the CSS to the template
@@ -846,6 +898,16 @@ class RegisterController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_registrationField'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $default Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _registrationField($name, $default, $task='create')
 	{
 		switch ($task)
@@ -884,6 +946,15 @@ class RegisterController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_show_registration_form'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$xregistration Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _show_registration_form(&$xregistration=null, $task='create')
 	{
 		// Instantiate a new view
@@ -971,6 +1042,14 @@ class RegisterController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'passwordstrength'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $act Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	protected function passwordstrength($act)
 	{
 		// Incoming
@@ -1014,6 +1093,14 @@ class RegisterController extends Hubzero_Controller
 	//  Email (account confirmation)
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'resend'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function resend()
 	{
 		// Add the CSS to the template
@@ -1089,6 +1176,13 @@ class RegisterController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'change'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function change()
 	{
 		// Add the CSS to the template
@@ -1207,6 +1301,13 @@ class RegisterController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'confirm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function confirm()
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -1297,6 +1398,13 @@ class RegisterController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'unconfirmed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function unconfirmed()
 	{
 		$xprofile =& Hubzero_Factory::getProfile();
@@ -1350,6 +1458,14 @@ class RegisterController extends Hubzero_Controller
 	// Private Functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -1369,6 +1485,13 @@ class RegisterController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		if ($this->_task) {
@@ -1380,6 +1503,13 @@ class RegisterController extends Hubzero_Controller
 		$document->setTitle( $title );
 	}
 
+	/**
+	 * Short description for '_cookie_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _cookie_check()
 	{
 		$xhub =& Hubzero_Factory::getHub();

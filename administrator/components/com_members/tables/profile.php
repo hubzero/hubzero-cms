@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,55 +21,296 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'MembersProfile'
+ * 
+ * Long description (if any) ...
+ */
 class MembersProfile extends JTable
 {
+
+	/**
+	 * Description for 'uidNumber'
+	 * 
+	 * @var unknown
+	 */
 	var $uidNumber = null;
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	var $name = null;
+
+	/**
+	 * Description for 'username'
+	 * 
+	 * @var unknown
+	 */
 	var $username = null;
+
+	/**
+	 * Description for 'email'
+	 * 
+	 * @var unknown
+	 */
 	var $email = null;
+
+	/**
+	 * Description for 'registerDate'
+	 * 
+	 * @var unknown
+	 */
 	var $registerDate = null;
+
+	/**
+	 * Description for 'gidNumber'
+	 * 
+	 * @var unknown
+	 */
 	var $gidNumber = null;
+
+	/**
+	 * Description for 'homeDirectory'
+	 * 
+	 * @var unknown
+	 */
 	var $homeDirectory = null;
+
+	/**
+	 * Description for 'loginShell'
+	 * 
+	 * @var unknown
+	 */
 	var $loginShell = null;
+
+	/**
+	 * Description for 'ftpShell'
+	 * 
+	 * @var unknown
+	 */
 	var $ftpShell = null;
+
+	/**
+	 * Description for 'userPassword'
+	 * 
+	 * @var unknown
+	 */
 	var $userPassword = null;
+
+	/**
+	 * Description for 'gid'
+	 * 
+	 * @var unknown
+	 */
 	var $gid = null;
+
+	/**
+	 * Description for 'orgtype'
+	 * 
+	 * @var unknown
+	 */
 	var $orgtype = null;
+
+	/**
+	 * Description for 'organization'
+	 * 
+	 * @var unknown
+	 */
 	var $organization = null;
+
+	/**
+	 * Description for 'countryresident'
+	 * 
+	 * @var unknown
+	 */
 	var $countryresident = null;
+
+	/**
+	 * Description for 'countryorigin'
+	 * 
+	 * @var unknown
+	 */
 	var $countryorigin = null;
+
+	/**
+	 * Description for 'gender'
+	 * 
+	 * @var unknown
+	 */
 	var $gender = null;
+
+	/**
+	 * Description for 'url'
+	 * 
+	 * @var unknown
+	 */
 	var $url = null;
+
+	/**
+	 * Description for 'reason'
+	 * 
+	 * @var unknown
+	 */
 	var $reason = null;
+
+	/**
+	 * Description for 'mailPreferenceOption'
+	 * 
+	 * @var unknown
+	 */
 	var $mailPreferenceOption = null;
+
+	/**
+	 * Description for 'usageAgreement'
+	 * 
+	 * @var unknown
+	 */
 	var $usageAgreement = null;
+
+	/**
+	 * Description for 'jobsAllowed'
+	 * 
+	 * @var unknown
+	 */
 	var $jobsAllowed = null;
+
+	/**
+	 * Description for 'modifiedDate'
+	 * 
+	 * @var unknown
+	 */
 	var $modifiedDate = null;
+
+	/**
+	 * Description for 'emailConfirmed'
+	 * 
+	 * @var unknown
+	 */
 	var $emailConfirmed = null;
+
+	/**
+	 * Description for 'regIP'
+	 * 
+	 * @var unknown
+	 */
 	var $regIP = null;
+
+	/**
+	 * Description for 'regHost'
+	 * 
+	 * @var unknown
+	 */
 	var $regHost = null;
+
+	/**
+	 * Description for 'nativeTribe'
+	 * 
+	 * @var unknown
+	 */
 	var $nativeTribe = null;
+
+	/**
+	 * Description for 'phone'
+	 * 
+	 * @var unknown
+	 */
 	var $phone = null;
+
+	/**
+	 * Description for 'proxyPassword'
+	 * 
+	 * @var unknown
+	 */
 	var $proxyPassword = null;
+
+	/**
+	 * Description for 'proxyUidNumber'
+	 * 
+	 * @var unknown
+	 */
 	var $proxyUidNumber = null;
+
+	/**
+	 * Description for 'givenName'
+	 * 
+	 * @var unknown
+	 */
 	var $givenName = null;
+
+	/**
+	 * Description for 'middleName'
+	 * 
+	 * @var unknown
+	 */
 	var $middleName = null;
+
+	/**
+	 * Description for 'surname'
+	 * 
+	 * @var unknown
+	 */
 	var $surname = null;
+
+	/**
+	 * Description for 'picture'
+	 * 
+	 * @var unknown
+	 */
 	var $picture = null;
+
+	/**
+	 * Description for 'vip'
+	 * 
+	 * @var unknown
+	 */
 	var $vip = null;
+
+	/**
+	 * Description for 'public'
+	 * 
+	 * @var unknown
+	 */
 	var $public = null;
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params = null;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xprofiles', 'uidNumber', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->givenName ) == '') {
@@ -88,6 +326,15 @@ class MembersProfile extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array(), $admin )
 	{
 		// Get plugins
@@ -203,6 +450,15 @@ class MembersProfile extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array(), $admin=false )
 	{
 		$filters['count'] = true;
@@ -216,6 +472,15 @@ class MembersProfile extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array(), $admin=false )
 	{
 		if ($admin) {
@@ -264,6 +529,15 @@ class MembersProfile extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'selectWhere'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $select Parameter description (if any) ...
+	 * @param      unknown $where Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function selectWhere( $select, $where )
 	{
 		$query = "SELECT $select FROM $this->_tbl WHERE $where";

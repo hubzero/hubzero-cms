@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modMySubmissions'
+ * 
+ * Long description (if any) ...
+ */
 class modMySubmissions
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -57,18 +101,48 @@ class modMySubmissions
 	//----------------------------------------------------------
 	// Checks
 	//----------------------------------------------------------
+
+
+	/**
+	 * Short description for 'step_type_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function step_type_check( $id )
 	{
 		// do nothing
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'step_compose_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function step_compose_check( $id )
 	{
 		return $id;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'step_attach_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function step_attach_check( $id )
 	{
 		if ($id) {
@@ -82,6 +156,16 @@ class modMySubmissions
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'step_authors_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function step_authors_check( $id )
 	{
 		if ($id) {
@@ -96,6 +180,16 @@ class modMySubmissions
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'step_tags_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function step_tags_check( $id )
 	{
 		$database =& JFactory::getDBO();
@@ -111,12 +205,31 @@ class modMySubmissions
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'step_review_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function step_review_check( $id )
 	{
 		return 0;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function display()
 	{
 		$juser =& JFactory::getUser();

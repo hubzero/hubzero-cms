@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,17 +21,61 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Wish'
+ * 
+ * Long description (if any) ...
+ */
 class Wish extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'wishlist'
+	 * 
+	 * @var unknown
+	 */
 	var $wishlist       = NULL;  // @var int
+
+
+	/**
+	 * Description for 'subject'
+	 * 
+	 * @var unknown
+	 */
 	var $subject		= NULL;  // @var varchar(200)
+
+
+	/**
+	 * Description for 'about'
+	 * 
+	 * @var unknown
+	 */
 	var $about			= NULL;  // @var text
+
+
+	/**
+	 * Description for 'status'
+	 * 
+	 * @var unknown
+	 */
 	var $status			= NULL;  // @var int(11)
 		// 0 new/pending
 		// 1 granted
@@ -42,29 +83,135 @@ class Wish extends JTable
 		// 3 rejected
 		// 4 withdrawn
 
+
+	/**
+	 * Description for 'proposed'
+	 * 
+	 * @var unknown
+	 */
 	var $proposed    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'granted'
+	 * 
+	 * @var unknown
+	 */
 	var $granted    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'proposed_by'
+	 * 
+	 * @var unknown
+	 */
 	var $proposed_by 	= NULL;  // @var int(50)
+
+
+	/**
+	 * Description for 'granted_by'
+	 * 
+	 * @var unknown
+	 */
 	var $granted_by 	= NULL;  // @var int(50)
+
+
+	/**
+	 * Description for 'granted_vid'
+	 * 
+	 * @var unknown
+	 */
 	var $granted_vid 	= NULL;  // @var int(50)
+
+
+	/**
+	 * Description for 'assigned'
+	 * 
+	 * @var unknown
+	 */
 	var $assigned 		= NULL;  // @var int(50)
+
+
+	/**
+	 * Description for 'effort'
+	 * 
+	 * @var unknown
+	 */
 	var $effort		    = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'due'
+	 * 
+	 * @var unknown
+	 */
 	var $due    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'anonymous'
+	 * 
+	 * @var unknown
+	 */
 	var $anonymous		= NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'ranking'
+	 * 
+	 * @var unknown
+	 */
 	var $ranking		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'private'
+	 * 
+	 * @var unknown
+	 */
 	var $private		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'accepted'
+	 * 
+	 * @var unknown
+	 */
 	var $accepted		= NULL;  // @var int(11) 
+
+
+	/**
+	 * Description for 'points'
+	 * 
+	 * @var unknown
+	 */
 	var $points			= NULL;  // @var int(11) 
 		// 1 admins accepted this wish
 		// 2 wish author accepted solution
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist_item', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->subject ) == '') {
@@ -80,6 +227,15 @@ class Wish extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'get_votes_sum'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $wishid Parameter description (if any) ...
+	 * @param      unknown $what Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_votes_sum($wishid, $what)
 	{
 		if ($wishid === NULL) {
@@ -91,6 +247,17 @@ class Wish extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'get_count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      object $juser Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function get_count($listid, $filters, $admin, $juser=NULL)
 	{
 		if ($listid === NULL) {
@@ -176,6 +343,18 @@ class Wish extends JTable
 		return count($result);
 	}
 
+	/**
+	 * Short description for 'get_wishes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      object $juser Parameter description (if any) ...
+	 * @param      integer $fullinfo Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_wishes($listid, $filters, $admin, $juser=NULL, $fullinfo = 1)
 	{
 		if ($listid === NULL) {
@@ -342,6 +521,15 @@ class Wish extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'delete_wish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $wishid Parameter description (if any) ...
+	 * @param      integer $withdraw Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete_wish ($wishid, $withdraw=0)
 	{
 		if ($wishid === NULL) {
@@ -362,6 +550,18 @@ class Wish extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'get_wish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $wishid Parameter description (if any) ...
+	 * @param      mixed $uid Parameter description (if any) ...
+	 * @param      integer $refid Parameter description (if any) ...
+	 * @param      string $cat Parameter description (if any) ...
+	 * @param      integer $deleted Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function get_wish ($wishid = 0, $uid = 0, $refid = 0, $cat = '', $deleted = 0)
 	{
 	 	if ($wishid === NULL) {
@@ -416,6 +616,17 @@ class Wish extends JTable
 
 	//----------
 	// Does the wish exist on this list?
+
+
+	/**
+	 * Short description for 'check_wish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $wishid Parameter description (if any) ...
+	 * @param      string $listid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function check_wish($wishid, $listid)
 	{
 		if ($wishid === NULL or $listid === NULL) {
@@ -430,6 +641,19 @@ class Wish extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getWishID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $which Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getWishID($which, $id, $listid, $admin, $uid, $filters=array())
 	{
 		if ($which === NULL or $id === NULL or $listid === NULL) {
@@ -508,6 +732,16 @@ class Wish extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'get_vote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $refid Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_vote($refid, $category= 'wish', $uid)
 	{
 		if ($refid === NULL or $uid === NULL) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,6 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
 
+/**
+ * Short description for 'plgXAuthenticationHzldap'
+ * 
+ * Long description (if any) ...
+ */
 class plgXAuthenticationHzldap extends JPlugin
 {
 	/**
@@ -48,6 +55,15 @@ class plgXAuthenticationHzldap extends JPlugin
 		parent::__construct($subject, $config);
 	}
 
+	/**
+	 * Short description for 'logintobreeze'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @param      unknown $passwd Parameter description (if any) ...
+	 * @return     void
+	 */
         function logintobreeze($login, $passwd)
         {
 				$buffer = '';
@@ -122,6 +138,15 @@ class plgXAuthenticationHzldap extends JPlugin
         }
 
         // Funtion to log out of Breeze
+
+
+	/**
+	 * Short description for 'logoutofbreeze'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
         function logoutofbreeze()
         {
                 setcookie("breezecookie","", time()-60000);

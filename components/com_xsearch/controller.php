@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'XSearchController'
+ * 
+ * Long description (if any) ...
+ */
 class XSearchController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function execute()
 	{
 		$this->_stemming = 1;
@@ -244,6 +259,15 @@ class XSearchController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_highlight'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $searchquery Parameter description (if any) ...
+	 * @param      array $results Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _highlight( $searchquery, $results )
 	{
 		// Get all the search words and phrases to highlight
@@ -303,6 +327,13 @@ class XSearchController extends Hubzero_Controller
 		return $results;
 	}
 
+	/**
+	 * Short description for '_getAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?

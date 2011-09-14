@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,13 +21,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'CitationsFormatter'
+ * 
+ * Long description (if any) ...
+ */
 class CitationsFormatter
 {
+
+	/**
+	 * Short description for 'cleanUrl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function cleanUrl($url)
 	{
 		$url = stripslashes($url);
@@ -40,6 +56,15 @@ class CitationsFormatter
 		return $url;
 	}
 
+	/**
+	 * Short description for 'keyExistsOrIsNotEmpty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $key Parameter description (if any) ...
+	 * @param      object $row Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function keyExistsOrIsNotEmpty($key,$row)
 	{
 		if (isset($row->$key)) {
@@ -53,6 +78,15 @@ class CitationsFormatter
 		}
 	}
 
+	/**
+	 * Short description for 'grammarCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $html Parameter description (if any) ...
+	 * @param      string $punct Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function grammarCheck($html, $punct=',')
 	{
 		if (substr($html,-1) == '"') {
@@ -63,6 +97,16 @@ class CitationsFormatter
 		return $html;
 	}
 
+	/**
+	 * Short description for 'formatReference'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed &$row Parameter description (if any) ...
+	 * @param      string $link Parameter description (if any) ...
+	 * @param      string $highlight Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function formatReference(&$row, $link='none', $highlight='')
 	{
 		ximport('Hubzero_View_Helper_Html');

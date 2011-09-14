@@ -1,5 +1,45 @@
 <?php
 
+/**
+ * Short description for 'file'
+ * 
+ * Long description (if any) ...
+ * 
+ * PHP version 5
+ * 
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ * + Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * + Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ * + Neither the name of the <ORGANIZATION> nor the names of its contributors
+ * may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * @category  CategoryName
+ * @package   MathRenderer
+ * @author    Author's name <author@mail.com>
+ * @copyright 2011 Author's name
+ * @license   http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @version   CVS: $Id:$
+ * @link      http://pear.php.net/package/MathRenderer
+ * @see       References to other sections (if any)...
+ */
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
@@ -14,23 +54,103 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-------------------------------------------------------------
 
 // Maths constants
+
+/**
+ * Description for ''MW_MATH_PNG''
+ */
 define( 'MW_MATH_PNG',    0 );
+
+/**
+ * Description for ''MW_MATH_SIMPLE''
+ */
 define( 'MW_MATH_SIMPLE', 1 );
+
+/**
+ * Description for ''MW_MATH_HTML''
+ */
 define( 'MW_MATH_HTML',   2 );
+
+/**
+ * Description for ''MW_MATH_SOURCE''
+ */
 define( 'MW_MATH_SOURCE', 3 );
+
+/**
+ * Description for ''MW_MATH_MODERN''
+ */
 define( 'MW_MATH_MODERN', 4 );
+
+/**
+ * Description for ''MW_MATH_MATHML''
+ */
 define( 'MW_MATH_MATHML', 5 );
 
+/**
+ * Short description for 'MathRenderer'
+ * 
+ * Long description (if any) ...
+ */
 class MathRenderer
 {
+
+	/**
+	 * Description for 'mode'
+	 * 
+	 * @var integer
+	 */
 	var $mode = MW_MATH_MODERN;
+
+	/**
+	 * Description for 'tex'
+	 * 
+	 * @var string
+	 */
 	var $tex = '';
+
+	/**
+	 * Description for 'inputhash'
+	 * 
+	 * @var string
+	 */
 	var $inputhash = '';
+
+	/**
+	 * Description for 'hash'
+	 * 
+	 * @var string
+	 */
 	var $hash = '';
+
+	/**
+	 * Description for 'html'
+	 * 
+	 * @var string
+	 */
 	var $html = '';
+
+	/**
+	 * Description for 'mathml'
+	 * 
+	 * @var string
+	 */
 	var $mathml = '';
+
+	/**
+	 * Description for 'conservativeness'
+	 * 
+	 * @var integer
+	 */
 	var $conservativeness = 0;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tex Parameter description (if any) ...
+	 * @param      array $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $tex, $params=array() )
 	{
 		$this->tex = $tex;
@@ -39,11 +159,28 @@ class MathRenderer
 		$this->config = JComponentHelper::getParams( 'com_wiki' );
  	}
 
+	/**
+	 * Short description for 'setOutputMode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $mode Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setOutputMode( $mode )
 	{
 		$this->mode = $mode;
 	}
 
+	/**
+	 * Short description for '_makePath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      integer $mode Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _makePath( $path, $mode=0777 )
 	{
 		if (file_exists( $path )) {
@@ -71,6 +208,13 @@ class MathRenderer
 		}
 	}
 
+	/**
+	 * Short description for 'render'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function render()
 	{
 		$tmpDirectory = JPATH_ROOT.$this->config->get('tmppath');
@@ -243,6 +387,15 @@ class MathRenderer
 		return $this->_doRender();
 	}
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @param      string $append Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _error( $msg, $append = '' )
 	{
 		$mf = htmlspecialchars( 'math_failure' );
@@ -251,6 +404,13 @@ class MathRenderer
 		return '<p class="error">'.$mf.' ('.$errmsg.$append.'): '.$source.'</p>'."\n";
 	}
 
+	/**
+	 * Short description for '_recall'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _recall()
 	{
 		$this->md5 = md5( $this->tex );
@@ -295,6 +455,15 @@ class MathRenderer
 	}
 
 	// Select among PNG, HTML, or MathML output depending on
+
+
+	/**
+	 * Short description for '_doRender'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function _doRender()
 	{
 		if ($this->mode == MW_MATH_MATHML && $this->mathml != '') {
@@ -310,6 +479,13 @@ class MathRenderer
 		}
 	}
 
+	/**
+	 * Short description for '_linkToMathImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function _linkToMathImage()
 	{
 		$url = $this->config->get('mathpath') .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1) .DS. "{$this->hash}.png";
@@ -317,22 +493,54 @@ class MathRenderer
 		return '<img src="'.$url.'" class="tex" alt="'.$this->tex.'" />';
 	}
 
+	/**
+	 * Short description for '_getHashPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getHashPath()
 	{
 		$path = JPATH_ROOT.$this->config->get('mathpath') .DS. substr($this->hash, 0, 1) .DS. substr($this->hash, 1, 1) .DS. substr($this->hash, 2, 1);
 		return $path;
 	}
 
+	/**
+	 * Short description for '_encodeBlob'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $b Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _encodeBlob($b)
 	{
 		return $b;
 	}
 
+	/**
+	 * Short description for '_decodeBlob'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $b Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _decodeBlob($b)
 	{
 		return $b;
 	}
 
+	/**
+	 * Short description for 'renderMath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tex Parameter description (if any) ...
+	 * @param      array $params Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public static function renderMath( $tex, $params=array() )
 	{
 		$math = new MathRenderer( $tex, $params );

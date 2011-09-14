@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -35,6 +37,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_Factory
 {
+
+	/**
+	 * Short description for 'getProfile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function &getProfile()
 	{
 		static $instances = null;
@@ -52,6 +62,15 @@ class Hubzero_Factory
 		return $instances[0];
 	}
 
+	/**
+	 * Short description for 'loadArrayList'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$arraylist Parameter description (if any) ...
+	 * @param      unknown $namespace Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public static function loadArrayList(&$arraylist, $namespace = null)
 	{
 		$config = &JFactory::getConfig();
@@ -76,6 +95,13 @@ class Hubzero_Factory
 		return true;
 	}
 
+	/**
+	 * Short description for 'getHub'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function &getHub()
 	{
 		 ximport('Hubzero_Hub');
@@ -91,6 +117,14 @@ class Hubzero_Factory
 		 return $instances[0];
 	}
 
+	/**
+	 * Short description for 'getComponentFactory'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $component Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function &getComponentFactory($component)
 	{
 		static $instances;
@@ -116,6 +150,14 @@ class Hubzero_Factory
 		return $instances[$component];
 	}
 
+	/**
+	 * Short description for 'getLDC'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $primary Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function &getLDC($primary = 0)
 	{
 		static $instances;
@@ -268,6 +310,13 @@ class Hubzero_Factory
 
 	}
 
+	/**
+	 * Short description for 'getPLDC'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function &getPLDC()
 	{
 		static $instances;
@@ -280,6 +329,13 @@ class Hubzero_Factory
 		return $instances[0];
 	}
 
+	/**
+	 * Short description for 'getLogger'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function &getLogger()
 	{
 		static $instances;
@@ -296,6 +352,13 @@ class Hubzero_Factory
 		return $instances[0];
 	}
 
+	/**
+	 * Short description for 'getAuthLogger'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function &getAuthLogger()
 	{
 		static $instances;

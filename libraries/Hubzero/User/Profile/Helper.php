@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,13 +21,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_User_Profile_Helper'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_User_Profile_Helper
 {
+
+	/**
+	 * Short description for 'iterate_profiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $func Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function iterate_profiles($func, $storage)
 	{
 		$db = &JFactory::getDBO();
@@ -94,6 +111,15 @@ class Hubzero_User_Profile_Helper
 		return true;
 	}
 
+	/**
+	 * Short description for 'delete_profile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete_profile($user, $storage)
 	{
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
@@ -121,6 +147,14 @@ class Hubzero_User_Profile_Helper
 		}
 	}
 
+	/**
+	 * Short description for 'find_by_email'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function find_by_email($email)
 	{
 		if (empty($email))
@@ -140,6 +174,15 @@ class Hubzero_User_Profile_Helper
 		return $result;
 	}
 
+	/**
+	 * Short description for 'getMemberPhoto'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      integer $anonymous Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getMemberPhoto( $member, $anonymous=0 )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
@@ -172,6 +215,14 @@ class Hubzero_User_Profile_Helper
 		}
 	}
 
+	/**
+	 * Short description for 'thumbit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
@@ -184,6 +235,14 @@ class Hubzero_User_Profile_Helper
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)

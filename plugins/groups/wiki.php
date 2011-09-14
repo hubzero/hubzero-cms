@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_wiki' );
 
+/**
+ * Short description for 'plgGroupsWiki'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsWiki extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgGroupsWiki'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsWiki(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgGroupsWiki extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -54,6 +78,21 @@ class plgGroupsWiki extends JPlugin
 		return $area;
 	}
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
@@ -163,6 +202,14 @@ class plgGroupsWiki extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'onGroupDelete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onGroupDelete( $group )
 	{
 		// Get all the IDs for pages associated with this group
@@ -199,11 +246,27 @@ class plgGroupsWiki extends JPlugin
 		return $log;
 	}
 
+	/**
+	 * Short description for 'onGroupDeleteCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function onGroupDeleteCount( $group )
 	{
 		return JText::_('PLG_GROUPS_WIKI_LOG').': '.count( $this->getPageIDs( $group->get('cn') ));
 	}
 
+	/**
+	 * Short description for 'getPageIDs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getPageIDs( $gid=NULL )
 	{
 		if (!$gid) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,30 +35,149 @@ defined('_JEXEC') or die( 'Restricted access' );
 // XForum database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'XForum'
+ * 
+ * Long description (if any) ...
+ */
 class XForum extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'topic'
+	 * 
+	 * @var unknown
+	 */
 	var $topic      = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'comment'
+	 * 
+	 * @var unknown
+	 */
 	var $comment    = NULL;  // @var text
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'modified'
+	 * 
+	 * @var unknown
+	 */
 	var $modified   = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'modified_by'
+	 * 
+	 * @var unknown
+	 */
 	var $modified_by = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state      = NULL;  // @var int(2)
+
+
+	/**
+	 * Description for 'sticky'
+	 * 
+	 * @var unknown
+	 */
 	var $sticky     = NULL;  // @var int(2)
+
+
+	/**
+	 * Description for 'parent'
+	 * 
+	 * @var unknown
+	 */
 	var $parent     = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'hits'
+	 * 
+	 * @var unknown
+	 */
 	var $hits       = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'group'
+	 * 
+	 * @var unknown
+	 */
 	var $group      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'access'
+	 * 
+	 * @var unknown
+	 */
 	var $access     = NULL;  // @var tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
+
+
+	/**
+	 * Description for 'anonymous'
+	 * 
+	 * @var unknown
+	 */
 	var $anonymous  = NULL;  // @var tinyint(2)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xforum', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->comment ) == '' or trim( $this->comment ) == JText::_('Enter your comments...')) {
@@ -66,6 +187,14 @@ class XForum extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array() )
 	{
 		$query  = "FROM $this->_tbl AS c WHERE ";
@@ -99,6 +228,14 @@ class XForum extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
@@ -109,6 +246,14 @@ class XForum extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array() )
 	{
 		$query = "SELECT c.*";
@@ -125,6 +270,14 @@ class XForum extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getLastPost'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $parent Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getLastPost( $parent=null )
 	{
 		if (!$parent) {
@@ -140,6 +293,14 @@ class XForum extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deleteReplies'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $parent Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteReplies( $parent=null )
 	{
 		if (!$parent) {
@@ -163,15 +324,68 @@ class XForum extends JTable
 // XForum pagination class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class XForumPagination extends JObject
 {
+
+	/**
+	 * Description for 'limitstart'
+	 * 
+	 * @var number
+	 */
 	var $limitstart = null;  // The record number to start dislpaying from
+
+
+	/**
+	 * Description for 'limit'
+	 * 
+	 * @var number
+	 */
 	var $limit = null;       // Number of rows to display per page
+
+
+	/**
+	 * Description for 'total'
+	 * 
+	 * @var number
+	 */
 	var $total = null;       // Total number of rows
+
+
+	/**
+	 * Description for '_viewall'
+	 * 
+	 * @var boolean
+	 */
 	var $_viewall = false;   // View all flag
+
+
+	/**
+	 * Description for 'forum'
+	 * 
+	 * @var mixed
+	 */
 	var $forum = null;       // The forum we're paging for
 
 	// Constructor
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $total Parameter description (if any) ...
+	 * @param      unknown $limitstart Parameter description (if any) ...
+	 * @param      unknown $limit Parameter description (if any) ...
+	 * @param      unknown $forum Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($total, $limitstart, $limit, $forum)
 	{
 		// Value/Type checking
@@ -215,12 +429,31 @@ class XForumPagination extends JObject
 	}
 
 	// Return the rationalised offset for a row with a given index.
+
+
+	/**
+	 * Short description for 'getRowOffset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $index Parameter description (if any) ...
+	 * @return     number Return description (if any) ...
+	 */
 	public function getRowOffset($index)
 	{
 		return $index +1 + $this->limitstart;
 	}
 
 	// Return the pagination data object, only creating it if it doesn't already exist
+
+
+	/**
+	 * Short description for 'getData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getData()
 	{
 		static $data;
@@ -231,6 +464,15 @@ class XForumPagination extends JObject
 	}
 
 	// Create and return the pagination page list string, ie. Previous, Next, 1 2 3 ... x
+
+
+	/**
+	 * Short description for 'getPagesLinks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getPagesLinks()
 	{
 		//$lang =& JFactory::getLanguage();
@@ -267,6 +509,14 @@ class XForumPagination extends JObject
 		}
 	}
 
+	/**
+	 * Short description for '_list_render'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $list Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function _list_render($list)
 	{
 		// Initialize variables
@@ -291,11 +541,27 @@ class XForumPagination extends JObject
 		return $html;
 	}
 
+	/**
+	 * Short description for '_item_active'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed &$item Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function _item_active(&$item)
 	{
 		return '<a title="'.$item->text.'" href="'.$item->link.'" class="pagenav">'.$item->text.'</a>';
 	}
 
+	/**
+	 * Short description for '_item_inactive'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed &$item Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function _item_inactive(&$item)
 	{
 		return '<span class="pagenav">'.$item->text.'</span>';
@@ -347,12 +613,46 @@ class XForumPagination extends JObject
 // XForum Pagination object representing a particular item in the pagination lists
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'XForumPaginationObject'
+ * 
+ * Long description (if any) ...
+ */
 class XForumPaginationObject extends JObject
 {
+
+	/**
+	 * Description for 'text'
+	 * 
+	 * @var unknown
+	 */
 	var $text;
+
+	/**
+	 * Description for 'base'
+	 * 
+	 * @var unknown
+	 */
 	var $base;
+
+	/**
+	 * Description for 'link'
+	 * 
+	 * @var unknown
+	 */
 	var $link;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      unknown $base Parameter description (if any) ...
+	 * @param      unknown $link Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($text, $base=null, $link=null)
 	{
 		$this->text = $text;

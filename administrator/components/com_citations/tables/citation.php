@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,64 +21,390 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'CitationsCitation'
+ * 
+ * Long description (if any) ...
+ */
 class CitationsCitation extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id             	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid            	= NULL;  // @var varchar(200)
+
+
+	/**
+	 * Description for 'affiliated'
+	 * 
+	 * @var unknown
+	 */
 	var $affiliated     	= NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'fundedby'
+	 * 
+	 * @var unknown
+	 */
 	var $fundedby       	= NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created        	= NULL;  // @var datetime
+
+
+	/**
+	 * Description for 'address'
+	 * 
+	 * @var unknown
+	 */
 	var $address        	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'author'
+	 * 
+	 * @var unknown
+	 */
 	var $author         	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'booktitle'
+	 * 
+	 * @var unknown
+	 */
 	var $booktitle      	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'chapter'
+	 * 
+	 * @var unknown
+	 */
 	var $chapter        	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'cite'
+	 * 
+	 * @var unknown
+	 */
 	var $cite           	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'edition'
+	 * 
+	 * @var unknown
+	 */
 	var $edition        	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'editor'
+	 * 
+	 * @var unknown
+	 */
 	var $editor         	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'eprint'
+	 * 
+	 * @var unknown
+	 */
 	var $eprint         	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'howpublished'
+	 * 
+	 * @var unknown
+	 */
 	var $howpublished   	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'institution'
+	 * 
+	 * @var unknown
+	 */
 	var $institution    	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'isbn'
+	 * 
+	 * @var unknown
+	 */
 	var $isbn           	= NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'journal'
+	 * 
+	 * @var unknown
+	 */
 	var $journal        	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'key'
+	 * 
+	 * @var unknown
+	 */
 	var $key            	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'location'
+	 * 
+	 * @var unknown
+	 */
 	var $location       	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'month'
+	 * 
+	 * @var unknown
+	 */
 	var $month          	= NULL;  // @var int(2)
+
+
+	/**
+	 * Description for 'note'
+	 * 
+	 * @var unknown
+	 */
 	var $note           	= NULL;  // @var text
+
+
+	/**
+	 * Description for 'number'
+	 * 
+	 * @var unknown
+	 */
 	var $number         	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'organization'
+	 * 
+	 * @var unknown
+	 */
 	var $organization   	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'pages'
+	 * 
+	 * @var unknown
+	 */
 	var $pages          	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'publisher'
+	 * 
+	 * @var unknown
+	 */
 	var $publisher      	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'school'
+	 * 
+	 * @var unknown
+	 */
 	var $school         	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'series'
+	 * 
+	 * @var unknown
+	 */
 	var $series         	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title          	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type           	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'url'
+	 * 
+	 * @var unknown
+	 */
 	var $url            	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'volume'
+	 * 
+	 * @var unknown
+	 */
 	var $volume         	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'year'
+	 * 
+	 * @var unknown
+	 */
 	var $year           	= NULL;  // @var int(4)
+
+
+	/**
+	 * Description for 'doi'
+	 * 
+	 * @var unknown
+	 */
 	var $doi            	= NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'ref_type'
+	 * 
+	 * @var unknown
+	 */
 	var $ref_type       	= NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'date_submit'
+	 * 
+	 * @var unknown
+	 */
 	var $date_submit    	= NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'date_accept'
+	 * 
+	 * @var unknown
+	 */
 	var $date_accept    	= NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'date_publish'
+	 * 
+	 * @var unknown
+	 */
 	var $date_publish   	= NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'software_use'
+	 * 
+	 * @var unknown
+	 */
 	var $software_use   	= NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'res_edu'
+	 * 
+	 * @var unknown
+	 */
     var	$res_edu 			= NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'exp_list_exp_data'
+	 * 
+	 * @var unknown
+	 */
 	var $exp_list_exp_data  = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'exp_data'
+	 * 
+	 * @var unknown
+	 */
  	var $exp_data       	= NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'notes'
+	 * 
+	 * @var unknown
+	 */
  	var $notes          	= NULL;  // @var text
+
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
 	var $published      	= NULL;  // @var int(3)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__citations', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
@@ -91,6 +414,15 @@ class CitationsCitation extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filter Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filter=array(), $admin=true )
 	{
 		$filter['sort'] = '';
@@ -124,6 +456,15 @@ class CitationsCitation extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filter Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filter=array(), $admin=true )
 	{
 		$query = "";
@@ -329,6 +670,15 @@ class CitationsCitation extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filter Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filter=array(), $admin=true )
 	{
 		$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
@@ -361,6 +711,13 @@ class CitationsCitation extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getStats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function getStats()
 	{
 		$stats = array();
@@ -379,6 +736,15 @@ class CitationsCitation extends JTable
 		return $stats;
 	}
 
+	/**
+	 * Short description for 'getCitations'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tbl Parameter description (if any) ...
+	 * @param      string $oid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCitations( $tbl, $oid )
 	{
 		$ca = new CitationsAssociation( $this->_db );
@@ -393,6 +759,15 @@ class CitationsCitation extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getLastCitationDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tbl Parameter description (if any) ...
+	 * @param      string $oid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getLastCitationDate( $tbl, $oid )
 	{
 		$ca = new CitationsAssociation( $this->_db );

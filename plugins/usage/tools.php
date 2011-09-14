@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_tools' );
 
+/**
+ * Short description for 'plgUsageTools'
+ * 
+ * Long description (if any) ...
+ */
 class plgUsageTools extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgUsageTools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgUsageTools(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgUsageTools extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onUsageAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -51,6 +75,17 @@ class plgUsageTools extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'gettoplist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $database Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @param      string $dthis Parameter description (if any) ...
+	 * @param      string $s_top Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function gettoplist($database, $period, $dthis, $s_top)
 	{
 		$html = '';
@@ -114,6 +149,14 @@ class plgUsageTools extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for 'gettoprank_tools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $database Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function gettoprank_tools($database)
 	{
 		$html = '';
@@ -158,6 +201,14 @@ class plgUsageTools extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for 'gettopcited_tools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $database Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function gettopcited_tools($database)
 	{
 		$html = '';
@@ -216,6 +267,14 @@ class plgUsageTools extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for 'time_units'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $time Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function time_units($time)
 	{
 		if ($time < 60) {
@@ -231,6 +290,17 @@ class plgUsageTools extends JPlugin
 		return $data;
 	}
 
+	/**
+	 * Short description for 'drop_down_dates'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @param      unknown $s_top Parameter description (if any) ...
+	 * @param      unknown $dthis Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function drop_down_dates(&$db, $period, $s_top, $dthis)
 	{
 		$months = array( "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec");
@@ -423,6 +493,16 @@ class plgUsageTools extends JPlugin
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
 
+
+	/**
+	 * Short description for 'check_for_data'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $yearmonth Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function check_for_data($yearmonth, $period)
 	{
 		$database =& JFactory::getDBO();
@@ -438,6 +518,15 @@ class plgUsageTools extends JPlugin
 		return(false);
 	}
 
+	/**
+	 * Short description for 'navlinks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $period Parameter description (if any) ...
+	 * @param      string $top Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function navlinks($period='12',$top='')
 	{
 		$html  = '<div id="sub-sub-menu">'."\n";
@@ -478,6 +567,19 @@ class plgUsageTools extends JPlugin
 	    return $html;
 	}
 
+	/**
+	 * Short description for 'onUsageDisplay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $task Parameter description (if any) ...
+	 * @param      unknown $db Parameter description (if any) ...
+	 * @param      unknown $months Parameter description (if any) ...
+	 * @param      unknown $monthsReverse Parameter description (if any) ...
+	 * @param      unknown $enddate Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for

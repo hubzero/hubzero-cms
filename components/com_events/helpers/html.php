@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,13 +21,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'EventsHtml'
+ * 
+ * Long description (if any) ...
+ */
 class EventsHtml
 {
+
+	/**
+	 * Short description for 'autolink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function autolink($matches)
 	{
 		$href = $matches[0];
@@ -63,6 +79,14 @@ class EventsHtml
 		return $l;
 	}
 
+	/**
+	 * Short description for 'obfuscate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $email Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);
@@ -75,6 +99,19 @@ class EventsHtml
 		return $obfuscatedEmail;
 	}
 
+	/**
+	 * Short description for 'buildRadioOption'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $arr Parameter description (if any) ...
+	 * @param      string $tag_name Parameter description (if any) ...
+	 * @param      string $tag_attribs Parameter description (if any) ...
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      array $selected Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected )
 	{
 		$html = '';
@@ -101,6 +138,16 @@ class EventsHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'buildReccurDaySelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $reccurday Parameter description (if any) ...
+	 * @param      unknown $tag_name Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
@@ -120,6 +167,15 @@ class EventsHtml
 		return $tosend;
     }
 
+	/**
+	 * Short description for 'buildMonthSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $month Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildMonthSelect($month, $args)
 	{
 		for ($a=1; $a<13; $a++)
@@ -135,6 +191,17 @@ class EventsHtml
 		return $tosend;
     }
 
+	/**
+	 * Short description for 'buildDaySelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $year Parameter description (if any) ...
+	 * @param      unknown $month Parameter description (if any) ...
+	 * @param      unknown $day Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildDaySelect($year, $month, $day, $args)
 	{
 		$nbdays = date("d",mktime(0,0,0,($month + 1),0,$year));
@@ -150,6 +217,15 @@ class EventsHtml
 		return $tosend;
     }
 
+	/**
+	 * Short description for 'buildYearSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $year Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildYearSelect($year, $args)
 	{
 		$y = date("Y");
@@ -167,6 +243,15 @@ class EventsHtml
 		return $tosend;
     }
 
+	/**
+	 * Short description for 'buildViewSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $viewtype Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildViewSelect($viewtype, $args)
 	{
 		$viewlist[] = JHTML::_('select.option', 'view_week', JText::_('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
@@ -179,6 +264,20 @@ class EventsHtml
 		return $tosend;
 	}
 
+	/**
+	 * Short description for 'buildHourSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $start Parameter description (if any) ...
+	 * @param      unknown $end Parameter description (if any) ...
+	 * @param      unknown $inc Parameter description (if any) ...
+	 * @param      unknown $tag_name Parameter description (if any) ...
+	 * @param      unknown $tag_attribs Parameter description (if any) ...
+	 * @param      unknown $selected Parameter description (if any) ...
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function buildHourSelect( $start, $end, $inc, $tag_name, $tag_attribs, $selected, $format='' )
 	{
 		$start = intval( $start );
@@ -203,6 +302,17 @@ class EventsHtml
 		return JHTML::_('select.genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected, false, false );
 	}
 
+	/**
+	 * Short description for 'buildCategorySelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $catid Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildCategorySelect($catid, $args, $gid, $option)
 	{
 		$database =& JFactory::getDBO();
@@ -219,6 +329,15 @@ class EventsHtml
 		return $clist;
 	}
 
+	/**
+	 * Short description for 'buildWeekDaysCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $reccurweekdays Parameter description (if any) ...
+	 * @param      string $args Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
@@ -251,6 +370,15 @@ class EventsHtml
 		return $tosend;
 	}
 
+	/**
+	 * Short description for 'buildWeeksCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $reccurweeks Parameter description (if any) ...
+	 * @param      string $args Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildWeeksCheck($reccurweeks, $args)
 	{
 		$week_name = array('',
@@ -287,6 +415,15 @@ class EventsHtml
 		return $tosend;
 	}
 
+	/**
+	 * Short description for 'getUserMailtoLink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $agid Parameter description (if any) ...
+	 * @param      unknown $userid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     public function getUserMailtoLink($agid, $userid)
 	{
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
@@ -314,6 +451,14 @@ class EventsHtml
 		return $contactlink;
 	}
 
+	/**
+	 * Short description for 'getMonthName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $month Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getMonthName($month)
 	{
 		$monthname = '';
@@ -335,6 +480,14 @@ class EventsHtml
 		return $monthname;
 	}
 
+	/**
+	 * Short description for 'getLongDayName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $daynb Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getLongDayName($daynb)
 	{
 		$dayname = '';
@@ -351,6 +504,17 @@ class EventsHtml
 		return $dayname;
 	}
 
+	/**
+	 * Short description for 'getDateFormat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $year Parameter description (if any) ...
+	 * @param      integer $month Parameter description (if any) ...
+	 * @param      integer $day Parameter description (if any) ...
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getDateFormat($year,$month,$day, $type)
 	{
 		if (empty($year)) $year = 0;

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'MembersController'
+ * 
+ * Long description (if any) ...
+ */
 class MembersController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function execute()
 	{
 		// Load the component config
@@ -59,6 +74,14 @@ class MembersController extends Hubzero_Controller
 	//  Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		// Instantiate a new view
@@ -108,6 +131,13 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function add()
 	{
 		// Instantiate a new view
@@ -124,6 +154,14 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function edit($id=0)
 	{
 		// Instantiate a new view
@@ -162,11 +200,26 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'apply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function apply()
 	{
 		$this->save(0);
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $redirect Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function save($redirect=1)
 	{
 		// Check for request forgeries
@@ -376,6 +429,13 @@ class MembersController extends Hubzero_Controller
 		$this->edit($id);
 	}*/
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function remove()
 	{
 		// Check for request forgeries
@@ -423,6 +483,13 @@ class MembersController extends Hubzero_Controller
 		$this->_message = JText::_('MEMBER_REMOVED');
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
@@ -432,6 +499,14 @@ class MembersController extends Hubzero_Controller
 	//  Image handling
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function upload()
 	{
 		// Check for request forgeries
@@ -540,6 +615,13 @@ class MembersController extends Hubzero_Controller
 		$this->img( $file, $id );
 	}
 
+	/**
+	 * Short description for 'deleteimg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deleteimg()
 	{
 		// Check for request forgeries
@@ -608,6 +690,15 @@ class MembersController extends Hubzero_Controller
 		$this->img( $file, $id );
 	}
 
+	/**
+	 * Short description for 'img'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $file Parameter description (if any) ...
+	 * @param      integer $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function img( $file='', $id=0 )
 	{
 		// Instantiate a new view
@@ -648,6 +739,13 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'addgroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addgroup()
 	{
 		// Check for request forgeries
@@ -691,6 +789,14 @@ class MembersController extends Hubzero_Controller
 		$this->group( $id );
 	}
 
+	/**
+	 * Short description for 'group'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function group( $id=0 )
 	{
 		// Instantiate a new view
@@ -731,6 +837,14 @@ class MembersController extends Hubzero_Controller
 	//  Hosts
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'addhost'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addhost()
 	{
 		// Check for request forgeries
@@ -767,6 +881,13 @@ class MembersController extends Hubzero_Controller
 		$this->hosts( $profile );
 	}
 
+	/**
+	 * Short description for 'deletehost'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletehost()
 	{
 		// Check for request forgeries
@@ -809,6 +930,14 @@ class MembersController extends Hubzero_Controller
 		$this->hosts( $profile );
 	}
 
+	/**
+	 * Short description for 'hosts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $profile Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function hosts( $profile=null )
 	{
 		// Instantiate a new view
@@ -842,6 +971,14 @@ class MembersController extends Hubzero_Controller
 	//  Managers
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'addmanager'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addmanager()
 	{
 		// Check for request forgeries
@@ -878,6 +1015,13 @@ class MembersController extends Hubzero_Controller
 		$this->managers( $profile );
 	}
 
+	/**
+	 * Short description for 'deletemanager'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletemanager()
 	{
 		// Check for request forgeries
@@ -920,6 +1064,14 @@ class MembersController extends Hubzero_Controller
 		$this->managers( $profile );
 	}
 
+	/**
+	 * Short description for 'managers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $profile Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function managers( $profile=null )
 	{
 		// Instantiate a new view

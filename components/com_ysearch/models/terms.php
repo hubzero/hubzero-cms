@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
+/**
+ * Short description for 'DocumentMetadata'
+ * 
+ * Long description (if any) ...
+ */
 abstract class DocumentMetadata
 {
+
+	/**
+	 * Description for 'stop_words'
+	 * 
+	 * @var array
+	 */
 	private static $stop_words = array(
 		'1' => 1, '2' => 1, '3' => 1, '4' => 1, '5' => 1, '6' => 1, '7' => 1, '8' => 1, '9' => 1, '0' => 1, 'a' => 1, 'about' => 1, 'above' => 1, 'across' => 1, 'after' => 1, 'again' => 1, 'against' => 1, 'all' => 1,
 		'almost' => 1, 'alone' => 1, 'along' => 1, 'already' => 1, 'also' => 1, 'although' => 1, 'always' => 1, 'among' => 1, 'an' => 1, 'and' => 1, 'another' => 1, 'any' => 1, 'anybody' => 1, 'anyone' => 1,
@@ -63,16 +76,44 @@ abstract class DocumentMetadata
 		'where' => 1, 'whether' => 1, 'which' => 1, 'while' => 1, 'who' => 1, 'whole' => 1, 'whose' => 1, 'why' => 1, 'will' => 1, 'with' => 1, 'within' => 1, 'without' => 1, 'work' => 1, 'worked' => 1, 'working' => 1,
 		'works' => 1, 'would' => 1, 'x' => 1,  'y' => 1, 'year' => 1, 'years' => 1, 'yet' => 1, 'you' => 1, 'young' => 1, 'younger' => 1, 'youngest' => 1, 'your' => 1, 'yours' => 1, 'z' => 1
 	);
+
+	/**
+	 * Short description for 'is_stop_word'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $word Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public static function is_stop_word($word)
 	{
 		return array_key_exists($word, self::$stop_words);
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class YSearchModelTerms extends JModel
 {
+
+	/**
+	 * Description for 'raw'
+	 * 
+	 * @var unknown
+	 */
 	private $raw, $positive_chunks, $optional_chunks = array(), $forbidden_chunks = array(), $mandatory_chunks = array(), $section = NULL, $quoted = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $raw Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($raw)
 	{
 		$this->raw = preg_replace('/^\s+|\s+$/', '', preg_replace('/\s+/', ' ', $raw));
@@ -80,28 +121,98 @@ class YSearchModelTerms extends JModel
 			$this->parse_searchable_chunks();
 	}
 
+	/**
+	 * Short description for 'is_quoted'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $idx Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function is_quoted($idx)
 	{
 		return isset($this->quoted[$idx]) ? $this->quoted[$idx] : false;
 	}
 
+	/**
+	 * Short description for 'get_raw'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_raw() { return $this->raw; }
+
+	/**
+	 * Short description for 'get_raw_without_section'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function get_raw_without_section()
 	{
 		if (!$this->section) return $this->raw;
 		return preg_replace('/^'.implode(':', $this->section).':/', '', $this->raw);
 	}
+
+	/**
+	 * Short description for 'get_section'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_section() { return $this->section; }
+
+	/**
+	 * Short description for 'get_optional_chunks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_optional_chunks() { return $this->optional_chunks; }
+
+	/**
+	 * Short description for 'get_forbidden_chunks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_forbidden_chunks() { return $this->forbidden_chunks; }
+
+	/**
+	 * Short description for 'get_mandatory_chunks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_mandatory_chunks() { return $this->mandatory_chunks; }
 
+	/**
+	 * Short description for 'get_positive_chunks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_positive_chunks()
 	{
 		if (!$this->positive_chunks)
 			$this->positive_chunks = array_unique(array_merge($this->mandatory_chunks, $this->optional_chunks));
 		return $this->positive_chunks;
 	}
+
+	/**
+	 * Short description for 'get_stemmed_chunks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_stemmed_chunks()
 	{
 		$chunks = $this->get_positive_chunks();
@@ -119,16 +230,37 @@ class YSearchModelTerms extends JModel
 		return array_unique($chunks);
 	}
 
+	/**
+	 * Short description for 'is_set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function is_set()
 	{
 		return !!$this->raw;
 	}
 
+	/**
+	 * Short description for 'any'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function any()
 	{
 		return !!($this->optional_chunks || $this->mandatory_chunks);
 	}
 
+	/**
+	 * Short description for 'parse_searchable_chunks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function parse_searchable_chunks()
 	{
 		$accumulating_phrase = false;
@@ -175,6 +307,16 @@ class YSearchModelTerms extends JModel
 		$this->add_chunk($partial, $sign);
 	}
 
+	/**
+	 * Short description for 'add_chunk'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string &$partial Parameter description (if any) ...
+	 * @param      string &$sign Parameter description (if any) ...
+	 * @param      boolean $quoted Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function add_chunk(&$partial, &$sign = '', $quoted = false)
 	{
 		if (!$partial) return;
@@ -198,6 +340,13 @@ class YSearchModelTerms extends JModel
 		$sign = '';
 	}
 
+	/**
+	 * Short description for 'get_word_regex'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function get_word_regex()
 	{
 		$chunks = $this->get_stemmed_chunks();
@@ -205,6 +354,13 @@ class YSearchModelTerms extends JModel
 		return '('.join('|', array_map('preg_quote', $chunks)).'[[:alpha:]]*)';
 	}
 
+	/**
+	 * Short description for '__toString'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function __toString()
 	{
 		return $this->raw;

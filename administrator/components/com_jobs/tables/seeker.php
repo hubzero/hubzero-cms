@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,29 +21,117 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'JobSeeker'
+ * 
+ * Long description (if any) ...
+ */
 class JobSeeker extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'active'
+	 * 
+	 * @var unknown
+	 */
 	var $active		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'lookingfor'
+	 * 
+	 * @var unknown
+	 */
 	var $lookingfor	= NULL;
+
+	/**
+	 * Description for 'tagline'
+	 * 
+	 * @var unknown
+	 */
 	var $tagline	= NULL;
+
+	/**
+	 * Description for 'linkedin'
+	 * 
+	 * @var unknown
+	 */
 	var $linkedin	= NULL;
+
+	/**
+	 * Description for 'url'
+	 * 
+	 * @var unknown
+	 */
 	var $url		= NULL;
+
+	/**
+	 * Description for 'updated'
+	 * 
+	 * @var unknown
+	 */
 	var $updated	= NULL;
+
+	/**
+	 * Description for 'sought_cid'
+	 * 
+	 * @var unknown
+	 */
 	var $sought_cid	= NULL;
+
+	/**
+	 * Description for 'sought_type'
+	 * 
+	 * @var unknown
+	 */
 	var $sought_type= NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_seekers', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (intval( $this->uid ) == 0) {
@@ -57,6 +142,14 @@ class JobSeeker extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function load( $name=NULL )
 	{
 		if ($name !== NULL) {
@@ -79,6 +172,14 @@ class JobSeeker extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'countShortlistedBy'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function countShortlistedBy( $uid=0)
 	{
 		if ($uid == NULL) {
@@ -89,6 +190,17 @@ class JobSeeker extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'countSeekers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      integer $uid Parameter description (if any) ...
+	 * @param      integer $excludeme Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function countSeekers( $filters, $uid=0, $excludeme = 0, $admin = 0)
 	{
 		$filters['limit'] = 0;
@@ -107,6 +219,18 @@ class JobSeeker extends JTable
 		return count($array);
 	}
 
+	/**
+	 * Short description for 'getSeekers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      mixed $uid Parameter description (if any) ...
+	 * @param      integer $excludeme Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @param      integer $count Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getSeekers( $filters, $uid=0, $excludeme = 0, $admin = 0, $count = 0)
 	{
 		$query  = "SELECT DISTINCT x.name, x.countryresident, r.title, r.filename, r.created, ";
@@ -213,6 +337,16 @@ class JobSeeker extends JTable
 		return $seekers;
 	}
 
+	/**
+	 * Short description for 'getSeeker'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      mixed $eid Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getSeeker( $uid, $eid=0, $admin = 0)
 	{
 		if ($uid === NULL) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'ToolsController'
+ * 
+ * Long description (if any) ...
+ */
 class ToolsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function execute()
 	{
 		// Get the task
@@ -99,6 +114,14 @@ class ToolsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $session Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildPathway($session=null)
 	{
 		$app =& JFactory::getApplication();
@@ -142,6 +165,14 @@ class ToolsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $session Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildTitle($session=null)
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
@@ -162,6 +193,14 @@ class ToolsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'tools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function tools()
 	{
 		// Set the page title
@@ -209,6 +248,13 @@ class ToolsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'image'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function image()
 	{
 		ximport('Hubzero_Document');
@@ -223,6 +269,13 @@ class ToolsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'css'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function css()
 	{
 		ximport('Hubzero_Document');
@@ -237,6 +290,13 @@ class ToolsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function login()
 	{
 		// Set the page title
@@ -255,6 +315,13 @@ class ToolsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'accessdenied'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function accessdenied()
 	{
 		// Set the page title
@@ -273,6 +340,13 @@ class ToolsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'quotaexceeded'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function quotaexceeded()
 	{
 		// Check that the user is logged in
@@ -325,6 +399,14 @@ class ToolsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'storage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $exceeded Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function storage( $exceeded=false )
 	{
 		// Check that the user is logged in
@@ -389,6 +471,13 @@ class ToolsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'invoke'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function invoke()
 	{
 		ximport('Hubzero_Ldap');
@@ -563,6 +652,13 @@ class ToolsController extends Hubzero_Controller
 		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess.'&return='.$rtrn) );
 	}
 
+	/**
+	 * Short description for 'share'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function share()
 	{
 		// Check that the user is logged in
@@ -668,6 +764,13 @@ class ToolsController extends Hubzero_Controller
 		$this->view();
 	}
 
+	/**
+	 * Short description for 'unshare'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function unshare()
 	{
 		// Check that the user is logged in
@@ -711,6 +814,13 @@ class ToolsController extends Hubzero_Controller
 		$this->view();
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Check that the user is logged in
@@ -818,6 +928,18 @@ class ToolsController extends Hubzero_Controller
 		$this->session( $app, $authorized, $output, $toolname, $rtrn );
 	}
 
+	/**
+	 * Short description for 'session'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $app Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      unknown $output Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      unknown $rtrn Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function session( $app, $authorized, $output, $toolname, $rtrn=NULL )
 	{
 		// Build the page title
@@ -872,6 +994,13 @@ class ToolsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'stop'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function stop()
 	{
 		// Check that the user is logged in
@@ -938,6 +1067,13 @@ class ToolsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'purge'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function purge()
 	{
 		// Check that the user is logged in
@@ -986,6 +1122,14 @@ class ToolsController extends Hubzero_Controller
 		//$this->_redirect = JRoute::_('index.php?option=com_myhub' );
 	}
 
+	/**
+	 * Short description for 'getDiskUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function getDiskUsage($type='soft')
 	{
 		// Check that the user is logged in
@@ -1022,6 +1166,14 @@ class ToolsController extends Hubzero_Controller
 	// Views called through AJAX
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'renames'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function renames()
 	{
 		$mwdb =& MwUtils::getMWDBO();
@@ -1039,6 +1191,13 @@ class ToolsController extends Hubzero_Controller
 		echo $name;
 	}
 
+	/**
+	 * Short description for 'diskusage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function diskusage()
 	{
 		// Check that the user is logged in
@@ -1080,6 +1239,16 @@ class ToolsController extends Hubzero_Controller
 	// Record the usage of a tool
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'recordUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $app Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function recordUsage( $app, $uid )
 	{
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
@@ -1139,6 +1308,16 @@ class ToolsController extends Hubzero_Controller
 	// Invoke the Python script to do real work.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'middleware'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $comm Parameter description (if any) ...
+	 * @param      array &$fnoutput Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function middleware( $comm, &$fnoutput )
 	{
 		$retval = 1; // Assume success.
@@ -1174,6 +1353,15 @@ class ToolsController extends Hubzero_Controller
 	// Authorization checks
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function _authorize($uid=0)
 	{
 		// Check if they are logged in
@@ -1203,6 +1391,14 @@ class ToolsController extends Hubzero_Controller
 		return false;
 	}
 
+	/**
+	 * Short description for '_getToolExportControl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $exportcontrol Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _getToolExportControl($exportcontrol)
 	{
 		$xlog =& Hubzero_Factory::getLogger();
@@ -1239,6 +1435,15 @@ class ToolsController extends Hubzero_Controller
 		return true;
 	}
 
+	/**
+	 * Short description for '_getToolAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tool Parameter description (if any) ...
+	 * @param      string $login Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _getToolAccess($tool, $login='')
 	{
 		ximport('Hubzero_User_Helper');
@@ -1378,6 +1583,13 @@ class ToolsController extends Hubzero_Controller
 		return false;
 	}
 
+	/**
+	 * Short description for 'listfiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function listfiles()
 	{
 		// Get the app
@@ -1456,6 +1668,15 @@ class ToolsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'buildUploadPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @param      string $subdir Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function buildUploadPath( $listdir, $subdir='' )
 	{
 		if ($subdir) {
@@ -1504,6 +1725,13 @@ class ToolsController extends Hubzero_Controller
 		return $listdir.$subdir;
 	}
 
+	/**
+	 * Short description for 'deletefolder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletefolder()
 	{
 		// Check if they are logged in
@@ -1550,6 +1778,13 @@ class ToolsController extends Hubzero_Controller
 		$this->listfiles();
 	}
 
+	/**
+	 * Short description for 'deletefile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletefile()
 	{
 		// Check if they are logged in

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPluginHelper::loadLanguage( 'plg_whatsnew_kb' );
 
+/**
+ * Short description for 'plgWhatsnewKb'
+ * 
+ * Long description (if any) ...
+ */
 class plgWhatsnewKb extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgWhatsnewKb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgWhatsnewKb(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgWhatsnewKb extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onWhatsnewAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onWhatsnewAreas()
 	{
 		$areas = array(
@@ -51,6 +75,18 @@ class plgWhatsnewKb extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onWhatsnew'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $period Parameter description (if any) ...
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @param      array $tagids Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
 		if (is_array( $areas ) && $limit) {

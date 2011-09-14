@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,26 +21,96 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'JobStats'
+ * 
+ * Long description (if any) ...
+ */
 class JobStats extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var integer
+	 */
 	var $id         	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'itemid'
+	 * 
+	 * @var unknown
+	 */
 	var $itemid			= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category		= NULL;  // job / seeker  / employer
+
+
+	/**
+	 * Description for 'total_viewed'
+	 * 
+	 * @var unknown
+	 */
 	var $total_viewed	= NULL;
+
+	/**
+	 * Description for 'total_shared'
+	 * 
+	 * @var unknown
+	 */
 	var $total_shared	= NULL;
+
+	/**
+	 * Description for 'viewed_today'
+	 * 
+	 * @var integer
+	 */
 	var $viewed_today	= NULL;
+
+	/**
+	 * Description for 'lastviewed'
+	 * 
+	 * @var unknown
+	 */
 	var $lastviewed		= NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_stats', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (intval( $this->itemid ) == 0) {
@@ -59,6 +126,16 @@ class JobStats extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadStat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $itemid Parameter description (if any) ...
+	 * @param      unknown $category Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadStat($itemid = NULL, $category = NULL, $type = "viewed")
 	{
 		if ($itemid === NULL or $category === NULL) {
@@ -78,6 +155,16 @@ class JobStats extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getStats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $itemid Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getStats($itemid = NULL, $category = 'employer', $admin = 0)
 	{
 		if ($itemid === NULL) {
@@ -123,6 +210,17 @@ class JobStats extends JTable
 		return $stats;
 	}
 
+	/**
+	 * Short description for 'getView'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $itemid Parameter description (if any) ...
+	 * @param      unknown $category Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $when Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getView( $itemid=NULL, $category=NULL, $type='viewed', $when ='')
 	{
 		$lastweek = date('Y-m-d H:i:s', time() - (7 * 24 * 60 * 60));
@@ -157,6 +255,16 @@ class JobStats extends JTable
 		return $result;
 	}
 
+	/**
+	 * Short description for 'saveView'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $itemid Parameter description (if any) ...
+	 * @param      unknown $category Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function saveView( $itemid=NULL, $category=NULL, $type='viewed')
 	{
 		if ($itemid=== NULL) {
@@ -202,6 +310,13 @@ class JobStats extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'cleanup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function cleanup()
 	{
 		$lastmonth = date('Y-m-d H:i:s', time() - (30 * 24 * 60 * 60));
@@ -209,6 +324,15 @@ class JobStats extends JTable
 		$this->_db->query();
 	}
 
+	/**
+	 * Short description for 'deleteStats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $itemid Parameter description (if any) ...
+	 * @param      unknown $category Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteStats($itemid, $category)
 	{
 		if ($itemid === NULL or $category === NULL) {

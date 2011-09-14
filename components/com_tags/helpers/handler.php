@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -41,19 +43,80 @@ require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'tag.php' 
 require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'object.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'group.php' );
 
+/**
+ * Short description for 'TagsHandler'
+ * 
+ * Long description (if any) ...
+ */
 class TagsHandler extends JObject
 {
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var unknown
+	 */
 	public $_db  = NULL;  // Database
+
+
+	/**
+	 * Description for '_tbl'
+	 * 
+	 * @var string
+	 */
 	public $_tbl = 'tags';  // Secondary tag table, used for linking objects (such as resources) to tags
+
+
+	/**
+	 * Description for '_oid'
+	 * 
+	 * @var unknown
+	 */
 	public $_oid = NULL;  // The object to be tagged
+
+
+	/**
+	 * Description for '_tag_tbl'
+	 * 
+	 * @var string
+	 */
 	public $_tag_tbl = '#__tags';  // The primary tag table
+
+
+	/**
+	 * Description for '_obj_tbl'
+	 * 
+	 * @var string
+	 */
 	public $_obj_tbl = '#__tags_object';
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $db Parameter description (if any) ...
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $db, $config=array() )
 	{
 		$this->_db = $db;
 	}
 
+	/**
+	 * Short description for 'get_tags_on_object'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $object_id Parameter description (if any) ...
+	 * @param      integer $offset Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      unknown $tagger_id Parameter description (if any) ...
+	 * @param      integer $strength Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0)
 	{
 		if (!isset($object_id)) {
@@ -75,6 +138,17 @@ class TagsHandler extends JObject
 		return $tags;
 	}
 
+	/**
+	 * Short description for 'safe_tag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tagger_id Parameter description (if any) ...
+	 * @param      unknown $object_id Parameter description (if any) ...
+	 * @param      unknown $tag Parameter description (if any) ...
+	 * @param      integer $strength Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function safe_tag($tagger_id, $object_id, $tag, $strength=1)
 	{
 		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
@@ -129,6 +203,18 @@ class TagsHandler extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'tag_object'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tagger_id Parameter description (if any) ...
+	 * @param      unknown $object_id Parameter description (if any) ...
+	 * @param      unknown $tag_string Parameter description (if any) ...
+	 * @param      unknown $strength Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false)
 	{
 		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
@@ -169,6 +255,17 @@ class TagsHandler extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'remove_tag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tagger_id Parameter description (if any) ...
+	 * @param      unknown $object_id Parameter description (if any) ...
+	 * @param      unknown $tag Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function remove_tag($tagger_id, $object_id, $tag, $admin)
 	{
 		if (!isset($object_id) || !isset($tag)) {
@@ -189,6 +286,14 @@ class TagsHandler extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'remove_all_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $object_id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function remove_all_tags($object_id)
 	{
 		if ($object_id > 0) {
@@ -203,11 +308,27 @@ class TagsHandler extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'normalize_tag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function normalize_tag($tag)
 	{
 		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $tag));
 	}
 
+	/**
+	 * Short description for 'get_tag_id'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tag Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_tag_id($tag)
 	{
 		if (!isset($tag)) {
@@ -220,6 +341,14 @@ class TagsHandler extends JObject
 		return $t->id;
 	}
 
+	/**
+	 * Short description for 'get_raw_tag_id'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tag Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function get_raw_tag_id($tag)
 	{
 		if (!isset($tag)) {
@@ -229,6 +358,14 @@ class TagsHandler extends JObject
 		return $this->get_tag_id($tag);
 	}
 
+	/**
+	 * Short description for 'count_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function count_tags($admin=0)
 	{
 		$filters = array();
@@ -240,6 +377,16 @@ class TagsHandler extends JObject
 		return $t->getCount( $filters );
 	}
 
+	/**
+	 * Short description for 'get_tag_cloud'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $showsizes Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @param      unknown $objectid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
 	{
 		// find all tags
@@ -254,6 +401,16 @@ class TagsHandler extends JObject
 		return $this->buildCloud($tags, 'alpha', $showsizes);
 	}
 
+	/**
+	 * Short description for 'buildCloud'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $tags Parameter description (if any) ...
+	 * @param      string $sort Parameter description (if any) ...
+	 * @param      integer $showsizes Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildCloud($tags, $sort='alpha', $showsizes=0)
 	{
 		$html = '';
@@ -319,6 +476,19 @@ class TagsHandler extends JObject
 		return $html;
 	}
 
+	/**
+	 * Short description for 'get_tag_string'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $offset Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      unknown $tagger_id Parameter description (if any) ...
+	 * @param      integer $strength Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_tag_string( $oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0 )
 	{
 		$tags = $this->get_tags_on_object( $oid, $offset, $limit, $tagger_id, $strength, $admin );
@@ -336,6 +506,15 @@ class TagsHandler extends JObject
 		return $tags;
 	}
 
+	/**
+	 * Short description for '_parse_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tag_string Parameter description (if any) ...
+	 * @param      integer $keep Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function _parse_tags( $tag_string, $keep=0 )
 	{
 		$newwords = array();

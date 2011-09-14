@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_favorite' );
 
+/**
+ * Short description for 'plgResourcesFavorite'
+ * 
+ * Long description (if any) ...
+ */
 class plgResourcesFavorite extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgResourcesFavorite'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgResourcesFavorite(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,12 +60,31 @@ class plgResourcesFavorite extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onResourcesAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $resource Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onResourcesAreas( $resource )
 	{
 		$areas = array();
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $resource Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @param      string $rtrn Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		// Check if our area is in the array of areas we want to return results for
@@ -105,6 +141,14 @@ class plgResourcesFavorite extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'onResourcesFavorite'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function onResourcesFavorite( $option )
 	{
 		$rid = JRequest::getInt( 'rid', 0 );
@@ -114,6 +158,14 @@ class plgResourcesFavorite extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'fav'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function fav( $oid )
 	{
 		$juser =& JFactory::getUser();

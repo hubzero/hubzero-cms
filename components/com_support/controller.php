@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,14 +21,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'SupportController'
+ * 
+ * Long description (if any) ...
+ */
 class SupportController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->acl = SupportACL::getACL();
@@ -62,6 +77,14 @@ class SupportController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $ticket Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildPathway($ticket=null)
 	{
 		$app =& JFactory::getApplication();
@@ -90,6 +113,14 @@ class SupportController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $ticket Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildTitle($ticket=null)
 	{
 		$this->_title = JText::_(strtoupper($this->_name));
@@ -107,6 +138,14 @@ class SupportController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'stats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function stats()
 	{
 		// Check authorization
@@ -283,6 +322,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'index'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function index()
 	{
 		// Instantiate a new view
@@ -305,6 +351,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function login()
 	{
 		// Instantiate a new view
@@ -318,6 +371,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'tickets'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function tickets()
 	{
 		// Instantiate a new view
@@ -375,6 +435,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'ticket'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function ticket()
 	{
 		// Check authorization
@@ -557,6 +624,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'feed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function feed()
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php' );
@@ -620,6 +694,13 @@ class SupportController extends Hubzero_Controller
 		echo $doc->render();
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 	    $juser =& JFactory::getUser();
@@ -944,6 +1025,13 @@ class SupportController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='.$id);
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		// Incoming
@@ -971,6 +1059,13 @@ class SupportController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function create()
 	{
 		/*
@@ -1158,6 +1253,14 @@ class SupportController extends Hubzero_Controller
 	// Report abuse
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'reportabuse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function reportabuse()
 	{
 		// Login required
@@ -1233,6 +1336,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savereport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function savereport()
 	{
 		$juser =& JFactory::getUser();
@@ -1328,6 +1438,14 @@ class SupportController extends Hubzero_Controller
 	// General functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_getFilters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	private function _getFilters()
 	{
 		// Query filters defaults
@@ -1449,6 +1567,18 @@ class SupportController extends Hubzero_Controller
 		return $filters;
 	}
 
+	/**
+	 * Short description for '_userSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $active Parameter description (if any) ...
+	 * @param      integer $nouser Parameter description (if any) ...
+	 * @param      string $javascript Parameter description (if any) ...
+	 * @param      string $order Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _userSelect( $name, $active, $nouser=0, $javascript=NULL, $order='a.name' )
 	{
 		$query = "SELECT a.username AS value, a.name AS text, g.name AS groupname"
@@ -1472,6 +1602,18 @@ class SupportController extends Hubzero_Controller
 		return $users;
 	}
 
+	/**
+	 * Short description for '_userSelectGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $active Parameter description (if any) ...
+	 * @param      integer $nouser Parameter description (if any) ...
+	 * @param      string $javascript Parameter description (if any) ...
+	 * @param      string $group Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _userSelectGroup( $name, $active, $nouser=0, $javascript=NULL, $group='' )
 	{
 		$users = array();
@@ -1682,6 +1824,14 @@ class SupportController extends Hubzero_Controller
 		return;
 	}
 
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function upload($listdir)
 	{
 		// Check if they are logged in
@@ -1751,6 +1901,15 @@ class SupportController extends Hubzero_Controller
 	// misc.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolgroup Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function authorize($toolgroup='')
 	{
 		// Check if they are logged in

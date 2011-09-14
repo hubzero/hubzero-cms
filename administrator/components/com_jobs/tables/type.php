@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,23 +21,64 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'JobType'
+ * 
+ * Long description (if any) ...
+ */
 class JobType extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id       = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category = NULL;  // @var varchar(150)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_types', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getTypes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $sortby Parameter description (if any) ...
+	 * @param      string $sortdir Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getTypes($sortby = 'id', $sortdir = 'ASC')
 	{
 		$types = array();
@@ -59,6 +97,15 @@ class JobType extends JTable
 		return $types;
 	}
 
+	/**
+	 * Short description for 'getType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $id Parameter description (if any) ...
+	 * @param      string $default Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getType($id = NULL, $default = 'unspecified')
 	{
 		if ($id === NULL) {

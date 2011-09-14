@@ -1,25 +1,25 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @package		HUBzero                                  CMS
+ * @author		Shawn                                     Rice <zooley@purdue.edu>
+ * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *                                                    
+ *                                                    Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ *                                                    All rights reserved.
+ *                                                    
+ *                                                    This program is free software; you can redistribute it and/or
+ *                                                    modify it under the terms of the GNU General Public License,
+ *                                                    version 2 as published by the Free Software Foundation.
+ *                                                    
+ *                                                    This program is distributed in the hope that it will be useful,
+ *                                                    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *                                                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *                                                    GNU General Public License for more details.
+ *                                                    
+ *                                                    You should have received a copy of the GNU General Public License
+ *                                                    along with this program; if not, write to the Free Software
+ *                                                    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -27,9 +27,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'ForumController'
+ * 
+ * Long description (if any) ...
+ */
 class ForumController extends Hubzero_Controller
 {
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 
@@ -49,6 +61,15 @@ class ForumController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'setNotification'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setNotification( $message, $type )
 	{
 		//get the app
@@ -63,6 +84,13 @@ class ForumController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'getNotifications'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getNotifications()
 	{
 		//get the app
@@ -77,6 +105,13 @@ class ForumController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function _authorize()
 	{
 		$status = "";
@@ -97,6 +132,14 @@ class ForumController extends Hubzero_Controller
 	// Views                                      //
 	////////////////////////////////////////////////
 
+
+	/**
+	 * Short description for 'topics'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function topics()
 	{
 		$title = "Discussion Forum";
@@ -152,6 +195,13 @@ class ForumController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'topic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function topic()
 	{
 		$title = "Discussion Forum";
@@ -213,11 +263,25 @@ class ForumController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'addTopic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function addTopic()
 	{
 		$this->editTopic();
 	}
 
+	/**
+	 * Short description for 'editTopic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function editTopic()
 	{
 		$juser =& JFactory::getUser();
@@ -253,6 +317,13 @@ class ForumController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveTopic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function saveTopic()
 	{
 		$juser =& JFactory::getUser();
@@ -320,6 +391,13 @@ class ForumController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'deleteTopic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function deleteTopic()
 	{
 		// Is the user logged in?

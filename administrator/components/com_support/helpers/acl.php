@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,13 +35,49 @@ require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'aros_acos.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'aros.php' );
 
+/**
+ * Short description for 'SupportACL'
+ * 
+ * Long description (if any) ...
+ */
 class SupportACL extends JObject
 {
+
+	/**
+	 * Description for '_juser'
+	 * 
+	 * @var object
+	 */
 	private $_juser;
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	private $_db;
+
+	/**
+	 * Description for '_raw_data'
+	 * 
+	 * @var array
+	 */
 	private $_raw_data;
+
+	/**
+	 * Description for '_user_groups'
+	 * 
+	 * @var array
+	 */
 	private $_user_groups;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function __construct()
 	{
 		$this->_juser = JFactory::getUser();
@@ -59,6 +97,13 @@ class SupportACL extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'getACL'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function &getACL()
 	{
 		static $instance;
@@ -70,6 +115,17 @@ class SupportACL extends JObject
 		return $instance;
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      unknown $aco Parameter description (if any) ...
+	 * @param      unknown $aco_foreign_key Parameter description (if any) ...
+	 * @param      unknown $aro_foreign_key Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function check( $action=null, $aco=null, $aco_foreign_key=null, $aro_foreign_key=null )
 	{
 		$permission = 0;
@@ -143,6 +199,14 @@ class SupportACL extends JObject
 		return $grouppermission;
 	}
 
+	/**
+	 * Short description for 'setUser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $aro_foreign_key Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setUser($aro_foreign_key=null)
 	{
 		if ($aro_foreign_key) {
@@ -154,6 +218,18 @@ class SupportACL extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'setAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      unknown $aco Parameter description (if any) ...
+	 * @param      unknown $permission Parameter description (if any) ...
+	 * @param      unknown $aco_foreign_key Parameter description (if any) ...
+	 * @param      unknown $aro_foreign_key Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setAccess($action=null, $aco=null, $permission=null, $aco_foreign_key=null, $aro_foreign_key=null)
 	{
 		if ($aro_foreign_key) {
@@ -194,6 +270,14 @@ class SupportACL extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function authorize($group=null)
 	{
 		if ($group && $this->_user_groups && count($this->_user_groups) > 0) {

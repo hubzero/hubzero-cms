@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modXLogin'
+ * 
+ * Long description (if any) ...
+ */
 class modXLogin
 {
+
+	/**
+	 * Description for '_objects'
+	 * 
+	 * @var array
+	 */
 	var $_objects = array();
+
+	/**
+	 * Description for 'debug'
+	 * 
+	 * @var integer
+	 */
 	var $debug = 0;
 
 	//-----------
+
+
+	/**
+	 * Short description for 'setObject'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown &$object Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setObject($name, &$object)
 	{
 		$this->_objects[$name] =& $object;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'getObject'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function &getObject($name)
 	{
 		return $this->_objects[$name];
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function display()
 	{
 		$xhub = &Hubzero_Factory::getHub();

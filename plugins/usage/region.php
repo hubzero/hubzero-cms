@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_region' );
 
+/**
+ * Short description for 'plgUsageRegion'
+ * 
+ * Long description (if any) ...
+ */
 class plgUsageRegion extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgUsageRegion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgUsageRegion(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgUsageRegion extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onUsageAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -55,6 +79,18 @@ class plgUsageRegion extends JPlugin
 	//  Print Region List from Database
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'regionlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      unknown $region Parameter description (if any) ...
+	 * @param      mixed $t Parameter description (if any) ...
+	 * @param      mixed $enddate Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function regionlist(&$db, $region, $t=0, $enddate = 0)
 	{
 		// Set region list parameters...
@@ -225,6 +261,19 @@ class plgUsageRegion extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for 'onUsageDisplay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      unknown $db Parameter description (if any) ...
+	 * @param      unknown $months Parameter description (if any) ...
+	 * @param      unknown $monthsReverse Parameter description (if any) ...
+	 * @param      unknown $enddate Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for

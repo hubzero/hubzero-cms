@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,102 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Vote'
+ * 
+ * Long description (if any) ...
+ */
 class Vote extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id      		= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'referenceid'
+	 * 
+	 * @var unknown
+	 */
 	var $referenceid    = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'voted'
+	 * 
+	 * @var unknown
+	 */
 	var $voted 			= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'voter'
+	 * 
+	 * @var unknown
+	 */
 	var $voter   		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'helpful'
+	 * 
+	 * @var unknown
+	 */
 	var $helpful     	= NULL;  // @var varchar(11)
+
+
+	/**
+	 * Description for 'ip'
+	 * 
+	 * @var unknown
+	 */
 	var $ip      		= NULL;  // @var varchar(15)
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category     	= NULL;  // @var varchar(50)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__vote_log', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->referenceid ) == '') {
@@ -61,6 +132,16 @@ class Vote extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'checkVote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $refid Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $voter Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function checkVote($refid=null, $category=null, $voter=null)
 	{
 		if ($refid == null) {
@@ -84,6 +165,14 @@ class Vote extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getResults'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getResults( $filters=array() )
 	{
 		$query = "SELECT c.* 

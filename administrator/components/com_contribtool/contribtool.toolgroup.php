@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,19 +35,61 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'ToolGroup'
+ * 
+ * Long description (if any) ...
+ */
 class ToolGroup extends  JTable
 {
+
+	/**
+	 * Description for 'cn'
+	 * 
+	 * @var unknown
+	 */
 	var $cn      	   = NULL;  // @var varchar (255)
+
+
+	/**
+	 * Description for 'toolid'
+	 * 
+	 * @var unknown
+	 */
 	var $toolid        = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'role'
+	 * 
+	 * @var unknown
+	 */
 	var $role      	   = NULL;  // @var tinyint(2)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool_groups', 'cn', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 
@@ -63,6 +107,17 @@ class ToolGroup extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $cn Parameter description (if any) ...
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $role Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function save($cn, $toolid, $role)
 	{
 		$query = "INSERT INTO $this->_tbl (cn, toolid, role) VALUES ('".$cn."','".$toolid."','".$role."')";
@@ -70,6 +125,17 @@ class ToolGroup extends  JTable
 		$this->_db->query();
 	}
 
+	/**
+	 * Short description for 'saveGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      unknown $devgroup Parameter description (if any) ...
+	 * @param      unknown $members Parameter description (if any) ...
+	 * @param      unknown $exist Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function saveGroup($toolid=NULL, $devgroup, $members, $exist)
 	{
 		ximport('Hubzero_Group');
@@ -107,6 +173,18 @@ class ToolGroup extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'saveMemberGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      array $newgroups Parameter description (if any) ...
+	 * @param      string $editversion Parameter description (if any) ...
+	 * @param      array $membergroups Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function saveMemberGroups($toolid=NULL, $newgroups, $editversion='dev', $membergroups=array())
 	{
 		ximport('Hubzero_Tool');
@@ -143,6 +221,17 @@ class ToolGroup extends  JTable
 
 	}
 
+	/**
+	 * Short description for 'writeMemberGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $new Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      string &$err Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function writeMemberGroups($new, $id, $database, &$err='')
 	{
 		ximport('Hubzero_Group');
@@ -173,6 +262,17 @@ class ToolGroup extends  JTable
 
 	}
 
+	/**
+	 * Short description for 'writeTeam'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $new Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      string &$err Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function writeTeam($new, $id, $database, &$err='') {
 
 		$toolhelper = new ContribtoolHelper();

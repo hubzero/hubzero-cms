@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -40,10 +42,32 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Sometimes it is possible to see the discrepency by multiplying the number of
 // pages by the per-page setting, but I don't think anyone has ever bothered to
 // to do so.
+
+/**
+ * Short description for 'SearchPages'
+ * 
+ * Long description (if any) ...
+ */
 class SearchPages
 {
+
+	/**
+	 * Description for 'total'
+	 * 
+	 * @var number
+	 */
 	private $total, $offset, $limit;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $total Parameter description (if any) ...
+	 * @param      unknown $offset Parameter description (if any) ...
+	 * @param      unknown $limit Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($total, $offset, $limit)
 	{
 		$this->total = $total;
@@ -51,6 +75,14 @@ class SearchPages
 		$this->limit = $limit;
 	}
 
+	/**
+	 * Short description for 'link_to'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $update Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function link_to($update)
 	{
 		$get = array();
@@ -61,6 +93,13 @@ class SearchPages
 		return '/'.preg_replace('/^com_/', '', $_GET['option']).'/?'.join('&amp;', $get);
 	}
 
+	/**
+	 * Short description for 'getListFooter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getListFooter()
 	{
 		$html = array();

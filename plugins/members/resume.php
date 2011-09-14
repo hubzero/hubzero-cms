@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -34,8 +36,23 @@ jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_resume' );
 JPlugin::loadLanguage( 'com_jobs' );
 
+/**
+ * Short description for 'plgMembersResume'
+ * 
+ * Long description (if any) ...
+ */
 class plgMembersResume extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgMembersResume'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgMembersResume(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -60,6 +77,14 @@ class plgMembersResume extends JPlugin
 		$this->config = $config;
 	}
 
+	/**
+	 * Short description for 'onMembersAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onMembersAreas($authorized)
 	{
 		$emp = $this->isEmployer();
@@ -75,6 +100,15 @@ class plgMembersResume extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'isEmployer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function isEmployer( $member='', $authorized = '')
 	{
 		$juser 	  =& JFactory::getUser();
@@ -112,6 +146,14 @@ class plgMembersResume extends JPlugin
 		return $emp;
 	}
 
+	/**
+	 * Short description for 'isAdmin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function isAdmin($admin = 0)
 	{
 		$juser =& JFactory::getUser();
@@ -133,6 +175,17 @@ class plgMembersResume extends JPlugin
 		return $admin;
 	}
 
+	/**
+	 * Short description for 'onMembers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      array $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$return = 'html';
@@ -199,6 +252,18 @@ class plgMembersResume extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      unknown $emp Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function save($database, $option, $member, $task, $emp)
 	{
 		$lookingfor = JRequest::getVar('lookingfor','');
@@ -242,6 +307,17 @@ class plgMembersResume extends JPlugin
 		return $this->view($database, $option, $member, $emp);
 	}
 
+	/**
+	 * Short description for 'activate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @param      unknown $emp Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function activate($database, $option, $member, $emp)
 	{
 		// are we activating or disactivating?
@@ -271,6 +347,14 @@ class plgMembersResume extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'getThumb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getThumb($uid)
 	{
 		// do we have a thumb image for the user?
@@ -300,6 +384,19 @@ class plgMembersResume extends JPlugin
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      string $emp Parameter description (if any) ...
+	 * @param      integer $edittitle Parameter description (if any) ...
+	 * @param      mixed $editpref Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function view($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
 	{
 		$out = '';
@@ -575,6 +672,18 @@ class plgMembersResume extends JPlugin
 		return $out;
 	}
 
+	/**
+	 * Short description for 'showSeeker'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $seeker Parameter description (if any) ...
+	 * @param      unknown $emp Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      mixed $list Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function showSeeker( $seeker, $emp, $admin, $option, $list=0)
 	{
 		$database =& JFactory::getDBO();
@@ -657,6 +766,14 @@ class plgMembersResume extends JPlugin
 		return $out;
 	}
 
+	/**
+	 * Short description for 'build_path'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function build_path( $uid )
 	{
 		// Get the configured upload path
@@ -694,6 +811,17 @@ class plgMembersResume extends JPlugin
 	// media manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function upload( $database, $option, $member)
 	{
 		$path = JRequest::getVar( 'path', '');
@@ -766,6 +894,17 @@ class plgMembersResume extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'deleteresume'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @param      unknown $emp Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function deleteresume($database, $option, $member, $emp)
 	{
 		$row = new Resume( $database );
@@ -809,6 +948,13 @@ class plgMembersResume extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'onMembersShortlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function onMembersShortlist( )
 	{
 		$oid = JRequest::getInt( 'oid', 0 );
@@ -818,6 +964,15 @@ class plgMembersResume extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'shortlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $ajax Parameter description (if any) ...
+	 * @return     void
+	 */
 	function shortlist( $oid, $ajax=0 )
 	{
 		$juser =& JFactory::getUser();
@@ -847,11 +1002,30 @@ class plgMembersResume extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
+	/**
+	 * Short description for 'formSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
@@ -867,6 +1041,14 @@ class plgMembersResume extends JPlugin
 		return $out;
 	}
 
+	/**
+	 * Short description for 'nicetime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function nicetime($date)
 	{
 		if (empty($date)) {
@@ -908,6 +1090,14 @@ class plgMembersResume extends JPlugin
 		return "$difference $periods[$j] {$tense}";
 	}
 
+	/**
+	 * Short description for 'download'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function download($member)
 	{
 		// Get some needed libraries

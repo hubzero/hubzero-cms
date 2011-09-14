@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modPopularQuestions'
+ * 
+ * Long description (if any) ...
+ */
 class modPopularQuestions
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -55,6 +99,16 @@ class modPopularQuestions
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'mkt'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $stime Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -64,6 +118,16 @@ class modPopularQuestions
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'timeAgoo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
@@ -107,6 +171,16 @@ class modPopularQuestions
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'timeAgo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function timeAgo($timestamp)
 	{
 		$text = $this->timeAgoo($timestamp);
@@ -119,6 +193,15 @@ class modPopularQuestions
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function display()
 	{
 		$database =& JFactory::getDBO();

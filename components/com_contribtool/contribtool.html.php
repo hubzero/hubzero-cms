@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,48 +21,136 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined('n')) {
+
+/**
+ * Description for ''t''
+ */
 	define('t',"\t");
+
+/**
+ * Description for ''n''
+ */
 	define('n',"\n");
+
+/**
+ * Description for ''r''
+ */
 	define('r',"\r");
+
+/**
+ * Description for ''br''
+ */
 	define('br','<br />');
+
+/**
+ * Description for ''sp''
+ */
 	define('sp','&#160;');
+
+/**
+ * Description for ''a''
+ */
 	define('a','&amp;');
 }
 
+/**
+ * Short description for 'ContribtoolHtml'
+ * 
+ * Long description (if any) ...
+ */
 class ContribtoolHtml
 {
 
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
 
+	/**
+	 * Short description for 'warning'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
 
+	/**
+	 * Short description for 'passed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function passed( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'.n;
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
+	/**
+	 * Short description for 'hed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $level Parameter description (if any) ...
+	 * @param      string $txt Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function hed($level, $txt)
 	{
 		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
 	}
 
+	/**
+	 * Short description for 'div'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $txt Parameter description (if any) ...
+	 * @param      string $cls Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function div($txt, $cls='', $id='')
 	{
 		$html  = '<div';
@@ -85,6 +170,15 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'mkt'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $stime Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -93,6 +187,14 @@ class ContribtoolHtml
 		return $stime;
 	}
 
+	/**
+	 * Short description for 'timeAgoo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
@@ -136,6 +238,14 @@ class ContribtoolHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'timeAgo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timestamp Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function timeAgo($timestamp)
 	{
 		$timestamp = ContribtoolHtml::mkt($timestamp);
@@ -149,6 +259,21 @@ class ContribtoolHtml
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'formSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      string $idname Parameter description (if any) ...
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $jscall Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function formSelect($name, $idname, $array, $value, $class='', $jscall='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$idname.'"';
@@ -166,6 +291,21 @@ class ContribtoolHtml
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'primaryButton'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $href Parameter description (if any) ...
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $xtra Parameter description (if any) ...
+	 * @param      string $title Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='')
 	{
 		$title = str_replace('"','&quot;',$title);
@@ -175,6 +315,15 @@ class ContribtoolHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'getNumofTools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      string $toolnum Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getNumofTools($status, $toolnum='')
 	{
 		// get hub parameters
@@ -197,6 +346,14 @@ class ContribtoolHtml
 		return $toolnum;
 	}
 
+	/**
+	 * Short description for 'toolActive'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $stateNum Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function toolActive($stateNum) {
 		if($stateNum==8 or $stateNum==9) {
 			return false;
@@ -208,6 +365,15 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'toolWIP'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $stateNum Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function toolWIP($stateNum) {
 		if($stateNum==2 or $stateNum==9 or $stateNum==1) {
 			return false;
@@ -218,6 +384,14 @@ class ContribtoolHtml
 
 	}
 
+	/**
+	 * Short description for 'toolEstablished'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $stateNum Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function toolEstablished($stateNum) {
 		if($stateNum==1 or $stateNum==9) {
 			return false;
@@ -229,6 +403,16 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getStatusClass'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $statusNum Parameter description (if any) ...
+	 * @param      string &$statusClass Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getStatusClass($statusNum, &$statusClass) {
 
 		switch($statusNum)
@@ -243,6 +427,16 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getStatusName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $statusNum Parameter description (if any) ...
+	 * @param      unknown &$statusName Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function getStatusName($statusNum, &$statusName) {
 
 		switch($statusNum)
@@ -262,6 +456,16 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getStatusNum'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $statusName Parameter description (if any) ...
+	 * @param      integer $statusNum Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function getStatusNum($statusName, $statusNum=1)
 	{
 		$statusName= strtolower($statusName);
@@ -282,6 +486,16 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getPriority'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $int Parameter description (if any) ...
+	 * @param      string $priority Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getPriority ($int, $priority='')
 	{
 		switch($int)
@@ -297,6 +511,16 @@ class ContribtoolHtml
 		return $priority;
 	}
 
+	/**
+	 * Short description for 'getDevTeam'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $members Parameter description (if any) ...
+	 * @param      integer $obj Parameter description (if any) ...
+	 * @param      string $team Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getDevTeam($members, $obj = 1, $team='') {
 
 		if(count($members)>0) {
@@ -318,6 +542,16 @@ class ContribtoolHtml
 		return $team;
 	}
 
+	/**
+	 * Short description for 'getGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @param      integer $obj Parameter description (if any) ...
+	 * @param      string $list Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getGroups($groups, $obj = 1, $list='') {
 		if(count($groups)>0) {
 			foreach($groups as $group) {
@@ -329,6 +563,16 @@ class ContribtoolHtml
 		return $list;
 	}
 
+	/**
+	 * Short description for 'getToolAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $access Parameter description (if any) ...
+	 * @param      array $groups Parameter description (if any) ...
+	 * @param      string $toolaccess Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getToolAccess($access, $groups, $toolaccess='')
 	{
 		switch($access)
@@ -354,6 +598,16 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getCodeAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $access Parameter description (if any) ...
+	 * @param      string $codeaccess Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getCodeAccess($access, $codeaccess = '')
 	{
 		switch($access)
@@ -366,6 +620,15 @@ class ContribtoolHtml
 		return $codeaccess;
 	}
 
+	/**
+	 * Short description for 'getWikiAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $access Parameter description (if any) ...
+	 * @param      string $wikiaccess Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getWikiAccess($access, $wikiaccess = '')
 	{
 		switch($access)
@@ -379,6 +642,22 @@ class ContribtoolHtml
 	}
 	//------------
 
+
+	/**
+	 * Short description for 'writeWhatNext'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @param      string $par Parameter description (if any) ...
+	 * @param      string $step2 Parameter description (if any) ...
+	 * @param      string $step4 Parameter description (if any) ...
+	 * @param      string $step5addon Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function writeWhatNext ($status, $config, $option, $title, $par='', $step2='', $step4='', $step5addon='')
 	{
 		// get configs
@@ -534,6 +813,14 @@ class ContribtoolHtml
 			 return $html;
 	}
 
+	/**
+	 * Short description for 'writeApproval'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $active_stage Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeApproval($active_stage)
 	{
 
@@ -568,6 +855,20 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'writeResourceEditStage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $stage Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      unknown $published Parameter description (if any) ...
+	 * @param      string $vnum Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeResourceEditStage($stage, $version, $option, $rid, $published, $vnum)
 	{
 		$stages = array(JText::_('CONTRIBTOOL_STEP_DESCRIPTION'),JText::_('CONTRIBTOOL_STEP_CONTRIBUTORS'),
@@ -630,6 +931,15 @@ class ContribtoolHtml
 		echo $html;
 	}
 
+	/**
+	 * Short description for 'writeStates'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $active_state Parameter description (if any) ...
+	 * @param      unknown $statuspath Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeStates($active_state, $statuspath )
 	{
 
@@ -682,6 +992,16 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'selectAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $as Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectAccess($as, $value)
 	{
 		$html  = '<select name="access">';
@@ -700,6 +1020,16 @@ class ContribtoolHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'selectGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner">'.n;
@@ -719,6 +1049,25 @@ class ContribtoolHtml
 	//-----------------------------------------------------
 	// Tool registration/edit form
 	//-----------------------------------------------------
+
+
+	/**
+	 * Short description for 'writeToolForm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      unknown $juser Parameter description (if any) ...
+	 * @param      array $defaults Parameter description (if any) ...
+	 * @param      array $error Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      unknown $task Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @param      string $editversion Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeToolForm($option, $title, $admin, $juser, $defaults, $error, $id, $task, $config, $editversion='dev')
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -852,6 +1201,19 @@ class ContribtoolHtml
 	// Version Approval Steps
 	//-----------------------------------------------------
 
+
+	/**
+	 * Short description for 'writeFinalizeVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      string $error Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeFinalizeVersion($status, $admin, $error, $option, $title)
 	{
 		/*
@@ -928,6 +1290,18 @@ class ContribtoolHtml
     <?php	
 	}
 
+	/**
+	 * Short description for 'writeNotesArea'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $notes Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      integer $edititem Parameter description (if any) ...
+	 * @param      integer $addnew Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function writeNotesArea($notes, $option, $type='', $edititem = 0, $addnew = 1)
 	{
 
@@ -953,6 +1327,16 @@ class ContribtoolHtml
 
 	}
 
+	/**
+	 * Short description for 'addNoteArea'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $i Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function addNoteArea($i, $option, $type = 'item')
 	{
 		$out  = '';
@@ -967,6 +1351,23 @@ class ContribtoolHtml
 
 	}
 
+	/**
+	 * Short description for 'writeToolLicense'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $licenses Parameter description (if any) ...
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      string $error Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $license_choice Parameter description (if any) ...
+	 * @param      string $code Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeToolLicense($licenses, $status, $admin, $error, $option, $action, $license_choice, $code, $action, $title)
 	{
 		$open 					= ($code == '@OPEN') ? 1 : 0 ;
@@ -1048,6 +1449,20 @@ class ContribtoolHtml
 		<?php
 	}
 
+	/**
+	 * Short description for 'writeToolVersions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $tools Parameter description (if any) ...
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      unknown $error Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeToolVersions($tools, $status, $admin, $error, $option, $action, $title)
 	{
 		/*
@@ -1209,6 +1624,22 @@ class ContribtoolHtml
 	// Status
 	//-----------------------------------------------------
 
+
+	/**
+	 * Short description for 'writeToolStatus'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      unknown $error Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $title Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @return     void
+	 */
     public function writeToolStatus($status, $user, $admin, $error, $option, $msg, $title, $config)
 	{
 		// get configurations/ defaults
@@ -1491,6 +1922,22 @@ class ContribtoolHtml
 	// Pipeline
 	//-----------------------------------------------------
 
+
+	/**
+	 * Short description for 'summary'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$tools Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      object &$pageNav Parameter description (if any) ...
+	 * @param      mixed $total Parameter description (if any) ...
+	 * @param      string $title Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function summary (&$tools, $option, $filters, $admin, &$pageNav, $total, $title, $config)
 	{
 		// get configurations/ defaults
@@ -1625,6 +2072,29 @@ class ContribtoolHtml
 	// Resource page editing
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'writeResourceEditForm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      unknown $row Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      array $allnbtags Parameter description (if any) ...
+	 * @param      integer $step Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      unknown $tags Parameter description (if any) ...
+	 * @param      unknown $tagfa Parameter description (if any) ...
+	 * @param      unknown $fat Parameter description (if any) ...
+	 * @param      unknown $authors Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @param      unknown $groups Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeResourceEditForm ($rid, $toolid, $status, $row, $version, $allnbtags, $step, $option, $admin, $tags, $tagfa, $fat, $authors, $title, $groups)
 	{
 		$nextstep = $step+1;
@@ -1749,6 +2219,18 @@ if($tagname!='screenshots' and $tagname!='bio') {
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'stepAttach'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      integer $published Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function stepAttach( $rid, $option, $version, $published=0)
 	{
 		$allowupload = ($version=='current' or !$published) ? 1 : 0;
@@ -1774,6 +2256,16 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		<?php
 	}
 
+	/**
+	 * Short description for 'stepAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      unknown $version Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function stepAuthors($rid, $version, $option)
 	{
 		?>
@@ -1790,6 +2282,20 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		<?php
 	}
 
+	/**
+	 * Short description for 'stepTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      string $tags Parameter description (if any) ...
+	 * @param      unknown $tagfa Parameter description (if any) ...
+	 * @param      array $fat Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      integer $published Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function stepTags( $rid, $tags, $tagfa, $fat, $option, $published=0, $version )
 	{
 
@@ -1837,6 +2343,23 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		<?php
 	}
 
+	/**
+	 * Short description for 'writeResourcePreview'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$database Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $task Parameter description (if any) ...
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      object $resource Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @param      unknown $usersgroups Parameter description (if any) ...
+	 * @param      unknown $version Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function writeResourcePreview ( &$database, $option, $task, $rid, $toolid, $resource, $config, $usersgroups, $version, $title )
 	{
 
@@ -1919,6 +2442,23 @@ if($tagname!='screenshots' and $tagname!='bio') {
 	// Other views
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'ss_pop'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      string $wpath Parameter description (if any) ...
+	 * @param      string $upath Parameter description (if any) ...
+	 * @param      string $file Parameter description (if any) ...
+	 * @param      unknown $error Parameter description (if any) ...
+	 * @param      unknown $version Parameter description (if any) ...
+	 * @param      unknown $vid Parameter description (if any) ...
+	 * @param      array $shot Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function ss_pop( $option, $rid, $wpath, $upath, $file, $error, $version, $vid, $shot=array())
 	{
 	$size = getimagesize($upath.DS.$file);
@@ -1952,6 +2492,22 @@ if($tagname!='screenshots' and $tagname!='bio') {
 
 	}
 
+	/**
+	 * Short description for 'screenshots'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $upath Parameter description (if any) ...
+	 * @param      string $wpath Parameter description (if any) ...
+	 * @param      unknown $cparams Parameter description (if any) ...
+	 * @param      unknown $error Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      array $shots Parameter description (if any) ...
+	 * @param      integer $published Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function screenshots ( $option, $rid, $upath, $wpath, $cparams, $error, $version, $shots, $published=0)
 	{
 		$versionlabel = ($version == 'current') ? JText::_('CURRENTLY_PUBLISHED') : JText::_('DEVELOPMENT');
@@ -2134,6 +2690,20 @@ if($tagname!='screenshots' and $tagname!='bio') {
 
 	}
 
+	/**
+	 * Short description for 'attachments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      unknown $path Parameter description (if any) ...
+	 * @param      array $children Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @param      string $error Parameter description (if any) ...
+	 * @param      integer $allowupload Parameter description (if any) ...
+	 * @return     void
+	 */
  	public function attachments( $option, $id, $path, $children, $config, $error='', $allowupload=1 )
 	{
 
@@ -2240,6 +2810,19 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		echo $out;
 	}
 
+	/**
+	 * Short description for 'contributors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      array $rows Parameter description (if any) ...
+	 * @param      array $contributors Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $error Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @return     void
+	 */
  	public function contributors( $id, $rows, $contributors, $option, $error='', $version='dev' )
 	{
 
@@ -2334,6 +2917,15 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		echo $out;
 	}
 
+	/**
+	 * Short description for 'parseTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function parseTag($text, $tag)
 	{
 		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
@@ -2347,6 +2939,14 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		return $match;
 	}
 
+	/**
+	 * Short description for 'txt_unpee'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $pee Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
@@ -2362,6 +2962,17 @@ if($tagname!='screenshots' and $tagname!='bio') {
 	// Media manager functions
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'pageTop'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      mixed $app Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function pageTop( $option, $app, $title)
 	{
 		?>
@@ -2393,6 +3004,13 @@ if($tagname!='screenshots' and $tagname!='bio') {
  		<?php
 	}
 
+	/**
+	 * Short description for 'pageBottom'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function pageBottom()
 	{
 		$html  = ' </body>'.n;
@@ -2400,6 +3018,17 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		echo $html;
 	}
 
+	/**
+	 * Short description for 'orderUpIcon'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $i Parameter description (if any) ...
+	 * @param      string $pid Parameter description (if any) ...
+	 * @param      string $cid Parameter description (if any) ...
+	 * @param      string $for Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function orderUpIcon( $i, $pid, $cid, $for='' )
 	{
 		if ($i > 0 || ($i+0 > 0)) {
@@ -2409,6 +3038,18 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		}
 	}
 
+	/**
+	 * Short description for 'orderDownIcon'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $i Parameter description (if any) ...
+	 * @param      number $n Parameter description (if any) ...
+	 * @param      string $pid Parameter description (if any) ...
+	 * @param      string $cid Parameter description (if any) ...
+	 * @param      string $for Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function orderDownIcon( $i, $n, $pid, $cid, $for='' )
 	{
 		if ($i < $n-1 || $i+0 < $n-1) {
@@ -2418,6 +3059,14 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		}
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
@@ -2427,6 +3076,15 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		return $someid;
 	}
 
+	/**
+	 * Short description for 'getFileAttribs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      string $base_path Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getFileAttribs( $path, $base_path='' )
 	{
 		// Return nothing if no path provided
@@ -2489,6 +3147,14 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		return $html;
 	}
 
+	/**
+	 * Short description for 'formatsize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $file_size Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function formatsize($file_size)
 	{
 		if ($file_size >= 1073741824) {

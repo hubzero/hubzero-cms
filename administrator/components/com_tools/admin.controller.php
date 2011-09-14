@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,18 +21,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ToolsController'
+ * 
+ * Long description (if any) ...
+ */
 class ToolsController
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var string
+	 */
 	private $_name  = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();
+
+	/**
+	 * Description for '_task'
+	 * 
+	 * @var unknown
+	 */
 	private $_task  = NULL;
+
+	/**
+	 * Description for '_error'
+	 * 
+	 * @var unknown
+	 */
 	private $_error = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
@@ -59,11 +98,28 @@ class ToolsController
 		$this->_option = 'com_'.$this->_name;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -71,6 +127,13 @@ class ToolsController
 		}
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function execute()
 	{
 		$default = 'browse';
@@ -89,6 +152,13 @@ class ToolsController
 		$this->$task();
 	}
 
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function redirect()
 	{
 		if ($this->_redirect != NULL) {
@@ -101,6 +171,16 @@ class ToolsController
 	//  Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'middleware'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $comm Parameter description (if any) ...
+	 * @param      array &$fnoutput Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function middleware( $comm, &$fnoutput )
 	{
 		$retval = 1; // Assume success.
@@ -132,6 +212,13 @@ class ToolsController
 		return $retval;
 	}
 
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse( )
 	{
 		$table = JRequest::getVar( 'table', '' );
@@ -169,6 +256,18 @@ class ToolsController
 		echo $html;
 	}
 
+	/**
+	 * Short description for 'table'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $rows Parameter description (if any) ...
+	 * @param      unknown $headers Parameter description (if any) ...
+	 * @param      unknown $middle Parameter description (if any) ...
+	 * @param      unknown $trailer Parameter description (if any) ...
+	 * @param      string &$tail_row Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function table( $rows, $headers, $middle, $trailer, &$tail_row )
 	{
 		$html  = '<table class="adminlist">'.n;
@@ -190,6 +289,15 @@ class ToolsController
 	// History
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'history_body'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $row Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function history_body($row)
 	{
 		$html  = '  <tr>'.n;
@@ -205,6 +313,13 @@ class ToolsController
 		return $html;
 	}
 
+	/**
+	 * Short description for 'history'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function history()
 	{
 	    $juser =& JFactory::getUser();
@@ -231,6 +346,15 @@ class ToolsController
 	// Host
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'host_body'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $row Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function host_body($row)
 	{
 		// Get the middleware database
@@ -284,6 +408,14 @@ class ToolsController
 		return $html;
 	}
 
+	/**
+	 * Short description for 'host_edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function host_edit($row)
 	{
 		// Get the middleware database
@@ -323,6 +455,13 @@ class ToolsController
 		return $html;
 	}
 
+	/**
+	 * Short description for 'host_display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function host_display()
 	{
 		// Get the middleware database
@@ -437,6 +576,13 @@ class ToolsController
 		return $this->table($rows,$headers,'host_body','host_edit',$vars);
 	}
 
+	/**
+	 * Short description for 'type_display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function type_display()
 	{
 		// Get the middleware database
@@ -543,6 +689,15 @@ class ToolsController
 	// Hosttype
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'hosttype_refs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function hosttype_refs($value)
 	{
 		// Get the middleware database
@@ -557,6 +712,14 @@ class ToolsController
 		return $refs;
 	}
 
+	/**
+	 * Short description for 'hosttype_edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function hosttype_edit($row)
 	{
 		// Get the middleware database
@@ -573,6 +736,14 @@ class ToolsController
 		return ToolsHtml::updateform('hosttype', $bit, $refs, &$row, $this->_option);
 	}
 
+	/**
+	 * Short description for 'hosttype_body'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function hosttype_body( $row )
 	{
 		// Get the middleware database
@@ -616,6 +787,13 @@ class ToolsController
 		return $html;
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;

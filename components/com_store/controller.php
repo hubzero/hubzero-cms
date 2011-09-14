@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'StoreController'
+ * 
+ * Long description (if any) ...
+ */
 class StoreController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function execute()
 	{
 		// Get the component parameters
@@ -66,6 +81,14 @@ class StoreController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -110,6 +133,13 @@ class StoreController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
@@ -120,6 +150,14 @@ class StoreController extends Hubzero_Controller
 		$document->setTitle( $this->_title );
 	}
 
+	/**
+	 * Short description for '_getPurchaseType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $num Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getPurchaseType($num)
 	{
 		switch ($num)
@@ -132,6 +170,14 @@ class StoreController extends Hubzero_Controller
 		return $out;
 	}
 
+	/**
+	 * Short description for '_checkValidEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _checkValidEmail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
@@ -145,6 +191,14 @@ class StoreController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function login()
 	{
 		$view = new JView( array('name'=>'login') );
@@ -155,6 +209,13 @@ class StoreController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'storefront'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function storefront()
 	{
 		// Instantiate a new view
@@ -193,6 +254,13 @@ class StoreController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'cart'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function cart()
 	{
 		// Push some styles to the template
@@ -314,6 +382,13 @@ class StoreController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'checkout'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function checkout()
 	{
 		// Push some styles to the template
@@ -386,6 +461,14 @@ class StoreController extends Hubzero_Controller
 	// Processors
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'finalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function finalize()
 	{
 		// Push some styles to the template
@@ -540,6 +623,13 @@ class StoreController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function process()
 	{
 		// Push some styles to the template

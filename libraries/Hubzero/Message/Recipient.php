@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,102 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Message_Recipient'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Message_Recipient extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id       = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'mid'
+	 * 
+	 * @var unknown
+	 */
 	var $mid      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created  = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'expires'
+	 * 
+	 * @var unknown
+	 */
 	var $expires  = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'actionid'
+	 * 
+	 * @var unknown
+	 */
 	var $actionid = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state    = NULL;  // @var tinyint(2)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xmessage_recipient', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->mid ) == '') {
@@ -55,6 +126,15 @@ class Hubzero_Message_Recipient extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadRecord'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $mid Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadRecord( $mid=NULL, $uid=NULL )
 	{
 		if (!$mid) {
@@ -76,6 +156,15 @@ class Hubzero_Message_Recipient extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function buildQuery( $uid, $filters=array() )
 	{
 		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid='$uid', $this->_tbl AS r 
@@ -94,6 +183,15 @@ class Hubzero_Message_Recipient extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getMessages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getMessages( $uid=null, $filters=array() )
 	{
 		if (!$uid) {
@@ -110,6 +208,15 @@ class Hubzero_Message_Recipient extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getMessagesCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getMessagesCount( $uid=null, $filters=array() )
 	{
 		if (!$uid) {
@@ -127,6 +234,15 @@ class Hubzero_Message_Recipient extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getUnreadMessages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      unknown $limit Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getUnreadMessages( $uid=null, $limit=null )
 	{
 		if (!$uid) {
@@ -146,6 +262,14 @@ class Hubzero_Message_Recipient extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deleteTrash'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteTrash( $uid=null )
 	{
 		if (!$uid) {
@@ -165,6 +289,15 @@ class Hubzero_Message_Recipient extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'setState'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $state Parameter description (if any) ...
+	 * @param      array $ids Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function setState( $state=0, $ids=array() )
 	{
 		if (count($ids) <= 0) {

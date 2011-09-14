@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,15 +21,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'plgYSearchSiteMap'
+ * 
+ * Long description (if any) ...
+ */
 class plgYSearchSiteMap extends YSearchPlugin
 {
+
+	/**
+	 * Short description for 'getName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public static function getName() { return 'Site Map'; }
 
+	/**
+	 * Short description for 'onYSearch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $request Parameter description (if any) ...
+	 * @param      object &$results Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function onYSearch($request, &$results)
 	{
                 $terms = $request->get_term_ar();
@@ -53,6 +77,14 @@ class plgYSearchSiteMap extends YSearchPlugin
 		));
 	}
 
+	/**
+	 * Short description for 'onYSearchAdministrate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $context Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function onYSearchAdministrate($context)
 	{
 		$dbh =& JFactory::getDBO();
@@ -108,6 +140,14 @@ class plgYSearchSiteMap extends YSearchPlugin
 		return array('Site Map', join("\n", $html));
 	}
 
+	/**
+	 * Short description for 'save_entry_from_post'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $update Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private static function save_entry_from_post($update = false)
 	{
 		$dbh =& JFactory::getDBO();
@@ -140,6 +180,13 @@ class plgYSearchSiteMap extends YSearchPlugin
 		return array('sitemap', '<p class="success">Site map entry saved</p>', array('save_id' => $id));
 	}
 
+	/**
+	 * Short description for 'onYSearchTaskSiteMapEdit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function onYSearchTaskSiteMapEdit()
 	{
 		if (array_key_exists('add', $_POST))
@@ -157,6 +204,13 @@ class plgYSearchSiteMap extends YSearchPlugin
 		return array('sitemap', '', array());
 	}
 
+	/**
+	 * Short description for 'onYSearchTaskSiteMapSaveEdit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function onYSearchTaskSiteMapSaveEdit()
 	{
 		if (array_key_exists('cancel', $_POST))

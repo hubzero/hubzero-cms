@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -35,14 +37,40 @@ require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.
 //  Resources Tagging class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'SupportTags'
+ * 
+ * Long description (if any) ...
+ */
 class SupportTags extends TagsHandler
 {
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $db Parameter description (if any) ...
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $db, $config=array() )
 	{
 		$this->_db  = $db;
 		$this->_tbl = 'support';
 	}
 
+	/**
+	 * Short description for 'get_tag_cloud'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $showsizes Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @param      string $oid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function get_tag_cloud($showsizes=0, $admin=0, $oid=NULL)
 	{
 		// set some variables

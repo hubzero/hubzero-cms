@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,17 +38,45 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Bank');
 
+/**
+ * Short description for 'WishlistEconomy'
+ * 
+ * Long description (if any) ...
+ */
 class WishlistEconomy extends JObject
 {
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	var $_db = NULL;  // Database
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db)
 	{
 		$this->_db = $db;
 	}
 
+	/**
+	 * Short description for 'getPayees'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $wishid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getPayees($wishid)
 	{
 		if (!$wishid) {
@@ -57,6 +87,15 @@ class WishlistEconomy extends JObject
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getTotalPayment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $wishid Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getTotalPayment($wishid, $uid)
 	{
 		if (!$wishid or !$uid) {
@@ -67,6 +106,14 @@ class WishlistEconomy extends JObject
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'cleanupBonus'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $wishid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function cleanupBonus($wishid)
 	{
 		if (!$wishid) {
@@ -97,6 +144,16 @@ class WishlistEconomy extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'distribute_points'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $wishid Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      number $points Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function distribute_points($wishid, $type='grant', $points=0)
 	{
 		if (!$wishid) {

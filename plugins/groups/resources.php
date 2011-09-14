@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,12 +34,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_resources' );
 
+/**
+ * Short description for 'plgGroupsResources'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsResources extends JPlugin
 {
+
+	/**
+	 * Description for '_areas'
+	 * 
+	 * @var unknown
+	 */
 	private $_areas = null;
+
+	/**
+	 * Description for '_cats'
+	 * 
+	 * @var unknown
+	 */
 	private $_cats  = null;
+
+	/**
+	 * Description for '_total'
+	 * 
+	 * @var unknown
+	 */
 	private $_total = null;
 
+	/**
+	 * Short description for 'plgGroupsResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -50,6 +84,13 @@ class plgGroupsResources extends JPlugin
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -61,6 +102,21 @@ class plgGroupsResources extends JPlugin
 		return $area;
 	}
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $group Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
@@ -284,6 +340,14 @@ class plgGroupsResources extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'onGroupDelete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onGroupDelete( $group )
 	{
 		// Get all the IDs for resources associated with this group
@@ -315,11 +379,27 @@ class plgGroupsResources extends JPlugin
 		return $log;
 	}
 
+	/**
+	 * Short description for 'onGroupDeleteCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function onGroupDeleteCount( $group )
 	{
 		return JText::_('PLG_GROUPS_RESOURCES_LOG').': '.count( $this->getResourceIDs( $group->get('cn') ));
 	}
 
+	/**
+	 * Short description for 'getResourceIDs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function getResourceIDs( $gid=NULL )
 	{
 		if (!$gid) {
@@ -333,6 +413,13 @@ class plgGroupsResources extends JPlugin
 		return $database->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getResourcesAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function getResourcesAreas()
 	{
 		$areas = $this->_areas;
@@ -369,6 +456,20 @@ class plgGroupsResources extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'getResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $sort Parameter description (if any) ...
+	 * @param      string $access Parameter description (if any) ...
+	 * @param      array $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getResources( $group, $authorized, $limit=0, $limitstart=0, $sort='date', $access='all', $areas=null )
 	{
 		// Check if our area is in the array of areas we want to return results for
@@ -503,6 +604,14 @@ class plgGroupsResources extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'documents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
@@ -521,6 +630,15 @@ class plgGroupsResources extends JPlugin
 		// ...
 	}*/
 
+	/**
+	 * Short description for 'out'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      boolean $authorized Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function out( $row, $authorized=false )
 	{
 		$database =& JFactory::getDBO();

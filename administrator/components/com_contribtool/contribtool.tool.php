@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,17 +35,92 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'Tool'
+ * 
+ * Long description (if any) ...
+ */
 class Tool extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id      	   = NULL;  // @var int (primary key)
+
+
+	/**
+	 * Description for 'toolname'
+	 * 
+	 * @var unknown
+	 */
 	var $toolname      = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
 	var $published	   = NULL;  // @var tinyint
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state         = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'priority'
+	 * 
+	 * @var unknown
+	 */
 	var $priority      = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'registered'
+	 * 
+	 * @var unknown
+	 */
 	var $registered    = NULL;  // @var dateandtime
+
+
+	/**
+	 * Description for 'registered_by'
+	 * 
+	 * @var unknown
+	 */
 	var $registered_by = NULL;  // @var string (31)
+
+
+	/**
+	 * Description for 'ticketid'
+	 * 
+	 * @var unknown
+	 */
 	var $ticketid	   = NULL;  // @var int
+
+
+	/**
+	 * Description for 'state_changed'
+	 * 
+	 * @var unknown
+	 */
 	var $state_changed = NULL;  // @var dateandtime
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title         = NULL;  // @var string (127)
 	//var $version       = NULL;  // @var string (15)
 	//var $description   = NULL;  // @var text
@@ -59,11 +136,27 @@ class Tool extends JTable
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->toolname ) == '') {
@@ -74,6 +167,14 @@ class Tool extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadFromName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadFromName( $toolname )
 	{
 		if ($toolname === NULL) {
@@ -91,6 +192,15 @@ class Tool extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters, $admin)
 	{
 		$juser =& JFactory::getUser();
@@ -132,6 +242,15 @@ class Tool extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getToolCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getToolCount( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
@@ -143,6 +262,14 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getMyTools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getMyTools()
 	{
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
@@ -160,6 +287,15 @@ class Tool extends JTable
 
 	}
 
+	/**
+	 * Short description for 'getTools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getTools( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
@@ -175,6 +311,13 @@ class Tool extends JTable
 		return $result;
 	}
 
+	/**
+	 * Short description for 'getToolsOldScheme'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getToolsOldScheme()
 	{
 
@@ -185,6 +328,15 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getTicketId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getTicketId($toolid=NULL)
 	{
 		if ($toolid=== NULL) {
@@ -195,6 +347,15 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getResourceId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getResourceId($toolid=NULL)
 	{
 		if ($toolid=== NULL) {
@@ -205,6 +366,16 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getToolInstanceFromResource'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getToolInstanceFromResource($rid=NULL, $version ='dev')
 	{
 		if ($rid=== NULL) {
@@ -227,6 +398,15 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getToolIdFromResource'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getToolIdFromResource($rid=NULL)
 	{
 		if ($rid=== NULL) {
@@ -236,6 +416,14 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getToolnameFromResource'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getToolnameFromResource($rid=NULL)
 	{
 		if ($rid=== NULL) {
@@ -245,6 +433,14 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getToolId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getToolId($toolname=NULL)
 	{
 		if ($toolname=== NULL) {
@@ -255,6 +451,16 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'saveTicketId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $ticketid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
 		if ($toolid=== NULL or $ticketid=== NULL) {
@@ -270,6 +476,16 @@ class Tool extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'updateTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $newstate Parameter description (if any) ...
+	 * @param      string $priority Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function updateTool($toolid=NULL, $newstate=NULL, $priority=NULL)
 	{
 		if ($toolid=== NULL) {
@@ -296,6 +512,15 @@ class Tool extends JTable
 
 	}
 
+	/**
+	 * Short description for 'getToolInfo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getToolInfo($toolid, $toolname='')
 	{
 		$juser =& JFactory::getUser();
@@ -322,6 +547,14 @@ class Tool extends JTable
 		return $result;
 	}
 
+	/**
+	 * Short description for 'getToolDevGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getToolDevGroup($toolid)
 	{
 		$query  = "SELECT g.cn FROM #__tool_groups AS g ";
@@ -331,6 +564,14 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getToolDevelopers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getToolDevelopers($toolid)
 	{
 		$query  = "SELECT m.uidNumber FROM #__tool_groups AS g ";
@@ -343,6 +584,16 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getToolGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getToolGroups($toolid, $groups = array())
 	{
 		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
@@ -355,6 +606,19 @@ class Tool extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getToolStatus'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      array &$status Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      boolean $ldap Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function getToolStatus($toolid, $option, &$status, $version='dev', $ldap=false)
 	{
 		$toolinfo = $this->getToolInfo(intval($toolid));
@@ -375,6 +639,20 @@ class Tool extends JTable
 
 	}
 
+	/**
+	 * Short description for 'buildToolStatus'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $toolinfo Parameter description (if any) ...
+	 * @param      array $developers Parameter description (if any) ...
+	 * @param      array $authors Parameter description (if any) ...
+	 * @param      array $version Parameter description (if any) ...
+	 * @param      array &$status Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $ldap Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function buildToolStatus($toolinfo, $developers=array(), $authors=array(), $version, &$status, $option, $ldap)
 	{
 		// Create a Version object

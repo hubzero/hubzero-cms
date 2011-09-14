@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modMyTickets'
+ * 
+ * Long description (if any) ...
+ */
 class modMyTickets
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -55,6 +99,16 @@ class modMyTickets
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '_convertTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $stime Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _convertTime($stime)
 	{
 		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
@@ -65,6 +119,16 @@ class modMyTickets
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '_calculateTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _calculateTime($timestamp)
 	{
 		// Store the current time
@@ -108,6 +172,16 @@ class modMyTickets
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'timeAgo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timestamp Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function timeAgo($timestamp)
 	{
 		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
@@ -124,6 +198,15 @@ class modMyTickets
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function display()
 	{
 		$juser =& JFactory::getUser();

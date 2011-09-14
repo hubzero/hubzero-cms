@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modWhatsNew'
+ * 
+ * Long description (if any) ...
+ */
 class modWhatsNew
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -55,6 +99,15 @@ class modWhatsNew
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '_getAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
@@ -84,6 +137,18 @@ class modWhatsNew
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'formatTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $tags Parameter description (if any) ...
+	 * @param      number $num Parameter description (if any) ...
+	 * @param      integer $max Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function formatTags($tags=array(), $num=3, $max=25)
 	{
 		$out = '';
@@ -113,6 +178,15 @@ class modWhatsNew
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function display()
 	{
 		$module    =& $this->module;

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'BlogController'
+ * 
+ * Long description (if any) ...
+ */
 class BlogController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = JRequest::getVar('task','');
@@ -72,6 +87,13 @@ class BlogController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -115,6 +137,13 @@ class BlogController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
@@ -138,6 +167,13 @@ class BlogController extends Hubzero_Controller
 		$document->setTitle( $this->_title );
 	}
 
+	/**
+	 * Short description for '_browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function _browse()
 	{
 		// Instantiate a new view
@@ -207,6 +243,15 @@ class BlogController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_highlight'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $searchquery Parameter description (if any) ...
+	 * @param      array $results Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _highlight( $searchquery, $results )
 	{
 		$toks = array($searchquery);
@@ -252,6 +297,13 @@ class BlogController extends Hubzero_Controller
 		return $results;
 	}
 
+	/**
+	 * Short description for '_entry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _entry()
 	{
 		$view = new JView(array('name'=>'entry'));
@@ -359,11 +411,25 @@ class BlogController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_new'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _new()
 	{
 		return $this->_edit();
 	}
 
+	/**
+	 * Short description for '_edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _edit()
 	{
 		if ($this->juser->get('guest')) {
@@ -404,6 +470,14 @@ class BlogController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_normalizeTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _normalizeTitle($title)
 	{
 		$title = str_replace(' ', '-', $this->_shortenTitle($title));
@@ -411,6 +485,15 @@ class BlogController extends Hubzero_Controller
 		return strtolower($title);
 	}
 
+	/**
+	 * Short description for '_shortenTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function _shortenTitle($text, $chars=100)
 	{
 		$text = strip_tags($text);
@@ -423,6 +506,13 @@ class BlogController extends Hubzero_Controller
 		return $text;
 	}
 
+	/**
+	 * Short description for '_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _save()
 	{
 		if ($this->juser->get('guest')) {
@@ -471,6 +561,13 @@ class BlogController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias);
 	}
 
+	/**
+	 * Short description for '_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _delete()
 	{
 		if ($this->juser->get('guest')) {
@@ -549,6 +646,13 @@ class BlogController extends Hubzero_Controller
 		return $this->_browse();
 	}
 
+	/**
+	 * Short description for '_saveComment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _saveComment()
 	{
 		// Ensure the user is logged in
@@ -624,6 +728,13 @@ class BlogController extends Hubzero_Controller
 		return $this->_entry();
 	}
 
+	/**
+	 * Short description for '_deleteComment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _deleteComment()
 	{
 		// Ensure the user is logged in
@@ -661,6 +772,13 @@ class BlogController extends Hubzero_Controller
 		return $this->_entry();
 	}
 
+	/**
+	 * Short description for '_feed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _feed()
 	{
 		if (!$this->config->get('feeds_enabled')) {
@@ -770,6 +888,13 @@ class BlogController extends Hubzero_Controller
 		echo $doc->render();
 	}
 
+	/**
+	 * Short description for '_commentsFeed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _commentsFeed()
 	{
 		if (!$this->config->get('feeds_enabled')) {
@@ -974,6 +1099,14 @@ class BlogController extends Hubzero_Controller
 	// media manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _upload()
 	{
 		// Check if they're logged in
@@ -1021,6 +1154,13 @@ class BlogController extends Hubzero_Controller
 		$this->_media();
 	}
 
+	/**
+	 * Short description for '_deletefolder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _deletefolder()
 	{
 		// Check if they're logged in
@@ -1060,6 +1200,13 @@ class BlogController extends Hubzero_Controller
 		$this->_media();
 	}
 
+	/**
+	 * Short description for '_deletefile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _deletefile()
 	{
 		// Check if they're logged in
@@ -1100,6 +1247,13 @@ class BlogController extends Hubzero_Controller
 		$this->_media();
 	}
 
+	/**
+	 * Short description for '_media'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _media()
 	{
 		// Incoming
@@ -1119,6 +1273,15 @@ class BlogController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_getUploadPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $scope Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	protected function _getUploadPath($scope, $id)
 	{
 		$path = JPATH_ROOT;
@@ -1152,6 +1315,14 @@ class BlogController extends Hubzero_Controller
 		return $path;
 	}
 
+	/**
+	 * Short description for '_recursiveListdir'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	protected function _recursiveListdir($base)
 	{
 	    static $filelist = array();
@@ -1172,6 +1343,13 @@ class BlogController extends Hubzero_Controller
 	    return $dirlist;
 	}
 
+	/**
+	 * Short description for '_listfiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _listfiles()
 	{
 		// Incoming

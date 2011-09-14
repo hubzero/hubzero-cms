@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,27 +21,95 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WikiPageMath'
+ * 
+ * Long description (if any) ...
+ */
 class WikiPageMath extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id               = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'inputhash'
+	 * 
+	 * @var unknown
+	 */
 	var $inputhash        = NULL;  // @var varbinary(16)
+
+
+	/**
+	 * Description for 'outputhash'
+	 * 
+	 * @var unknown
+	 */
 	var $outputhash       = NULL;  // @var varbinary(16)
+
+
+	/**
+	 * Description for 'conservativeness'
+	 * 
+	 * @var unknown
+	 */
 	var $conservativeness = NULL;  // @var tinyint
+
+
+	/**
+	 * Description for 'html'
+	 * 
+	 * @var unknown
+	 */
 	var $html             = NULL;  // @var text
+
+
+	/**
+	 * Description for 'mathml'
+	 * 
+	 * @var unknown
+	 */
 	var $mathml           = NULL;  // @var text
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_math', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'loadByInput'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $inputhash Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadByInput( $inputhash )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE inputhash='".addslashes($inputhash)."' LIMIT 1" );

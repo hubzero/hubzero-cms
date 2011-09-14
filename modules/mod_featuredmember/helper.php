@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modFeaturedmember'
+ * 
+ * Long description (if any) ...
+ */
 class modFeaturedmember
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -55,6 +99,16 @@ class modFeaturedmember
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $someid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function niceidformat($someid)
 	{
 		$pre = '';
@@ -70,6 +124,17 @@ class modFeaturedmember
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'encode_html'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @param      integer $quotes Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function encode_html($str, $quotes=1)
 	{
 		$str = $this->ampersands($str);
@@ -88,6 +153,16 @@ class modFeaturedmember
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'ampersands'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function ampersands( $str )
 	{
 		$str = stripslashes($str);
@@ -99,6 +174,16 @@ class modFeaturedmember
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'thumb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function thumb( $thumb )
 	{
 		$image = explode('.',$thumb);
@@ -112,6 +197,15 @@ class modFeaturedmember
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function display()
 	{
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );

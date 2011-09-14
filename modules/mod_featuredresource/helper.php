@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modFeaturedresource'
+ * 
+ * Long description (if any) ...
+ */
 class modFeaturedresource
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -55,6 +99,16 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
@@ -65,6 +119,17 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'encode_html'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @param      integer $quotes Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function encode_html($str, $quotes=1)
 	{
 		$str = $this->ampersands($str);
@@ -83,6 +148,16 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'ampersands'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function ampersands( $str )
 	{
 		$str = stripslashes($str);
@@ -94,6 +169,15 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function display()
 	{
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
@@ -277,6 +361,16 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'getImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function getImage( $path )
 	{
 		$d = @dir(JPATH_ROOT.$path);
@@ -313,6 +407,17 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'getToolImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      integer $versionid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function getToolImage( $path, $versionid=0 )
 	{
 		// Get contribtool parameters
@@ -362,6 +467,16 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'thumbnail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $pic Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function thumbnail($pic)
 	{
 		$pic = explode('.',$pic);
@@ -374,6 +489,18 @@ class modFeaturedresource
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'build_path'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function build_path( $date, $id, $base='' )
 	{
 		if ( $date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs ) ) {

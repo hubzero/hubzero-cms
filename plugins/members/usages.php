@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_usages' );
 
+/**
+ * Short description for 'plgMembersUsages'
+ * 
+ * Long description (if any) ...
+ */
 class plgMembersUsages extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgMembersUsages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgMembersUsages(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,12 +60,27 @@ class plgMembersUsages extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onMembersAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function &onMembersAreas( $authorized )
 	{
 		$areas = $this->_authorize() ? array('usages' => JText::_('PLG_MEMBERS_USAGES')) : array();
 		return $areas;
 	}
 
+	/**
+	 * Short description for '_authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _authorize()
 	{
 		// Check if the user is logged in
@@ -90,6 +122,17 @@ class plgMembersUsages extends JPlugin
 		return false;
 	}
 
+	/**
+	 * Short description for 'onMembers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $member Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$arr = array(

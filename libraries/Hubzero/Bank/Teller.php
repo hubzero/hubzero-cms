@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,18 +21,69 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Bank_Teller'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Bank_Teller extends JObject
 {
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	var $_db      = NULL;  // Database
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var string
+	 */
 	var $uid      = NULL;  // User ID
+
+
+	/**
+	 * Description for 'balance'
+	 * 
+	 * @var mixed
+	 */
 	var $balance  = NULL;  // Current point balance
+
+
+	/**
+	 * Description for 'earnings'
+	 * 
+	 * @var mixed
+	 */
 	var $earnings = NULL;  // Lifetime point earnings
+
+
+	/**
+	 * Description for 'credit'
+	 * 
+	 * @var mixed
+	 */
 	var $credit   = NULL;  // Credit point balance 
+
+
+	/**
+	 * Description for '_error'
+	 * 
+	 * @var string
+	 */
 	var $_error   = NULL;  // Errors
 	//var $_id      = NULL;  // ID for #__users_points record
 
@@ -44,6 +92,16 @@ class Hubzero_Bank_Teller extends JObject
 	// Find the balance from the most recent transaction.
 	// If no balance is found, create an initial transaction.
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db, $uid )
 	{
 		$this->_db = $db;
@@ -68,6 +126,14 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Get the current balance
 
+
+	/**
+	 * Short description for 'summary'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function summary()
 	{
 		return $this->balance;
@@ -76,6 +142,14 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Get the current credit balance
 
+
+	/**
+	 * Short description for 'credit_summary'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function credit_summary()
 	{
 		return $this->credit;
@@ -84,6 +158,18 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Add points
 
+
+	/**
+	 * Short description for 'deposit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $amount Parameter description (if any) ...
+	 * @param      string $desc Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @param      unknown $ref Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function deposit($amount, $desc='Deposit', $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
@@ -104,6 +190,18 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Withdraw (spend) points
 
+
+	/**
+	 * Short description for 'withdraw'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $amount Parameter description (if any) ...
+	 * @param      string $desc Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @param      unknown $ref Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function withdraw($amount, $desc='Withdraw', $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
@@ -127,6 +225,18 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Set points aside (credit)
 
+
+	/**
+	 * Short description for 'hold'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $amount Parameter description (if any) ...
+	 * @param      string $desc Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @param      unknown $ref Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function hold($amount, $desc='Hold', $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
@@ -150,6 +260,15 @@ class Hubzero_Bank_Teller extends JObject
 	//-------------
 	// Make credit adjustment
 
+
+	/**
+	 * Short description for 'credit_adjustment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $amount Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function credit_adjustment($amount)
 	{
 		$amount = (intval($amount) > 0) ? intval($amount) : 0;
@@ -160,6 +279,15 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Get a history of transactions
 
+
+	/**
+	 * Short description for 'history'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function history( $limit=20 )
 	{
 		$lmt = "";
@@ -170,6 +298,13 @@ class Hubzero_Bank_Teller extends JObject
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getError'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function getError()
 	{
 		return $this->_error;
@@ -179,6 +314,15 @@ class Hubzero_Bank_Teller extends JObject
 	// Check that they have enough in their account 
 	// to perform the transaction.
 
+
+	/**
+	 * Short description for '_creditCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $amount Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function _creditCheck($amount)
 	{
 		$b = $this->balance;
@@ -194,6 +338,14 @@ class Hubzero_Bank_Teller extends JObject
 		}
 	}
 
+	/**
+	 * Short description for '_amountCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $amount Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function _amountCheck($amount)
 	{
 		$amount = intval($amount);
@@ -203,6 +355,18 @@ class Hubzero_Bank_Teller extends JObject
 		return $amount;
 	}
 
+	/**
+	 * Short description for '_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      unknown $amount Parameter description (if any) ...
+	 * @param      unknown $desc Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @param      unknown $ref Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function _save( $type, $amount, $desc, $cat, $ref )
 	{
 		if (!$this->_saveBalance( $type )) {
@@ -218,6 +382,15 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Save the current balance
 
+
+	/**
+	 * Short description for '_saveBalance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function _saveBalance( $type )
 	{
 
@@ -239,6 +412,19 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Record the transaction
 
+
+	/**
+	 * Short description for '_saveTransaction'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      unknown $amount Parameter description (if any) ...
+	 * @param      unknown $desc Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @param      unknown $ref Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function _saveTransaction( $type, $amount, $desc, $cat, $ref )
 	{
 		$data = array();

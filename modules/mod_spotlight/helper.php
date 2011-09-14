@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,25 +21,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modSpotlight'
+ * 
+ * Long description (if any) ...
+ */
 class modSpotlight
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -50,6 +88,14 @@ class modSpotlight
 		}
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $someid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function niceidformat($someid)
 	{
 		$pre = '';
@@ -64,6 +110,16 @@ class modSpotlight
 		return $pre.$someid;
 	}
 
+	/**
+	 * Short description for 'shortenText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @param      integer $p Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
@@ -87,6 +143,15 @@ class modSpotlight
 		return $text;
 	}
 
+	/**
+	 * Short description for 'encode_html'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @param      integer $quotes Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function encode_html($str, $quotes=1)
 	{
 		$str = $this->ampersands($str);
@@ -104,6 +169,14 @@ class modSpotlight
 		return strtr($str, $a);
 	}
 
+	/**
+	 * Short description for 'ampersands'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function ampersands( $str )
 	{
 		$str = stripslashes($str);
@@ -114,6 +187,13 @@ class modSpotlight
 		return $str;
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function display()
 	{
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
@@ -372,6 +452,18 @@ class modSpotlight
 		return $html;
 	}
 
+	/**
+	 * Short description for 'composeEntry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      string $tbl Parameter description (if any) ...
+	 * @param      number $txt_length Parameter description (if any) ...
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      integer $getid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function composeEntry( $row, $tbl, $txt_length = 0, $database, $getid = 0 )
 	{
 		$out = '';
@@ -574,6 +666,15 @@ class modSpotlight
 		return $out;
 	}
 
+	/**
+	 * Short description for 'getAverageRanking'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      object $database Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function getAverageRanking( $uid, $database )
 	{
 		if ($uid === NULL) {
@@ -592,6 +693,16 @@ class modSpotlight
 		return $database->loadResult();
 	}
 
+	/**
+	 * Short description for 'countContributions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $username Parameter description (if any) ...
+	 * @param      object $database Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function countContributions( $uid, $username, $database )
 	{
 		if ($uid === NULL) {
@@ -635,6 +746,14 @@ class modSpotlight
 		return $count;
 	}
 
+	/**
+	 * Short description for 'getImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function getImage( $path )
 	{
 		$d = @dir(JPATH_ROOT.$path);
@@ -670,6 +789,15 @@ class modSpotlight
 		}
 	}
 
+	/**
+	 * Short description for 'getToolImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      integer $versionid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function getToolImage( $path, $versionid=0 )
 	{
 		// Get contribtool parameters
@@ -718,6 +846,14 @@ class modSpotlight
 		}
 	}
 
+	/**
+	 * Short description for 'thumbnail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $pic Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function thumbnail($pic)
 	{
 		$pic = explode('.',$pic);
@@ -729,6 +865,14 @@ class modSpotlight
 		return $tn;
 	}
 
+	/**
+	 * Short description for 'thumb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function thumb( $thumb )
 	{
 		$image = explode('.',$thumb);
@@ -741,6 +885,16 @@ class modSpotlight
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'build_path'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function build_path( $date, $id, $base='' )
 	{
 		if ( $date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs ) ) {

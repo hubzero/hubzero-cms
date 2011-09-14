@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2009-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2009-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.helper');
 ximport('Hubzero_Tool_Version');
 
+/**
+ * Short description for 'Hubzero_ToolHelper'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_ToolHelper
 {
+
+	/**
+	 * Short description for 'iterate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $func Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     static public function iterate($func, $storage = 'mysql')
     {
         $db = &JFactory::getDBO();
@@ -104,34 +121,146 @@ class Hubzero_ToolHelper
     }
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Tool
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
     private $id = null;
+
+	/**
+	 * Description for 'toolname'
+	 * 
+	 * @var string
+	 */
     private $toolname = null;
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
     private $title = null;
+
+	/**
+	 * Description for 'version'
+	 * 
+	 * @var array
+	 */
     private $version = array();
+
+	/**
+	 * Description for 'registered'
+	 * 
+	 * @var unknown
+	 */
     private $registered = null;
+
+	/**
+	 * Description for 'registered_by'
+	 * 
+	 * @var unknown
+	 */
     private $registered_by = null;
+
+	/**
+	 * Description for 'state_changed'
+	 * 
+	 * @var unknown
+	 */
     private $state_changed = null;
+
+	/**
+	 * Description for 'ticketid'
+	 * 
+	 * @var unknown
+	 */
 	private $ticketid = null;
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
     private $published = null;
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	private $state = null;
+
+	/**
+	 * Description for 'priority'
+	 * 
+	 * @var unknown
+	 */
 	private $priority = null;
+
+	/**
+	 * Description for '_list_keys'
+	 * 
+	 * @var array
+	 */
     private $_list_keys = array('version');
 
+	/**
+	 * Description for '_ldapToolMirror'
+	 * 
+	 * @var boolean
+	 */
     private $_ldapToolMirror = false;
+
+	/**
+	 * Description for '_updateAll'
+	 * 
+	 * @var boolean
+	 */
     private $_updateAll = false;
 
+	/**
+	 * Description for '_propertyattrmap'
+	 * 
+	 * @var array
+	 */
     static $_propertyattrmap = array("toolname"=>"toolName", "title"=>"cn", "version"=>"member");
 
+	/**
+	 * Description for '_updatedkeys'
+	 * 
+	 * @var array
+	 */
     private $_updatedkeys = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     private function __construct()
     {
         $config = & JComponentHelper::getParams('com_contribtool');
         $this->_ldapToolMirror = $config->get('ldap_save') == '1';
     }
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     public function clear()
     {
         $cvars = get_class_vars(__CLASS__);
@@ -159,12 +288,27 @@ class Hubzero_Tool
         $this->_updatedkeys = array();
     }
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
     private function logDebug($msg)
     {
         $xlog = &Hubzero_Factory::getLogger();
         $xlog->logDebug($msg);
     }
 
+	/**
+	 * Short description for 'getToolNames'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
     public function getToolNames()
     {
         $db = &JFactory::getDBO();
@@ -174,6 +318,14 @@ class Hubzero_Tool
         return $result;
     }
 
+	/**
+	 * Short description for 'toArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function toArray($format = 'mysql')
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -221,6 +373,15 @@ class Hubzero_Tool
         return false;
     }
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $instance Parameter description (if any) ...
+	 * @param      unknown $storage Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function getInstance($instance, $storage = null)
     {
         $hztv = new Hubzero_Tool();
@@ -233,6 +394,14 @@ class Hubzero_Tool
         return $hztv;
     }
 
+	/**
+	 * Short description for 'createInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function createInstance($name)
     {
         if (empty($name))
@@ -252,6 +421,13 @@ class Hubzero_Tool
         return false;
     }
 
+	/**
+	 * Short description for '_ldap_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_create()
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -282,6 +458,13 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     public function _mysql_create()
     {
         $db = &JFactory::getDBO();
@@ -340,6 +523,14 @@ class Hubzero_Tool
         return false;
     }
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function create($storage = null)
     {
         if (is_null($storage))
@@ -387,6 +578,13 @@ class Hubzero_Tool
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_read()
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -503,6 +701,13 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _mysql_read()
     {
         $db = JFactory::getDBO();
@@ -552,6 +757,15 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for 'read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolname Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function read($toolname = null, $storage = 'mysql')
     {
         if (is_null($storage))
@@ -621,6 +835,14 @@ class Hubzero_Tool
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_update($all = false)
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -711,6 +933,14 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     function _mysql_update($all = false)
     {
         $db = &JFactory::getDBO();
@@ -876,18 +1106,40 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for 'sync'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
     public function sync()
     {
         $this->_updateAll = true;
         return $this->update();
     }
 
+	/**
+	 * Short description for 'syncldap'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
     public function syncldap()
     {
         $this->_updateAll = true;
         return $this->update('ldap');
     }
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function update($storage = null)
     {
         if (is_null($storage))
@@ -937,6 +1189,13 @@ class Hubzero_Tool
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_delete()
     {
         $conn = & Hubzero_Factory::getPLDC();
@@ -962,6 +1221,13 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     public function _mysql_delete()
     {
         if (!isset($this->toolname) && !isset($this->id))
@@ -1004,6 +1270,14 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function delete($storage = null)
     {
         if (func_num_args() > 1)
@@ -1058,6 +1332,14 @@ class Hubzero_Tool
         return $result;
     }
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     public function __get($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -1119,6 +1401,15 @@ class Hubzero_Tool
         return null;
     }
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
     public function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -1145,6 +1436,14 @@ class Hubzero_Tool
             $this->_updatedkeys[] = $property;
     }
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     public function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -1159,6 +1458,14 @@ class Hubzero_Tool
         return isset($this->$property);
     }
 
+	/**
+	 * Short description for '__unset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     void
+	 */
     public function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -1175,6 +1482,15 @@ class Hubzero_Tool
         unset($this->$property);
     }
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     void
+	 */
     private function _error($message, $level = E_USER_NOTICE)
     {
         $caller = next(debug_backtrace());
@@ -1195,41 +1511,105 @@ class Hubzero_Tool
         echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
     }
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function get($key)
     {
         return $this->__get($key);
     }
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function set($key, $value)
     {
         return $this->__set($key, $value);
     }
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     void
+	 */
     public function add($key = null, $value = array())
     {
         $this->__set($key, array_merge($this->__get($key), (array) $value));
     }
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     void
+	 */
     public function remove($key = null, $value = array())
     {
         $this->__set($key, array_diff($this->__get($key), (array) $value));
     }
 
+	/**
+	 * Short description for 'getCurrentVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
     public function getCurrentVersion()
     {
         return Hubzero_Tool_VersionHelper::getCurrentToolVersion($this->id);
     }
 
+	/**
+	 * Short description for 'getDevelopmentVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
     public function getDevelopmentVersion()
     {
         return Hubzero_Tool_VersionHelper::getDevelopmentToolVersion($this->id);
     }
 
+	/**
+	 * Short description for 'getRevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $revision Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getRevision($revision = 'dev')
 	{
         return Hubzero_Tool_VersionHelper::getToolRevision($this->id, $revision);
 	}
 
+	/**
+	 * Short description for 'getDevelopmentGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getDevelopmentGroup()
 	{
 		$db = &JFactory::getDBO();
@@ -1249,6 +1629,15 @@ class Hubzero_Tool
 		return $result;
 	}
 
+	/**
+	 * Short description for 'unpublishVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $instance Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function unpublishVersion($instance, $storage = 'all')
     {
         $db = &JFactory::getDBO();
@@ -1288,6 +1677,14 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for 'unpublishAllVersions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function unpublishAllVersions($storage = 'all')
     {
         $db = &JFactory::getDBO();
@@ -1325,6 +1722,15 @@ class Hubzero_Tool
         return true;
     }
 
+	/**
+	 * Short description for 'buildQueryLimit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     protected static function buildQueryLimit($filters = array(), $admin = false)
     {
         if (!isset($filters['start']) && !isset($filters['limit']))
@@ -1355,6 +1761,15 @@ class Hubzero_Tool
         return " LIMIT $start,$limit ";
     }
 
+	/**
+	 * Short description for 'buildQuerySort'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     protected static function buildQuerySort($filters = array(), $admin = false)
     {
         if (!isset($filters['sortby']))
@@ -1372,6 +1787,15 @@ class Hubzero_Tool
         return '';
     }
 
+	/**
+	 * Short description for 'buildQuerySearch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     protected static function buildQuerySearch($filters = array(), $admin = false)
     {
         $db = &JFactory::getDBO();
@@ -1418,11 +1842,29 @@ class Hubzero_Tool
         return $sqlsearch;
     }
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     protected static function buildQuery($filters = array(), $admin = false)
     {
         return ' FROM #__tool AS t ';
     }
 
+	/**
+	 * Short description for 'getToolCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
     static function getToolCount($filters = array(), $admin = false)
     {
         $db = &JFactory::getDBO();
@@ -1434,6 +1876,15 @@ class Hubzero_Tool
         return $db->loadResult();
     }
 
+	/**
+	 * Short description for 'getToolSummaries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
     static function getToolSummaries($filters = array(), $admin = false)
     {
         $db = &JFactory::getDBO();
@@ -1451,6 +1902,15 @@ class Hubzero_Tool
         return $db->loadAssocList();
     }
 
+	/**
+	 * Short description for 'getToolVersionSummaries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function getToolVersionSummaries($filters = array(), $admin = false)
     {
         // id  instance  version revision state
@@ -1466,6 +1926,14 @@ class Hubzero_Tool
         return $result;
     }
 
+	/**
+	 * Short description for 'getToolContributions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $userid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     static public function getToolContributions($userid = null)
     {
         if (empty($userid))
@@ -1484,6 +1952,15 @@ class Hubzero_Tool
         return $this->_db->loadResultArray();
     }
 
+	/**
+	 * Short description for 'getResourceId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolname Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getResourceId($toolname = null, $id = null)
 	{
 		$db = &JFactory::getDBO();
@@ -1545,6 +2022,16 @@ class Hubzero_Tool
 		return $db->loadResult();
 	}
 
+	/**
+	 * Short description for 'validate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$tool Parameter description (if any) ...
+	 * @param      array &$err Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	static public function validate(&$tool, &$err, $id)
 	{
 		$db = &JFactory::getDBO();
@@ -1662,6 +2149,16 @@ class Hubzero_Tool
 		return true;
 	}
 
+	/**
+	 * Short description for 'validateVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $newversion Parameter description (if any) ...
+	 * @param      string &$err Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	static public function validateVersion($newversion, &$err, $id)
 	{
         $db = &JFactory::getDBO();
@@ -1693,6 +2190,16 @@ class Hubzero_Tool
         return empty($err);
 	}
 
+	/**
+	 * Short description for 'validateLicense'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $license Parameter description (if any) ...
+	 * @param      string $code Parameter description (if any) ...
+	 * @param      unknown &$err Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	static public function validateLicense($license, $code, &$err)
 	{
         preg_replace( '/\[([^]]+)\]/', ' ', $license['text'], -1, $bingo );
@@ -1716,6 +2223,13 @@ class Hubzero_Tool
         return $result;
 	}
 
+	/**
+	 * Short description for 'getMyTools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
     static public function getMyTools()
     {
 		$db = &JFactory::getDBO();
@@ -1734,6 +2248,14 @@ class Hubzero_Tool
 
     }
 
+	/**
+	 * Short description for 'getToolId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolname Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	static public function getToolId($toolname=NULL)
     {
 		$db = &JFactory::getDBO();
@@ -1744,6 +2266,14 @@ class Hubzero_Tool
         return $db->loadResult();
     }
 
+	/**
+	 * Short description for 'getToolDevelopers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     static public function getToolDevelopers($toolid)
     {
 		$db = &JFactory::getDBO();
@@ -1756,6 +2286,15 @@ class Hubzero_Tool
         return $result;
     }
 
+	/**
+	 * Short description for 'getToolGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	static public function getToolGroups($toolid, $groups = array())
     {
 		$db = &JFactory::getDBO();
@@ -1768,6 +2307,15 @@ class Hubzero_Tool
         return  $groups;
     }
 
+	/**
+	 * Short description for 'saveTicketId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $ticketid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	static public function saveTicketId($toolid=NULL, $ticketid=NULL)
     {
 		$db = &JFactory::getDBO();
@@ -1784,6 +2332,14 @@ class Hubzero_Tool
         }
     }
 
+	/**
+	 * Short description for 'getTicketId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
  	static public function getTicketId($toolid=NULL)
     {
 		$db = &JFactory::getDBO();
@@ -1794,6 +2350,15 @@ class Hubzero_Tool
         return $db->loadResult();
     }
 
+	/**
+	 * Short description for 'xbuildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	static public function xbuildQuery( $filters, $admin)
     {
         $juser =& JFactory::getUser();
@@ -1835,6 +2400,15 @@ class Hubzero_Tool
         return $query;
     }
 
+	/**
+	 * Short description for 'getTools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function getTools( $filters=array(), $admin=false )
     {
 		$db = &JFactory::getDBO();

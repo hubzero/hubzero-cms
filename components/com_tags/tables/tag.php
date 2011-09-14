@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,27 +21,95 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'TagsTag'
+ * 
+ * Long description (if any) ...
+ */
 class TagsTag extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id          = NULL;  // int(11)
+
+
+	/**
+	 * Description for 'tag'
+	 * 
+	 * @var unknown
+	 */
 	var $tag         = NULL;  // string(100)
+
+
+	/**
+	 * Description for 'raw_tag'
+	 * 
+	 * @var unknown
+	 */
 	var $raw_tag     = NULL;  // string(100)
+
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
 	var $alias       = NULL;  // string(100)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description = NULL;  // text
+
+
+	/**
+	 * Description for 'admin'
+	 * 
+	 * @var unknown
+	 */
 	var $admin       = NULL;  // tinyint(3)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__tags', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'loadTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadTag( $oid=NULL )
 	{
 		if ($oid === NULL) {
@@ -57,6 +122,14 @@ class TagsTag extends JTable
 		return $this->load( $this->id );
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete( $oid=null )
 	{
 		$k = $this->_tbl_key;
@@ -81,6 +154,13 @@ class TagsTag extends JTable
 		return parent::delete($oid);
 	}
 
+	/**
+	 * Short description for 'checkExistence'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function checkExistence()
 	{
 		// First see if the tag exists.
@@ -94,6 +174,14 @@ class TagsTag extends JTable
 		return false;
 	}
 
+	/**
+	 * Short description for 'getUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tagid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getUsage( $tagid=NULL )
 	{
 		if (!$tagid) {
@@ -107,12 +195,29 @@ class TagsTag extends JTable
 		return $to->getCount( $tagid );
 	}
 
+	/**
+	 * Short description for 'getUsageForObject'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tagid Parameter description (if any) ...
+	 * @param      unknown $objectid Parameter description (if any) ...
+	 * @param      unknown $tbl Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getUsageForObject( $tagid=null, $objectid=null, $tbl=null )
 	{
 		$to = new TagsObject( $this->_db );
 		return $to->getCountForObject( $tagid, $objectid, $tbl );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->raw_tag ) == '') {
@@ -122,6 +227,14 @@ class TagsTag extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery($filters)
 	{
 		$filter = '';
@@ -167,6 +280,14 @@ class TagsTag extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
@@ -177,12 +298,30 @@ class TagsTag extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array() )
 	{
 		$this->_db->setQuery( $this->buildQuery( $filters ) );
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getCloud'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tbl Parameter description (if any) ...
+	 * @param      integer $state Parameter description (if any) ...
+	 * @param      mixed $objectid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCloud( $tbl='', $state=0, $objectid=0 )
 	{
 		$tj = new TagsObject( $this->_db );
@@ -212,6 +351,14 @@ class TagsTag extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getAutocomplete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getAutocomplete( $filters=array() )
 	{
 		$query = "SELECT t.id, t.tag, t.raw_tag 
@@ -229,6 +376,14 @@ class TagsTag extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getAllTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $authorized Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getAllTags( $authorized=false )
 	{
 		if (!$authorized) {
@@ -246,6 +401,17 @@ class TagsTag extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getTopTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      string $tbl Parameter description (if any) ...
+	 * @param      string $order Parameter description (if any) ...
+	 * @param      integer $exclude_private Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getTopTags( $limit=25, $tbl='', $order='tcount DESC', $exclude_private=1)
 	{
 		$tj = new TagsObject( $this->_db );
@@ -272,6 +438,15 @@ class TagsTag extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getRecentTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @param      string $order Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecentTags( $limit=25, $order='taggedon DESC' )
 	{
 		$tj = new TagsObject( $this->_db );
@@ -286,6 +461,15 @@ class TagsTag extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getRelatedTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRelatedTags( $id=null, $limit=25 )
 	{
 		if (!$id) {

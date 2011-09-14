@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -52,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Should probably merge them for consistency.
  *
  * @addtogroup UtfNormal
- * @public
+ * @public    
  */
 
 /** */
@@ -61,8 +63,8 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Return UTF-8 sequence for a given Unicode code point.
  * May die if fed out of range data.
  *
- * @param $codepoint Integer:
- * @return String
+ * @param  $codepoint Integer:
+ * @return String    
  * @public
  */
 function codepointToUtf8( $codepoint )
@@ -87,8 +89,8 @@ function codepointToUtf8( $codepoint )
  * Unicode code points and return a UTF-8 string composed of those
  * characters. Used by UTF-8 data generation and testing routines.
  *
- * @param $sequence String
- * @return String
+ * @param   $sequence String
+ * @return  String   
  * @private
  */
 function hexSequenceToUtf8( $sequence )
@@ -106,8 +108,8 @@ function hexSequenceToUtf8( $sequence )
  * Take a UTF-8 string and return a space-separated series of hex
  * numbers representing Unicode code points. For debugging.
  *
- * @param $str String: UTF-8 string.
- * @return string
+ * @param   $str   String: UTF-8 string.
+ * @return  string
  * @private
  */
 function utf8ToHexSequence( $str )
@@ -121,7 +123,7 @@ function utf8ToHexSequence( $str )
  * Determine the Unicode codepoint of a single-character UTF-8 sequence.
  * Does not check for invalid input data.
  *
- * @param $char String
+ * @param  $char   String
  * @return Integer
  * @public
  */
@@ -163,7 +165,7 @@ function utf8ToCodepoint( $char )
 /**
  * Escape a string for inclusion in a PHP single-quoted string literal.
  *
- * @param $string String: string to be escaped.
+ * @param  $string String: string to be escaped.
  * @return String: escaped string.
  * @public
  */

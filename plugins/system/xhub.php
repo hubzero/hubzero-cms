@@ -1,10 +1,6 @@
 <?php
 /**
- * @package		HUBzero
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -25,11 +21,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package		HUBzero
+ * @package          hubzero-cms
+ * @author           Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright        Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license          http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ximport'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  string $path Parameter description (if any) ...
+ * @return string Return description (if any) ...
+ */
 function ximport($path) {
 	if (substr(strtolower($path),0,7) == 'hubzero') {
 		return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
@@ -57,6 +67,14 @@ class XRouter extends JRouter
 		parent::__construct($options);
 	}
 
+	/**
+	 * Short description for 'parse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$uri Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function parse(&$uri)
 	{
 		$vars = array();
@@ -178,6 +196,14 @@ class XRouter extends JRouter
 		return $vars;
 	}
 
+	/**
+	 * Short description for 'build'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	function &build($url)
 	{
 		$uri =& parent::build($url);
@@ -212,6 +238,14 @@ class XRouter extends JRouter
 		return $uri;
 	}
 
+	/**
+	 * Short description for '_parseRawRoute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$uri Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function _parseRawRoute(&$uri)
 	{
 		$vars = array();
@@ -257,6 +291,14 @@ class XRouter extends JRouter
 		return $vars;
 	}
 
+	/**
+	 * Short description for '_parseSefRoute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$uri Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function _parseSefRoute(&$uri)
 	{
 		$vars   = array();
@@ -470,10 +512,26 @@ class XRouter extends JRouter
 		return $vars;
 	}
 
+	/**
+	 * Short description for '_buildRawRoute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$uri Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _buildRawRoute(&$uri)
 	{
 	}
 
+	/**
+	 * Short description for '_buildSefRoute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$uri Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function _buildSefRoute(&$uri)
 	{
 		// Get the route
@@ -575,6 +633,14 @@ class XRouter extends JRouter
 		$uri->setPath($route);
 	}
 
+	/**
+	 * Short description for '_processParseRules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$uri Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function _processParseRules(&$uri)
 	{
 		// Process the attached parse rules
@@ -595,6 +661,14 @@ class XRouter extends JRouter
 		return $vars;
 	}
 
+	/**
+	 * Short description for '_processBuildRules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$uri Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _processBuildRules(&$uri)
 	{
 		// Make sure any menu vars are used if no others are specified
@@ -630,6 +704,14 @@ class XRouter extends JRouter
 		$uri->setPath($route);
 	}
 
+	/**
+	 * Short description for '_createURI'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	function &_createURI($url)
 	{
 		//Create the URI
@@ -672,6 +754,14 @@ class XRouter extends JRouter
 		return $uri;
 	}
 
+	/**
+	 * Short description for '_buildContentRoute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$query Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function _buildContentRoute(&$query)
 	{
 		$segments = array();
@@ -740,6 +830,14 @@ class XRouter extends JRouter
 		return $segments;
 	}
 
+	/**
+	 * Short description for '_parseContentRoute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$segments Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function _parseContentRoute(&$segments)
 	{
 		$view = 'article';
@@ -922,6 +1020,11 @@ class XRouter extends JRouter
 
 jimport('joomla.event.plugin');
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class plgSystemXhub extends JPlugin
 {
 	/**
@@ -938,6 +1041,13 @@ class plgSystemXhub extends JPlugin
 		parent::__construct($subject, NULL);
 	}
 
+	/**
+	 * Short description for 'onAfterRoute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
         function onAfterRoute()
         {
                 $app = &JFactory::getApplication();
@@ -960,6 +1070,13 @@ class plgSystemXhub extends JPlugin
                 }
         }
 
+	/**
+	 * Short description for 'onAfterInitialise'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function onAfterInitialise()
 	{
 		//jimport('joomla.database.table');
@@ -1052,6 +1169,14 @@ class plgSystemXhub extends JPlugin
 		Hubzero_Session_Helper::set_ip($session->getId(), $_SERVER['REMOTE_ADDR']);
 	}
 
+	/**
+	 * Short description for 'onLoginFailure'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $response Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function onLoginFailure($response)
 	{
 		$authlog = Hubzero_Factory::getAuthLogger();

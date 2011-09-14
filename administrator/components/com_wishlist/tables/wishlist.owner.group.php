@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,19 +33,65 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Group');
 
+/**
+ * Short description for 'WishlistOwnerGroup'
+ * 
+ * Long description (if any) ...
+ */
 class WishlistOwnerGroup extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var integer
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'wishlist'
+	 * 
+	 * @var unknown
+	 */
 	var $wishlist	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'groupid'
+	 * 
+	 * @var unknown
+	 */
 	var $groupid	= NULL;  // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist_ownergroups', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'get_owner_groups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      string $controlgroup Parameter description (if any) ...
+	 * @param      mixed $wishlist Parameter description (if any) ...
+	 * @param      integer $native Parameter description (if any) ...
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_owner_groups($listid, $controlgroup='', $wishlist='', $native=0, $groups = array())
 	{
 		ximport('Hubzero_Group');
@@ -106,6 +154,16 @@ class WishlistOwnerGroup extends JTable
 		return $groups;
 	 }
 
+	/**
+	 * Short description for 'delete_owner_group'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      string $groupid Parameter description (if any) ...
+	 * @param      unknown $admingroup Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	 public function delete_owner_group($listid, $groupid, $admingroup)
 	 {
 	 	ximport('Hubzero_Group');
@@ -124,6 +182,16 @@ class WishlistOwnerGroup extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'save_owner_groups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $listid Parameter description (if any) ...
+	 * @param      unknown $admingroup Parameter description (if any) ...
+	 * @param      array $newgroups Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function save_owner_groups($listid, $admingroup, $newgroups = array())
 	{
 		if ($listid === NULL) {

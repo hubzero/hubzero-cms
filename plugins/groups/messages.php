@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,9 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_messages' );
 
+/**
+ * Short description for 'plgGroupsMessages'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsMessages extends JPlugin
 {
 
+	/**
+	 * Short description for 'plgGroupsMessages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsMessages(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -44,6 +60,13 @@ class plgGroupsMessages extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -55,6 +78,21 @@ class plgGroupsMessages extends JPlugin
 		return $area;
 	}
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
@@ -143,6 +181,14 @@ class plgGroupsMessages extends JPlugin
 	// Views
 	//---------------------------------
 
+
+	/**
+	 * Short description for '_sent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function _sent()
 	{
 		// Set the page title
@@ -192,6 +238,13 @@ class plgGroupsMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for '_view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function _view()
 	{
 		//get the message id
@@ -241,6 +294,13 @@ class plgGroupsMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for '_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function _create()
 	{
 		// Ensure only admins and group managers can create messages
@@ -288,6 +348,13 @@ class plgGroupsMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for '_send'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function _send()
 	{
 		// Ensure the user is logged in
@@ -405,6 +472,15 @@ class plgGroupsMessages extends JPlugin
 	// Functions 
 	//---------------------------------
 
+
+	/**
+	 * Short description for 'autolink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function autolink($matches)
 	{
 		$href = $matches[0];
@@ -434,6 +510,14 @@ class plgGroupsMessages extends JPlugin
 		return $l;
 	}
 
+	/**
+	 * Short description for 'obfuscate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $email Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);

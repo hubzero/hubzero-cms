@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'SupportController'
+ * 
+ * Long description (if any) ...
+ */
 class SupportController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		// Get the component config
@@ -118,6 +133,14 @@ class SupportController extends Hubzero_Controller
 	//  Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'acl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function acl()
 	{
 		$this->acl = SupportACL::getACL();
@@ -140,6 +163,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'updateacl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function updateacl()
 	{
 		// Check for request forgeries
@@ -177,6 +207,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('ACL successfully updated');
 	}
 
+	/**
+	 * Short description for 'deleteacl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deleteacl()
 	{
 		// Check for request forgeries
@@ -208,6 +245,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('ACL successfully removed');
 	}
 
+	/**
+	 * Short description for 'saveacl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveacl()
 	{
 		// Check for request forgeries
@@ -313,6 +357,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('ACL successfully created');
 	}
 
+	/**
+	 * Short description for 'stats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function stats()
 	{
 		// Push some styles to the template
@@ -472,6 +523,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'categories'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function categories()
 	{
 		// Instantiate a new view
@@ -509,6 +567,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'sections'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function sections()
 	{
 		// Instantiate a new view
@@ -546,6 +611,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'resolutions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function resolutions()
 	{
 		// Instantiate a new view
@@ -583,6 +655,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'tickets'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function tickets()
 	{
 		// Instantiate a new view
@@ -618,6 +697,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'messages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function messages()
 	{
 		// Instantiate a new view
@@ -655,11 +741,25 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function add()
 	{
 		$this->edit();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edit()
 	{
 		// Push some styles to the template
@@ -806,6 +906,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editcat()
 	{
 		// Instantiate a new view
@@ -839,6 +946,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editsec'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editsec()
 	{
 		// Instantiate a new view
@@ -867,6 +981,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editres'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editres()
 	{
 		// Instantiate a new view
@@ -890,6 +1011,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editmsg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editmsg()
 	{
 		// Instantiate a new view
@@ -913,6 +1041,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savemsg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savemsg()
 	{
 		// Check for request forgeries
@@ -950,6 +1085,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('MESSAGE_SUCCESSFULLY_SAVED');
 	}
 
+	/**
+	 * Short description for 'savecat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savecat()
 	{
 		// Check for request forgeries
@@ -986,6 +1128,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('CATEGORY_SUCCESSFULLY_SAVED');
 	}
 
+	/**
+	 * Short description for 'savesec'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savesec()
 	{
 		// Check for request forgeries
@@ -1022,6 +1171,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('SECTION_SUCCESSFULLY_SAVED');
 	}
 
+	/**
+	 * Short description for 'saveres'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveres()
 	{
 		// Check for request forgeries
@@ -1062,6 +1218,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('RESOLUTION_SUCCESSFULLY_SAVED');
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check for request forgeries
@@ -1413,6 +1576,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::sprintf('TICKET_SUCCESSFULLY_SAVED',$row->id);
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function remove()
 	{
 		// Check for request forgeries
@@ -1450,6 +1620,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::sprintf('TICKET_SUCCESSFULLY_DELETED',count($ids));
 	}
 
+	/**
+	 * Short description for 'deletemsg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletemsg()
 	{
 		// Check for request forgeries
@@ -1479,6 +1656,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::sprintf('MESSAGE_SUCCESSFULLY_DELETED',count($ids));
 	}
 
+	/**
+	 * Short description for 'deletecat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletecat()
 	{
 		// Check for request forgeries
@@ -1508,26 +1692,62 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::sprintf('CATEGORY_SUCCESSFULLY_DELETED',count($ids));
 	}
 
+	/**
+	 * Short description for 'cancelsec'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelsec()
 	{
 		$this->cancel('sections');
 	}
 
+	/**
+	 * Short description for 'cancelcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelcat()
 	{
 		$this->cancel('categories');
 	}
 
+	/**
+	 * Short description for 'cancelmsg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelmsg()
 	{
 		$this->cancel('messages');
 	}
 
+	/**
+	 * Short description for 'cancelres'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelres()
 	{
 		$this->cancel('resolutions');
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $task Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function cancel($task='')
 	{
 		// Get configuration
@@ -1560,6 +1780,14 @@ class SupportController extends Hubzero_Controller
 	//  Abuse reports
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'abusereports'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function abusereports()
 	{
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'reportabuse.php' );
@@ -1601,6 +1829,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'abusereport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function abusereport()
 	{
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'reportabuse.php' );
@@ -1694,6 +1929,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'releasereport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function releasereport()
 	{
 		// Check for request forgeries
@@ -1724,6 +1966,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('ITEM_RELEASED_SUCCESSFULLY');
 	}
 
+	/**
+	 * Short description for 'deletereport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletereport()
 	{
 		// Check for request forgeries
@@ -1857,6 +2106,19 @@ class SupportController extends Hubzero_Controller
 	// Misc. Functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'userSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $active Parameter description (if any) ...
+	 * @param      integer $nouser Parameter description (if any) ...
+	 * @param      string $javascript Parameter description (if any) ...
+	 * @param      string $order Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function userSelect( $name, $active, $nouser=0, $javascript=NULL, $order='a.name' )
 	{
 		$database =& JFactory::getDBO();
@@ -1882,6 +2144,18 @@ class SupportController extends Hubzero_Controller
 		return $users;
 	}
 
+	/**
+	 * Short description for 'userSelectGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $active Parameter description (if any) ...
+	 * @param      integer $nouser Parameter description (if any) ...
+	 * @param      string $javascript Parameter description (if any) ...
+	 * @param      string $group Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function userSelectGroup( $name, $active, $nouser=0, $javascript=NULL, $group='' )
 	{
 		$users = array();
@@ -2066,6 +2340,14 @@ class SupportController extends Hubzero_Controller
 		return;
 	}
 
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function upload( $listdir )
 	{
 		// Incoming
@@ -2128,6 +2410,14 @@ class SupportController extends Hubzero_Controller
 	//  Tag/Group autoassignment
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'taggroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function taggroup()
 	{
 		// Instantiate a new view
@@ -2166,6 +2456,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edittg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edittg()
 	{
 		ximport('Hubzero_Group');
@@ -2196,6 +2493,13 @@ class SupportController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savetg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savetg()
 	{
 		// Check for request forgeries
@@ -2252,6 +2556,13 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::_('ENTRY_SUCCESSFULLY_SAVED');
 	}
 
+	/**
+	 * Short description for 'deletetg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletetg()
 	{
 		// Check for request forgeries
@@ -2281,11 +2592,25 @@ class SupportController extends Hubzero_Controller
 		$this->_message = JText::sprintf('ENTRY_SUCCESSFULLY_DELETED',count($ids));
 	}
 
+	/**
+	 * Short description for 'canceltg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function canceltg()
 	{
 		$this->cancel('taggroup');
 	}
 
+	/**
+	 * Short description for 'reorder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function reorder()
 	{
 		// Check for request forgeries

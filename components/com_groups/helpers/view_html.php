@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,13 +21,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'JHTMLView_html'
+ * 
+ * Long description (if any) ...
+ */
 Class JHTMLView_html {
 
+	/**
+	 * Short description for 'displayMenu'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $user Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      mixed $group Parameter description (if any) ...
+	 * @param      array $group_content_pages Parameter description (if any) ...
+	 * @param      unknown $active_tab Parameter description (if any) ...
+	 * @param      string $access Parameter description (if any) ...
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function displayMenu($user, $authorized, $option, $group, $group_content_pages, $active_tab, $access, $name, $title)
 	{
 		//check if admin
@@ -98,6 +121,19 @@ Class JHTMLView_html {
 		return "<li><a class=\"{$cls}\" href=\"{$link}\">{$title}</a></li>";
 	}
 
+	/**
+	 * Short description for 'displayContent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @param      unknown $active_tab Parameter description (if any) ...
+	 * @param      array $sections Parameter description (if any) ...
+	 * @param      array $hub_plugins Parameter description (if any) ...
+	 * @param      unknown $group_plugins Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function displayContent($user, $group, $active_tab, $sections, $hub_plugins, $group_plugins)
 	{
 		for($i=0;$i < count($hub_plugins); $i++) {

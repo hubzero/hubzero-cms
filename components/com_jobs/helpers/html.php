@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,22 +21,65 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if (!defined('n')) {
+
+/**
+ * Description for ''t''
+ */
 	define('t',"\t");
+
+/**
+ * Description for ''n''
+ */
 	define('n',"\n");
+
+/**
+ * Description for ''r''
+ */
 	define('r',"\r");
+
+/**
+ * Description for ''br''
+ */
 	define('br','<br />');
+
+/**
+ * Description for ''sp''
+ */
 	define('sp','&#160;');
+
+/**
+ * Description for ''a''
+ */
 	define('a','&amp;');
 }
 
+/**
+ * Short description for 'JobsHtml'
+ * 
+ * Long description (if any) ...
+ */
 class JobsHtml
 {
+
+	/**
+	 * Short description for 'txt_unpee'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $pee Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
@@ -51,6 +91,16 @@ class JobsHtml
 		return $pee;
 	}
 
+	/**
+	 * Short description for 'confirmscreen'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $returnurl Parameter description (if any) ...
+	 * @param      string $actionurl Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function confirmscreen($returnurl, $actionurl, $action='cancelsubscription')
 	{
 		$html  = '<div class="confirmwrap">'.n;
@@ -79,6 +129,17 @@ class JobsHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'formSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
@@ -94,6 +155,13 @@ class JobsHtml
 		return $out;
 	}
 
+	/**
+	 * Short description for 'wikiHelp'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function wikiHelp()
 	{
 		$out  = '<table class="wiki-reference" summary="Wiki Syntax Reference">'.n;

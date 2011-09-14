@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,72 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ResourcesHtml'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesHtml
 {
+
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'warning'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
+	/**
+	 * Short description for 'statusKey'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function statusKey()
 	{
 		?>
@@ -63,6 +104,16 @@ class ResourcesHtml
 		<?php
 	}
 
+	/**
+	 * Short description for 'shortenText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @param      integer $p Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
@@ -84,6 +135,15 @@ class ResourcesHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'parseTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function parseTag($text, $tag)
 	{
 		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
@@ -97,6 +157,14 @@ class ResourcesHtml
 		return $match;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
@@ -106,6 +174,16 @@ class ResourcesHtml
 		return $someid;
 	}
 
+	/**
+	 * Short description for 'build_path'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function build_path( $date, $id, $base='' )
 	{
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
@@ -126,6 +204,14 @@ class ResourcesHtml
 		return $path;
 	}
 
+	/**
+	 * Short description for 'writeRating'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rating Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function writeRating( $rating )
 	{
 		switch ($rating)
@@ -151,6 +237,16 @@ class ResourcesHtml
 	// Form <select> builders
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'selectAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $as Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectAccess($as, $value)
 	{
 		$as = explode(',',$as);
@@ -167,6 +263,15 @@ class ResourcesHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'selectGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner"';
@@ -189,6 +294,18 @@ class ResourcesHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'selectSection'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      integer $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectSection($name, $array, $value, $class='', $id)
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'" onchange="return listItemTask(\'cb'. $id .'\',\'regroup\')"';
@@ -207,6 +324,20 @@ class ResourcesHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'selectType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $arr Parameter description (if any) ...
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      mixed $value Parameter description (if any) ...
+	 * @param      string $shownone Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $js Parameter description (if any) ...
+	 * @param      string $skip Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
@@ -234,6 +365,17 @@ class ResourcesHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'selectAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rows Parameter description (if any) ...
+	 * @param      array $authnames Parameter description (if any) ...
+	 * @param      object $attribs Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectAuthors($rows, $authnames, $attribs, $option)
 	{
 		$authIDs = array();
@@ -292,6 +434,14 @@ class ResourcesHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'dateToPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function dateToPath( $date )
 	{
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
@@ -306,6 +456,15 @@ class ResourcesHtml
 	// Media manager functions
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'dir_name'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $dir Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function dir_name($dir)
 	{
 		$lastSlash = intval(strrpos($dir, '/'));
@@ -316,6 +475,14 @@ class ResourcesHtml
 		}
 	}
 
+	/**
+	 * Short description for 'parse_size'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $size Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function parse_size($size)
 	{
 		if ($size < 1024) {
@@ -327,6 +494,14 @@ class ResourcesHtml
 		}
 	}
 
+	/**
+	 * Short description for 'num_files'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $dir Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function num_files($dir)
 	{
 		$total = 0;

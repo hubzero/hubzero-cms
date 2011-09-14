@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'TagsController'
+ * 
+ * Long description (if any) ...
+ */
 class TagsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
@@ -57,6 +72,14 @@ class TagsController extends Hubzero_Controller
 	// Tag functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		// Instantiate a new view
@@ -98,11 +121,26 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function add()
 	{
 		$this->edit();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $tag Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function edit($tag=NULL)
 	{
 		// Instantiate a new view
@@ -130,11 +168,25 @@ class TagsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check for request forgeries
@@ -180,6 +232,13 @@ class TagsController extends Hubzero_Controller
 		$this->_message = JText::_( 'TAG_SAVED' );
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function remove()
 	{
 		// Check for request forgeries
@@ -214,6 +273,13 @@ class TagsController extends Hubzero_Controller
 		$this->_message = JText::_( 'TAG_REMOVED' );
 	}
 
+	/**
+	 * Short description for 'merge'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function merge()
 	{
 		// Incoming
@@ -325,6 +391,13 @@ class TagsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'pierce'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function pierce()
 	{
 		// Incoming

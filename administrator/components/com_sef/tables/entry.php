@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,26 +21,88 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'SefEntry'
+ * 
+ * Long description (if any) ...
+ */
 class SefEntry extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id	     = null;  // @var int
+
+
+	/**
+	 * Description for 'cpt'
+	 * 
+	 * @var unknown
+	 */
 	var $cpt     = null;  // @var int
+
+
+	/**
+	 * Description for 'oldurl'
+	 * 
+	 * @var unknown
+	 */
 	var $oldurl	 = null;  // @var string
+
+
+	/**
+	 * Description for 'newurl'
+	 * 
+	 * @var unknown
+	 */
 	var $newurl	 = null;  // @var string
+
+
+	/**
+	 * Description for 'dateadd'
+	 * 
+	 * @var unknown
+	 */
 	var $dateadd = null;  // @var date
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$_db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$_db )
 	{
 		parent::__construct( '#__redirection', 'id', $_db );
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array(), $admin=false )
 	{
 		$sql  = "SELECT COUNT(*) ";
@@ -53,6 +112,15 @@ class SefEntry extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array(), $admin=false )
 	{
 		$sql  = "SELECT * ";
@@ -63,6 +131,15 @@ class SefEntry extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array(), $admin=false )
 	{
 		$query = "FROM $this->_tbl WHERE ";

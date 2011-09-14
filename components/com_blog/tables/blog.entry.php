@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,30 +35,153 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Blog Entry database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'BlogEntry'
+ * 
+ * Long description (if any) ...
+ */
 class BlogEntry extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id           = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title        = NULL;  // @var varchar(150)
+
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
 	var $alias        = NULL;  // @var varchar(150)
+
+
+	/**
+	 * Description for 'content'
+	 * 
+	 * @var unknown
+	 */
 	var $content      = NULL;  // @var text
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created      = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by   = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state        = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'publish_up'
+	 * 
+	 * @var unknown
+	 */
 	var $publish_up   = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'publish_down'
+	 * 
+	 * @var unknown
+	 */
 	var $publish_down = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params		  = NULL;  // @var text
+
+
+	/**
+	 * Description for 'group_id'
+	 * 
+	 * @var unknown
+	 */
 	var $group_id     = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'hits'
+	 * 
+	 * @var unknown
+	 */
 	var $hits         = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'allow_comments'
+	 * 
+	 * @var unknown
+	 */
 	var $allow_comments = NULL;  // @var int(2)
+
+
+	/**
+	 * Description for 'scope'
+	 * 
+	 * @var unknown
+	 */
 	var $scope        = NULL;  // @var varchar(100)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__blog_entries', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'loadAlias'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      unknown $scope Parameter description (if any) ...
+	 * @param      unknown $created_by Parameter description (if any) ...
+	 * @param      unknown $group_id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadAlias( $oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL )
 	{
 		if ($oid === NULL) {
@@ -104,6 +229,13 @@ class BlogEntry extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
@@ -121,6 +253,14 @@ class BlogEntry extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getEntriesCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getEntriesCount($filters=array())
 	{
 		$filters['limit'] = 0;
@@ -130,6 +270,14 @@ class BlogEntry extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getEntries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getEntries($filters=array())
 	{
 		$bc = new BlogComment( $this->_db );
@@ -140,6 +288,14 @@ class BlogEntry extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for '_buildAdminQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _buildAdminQuery($filters)
 	{
 		$filters['scope'] = 'site';
@@ -187,6 +343,14 @@ class BlogEntry extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
@@ -196,6 +360,14 @@ class BlogEntry extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords($filters=array())
 	{
 		$bc = new BlogComment( $this->_db );
@@ -206,6 +378,14 @@ class BlogEntry extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for '_buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _buildQuery($filters)
 	{
 		$nullDate = $this->_db->getNullDate();
@@ -276,6 +456,14 @@ class BlogEntry extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'deleteComments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteComments($id=null)
 	{
 		if (!$id) {
@@ -297,6 +485,14 @@ class BlogEntry extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'deleteFiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteFiles($id=null)
 	{
 		// Build the file path
@@ -318,6 +514,14 @@ class BlogEntry extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'deleteTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteTags($id=null)
 	{
 		if (!$id) {
@@ -336,6 +540,14 @@ class BlogEntry extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getPopularEntries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getPopularEntries($filters=array())
 	{
 		$filters['order'] = 'hits DESC';
@@ -348,6 +560,14 @@ class BlogEntry extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getRecentEntries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecentEntries($filters=array())
 	{
 		$filters['order'] = 'publish_up DESC';
@@ -360,6 +580,14 @@ class BlogEntry extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getDateOfFirstEntry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getDateOfFirstEntry($filters=array())
 	{
 		$filters['order'] = 'publish_up ASC';

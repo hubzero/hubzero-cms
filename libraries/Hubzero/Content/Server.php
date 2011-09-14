@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,22 +21,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Content_Server'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Content_Server
 {
+
+	/**
+	 * Description for '_filename'
+	 * 
+	 * @var unknown
+	 */
 	var $_filename;
+
+	/**
+	 * Description for '_acceptranges'
+	 * 
+	 * @var unknown
+	 */
 	var $_acceptranges;
+
+	/**
+	 * Description for '_disposition'
+	 * 
+	 * @var unknown
+	 */
 	var $_disposition;
+
+	/**
+	 * Description for '_saveas'
+	 * 
+	 * @var unknown
+	 */
 	var $_saveas;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function __construct()
 	{
 	}
 
+	/**
+	 * Short description for 'saveas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $saveas Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function saveas($saveas = null)
 	{
 		if (!is_null($saveas))
@@ -48,6 +94,14 @@ class Hubzero_Content_Server
 		return($this->_saveas);
 	}
 
+	/**
+	 * Short description for 'filename'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function filename($filename = null)
 	{
 		if (!is_null($filename))
@@ -56,6 +110,14 @@ class Hubzero_Content_Server
 		return($this->_filename);
 	}
 
+	/**
+	 * Short description for 'acceptranges'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $acceptranges Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function acceptranges($acceptranges = null)
 	{
 		if (!is_null($acceptranges))
@@ -64,6 +126,14 @@ class Hubzero_Content_Server
 		return($this->_acceptranges);
 	}
 
+	/**
+	 * Short description for 'disposition'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $disposition Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function disposition($disposition = null)
 	{
 		if (!is_null($disposition)) {
@@ -80,21 +150,58 @@ class Hubzero_Content_Server
 		return($this->_disposition);
 	}
 
+	/**
+	 * Short description for 'serve'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function serve()
 	{
 		return Hubzero_Content_Server::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
 	}
 
+	/**
+	 * Short description for 'serve_attachment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @param      unknown $saveas Parameter description (if any) ...
+	 * @param      boolean $acceptranges Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function serve_attachment($filename, $saveas = null, $acceptranges = true)
 	{
 		return Hubzero_Content_Server::serve_file($filename, $saveas, 'attachment', $acceptranges);
 	}
 
+	/**
+	 * Short description for 'serve_inline'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @param      boolean $acceptranges Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function serve_inline($filename, $acceptranges = true)
 	{
 		return Hubzero_Content_Server::serve_file($filename, null, 'inline', $acceptranges);
 	}
 
+	/**
+	 * Short description for 'serve_file'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @param      string $saveas Parameter description (if any) ...
+	 * @param      string $disposition Parameter description (if any) ...
+	 * @param      boolean $acceptranges Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true)
 	{
 		$fp = fopen($filename,"rb");

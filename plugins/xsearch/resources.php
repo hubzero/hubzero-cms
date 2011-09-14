@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,12 +34,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_resources' );
 
+/**
+ * Short description for 'plgXSearchResources'
+ * 
+ * Long description (if any) ...
+ */
 class plgXSearchResources extends JPlugin
 {
+
+	/**
+	 * Description for '_areas'
+	 * 
+	 * @var unknown
+	 */
 	private $_areas = null;
+
+	/**
+	 * Description for '_cats'
+	 * 
+	 * @var unknown
+	 */
 	private $_cats  = null;
+
+	/**
+	 * Description for '_total'
+	 * 
+	 * @var unknown
+	 */
 	private $_total = null;
 
+	/**
+	 * Short description for 'plgXSearchResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgXSearchResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -50,6 +84,13 @@ class plgXSearchResources extends JPlugin
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
 
+	/**
+	 * Short description for 'onXSearchAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function onXSearchAreas()
 	{
 		$areas = $this->_areas;
@@ -85,6 +126,17 @@ class plgXSearchResources extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onXSearch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $searchquery Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      array $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
 		$database =& JFactory::getDBO();
@@ -223,6 +275,14 @@ class plgXSearchResources extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'documents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
@@ -242,6 +302,15 @@ class plgXSearchResources extends JPlugin
 		// ...
 	}*/
 
+	/**
+	 * Short description for 'out'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      unknown $keyword Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function out( $row, $keyword )
 	{
 		$database =& JFactory::getDBO();

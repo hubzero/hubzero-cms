@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'AnswersController'
+ * 
+ * Long description (if any) ...
+ */
 class AnswersController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
@@ -75,6 +90,14 @@ class AnswersController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'questions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function questions()
 	{
 		// Get Joomla configuration
@@ -143,6 +166,13 @@ class AnswersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'answers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function answers()
 	{
 		// Get Joomla configuration
@@ -188,6 +218,13 @@ class AnswersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editQuestion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editQuestion()
 	{
 		// Instantiate a new view
@@ -235,6 +272,13 @@ class AnswersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editAnswer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editAnswer()
 	{
 		// Instantiate a new view
@@ -285,6 +329,14 @@ class AnswersController extends Hubzero_Controller
 	//  Processers
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'saveQuestion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveQuestion()
 	{
 		// Check for request forgeries
@@ -335,6 +387,13 @@ class AnswersController extends Hubzero_Controller
 		$this->_message = JText::_('Question Successfully Saved');
 	}
 
+	/**
+	 * Short description for 'saveAnswer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveAnswer()
 	{
 		// Check for request forgeries
@@ -385,6 +444,13 @@ class AnswersController extends Hubzero_Controller
 		$this->_message = JText::_('Answer Successfully Saved');
 	}
 
+	/**
+	 * Short description for 'deleteAnswer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deleteAnswer()
 	{
 		// Check for request forgeries
@@ -422,6 +488,13 @@ class AnswersController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=answers&qid='.$qid;
 	}
 
+	/**
+	 * Short description for 'deleteQuestion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deleteQuestion()
 	{
 		// Check for request forgeries
@@ -503,6 +576,13 @@ class AnswersController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'state'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function state()
 	{
 		// Check for request forgeries
@@ -576,6 +656,13 @@ class AnswersController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'accept'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function accept()
 	{
 		// Check for request forgeries
@@ -658,11 +745,25 @@ class AnswersController extends Hubzero_Controller
 		$this->_redirect .= ($qid) ? '&task=answers&qid='.$qid : '';
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'cancelResponse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelResponse()
 	{
 		$qid = JRequest::getInt('qid', 0);
@@ -670,6 +771,14 @@ class AnswersController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&qid=';
 	}
 
+	/**
+	 * Short description for '_getPointReward'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _getPointReward($id)
 	{
 		// Check if question owner assigned a reward for answering his Q
@@ -677,6 +786,14 @@ class AnswersController extends Hubzero_Controller
 		return $BT->getAmount( 'answers', 'hold', $id );
 	}
 
+	/**
+	 * Short description for '_get_vote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _get_vote($id)
 	{
 		// Get the user's IP address
@@ -689,6 +806,15 @@ class AnswersController extends Hubzero_Controller
 		return $voted;
 	}
 
+	/**
+	 * Short description for '_getAbuseReports'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _getAbuseReports($id, $cat)
 	{
 		// Incoming
@@ -703,6 +829,13 @@ class AnswersController extends Hubzero_Controller
 		return $ra->getCount( $filters );
 	}
 
+	/**
+	 * Short description for 'resetHelpful'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function resetHelpful()
 	{
 		// Check for request forgeries
@@ -737,6 +870,17 @@ class AnswersController extends Hubzero_Controller
 	//  Retrievers
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'get_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      mixed $tagger_id Parameter description (if any) ...
+	 * @param      mixed $strength Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function get_tags($id, $tagger_id=0, $strength=0)
 	{
 		$database =& JFactory::getDBO();

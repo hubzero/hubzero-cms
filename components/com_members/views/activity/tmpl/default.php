@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     GNU General Public License, version 2 (GPLv2) 
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -24,6 +22,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   GNU General Public License, version 2 (GPLv2) 
  */
 
 // no direct access

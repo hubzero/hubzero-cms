@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_share' );
 
+/**
+ * Short description for 'plgResourcesShare'
+ * 
+ * Long description (if any) ...
+ */
 class plgResourcesShare extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgResourcesShare'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgResourcesShare(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,14 @@ class plgResourcesShare extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onResourcesAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $resource Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onResourcesAreas( $resource )
 	{
 		static $areas = array(
@@ -51,6 +76,17 @@ class plgResourcesShare extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $resource Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @param      string $rtrn Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		$arr = array(
@@ -136,6 +172,16 @@ class plgResourcesShare extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'share'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $with Parameter description (if any) ...
+	 * @param      string $url Parameter description (if any) ...
+	 * @param      mixed $resource Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function share($with, $url, $resource)
 	{
 		$jconfig =& JFactory::getConfig();

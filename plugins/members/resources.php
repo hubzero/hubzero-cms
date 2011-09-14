@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,12 +34,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_resources' );
 
+/**
+ * Short description for 'plgMembersResources'
+ * 
+ * Long description (if any) ...
+ */
 class plgMembersResources extends JPlugin
 {
+
+	/**
+	 * Description for '_areas'
+	 * 
+	 * @var unknown
+	 */
 	private $_areas = null;
+
+	/**
+	 * Description for '_cats'
+	 * 
+	 * @var unknown
+	 */
 	private $_cats  = null;
+
+	/**
+	 * Description for '_total'
+	 * 
+	 * @var unknown
+	 */
 	private $_total = null;
 
+	/**
+	 * Short description for 'plgMembersResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgMembersResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -50,6 +84,14 @@ class plgMembersResources extends JPlugin
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
 
+	/**
+	 * Short description for 'onMembersContributionsAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembersContributionsAreas( $authorized )
 	{
 		$areas = $this->_areas;
@@ -85,12 +127,36 @@ class plgMembersResources extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onMembersContributionsCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      string $user_id Parameter description (if any) ...
+	 * @param      string $username Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' )
 	{
 		$query = "SELECT COUNT(R.id) FROM #__resources AS R, #__author_assoc AS AA WHERE AA.authorid=".$user_id." AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
 		return $query;
 	}
 
+	/**
+	 * Short description for 'onMembersContributions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $member Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      unknown $sort Parameter description (if any) ...
+	 * @param      array $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembersContributions( $member, $option, $authorized, $limit=0, $limitstart=0, $sort, $areas=null )
 	{
 		$database =& JFactory::getDBO();
@@ -233,6 +299,15 @@ class plgMembersResources extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'out'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      boolean $authorized Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function out( $row, $authorized=false )
 	{
 		$database =& JFactory::getDBO();
@@ -348,6 +423,13 @@ class plgMembersResources extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for 'documents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
@@ -361,11 +443,32 @@ class plgMembersResources extends JPlugin
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 	}
 
+	/**
+	 * Short description for 'onMembersFavoritesAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function onMembersFavoritesAreas( $authorized )
 	{
 		return $this->onMembersContributionsAreas( $authorized );
 	}
 
+	/**
+	 * Short description for 'onMembersFavorites'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $member Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      array $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembersFavorites( $member, $option, $authorized, $limit=0, $limitstart=0, $areas=null )
 	{
 		$database =& JFactory::getDBO();

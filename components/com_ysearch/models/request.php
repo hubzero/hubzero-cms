@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,22 +33,82 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
+/**
+ * Short description for 'YSearchModelRequest'
+ * 
+ * Long description (if any) ...
+ */
 class YSearchModelRequest
 {
+
+	/**
+	 * Description for 'terms'
+	 * 
+	 * @var object
+	 */
 	private $terms, $term_ar, $tags, $object_tags = array();
 
+	/**
+	 * Short description for 'get_terms'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function get_terms() { return $this->terms; }
+
+	/**
+	 * Short description for 'get_term_ar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_term_ar() { return $this->term_ar; }
+
+	/**
+	 * Short description for 'get_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_tags() { return $this->tags; }
+
+	/**
+	 * Short description for 'get_tagged_ids'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tbl Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_tagged_ids($tbl)
 	{
 		return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : array();
 	}
+
+	/**
+	 * Short description for 'get_tag_ids_by_table'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tbl Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_tag_ids_by_table($tbl)
 	{
 		return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : array();
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $terms Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($terms)
 	{
 		$this->terms = $terms;
@@ -59,6 +121,13 @@ class YSearchModelRequest
 		$this->load_tags();
 	}
 
+	/**
+	 * Short description for 'load_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function load_tags()
 	{
 		$weight = 'match(t.raw_tag, t.alias, t.description) against (\''.join(' ', $this->term_ar['stemmed']).'\')';

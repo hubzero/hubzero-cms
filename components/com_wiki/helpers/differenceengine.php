@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,6 +35,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Bump this when changing the diff formatting in a way that
 // fixes important bugs or such to force cached diff views to
 // clear.
+
+/**
+ * Description for ''MW_DIFF_VERSION''
+ */
 define( 'MW_DIFF_VERSION', '1.11a' );
 
 // A PHP diff engine for phpwiki. (Taken from phpwiki-1.3.3)
@@ -40,34 +46,102 @@ define( 'MW_DIFF_VERSION', '1.11a' );
 // Copyright (C) 2000, 2001 Geoffrey T. Dairiki <dairiki@dairiki.org>
 // You may copy this code freely under the conditions of the GPL.
 
+
+/**
+ * Description for ''USE_ASSERTS''
+ */
 define('USE_ASSERTS', function_exists('assert'));
 
+/**
+ * Short description for '_DiffOp'
+ * 
+ * Long description (if any) ...
+ */
 class _DiffOp
 {
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type;
+
+	/**
+	 * Description for 'orig'
+	 * 
+	 * @var unknown
+	 */
 	var $orig;
+
+	/**
+	 * Description for 'closing'
+	 * 
+	 * @var unknown
+	 */
 	var $closing;
 
+	/**
+	 * Short description for 'reverse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function reverse()
 	{
 		trigger_error('pure virtual', E_USER_ERROR);
 	}
 
+	/**
+	 * Short description for 'norig'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
 	function norig()
 	{
 		return $this->orig ? sizeof($this->orig) : 0;
 	}
 
+	/**
+	 * Short description for 'nclosing'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
 	function nclosing()
 	{
 		return $this->closing ? sizeof($this->closing) : 0;
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class _DiffOp_Copy extends _DiffOp
 {
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var string
+	 */
 	var $type = 'copy';
 
+	/**
+	 * Short description for '_DiffOp_Copy'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $orig Parameter description (if any) ...
+	 * @param      boolean $closing Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _DiffOp_Copy ($orig, $closing = false)
 	{
 		if (!is_array($closing))
@@ -76,54 +150,140 @@ class _DiffOp_Copy extends _DiffOp
 		$this->closing = $closing;
 	}
 
+	/**
+	 * Short description for 'reverse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	function reverse()
 	{
 		return new _DiffOp_Copy($this->closing, $this->orig);
 	}
 }
 
+/**
+ * Short description for '_DiffOp_Delete'
+ * 
+ * Long description (if any) ...
+ */
 class _DiffOp_Delete extends _DiffOp
 {
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var string
+	 */
 	var $type = 'delete';
 
+	/**
+	 * Short description for '_DiffOp_Delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _DiffOp_Delete ($lines)
 	{
 		$this->orig = $lines;
 		$this->closing = false;
 	}
 
+	/**
+	 * Short description for 'reverse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	function reverse()
 	{
 		return new _DiffOp_Add($this->orig);
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class _DiffOp_Add extends _DiffOp
 {
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var string
+	 */
 	var $type = 'add';
 
+	/**
+	 * Short description for '_DiffOp_Add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _DiffOp_Add ($lines)
 	{
 		$this->closing = $lines;
 		$this->orig = false;
 	}
 
+	/**
+	 * Short description for 'reverse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	function reverse()
 	{
 		return new _DiffOp_Delete($this->closing);
 	}
 }
 
+/**
+ * Short description for '_DiffOp_Change'
+ * 
+ * Long description (if any) ...
+ */
 class _DiffOp_Change extends _DiffOp
 {
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var string
+	 */
 	var $type = 'change';
 
+	/**
+	 * Short description for '_DiffOp_Change'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $orig Parameter description (if any) ...
+	 * @param      unknown $closing Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _DiffOp_Change ($orig, $closing)
 	{
 		$this->orig = $orig;
 		$this->closing = $closing;
 	}
 
+	/**
+	 * Short description for 'reverse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	function reverse()
 	{
 		return new _DiffOp_Change($this->closing, $this->orig);
@@ -153,10 +313,29 @@ class _DiffOp_Change extends _DiffOp
 // @private
 // @addtogroup DifferenceEngine
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class _DiffEngine
 {
+
+	/**
+	 * Description for 'AX_XREF_LENGTH'
+	 */
 	const MAX_XREF_LENGTH =  10000;
 
+	/**
+	 * Short description for 'diff'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $from_lines Parameter description (if any) ...
+	 * @param      array $to_lines Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function diff ($from_lines, $to_lines)
 	{
 		$n_from = sizeof($from_lines);
@@ -249,6 +428,16 @@ class _DiffEngine
 	}
 
 	// Returns the whole line if it's small enough, or the MD5 hash otherwise
+
+
+	/**
+	 * Short description for '_line_hash'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $line Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function _line_hash( $line )
 	{
 		if ( strlen( $line ) > self::MAX_XREF_LENGTH ) {
@@ -273,6 +462,20 @@ class _DiffEngine
 	// of the two files do not match, and likewise that the last lines do not
 	// match.  The caller must trim matching lines from the beginning and end
 	// of the portions it is going to specify.
+
+
+	/**
+	 * Short description for '_diag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $xoff Parameter description (if any) ...
+	 * @param      number $xlim Parameter description (if any) ...
+	 * @param      number $yoff Parameter description (if any) ...
+	 * @param      number $ylim Parameter description (if any) ...
+	 * @param      number $nchunks Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function _diag ($xoff, $xlim, $yoff, $ylim, $nchunks)
 	{
 		$flip = false;
@@ -349,6 +552,14 @@ class _DiffEngine
 		return array($this->lcs, $seps);
 	}
 
+	/**
+	 * Short description for '_lcs_pos'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $ypos Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	function _lcs_pos ($ypos)
 	{
 		$end = $this->lcs;
@@ -386,6 +597,19 @@ class _DiffEngine
 	//
 	// Note that XLIM, YLIM are exclusive bounds.
 	// All line numbers are origin-0 and discarded lines are not counted.
+
+
+	/**
+	 * Short description for '_compareseq'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $xoff Parameter description (if any) ...
+	 * @param      number $xlim Parameter description (if any) ...
+	 * @param      number $yoff Parameter description (if any) ...
+	 * @param      number $ylim Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _compareseq ($xoff, $xlim, $yoff, $ylim)
 	{
 		// Slide down the bottom initial diagonal.
@@ -442,6 +666,18 @@ class _DiffEngine
 	// to be the "change".
 	//
 	// This is extracted verbatim from analyze.c (GNU diffutils-2.7).
+
+
+	/**
+	 * Short description for '_shift_boundaries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @param      array &$changed Parameter description (if any) ...
+	 * @param      array $other_changed Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _shift_boundaries ($lines, &$changed, $other_changed)
 	{
 		$i = 0;
@@ -546,8 +782,20 @@ class _DiffEngine
 //-------------------------------------------------------------
 // Class representing a 'diff' between two sequences of strings.
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'Diff'
+ * 
+ * Long description (if any) ...
+ */
 class Diff
 {
+
+	/**
+	 * Description for 'edits'
+	 * 
+	 * @var array
+	 */
 	var $edits;
 
 	// Constructor.
@@ -556,6 +804,17 @@ class Diff
 	// @param $from_lines array An array of strings.
 	//		  (Typically these are lines from a file.)
 	// @param $to_lines array An array of strings.
+
+
+	/**
+	 * Short description for 'Diff'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $from_lines Parameter description (if any) ...
+	 * @param      unknown $to_lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function Diff($from_lines, $to_lines)
 	{
 		$eng = new _DiffEngine;
@@ -571,6 +830,15 @@ class Diff
 	//	$rev = $diff->reverse();
 	// @return object A Diff object representing the inverse of the
 	//				  original diff.
+
+
+	/**
+	 * Short description for 'reverse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	function reverse()
 	{
 		$rev = $this;
@@ -584,6 +852,15 @@ class Diff
 	// Check for empty diff.
 	//
 	// @return bool True iff two sequences were identical.
+
+
+	/**
+	 * Short description for 'isEmpty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function isEmpty()
 	{
 		foreach ($this->edits as $edit) {
@@ -598,6 +875,15 @@ class Diff
 	// This is mostly for diagnostic purposed.
 	//
 	// @return int The length of the LCS.
+
+
+	/**
+	 * Short description for 'lcs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
 	function lcs()
 	{
 		$lcs = 0;
@@ -614,6 +900,15 @@ class Diff
 	// constructor.
 	//
 	// @return array The original sequence of strings.
+
+
+	/**
+	 * Short description for 'orig'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	function orig()
 	{
 		$lines = array();
@@ -631,6 +926,15 @@ class Diff
 	// constructor.
 	//
 	// @return array The sequence of strings.
+
+
+	/**
+	 * Short description for 'closing'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	function closing()
 	{
 		$lines = array();
@@ -645,6 +949,17 @@ class Diff
 	// Check a Diff for validity.
 	//
 	// This is here only for debugging purposes.
+
+
+	/**
+	 * Short description for '_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $from_lines Parameter description (if any) ...
+	 * @param      unknown $to_lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _check($from_lines, $to_lines)
 	{
 		if (serialize($from_lines) != serialize($this->orig()))
@@ -670,6 +985,11 @@ class Diff
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class MappedDiff extends Diff
 {
 	// Constructor.
@@ -693,6 +1013,19 @@ class MappedDiff extends Diff
 	//
 	// @param $mapped_to_lines array This array should
 	//	have the same number of elements as $to_lines.
+
+
+	/**
+	 * Short description for 'MappedDiff'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $from_lines Parameter description (if any) ...
+	 * @param      unknown $to_lines Parameter description (if any) ...
+	 * @param      unknown $mapped_from_lines Parameter description (if any) ...
+	 * @param      unknown $mapped_to_lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function MappedDiff($from_lines, $to_lines, $mapped_from_lines, $mapped_to_lines)
 	{
 		assert(sizeof($from_lines) == sizeof($mapped_from_lines));
@@ -728,25 +1061,61 @@ class MappedDiff extends Diff
 // @private
 // @addtogroup DifferenceEngine
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'DiffFormatter'
+ * 
+ * Long description (if any) ...
+ */
 class DiffFormatter
 {
 	// Number of leading context "lines" to preserve.
 	//
 	// This should be left at zero for this class, but subclasses
 	// may want to set this to other values.
+
+
+	/**
+	 * Description for 'leading_context_lines'
+	 * 
+	 * @var integer
+	 */
 	var $leading_context_lines = 0;
 
 	// Number of trailing context "lines" to preserve.
 	//
 	// This should be left at zero for this class, but subclasses
 	// may want to set this to other values.
+
+
+	/**
+	 * Description for 'trailing_context_lines'
+	 * 
+	 * @var integer
+	 */
 	var $trailing_context_lines = 0;
+
+	/**
+	 * Description for 'i'
+	 * 
+	 * @var mixed
+	 */
 	var $i = 0;
 
 	// Format a diff.
 	//
 	// @param $diff object A Diff object.
 	// @return string The formatted output.
+
+
+	/**
+	 * Short description for 'format'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $diff Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function format($diff)
 	{
 		$xi = $yi = 1;
@@ -820,6 +1189,18 @@ class DiffFormatter
 		return $end;
 	}
 
+	/**
+	 * Short description for '_block'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $xbeg Parameter description (if any) ...
+	 * @param      unknown $xlen Parameter description (if any) ...
+	 * @param      unknown $ybeg Parameter description (if any) ...
+	 * @param      unknown $ylen Parameter description (if any) ...
+	 * @param      array &$edits Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _block($xbeg, $xlen, $ybeg, $ylen, &$edits)
 	{
 		$this->_start_block($this->_block_header($xbeg, $xlen, $ybeg, $ylen));
@@ -839,11 +1220,25 @@ class DiffFormatter
 		$this->_end_block();
 	}
 
+	/**
+	 * Short description for '_start_diff'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function _start_diff()
 	{
 		ob_start();
 	}
 
+	/**
+	 * Short description for '_end_diff'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function _end_diff()
 	{
 		$val = ob_get_contents();
@@ -851,6 +1246,17 @@ class DiffFormatter
 		return $val;
 	}
 
+	/**
+	 * Short description for '_block_header'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $xbeg Parameter description (if any) ...
+	 * @param      number $xlen Parameter description (if any) ...
+	 * @param      string $ybeg Parameter description (if any) ...
+	 * @param      number $ylen Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function _block_header($xbeg, $xlen, $ybeg, $ylen)
 	{
 		if ($xlen > 1)
@@ -861,36 +1267,93 @@ class DiffFormatter
 		return $xbeg . ($xlen ? ($ylen ? 'c' : 'd') : 'a') . $ybeg;
 	}
 
+	/**
+	 * Short description for '_start_block'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $header Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _start_block($header)
 	{
 		echo $header;
 	}
 
+	/**
+	 * Short description for '_end_block'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function _end_block()
 	{
 	}
 
+	/**
+	 * Short description for '_lines'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @param      string $prefix Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _lines($lines, $prefix = ' ')
 	{
 		foreach ($lines as $line)
 			echo "$prefix $line\n";
 	}
 
+	/**
+	 * Short description for '_context'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _context($lines)
 	{
 		$this->_lines($lines);
 	}
 
+	/**
+	 * Short description for '_added'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _added($lines)
 	{
 		$this->_lines($lines, '>');
 	}
 
+	/**
+	 * Short description for '_deleted'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _deleted($lines)
 	{
 		$this->_lines($lines, '<');
 	}
 
+	/**
+	 * Short description for '_changed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $orig Parameter description (if any) ...
+	 * @param      unknown $closing Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _changed($orig, $closing) {
 		$this->_deleted($orig);
 		echo "---\n";
@@ -903,10 +1366,28 @@ class DiffFormatter
 //  partly taken from diff.php, phpwiki-1.3.3
 //-------------------------------------------------------------
 
+
+/**
+ * Description for ''NBSP''
+ */
 define('NBSP', '&#160;');	// iso-8859-x non-breaking space.
 
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class _HWLDF_WordAccumulator
 {
+
+	/**
+	 * Short description for '_HWLDF_WordAccumulator'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function _HWLDF_WordAccumulator ()
 	{
 		$this->_lines = array();
@@ -915,6 +1396,14 @@ class _HWLDF_WordAccumulator
 		$this->_tag = '';
 	}
 
+	/**
+	 * Short description for '_flushGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $new_tag Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _flushGroup ($new_tag)
 	{
 		if ($this->_group !== '') {
@@ -931,6 +1420,14 @@ class _HWLDF_WordAccumulator
 		$this->_tag = $new_tag;
 	}
 
+	/**
+	 * Short description for '_flushLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $new_tag Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _flushLine ($new_tag)
 	{
 		$this->_flushGroup($new_tag);
@@ -942,6 +1439,15 @@ class _HWLDF_WordAccumulator
 		$this->_line = '';
 	}
 
+	/**
+	 * Short description for 'addWords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $words Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     void
+	 */
 	function addWords ($words, $tag = '')
 	{
 		if ($tag != $this->_tag)
@@ -960,6 +1466,13 @@ class _HWLDF_WordAccumulator
 		}
 	}
 
+	/**
+	 * Short description for 'getLines'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getLines()
 	{
 		$this->_flushLine('~done');
@@ -967,10 +1480,28 @@ class _HWLDF_WordAccumulator
 	}
 }
 
+/**
+ * Short description for 'WordLevelDiff'
+ * 
+ * Long description (if any) ...
+ */
 class WordLevelDiff extends MappedDiff
 {
+
+	/**
+	 * Description for 'AX_LINE_LENGTH'
+	 */
 	const MAX_LINE_LENGTH = 10000;
 
+	/**
+	 * Short description for 'WordLevelDiff'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $orig_lines Parameter description (if any) ...
+	 * @param      unknown $closing_lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function WordLevelDiff ($orig_lines, $closing_lines)
 	{
 		list ($orig_words, $orig_stripped) = $this->_split($orig_lines);
@@ -979,6 +1510,14 @@ class WordLevelDiff extends MappedDiff
 		$this->MappedDiff($orig_words, $closing_words, $orig_stripped, $closing_stripped);
 	}
 
+	/**
+	 * Short description for '_split'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function _split($lines)
 	{
 		$words = array();
@@ -1010,6 +1549,13 @@ class WordLevelDiff extends MappedDiff
 		return array($words, $stripped);
 	}
 
+	/**
+	 * Short description for 'orig'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function orig ()
 	{
 		$orig = new _HWLDF_WordAccumulator;
@@ -1026,6 +1572,13 @@ class WordLevelDiff extends MappedDiff
 		return $lines;
 	}
 
+	/**
+	 * Short description for 'closing'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function closing ()
 	{
 		$closing = new _HWLDF_WordAccumulator;
@@ -1045,14 +1598,39 @@ class WordLevelDiff extends MappedDiff
 //-------------------------------------------------------------
 //	Wikipedia Table style diff formatter.
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class TableDiffFormatter extends DiffFormatter
 {
+
+	/**
+	 * Short description for 'TableDiffFormatter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function TableDiffFormatter()
 	{
 		$this->leading_context_lines = 0;
 		$this->trailing_context_lines = 0;
 	}
 
+	/**
+	 * Short description for '_block_header'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $xbeg Parameter description (if any) ...
+	 * @param      unknown $xlen Parameter description (if any) ...
+	 * @param      string $ybeg Parameter description (if any) ...
+	 * @param      unknown $ylen Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function _block_header( $xbeg, $xlen, $ybeg, $ylen )
 	{
 		$r  = "\t\t".'<tr>'."\n";
@@ -1063,38 +1641,106 @@ class TableDiffFormatter extends DiffFormatter
 		return '';
 	}
 
+	/**
+	 * Short description for '_start_block'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $header Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _start_block( $header )
 	{
 		echo $header;
 	}
 
+	/**
+	 * Short description for '_end_block'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function _end_block()
 	{
 		//echo '</table>';
 	}
 
+	/**
+	 * Short description for '_lines'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @param      string $prefix Parameter description (if any) ...
+	 * @param      string $color Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _lines( $lines, $prefix=' ', $color='white' )
 	{
 	}
 
 	// HTML-escape parameter before calling this
+
+
+	/**
+	 * Short description for 'addedLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $line Parameter description (if any) ...
+	 * @param      integer $colspan Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function addedLine( $line, $colspan=0 )
 	{
 		return $this->wrapLine( '+', 'diff-addedline', $line, $colspan );
 	}
 
 	// HTML-escape parameter before calling this
+
+
+	/**
+	 * Short description for 'deletedLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $line Parameter description (if any) ...
+	 * @param      integer $colspan Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function deletedLine( $line, $colspan=0 )
 	{
 		return $this->wrapLine( '-', 'diff-deletedline', $line, $colspan );
 	}
 
 	// HTML-escape parameter before calling this
+
+
+	/**
+	 * Short description for 'contextLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $line Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function contextLine( $line )
 	{
 		return $this->wrapLine( ' ', 'diff-context', $line );
 	}
 
+	/**
+	 * Short description for 'wrapLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $marker Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $line Parameter description (if any) ...
+	 * @param      mixed $colspan Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function wrapLine( $marker, $class, $line, $colspan=0 )
 	{
 		if ($line !== '') {
@@ -1108,11 +1754,26 @@ class TableDiffFormatter extends DiffFormatter
 		return $html;
 	}
 
+	/**
+	 * Short description for 'emptyLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function emptyLine()
 	{
 		//return "\t\t\t".'<td colspan="2">&nbsp;</td>'."\n";
 	}
 
+	/**
+	 * Short description for '_added'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _added( $lines )
 	{
 		foreach ($lines as $line)
@@ -1125,6 +1786,14 @@ class TableDiffFormatter extends DiffFormatter
 		}
 	}
 
+	/**
+	 * Short description for '_deleted'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _deleted($lines)
 	{
 		foreach ($lines as $line)
@@ -1137,6 +1806,14 @@ class TableDiffFormatter extends DiffFormatter
 		}
 	}
 
+	/**
+	 * Short description for '_context'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _context( $lines )
 	{
 		/*foreach ($lines as $line) {
@@ -1146,6 +1823,15 @@ class TableDiffFormatter extends DiffFormatter
 		}*/
 	}
 
+	/**
+	 * Short description for '_changed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $orig Parameter description (if any) ...
+	 * @param      unknown $closing Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _changed( $orig, $closing )
 	{
 		$diff = new WordLevelDiff( $orig, $closing );
@@ -1186,51 +1872,141 @@ class TableDiffFormatter extends DiffFormatter
 //     <div class="diff-addedline">newcode</div>
 //     unchanged code
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'DivDiffFormatter'
+ * 
+ * Long description (if any) ...
+ */
 class DivDiffFormatter extends DiffFormatter
 {
+
+	/**
+	 * Short description for 'DivDiffFormatter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function DivDiffFormatter()
 	{
 		$this->leading_context_lines = 0;
 		$this->trailing_context_lines = 0;
 	}
 
+	/**
+	 * Short description for '_block_header'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $xbeg Parameter description (if any) ...
+	 * @param      unknown $xlen Parameter description (if any) ...
+	 * @param      string $ybeg Parameter description (if any) ...
+	 * @param      unknown $ylen Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function _block_header( $xbeg, $xlen, $ybeg, $ylen )
 	{
 		$r = '<!--LINE '.$xbeg."-->\n" . '<!--LINE '.$ybeg."-->\n";
 		return $r;
 	}
 
+	/**
+	 * Short description for '_start_block'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $header Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _start_block( $header )
 	{
 		echo $header;
 	}
 
+	/**
+	 * Short description for '_end_block'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function _end_block()
 	{
 	}
 
+	/**
+	 * Short description for '_lines'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $lines Parameter description (if any) ...
+	 * @param      string $prefix Parameter description (if any) ...
+	 * @param      string $color Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _lines( $lines, $prefix=' ', $color='white' )
 	{
 	}
 
 	// HTML-escape parameter before calling this
+
+
+	/**
+	 * Short description for 'addedLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $line Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function addedLine( $line )
 	{
 		return $this->wrapLine( '+', 'diff-addedline', $line );
 	}
 
 	// HTML-escape parameter before calling this
+
+
+	/**
+	 * Short description for 'deletedLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $line Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function deletedLine( $line )
 	{
 		return $this->wrapLine( '-', 'diff-deletedline', $line );
 	}
 
 	// HTML-escape parameter before calling this
+
+
+	/**
+	 * Short description for 'contextLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $line Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function contextLine( $line )
 	{
 		return $this->wrapLine( ' ', 'diff-context', $line );
 	}
 
+	/**
+	 * Short description for 'wrapLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $marker Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $line Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function wrapLine( $marker, $class, $line )
 	{
 		if (trim($line) !== '') {
@@ -1241,11 +2017,26 @@ class DivDiffFormatter extends DiffFormatter
 		return $line;
 	}
 
+	/**
+	 * Short description for 'emptyLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function emptyLine()
 	{
 		return '<br />';
 	}
 
+	/**
+	 * Short description for '_added'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _added( $lines )
 	{
 		foreach ($lines as $line) {
@@ -1253,6 +2044,14 @@ class DivDiffFormatter extends DiffFormatter
 		}
 	}
 
+	/**
+	 * Short description for '_deleted'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _deleted($lines)
 	{
 		foreach ($lines as $line)
@@ -1261,6 +2060,14 @@ class DivDiffFormatter extends DiffFormatter
 		}
 	}
 
+	/**
+	 * Short description for '_context'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lines Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _context( $lines )
 	{
 		foreach ($lines as $line)
@@ -1272,6 +2079,15 @@ class DivDiffFormatter extends DiffFormatter
 		}
 	}
 
+	/**
+	 * Short description for '_changed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $orig Parameter description (if any) ...
+	 * @param      unknown $closing Parameter description (if any) ...
+	 * @return     void
+	 */
 	function _changed( $orig, $closing )
 	{
 		$diff = new WordLevelDiff( $orig, $closing );

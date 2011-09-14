@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,6 +21,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_xsearch_answers' );
 
+/**
+ * Short description for 'plgXSearchAnswers'
+ * 
+ * Long description (if any) ...
+ */
 class plgXSearchAnswers extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgXSearchAnswers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgXSearchAnswers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -42,6 +59,13 @@ class plgXSearchAnswers extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onXSearchAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onXSearchAreas()
 	{
 		$areas = array(
@@ -50,6 +74,17 @@ class plgXSearchAnswers extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onXSearch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $searchquery Parameter description (if any) ...
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
 		if (is_array( $areas ) && $limit) {
@@ -126,6 +161,15 @@ class plgXSearchAnswers extends JPlugin
 		// ...
 	}*/
 
+	/**
+	 * Short description for 'out'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      unknown $keyword Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function out( $row, $keyword )
 	{
 		if (strstr( $row->href, 'index.php' )) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,27 +21,91 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'Resume'
+ * 
+ * Long description (if any) ...
+ */
 class Resume extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created	= NULL;
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title		= NULL;
+
+	/**
+	 * Description for 'filename'
+	 * 
+	 * @var unknown
+	 */
 	var $filename	= NULL;
+
+	/**
+	 * Description for 'main'
+	 * 
+	 * @var unknown
+	 */
 	var $main		= NULL;  // tinyint  0 - no, 1 - yes
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_resumes', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (intval( $this->uid ) == 0) {
@@ -60,6 +121,14 @@ class Resume extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function load( $name=NULL )
 	{
 		if ($name !== NULL) {
@@ -84,6 +153,14 @@ class Resume extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'delete_resume'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete_resume ($id = NULL)
 	{
 		if ($id === NULL) {
@@ -102,6 +179,16 @@ class Resume extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getResumeFiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pile Parameter description (if any) ...
+	 * @param      mixed $uid Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getResumeFiles ($pile = 'all', $uid = 0, $admin = 0)
 	{
 		$query  = "SELECT DISTINCT r.uid, r.filename FROM $this->_tbl AS r ";

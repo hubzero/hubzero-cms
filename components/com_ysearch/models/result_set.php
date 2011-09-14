@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,30 +33,143 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
+/**
+ * Short description for 'YSearchModelResultSet'
+ * 
+ * Long description (if any) ...
+ */
 class YSearchModelResultSet extends JModel implements Iterator
 {
+
+	/**
+	 * Description for 'plugin_weights'
+	 * 
+	 * @var array
+	 */
 	private static $plugin_weights;
+
+	/**
+	 * Description for 'tags'
+	 * 
+	 * @var array
+	 */
 	private $tags = array(), $total_list_count, $limit, $widgets, $custom_title = NULL, $custom_mode = false, $offset, $pos = 0, $results = array(), $custom = array(), $processed_results = array(), $highlighter, $current_plugin, $total_count, $tag_mode = false, $result_counts = array(), $shown_results = array(), $sorters = array();
 
+	/**
+	 * Short description for 'get_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_tags()
 	{
 		return is_a($this->tags, 'YSearchResultEmpty') ? array() : $this->tags;
 	}
+
+	/**
+	 * Short description for 'get_limit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_limit() { return $this->limit; }
+
+	/**
+	 * Short description for 'get_offset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_offset() { return $this->offset; }
+
+	/**
+	 * Short description for 'set_limit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $limit Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function set_limit($limit) { $this->limit = $limit; }
+
+	/**
+	 * Short description for 'set_offset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $offset Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function set_offset($offset) { $this->offset = $offset; }
+
+	/**
+	 * Short description for 'get_widgets'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_widgets() { return $this->widgets; }
+
+	/**
+	 * Short description for 'get_shown_results'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_shown_results() { return $this->shown_results; }
+
+	/**
+	 * Short description for 'get_shown_count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_shown_count() { return count($this->shown_results); }
+
+	/**
+	 * Short description for 'get_result_counts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_result_counts() { return $this->result_counts; }
+
+	/**
+	 * Short description for 'get_tag_weight_modifier'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function get_tag_weight_modifier()
 	{
 		return array_key_exists('tagmod', self::$plugin_weights) ? self::$plugin_weights['tagmod'] : 1.3;
 	}
 
+	/**
+	 * Short description for 'get_custom_title'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_custom_title() { return $this->custom_title; }
 
+	/**
+	 * Short description for 'collect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $force_generic Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function collect($force_generic = false)
 	{
 		if (!$this->terms->any() || !($positive_terms = $this->terms->get_positive_chunks()))
@@ -281,6 +396,15 @@ class YSearchModelResultSet extends JModel implements Iterator
 			$this->shown_results = array_slice($this->shown_results, $this->offset, $this->limit);
 	}
 
+	/**
+	 * Short description for 'sort_results'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $a Parameter description (if any) ...
+	 * @param      mixed $b Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function sort_results($a, $b)
 	{
 		$weight = array(
@@ -304,6 +428,14 @@ class YSearchModelResultSet extends JModel implements Iterator
 		return $diff == 0 ? 0 : $diff > 0 ? -1 : 1;
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $terms Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($terms)
 	{
 		parent::__construct();
@@ -319,6 +451,14 @@ class YSearchModelResultSet extends JModel implements Iterator
 		$this->widgets = array();
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $res Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function add($res)
 	{
 		if (is_array($res))
@@ -331,6 +471,14 @@ class YSearchModelResultSet extends JModel implements Iterator
 			$this->results[] = $res;
 	}
 
+	/**
+	 * Short description for 'process_result'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $res Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function process_result($res)
 	{
 		$res = $res->to_associative();
@@ -348,16 +496,37 @@ class YSearchModelResultSet extends JModel implements Iterator
 				$this->process_result($subres);
 	}
 
+	/**
+	 * Short description for 'get_total_count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_total_count()
 	{
 		return $this->total_count;
 	}
 
+	/**
+	 * Short description for 'get_total_list_count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_total_list_count()
 	{
 		return $this->total_list_count;
 	}
 
+	/**
+	 * Short description for 'get_plugin_list_count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_plugin_list_count()
 	{
 		@list($term_plugin, $term_section) = $this->terms->get_section();
@@ -369,6 +538,13 @@ class YSearchModelResultSet extends JModel implements Iterator
 		return $this->total_list_count;
 	}
 
+	/**
+	 * Short description for 'get_plugin_count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_plugin_count()
 	{
 		list($term_plugin, $term_section) = $this->terms->get_section();
@@ -377,12 +553,58 @@ class YSearchModelResultSet extends JModel implements Iterator
 		return $this->total_count;
 	}
 
+	/**
+	 * Short description for 'get_shown'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_shown() { return $this->shown_results; }
 
+	/**
+	 * Short description for 'rewind'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function rewind() { $this->pos = 0; }
+
+	/**
+	 * Short description for 'current'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function current() { return $this->shown_results[$this->pos]; }
+
+	/**
+	 * Short description for 'key'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function key() { return $this->pos; }
+
+	/**
+	 * Short description for 'next'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function next() { ++$this->pos; }
+
+	/**
+	 * Short description for 'valid'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function valid() { return isset($this->shown_results[$this->pos]); }
 }
 

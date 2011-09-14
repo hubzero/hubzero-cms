@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_overview' );
 
+/**
+ * Short description for 'plgUsageOverview'
+ * 
+ * Long description (if any) ...
+ */
 class plgUsageOverview extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgUsageOverview'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgUsageOverview(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgUsageOverview extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onUsageAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -55,6 +79,15 @@ class plgUsageOverview extends JPlugin
 	//  Strip Usage GET variables  //
 	//-----------------------------//
 
+
+	/**
+	 * Short description for '_usageurlstrip'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _usageurlstrip($url)
 	{
 	   	$pvar = strpos($url, "period=");
@@ -70,6 +103,17 @@ class plgUsageOverview extends JPlugin
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
 
+
+	/**
+	 * Short description for '_check_for_data'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      unknown $yearmonth Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _check_for_data(&$db, $yearmonth, $period)
 	{
 	   	$sql = "SELECT COUNT(datetime) FROM summary_user_vals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
@@ -82,6 +126,17 @@ class plgUsageOverview extends JPlugin
 	   	return(false);
 	}
 
+	/**
+	 * Short description for '_print_user_row'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @param      string $datetime Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _print_user_row(&$db, $id, $period, $datetime)
 	{
 		$html = '';
@@ -119,6 +174,17 @@ class plgUsageOverview extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for '_getSparkline'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $db Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @param      unknown $datetime Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _getSparkline($db, $id, $period, $datetime)
 	{
 		$sparkline = '';
@@ -160,6 +226,14 @@ class plgUsageOverview extends JPlugin
 		return $sparkline;
 	}
 
+	/**
+	 * Short description for '_empty_rows'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $n Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _empty_rows($n)
 	{
 		$html = '';
@@ -172,6 +246,15 @@ class plgUsageOverview extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for '_fmt_result'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $value Parameter description (if any) ...
+	 * @param      integer $fmt Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _fmt_result($value, $fmt)
 	{
 		$valfmt[0]='-'; // blank. for future use
@@ -212,6 +295,16 @@ class plgUsageOverview extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for '_navlinks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _navlinks($option, $task, $period='prior12')
 	{
 		$html  = '<div id="sub-sub-menu">'."\n";
@@ -247,6 +340,19 @@ class plgUsageOverview extends JPlugin
 	    return $html;
 	}
 
+	/**
+	 * Short description for 'onUsageDisplay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      object $db Parameter description (if any) ...
+	 * @param      unknown $months Parameter description (if any) ...
+	 * @param      array $monthsReverse Parameter description (if any) ...
+	 * @param      unknown $enddate Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for

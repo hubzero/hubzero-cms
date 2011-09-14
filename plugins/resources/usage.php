@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_usage' );
 
+/**
+ * Short description for 'plgResourcesUsage'
+ * 
+ * Long description (if any) ...
+ */
 class plgResourcesUsage extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgResourcesUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgResourcesUsage(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,14 @@ class plgResourcesUsage extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onResourcesAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $resource Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onResourcesAreas( $resource )
 	{
 		if ($resource->_type->_params->get('plg_usage')) {
@@ -55,6 +80,17 @@ class plgResourcesUsage extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $resource Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @param      string $rtrn Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		$arr = array(
@@ -156,6 +192,14 @@ class plgResourcesUsage extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'timeUnits'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $time Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function timeUnits($time)
 	{
 		if ($time < 60) {
@@ -171,6 +215,17 @@ class plgResourcesUsage extends JPlugin
 		return $data;
 	}
 
+	/**
+	 * Short description for 'dropDownDates'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @param      unknown $s_top Parameter description (if any) ...
+	 * @param      unknown $dthis Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function dropDownDates(&$db, $period, $s_top, $dthis)
 	{
 		$months = array( "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec");
@@ -358,6 +413,15 @@ class plgResourcesUsage extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for 'checkForData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $yearmonth Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function checkForData($yearmonth, $period)
 	{
 		$database =& JFactory::getDBO();

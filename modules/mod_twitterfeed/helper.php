@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,13 +22,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 //Dont allow direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modTwitterFeedHelper'
+ * 
+ * Long description (if any) ...
+ */
 class modTwitterFeedHelper
 {
+
+	/**
+	 * Short description for 'getTweets'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $twitterID Parameter description (if any) ...
+	 * @param      mixed $tweetCount Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getTweets( $twitterID, $tweetCount )
 	{
 		//declare variables

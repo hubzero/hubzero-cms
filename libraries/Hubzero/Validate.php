@@ -1,10 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2009-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2009-2011 Purdue University. All rights reserved.
  *
@@ -25,38 +21,98 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Validate'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Validate
 {
+
+	/**
+	 * Short description for 'is_any_integer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $x Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	static public function is_any_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x);
 	}
 
+	/**
+	 * Short description for 'is_positive_integer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $x Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	static public function is_positive_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x > 0);
 	}
 
+	/**
+	 * Short description for 'is_nonnegative_integer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $x Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	static public function is_nonnegative_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x >= 0);
 	}
 
+	/**
+	 * Short description for 'is_nonpositive_integer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $x Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	static public function is_nonpositive_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x <= 0);
 	}
 
+	/**
+	 * Short description for 'is_negative_integer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $x Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	static public function is_negative_integer($x)
 	{
 		return (is_numeric($x) && intval($x) == $x && $x < 0);
 	}
 
+	/**
+	 * Short description for 'is_reserved_username'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $x Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	static public function is_reserved_username($x)
 	{
 		$reserved_users = array(
@@ -125,6 +181,14 @@ class Hubzero_Validate
 		return false;
 	}
 
+	/**
+	 * Short description for 'validlogin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function validlogin($login)
 	{
 		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $login)) {
@@ -138,6 +202,14 @@ class Hubzero_Validate
 		}
 	}
 
+	/**
+	 * Short description for 'validpassword'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $password Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function validpassword($password)
 	{
 		if (eregi("^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$", $password)) {
@@ -147,6 +219,14 @@ class Hubzero_Validate
 		}
 	}
 
+	/**
+	 * Short description for 'validemail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function validemail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
@@ -156,6 +236,14 @@ class Hubzero_Validate
 		}
 	}
 
+	/**
+	 * Short description for 'validurl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function validurl($url)
 	{
 		if (eregi("^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]*$", $url)) {
@@ -165,6 +253,14 @@ class Hubzero_Validate
 		}
 	}
 
+	/**
+	 * Short description for 'validphone'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $phone Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function validphone($phone)
 	{
 		if (eregi("^[\ \#\*\+\:\,\.0-9-]*$", $phone)) {
@@ -174,6 +270,14 @@ class Hubzero_Validate
 		}
 	}
 
+	/**
+	 * Short description for 'validtext'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function validtext($text)
 	{
 		if (!strchr($text, "	")) {
@@ -183,6 +287,14 @@ class Hubzero_Validate
 		}
 	}
 
+	/**
+	 * Short description for 'validateOrgType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $org Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function validateOrgType($org)
     {
 		$orgtypes = array(

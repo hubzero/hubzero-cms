@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2009-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2009-2011 Purdue University. All rights reserved.
  *
@@ -24,13 +21,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Toolbox'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Toolbox
 {
+
+	/**
+	 * Short description for 'send_email'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function send_email($email, $subject, $message)
 	{
 		$jconfig =& JFactory::getConfig();
@@ -54,6 +72,14 @@ class Hubzero_Toolbox
 		return(0);
 	}
 
+	/**
+	 * Short description for 'thisurl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $cutgetvars Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thisurl($cutgetvars = 0)
 	{
 		if (!empty($_SERVER['REDIRECT_URL'])) {

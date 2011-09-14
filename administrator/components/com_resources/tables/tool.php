@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -233,19 +235,72 @@ class ToolAuthor extends JTable
 }
 */
 
+/**
+ * Short description for 'ToolLicense'
+ * 
+ * Long description (if any) ...
+ */
 class ToolLicense extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id  = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	var $name     = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'text'
+	 * 
+	 * @var unknown
+	 */
 	var $text = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title = NULL;
+
+	/**
+	 * Description for 'ordering'
+	 * 
+	 * @var unknown
+	 */
 	var $ordering = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool_licenses', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->name ) == '') {

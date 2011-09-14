@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_maps' );
 
+/**
+ * Short description for 'plgUsageMaps'
+ * 
+ * Long description (if any) ...
+ */
 class plgUsageMaps extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgUsageMaps'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgUsageMaps(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgUsageMaps extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onUsageAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -51,6 +75,15 @@ class plgUsageMaps extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'get_hosts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      array $location Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function get_hosts(&$db, $location)
 	{
 		$query = "SELECT DISTINCT(domain) FROM #__xsession WHERE ipLATITUDE = '".$location['lat']."' AND ipLONGITUDE = '".$location['lng']."'";
@@ -68,6 +101,16 @@ class plgUsageMaps extends JPlugin
 		return rtrim($info,'_br_');
 	}
 
+	/**
+	 * Short description for 'get_count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      string $domain Parameter description (if any) ...
+	 * @param      array $location Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function get_count(&$db, $domain, $location)
 	{
 		$query = "SELECT COUNT(DISTINCT username) FROM #__xsession,#__session WHERE #__xsession.session_id=#__session.session_id AND guest = '0' AND domain = '".$domain."' AND ipLATITUDE = '".$location['lat']."' AND ipLONGITUDE = '".$location['lng']."' LIMIT 1";
@@ -106,6 +149,15 @@ class plgUsageMaps extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'checkbot'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      array $location Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function checkbot(&$db, $location)
 	{
 		$query = "SELECT bot FROM #__xsession WHERE ipLATITUDE ='".$location['lat']."' AND ipLONGITUDE = '".$location['lng']."' ORDER BY bot DESC LIMIT 1";
@@ -116,6 +168,14 @@ class plgUsageMaps extends JPlugin
 		return $bot;
 	}
 
+	/**
+	 * Short description for 'getData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function getData( $type )
 	{
 		$db =& $this->udb;
@@ -210,6 +270,19 @@ class plgUsageMaps extends JPlugin
 		die();
 	}
 
+	/**
+	 * Short description for 'onUsageDisplay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      unknown $db Parameter description (if any) ...
+	 * @param      unknown $months Parameter description (if any) ...
+	 * @param      unknown $monthsReverse Parameter description (if any) ...
+	 * @param      unknown $enddate Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for

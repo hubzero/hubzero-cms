@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,24 +21,72 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WikiAuthor'
+ * 
+ * Long description (if any) ...
+ */
 class WikiAuthor extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id  = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'pid'
+	 * 
+	 * @var string
+	 */
 	var $pid = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var string
+	 */
 	var $uid = NULL;  // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_authors', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pid Parameter description (if any) ...
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function getID( $pid=NULL, $uid=NULL )
 	{
 		if ($pid == NULL) {
@@ -54,6 +99,14 @@ class WikiAuthor extends JTable
 		$this->id = $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pid Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getAuthors( $pid=NULL )
 	{
 		if ($pid == NULL) {
@@ -72,6 +125,14 @@ class WikiAuthor extends JTable
 		return $auths;
 	}
 
+	/**
+	 * Short description for 'deleteAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteAuthors( $pid=NULL )
 	{
 		if ($pid == NULL) {
@@ -85,6 +146,13 @@ class WikiAuthor extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if ($this->pid == '') {

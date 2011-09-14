@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,102 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'SupportAroAco'
+ * 
+ * Long description (if any) ...
+ */
 class SupportAroAco extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id      = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'aro_id'
+	 * 
+	 * @var unknown
+	 */
 	var $aro_id  = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'aco_id'
+	 * 
+	 * @var unknown
+	 */
 	var $aco_id  = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'action_create'
+	 * 
+	 * @var unknown
+	 */
 	var $action_create = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'action_read'
+	 * 
+	 * @var unknown
+	 */
 	var $action_read   = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'action_update'
+	 * 
+	 * @var unknown
+	 */
 	var $action_update = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'action_delete'
+	 * 
+	 * @var unknown
+	 */
 	var $action_delete = NULL;  // @var int(3)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_acl_aros_acos', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->aro_id ) == '') {
@@ -60,6 +131,14 @@ class SupportAroAco extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'deleteRecordsByAro'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $aro_id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteRecordsByAro( $aro_id=0 )
 	{
 		if (!$aro_id) {
@@ -74,6 +153,14 @@ class SupportAroAco extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'deleteRecordsByAco'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $aco_id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteRecordsByAco( $aco_id=0 )
 	{
 		if (!$aco_id) {
@@ -88,6 +175,14 @@ class SupportAroAco extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for '_buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl ORDER BY id";
@@ -98,6 +193,14 @@ class SupportAroAco extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
@@ -106,6 +209,14 @@ class SupportAroAco extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT *";

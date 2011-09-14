@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -48,8 +50,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 */
 
+/**
+ * Short description for 'Hubzero_Session_Helper'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Session_Helper
 {
+
+	/**
+	 * Short description for 'purge'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public static function purge()
 	{
 		$db = JFactory::getDBO();
@@ -59,6 +74,15 @@ class Hubzero_Session_Helper
 		$db->query();
 	}
 
+	/**
+	 * Short description for 'set_ip'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $session_id Parameter description (if any) ...
+	 * @param      unknown $ip Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function set_ip($session_id, $ip)
 	{
 		$db = JFactory::getDBO();

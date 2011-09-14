@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'JobsController'
+ * 
+ * Long description (if any) ...
+ */
 class JobsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
@@ -77,6 +92,14 @@ class JobsController extends Hubzero_Controller
 	// Jobs List
 	//---------------------
 
+
+	/**
+	 * Short description for 'jobs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function jobs()
 	{
 		// Instantiate a new view
@@ -127,6 +150,14 @@ class JobsController extends Hubzero_Controller
 	// Save Job Posting
 	//---------------------
 
+
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function save()
 	{
 		// Check for request forgeries
@@ -261,6 +292,17 @@ class JobsController extends Hubzero_Controller
 	// Check job ad quota depending on subscription
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'checkQuota'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $job Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function checkQuota($job, $uid, $database)
 	{
 		// make sure we aren't over quota
@@ -278,6 +320,14 @@ class JobsController extends Hubzero_Controller
 	// Remove Job Posting
 	//---------------------
 
+
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function remove()
 	{
 		// Check for request forgeries
@@ -310,6 +360,15 @@ class JobsController extends Hubzero_Controller
 	// Edit Job Posting
 	//---------------------
 
+
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $isnew Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function edit( $isnew=0 )
 	{
 		// Instantiate a new view
@@ -401,6 +460,14 @@ class JobsController extends Hubzero_Controller
 	// Categores
 	//---------------------
 
+
+	/**
+	 * Short description for 'categories'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function categories()
 	{
 		// Instantiate a new view
@@ -438,6 +505,13 @@ class JobsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveorder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function saveorder()
 	{
 		// Check for request forgeries
@@ -462,11 +536,25 @@ class JobsController extends Hubzero_Controller
 		$this->_message = JText::_('Order successfully saved');
 	}
 
+	/**
+	 * Short description for 'newcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function newcat()
 	{
 		$this->editcat();
 	}
 
+	/**
+	 * Short description for 'editcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editcat()
 	{
 		// Instantiate a new view
@@ -495,6 +583,13 @@ class JobsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savecat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savecat()
 	{
 		// Check for request forgeries
@@ -518,6 +613,13 @@ class JobsController extends Hubzero_Controller
 		$this->_message = JText::_('Type successfully saved');
 	}
 
+	/**
+	 * Short description for 'deletecat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletecat()
 	{
 		// Check for request forgeries
@@ -550,6 +652,14 @@ class JobsController extends Hubzero_Controller
 	// Types
 	//---------------------
 
+
+	/**
+	 * Short description for 'types'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function types()
 	{
 		// Instantiate a new view
@@ -623,11 +733,25 @@ class JobsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'newtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function newtype()
 	{
 		$this->edittype();
 	}
 
+	/**
+	 * Short description for 'edittype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edittype()
 	{
 		// Instantiate a new view
@@ -656,6 +780,13 @@ class JobsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savetype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savetype()
 	{
 		// Check for request forgeries
@@ -679,6 +810,13 @@ class JobsController extends Hubzero_Controller
 		$this->_message = JText::_('Type successfully saved');
 	}
 
+	/**
+	 * Short description for 'deletetype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletetype()
 	{
 		// Check for request forgeries

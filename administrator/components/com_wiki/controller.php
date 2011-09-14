@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,13 +33,33 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'WikiController'
+ * 
+ * Long description (if any) ...
+ */
 class WikiController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->config = JComponentHelper::getParams( 'com_wiki' );
 
+	/**
+	 * Description for ''WIKI_SUBPAGE_SEPARATOR''
+	 */
 		define('WIKI_SUBPAGE_SEPARATOR',$this->config->get('subpage_separator'));
+
+	/**
+	 * Description for ''WIKI_MAX_PAGENAME_LENGTH''
+	 */
 		define('WIKI_MAX_PAGENAME_LENGTH',$this->config->get('max_pagename_length'));
 
 		$this->_task = strtolower(JRequest::getVar('task', 'pages'));
@@ -79,6 +101,14 @@ class WikiController extends Hubzero_Controller
 	// Collection functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'pages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function pages()
 	{
 		// Instantiate a new view
@@ -118,6 +148,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'revisions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function revisions()
 	{
 		// Instantiate a new view
@@ -162,6 +199,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editpage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editpage()
 	{
 		// Incoming
@@ -199,6 +243,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editrevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editrevision()
 	{
 		// Incoming
@@ -244,6 +295,14 @@ class WikiController extends Hubzero_Controller
 	//  Processers
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'savepage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savepage()
 	{
 		// Check for request forgeries
@@ -316,6 +375,13 @@ class WikiController extends Hubzero_Controller
 		$this->_message = JText::_('Page successfully saved');
 	}
 
+	/**
+	 * Short description for 'saverevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function saverevision()
 	{
 		// Check for request forgeries
@@ -392,6 +458,13 @@ class WikiController extends Hubzero_Controller
 		$this->_message = JText::_('Revision saved');
 	}
 
+	/**
+	 * Short description for 'deletepage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletepage()
 	{
 		// Incoming
@@ -469,6 +542,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'deleterevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deleterevision()
 	{
 		// Incoming
@@ -551,6 +631,13 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'access'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function access()
 	{
 		// Check for request forgeries
@@ -591,6 +678,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'toggleapprove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function toggleapprove()
 	{
 		// Check for request forgeries
@@ -629,6 +723,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=revisions&pageid='.$pageid;
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		// Incoming
@@ -641,6 +742,13 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'resethits'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function resethits()
 	{
 		// Check for request forgeries
@@ -672,6 +780,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect  = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'togglestate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function togglestate()
 	{
 		// Check for request forgeries

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,20 +35,92 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Image manipulation class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'MembersImgHandler'
+ * 
+ * Long description (if any) ...
+ */
 class MembersImgHandler extends JObject
 {
+
+	/**
+	 * Description for 'path'
+	 * 
+	 * @var unknown
+	 */
 	var $path = NULL;
+
+	/**
+	 * Description for 'image'
+	 * 
+	 * @var unknown
+	 */
 	var $image = NULL;
+
+	/**
+	 * Description for 'maxWidth'
+	 * 
+	 * @var integer
+	 */
 	var $maxWidth = 186;
+
+	/**
+	 * Description for 'maxHeight'
+	 * 
+	 * @var integer
+	 */
 	var $maxHeight = 186;
+
+	/**
+	 * Description for 'cropratio'
+	 * 
+	 * @var unknown
+	 */
 	var $cropratio = NULL;
+
+	/**
+	 * Description for 'quality'
+	 * 
+	 * @var integer
+	 */
 	var $quality = 90;
+
+	/**
+	 * Description for 'color'
+	 * 
+	 * @var boolean
+	 */
 	var $color = false;
+
+	/**
+	 * Description for 'overwrite'
+	 * 
+	 * @var boolean
+	 */
 	var $overwrite = true;
+
+	/**
+	 * Description for 'outputName'
+	 * 
+	 * @var unknown
+	 */
 	var $outputName = NULL;
 
+	/**
+	 * Description for '_MEMORY_TO_ALLOCATE'
+	 * 
+	 * @var string
+	 */
 	var $_MEMORY_TO_ALLOCATE = '100M';
 
+	/**
+	 * Short description for 'process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function process()
 	{
 		$docRoot = $this->path;
@@ -266,6 +340,15 @@ class MembersImgHandler extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'createThumbName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $image Parameter description (if any) ...
+	 * @param      string $tn Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function createThumbName( $image=null, $tn='_thumb' )
 	{
 		if (!$image) {
@@ -286,6 +369,15 @@ class MembersImgHandler extends JObject
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'findSharp'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $orig Parameter description (if any) ...
+	 * @param      number $final Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function findSharp($orig, $final)
 	{
 		$final = $final * (750.0 / $orig);

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,35 +21,160 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WikiPage'
+ * 
+ * Long description (if any) ...
+ */
 class WikiPage extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id          = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'pagename'
+	 * 
+	 * @var string
+	 */
 	var $pagename    = NULL;  // @var varchar(100) Unique key
+
+
+	/**
+	 * Description for 'hits'
+	 * 
+	 * @var unknown
+	 */
 	var $hits        = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by  = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'rating'
+	 * 
+	 * @var unknown
+	 */
 	var $rating      = NULL;  // @var decimal(2,1)
+
+
+	/**
+	 * Description for 'times_rated'
+	 * 
+	 * @var unknown
+	 */
 	var $times_rated = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title       = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'scope'
+	 * 
+	 * @var string
+	 */
 	var $scope       = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params      = NULL;  // @var text
+
+
+	/**
+	 * Description for 'ranking'
+	 * 
+	 * @var unknown
+	 */
 	var $ranking     = NULL;  // @var float
+
+
+	/**
+	 * Description for 'authors'
+	 * 
+	 * @var unknown
+	 */
 	var $authors     = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'access'
+	 * 
+	 * @var unknown
+	 */
 	var $access      = NULL;  // @var tinyint(2)
+
+
+	/**
+	 * Description for 'group'
+	 * 
+	 * @var unknown
+	 */
 	var $group       = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state       = NULL;  // @var tinyint(2)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_page', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      string $scope Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function load( $oid=NULL, $scope='' )
 	{
 		$s = "";
@@ -79,12 +201,26 @@ class WikiPage extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getID()
 	{
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE pagename='". $this->pagename ."' AND scope='".$this->scope."'" );
 		$this->id = $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'exist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function exist()
 	{
 		if ($this->id !== NULL) {
@@ -94,6 +230,13 @@ class WikiPage extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'calculateRating'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function calculateRating()
 	{
 		$this->_db->setQuery( "SELECT rating FROM #__wiki_comments WHERE pageid='$this->id' AND rating!=0" );
@@ -119,6 +262,14 @@ class WikiPage extends JTable
 		$this->times_rated = $totalcount;
 	}
 
+	/**
+	 * Short description for 'getTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getTags($admin=0)
 	{
 		$obj = new WikiTags( $this->_db );
@@ -126,6 +277,14 @@ class WikiPage extends JTable
 		return $tags;
 	}
 
+	/**
+	 * Short description for 'getRevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $version Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	function getRevision($version)
 	{
 		$obj = new WikiPageRevision( $this->_db );
@@ -133,6 +292,13 @@ class WikiPage extends JTable
 		return $obj;
 	}
 
+	/**
+	 * Short description for 'getRevisionCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRevisionCount()
 	{
 		$obj = new WikiPageRevision( $this->_db );
@@ -140,6 +306,13 @@ class WikiPage extends JTable
 		return $obj->getRevisionCount();
 	}
 
+	/**
+	 * Short description for 'getCurrentRevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	function getCurrentRevision()
 	{
 		$obj = new WikiPageRevision( $this->_db );
@@ -147,12 +320,27 @@ class WikiPage extends JTable
 		return $obj;
 	}
 
+	/**
+	 * Short description for 'getTemplates'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	function getTemplates()
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group`='$this->group' ORDER BY `pagename`" );
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for '_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $pagename Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function _check($pagename)
 	{
 		// Compress internal white-space to single space character.
@@ -180,6 +368,13 @@ class WikiPage extends JTable
 		return $pagename;
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function check()
 	{
 		if (is_string($this->pagename) && trim($this->pagename) == '') {
@@ -194,6 +389,13 @@ class WikiPage extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	function getAuthors()
 	{
 		$auths = explode(',',$this->authors);
@@ -205,6 +407,14 @@ class WikiPage extends JTable
 		return $auths;
 	}
 
+	/**
+	 * Short description for 'deleteBits'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	function deleteBits( $id=NULL )
 	{
 		if (!$id) {
@@ -243,12 +453,28 @@ class WikiPage extends JTable
 		}*/
 	}
 
+	/**
+	 * Short description for 'count'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	function count( $filters=array() )
 	{
 		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl" );
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getPagesCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getPagesCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
@@ -258,6 +484,14 @@ class WikiPage extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getPages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getPages( $filters=array() )
 	{
 		//echo $this->buildQuery( $filters );
@@ -265,6 +499,14 @@ class WikiPage extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery($filters)
 	{
 		if (isset($filters['count']) && $filters['count']) {
@@ -288,6 +530,14 @@ class WikiPage extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'buildPluginQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function buildPluginQuery( $filters=array() )
 	{
 		//$database =& JFactory::getDBO();

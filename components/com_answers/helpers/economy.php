@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,17 +38,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Bank');
 
+/**
+ * Short description for 'AnswersEconomy'
+ * 
+ * Long description (if any) ...
+ */
 class AnswersEconomy extends JObject
 {
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	var $_db = NULL;  // Database
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db)
 	{
 		$this->_db = $db;
 	}
 
+	/**
+	 * Short description for 'getQuestions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getQuestions()
 	{
 		// get all closed questions
@@ -57,6 +86,15 @@ class AnswersEconomy extends JObject
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'calculate_marketvalue'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function calculate_marketvalue($id, $type='regular')
 	{
 		if ($id === NULL) {
@@ -120,6 +158,17 @@ class AnswersEconomy extends JObject
 		return $calc;
 	}
 
+	/**
+	 * Short description for 'distribute_points'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $qid Parameter description (if any) ...
+	 * @param      unknown $Q_owner Parameter description (if any) ...
+	 * @param      unknown $BA_owner Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
 		$juser =& JFactory::getUser();

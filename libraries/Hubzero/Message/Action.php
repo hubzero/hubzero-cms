@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,25 +21,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Message_Action'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Message_Action extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id          = NULL;  // @var int(11) Primary key
+
+
+/**
+ * Description for 'class'
+ * 
+ * @var unknown
+ */
 	var $class       = NULL;  // @var varchar(20)
+
+
+	/**
+	 * Description for 'element'
+	 * 
+	 * @var unknown
+	 */
 	var $element     = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description = NULL;  // @var text
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xmessage_action', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->element ) == '') {
@@ -52,6 +102,17 @@ class Hubzero_Message_Action extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getActionItems'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      unknown $component Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getActionItems( $type=null, $component=null, $element=null, $uid=null )
 	{
 		if (!$uid) {

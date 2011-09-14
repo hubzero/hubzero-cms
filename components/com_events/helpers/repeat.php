@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,19 +21,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'EventsRepeat'
+ * 
+ * Long description (if any) ...
+ */
 class EventsRepeat
 {
+
+	/**
+	 * Description for 'row'
+	 * 
+	 * @var unknown
+	 */
 	var $row      = NULL;
+
+	/**
+	 * Description for 'year'
+	 * 
+	 * @var unknown
+	 */
 	var $year     = NULL;
+
+	/**
+	 * Description for 'month'
+	 * 
+	 * @var unknown
+	 */
 	var $month    = NULL;
+
+	/**
+	 * Description for 'day'
+	 * 
+	 * @var unknown
+	 */
 	var $day      = NULL;
+
+	/**
+	 * Description for 'viewable'
+	 * 
+	 * @var boolean
+	 */
 	var $viewable = NULL;
 
+	/**
+	 * Short description for 'EventsRepeat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $row Parameter description (if any) ...
+	 * @param      unknown $year Parameter description (if any) ...
+	 * @param      unknown $month Parameter description (if any) ...
+	 * @param      number $day Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function EventsRepeat( $row=NULL, $year=NULL, $month=NULL, $day=NULL )
 	{
 		if (is_null($row)) return false;

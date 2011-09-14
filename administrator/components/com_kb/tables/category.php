@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,102 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'KbCategory'
+ * 
+ * Long description (if any) ...
+ */
 class KbCategory extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id           = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title        = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description  = NULL;  // @var text
+
+
+	/**
+	 * Description for 'section'
+	 * 
+	 * @var unknown
+	 */
 	var $section      = NULL;  // @var int(1)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state        = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'access'
+	 * 
+	 * @var unknown
+	 */
 	var $access       = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
 	var $alias        = NULL;  // @var varchar(200)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq_categories', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
@@ -55,6 +126,14 @@ class KbCategory extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadAlias'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadAlias( $oid=NULL )
 	{
 		if (empty($oid)) {
@@ -69,6 +148,16 @@ class KbCategory extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getCategories'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $noauth Parameter description (if any) ...
+	 * @param      integer $empty_cat Parameter description (if any) ...
+	 * @param      mixed $catid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCategories( $noauth, $empty_cat=0, $catid=0 )
 	{
         $juser =& JFactory::getUser();
@@ -97,6 +186,15 @@ class KbCategory extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deleteSef'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteSef( $option, $id=NULL )
 	{
 		if ($id == NULL) {
@@ -111,18 +209,40 @@ class KbCategory extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getAllSections'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getAllSections()
 	{
 		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section=0 ORDER BY m.title" );
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getAllCategories'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getAllCategories()
 	{
 		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section!=0 ORDER BY m.title" );
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getCategoriesCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCategoriesCount( $filters=array() )
 	{
 		$query  = "SELECT count(*) FROM $this->_tbl WHERE section=";
@@ -132,6 +252,14 @@ class KbCategory extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getCategoriesAll'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCategoriesAll( $filters=array() )
 	{
 		if (isset($filters['id']) && $filters['id']) {

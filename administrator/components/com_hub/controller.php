@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'HubController'
+ * 
+ * Long description (if any) ...
+ */
 class HubController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = Jrequest::getVar( 'task', '' );
@@ -134,6 +149,14 @@ class HubController extends Hubzero_Controller
 	// Config functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'loadConfiguration'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	protected function &loadConfiguration()
 	{
 		$arr = array();
@@ -158,6 +181,14 @@ class HubController extends Hubzero_Controller
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'saveConfiguration'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$arr Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function saveConfiguration(&$arr)
 	{
 		$handle = fopen(JPATH_CONFIGURATION.DS.'hubconfiguration.php', "wb");
@@ -173,6 +204,13 @@ class HubController extends Hubzero_Controller
 		fclose($handle);
 	}
 
+	/**
+	 * Short description for 'settings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function settings()
 	{
 		$arr =& $this->loadConfiguration();
@@ -239,6 +277,14 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $task Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _save( $task='' )
 	{
 		if ($task == 'registration') {
@@ -272,6 +318,13 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_('Configuration saved');
 	}
 
+	/**
+	 * Short description for 'saveReg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveReg()
 	{
 		// Check for request forgeries
@@ -319,6 +372,13 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_('Configuration saved');
 	}
 
+	/**
+	 * Short description for 'misc'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function misc()
 	{
 		$view = new JView( array('name'=>'misc') );
@@ -366,6 +426,13 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edit()
 	{
 		$arr =& $this->loadConfiguration();
@@ -411,11 +478,26 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $redirect Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function save( $redirect=1 )
 	{
 		// Check for request forgeries
@@ -447,6 +529,13 @@ class HubController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function delete()
 	{
 		// Check for request forgeries
@@ -476,6 +565,13 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_('Configuration variable deleted');
 	}
 
+	/**
+	 * Short description for 'components'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function components()
 	{
 		// Get the list of components
@@ -513,6 +609,13 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savecom'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savecom()
 	{
 		// Check for request forgeries
@@ -552,6 +655,14 @@ class HubController extends Hubzero_Controller
 	//  Organizations
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'orgs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function orgs()
 	{
 		$view = new JView( array('name'=>'organizations') );
@@ -592,11 +703,25 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'addorg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addorg()
 	{
 		$this->editorg();
 	}
 
+	/**
+	 * Short description for 'editorg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editorg()
 	{
 		$view = new JView( array('name'=>'organization') );
@@ -626,6 +751,13 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveorg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveorg()
 	{
 		// Check for request forgeries
@@ -655,6 +787,13 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_( 'HUB_ORG_SAVED' );
 	}
 
+	/**
+	 * Short description for 'removeorg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function removeorg()
 	{
 		// Check for request forgeries
@@ -685,6 +824,13 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_('HUB_ORG_REMOVED');
 	}
 
+	/**
+	 * Short description for 'cancelorg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelorg()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgs';

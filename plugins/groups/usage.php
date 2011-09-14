@@ -1,25 +1,25 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Christopher <csmoak@purdue.edu>
- * @copyright	Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @package		HUBzero                                  CMS
+ * @author		Christopher                               <csmoak@purdue.edu>
+ * @copyright	Copyright                               2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *
- * Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *                                                    
+ *                                                    Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
+ *                                                    All rights reserved.
+ *                                                    
+ *                                                    This program is free software; you can redistribute it and/or
+ *                                                    modify it under the terms of the GNU General Public License,
+ *                                                    version 2 as published by the Free Software Foundation.
+ *                                                    
+ *                                                    This program is distributed in the hope that it will be useful,
+ *                                                    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *                                                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *                                                    GNU General Public License for more details.
+ *                                                    
+ *                                                    You should have received a copy of the GNU General Public License
+ *                                                    along with this program; if not, write to the Free Software
+ *                                                    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 // No direct access
@@ -28,8 +28,23 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_usage' );
 
+/**
+ * Short description for 'plgGroupsUsage'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsUsage extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgGroupsUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsUsage(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -39,6 +54,13 @@ class plgGroupsUsage extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -50,6 +72,21 @@ class plgGroupsUsage extends JPlugin
 		return $area;
 	}
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $group Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
@@ -186,6 +223,15 @@ class plgGroupsUsage extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'getResourcesCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getResourcesCount( $gid=NULL, $authorized )
 	{
 		if (!$gid) {
@@ -200,6 +246,15 @@ class plgGroupsUsage extends JPlugin
 		return $database->loadResult();
 	}
 
+	/**
+	 * Short description for 'getWikipageCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getWikipageCount( $gid=NULL, $authorized )
 	{
 		if (!$gid) {
@@ -211,6 +266,15 @@ class plgGroupsUsage extends JPlugin
 		return $database->loadResult();
 	}
 
+	/**
+	 * Short description for 'getWikifileCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getWikifileCount( $gid=NULL, $authorized )
 	{
 		if (!$gid) {
@@ -234,6 +298,16 @@ class plgGroupsUsage extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'getForumCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      string $state Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getForumCount( $gid=NULL, $authorized, $state='' )
 	{
 		if (!$gid) {
@@ -267,6 +341,14 @@ class plgGroupsUsage extends JPlugin
 		return $forum->getCount( $filters );
 	}
 
+	/**
+	 * Short description for 'getGroupPagesCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function getGroupPagesCount($gid)
 	{
 		if (!$gid) {
@@ -284,6 +366,17 @@ class plgGroupsUsage extends JPlugin
 		return count($pages);
 	}
 
+	/**
+	 * Short description for 'getGroupPageViews'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @param      string $pageid Parameter description (if any) ...
+	 * @param      unknown $start Parameter description (if any) ...
+	 * @param      unknown $end Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getGroupPageViews( $gid, $pageid = null, $start, $end )
 	{
 		$database =& JFactory::getDBO();
@@ -323,6 +416,16 @@ class plgGroupsUsage extends JPlugin
 		return array_reverse($page_views);
 	}
 
+	/**
+	 * Short description for 'drawChart'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $pid Parameter description (if any) ...
+	 * @param      unknown $start Parameter description (if any) ...
+	 * @param      unknown $end Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function drawChart($pid, $start, $end)
 	{
 		//vars used 
@@ -386,6 +489,14 @@ class plgGroupsUsage extends JPlugin
 		return $script;
 	}
 
+	/**
+	 * Short description for 'getGroupBlogCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function getGroupBlogCount($gid)
 	{
 		if (!$gid) {
@@ -407,6 +518,14 @@ class plgGroupsUsage extends JPlugin
 		return $total;
 	}
 
+	/**
+	 * Short description for 'getGroupBlogCommentCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function getGroupBlogCommentCount( $gid )
 	{
 		if (!$gid) {
@@ -422,6 +541,14 @@ class plgGroupsUsage extends JPlugin
 		return $count;
 	}
 
+	/**
+	 * Short description for 'getGroupCalendarCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getGroupCalendarCount( $gid )
 	{
 		$database =& JFactory::getDBO();

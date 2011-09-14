@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,27 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.document.document');
 
+/**
+ * Short description for 'Hubzero_Document'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Document
 {
+
+	/**
+	 * Short description for 'addComponentStylesheet'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      string $stylesheet Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      unknown $media Parameter description (if any) ...
+	 * @param      array $attribs Parameter description (if any) ...
+	 * @param      boolean $augment Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -62,6 +83,15 @@ class Hubzero_Document
 		}
 	}
 
+	/**
+	 * Short description for 'getComponentImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      string $image Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function getComponentImage($component, $image)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -79,6 +109,15 @@ class Hubzero_Document
 		}
 	}
 
+	/**
+	 * Short description for 'getComponentStylesheet'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      string $stylesheet Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function getComponentStylesheet($component, $stylesheet)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -96,6 +135,15 @@ class Hubzero_Document
 		}
 	}
 
+	/**
+	 * Short description for 'getModuleImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $module Parameter description (if any) ...
+	 * @param      string $image Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function getModuleImage($module, $image)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -113,6 +161,14 @@ class Hubzero_Document
 		}
 	}
 
+	/**
+	 * Short description for 'getHubImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $image Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function getHubImage($image)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -130,6 +186,19 @@ class Hubzero_Document
 		}
 	}
 
+	/**
+	 * Short description for 'addModuleStyleSheet'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $module Parameter description (if any) ...
+	 * @param      string $stylesheet Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      unknown $media Parameter description (if any) ...
+	 * @param      array $attribs Parameter description (if any) ...
+	 * @param      boolean $augment Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		$mainframe =& JFactory::getApplication();
@@ -156,6 +225,20 @@ class Hubzero_Document
 		}
 	}
 
+	/**
+	 * Short description for 'addPluginStyleSheet'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $plugin_group Parameter description (if any) ...
+	 * @param      string $plugin Parameter description (if any) ...
+	 * @param      string $stylesheet Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      unknown $media Parameter description (if any) ...
+	 * @param      array $attribs Parameter description (if any) ...
+	 * @param      boolean $augment Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function addPluginStyleSheet($plugin_group, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		$mainframe =& JFactory::getApplication();

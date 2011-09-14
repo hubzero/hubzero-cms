@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,21 +21,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'EventsConfig'
+ * 
+ * Long description (if any) ...
+ */
 class EventsConfig extends JTable
 {
+
+	/**
+	 * Description for 'param'
+	 * 
+	 * @var unknown
+	 */
 	var $param = NULL;
+
+	/**
+	 * Description for 'value'
+	 * 
+	 * @var unknown
+	 */
 	var $value = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__events_config', 'param', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		// check for valid name
@@ -50,24 +84,78 @@ class EventsConfig extends JTable
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class EventsConfigs
 {
+
+	/**
+	 * Description for '_tbl'
+	 * 
+	 * @var string
+	 */
 	private $_tbl   = NULL;
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	private $_db    = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();
+
+	/**
+	 * Description for '_error'
+	 * 
+	 * @var unknown
+	 */
 	private $_error = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		$this->_tbl = '#__events_config';
 		$this->_db = $db;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -75,6 +163,13 @@ class EventsConfigs
 		}
 	}
 
+	/**
+	 * Short description for 'load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function load()
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl" );
@@ -106,6 +201,13 @@ class EventsConfigs
 		$this->fields = $fields;
 	}
 
+	/**
+	 * Short description for 'loadDefaults'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadDefaults()
 	{
 		$config = array(
@@ -136,6 +238,14 @@ class EventsConfigs
 		return true;
 	}
 
+	/**
+	 * Short description for 'getCfg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $f Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getCfg( $f='' )
 	{
 		if ($f) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,19 +35,61 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'SupportCategory'
+ * 
+ * Long description (if any) ...
+ */
 class SupportCategory extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id       = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category = NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'section'
+	 * 
+	 * @var unknown
+	 */
 	var $section  = NULL;  // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_categories', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->category ) == '') {
@@ -56,6 +100,14 @@ class SupportCategory extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getCategories'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $section Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCategories( $section=NULL )
 	{
 		if ($section !== NULL) {
@@ -69,6 +121,14 @@ class SupportCategory extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl AS c, #__support_sections AS s"
@@ -83,6 +143,14 @@ class SupportCategory extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array() )
 	{
 		$query  = "SELECT COUNT(*)";
@@ -91,6 +159,14 @@ class SupportCategory extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array() )
 	{
 		$filters['order'] = 'section, category';

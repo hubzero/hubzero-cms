@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -44,13 +46,13 @@ defined('_JEXEC') or die( 'Restricted access' );
    * the PHP License and are unable to obtain it through the web, please
    * send a note to license@php.net so we can mail you a copy immediately.
    *
-   * @category   Structures
-   * @package    Structures_BibTex
- * @author      Elmar Pitschke <elmar.pitschke@gmx.de>
- * @copyright   1997-2005 The PHP Group
- * @license     http://www.php.net/license/3_0.txt  PHP License 3.0
-   * @version    CVS: $Id: BibTex.php,v 1.15 2007/01/23 22:56:40 hugoki Exp $
-   * @link       http://pear.php.net/package/Structures_BibTex
+   * @category  Structures
+   * @package   Structures_BibTex
+ * @author    Elmar Pitschke <elmar.pitschke@gmx.de>
+ * @copyright 1997-2005 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt PHP License 3.0
+   * @version   CVS: $Id: BibTex.php,v 1.15 2007/01/23 22:56:40 hugoki Exp $
+   * @link      http://pear.php.net/package/Structures_BibTex
    */
 
 require_once( JPATH_ROOT.DS.'libraries'.DS.'pear'.DS.'PEAR.php' );
@@ -96,13 +98,13 @@ require_once( JPATH_ROOT.DS.'libraries'.DS.'pear'.DS.'PEAR.php' );
  * print nl2br($bibtex->bibTex());
  * </code>
  *
- * @category   Structures
- * @package    Structures_BibTex
- * @author      Elmar Pitschke <elmar.pitschke@gmx.de>
- * @copyright   1997-2005 The PHP Group
- * @license     http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
- * @link       http://pear.php.net/Structures/Structure_BibTex
+ * @category  Structures
+ * @package   Structures_BibTex
+ * @author    Elmar Pitschke <elmar.pitschke@gmx.de>
+ * @copyright 1997-2005 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt PHP License 3.0
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/Structures/Structure_BibTex
  */
 class Structures_BibTex
 {
@@ -110,63 +112,63 @@ class Structures_BibTex
      * Array with the BibTex Data
      *
      * @access public
-     * @var array
+     * @var    array 
      */
     var $data;
     /**
      * String with the BibTex content
      *
      * @access public
-     * @var string
+     * @var    string
      */
     var $content;
     /**
      * Array with possible Delimiters for the entries
      *
      * @access private
-     * @var array
+     * @var    array  
      */
     var $_delimiters;
     /**
      * Array to store warnings
      *
      * @access public
-     * @var array
+     * @var    array 
      */
     var $warnings;
     /**
      * Run-time configuration options
      *
      * @access private
-     * @var array
+     * @var    array  
      */
     var $_options;
     /**
      * RTF Format String
      *
      * @access public
-     * @var string
+     * @var    string
      */
     var $rtfstring;
     /**
      * HTML Format String
      *
      * @access public
-     * @var string
+     * @var    string
      */
     var $htmlstring;
     /**
      * Array with the "allowed" types
      *
      * @access public
-     * @var array
+     * @var    array 
      */
     var $allowedTypes;
     /**
      * Author Format Strings
      *
      * @access public
-     * @var string
+     * @var    string
      */
     var $authorstring;
 
@@ -174,7 +176,7 @@ class Structures_BibTex
      * Constructor
      *
      * @access public
-     * @return void
+     * @return void  
      */
     function Structures_BibTex($options = array())
     {
@@ -235,9 +237,9 @@ class Structures_BibTex
      * Sets run-time configuration options
      *
      * @access public
-     * @param string $option option name
-     * @param mixed  $value value for the option
-     * @return mixed true on success PEAR_Error on failure
+     * @param  string $option option name
+     * @param  mixed  $value  value for the option
+     * @return mixed  true on success PEAR_Error on failure
      */
     function setOption($option, $value)
     {
@@ -254,8 +256,8 @@ class Structures_BibTex
      * Reads a give BibTex File
      *
      * @access public
-     * @param string $filename Name of the file
-     * @return mixed true on success PEAR_Error on failure
+     * @param  string $filename Name of the file
+     * @return mixed  true on success PEAR_Error on failure
      */
     function loadFile($filename)
     {
@@ -276,8 +278,8 @@ class Structures_BibTex
      * Adds to the content string
      *
      * @access public
-     * @param string $filename Name of the file
-     * @return mixed true on success PEAR_Error on failure
+     * @param  string $filename Name of the file
+     * @return mixed  true on success PEAR_Error on failure
      */
     function addContent($bibstring)
     {
@@ -287,7 +289,7 @@ class Structures_BibTex
     /**
      * Parses what is stored in content and clears the content if the parsing is successfull.
      *
-     * @access public
+     * @access public 
      * @return boolean true on success and PEAR_Error if there was a problem
      */
     function parse()
@@ -399,8 +401,8 @@ class Structures_BibTex
      * If there is a problem false is returned.
      *
      * @access private
-     * @param string $entry The entry
-     * @return array The representation of the entry or false if there is a problem
+     * @param  string  $entry The entry
+     * @return array   The representation of the entry or false if there is a problem
      */
     function _parseEntry($entry)
     {
@@ -494,9 +496,9 @@ class Structures_BibTex
      * If the '=' is inside braces it contains to a equation and therefore false is returned.
      *
      * @access private
-     * @param string $entry The text of the whole remaining entry
-     * @param int the current used place of the '='
-     * @return bool true if the '=' is correct, false if it contains to an equation
+     * @param  string  $entry The text of the whole remaining entry
+     * @param  int     the    current used place of the '='
+     * @return bool    true if the '=' is correct, false if it contains to an equation
      */
     function _checkEqualSign($entry, $position)
     {
@@ -553,8 +555,8 @@ class Structures_BibTex
      * Checking if the type is allowed
      *
      * @access private
-     * @param string $entry The entry to check
-     * @return bool true if allowed, false otherwise
+     * @param  string  $entry The entry to check
+     * @return bool    true if allowed, false otherwise
      */
     function _checkAllowedType($entry)
     {
@@ -569,8 +571,8 @@ class Structures_BibTex
      * at of the next entry this method returns true.
      *
      * @access private
-     * @param string $entry The text of the entry until the at
-     * @return bool true if the at is correct, false if the at is likely to begin the next entry.
+     * @param  string  $entry The text of the entry until the at
+     * @return bool    true if the at is correct, false if the at is likely to begin the next entry.
      */
     function _checkAt($entry)
     {
@@ -617,8 +619,8 @@ class Structures_BibTex
      * Stripping Delimiter
      *
      * @access private
-     * @param string $entry The entry where the Delimiter should be stripped from
-     * @return string Stripped entry
+     * @param  string  $entry The entry where the Delimiter should be stripped from
+     * @return string  Stripped entry
      */
     function _stripDelimiter($entry)
     {
@@ -642,8 +644,8 @@ class Structures_BibTex
      * Unwrapping entry
      *
      * @access private
-     * @param string $entry The entry to unwrap
-     * @return string unwrapped entry
+     * @param  string  $entry The entry to unwrap
+     * @return string  unwrapped entry
      */
     function _unwrap($entry)
     {
@@ -655,8 +657,8 @@ class Structures_BibTex
      * Wordwrap an entry
      *
      * @access private
-     * @param string $entry The entry to wrap
-     * @return string wrapped entry
+     * @param  string  $entry The entry to wrap
+     * @return string  wrapped entry
      */
     function _wordwrap($entry)
     {
@@ -670,8 +672,8 @@ class Structures_BibTex
      * Extracting the authors
      *
      * @access private
-     * @param string $entry The entry with the authors
-     * @return array the extracted authors
+     * @param  string  $entry The entry with the authors
+     * @return array   the extracted authors
      */
     function _extractAuthors($entry) {
         $entry       = $this->_unwrap($entry);
@@ -805,8 +807,8 @@ class Structures_BibTex
      * - Caseless   (return value -1)
      *
      * @access private
-     * @param string $word
-     * @return int The Case or PEAR_Error if there was a problem
+     * @param  string  $word
+     * @return int     The Case or PEAR_Error if there was a problem
      */
     function _determineCase($word) {
         $ret         = -1;
@@ -850,9 +852,9 @@ class Structures_BibTex
      * If a problem is detected a warning is appended to the array warnings.
      *
      * @access private
-     * @param string $entry The entry aka one line which which should be validated
-     * @param string $wholeentry The whole BibTex Entry which the one line is part of
-     * @return void
+     * @param  string  $entry      The entry aka one line which which should be validated
+     * @param  string  $wholeentry The whole BibTex Entry which the one line is part of
+     * @return void   
      */
     function _validateValue($entry, $wholeentry)
     {
@@ -887,8 +889,8 @@ class Structures_BibTex
      * Remove curly braces from entry
      *
      * @access private
-     * @param string $value The value in which curly braces to be removed
-     * @param string Value with removed curly braces
+     * @param  string  $value The value in which curly braces to be removed
+     * @param  string  Value  with removed curly braces
      */
     function _removeCurlyBraces($value)
     {
@@ -922,9 +924,9 @@ class Structures_BibTex
      * Generates a warning
      *
      * @access private
-     * @param string $type The type of the warning
-     * @param string $entry The line of the entry where the warning occurred
-     * @param string $wholeentry OPTIONAL The whole entry where the warning occurred
+     * @param  string  $type       The type of the warning
+     * @param  string  $entry      The line of the entry where the warning occurred
+     * @param  string  $wholeentry OPTIONAL The whole entry where the warning occurred
      */
     function _generateWarning($type, $entry, $wholeentry='')
     {
@@ -948,7 +950,7 @@ class Structures_BibTex
      * Is there a warning?
      *
      * @access public
-     * @return true if there is, false otherwise
+     * @return true   if there is, false otherwise
      */
     function hasWarning()
     {
@@ -960,7 +962,7 @@ class Structures_BibTex
      * Returns the amount of available BibTex entries
      *
      * @access public
-     * @return int The amount of available BibTex entries
+     * @return int    The amount of available BibTex entries
      */
     function amount()
     {
@@ -973,8 +975,8 @@ class Structures_BibTex
      * The Author is formatted as setted in the authorstring
      *
      * @access private
-     * @param array $array Author array
-     * @return string the formatted author string
+     * @param  array   $array Author array
+     * @return string  the formatted author string
      */
     function _formatAuthor($array)
     {
@@ -1054,8 +1056,8 @@ class Structures_BibTex
      * Adds a new BibTex entry to the data
      *
      * @access public
-     * @param array $newentry The new data to add
-     * @return void
+     * @param  array  $newentry The new data to add
+     * @return void  
      */
     function addEntry($newentry)
     {
@@ -1069,7 +1071,7 @@ class Structures_BibTex
      * entry types and the values are the amount of these entries.
      *
      * @access public
-     * @return array Hash Table with the data
+     * @return array  Hash Table with the data
      */
     function getStatistic()
     {

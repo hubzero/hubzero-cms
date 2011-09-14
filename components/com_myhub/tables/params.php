@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,24 +21,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'MyhubParams'
+ * 
+ * Long description (if any) ...
+ */
 class MyhubParams extends JTable
 {
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var string
+	 */
 	var $uid    = NULL;  // int(11)
+
+
+	/**
+	 * Description for 'mid'
+	 * 
+	 * @var string
+	 */
 	var $mid    = NULL;  // int(11)
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params = NULL;  // text
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__myhub_params', 'uid', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (!$this->uid) {
@@ -57,6 +100,15 @@ class MyhubParams extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadParams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      unknown $mid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadParams( $uid=NULL, $mid=NULL )
 	{
 		if ($uid === NULL) {
@@ -75,6 +127,14 @@ class MyhubParams extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'storeParams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $new Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function storeParams( $new=false )
 	{
 		if (!$new) {
@@ -100,6 +160,15 @@ class MyhubParams extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'loadModule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $mid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function loadModule( $uid=NULL, $mid=NULL )
 	{
 		if ($uid === NULL) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,24 +38,62 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_User_Profile');
 
 define('XUSER_EXISTS', 1);
+
+/**
+ * Description for ''XUSER_CREATE_ERROR''
+ */
 define('XUSER_CREATE_ERROR', 2);
 
+/**
+ * Short description for 'Hubzero_User'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_User extends JObject
 {
+
+	/**
+	 * Description for '_xuser'
+	 * 
+	 * @var array
+	 */
 	var $_xuser;
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function logDebug($msg)
 	{
 		$xlog =& Hubzero_Factory::getLogger();
 		$xlog->logDebug($msg);
 	}
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function clear()
 	{
 		$this->_xuser = array();
 		$this->normalize();
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($login = null)
 	{
 		//$this->logDebug("Hubzero_User::__construct($login)");
@@ -64,6 +104,14 @@ class Hubzero_User extends JObject
 			$this->load($login);
 	}
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getInstance($login = null)
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -97,6 +145,13 @@ class Hubzero_User extends JObject
 		return $instance;
 	}
 
+	/**
+	 * Short description for 'normalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function normalize()
 	{
 		//$this->logDebug("Hubzero_User::normalize()");
@@ -122,6 +177,14 @@ class Hubzero_User extends JObject
 				$this->_xuser[$key] = array();
 	}
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get($key)
 	{
 		//$this->logDebug("Hubzero_User::get($key)");
@@ -135,6 +198,15 @@ class Hubzero_User extends JObject
 		return $this->_xuser[$key];
 	}
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function set($key,$value)
 	{
 		//$this->logDebug("Hubzero_User::set($key,$value)");
@@ -153,6 +225,13 @@ class Hubzero_User extends JObject
 			$this->_xuser['password'] = '';
 	}
 
+	/**
+	 * Short description for 'getuser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function getuser()
 	{
 		//$this->logDebug("Hubzero_User::getuser()");
@@ -160,6 +239,13 @@ class Hubzero_User extends JObject
 		return $this->_xuser;
 	}
 
+	/**
+	 * Short description for 'reload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function reload()
 	{
 		$login = $this->get('login');
@@ -168,6 +254,13 @@ class Hubzero_User extends JObject
 		$this->load($login);
 	}
 
+	/**
+	 * Short description for 'deactivate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function deactivate() // in the future this will mark the record inactive, maybe clear host/admin flags from ldap
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -200,6 +293,14 @@ class Hubzero_User extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $login Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete($login)
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -217,6 +318,14 @@ class Hubzero_User extends JObject
 
 	}
 
+	/**
+	 * Short description for 'load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $login Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function load($login = null)
 	{
 		//$this->logDebug("Hubzero_User::load($login)");
@@ -420,6 +529,13 @@ class Hubzero_User extends JObject
 		$this->set('groups', isset($groups) ? $groups : '');
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function create()
 	{
 		//$this->logDebug("Hubzero_User::create()");
@@ -603,6 +719,15 @@ class Hubzero_User extends JObject
 		return 0;
 	}
 
+	/**
+	 * Short description for '_renameUid'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $olduid Parameter description (if any) ...
+	 * @param      string $newuid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function _renameUid($olduid, $newuid)
 	{
 		$ldapconn =& Hubzero_Factory::getPLDC();
@@ -619,6 +744,13 @@ class Hubzero_User extends JObject
 		ldap_rename($ldapconn, $dn, $rdn, 'ou=users,' . $hubLDAPBaseDN,true);
 	}
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function update()
 	{
 		//$this->logDebug("Hubzero_User::update()");
@@ -815,6 +947,14 @@ class Hubzero_User extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadRegistration'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$registration Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadRegistration(&$registration)
 	{
 		if (!is_object($registration))
@@ -839,6 +979,13 @@ class Hubzero_User extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'hasTransientUsername'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function hasTransientUsername()
 	{
 		$parts = explode(':', $this->get('login'));
@@ -847,6 +994,13 @@ class Hubzero_User extends JObject
 			return true;
 	}
 
+	/**
+	 * Short description for 'getTransientUsername'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getTransientUsername()
 	{
 		$parts = explode(':', $this->_registration['login'] );
@@ -855,12 +1009,26 @@ class Hubzero_User extends JObject
 			return pack("H*", $parts[1]);
 	}
 
+	/**
+	 * Short description for 'hasTransientEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function hasTransientEmail()
 	{
 		if (eregi( "\.localhost\.invalid$", $this->get('email')))
 			return true;
 	}
 
+	/**
+	 * Short description for 'getTransientEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getTransientEmail()
 	{
 		if (eregi( "\.localhost\.invalid$", $this->_registration['email']))

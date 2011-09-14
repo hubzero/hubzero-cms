@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'KbController'
+ * 
+ * Long description (if any) ...
+ */
 class KbController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_longname = JText::_('COMPONENT_LONG_NAME');
@@ -73,6 +88,14 @@ class KbController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function login()
 	{
 		// Set the page title
@@ -90,6 +113,13 @@ class KbController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		// Instantiate a new view
@@ -137,6 +167,13 @@ class KbController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'category'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function category()
 	{
 		// Incoming
@@ -232,6 +269,13 @@ class KbController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'article'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function article()
 	{
 		// Incoming
@@ -348,6 +392,17 @@ class KbController extends Hubzero_Controller
 	// Private Functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $section Parameter description (if any) ...
+	 * @param      mixed $category Parameter description (if any) ...
+	 * @param      mixed $article Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildPathway($section=null, $category=null, $article=null)
 	{
 		$app =& JFactory::getApplication();
@@ -389,6 +444,16 @@ class KbController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $section Parameter description (if any) ...
+	 * @param      object $category Parameter description (if any) ...
+	 * @param      object $article Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildTitle($section=null, $category=null, $article=null)
 	{
 		$title = JText::_('COMPONENT_LONG_NAME');
@@ -405,6 +470,13 @@ class KbController extends Hubzero_Controller
 		$document->setTitle( $title );
 	}
 
+	/**
+	 * Short description for 'vote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function vote()
 	{
 		if ($this->juser->get('guest')) {
@@ -521,6 +593,14 @@ class KbController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_server'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $index Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _server($index = '')
 	{
 		if (!isset($_SERVER[$index])) {
@@ -530,11 +610,26 @@ class KbController extends Hubzero_Controller
 		return TRUE;
 	}
 
+	/**
+	 * Short description for '_validIp'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $ip Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _validIp($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? false : true;
 	}
 
+	/**
+	 * Short description for '_ipAddress'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _ipAddress()
 	{
 		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
@@ -568,6 +663,14 @@ class KbController extends Hubzero_Controller
 	// Comments
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'savecomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savecomment()
 	{
 		// Ensure the user is logged in
@@ -606,6 +709,13 @@ class KbController extends Hubzero_Controller
 		return $this->article();
 	}
 
+	/**
+	 * Short description for 'deletecomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletecomment()
 	{
 		// Ensure the user is logged in
@@ -643,6 +753,13 @@ class KbController extends Hubzero_Controller
 		return $this->article();
 	}
 
+	/**
+	 * Short description for 'commentsfeed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function commentsfeed()
 	{
 		if (!$this->config->get('feeds_enabled')) {

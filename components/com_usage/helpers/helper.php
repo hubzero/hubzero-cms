@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,14 +21,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'UsageHelper'
+ * 
+ * Long description (if any) ...
+ */
 class UsageHelper
 {
 	// Get the database for storing stats
+
+
+	/**
+	 * Short description for 'getUDBO'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getUDBO()
 	{
 		static $instance;
@@ -65,6 +81,19 @@ class UsageHelper
 	//  Print Top X List from Database  //
 	//----------------------------------//
 
+
+	/**
+	 * Short description for 'toplist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      unknown $top Parameter description (if any) ...
+	 * @param      mixed $t Parameter description (if any) ...
+	 * @param      mixed $enddate Parameter description (if any) ...
+	 * @param      integer $raw Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function toplist(&$db, $top, $t=0, $enddate=0, $raw=0)
 	{
 		// Set top list parameters...
@@ -244,6 +273,15 @@ class UsageHelper
 	//  Reindexing All Elements
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'array_unique_reindex'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $somearray Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function array_unique_reindex($somearray)
 	{
 		$tmparr = array_unique($somearray);
@@ -262,6 +300,17 @@ class UsageHelper
 	//  for the date passed to it, FALSE otherwise.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'check_for_data'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      unknown $yearmonth Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check_for_data(&$db, $yearmonth, $period)
 	{
 		$sql = "SELECT COUNT(datetime) 
@@ -276,6 +325,15 @@ class UsageHelper
 		return(false);
 	}
 
+	/**
+	 * Short description for 'check_for_classdata'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      unknown $yearmonth Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check_for_classdata(&$db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime) 
@@ -289,6 +347,15 @@ class UsageHelper
 		return(false);
 	}
 
+	/**
+	 * Short description for 'check_for_regiondata'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      unknown $yearmonth Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check_for_regiondata(&$db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime)
@@ -306,6 +373,16 @@ class UsageHelper
 	// Date Format functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'dateformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function dateformat($seldate, $period='month')
 	{
 		$year  = substr($seldate, 0, 4);
@@ -345,6 +422,14 @@ class UsageHelper
 		}
 	}
 
+	/**
+	 * Short description for 'dateformat_plot'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function dateformat_plot($seldate)
 	{
 		$year  = substr($seldate, 0, 4);
@@ -361,6 +446,17 @@ class UsageHelper
 	// Selected Date functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'seldate_value'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $valarray Parameter description (if any) ...
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @param      string $valkey Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function seldate_value($valarray, $seldate, $valkey='value')
 	{
 		if ($valarray) {
@@ -374,16 +470,42 @@ class UsageHelper
 		return(0);
 	}
 
+	/**
+	 * Short description for 'seldate_next'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function seldate_next($seldate, $period)
 	{
 		return(UsageHelper::seldate_shift($seldate, $period, 1));
 	}
 
+	/**
+	 * Short description for 'seldate_prev'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function seldate_prev($seldate, $period)
 	{
 		return(UsageHelper::seldate_shift($seldate, $period, 0));
 	}
 
+	/**
+	 * Short description for 'seldate_nextyear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function seldate_nextyear($seldate)
 	{
 		$date = $seldate;
@@ -394,6 +516,14 @@ class UsageHelper
 		return($date);
 	}
 
+	/**
+	 * Short description for 'seldate_prevyear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function seldate_prevyear($seldate)
 	{
 		$date = $seldate;
@@ -404,6 +534,15 @@ class UsageHelper
 		return($date);
 	}
 
+	/**
+	 * Short description for 'seldate_fix'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function seldate_fix($seldate, $period)
 	{
 		$year  = substr($seldate, 0, 4);
@@ -435,6 +574,16 @@ class UsageHelper
 		return(sprintf("%04d-%02d-%02d", $year, $month, $day));
 	}
 
+	/**
+	 * Short description for 'seldate_shift'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $seldate Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @param      unknown $right Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function seldate_shift($seldate, $period, $right)
 	{
 		$year  = substr($seldate, 0, 4);
@@ -492,6 +641,15 @@ class UsageHelper
 		return(sprintf("%04d-%02d-%02d", $year, $month, $day));
 	}
 
+	/**
+	 * Short description for 'seldate_valuedescsortkey'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$arr Parameter description (if any) ...
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function seldate_valuedescsortkey(&$arr, $date)
 	{
 		$reversealpha = array(',' => '', '.' => '', 'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
@@ -525,11 +683,28 @@ class UsageHelper
 		return($arr);
 	}
 
+	/**
+	 * Short description for 'seldate_valuedescsort'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$arr Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function seldate_valuedescsort(&$arr)
 	{
 		return(usort($arr, "arraykeyeddesccmp"));
 	}
 
+	/**
+	 * Short description for 'valformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $value Parameter description (if any) ...
+	 * @param      integer $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function valformat($value, $format)
 	{
 		if ($format == 1) {
@@ -562,6 +737,18 @@ class UsageHelper
 		}
 	}
 
+	/**
+	 * Short description for 'options'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      unknown $enddate Parameter description (if any) ...
+	 * @param      unknown $thisyear Parameter description (if any) ...
+	 * @param      array $monthsReverse Parameter description (if any) ...
+	 * @param      string $func Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function options( &$db, $enddate, $thisyear, $monthsReverse, $func='' )
 	{
 		$o = '';

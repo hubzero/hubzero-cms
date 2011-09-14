@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -360,7 +362,15 @@ $wgHtmlEntityAliases = array(
  */
 class Sanitizer
 {
+
+	/**
+	 * Description for 'ONE'
+	 */
 	const NONE = 0;
+
+	/**
+	 * Description for 'NITIAL_NONLETTER'
+	 */
 	const INITIAL_NONLETTER = 1;
 
 	/**
@@ -965,6 +975,14 @@ class Sanitizer
 				Sanitizer::normalizeCharReferences( $text ) ) );
 	}
 
+	/**
+	 * Short description for 'normalizeWhitespace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private static function normalizeWhitespace( $text )
 	{
 		return preg_replace(
@@ -1039,6 +1057,14 @@ class Sanitizer
 		}
 	}
 
+	/**
+	 * Short description for 'decCharReference'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $codepoint Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	static function decCharReference( $codepoint )
 	{
 		$point = intval( $codepoint );
@@ -1049,6 +1075,14 @@ class Sanitizer
 		}
 	}
 
+	/**
+	 * Short description for 'hexCharReference'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $codepoint Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	static function hexCharReference( $codepoint )
 	{
 		$point = hexdec( $codepoint );
@@ -1359,6 +1393,15 @@ class Sanitizer
 		return $out;
 	}
 
+	/**
+	 * Short description for 'cleanUrl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @param      boolean $hostname Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	static function cleanUrl( $url, $hostname=true )
 	{
 		# Normalize any HTML entities in input. They will be

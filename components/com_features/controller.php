@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'FeaturesController'
+ * 
+ * Long description (if any) ...
+ */
 class FeaturesController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
@@ -54,6 +69,14 @@ class FeaturesController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _login()
 	{
 		$view = new JView( array('name'=>'login') );
@@ -64,6 +87,13 @@ class FeaturesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _browse()
 	{
 		// Instantiate a new view
@@ -114,11 +144,25 @@ class FeaturesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _add()
 	{
 		$this->_edit();
 	}
 
+	/**
+	 * Short description for '_edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _edit()
 	{
 		// Check if they are authorized to make changes
@@ -170,6 +214,13 @@ class FeaturesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _save()
 	{
 		// Check if they are authorized to make changes
@@ -209,6 +260,13 @@ class FeaturesController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 
+	/**
+	 * Short description for '_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _delete()
 	{
 		// Check if they are authorized to make changes

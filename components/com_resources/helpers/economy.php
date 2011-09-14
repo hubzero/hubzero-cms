@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,17 +38,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Bank');
 
+/**
+ * Short description for 'ResourcesEconomy'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesEconomy extends JObject
 {
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	var $_db = NULL;  // Database
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db)
 	{
 		$this->_db = $db;
 	}
 
+	/**
+	 * Short description for 'getCons'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCons()
 	{
 		// get all eligible resource contributors
@@ -58,6 +87,15 @@ class ResourcesEconomy extends JObject
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'distribute_points'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $con Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function distribute_points($con, $type='royalty')
 	{
 		if (!is_object($con)) {
@@ -87,18 +125,46 @@ class ResourcesEconomy extends JObject
 // Stores economy funtions for reviews on resources
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class ReviewsEconomy extends JObject
 {
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	var $_db = NULL;  // Database
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db)
 	{
 		$this->_db = $db;
 
 	}
 
+	/**
+	 * Short description for 'getReviews'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function getReviews()
 	{
 		// get all eligible reviews
@@ -122,6 +188,15 @@ class ReviewsEconomy extends JObject
 		return $reviews;
 	}
 
+	/**
+	 * Short description for 'calculate_marketvalue'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $review Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function calculate_marketvalue($review, $type='royalty')
 	{
 		if (!is_object($review)) {
@@ -145,6 +220,15 @@ class ReviewsEconomy extends JObject
 		return $calc;
 	}
 
+	/**
+	 * Short description for 'distribute_points'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $review Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function distribute_points($review, $type='royalty')
 	{
 		if (!is_object($review)) {

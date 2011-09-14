@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,103 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'OrderItem'
+ * 
+ * Long description (if any) ...
+ */
 class OrderItem extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'oid'
+	 * 
+	 * @var unknown
+	 */
 	var $oid    	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid    	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'itemid'
+	 * 
+	 * @var unknown
+	 */
 	var $itemid     = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'price'
+	 * 
+	 * @var unknown
+	 */
 	var $price    	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'quantity'
+	 * 
+	 * @var unknown
+	 */
 	var $quantity   = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'selections'
+	 * 
+	 * @var unknown
+	 */
 	var $selections = NULL;  // @var text
 
 	//----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__order_items', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getOrderItems'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $oid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getOrderItems($oid)
 	{
 		if ($oid == null) {
@@ -59,6 +131,14 @@ class OrderItem extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'countAllItemOrders'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $oid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function countAllItemOrders($oid)
 	{
 		if ($oid == null) {
@@ -72,6 +152,14 @@ class OrderItem extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'countActiveItemOrders'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $oid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function countActiveItemOrders($oid)
 	{
 		if ($oid == null) {

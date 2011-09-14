@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,33 +21,134 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Store'
+ * 
+ * Long description (if any) ...
+ */
 class Store extends  JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title    		= NULL;
+
+	/**
+	 * Description for 'price'
+	 * 
+	 * @var unknown
+	 */
 	var $price    		= NULL;
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description    = NULL;
+
+	/**
+	 * Description for 'available'
+	 * 
+	 * @var unknown
+	 */
 	var $available    	= NULL;
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
 	var $published   	= NULL;
+
+	/**
+	 * Description for 'featured'
+	 * 
+	 * @var unknown
+	 */
 	var $featured   	= NULL;
+
+	/**
+	 * Description for 'special'
+	 * 
+	 * @var unknown
+	 */
 	var $special   		= NULL;
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category   	= NULL;
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type   		= NULL;
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created  		= NULL;  // @var datetime
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params 		= NULL;  // @var text
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__store', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getInfo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getInfo( $id)
 	{
 		if ($id == null) {
@@ -62,6 +160,16 @@ class Store extends  JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getItems'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rtrn Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getItems( $rtrn='count', $filters, $config)
 	{
 		// build body of query

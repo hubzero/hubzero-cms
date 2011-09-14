@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,22 +21,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Trac_Project'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Trac_Project
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	private $id = null;
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	private $name = null;
+
+	/**
+	 * Description for '_updatedkeys'
+	 * 
+	 * @var array
+	 */
 	private $_updatedkeys = array();
+
+	/**
+	 * Description for '_list_keys'
+	 * 
+	 * @var array
+	 */
 	private $_list_keys = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function __construct()
 	{
 	}
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function clear()
 	{
 		$cvars = get_class_vars(__CLASS__);
@@ -64,12 +109,27 @@ class Hubzero_Trac_Project
 		return true;
 	}
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function logDebug($msg)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
 		$xlog->logDebug($msg);
 	}
 
+	/**
+	 * Short description for 'toArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function toArray()
 	{
 		$result = array();
@@ -89,6 +149,14 @@ class Hubzero_Trac_Project
 		return $result;
 	}
 
+	/**
+	 * Short description for 'find'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function find($name)
 	{
 		$hztp = new Hubzero_Trac_Project();
@@ -105,6 +173,14 @@ class Hubzero_Trac_Project
 		return $hztp;
 	}
 
+	/**
+	 * Short description for 'find_or_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function find_or_create($name)
 	{
 		$hztp = new Hubzero_Trac_Project();
@@ -122,6 +198,13 @@ class Hubzero_Trac_Project
 		return $hztp;
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function create()
 	{
 		$db = &JFactory::getDBO();
@@ -170,6 +253,13 @@ class Hubzero_Trac_Project
 		return false;
 	}
 
+	/**
+	 * Short description for 'read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function read()
 	{
 		$db = &JFactory::getDBO();
@@ -208,6 +298,14 @@ class Hubzero_Trac_Project
 		return true;
 	}
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function update($all = false)
 	{
 		$db = &JFactory::getDBO();
@@ -283,6 +381,13 @@ class Hubzero_Trac_Project
 		return true;
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete()
 	{
 		if (!isset($this->name) && !isset($this->id)) {
@@ -319,6 +424,14 @@ class Hubzero_Trac_Project
 		return true;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function __get($property = null)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
@@ -365,6 +478,15 @@ class Hubzero_Trac_Project
 		return null;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function __set($property = null, $value = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
@@ -391,6 +513,14 @@ class Hubzero_Trac_Project
 		}
 	}
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function __isset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
@@ -405,6 +535,14 @@ class Hubzero_Trac_Project
 		return isset($this->$property);
 	}
 
+	/**
+	 * Short description for '__unset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function __unset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
@@ -421,6 +559,15 @@ class Hubzero_Trac_Project
 		unset($this->$property);
 	}
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
 		$caller = next(debug_backtrace());
@@ -441,16 +588,42 @@ class Hubzero_Trac_Project
 		echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
 	}
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get($key)
 	{
 		return $this->__get($key);
 	}
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function set($key, $value)
 	{
 		return $this->__set($key, $value);
 	}
 
+	/**
+	 * Short description for 'add_user_permission'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $user Parameter description (if any) ...
+	 * @param      unknown $action Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function add_user_permission($user,$action)
 	{
 		$db = &JFactory::getDBO();
@@ -489,6 +662,15 @@ class Hubzero_Trac_Project
 		$db->query();
 	}
 
+	/**
+	 * Short description for 'add_group_permission'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $group Parameter description (if any) ...
+	 * @param      unknown $action Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function add_group_permission($group,$action)
 	{
 		$db = &JFactory::getDBO();
@@ -525,6 +707,15 @@ class Hubzero_Trac_Project
 		$db->query();
 	}
 
+	/**
+	 * Short description for 'remove_user_permission'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $user Parameter description (if any) ...
+	 * @param      unknown $action Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function remove_user_permission($user,$action)
 	{
 		$db = &JFactory::getDBO();
@@ -570,6 +761,15 @@ class Hubzero_Trac_Project
 		$db->query();
 	}
 
+	/**
+	 * Short description for 'remove_group_permission'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $group Parameter description (if any) ...
+	 * @param      unknown $action Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function remove_group_permission($group,$action)
 	{
 		$db = &JFactory::getDBO();
@@ -613,6 +813,14 @@ class Hubzero_Trac_Project
 		$db->query();
 	}
 
+	/**
+	 * Short description for 'get_user_permission'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $user Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_user_permission($user)
 	{
 		$db = &JFactory::getDBO();
@@ -635,6 +843,14 @@ class Hubzero_Trac_Project
 		return $result;
 	}
 
+	/**
+	 * Short description for 'get_group_permission'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $group Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_group_permission($group)
 	{
 		$db = &JFactory::getDBO();

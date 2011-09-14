@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     GNU General Public License, version 2 (GPLv2) 
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,18 +21,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   GNU General Public License, version 2 (GPLv2) 
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WishlistController'
+ * 
+ * Long description (if any) ...
+ */
 class WishlistController extends JObject
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var string
+	 */
 	private $_name  = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();
+
+	/**
+	 * Description for '_task'
+	 * 
+	 * @var string
+	 */
 	private $_task  = NULL;
+
+	/**
+	 * Description for '_error'
+	 * 
+	 * @var unknown
+	 */
 	private $_error = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
@@ -59,21 +98,55 @@ class WishlistController extends JObject
 		$this->_option = 'com_'.$this->_name;
 	}
 
+	/**
+	 * Short description for 'setVar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setVar ($property, $value)
 	{
 		$this->$property = $value;
 	}
 
+	/**
+	 * Short description for 'getVar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getVar ($property)
 	{
 		return $this->$property;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -81,6 +154,13 @@ class WishlistController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'getTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getTask()
 	{
 		$task = JRequest::getVar( 'task', '', 'post' );
@@ -92,6 +172,13 @@ class WishlistController extends JObject
 		return $task;
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function execute()
 	{
 		// Load the component config
@@ -161,6 +248,13 @@ class WishlistController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function redirect()
 	{
 		if ($this->_redirect != NULL) {
@@ -173,6 +267,16 @@ class WishlistController extends JObject
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_getStyles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $css Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function _getStyles($option='', $css='')
 	{
 		ximport('Hubzero_Document');
@@ -185,6 +289,16 @@ class WishlistController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for '_getScripts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $name Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function _getScripts($option='',$name='')
 	{
 		$document =& JFactory::getDocument();
@@ -201,6 +315,13 @@ class WishlistController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
@@ -215,6 +336,15 @@ class WishlistController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $wishlist Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _buildPathway($wishlist)
 	{
 		$app =& JFactory::getApplication();
@@ -278,6 +408,17 @@ class WishlistController extends JObject
 	}
 	//------------
 
+
+	/**
+	 * Short description for 'startPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $wishlist Parameter description (if any) ...
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @param      object $pathway Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function startPath ($wishlist, $title, $pathway) {
 
 		// build return path to resource
@@ -309,6 +450,14 @@ class WishlistController extends JObject
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'abort'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function abort()
 	{
 		// Set the page title
@@ -333,6 +482,13 @@ class WishlistController extends JObject
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function login()
 	{
 		$view = new JView( array('name'=>'login') );
@@ -344,6 +500,13 @@ class WishlistController extends JObject
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'wishlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function wishlist()
 	{
 		ximport('Hubzero_Group');
@@ -524,6 +687,13 @@ class WishlistController extends JObject
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'wish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function wish()
 	{
 		$database   =& JFactory::getDBO();
@@ -773,6 +943,14 @@ class WishlistController extends JObject
 	// Manage List
 	//----------------------------------------------------------			
 
+
+	/**
+	 * Short description for 'savesettings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function savesettings() {
 
 		$database =& JFactory::getDBO();
@@ -868,6 +1046,13 @@ class WishlistController extends JObject
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved=1';
 	}
 
+	/**
+	 * Short description for 'settings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function settings()
 	{
 		$database =& JFactory::getDBO();
@@ -952,6 +1137,14 @@ class WishlistController extends JObject
 	// Manage Plan
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'saveplan'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function saveplan() {
 
 		$database =& JFactory::getDBO();
@@ -1123,6 +1316,15 @@ class WishlistController extends JObject
 	// Manage Wishes
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'addwish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $wishid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function addwish($wishid=0)
 	{
 		$database =& JFactory::getDBO();
@@ -1261,6 +1463,13 @@ class WishlistController extends JObject
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savewish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function savewish()
 	{
 		$database =& JFactory::getDBO();
@@ -1441,6 +1650,13 @@ class WishlistController extends JObject
 		$this->_redirect =JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id).'?saved='.$saved;
 	}
 
+	/**
+	 * Short description for 'editwish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function editwish()
 	{
 		$database =& JFactory::getDBO();
@@ -1629,6 +1845,14 @@ class WishlistController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'movewish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function movewish()
 	{
 		ximport('Hubzero_Group');
@@ -1855,6 +2079,13 @@ class WishlistController extends JObject
 		$this->wishlist();
 	}
 
+	/**
+	 * Short description for 'addbonus'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function addbonus()
 	{
 		$database =& JFactory::getDBO();
@@ -1924,6 +2155,13 @@ class WishlistController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'deletewish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function deletewish()
 	{
 		$database =& JFactory::getDBO();
@@ -2006,6 +2244,14 @@ class WishlistController extends JObject
 	// Admin votes
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'savevote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function savevote()
 	{
 		$database =& JFactory::getDBO();
@@ -2114,6 +2360,14 @@ class WishlistController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'rank'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $listid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function rank($listid)
 	{
 		if(!$this->listid) {
@@ -2246,6 +2500,14 @@ class WishlistController extends JObject
 	// Comments and Ratings
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'savereply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function savereply()
 	{
 		$database =& JFactory::getDBO();
@@ -2453,6 +2715,13 @@ class WishlistController extends JObject
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
 	}
 
+	/**
+	 * Short description for 'deletereply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function deletereply()
 	{
 		$database =& JFactory::getDBO();
@@ -2487,6 +2756,13 @@ class WishlistController extends JObject
 		$this->_redirect = $referer;
 	}
 
+	/**
+	 * Short description for 'reply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function reply()
 	{
 		$database 	=& JFactory::getDBO();
@@ -2522,6 +2798,13 @@ class WishlistController extends JObject
 		$this->wish();
 	}
 
+	/**
+	 * Short description for 'rateitem'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function rateitem()
 	{
 		$database =& JFactory::getDBO();
@@ -2619,6 +2902,15 @@ class WishlistController extends JObject
 	// Misc retrievers
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getWebPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $wishid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getWebPath($wishid=0)
 	{
 		$webpath = $this->config->get('webpath')  ? $this->config->get('webpath')  : 'site/wishes';
@@ -2645,6 +2937,22 @@ class WishlistController extends JObject
 		return $webpath;
 	}
 
+	/**
+	 * Short description for 'getComments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $parentid Parameter description (if any) ...
+	 * @param      unknown $itemid Parameter description (if any) ...
+	 * @param      unknown $category Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @param      boolean $abuse Parameter description (if any) ...
+	 * @param      unknown $owners Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      integer $skipattachments Parameter description (if any) ...
+	 * @param      integer $getauthors Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getComments($parentid, $itemid, $category, $level, $abuse=false, $owners, $admin, $skipattachments=0, $getauthors = 0)
 	{
 			$database =& JFactory::getDBO();
@@ -2704,6 +3012,14 @@ class WishlistController extends JObject
 		return $comments;
 	}
 
+	/**
+	 * Short description for 'getFilters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getFilters($admin=0)
 	{
 		// Query filters defaults
@@ -2731,6 +3047,16 @@ class WishlistController extends JObject
 	}
 	//------------
 
+
+	/**
+	 * Short description for 'authorize_admin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $listid Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function authorize_admin($listid = 0, $admin = 0)
 	{
 		$juser =& JFactory::getUser();
@@ -2763,6 +3089,19 @@ class WishlistController extends JObject
 		$this->_admin = $admin;
 	}
 
+	/**
+	 * Short description for 'userSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      array $ownerids Parameter description (if any) ...
+	 * @param      unknown $active Parameter description (if any) ...
+	 * @param      integer $nouser Parameter description (if any) ...
+	 * @param      string $javascript Parameter description (if any) ...
+	 * @param      string $order Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function userSelect( $name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name' )
 	{
 		$database =& JFactory::getDBO();
@@ -2802,6 +3141,15 @@ class WishlistController extends JObject
 	// Misc
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'mkt'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $stime Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -2810,6 +3158,14 @@ class WishlistController extends JObject
 		return $stime;
 	}
 
+	/**
+	 * Short description for 'timeAgoo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
@@ -2852,6 +3208,14 @@ class WishlistController extends JObject
 		return $text;
 	}
 
+	/**
+	 * Short description for 'timeAgo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timestamp Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function timeAgo($timestamp)
 	{
 		$text = $this->timeAgoo($timestamp);
@@ -2863,6 +3227,14 @@ class WishlistController extends JObject
 		return $text;
 	}
 
+	/**
+	 * Short description for 'server'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $index Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function server($index = '')
 	{
 		if (!isset($_SERVER[$index])) {
@@ -2872,11 +3244,26 @@ class WishlistController extends JObject
 		return $_SERVER[$index];
 	}
 
+	/**
+	 * Short description for 'valid_ip'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $ip Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function valid_ip($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
 	}
 
+	/**
+	 * Short description for 'ip_address'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function ip_address()
 	{
 		if ($this->server('REMOTE_ADDR') AND $this->server('HTTP_CLIENT_IP')) {
@@ -2906,6 +3293,14 @@ class WishlistController extends JObject
 		return $ip_address;
 	}
 
+	/**
+	 * Short description for 'purifyText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$text Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function purifyText( &$text )
 	{
 		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
@@ -2920,6 +3315,14 @@ class WishlistController extends JObject
 		return $text;
 	}
 
+	/**
+	 * Short description for 'makeArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function makeArray($string='')
 	{
 		$string		= ereg_replace(' ',',',$string);
@@ -2930,6 +3333,14 @@ class WishlistController extends JObject
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'cleanArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $array Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function cleanArray($array) {
 
 		foreach ($array as $key => $value) {
@@ -2940,6 +3351,15 @@ class WishlistController extends JObject
 		return $array;
 	}
 
+	/**
+	 * Short description for 'transform'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      array $newarray Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function transform($array, $newarray=array()) {
 		if(count($array)>0) {
 			foreach($array as $a) {
@@ -2955,6 +3375,13 @@ class WishlistController extends JObject
 		return $newarray;
 	}
 
+	/**
+	 * Short description for 'autocomplete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function autocomplete()
 	{
 		$filters = array();
@@ -2985,6 +3412,15 @@ class WishlistController extends JObject
 		return;
 	}
 
+	/**
+	 * Short description for 'getAutocomplete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      string $which Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	private function getAutocomplete( $filters=array(), $which )
 	{
 		$database =& JFactory::getDBO();
@@ -3012,6 +3448,15 @@ class WishlistController extends JObject
 	// media manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $listdir Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function upload( $listdir )
 	{
 
@@ -3063,6 +3508,15 @@ class WishlistController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'convertTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rawnum Parameter description (if any) ...
+	 * @param      array $due Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function convertTime ($rawnum,  $due=array())
 	{
 		$rawnum = round($rawnum);

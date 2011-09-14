@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,6 +22,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -54,23 +56,66 @@ defined('_JEXEC') or die( 'Restricted access' );
 //                   task which will display details of the event.
 //
 // displayYear = 1 (default is 0) display year when displaying dates in the non-customized event's listing.
+
+/**
+ * Short description for 'modEventsLatest'
+ * 
+ * Long description (if any) ...
+ */
 class modEventsLatest
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -79,6 +124,15 @@ class modEventsLatest
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function display()
 	{
 		// Check the events component
@@ -99,6 +153,17 @@ class modEventsLatest
 
 	//-----------
 	// This custom sort compare function compares the start times of events that are refernced by the a & b vars
+
+
+	/**
+	 * Short description for 'cmpByStartTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$a Parameter description (if any) ...
+	 * @param      object &$b Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function cmpByStartTime(&$a, &$b)
 	{
 		list($date, $aStrtTime) = split(' ',$a->publish_up);
@@ -112,6 +177,19 @@ class modEventsLatest
 	// except no actual output is performed.  Rather this function returns an array of references to
 	// $rows within the $rows (ie events) input array which occur on the input '$date'.  This
 	// is determined by the complicated com_event algorithm according to the event's repeatting type.
+
+
+	/**
+	 * Short description for '_getEventsByDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$rows Parameter description (if any) ...
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @param      array &$seenThisEvent Parameter description (if any) ...
+	 * @param      unknown $noRepeats Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _getEventsByDate(&$rows, $date, &$seenThisEvent, $noRepeats)
 	{
     	$num_events = count($rows);
@@ -141,6 +219,15 @@ class modEventsLatest
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '_displayLatestEvents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function _displayLatestEvents()
 	{
 		$database =& JFactory::getDBO();
@@ -183,6 +270,10 @@ class modEventsLatest
 		// Get the start day
 		$startday = $this->params->get( 'start_day' );
 		if (!defined('_CAL_CONF_STARDAY')) {
+
+	/**
+	 * Description for ''_CAL_CONF_STARDAY''
+	 */
 			define('_CAL_CONF_STARDAY',$startday);
 		}
 

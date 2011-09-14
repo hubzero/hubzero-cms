@@ -2,10 +2,7 @@
 
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -26,6 +23,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 //error_reporting(E_ALL);
@@ -38,8 +40,14 @@ $basepath = '/'.$bits[1].'/'.$bits[2];
 /** Set flag that this is a parent file */
 define( "_JEXEC", 1 );
 
+/**
+ * Description for ''JPATH_BASE''
+ */
 define('JPATH_BASE', $basepath );
 
+/**
+ * Description for ''DS''
+ */
 define( 'DS', DIRECTORY_SEPARATOR );
 
 require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );

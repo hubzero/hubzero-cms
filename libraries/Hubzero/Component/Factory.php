@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,21 +21,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Component_Factory'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Component_Factory
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var string
+	 */
 	var $_name;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($name)
 	{
 		$this->_name = $name;
 		$this->loadConfig();
 	}
 
+	/**
+	 * Short description for 'loadConfig'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $file Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function loadConfig($file = '')
 	{
 		if ($file == '') {
@@ -59,6 +88,15 @@ class Hubzero_Component_Factory
 		}
 	}
 
+	/**
+	 * Short description for 'getCfg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $varname Parameter description (if any) ...
+	 * @param      string $default Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getCfg( $varname, $default = '' )
 	{
 		$registry =& JFactory::getConfig();
@@ -66,6 +104,13 @@ class Hubzero_Component_Factory
 		return $registry->getValue('hubzero_' . $this->_name . '.' . $varname, $default);
 	}
 
+	/**
+	 * Short description for 'getDBO'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function &getDBO()
 	{
 		if (defined('_JEXEC')) {

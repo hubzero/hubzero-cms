@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,22 +21,87 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'GroupPages'
+ * 
+ * Long description (if any) ...
+ */
 Class GroupPages extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id = NULL;
+
+	/**
+	 * Description for 'gid'
+	 * 
+	 * @var unknown
+	 */
 	var $gid = NULL;
+
+	/**
+	 * Description for 'url'
+	 * 
+	 * @var unknown
+	 */
 	var $url = NULL;
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title = NULL;
+
+	/**
+	 * Description for 'content'
+	 * 
+	 * @var unknown
+	 */
 	var $content = NULL;
+
+	/**
+	 * Description for 'porder'
+	 * 
+	 * @var unknown
+	 */
 	var $porder = NULL;
+
+	/**
+	 * Description for 'active'
+	 * 
+	 * @var unknown
+	 */
 	var $active = NULL;
+
+	/**
+	 * Description for 'privacy'
+	 * 
+	 * @var unknown
+	 */
 	var $privacy = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( &$db)
 	{
 		parent::__construct( '#__xgroups_pages', 'id', $db );
@@ -48,6 +111,16 @@ Class GroupPages extends JTable
 	// Displaying Pages
 	///////////////////////////////////////
 
+
+	/**
+	 * Short description for 'getPages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @param      boolean $active Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getPages( $gid, $active = false )
 	{
 		$final_pages = array();
@@ -80,6 +153,14 @@ Class GroupPages extends JTable
 		return $final_pages;
 	}
 
+	/**
+	 * Short description for 'getHighestPageOrder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getHighestPageOrder( $gid )
 	{
 		$sql = "SELECT porder from $this->_tbl WHERE gid='".$gid."' ORDER BY porder DESC LIMIT 1";
@@ -89,6 +170,13 @@ Class GroupPages extends JTable
 		return $high['porder'];
 	}
 
+	/**
+	 * Short description for 'displayPage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function displayPage()
 	{
 		$this->juser =& JFactory::getUser();
@@ -170,6 +258,13 @@ Class GroupPages extends JTable
 		return $page;
 	}
 
+	/**
+	 * Short description for 'defaultPage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function defaultPage()
 	{
 		//get the group members
@@ -258,6 +353,14 @@ Class GroupPages extends JTable
 	 	return $about.$member_browser;
 	}
 
+	/**
+	 * Short description for 'pageHit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pid Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function pageHit( $pid )
 	{
 		//instantiate database
@@ -274,6 +377,15 @@ Class GroupPages extends JTable
 		$db->query();
 	}
 
+	/**
+	 * Short description for 'thumbit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $picture Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function thumbit( $uid, $picture )
 	{
 		//set a default

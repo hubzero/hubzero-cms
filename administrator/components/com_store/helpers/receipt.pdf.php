@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,13 +36,37 @@ defined('_JEXEC') or die( 'Restricted access' );
 //----------------------------------------------------------
 jimport('fpdf16.fpdf');
 
+/**
+ * Short description for 'PDF'
+ * 
+ * Long description (if any) ...
+ */
 class PDF extends FPDF
 {
+
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function set( $property, $value=NULL )
 	{
 		$this->$property = $value;
 	}
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $default Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get( $property, $default=NULL )
 	{
 		if (isset($this->$property)) {
@@ -51,6 +77,15 @@ class PDF extends FPDF
 
 	//-----------
 	// Page header
+
+
+	/**
+	 * Short description for 'Header'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function Header()
 	{
 		$app =& JFactory::getApplication();
@@ -98,6 +133,15 @@ class PDF extends FPDF
 
 	//-----------
 	// Page footer
+
+
+	/**
+	 * Short description for 'Footer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function Footer()
 	{
 		// Position at 1.5 cm from bottom
@@ -120,6 +164,15 @@ class PDF extends FPDF
 
 	//-----------
 	// Page title
+
+
+	/**
+	 * Short description for 'mainTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function mainTitle()
 	{
 		$this->SetFont('Helvetica','B',14);
@@ -130,6 +183,16 @@ class PDF extends FPDF
 
 	//-----------
 	// Warning 
+
+
+	/**
+	 * Short description for 'warning'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function warning($text)
 	{
 		$this->Ln(10);
@@ -140,6 +203,18 @@ class PDF extends FPDF
 
 	//-----------
 	// Order Details
+
+
+	/**
+	 * Short description for 'orderDetails'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $customer Parameter description (if any) ...
+	 * @param      object $row Parameter description (if any) ...
+	 * @param      array $orderitems Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function orderDetails($customer, $row, $orderitems)
 	{
 		//$this->SetY(40);

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,39 +35,221 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'SupportTicket'
+ * 
+ * Long description (if any) ...
+ */
 class SupportTicket extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'status'
+	 * 
+	 * @var unknown
+	 */
 	var $status     = NULL;  // @var int(3)  --  0 = new, 1 = accepted, 2 = closed
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created    = NULL;  // @var datetime
+
+
+	/**
+	 * Description for 'login'
+	 * 
+	 * @var unknown
+	 */
 	var $login      = NULL;  // @var string(200)
+
+
+	/**
+	 * Description for 'severity'
+	 * 
+	 * @var unknown
+	 */
 	var $severity   = NULL;  // @var string(30)
+
+
+	/**
+	 * Description for 'owner'
+	 * 
+	 * @var unknown
+	 */
 	var $owner      = NULL;  // @var string(50)
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category   = NULL;  // @var string(50)
+
+
+	/**
+	 * Description for 'summary'
+	 * 
+	 * @var unknown
+	 */
 	var $summary    = NULL;  // @var string(250)
+
+
+	/**
+	 * Description for 'report'
+	 * 
+	 * @var unknown
+	 */
 	var $report     = NULL;  // @var text
+
+
+	/**
+	 * Description for 'resolved'
+	 * 
+	 * @var unknown
+	 */
 	var $resolved   = NULL;  // @var string(50)
+
+
+	/**
+	 * Description for 'email'
+	 * 
+	 * @var unknown
+	 */
 	var $email      = NULL;  // @var string(200)
+
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	var $name       = NULL;  // @var string(200)
+
+
+	/**
+	 * Description for 'os'
+	 * 
+	 * @var unknown
+	 */
 	var $os         = NULL;  // @var string(50)
+
+
+	/**
+	 * Description for 'browser'
+	 * 
+	 * @var unknown
+	 */
 	var $browser    = NULL;  // @var string(50)
+
+
+	/**
+	 * Description for 'ip'
+	 * 
+	 * @var unknown
+	 */
 	var $ip         = NULL;  // @var string(200)
+
+
+	/**
+	 * Description for 'hostname'
+	 * 
+	 * @var unknown
+	 */
 	var $hostname   = NULL;  // @var string(200)
+
+
+	/**
+	 * Description for 'uas'
+	 * 
+	 * @var unknown
+	 */
 	var $uas        = NULL;  // @var string(250)
+
+
+	/**
+	 * Description for 'referrer'
+	 * 
+	 * @var unknown
+	 */
 	var $referrer   = NULL;  // @var string(250)
+
+
+	/**
+	 * Description for 'cookies'
+	 * 
+	 * @var unknown
+	 */
 	var $cookies    = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'instances'
+	 * 
+	 * @var unknown
+	 */
 	var $instances  = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'section'
+	 * 
+	 * @var unknown
+	 */
 	var $section    = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type       = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'group'
+	 * 
+	 * @var unknown
+	 */
 	var $group      = NULL;  // @var string(250)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__support_tickets', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (!$this->id && trim( $this->report ) == '') {
@@ -76,6 +260,15 @@ class SupportTicket extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildQuery( $filters, $admin )
 	{
 		//$juser =& JFactory::getUser();
@@ -239,6 +432,15 @@ class SupportTicket extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getTicketsCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getTicketsCount( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
@@ -253,6 +455,15 @@ class SupportTicket extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getTickets'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getTickets( $filters=array(), $admin=false )
 	{
 		$filter = $this->buildQuery( $filters, $admin );
@@ -270,6 +481,16 @@ class SupportTicket extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getTicketId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $which Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $authorized Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getTicketId($which, $filters, $authorized=false)
 	{
 		$filter = $this->buildQuery( $filters, $authorized );
@@ -286,6 +507,18 @@ class SupportTicket extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getCountOfTicketsOpened'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $type Parameter description (if any) ...
+	 * @param      string $year Parameter description (if any) ...
+	 * @param      string $month Parameter description (if any) ...
+	 * @param      string $day Parameter description (if any) ...
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
@@ -305,6 +538,19 @@ class SupportTicket extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getCountOfTicketsClosed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $type Parameter description (if any) ...
+	 * @param      string $year Parameter description (if any) ...
+	 * @param      string $month Parameter description (if any) ...
+	 * @param      string $day Parameter description (if any) ...
+	 * @param      string $username Parameter description (if any) ...
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
@@ -329,6 +575,16 @@ class SupportTicket extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getCountOfOpenTickets'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $type Parameter description (if any) ...
+	 * @param      boolean $unassigned Parameter description (if any) ...
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCountOfOpenTickets($type=0, $unassigned=false, $group=null)
 	{
 		$sql = "SELECT count(*) 
@@ -349,6 +605,17 @@ class SupportTicket extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getCountOfTicketsClosedInMonth'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $type Parameter description (if any) ...
+	 * @param      string $year Parameter description (if any) ...
+	 * @param      string $month Parameter description (if any) ...
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
@@ -374,6 +641,17 @@ class SupportTicket extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getCountOfTicketsOpenedInMonth'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $type Parameter description (if any) ...
+	 * @param      string $year Parameter description (if any) ...
+	 * @param      string $month Parameter description (if any) ...
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
@@ -397,6 +675,16 @@ class SupportTicket extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getAverageLifeOfTicket'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $type Parameter description (if any) ...
+	 * @param      string $year Parameter description (if any) ...
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getAverageLifeOfTicket($type=0, $year='', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");

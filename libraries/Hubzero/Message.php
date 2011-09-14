@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,8 +38,25 @@ include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Message'.DS.'Notify.php'
 include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Message'.DS.'Recipient.php');
 include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Message'.DS.'Seen.php');
 
+/**
+ * Short description for 'Hubzero_Message_Helper'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Message_Helper extends JObject
 {
+
+	/**
+	 * Short description for 'takeAction'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      array $uids Parameter description (if any) ...
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function takeAction( $type, $uids=array(), $component='', $element=null )
 	{
 		// Do we have the proper bits?
@@ -69,6 +88,22 @@ class Hubzero_Message_Helper extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'sendMessage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      string $subject Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @param      array $from Parameter description (if any) ...
+	 * @param      array $to Parameter description (if any) ...
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @param      string $description Parameter description (if any) ...
+	 * @param      integer $group_id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function sendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0 )
 	{
 		// Do we have a message?

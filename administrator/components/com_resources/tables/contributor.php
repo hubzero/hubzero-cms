@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,102 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ResourcesContributor'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesContributor extends JTable
 {
+
+	/**
+	 * Description for 'subtable'
+	 * 
+	 * @var unknown
+	 */
 	var $subtable = NULL;  // @var varchar(50) Primary Key
+
+
+	/**
+	 * Description for 'subid'
+	 * 
+	 * @var unknown
+	 */
 	var $subid    = NULL;  // @var int(11) Primary Key
+
+
+	/**
+	 * Description for 'authorid'
+	 * 
+	 * @var unknown
+	 */
 	var $authorid = NULL;  // @var int(11) Primary Key
+
+
+	/**
+	 * Description for 'ordering'
+	 * 
+	 * @var unknown
+	 */
 	var $ordering = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'role'
+	 * 
+	 * @var unknown
+	 */
 	var $role     = NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	var $name     = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'organization'
+	 * 
+	 * @var unknown
+	 */
 	var $organization = NULL;  // @var varchar(255)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__author_assoc', 'authorid', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (!$this->authorid) {
@@ -61,6 +132,16 @@ class ResourcesContributor extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadAssociation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $authorid Parameter description (if any) ...
+	 * @param      string $subid Parameter description (if any) ...
+	 * @param      string $subtable Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadAssociation( $authorid=NULL, $subid=NULL, $subtable='' )
 	{
 		if (!$authorid) {
@@ -85,6 +166,14 @@ class ResourcesContributor extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'deleteAssociations'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteAssociations( $id=NULL )
 	{
 		if (!$id) {
@@ -99,6 +188,16 @@ class ResourcesContributor extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'deleteAssociation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $authorid Parameter description (if any) ...
+	 * @param      string $subid Parameter description (if any) ...
+	 * @param      string $subtable Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteAssociation( $authorid=NULL, $subid=NULL, $subtable='' )
 	{
 		if (!$authorid) {
@@ -124,6 +223,13 @@ class ResourcesContributor extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'createAssociation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function createAssociation()
 	{
 		//$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering)";
@@ -136,6 +242,13 @@ class ResourcesContributor extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'updateAssociation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function updateAssociation()
 	{
 		//$query = "UPDATE $this->_tbl SET ordering=$this->ordering WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
@@ -148,6 +261,15 @@ class ResourcesContributor extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $subid Parameter description (if any) ...
+	 * @param      unknown $subtable Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $subid=NULL, $subtable=null )
 	{
 		if (!$subid) {
@@ -166,6 +288,15 @@ class ResourcesContributor extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getLastOrder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $subid Parameter description (if any) ...
+	 * @param      unknown $subtable Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getLastOrder( $subid=NULL, $subtable=null )
 	{
 		if (!$subid) {
@@ -184,6 +315,14 @@ class ResourcesContributor extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getNeighbor'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $move Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getNeighbor( $move )
 	{
 		switch ($move)

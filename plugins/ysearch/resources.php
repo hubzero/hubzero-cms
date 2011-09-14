@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,20 +21,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ResourceChildSorter'
+ * 
+ * Long description (if any) ...
+ */
 class ResourceChildSorter
 {
+
+	/**
+	 * Description for 'order'
+	 * 
+	 * @var array
+	 */
 	private $order;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $order Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($order)
 	{
 		$this->order = $order;
 	}
 
+	/**
+	 * Short description for 'sort'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $a Parameter description (if any) ...
+	 * @param      object $b Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function sort($a, $b)
 	{
 		$a_id = $a->get('id');
@@ -53,8 +83,24 @@ class ResourceChildSorter
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class plgYSearchResources extends YSearchPlugin
 {
+
+	/**
+	 * Short description for 'onYSearch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $request Parameter description (if any) ...
+	 * @param      object &$results Parameter description (if any) ...
+	 * @param      object $authz Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function onYSearch($request, &$results, $authz)
 	{
 		$dbg = isset($_GET['dbg']);

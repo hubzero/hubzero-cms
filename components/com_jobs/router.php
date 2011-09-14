@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,11 +21,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'JobsBuildRoute'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  array &$query Parameter description (if any) ...
+ * @return array Return description (if any) ...
+ */
 function JobsBuildRoute(&$query)
 {
     $segments = array();
@@ -57,6 +67,14 @@ function JobsBuildRoute(&$query)
     return $segments;
 }
 
+/**
+ * Short description for 'JobsParseRoute'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  array $segments Parameter description (if any) ...
+ * @return array Return description (if any) ...
+ */
 function JobsParseRoute($segments)
 {
     $vars = array();

@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,19 +21,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'InformationModule'
+ * 
+ * Long description (if any) ...
+ */
 Class InformationModule
 {
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( $group )
 	{
 		//group object
 		$this->group = $group;
 	}
 
+	/**
+	 * Short description for 'onManageModules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	function onManageModules()
 	{
 		$mod = array(
@@ -49,6 +72,13 @@ Class InformationModule
 		return $mod;
 	}
 
+	/**
+	 * Short description for 'render'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function render()
 	{
 		//var to hold content being returned

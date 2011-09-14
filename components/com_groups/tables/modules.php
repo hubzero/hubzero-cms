@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,25 +21,88 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'GroupModules'
+ * 
+ * Long description (if any) ...
+ */
 Class GroupModules extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id = NULL;
+
+	/**
+	 * Description for 'gid'
+	 * 
+	 * @var unknown
+	 */
 	var $gid = NULL;
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type = NULL;
+
+	/**
+	 * Description for 'content'
+	 * 
+	 * @var unknown
+	 */
 	var $content = NULL;
+
+	/**
+	 * Description for 'morder'
+	 * 
+	 * @var unknown
+	 */
 	var $morder = NULL;
+
+	/**
+	 * Description for 'active'
+	 * 
+	 * @var unknown
+	 */
 	var $active = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( &$db)
 	{
 		parent::__construct( '#__xgroups_modules', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getModules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @param      boolean $active Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getModules( $gid, $active = false )
 	{
 		if($active) {
@@ -57,6 +117,14 @@ Class GroupModules extends JTable
 		return $modules;
 	}
 
+	/**
+	 * Short description for 'getHighestModuleOrder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getHighestModuleOrder( $gid )
 	{
 		$sql = "SELECT morder from $this->_tbl WHERE gid='".$gid."' ORDER BY morder DESC LIMIT 1";
@@ -66,6 +134,15 @@ Class GroupModules extends JTable
 		return $high['morder'];
 	}
 
+	/**
+	 * Short description for 'renderModules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      unknown $wiki_parser Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function renderModules ( $group, $wiki_parser )
 	{
 		//array of modules

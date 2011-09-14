@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_messages' );
 
+/**
+ * Short description for 'plgMembersMessages'
+ * 
+ * Long description (if any) ...
+ */
 class plgMembersMessages extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgMembersMessages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgMembersMessages(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,14 @@ class plgMembersMessages extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onMembersAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onMembersAreas( $authorized )
 	{
 		if (!$authorized) {
@@ -55,6 +80,17 @@ class plgMembersMessages extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onMembers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
@@ -130,6 +166,16 @@ class plgMembersMessages extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'inbox'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function inbox($database, $option, $member)
 	{
 		// Push some scripts to the template
@@ -186,6 +232,16 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'archive'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function archive($database, $option, $member)
 	{
 		// Push some scripts to the template
@@ -242,6 +298,16 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'trash'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function trash($database, $option, $member)
 	{
 		// Push some scripts to the template
@@ -298,6 +364,16 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'sent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function sent($database, $option, $member)
 	{
 		// Push some scripts to the template
@@ -347,6 +423,16 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'sendtoarchive'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function sendtoarchive($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
@@ -377,6 +463,16 @@ class plgMembersMessages extends JPlugin
 		return $this->inbox($database, $option, $member);
 	}
 
+	/**
+	 * Short description for 'sendtoinbox'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function sendtoinbox($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
@@ -398,6 +494,16 @@ class plgMembersMessages extends JPlugin
 		return $this->inbox($database, $option, $member);
 	}
 
+	/**
+	 * Short description for 'sendtotrash'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function sendtotrash($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
@@ -430,6 +536,16 @@ class plgMembersMessages extends JPlugin
 		return $this->inbox($database, $option, $member);
 	}
 
+	/**
+	 * Short description for 'emptytrash'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function emptytrash($database, $option, $member)
 	{
 		$recipient = new Hubzero_Message_Recipient( $database );
@@ -441,6 +557,16 @@ class plgMembersMessages extends JPlugin
 		return $this->trash($database, $option, $member);
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function delete($database, $option, $member)
 	{
 		$mids = JRequest::getVar('mid',array(0));
@@ -461,6 +587,16 @@ class plgMembersMessages extends JPlugin
 		return $this->trash($database, $option, $member);
 	}
 
+	/**
+	 * Short description for 'markasread'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function markasread($database, $option, $member)
 	{
 		$ids = JRequest::getVar('mid',array(0));
@@ -482,6 +618,17 @@ class plgMembersMessages extends JPlugin
 		return $this->inbox($database, $option, $member);
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @param      unknown $mid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function view($database, $option, $member, $mid)
 	{
 		$xmessage = new Hubzero_Message_Message( $database );
@@ -539,6 +686,14 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'autolink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function autolink($matches)
 	{
 		$href = $matches[0];
@@ -568,6 +723,14 @@ class plgMembersMessages extends JPlugin
 		return $l;
 	}
 
+	/**
+	 * Short description for 'obfuscate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $email Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);
@@ -580,6 +743,17 @@ class plgMembersMessages extends JPlugin
 		return $obfuscatedEmail;
 	}
 
+	/**
+	 * Short description for 'selectMethod'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $notimethods Parameter description (if any) ...
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $values Parameter description (if any) ...
+	 * @param      array $ids Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectMethod($notimethods, $name, $values=array(), $ids=array())
 	{
 		$out = '';
@@ -605,6 +779,16 @@ class plgMembersMessages extends JPlugin
 		return $out;
 	}
 
+	/**
+	 * Short description for 'settings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function settings($database, $option, $member)
 	{
 		// Push some scripts to the template
@@ -690,6 +874,16 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'savesettings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function savesettings($database, $option, $member)
 	{
 		// Incoming
@@ -771,6 +965,16 @@ class plgMembersMessages extends JPlugin
 		return $this->settings($database, $option, $member);
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $member Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	private function create($database, $option, $member)
 	{
 		ximport('Hubzero_Plugin_View');
@@ -792,6 +996,16 @@ class plgMembersMessages extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'send'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $member Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function send($database, $option, $member)
 	{
 		// Ensure the user is logged in

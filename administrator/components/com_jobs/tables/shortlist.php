@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,27 +21,94 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'Shortlist'
+ * 
+ * Long description (if any) ...
+ */
 class Shortlist extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'emp'
+	 * 
+	 * @var unknown
+	 */
 	var $emp		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'seeker'
+	 * 
+	 * @var unknown
+	 */
 	var $seeker		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category	= NULL;  // @var varchar (job / resume)
+
+
+	/**
+	 * Description for 'jobid'
+	 * 
+	 * @var unknown
+	 */
 	var $jobid		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'added'
+	 * 
+	 * @var unknown
+	 */
 	var $added		= NULL;  // @var datetime
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_shortlist', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (intval( $this->emp) == 0) {
@@ -60,6 +124,16 @@ class Shortlist extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadEntry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $emp Parameter description (if any) ...
+	 * @param      unknown $seeker Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadEntry( $emp, $seeker, $category = 'resume' )
 	{
 		if ($emp === NULL or $seeker === NULL) {

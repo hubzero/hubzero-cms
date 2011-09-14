@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,22 +21,65 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined('n')) {
+
+/**
+ * Description for ''t''
+ */
 	define('t',"\t");
+
+/**
+ * Description for ''n''
+ */
 	define('n',"\n");
+
+/**
+ * Description for ''r''
+ */
 	define('r',"\r");
+
+/**
+ * Description for ''br''
+ */
 	define('br','<br />');
+
+/**
+ * Description for ''sp''
+ */
 	define('sp','&#160;');
+
+/**
+ * Description for ''a''
+ */
 	define('a','&amp;');
 }
 
+/**
+ * Short description for 'WishlistHtml'
+ * 
+ * Long description (if any) ...
+ */
 class WishlistHtml
 {
+
+	/**
+	 * Short description for 'txt_unpee'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $pee Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
@@ -51,6 +91,15 @@ class WishlistHtml
 		return $pee;
 	}
 
+	/**
+	 * Short description for 'cleanText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $desclen Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function cleanText($text, $desclen=300)
 	{
 		$elipse = false;
@@ -71,6 +120,17 @@ class WishlistHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'formSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="'.$name.'" id="'.$name.'"';
@@ -86,6 +146,15 @@ class WishlistHtml
 		return $out;
 	}
 
+	/**
+	 * Short description for 'tableRow'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $h Parameter description (if any) ...
+	 * @param      string $c Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function tableRow($h,$c='')
 	{
 		$html  = t.'  <tr>'.n;
@@ -98,6 +167,16 @@ class WishlistHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'convertVote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rawnum Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $output Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function convertVote($rawnum, $category, $output='')
 	{
 		$rawnum = round($rawnum);
@@ -128,6 +207,18 @@ class WishlistHtml
 		return $output;
 	}
 
+	/**
+	 * Short description for 'rankingForm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      mixed $wishlist Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      mixed $myvote Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function rankingForm($option, $wishlist, $task, $myvote, $admin)
 	{
 		$importance = array(''=>JText::_('SELECT_IMP'),'0.0'=>'0 -'.JText::_('RUBBISH'),'1'=>'1 - '.JText::_('MAYBE'),'2'=>'2 - '.JText::_('INTERESTING'),
@@ -159,6 +250,21 @@ class WishlistHtml
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'browseForm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $total Parameter description (if any) ...
+	 * @param      object $wishlist Parameter description (if any) ...
+	 * @param      unknown $pageNav Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function browseForm($option, $filters, $admin, $id, $total, $wishlist, $pageNav)
 	{
 		$sortbys = array();
@@ -207,6 +313,14 @@ class WishlistHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'nicetime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function nicetime($date)
 	{
 		if (empty($date)) {

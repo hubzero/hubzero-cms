@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,20 +35,69 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Support Attachments class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'SupportAttachment'
+ * 
+ * Long description (if any) ...
+ */
 class SupportAttachment extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id          = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'ticket'
+	 * 
+	 * @var string
+	 */
 	var $ticket      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'filename'
+	 * 
+	 * @var string
+	 */
 	var $filename    = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var string
+	 */
 	var $description = NULL;  // @var varchar(255)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct(&$db)
 	{
 		parent::__construct('#__support_attachments', 'id', $db);
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if ($this->ticket == NULL) {
@@ -61,6 +112,13 @@ class SupportAttachment extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function getID()
 	{
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename='".$this->filename."' AND description='".$this->description."' AND ticket=".$this->ticket);
@@ -68,12 +126,28 @@ class SupportAttachment extends JTable
 		$this->id = $id;
 	}
 
+	/**
+	 * Short description for 'parse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function parse($text)
 	{
 		$f = '/\{attachment#[0-9]*\}/sU';
 		return preg_replace_callback($f, array(&$this,'getAttachment'), $text);
 	}
 
+	/**
+	 * Short description for 'getAttachment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
@@ -114,6 +188,15 @@ class SupportAttachment extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'deleteAttachment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $filename Parameter description (if any) ...
+	 * @param      string $ticket Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function deleteAttachment( $filename, $ticket )
 	{
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND ticket=".$ticket );
@@ -123,6 +206,15 @@ class SupportAttachment extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadAttachment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @param      unknown $ticket Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function loadAttachment($filename=NULL, $ticket=NULL)
 	{
 		if ($filename === NULL) {

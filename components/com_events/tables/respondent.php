@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     GNU General Public License, version 2 (GPLv2) 
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,46 +21,248 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   GNU General Public License, version 2 (GPLv2) 
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'EventsRespondent'
+ * 
+ * Long description (if any) ...
+ */
 class EventsRespondent extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	public $id = NULL;
+
+	/**
+	 * Description for 'event_id'
+	 * 
+	 * @var unknown
+	 */
 	public $event_id = NULL;
+
+	/**
+	 * Description for 'registered'
+	 * 
+	 * @var unknown
+	 */
 	public $registered = NULL;
+
+	/**
+	 * Description for 'first_name'
+	 * 
+	 * @var unknown
+	 */
 	public $first_name = NULL;
+
+	/**
+	 * Description for 'last_name'
+	 * 
+	 * @var unknown
+	 */
 	public $last_name = NULL;
+
+	/**
+	 * Description for 'affiliation'
+	 * 
+	 * @var unknown
+	 */
 	public $affiliation = NULL;
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	public $title = NULL;
+
+	/**
+	 * Description for 'city'
+	 * 
+	 * @var unknown
+	 */
 	public $city = NULL;
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	public $state = NULL;
+
+	/**
+	 * Description for 'zip'
+	 * 
+	 * @var unknown
+	 */
 	public $zip = NULL;
+
+	/**
+	 * Description for 'country'
+	 * 
+	 * @var unknown
+	 */
 	public $country = NULL;
+
+	/**
+	 * Description for 'telephone'
+	 * 
+	 * @var unknown
+	 */
 	public $telephone = NULL;
+
+	/**
+	 * Description for 'fax'
+	 * 
+	 * @var unknown
+	 */
 	public $fax = NULL;
+
+	/**
+	 * Description for 'email'
+	 * 
+	 * @var unknown
+	 */
 	public $email = NULL;
+
+	/**
+	 * Description for 'website'
+	 * 
+	 * @var unknown
+	 */
 	public $website = NULL;
+
+	/**
+	 * Description for 'position_description'
+	 * 
+	 * @var unknown
+	 */
 	public $position_description = NULL;
+
+	/**
+	 * Description for 'highest_degree'
+	 * 
+	 * @var unknown
+	 */
 	public $highest_degree = NULL;
+
+	/**
+	 * Description for 'gender'
+	 * 
+	 * @var unknown
+	 */
 	public $gender = NULL;
+
+	/**
+	 * Description for 'disability_needs'
+	 * 
+	 * @var unknown
+	 */
 	public $disability_needs = NULL;
+
+	/**
+	 * Description for 'dietary_needs'
+	 * 
+	 * @var unknown
+	 */
 	public $dietary_needs = NULL;
+
+	/**
+	 * Description for 'attending_dinner'
+	 * 
+	 * @var unknown
+	 */
 	public $attending_dinner = NULL;
+
+	/**
+	 * Description for 'abstract'
+	 * 
+	 * @var unknown
+	 */
 	public $abstract = NULL;
+
+	/**
+	 * Description for 'comment'
+	 * 
+	 * @var unknown
+	 */
 	public $comment = NULL;
+
+	/**
+	 * Description for 'arrival'
+	 * 
+	 * @var unknown
+	 */
 	public $arrival = NULL;
+
+	/**
+	 * Description for 'departure'
+	 * 
+	 * @var unknown
+	 */
 	public $departure = NULL;
 
+	/**
+	 * Description for 'filters'
+	 * 
+	 * @var mixed
+	 */
 	private $filters      = array();
+
+	/**
+	 * Description for 'order'
+	 * 
+	 * @var string
+	 */
 	private $order        = NULL;
+
+	/**
+	 * Description for 'order_desc'
+	 * 
+	 * @var string
+	 */
 	private $order_desc   = NULL;
+
+	/**
+	 * Description for 'search_terms'
+	 * 
+	 * @var string
+	 */
 	private $search_terms = '';
+
+	/**
+	 * Description for 'limit'
+	 * 
+	 * @var mixed
+	 */
 	private $limit        = 0;
+
+	/**
+	 * Description for 'offset'
+	 * 
+	 * @var mixed
+	 */
 	private $offset       = 0;
 
+	/**
+	 * Short description for 'getRacialIdentification'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $resp_id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public static function getRacialIdentification($resp_id)
 	{
 		$dbh =& JFactory::getDBO();
@@ -75,22 +275,53 @@ class EventsRespondent extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getSearchTerms'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function getSearchTerms()
 	{
 		return $this->search_terms;
 	}
 
+	/**
+	 * Short description for 'getOrdering'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function getOrdering()
 	{
 		return $this->order_desc;
 	}
 
+	/**
+	 * Short description for 'getPaginator'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getPaginator()
 	{
 		jimport('joomla.html.pagination');
 		return new JPagination($this->getCount(), $this->limit, $this->offset);
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     void
+	 * @throws Exception  Exception description (if any) ...
+	 * @throws Exception  Exception description (if any) ...
+	 */
 	public function __construct($filters)
 	{
 		parent::__construct('#__events_respondents', 'id', JFactory::getDBO());
@@ -147,6 +378,14 @@ class EventsRespondent extends JTable
 		$this->filters = implode(' AND ', array_values($this->filters));
 	}
 
+	/**
+	 * Short description for 'fetch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $bounded Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function fetch($bounded = true)
 	{
 		$this->_db->setQuery(
@@ -156,16 +395,38 @@ class EventsRespondent extends JTable
 		return $bounded ? $this->_db->loadObjectList() : $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getRecords()
 	{
 		return $this->fetch();
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getCount()
 	{
 		return $this->fetch(false);
 	}
 
+	/**
+	 * Short description for 'deleteRespondents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $event_id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function deleteRespondents( $event_id=NULL )
 	{
 		if ($event_id === NULL) {

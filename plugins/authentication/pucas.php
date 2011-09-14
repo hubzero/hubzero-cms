@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,6 +34,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Auth_Domain');
 ximport('Hubzero_Auth_Link');
 
+/**
+ * Short description for 'plgAuthenticationPUCAS'
+ * 
+ * Long description (if any) ...
+ */
 class plgAuthenticationPUCAS
 {
 	/**
@@ -48,6 +55,13 @@ class plgAuthenticationPUCAS
 		parent::__construct($subject, $config);
 	}
 
+	/**
+	 * Short description for 'logout'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function logout()
 	{
 		global $PHPCAS_CLIENT, $mainframe;
@@ -82,6 +96,13 @@ class plgAuthenticationPUCAS
 		}
 	}
 
+	/**
+	 * Short description for 'status'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function status()
 	{
 		global $PHPCAS_CLIENT, $mainframe;
@@ -104,6 +125,15 @@ class plgAuthenticationPUCAS
 		return $status;
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$credentials Parameter description (if any) ...
+	 * @param      array &$options Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function login(&$credentials, &$options)
 	{
 		if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
@@ -116,6 +146,15 @@ class plgAuthenticationPUCAS
 		$options['return'] = $return;
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $view Parameter description (if any) ...
+	 * @param      unknown $tpl Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function display($view,$tpl)
 	{
 		global $PHPCAS_CLIENT, $mainframe;
@@ -148,6 +187,16 @@ class plgAuthenticationPUCAS
 		$mainframe->redirect($service . '/index.php?option=com_user&task=login&authenticator=pucas' . $return);
 	}
 
+	/**
+	 * Short description for 'onAuthenticate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $credentials Parameter description (if any) ...
+	 * @param      unknown $options Parameter description (if any) ...
+	 * @param      object &$response Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function onAuthenticate( $credentials, $options, &$response )
 	{
 		global $PHPCAS_CLIENT;

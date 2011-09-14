@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'XPollController'
+ * 
+ * Long description (if any) ...
+ */
 class XPollController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', 'latest' );
@@ -47,6 +62,14 @@ class XPollController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $poll Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildPathway($poll=null)
 	{
 		$app =& JFactory::getApplication();
@@ -72,6 +95,14 @@ class XPollController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $poll Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildTitle($poll=null)
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
@@ -89,6 +120,14 @@ class XPollController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'vote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function vote()
 	{
 		$redirect = 1;
@@ -182,6 +221,13 @@ class XPollController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Instantiate a view
@@ -246,6 +292,13 @@ class XPollController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'latest'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function latest()
 	{
 		// Instantiate a new view

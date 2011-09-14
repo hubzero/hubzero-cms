@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,25 +21,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ResourcesDoi'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesDoi extends JTable
 {
+
+	/**
+	 * Description for 'local_revision'
+	 * 
+	 * @var unknown
+	 */
 	var $local_revision = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'doi_label'
+	 * 
+	 * @var unknown
+	 */
 	var $doi_label      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'rid'
+	 * 
+	 * @var unknown
+	 */
 	var $rid            = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
 	var $alias          = NULL;  // @var varchar(30)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__doi_mapping', 'rid', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->rid ) == '') {
@@ -52,6 +102,15 @@ class ResourcesDoi extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getDoi'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $revision Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getDoi( $id=NULL, $revision=NULL )
 	{
 		if ($id == NULL) {
@@ -75,6 +134,15 @@ class ResourcesDoi extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getLatestDoi'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      unknown $revision Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getLatestDoi( $id=NULL, $revision=NULL )
 	{
 		if ($id == NULL) {
@@ -92,6 +160,17 @@ class ResourcesDoi extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'saveDOI'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $revision Parameter description (if any) ...
+	 * @param      mixed $newlabel Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $alias Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function saveDOI($revision=0, $newlabel=1, $rid, $alias='')
 	{
 		if ($rid == NULL) {
@@ -107,6 +186,17 @@ class ResourcesDoi extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'createDOIHandle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @param      unknown $handle Parameter description (if any) ...
+	 * @param      unknown $doiservice Parameter description (if any) ...
+	 * @param      string &$err Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function createDOIHandle($url, $handle, $doiservice, &$err='')
 	{
 		jimport('nusoap.lib.nusoap');
@@ -141,6 +231,16 @@ class ResourcesDoi extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'deleteDOIHandle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @param      unknown $handle Parameter description (if any) ...
+	 * @param      unknown $doiservice Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function deleteDOIHandle($url, $handle, $doiservice)
 	{
 		jimport('nusoap.lib.nusoap');

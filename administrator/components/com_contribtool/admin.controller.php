@@ -1,10 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -25,19 +21,63 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Tool');
 ximport('Hubzero_Tool_Version');
+
+/**
+ * Short description for 'ContribtoolController'
+ * 
+ * Long description (if any) ...
+ */
 class ContribtoolController extends JObject
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var string
+	 */
 	private $_name  = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();
+
+	/**
+	 * Description for '_task'
+	 * 
+	 * @var unknown
+	 */
 	private $_task  = NULL;
+
+	/**
+	 * Description for 'error'
+	 * 
+	 * @var unknown
+	 */
 	private $error  = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
@@ -61,11 +101,28 @@ class ContribtoolController extends JObject
 		$this->_option = 'com_'.$this->_name;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -74,6 +131,14 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function getTask()
 	{
 		$task = JRequest::getVar( 'task', 'view' );
@@ -81,6 +146,13 @@ class ContribtoolController extends JObject
 		return $task;
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$database =& JFactory::getDBO();
@@ -116,6 +188,14 @@ class ContribtoolController extends JObject
 	// Setup component
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'defaultParams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function defaultParams()
 	{
 		$params = 'contribtool_on=0
@@ -143,6 +223,14 @@ class ContribtoolController extends JObject
 	}
 	//-------------
 
+
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		    $toolid = JRequest::getInt( 'toolid', null );
@@ -161,11 +249,26 @@ class ContribtoolController extends JObject
 			   $this->view($toolid,0);
 	}
 
+	/**
+	 * Short description for 'apply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function apply()
 	{
 	    $this->save(0);
 	}
 
+	/**
+	 * Short description for 'saveToolVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $redirect Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveToolVersion($redirect = true)
 	{
 		// Incoming instance ID
@@ -230,6 +333,14 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'saveTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $redirect Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveTool($redirect = true)
 	{
 		// Incoming instance ID
@@ -264,6 +375,14 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $redirect Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function save($redirect = true)
 	{
           $type = JRequest::getString( 'type', '' );
@@ -278,6 +397,13 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edit()
 	{
 		    $toolid = JRequest::getInt( 'toolid', null );
@@ -296,6 +422,14 @@ class ContribtoolController extends JObject
 			   $this->editToolVersion($toolid,$id);
 	}
 
+	/**
+	 * Short description for 'editTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function editTool($toolid = null)
 	{
 		// Incoming instance ID
@@ -319,6 +453,15 @@ class ContribtoolController extends JObject
 		ContribtoolHtml::editTool($data, $this->_option);
 	}
 
+	/**
+	 * Short description for 'editToolVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function editToolVersion($toolid  = null,$id = null)
 	{
 		// Incoming instance ID
@@ -358,6 +501,15 @@ class ContribtoolController extends JObject
 		ContribtoolHtml::editToolVersion($data, $this->_option);
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
      protected function view($toolid = null, $id = null)
      {
           $app =& JFactory::getApplication();
@@ -440,6 +592,15 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'createResPage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      array $tool Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function createResPage($toolid, $tool)
 	{
 		$juser =& JFactory::getUser();
@@ -490,6 +651,16 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'createTicket'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      array $tool Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function createTicket($toolid, $tool)
 	{
 		ximport('Hubzero_Tool');
@@ -533,6 +704,20 @@ class ContribtoolController extends JObject
 		return $row->id;
 	}
 
+	/**
+	 * Short description for 'updateTicket'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      array $oldstuff Parameter description (if any) ...
+	 * @param      array $newstuff Parameter description (if any) ...
+	 * @param      unknown $comment Parameter description (if any) ...
+	 * @param      integer $access Parameter description (if any) ...
+	 * @param      integer $email Parameter description (if any) ...
+	 * @param      array $changelog Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $changelog=array())
 	{
 		ximport('Hubzero_Tool');
@@ -650,12 +835,27 @@ class ContribtoolController extends JObject
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'pipeline'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function pipeline()
 	{
 		// Output HTML
 		ContribtoolHtml::summary( $this->error, $this->_option, $this->config,  0);
 	}
 
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function redirect()
 	{
 		if ($this->_redirect != NULL) {

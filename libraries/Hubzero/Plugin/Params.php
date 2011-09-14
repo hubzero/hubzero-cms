@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,21 +35,77 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'Hubzero_Plugin_Params'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Plugin_Params extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id        = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'object_id'
+	 * 
+	 * @var unknown
+	 */
 	var $object_id = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'folder'
+	 * 
+	 * @var unknown
+	 */
 	var $folder    = NULL;  // @var varchar(100)
+
+
+	/**
+	 * Description for 'element'
+	 * 
+	 * @var unknown
+	 */
 	var $element   = NULL;  // @var varchar(100)
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params    = NULL;  // @var text
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__plugin_params', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->object_id ) == '') {
@@ -65,6 +123,16 @@ class Hubzero_Plugin_Params extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadPlugin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      unknown $folder Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadPlugin( $oid=null, $folder=null, $element=NULL )
 	{
 		if (!$oid) {
@@ -88,6 +156,16 @@ class Hubzero_Plugin_Params extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getCustomParams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      unknown $folder Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCustomParams( $oid=null, $folder=null, $element=null )
 	{
 		if (!$oid) {
@@ -110,6 +188,15 @@ class Hubzero_Plugin_Params extends JTable
 		return $params;
 	}
 
+	/**
+	 * Short description for 'getDefaultParams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $folder Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getDefaultParams( $folder=null, $element=null )
 	{
 		if (!$folder) {
@@ -127,6 +214,16 @@ class Hubzero_Plugin_Params extends JTable
 		return $params;
 	}
 
+	/**
+	 * Short description for 'getParams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      unknown $folder Parameter description (if any) ...
+	 * @param      unknown $element Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getParams( $oid=null, $folder=null, $element=null )
 	{
 		$rparams = $this->getCustomParams( $oid, $folder, $element );

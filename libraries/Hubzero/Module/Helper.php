@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,16 +38,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class Hubzero_Module_Helper
 {
+
+	/**
+	 * Short description for 'displayModules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $position Parameter description (if any) ...
+	 * @param      unknown $style Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function displayModules($position, $style=-2)
 	{
 		echo Hubzero_Module_Helper::renderModules($position, $style);
 	}
 
+	/**
+	 * Short description for 'displayModule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $style Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function displayModule($name, $style=-1)
 	{
 		echo Hubzero_Module_Helper::renderModule($name,$style);
 	}
 
+	/**
+	 * Short description for 'renderModule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $style Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public static function renderModule($name, $style=-1)
 	{
 		$module = JModuleHelper::getModule($name);
@@ -55,6 +85,15 @@ class Hubzero_Module_Helper
 		return($contents);
 	}
 
+	/**
+	 * Short description for 'renderModules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $position Parameter description (if any) ...
+	 * @param      unknown $style Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public static function renderModules( $position, $style=-2 )
 	{
 		if (!defined('_JEXEC')) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,6 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $mainframe->registerEvent( 'onPrepareContent', 'plgContentXHubTags' );
 
+/**
+ * Short description for 'plgContentXHubTags'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  object  &$row    Parameter description (if any) ...
+ * @param  object  &$params Parameter description (if any) ...
+ * @param  integer $page    Parameter description (if any) ...
+ * @return boolean Return description (if any) ...
+ */
 function plgContentXHubTags( &$row, &$params, $page=0 )
 {
 	// expression to search for
@@ -53,6 +65,17 @@ function plgContentXHubTags( &$row, &$params, $page=0 )
 		plgContentXHubTagsProcess( $row, $matches, $count, $regex);
 }
 
+/**
+ * Short description for 'plgContentXHubTagsProcess'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  object  &$row     Parameter description (if any) ...
+ * @param  array   &$matches Parameter description (if any) ...
+ * @param  unknown $count    Parameter description (if any) ...
+ * @param  string  $regex    Parameter description (if any) ...
+ * @return void   
+ */
 function plgContentXHubTagsProcess( &$row, &$matches, $count, $regex )
 {
 	for ( $i=0; $i < $count; $i++ )
@@ -82,6 +105,14 @@ function plgContentXHubTagsProcess( &$row, &$matches, $count, $regex )
  * {xhub:module position="position" style="style"}
  */
 
+/**
+ * Short description for 'plgContentXHubTagsModules'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  unknown $options Parameter description (if any) ...
+ * @return mixed   Return description (if any) ...
+ */
 function plgContentXHubTagsModules($options)
 {
     global $mainframe;
@@ -106,6 +137,13 @@ function plgContentXHubTagsModules($options)
  *
  */
 
+/**
+ * Short description for 'plgContentXhubTagsTemplateDir'
+ * 
+ * Long description (if any) ...
+ * 
+ * @return string Return description (if any) ...
+ */
 function plgContentXhubTagsTemplateDir()
 {
 	global $mainframe;
@@ -119,6 +157,14 @@ function plgContentXhubTagsTemplateDir()
  * {xhub:include type="stylesheet" component="component" filename="filename"}
  */
 
+/**
+ * Short description for 'plgContentXHubTagsInclude'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  unknown $options Parameter description (if any) ...
+ * @return string  Return description (if any) ...
+ */
 function plgContentXHubTagsInclude($options)
 {
 	global $mainframe;
@@ -171,6 +217,14 @@ function plgContentXHubTagsInclude($options)
 
 /* {xhub:image component="component" filename="filename"} */
 
+/**
+ * Short description for 'plgContentXHubTagsImage'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  unknown $options Parameter description (if any) ...
+ * @return mixed   Return description (if any) ...
+ */
 function plgContentXHubTagsImage($options)
 {
 	global $mainframe;
@@ -203,6 +257,14 @@ function plgContentXHubTagsImage($options)
 
 /* {xhub:getcfg variable} */
 
+/**
+ * Short description for 'plgContentXhubTagsGetCfg'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  unknown $options Parameter description (if any) ...
+ * @return object  Return description (if any) ...
+ */
 function plgContentXhubTagsGetCfg($options)
 {
 	$options = trim($options," \n\t\r}");

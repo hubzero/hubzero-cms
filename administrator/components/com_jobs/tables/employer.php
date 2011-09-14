@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,104 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'Employer'
+ * 
+ * Long description (if any) ...
+ */
 class Employer extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         		= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid				= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'added'
+	 * 
+	 * @var unknown
+	 */
 	var $added    			= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'subscriptionid'
+	 * 
+	 * @var unknown
+	 */
 	var $subscriptionid		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'companyName'
+	 * 
+	 * @var unknown
+	 */
 	var $companyName		= NULL;  // @var varchar (250)
+
+
+	/**
+	 * Description for 'companyLocation'
+	 * 
+	 * @var unknown
+	 */
 	var $companyLocation	= NULL;  // @var varchar (250)
+
+
+	/**
+	 * Description for 'companyWebsite'
+	 * 
+	 * @var unknown
+	 */
 	var $companyWebsite		= NULL;  // @var varchar (250)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_employers', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'isEmployer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function isEmployer($uid, $admin=0)
 	{
 		if ($uid === NULL) {
@@ -70,6 +143,14 @@ class Employer extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'loadEmployer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadEmployer( $uid=NULL )
 	{
 		if ($uid === NULL) {
@@ -84,6 +165,15 @@ class Employer extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getEmployer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $subscriptioncode Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getEmployer( $uid = NULL, $subscriptioncode = NULL )
 	{
 		if ($uid === NULL or $subscriptioncode === NULL) {

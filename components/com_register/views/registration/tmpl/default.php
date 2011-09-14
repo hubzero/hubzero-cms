@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,20 +21,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined("n")) {
+
+/**
+ * Description for '"t"'
+ */
 	define("t","\t");
+
+/**
+ * Description for '"n"'
+ */
 	define("n","\n");
+
+/**
+ * Description for '"r"'
+ */
 	define("r","\r");
+
+/**
+ * Description for '"br"'
+ */
 	define("br","<br />");
+
+/**
+ * Description for '"sp"'
+ */
 	define("sp","&#160;");
+
+/**
+ * Description for '"a"'
+ */
 	define("a","&amp;");
 }
 
+/**
+ * Short description for 'registration_error'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  string $msg Parameter description (if any) ...
+ * @param  string $tag Parameter description (if any) ...
+ * @return string Return description (if any) ...
+ */
 	function registration_error($msg, $tag='p')
 	{
 		if (empty($msg))
@@ -46,6 +81,14 @@ if (!defined("n")) {
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
 
+/**
+ * Short description for 'obfuscate'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  array  $email Parameter description (if any) ...
+ * @return string Return description (if any) ...
+ */
 	function obfuscate( $email )
 	{
 		$length = strlen($email);
@@ -58,11 +101,32 @@ if (!defined("n")) {
 		return $obfuscatedEmail;
 	}
 
+/**
+ * Short description for 'registration_warning'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  string $msg Parameter description (if any) ...
+ * @param  string $tag Parameter description (if any) ...
+ * @return string Return description (if any) ...
+ */
 	function registration_warning($msg, $tag='p')
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
 
+/**
+ * Short description for 'registration_radio'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  string $name    Parameter description (if any) ...
+ * @param  string $value   Parameter description (if any) ...
+ * @param  string $class   Parameter description (if any) ...
+ * @param  string $checked Parameter description (if any) ...
+ * @param  string $id      Parameter description (if any) ...
+ * @return string Return description (if any) ...
+ */
 	function registration_radio($name, $value, $class='', $checked='', $id='')
 	{
 		$o = '<input type="radio" name="'.$name.'" value="'.$value.'"';

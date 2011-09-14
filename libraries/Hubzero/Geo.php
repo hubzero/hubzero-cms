@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,14 +21,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Geo'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Geo
 {
 	// Get a list of existing application sessions.
+
+
+	/**
+	 * Short description for 'getGODBO'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getGODBO()
 	{
 		static $instance;
@@ -61,6 +77,13 @@ class Hubzero_Geo
 		return $instance;
 	}
 
+	/**
+	 * Short description for 'getcountries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function getcountries()
 	{
 		$countries = array();
@@ -84,6 +107,14 @@ class Hubzero_Geo
 		return $countries;
 	}
 
+	/**
+	 * Short description for 'getCountriesByContinent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $continent Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getCountriesByContinent($continent='')
 	{
 		if (!$continent) {
@@ -97,6 +128,14 @@ class Hubzero_Geo
 		return $gdb->loadResultArray();
 	}
 
+	/**
+	 * Short description for 'getcountry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $code Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getcountry($code='')
 	{
 		$name = '';
@@ -110,6 +149,14 @@ class Hubzero_Geo
 		return $name;
 	}
 
+	/**
+	 * Short description for 'ipcountry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $ip Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function ipcountry($ip='')
 	{
 		$country = '';
@@ -123,6 +170,14 @@ class Hubzero_Geo
 		return $country;
 	}
 
+	/**
+	 * Short description for 'is_d1nation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $country Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function is_d1nation($country)
 	{
 		$d1nation = false;
@@ -139,6 +194,15 @@ class Hubzero_Geo
 		return $d1nation;
 	}
 
+	/**
+	 * Short description for 'is_iplocation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $ip Parameter description (if any) ...
+	 * @param      string $location Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function is_iplocation($ip, $location)
 	{
 		$iplocation = false;

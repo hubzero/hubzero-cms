@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,18 +21,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Hub'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Hub
 {
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function __construct()
 	{
 		$this->loadConfig();
 	}
 
+	/**
+	 * Short description for 'loadConfig'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function loadConfig()
 	{
 		$registry =& JFactory::getConfig();
@@ -62,6 +84,15 @@ class Hubzero_Hub
 		}
 	}
 
+	/**
+	 * Short description for 'getCfg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $varname Parameter description (if any) ...
+	 * @param      string $default Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getCfg( $varname, $default = '' )
 	{
 		$config = &JFactory::getConfig();
@@ -71,6 +102,15 @@ class Hubzero_Hub
 		return $value;
 	}
 
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $url Parameter description (if any) ...
+	 * @param      boolean $permanent Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function redirect($url, $permanent = false)
 	{
 		// check for relative internal links
@@ -107,6 +147,15 @@ class Hubzero_Hub
 		exit(0);
 	}
 
+	/**
+	 * Short description for 'getComponentViewFilename'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $component Parameter description (if any) ...
+	 * @param      string $view Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getComponentViewFilename($component, $view)
 	{
 		$app =& JFactory::getApplication();

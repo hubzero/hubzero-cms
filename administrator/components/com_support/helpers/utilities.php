@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,8 +35,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Support Utilities class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'SupportUtilities'
+ * 
+ * Long description (if any) ...
+ */
 class SupportUtilities
 {
+
+	/**
+	 * Short description for 'sendEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @param      array $from Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function sendEmail($email, $subject, $message, $from)
 	{
 		if ($from) {
@@ -53,6 +73,14 @@ class SupportUtilities
 		return(0);
 	}
 
+	/**
+	 * Short description for 'checkValidLogin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function checkValidLogin($login)
 	{
 		if (eregi("^[_0-9a-zA-Z]+$", $login)) {
@@ -62,6 +90,14 @@ class SupportUtilities
 		}
 	}
 
+	/**
+	 * Short description for 'checkValidEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function checkValidEmail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
@@ -71,6 +107,14 @@ class SupportUtilities
 		}
 	}
 
+	/**
+	 * Short description for 'getSeverities'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $severities Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getSeverities($severities)
 	{
 		if ($severities) {
@@ -86,6 +130,13 @@ class SupportUtilities
 		return $s;
 	}
 
+	/**
+	 * Short description for 'getFilters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function getFilters()
 	{
 		$app =& JFactory::getApplication();

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,26 +21,89 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Favorite'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Favorite extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id    = NULL;  // int(11) Primary key
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid   = NULL;  // int(11)
+
+
+	/**
+	 * Description for 'oid'
+	 * 
+	 * @var unknown
+	 */
 	var $oid   = NULL;  // int(11)
+
+
+	/**
+	 * Description for 'tbl'
+	 * 
+	 * @var unknown
+	 */
 	var $tbl   = NULL;  // int(11)
+
+
+	/**
+	 * Description for 'faved'
+	 * 
+	 * @var unknown
+	 */
 	var $faved = NULL;  // datetime(0000-00-00 00:00:00)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xfavorites', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'loadFavorite'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      unknown $tbl Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadFavorite( $uid=NULL, $oid=NULL, $tbl=NULL )
 	{
 		if ($uid === NULL) {
@@ -62,6 +122,13 @@ class Hubzero_Favorite extends JTable
 		return $this->load( $this->id );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->uid ) == '') {
@@ -79,6 +146,14 @@ class Hubzero_Favorite extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery($filters)
 	{
 		$filter = '';
@@ -95,6 +170,14 @@ class Hubzero_Favorite extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array() )
 	{
 		$filters['limit'] = 0;
@@ -103,6 +186,14 @@ class Hubzero_Favorite extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array() )
 	{
 		$this->_db->setQuery( $this->buildQuery( $filters ) );

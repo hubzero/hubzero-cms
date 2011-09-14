@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,24 +21,73 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WishlistOwner'
+ * 
+ * Long description (if any) ...
+ */
 class WishlistOwner extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var integer
+	 */
 	var $id       = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'wishlist'
+	 * 
+	 * @var unknown
+	 */
 	var $wishlist = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'userid'
+	 * 
+	 * @var unknown
+	 */
 	var $userid	  = NULL;  // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist_owners', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'delete_owner'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      unknown $admingroup Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete_owner($listid, $uid, $admingroup)
 	{
 		if ($listid === NULL or $uid === NULL) {
@@ -60,6 +106,17 @@ class WishlistOwner extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'save_owners'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      unknown $admingroup Parameter description (if any) ...
+	 * @param      array $newowners Parameter description (if any) ...
+	 * @param      integer $type Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function save_owners($listid, $admingroup, $newowners = array(), $type = 0)
 	{
 		if ($listid === NULL) {
@@ -111,6 +168,19 @@ class WishlistOwner extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'get_owners'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listid Parameter description (if any) ...
+	 * @param      unknown $admingroup Parameter description (if any) ...
+	 * @param      mixed $wishlist Parameter description (if any) ...
+	 * @param      integer $native Parameter description (if any) ...
+	 * @param      mixed $wishid Parameter description (if any) ...
+	 * @param      array $owners Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_owners($listid, $admingroup, $wishlist='', $native=0, $wishid=0, $owners = array())
 	{
 		ximport('Hubzero_Group');

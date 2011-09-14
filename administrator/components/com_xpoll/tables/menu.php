@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,23 +21,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'XPollMenu'
+ * 
+ * Long description (if any) ...
+ */
 class XPollMenu extends JTable
 {
+
+	/**
+	 * Description for 'pollid'
+	 * 
+	 * @var string
+	 */
 	var $pollid  = NULL; // @var int(11)
+
+
+	/**
+	 * Description for 'menuid'
+	 * 
+	 * @var string
+	 */
 	var $menuid  = NULL; // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for 'XPollMenu'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function XPollMenu( &$db )
 	{
 		parent::__construct( '#__xpoll_menu', 'pollid', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		// Check for pollid
@@ -58,6 +94,14 @@ class XPollMenu extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'deleteEntries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $poll_id Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function deleteEntries( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {
@@ -71,6 +115,15 @@ class XPollMenu extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'insertEntry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $poll_id Parameter description (if any) ...
+	 * @param      unknown $menu_id Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function insertEntry( $poll_id=NULL, $menu_id=NULL )
 	{
 		if ($poll_id == NULL) {
@@ -87,6 +140,14 @@ class XPollMenu extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getMenuIds'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $poll_id Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getMenuIds( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {

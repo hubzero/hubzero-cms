@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'BlogController'
+ * 
+ * Long description (if any) ...
+ */
 class BlogController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = strtolower(JRequest::getVar('task', ''));
@@ -57,6 +72,14 @@ class BlogController extends Hubzero_Controller
 	// Our tasks
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'entries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function entries()
 	{
 		// Get configuration
@@ -96,6 +119,13 @@ class BlogController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edit()
 	{
 		// Instantiate a new view
@@ -124,6 +154,13 @@ class BlogController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function save()
 	{
 		// Initiate extended database class
@@ -150,6 +187,13 @@ class BlogController extends Hubzero_Controller
 		$this->_message = JText::_('Entry saved!');
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function delete()
 	{
 		// Incoming
@@ -172,6 +216,13 @@ class BlogController extends Hubzero_Controller
 		$this->_message = JText::_('Entries deleted!');
 	}
 
+	/**
+	 * Short description for 'setState'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function setState()
 	{
 		// Incoming
@@ -220,6 +271,13 @@ class BlogController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'setComments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function setComments()
 	{
 		// Incoming
@@ -265,6 +323,13 @@ class BlogController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		// Set the redirect

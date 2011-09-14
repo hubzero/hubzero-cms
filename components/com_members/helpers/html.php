@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,21 +21,63 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined("n")) {
+
+/**
+ * Description for '"t"'
+ */
 	define("t","\t");
+
+/**
+ * Description for '"n"'
+ */
 	define("n","\n");
+
+/**
+ * Description for '"br"'
+ */
 	define("br","<br />");
+
+/**
+ * Description for '"sp"'
+ */
 	define("sp","&#160;");
+
+/**
+ * Description for '"a"'
+ */
 	define("a","&amp;");
 }
 
+/**
+ * Short description for 'MembersHtml'
+ * 
+ * Long description (if any) ...
+ */
 class MembersHtml
 {
+
+	/**
+	 * Short description for 'selectAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $class Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function selectAccess($name, $value, $class='', $id='')
 	{
 		$arr = array( JText::_('Public'), JText::_('Registered users'), JText::_('Private') );
@@ -58,6 +97,14 @@ class MembersHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'propercase_singleresponse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $response Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function propercase_singleresponse($response)
 	{
 		$html = '';
@@ -71,6 +118,14 @@ class MembersHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'propercase_multiresponse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $response_array Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function propercase_multiresponse($response_array)
 	{
 		$html = '';
@@ -94,6 +149,14 @@ class MembersHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'obfuscate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $email Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function obfuscate( $email )
 	{
 		$length = strlen($email);
@@ -106,6 +169,14 @@ class MembersHtml
 		return $obfuscatedEmail;
 	}
 
+	/**
+	 * Short description for 'date2epoch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $datestr Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function date2epoch($datestr)
 	{
 		if (empty($datestr)) {
@@ -117,6 +188,15 @@ class MembersHtml
 		return(mktime($h, $i, $s, $m, $d, $y));
 	}
 
+	/**
+	 * Short description for 'valformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $value Parameter description (if any) ...
+	 * @param      integer $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function valformat($value, $format)
 	{
 		if ($format == 1) {

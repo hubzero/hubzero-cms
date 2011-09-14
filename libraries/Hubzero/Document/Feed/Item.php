@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Hubzero_Document_Feed_Item is an internal class that stores feed item information
  *
- * @author      Johan Janssens <johan.janssens@joomla.org>
- * @author      Shawn Rice <zooley@purdue.edu>
+ * @author Johan Janssens <johan.janssens@joomla.org>
+ * @author Shawn Rice <zooley@purdue.edu>
  */
 class Hubzero_Document_Feed_Item extends JObject
 {
@@ -158,13 +160,61 @@ class Hubzero_Document_Feed_Item extends JObject
 	var $source;
 
 	/* iTunes specific tags */
+
+	/**
+	 * Description for 'itunes_summary'
+	 * 
+	 * @var string
+	 */
 	var $itunes_summary = "";
+
+	/**
+	 * Description for 'itunes_explicit'
+	 * 
+	 * @var string
+	 */
 	var $itunes_explicit = "no";
+
+	/**
+	 * Description for 'itunes_keywords'
+	 * 
+	 * @var string
+	 */
 	var $itunes_keywords = "";
+
+	/**
+	 * Description for 'itunes_author'
+	 * 
+	 * @var string
+	 */
 	var $itunes_author = "";
+
+	/**
+	 * Description for 'itunes_image'
+	 * 
+	 * @var string
+	 */
 	var $itunes_image = "";
+
+	/**
+	 * Description for 'itunes_duration'
+	 * 
+	 * @var string
+	 */
 	var $itunes_duration = "";
+
+	/**
+	 * Description for 'itunes_category'
+	 * 
+	 * @var string
+	 */
 	var $itunes_category = "";
+
+	/**
+	 * Description for 'itunes_subcategories'
+	 * 
+	 * @var unknown
+	 */
 	var $itunes_subcategories = null;
 
 	/**

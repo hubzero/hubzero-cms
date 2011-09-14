@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,30 +21,118 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Bank_Transaction'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Bank_Transaction extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id          = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid         = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type        = NULL;  // @var varchar(20)
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category    = NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'referenceid'
+	 * 
+	 * @var unknown
+	 */
 	var $referenceid = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'amount'
+	 * 
+	 * @var unknown
+	 */
 	var $amount      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created     = NULL;  // @var datetime
+
+
+	/**
+	 * Description for 'balance'
+	 * 
+	 * @var unknown
+	 */
 	var $balance     = NULL;  // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__users_transactions', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->uid ) == '') {
@@ -57,6 +142,15 @@ class Hubzero_Bank_Transaction extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'history'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function history( $limit=50, $uid=null )
 	{
 		if ($uid == null) {
@@ -73,6 +167,16 @@ class Hubzero_Bank_Transaction extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deleteRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $referenceid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteRecords( $category=null, $type=null, $referenceid=null )
 	{
 		if ($referenceid == null) {
@@ -97,6 +201,17 @@ class Hubzero_Bank_Transaction extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getTransactions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $referenceid Parameter description (if any) ...
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getTransactions( $category=null, $type=null, $referenceid=null, $uid=null )
 	{
 		if ($referenceid == null) {
@@ -121,6 +236,17 @@ class Hubzero_Bank_Transaction extends JTable
 
 	}
 
+	/**
+	 * Short description for 'getAmount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $referenceid Parameter description (if any) ...
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getAmount( $category=null, $type=null, $referenceid=null, $uid=null )
 	{
 		if ($referenceid == null) {
@@ -144,6 +270,22 @@ class Hubzero_Bank_Transaction extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getTotals'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $referenceid Parameter description (if any) ...
+	 * @param      integer $royalty Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      integer $allusers Parameter description (if any) ...
+	 * @param      string $when Parameter description (if any) ...
+	 * @param      integer $calc Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function getTotals( $category=null, $type=null, $referenceid=null, $royalty=0, $action=null, $uid=null, $allusers = 0, $when=null, $calc=0 )
 	{
 		if ($referenceid == null) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,12 +35,45 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Information retrieval for items/info linked to a resource
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'ResourcesHelper'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesHelper extends JObject
 {
+
+	/**
+	 * Description for '_id'
+	 * 
+	 * @var mixed
+	 */
 	private $_id = 0;
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var object
+	 */
 	private $_db = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $id, &$db )
 	{
 		$this->_id = $id;
@@ -50,11 +85,28 @@ class ResourcesHelper extends JObject
 		$this->parents = null;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -66,6 +118,15 @@ class ResourcesHelper extends JObject
 	// Contributors
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getUnlinkedContributors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $incSubmitter Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function getUnlinkedContributors($incSubmitter=false)
 	{
 		if (!isset($this->_contributors)) {
@@ -100,6 +161,15 @@ class ResourcesHelper extends JObject
 		$this->ul_contributors = $html;
 	}
 
+	/**
+	 * Short description for 'getToolAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      string $revision Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function getToolAuthors($toolname, $revision)
 	{
 		if (false) // @FIXME  quick hack to deal with influx of LDAP data in jos_tool_groups
@@ -134,6 +204,13 @@ class ResourcesHelper extends JObject
 		$this->_contributors = $cons;
 	}
 
+	/**
+	 * Short description for 'getCons'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function getCons()
 	{
 		/*$sql = "SELECT n.uidNumber AS id, n.name AS name, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, a.role"
@@ -174,6 +251,15 @@ class ResourcesHelper extends JObject
 		$this->_contributors = $cons;
 	}
 
+	/**
+	 * Short description for 'getContributors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $showorgs Parameter description (if any) ...
+	 * @param      integer $newstyle Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function getContributors($showorgs=false, $newstyle=0)
 	{
 		if (!isset($this->_contributors) && !$this->_contributors) {
@@ -262,6 +348,13 @@ class ResourcesHelper extends JObject
 		$this->contributors = $html;
 	}
 
+	/**
+	 * Short description for 'getContributorIDs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function getContributorIDs()
 	{
 		$cons = array();
@@ -293,6 +386,14 @@ class ResourcesHelper extends JObject
 	// Citations
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getCitations'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getCitations()
 	{
 		if (!$this->_id) {
@@ -310,6 +411,13 @@ class ResourcesHelper extends JObject
 		$this->citations = $cc->getCitations( 'resource', $this->_id );
 	}
 
+	/**
+	 * Short description for 'getCitationsCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function getCitationsCount()
 	{
 		$citations = $this->citations;
@@ -320,6 +428,13 @@ class ResourcesHelper extends JObject
 		$this->citationsCount = $citations;
 	}
 
+	/**
+	 * Short description for 'getLastCitationDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getLastCitationDate()
 	{
 		if ($this->_id) {
@@ -341,6 +456,17 @@ class ResourcesHelper extends JObject
 	// Tags
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $tagger_id Parameter description (if any) ...
+	 * @param      integer $strength Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getTags($tagger_id=0, $strength=0, $admin=0)
 	{
 		if ($this->_id == 0) {
@@ -353,6 +479,15 @@ class ResourcesHelper extends JObject
 		$this->tags = $rt->get_tags_on_object($this->_id, 0, 0, $tagger_id, $strength, $admin);
 	}
 
+	/**
+	 * Short description for 'getTagsForEditing'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $tagger_id Parameter description (if any) ...
+	 * @param      integer $strength Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getTagsForEditing( $tagger_id=0, $strength=0 )
 	{
 		if ($this->_id == 0) {
@@ -366,6 +501,14 @@ class ResourcesHelper extends JObject
 		$this->tagsForEditing = $rt->get_tag_string( $this->_id, 0, 0, $tagger_id, $strength, 0 );
 	}
 
+	/**
+	 * Short description for 'getTagCloud'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getTagCloud( $admin=0 )
 	{
 		if ($this->_id == 0) {
@@ -383,6 +526,18 @@ class ResourcesHelper extends JObject
 	// Children, parents, etc.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getChildren'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @param      string $standalone Parameter description (if any) ...
+	 * @param      mixed $excludeFirstChild Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getChildren( $id='', $limit=0, $standalone='all', $excludeFirstChild = 0 )
 	{
 		$children = '';
@@ -417,6 +572,14 @@ class ResourcesHelper extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'getStandaloneCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getStandaloneCount( $filters )
 	{
 		//$rt = new ResourcesType( $database );
@@ -432,6 +595,14 @@ class ResourcesHelper extends JObject
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getStandaloneChildren'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getStandaloneChildren( $filters )
 	{
 		$sql = "SELECT r.id, r.title, r.alias, r.introtext, r.fulltext, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
@@ -463,6 +634,13 @@ class ResourcesHelper extends JObject
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getFirstChild'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function getFirstChild()
 	{
 		if ($this->children) {
@@ -472,6 +650,13 @@ class ResourcesHelper extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'getParents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getParents()
 	{
 		if ($this->_id == 0) {
@@ -496,6 +681,14 @@ class ResourcesHelper extends JObject
 	// Reviews
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getReviews'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getReviews()
 	{
 		if ($this->_id == 0) {
@@ -510,6 +703,13 @@ class ResourcesHelper extends JObject
 		$this->reviews = $rr->getRatings( $this->_id );
 	}
 
+	/**
+	 * Short description for 'countQuestions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
 	public function countQuestions()
 	{
 		return 0;
@@ -518,22 +718,86 @@ class ResourcesHelper extends JObject
 	//----------------------------------------------------------
 	// For storing screenshots information
 	//----------------------------------------------------------
+
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 	class ResourceScreenshot extends  JTable
 	{
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var integer
+	 */
 		var $id      	   = NULL;  // @var int (primary key)
+
+
+	/**
+	 * Description for 'versionid'
+	 * 
+	 * @var unknown
+	 */
 		var $versionid     = NULL;  // @var int
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 		var $title         = NULL;  // @var string (127)
+
+
+	/**
+	 * Description for 'ordering'
+	 * 
+	 * @var unknown
+	 */
 		var $ordering      = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'filename'
+	 * 
+	 * @var string
+	 */
 		var $filename 	   = NULL;  // @var string (100)
+
+
+	/**
+	 * Description for 'resourceid'
+	 * 
+	 * @var unknown
+	 */
 		var $resourceid    = NULL;  // @var int
 
 		//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 		public function __construct( &$db )
 		{
 			parent::__construct( '#__screenshots', 'id', $db );
 		}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 		public function check()
 		{
 			if (trim( $this->filename ) == '') {
@@ -544,6 +808,16 @@ class ResourcesHelper extends JObject
 			return true;
 		}
 
+	/**
+	 * Short description for 'loadFromFilename'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $filename Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $versionid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 		public function loadFromFilename( $filename, $rid=NULL, $versionid=NULL)
 		{
 			if ($filename===NULL) {
@@ -568,6 +842,17 @@ class ResourcesHelper extends JObject
 		}
 		//-----------
 
+
+	/**
+	 * Short description for 'getScreenshot'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $filename Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $versionid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 		public function getScreenshot( $filename, $rid=NULL, $versionid=NULL)
 		{
 			if ($filename===NULL) {
@@ -587,6 +872,15 @@ class ResourcesHelper extends JObject
 			return $this->_db->loadObjectList();
 		}
 
+	/**
+	 * Short description for 'getLastOrdering'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $versionid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 		public function getLastOrdering($rid=NULL, $versionid=NULL) {
 
 			if ($rid===NULL) {
@@ -604,6 +898,19 @@ class ResourcesHelper extends JObject
 		}
 		//-----------
 
+
+	/**
+	 * Short description for 'saveScreenshot'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $filename Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      mixed $versionid Parameter description (if any) ...
+	 * @param      mixed $ordering Parameter description (if any) ...
+	 * @param      boolean $new Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 		public function saveScreenshot( $filename, $rid=NULL, $versionid=0, $ordering = 0, $new=false )
 		{
 			if ($filename===NULL) {
@@ -634,6 +941,16 @@ class ResourcesHelper extends JObject
 			}
 		}
 
+	/**
+	 * Short description for 'deleteScreenshot'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $filename Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $versionid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 		public function deleteScreenshot($filename, $rid=NULL, $versionid=NULL) {
 			if ($filename===NULL) {
 				return false;
@@ -650,6 +967,15 @@ class ResourcesHelper extends JObject
 			$this->_db->query();
 		}
 
+	/**
+	 * Short description for 'getScreenshots'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $versionid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 		public function getScreenshots( $rid=NULL, $versionid=NULL)
 		{
 			if ($rid===NULL) {
@@ -666,6 +992,15 @@ class ResourcesHelper extends JObject
 			return $this->_db->loadObjectList();
 		}
 
+	/**
+	 * Short description for 'getFiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $versionid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 		public function getFiles( $rid=NULL, $versionid=NULL)
 		{
 			if ($rid===NULL) {
@@ -682,6 +1017,17 @@ class ResourcesHelper extends JObject
 			return $this->_db->loadObjectList();
 		}
 
+	/**
+	 * Short description for 'updateFiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $devid Parameter description (if any) ...
+	 * @param      string $currentid Parameter description (if any) ...
+	 * @param      integer $copy Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 		public function updateFiles( $rid=NULL, $devid=NULL, $currentid=NULL, $copy=0)
 		{
 			if ($rid===NULL or $devid===NULL or $currentid===NULL) {
@@ -733,6 +1079,12 @@ class ResourcesHelper extends JObject
 	}
 
 // For backwards compatibility
+
+/**
+ * Short description for 'ResourceExtended'
+ * 
+ * Long description (if any) ...
+ */
 class ResourceExtended extends ResourcesHelper
 {
 }

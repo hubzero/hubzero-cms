@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_usage_chart' );
 
+/**
+ * Short description for 'plgUsageChart'
+ * 
+ * Long description (if any) ...
+ */
 class plgUsageChart extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgUsageChart'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgUsageChart(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgUsageChart extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onUsageAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function onUsageAreas()
 	{
 		$areas = array(
@@ -56,6 +80,17 @@ class plgUsageChart extends JPlugin
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
 
+
+	/**
+	 * Short description for 'check_for_data'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      unknown $yearmonth Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function check_for_data(&$db, $yearmonth, $period)
 	{
 	   	$sql = "SELECT COUNT(datetime) FROM totalvals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
@@ -68,6 +103,17 @@ class plgUsageChart extends JPlugin
 	   	return(false);
 	}
 
+	/**
+	 * Short description for 'getChartData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $db Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @param      unknown $datetime Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function getChartData($db, $id, $period, $datetime)
 	{
 		$data = array();
@@ -206,6 +252,18 @@ class plgUsageChart extends JPlugin
 		return $data;
 	}
 
+	/**
+	 * Short description for 'getPieData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$db Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @param      string $datetime Parameter description (if any) ...
+	 * @param      string $group Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function getPieData(&$db, $id, $period, $datetime, $group='residence')
 	{
 		$data = array();
@@ -264,6 +322,15 @@ class plgUsageChart extends JPlugin
 		return $data;
 	}
 
+	/**
+	 * Short description for 'fmt_result'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $value Parameter description (if any) ...
+	 * @param      integer $fmt Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function fmt_result($value, $fmt)
 	{
 		$valfmt[0]='-'; // blank. for future use
@@ -294,6 +361,16 @@ class plgUsageChart extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'navlinks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function navlinks($option, $task, $period='prior12')
 	{
 		$html  = '<div id="sub-sub-menu">'."\n";
@@ -329,6 +406,19 @@ class plgUsageChart extends JPlugin
 	    return $html;
 	}
 
+	/**
+	 * Short description for 'outputData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $label Parameter description (if any) ...
+	 * @param      unknown $db Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $period Parameter description (if any) ...
+	 * @param      unknown $datetime Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function outputData($option, $label, $db, $id, $period, $datetime)
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'ofc'.DS.'php-ofc-library'.DS.'open-flash-chart.php' );
@@ -477,6 +567,19 @@ class plgUsageChart extends JPlugin
 		$document->addScriptDeclaration( $js );
 	}
 
+	/**
+	 * Short description for 'onUsageDisplay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      object $db Parameter description (if any) ...
+	 * @param      unknown $months Parameter description (if any) ...
+	 * @param      unknown $monthsReverse Parameter description (if any) ...
+	 * @param      unknown $enddate Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onUsageDisplay( $option, $task, $db, $months, $monthsReverse, $enddate )
 	{
 		// Check if our task is the area we want to return results for

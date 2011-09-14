@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'EventsController'
+ * 
+ * Long description (if any) ...
+ */
 class EventsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function execute()
 	{
 		$config = new EventsConfigs( $this->database );
@@ -53,7 +68,14 @@ class EventsController extends Hubzero_Controller
 			}
 		}
 
+	/**
+	 * Description for ''_CAL_CONF_STARDAY''
+	 */
 		define( '_CAL_CONF_STARDAY', $config->getCfg('starday'));
+
+	/**
+	 * Description for ''_CAL_CONF_DEFCOLOR''
+	 */
 		define( '_CAL_CONF_DEFCOLOR', $config->getCfg('navbarcolor'));
 
 		$this->_task = strtolower(JRequest::getString('task', ''));
@@ -110,6 +132,13 @@ class EventsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'getScripts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function getScripts()
 	{
 		$document =& JFactory::getDocument();
@@ -123,6 +152,14 @@ class EventsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'events'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function events()
 	{
 		// Instantiate a new view
@@ -169,6 +206,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit()
 	{
 		// Instantiate a new view
@@ -315,6 +359,15 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'parseTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function parseTag($text, $tag)
 	{
 		preg_match("#<ef:".$tag.">(.*?)</ef:".$tag.">#s", $text, $matches);
@@ -328,6 +381,13 @@ class EventsController extends Hubzero_Controller
 		return $match;
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		// Incoming
@@ -342,6 +402,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check for request forgeries
@@ -554,6 +621,14 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_CAL_LANG_SAVED');
 	}
 
+	/**
+	 * Short description for 'clean'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function clean($string)
 	{
 		if (get_magic_quotes_gpc()) {
@@ -596,6 +671,13 @@ class EventsController extends Hubzero_Controller
 		return $string;
 	}
 
+	/**
+	 * Short description for 'publish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function publish()
 	{
 		// Incoming
@@ -624,6 +706,13 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_CAL_LANG_PUBLISHED');
 	}
 
+	/**
+	 * Short description for 'unpublish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function unpublish()
 	{
 		// Incoming
@@ -652,6 +741,13 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_CAL_LANG_UNPUBLISHED');
 	}
 
+	/**
+	 * Short description for 'setType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function setType()
 	{
 		// Incoming
@@ -694,6 +790,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function remove()
 	{
 		// Incoming
@@ -745,6 +848,14 @@ class EventsController extends Hubzero_Controller
 	// Configuration
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'configure'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function configure()
 	{
 		$view = new JView( array('name'=>'configure') );
@@ -761,6 +872,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveconfig'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveconfig()
 	{
 		// Get the configuration
@@ -833,6 +951,14 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_CAL_LANG_CONFIG_SAVED');
 	}
 
+	/**
+	 * Short description for 'normalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $txt Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function normalize($txt)
 	{
 		// Strip any non-alphanumeric characters
@@ -845,6 +971,14 @@ class EventsController extends Hubzero_Controller
 	// Categories
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'cats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function cats()
 	{
 		$view = new JView( array('name'=>'categories') );
@@ -927,6 +1061,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function editcat()
 	{
 		$view = new JView( array('name'=>'category') );
@@ -1000,6 +1141,17 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'readDirectory'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $path Parameter description (if any) ...
+	 * @param      string $filter Parameter description (if any) ...
+	 * @param      boolean $recurse Parameter description (if any) ...
+	 * @param      boolean $fullpath Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function readDirectory( $path, $filter='.', $recurse=false, $fullpath=false  )
 	{
 		$arr = array(null);
@@ -1015,6 +1167,13 @@ class EventsController extends Hubzero_Controller
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'savecat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savecat()
 	{
 		// Check for request forgeries
@@ -1058,6 +1217,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
 
+	/**
+	 * Short description for 'cancelcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelcat()
 	{
 		// Checkin the category
@@ -1069,6 +1235,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
 
+	/**
+	 * Short description for 'publishcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function publishcat()
 	{
 		// Check for request forgeries
@@ -1100,6 +1273,13 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_CAL_LANG_CATEGORY_PUBLISHED');
 	}
 
+	/**
+	 * Short description for 'unpublishcat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function unpublishcat()
 	{
 		// Check for request forgeries
@@ -1131,6 +1311,13 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_CAL_LANG_CATEGORY_UNPUBLISHED');
 	}
 
+	/**
+	 * Short description for 'orderup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function orderup()
 	{
 		// Check for request forgeries
@@ -1148,6 +1335,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
 
+	/**
+	 * Short description for 'orderdown'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function orderdown()
 	{
 		// Check for request forgeries
@@ -1165,6 +1359,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 	}
 
+	/**
+	 * Short description for 'removecat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function removecat()
 	{
 		// Check for request forgeries
@@ -1217,6 +1418,14 @@ class EventsController extends Hubzero_Controller
 	//  Respondents
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'viewrespondent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function viewrespondent()
 	{
 		$view = new JView( array('name'=>'respondent') );
@@ -1241,6 +1450,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'viewlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function viewlist()
 	{
 		$view = new JView( array('name'=>'respondents') );
@@ -1270,6 +1486,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'getRespondents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function getRespondents()
 	{
 		$app =& JFactory::getApplication();
@@ -1287,11 +1510,25 @@ class EventsController extends Hubzero_Controller
 		return new EventsRespondent($filters);
 	}
 
+	/**
+	 * Short description for 'downloadlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function downloadlist()
 	{
 		EventsHtml::downloadlist($this->getRespondents(), $this->_option);
 	}
 
+	/**
+	 * Short description for 'removerespondent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function removerespondent()
 	{
 		// Check for request forgeries
@@ -1327,6 +1564,14 @@ class EventsController extends Hubzero_Controller
 	//  Pages
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'pages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function pages()
 	{
 		$ids = JRequest::getVar( 'id', array(0) );
@@ -1375,6 +1620,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'addpage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addpage()
 	{
 		$ids = JRequest::getVar( 'id', array() );
@@ -1387,6 +1639,14 @@ class EventsController extends Hubzero_Controller
 		$this->editpage($id);
 	}
 
+	/**
+	 * Short description for 'editpage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $eid Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function editpage($eid=null)
 	{
 		$view = new JView( array('name'=>'page') );
@@ -1420,6 +1680,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savepage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savepage()
 	{
 		// Check for request forgeries
@@ -1468,6 +1735,13 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_PAGE_SAVED');
 	}
 
+	/**
+	 * Short description for 'removepage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function removepage()
 	{
 		// Check for request forgeries
@@ -1499,16 +1773,37 @@ class EventsController extends Hubzero_Controller
 		$this->_message = JText::_('EVENTS_PAGES_REMOVED');
 	}
 
+	/**
+	 * Short description for 'orderuppage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function orderuppage()
 	{
 		$this->reorderpage();
 	}
 
+	/**
+	 * Short description for 'orderdownpage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function orderdownpage()
 	{
 		$this->reorderpage();
 	}
 
+	/**
+	 * Short description for 'reorderpage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function reorderpage()
 	{
 		// Check for request forgeries
@@ -1568,6 +1863,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='. $this->_option .'&task=pages&id[]='. $pid;
 	}
 
+	/**
+	 * Short description for 'cancelpage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelpage()
 	{
 		$workshop = JRequest::getInt( 'event', 0 );

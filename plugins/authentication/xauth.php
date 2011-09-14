@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,20 +35,54 @@ jimport( 'joomla.plugin.plugin' );
 
 // TODO: hzldap plugin should be built into here maybe
 
+
+/**
+ * Short description for 'plgAuthenticationXauth'
+ * 
+ * Long description (if any) ...
+ */
 class plgAuthenticationXauth extends JPlugin
 {
+
+	/**
+	 * Short description for 'attach'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $obsert Parameter description (if any) ...
+	 * @return     void
+	 */
 	function attach($obsert)
 	{
 		// I don't know what this is for at the moment, but it complains if this
 		// function is missing
 	}
 
+	/**
+	 * Short description for 'plgAuthenticationXauth'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	function plgAuthenticationXauth(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 		JPluginHelper::importPlugin('xauthentication');
 	}
 
+	/**
+	 * Short description for 'onAuthenticate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $credentials Parameter description (if any) ...
+	 * @param      array $options Parameter description (if any) ...
+	 * @param      object &$response Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function onAuthenticate( $credentials, $options, &$response )
 	{
 		$plugins = JPluginHelper::getPlugin('xauthentication');
@@ -106,6 +142,16 @@ class plgAuthenticationXauth extends JPlugin
 		$response->error_message = 'Invalid domain';
 	}
 
+	/**
+	 * Short description for 'onAuthenticateOld'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $credentials Parameter description (if any) ...
+	 * @param      array $options Parameter description (if any) ...
+	 * @param      object &$response Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function onAuthenticateOld( $credentials, $options, &$response )
 	{
 		$plugins = JPluginHelper::getPlugin('xauthentication');

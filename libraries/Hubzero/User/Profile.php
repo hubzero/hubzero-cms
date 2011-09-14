@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2009-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2009-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,64 +33,374 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile_Helper');
 
+/**
+ * Short description for 'Hubzero_User_Profile'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_User_Profile extends JObject
 {
 	// properties
+
+
+	/**
+	 * Description for 'uidNumber'
+	 * 
+	 * @var unknown
+	 */
 	private $uidNumber = null;
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	private $name = null;
+
+	/**
+	 * Description for 'username'
+	 * 
+	 * @var unknown
+	 */
 	private $username = null;
+
+	/**
+	 * Description for 'email'
+	 * 
+	 * @var unknown
+	 */
 	private $email = null;
+
+	/**
+	 * Description for 'registerDate'
+	 * 
+	 * @var unknown
+	 */
 	private $registerDate = null;
+
+	/**
+	 * Description for 'gidNumber'
+	 * 
+	 * @var unknown
+	 */
 	private $gidNumber = null;
+
+	/**
+	 * Description for 'homeDirectory'
+	 * 
+	 * @var unknown
+	 */
 	private $homeDirectory = null;
+
+	/**
+	 * Description for 'loginShell'
+	 * 
+	 * @var unknown
+	 */
 	private $loginShell = null;
+
+	/**
+	 * Description for 'ftpShell'
+	 * 
+	 * @var unknown
+	 */
 	private $ftpShell = null;
+
+	/**
+	 * Description for 'userPassword'
+	 * 
+	 * @var string
+	 */
 	private $userPassword = null;
+
+	/**
+	 * Description for 'shadowExpire'
+	 * 
+	 * @var unknown
+	 */
 	private $shadowExpire = null;
+
+	/**
+	 * Description for 'gid'
+	 * 
+	 * @var unknown
+	 */
 	private $gid = null;
+
+	/**
+	 * Description for 'orgtype'
+	 * 
+	 * @var unknown
+	 */
 	private $orgtype = null;
+
+	/**
+	 * Description for 'organization'
+	 * 
+	 * @var unknown
+	 */
 	private $organization = null;
+
+	/**
+	 * Description for 'countryresident'
+	 * 
+	 * @var unknown
+	 */
 	private $countryresident = null;
+
+	/**
+	 * Description for 'countryorigin'
+	 * 
+	 * @var unknown
+	 */
 	private $countryorigin = null;
+
+	/**
+	 * Description for 'gender'
+	 * 
+	 * @var unknown
+	 */
 	private $gender = null;
+
+	/**
+	 * Description for 'url'
+	 * 
+	 * @var unknown
+	 */
 	private $url = null;
+
+	/**
+	 * Description for 'reason'
+	 * 
+	 * @var unknown
+	 */
 	private $reason = null;
+
+	/**
+	 * Description for 'mailPreferenceOption'
+	 * 
+	 * @var unknown
+	 */
 	private $mailPreferenceOption = null;
+
+	/**
+	 * Description for 'usageAgreement'
+	 * 
+	 * @var unknown
+	 */
 	private $usageAgreement = null;
+
+	/**
+	 * Description for 'jobsAllowed'
+	 * 
+	 * @var unknown
+	 */
 	private $jobsAllowed = null;
+
+	/**
+	 * Description for 'modifiedDate'
+	 * 
+	 * @var unknown
+	 */
 	private $modifiedDate = null;
+
+	/**
+	 * Description for 'emailConfirmed'
+	 * 
+	 * @var unknown
+	 */
 	private $emailConfirmed = null;
+
+	/**
+	 * Description for 'regIP'
+	 * 
+	 * @var unknown
+	 */
 	private $regIP = null;
+
+	/**
+	 * Description for 'regHost'
+	 * 
+	 * @var unknown
+	 */
 	private $regHost = null;
+
+	/**
+	 * Description for 'nativeTribe'
+	 * 
+	 * @var unknown
+	 */
 	private $nativeTribe = null;
+
+	/**
+	 * Description for 'phone'
+	 * 
+	 * @var unknown
+	 */
 	private $phone = null;
+
+	/**
+	 * Description for 'proxyPassword'
+	 * 
+	 * @var unknown
+	 */
 	private $proxyPassword = null;
+
+	/**
+	 * Description for 'proxyUidNumber'
+	 * 
+	 * @var unknown
+	 */
 	private $proxyUidNumber = null;
+
+	/**
+	 * Description for 'givenName'
+	 * 
+	 * @var unknown
+	 */
 	private $givenName = null;
+
+	/**
+	 * Description for 'middleName'
+	 * 
+	 * @var unknown
+	 */
 	private $middleName = null;
+
+	/**
+	 * Description for 'surname'
+	 * 
+	 * @var unknown
+	 */
 	private $surname = null;
+
+	/**
+	 * Description for 'picture'
+	 * 
+	 * @var unknown
+	 */
 	private $picture = null;
+
+	/**
+	 * Description for 'vip'
+	 * 
+	 * @var unknown
+	 */
 	private $vip = null;
+
+	/**
+	 * Description for 'public'
+	 * 
+	 * @var unknown
+	 */
 	private $public = null;
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	private $params = null;
+
+	/**
+	 * Description for 'note'
+	 * 
+	 * @var unknown
+	 */
 	private $note = null;
 	// properties stored in auxilliary tables
+
+
+	/**
+	 * Description for '_auxs_bio'
+	 * 
+	 * @var unknown
+	 */
 	private $_auxs_bio = null;
 	// multi-value properties stored in auxilliary tables
+
+
+	/**
+	 * Description for '_auxv_disability'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_disability = array();
+
+	/**
+	 * Description for '_auxv_hispanic'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_hispanic = array();
+
+	/**
+	 * Description for '_auxv_race'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_race = array();
+
+	/**
+	 * Description for '_auxv_admin'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_admin = array();
+
+	/**
+	 * Description for '_auxv_host'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_host = array();
+
+	/**
+	 * Description for '_auxv_manager'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_manager = array();
+
+	/**
+	 * Description for '_auxv_edulevel'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_edulevel = array();
+
+	/**
+	 * Description for '_auxv_role'
+	 * 
+	 * @var array
+	 */
 	private $_auxv_role = array();
 	//private $_auxv_tag = array();
 	// private class variables
+
+
+	/**
+	 * Description for '_password'
+	 * 
+	 * @var string
+	 */
 	private $_password = null;
+
+	/**
+	 * Description for '_params'
+	 * 
+	 * @var object
+	 */
 	private $_params = null;
 
 	// static class variables
+
+
+	/**
+	 * Description for '_s_propertyattrmap'
+	 * 
+	 * @var array
+	 */
 	static $_s_propertyattrmap = array('username' => 'uid', 'name' => 'cn', 'uidNumber' => 'uidNumber',
 			'gidNumber' => 'gidNumber', 'homeDirectory' => 'homeDirectory', 'email' => 'mail',
 			'registerDate' => 'regDate', 'loginShell' => 'loginShell', 'ftpShell' => 'ftpShell',
@@ -102,6 +414,14 @@ class Hubzero_User_Profile extends JObject
 			'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel',
 			'role' => 'role', 'shadowExpire' => 'shadowExpire');
 
+	/**
+	 * Short description for 'setError'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setError($msg)
 	{
 		$bt = debug_backtrace();
@@ -111,6 +431,14 @@ class Hubzero_User_Profile extends JObject
 		array_push($this->_errors, $error);
 	}
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function logDebug($msg)
 	{
 		$xlog =& Hubzero_Factory::getLogger();
@@ -119,6 +447,13 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function clear()
 	{
 		$classvars = get_class_vars('Hubzero_User_Profile');
@@ -143,6 +478,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_ldap_get_user'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $username Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _ldap_get_user($username = null)
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -256,6 +599,14 @@ class Hubzero_User_Profile extends JObject
 		return $userinfo;
 	}
 
+	/**
+	 * Short description for '_ldap_load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $username Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _ldap_load($username = null)
 	{
 		$userinfo = $this->_ldap_get_user($username);
@@ -278,6 +629,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $user Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_load($user)
 	{
 		$db = &JFactory::getDBO();
@@ -329,6 +688,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_author_load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $authorid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_author_load($authorid)
 	{
 		static $_propertyauthormap = array('uidNumber' => 'id', 'givenName' => 'firstname', 'middleName' => 'middlename',
@@ -365,6 +732,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_xregistration_load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $registration Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _xregistration_load($registration)
 	{
 		static $_propertyregmap = array('username' => 'login', 'name' => 'name', 'email' => 'email', 'orgtype' => 'orgtype',
@@ -390,6 +765,15 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function load($user, $storage = 'mysql')
 	{
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap','author','xregistration')))
@@ -413,6 +797,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function __construct($user = null)
 	{
 		if (!empty($user))
@@ -421,6 +813,13 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_ldap_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _ldap_create()
 	{
 		if (!is_numeric($this->get('uidNumber')))
@@ -505,6 +904,13 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_create()
 	{
 		$db = &JFactory::getDBO();
@@ -586,6 +992,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function create($storage = null)
 	{
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
@@ -614,6 +1028,13 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_ldap_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _ldap_update()
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -731,6 +1152,13 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_update_auxilliary_tables'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_update_auxilliary_tables()
 	{
 		$db = &JFactory::getDBO();
@@ -802,6 +1230,14 @@ class Hubzero_User_Profile extends JObject
 
 	}
 
+	/**
+	 * Short description for '_mysql_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $mysqlonly Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_update($mysqlonly = false)
 	{
 		if (!is_numeric($this->get('uidNumber')))
@@ -846,6 +1282,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function update($storage = null)
 	{
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
@@ -877,6 +1321,15 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'store'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $updateOnly Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function store($updateOnly = false, $storage = null)
 	{
 		$db = &JFactory::getDBO();
@@ -950,6 +1403,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	static function getInstance($user = null)
 	{
 		$instance = new Hubzero_User_Profile($user);
@@ -960,6 +1421,14 @@ class Hubzero_User_Profile extends JObject
 		return $instance;
 	}
 
+	/**
+	 * Short description for '_get_auxilliary_property'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $property Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _get_auxilliary_property($property)
 	{
 		$db = & JFactory::getDBO();
@@ -999,6 +1468,14 @@ class Hubzero_User_Profile extends JObject
 		return $result;
 	}
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $property Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get($property)
 	{
 		if ($property == 'password')
@@ -1029,6 +1506,15 @@ class Hubzero_User_Profile extends JObject
 		return $this->$property;
 	}
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      mixed $value Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function set($property,$value)
 	{
 		if ($property == 'password')
@@ -1089,6 +1575,15 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function add($property, $value)
 	{
 		if ('_' == substr($property, 0, 1))
@@ -1130,6 +1625,15 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function remove($property, $value)
 	{
 		if ('_' == substr($property, 0, 1))
@@ -1169,21 +1673,57 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'getParam'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $default Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getParam( $key, $default = null )
 	{
 		return $this->_params->get( $key, $default );
 	}
 
+	/**
+	 * Short description for 'setParam'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function setParam( $key, $value )
 	{
 		return $this->_params->set( $key, $value );
 	}
 
+	/**
+	 * Short description for 'defParam'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function defParam( $key, $value )
 	{
 		return $this->_params->def( $key, $value );
 	}
 
+	/**
+	 * Short description for 'getParameters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $loadsetupfile Parameter description (if any) ...
+	 * @param      unknown $path Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function &getParameters($loadsetupfile = false, $path = null)
 	{
 		static $parampath;
@@ -1217,11 +1757,27 @@ class Hubzero_User_Profile extends JObject
 		return $this->_params;
 	}
 
+	/**
+	 * Short description for 'setParameters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setParameters($params)
 	{
 		$this->_params = $params;
 	}
 
+	/**
+	 * Short description for '_ldap_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _ldap_delete($uid)
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -1252,6 +1808,13 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_delete()
 	{
 		$db = & JFactory::getDBO();
@@ -1296,6 +1859,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete($storage = null)
 	{
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
@@ -1323,6 +1894,14 @@ class Hubzero_User_Profile extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadRegistration'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$registration Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadRegistration(&$registration)
 	{
 		if (!is_object($registration)) {
@@ -1378,6 +1957,16 @@ class Hubzero_User_Profile extends JObject
 	}
 
 	/* Member Roles */
+
+	/**
+	 * Short description for 'getGroupMemberRoles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getGroupMemberRoles( $uid, $gid )
 	{
 		$user_roles = '';

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,15 +33,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
 
+/**
+ * Short description for 'plgHubzeroWikiparser'
+ * 
+ * Long description (if any) ...
+ */
 class plgHubzeroWikiparser extends JPlugin
 {
+
+	/**
+	 * Description for 'parser'
+	 * 
+	 * @var object
+	 */
 	public $parser;
 
+	/**
+	 * Short description for 'plgHubzeroWikiparser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgHubzeroWikiparser(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 	}
 
+	/**
+	 * Short description for 'onGetWikiParser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @param      boolean $getnew Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function onGetWikiParser( $config, $getnew=false )
 	{
 		if (!is_object($this->parser) || $getnew) {
@@ -62,6 +93,17 @@ class plgHubzeroWikiparser extends JPlugin
 		return $this->parser;
 	}
 
+	/**
+	 * Short description for 'onWikiParseText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @param      boolean $fullparse Parameter description (if any) ...
+	 * @param      boolean $getnew Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function onWikiParseText( $text, $config, $fullparse=true, $getnew=false )
 	{
 		$parser = $this->onGetWikiParser( $config, $getnew );

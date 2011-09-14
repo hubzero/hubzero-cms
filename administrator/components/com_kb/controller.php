@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'KbController'
+ * 
+ * Long description (if any) ...
+ */
 class KbController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = strtolower(JRequest::getVar('task', '', 'request'));
@@ -75,6 +90,14 @@ class KbController extends Hubzero_Controller
 	// Collection functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'categories'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function categories()
 	{
 		// Instantiate a new view
@@ -119,6 +142,13 @@ class KbController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'articles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function articles()
 	{
 		// Instantiate a new view
@@ -166,6 +196,13 @@ class KbController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'orphans'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function orphans()
 	{
 		// Instantiate a new view
@@ -214,6 +251,13 @@ class KbController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editfaq'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function editfaq()
 	{
         $created_by_id = 0;
@@ -303,6 +347,13 @@ class KbController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editcategory'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editcategory()
 	{
 		// Instantiate a new view
@@ -338,6 +389,14 @@ class KbController extends Hubzero_Controller
 	//  Processers
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'savefaq'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savefaq()
 	{
 		// Check for request forgeries
@@ -410,6 +469,13 @@ class KbController extends Hubzero_Controller
 		$this->_message = JText::_('KB_ARTICLE_SAVED');
 	}
 
+	/**
+	 * Short description for 'savecategory'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savecategory()
 	{
 		// Check for request forgeries
@@ -451,6 +517,13 @@ class KbController extends Hubzero_Controller
 		$this->_message = JText::_('KB_CATEGORY_SAVED');
 	}
 
+	/**
+	 * Short description for 'deletefaq'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletefaq()
 	{
 		// Incoming
@@ -483,6 +556,13 @@ class KbController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'deletecategory'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function deletecategory()
 	{
 		// Incoming
@@ -578,6 +658,13 @@ class KbController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'access'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function access()
 	{
 		// Incoming
@@ -615,6 +702,14 @@ class KbController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'publish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $w Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function publish($w=0)
 	{
 		// Incoming
@@ -670,6 +765,13 @@ class KbController extends Hubzero_Controller
 		$this->_redirect .= ($cid) ? '&task=category&id='.$cid : '';
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		// Incoming
@@ -697,6 +799,13 @@ class KbController extends Hubzero_Controller
 		$this->_redirect .= ($cid) ? '&task=categories&id='.$cid : '';
 	}
 
+	/**
+	 * Short description for 'resethits'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function resethits()
 	{
 		// Incoming
@@ -726,6 +835,13 @@ class KbController extends Hubzero_Controller
 		$this->_redirect .= ($cid) ? '&task=category&cid='.$cid : '';
 	}
 
+	/**
+	 * Short description for 'resetvotes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function resetvotes()
 	{
 		// Incoming

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_forum' );
 
+/**
+ * Short description for 'plgGroupsForum'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsForum extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgGroupsForum'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsForum(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgGroupsForum extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -54,6 +78,21 @@ class plgGroupsForum extends JPlugin
 		return $area;
 	}
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
@@ -158,6 +197,13 @@ class plgGroupsForum extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'topics'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function topics()
 	{
 		// Incoming
@@ -215,6 +261,14 @@ class plgGroupsForum extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'topic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $id Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	protected function topic($id=0)
 	{
 		// Incoming
@@ -283,6 +337,13 @@ class plgGroupsForum extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'deletetopic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletetopic()
 	{
 		// Is the user logged in?
@@ -324,6 +385,13 @@ class plgGroupsForum extends JPlugin
 		$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
 	}
 
+	/**
+	 * Short description for 'edittopic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function edittopic()
 	{
 		//check to make sure editor is a member
@@ -383,6 +451,13 @@ class plgGroupsForum extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'savetopic'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savetopic()
 	{
 		//check to make sure editor is a member
@@ -465,6 +540,14 @@ class plgGroupsForum extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'onGroupDelete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onGroupDelete( $group )
 	{
 		//ximport('xforum');
@@ -492,10 +575,26 @@ class plgGroupsForum extends JPlugin
 		return $log;
 	}
 
+	/**
+	 * Short description for 'onGroupDeleteCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function onGroupDeleteCount( $group )
 	{
 	}
 
+	/**
+	 * Short description for 'getForumIDs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getForumIDs( $gid=NULL )
 	{
 		if (!$gid) {
@@ -514,6 +613,13 @@ class plgGroupsForum extends JPlugin
 		return $forum->getRecords( $filters );
 	}
 
+	/**
+	 * Short description for '_reply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	protected function _reply()
 	{
 		// Is the user logged in?

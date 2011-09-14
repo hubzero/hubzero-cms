@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,24 +21,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'MyhubPrefs'
+ * 
+ * Long description (if any) ...
+ */
 class MyhubPrefs extends JTable
 {
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid   = NULL;  // int(11)
+
+
+	/**
+	 * Description for 'prefs'
+	 * 
+	 * @var unknown
+	 */
 	var $prefs = NULL;  // varchar(200)
+
+
+	/**
+	 * Description for 'modified'
+	 * 
+	 * @var unknown
+	 */
 	var $modified = NULL;  // datetime(0000-00-00 00:00:00)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__myhub', 'uid', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (!$this->uid) {
@@ -52,6 +95,13 @@ class MyhubPrefs extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function create()
 	{
 		$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
@@ -63,6 +113,14 @@ class MyhubPrefs extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getPrefs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $module Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getPrefs( $module=NULL )
 	{
 		if (!$module) {

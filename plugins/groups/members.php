@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_members' );
 
+/**
+ * Short description for 'plgGroupsMembers'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsMembers extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgGroupsMembers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsMembers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,13 @@ class plgGroupsMembers extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -54,6 +78,21 @@ class plgGroupsMembers extends JPlugin
 		return $area;
 	}
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $group Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
@@ -255,6 +294,14 @@ class plgGroupsMembers extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'thumbit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
@@ -267,6 +314,14 @@ class plgGroupsMembers extends JPlugin
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
@@ -280,6 +335,14 @@ class plgGroupsMembers extends JPlugin
 	// Manage group members
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'approve'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function approve()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -374,6 +437,13 @@ class plgGroupsMembers extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'promote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function promote()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -448,6 +518,13 @@ class plgGroupsMembers extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'demote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function demote()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -528,6 +605,13 @@ class plgGroupsMembers extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function remove()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -562,6 +646,13 @@ class plgGroupsMembers extends JPlugin
 		$this->_output = $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'confirmremove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function confirmremove()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -658,6 +749,13 @@ class plgGroupsMembers extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function add()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -668,6 +766,13 @@ class plgGroupsMembers extends JPlugin
 		$xhub->redirect( JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&task=invite&return=members') );
 	}
 
+	/**
+	 * Short description for 'deny'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function deny()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -705,6 +810,13 @@ class plgGroupsMembers extends JPlugin
 		$this->_output = $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'confirmdeny'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function confirmdeny()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -777,6 +889,13 @@ class plgGroupsMembers extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function cancel()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -811,6 +930,13 @@ class plgGroupsMembers extends JPlugin
 		$this->_output = $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'confirmcancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function confirmcancel()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -909,6 +1035,14 @@ class plgGroupsMembers extends JPlugin
 	}
 
 	/* Member Roles */
+
+	/**
+	 * Short description for 'addrole'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function addrole()
 	{
 		if($this->membership_control == 0) {
@@ -933,6 +1067,13 @@ class plgGroupsMembers extends JPlugin
 		$xhub->redirect( JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members') );
 	}
 
+	/**
+	 * Short description for 'removerole'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function removerole()
 	{
 		if($this->membership_control == 0) {
@@ -962,6 +1103,13 @@ class plgGroupsMembers extends JPlugin
 		$xhub->redirect( JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members') );
 	}
 
+	/**
+	 * Short description for 'assignrole'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function assignrole()
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -1009,6 +1157,13 @@ class plgGroupsMembers extends JPlugin
 		$this->_output = $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'submitrole'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function submitrole()
 	{
 		if($this->membership_control == 0) {
@@ -1036,6 +1191,13 @@ class plgGroupsMembers extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'deleterole'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function deleterole()
 	{
 		if($this->membership_control == 0) {
@@ -1067,6 +1229,15 @@ class plgGroupsMembers extends JPlugin
 	// Messaging
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'notifyAdmin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $admchange Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function notifyAdmin( $admchange='' )
 	{
 		// Load needed plugins
@@ -1139,6 +1310,14 @@ class plgGroupsMembers extends JPlugin
 		//}
 	}
 
+	/**
+	 * Short description for 'notifyUser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $targetuser Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function notifyUser( $targetuser )
 	{
 		// Get the group information
@@ -1242,6 +1421,14 @@ class plgGroupsMembers extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'notifyEmailInvitedUser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function notifyEmailInvitedUser( $email )
 	{
 		// Get the group information

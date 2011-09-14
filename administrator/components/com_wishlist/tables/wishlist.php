@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,30 +21,118 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Wishlist'
+ * 
+ * Long description (if any) ...
+ */
 class Wishlist extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category       = NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'referenceid'
+	 * 
+	 * @var unknown
+	 */
 	var $referenceid	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description	= NULL;  // @var text
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title			= NULL;  // @var varchar(150)
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by 	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state     		= NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'public'
+	 * 
+	 * @var unknown
+	 */
 	var $public			= NULL;  // @var int(3)  // can any user view and submit to it?
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__wishlist', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
@@ -58,6 +143,15 @@ class Wishlist extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'get_wishlistID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $rid Parameter description (if any) ...
+	 * @param      string $cat Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_wishlistID($rid=0, $cat='resource')
 	{
 		if ($rid === NULL) {
@@ -76,6 +170,18 @@ class Wishlist extends JTable
 		return  $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'createlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      unknown $refid Parameter description (if any) ...
+	 * @param      integer $public Parameter description (if any) ...
+	 * @param      string $title Parameter description (if any) ...
+	 * @param      string $description Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function createlist($category='resource', $refid, $public=1, $title='', $description='')
 	{
 		if ($refid === NULL) {
@@ -158,6 +264,14 @@ class Wishlist extends JTable
 		return 0;
 	}
 
+	/**
+	 * Short description for 'getTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getTitle($id)
 	{
 		if ($id === NULL) {
@@ -171,6 +285,14 @@ class Wishlist extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'is_primary'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function is_primary($id)
 	{
 		if ($id === NULL) {
@@ -187,6 +309,18 @@ class Wishlist extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'get_wishlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      mixed $refid Parameter description (if any) ...
+	 * @param      string $cat Parameter description (if any) ...
+	 * @param      integer $primary Parameter description (if any) ...
+	 * @param      integer $getversions Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_wishlist($id='', $refid=0, $cat='', $primary = 0, $getversions=0)
 	{
 		if ($id===NULL && $refid===0 && $cat===NULL) {
@@ -234,6 +368,16 @@ class Wishlist extends JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'get_parent_versions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      integer $type Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_parent_versions($rid, $type)
 	{
 		$versions = array();
@@ -250,6 +394,15 @@ class Wishlist extends JTable
 		return $versions;
 	}
 
+	/**
+	 * Short description for 'get_wishlist_parent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $refid Parameter description (if any) ...
+	 * @param      string $cat Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_wishlist_parent($refid, $cat='resource')
 	{
 		$resource = array();
@@ -266,6 +419,14 @@ class Wishlist extends JTable
 		return $resource;
 	}
 
+	/**
+	 * Short description for 'getCons'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $refid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCons($refid)
 	{
 		$sql = "SELECT n.uidNumber AS id"
@@ -278,6 +439,15 @@ class Wishlist extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getToolDevGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $refid Parameter description (if any) ...
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getToolDevGroup($refid, $groups = array())
 	{
 		$query  = "SELECT g.cn FROM #__tool_groups AS g ";

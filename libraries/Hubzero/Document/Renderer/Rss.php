@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,10 +34,10 @@ defined('_JEXEC') or die( 'Restricted access' );
  /**
  * Hubzero_Document_Renderer_RSS is a feed that implements RSS 2.0 Specification that includes support for iTunes tags
  * 
- * @author      Johan Janssens <johan.janssens@joomla.org>
- * @author      Shawn Rice <zooley@purdue.edu>
- *
- * @see http://www.rssboard.org/rss-specification
+ * @author Johan Janssens <johan.janssens@joomla.org>
+ * @author Shawn Rice <zooley@purdue.edu>
+ *         
+ * @see    http://www.rssboard.org/rss-specification
  */
 
 class Hubzero_Document_Renderer_Rss extends JDocumentRenderer

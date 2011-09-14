@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,33 +21,94 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WikiHtml'
+ * 
+ * Long description (if any) ...
+ */
 class WikiHtml
 {
+
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'warning'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'passed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function passed( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
+	/**
+	 * Short description for 'subMenu'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $sub Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $pagename Parameter description (if any) ...
+	 * @param      string $scope Parameter description (if any) ...
+	 * @param      integer $state Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      object $params Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function subMenu($sub, $option, $pagename, $scope, $state, $task, $params, $authorized)
 	{
 		$html = '';
@@ -115,6 +173,14 @@ class WikiHtml
 		return $html;
     }
 
+	/**
+	 * Short description for 'tagCloud'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $tags Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function tagCloud($tags)
 	{
 		if (count($tags) > 0) {
@@ -139,6 +205,16 @@ class WikiHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'ranking'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $stats Parameter description (if any) ...
+	 * @param      mixed $page Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function ranking( $stats, $page, $option )
 	{
 		$r = (10*$page->ranking);
@@ -158,6 +234,16 @@ class WikiHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'authors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $page Parameter description (if any) ...
+	 * @param      object $params Parameter description (if any) ...
+	 * @param      array $contributors Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function authors( $page, $params, $contributors=array() )
 	{
 		$html = '';
@@ -206,6 +292,14 @@ class WikiHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
@@ -215,6 +309,15 @@ class WikiHtml
 		return $someid;
 	}
 
+	/**
+	 * Short description for 'encode_html'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @param      integer $quotes Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function encode_html($str, $quotes=1)
 	{
 		$a = array(

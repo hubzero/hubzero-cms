@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'WikiController'
+ * 
+ * Long description (if any) ...
+ */
 class WikiController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_sub = false;
@@ -51,11 +67,25 @@ class WikiController extends Hubzero_Controller
 		parent::__construct($config);
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->config = JComponentHelper::getParams( 'com_wiki' );
 
+	/**
+	 * Description for ''WIKI_SUBPAGE_SEPARATOR''
+	 */
 		define('WIKI_SUBPAGE_SEPARATOR',$this->config->get('subpage_separator'));
+
+	/**
+	 * Description for ''WIKI_MAX_PAGENAME_LENGTH''
+	 */
 		define('WIKI_MAX_PAGENAME_LENGTH',$this->config->get('max_pagename_length'));
 
 		$wp = new WikiPage( $this->database );
@@ -116,6 +146,15 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'getScripts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      string $path Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function getScripts($name='', $path='')
 	{
 		$document =& JFactory::getDocument();
@@ -134,6 +173,14 @@ class WikiController extends Hubzero_Controller
 	// Page/Source Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Load the page
@@ -305,6 +352,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function login()
 	{
 		// Set the page title
@@ -348,6 +402,13 @@ class WikiController extends Hubzero_Controller
 		echo '</div><!-- / .main section -->'.n;*/
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit()
 	{
 	    //$juser =& JFactory::getUser();
@@ -577,6 +638,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		$pageid = JRequest::getInt( 'pageid', 0, 'post' );
@@ -803,6 +871,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&scope='.$page->scope.'&pagename='.$page->pagename);
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		// Check if they are logged in
@@ -904,6 +979,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&scope='.$this->scope);
 	}
 
+	/**
+	 * Short description for 'renamepage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function renamepage()
 	{
 		// Check if they are logged in
@@ -974,6 +1056,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saverename'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saverename()
 	{
 		// Check if they are logged in
@@ -1040,6 +1129,14 @@ class WikiController extends Hubzero_Controller
 	// History Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'history'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function history()
 	{
 		$this->getPage();
@@ -1089,6 +1186,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'compare'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function compare()
 	{
 		$this->getPage();
@@ -1166,6 +1270,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'deleterevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deleterevision()
 	{
 		// Check if they are logged in
@@ -1215,6 +1326,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&scope='.$scope.'&pagename='.$pagename.'&task=history');
 	}
 
+	/**
+	 * Short description for 'approve'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function approve()
 	{
 		// Check if they are logged in
@@ -1265,6 +1383,14 @@ class WikiController extends Hubzero_Controller
 	// Comment Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'comments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function comments()
 	{
 		$this->getPage();
@@ -1352,6 +1478,13 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editcomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function editcomment()
 	{
 		$this->getPage();
@@ -1385,6 +1518,13 @@ class WikiController extends Hubzero_Controller
 		$this->comments();
 	}
 
+	/**
+	 * Short description for 'savecomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savecomment()
 	{
 		$pagename = trim(JRequest::getVar( 'pagename', '', 'post' ));
@@ -1441,6 +1581,13 @@ class WikiController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&scope='.$scope.'&pagename='.$pagename.'&task=comments');
 	}
 
+	/**
+	 * Short description for 'removecomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function removecomment()
 	{
 		$id = JRequest::getInt( 'id', 0, 'request' );
@@ -1461,6 +1608,13 @@ class WikiController extends Hubzero_Controller
 		$this->comments();
 	}
 
+	/**
+	 * Short description for 'reportcomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function reportcomment()
 	{
 		$id = JRequest::getInt( 'id', 0, 'request' );
@@ -1480,6 +1634,14 @@ class WikiController extends Hubzero_Controller
 	// media manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function upload()
 	{
 		// Check if they're logged in
@@ -1550,6 +1712,13 @@ class WikiController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'delete_folder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete_folder()
 	{
 		// Check if they're logged in
@@ -1596,6 +1765,13 @@ class WikiController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'delete_file'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete_file()
 	{
 		// Check if they're logged in
@@ -1647,6 +1823,13 @@ class WikiController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'media'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function media()
 	{
 		// Incoming
@@ -1666,6 +1849,14 @@ class WikiController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'recursive_listdir'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	protected function recursive_listdir($base)
 	{
 	    static $filelist = array();
@@ -1686,6 +1877,13 @@ class WikiController extends Hubzero_Controller
 	    return $dirlist;
 	}
 
+	/**
+	 * Short description for 'list_files'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function list_files()
 	{
 		// Incoming
@@ -1749,6 +1947,16 @@ class WikiController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'make_path'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      integer $mode Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function make_path( $path, $mode=0777 )
 	{
 		if (file_exists( $path )) {
@@ -1776,12 +1984,27 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'normalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $txt Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function normalize( $txt )
 	{
 		//$valid_chars = '\-\:a-zA-Z0-9';
 		return preg_replace("/[^\:a-zA-Z0-9]/", "", $txt);
 	}
 
+	/**
+	 * Short description for 'getPage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function getPage()
 	{
 		// Check if the page object already exist
@@ -1811,6 +2034,14 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'checkAuthorization'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function checkAuthorization( $type='edit' )
 	{
 		// Check if they are logged in
@@ -1907,6 +2138,14 @@ class WikiController extends Hubzero_Controller
 		return false;
 	}
 
+	/**
+	 * Short description for 'splitPagename'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $page Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function splitPagename($page)
 	{
 		$lang =& JFactory::getLanguage();
@@ -1993,6 +2232,16 @@ class WikiController extends Hubzero_Controller
 	// "\xaa" and "\xba" in [:alpha:].)
 	//
 	// So for now, this will do.  --Jeff <dairiki@dairiki.org> 14 Mar, 2001
+
+
+	/**
+	 * Short description for 'pcre_fix_posix_classes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $regexp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function pcre_fix_posix_classes($regexp)
 	{
 		// First check to see if our PCRE lib supports POSIX character
@@ -2010,6 +2259,13 @@ class WikiController extends Hubzero_Controller
 		return preg_replace("/\[:($keys):]/e", '$classes["\1"]', $regexp);
 	}
 
+	/**
+	 * Short description for 'download'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function download()
 	{
 		// Get some needed libraries

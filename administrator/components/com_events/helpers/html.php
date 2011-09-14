@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,31 +21,91 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined("n")) {
+
+/**
+ * Description for '"t"'
+ */
 	define("t","\t");
+
+/**
+ * Description for '"n"'
+ */
 	define("n","\n");
+
+/**
+ * Description for '"br"'
+ */
 	define("br","<br />");
+
+/**
+ * Description for '"sp"'
+ */
 	define("sp","&#160;");
+
+/**
+ * Description for '"a"'
+ */
 	define("a","&amp;");
 }
 
+/**
+ * Short description for 'EventsHtml'
+ * 
+ * Long description (if any) ...
+ */
 class EventsHtml
 {
+
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function error( $msg )
 	{
 		return '<p class="error">'.$msg.'</p>';
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script> alert('".$msg."'); window.history.go(-1); </script>";
 	}
 
+	/**
+	 * Short description for 'buildRadioOption'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $arr Parameter description (if any) ...
+	 * @param      string $tag_name Parameter description (if any) ...
+	 * @param      string $tag_attribs Parameter description (if any) ...
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      array $selected Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildRadioOption( $arr, $tag_name, $tag_attribs, $key, $text, $selected )
 	{
 		$html = '';
@@ -75,6 +132,17 @@ class EventsHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'buildCategorySelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $catid Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function buildCategorySelect($catid, $args, $gid, $option)
 	{
 		$database =& JFactory::getDBO();
@@ -91,6 +159,16 @@ class EventsHtml
 		echo $clist;
 	}
 
+	/**
+	 * Short description for 'buildReccurDaySelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $reccurday Parameter description (if any) ...
+	 * @param      unknown $tag_name Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
@@ -110,6 +188,15 @@ class EventsHtml
 		echo $tosend;
     }
 
+	/**
+	 * Short description for 'buildWeekDaysCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $reccurweekdays Parameter description (if any) ...
+	 * @param      string $args Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
@@ -142,6 +229,15 @@ class EventsHtml
 		echo $tosend;
 	}
 
+	/**
+	 * Short description for 'buildWeeksCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $reccurweeks Parameter description (if any) ...
+	 * @param      string $args Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function buildWeeksCheck($reccurweeks, $args)
 	{
 		$week_name = array('',
@@ -178,6 +274,14 @@ class EventsHtml
 		echo $tosend;
 	}
 
+	/**
+	 * Short description for 'getLongDayName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $daynb Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getLongDayName($daynb)
 	{
 		$dayname = '';
@@ -194,6 +298,15 @@ class EventsHtml
 		return $dayname;
 	}
 
+	/**
+	 * Short description for 'getColorBar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $event_id Parameter description (if any) ...
+	 * @param      unknown $newcolor Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getColorBar($event_id=NULL,$newcolor)
 	{
 		$database =& JFactory::getDBO();
@@ -246,6 +359,11 @@ class EventsHtml
 		}
 	}
 
+	/**
+	 * Description for 'field_ordering'
+	 * 
+	 * @var array
+	 */
 	private static $field_ordering = array(
 		'name' => 0, 'email' => 1, 'telephone' => 2, 'affiliation' => 3, 'position' => 4, 'address' => 5,
 		'arrival' => 6, 'departure' => 7, 'website' => 8, 'gender' => 9, 'disability' => 10,
@@ -254,11 +372,28 @@ class EventsHtml
 		'fax' => 17, 'title' => 18 // folded into previous entries
 	);
 
+	/**
+	 * Short description for 'fieldSorter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $a Parameter description (if any) ...
+	 * @param      unknown $b Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function fieldSorter($a, $b)
 	{
 		return EventsHtml::$field_ordering[$a] < EventsHtml::$field_ordering[$b] ? -1 : 1;
 	}
 
+	/**
+	 * Short description for 'quoteCsv'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $val Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function quoteCsv($val)
 	{
 		if (!isset($val)) return '';
@@ -268,11 +403,28 @@ class EventsHtml
 		return $val;
 	}
 
+	/**
+	 * Short description for 'quoteCsvRow'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $vals Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function quoteCsvRow($vals)
 	{
 		return implode(',', array_map(array('EventsHtml', 'quoteCsv'), $vals))."\n";
 	}
 
+	/**
+	 * Short description for 'downloadlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $resp Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function downloadlist($resp, $option)
 	{
 		$database =& JFactory::getDBO();

@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,30 +21,125 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+/**
+ * Short description for 'FeedbackQuotes'
+ * 
+ * Long description (if any) ...
+ */
 class FeedbackQuotes extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'userid'
+	 * 
+	 * @var unknown
+	 */
 	var $userid	    = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'fullname'
+	 * 
+	 * @var unknown
+	 */
 	var $fullname   = NULL;  // @var string
+
+
+	/**
+	 * Description for 'org'
+	 * 
+	 * @var unknown
+	 */
 	var $org	    = NULL;  // @var string
+
+
+	/**
+	 * Description for 'quote'
+	 * 
+	 * @var unknown
+	 */
 	var $quote      = NULL;  // @var text
+
+
+	/**
+	 * Description for 'picture'
+	 * 
+	 * @var string
+	 */
 	var $picture    = NULL;  // @var string
+
+
+	/**
+	 * Description for 'date'
+	 * 
+	 * @var unknown
+	 */
 	var $date	    = NULL;  // @var datetime	
+
+
+	/**
+	 * Description for 'publish_ok'
+	 * 
+	 * @var unknown
+	 */
 	var $publish_ok = NULL;  // @var int(1)
+
+
+	/**
+	 * Description for 'contact_ok'
+	 * 
+	 * @var unknown
+	 */
 	var $contact_ok = NULL;  // @var int(1)
+
+
+	/**
+	 * Description for 'notes'
+	 * 
+	 * @var unknown
+	 */
 	var $notes 		= NULL;	 // @var string
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__feedback', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->quote ) == '') {
@@ -57,6 +150,14 @@ class FeedbackQuotes extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters )
 	{
 		$query = "FROM $this->_tbl ";
@@ -83,6 +184,14 @@ class FeedbackQuotes extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array() )
 	{
 		$query = "SELECT COUNT(*) ".$this->buildQuery( $filters );
@@ -91,6 +200,14 @@ class FeedbackQuotes extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getResults'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getResults( $filters=array() )
 	{
 		$query  = "SELECT * ".$this->buildQuery( $filters );
@@ -99,6 +216,14 @@ class FeedbackQuotes extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deletePicture'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $config Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deletePicture( $config=null )
 	{
 		// Load the component config

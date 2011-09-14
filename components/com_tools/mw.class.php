@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,30 +21,123 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'MwSession'
+ * 
+ * Long description (if any) ...
+ */
 class MwSession extends JTable
 {
+
+	/**
+	 * Description for 'sessnum'
+	 * 
+	 * @var unknown
+	 */
 	var $sessnum    = null;
+
+	/**
+	 * Description for 'username'
+	 * 
+	 * @var unknown
+	 */
 	var $username   = null;
+
+	/**
+	 * Description for 'remoteip'
+	 * 
+	 * @var unknown
+	 */
 	var $remoteip   = null;
+
+	/**
+	 * Description for 'exechost'
+	 * 
+	 * @var unknown
+	 */
 	var $exechost   = null;
+
+	/**
+	 * Description for 'dispnum'
+	 * 
+	 * @var unknown
+	 */
 	var $dispnum    = null;
+
+	/**
+	 * Description for 'start'
+	 * 
+	 * @var unknown
+	 */
 	var $start      = null;
+
+	/**
+	 * Description for 'accesstime'
+	 * 
+	 * @var unknown
+	 */
 	var $accesstime = null;
+
+	/**
+	 * Description for 'timeout'
+	 * 
+	 * @var unknown
+	 */
 	var $timeout    = null;
+
+	/**
+	 * Description for 'appname'
+	 * 
+	 * @var unknown
+	 */
 	var $appname    = null;
+
+	/**
+	 * Description for 'sessname'
+	 * 
+	 * @var unknown
+	 */
 	var $sessname   = null;
+
+	/**
+	 * Description for 'sesstoken'
+	 * 
+	 * @var unknown
+	 */
 	var $sesstoken  = null;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( 'session', 'sessnum', $db );
 	}
 
+	/**
+	 * Short description for 'load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $sess Parameter description (if any) ...
+	 * @param      unknown $username Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function load( $sess=null, $username=null )
 	{
 		if ($sess == null) {
@@ -72,6 +162,15 @@ class MwSession extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'loadSession'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $sess Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function loadSession( $sess=null, $authorized=null )
 	{
 		if ($sess == null) {
@@ -103,6 +202,15 @@ class MwSession extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'checkSession'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $sess Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function checkSession($sess=null, $authorized=null)
 	{
 		if ($sess == null) {
@@ -137,6 +245,15 @@ class MwSession extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $username Parameter description (if any) ...
+	 * @param      unknown $appname Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getCount( $username=NULL, $appname=NULL )
 	{
 		if ($username == null) {
@@ -162,6 +279,16 @@ class MwSession extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $username Parameter description (if any) ...
+	 * @param      unknown $appname Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getRecords( $username=null, $appname=null, $authorized=null)
 	{
 		if ($username == null) {
@@ -194,6 +321,14 @@ class MwSession extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getTimeout'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $sess Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getTimeout( $sess )
 	{
 		if ($sess == null) {
@@ -218,54 +353,234 @@ class MwSession extends JTable
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class MwJob extends JTable
 {
+
+	/**
+	 * Description for 'sessnum'
+	 * 
+	 * @var unknown
+	 */
 	var $sessnum   = null;
+
+	/**
+	 * Description for 'jobid'
+	 * 
+	 * @var unknown
+	 */
 	var $jobid     = null;
+
+	/**
+	 * Description for 'superjob'
+	 * 
+	 * @var unknown
+	 */
 	var $superjob  = null;
+
+	/**
+	 * Description for 'event'
+	 * 
+	 * @var unknown
+	 */
 	var $event     = null;
+
+	/**
+	 * Description for 'ncpus'
+	 * 
+	 * @var unknown
+	 */
 	var $ncpus     = null;
+
+	/**
+	 * Description for 'venue'
+	 * 
+	 * @var unknown
+	 */
 	var $venue     = null;
+
+	/**
+	 * Description for 'start'
+	 * 
+	 * @var unknown
+	 */
 	var $start     = null;
+
+	/**
+	 * Description for 'heartbeat'
+	 * 
+	 * @var unknown
+	 */
 	var $heartbeat = null;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( 'job', 'jobid', $db );
 	}
 }
 
+/**
+ * Short description for 'MwView'
+ * 
+ * Long description (if any) ...
+ */
 class MwView extends JTable
 {
+
+	/**
+	 * Description for 'viewid'
+	 * 
+	 * @var unknown
+	 */
 	var $viewid    = null;
+
+	/**
+	 * Description for 'sessnum'
+	 * 
+	 * @var unknown
+	 */
 	var $sessnum   = null;
+
+	/**
+	 * Description for 'username'
+	 * 
+	 * @var unknown
+	 */
 	var $username  = null;
+
+	/**
+	 * Description for 'remoteip'
+	 * 
+	 * @var unknown
+	 */
 	var $remoteip  = null;
+
+	/**
+	 * Description for 'start'
+	 * 
+	 * @var unknown
+	 */
 	var $start     = null;
+
+	/**
+	 * Description for 'heartbeat'
+	 * 
+	 * @var unknown
+	 */
 	var $heartbeat = null;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( 'view', 'viewid', $db );
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class MwViewperm extends JTable
 {
+
+	/**
+	 * Description for 'sessnum'
+	 * 
+	 * @var unknown
+	 */
 	var $sessnum   = null;
+
+	/**
+	 * Description for 'viewuser'
+	 * 
+	 * @var unknown
+	 */
 	var $viewuser  = null;
+
+	/**
+	 * Description for 'viewtoken'
+	 * 
+	 * @var unknown
+	 */
 	var $viewtoken = null;
+
+	/**
+	 * Description for 'geometry'
+	 * 
+	 * @var unknown
+	 */
 	var $geometry  = null;
+
+	/**
+	 * Description for 'fwhost'
+	 * 
+	 * @var unknown
+	 */
 	var $fwhost    = null;
+
+	/**
+	 * Description for 'fwpost'
+	 * 
+	 * @var unknown
+	 */
 	var $fwpost    = null;
+
+	/**
+	 * Description for 'vncpass'
+	 * 
+	 * @var unknown
+	 */
 	var $vncpass   = null;
+
+	/**
+	 * Description for 'readonly'
+	 * 
+	 * @var unknown
+	 */
 	var $readonly  = null;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( 'viewperm', 'sessnum', $db );
 	}
 
+	/**
+	 * Short description for 'loadViewperm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $sess Parameter description (if any) ...
+	 * @param      string $username Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function loadViewperm( $sess=null, $username=null )
 	{
 		if ($sess == null) {
@@ -282,6 +597,15 @@ class MwViewperm extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deleteViewperm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $sess Parameter description (if any) ...
+	 * @param      string $username Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteViewperm( $sess=null, $username=null )
 	{
 		if ($sess == null) {
@@ -301,6 +625,14 @@ class MwViewperm extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $updateNulls Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function update( $updateNulls=false )
 	{
 		$ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
@@ -313,6 +645,13 @@ class MwViewperm extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'insert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function insert()
 	{
 		$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
@@ -330,17 +669,86 @@ class MwViewperm extends JTable
 // Narwhal class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'MiddlewareApp'
+ * 
+ * Long description (if any) ...
+ */
 class MiddlewareApp
 {
+
+	/**
+	 * Description for 'appname'
+	 * 
+	 * @var unknown
+	 */
 	var $appname;
+
+	/**
+	 * Description for 'geometry'
+	 * 
+	 * @var unknown
+	 */
 	var $geometry;
+
+	/**
+	 * Description for 'depth'
+	 * 
+	 * @var unknown
+	 */
 	var $depth;
+
+	/**
+	 * Description for 'hostreq'
+	 * 
+	 * @var unknown
+	 */
 	var $hostreq;
+
+	/**
+	 * Description for 'userreq'
+	 * 
+	 * @var unknown
+	 */
 	var $userreq;
+
+	/**
+	 * Description for 'timeout'
+	 * 
+	 * @var unknown
+	 */
 	var $timeout;
+
+	/**
+	 * Description for 'command'
+	 * 
+	 * @var unknown
+	 */
 	var $command;
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $a Parameter description (if any) ...
+	 * @param      unknown $g Parameter description (if any) ...
+	 * @param      unknown $d Parameter description (if any) ...
+	 * @param      unknown $h Parameter description (if any) ...
+	 * @param      unknown $u Parameter description (if any) ...
+	 * @param      unknown $t Parameter description (if any) ...
+	 * @param      unknown $c Parameter description (if any) ...
+	 * @param      unknown $desc Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $a,$g,$d,$h,$u,$t,$c,$desc )
 	{
 		$this->appname  = $a;
@@ -358,12 +766,46 @@ class MiddlewareApp
 // Host class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class Host
 {
+
+	/**
+	 * Description for 'hostname'
+	 * 
+	 * @var unknown
+	 */
 	var $hostname;
+
+	/**
+	 * Description for 'provisions'
+	 * 
+	 * @var unknown
+	 */
 	var $provisions;
+
+	/**
+	 * Description for 'status'
+	 * 
+	 * @var unknown
+	 */
 	var $status;
 
+	/**
+	 * Short description for 'Description'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $h Parameter description (if any) ...
+	 * @param      unknown $p Parameter description (if any) ...
+	 * @param      unknown $s Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function Description($h,$p,$s)
 	{
 		$this->hostname = $h;
@@ -376,12 +818,46 @@ class Host
 // Hosttype class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'Hosttype'
+ * 
+ * Long description (if any) ...
+ */
 class Hosttype
 {
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	var $name;
+
+	/**
+	 * Description for 'value'
+	 * 
+	 * @var unknown
+	 */
 	var $value;
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description;
 
+	/**
+	 * Short description for 'Description'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $n Parameter description (if any) ...
+	 * @param      unknown $v Parameter description (if any) ...
+	 * @param      unknown $d Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function Description($n,$v,$d)
 	{
 		$this->name = $n;
@@ -394,18 +870,64 @@ class Hosttype
 // Recent tools class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class RecentTool extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id      = NULL;
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid     = NULL;
+
+	/**
+	 * Description for 'tool'
+	 * 
+	 * @var unknown
+	 */
 	var $tool    = NULL;
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__recent_tools', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getRecords( $uid=null )
 	{
 		if ($uid == null) {

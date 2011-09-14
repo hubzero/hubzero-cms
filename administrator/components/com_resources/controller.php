@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'ResourcesController'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
@@ -100,6 +115,14 @@ class ResourcesController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'resources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function resources()
 	{
 		// Instantiate a new view
@@ -201,6 +224,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'children'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function children()
 	{
 		// Instantiate a new view
@@ -296,6 +326,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'orphans'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function orphans()
 	{
 		// Instantiate a new view
@@ -384,6 +421,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'ratings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function ratings()
 	{
 		// Incoming
@@ -417,6 +461,14 @@ class ResourcesController extends Hubzero_Controller
 	// Children
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'addchild'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function addchild()
 	{
 		// Incoming
@@ -537,6 +589,15 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'attachchild'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $pid Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function attachchild( $id, $pid )
 	{
 		// Make sure we have both parent and child IDs
@@ -577,6 +638,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Child successfully added');
 	}
 
+	/**
+	 * Short description for 'removechild'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function removechild()
 	{
 		// Incoming
@@ -612,6 +680,15 @@ class ResourcesController extends Hubzero_Controller
 	// Resource Functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $isnew Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit( $isnew=0 )
 	{
 		// Instantiate a new view
@@ -762,6 +839,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function save()
 	{
 		// Check for request forgeries
@@ -981,6 +1065,15 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Item successfully saved');
 	}
 
+	/**
+	 * Short description for 'email_contributors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function email_contributors($row, $database)
 	{
 		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'helpers'.DS.'helper.php' );
@@ -1020,6 +1113,13 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function remove()
 	{
 		// Check for request forgeries
@@ -1080,6 +1180,14 @@ class ResourcesController extends Hubzero_Controller
 	// Processors
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'regroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function regroup()
 	{
 		// Check for request forgeries
@@ -1117,6 +1225,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
 
+	/**
+	 * Short description for 'access'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function access()
 	{
 		// Check for request forgeries
@@ -1162,6 +1277,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
 
+	/**
+	 * Short description for 'publish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function publish()
 	{
 		// Check for request forgeries
@@ -1224,6 +1346,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		// Check for request forgeries
@@ -1242,6 +1371,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = $this->buildRedirectURL( $pid );
 	}
 
+	/**
+	 * Short description for 'resethits'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function resethits()
 	{
 		// Check for request forgeries
@@ -1265,6 +1401,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Successfully reset Hit count');
 	}
 
+	/**
+	 * Short description for 'resetrating'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function resetrating()
 	{
 		// Check for request forgeries
@@ -1289,6 +1432,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Successfully reset Rating count');
 	}
 
+	/**
+	 * Short description for 'resetranking'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function resetranking()
 	{
 		// Check for request forgeries
@@ -1312,6 +1462,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Successfully reset Ranking');
 	}
 
+	/**
+	 * Short description for 'checkin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function checkin()
 	{
 		// Check for request forgeries
@@ -1339,6 +1496,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = $this->buildRedirectURL();
 	}
 
+	/**
+	 * Short description for 'reorder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function reorder()
 	{
 		// Check for request forgeries
@@ -1402,6 +1566,14 @@ class ResourcesController extends Hubzero_Controller
 	// Types
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'viewtypes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function viewtypes()
 	{
 		// Instantiate a new view
@@ -1446,11 +1618,25 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'newtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function newtype()
 	{
 		$this->edittype();
 	}
 
+	/**
+	 * Short description for 'edittype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edittype()
 	{
 		// Instantiate a new view
@@ -1482,6 +1668,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savetype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savetype()
 	{
 		// Check for request forgeries
@@ -1541,12 +1734,27 @@ class ResourcesController extends Hubzero_Controller
 		$this->_message = JText::_('Type successfully saved');
 	}
 
+	/**
+	 * Short description for 'normalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $txt Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function normalize($txt)
 	{
 		// Strip any non-alphanumeric characters
 		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $txt));
 	}
 
+	/**
+	 * Short description for 'deletetype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletetype()
 	{
 		// Check for request forgeries
@@ -1587,6 +1795,14 @@ class ResourcesController extends Hubzero_Controller
 	// Media manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function upload()
 	{
 		// Check for request forgeries
@@ -1691,6 +1907,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'deletefolder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletefolder()
 	{
 		// Check for request forgeries
@@ -1735,6 +1958,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'deletefile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function deletefile()
 	{
 		// Check for request forgeries
@@ -1775,6 +2005,13 @@ class ResourcesController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'media'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function media()
 	{
 		// Instantiate a new view
@@ -1825,6 +2062,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'listfiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function listfiles()
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
@@ -1884,6 +2128,15 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'buildUploadPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @param      string $subdir Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function buildUploadPath( $listdir, $subdir='' )
 	{
 		if ($subdir) {
@@ -1930,6 +2183,14 @@ class ResourcesController extends Hubzero_Controller
 		return JPATH_ROOT.$listdir.$subdir;
 	}
 
+	/**
+	 * Short description for 'recursive_listdir'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function recursive_listdir($base)
 	{
 	    static $filelist = array();
@@ -1954,6 +2215,15 @@ class ResourcesController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'buildRedirectURL'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $pid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function buildRedirectURL( $pid=0 )
 	{
 		// Get configuration
@@ -2002,6 +2272,18 @@ class ResourcesController extends Hubzero_Controller
 		return $url;
 	}
 
+	/**
+	 * Short description for 'userSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $active Parameter description (if any) ...
+	 * @param      integer $nouser Parameter description (if any) ...
+	 * @param      string $javascript Parameter description (if any) ...
+	 * @param      string $order Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function userSelect( $name, $active, $nouser=0, $javascript=NULL, $order='a.name' )
 	{
 		$database =& JFactory::getDBO();
@@ -2032,6 +2314,13 @@ class ResourcesController extends Hubzero_Controller
 		return $users;
 	}
 
+	/**
+	 * Short description for 'getauthor'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function getauthor()
 	{
 		$u = JRequest::getInt('u', 0);
@@ -2056,6 +2345,14 @@ class ResourcesController extends Hubzero_Controller
 	// Functions for tagging a resource
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'edittags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function edittags()
 	{
 		// Instantiate a new view
@@ -2101,6 +2398,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savetags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function savetags()
 	{
 	    // Check for request forgeries

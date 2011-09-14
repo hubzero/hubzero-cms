@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,40 +21,198 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'KbArticle'
+ * 
+ * Long description (if any) ...
+ */
 class KbArticle extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id           = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title        = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params       = NULL;  // @var text
+
+
+	/**
+	 * Description for 'fulltext'
+	 * 
+	 * @var unknown
+	 */
 	var $fulltext     = NULL;  // @var text
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created      = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by   = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'modified'
+	 * 
+	 * @var unknown
+	 */
 	var $modified     = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'modified_by'
+	 * 
+	 * @var unknown
+	 */
 	var $modified_by  = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'checked_out'
+	 * 
+	 * @var unknown
+	 */
 	var $checked_out  = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'checked_out_time'
+	 * 
+	 * @var unknown
+	 */
 	var $checked_out_time = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state        = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'access'
+	 * 
+	 * @var unknown
+	 */
 	var $access       = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'hits'
+	 * 
+	 * @var unknown
+	 */
 	var $hits         = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'version'
+	 * 
+	 * @var unknown
+	 */
 	var $version      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'section'
+	 * 
+	 * @var unknown
+	 */
 	var $section      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category     = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'helpful'
+	 * 
+	 * @var unknown
+	 */
 	var $helpful      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'nothelpful'
+	 * 
+	 * @var unknown
+	 */
 	var $nothelpful   = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
 	var $alias        = NULL;  // @var varchar(200)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
@@ -67,6 +222,13 @@ class KbArticle extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'store'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function store()
 	{
 		if (empty($this->modified)) {
@@ -76,6 +238,15 @@ class KbArticle extends JTable
 		return parent::store();
 	}
 
+	/**
+	 * Short description for 'loadAlias'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadAlias( $oid=NULL, $cat=NULL )
 	{
 		if (empty($oid)) {
@@ -92,6 +263,17 @@ class KbArticle extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getCategoryArticles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $noauth Parameter description (if any) ...
+	 * @param      string $section Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $access Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCategoryArticles($noauth, $section, $category, $access)
 	{
 		$juser =& JFactory::getUser();
@@ -107,6 +289,15 @@ class KbArticle extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getArticles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $limit Parameter description (if any) ...
+	 * @param      string $order Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getArticles($limit, $order)
 	{
 		$juser =& JFactory::getUser();
@@ -123,6 +314,14 @@ class KbArticle extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getCollection'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $cid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCollection( $cid=NULL )
 	{
 		if ($cid == NULL) {
@@ -135,6 +334,14 @@ class KbArticle extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getArticlesCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getArticlesCount( $filters=array() )
 	{
 		if (isset($filters['cid']) && $filters['cid']) {
@@ -156,6 +363,14 @@ class KbArticle extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getArticlesAll'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getArticlesAll( $filters=array() )
 	{
 		if (isset($filters['cid']) && $filters['cid']) {
@@ -185,6 +400,15 @@ class KbArticle extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deleteSef'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteSef( $option, $id=NULL )
 	{
 		if ($id == NULL) {
@@ -204,6 +428,15 @@ class KbArticle extends JTable
 
 	//-----------
 
+
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array() )
 	{
 		$sql = "FROM $this->_tbl AS m 
@@ -260,6 +493,14 @@ class KbArticle extends JTable
 		return $sql;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array() )
 	{
 		$query = "SELECT count(*) ".$this->buildQuery( $filters );
@@ -268,6 +509,14 @@ class KbArticle extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array() )
 	{
 		$query = "SELECT DISTINCT(m.id), m.title, m.created, m.state, m.access, m.modified, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'ContributeController'
+ * 
+ * Long description (if any) ...
+ */
 class ContributeController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
@@ -96,6 +111,13 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -121,6 +143,13 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
@@ -139,6 +168,14 @@ class ContributeController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function login()
 	{
 		// Instantiate a view
@@ -151,6 +188,13 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'intro'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function intro()
 	{
 		// Output HTML
@@ -163,6 +207,14 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'check_progress'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function check_progress($id)
 	{
 		$steps = $this->steps;
@@ -187,6 +239,13 @@ class ContributeController extends Hubzero_Controller
 		$this->progress = $progress;
 	}
 
+	/**
+	 * Short description for 'steps'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function steps()
 	{
 		$steps = $this->steps;
@@ -216,6 +275,14 @@ class ContributeController extends Hubzero_Controller
 	// Steps
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'step_type'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function step_type()
 	{
 		$step = $this->step;
@@ -238,6 +305,14 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'step_compose'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $row Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function step_compose($row=null)
 	{
 		$xhub = Hubzero_Factory::getHub();
@@ -284,6 +359,13 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'step_attach'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_attach()
 	{
 		$step = $this->step;
@@ -321,6 +403,13 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'step_authors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_authors()
 	{
 		$step = $this->_data['step'];
@@ -363,6 +452,13 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'step_tags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_tags()
 	{
 		$step = $this->step;
@@ -484,6 +580,13 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'step_review'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_review()
 	{
 		$step = $this->step;
@@ -537,6 +640,14 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_getUsersGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _getUsersGroups($groups)
 	{
 		$arr = array();
@@ -555,11 +666,26 @@ class ContributeController extends Hubzero_Controller
 	//  Pre Processing
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'step_type_process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function step_type_process()
 	{
 		// do nothing
 	}
 
+	/**
+	 * Short description for 'step_compose_process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_compose_process()
 	{
 		// Initiate extended database class
@@ -669,11 +795,25 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'step_attach_process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function step_attach_process()
 	{
 		// do nothing
 	}
 
+	/**
+	 * Short description for 'step_authors_process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_authors_process()
 	{
 		// Incoming
@@ -712,6 +852,13 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'step_tags_process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_tags_process()
 	{
 		// Incoming
@@ -766,6 +913,14 @@ class ContributeController extends Hubzero_Controller
 	// Final submission
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'submit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function submit()
 	{
 		// Incoming
@@ -914,6 +1069,13 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		// Incoming
@@ -996,6 +1158,13 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'retract'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function retract()
 	{
 		// Incoming
@@ -1023,6 +1192,14 @@ class ContributeController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 
+	/**
+	 * Short description for 'markRemovedContribution'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function markRemovedContribution( $id )
 	{
 		// Make sure we have a record to pull
@@ -1046,6 +1223,14 @@ class ContributeController extends Hubzero_Controller
 		return true;
 	}
 
+	/**
+	 * Short description for 'deleteContribution'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function deleteContribution( $id )
 	{
 		// Make sure we have a record to pull
@@ -1139,6 +1324,14 @@ class ContributeController extends Hubzero_Controller
 	// Attachments
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'attach_rename'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function attach_rename()
 	{
 		// Check if they are logged in
@@ -1162,6 +1355,13 @@ class ContributeController extends Hubzero_Controller
 		echo $name;
 	}
 
+	/**
+	 * Short description for 'attach_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function attach_save()
 	{
 		// Check if they are logged in
@@ -1347,6 +1547,13 @@ class ContributeController extends Hubzero_Controller
 		$this->attachments( $pid );
 	}
 
+	/**
+	 * Short description for 'attach_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function attach_delete()
 	{
 		// Check if they are logged in
@@ -1446,6 +1653,14 @@ class ContributeController extends Hubzero_Controller
 		$this->attachments( $pid );
 	}
 
+	/**
+	 * Short description for 'attachments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function attachments( $id=null )
 	{
 		// Check if they are logged in
@@ -1481,6 +1696,15 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_buildUploadPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @param      string $subdir Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _buildUploadPath( $listdir, $subdir='' )
 	{
 		if ($subdir) {
@@ -1527,6 +1751,14 @@ class ContributeController extends Hubzero_Controller
 		return JPATH_ROOT.$listdir.$subdir;
 	}
 
+	/**
+	 * Short description for '_getChildType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _getChildType($filename)
 	{
 		$filename_arr = explode('.',$filename);
@@ -1551,6 +1783,13 @@ class ContributeController extends Hubzero_Controller
 		return $type;
 	}
 
+	/**
+	 * Short description for 'reorder_attach'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function reorder_attach()
 	{
 		// Incoming
@@ -1614,6 +1853,15 @@ class ContributeController extends Hubzero_Controller
 	// contributors manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'author_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $show Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function author_save($show=1)
 	{
 		// Incoming resource ID
@@ -1727,6 +1975,14 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_author_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _author_check($id)
 	{
 		$xprofile = Hubzero_User_Profile::getInstance($id);
@@ -1742,6 +1998,13 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'author_remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function author_remove()
 	{
 		// Incoming
@@ -1767,6 +2030,13 @@ class ContributeController extends Hubzero_Controller
 		$this->authors( $pid );
 	}
 
+	/**
+	 * Short description for 'reorder_author'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function reorder_author()
 	{
 		// Incoming
@@ -1826,6 +2096,14 @@ class ContributeController extends Hubzero_Controller
 		$this->authors( $pid );
 	}
 
+	/**
+	 * Short description for 'authors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function authors( $id=null )
 	{
 		// Incoming
@@ -1878,16 +2156,41 @@ class ContributeController extends Hubzero_Controller
 	// Checks
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'step_type_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function step_type_check( $id )
 	{
 		// do nothing
 	}
 
+	/**
+	 * Short description for 'step_compose_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function step_compose_check( $id )
 	{
 		return $id;
 	}
 
+	/**
+	 * Short description for 'step_attach_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function step_attach_check( $id )
 	{
 		if ($id) {
@@ -1899,6 +2202,14 @@ class ContributeController extends Hubzero_Controller
 		return $total;
 	}
 
+	/**
+	 * Short description for 'step_authors_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function step_authors_check( $id )
 	{
 		if ($id) {
@@ -1911,6 +2222,14 @@ class ContributeController extends Hubzero_Controller
 		return $contributors;
 	}
 
+	/**
+	 * Short description for 'step_tags_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function step_tags_check( $id )
 	{
 		$rt = new ResourcesTags( $this->database );
@@ -1923,6 +2242,14 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'step_review_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function step_review_check( $id )
 	{
 		$row = new ResourcesResource( $this->database );
@@ -1939,6 +2266,15 @@ class ContributeController extends Hubzero_Controller
 	// Misc
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_txtClean'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$text Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _txtClean( &$text )
 	{
 		$text = str_replace('“','"', $text);
@@ -1954,6 +2290,15 @@ class ContributeController extends Hubzero_Controller
 		return $text;
 	}
 
+	/**
+	 * Short description for '_txtAutoP'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pee Parameter description (if any) ...
+	 * @param      integer $br Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _txtAutoP($pee, $br = 1)
 	{
 		$trans_tbl = get_html_translation_table(HTML_ENTITIES);
@@ -2002,6 +2347,14 @@ class ContributeController extends Hubzero_Controller
 		return $pee;
 	}
 
+	/**
+	 * Short description for '_txtUnpee'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $pee Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function _txtUnpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
@@ -2013,6 +2366,16 @@ class ContributeController extends Hubzero_Controller
 		return $pee;
 	}
 
+	/**
+	 * Short description for '_buildPathFromDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _buildPathFromDate( $date, $id, $base='' )
 	{
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {

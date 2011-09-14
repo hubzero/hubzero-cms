@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,23 +36,98 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Logs batch transactions, royalty distributions and other big transactions
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'Hubzero_Bank_MarketHistory'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Bank_MarketHistory extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id          	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'itemid'
+	 * 
+	 * @var unknown
+	 */
 	var $itemid      	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category    	= NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'market_value'
+	 * 
+	 * @var unknown
+	 */
 	var $market_value	= NULL;  // @var decimal(11,2)
+
+
+	/**
+	 * Description for 'date'
+	 * 
+	 * @var unknown
+	 */
 	var $date      		= NULL;  // @var datetime
+
+
+	/**
+	 * Description for 'action'
+	 * 
+	 * @var unknown
+	 */
 	var $action	 		= NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'log'
+	 * 
+	 * @var unknown
+	 */
 	var $log    		= NULL;  // @var text
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__market_history', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getRecord'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $itemid Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @param      string $created Parameter description (if any) ...
+	 * @param      string $log Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecord($itemid=0, $action='', $category='', $created='', $log = '')
 	{
 		if ($itemid === NULL) {

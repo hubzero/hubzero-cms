@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,13 +21,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ContributionSorter'
+ * 
+ * Long description (if any) ...
+ */
 class ContributionSorter
 {
+
+	/**
+	 * Short description for 'sort'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $a Parameter description (if any) ...
+	 * @param      object $b Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public static function sort($a, $b)
 	{
 		$sec_diff = strcmp($a->get_section(), $b->get_section());
@@ -43,6 +60,15 @@ class ContributionSorter
 		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
 	}
 
+	/**
+	 * Short description for 'sort_weight'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $a Parameter description (if any) ...
+	 * @param      object $b Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public static function sort_weight($a, $b)
 	{
 		$aw = $a->get_weight();
@@ -51,14 +77,38 @@ class ContributionSorter
 		return $aw > $bw ? -1 : 1;
 	}
 
+	/**
+	 * Short description for 'sort_title'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $a Parameter description (if any) ...
+	 * @param      object $b Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public static function sort_title($a, $b)
 	{
 		return strcmp($a->get_title(), $b->get_title());
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class plgYSearchMembers extends YSearchPlugin
 {
+
+	/**
+	 * Short description for 'onYSearch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $request Parameter description (if any) ...
+	 * @param      object &$results Parameter description (if any) ...
+	 * @return     void
+	 */
 	public static function onYSearch($request, &$results)
 	{
 		$terms = $request->get_term_ar();
@@ -90,6 +140,15 @@ class plgYSearchMembers extends YSearchPlugin
 		));
 	}
 
+	/**
+	 * Short description for 'onYSearchCustom'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $request Parameter description (if any) ...
+	 * @param      object &$results Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public static function onYSearchCustom($request, &$results)
 	{
 		if (($section = $request->get_terms()->get_section()) && $section[0] != 'members')
@@ -201,6 +260,14 @@ class plgYSearchMembers extends YSearchPlugin
 		return false;
 	}
 
+	/**
+	 * Short description for 'onBeforeYSearchRenderMembers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $res Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
   public static function onBeforeYSearchRenderMembers($res)
   {
     if (!($href = $res->get('img_href')) || !is_file(JPATH_ROOT.$href))

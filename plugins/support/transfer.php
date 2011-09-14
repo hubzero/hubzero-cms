@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_support_transfer' );
 
+/**
+ * Short description for 'plgSupportTransfer'
+ * 
+ * Long description (if any) ...
+ */
 class plgSupportTransfer extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgSupportTransfer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgSupportTransfer(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -51,6 +68,18 @@ class plgSupportTransfer extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'transferItem'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $from_type Parameter description (if any) ...
+	 * @param      unknown $from_id Parameter description (if any) ...
+	 * @param      unknown $to_type Parameter description (if any) ...
+	 * @param      integer $rid Parameter description (if any) ...
+	 * @param      integer $deactivate Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function transferItem($from_type, $from_id, $to_type, $rid=0, $deactivate=1)
 	{
 		$database =& JFactory::getDBO();
@@ -330,6 +359,14 @@ class plgSupportTransfer extends JPlugin
 		return $newrow->id;
 	}
 
+	/**
+	 * Short description for 'getResourceIdFromTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getResourceIdFromTag($tag)
 	{
 		// intended to find a resource from a tag, e.g. tool:cntbands		
@@ -340,6 +377,14 @@ class plgSupportTransfer extends JPlugin
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getResourceIdFromGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $groupname Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getResourceIdFromGroup($groupname)
 	{
 		// intended to find a resource from the name of owner group, e.g. app-cntbands		
@@ -350,6 +395,15 @@ class plgSupportTransfer extends JPlugin
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'shortenText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function shortenText($text, $chars=200)
 	{
 		$text = strip_tags($text);

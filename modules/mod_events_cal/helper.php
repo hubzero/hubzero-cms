@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,28 +22,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modEventsCalendar'
+ * 
+ * Long description (if any) ...
+ */
 class modEventsCalendar
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -55,6 +99,15 @@ class modEventsCalendar
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function display()
 	{
 		$lang =& JFactory::getLanguage();
@@ -131,6 +184,10 @@ class modEventsCalendar
 		// Get the start day
 		$startday = $this->params->get( 'start_day' );
 		if (!defined('_CAL_CONF_STARDAY')) {
+
+	/**
+	 * Description for ''_CAL_CONF_STARDAY''
+	 */
 			define('_CAL_CONF_STARDAY',$startday);
 		}
 		//define('_CAL_CONF_DATEFORMAT',1);
@@ -177,6 +234,21 @@ class modEventsCalendar
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '_calendar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timeWithOffset Parameter description (if any) ...
+	 * @param      number $startday Parameter description (if any) ...
+	 * @param      unknown $time Parameter description (if any) ...
+	 * @param      unknown $linkString Parameter description (if any) ...
+	 * @param      array &$day_name Parameter description (if any) ...
+	 * @param      boolean $monthMustHaveEvent Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _calendar( $timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent=false )
 	{
 		$database =& JFactory::getDBO();

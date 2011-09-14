@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,38 +35,213 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'ToolVersion'
+ * 
+ * Long description (if any) ...
+ */
 class ToolVersion extends  JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id      	   = NULL;  // @var int (primary key)
+
+
+	/**
+	 * Description for 'toolid'
+	 * 
+	 * @var string
+	 */
 	var $toolid        = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'toolname'
+	 * 
+	 * @var unknown
+	 */
 	var $toolname      = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'instance'
+	 * 
+	 * @var unknown
+	 */
 	var $instance      = NULL; // @var string (30)
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title         = NULL;  // @var string (127)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description   = NULL;  // @var text
+
+
+	/**
+	 * Description for 'fulltext'
+	 * 
+	 * @var unknown
+	 */
 	var $fulltext      = NULL;  // @var text
+
+
+	/**
+	 * Description for 'toolaccess'
+	 * 
+	 * @var unknown
+	 */
 	var $toolaccess    = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'codeaccess'
+	 * 
+	 * @var unknown
+	 */
 	var $codeaccess	   = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'wikiaccess'
+	 * 
+	 * @var unknown
+	 */
 	var $wikiaccess	   = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'version'
+	 * 
+	 * @var unknown
+	 */
 	var $version       = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'revision'
+	 * 
+	 * @var unknown
+	 */
 	var $revision 	   = NULL;  // @var int
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state         = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'vnc_geometry'
+	 * 
+	 * @var unknown
+	 */
 	var $vnc_geometry  = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'vnc_command'
+	 * 
+	 * @var unknown
+	 */
 	var $vnc_command   = NULL;  // @var string (100)
+
+
+	/**
+	 * Description for 'mw'
+	 * 
+	 * @var unknown
+	 */
 	var $mw   		   = NULL;  // @var string (15)
+
+
+	/**
+	 * Description for 'released'
+	 * 
+	 * @var unknown
+	 */
 	var $released      = NULL;  // @var dateandtime
+
+
+	/**
+	 * Description for 'released_by'
+	 * 
+	 * @var unknown
+	 */
 	var $released_by   = NULL;  // @var string
+
+
+	/**
+	 * Description for 'unpublished'
+	 * 
+	 * @var unknown
+	 */
 	var $unpublished   = NULL;  // @var dateandtime
+
+
+	/**
+	 * Description for 'license'
+	 * 
+	 * @var unknown
+	 */
 	var $license	   = NULL;  // @var text
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params        = NULL;  // @var text
+
+
+	/**
+	 * Description for 'exportControl'
+	 * 
+	 * @var unknown
+	 */
 	var $exportControl = NULL;  // @var string (15)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool_version', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (!$this->id && trim( $this->toolname ) == '') {
@@ -91,6 +268,15 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'loadFromInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tool Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadFromInstance( $tool=NULL )
 	{
 		if ($tool === NULL) {
@@ -108,6 +294,14 @@ class ToolVersion extends  JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getAll'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $includedev Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getAll($includedev = 1)
 	{
 
@@ -121,6 +315,15 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getVersions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $alias Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getVersions( $alias )
 	{
 		// will load versions excluding dev
@@ -142,6 +345,15 @@ class ToolVersion extends  JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getVersionIdFromResource'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getVersionIdFromResource($rid=NULL, $version ='dev')
 	{
 		if ($rid=== NULL) {
@@ -163,6 +375,14 @@ class ToolVersion extends  JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'loadFromName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $alias Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadFromName( $alias )
 	{
 		if ($alias === NULL) {
@@ -180,6 +400,15 @@ class ToolVersion extends  JTable
 		}
 	}
 
+	/**
+	 * Short description for 'load_version'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function load_version ( $toolid=NULL, $version='dev' )
 	{
 		if ($toolid === NULL) {
@@ -201,6 +430,17 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'setUnpublishDate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      mixed $vid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function setUnpublishDate($toolid=NULL, $toolname='', $vid=0)
 	{
 		if (!$toolid) {
@@ -225,6 +465,16 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'unpublish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      mixed $vid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function unpublish($toolid=NULL, $vid=0)
 	{
 	    	$xlog = &Hubzero_Factory::getLogger();
@@ -250,6 +500,17 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      integer $create_new Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function save($toolid=NULL, $version='dev', $create_new = 0)
 	{
 		die('1');
@@ -293,6 +554,13 @@ class ToolVersion extends  JTable
 
 	}
 
+	/**
+	 * Short description for 'store'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function store()
 	{
 	    	if (empty($this->id))
@@ -315,6 +583,19 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getToolVersions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      array &$versions Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      boolean $ldap Parameter description (if any) ...
+	 * @param      integer $exclude_dev Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getToolVersions( $toolid, &$versions, $toolname='', $ldap=false, $exclude_dev = 0)
 	{
 		ximport('Hubzero_Tool');
@@ -359,6 +640,19 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getVersionInfo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      string $instance Parameter description (if any) ...
+	 * @param      boolean $ldap Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getVersionInfo($id, $version='', $toolname='', $instance='', $ldap=false)
 	{
 	    	$xlog =& Hubzero_Factory::getLogger();
@@ -394,6 +688,18 @@ class ToolVersion extends  JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'compileResource'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $thistool Parameter description (if any) ...
+	 * @param      mixed $curtool Parameter description (if any) ...
+	 * @param      mixed $resource Parameter description (if any) ...
+	 * @param      string $revision Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function compileResource ($thistool, $curtool='', $resource, $revision, $config)
 	{
 		if($curtool) {
@@ -465,6 +771,19 @@ class ToolVersion extends  JTable
 	// Validate input
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'validLicense'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolname Parameter description (if any) ...
+	 * @param      array $license Parameter description (if any) ...
+	 * @param      string $code Parameter description (if any) ...
+	 * @param      unknown &$error Parameter description (if any) ...
+	 * @param      integer $result Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function validLicense($toolname, $license, $code, &$error, $result=0)
 	{
 
@@ -490,6 +809,21 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'validToolReg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$tool Parameter description (if any) ...
+	 * @param      array &$err Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      boolean $ldap Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @param      integer $checker Parameter description (if any) ...
+	 * @param      integer $result Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function validToolReg(&$tool, &$err, $id, $ldap, $config, $checker=0, $result=1)
 	{
 	    	$xlog =& Hubzero_Factory::getLogger();
@@ -603,6 +937,19 @@ class ToolVersion extends  JTable
 
 	}
 
+	/**
+	 * Short description for 'validVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolname Parameter description (if any) ...
+	 * @param      unknown $newversion Parameter description (if any) ...
+	 * @param      unknown &$error Parameter description (if any) ...
+	 * @param      integer $ldap Parameter description (if any) ...
+	 * @param      integer $required Parameter description (if any) ...
+	 * @param      integer $result Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function validVersion($toolname, $newversion, &$error, $ldap=0, $required=1, $result=1)
 	{
 		$toolhelper = new ContribtoolHelper();
@@ -636,6 +983,15 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getToolname'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $instance Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getToolname ($instance) {
 
 		$database =& JFactory::getDBO();
@@ -646,6 +1002,15 @@ class ToolVersion extends  JTable
 		return $toolname;
 	}
 
+	/**
+	 * Short description for 'getCurrentVersionProperty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCurrentVersionProperty ($toolname, $property) {
 
 		$database =& JFactory::getDBO();
@@ -654,6 +1019,15 @@ class ToolVersion extends  JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getDevVersionProperty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getDevVersionProperty ($toolname, $property) {
 
 		$database =& JFactory::getDBO();

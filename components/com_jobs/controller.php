@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -31,18 +33,48 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'JobsController'
+ * 
+ * Long description (if any) ...
+ */
 class JobsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'setVar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setVar($property, $value)
 	{
 		$this->$property = $value;
 	}
 
+	/**
+	 * Short description for 'getVar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getVar($property)
 	{
 		return $this->$property;
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function execute()
 	{
 		// Load the component config
@@ -113,6 +145,14 @@ class JobsController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
@@ -126,6 +166,13 @@ class JobsController extends Hubzero_Controller
 		$document->setTitle( $this->_title );
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -197,6 +244,14 @@ class JobsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function login()
 	{
 		$view = new JView( array('name'=>'login') );
@@ -211,6 +266,14 @@ class JobsController extends Hubzero_Controller
 	//-----------
 	// NOTE: This view should only be called through AJAX
 
+
+	/**
+	 * Short description for 'plugin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function plugin()
 	{
 		// Incoming
@@ -236,6 +299,13 @@ class JobsController extends Hubzero_Controller
 		echo $html;
 	}
 
+	/**
+	 * Short description for 'shortlist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function shortlist()
 	{
 		// Shortlisted user
@@ -257,6 +327,14 @@ class JobsController extends Hubzero_Controller
 	// Introductory page/ Jobs list
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function view()
 	{
 		// Push some styles to the template
@@ -350,6 +428,14 @@ class JobsController extends Hubzero_Controller
 	// List of candidates
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'resumes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function resumes()
 	{
 		// Push some styles to the template
@@ -446,6 +532,14 @@ class JobsController extends Hubzero_Controller
 	// Subscription form
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'subscribe'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function subscribe()
 	{
 		$database =& JFactory::getDBO();
@@ -543,6 +637,14 @@ class JobsController extends Hubzero_Controller
 	// Subscription confirmation
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'confirm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function confirm()
 	{
 		$database =& JFactory::getDBO();
@@ -721,6 +823,14 @@ class JobsController extends Hubzero_Controller
 	// Subscription cancellation
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function cancel()
 	{
 		$database =& JFactory::getDBO();
@@ -782,6 +892,14 @@ class JobsController extends Hubzero_Controller
 	// Dashboard
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'dashboard'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function dashboard()
 	{
 		$database =& JFactory::getDBO();
@@ -899,6 +1017,14 @@ class JobsController extends Hubzero_Controller
 	// Intro screen for employers before they login
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'intro_employer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function intro_employer()
 	{
 		// Set page title
@@ -929,6 +1055,14 @@ class JobsController extends Hubzero_Controller
 	// Link to Add Resume (goes to profile "Resume" tab)
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'addresume'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function addresume()
 	{
 		$juser =& JFactory::getUser();
@@ -947,6 +1081,14 @@ class JobsController extends Hubzero_Controller
 	// Apply to a job
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'apply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function apply()
 	{
 		$database =& JFactory::getDBO();
@@ -1030,6 +1172,14 @@ class JobsController extends Hubzero_Controller
 	// Save job application
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'saveapp'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function saveapp()
 	{
 		$database =& JFactory::getDBO();
@@ -1090,6 +1240,14 @@ class JobsController extends Hubzero_Controller
 	// Job posting
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'job'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function job()
 	{
 		$database =& JFactory::getDBO();
@@ -1214,6 +1372,14 @@ class JobsController extends Hubzero_Controller
 	// Save job
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'savejob'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function savejob()
 	{
 		$database =& JFactory::getDBO();
@@ -1361,6 +1527,14 @@ class JobsController extends Hubzero_Controller
 	// Add/edit job form
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'editjob'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function editjob()
 	{
 		$database 	=& JFactory::getDBO();
@@ -1495,6 +1669,15 @@ class JobsController extends Hubzero_Controller
 	// Authorizations
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'authorize_employer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function authorize_employer($admin = 0)
 	{
 		$database =& JFactory::getDBO();
@@ -1545,6 +1728,14 @@ class JobsController extends Hubzero_Controller
 		$this->_emp = $emp;
 	}
 
+	/**
+	 * Short description for 'authorize_admin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function authorize_admin($admin = 0)
 	{
 		$juser =& JFactory::getUser();
@@ -1577,6 +1768,17 @@ class JobsController extends Hubzero_Controller
 	// Search Preferences
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'updatePrefs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      object $juser Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function updatePrefs($database, $juser, $category = 'resume')
 	{
 		$saveprefs  = JRequest::getInt( 'saveprefs', 0, 'post');
@@ -1625,6 +1827,16 @@ class JobsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'getPrefs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      object $juser Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function getPrefs($database, $juser, $category = 'resume')
 	{
 		$p = new Prefs($database);
@@ -1650,6 +1862,18 @@ class JobsController extends Hubzero_Controller
 	// Search filters
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getFilters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @param      integer $emp Parameter description (if any) ...
+	 * @param      integer $checkstored Parameter description (if any) ...
+	 * @param      integer $jobs Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getFilters($admin=0, $emp = 0, $checkstored = 1, $jobs = 0)
 	{
 		// Query filters defaults
@@ -1691,6 +1915,14 @@ class JobsController extends Hubzero_Controller
 	// Batch resume download
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'batch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function batch()
 	{
 		$database =& JFactory::getDBO();
@@ -1752,6 +1984,15 @@ class JobsController extends Hubzero_Controller
 	// Create resume archive
 	//-----------------------------
 
+
+	/**
+	 * Short description for 'archiveResumes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pile Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function archiveResumes($pile = 'all')
 	{
 		$database =& JFactory::getDBO();
@@ -1823,6 +2064,17 @@ class JobsController extends Hubzero_Controller
 	// Check job ad quota depending on subscription
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'checkQuota'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $job Parameter description (if any) ...
+	 * @param      object $juser Parameter description (if any) ...
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function checkQuota ($job, $juser, $database)
 	{
 		// make sure we aren't over quota
@@ -1843,6 +2095,14 @@ class JobsController extends Hubzero_Controller
 	// Initial setup of default services
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'setupServices'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function setupServices()
 	{
 		$database =& JFactory::getDBO();
@@ -1911,6 +2171,15 @@ maxads=3'
 	// Get service params
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'getServiceParams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object &$service Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function getServiceParams (&$service)
 	{
 		$params = new JParameter( $service->params );

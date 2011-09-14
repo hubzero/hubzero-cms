@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_tageditor_autocompleter' );
 
+/**
+ * Short description for 'plgTageditorAutocompleter'
+ * 
+ * Long description (if any) ...
+ */
 class plgTageditorAutocompleter extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgTageditorAutocompleter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgTageditorAutocompleter(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,14 @@ class plgTageditorAutocompleter extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onTagsEdit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $atts Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function onTagsEdit( $atts )
 	{
 		$name  = $atts[0];

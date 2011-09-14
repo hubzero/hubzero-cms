@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_blog' );
 
+/**
+ * Short description for 'plgMembersBlog'
+ * 
+ * Long description (if any) ...
+ */
 class plgMembersBlog extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgMembersBlog'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgMembersBlog(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,14 @@ class plgMembersBlog extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onMembersAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onMembersAreas( $authorized )
 	{
 		$areas = array(
@@ -51,6 +76,17 @@ class plgMembersBlog extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onMembers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $member Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
@@ -131,6 +167,13 @@ class plgMembersBlog extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for '_metadata'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function _metadata()
 	{
 		$html = '<p class="blog"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog').'">'.JText::_('Blog entries').'</a></p>'."\n";
@@ -138,6 +181,13 @@ class plgMembersBlog extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for '_browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	private function _browse()
 	{
 		ximport('Hubzero_Plugin_View');
@@ -218,6 +268,13 @@ class plgMembersBlog extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for '_feed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _feed()
 	{
 		if (!$this->_params->get('feeds_enabled')) {
@@ -341,6 +398,15 @@ class plgMembersBlog extends JPlugin
 		echo $doc->render();
 	}
 
+	/**
+	 * Short description for '_highlight'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $searchquery Parameter description (if any) ...
+	 * @param      array $results Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _highlight( $searchquery, $results )
 	{
 		$toks = array($searchquery);
@@ -386,6 +452,13 @@ class plgMembersBlog extends JPlugin
 		return $results;
 	}
 
+	/**
+	 * Short description for '_entry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _entry()
 	{
 		ximport('Hubzero_Plugin_View');
@@ -507,11 +580,25 @@ class plgMembersBlog extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for '_new'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _new()
 	{
 		return $this->_edit();
 	}
 
+	/**
+	 * Short description for '_edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	private function _edit()
 	{
 		$juser =& JFactory::getUser();
@@ -554,6 +641,14 @@ class plgMembersBlog extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for '_normalizeTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _normalizeTitle($title)
 	{
 		$title = str_replace(' ', '-', $this->_shortenTitle($title));
@@ -561,6 +656,15 @@ class plgMembersBlog extends JPlugin
 		return strtolower($title);
 	}
 
+	/**
+	 * Short description for '_shortenTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function _shortenTitle($text, $chars=100)
 	{
 		$text = strip_tags($text);
@@ -573,6 +677,13 @@ class plgMembersBlog extends JPlugin
 		return $text;
 	}
 
+	/**
+	 * Short description for '_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _save()
 	{
 		$juser =& JFactory::getUser();
@@ -625,6 +736,13 @@ class plgMembersBlog extends JPlugin
 		$app->redirect( JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias) );
 	}
 
+	/**
+	 * Short description for '_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	private function _delete()
 	{
 		$juser =& JFactory::getUser();
@@ -705,6 +823,13 @@ class plgMembersBlog extends JPlugin
 		return $this->_browse();
 	}
 
+	/**
+	 * Short description for '_savecomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _savecomment()
 	{
 		// Ensure the user is logged in
@@ -781,6 +906,13 @@ class plgMembersBlog extends JPlugin
 		return $this->_entry();
 	}
 
+	/**
+	 * Short description for '_deletecomment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _deletecomment()
 	{
 		// Ensure the user is logged in
@@ -814,6 +946,13 @@ class plgMembersBlog extends JPlugin
 		return $this->_entry();
 	}
 
+	/**
+	 * Short description for '_settings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	private function _settings()
 	{
 		$juser =& JFactory::getUser();
@@ -850,6 +989,13 @@ class plgMembersBlog extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for '_savesettings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _savesettings()
 	{
 		$juser =& JFactory::getUser();

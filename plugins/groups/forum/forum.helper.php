@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,8 +35,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Forum helper class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'ForumHelper'
+ * 
+ * Long description (if any) ...
+ */
 class ForumHelper
 {
+
+	/**
+	 * Short description for 'getMemberPhoto'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      integer $anonymous Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getMemberPhoto( $member, $anonymous=0 )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
@@ -67,6 +85,14 @@ class ForumHelper
 		}
 	}
 
+	/**
+	 * Short description for 'thumbit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
@@ -79,6 +105,14 @@ class ForumHelper
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)

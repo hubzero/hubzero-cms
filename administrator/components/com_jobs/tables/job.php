@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,54 +21,243 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'Job'
+ * 
+ * Long description (if any) ...
+ */
 class Job extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         		= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'cid'
+	 * 
+	 * @var unknown
+	 */
 	var $cid       			= NULL;  // @var int
+
+
+	/**
+	 * Description for 'employerid'
+	 * 
+	 * @var unknown
+	 */
 	var $employerid      	= NULL;  // @var int
+
+
+	/**
+	 * Description for 'code'
+	 * 
+	 * @var unknown
+	 */
 	var $code      			= NULL;  // @var int
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title				= NULL;  // @var varchar(200)
+
+
+	/**
+	 * Description for 'companyName'
+	 * 
+	 * @var unknown
+	 */
 	var $companyName		= NULL;  // @var varchar(200)
+
+
+	/**
+	 * Description for 'companyLocation'
+	 * 
+	 * @var unknown
+	 */
 	var $companyLocation	= NULL;  // @var varchar(200)
+
+
+	/**
+	 * Description for 'companyLocationCountry'
+	 * 
+	 * @var unknown
+	 */
 	var $companyLocationCountry	= NULL;  // @var varchar(100)
+
+
+	/**
+	 * Description for 'companyWebsite'
+	 * 
+	 * @var unknown
+	 */
 	var $companyWebsite		= NULL;  // @var varchar(200)
 
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description		= NULL;  // @var text
+
+
+	/**
+	 * Description for 'addedBy'
+	 * 
+	 * @var unknown
+	 */
 	var $addedBy 			= NULL;  // @var int(50)
+
+
+	/**
+	 * Description for 'editedBy'
+	 * 
+	 * @var unknown
+	 */
 	var $editedBy 			= NULL;  // @var int(50)
+
+
+	/**
+	 * Description for 'added'
+	 * 
+	 * @var unknown
+	 */
 	var $added    			= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'edited'
+	 * 
+	 * @var unknown
+	 */
 	var $edited	    		= NULL;  // @var datetime (0000-00-00 00:00:00)
 
+
+	/**
+	 * Description for 'status'
+	 * 
+	 * @var unknown
+	 */
 	var $status				= NULL;  // @var int(11)
 		// 0 pending approval
 		// 1 published
 		// 2 deleted
 		// 3 inactive
 		// 4 draft
+
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type				= NULL;  // @var int(3)
 
+
+	/**
+	 * Description for 'opendate'
+	 * 
+	 * @var unknown
+	 */
 	var $opendate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'closedate'
+	 * 
+	 * @var unknown
+	 */
 	var $closedate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'startdate'
+	 * 
+	 * @var unknown
+	 */
 	var $startdate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
 
+
+	/**
+	 * Description for 'applyExternalUrl'
+	 * 
+	 * @var unknown
+	 */
 	var $applyExternalUrl	= NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'applyInternal'
+	 * 
+	 * @var unknown
+	 */
 	var $applyInternal 		= NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'contactName'
+	 * 
+	 * @var unknown
+	 */
 	var $contactName		= NULL;  // @var varchar(100)
+
+
+	/**
+	 * Description for 'contactEmail'
+	 * 
+	 * @var unknown
+	 */
 	var $contactEmail		= NULL;  // @var varchar(100)
+
+
+	/**
+	 * Description for 'contactPhone'
+	 * 
+	 * @var unknown
+	 */
 	var $contactPhone		= NULL;  // @var varchar(100)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_openings', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
@@ -87,6 +273,17 @@ class Job extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'get_my_openings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      mixed $current Parameter description (if any) ...
+	 * @param      mixed $admin Parameter description (if any) ...
+	 * @param      mixed $active Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function get_my_openings($uid = NULL, $current = 0, $admin = 0, $active = 0)
 	{
 	 	if ($uid === NULL) {
@@ -108,6 +305,16 @@ class Job extends JTable
 		return $this->_db->loadObjectList();
 	 }
 
+	/**
+	 * Short description for 'countMyActiveOpenings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      integer $onlypublished Parameter description (if any) ...
+	 * @param      mixed $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	 public function countMyActiveOpenings($uid = NULL, $onlypublished = 0, $admin = 0)
 	 {
 	 	if ($uid === NULL) {
@@ -127,6 +334,17 @@ class Job extends JTable
 		return $this->_db->loadResult();
 	 }
 
+	/**
+	 * Short description for 'get_openings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      mixed $uid Parameter description (if any) ...
+	 * @param      mixed $admin Parameter description (if any) ...
+	 * @param      string $subscription Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	 public function get_openings($filters, $uid = 0, $admin = 0, $subscription = '')
 	 {
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
@@ -237,6 +455,14 @@ class Job extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'loadJob'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $code Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadJob( $code=NULL )
 	{
 		if ($code === NULL) {
@@ -251,6 +477,14 @@ class Job extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'delete_opening'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $jid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete_opening($jid)
 	{
 		if ($jid === NULL) {
@@ -269,6 +503,17 @@ class Job extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'get_opening'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $jid Parameter description (if any) ...
+	 * @param      integer $uid Parameter description (if any) ...
+	 * @param      mixed $admin Parameter description (if any) ...
+	 * @param      string $jobcode Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_opening ($jid = 0, $uid = 0, $admin = 0, $jobcode = '')
 	{
 		if ($jid === NULL && $jobcode == '') {

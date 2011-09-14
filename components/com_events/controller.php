@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'EventsController'
+ * 
+ * Long description (if any) ...
+ */
 class EventsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_setup();
@@ -59,6 +74,13 @@ class EventsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -141,6 +163,13 @@ class EventsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_name));
@@ -193,6 +222,14 @@ class EventsController extends Hubzero_Controller
 	// Checks (private)
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_setup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function _setup()
 	{
 		// Load the events configuration
@@ -202,7 +239,16 @@ class EventsController extends Hubzero_Controller
 		$this->config = $config;
 
 		// Set some defines
+
+
+	/**
+	 * Description for ''_CAL_CONF_STARDAY''
+	 */
 		define( '_CAL_CONF_STARDAY', $config->getCfg('starday'));
+
+	/**
+	 * Description for ''_CAL_CONF_DATEFORMAT''
+	 */
 		define( '_CAL_CONF_DATEFORMAT', $config->getCfg('dateformat') );
 
 		$jconfig =& JFactory::getConfig();
@@ -264,6 +310,14 @@ class EventsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'year'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function year()
 	{
 		// Get some needed info
@@ -319,6 +373,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'month'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function month()
 	{
 		// Get some needed info
@@ -379,6 +440,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'week'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function week()
 	{
 		// Get some needed info
@@ -466,6 +534,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'day'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function day()
 	{
 		// Get some needed info
@@ -531,6 +606,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'details'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function details()
 	{
 		// Get some needed info
@@ -713,6 +795,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'register'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function register()
 	{
 		$document =& JFactory::getDocument();
@@ -839,6 +928,13 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function process()
 	{
 		$document =& JFactory::getDocument();
@@ -984,6 +1080,14 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_log'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $reg Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _log($reg)
 	{
 		$this->database->setQuery(
@@ -1018,6 +1122,16 @@ class EventsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_getValueString'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @param      array $reg Parameter description (if any) ...
+	 * @param      array $values Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _getValueString($database, $reg, $values)
 	{
 		$rv = array();
@@ -1062,6 +1176,13 @@ class EventsController extends Hubzero_Controller
 		return implode($rv, ',');
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function login()
 	{
 		$view = new JView( array('name'=>'login') );
@@ -1072,6 +1193,14 @@ class EventsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit($row=NULL)
 	{
 		// Check if they are logged in
@@ -1310,6 +1439,14 @@ class EventsController extends Hubzero_Controller
 	// Actions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		// Check if they are logged in
@@ -1378,6 +1515,13 @@ class EventsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check if they are logged in
@@ -1630,6 +1774,18 @@ class EventsController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_sendEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$hub Parameter description (if any) ...
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _sendEmail(&$hub, $email, $subject, $message)
 	{
 		if ($hub) {
@@ -1652,6 +1808,14 @@ class EventsController extends Hubzero_Controller
 		return(0);
 	}
 
+	/**
+	 * Short description for '_validEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _validEmail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
@@ -1661,6 +1825,13 @@ class EventsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_getCategories'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	private function _getCategories()
 	{
 		$sql = "SELECT * FROM #__categories WHERE section='".$this->_option."' AND published = '1' ORDER BY title DESC";
@@ -1677,6 +1848,15 @@ class EventsController extends Hubzero_Controller
 		return $c;
 	}
 
+	/**
+	 * Short description for 'parseTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function parseTag($text, $tag)
 	{
 		preg_match("#<ef:".$tag.">(.*?)</ef:".$tag.">#s", $text, $matches);
@@ -1690,6 +1870,14 @@ class EventsController extends Hubzero_Controller
 		return $match;
 	}
 
+	/**
+	 * Short description for '_clean'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _clean($string)
 	{
 		if (get_magic_quotes_gpc()) {
@@ -1732,6 +1920,17 @@ class EventsController extends Hubzero_Controller
 		return $string;
 	}
 
+	/**
+	 * Short description for '_sendMail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      string $email Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _sendMail($name, $email, $subject, $message)
 	{
 		$name .= ' '.JText::_('EVENTS_ADMINISTRATOR');
@@ -1747,6 +1946,14 @@ class EventsController extends Hubzero_Controller
 	    @mail($email, $subject, $message, $headers);
 	}
 
+	/**
+	 * Short description for '_authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function _authorize($id='')
 	{
 		// Check if they are logged in

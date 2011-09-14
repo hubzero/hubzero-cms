@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'MyhubController'
+ * 
+ * Long description (if any) ...
+ */
 class MyhubController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->num_default = 6;
@@ -59,6 +74,14 @@ class MyhubController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $question Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildPathway($question=null)
 	{
 		$app =& JFactory::getApplication();
@@ -78,6 +101,14 @@ class MyhubController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $question Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildTitle($question=null)
 	{
 		$juser =& JFactory::getUser();
@@ -100,6 +131,15 @@ class MyhubController extends Hubzero_Controller
 	//----------------------------------------------------------
 
 	// Display a login form
+
+
+	/**
+	 * Short description for 'restricted'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function restricted()
 	{
 		// Set the page title
@@ -119,6 +159,15 @@ class MyhubController extends Hubzero_Controller
 
 	//-----------
 	// Restore the "My HUB" page to default settings
+
+
+	/**
+	 * Short description for 'restore'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function restore()
 	{
 		// Load the user's info
@@ -142,6 +191,15 @@ class MyhubController extends Hubzero_Controller
 
 	//-----------
 	// The main "My HUB" page
+
+
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Add the CSS
@@ -241,6 +299,15 @@ class MyhubController extends Hubzero_Controller
 	//----------------------------------------------------------
 
 	// Rebuild the "available modules" list
+
+
+	/**
+	 * Short description for 'rebuild'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function rebuild()
 	{
 		$id  = $this->save(1);
@@ -266,6 +333,16 @@ class MyhubController extends Hubzero_Controller
 	//-----------
 	// Save preferences (i.e., the list of modules 
 	// to be displayed and their locations)
+
+
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $rtrn Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save( $rtrn=0 )
 	{
 		// Incoming
@@ -297,6 +374,15 @@ class MyhubController extends Hubzero_Controller
 
 	//-----------
 	// Save the parameters for a module
+
+
+	/**
+	 * Short description for 'saveparams'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function saveparams()
 	{
 		// Incoming
@@ -335,6 +421,15 @@ class MyhubController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'getmodule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $extras Parameter description (if any) ...
+	 * @param      string $act Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function getmodule( $extras=false, $act='' )
 	{
 		// Instantiate a view
@@ -383,6 +478,15 @@ class MyhubController extends Hubzero_Controller
 
 	//-----------
 	// Reload the contents of a module
+
+
+	/**
+	 * Short description for 'refresh'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function refresh()
 	{
 		$this->getmodule( false, '' );
@@ -393,6 +497,15 @@ class MyhubController extends Hubzero_Controller
 	// NOTE: this is different from the method above in that
 	// it also builds the title, parameters form, and container
 	// for the module
+
+
+	/**
+	 * Short description for 'addmodule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addmodule()
 	{
 		$this->getmodule( true, 'customize' );
@@ -402,6 +515,17 @@ class MyhubController extends Hubzero_Controller
 	// outputs a group of modules, each contained in a list item
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'output_modules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $mods Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @param      string $act Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	protected function output_modules($mods, $uid, $act='')
 	{
 		// Get the modules
@@ -457,6 +581,15 @@ class MyhubController extends Hubzero_Controller
 	// Fetchers
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_getUnusedModules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $mods Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getUnusedModules($mods)
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
@@ -482,6 +615,13 @@ class MyhubController extends Hubzero_Controller
 		return $modules;
 	}
 
+	/**
+	 * Short description for '_getDefaultModules'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function _getDefaultModules()
 	{
 		$string = '';

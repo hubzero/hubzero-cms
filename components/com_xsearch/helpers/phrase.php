@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,20 +21,67 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'XSearchPhrase'
+ * 
+ * Long description (if any) ...
+ */
 class XSearchPhrase
 {
+
+	/**
+	 * Description for '_text'
+	 * 
+	 * @var unknown
+	 */
 	private $_text  = NULL;     // The original search text - should NEVER BE CHANGED
+
+
+	/**
+	 * Description for '_stem'
+	 * 
+	 * @var unknown
+	 */
 	private $_stem  = NULL;     // A flag for if we should stem words or not
+
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();  // Processed text
+
+
+	/**
+	 * Description for '_error'
+	 * 
+	 * @var unknown
+	 */
 	private $_error = NULL;     // Error holder
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      boolean $stem Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $text=NULL, $stem=false )
 	{
 		$this->_text = $text;
@@ -45,11 +89,28 @@ class XSearchPhrase
 		$this->searchTokens = array();
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -57,6 +118,13 @@ class XSearchPhrase
 		}
 	}
 
+	/**
+	 * Short description for 'process'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function process()
 	{
 		if (trim($this->_text) == '') {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'GroupsController'
+ * 
+ * Long description (if any) ...
+ */
 class GroupsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		// Load the component config
@@ -71,11 +86,26 @@ class GroupsController extends Hubzero_Controller
 	//  Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'mytest'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function mytest()
 	{
 		die('gee');
 	}
 
+	/**
+	 * Short description for 'exporttoldap'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function exporttoldap()
 	{
 		// Instantiate a new view
@@ -142,6 +172,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'importldap'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function importldap()
 	{
         // Instantiate a new view
@@ -198,6 +235,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'system'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function system()
 	{
 		// Instantiate a new view
@@ -232,6 +276,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		// Instantiate a new view
@@ -280,6 +331,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'manage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function manage()
 	{
 		// Incoming
@@ -360,11 +418,25 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function add()
 	{
 		$this->edit();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edit()
 	{
 		// Incoming
@@ -394,6 +466,15 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'multi_array_map'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $func Parameter description (if any) ...
+	 * @param      array $arr Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	protected function multi_array_map( $func, $arr )
 	{
 		$newArr = array();
@@ -405,6 +486,13 @@ class GroupsController extends Hubzero_Controller
 		return $newArr;
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check for request forgeries
@@ -539,6 +627,13 @@ class GroupsController extends Hubzero_Controller
 		$this->_message = JText::_('GROUP_SAVED');
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		// Check for request forgeries
@@ -619,11 +714,25 @@ class GroupsController extends Hubzero_Controller
 		$this->_message = JText::_('GROUPS_REMOVED');
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'publish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function publish()
 	{
 		// Check for request forgeries
@@ -672,6 +781,13 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'unpublish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function unpublish()
 	{
 		// Check for request forgeries
@@ -724,6 +840,14 @@ class GroupsController extends Hubzero_Controller
 	//  User management functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'addusers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function addusers()
 	{
 		// Check for request forgeries
@@ -791,6 +915,13 @@ class GroupsController extends Hubzero_Controller
 		$this->group->update();
 	}
 
+	/**
+	 * Short description for 'accept'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function accept()
 	{
 		// Check for request forgeries
@@ -841,6 +972,13 @@ class GroupsController extends Hubzero_Controller
 		$this->group->update();
 	}
 
+	/**
+	 * Short description for 'approve'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function approve()
 	{
 		// Check for request forgeries
@@ -891,6 +1029,13 @@ class GroupsController extends Hubzero_Controller
 		$this->group->update();
 	}
 
+	/**
+	 * Short description for 'promote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function promote()
 	{
 		// Check for request forgeries
@@ -933,6 +1078,13 @@ class GroupsController extends Hubzero_Controller
 		$this->group->update();
 	}
 
+	/**
+	 * Short description for 'demote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function demote()
 	{
 		// Check for request forgeries
@@ -984,6 +1136,13 @@ class GroupsController extends Hubzero_Controller
 		//$this->group->update();
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function remove()
 	{
 		// Check for request forgeries
@@ -1048,6 +1207,13 @@ class GroupsController extends Hubzero_Controller
 		$this->group->update();
 	}
 
+	/**
+	 * Short description for 'uninvite'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function uninvite()
 	{
 		// Check for request forgeries
@@ -1087,6 +1253,13 @@ class GroupsController extends Hubzero_Controller
 		$this->group->update();
 	}
 
+	/**
+	 * Short description for 'deny'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function deny()
 	{
 		// Check for request forgeries
@@ -1123,6 +1296,15 @@ class GroupsController extends Hubzero_Controller
 		$this->group->update();
 	}
 
+	/**
+	 * Short description for '_validCn'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $name Parameter description (if any) ...
+	 * @param      integer $type Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _validCn($name, $type)
 	{
 		if ($type == 1) {

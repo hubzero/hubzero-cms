@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'ResourcesController'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task  = JRequest::getVar( 'task', '' );
@@ -72,6 +87,13 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -112,6 +134,13 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		if (!$this->_title) {
@@ -139,6 +168,14 @@ class ResourcesController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'intro'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function intro()
 	{
 		// Push some styles to the template
@@ -171,6 +208,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		// Instantiate a new view
@@ -263,6 +307,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'browsetags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function browsetags()
 	{
 		// Check if we're using this view type
@@ -370,6 +421,14 @@ class ResourcesController extends Hubzero_Controller
 	//-----------
 	// NOTE: This view should only be called through AJAX
 
+
+	/**
+	 * Short description for 'browser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browser()
 	{
 		$database =& JFactory::getDBO();
@@ -532,6 +591,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'play'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function play()
 	{
 		$database =& JFactory::getDBO();
@@ -612,6 +678,13 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Incoming
@@ -969,6 +1042,13 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'feed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function feed()
 	{
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
@@ -1319,6 +1399,17 @@ class ResourcesController extends Hubzero_Controller
 		echo $doc->render();
 	}
 
+	/**
+	 * Short description for 'checkForImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @param      string $upath Parameter description (if any) ...
+	 * @param      unknown $created Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function checkForImage($filename, $upath, $created, $id)
 	{
 		$path = ResourcesHtml::build_path( $created, $id, '' );
@@ -1385,6 +1476,14 @@ class ResourcesController extends Hubzero_Controller
 	//-----------
 	// NOTE: This view should only be called through AJAX
 
+
+	/**
+	 * Short description for 'plugin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function plugin()
 	{
 		// Incoming
@@ -1410,6 +1509,13 @@ class ResourcesController extends Hubzero_Controller
 		echo $html;
 	}
 
+	/**
+	 * Short description for 'download'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function download()
 	{
 		// Get some needed libraries
@@ -1534,6 +1640,14 @@ class ResourcesController extends Hubzero_Controller
 	// Tools
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'sourcecode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function sourcecode()
 	{
 		// Get tool instance
@@ -1589,6 +1703,13 @@ class ResourcesController extends Hubzero_Controller
 		return;
 	}
 
+	/**
+	 * Short description for 'license'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function license()
 	{
 		// Get tool instance
@@ -1639,6 +1760,14 @@ class ResourcesController extends Hubzero_Controller
 	// Citations
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'citation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function citation()
 	{
 		$database =& JFactory::getDBO();
@@ -1795,6 +1924,17 @@ class ResourcesController extends Hubzero_Controller
 		die; // REQUIRED
 	}
 
+	/**
+	 * Short description for 'serveup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $inline Parameter description (if any) ...
+	 * @param      string $p Parameter description (if any) ...
+	 * @param      string $f Parameter description (if any) ...
+	 * @param      string $mime Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function serveup($inline = false, $p, $f, $mime)
 	{
 		$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]) )
@@ -1828,6 +1968,15 @@ class ResourcesController extends Hubzero_Controller
         // The caller MUST 'die();'
     }
 
+	/**
+	 * Short description for 'readfile_chunked'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @param      boolean $retbytes Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function readfile_chunked($filename,$retbytes=true)
 	{
 		$chunksize = 1*(1024*1024); // How many bytes per chunk
@@ -1856,6 +2005,14 @@ class ResourcesController extends Hubzero_Controller
 	// Other Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'savetags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savetags()
 	{
 		// Check if they are logged in
@@ -1885,6 +2042,15 @@ class ResourcesController extends Hubzero_Controller
 	//	Checks
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $contributorIDs Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function _authorize($contributorIDs=array())
 	{
 		// Check if they are logged in
@@ -1913,6 +2079,14 @@ class ResourcesController extends Hubzero_Controller
 		return false;
 	}
 
+	/**
+	 * Short description for 'checkGroupAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $resource Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function checkGroupAccess($resource)
 	{
 		//$juser =& Hubzero_Factory::getUser();
@@ -1974,6 +2148,14 @@ class ResourcesController extends Hubzero_Controller
 		return $restricted;
 	}
 
+	/**
+	 * Short description for 'getUsersGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
@@ -1988,6 +2170,14 @@ class ResourcesController extends Hubzero_Controller
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'fullPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function fullPath($path)
 	{
 		if (substr($path, 0, 7) == 'http://'
@@ -2021,6 +2211,14 @@ class ResourcesController extends Hubzero_Controller
 		return $base.$path;
 	}
 
+	/**
+	 * Short description for 'check_toolaccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function check_toolaccess($toolid)
 	{
 		$database =& JFactory::getDBO();

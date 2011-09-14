@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,6 +35,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 //  A collection of static methods to play with strings.
 //-------------------------------------------------------------
 
+
+/**
+ * Short description for 'StringUtils'
+ * 
+ * Long description (if any) ...
+ */
 class StringUtils
 {
 	// Perform an operation equivalent to 
@@ -41,6 +49,19 @@ class StringUtils
 	// Compared to delimiterReplace(), this implementation is fast but memory-
 	// hungry and inflexible. The memory requirements are such that I don't 
 	// recommend using it on anything but guaranteed small chunks of text.
+
+
+	/**
+	 * Short description for 'hungryDelimiterReplace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $startDelim Parameter description (if any) ...
+	 * @param      unknown $endDelim Parameter description (if any) ...
+	 * @param      string $replace Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	static function hungryDelimiterReplace( $startDelim, $endDelim, $replace, $subject )
 	{
 		$segments = explode( $startDelim, $subject );
@@ -71,6 +92,22 @@ class StringUtils
 	// regex. In this implementation, the end must share no characters with the 
 	// start, so e.g. /*/ is not considered to be both the start and end of a 
 	// comment. /*/xy/*/ is considered to be a single comment with contents /xy/. 
+
+
+	/**
+	 * Short description for 'delimiterReplaceCallback'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $startDelim Parameter description (if any) ...
+	 * @param      unknown $endDelim Parameter description (if any) ...
+	 * @param      unknown $callback Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @param      string $flags Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 * @throws MWException  Exception description (if any) ...
+	 * @throws MWException  Exception description (if any) ...
+	 */
 	static function delimiterReplaceCallback( $startDelim, $endDelim, $callback, $subject, $flags = '' )
 	{
 		$inputPos = 0;
@@ -148,6 +185,20 @@ class StringUtils
 	//               replaced by the text between the delimiters
 	// @param string $subject String to search
 	// @return string The string with the matches replaced
+
+
+	/**
+	 * Short description for 'delimiterReplace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $startDelim Parameter description (if any) ...
+	 * @param      unknown $endDelim Parameter description (if any) ...
+	 * @param      unknown $replace Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @param      string $flags Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	static function delimiterReplace( $startDelim, $endDelim, $replace, $subject, $flags = '' )
 	{
 		$replacer = new RegexlikeReplacer( $replace );
@@ -159,6 +210,17 @@ class StringUtils
 	// @param string $separator
 	// @param string $text
 	// @return array
+
+
+	/**
+	 * Short description for 'explodeMarkup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $separator Parameter description (if any) ...
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	static function explodeMarkup( $separator, $text )
 	{
 		$placeholder = "\x00";
@@ -184,6 +246,16 @@ class StringUtils
 	// replacement parameter.
 	// @param string $string
 	// @return string
+
+
+	/**
+	 * Short description for 'escapeRegexReplacement'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	static function escapeRegexReplacement( $string )
 	{
 		$string = str_replace( '\\', '\\\\', $string );
@@ -196,8 +268,22 @@ class StringUtils
 //  Base class for "replacers", objects used in preg_replace_callback() and 
 //  StringUtils::delimiterReplaceCallback()
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class Replacer
 {
+
+	/**
+	 * Short description for 'cb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	function cb()
 	{
 		return array( &$this, 'replace' );
@@ -207,15 +293,43 @@ class Replacer
 //-------------------------------------------------------------
 //  Class to replace regex matches with a string similar to that used in preg_replace()
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'RegexlikeReplacer'
+ * 
+ * Long description (if any) ...
+ */
 class RegexlikeReplacer extends Replacer
 {
+
+	/**
+	 * Description for 'r'
+	 * 
+	 * @var unknown
+	 */
 	var $r;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $r Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( $r )
 	{
 		$this->r = $r;
 	}
 
+	/**
+	 * Short description for 'replace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function replace( $matches )
 	{
 		$pairs = array();
@@ -229,8 +343,25 @@ class RegexlikeReplacer extends Replacer
 //-------------------------------------------------------------
 //  Class to perform secondary replacement within each replacement string
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class DoubleReplacer extends Replacer
 {
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $from Parameter description (if any) ...
+	 * @param      unknown $to Parameter description (if any) ...
+	 * @param      integer $index Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( $from, $to, $index = 0 )
 	{
 		$this->from = $from;
@@ -238,6 +369,14 @@ class DoubleReplacer extends Replacer
 		$this->index = $index;
 	}
 
+	/**
+	 * Short description for 'replace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function replace( $matches )
 	{
 		return str_replace( $this->from, $this->to, $matches[$this->index] );
@@ -247,15 +386,44 @@ class DoubleReplacer extends Replacer
 //-------------------------------------------------------------
 //  Class to perform replacement based on a simple hashtable lookup
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'HashtableReplacer'
+ * 
+ * Long description (if any) ...
+ */
 class HashtableReplacer extends Replacer
 {
+
+	/**
+	 * Description for 'table'
+	 * 
+	 * @var array
+	 */
 	var $table, $index;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $table Parameter description (if any) ...
+	 * @param      integer $index Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( $table, $index = 0 ) {
 		$this->table = $table;
 		$this->index = $index;
 	}
 
+	/**
+	 * Short description for 'replace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function replace( $matches ) {
 		return $this->table[$matches[$this->index]];
 	}
@@ -265,59 +433,155 @@ class HashtableReplacer extends Replacer
 //  Replacement array for FSS with fallback to strtr()
 //  Supports lazy initialisation of FSS resource
 //-------------------------------------------------------------
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class ReplacementArray
 {
-	/*mostly private*/ var $data = false;
-	/*mostly private*/ var $fss = false;
+	/*mostly private*/
+
+	/**
+	 * Description for 'data'
+	 * 
+	 * @var mixed
+	 */
+ var $data = false;
+	/*mostly private*/
+
+	/**
+	 * Description for 'fss'
+	 * 
+	 * @var boolean
+	 */
+ var $fss = false;
 
 	// Create an object with the specified replacement array
 	// The array should have the same form as the replacement array for strtr()
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $data Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( $data = array() )
 	{
 		$this->data = $data;
 	}
 
+	/**
+	 * Short description for '__sleep'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	function __sleep()
 	{
 		return array( 'data' );
 	}
 
+	/**
+	 * Short description for '__wakeup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function __wakeup()
 	{
 		$this->fss = false;
 	}
 
 	// Set the whole replacement array at once
+
+
+	/**
+	 * Short description for 'setArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $data Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setArray( $data )
 	{
 		$this->data = $data;
 		$this->fss = false;
 	}
 
+	/**
+	 * Short description for 'getArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	function getArray()
 	{
 		return $this->data;
 	}
 
 	// Set an element of the replacement array
+
+
+	/**
+	 * Short description for 'setPair'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $from Parameter description (if any) ...
+	 * @param      unknown $to Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setPair( $from, $to )
 	{
 		$this->data[$from] = $to;
 		$this->fss = false;
 	}
 
+	/**
+	 * Short description for 'mergeArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $data Parameter description (if any) ...
+	 * @return     void
+	 */
 	function mergeArray( $data )
 	{
 		$this->data = array_merge( $this->data, $data );
 		$this->fss = false;
 	}
 
+	/**
+	 * Short description for 'merge'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $other Parameter description (if any) ...
+	 * @return     void
+	 */
 	function merge( $other )
 	{
 		$this->data = array_merge( $this->data, $other->data );
 		$this->fss = false;
 	}
 
+	/**
+	 * Short description for 'replace'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function replace( $subject )
 	{
 		if ( function_exists( 'fss_prep_replace' ) ) {

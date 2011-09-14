@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'CitationsController'
+ * 
+ * Long description (if any) ...
+ */
 class CitationsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function execute()
 	{
 		$default = 'browse';
@@ -55,6 +70,14 @@ class CitationsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function browse()
 	{
 		// Get configuration
@@ -96,11 +119,25 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function add()
 	{
 		$this->edit();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function edit()
 	{
 		// Instantiate a new view
@@ -147,6 +184,13 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'stats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function stats()
 	{
 		// Instantiate a new view
@@ -171,6 +215,14 @@ class CitationsController extends Hubzero_Controller
 	// Processors
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check for request forgeries
@@ -249,6 +301,15 @@ class CitationsController extends Hubzero_Controller
 		$this->_message = JText::_( 'CITATION_SAVED' );
 	}
 
+	/**
+	 * Short description for '_isEmpty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $b Parameter description (if any) ...
+	 * @param      array $ignored Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _isEmpty($b, $ignored=array())
 	{
 		foreach ($ignored as $ignore)
@@ -271,6 +332,13 @@ class CitationsController extends Hubzero_Controller
 		return $e;
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function remove()
 	{
 		// Incoming (we're expecting an array)

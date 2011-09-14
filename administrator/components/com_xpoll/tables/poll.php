@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,30 +21,118 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'XPollPoll'
+ * 
+ * Long description (if any) ...
+ */
 class XPollPoll extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id               = NULL; // @var int Primary key
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title            = NULL; // @var string
+
+
+	/**
+	 * Description for 'voters'
+	 * 
+	 * @var unknown
+	 */
 	var $voters           = NULL; // @var int(9)
+
+
+	/**
+	 * Description for 'checked_out'
+	 * 
+	 * @var unknown
+	 */
 	var $checked_out      = NULL; // @var int(11)
+
+
+	/**
+	 * Description for 'checked_out_time'
+	 * 
+	 * @var unknown
+	 */
 	var $checked_out_time = NULL; // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
 	var $published        = NULL; // @var tinyint(1)
+
+
+	/**
+	 * Description for 'access'
+	 * 
+	 * @var unknown
+	 */
 	var $access	          = NULL; // @var int(11)
+
+
+	/**
+	 * Description for 'lag'
+	 * 
+	 * @var integer
+	 */
 	var $lag              = NULL; // @var int(11)
+
+
+	/**
+	 * Description for 'open'
+	 * 
+	 * @var unknown
+	 */
 	var $open             = NULL; // @var tinyint(1)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xpolls', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		// Check for valid name
@@ -79,6 +164,14 @@ class XPollPoll extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete( $oid=NULL )
 	{
 		$k = $this->_tbl_key;
@@ -108,6 +201,13 @@ class XPollPoll extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'getAllPolls'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	public function getAllPolls()
 	{
 		$query = "SELECT id, title FROM $this->_tbl WHERE published=1 ORDER BY id";
@@ -115,6 +215,13 @@ class XPollPoll extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getLatestPoll'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getLatestPoll()
 	{
 		$Itemid = 1;
@@ -133,6 +240,14 @@ class XPollPoll extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'increaseVoteCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $poll_id Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function increaseVoteCount( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {
@@ -146,6 +261,14 @@ class XPollPoll extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array() )
 	{
 		$query = " FROM $this->_tbl AS m";
@@ -153,6 +276,14 @@ class XPollPoll extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters )
 	{
 		$query  = "SELECT COUNT(m.id)";
@@ -162,6 +293,14 @@ class XPollPoll extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters )
 	{
 		$query = "SELECT m.*, u.name AS editor, COUNT(d.id) AS numoptions";

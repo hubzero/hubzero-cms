@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -35,14 +37,41 @@ require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.p
 //  Resources Tagging class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'ResourcesTags'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesTags extends TagsHandler
 {
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $db Parameter description (if any) ...
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $db, $config=array() )
 	{
 		$this->_db  = $db;
 		$this->_tbl = 'resources';
 	}
 
+	/**
+	 * Short description for 'getTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      mixed $tagger_id Parameter description (if any) ...
+	 * @param      mixed $strength Parameter description (if any) ...
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getTags($id, $tagger_id=0, $strength=0, $admin=0)
 	{
 		$sql = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t, $this->_obj_tbl AS rt WHERE rt.objectid=$id AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
@@ -62,6 +91,16 @@ class ResourcesTags extends TagsHandler
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'get_tags_with_objects'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $id Parameter description (if any) ...
+	 * @param      mixed $type Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_tags_with_objects($id=0, $type=0, $tag='')
 	{
 		$juser =& JFactory::getUser();
@@ -144,6 +183,14 @@ class ResourcesTags extends TagsHandler
 		return $rows;
 	}
 
+	/**
+	 * Short description for 'getUsersGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
@@ -158,6 +205,19 @@ class ResourcesTags extends TagsHandler
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'get_objects_on_tag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tag Parameter description (if any) ...
+	 * @param      mixed $id Parameter description (if any) ...
+	 * @param      mixed $type Parameter description (if any) ...
+	 * @param      string $sortby Parameter description (if any) ...
+	 * @param      string $tag2 Parameter description (if any) ...
+	 * @param      array $filterby Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_objects_on_tag( $tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array() )
 	{
 		$juser =& JFactory::getUser();
@@ -331,6 +391,16 @@ class ResourcesTags extends TagsHandler
 		return $rows;
 	}
 
+	/**
+	 * Short description for 'checkTagUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tag Parameter description (if any) ...
+	 * @param      mixed $id Parameter description (if any) ...
+	 * @param      string $alias Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function checkTagUsage( $tag, $id=0, $alias='' )
 	{
 		if (!$id && !$alias) {
@@ -353,6 +423,15 @@ class ResourcesTags extends TagsHandler
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getTagUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tag Parameter description (if any) ...
+	 * @param      string $rtrn Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getTagUsage( $tag, $rtrn='id' )
 	{
 		if (!$tag) {

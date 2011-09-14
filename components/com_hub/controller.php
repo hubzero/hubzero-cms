@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,17 +21,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'HubController'
+ * 
+ * Long description (if any) ...
+ */
 class HubController extends JObject
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var string
+	 */
 	private $_name  = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();
+
+	/**
+	 * Description for '_task'
+	 * 
+	 * @var string
+	 */
 	private $_task  = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
@@ -60,11 +93,28 @@ class HubController extends JObject
 		$this->_option = 'com_'.$this->_name;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -72,6 +122,13 @@ class HubController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for '_cookie_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _cookie_check()
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -101,11 +158,25 @@ class HubController extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'invalidRequest'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function invalidRequest()
 	{
 		return JError::raiseError( 404, "Invalid Request" );
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_view = JRequest::getVar('view','','method');
@@ -171,6 +242,14 @@ class HubController extends JObject
 	// Tasks
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'logout'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function logout()
 	{
 		$app  =& JFactory::getApplication();
@@ -195,6 +274,14 @@ class HubController extends JObject
 		JError::raiseError( 500, $error->get('message') );
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $action Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function login($action = 'show')
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -309,6 +396,14 @@ class HubController extends JObject
 		echo '</div><!-- / .main section -->'.n;
 	}
 
+	/**
+	 * Short description for 'realm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $action Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	protected function realm($action = null)
 	{
 		$xhub =& Hubzero_Factory::getHub();
@@ -359,6 +454,13 @@ class HubController extends JObject
 		include $xhub->getComponentViewFilename($this->_option, 'realm');
 	}
 
+	/**
+	 * Short description for 'lostusername'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function lostusername()
 	{
 		// Load some needed libraries
@@ -408,6 +510,14 @@ class HubController extends JObject
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'send_account_recovery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $email Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function send_account_recovery($email)
 	{
 		ximport('Hubzero_User_Profile');
@@ -477,6 +587,13 @@ class HubController extends JObject
 		return 0;
 	}
 
+	/**
+	 * Short description for 'lostpassword'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function lostpassword()
 	{
 		// Load some needed libraries

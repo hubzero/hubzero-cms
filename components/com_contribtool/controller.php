@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,13 +36,50 @@ ximport('Hubzero_Tool');
 ximport('Hubzero_Group');
 ximport('Hubzero_Trac_Project');
 
+/**
+ * Short description for 'ContribtoolController'
+ * 
+ * Long description (if any) ...
+ */
 class ContribtoolController extends JObject
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var string
+	 */
 	private $_name  = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();
+
+	/**
+	 * Description for '_task'
+	 * 
+	 * @var string
+	 */
 	private $_task  = NULL;
+
+	/**
+	 * Description for '_error'
+	 * 
+	 * @var string
+	 */
 	private $_error = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_redirect = NULL;
@@ -64,22 +103,57 @@ class ContribtoolController extends JObject
 		$this->_option = 'com_'.$this->_name;
 	}
 
+	/**
+	 * Short description for 'setVar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setVar ($property, $value)
 	{
 		$this->$property = $value;
 	}
 
+	/**
+	 * Short description for 'getVar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getVar ($property)
 	{
 		return $this->$property;
 	}
 	//-----------
 
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -88,6 +162,15 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getStyles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function getStyles($option='')
 	{
 		ximport('Hubzero_Document');
@@ -101,6 +184,15 @@ class ContribtoolController extends JObject
 		//Hubzero_Document::addComponentStylesheet('com_contribute');
 	}
 
+	/**
+	 * Short description for 'getScripts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $name Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function getScripts($option='',$name='')
 	{
 		$document =& JFactory::getDocument();
@@ -116,6 +208,13 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'getTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function getTask()
 	{
 		$task = JRequest::getVar( 'task', '', 'post' );
@@ -135,6 +234,14 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		// Get the component parameters
@@ -221,6 +328,13 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function redirect()
 	{
 		if ($this->_redirect != NULL) {
@@ -252,6 +366,15 @@ class ContribtoolController extends JObject
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function login($msg='')
 	{
 		// Set the page title
@@ -274,6 +397,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'version'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function version()
 	{
 		$database =& JFactory::getDBO();
@@ -349,6 +479,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'finalize_version'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function finalize_version ()
 	{
 		$database =& JFactory::getDBO();
@@ -409,6 +546,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'releasenotes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function releasenotes()
 	{
 		$database =& JFactory::getDBO();
@@ -537,6 +681,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'license'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function license()
 	{
 		$database =& JFactory::getDBO();
@@ -617,6 +768,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'summary'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function summary ()
 	{
 		$database 	=& JFactory::getDBO();
@@ -660,6 +818,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'status'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function status()
 	{
 		$xprofile    	=& Hubzero_Factory::getProfile();
@@ -783,6 +948,13 @@ class ContribtoolController extends JObject
 		echo ContribtoolHtml::writeToolStatus($status, $xprofile, $this->_admin, $this->_error, $this->_option, $this->_msg, $title, $this->config);
 	}
 
+	/**
+	 * Short description for 'new_tool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function new_tool()
 	{
 		$database  =& JFactory::getDBO();
@@ -829,6 +1001,13 @@ class ContribtoolController extends JObject
 		echo ContribtoolHtml::writeToolForm($this->_option, $title, $this->_admin, $juser, $defaults, $err=array(), $id='', $this->_task, $this->config );
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit()
 	{
 		$database =& JFactory::getDBO();
@@ -891,6 +1070,17 @@ class ContribtoolController extends JObject
 	// Process
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'setTracAccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      string $codeaccess Parameter description (if any) ...
+	 * @param      string $wikiaccess Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function setTracAccess($toolname, $codeaccess, $wikiaccess)
 	{
 		$hztrac = Hubzero_Trac_Project::find_or_create('app:' . $toolname);
@@ -916,6 +1106,13 @@ class ContribtoolController extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		$database 	=& JFactory::getDBO();
@@ -1413,6 +1610,19 @@ class ContribtoolController extends JObject
 		} //--------end if update
 	}
 
+	/**
+	 * Short description for 'email'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $summary Parameter description (if any) ...
+	 * @param      string $comment Parameter description (if any) ...
+	 * @param      unknown $access Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $toolinfo Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
 	{
 		ximport('Hubzero_Group');
@@ -1537,6 +1747,22 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'newUpdateTicket'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      unknown $ticketid Parameter description (if any) ...
+	 * @param      array $oldstuff Parameter description (if any) ...
+	 * @param      array $newstuff Parameter description (if any) ...
+	 * @param      unknown $comment Parameter description (if any) ...
+	 * @param      integer $access Parameter description (if any) ...
+	 * @param      integer $email Parameter description (if any) ...
+	 * @param      integer $action Parameter description (if any) ...
+	 * @param      array $changelog Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function newUpdateTicket($toolid, $ticketid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $changelog=array())
 	{
 		$juser =& JFactory::getUser();
@@ -1661,6 +1887,24 @@ class ContribtoolController extends JObject
 
 	}
 	//-----------
+
+
+	/**
+	 * Short description for 'updateTicket'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      array $oldstuff Parameter description (if any) ...
+	 * @param      array $newstuff Parameter description (if any) ...
+	 * @param      unknown $comment Parameter description (if any) ...
+	 * @param      integer $access Parameter description (if any) ...
+	 * @param      integer $email Parameter description (if any) ...
+	 * @param      integer $action Parameter description (if any) ...
+	 * @param      array $toolinfo Parameter description (if any) ...
+	 * @param      array $changelog Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $toolinfo= array(), $changelog=array())
 	{
 		$juser =& JFactory::getUser();
@@ -1788,6 +2032,16 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'createTicket'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      array $tool Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function createTicket($toolid, $tool)
 	{
 		$juser =& JFactory::getUser();
@@ -1836,6 +2090,17 @@ class ContribtoolController extends JObject
 		return $row->id;
 	}
 
+	/**
+	 * Short description for 'updateResPage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      array $status Parameter description (if any) ...
+	 * @param      integer $published Parameter description (if any) ...
+	 * @param      integer $newtool Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function updateResPage($rid, $status=array(), $published=0, $newtool=0)
 	{
 
@@ -1875,6 +2140,15 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'createResPage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      array $tool Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function createResPage($toolid, $tool)
 	{
 
@@ -1927,6 +2201,13 @@ class ContribtoolController extends JObject
 		return $row->id;
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function cancel()
 	{
 		$database =& JFactory::getDBO();
@@ -1998,6 +2279,15 @@ class ContribtoolController extends JObject
 	// Run scripts
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'licenseTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function licenseTool($toolname)
 	{
 		$token = md5(uniqid());
@@ -2022,6 +2312,15 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'addRepo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$output Parameter description (if any) ...
+	 * @param      array $toolinfo Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function addRepo(&$output, $toolinfo = array())
 	{
 		if(!$this->_toolid) {
@@ -2060,6 +2359,14 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'installTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$output Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function installTool(&$output)
 	{
 		ximport('Hubzero_Tool_Version');
@@ -2111,6 +2418,14 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'finalizeTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string &$out Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function finalizeTool(&$out)
 	{
 		$xlog =& Hubzero_Factory::getLogger();
@@ -2195,6 +2510,17 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'invokescript'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $command Parameter description (if any) ...
+	 * @param      string $successmsg Parameter description (if any) ...
+	 * @param      array &$output Parameter description (if any) ...
+	 * @param      integer $success Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function invokescript( $command, $successmsg, &$output, $success = 1)
 	{
 		$output['class'] 	= 'passed';
@@ -2223,6 +2549,15 @@ class ContribtoolController extends JObject
 		return true;
 	}
 
+	/**
+	 * Short description for 'retire'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$output Parameter description (if any) ...
+	 * @param      integer $result Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function retire (&$output, $result = 1)
 	{
 		$database 	=& JFactory::getDBO();
@@ -2279,6 +2614,15 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'publish'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$output Parameter description (if any) ...
+	 * @param      integer $result Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function publish(&$output, $result = 1)
 	{
 		$database 		=& JFactory::getDBO();
@@ -2561,6 +2905,14 @@ class ContribtoolController extends JObject
 	// Resource page editing
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'edit_resource'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit_resource()
 	{
 		ximport('Hubzero_Tool_Version');
@@ -2807,6 +3159,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'preview_resource'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function preview_resource ( )
 	{
 	    $database 	=& JFactory::getDBO();
@@ -2910,6 +3269,16 @@ class ContribtoolController extends JObject
 	// Misc resource editing
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'txt_shorten'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	protected function txt_shorten($text, $chars=500)
 	{
 		$text = strip_tags($text);
@@ -2925,6 +3294,15 @@ class ContribtoolController extends JObject
 		return $text;
 	}
 
+	/**
+	 * Short description for 'txt_autop'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $pee Parameter description (if any) ...
+	 * @param      integer $br Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	protected function txt_autop($pee, $br = 1)
 	{
 		// converts paragraphs of text into xhtml
@@ -2949,6 +3327,14 @@ class ContribtoolController extends JObject
 		return $pee;
 	}
 
+	/**
+	 * Short description for 'txt_unpee'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $pee Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
@@ -2964,6 +3350,14 @@ class ContribtoolController extends JObject
 	// Attachments
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'attach_rename'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function attach_rename()
 	{
 		// Incoming
@@ -2984,6 +3378,13 @@ class ContribtoolController extends JObject
 		echo $name;
 	}
 
+	/**
+	 * Short description for 'attach_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function attach_save()
 	{
 		$juser =& JFactory::getUser();
@@ -3121,6 +3522,13 @@ class ContribtoolController extends JObject
 		$this->attachments( $pid );
 	}
 
+	/**
+	 * Short description for 'attach_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function attach_delete()
 	{
 		$database =& JFactory::getDBO();
@@ -3192,6 +3600,14 @@ class ContribtoolController extends JObject
 		$this->attachments( $pid );
 	}
 
+	/**
+	 * Short description for 'attachments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function attachments( $id=null )
 	{
 		// Incoming
@@ -3228,6 +3644,13 @@ class ContribtoolController extends JObject
 		ContribtoolHtml::pageBottom();
 	}
 
+	/**
+	 * Short description for 'ss_reorder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function ss_reorder()
 	{
 		$database =& JFactory::getDBO();
@@ -3300,6 +3723,13 @@ class ContribtoolController extends JObject
 		$this->screenshots( $pid, $version );
 	}
 
+	/**
+	 * Short description for 'ss_edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function ss_edit()
 	{
 		$database =& JFactory::getDBO();
@@ -3361,6 +3791,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'ss_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function ss_save()
 	{
 		$database =& JFactory::getDBO();
@@ -3406,6 +3843,14 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'ss_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function ss_delete()
 	{
 		$database =& JFactory::getDBO();
@@ -3487,6 +3932,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'ss_upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function ss_upload()
 	{
 		$juser =& JFactory::getUser();
@@ -3637,6 +4089,18 @@ class ContribtoolController extends JObject
 		$this->screenshots( $pid, $version );
 	}
 
+	/**
+	 * Short description for 'createAnimThumb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tmpname Parameter description (if any) ...
+	 * @param      number $maxwidth Parameter description (if any) ...
+	 * @param      unknown $maxheight Parameter description (if any) ...
+	 * @param      string $save_dir Parameter description (if any) ...
+	 * @param      string $save_name Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function createAnimThumb( $tmpname, $maxwidth, $maxheight, $save_dir, $save_name )
     {
 
@@ -3662,6 +4126,18 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'createThumb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tmpname Parameter description (if any) ...
+	 * @param      number $maxwidth Parameter description (if any) ...
+	 * @param      unknown $maxheight Parameter description (if any) ...
+	 * @param      string $save_dir Parameter description (if any) ...
+	 * @param      string $save_name Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function createThumb( $tmpname, $maxwidth, $maxheight, $save_dir, $save_name )
     {
    		$save_dir .= ( substr($save_dir,-1) != "/") ? DS : "";
@@ -3705,6 +4181,14 @@ class ContribtoolController extends JObject
     }
 	//----------
 
+
+	/**
+	 * Short description for 'copyss'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function copyss()
 	{
 		$database =& JFactory::getDBO();
@@ -3743,6 +4227,13 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'movess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function movess()
 	{
 
@@ -3842,6 +4333,17 @@ class ContribtoolController extends JObject
 	
 	}
 	*/
+
+	/**
+	 * Short description for 'transferScreenshots'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $sourceid Parameter description (if any) ...
+	 * @param      string $destid Parameter description (if any) ...
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function transferScreenshots($sourceid, $destid, $rid)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
@@ -3906,6 +4408,15 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'screenshots'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      unknown $version Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function screenshots( $rid=NULL, $version=NULL )
 	{
 		$database =& JFactory::getDBO();
@@ -3966,6 +4477,15 @@ class ContribtoolController extends JObject
 		ContribtoolHtml::pageBottom();
 	}
 
+	/**
+	 * Short description for '_buildUploadPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @param      string $subdir Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _buildUploadPath( $listdir, $subdir='' )
 	{
 		if ($subdir) {
@@ -4012,6 +4532,14 @@ class ContribtoolController extends JObject
 		return JPATH_ROOT.$listdir.$subdir;
 	}
 
+	/**
+	 * Short description for '_getChildType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _getChildType($filename)
 	{
 		$filename_arr = explode('.',$filename);
@@ -4036,6 +4564,13 @@ class ContribtoolController extends JObject
 		return $type;
 	}
 
+	/**
+	 * Short description for 'reorder_attach'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function reorder_attach()
 	{
 		$database =& JFactory::getDBO();
@@ -4100,6 +4635,17 @@ class ContribtoolController extends JObject
 	// contributors manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'author_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $show Parameter description (if any) ...
+	 * @param      integer $id Parameter description (if any) ...
+	 * @param      array $authorsNew Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function author_save( $show = 1, $id = 0, $authorsNew = array() )
 	{
 		// Incoming resource ID
@@ -4219,6 +4765,14 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for '_author_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _author_check($id)
 	{
 		$xprofile = Hubzero_User_Profile::getInstance($id);
@@ -4234,6 +4788,13 @@ class ContribtoolController extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'author_remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function author_remove()
 	{
 		// Incoming
@@ -4261,6 +4822,13 @@ class ContribtoolController extends JObject
 		$this->authors( $pid );
 	}
 
+	/**
+	 * Short description for 'reorder_author'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function reorder_author()
 	{
 		$database =& JFactory::getDBO();
@@ -4322,6 +4890,14 @@ class ContribtoolController extends JObject
 		$this->authors( $pid );
 	}
 
+	/**
+	 * Short description for 'authors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function authors( $id=null )
 	{
 		$database =& JFactory::getDBO();
@@ -4389,6 +4965,19 @@ class ContribtoolController extends JObject
 	// misc.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'check_access'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      object $juser Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @param      integer $allow_siteadmins Parameter description (if any) ...
+	 * @param      boolean $allow_authors Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function check_access($toolid, $juser, $admin, $allow_siteadmins=1, $allow_authors=false)
 	{
 		$database 	=& JFactory::getDBO();
@@ -4419,6 +5008,14 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'getFilters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function getFilters($admin)
 	{
 		// Query filters defaults
@@ -4438,6 +5035,14 @@ class ContribtoolController extends JObject
 		return $filters;
 	}
 
+	/**
+	 * Short description for '_getUsersGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _getUsersGroups($groups)
 	{
 		$arr = array();
@@ -4452,6 +5057,14 @@ class ContribtoolController extends JObject
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'getGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function getGroups( $groups )
 	{
 		ximport('Hubzero_Group');
@@ -4472,6 +5085,15 @@ class ContribtoolController extends JObject
 		return $groups;
 	}
 
+	/**
+	 * Short description for 'authorize_admin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $admin Parameter description (if any) ...
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function authorize_admin($admin = 0, $groups=array())
 	{
 		// if no admin group is defined, allow superadmin to act as admin
@@ -4510,6 +5132,14 @@ class ContribtoolController extends JObject
 		$this->_admin = $admin;
 	}
 
+	/**
+	 * Short description for 'txt_clean'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$text Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function txt_clean( &$text )
 	{
 		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );

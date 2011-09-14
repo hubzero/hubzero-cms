@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,27 +36,154 @@ defined('_JEXEC') or die( 'Restricted access' );
 //  Trac's parser, and Textile.
 //-------------------------------------------------------------
 
+
+/**
+ * Short description for 'WikiParser'
+ * 
+ * Long description (if any) ...
+ */
 class WikiParser
 {
+
+	/**
+	 * Description for 'mForceTocPosition'
+	 * 
+	 * @var boolean
+	 */
 	var $mForceTocPosition = NULL;
+
+	/**
+	 * Description for 'mShowToc'
+	 * 
+	 * @var boolean
+	 */
 	var $mShowToc = NULL;
+
+	/**
+	 * Description for 'mTitle'
+	 * 
+	 * @var unknown
+	 */
 	var $mTitle = NULL;
+
+	/**
+	 * Description for 'mUniqPrefix'
+	 * 
+	 * @var string
+	 */
 	var $mUniqPrefix = NULL;
+
+	/**
+	 * Description for 'mOutput'
+	 * 
+	 * @var unknown
+	 */
 	var $mOutput;
+
+	/**
+	 * Description for 'mAutonumber'
+	 * 
+	 * @var unknown
+	 */
 	var $mAutonumber;
+
+	/**
+	 * Description for 'mDTopen'
+	 * 
+	 * @var boolean
+	 */
 	var $mDTopen;
+
+	/**
+	 * Description for 'mStripState'
+	 * 
+	 * @var unknown
+	 */
 	var $mStripState;
+
+	/**
+	 * Description for 'mIncludeCount'
+	 * 
+	 * @var unknown
+	 */
 	var $mIncludeCount;
+
+	/**
+	 * Description for 'mArgStack'
+	 * 
+	 * @var unknown
+	 */
 	var $mArgStack;
+
+	/**
+	 * Description for 'mLastSection'
+	 * 
+	 * @var string
+	 */
 	var $mLastSection;
+
+	/**
+	 * Description for 'mInPre'
+	 * 
+	 * @var boolean
+	 */
 	var $mInPre;
+
+	/**
+	 * Description for 'mInterwikiLinkHolders'
+	 * 
+	 * @var unknown
+	 */
 	var $mInterwikiLinkHolders;
+
+	/**
+	 * Description for 'mLinkHolders'
+	 * 
+	 * @var unknown
+	 */
 	var $mLinkHolders;
+
+	/**
+	 * Description for 'glyph'
+	 * 
+	 * @var array
+	 */
 	var $glyph = NULL;
+
+	/**
+	 * Description for 'shelf'
+	 * 
+	 * @var array
+	 */
 	var $shelf = array();
+
+	/**
+	 * Description for 'hlgn'
+	 * 
+	 * @var string
+	 */
 	var $hlgn,$vlgn,$lnge,$clas,$styl,$cspn,$rspn,$a,$s,$c;
+
+	/**
+	 * Description for 'pageid'
+	 * 
+	 * @var integer
+	 */
 	var $pageid, $option, $scope, $pagename, $pres;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $scope Parameter description (if any) ...
+	 * @param      string $pagename Parameter description (if any) ...
+	 * @param      integer $pageid Parameter description (if any) ...
+	 * @param      string $filepath Parameter description (if any) ...
+	 * @param      unknown $domain Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $option='', $scope='', $pagename='', $pageid=0, $filepath='', $domain=null )
 	{
 		// We need this info for links that may get generated
@@ -103,11 +232,25 @@ class WikiParser
 		$this->c = "(?:{$this->clas}|{$this->styl})*";
 	}
 
+	/**
+	 * Short description for 'uniqPrefix'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function uniqPrefix()
 	{
 		return $this->mUniqPrefix;
 	}
 
+	/**
+	 * Short description for 'getRandomString'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
 	public function getRandomString()
 	{
 		return dechex(mt_rand(0, 0x7fffffff)) . dechex(mt_rand(0, 0x7fffffff));
@@ -118,6 +261,18 @@ class WikiParser
 	//  Turns raw wiki text to HTML
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'parse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      boolean $fullparse Parameter description (if any) ...
+	 * @param      integer $linestart Parameter description (if any) ...
+	 * @param      integer $camelcase Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function parse( $text, $fullparse=true, $linestart=0, $camelcase=1 )
 	{
 		//$text = "\n".$text;
@@ -220,11 +375,29 @@ class WikiParser
 	// Links
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'q1'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function q1($text)
 	{
 		return str_replace('\\"', '"', $text);
 	}
 
+	/**
+	 * Short description for 'wikiname_token'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $name Parameter description (if any) ...
+	 * @param      unknown $anchor Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function wikiname_token($name, $anchor)
 	{
 		if ($name[0] == '!') {
@@ -249,6 +422,15 @@ class WikiParser
 		return '<a href="'.$link.'" class="'.$cls.'">'.$name.$append.'</a>';
 	}
 
+	/**
+	 * Short description for 'replaceLinks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      integer $camelcase Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function replaceLinks( $text, $camelcase=1 )
 	{
 		$this->reference_wiki = '';
@@ -319,6 +501,14 @@ class WikiParser
 		return $text;
 	}
 
+	/**
+	 * Short description for 'handle_autolink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function handle_autolink($matches)
 	{
 		$href = $matches[0];
@@ -348,11 +538,27 @@ class WikiParser
 		return '<alink></alink>';
 	}
 
+	/**
+	 * Short description for 'restore_alinks'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $matches Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function restore_alinks($matches)
 	{
 		return array_shift($this->alinks);
 	}
 
+	/**
+	 * Short description for 'handle_internallink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function handle_internallink($matches)
 	{
 		$nolink = false;
@@ -422,16 +628,40 @@ class WikiParser
 		return '<link></link>';
 	}
 
+	/**
+	 * Short description for 'restore_links'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $matches Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function restore_links($matches)
 	{
 		return array_shift($this->links);
 	}
 
+	/**
+	 * Short description for 'wiki_link'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $topic Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function wiki_link($topic)
 	{
 		return ucfirst(str_replace(' ','_',$topic));
 	}
 
+	/**
+	 * Short description for 'handle_externallink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function handle_externallink($matches)
 	{
 		$href = $matches[2];
@@ -470,6 +700,15 @@ class WikiParser
 	// The following portions are for handling code and pre blocks
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'strip'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function strip( $text )
 	{
 		$this->pres = array();
@@ -512,6 +751,14 @@ class WikiParser
 		return $output;
 	}
 
+	/**
+	 * Short description for 'shelve'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $val Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function shelve($val)
 	{
 		$i = uniqid(rand());
@@ -519,6 +766,15 @@ class WikiParser
 		return $i;
 	}
 
+	/**
+	 * Short description for 'unstrip'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      boolean $html Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function unstrip( $text, $html=true )
 	{
 		$this->_wikitohtml = $html;
@@ -539,6 +795,14 @@ class WikiParser
 		return $text;
 	}
 
+	/**
+	 * Short description for 'handle_pre_up'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function handle_pre_up($matches)
 	{
 		$this->counter++;
@@ -549,6 +813,14 @@ class WikiParser
 		}
 	}
 
+	/**
+	 * Short description for 'handle_pre_down'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function handle_pre_down($matches)
 	{
 		if ($this->counter == 1) {
@@ -565,6 +837,14 @@ class WikiParser
 		return $html;
 	}
 
+	/**
+	 * Short description for 'handle_save_pre'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function handle_save_pre($matches)
 	{
 		$t = trim($matches[1]);
@@ -577,12 +857,28 @@ class WikiParser
 		}
 	}
 
+	/**
+	 * Short description for 'handle_save_code'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function handle_save_code($matches)
 	{
 		array_push($this->codes,$matches[1]);
 		return "<code></code>";
 	}
 
+	/**
+	 * Short description for 'handle_restore_pre'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function handle_restore_pre($matches)
 	{
 		$txt = array_shift($this->pres);
@@ -604,6 +900,14 @@ class WikiParser
 		}
 	}
 
+	/**
+	 * Short description for 'handle_restore_code'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $matches Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function handle_restore_code($matches)
 	{
 		$txt = array_shift($this->codes);
@@ -619,11 +923,30 @@ class WikiParser
 		return '<code>'.$txt.'</code>';
 	}
 
+	/**
+	 * Short description for 'doSpecial'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      unknown $start Parameter description (if any) ...
+	 * @param      unknown $end Parameter description (if any) ...
+	 * @param      string $method Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function doSpecial($text, $start, $end, $method='fSpecial')
 	{
 	  return preg_replace_callback('/(^|\s|[[({>])'.preg_quote($start, '/').'(.*?)'.preg_quote($end, '/').'(\s|$|[\])}])?/ms', array(&$this, $method), $text);
 	}
 
+	/**
+	 * Short description for 'fSpecial'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function fSpecial($m)
 	{
 		// A special block like notextile or code
@@ -631,6 +954,14 @@ class WikiParser
 		return $before.$this->shelve($this->encode_html($text)).$after;
 	}
 
+	/**
+	 * Short description for 'fPCode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function fPCode($m)
 	{
 		@list(, $before, $text, $after) = $m;
@@ -638,6 +969,15 @@ class WikiParser
 		array_push($this->codes,'<code>{{{'.$this->encode_html($text).'}}}</code>');
 		return $before.'<code></code>'.$after;
 	}
+
+	/**
+	 * Short description for 'fCCode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function fCCode($m)
 	{
 		@list(, $before, $text, $after) = $m;
@@ -646,6 +986,14 @@ class WikiParser
 		return $before.'<code></code>'.$after;
 	}
 
+	/**
+	 * Short description for 'fCode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function fCode($m)
 	{
 		@list(, $before, $text, $after) = $m;
@@ -654,12 +1002,29 @@ class WikiParser
 		return $before.'<code></code>'.$after;
 	}
 
+	/**
+	 * Short description for 'fPre'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function fPre($m)
 	{
 		@list(, $before, $text, $after) = $m;
 		return $before.'<pre>'.$this->shelve($this->encode_html($text)).'</pre>'.$after;
 	}
 
+	/**
+	 * Short description for 'encode_html'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @param      integer $quotes Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function encode_html($str, $quotes=1)
 	{
 		$a = array(
@@ -675,6 +1040,14 @@ class WikiParser
 		return strtr($str, $a);
 	}
 
+	/**
+	 * Short description for 'cleanXss'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function cleanXss($string)
 	{
 		/*if (get_magic_quotes_gpc()) {
@@ -719,6 +1092,15 @@ class WikiParser
 	//  Admonitions
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'admonitions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function admonitions($text)
 	{
 		$text = preg_replace_callback('/\{admonition\}(.*?)\{\/admonition\}/s', array(&$this,'admonitionCallback'), $text);
@@ -726,6 +1108,14 @@ class WikiParser
 		return $text;
 	}
 
+	/**
+	 * Short description for 'admonitionCallback'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function admonitionCallback( $matches )
 	{
 		$txt = $matches[1];
@@ -744,6 +1134,15 @@ class WikiParser
 	// Math
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'math'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function math( $text )
 	{
 		$path = dirname(__FILE__);
@@ -762,17 +1161,41 @@ class WikiParser
 		return $text;
 	}
 
+	/**
+	 * Short description for 'aftermath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function aftermath( $text )
 	{
 		$text = preg_replace_callback('/<math><\/math>/i',array(&$this,"restore_math"),$text);
 		return $text;
 	}
 
+	/**
+	 * Short description for 'restore_math'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $matches Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function restore_math($matches)
 	{
 		return '<span class="asciimath">'.array_shift($this->maths).'</span>';
 	}
 
+	/**
+	 * Short description for 'mathCallback'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $mtch_arr Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function mathCallback( $mtch_arr )
 	{
 		$txt = trim($mtch_arr[1]);
@@ -811,6 +1234,15 @@ class WikiParser
 	// Macros
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'includes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function includes($text)
 	{
 		$path = dirname(__FILE__);
@@ -829,6 +1261,14 @@ class WikiParser
 		return $text;
 	}
 
+	/**
+	 * Short description for 'getInclude'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function getInclude($matches)
 	{
 		if (isset($matches[1]) && $matches[1] != '') {
@@ -870,6 +1310,15 @@ class WikiParser
 	// Macros
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'macros'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function macros($text)
 	{
 		$path = dirname(__FILE__);
@@ -888,6 +1337,14 @@ class WikiParser
 		return $text;
 	}
 
+	/**
+	 * Short description for 'getMacro'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function getMacro($matches)
 	{
 		if (isset($matches[1]) && $matches[1] != '') {
@@ -939,6 +1396,14 @@ class WikiParser
 		}
 	}
 
+	/**
+	 * Short description for 'restore_macros'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $matches Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function restore_macros($matches)
 	{
 		return array_shift($this->macros);
@@ -948,6 +1413,15 @@ class WikiParser
 	// Misc.
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'glyphs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $text Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function glyphs($text)
 	{
 		// fix: hackish
@@ -1006,6 +1480,16 @@ class WikiParser
 		return join('', $glyph_out);
 	}
 
+	/**
+	 * Short description for 'pba'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $in Parameter description (if any) ...
+	 * @param      string $element Parameter description (if any) ...
+	 * @param      integer $include_id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function pba($in, $element = "", $include_id = 1) // "parse block attributes"
 	{
 		$style = '';
@@ -1073,6 +1557,14 @@ class WikiParser
 		return '';
 	}
 
+	/**
+	 * Short description for 'iAlign'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $in Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function iAlign($in)
 	{
 		$vals = array(
@@ -1082,6 +1574,14 @@ class WikiParser
 		return (isset($vals[$in])) ? $vals[$in] : '';
 	}
 
+	/**
+	 * Short description for 'hAlign'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $in Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function hAlign($in)
 	{
 		$vals = array(
@@ -1092,6 +1592,14 @@ class WikiParser
 		return (isset($vals[$in])) ? $vals[$in] : '';
 	}
 
+	/**
+	 * Short description for 'vAlign'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $in Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function vAlign($in)
 	{
 		$vals = array(
@@ -1101,6 +1609,14 @@ class WikiParser
 		return (isset($vals[$in])) ? $vals[$in] : '';
 	}
 
+	/**
+	 * Short description for 'span'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function span($text)
 	{
 		$qtags = array('\?\?','__','%','\+','~~',',,','\^');
@@ -1123,6 +1639,14 @@ class WikiParser
 		return $text;
 	}
 
+	/**
+	 * Short description for 'fSpan'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function fSpan($m)
 	{
 		$qtags = array(
@@ -1157,6 +1681,15 @@ class WikiParser
 	// Headings
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'headings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function headings( $text )
 	{
 		for ( $i = 6; $i >= 1; --$i )
@@ -1174,6 +1707,15 @@ class WikiParser
 	// Quotes
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'doAllQuotes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function doAllQuotes( $text )
 	{
 		$outtext = '';
@@ -1186,6 +1728,14 @@ class WikiParser
 		return $outtext;
 	}
 
+	/**
+	 * Short description for 'doQuotes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function doQuotes( $text )
 	{
 		$arr = preg_split( "/(''+)/", $text, -1, PREG_SPLIT_DELIM_CAPTURE );
@@ -1350,6 +1900,15 @@ class WikiParser
 	// Tables
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'tables'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function tables($text)
 	{
 		$text .= "\n\n";
@@ -1357,6 +1916,14 @@ class WikiParser
 			array(&$this, "doTable"), $text);
 	}
 
+	/**
+	 * Short description for 'doTable'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function doTable($matches)
 	{
 		$tatts = $this->pba($matches[1], 'table');
@@ -1393,6 +1960,14 @@ class WikiParser
 	// Block levels
 	//-------------------------------------------------------------
 
+
+	/**
+	 * Short description for 'closeParagraph'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function closeParagraph()
 	{
 		$result = '';
@@ -1407,6 +1982,17 @@ class WikiParser
 	//------------
 	// Returns the length of the longest common substring
 	// of both arguments, starting at the beginning of both.
+
+
+	/**
+	 * Short description for 'getCommon'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $st1 Parameter description (if any) ...
+	 * @param      string $st2 Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function getCommon( $st1, $st2 )
 	{
 		$fl = $st1; //strlen( $st1 );
@@ -1422,6 +2008,16 @@ class WikiParser
 	//------------
 	// These next three functions open, continue, and close the list
 	// element appropriate to the prefix character passed into them.
+
+
+	/**
+	 * Short description for 'openList'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $char Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function openList( $char )
 	{
 		$result = $this->closeParagraph();
@@ -1438,6 +2034,14 @@ class WikiParser
 		return $result;
 	}
 
+	/**
+	 * Short description for 'nextItem'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $char Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function nextItem( $char )
 	{
 		if ( '*' == $char || '#' == $char ) { return '</li><li>'; }
@@ -1455,6 +2059,14 @@ class WikiParser
 		return '<!-- ERR 2 -->';
 	}
 
+	/**
+	 * Short description for 'closeList'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $char Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function closeList( $char )
 	{
 		if ( '*' == $char ) { $text = '</li></ul>'; }
@@ -1471,6 +2083,14 @@ class WikiParser
 		return $text."\n";
 	}
 
+	/**
+	 * Short description for 'doDFLists'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function doDFLists( $text )
 	{
 		$textLines = explode( "\n", $text );
@@ -1525,6 +2145,17 @@ class WikiParser
 
 	//------------
 	// Make lists from lines starting with 'some text::', '*', '#', etc.
+
+
+	/**
+	 * Short description for 'doBlockLevels'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      unknown $linestart Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function doBlockLevels( $text, $linestart )
 	{
 		// Parsing through the text line by line.  The main thing
@@ -1714,6 +2345,19 @@ class WikiParser
 	// @return string for "get", the extracted section text.
 	//                for "replace", the whole page with the section replaced.
 	//-------------------------------------------------------------
+
+
+	/**
+	 * Short description for 'extractSections'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      integer $section Parameter description (if any) ...
+	 * @param      string $mode Parameter description (if any) ...
+	 * @param      string $newtext Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function extractSections( $text, $section, $mode, $newtext='' )
 	{
 		// Strip PRE etc. to avoid confusion (true-parameter causes HTML
@@ -1824,11 +2468,33 @@ class WikiParser
 	// @param $deftext: default to return if section is not found
 	// @return string text of the requested section
 	//-------------------------------------------------------------
+
+
+	/**
+	 * Short description for 'getSection'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      unknown $section Parameter description (if any) ...
+	 * @param      string $deftext Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getSection( $text, $section, $deftext='' )
 	{
 		return $this->extractSections( $text, $section, 'get', $deftext );
 	}
 
+	/**
+	 * Short description for 'replaceSection'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oldtext Parameter description (if any) ...
+	 * @param      unknown $section Parameter description (if any) ...
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function replaceSection( $oldtext, $section, $text )
 	{
 		return $this->extractSections( $oldtext, $section, 'replace', $text );
@@ -1837,6 +2503,17 @@ class WikiParser
 	//-------------------------------------------------------------
 	//  Builds a Table of Contents and links to headings
 	//-------------------------------------------------------------
+
+
+	/**
+	 * Short description for 'formatHeadings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      boolean $isMain Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function formatHeadings( $text, $isMain=true )
 	{
 		$wgMaxTocLevel = 15;
@@ -2041,21 +2718,59 @@ class WikiParser
 		return $bits;
 	}
 
+	/**
+	 * Short description for 'makeHeadline'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $level Parameter description (if any) ...
+	 * @param      string $attribs Parameter description (if any) ...
+	 * @param      string $anchor Parameter description (if any) ...
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      string $link Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function makeHeadline( $level, $attribs, $anchor, $text, $link )
 	{
 		return '<h'.$level.$attribs.'<a name="'.$anchor.'"></a><span class="tp-headline">'.$text.'</span> '.$link.'</h'.$level.'>';
 	}
 
+	/**
+	 * Short description for 'tocIndent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function tocIndent()
 	{
 		return "\n<ul>";
 	}
 
+	/**
+	 * Short description for 'tocUnindent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function tocUnindent($level)
 	{
 		return "</li>\n" . str_repeat( "</ul>\n</li>\n", $level>0 ? $level : 0 );
 	}
 
+	/**
+	 * Short description for 'tocLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $anchor Parameter description (if any) ...
+	 * @param      string $tocline Parameter description (if any) ...
+	 * @param      string $tocnumber Parameter description (if any) ...
+	 * @param      string $level Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function tocLine( $anchor, $tocline, $tocnumber, $level )
 	{
 		return "\n".'<li class="toclevel-'.$level.'"><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->scope.'&pagename='.$this->pagename).'#'.
@@ -2064,11 +2779,28 @@ class WikiParser
 			$tocline . '</span></a>';
 	}
 
+	/**
+	 * Short description for 'tocLineEnd'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	private function tocLineEnd()
 	{
 		return "</li>\n";
  	}
 
+	/**
+	 * Short description for 'editSectionLink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $title Parameter description (if any) ...
+	 * @param      string $section Parameter description (if any) ...
+	 * @param      string $hint Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function editSectionLink( $title, $section, $hint='' )
 	{
 		if ($hint != '') {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,20 +21,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'modYoutubeHelper'
+ * 
+ * Long description (if any) ...
+ */
 class modYoutubeHelper
 {
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      unknown $module Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct( $params, $module )
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
 
+	/**
+	 * Short description for 'render'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function render()
 	{
 		//get the document
@@ -250,6 +273,14 @@ class modYoutubeHelper
 		}
 	}
 
+	/**
+	 * Short description for 'formatTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $seconds Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function formatTime( $seconds )
 	{
 		$minutes = floor($seconds / 60);

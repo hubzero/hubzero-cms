@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Steve Snyder <snyder13@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,15 +21,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Steve Snyder <snyder13@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'YSearchAuthorization'
+ * 
+ * Long description (if any) ...
+ */
 class YSearchAuthorization
 {
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var string
+	 */
 	private $uid = NULL, $super_admin = false, $groups = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function __construct()
 	{
 		$juser =& JFactory::getUser();
@@ -46,8 +66,31 @@ class YSearchAuthorization
 			$this->super_admin = true;
 	}
 
+	/**
+	 * Short description for 'is_guest'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function is_guest() { return is_null($this->uid); }
+
+	/**
+	 * Short description for 'is_super_admin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function is_super_admin() { return $this->super_admin; }
+
+	/**
+	 * Short description for 'get_groups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function get_groups()
 	{
 		if (is_null($this->groups))
@@ -63,10 +106,26 @@ class YSearchAuthorization
 		}
 		return $this->groups;
 	}
+
+	/**
+	 * Short description for 'get_group_ids'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_group_ids()
 	{
 		return array_keys($this->get_groups());
 	}
+
+	/**
+	 * Short description for 'get_group_names'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get_group_names()
 	{
 		return array_values($this->get_groups());

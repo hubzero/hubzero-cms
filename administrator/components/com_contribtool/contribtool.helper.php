@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,17 +21,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ContribtoolHelper'
+ * 
+ * Long description (if any) ...
+ */
 class ContribtoolHelper
 {
 	//------------------------------------
 	// Misceleneous contribtool functions
 	//------------------------------------
 
+
+	/**
+	 * Short description for 'makeArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function makeArray($string='') {
 
 		$string		= ereg_replace(' ',',',$string);
@@ -46,6 +62,14 @@ class ContribtoolHelper
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'cleanArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $array Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function cleanArray($array) {
 
 		foreach ($array as $key => $value) {
@@ -56,6 +80,14 @@ class ContribtoolHelper
 		return $array;
 	}
 
+	/**
+	 * Short description for 'check_validInput'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $field Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function check_validInput($field)
 	{
 		if(eregi("^[_0-9a-zA-Z.:-]+$", $field) or $field=='') {
@@ -66,6 +98,15 @@ class ContribtoolHelper
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getLicenses'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $database Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getLicenses($database)
 	{
 		$database->setQuery( "SELECT text, name, title"
@@ -74,6 +115,16 @@ class ContribtoolHelper
 		return $database->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'transform'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $array Parameter description (if any) ...
+	 * @param      unknown $label Parameter description (if any) ...
+	 * @param      array $newarray Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function transform($array, $label, $newarray=array()) {
 		if(count($array)>0) {
 			foreach($array as $a) {
@@ -90,6 +141,16 @@ class ContribtoolHelper
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'getLogins'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $uids Parameter description (if any) ...
+	 * @param      array $logins Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getLogins($uids, $logins = array()) {
 		if(is_array($uids)) {
 			foreach ($uids as $uid) {
@@ -102,6 +163,17 @@ class ContribtoolHelper
 		return $logins;
 	}
 	//-----------
+
+
+	/**
+	 * Short description for 'record_view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $database Parameter description (if any) ...
+	 * @param      string $ticketid Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function record_view($database, $ticketid)
 	{
 		$juser =& JFactory::getUser();

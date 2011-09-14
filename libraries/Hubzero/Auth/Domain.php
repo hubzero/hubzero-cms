@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,24 +21,90 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+/**
+ * Short description for 'Hubzero_Auth_Domain'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Auth_Domain
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	private $id;
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	private $type;
+
+	/**
+	 * Description for 'authenticator'
+	 * 
+	 * @var unknown
+	 */
 	private $authenticator;
+
+	/**
+	 * Description for 'domain'
+	 * 
+	 * @var unknown
+	 */
 	private $domain;
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	private $params;
+
+	/**
+	 * Description for '_updatedkeys'
+	 * 
+	 * @var array
+	 */
 	private $_updatedkeys = array();
+
+	/**
+	 * Description for '_updateAll'
+	 * 
+	 * @var boolean
+	 */
 	private $_updateAll = false;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function __construct()
 	{
 	}
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function clear()
 	{
 		$cvars = get_class_vars(__CLASS__);
@@ -61,12 +125,30 @@ class Hubzero_Auth_Domain
 		$this->_updatedkeys = array();
 	}
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function logDebug($msg)
 	{
 		$xlog = &XFactory::getLogger();
 		$xlog->logDebug($msg);
 	}
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      unknown $authenticator Parameter description (if any) ...
+	 * @param      unknown $domain Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getInstance($type,$authenticator,$domain)
 	{
 		$hzad = new Hubzero_Auth_Domain();
@@ -82,6 +164,16 @@ class Hubzero_Auth_Domain
 		return $hzad;
 	}
 
+	/**
+	 * Short description for 'createInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      unknown $authenticator Parameter description (if any) ...
+	 * @param      unknown $domain Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function createInstance($type,$authenticator,$domain = null)
 	{
 		if (empty($type) || empty($authenticator))
@@ -103,6 +195,13 @@ class Hubzero_Auth_Domain
 		return $instance;
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function create()
 	{
 		$db = &JFactory::getDBO();
@@ -163,6 +262,13 @@ class Hubzero_Auth_Domain
 		return false;
 	}
 
+	/**
+	 * Short description for 'read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function read()
 	{
 		$db = JFactory::getDBO();
@@ -207,6 +313,14 @@ class Hubzero_Auth_Domain
 		return true;
 	}
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function update($all = false)
 	{
 		$db = &JFactory::getDBO();
@@ -272,6 +386,14 @@ class Hubzero_Auth_Domain
 		return true;
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $deletelinks Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete($deletelinks = false)
 	{
 		if (!isset($this->toolname) && !isset($this->id))
@@ -317,6 +439,14 @@ class Hubzero_Auth_Domain
 		return true;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function __get($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -345,6 +475,15 @@ class Hubzero_Auth_Domain
 		return null;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function __set($property = null, $value = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -364,6 +503,14 @@ class Hubzero_Auth_Domain
 			$this->_updatedkeys[] = $property;
 	}
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function __isset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -378,6 +525,14 @@ class Hubzero_Auth_Domain
 		return isset($this->$property);
 	}
 
+	/**
+	 * Short description for '__unset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function __unset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -394,6 +549,15 @@ class Hubzero_Auth_Domain
 		unset($this->$property);
 	}
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
 		$caller = next(debug_backtrace());
@@ -414,6 +578,16 @@ class Hubzero_Auth_Domain
 		echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
 	}
 
+	/**
+	 * Short description for 'find_or_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      unknown $authenticator Parameter description (if any) ...
+	 * @param      unknown $domain Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function find_or_create($type,$authenticator,$domain=null)
 	{
 		$hzad = new Hubzero_Auth_Domain();

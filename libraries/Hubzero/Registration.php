@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,28 +21,106 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Description for ''REG_HIDE''
+ */
 define('REG_HIDE', 0);
+
+/**
+ * Description for ''REG_OPTIONAL''
+ */
 define('REG_OPTIONAL', 1);
+
+/**
+ * Description for ''REG_REQUIRED''
+ */
 define('REG_REQUIRED', 2);
+
+/**
+ * Description for ''REG_READONLY''
+ */
 define('REG_READONLY', 4);
+
+/**
+ * Description for ''PASS_SCORE_BAD''
+ */
 define('PASS_SCORE_BAD', 0);
+
+/**
+ * Description for ''PASS_SCORE_MEDIOCRE''
+ */
 define('PASS_SCORE_MEDIOCRE', 34);
+
+/**
+ * Description for ''PASS_SCORE_GOOD''
+ */
 define('PASS_SCORE_GOOD', 50);
+
+/**
+ * Description for ''PASS_SCORE_STRONG''
+ */
 define('PASS_SCORE_STRONG', 68);
 
+/**
+ * Short description for 'Hubzero_Registration'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Registration
 {
+
+	/**
+	 * Description for '_registration'
+	 * 
+	 * @var array
+	 */
 	var $_registration;
+
+	/**
+	 * Description for '_encoded'
+	 * 
+	 * @var unknown
+	 */
 	var $_encoded;
+
+	/**
+	 * Description for '_missing'
+	 * 
+	 * @var array
+	 */
 	var $_missing;
+
+	/**
+	 * Description for '_invalid'
+	 * 
+	 * @var mixed
+	 */
 	var $_invalid;
+
+	/**
+	 * Description for '_checked'
+	 * 
+	 * @var boolean
+	 */
 	var $_checked;
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function clear()
 	{
 		$this->_registration = array();
@@ -55,6 +130,14 @@ class Hubzero_Registration
 		$this->_checked = true;
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($login = null)
 	{
 		//$this->logDebug("Hubzero_Registration::__construct()");
@@ -62,6 +145,13 @@ class Hubzero_Registration
 		$this->clear();
 	}
 
+	/**
+	 * Short description for 'normalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function normalize()
 	{
 		$this->_registration['countryresident'] = null;
@@ -90,6 +180,13 @@ class Hubzero_Registration
 		$this->_registration['mailPreferenceOption'] = null;
 	}
 
+	/**
+	 * Short description for 'loadPost'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function loadPost()
 	{
 		// fill out registration data based on current form POST
@@ -309,6 +406,14 @@ class Hubzero_Registration
 		$this->_checked = false;
 	}
 
+	/**
+	 * Short description for 'loadProfile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $xprofile Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function loadProfile($xprofile = null)
 	{
 		$this->clear();
@@ -345,6 +450,14 @@ class Hubzero_Registration
 		$this->_checked = false;
 	}
 
+	/**
+	 * Short description for 'loadAccount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $juser Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function loadAccount($juser = null)
 	{
 		$this->clear();
@@ -360,6 +473,14 @@ class Hubzero_Registration
 		$this->_checked = false;
 	}
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function get($key)
 	{
 		//$this->logDebug("Hubzero_Registration::get($key)");
@@ -370,6 +491,15 @@ class Hubzero_Registration
 		return $this->_registration[$key];
 	}
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function set($key,$value)
 	{
 		//$this->logDebug("Hubzero_Registration::set($key,$value)");
@@ -385,6 +515,16 @@ class Hubzero_Registration
 			//unset($this->_encoded[$key]);
 	}
 
+	/**
+	 * Short description for 'registrationField'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $default Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function registrationField($name, $default, $task = 'register')
 	{
 		if (($task == 'register') || ($task == 'create') || ($task == 'new'))
@@ -438,6 +578,15 @@ class Hubzero_Registration
 		return $db->loadResult();
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $task Parameter description (if any) ...
+	 * @param      integer $id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check($task = 'create', $id = 0)
 	{
 		ximport('Hubzero_User_Helper');
@@ -902,6 +1051,15 @@ class Hubzero_Registration
 		return false;
 	}
 
+	/**
+	 * Short description for 'scorePassword'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $password Parameter description (if any) ...
+	 * @param      string $username Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function scorePassword($password, $username='')
 	{
 		$score = 0;

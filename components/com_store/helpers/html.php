@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,13 +21,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'StoreHtml'
+ * 
+ * Long description (if any) ...
+ */
 class StoreHtml
 {
+
+	/**
+	 * Short description for 'productimage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      string $item Parameter description (if any) ...
+	 * @param      string $root Parameter description (if any) ...
+	 * @param      string $wpath Parameter description (if any) ...
+	 * @param      string $alt Parameter description (if any) ...
+	 * @param      string $category Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function productimage( $option, $item, $root, $wpath, $alt, $category )
 	{
 		if ($wpath) {

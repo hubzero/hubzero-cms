@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'MembersController'
+ * 
+ * Long description (if any) ...
+ */
 class MembersController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function execute()
 	{
 		// Load the component config
@@ -83,6 +98,14 @@ class MembersController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'autocomplete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function autocomplete()
 	{
 		if ($this->juser->get('guest')) {
@@ -121,6 +144,13 @@ class MembersController extends Hubzero_Controller
 		echo '['.implode(',',$json).']';
 	}
 
+	/**
+	 * Short description for 'abort'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function abort()
 	{
 		// Set the page title
@@ -143,6 +173,13 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		// Include some needed styles and scripts
@@ -234,6 +271,13 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Build the page title
@@ -439,6 +483,13 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'changepassword'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function changepassword()
 	{
 		// Set the page title
@@ -570,6 +621,13 @@ class MembersController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$id);
 	}
 
+	/**
+	 * Short description for 'raiselimit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function raiselimit()
 	{
 		// Set the page title
@@ -792,6 +850,15 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $xregistration Parameter description (if any) ...
+	 * @param      mixed $profile Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit($xregistration=null, $profile=null)
 	{
 		// Set the page title
@@ -915,6 +982,16 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_registrationField'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $default Parameter description (if any) ...
+	 * @param      string $task Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _registrationField($name, $default, $task = 'create')
 	{
 		switch ($task)
@@ -956,6 +1033,14 @@ class MembersController extends Hubzero_Controller
 	//  Processors
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check if they are logged in
@@ -1124,6 +1209,16 @@ class MembersController extends Hubzero_Controller
 		$this->_redirect = JRoute::_( $url );
 	}
 
+	/**
+	 * Short description for 'send_confirmation_code'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @param      unknown $confirm Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function send_confirmation_code($login, $email, $confirm)
 	{
 		$jconfig =& JFactory::getConfig();
@@ -1152,6 +1247,13 @@ class MembersController extends Hubzero_Controller
 		return $msg;
 	}
 
+	/**
+	 * Short description for 'saveaccess'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function saveaccess()
 	{
 		// Check if they are logged in
@@ -1192,6 +1294,13 @@ class MembersController extends Hubzero_Controller
 		$this->view();
 	}
 
+	/**
+	 * Short description for 'activity'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function activity()
 	{
 		// Set the page title
@@ -1297,6 +1406,13 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'whois'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function whois()
 	{
 		// Set the page title
@@ -1372,16 +1488,41 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_get_summarybyfilter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _get_summarybyfilter($args)
 	{
 		return( $this->_get_attrsbyfilter('username uidNumber email name',$args) );
 	}
 
+	/**
+	 * Short description for '_get_usernamesbyfilter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _get_usernamesbyfilter($args)
 	{
 		return( $this->_get_attrsbyfilter('username',$args) );
 	}
 
+	/**
+	 * Short description for '_get_attrsbyfilter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $attrs Parameter description (if any) ...
+	 * @param      unknown $filters Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _get_attrsbyfilter($attrs, $filters)
 	{
 		$result = false;
@@ -1405,6 +1546,14 @@ class MembersController extends Hubzero_Controller
 		return $result;
 	}
 
+	/**
+	 * Short description for '_parse_email_address'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $adrstring Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _parse_email_address($adrstring)
 	{
 		$address = '';
@@ -1431,6 +1580,14 @@ class MembersController extends Hubzero_Controller
 		return( array($addr, $personal) );
 	}
 
+	/**
+	 * Short description for '_parse_simplesearch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $searchstr Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _parse_simplesearch($searchstr)
 	{
 		$address = array();
@@ -1566,6 +1723,15 @@ class MembersController extends Hubzero_Controller
 		return( $result );
 	}
 
+	/**
+	 * Short description for '_like'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $k Parameter description (if any) ...
+	 * @param      string $v Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _like($k, $v)
 	{
 		if ((substr($v, -1) == '*' || substr($v, -1) == '?')
@@ -1580,6 +1746,13 @@ class MembersController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancel()
 	{
 		// Incoming
@@ -1593,6 +1766,14 @@ class MembersController extends Hubzero_Controller
 	//  Image handling
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function upload()
 	{
 		// Check if they are logged in
@@ -1704,6 +1885,13 @@ class MembersController extends Hubzero_Controller
 		$this->img( $file, $id );
 	}
 
+	/**
+	 * Short description for 'deleteimg'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function deleteimg()
 	{
 		// Check if they are logged in
@@ -1774,6 +1962,15 @@ class MembersController extends Hubzero_Controller
 		$this->img( $file, $id );
 	}
 
+	/**
+	 * Short description for 'img'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $file Parameter description (if any) ...
+	 * @param      integer $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function img( $file='', $id=0 )
 	{
 		// Load the component config
@@ -1810,6 +2007,15 @@ class MembersController extends Hubzero_Controller
 	//	Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function _authorize($uid=0)
 	{
 		// Check if they are logged in

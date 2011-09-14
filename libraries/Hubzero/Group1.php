@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2009-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2009-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,35 +34,175 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.helper');
 ximport('Hubzero_Validate');
 
+/**
+ * Short description for 'Hubzero_Group'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Group
 {
+
+	/**
+	 * Description for 'gidNumber'
+	 * 
+	 * @var unknown
+	 */
 	private $gidNumber = null;
+
+	/**
+	 * Description for 'cn'
+	 * 
+	 * @var string
+	 */
 	private $cn = null;
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	private $description = null;
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
 	private $published = null;
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	private $type = null;
+
+	/**
+	 * Description for 'access'
+	 * 
+	 * @var unknown
+	 */
 	private $access = null;
+
+	/**
+	 * Description for 'public_desc'
+	 * 
+	 * @var unknown
+	 */
 	private $public_desc = null;
+
+	/**
+	 * Description for 'private_desc'
+	 * 
+	 * @var unknown
+	 */
 	private $private_desc = null;
+
+	/**
+	 * Description for 'restrict_msg'
+	 * 
+	 * @var unknown
+	 */
 	private $restrict_msg = null;
+
+	/**
+	 * Description for 'join_policy'
+	 * 
+	 * @var unknown
+	 */
 	private $join_policy = null;
+
+	/**
+	 * Description for 'privacy'
+	 * 
+	 * @var unknown
+	 */
 	private $privacy = null;
+
+	/**
+	 * Description for 'members'
+	 * 
+	 * @var array
+	 */
 	private $members = array();
+
+	/**
+	 * Description for 'managers'
+	 * 
+	 * @var array
+	 */
 	private $managers = array();
+
+	/**
+	 * Description for 'applicants'
+	 * 
+	 * @var array
+	 */
 	private $applicants = array();
+
+	/**
+	 * Description for 'invitees'
+	 * 
+	 * @var array
+	 */
 	private $invitees = array();
+
+	/**
+	 * Description for 'tracperm'
+	 * 
+	 * @var array
+	 */
 	private $tracperm = array();
 
+	/**
+	 * Description for '_list_keys'
+	 * 
+	 * @var array
+	 */
 	private $_list_keys = array('members', 'managers', 'applicants', 'invitees', 'tracperm');
 
+	/**
+	 * Description for '_ldapMirror'
+	 * 
+	 * @var boolean
+	 */
 	private $_ldapMirror = false;
+
+	/**
+	 * Description for '_ldapLegacy'
+	 * 
+	 * @var boolean
+	 */
 	private $_ldapLegacy = true;
+
+	/**
+	 * Description for '_updateAll'
+	 * 
+	 * @var boolean
+	 */
 	private $_updateAll = false;
 
+	/**
+	 * Description for '_propertyattrmap'
+	 * 
+	 * @var array
+	 */
 	private $_propertyattrmap = array('gidNumber'=>'gidNumber', 'cn'=>'cn', 'members'=>'memberUid');
 
+	/**
+	 * Description for '_updatedkeys'
+	 * 
+	 * @var array
+	 */
 	private $_updatedkeys = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function __construct()
 	{
 		$config = & JComponentHelper::getParams('com_groups');
@@ -78,6 +220,13 @@ class Hubzero_Group
 		}
 	}
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function clear()
 	{
 		$cvars = get_class_vars(__CLASS__);
@@ -103,12 +252,28 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function logDebug($msg)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
 		$xlog->logDebug($msg);
 	}
 
+	/**
+	 * Short description for 'toArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function toArray($format = 'mysql')
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -220,6 +385,15 @@ class Hubzero_Group
 		return false;
 	}
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $instance Parameter description (if any) ...
+	 * @param      unknown $storage Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getInstance($instance, $storage = null)
 	{
 		$hzg = new Hubzero_Group();
@@ -231,6 +405,14 @@ class Hubzero_Group
 		return $hzg;
 	}
 
+	/**
+	 * Short description for 'createInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function createInstance($name)
 	{
 		if (empty($name)) {
@@ -248,6 +430,13 @@ class Hubzero_Group
 		return false;
 	}
 
+	/**
+	 * Short description for '_ldap_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _ldap_create()
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -288,6 +477,13 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_create()
 	{
 		$db = &JFactory::getDBO();
@@ -338,6 +534,14 @@ class Hubzero_Group
 		return false;
 	}
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function create($storage = null)
 	{
 		if (is_null($storage)) {
@@ -370,6 +574,14 @@ class Hubzero_Group
 		return $result;
 	}
 
+	/**
+	 * Short description for '_ldap_load'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $cn Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _ldap_load($cn)
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -456,6 +668,13 @@ class Hubzero_Group
 		return $info;
 	}
 
+	/**
+	 * Short description for '_ldap_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function _ldap_read()
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -541,6 +760,13 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function _mysql_read()
 	{
 		$db = &JFactory::getDBO();
@@ -593,6 +819,15 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for 'read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function read($name = null, $storage = 'mysql')
 	{
 		if (!is_null($name) && !is_string($name) && !is_integer($name)) {
@@ -640,6 +875,14 @@ class Hubzero_Group
 		return $result;
 	}
 
+	/**
+	 * Short description for '_ldap_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _ldap_update($all = false)
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -728,6 +971,14 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function _mysql_update($all = false)
 	{
 		$db = &JFactory::getDBO();
@@ -871,6 +1122,13 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for 'sync'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function sync()
 	{
 		$this->_updateAll = true;
@@ -878,6 +1136,13 @@ class Hubzero_Group
 		return $this->update();
 	}
 
+	/**
+	 * Short description for 'syncldap'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function syncldap()
 	{
 		$this->_updateAll = true;
@@ -885,6 +1150,14 @@ class Hubzero_Group
 		return $this->update('ldap');
 	}
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function update($storage = null)
 	{
 		if (is_null($storage)) {
@@ -923,6 +1196,13 @@ class Hubzero_Group
 		return $result;
 	}
 
+	/**
+	 * Short description for '_ldap_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _ldap_delete()
 	{
 		$conn = &Hubzero_Factory::getPLDC();
@@ -950,6 +1230,13 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for '_mysql_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _mysql_delete()
 	{
 		if (!isset($this->cn) && !isset($this->gidNumber)) {
@@ -992,6 +1279,14 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete($storage = null)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
@@ -1036,6 +1331,14 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function __get($property = null)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
@@ -1093,6 +1396,15 @@ class Hubzero_Group
 		return null;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function __set($property = null, $value = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
@@ -1125,6 +1437,14 @@ class Hubzero_Group
 		}
 	}
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function __isset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
@@ -1139,6 +1459,14 @@ class Hubzero_Group
 		return isset($this->$property);
 	}
 
+	/**
+	 * Short description for '__unset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function __unset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
@@ -1155,6 +1483,15 @@ class Hubzero_Group
 		unset($this->$property);
 	}
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
 		$caller = next(debug_backtrace());
@@ -1175,16 +1512,41 @@ class Hubzero_Group
 		echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
 	}
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function get($key)
 	{
 		return $this->__get($key);
 	}
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function set($key, $value)
 	{
 		return $this->__set($key, $value);
 	}
 
+	/**
+	 * Short description for '_usernames'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $users Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _usernames($users)
 	{
 		$db = JFactory::getDBO();
@@ -1226,6 +1588,14 @@ class Hubzero_Group
 		return $result;
 	}
 
+	/**
+	 * Short description for '_userids'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $users Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     private function _userids($users)
     {
         $db = JFactory::getDBO();
@@ -1267,6 +1637,15 @@ class Hubzero_Group
         return $result;
     }
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function add($key = null, $value = array())
 	{
 		$users = $this->_usernames($value);
@@ -1275,6 +1654,15 @@ class Hubzero_Group
 		$this->__set($key, array_merge($this->__get($key), $users));
 	}
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function remove($key = null, $value = array())
 	{
 		$users = $this->_usernames($value);
@@ -1283,6 +1671,15 @@ class Hubzero_Group
 		$this->__set($key, array_diff($this->__get($key), $users));
 	}
 
+	/**
+	 * Short description for 'iterate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $func Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	static function iterate($func, $storage = 'mysql')
 	{
 		$db = &JFactory::getDBO();
@@ -1343,6 +1740,15 @@ class Hubzero_Group
 		return true;
 	}
 
+	/**
+	 * Short description for 'exists'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	static public function exists($group, $storage = 'mysql')
 	{
 		$db = &JFactory::getDBO();
@@ -1366,6 +1772,14 @@ class Hubzero_Group
 		return false;
 	}
 
+	/**
+	 * Short description for 'find'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	static function find($filters = array())
 	{
 		$db = &JFactory::getDBO();
@@ -1462,6 +1876,15 @@ class Hubzero_Group
 		return $result;
 	}
 
+	/**
+	 * Short description for 'is_member_of'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $table Parameter description (if any) ...
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function is_member_of($table, $uid)
 	{
 		$db =& JFactory::getDBO();
@@ -1486,26 +1909,66 @@ class Hubzero_Group
 		return !empty($result);
 	}
 
+	/**
+	 * Short description for 'isMember'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function isMember($uid)
 	{
 		return $this->is_member_of('members',$uid);
 	}
 
+	/**
+	 * Short description for 'isApplicant'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function isApplicant($uid)
 	{
 		return $this->is_member_of('applicants',$uid);
 	}
 
+	/**
+	 * Short description for 'isManager'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function isManager($uid)
 	{
 		return $this->is_member_of('managers',$uid);
 	}
 
+	/**
+	 * Short description for 'isInvitee'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function isInvitee($uid)
 	{
 		return $this->is_member_of('invitees',$uid);
 	}
 
+	/**
+	 * Short description for 'getEmails'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $key Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getEmails($key='managers')
 	{
 		ximport('Hubzero_User_Profile');
@@ -1523,6 +1986,15 @@ class Hubzero_Group
 		return $emails;
 	}
 
+	/**
+	 * Short description for 'search'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tbl Parameter description (if any) ...
+	 * @param      string $q Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function search($tbl='', $q='')
 	{
 		if (!in_array($tbl, array('applicants','members','managers','invitees')))
@@ -1538,6 +2010,14 @@ class Hubzero_Group
 		return $db->loadResultArray();
 	}
 
+	/**
+	 * Short description for 'select'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function select($group)
 	{
 		$db = &JFactory::getDBO();

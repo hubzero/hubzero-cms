@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,10 +35,23 @@ ximport('Hubzero_Controller');
 ximport('Hubzero_Group');
 ximport('Hubzero_Group_InviteEmail');
 
+/**
+ * Short description for 'GroupsController'
+ * 
+ * Long description (if any) ...
+ */
 class GroupsController extends Hubzero_Controller
 {
 	//var $notifications = array();
 
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		// Get the task
@@ -113,6 +128,15 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'setNotification'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setNotification( $message, $type )
 	{
 		//if type is not set, set to error message
@@ -124,6 +148,13 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'getNotifications'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getNotifications()
 	{
 		//getmessages in quene 
@@ -135,6 +166,14 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_getGroupStyles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $group_type Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _getGroupStyles( $group_type = null )
 	{
 		$task = $this->_task;
@@ -163,6 +202,13 @@ class GroupsController extends Hubzero_Controller
 
 	}
 
+	/**
+	 * Short description for '_getGroupScripts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _getGroupScripts()
 	{
 		$doc =& JFactory::getDocument();
@@ -176,6 +222,14 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $group_pages Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function _buildPathway( $group_pages = array() )
 	{
 		$option = substr($this->_option,4);
@@ -224,6 +278,13 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		$option = substr($this->_option,4);
@@ -247,6 +308,14 @@ class GroupsController extends Hubzero_Controller
 		$document->setTitle( $this->_title );
 	}
 
+	/**
+	 * Short description for 'getMemberProfile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $user Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getMemberProfile( $user )
 	{
 		//look up username in nanohub profiles
@@ -266,6 +335,14 @@ class GroupsController extends Hubzero_Controller
 	// Main displays
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'abort'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function abort()
 	{
 		//build the title
@@ -284,6 +361,14 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $title Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function login( $title = "" )
 	{
 		$title = ($title) ? $title : JText::_(strtoupper($this->_name));
@@ -294,6 +379,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'intro'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function intro()
 	{
 		//build the title
@@ -323,6 +415,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function browse()
 	{
 		$view = new JView( array('name'=>'browse') );
@@ -383,6 +482,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'features'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function features()
 	{
 		//build the title
@@ -404,6 +510,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Load the group page
@@ -580,6 +693,14 @@ class GroupsController extends Hubzero_Controller
 	// User actions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'join'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function join()
 	{
 		// Build the title
@@ -660,6 +781,13 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function cancel()
 	{
 		$return = strtolower(trim(JRequest::getVar( 'return', '', 'get' )));
@@ -766,6 +894,13 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'confirm'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function confirm()
 	{
 
@@ -897,6 +1032,13 @@ class GroupsController extends Hubzero_Controller
 		$xhub->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')));
 	}
 
+	/**
+	 * Short description for 'accept'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function accept()
 	{
 		$return = strtolower(trim(JRequest::getVar( 'return', '', 'get' )));
@@ -1025,6 +1167,14 @@ class GroupsController extends Hubzero_Controller
 	// Group management
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function edit()
 	{
 		// Build the title
@@ -1102,6 +1252,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save()
 	{
 		// Check if they're logged in
@@ -1341,6 +1498,13 @@ class GroupsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$g_cn);
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		// Build title
@@ -1548,6 +1712,13 @@ class GroupsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 
+	/**
+	 * Short description for 'approve'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function approve()
 	{
 		// Set the page title
@@ -1635,6 +1806,13 @@ class GroupsController extends Hubzero_Controller
 		$this->view();
 	}
 
+	/**
+	 * Short description for 'invite'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function invite()
 	{
 		// Check if they're logged in
@@ -1943,6 +2121,14 @@ class GroupsController extends Hubzero_Controller
 	// Group Customization
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'customize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function customize()
 	{
 		// Check if they're logged in
@@ -2024,6 +2210,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveCustomization'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveCustomization()
 	{
 		// Check if they're logged in
@@ -2104,6 +2297,13 @@ class GroupsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$group->get('cn'));
 	}
 
+	/**
+	 * Short description for 'managePages'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function managePages()
 	{
 		// Check if they're logged in
@@ -2260,6 +2460,14 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'editPage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function editPage( $group )
 	{
 		$view = new JView( array('name'=>'customize', 'layout'=>'page') );
@@ -2295,6 +2503,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'savePage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function savePage()
 	{
 		// Ensure we have a group to work with
@@ -2361,6 +2576,14 @@ class GroupsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$group->get('cn').'&task=managepages');
 	}
 
+	/**
+	 * Short description for 'editModule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function editModule( $group )
 	{
 		$view = new JView( array('name'=>'customize', 'layout'=>'module') );
@@ -2411,6 +2634,13 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveModule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveModule()
 	{
 		// Ensure we have a group to work with
@@ -2457,6 +2687,16 @@ class GroupsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$group->get('cn').'&task=managepages');
 	}
 
+	/**
+	 * Short description for 'change_state'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $status Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function change_state( $type, $status, $id )
 	{
 		// Based on passed in status either activate or deactivate
@@ -2481,6 +2721,17 @@ class GroupsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$this->_group->get('cn').'&task=managepages');
 	}
 
+	/**
+	 * Short description for 'reorder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $direction Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      unknown $high_order Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function reorder( $type, $direction, $id, $high_order )
 	{
 		$order_field = substr($type,0,1) . 'order';
@@ -2546,6 +2797,16 @@ class GroupsController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$this->_group->get('cn').'&task=managepages');
 	}
 
+	/**
+	 * Short description for 'uniquePageURL'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $current_url Parameter description (if any) ...
+	 * @param      unknown $group_pages Parameter description (if any) ...
+	 * @param      object $group Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function uniquePageURL( $current_url, $group_pages, $group )
 	{
 		// Get the page urls
@@ -2592,6 +2853,14 @@ class GroupsController extends Hubzero_Controller
 	// media manager
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function upload()
 	{
 		// Check if they're logged in
@@ -2664,6 +2933,13 @@ class GroupsController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'deletefolder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletefolder()
 	{
 		// Check if they're logged in
@@ -2716,6 +2992,13 @@ class GroupsController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'deletefile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function deletefile()
 	{
 		// Check if they're logged in
@@ -2776,6 +3059,13 @@ class GroupsController extends Hubzero_Controller
 		$this->media();
 	}
 
+	/**
+	 * Short description for 'media'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function media()
 	{
 		// Load the component config
@@ -2801,6 +3091,14 @@ class GroupsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'recursive_listdir'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	protected function recursive_listdir($base)
 	{
 	    static $filelist = array();
@@ -2821,6 +3119,13 @@ class GroupsController extends Hubzero_Controller
 	    return $dirlist;
 	}
 
+	/**
+	 * Short description for 'listfiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function listfiles()
 	{
 		// Incoming
@@ -2887,6 +3192,15 @@ class GroupsController extends Hubzero_Controller
 	// Misc Functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $checkonlymembership Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function _authorize($checkonlymembership=false)
 	{
 		// Check if they are logged in
@@ -2954,6 +3268,14 @@ class GroupsController extends Hubzero_Controller
 		return false;
 	}
 
+	/**
+	 * Short description for 'getGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function getGroups( $groups )
 	{
 		if (!$this->juser->get('guest')) {
@@ -2984,6 +3306,17 @@ class GroupsController extends Hubzero_Controller
 		return $groups;
 	}
 
+	/**
+	 * Short description for 'email'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @param      unknown $subject Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @param      array $from Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function email($email, $subject, $message, $from)
 	{
 		if ($from) {
@@ -3002,6 +3335,13 @@ class GroupsController extends Hubzero_Controller
 		return false;
 	}
 
+	/**
+	 * Short description for 'autocomplete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function autocomplete()
 	{
 		$filters = array();
@@ -3024,6 +3364,14 @@ class GroupsController extends Hubzero_Controller
 		echo '['.implode(',',$json).']';
 	}
 
+	/**
+	 * Short description for '_getAutocomplete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	private function _getAutocomplete( $filters=array() )
 	{
 		$query = "SELECT t.gidNumber, t.cn, t.description 
@@ -3035,6 +3383,13 @@ class GroupsController extends Hubzero_Controller
 		return $this->database->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'memberslist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function memberslist()
 	{
 		// Fetch results
@@ -3074,6 +3429,14 @@ class GroupsController extends Hubzero_Controller
 		echo '{"members":['.implode(',',$json).']}';
 	}
 
+	/**
+	 * Short description for '_validCn'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $gid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _validCn($gid)
 	{
 		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid)) {
@@ -3087,6 +3450,14 @@ class GroupsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'randomString'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $length Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function randomString( $length )
 	{
 		$str = '';
@@ -3100,6 +3471,14 @@ class GroupsController extends Hubzero_Controller
 		return strtoupper($str);
 	}
 
+	/**
+	 * Short description for 'download'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $filename Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function download( $filename )
 	{
 		//get the group

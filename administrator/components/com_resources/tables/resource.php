@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,49 +21,271 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ResourcesResource'
+ * 
+ * Long description (if any) ...
+ */
 class ResourcesResource extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id               = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
 	var $title            = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type             = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'logical_type'
+	 * 
+	 * @var unknown
+	 */
 	var $logical_type     = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'introtext'
+	 * 
+	 * @var unknown
+	 */
 	var $introtext        = NULL;  // @var text
+
+
+	/**
+	 * Description for 'fulltext'
+	 * 
+	 * @var unknown
+	 */
 	var $fulltext         = NULL;  // @var text
+
+
+	/**
+	 * Description for 'footertext'
+	 * 
+	 * @var unknown
+	 */
 	var $footertext       = NULL;  // @var text
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created          = NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by       = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'modified'
+	 * 
+	 * @var unknown
+	 */
 	var $modified         = NULL;  // @var boolean
+
+
+	/**
+	 * Description for 'modified_by'
+	 * 
+	 * @var unknown
+	 */
 	var $modified_by      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
 	var $published        = NULL;  // @var int(1)
+
+
+	/**
+	 * Description for 'publish_up'
+	 * 
+	 * @var unknown
+	 */
 	var $publish_up       = NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'publish_down'
+	 * 
+	 * @var unknown
+	 */
 	var $publish_down     = NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'access'
+	 * 
+	 * @var unknown
+	 */
 	var $access           = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'hits'
+	 * 
+	 * @var unknown
+	 */
 	var $hits             = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'path'
+	 * 
+	 * @var unknown
+	 */
 	var $path             = NULL;  // @var varchar(200)
+
+
+	/**
+	 * Description for 'checked_out'
+	 * 
+	 * @var unknown
+	 */
 	var $checked_out      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'checked_out_time'
+	 * 
+	 * @var unknown
+	 */
 	var $checked_out_time = NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'standalone'
+	 * 
+	 * @var unknown
+	 */
 	var $standalone       = NULL;  // @var int(1)
+
+
+	/**
+	 * Description for 'group_owner'
+	 * 
+	 * @var unknown
+	 */
 	var $group_owner      = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'group_access'
+	 * 
+	 * @var string
+	 */
 	var $group_access     = NULL;  // @var text
+
+
+	/**
+	 * Description for 'rating'
+	 * 
+	 * @var unknown
+	 */
 	var $rating           = NULL;  // @var decimal(2,1)
+
+
+	/**
+	 * Description for 'times_rated'
+	 * 
+	 * @var unknown
+	 */
 	var $times_rated      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	var $params           = NULL;  // @var text
+
+
+	/**
+	 * Description for 'attribs'
+	 * 
+	 * @var unknown
+	 */
 	var $attribs          = NULL;  // @var text
+
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
 	var $alias            = NULL;  // @var varchar(100)
+
+
+	/**
+	 * Description for 'ranking'
+	 * 
+	 * @var unknown
+	 */
 	var $ranking          = NULL;  // @var float
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resources', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'loadAlias'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadAlias( $oid=NULL )
 	{
 		if ($oid === NULL) {
@@ -81,6 +300,13 @@ class ResourcesResource extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
@@ -90,6 +316,14 @@ class ResourcesResource extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getTypeTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $which Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getTypeTitle($which=0)
 	{
 		if ($which) {
@@ -102,6 +336,13 @@ class ResourcesResource extends JTable
 		return ($title) ? $title : '';
 	}
 
+	/**
+	 * Short description for 'getGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function getGroups()
 	{
 		if ($this->group_access != '') {
@@ -119,6 +360,13 @@ class ResourcesResource extends JTable
 		return $allowedgroups;
 	}
 
+	/**
+	 * Short description for 'calculateRating'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function calculateRating()
 	{
 		$this->_db->setQuery( "SELECT rating FROM #__resource_ratings WHERE resource_id='$this->id'" );
@@ -144,6 +392,13 @@ class ResourcesResource extends JTable
 		$this->times_rated = $totalcount;
 	}
 
+	/**
+	 * Short description for 'updateRating'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function updateRating()
 	{
 		$this->_db->setQuery( "UPDATE $this->_tbl SET rating='$this->rating', times_rated='$this->times_rated' WHERE id='$this->id'" );
@@ -153,6 +408,14 @@ class ResourcesResource extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'deleteExistence'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function deleteExistence( $id=NULL )
 	{
 		if (!$id) {
@@ -185,6 +448,14 @@ class ResourcesResource extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array() )
 	{
 		$juser =& JFactory::getUser();
@@ -275,6 +546,14 @@ class ResourcesResource extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getUsersGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $groups Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
@@ -289,6 +568,15 @@ class ResourcesResource extends JTable
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount( $filters=array(), $admin=false )
 	{
 		$query = $this->buildQuery( $filters, $admin );
@@ -300,6 +588,15 @@ class ResourcesResource extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getRecords( $filters=array(), $admin=false )
 	{
 		$sql  = "SELECT C.id, C.title, C.type, C.introtext, C.fulltext, C.created, C.created_by, C.modified, C.published, C.publish_up, C.standalone, C.access, C.hits, C.rating, C.times_rated, C.params, C.alias, C.ranking, t.type AS typetitle, lt.type AS logicaltitle";
@@ -311,6 +608,14 @@ class ResourcesResource extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'buildPluginQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildPluginQuery( $filters=array() )
 	{
 		$database =& JFactory::getDBO();

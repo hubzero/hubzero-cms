@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,26 +21,104 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+/**
+ * Short description for 'Hubzero_Auth_Link'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Auth_Link
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	private $id;
+
+	/**
+	 * Description for 'user_id'
+	 * 
+	 * @var unknown
+	 */
 	private $user_id;
+
+	/**
+	 * Description for 'auth_domain_id'
+	 * 
+	 * @var unknown
+	 */
 	private $auth_domain_id;
+
+	/**
+	 * Description for 'username'
+	 * 
+	 * @var unknown
+	 */
 	private $username;
+
+	/**
+	 * Description for 'email'
+	 * 
+	 * @var unknown
+	 */
 	private $email;
+
+	/**
+	 * Description for 'password'
+	 * 
+	 * @var unknown
+	 */
 	private $password;
+
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
 	private $params;
+
+	/**
+	 * Description for '_updatedkeys'
+	 * 
+	 * @var array
+	 */
 	private $_updatedkeys = array();
+
+	/**
+	 * Description for '_updateAll'
+	 * 
+	 * @var boolean
+	 */
 	private $_updateAll = false;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function __construct()
     {
     }
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     public function clear()
     {
         $cvars = get_class_vars(__CLASS__);
@@ -63,12 +139,29 @@ class Hubzero_Auth_Link
         $this->_updatedkeys = array();
     }
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
     private function logDebug($msg)
     {
         $xlog = &XFactory::getLogger();
         $xlog->logDebug($msg);
     }
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $auth_domain_id Parameter description (if any) ...
+	 * @param      unknown $username Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function getInstance($auth_domain_id, $username)
     {
         $hzal = new Hubzero_Auth_Link();
@@ -84,6 +177,14 @@ class Hubzero_Auth_Link
         return $hzal;
     }
 
+	/**
+	 * Short description for 'find_by_id'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function find_by_id($id)
     {
 		$hzal = new Hubzero_Auth_Link();
@@ -98,6 +199,15 @@ class Hubzero_Auth_Link
 
     }
 
+	/**
+	 * Short description for 'createInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $auth_domain_id Parameter description (if any) ...
+	 * @param      unknown $username Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function createInstance($auth_domain_id,$username)
     {
         if (empty($auth_domain_id) || empty($username))
@@ -120,6 +230,13 @@ class Hubzero_Auth_Link
         return $instance;
     }
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     public function create()
     {
         $db = &JFactory::getDBO();
@@ -193,6 +310,13 @@ class Hubzero_Auth_Link
         return false;
     }
 
+	/**
+	 * Short description for 'read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function read()
     {
         $db = JFactory::getDBO();
@@ -244,6 +368,14 @@ class Hubzero_Auth_Link
         return true;
     }
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
  	function update($all = false)
     {
         $db = &JFactory::getDBO();
@@ -309,6 +441,13 @@ class Hubzero_Auth_Link
         return true;
     }
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete()
     {
         if (!isset($this->toolname) && !isset($this->id))
@@ -346,6 +485,14 @@ class Hubzero_Auth_Link
         return true;
     }
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function __get($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -374,6 +521,15 @@ class Hubzero_Auth_Link
         return null;
     }
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
     private function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -393,6 +549,14 @@ class Hubzero_Auth_Link
             $this->_updatedkeys[] = $property;
     }
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     private function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -407,6 +571,14 @@ class Hubzero_Auth_Link
         return isset($this->$property);
     }
 
+	/**
+	 * Short description for '__unset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     void
+	 */
     private function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -423,6 +595,15 @@ class Hubzero_Auth_Link
         unset($this->$property);
     }
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     void
+	 */
     private function _error($message, $level = E_USER_NOTICE)
     {
         $caller = next(debug_backtrace());
@@ -443,6 +624,14 @@ class Hubzero_Auth_Link
         echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
     }
 
+	/**
+	 * Short description for 'delete_by_user_id'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function delete_by_user_id($uid = null)
     {
     	if (empty($uid))
@@ -465,6 +654,17 @@ class Hubzero_Auth_Link
         return true;
     }
 
+	/**
+	 * Short description for 'find_or_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $type Parameter description (if any) ...
+	 * @param      unknown $authenticator Parameter description (if any) ...
+	 * @param      unknown $domain Parameter description (if any) ...
+	 * @param      unknown $username Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function find_or_create($type,$authenticator,$domain,$username)
     {
     	$hzad = Hubzero_Auth_Domain::find_or_create($type,$authenticator,$domain);
@@ -486,6 +686,14 @@ class Hubzero_Auth_Link
 		return $hzal;
 	}
 
+	/**
+	 * Short description for 'find_trusted_emails'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user_id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function find_trusted_emails( $user_id )
 	{
 		if (empty($user_id))

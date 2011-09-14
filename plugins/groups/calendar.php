@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,9 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_calendar' );
 
+/**
+ * Short description for 'plgGroupsCalendar'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsCalendar extends JPlugin
 {
 
+	/**
+	 * Short description for 'plgGroupsCalendar'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsCalendar(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -44,6 +60,13 @@ class plgGroupsCalendar extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -55,6 +78,21 @@ class plgGroupsCalendar extends JPlugin
 		return $area;
 	}
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      string $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      array $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
@@ -160,6 +198,14 @@ class plgGroupsCalendar extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'onGroupDeleteCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function onGroupDeleteCount($group)
 	{
 		//return JText::_('Calendar Events').': '.count($this->getCalendarEvents($group));
@@ -169,6 +215,16 @@ class plgGroupsCalendar extends JPlugin
 	// Functions						//
 	/////////////////////////////////////
 
+
+	/**
+	 * Short description for '_generateCalendarPicker'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $month Parameter description (if any) ...
+	 * @param      unknown $year Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _generateCalendarPicker($month,$year)
 	{
 		$year_start = date("Y");
@@ -192,6 +248,16 @@ class plgGroupsCalendar extends JPlugin
 		return $picker;
 	}
 
+	/**
+	 * Short description for 'getEvents'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $day Parameter description (if any) ...
+	 * @param      unknown $month Parameter description (if any) ...
+	 * @param      unknown $year Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function getEvents( $day, $month, $year )
 	{
 		$events = array();
@@ -216,6 +282,16 @@ class plgGroupsCalendar extends JPlugin
 	// Views							//
 	/////////////////////////////////////
 
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $month Parameter description (if any) ...
+	 * @param      unknown $year Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	private function display( $month, $year )
 	{
 		ximport('Hubzero_Plugin_View');
@@ -371,11 +447,25 @@ class plgGroupsCalendar extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function add()
 	{
 		return $this->edit();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
 	private function edit()
 	{
 		//create the view
@@ -425,6 +515,13 @@ class plgGroupsCalendar extends JPlugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function save()
 	{
 		//get the edit form posted vars
@@ -473,6 +570,13 @@ class plgGroupsCalendar extends JPlugin
 		return $this->display($start[0],$start[2]);
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function delete()
 	{
 		//get the passed in event id

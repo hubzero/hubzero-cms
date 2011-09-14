@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2009-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2009-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,23 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.helper');
 
+/**
+ * Short description for 'Hubzero_Tool_VersionHelper'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Tool_VersionHelper
 {
+
+	/**
+	 * Short description for 'iterate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $func Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function iterate($func, $storage = 'mysql')
     {
         $db = &JFactory::getDBO();
@@ -102,6 +119,14 @@ class Hubzero_Tool_VersionHelper
         return true;
     }
 
+	/**
+	 * Short description for 'getCurrentToolVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function getCurrentToolVersion($toolid)
     {
         $db = & JFactory::getDBO();
@@ -129,6 +154,14 @@ class Hubzero_Tool_VersionHelper
         return Hubzero_Tool_Version::getInstance($result);
     }
 
+	/**
+	 * Short description for 'getDevelopmentToolVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function getDevelopmentToolVersion($toolid)
     {
         $db = & JFactory::getDBO();
@@ -156,6 +189,15 @@ class Hubzero_Tool_VersionHelper
         return Hubzero_Tool_Version::getInstance($result);
     }
 
+	/**
+	 * Short description for 'getToolRevision'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      string $revision Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getToolRevision($toolid, $revision)
 	{
 		$db = &JFactory::getDBO();
@@ -216,46 +258,283 @@ class Hubzero_Tool_VersionHelper
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Tool_Version
 {
     //  Database Column Name			LDAP Field Name		Database Table Name
     //  ======================================================================
+
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
     private $id = null;                 //					    jos_tool_version
+
+
+	/**
+	 * Description for 'toolname'
+	 * 
+	 * @var unknown
+	 */
     private $toolname = null;           //					    jos_tool_version
+
+
+	/**
+	 * Description for 'instance'
+	 * 
+	 * @var string
+	 */
     private $instance = null;           // tool				    jos_tool_version
+
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var unknown
+	 */
     private $title = null;              // cn				    jos_tool_version
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
     private $description = null;        // description			jos_tool_version
+
+
+	/**
+	 * Description for 'fulltext'
+	 * 
+	 * @var unknown
+	 */
     private $fulltext = null;           //					    jos_tool_version
+
+
+	/**
+	 * Description for 'version'
+	 * 
+	 * @var unknown
+	 */
     private $version = null;            // version			    jos_tool_version
+
+
+	/**
+	 * Description for 'revision'
+	 * 
+	 * @var unknown
+	 */
     private $revision = null;           // revision			    jos_tool_version
+
+
+	/**
+	 * Description for 'toolaccess'
+	 * 
+	 * @var unknown
+	 */
     private $toolaccess = null;         // public				jos_tool_version
+
+
+	/**
+	 * Description for 'codeaccess'
+	 * 
+	 * @var unknown
+	 */
     private $codeaccess = null;         // sourcePublic		    jos_tool_version
+
+
+	/**
+	 * Description for 'wikiaccess'
+	 * 
+	 * @var unknown
+	 */
     private $wikiaccess = null;         // projectPublic		jos_tool_version
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var integer
+	 */
     private $state = null;              // state				jos_tool_version
+
+
+	/**
+	 * Description for 'released_by'
+	 * 
+	 * @var unknown
+	 */
     private $released_by = null;        //					    jos_tool_version
+
+
+	/**
+	 * Description for 'released'
+	 * 
+	 * @var unknown
+	 */
     private $released = null;           // publishDate			jos_tool_version
+
+
+	/**
+	 * Description for 'unpublished'
+	 * 
+	 * @var unknown
+	 */
     private $unpublished = null;        // unpublishDate		jos_tool_version
+
+
+	/**
+	 * Description for 'exportControl'
+	 * 
+	 * @var unknown
+	 */
     private $exportControl = null;      // exportControl		jos_tool_version
+
+
+	/**
+	 * Description for 'license'
+	 * 
+	 * @var unknown
+	 */
     private $license = null;            // usageAgreementText   jos_tool_version
+
+
+	/**
+	 * Description for 'vnc_geometry'
+	 * 
+	 * @var unknown
+	 */
     private $vnc_geometry = null;       // vncGeometry			jos_tool_version
+
+
+	/**
+	 * Description for 'vnc_depth'
+	 * 
+	 * @var unknown
+	 */
     private $vnc_depth = null;          // vncDepth			    jos_tool_version
+
+
+	/**
+	 * Description for 'vnc_timeout'
+	 * 
+	 * @var unknown
+	 */
     private $vnc_timeout = null;        // vncTimeout			jos_tool_version
+
+
+	/**
+	 * Description for 'vnc_command'
+	 * 
+	 * @var unknown
+	 */
     private $vnc_command = null;        // vncCommand			jos_tool_version
+
+
+	/**
+	 * Description for 'mw'
+	 * 
+	 * @var unknown
+	 */
     private $mw = null;                 // defaultMiddleware	jos_tool_version
+
+
+	/**
+	 * Description for 'priority'
+	 * 
+	 * @var unknown
+	 */
     private $priority = null;           // priority			    jos_tool_version
+
+
+	/**
+	 * Description for 'toolid'
+	 * 
+	 * @var unknown
+	 */
     private $toolid = null;             //					    jos_tool_version
+
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var array
+	 */
     private $alias = array();           // alias [array]		jos_tool_aliases
+
+
+	/**
+	 * Description for 'middleware'
+	 * 
+	 * @var array
+	 */
     private $middleware = array();      // middleware [array]	jos_tool_middleware
+
+
+	/**
+	 * Description for 'hostreq'
+	 * 
+	 * @var array
+	 */
     private $hostreq = array();         // vncHostReq [array]	jos_tool_hostreq
+
+
+	/**
+	 * Description for 'author'
+	 * 
+	 * @var array
+	 */
     private $author = array();          // author [array]		jos_tool_authors
+
+
+	/**
+	 * Description for 'member'
+	 * 
+	 * @var array
+	 */
     private $member = array();          // member [array]		jos_tool_groups
+
+
+	/**
+	 * Description for 'owner'
+	 * 
+	 * @var array
+	 */
     private $owner = array();           // owner [array]		jos_tool_groups
 
+
+	/**
+	 * Description for '_list_keys'
+	 * 
+	 * @var array
+	 */
     private $_list_keys = array('alias', 'middleware', 'hostreq', 'author', 'member', 'owner');
 
+	/**
+	 * Description for '_ldapToolMirror'
+	 * 
+	 * @var boolean
+	 */
     private $_ldapToolMirror = false;
+
+	/**
+	 * Description for '_updateAll'
+	 * 
+	 * @var boolean
+	 */
     private $_updateAll = false;
 
+	/**
+	 * Description for '_propertyattrmap'
+	 * 
+	 * @var array
+	 */
     static $_propertyattrmap = array('title'=>'cn', 'description'=>'description',
         'version'=>'version', 'revision'=>'revision', 'released'=>'publishDate',
         'unpublished'=>'unpublishDate', 'exportControl'=>'exportControl',
@@ -265,14 +544,33 @@ class Hubzero_Tool_Version
         'owner'=>'owner', 'state'=>'state', 'codeaccess'=>'sourcePublic', 'toolaccess'=>'public',
         'wikiaccess'=>'projectPublic', 'author'=>'author', 'middleware'=>'middleware');
 
+	/**
+	 * Description for '_updatedkeys'
+	 * 
+	 * @var array
+	 */
     private $_updatedkeys = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     private function __construct()
     {
         $config = & JComponentHelper::getParams('com_contribtool');
         $this->_ldapToolMirror = $config->get('ldap_save') == '1';
     }
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     public function clear()
     {
         $cvars = get_class_vars(__CLASS__);
@@ -300,12 +598,28 @@ class Hubzero_Tool_Version
         $this->_updatedkeys = array();
     }
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
     private function logDebug($msg)
     {
         $xlog = &Hubzero_Factory::getLogger();
         $xlog->logDebug($msg);
     }
 
+	/**
+	 * Short description for 'getTool_VersionNames'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tool Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function getTool_VersionNames($tool = null)
     {
         $db = &JFactory::getDBO();
@@ -352,6 +666,14 @@ class Hubzero_Tool_Version
         return $result;
     }
 
+	/**
+	 * Short description for 'toArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function toArray($format = 'mysql')
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -485,6 +807,15 @@ class Hubzero_Tool_Version
         return false;
     }
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $instance Parameter description (if any) ...
+	 * @param      unknown $storage Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function getInstance($instance, $storage = null)
     {
         $hztv = new Hubzero_Tool_Version();
@@ -497,6 +828,15 @@ class Hubzero_Tool_Version
         return $hztv;
     }
 
+	/**
+	 * Short description for 'createInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $toolname Parameter description (if any) ...
+	 * @param      unknown $instance Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function createInstance($toolname,$instance)
     {
         if (empty($toolname))
@@ -521,6 +861,13 @@ class Hubzero_Tool_Version
         return false;
     }
 
+	/**
+	 * Short description for '_ldap_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_create()
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -544,6 +891,13 @@ class Hubzero_Tool_Version
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _mysql_create()
     {
         $db = &JFactory::getDBO();
@@ -603,6 +957,14 @@ class Hubzero_Tool_Version
         return false;
     }
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function create($storage = null)
     {
         if (is_null($storage))
@@ -647,6 +1009,13 @@ class Hubzero_Tool_Version
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_read()
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -828,6 +1197,13 @@ class Hubzero_Tool_Version
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _mysql_read()
     {
         $db = JFactory::getDBO();
@@ -886,6 +1262,15 @@ class Hubzero_Tool_Version
         return true;
     }
 
+	/**
+	 * Short description for 'read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $instance Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function read($instance = null, $storage = 'mysql')
     {
         if (is_null($storage))
@@ -955,6 +1340,14 @@ class Hubzero_Tool_Version
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_update($all = false)
     {
         $xhub = &Hubzero_Factory::getHub();
@@ -1057,6 +1450,14 @@ class Hubzero_Tool_Version
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _mysql_update($all = false)
     {
         $db = &JFactory::getDBO();
@@ -1300,18 +1701,40 @@ class Hubzero_Tool_Version
         return true;
     }
 
+	/**
+	 * Short description for 'sync'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
     public function sync()
     {
         $this->_updateAll = true;
         return $this->update();
     }
 
+	/**
+	 * Short description for 'syncldap'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
     public function syncldap()
     {
         $this->_updateAll = true;
         return $this->update('ldap');
     }
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function update($storage = null)
     {
 		$xlog = &Hubzero_Factory::getLogger();
@@ -1362,6 +1785,13 @@ class Hubzero_Tool_Version
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_delete()
     {
         $conn = &Hubzero_Factory::getPLDC();
@@ -1387,6 +1817,13 @@ class Hubzero_Tool_Version
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _mysql_delete()
     {
         if (!isset($this->instance) && !isset($this->id))
@@ -1447,6 +1884,14 @@ class Hubzero_Tool_Version
         return true;
     }
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function delete($storage = null)
     {
         $xlog = &Hubzero_Factory::getLogger();
@@ -1500,6 +1945,14 @@ class Hubzero_Tool_Version
         return $result;
     }
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     public function __get($property = null)
     {
         $xlog = &Hubzero_Factory::getLogger();
@@ -1582,6 +2035,15 @@ class Hubzero_Tool_Version
         return null;
     }
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     void
+	 */
     public function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -1652,6 +2114,14 @@ class Hubzero_Tool_Version
             $this->_updatedkeys[] = $property;
     }
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     public function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -1666,6 +2136,14 @@ class Hubzero_Tool_Version
         return isset($this->$property);
     }
 
+	/**
+	 * Short description for '__unset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     void
+	 */
     public function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -1682,6 +2160,15 @@ class Hubzero_Tool_Version
         unset($this->$property);
     }
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     void
+	 */
     private function _error($message, $level = E_USER_NOTICE)
     {
         $caller = next(debug_backtrace());
@@ -1702,26 +2189,69 @@ class Hubzero_Tool_Version
         echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
     }
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function get($key)
     {
         return $this->__get($key);
     }
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function set($key, $value)
     {
         return $this->__set($key, $value);
     }
 
+	/**
+	 * Short description for 'add'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     void
+	 */
     public function add($key = null, $value = array())
     {
         $this->__set($key, array_merge($this->__get($key), (array) $value));
     }
 
+	/**
+	 * Short description for 'remove'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      array $value Parameter description (if any) ...
+	 * @return     void
+	 */
     public function remove($key = null, $value = array())
     {
         $this->__set($key, array_diff($this->__get($key), (array) $value));
     }
 
+	/**
+	 * Short description for 'getDevelopmentGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $byid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getDevelopmentGroup($byid = false)
 	{
 		$db = &JFactory::getDBO();
@@ -1739,6 +2269,17 @@ class Hubzero_Tool_Version
 		return $result;
 	}
 
+	/**
+	 * Short description for 'getVersionInfo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      string $instance Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getVersionInfo($id, $version='', $toolname='', $instance='')
     {
 		$db = &JFactory::getDBO();

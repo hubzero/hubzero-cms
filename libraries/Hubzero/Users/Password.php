@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,37 +21,136 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+/**
+ * Short description for 'Hubzero_Users_Password'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Users_Password
 {
+
+	/**
+	 * Description for 'user_id'
+	 * 
+	 * @var mixed
+	 */
     private $user_id = null;
+
+	/**
+	 * Description for 'passhash'
+	 * 
+	 * @var unknown
+	 */
     private $passhash = null;
+
+	/**
+	 * Description for 'shadowLastChange'
+	 * 
+	 * @var unknown
+	 */
     private $shadowLastChange = null;
+
+	/**
+	 * Description for 'shadowMin'
+	 * 
+	 * @var array
+	 */
     private $shadowMin = array();
+
+	/**
+	 * Description for 'shadowMax'
+	 * 
+	 * @var unknown
+	 */
     private $shadowMax = null;
+
+	/**
+	 * Description for 'shadowWarning'
+	 * 
+	 * @var unknown
+	 */
     private $shadowWarning = null;
+
+	/**
+	 * Description for 'shadowInactive'
+	 * 
+	 * @var unknown
+	 */
     private $shadowInactive = null;
+
+	/**
+	 * Description for 'shadowExpire'
+	 * 
+	 * @var unknown
+	 */
     private $shadowExpire = null;
+
+	/**
+	 * Description for 'shadowFlag'
+	 * 
+	 * @var unknown
+	 */
     private $shadowFlag = null;
 
+	/**
+	 * Description for '_ldapPasswordMirror'
+	 * 
+	 * @var boolean
+	 */
     private $_ldapPasswordMirror = true;
+
+	/**
+	 * Description for '_updateAll'
+	 * 
+	 * @var boolean
+	 */
     private $_updateAll = false;
 
+	/**
+	 * Description for '_propertyattrmap'
+	 * 
+	 * @var array
+	 */
     static $_propertyattrmap = array("user_id"=>"uidNumber","passhash"=>"userPassword","shadowLastChange"=>"shadowLastChange",
                                      "shadowMin"=>"shadowMin","shadowMax"=>"shadowMax","shadowWarning"=>"shadowWarning",
                                      "shadowInactive"=>"shadowInactive","shadowExpire"=>"shadowExpire","shadowFlag"=>"shadowFlag");
 
+	/**
+	 * Description for '_updatedkeys'
+	 * 
+	 * @var array
+	 */
     private $_updatedkeys = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     private function __construct()
     {
         $config = & JComponentHelper::getParams('com_members');
         $this->_ldapPasswordMirror = $config->get('ldap_save') == '1';
     }
 
+	/**
+	 * Short description for 'clear'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
     public function clear()
     {
         $cvars = get_class_vars(__CLASS__);
@@ -74,12 +171,28 @@ class Hubzero_Users_Password
         $this->_updatedkeys = array();
     }
 
+	/**
+	 * Short description for 'logDebug'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @return     void
+	 */
     private function logDebug($msg)
     {
         $xlog = &XFactory::getLogger();
         $xlog->logDebug($msg);
     }
 
+	/**
+	 * Short description for 'toArray'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function toArray($format = 'mysql')
     {
         $xhub = &XFactory::getHub();
@@ -119,6 +232,15 @@ class Hubzero_Users_Password
         return false;
     }
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $instance Parameter description (if any) ...
+	 * @param      unknown $storage Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function getInstance($instance, $storage = null)
     {
         $hzup = new Hubzero_Users_Password();
@@ -131,6 +253,14 @@ class Hubzero_Users_Password
         return $hzup;
     }
 
+	/**
+	 * Short description for 'createInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user_id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
     public function createInstance($user_id)
     {
         if (empty($name))
@@ -150,12 +280,26 @@ class Hubzero_Users_Password
         return false;
     }
 
+	/**
+	 * Short description for '_ldap_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_create()
     {
 		// @FIXME: should check if it exists in LDAP, return true if it does, otherwise false
 		return false;
     }
 
+	/**
+	 * Short description for '_mysql_create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     public function _mysql_create()
     {
         $db = &JFactory::getDBO();
@@ -184,6 +328,14 @@ class Hubzero_Users_Password
         return false;
     }
 
+	/**
+	 * Short description for 'create'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function create($storage = null)
     {
         if (is_null($storage))
@@ -229,6 +381,13 @@ class Hubzero_Users_Password
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_read()
     {
         $xhub = &XFactory::getHub();
@@ -302,6 +461,13 @@ class Hubzero_Users_Password
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _mysql_read()
     {
         $db = JFactory::getDBO();
@@ -341,6 +507,15 @@ class Hubzero_Users_Password
         return true;
     }
 
+	/**
+	 * Short description for 'read'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $user_id Parameter description (if any) ...
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function read($user_id = null, $storage = 'mysql')
     {
         if (is_null($storage))
@@ -408,6 +583,14 @@ class Hubzero_Users_Password
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_update($all = false)
     {
         $xhub = &XFactory::getHub();
@@ -498,6 +681,14 @@ class Hubzero_Users_Password
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $all Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     function _mysql_update($all = false)
     {
         $db = &JFactory::getDBO();
@@ -563,18 +754,40 @@ class Hubzero_Users_Password
         return true;
     }
 
+	/**
+	 * Short description for 'sync'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
     public function sync()
     {
         $this->_updateAll = true;
         return $this->update();
     }
 
+	/**
+	 * Short description for 'syncldap'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
     public function syncldap()
     {
         $this->_updateAll = true;
         return $this->update('ldap');
     }
 
+	/**
+	 * Short description for 'update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function update($storage = null)
     {
         if (is_null($storage))
@@ -621,6 +834,13 @@ class Hubzero_Users_Password
         return $result;
     }
 
+	/**
+	 * Short description for '_ldap_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     private function _ldap_delete()
     {
         $conn = & XFactory::getPLDC();
@@ -652,6 +872,13 @@ class Hubzero_Users_Password
         return true;
     }
 
+	/**
+	 * Short description for '_mysql_delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
     public function _mysql_delete()
     {
         if ($this->user_id <= 0)
@@ -689,6 +916,14 @@ class Hubzero_Users_Password
         return true;
     }
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $storage Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
     public function delete($storage = null)
     {
         if (func_num_args() > 1)
@@ -740,6 +975,14 @@ class Hubzero_Users_Password
         return $result;
     }
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     private function __get($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -768,6 +1011,15 @@ class Hubzero_Users_Password
         return null;
     }
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
     private function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -787,6 +1039,14 @@ class Hubzero_Users_Password
             $this->_updatedkeys[] = $property;
     }
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
     private function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -801,6 +1061,14 @@ class Hubzero_Users_Password
         return isset($this->$property);
     }
 
+	/**
+	 * Short description for '__unset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $property Parameter description (if any) ...
+	 * @return     void
+	 */
     private function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
@@ -817,6 +1085,15 @@ class Hubzero_Users_Password
         unset($this->$property);
     }
 
+	/**
+	 * Short description for '_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $message Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @return     void
+	 */
     private function _error($message, $level = E_USER_NOTICE)
     {
         $caller = next(debug_backtrace());
@@ -837,11 +1114,28 @@ class Hubzero_Users_Password
         echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
     }
 
+	/**
+	 * Short description for 'get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function get($key)
     {
         return $this->__get($key);
     }
 
+	/**
+	 * Short description for 'set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
     public function set($key, $value)
     {
         return $this->__set($key, $value);

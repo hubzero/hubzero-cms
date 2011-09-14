@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,33 +21,111 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WikiPageAttachment'
+ * 
+ * Long description (if any) ...
+ */
 class WikiPageAttachment extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id          = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'pageid'
+	 * 
+	 * @var string
+	 */
 	var $pageid      = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'filename'
+	 * 
+	 * @var unknown
+	 */
 	var $filename    = NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description = NULL;  // @var text
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created     = NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by  = NULL;  // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__wiki_attachments', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getID($name, $listdir)
 	{
 		$this->_db->setQuery( "SELECT id, description FROM $this->_tbl WHERE filename='".$name."' AND pageid=".$listdir );
 		return $this->_db->loadRow();
 	}
 
+	/**
+	 * Short description for 'deleteFile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $filename Parameter description (if any) ...
+	 * @param      string $pageid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteFile($filename, $pageid)
 	{
 		if (!$filename) {
@@ -66,6 +141,14 @@ class WikiPageAttachment extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'parse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function parse($text)
 	{
 		//$f = '/\{file#[0-9]*\}/sU';
@@ -73,6 +156,14 @@ class WikiPageAttachment extends JTable
 		return preg_replace_callback($f, array(&$this,'getAttachment'), $text);
 	}
 
+	/**
+	 * Short description for 'getAttachment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getAttachment($matches)
 	{
 		$match  = $matches[0];
@@ -96,6 +187,15 @@ class WikiPageAttachment extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'setPageID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oldid Parameter description (if any) ...
+	 * @param      unknown $newid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function setPageID( $oldid=null, $newid=null )
 	{
 		if (!$oldid) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,31 +21,89 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined("n")) {
+
+/**
+ * Description for '"t"'
+ */
 	define("t","\t");
+
+/**
+ * Description for '"n"'
+ */
 	define("n","\n");
+
+/**
+ * Description for '"br"'
+ */
 	define("br","<br />");
+
+/**
+ * Description for '"sp"'
+ */
 	define("sp","&#160;");
+
+/**
+ * Description for '"a"'
+ */
 	define("a","&amp;");
 }
 
+/**
+ * Short description for 'ToolsHtml'
+ * 
+ * Long description (if any) ...
+ */
 class ToolsHtml
 {
+
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
+	/**
+	 * Short description for 'hInput'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      string $value Parameter description (if any) ...
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function hInput($name, $value='', $id='')
 	{
 		$html  = '<input type="hidden" name="'.$name.'" value="'.$value.'"';
@@ -57,11 +112,29 @@ class ToolsHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'sInput'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      string $value Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function sInput($name, $value='')
 	{
 		return '<input type="submit" name="'.$name.'" value="'.$value.'" />'."\n";
 	}
 
+	/**
+	 * Short description for 'td'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $content Parameter description (if any) ...
+	 * @param      string $attribs Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function td($content, $attribs='')
 	{
 		$html  = '   <td';
@@ -74,6 +147,18 @@ class ToolsHtml
 	// An administrative active link.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'admlink'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $name Parameter description (if any) ...
+	 * @param      array $vars Parameter description (if any) ...
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function admlink( $name, $vars, $text, $option )
 	{
 		$html = '';
@@ -101,6 +186,16 @@ class ToolsHtml
 	// ListEdit widget.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'listedit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $list Parameter description (if any) ...
+	 * @param      array $hidden Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function listedit( $list, $hidden )
 	{
 		$html = '<ul class="ntools">'."\n";
@@ -145,6 +240,19 @@ class ToolsHtml
 	// Table widget.
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'table'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $rows Parameter description (if any) ...
+	 * @param      string $header Parameter description (if any) ...
+	 * @param      string $middle Parameter description (if any) ...
+	 * @param      string $trailer Parameter description (if any) ...
+	 * @param      string $tail_row Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function table( $rows, $header, $middle, $trailer, $tail_row )
 	{
 		$html  = '<table>'."\n";
@@ -168,6 +276,18 @@ class ToolsHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'updateform'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $table Parameter description (if any) ...
+	 * @param      string $bit Parameter description (if any) ...
+	 * @param      string $refs Parameter description (if any) ...
+	 * @param      mixed &$row Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function updateform($table, $bit, $refs, &$row, $option)
 	{
 		$html  = '<tr>'."\n";
@@ -188,6 +308,14 @@ class ToolsHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'tableHeader'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $headers Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function tableHeader($headers)
 	{
 		$html  = ' <thead>'."\n";
@@ -201,6 +329,17 @@ class ToolsHtml
 		return $html;
 	}
 
+	/**
+	 * Short description for 'delete_button'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $table Parameter description (if any) ...
+	 * @param      string $value Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function delete_button($name, $table, $value, $option)
 	{
 		$html  = '<form name="delete_'.$value.'" method="get" action="index.php">'."\n";

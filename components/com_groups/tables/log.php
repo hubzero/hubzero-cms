@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,23 +35,93 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'XGroupLog'
+ * 
+ * Long description (if any) ...
+ */
 class XGroupLog extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id        = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'gid'
+	 * 
+	 * @var unknown
+	 */
 	var $gid       = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'timestamp'
+	 * 
+	 * @var unknown
+	 */
 	var $timestamp = NULL;  // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid       = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'action'
+	 * 
+	 * @var unknown
+	 */
 	var $action    = NULL;  // @var varchar(50)
+
+
+	/**
+	 * Description for 'comments'
+	 * 
+	 * @var unknown
+	 */
 	var $comments  = NULL;  // @var text
+
+
+	/**
+	 * Description for 'actorid'
+	 * 
+	 * @var unknown
+	 */
 	var $actorid   = NULL;  // @var int(11)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xgroups_log', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->gid ) == '') {
@@ -65,6 +137,15 @@ class XGroupLog extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getLogs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getLogs( $gid=null, $limit=5 )
 	{
 		if (!$gid) {
@@ -83,6 +164,15 @@ class XGroupLog extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getLog'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @param      string $which Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function getLog( $gid=null, $which='first' )
 	{
 		if (!$gid) {
@@ -108,6 +198,14 @@ class XGroupLog extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'deleteLogs'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $gid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteLogs( $gid=null )
 	{
 		if (!$gid) {
@@ -124,6 +222,15 @@ class XGroupLog extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'logCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $gid Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function logCount( $gid=null, $action='' )
 	{
 		if (!$gid) {

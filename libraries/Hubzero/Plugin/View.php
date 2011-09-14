@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,6 +21,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,10 +35,10 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Class holding methods for displaying presentation data.
  *
- * @abstract
+ * @abstract                 
  * @package		Joomla.Framework
- * @subpackage	Application
- * @since		1.5
+ * @subpackage	Application   
+ * @since		1.5               
  */
 class Hubzero_Plugin_View extends JObject
 {
@@ -118,7 +120,7 @@ class Hubzero_Plugin_View extends JObject
 	/**
      * Callback for escaping.
      *
-     * @var string
+     * @var    string 
      * @access private
      */
     var $_escape = 'htmlspecialchars';
@@ -126,7 +128,7 @@ class Hubzero_Plugin_View extends JObject
 	 /**
      * Charset to use in escaping mechanisms; defaults to urf8 (UTF-8)
      *
-     * @var string
+     * @var    string 
      * @access private
      */
     var $_charset = 'UTF-8';

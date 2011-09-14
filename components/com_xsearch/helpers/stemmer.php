@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -77,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         * 
         * @param  string $word  Word to stem
         * @param  bool   $cache Whether to use caching
-        * @return string        Stemmed word
+        * @return string Stemmed word
         */
         public static function Stem($word, $cache = false)
         {
@@ -372,9 +374,9 @@ defined('_JEXEC') or die( 'Restricted access' );
         * @param  string $check Ending to check for
         * @param  string $repl  Replacement string
         * @param  int    $m     Optional minimum number of m() to meet
-        * @return bool          Whether the $check string was at the end
-        *                       of the $str string. True does not necessarily mean
-        *                       that it was replaced.
+        * @return bool   Whether the $check string was at the end
+        *                of the $str string. True does not necessarily mean
+        *                that it was replaced.
         */
         private static function replace(&$str, $check, $repl, $m = null)
         {
@@ -405,7 +407,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         * <c>vcvcvc<v> gives 3 
         * 
         * @param  string $str The string to return the m count for
-        * @return int         The m count
+        * @return int    The m count
         */
         private static function m($str)
         {
@@ -425,7 +427,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         * of the same consonant next to each other at the end of the string.
         * 
         * @param  string $str String to check
-        * @return bool        Result
+        * @return bool   Result
         */
         private static function doubleConsonant($str)
         {
@@ -438,7 +440,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         * Checks for ending CVC sequence where second C is not W, X or Y
         * 
         * @param  string $str String to check
-        * @return bool        Result
+        * @return bool   Result
         */
         private static function cvc($str)
         {

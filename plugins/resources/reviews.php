@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_reviews' );
 
+/**
+ * Short description for 'plgResourcesReviews'
+ * 
+ * Long description (if any) ...
+ */
 class plgResourcesReviews extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgResourcesReviews'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgResourcesReviews(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -47,6 +64,14 @@ class plgResourcesReviews extends JPlugin
 		$this->banking = $upconfig->get('bankAccounts');
 	}
 
+	/**
+	 * Short description for 'onResourcesAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $resource Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onResourcesAreas( $resource )
 	{
 		if ($resource->_type->_params->get('plg_reviews')) {
@@ -59,6 +84,14 @@ class plgResourcesReviews extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onResourcesRateItem'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onResourcesRateItem( $option )
 	{
 		$id = JRequest::getInt( 'rid', 0 );
@@ -84,6 +117,17 @@ class plgResourcesReviews extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'onResources'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $resource Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @param      string $rtrn Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		$arr = array(
@@ -193,6 +237,17 @@ class plgResourcesReviews extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'getComments'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $item Parameter description (if any) ...
+	 * @param      unknown $category Parameter description (if any) ...
+	 * @param      integer $level Parameter description (if any) ...
+	 * @param      boolean $abuse Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getComments($item, $category, $level, $abuse=false)
 	{
 		$database =& JFactory::getDBO();
@@ -214,6 +269,15 @@ class plgResourcesReviews extends JPlugin
 		return $comments;
 	}
 
+	/**
+	 * Short description for 'getAbuseReports'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $item Parameter description (if any) ...
+	 * @param      unknown $category Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getAbuseReports($item, $category)
 	{
 		$database =& JFactory::getDBO();
@@ -222,6 +286,15 @@ class plgResourcesReviews extends JPlugin
 		return $ra->getCount( array('id'=>$item, 'category'=>$category) );
 	}
 
+	/**
+	 * Short description for 'getMemberPhoto'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      integer $anonymous Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getMemberPhoto( $member, $anonymous=0 )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
@@ -254,6 +327,14 @@ class plgResourcesReviews extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'thumbit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thumbit($thumb)
 	{
 		$image = explode('.',$thumb);
@@ -266,6 +347,14 @@ class plgResourcesReviews extends JPlugin
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $someid Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		while (strlen($someid) < 5)
@@ -276,15 +365,43 @@ class plgResourcesReviews extends JPlugin
 	}
 }
 
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class PlgResourcesReviewsHelper extends JObject
 {
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	private $_data  = array();
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -293,6 +410,14 @@ class PlgResourcesReviewsHelper extends JObject
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function redirect()
 	{
 		if ($this->_redirect != NULL) {
@@ -301,6 +426,13 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function execute()
 	{
 		// Incoming action
@@ -330,6 +462,13 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'savereply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function savereply()
 	{
 		$juser =& JFactory::getUser();
@@ -390,6 +529,13 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'deletereply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function deletereply()
 	{
 		$database =& JFactory::getDBO();
@@ -424,6 +570,13 @@ class PlgResourcesReviewsHelper extends JObject
 		$reply->delete( $replyid );
 	}
 
+	/**
+	 * Short description for 'rateitem'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function rateitem()
 	{
 		$database =& JFactory::getDBO();
@@ -491,6 +644,13 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'editreview'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function editreview()
 	{
 		// Is the user logged in?
@@ -536,6 +696,13 @@ class PlgResourcesReviewsHelper extends JObject
 		return;
 	}
 
+	/**
+	 * Short description for 'savereview'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function savereview()
 	{
 		// Incoming
@@ -626,6 +793,13 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 	}
 
+	/**
+	 * Short description for 'deletereview'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function deletereview()
 	{
 		$database =& JFactory::getDBO();
@@ -682,11 +856,26 @@ class PlgResourcesReviewsHelper extends JObject
 		$resource->updateRating();
 	}
 
+	/**
+	 * Short description for '_validIp'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $ip Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _validIp($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
 	}
 
+	/**
+	 * Short description for '_ipAddress'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _ipAddress()
 	{
 		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
@@ -716,6 +905,14 @@ class PlgResourcesReviewsHelper extends JObject
 		return $ip_address;
 	}
 
+	/**
+	 * Short description for '_server'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $index Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _server($index = '')
 	{
 		if (!isset($_SERVER[$index])) {

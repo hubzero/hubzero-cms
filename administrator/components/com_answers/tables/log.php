@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,25 +21,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'AnswersLog'
+ * 
+ * Long description (if any) ...
+ */
 class AnswersLog extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id      = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'rid'
+	 * 
+	 * @var unknown
+	 */
 	var $rid     = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'ip'
+	 * 
+	 * @var unknown
+	 */
 	var $ip      = NULL;  // @var varchar(15)
+
+
+	/**
+	 * Description for 'helpful'
+	 * 
+	 * @var unknown
+	 */
 	var $helpful = NULL;  // @var varchar(10)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__answers_log', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->rid ) == '') {
@@ -52,6 +102,15 @@ class AnswersLog extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'checkVote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $ip Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function checkVote($rid=null, $ip=null)
 	{
 		if ($rid == null) {
@@ -67,6 +126,14 @@ class AnswersLog extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'deleteLog'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteLog($rid=null)
 	{
 		if ($rid == null) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,46 +21,126 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!defined("n")) {
+
+/**
+ * Description for ''t''
+ */
 	define('t',"\t");
+
+/**
+ * Description for ''n''
+ */
 	define('n',"\n");
+
+/**
+ * Description for ''r''
+ */
 	define('r',"\r");
+
+/**
+ * Description for ''br''
+ */
 	define('br','<br />');
+
+/**
+ * Description for ''sp''
+ */
 	define('sp','&#160;');
+
+/**
+ * Description for ''a''
+ */
 	define('a','&amp;');
 }
 
+/**
+ * Short description for 'ContribtoolHtml'
+ * 
+ * Long description (if any) ...
+ */
 class ContribtoolHtml
 {
 	//----------------------------------------------------------
 	// Misc. 
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function error( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
 
+	/**
+	 * Short description for 'warning'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function warning( $msg, $tag='p' )
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
 
+	/**
+	 * Short description for 'alert'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function alert( $msg )
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
+	/**
+	 * Short description for 'hed'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $level Parameter description (if any) ...
+	 * @param      string $txt Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function hed($level, $txt)
 	{
 		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
 	}
 
+	/**
+	 * Short description for 'shortenText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $text Parameter description (if any) ...
+	 * @param      integer $chars Parameter description (if any) ...
+	 * @param      integer $p Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
@@ -85,6 +162,17 @@ class ContribtoolHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'browseTools'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $rows Parameter description (if any) ...
+	 * @param      object $pageNav Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function browseTools( $rows, $pageNav, $option, $filters )
 	{
           ?>
@@ -187,6 +275,15 @@ class ContribtoolHtml
 <?php
 	}
 
+	/**
+	 * Short description for 'editTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $data Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function editTool($data,$option)
 	{
 ?>
@@ -236,6 +333,15 @@ class ContribtoolHtml
 <?php
 	}
 
+	/**
+	 * Short description for 'editToolVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $data Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function editToolVersion($data,$option)
 	{
 ?>
@@ -286,6 +392,17 @@ class ContribtoolHtml
 <?php
 	}
 
+	/**
+	 * Short description for 'browseToolVersions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $data Parameter description (if any) ...
+	 * @param      object $pageNav Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function browseToolVersions( $data, $pageNav, $option, $filters )
 	{
           ?>

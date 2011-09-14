@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,31 +21,126 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'AnswersQuestion'
+ * 
+ * Long description (if any) ...
+ */
 class AnswersQuestion extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         = NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'subject'
+	 * 
+	 * @var unknown
+	 */
 	var $subject    = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'question'
+	 * 
+	 * @var unknown
+	 */
 	var $question   = NULL;  // @var text
+
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var unknown
+	 */
 	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var unknown
+	 */
 	var $created_by = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'state'
+	 * 
+	 * @var unknown
+	 */
 	var $state      = NULL;  // @var int(3)
+
+
+	/**
+	 * Description for 'anonymous'
+	 * 
+	 * @var unknown
+	 */
 	var $anonymous  = NULL;  // @var int(2)
+
+
+	/**
+	 * Description for 'email'
+	 * 
+	 * @var unknown
+	 */
 	var $email      = NULL;  // @var int(2)
+
+
+	/**
+	 * Description for 'helpful'
+	 * 
+	 * @var unknown
+	 */
 	var $helpful    = NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'reward'
+	 * 
+	 * @var unknown
+	 */
 	var $reward 	= NULL;  // @var int(2)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__answers_questions', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->subject ) == '') {
@@ -58,6 +150,14 @@ class AnswersQuestion extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery($filters=array())
 	{
 		$juser =& JFactory::getUser();
@@ -141,6 +241,14 @@ class AnswersQuestion extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getCount($filters=array())
 	{
 		$query  = "SELECT COUNT(C.id) ";
@@ -155,6 +263,14 @@ class AnswersQuestion extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getResults'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getResults($filters=array())
 	{
 		$ar = new AnswersResponse( $this->_db );
@@ -172,6 +288,15 @@ class AnswersQuestion extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getQuestionsByTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tag Parameter description (if any) ...
+	 * @param      mixed $limit Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getQuestionsByTag( $tag, $limit=100 )
 	{
 		$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount";

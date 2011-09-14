@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,13 +21,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'FeaturesHtml'
+ * 
+ * Long description (if any) ...
+ */
 class FeaturesHtml
 {
+
+	/**
+	 * Short description for 'niceidformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $someid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function niceidformat($someid)
 	{
 		$pre = '';
@@ -45,6 +61,14 @@ class FeaturesHtml
 		return $pre.$someid;
 	}
 
+	/**
+	 * Short description for 'thumb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thumb( $thumb )
 	{
 		$image = explode('.',$thumb);
@@ -57,6 +81,14 @@ class FeaturesHtml
 		return $thumb;
 	}
 
+	/**
+	 * Short description for 'getImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getImage( $path )
 	{
 		$d = @dir(JPATH_ROOT.$path);
@@ -92,6 +124,15 @@ class FeaturesHtml
 		}
 	}
 
+	/**
+	 * Short description for 'getToolImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      integer $versionid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getToolImage( $path, $versionid=0 )
 	{
 		// Get contribtool parameters
@@ -140,6 +181,14 @@ class FeaturesHtml
 		}
 	}
 
+	/**
+	 * Short description for 'thumbnail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $pic Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function thumbnail($pic)
 	{
 		$pic = explode('.',$pic);
@@ -151,6 +200,16 @@ class FeaturesHtml
 		return $tn;
 	}
 
+	/**
+	 * Short description for 'build_path'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function build_path( $date, $id, $base='' )
 	{
 		if ( $date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs ) ) {
@@ -168,6 +227,14 @@ class FeaturesHtml
 		return $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
 	}
 
+	/**
+	 * Short description for 'mkt'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $stime Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
@@ -176,6 +243,14 @@ class FeaturesHtml
 		return $stime;
 	}
 
+	/**
+	 * Short description for 'timeAgoo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function timeAgoo($timestamp)
 	{
 		// Store the current time
@@ -218,6 +293,14 @@ class FeaturesHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'timeAgo'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $timestamp Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function timeAgo($timestamp)
 	{
 		$text = FeaturesHtml::timeAgoo($timestamp);
@@ -229,6 +312,15 @@ class FeaturesHtml
 		return $text;
 	}
 
+	/**
+	 * Short description for 'getContributorImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $database Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function getContributorImage( $id, $database )
 	{
 		$thumb = '';

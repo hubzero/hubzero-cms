@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'FeedbackController'
+ * 
+ * Long description (if any) ...
+ */
 class FeedbackController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '', 'post' );
@@ -63,6 +78,13 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
@@ -82,6 +104,13 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_buildTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
@@ -96,6 +125,14 @@ class FeedbackController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function login()
 	{
 		$view = new JView( array('name'=>'login') );
@@ -107,6 +144,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'main'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function main()
 	{
 		// Check if wishlist component entry is there
@@ -141,6 +185,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'success_story'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function success_story()
 	{
 		// Incoming
@@ -185,6 +236,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'poll'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function poll()
 	{
 		// Set page title
@@ -207,6 +265,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'suggestions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function suggestions()
 	{
 		// Incoming
@@ -243,6 +308,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'report_problems'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function report_problems()
 	{
 		// Get browser info
@@ -295,6 +367,14 @@ class FeedbackController extends Hubzero_Controller
 	// Processors
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'sendstory'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function sendstory()
 	{
 		// Set page title
@@ -375,6 +455,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'sendsuggestions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function sendsuggestions()
 	{
 		// Set page title
@@ -542,6 +629,13 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'sendreport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function sendreport()
 	{
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php' );
@@ -791,6 +885,15 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_uploadAttachment'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $listdir Parameter description (if any) ...
+	 * @param      mixed $sconfig Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _uploadAttachment( $listdir, $sconfig )
 	{
 		if (!$listdir) {
@@ -856,6 +959,14 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_getTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $referrer Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _getTool( $referrer )
 	{
 		$tool = '';
@@ -900,6 +1011,14 @@ class FeedbackController extends Hubzero_Controller
 		return $tool;
 	}
 
+	/**
+	 * Short description for '_getTicketGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $tool Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _getTicketGroup($tool)
 	{
 		// Do we have a tool?
@@ -956,6 +1075,14 @@ class FeedbackController extends Hubzero_Controller
 	//  Image handling
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function upload()
 	{
 		if ($this->juser->get('guest')) {
@@ -1031,6 +1158,13 @@ class FeedbackController extends Hubzero_Controller
 		$this->img( $file, $id );
 	}
 
+	/**
+	 * Short description for 'delete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function delete()
 	{
 		if ($this->juser->get('guest')) {
@@ -1092,6 +1226,15 @@ class FeedbackController extends Hubzero_Controller
 		$this->img( $file, $id );
 	}
 
+	/**
+	 * Short description for 'img'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $file Parameter description (if any) ...
+	 * @param      integer $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function img( $file='', $id=0 )
 	{
 		// Do have an ID or do we need to get one?
@@ -1129,6 +1272,14 @@ class FeedbackController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for '_getUser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	private function _getUser()
 	{
 		$user = array();
@@ -1155,6 +1306,15 @@ class FeedbackController extends Hubzero_Controller
 		return $user;
 	}
 
+	/**
+	 * Short description for '_detect_spam'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @param      unknown $ip Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _detect_spam($text, $ip)
 	{
 		// Spammer IPs (banned)
@@ -1212,6 +1372,15 @@ class FeedbackController extends Hubzero_Controller
 		return $spam;
 	}
 
+	/**
+	 * Short description for '_generate_hash'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $input Parameter description (if any) ...
+	 * @param      string $day Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _generate_hash($input, $day)
 	{
 		// Add date:
@@ -1226,6 +1395,14 @@ class FeedbackController extends Hubzero_Controller
 		return $enc;
 	}
 
+	/**
+	 * Short description for '_check_validLogin'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $login Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _check_validLogin($login)
 	{
 		if (eregi("^[_0-9a-zA-Z]+$", $login)) {
@@ -1235,6 +1412,14 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_check_validEmail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $email Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _check_validEmail($email)
 	{
 		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
@@ -1244,6 +1429,14 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_server'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $index Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _server($index = '')
 	{
 		if (!isset($_SERVER[$index])) {
@@ -1253,11 +1446,26 @@ class FeedbackController extends Hubzero_Controller
 		return TRUE;
 	}
 
+	/**
+	 * Short description for '_valid_ip'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $ip Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _valid_ip($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
 	}
 
+	/**
+	 * Short description for '_ip_address'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _ip_address()
 	{
 		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {

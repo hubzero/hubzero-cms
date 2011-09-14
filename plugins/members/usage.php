@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_usage' );
 
+/**
+ * Short description for 'plgMembersUsage'
+ * 
+ * Long description (if any) ...
+ */
 class plgMembersUsage extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgMembersUsage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgMembersUsage(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -43,6 +60,14 @@ class plgMembersUsage extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onMembersAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onMembersAreas( $authorized )
 	{
 		$areas = array(
@@ -51,6 +76,17 @@ class plgMembersUsage extends JPlugin
 		return $areas;
 	}
 
+	/**
+	 * Short description for 'onMembers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $member Parameter description (if any) ...
+	 * @param      string $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
@@ -137,6 +173,14 @@ class plgMembersUsage extends JPlugin
 		return $arr;
 	}
 
+	/**
+	 * Short description for 'uid'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      number $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function uid($uid)
 	{
 		if ($uid < 0) {
@@ -146,6 +190,14 @@ class plgMembersUsage extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'first_last_contribution'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $authorid Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function first_last_contribution($authorid)
 	{
 		$database =& JFactory::getDBO();
@@ -172,6 +224,15 @@ class plgMembersUsage extends JPlugin
 		return $contribution;
 	}
 
+	/**
+	 * Short description for 'get_simcount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $resid Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	public function get_simcount($resid, $period)
 	{
 		$database =& JFactory::getDBO();
@@ -187,6 +248,16 @@ class plgMembersUsage extends JPlugin
 		return 0;
 	}
 
+	/**
+	 * Short description for 'get_usercount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $resid Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @param      string $restype Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function get_usercount($resid, $period, $restype='0')
 	{
 		$database =& JFactory::getDBO();
@@ -212,6 +283,15 @@ class plgMembersUsage extends JPlugin
 		return $data;
 	}
 
+	/**
+	 * Short description for 'get_citationcount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $resid Parameter description (if any) ...
+	 * @param      mixed $authorid Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function get_citationcount($resid, $authorid=0)
 	{
 		$database =& JFactory::getDBO();
@@ -231,6 +311,14 @@ class plgMembersUsage extends JPlugin
 		}
 	}
 
+	/**
+	 * Short description for 'get_rank'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $authorid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function get_rank($authorid)
 	{
 		$database =& JFactory::getDBO();
@@ -267,6 +355,16 @@ class plgMembersUsage extends JPlugin
 		return $rank;
 	}
 
+	/**
+	 * Short description for 'get_total_stats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $authorid Parameter description (if any) ...
+	 * @param      string $user_type Parameter description (if any) ...
+	 * @param      string $period Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function get_total_stats($authorid, $user_type, $period)
 	{
 		$database =& JFactory::getDBO();

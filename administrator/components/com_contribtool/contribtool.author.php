@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,23 +35,93 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
+
+/**
+ * Short description for 'ToolAuthor'
+ * 
+ * Long description (if any) ...
+ */
 class ToolAuthor extends  JTable
 {
+
+	/**
+	 * Description for 'toolname'
+	 * 
+	 * @var unknown
+	 */
 	var $toolname     	   = NULL;  // @var varchar (50)
+
+
+	/**
+	 * Description for 'revision'
+	 * 
+	 * @var unknown
+	 */
 	var $revision          = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid      	   	   = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'ordering'
+	 * 
+	 * @var unknown
+	 */
 	var $ordering     	   = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'version_id'
+	 * 
+	 * @var unknown
+	 */
 	var $version_id        = NULL;  // @var int (11)
+
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	var $name        	   = NULL;  // @var varchar(250)
+
+
+	/**
+	 * Description for 'organization'
+	 * 
+	 * @var unknown
+	 */
 	var $organization      = NULL;  // @var varchar(250)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__tool_authors', 'version_id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 
@@ -75,6 +147,14 @@ class ToolAuthor extends  JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getToolContributions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getToolContributions($uid)
 	{
 		if (!$uid) {
@@ -90,6 +170,18 @@ class ToolAuthor extends  JTable
 
 	}
 
+	/**
+	 * Short description for 'getToolAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $version Parameter description (if any) ...
+	 * @param      mixed $rid Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @param      string $revision Parameter description (if any) ...
+	 * @param      array $authors Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
 		$juser = &JFactory::getUser();
@@ -133,6 +225,19 @@ class ToolAuthor extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for 'saveAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $authors Parameter description (if any) ...
+	 * @param      string $version Parameter description (if any) ...
+	 * @param      mixed $rid Parameter description (if any) ...
+	 * @param      mixed $revision Parameter description (if any) ...
+	 * @param      string $toolname Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function saveAuthors($authors, $version='dev', $rid=0, $revision=0, $toolname='')
 	{
 		if (!$rid) {
@@ -238,6 +343,15 @@ class ToolAuthor extends  JTable
 	}
 	//-----------
 
+
+	/**
+	 * Short description for '_author_check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _author_check($id)
 	{
 		$xprofile = Hubzero_User_Profile::getInstance($id);

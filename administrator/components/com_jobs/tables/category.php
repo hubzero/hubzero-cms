@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,24 +21,73 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'JobCategory'
+ * 
+ * Long description (if any) ...
+ */
 class JobCategory extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id         	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'category'
+	 * 
+	 * @var unknown
+	 */
 	var $category		= NULL;  // @var varchar(150)
+
+
+	/**
+	 * Description for 'description'
+	 * 
+	 * @var unknown
+	 */
 	var $description	= NULL;  // @var varchar(255)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__jobs_categories', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getCats'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $sortby Parameter description (if any) ...
+	 * @param      string $sortdir Parameter description (if any) ...
+	 * @param      integer $getobject Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getCats ($sortby = 'ordernum', $sortdir = 'ASC', $getobject = 0)
 	{
 		$cats = array();
@@ -65,6 +111,15 @@ class JobCategory extends JTable
 		return $cats;
 	}
 
+	/**
+	 * Short description for 'getCat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $id Parameter description (if any) ...
+	 * @param      string $default Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getCat($id = NULL, $default = 'unspecified' )
 	{
 		if ($id === NULL) {
@@ -80,6 +135,15 @@ class JobCategory extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'updateOrder'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      integer $ordernum Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function updateOrder($id = NULL, $ordernum = 1 )
 	{
 		if ($id === NULL or !intval($ordernum)) {

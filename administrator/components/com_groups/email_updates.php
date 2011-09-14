@@ -2,10 +2,7 @@
 
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -26,6 +23,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 error_reporting(E_ALL);
@@ -44,12 +46,24 @@ $basepath = '/'.$parts[1].'/'.$parts[2];
 //echo $basepath;
 
 //set flag that this is a parent file
+
+/**
+ * Description for '"_JEXEC"'
+ */
 define( "_JEXEC", 1 );
 
 //define base path
+
+/**
+ * Description for ''JPATH_BASE''
+ */
 define('JPATH_BASE', $basepath );
 
 //define directory seperator
+
+/**
+ * Description for ''DS''
+ */
 define( 'DS', DIRECTORY_SEPARATOR );
 
 //include joomla framework
@@ -61,6 +75,13 @@ $time_start = microtime(true);
 
 echo "right before afterload \n";
 
+/**
+ * Short description for 'apache_note'
+ * 
+ * Long description (if any) ...
+ * 
+ * @return void
+ */
 function apache_note()
 {
 

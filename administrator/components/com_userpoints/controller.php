@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'UserpointsController'
+ * 
+ * Long description (if any) ...
+ */
 class UserpointsController extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		// Load the component config
@@ -62,6 +77,14 @@ class UserpointsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
+
+	/**
+	 * Short description for 'summary'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function summary()
 	{
 		// Get top earners
@@ -223,6 +246,13 @@ class UserpointsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function edit()
 	{
 		$uid = JRequest::getInt('uid', 0 );
@@ -260,11 +290,25 @@ class UserpointsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function save()
 	{
 		// Check for request forgeries
@@ -344,6 +388,13 @@ class UserpointsController extends Hubzero_Controller
 		$this->_message = JText::_('User info saved');
 	}
 
+	/**
+	 * Short description for 'config'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function config()
 	{
 		// Instantiate a new view
@@ -363,6 +414,13 @@ class UserpointsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveconfig'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function saveconfig()
 	{
 		// Check for request forgeries
@@ -391,6 +449,13 @@ class UserpointsController extends Hubzero_Controller
 		$this->_message = JText::_('Config Saved');
 	}
 
+	/**
+	 * Short description for 'batch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function batch()
 	{
 		// Instantiate a new view
@@ -407,6 +472,13 @@ class UserpointsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'process_batch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function process_batch()
 	{
 		// Check for request forgeries
@@ -486,6 +558,14 @@ class UserpointsController extends Hubzero_Controller
 	// Process Royalties
 	//--------------------------------------------------------
 
+
+	/**
+	 * Short description for 'royalty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function royalty()
 	{
 		$auto = JRequest::getInt('auto', 1);

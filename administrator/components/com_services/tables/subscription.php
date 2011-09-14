@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,37 +21,174 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Short description for 'Subscription'
+ * 
+ * Long description (if any) ...
+ */
 class Subscription extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id       		= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'uid'
+	 * 
+	 * @var unknown
+	 */
 	var $uid      		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'serviceid'
+	 * 
+	 * @var unknown
+	 */
 	var $serviceid  	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'units'
+	 * 
+	 * @var unknown
+	 */
 	var $units 			= NULL;  //	@var int(11)
+
+
+	/**
+	 * Description for 'status'
+	 * 
+	 * @var unknown
+	 */
 	var $status 		= NULL;  //	@var int(11)
+
+
+	/**
+	 * Description for 'code'
+	 * 
+	 * @var unknown
+	 */
 	var $code 			= NULL;  //	@var varchar
+
+
+	/**
+	 * Description for 'contact'
+	 * 
+	 * @var unknown
+	 */
 	var $contact 		= NULL;  //	@var varchar
+
+
+	/**
+	 * Description for 'added'
+	 * 
+	 * @var unknown
+	 */
 	var $added 			= NULL;  //	@var datetime
+
+
+	/**
+	 * Description for 'updated'
+	 * 
+	 * @var unknown
+	 */
 	var $updated 		= NULL;  //	@var datetime
+
+
+	/**
+	 * Description for 'expires'
+	 * 
+	 * @var unknown
+	 */
 	var $expires 		= NULL;  //	@var datetime
+
+
+	/**
+	 * Description for 'pendingunits'
+	 * 
+	 * @var unknown
+	 */
 	var $pendingunits 	= NULL;  //	@var int(11)
+
+
+	/**
+	 * Description for 'installment'
+	 * 
+	 * @var unknown
+	 */
 	var $installment 	= NULL;  //	@var int(11)
+
+
+	/**
+	 * Description for 'pendingpayment'
+	 * 
+	 * @var unknown
+	 */
 	var $pendingpayment = NULL;  //	@var int(11)
+
+
+	/**
+	 * Description for 'totalpaid'
+	 * 
+	 * @var unknown
+	 */
 	var $totalpaid 		= NULL;  //	@var int(11)
+
+
+	/**
+	 * Description for 'notes'
+	 * 
+	 * @var unknown
+	 */
 	var $notes 			= NULL;  //	@var text
+
+
+	/**
+	 * Description for 'usepoints'
+	 * 
+	 * @var unknown
+	 */
 	var $usepoints 		= NULL;  //	@var tinyint
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__users_points_subscriptions', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->uid ) == '') {
@@ -70,6 +204,17 @@ class Subscription extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'loadSubscription'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $id Parameter description (if any) ...
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      unknown $serviceid Parameter description (if any) ...
+	 * @param      array $status Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadSubscription( $id = NULL, $oid=NULL, $serviceid = NULL, $status = array(0, 1, 2) )
 	{
 		if ($id == 0 or  ($oid === NULL && $serviceid === NULL)) {
@@ -101,6 +246,16 @@ class Subscription extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'cancelSubscription'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $subid Parameter description (if any) ...
+	 * @param      integer $refund Parameter description (if any) ...
+	 * @param      integer $unitsleft Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function cancelSubscription( $subid = NULL, $refund=0, $unitsleft=0)
 	{
 		if ($subid === NULL ) {
@@ -119,6 +274,15 @@ class Subscription extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getSubscriptionsCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getSubscriptionsCount( $filters=array(), $admin=false )
 	{
 		$filters['exlcudeadmin'] = 1;
@@ -130,6 +294,15 @@ class Subscription extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getSubscriptions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getSubscriptions($filters, $admin=false)
 	{
 		$filter = $this->buildQuery( $filters, $admin );
@@ -144,6 +317,14 @@ class Subscription extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getSubscription'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getSubscription($id)
 	{
 		if ($id === NULL ) {
@@ -162,6 +343,15 @@ class Subscription extends JTable
 		return $result;
 	}
 
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildQuery( $filters=array(), $admin=false )
 	{
 		$juser =& JFactory::getUser();
@@ -200,6 +390,18 @@ class Subscription extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'generateCode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $minlength Parameter description (if any) ...
+	 * @param      integer $maxlength Parameter description (if any) ...
+	 * @param      integer $usespecial Parameter description (if any) ...
+	 * @param      integer $usenumbers Parameter description (if any) ...
+	 * @param      integer $useletters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function generateCode($minlength = 6, $maxlength = 6, $usespecial = 0, $usenumbers = 1, $useletters = 1 )
 	{
 		$key = '';
@@ -213,6 +415,17 @@ class Subscription extends JTable
 		return $key;
 	}
 
+	/**
+	 * Short description for 'getRemaining'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      object $subscription Parameter description (if any) ...
+	 * @param      integer $maxunits Parameter description (if any) ...
+	 * @param      mixed $unitsize Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getRemaining( $type='unit', $subscription = NULL, $maxunits = 24, $unitsize=1 )
 	{
 		if ($subscription === NULL ) {

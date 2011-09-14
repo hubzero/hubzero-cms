@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -23,33 +21,141 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ResourceAudience'
+ * 
+ * Long description (if any) ...
+ */
 class ResourceAudience extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id       	= NULL;  // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'rid'
+	 * 
+	 * @var unknown
+	 */
 	var $rid 		= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'versionid'
+	 * 
+	 * @var unknown
+	 */
 	var $versionid 	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'level0'
+	 * 
+	 * @var unknown
+	 */
 	var $level0 	= NULL;  // @var tinyint
+
+
+	/**
+	 * Description for 'level1'
+	 * 
+	 * @var unknown
+	 */
 	var $level1 	= NULL;  // @var tinyint
+
+
+	/**
+	 * Description for 'level2'
+	 * 
+	 * @var unknown
+	 */
 	var $level2 	= NULL;  // @var tinyint
+
+
+	/**
+	 * Description for 'level3'
+	 * 
+	 * @var unknown
+	 */
 	var $level3 	= NULL;  // @var tinyint
+
+
+	/**
+	 * Description for 'level4'
+	 * 
+	 * @var unknown
+	 */
 	var $level4 	= NULL;  // @var tinyint	
+
+
+	/**
+	 * Description for 'level5'
+	 * 
+	 * @var unknown
+	 */
 	var $level5 	= NULL;  // @var tinyint
+
+
+	/**
+	 * Description for 'comments'
+	 * 
+	 * @var unknown
+	 */
 	var $comments 	= NULL;  // @var varchar(255)
+
+
+	/**
+	 * Description for 'addedBy'
+	 * 
+	 * @var unknown
+	 */
 	var $addedBy	= NULL;  // @var int(11)
+
+
+	/**
+	 * Description for 'added'
+	 * 
+	 * @var unknown
+	 */
 	var $added		= NULL;  // @var datetime
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__resource_taxonomy_audience', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		if (trim( $this->rid ) == '') {
@@ -59,6 +165,17 @@ class ResourceAudience extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getAudience'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $rid Parameter description (if any) ...
+	 * @param      mixed $versionid Parameter description (if any) ...
+	 * @param      integer $getlabels Parameter description (if any) ...
+	 * @param      mixed $numlevels Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getAudience($rid, $versionid = 0, $getlabels = 1, $numlevels = 5)
 	{
 		if ($rid === NULL) {

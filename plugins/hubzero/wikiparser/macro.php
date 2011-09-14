@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,20 +21,67 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WikiMacro'
+ * 
+ * Long description (if any) ...
+ */
 class WikiMacro
 {
+
+	/**
+	 * Description for '_name'
+	 * 
+	 * @var unknown
+	 */
 	protected $_name  = NULL;
+
+	/**
+	 * Description for '_data'
+	 * 
+	 * @var array
+	 */
 	protected $_data  = array();
+
+	/**
+	 * Description for '_db'
+	 * 
+	 * @var unknown
+	 */
 	protected $_db    = NULL;
+
+	/**
+	 * Description for '_error'
+	 * 
+	 * @var unknown
+	 */
 	protected $_error = NULL;
 
+	/**
+	 * Description for 'thisInstance'
+	 * 
+	 * @var object
+	 */
 	static protected $thisInstance = NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $config=array() )
 	{
 		$this->_db =& JFactory::getDBO();
@@ -58,11 +102,28 @@ class WikiMacro
 		}
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_data[$property])) {
@@ -70,6 +131,14 @@ class WikiMacro
 		}
 	}
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	static public function getInstance( $config=array() )
 	{
 		if (self::$thisInstance == null) {
@@ -83,11 +152,25 @@ class WikiMacro
 		return self::$thisInstance;
 	}
 
+	/**
+	 * Short description for 'render'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function render()
 	{
 		// Abstract function for overloading
 	}
 
+	/**
+	 * Short description for 'description'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function description()
 	{
 		return JText::_('Not implemented.');

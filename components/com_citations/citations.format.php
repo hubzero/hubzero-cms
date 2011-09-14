@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,43 +21,119 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'CitationsFormat'
+ * 
+ * Long description (if any) ...
+ */
 class CitationsFormat
 {
+
+	/**
+	 * Description for '_format'
+	 * 
+	 * @var string
+	 */
 	protected $_format = 'APA';
+
+	/**
+	 * Description for '_reference'
+	 * 
+	 * @var unknown
+	 */
 	protected $_reference = null;
+
+	/**
+	 * Description for '_formatters'
+	 * 
+	 * @var array
+	 */
 	protected $_formatters = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $reference Parameter description (if any) ...
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($reference=null, $format='APA')
 	{
 		$this->setFormat($format);
 		$this->setReference($reference);
 	}
 
+	/**
+	 * Short description for 'setFormat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $format Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setFormat($format)
 	{
 		$this->_format = trim($format);
 	}
 
+	/**
+	 * Short description for 'getFormat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function getFormat()
 	{
 		return $this->_format;
 	}
 
+	/**
+	 * Short description for 'setReference'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $reference Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setReference($reference)
 	{
 		$this->_reference = $reference;
 	}
 
+	/**
+	 * Short description for 'getReference'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getReference()
 	{
 		return $this->_reference;
 	}
 
+	/**
+	 * Short description for 'setFormatter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $formatter Parameter description (if any) ...
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function setFormatter($formatter, $format='')
 	{
 		$format = ($format) ? $format : $this->_format;
@@ -68,6 +141,14 @@ class CitationsFormat
 		$this->_formatter[$format] = $formatter;
 	}
 
+	/**
+	 * Short description for 'getFormatter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $format Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getFormatter($format='')
 	{
 		$format = ($format) ? $format : $this->_format;
@@ -75,6 +156,15 @@ class CitationsFormat
 		return (isset($this->_formatter[$format])) ? $this->_formatter[$format] : NULL;
 	}
 
+	/**
+	 * Short description for 'formatReference'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $reference Parameter description (if any) ...
+	 * @param      unknown $highlight Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function formatReference($reference=null, $highlight=null)
 	{
 		if (!$reference) {

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'format'.DS.'abstract.php');
 
+/**
+ * Short description for 'CitationsFormatIEEE'
+ * 
+ * Long description (if any) ...
+ */
 class CitationsFormatIEEE extends CitationsFormatAbstract
 {
+
+	/**
+	 * Short description for 'format'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      string $link Parameter description (if any) ...
+	 * @param      string $highlight Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function format($row, $link='none', $highlight='')
 	{
 		$html = "\t".'<p>';

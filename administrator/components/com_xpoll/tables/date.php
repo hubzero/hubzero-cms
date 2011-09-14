@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,26 +21,86 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'XPollDate'
+ * 
+ * Long description (if any) ...
+ */
 class XPollDate extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id       = NULL; // @var int(11) Primary key
+
+
+	/**
+	 * Description for 'date'
+	 * 
+	 * @var unknown
+	 */
 	var $date     = NULL; // @var datetime(0000-00-00 00:00:00)
+
+
+	/**
+	 * Description for 'vote_id'
+	 * 
+	 * @var string
+	 */
 	var $vote_id  = NULL; // @var int(11)
+
+
+	/**
+	 * Description for 'poll_id'
+	 * 
+	 * @var string
+	 */
 	var $poll_id  = NULL; // @var int(11)
+
+
+	/**
+	 * Description for 'voter_ip'
+	 * 
+	 * @var unknown
+	 */
 	var $voter_ip = NULL; // @var varchar(50)
 
 	//-----------
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xpoll_date', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function check()
 	{
 		// Check for pollid
@@ -61,6 +118,14 @@ class XPollDate extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getMinMaxDates'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $poll_id Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getMinMaxDates( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {
@@ -73,6 +138,14 @@ class XPollDate extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'deleteEntries'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $poll_id Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function deleteEntries( $poll_id=NULL )
 	{
 		if ($poll_id == NULL) {

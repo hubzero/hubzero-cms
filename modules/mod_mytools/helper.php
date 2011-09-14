@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  * All rights reserved.
@@ -25,6 +22,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,18 +36,101 @@ defined('_JEXEC') or die( 'Restricted access' );
 // This class holds information about one application.
 // It may be either a running session or an app that can be invoked.
 //----------------------------------------------------------
+
+/**
+ * Short description for 'MwModApp'
+ * 
+ * Long description (if any) ...
+ */
 class MwModApp
 {
+
+	/**
+	 * Description for 'name'
+	 * 
+	 * @var unknown
+	 */
 	var $name;
+
+	/**
+	 * Description for 'caption'
+	 * 
+	 * @var unknown
+	 */
 	var $caption;
+
+	/**
+	 * Description for 'desc'
+	 * 
+	 * @var unknown
+	 */
 	var $desc;
+
+	/**
+	 * Description for 'middleware'
+	 * 
+	 * @var unknown
+	 */
 	var $middleware; // which environment to run in
+
+
+	/**
+	 * Description for 'session'
+	 * 
+	 * @var unknown
+	 */
 	var $session;    // sessionid of application
+
+
+	/**
+	 * Description for 'owner'
+	 * 
+	 * @var unknown
+	 */
 	var $owner;      // owner of a running session
+
+
+	/**
+	 * Description for 'num'
+	 * 
+	 * @var unknown
+	 */
 	var $num;        // Nth occurrence of this application in a list
+
+
+	/**
+	 * Description for 'public'
+	 * 
+	 * @var unknown
+	 */
 	var $public;     // is this tool public?
+
+
+	/**
+	 * Description for 'revision'
+	 * 
+	 * @var unknown
+	 */
 	var $revision;   // what license is in use?
 
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $n Parameter description (if any) ...
+	 * @param      unknown $c Parameter description (if any) ...
+	 * @param      unknown $d Parameter description (if any) ...
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @param      unknown $s Parameter description (if any) ...
+	 * @param      unknown $o Parameter description (if any) ...
+	 * @param      unknown $num Parameter description (if any) ...
+	 * @param      unknown $p Parameter description (if any) ...
+	 * @param      unknown $r Parameter description (if any) ...
+	 * @param      unknown $tn Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($n,$c,$d,$m,$s,$o,$num,$p,$r, $tn)
 	{
 		$this->name       = $n;
@@ -64,23 +149,66 @@ class MwModApp
 //----------------------------------------------------------
 // Module class
 //----------------------------------------------------------
+
+/**
+ * Short description for 'class'
+ * 
+ * Long description (if any) ...
+ */
 class modToolList
 {
+
+	/**
+	 * Description for 'attributes'
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	//-----------
+
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( $params )
 	{
 		$this->params = $params;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->attributes[$property])) {
@@ -90,6 +218,16 @@ class modToolList
 
 	//-----------
 	// Get a list of applications that the user might invoke.
+
+
+	/**
+	 * Short description for '_getToollist'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $lst Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _getToollist($lst=NULL)
 	{
 		ximport('Hubzero_Tool');
@@ -157,6 +295,16 @@ class modToolList
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for '_prepText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $txt Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _prepText($txt)
 	{
 		$txt = stripslashes($txt);
@@ -165,6 +313,17 @@ class modToolList
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'buildList'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array &$toollist Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildList(&$toollist, $type='all')
 	{
 		if ($type == 'favs') {
@@ -245,6 +404,15 @@ class modToolList
 	}
 
 	//-----------
+
+
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function display()
 	{
 		$params = $this->params;
