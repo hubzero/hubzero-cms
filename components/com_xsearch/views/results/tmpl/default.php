@@ -138,7 +138,7 @@ echo $html;
 ?>
 		</div><!-- / .aside -->
 		<div class="subject">
-			<h3><?php echo JText::_('COM_XSEARCH_SEARCH_FOR').' '.$this->keyword; ?></h3>
+			<h3><?php echo JText::_('COM_XSEARCH_SEARCH_FOR').' '.htmlentities(utf8_encode(stripslashes($this->keyword)),ENT_COMPAT,'UTF-8'); ?></h3>
 <?php
 $juri =& JURI::getInstance();
 $foundresults = false;
