@@ -83,8 +83,8 @@ class UpdateWikiPageAuthor extends XImportHelperScript
 			}
 		}*/
 		if (!$this->getError()) {
-			return '<p class="passed">Success!</p>';
+			echo '<p class="passed">Success!</p>';
 		}
-		return '<p class="error">' . $this->getError() . '</p>';
+		echo '<p class="error">' . $this->getError() . '</p>';
 	}
 }
