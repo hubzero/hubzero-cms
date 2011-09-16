@@ -1,0 +1,29 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/hubzero/wikieditortoolbar/wikieditortoolbar.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	image CAPTCHA plugin
+	-- -- -- -- -- -- --
+
+*/
+
+#hubForm .captcha-block table,
+#hubForm .captcha-block table tbody,
+#hubForm .captcha-block table tbody tr,
+.captcha-block table,
+.captcha-block table tbody,
+.captcha-block table tbody tr {
+	border: none;
+}
+#hubForm .captcha-block table tbody td,
+.captcha-block table tbody td {
+	text-align: center;
+	padding: 0;
+	border: none;
+}
