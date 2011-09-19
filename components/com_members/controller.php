@@ -367,9 +367,10 @@ class MembersController extends Hubzero_Controller
 		$tab = JRequest::getVar( 'active', 'profile' );
 
 		// Check subscription to Employer Services
+		//   NOTE: This must occur after the initial plugins import and 
+		//   do not specifically call JPluginHelper::importPlugin( 'members', 'resume' );
+		//   Doing so will can have negative affects.
 		if ($this->config->get('employeraccess') && $tab == 'resume') {
-			//JPluginHelper::importPlugin( 'members', 'resume' );
-			//$dispatcher =& JDispatcher::getInstance();
 			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
 			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
 			$authorized = $emp ? 1 : $authorized;
