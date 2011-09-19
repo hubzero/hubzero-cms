@@ -2176,7 +2176,7 @@ class GroupsController extends Hubzero_Controller
 		// If path is a directory then load images
 		if (is_dir($asset_path)) {
 			// Get all images that are in group asset folder and could be a possible group logo
-			$logos = JFolder::files($asset_path,'.jpg|.jpeg|.png|.gif',false, true);
+			$logos = JFolder::files($asset_path,'.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF',false, true);
 		}
 
 		// Get plugins
