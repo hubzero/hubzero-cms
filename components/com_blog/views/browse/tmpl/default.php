@@ -182,9 +182,9 @@ $juser =& JFactory::getUser();
 				);
 				$row->content = $p->parse(stripslashes($row->content), $wikiconfig);
 				if ($this->config->get('cleanintro', 1)) {
-					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), 300, 0, 1);
+					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), $this->config->get('introlength', 300), 0, 1);
 				} else {
-					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), 300, 0, 0);
+					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), $this->config->get('introlength', 300), 0, 0);
 				}
 				if (substr($row->content, -7) == '&#8230;') {
 					$row->content .= '</p>';
