@@ -2919,7 +2919,7 @@ class Hubzero_Group
 			foreach($hub_group_plugins as $hgp) {
 				//if group defined access level is not an acceptable value or not set use default value that is set per plugin
 				//else use group defined access level
-				if(!in_array($active_group_plugins[$hgp['name']], $acceptable_levels)) {
+				if (!isset($active_group_plugins[$hgp['name']]) || !in_array($active_group_plugins[$hgp['name']], $acceptable_levels)) {
 					$value = $hgp['default_access'];
 				} else {
 					$value = $active_group_plugins[$hgp['name']];
