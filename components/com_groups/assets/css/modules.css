@@ -150,7 +150,7 @@
 	}
 .upcoming_events .event {
 	padding:8px 0 8px 25px;
-	background-position:0px 8px;
+	background: url("/components/com_groups/assets/img/calendar_view_day.png") no-repeat 0px 8px;
 	border-bottom:1px solid #ccc;
 	}
 .upcoming_events .event:last-child {
