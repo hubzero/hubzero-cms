@@ -137,6 +137,10 @@ table tr:first-child td {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4c4c4', endColorstr='#a2a2a2');
 }
 
+.preview img {
+	max-width:100%;
+}
+
 .parsed {
 	padding:10px 15px;
 }

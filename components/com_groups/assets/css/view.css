@@ -485,3 +485,9 @@ p#closed {
 	color:#2d548e;
 }
 
+/* ----------------------- */
+
+.group_wiki .subject img {
+	max-width:100%;
+}
+
