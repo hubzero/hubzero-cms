@@ -53,6 +53,20 @@ if($rt->type == "Series") {
 	$rh->getChildren( $parent->id, 0, 'yes' );
 	$children = $rh->children;
 }  
+
+//get the contributors for the resource
+$sql = "SELECT authorid FROM #__author_assoc "
+	 . "WHERE subtable='resources' "
+	 . "AND subid=" . $parent->id . " "
+	 . "ORDER BY ordering";
+$this->database->setQuery( $sql );
+$author_ids = $this->database->loadResultArray();
+
+//get the author names from ids
+foreach($author_ids as $ai) {
+	$author =& JUser::getInstance($ai);
+	$authors[] = $author->name;
+}
 ?>
 
 <div id="presenter-nav-bar">
@@ -92,7 +106,8 @@ if($rt->type == "Series") {
 <div id="presenter-container">
 	<div id="presenter-header">
 		<div id="title"><?php echo $rr->title; ?></div>
-		<div id="slide_title"></div>
+		<div id="author"><?php if($authors) { echo "by: " . implode(", ", $authors); } ?></div>
+		<!--<div id="slide_title"></div>-->
 	</div><!-- /#header -->
 	
 	<div id="presenter-content">
@@ -155,15 +170,17 @@ if($rt->type == "Series") {
 			</div>
 			<div id="list">
 				<ul id="list_items">
-					<?php $counter = 0; $last_slide_id = 0; ?>
+					<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
 					<?php foreach($presentation->slides as $slide) : ?>
 						<?php if((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
 								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 								<span>
 									<?php 
+										$num++;
 										$max = 30;
 										$elipsis = "&hellip;";
+										echo ($num) . ". ";
 										echo substr($slide->title, 0, $max); 
 									
 										if(strlen($slide->title) > $max) 

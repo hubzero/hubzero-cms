@@ -232,7 +232,7 @@ HUB.Presenter = {
 		jQ( list_item ).addClass('active');
 		
 		//update the title
-		jQ('#slide_title').html(jQ('#slide_' + slide).attr('title'));
+		//jQ('#slide_title').html(jQ('#slide_' + slide).attr('title'));
 	},
 	
 	//-----
@@ -313,7 +313,7 @@ HUB.Presenter = {
 		});
 		
 		//define height of list   
-		jQ('#list_items').height( 240 );  
+		jQ('#list_items').height( 238 );  
 		
 		//bind click events to scene selector
 		jQ('#list_items li').bind('click', function(e) {
@@ -496,6 +496,13 @@ HUB.Presenter = {
 					timeout = setTimeout('jQ("#presenter-container").trigger("touchend");' ,200);
 				}
 			}
+		});
+		
+		//make the control bar draggable
+		jQ("#control-box").draggable({
+			cursor:'move', 
+			containment: '#presenter-content',
+			opacity:'0.8'
 		});
 	},
 	      
