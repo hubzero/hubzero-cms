@@ -108,7 +108,7 @@ else {
 
 								$cls  = "reg";
 								$cls .= (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? " newish" : "";
-								$cls .= ($item->private && $wishlist->public) ? " private" : "";
+								$cls .= ($item->private && $this->wishlist->public) ? " private" : "";
 								$cls .= ($item->status==1) ? " grantedwish" : "";
 							?>
 							<tr class="<?php echo $cls; ?>">
