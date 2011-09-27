@@ -2735,7 +2735,7 @@ class ContribtoolController extends JObject
 					// Get first author
 					$objA = new ToolAuthor( $database);
 					$firstAuthor = $objA->getFirstAuthor($status['resourceid']);
-					$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : htmlspecialchars($juser->get('name'));
+					$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
 					
 					// Format name
 					$nameParts   = explode(" ", $firstAuthor);

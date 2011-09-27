@@ -939,7 +939,7 @@ class ContribtoolController extends JObject
 				$query.= " ORDER BY a.ordering ASC LIMIT 1";
 				$database->setQuery( $query );
 				$firstAuthor = $database->loadResult();
-				$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : htmlspecialchars($juser->get('name'));
+				$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
 				
 				// Format name
 				if($firstAuthor) {
