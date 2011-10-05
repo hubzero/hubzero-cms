@@ -169,7 +169,7 @@ class modYoutubeHelper
 
 			//get the title, subtitle, logo
 			$title = $feed['title']['$t'];
-			if $type == 'playlists') {
+			if ($type == 'playlists') {
 				$desc = $feed['subtitle']['$t'];
 			}
 			$logo = $feed['logo']['$t'];
