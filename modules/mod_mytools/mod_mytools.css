@@ -40,7 +40,7 @@
 		background-image: none;
 		}
 	.sortable .tab_panel li.supported {
-		background-position: 0.5em 0.7em;
+		background: url("/modules/mod_mytools/images/award_star_gold_1.png") 0.5em 0.7em no-repeat;
 		padding-left: 2em;
 		}
 	.sortable .tab_panel p {
