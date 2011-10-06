@@ -279,7 +279,7 @@ class plgSupportCaptcha extends JPlugin
 			return false;
 		}
 		
-		if (trim($captcha['instance']) == '' || trim($captcha['answer']) == '')
+		if ($captcha['instance'] < 0 || trim($captcha['answer']) == '')
 		{
 			return false;
 		}
@@ -355,7 +355,7 @@ class plgSupportCaptcha extends JPlugin
 		$html .= '</label>' . "\n";
 		
 		$currentSession =& JFactory::getSession();
-		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $this->_generateHash($key, date('j')));
+		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
 		
 		if ($this->_verified) {
 			$html  = '<input type="hidden" name="captcha[answer]" id="captcha-answer" value="' . $key . '" />' . "\n";
@@ -427,11 +427,11 @@ class plgSupportCaptcha extends JPlugin
 	 */
 	private function _confirm($word, $instanceNo='')
 	{
-		$word = $this->_generateHash($word, date('j'));
+		$word = $this->_generateHash(strtolower($word), date('j'));
 		
 		$currentSession =& JFactory::getSession();
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
-		
+
 		if ($word == $securiy_code) {
 		   return true;
 		} else {
