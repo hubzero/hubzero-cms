@@ -38,5 +38,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div>
 	<h3><?php echo JText::_('COM_FEEDBACK_ERROR'); ?></h3>
 	<p><?php echo JText::_('COM_FEEDBACK_ERROR_PROCESSING_DESCRIPTION'); ?></p>
+<?php if ($this->getError()) { echo '<p>' . $this->getError() . '</p>'; } ?>
 </div>
 <script type="text/javascript">window.top.window.HUB.ReportProblem.hideTimer();</script>
