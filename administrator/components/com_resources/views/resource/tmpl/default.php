@@ -234,7 +234,7 @@ function popratings()
 				<tr>
 					<td class="key"><label for="attrib[attributes]">Attributes:</label></td>
 					<td colspan="3">
-						<input type="text" name="attrib[attributes]" id="attrib[attributes]" size="60" maxlength="100" value="<?php echo $this->attribs->get( 'duration', '' ); ?>" /><br />
+						<input type="text" name="attrib[attributes]" id="attrib[attributes]" size="60" maxlength="100" value="<?php echo $this->attribs->get( 'attributes', '' ); ?>" /><br />
 						<span class="hint">code:silicon, class:one two three, one:more</span>
 					</td>
 				</tr>
