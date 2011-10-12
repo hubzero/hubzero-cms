@@ -3562,7 +3562,7 @@ class GroupsController extends Hubzero_Controller
 		// Serve up the image
 		$xserver = new Hubzero_Content_Server();
 		$xserver->filename(JPATH_ROOT.DS.$file_path);
-		$xserver->disposition('inline');
+		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
 		if (!$xserver->serve()) {
