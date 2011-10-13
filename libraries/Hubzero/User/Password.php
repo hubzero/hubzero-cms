@@ -31,11 +31,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'Hubzero_Users_Password'
+ * Short description for 'Hubzero_User_Password'
  * 
  * Long description (if any) ...
  */
-class Hubzero_Users_Password
+class Hubzero_User_Password
 {
 
 	/**
@@ -181,7 +181,7 @@ class Hubzero_Users_Password
 	 */
     private function logDebug($msg)
     {
-        $xlog = &XFactory::getLogger();
+        $xlog = &Hubzero_Factory::getLogger();
         $xlog->logDebug($msg);
     }
 
@@ -195,7 +195,7 @@ class Hubzero_Users_Password
 	 */
     public function toArray($format = 'mysql')
     {
-        $xhub = &XFactory::getHub();
+        $xhub = &Hubzero_Factory::getHub();
         $result = array();
         $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
 
@@ -243,7 +243,7 @@ class Hubzero_Users_Password
 	 */
     public function getInstance($instance, $storage = null)
     {
-        $hzup = new Hubzero_Users_Password();
+        $hzup = new Hubzero_User_Password();
 
         if ($hzup->read($instance, $storage) === false)
         {
@@ -268,7 +268,7 @@ class Hubzero_Users_Password
             return false;
         }
 
-        $instance = new Hubzero_Users_Password();
+        $instance = new Hubzero_User_Password();
 
         $instance->user_id = $user_id;
 
@@ -390,8 +390,8 @@ class Hubzero_Users_Password
 	 */
     private function _ldap_read()
     {
-        $xhub = &XFactory::getHub();
-        $conn = &XFactory::getPLDC();
+        $xhub = &Hubzero_Factory::getHub();
+        $conn = &Hubzero_Factory::getPLDC();
 
         if (empty($conn) || empty($xhub))
         {
@@ -593,8 +593,8 @@ class Hubzero_Users_Password
 	 */
     private function _ldap_update($all = false)
     {
-        $xhub = &XFactory::getHub();
-        $conn = &XFactory::getPLDC();
+        $xhub = &Hubzero_Factory::getHub();
+        $conn = &Hubzero_Factory::getPLDC();
         $errno = 0;
 
         if (empty($conn) || empty($xhub))
@@ -611,7 +611,7 @@ class Hubzero_Users_Password
 
         $pwinfo = $this->toArray('ldap');
 
-        $current_hzup = Hubzero_Users_Password::getInstance($this->user_id, 'ldap');
+        $current_hzup = Hubzero_User_Password::getInstance($this->user_id, 'ldap');
 
         if (!is_object($current_hzup))
         {
@@ -620,7 +620,7 @@ class Hubzero_Users_Password
                 return false;
             }
 
-            $current_hzup = Hubzero_Users_Password::getInstance($this->user_id, 'ldap');
+            $current_hzup = Hubzero_User_Password::getInstance($this->user_id, 'ldap');
 
             if (!is_object($current_hzup))
             {
@@ -843,8 +843,8 @@ class Hubzero_Users_Password
 	 */
     private function _ldap_delete()
     {
-        $conn = & XFactory::getPLDC();
-        $xhub = & XFactory::getHub();
+        $conn = & Hubzero_Factory::getPLDC();
+        $xhub = & Hubzero_Factory::getHub();
 
 		return false;
 
