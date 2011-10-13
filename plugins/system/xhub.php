@@ -1149,7 +1149,7 @@ class plgSystemXhub extends JPlugin
 				//$crypt = new JSimpleCrypt($key);
 				$crypt = new JSimpleCrypt();
 				$str = $crypt->decrypt($str);
-				$user = unserialize($str);
+				$user = @unserialize($str);
 				// We should store userid not username in cookie, will save us a database query here
 				$username = $user['username'];
 
