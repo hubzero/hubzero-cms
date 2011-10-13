@@ -36,6 +36,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				</td>
 			</tr>
 			<tr>
+				<td class="key">
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'ENABLE API SERVICES' ); ?>::<?php echo JText::_( 'TIPENABLEAPISERVICES' ); ?>">
+					<?php echo JText::_( 'ENABLE API SERVICES' ); ?>
+				</span>
+				</td>
+				<td>
+					<?php echo $lists['api_server']; ?>
+				</td>
+			</tr>
+			<tr>
 			<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Help Server' ); ?>::<?php echo JText::_( 'TIPHELPSERVER' ); ?>">
 					<?php echo JText::_( 'Help Server' ); ?>

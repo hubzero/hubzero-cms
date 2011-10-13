@@ -67,6 +67,12 @@ class JApplicationHelper
 			$obj->name	= 'xmlrpc';
 			$obj->path	= JPATH_XMLRPC;
 			$clients[3] = clone($obj);
+
+			// HUBzero API Client
+			$obj->id		= 4;
+			$obj->name	= 'api';
+			$obj->path	= JPATH_SITE . DS . 'api';
+			$clients[4] = clone($obj);
 		}
 
 		//If no client id has been passed return the whole array
