@@ -109,9 +109,10 @@ class JLoader
 			$classes[$class] = $file;
 
 			// In php4 we load the class immediately.
-			if((version_compare( phpversion(), '5.0' ) < 0)) {
+			// In HUBzero we load the class immediately
+			//if((version_compare( phpversion(), '5.0' ) < 0)) {
 				JLoader::load($class);
-			}
+			//}
 
 		}
 
