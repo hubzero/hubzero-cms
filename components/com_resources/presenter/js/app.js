@@ -459,6 +459,11 @@ HUB.Presenter = {
 			e.preventDefault();
 		});
 		
+		jQ("#link").bind('click', function(e) {
+			HUB.Presenter.linkVideo();
+			e.preventDefault();
+		});
+		
 		//progress bar functionality
 		HUB.Presenter.progressBar();       
 		
@@ -585,6 +590,23 @@ HUB.Presenter = {
 		if(!paused) {
 			player.play();
 		}
+	},
+	
+	//-----
+	
+	linkVideo: function()
+	{
+		var time_hash,
+			url = window.location,
+			time = HUB.Presenter.getCurrent();
+			
+		//make time usable
+		time = HUB.Presenter.formatTime( time );
+		parts = time.split(":");
+		
+		//create hash based on current time and then prompt user with link
+		time_hash = "#time-" + ( (parseInt(parts[0]) * 60) + parseInt(parts[1]) ) + ":" + parts[2];
+		prompt("Link to Current Position in Presentation", url + time_hash);
 	},
 	
 	//-----
@@ -1098,6 +1120,7 @@ var app_images = [
 	'facebook.png',
 	'handle.png',
 	'keyboard.png',
+	'link.png',
 	'nanohub.png', 
 	'next.png',
 	'pause.png', 

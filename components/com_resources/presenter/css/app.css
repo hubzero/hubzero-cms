@@ -51,6 +51,7 @@ a:focus {
 	padding:5px 0 0 150px;
 	color:#ccc;
 	font-size:11px;
+	text-indent:-555em;
 	background:url("../img/nanohub.png") no-repeat 0 0;
 	}
 #presenter-nav-bar #nanohub:hover {
@@ -305,7 +306,8 @@ video {
 #control-box #control-buttons #previous,
 #control-box #control-buttons #next,
 #control-box #control-buttons #play-pause,
-#control-box #control-buttons #switch {
+#control-box #control-buttons #switch,
+#control-box #control-buttons #link {
 	display:block;
 	position:absolute;
 	text-indent:-555em;
@@ -340,6 +342,13 @@ video {
 	width:16px;
 	top:15px;
 	left:420px;
+	}
+#control-box #control-buttons #link {
+	background: url('../img/link.png') no-repeat 50% 50%;
+	height:16px;
+	width:16px;
+	top:15px;
+	left:390px;
 	}
 #control-box #volume-icon {
 	position:absolute;
