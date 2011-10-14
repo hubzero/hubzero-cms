@@ -1277,7 +1277,8 @@ class AnswersController extends Hubzero_Controller
 
 		//$row->answer     = Hubzero_Filter::cleanXss($row->answer);
 		//$row->answer     = nl2br($row->answer);
-		$wikiconfig = array(
+		// Wiki markup should be saved *as* wiki markup, not parsed HTML
+		/*$wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => 'comment',
 			'pagename' => $row->qid,
@@ -1287,7 +1288,7 @@ class AnswersController extends Hubzero_Controller
 		);
 		ximport('Hubzero_Wiki_Parser');
 		$p =& Hubzero_Wiki_Parser::getInstance();
-		$row->answer = $p->parse($row->answer, $wikiconfig);
+		$row->answer = $p->parse($row->answer, $wikiconfig);*/
 
 		$row->created_by = $this->juser->get('username');
 		$row->created    = date( 'Y-m-d H:i:s', time() );
