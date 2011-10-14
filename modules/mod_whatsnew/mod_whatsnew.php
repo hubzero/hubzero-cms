@@ -29,16 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-include_once( JPATH_ROOT.DS.'components'.DS.'com_whatsnew'.DS.'helpers'.DS.'period.php' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__) . DS . 'helper.php');
 
-$modwhatsnew = new modWhatsNew( $params );
-$modwhatsnew->module = $module;
+$modwhatsnew = new modWhatsNew($params, $module);
 $modwhatsnew->display();
-
-require( JModuleHelper::getLayoutPath('mod_whatsnew') );
-

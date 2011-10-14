@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'modPopularQuestions'
@@ -39,28 +39,14 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modPopularQuestions
 {
-
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
+	private $_attributes = array();
 
 	//-----------
 
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( $params )
+	public function __construct($params, $module) 
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	//-----------
@@ -77,7 +63,7 @@ class modPopularQuestions
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
 
 	//-----------
@@ -93,9 +79,17 @@ class modPopularQuestions
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
+	}
+	
+	//-----------
+	
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
 	}
 
 	//-----------
@@ -111,8 +105,9 @@ class modPopularQuestions
 	 */
 	public function mkt($stime)
 	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs)) 
+		{
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
@@ -137,7 +132,7 @@ class modPopularQuestions
 		$difference = $current_time - $timestamp;
 
 		// Set the periods of time
-		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
+		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
 
 		// Set the number of seconds per period
 		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
@@ -148,7 +143,10 @@ class modPopularQuestions
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) $val = 0;
+		if ($val < 0) 
+		{
+			$val = 0;
+		}
 
 		// Determine the minor value, to recurse through
 		$new_time = $current_time - ($difference % $lengths[$val]);
@@ -157,13 +155,17 @@ class modPopularQuestions
 		$number = floor($number);
 
 		// If required create a plural
-		if ($number != 1) $periods[$val].= "s";
+		if ($number != 1) 
+		{
+			$periods[$val] .= "s";
+		}
 
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
 
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)){
+		if (($val >= 1) && (($current_time - $new_time) > 0)) 
+		{
 			$text .= $this->timeAgoo($new_time);
 		}
 
@@ -185,30 +187,24 @@ class modPopularQuestions
 	{
 		$text = $this->timeAgoo($timestamp);
 
-		$parts = explode(' ',$text);
+		$parts = explode(' ', $text);
 
-		$text  = $parts[0].' '.$parts[1];
-		$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
+		$text  = $parts[0] . ' ' . $parts[1];
+		$text .= ($parts[2]) ? ' ' . $parts[2] . ' ' . $parts[3] : '';
 		return $text;
 	}
 
 	//-----------
 
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function display()
+	public function run()
 	{
-		$database =& JFactory::getDBO();
+		$this->database = JFactory::getDBO();
 
-		$params =& $this->params;
-		$state = $params->get( 'state' );
-		$limit = intval( $params->get( 'limit' ) );
+		$this->cssId = $this->params->get('cssId');
+		$this->cssClass = $this->params->get('cssClass');
+		
+		$state = $this->params->get('state', 'open');
+		$limit = intval($this->params->get('limit', 5));
 
 		switch ($state)
 		{
@@ -218,29 +214,54 @@ class modPopularQuestions
 			default: $st = ""; break;
 		}
 
-		$tag = JRequest::getVar( 'tag', '', 'get' );
-		$modpopularquestions->style = JRequest::getVar( 'style', '', 'get' );
+		$this->tag = JRequest::getVar('tag', '', 'get');
+		$this->style = JRequest::getVar('style', '', 'get');
 
-		if ($tag) {
+		if ($this->tag) 
+		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
-				."\n FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg, #__answers_responses AS r"
-				."\n WHERE r.qid=a.id AND a.id=t.objectid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='".$tag."' OR tg.raw_tag='".$tag."' OR tg.alias='".$tag."')";
-		} else {
+				." FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg, #__answers_responses AS r"
+				." WHERE r.qid=a.id AND a.id=t.objectid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='" . $this->tag . "' OR tg.raw_tag='" . $this->tag . "' OR tg.alias='" . $this->tag . "')";
+		} 
+		else 
+		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
-				."\n FROM #__answers_questions AS a, #__answers_responses AS r"
-				."\n WHERE r.qid=a.id";
+				." FROM #__answers_questions AS a, #__answers_responses AS r"
+				." WHERE r.qid=a.id";
 		}
-		if ($st) {
+		if ($st) 
+		{
 			$query .= " AND ".$st;
 		}
-		$query .= "\n GROUP BY id ORDER BY helpful DESC";
-		$query .= ($limit) ? "\n LIMIT ".$limit : "";
+		$query .= " GROUP BY id ORDER BY helpful DESC";
+		$query .= ($limit) ? " LIMIT " . $limit : "";
 
-		$database->setQuery( $query );
-		$this->rows = $database->loadObjectList();
+		$this->database->setQuery($query);
+		$this->rows = $this->database->loadObjectList();
+		
+		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+	
+	//-----------
 
+	public function display()
+	{
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_popularquestions');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		
+		$juser =& JFactory::getUser();
+		
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+		
+		$this->run();
 	}
 }

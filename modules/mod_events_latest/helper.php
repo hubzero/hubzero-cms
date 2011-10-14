@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Parameters:
 // ===========
@@ -64,28 +64,14 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modEventsLatest
 {
-
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
+	private $_attributes = array();
 
 	//-----------
 
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( $params )
+	public function __construct($params, $module) 
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	//-----------
@@ -102,11 +88,11 @@ class modEventsLatest
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
-
+	
 	//-----------
-
+	
 
 	/**
 	 * Short description for '__get'
@@ -118,13 +104,20 @@ class modEventsLatest
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
+	}
+	
+	//-----------
+	
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
 	}
 
 	//-----------
-
 
 	/**
 	 * Short description for 'display'
@@ -133,20 +126,42 @@ class modEventsLatest
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function display()
+	public function display() 
+	{
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		
+		$juser =& JFactory::getUser();
+		
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+		
+		$this->run();
+	}
+
+	//-----------
+
+	public function run()
 	{
 		// Check the events component
-		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' ) ) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' );
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'date.php');
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'repeat.php');
-		} else {
+		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php')) 
+		{ 
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
+		} 
+		else 
+		{
 			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
 			return;
 		}
-
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_events_latest');
 
 		$this->_displayLatestEvents();
 	}
@@ -166,9 +181,12 @@ class modEventsLatest
 	 */
 	public function cmpByStartTime(&$a, &$b)
 	{
-		list($date, $aStrtTime) = split(' ',$a->publish_up);
-		list($date, $bStrtTime) = split(' ',$b->publish_up);
-		if ($aStrtTime == $bStrtTime) return 0;
+		list($date, $aStrtTime) = split(' ', $a->publish_up);
+		list($date, $bStrtTime) = split(' ', $b->publish_up);
+		if ($aStrtTime == $bStrtTime) 
+		{
+			return 0;
+		}
 		return ($aStrtTime > $bStrtTime) ? -1 : 1;
 	}
 
@@ -197,16 +215,21 @@ class modEventsLatest
 
 		$eventCheck = new EventsRepeat;
 
-		if ($num_events>0) {
-			$year = date('Y', $date);
+		if ($num_events > 0) 
+		{
+			$year  = date('Y', $date);
 	    	$month = date('m', $date);
-	    	$day = date('d', $date);
+	    	$day   = date('d', $date);
 
 			for ($r = 0; $r < count($rows); $r++)
 			{
 				$row = $rows[$r];
-				if (isset($seenThisEvent[$row->id]) && $noRepeats) continue;
-				if ($eventCheck->EventsRepeat($row, $year, $month, $day)){
+				if (isset($seenThisEvent[$row->id]) && $noRepeats) 
+				{
+					continue;
+				}
+				if ($eventCheck->EventsRepeat($row, $year, $month, $day)) 
+				{
 					$seenThisEvent[$row->id] = 1;
 					$new_rows_events[] =& $rows[$r];
 				}
@@ -241,36 +264,38 @@ class modEventsLatest
 		$Config_lang = $lang->getBackwardLang();
 
 		// Get module parameters
-		$mode              = $this->params->get( 'mode' )                ? abs(intval($this->params->get( 'mode' ))) : 4;
-		$days              = $this->params->get( 'days' )                ? abs(intval($this->params->get( 'days' ))) : 7;
-		$maxEvents         = $this->params->get( 'max_events' )          ? abs(intval($this->params->get( 'max_events' ))) : 5;
-		$displayLinks      = $this->params->get( 'display_links' )       ? abs(intval($this->params->get( 'display_links' ))) : 0;
-		$displayYear       = $this->params->get( 'display_year' )        ? abs(intval($this->params->get( 'display_year' ))) : 0;
-		$disableTitleStyle = $this->params->get( 'display_title_style' ) ? abs(intval($this->params->get( 'display_title_style' ))) : 0;
-		$disableDateStyle  = $this->params->get( 'display_date_style' )  ? abs(intval($this->params->get( 'display_date_style' ))) : 0;
-		$customFormatStr   = $this->params->get( 'custom_format_str' )   ? $this->params->get( 'custom_format_str' ) : NULL;
-		$norepeat          = $this->params->get( 'no_repeat' )           ? abs(intval($this->params->get( 'no_repeat' ))) : 0;
-		$charlimit         = $this->params->get( 'char_limit' )          ? abs(intval($this->params->get( 'char_limit' ))) : 150;
-		$announcements     = $this->params->get( 'announcements' )       ? abs(intval($this->params->get( 'announcements' ))) : 0;
+		$mode              = $this->params->get('mode')                ? abs(intval($this->params->get('mode'))) : 4;
+		$days              = $this->params->get('days')                ? abs(intval($this->params->get('days'))) : 7;
+		$maxEvents         = $this->params->get('max_events')          ? abs(intval($this->params->get('max_events'))) : 5;
+		$displayLinks      = $this->params->get('display_links')       ? abs(intval($this->params->get('display_links'))) : 0;
+		$displayYear       = $this->params->get('display_year')        ? abs(intval($this->params->get('display_year'))) : 0;
+		$disableTitleStyle = $this->params->get('display_title_style') ? abs(intval($this->params->get('display_title_style'))) : 0;
+		$disableDateStyle  = $this->params->get('display_date_style')  ? abs(intval($this->params->get('display_date_style'))) : 0;
+		$customFormatStr   = $this->params->get('custom_format_str')   ? $this->params->get('custom_format_str') : NULL;
+		$norepeat          = $this->params->get('no_repeat')           ? abs(intval($this->params->get('no_repeat'))) : 0;
+		$charlimit         = $this->params->get('char_limit')          ? abs(intval($this->params->get('char_limit'))) : 150;
+		$announcements     = $this->params->get('announcements')       ? abs(intval($this->params->get('announcements'))) : 0;
 
 		// Can't have a mode greater than 4
-		if ($mode > 4) {
+		if ($mode > 4) 
+		{
 			$mode = 0;
 		}
 
 		// Hardcoded to 10 for now to avoid bad mistakes in params
-		if (!$maxEvents || $maxEvents > 100) {
+		if (!$maxEvents || $maxEvents > 100) 
+		{
 			$maxEvents = 10;
 		}
 
 		// Derive the event date range we want based on current date and form the db query.
-		$todayBegin = date('Y-m-d')." 00:00:00";
-		$yesterdayEnd = date('Y-m-d', mktime(0,0,0,date('m'),date('d') - 1, date('Y')))." 23:59:59";
+		$todayBegin = date('Y-m-d') . ' 00:00:00';
+		$yesterdayEnd = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'))) . ' 23:59:59';
 
 		// Get the start day
-		$startday = $this->params->get( 'start_day' );
-		if (!defined('_CAL_CONF_STARDAY')) {
-
+		$startday = $this->params->get('start_day');
+		if (!defined('_CAL_CONF_STARDAY')) 
+		{
 	/**
 	 * Description for ''_CAL_CONF_STARDAY''
 	 */
@@ -287,28 +312,28 @@ class modEventsLatest
 				//if (!defined(_CAL_CONF_STARDAY)) define(_CAL_CONF_STARDAY, 0);
 				$numDay = (date("w")-_CAL_CONF_STARDAY + 7)%7;
 				// begin of this week
-				$beginDate = date('Y-m-d', mktime(0,0,0,date('m'),date('d') - $numDay, date('Y')))." 00:00:00";
-				//$thisWeekEnd = date('Y-m-d', mktime(0,0,0,date('m'),date('d') - date('w')+6, date('Y'))." 23:59:59";
+				$beginDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - $numDay, date('Y'))) . ' 00:00:00';
+				//$thisWeekEnd = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - date('w')+6, date('Y'))." 23:59:59";
 				// end of next week
-				$endDate = date('Y-m-d', mktime(0,0,0,date('m'),date('d') - $numDay + 13, date('Y')))." 23:59:59";
+				$endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - $numDay + 13, date('Y'))) . ' 23:59:59';
 				break;
 			case 2:
 			case 3:
 				// Begin of today - $days
-				$beginDate = date('Y-m-d', mktime(0,0,0,date('m'),date('d') - $days, date('Y')))." 00:00:00";
+				$beginDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - $days, date('Y'))) . ' 00:00:00';
 				// End of today + $days
-				$endDate = date('Y-m-d', mktime(0,0,0,date('m'),date('d') + $days, date('Y')))." 23:59:59";
+				$endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + $days, date('Y'))) . ' 23:59:59';
 				break;
 			case 4:
 			default:
 				// Beginning of this month
 				//$beginDate = date('Y-m-d', mktime(0,0,0,date('m'),1, date('Y')))." 00:00:00";
 				//start today
-				$beginDate = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
+				$beginDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
 				// end of this month
 				//$endDate = date('Y-m-d', mktime(0,0,0,date('m')+1,0, date('Y')))." 23:59:59";
 				// end of this year
-				$endDate = date('Y-m-d', mktime(0,0,0,date('m'),0, date('Y')+1))." 23:59:59";
+				$endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), 0, date('Y') + 1)) . ' 23:59:59';
 				break;
 		}
 
@@ -336,38 +361,44 @@ class modEventsLatest
 			. "\nORDER BY publish_up ASC";
 
 		// Retrieve the list of returned records as an array of objects
-		$database->setQuery( $query );
+		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 
 		// Determine the events that occur each day within our range
 		$events = 0;
-		$date = mktime(0,0,0);
-		$lastDate = mktime(0,0,0,intval(substr($endDate,5,2)),intval(substr($endDate,8,2)),intval(substr($endDate,0,4)));
+		$date = mktime(0, 0, 0);
+		$lastDate = mktime(0, 0, 0, intval(substr($endDate, 5, 2)), intval(substr($endDate, 8, 2)), intval(substr($endDate, 0, 4)));
 		$i = 0;
 
 		$content  = '';
 		$seenThisEvent = array();
 
-		if (count($rows)) {
+		if (count($rows)) 
+		{
 			while ($date <= $lastDate)
 			{
 				// Get the events for this $date
 				$eventsThisDay = $this->_getEventsByDate($rows, $date, $seenThisEvent, $norepeat);
-				if (count($eventsThisDay)) {
+				if (count($eventsThisDay)) 
+				{
 					// dmcd May 7/04  bug fix to not exceed maxEvents
 					$eventsToAdd = min($maxEvents-$events, count($eventsThisDay));
 					$eventsThisDay = array_slice($eventsThisDay, 0, $eventsToAdd);
 					$eventsByRelDay[$i] = $eventsThisDay;
 					$events += count($eventsByRelDay[$i]);
 				}
-				if ($events >= $maxEvents) break;
-				$date = mktime(0,0,0,date('m', $date),date('d', $date)+1,date('Y', $date));
+				if ($events >= $maxEvents) 
+				{
+					break;
+				}
+				$date = mktime(0, 0, 0, date('m', $date), date('d', $date) + 1, date('Y', $date));
 				$i++;
 			}
 		}
 
 		// Do we actually have any events to display?
-		if ($events < $maxEvents && ($mode==1 || $mode==3)) {
+		if ($events < $maxEvents && ($mode==1 || $mode==3)) 
+		{
 			// Display some recent previous events too up to a total of $maxEvents
 			// Changed by Swaroop to display only events that are not announcements
 			$query = "SELECT #__events.* FROM #__events, #__categories as b"
@@ -380,41 +411,51 @@ class modEventsLatest
 
 			// Initialise the query in the $database connector
 			// This translates the '#__' prefix into the real database prefix
-			$database->setQuery( $query );
+			$database->setQuery($query);
 
 			// Retrieve the list of returned records as an array of objects
 			$prows = $database->loadObjectList();
 
-			if (count($prows)) {
+			if (count($prows)) 
+			{
 				// Start from yesterday
-				$date = mktime(23,59,59,date('m'),date('d')-1,date('Y'));
-				$lastDate = mktime(0,0,0,intval(substr($beginDate,5,2)),intval(substr($beginDate,8,2)),intval(substr($beginDate,0,4)));
-				$i=-1;
+				$date = mktime(23, 59, 59, date('m'), date('d') - 1, date('Y'));
+				$lastDate = mktime(0, 0, 0, intval(substr($beginDate, 5, 2)), intval(substr($beginDate, 8, 2)), intval(substr($beginDate, 0, 4)));
+				$i = -1;
 
 				while ($date >= $lastDate)
 				{
 					// Get the events for this $date
 					$eventsThisDay = $this->_getEventsByDate($prows, $date, $seenThisEvent, $norepeat);
-					if (count($eventsThisDay)) {
+					if (count($eventsThisDay)) 
+					{
 						$eventsByRelDay[$i] = $eventsThisDay;
 						$events += count($eventsByRelDay[$i]);
 					}
-					if ($events >= $maxEvents) break;
-					$date = mktime(0,0,0,date('m', $date),date('d', $date)-1,date('Y', $date));
+					if ($events >= $maxEvents) 
+					{
+						break;
+					}
+					$date = mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date));
 					$i--;
 				}
 			}
 		}
 
-		if (isset($eventsByRelDay) && count($eventsByRelDay)) {
+		if (isset($eventsByRelDay) && count($eventsByRelDay)) 
+		{
 			// Now to display these events, we just start at the smallest index of the $eventsByRelDay array and work our way up.
 			ksort($eventsByRelDay, SORT_NUMERIC);
 			reset($eventsByRelDay);
 
 			$this->eventsByRelDay = $eventsByRelDay;
-		} else {
+		} 
+		else 
+		{
 			$this->eventsByRelDay = null;
 		}
+		
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

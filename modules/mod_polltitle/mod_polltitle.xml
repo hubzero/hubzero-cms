@@ -42,4 +42,11 @@ HUBzero is a registered trademark of Purdue University.
 	<params>
 		<param name="message" type="text" default="Tell us what you think." label="Message" description="Default message in case there are no active polls to display" />
 	</params>
+	<params group="advanced">
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+	</params>
 </install>

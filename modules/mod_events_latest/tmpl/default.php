@@ -31,15 +31,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($modeventslatest->error) { ?>
-	<p class="error"><?php echo $modeventslatest->error; ?></p>
-<?php } else { ?>
+if ($this->error) 
+{ 
+?>
+	<p class="error"><?php echo $this->error; ?></p>
+<?php 
+} 
+else 
+{ 
+?>
 <table class="latest_events_tbl" summary="<?php echo JText::_('MOD_EVENTS_LATEST_TABLE_SUMMARY'); ?>">
 	<tbody>
 <?php
-if ($modeventslatest->eventsByRelDay) {
+if ($this->eventsByRelDay) 
+{
 	$cls = 'even';
-	foreach ($modeventslatest->eventsByRelDay as $relDay => $daysEvents)
+	foreach ($this->eventsByRelDay as $relDay => $daysEvents)
 	{
 		reset($daysEvents);
 
@@ -48,29 +55,32 @@ if ($modeventslatest->eventsByRelDay) {
 		{
 			// Get the title and start time
 			$startDate = $dayEvent->publish_up;
-			$eventDate = mktime(substr($startDate,11,2),substr($startDate,14,2), substr($startDate,17,2),date('m'),date('d') + $relDay,date('Y'));
-			$startDate = mktime(substr($startDate,11,2),substr($startDate,14,2), substr($startDate,17,2), substr($startDate,5,2), substr($startDate,8,2), substr($startDate,0,4));
+			$eventDate = mktime(substr($startDate, 11, 2), substr($startDate, 14, 2), substr($startDate, 17, 2), date('m'), date('d') + $relDay, date('Y'));
+			$startDate = mktime(substr($startDate, 11, 2), substr($startDate, 14, 2), substr($startDate, 17, 2), substr($startDate, 5, 2), substr($startDate, 8, 2), substr($startDate, 0, 4));
 			$endDate = $dayEvent->publish_down;
-			$endDate = mktime(substr($endDate,11,2),substr($endDate,14,2), substr($endDate,17,2), substr($endDate,5,2), substr($endDate,8,2), substr($endDate,0,4));
+			$endDate = mktime(substr($endDate, 11, 2), substr($endDate, 14, 2), substr($endDate, 17, 2), substr($endDate, 5, 2), substr($endDate, 8, 2), substr($endDate, 0, 4));
 
-			$year = date('Y', $startDate);
+			$year  = date('Y', $startDate);
 			$month = date('m', $startDate);
-			$day = date('d', $startDate);
+			$day   = date('d', $startDate);
 
 			$cls = ($cls == 'even') ? 'odd' : 'even';
 
-			if ($dayEvent->announcement == 1) {
+			if ($dayEvent->announcement == 1) 
+			{
 				$cls .= ' announcement';
 			}
 ?>
 		<tr class="<?php echo $cls; ?>">
-			<td class="event-date"><span class="month"><?php echo date('M',$eventDate); ?></span><span class="day"><?php echo date('d',$eventDate); ?></span></td>
-			<td class="event-title"><a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id='.$dayEvent->id); ?>"><?php echo stripslashes($dayEvent->title); ?></a></td>
+			<td class="event-date"><span class="month"><?php echo date('M', $eventDate); ?></span><span class="day"><?php echo date('d', $eventDate); ?></span></td>
+			<td class="event-title"><a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id=' . $dayEvent->id); ?>"><?php echo stripslashes($dayEvent->title); ?></a></td>
 		</tr>
 <?php 
 		}
 	}
-} else {
+} 
+else 
+{
 ?>
 		<tr class="odd">
 			<td class="mod_events_latest_noevents"><?php echo JText::_('MOD_EVENTS_LATEST_NONE_FOUND'); ?></td>
@@ -80,5 +90,7 @@ if ($modeventslatest->eventsByRelDay) {
 ?>
 	</tbody>
 </table>
-<p class="more"><a href="<?php echo JRoute::_('index.php?option=com_events&year='.strftime("%Y", time() ).'&month='.strftime("%m", time() )); ?>"><?php echo JText::_('MOD_EVENTS_LATEST_MORE'); ?></a></p>
-<?php } ?>
+<p class="more"><a href="<?php echo JRoute::_('index.php?option=com_events&year=' . strftime("%Y", time()) . '&month=' . strftime("%m", time())); ?>"><?php echo JText::_('MOD_EVENTS_LATEST_MORE'); ?></a></p>
+<?php 
+} 
+?>

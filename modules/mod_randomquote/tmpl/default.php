@@ -31,18 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($modrandomquote->quote) {
-	$html  = '<h3 class="notable_quote">'.JText::_('Notable Quote').'</h3>'."\n";
-	$html .= '<div class="frontquote">'."\n";
-	$html .= ' <blockquote cite="'.$modrandomquote->quote->fullname.'"><p>'."\n";
-	$html .= Hubzero_View_Helper_Html::shortenText(stripslashes($modrandomquote->quote_to_show), $modrandomquote->charlimit, 0)."\n" ;
-	$html .= strlen($modrandomquote->quote->quote) > $modrandomquote->charlimit
-	? '<a href="/about/quotes/?quoteid='.$modrandomquote->quote->id.'" title="'.JText::_('View the full quote by').' '.$modrandomquote->quote->fullname.'" class="showfullquote">...&raquo;</a>'."\n"
-	: '' ;
-	$html .= ' </p></blockquote>'."\n";
-	$html .= '<p class="cite"><cite>'.$modrandomquote->quote->fullname.'</cite>, '.$modrandomquote->quote->org.' <span>-</span> <span>'.JText::_('in').'&nbsp;<a href="/about/quotes">'.JText::_('Notable&nbsp;Quotes').'</a></span></p>'."\n";
-	//$html .= ' <p class="cite"><cite>'.$modrandomquote->quote->fullname.'</cite> - '.JText::_('in').'&nbsp;<a href="/about/quotes">'.JText::_('Quotes').'</a></p>'."\n";
-	$html .= '</div>'."\n";
-
-	echo $html;
-}
+if ($this->quote) { ?>
+	<h3 class="notable_quote"><?php echo JText::_('Notable Quote'); ?></h3>
+	<div class="frontquote">
+		<blockquote cite="<?php echo $this->quote->fullname; ?>">
+			<p>
+				<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->quote_to_show), $this->charlimit, 0); ?>
+<?php if (strlen($this->quote->quote) > $this->charlimit) { ?>
+				<a href="/about/quotes/?quoteid=<?php echo $this->quote->id; ?>" title="<?php echo JText::_('View the full quote by').' '.$this->quote->fullname; ?>" class="showfullquote">...&raquo;</a>
+<?php } ?>
+			</p>
+		</blockquote>
+		<p class="cite">
+			<cite><?php echo $this->quote->fullname; ?></cite>, <?php echo $this->quote->org; ?> <span>-</span> <span><?php echo JText::_('in'); ?> <a href="/about/quotes"><?php echo JText::_('Notable Quotes'); ?></a></span>
+		</p>
+	</div>
+<?php } ?>

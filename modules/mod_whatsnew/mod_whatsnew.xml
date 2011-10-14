@@ -46,8 +46,8 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.mod_whatsnew.ini</language>
 	</languages>
 	<params>
-		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="count" type="text" default="5" label="Number of entries" description="The number of entries to display." />
+		<param name="cssId" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+		<param name="limit" type="text" default="5" label="Number of entries" description="The number of entries to display." />
 		<param name="feed" type="list" default="1" label="Feed link" description="Select whether to display a feed link">
 			<option value="1">Display link</option>
 			<option value="0">Hide link</option>
@@ -57,6 +57,13 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
+	</params>
+	<params group="advanced">
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
 	</params>
 </install>
 

@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'modRecentQuestions'
@@ -39,28 +39,14 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modRecentQuestions
 {
-
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
+	private $_attributes = array();
 
 	//-----------
 
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( $params )
+	public function __construct($params, $module) 
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	//-----------
@@ -77,7 +63,7 @@ class modRecentQuestions
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
 
 	//-----------
@@ -93,13 +79,20 @@ class modRecentQuestions
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
 	}
 
 	//-----------
-
+	
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
+	}
+	
+	//-----------
 
 	/**
 	 * Short description for 'mkt'
@@ -111,8 +104,9 @@ class modRecentQuestions
 	 */
 	public function mkt($stime)
 	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs)) 
+		{
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
@@ -194,21 +188,15 @@ class modRecentQuestions
 
 	//-----------
 
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function display()
+	public function run()
 	{
-		$database =& JFactory::getDBO();
+		$this->database = JFactory::getDBO();
 
-		$params =& $this->params;
-		$state = $params->get( 'state' );
-		$limit = intval( $params->get( 'limit' ) );
+		$this->cssId = $this->params->get('cssId');
+		$this->cssClass = $this->params->get('cssClass');
+		
+		$state = $this->params->get('state', 'open');
+		$limit = intval($this->params->get('limit', 5));
 
 		switch ($state)
 		{
@@ -218,30 +206,57 @@ class modRecentQuestions
 			default: $st = ""; break;
 		}
 
-		$tag = JRequest::getVar( 'tag', '', 'get' );
-		$this->style = JRequest::getVar( 'style', '', 'get' );
-		if ($tag) {
+		$this->tag = JRequest::getVar('tag', '', 'get');
+		$this->style = JRequest::getVar('style', '', 'get');
+		
+		if ($this->tag) 
+		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
-				."\n FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg"
-				."\n WHERE a.id=t.questionid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='".$tag."' OR tg.raw_tag='".$tag."' OR tg.alias='".$tag."')";
-			if ($st) {
-				$query .= " AND ".$st;
+				." FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg"
+				." WHERE a.id=t.questionid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='" . $this->tag . "' OR tg.raw_tag='" . $this->tag . "' OR tg.alias='" . $this->tag . "')";
+			if ($st) 
+			{
+				$query .= " AND " . $st;
 			}
-		} else {
+		} 
+		else 
+		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
-				."\n FROM #__answers_questions AS a";
-			if ($st) {
-				$query .= " WHERE ".$st;
+				." FROM #__answers_questions AS a";
+			if ($st) 
+			{
+				$query .= " WHERE " . $st;
 			}
 		}
-		$query .= "\n ORDER BY a.created DESC";
-		$query .= ($limit) ? "\n LIMIT ".$limit : "";
+		$query .= " ORDER BY a.created DESC";
+		$query .= ($limit) ? " LIMIT " . $limit : "";
 
-		$database->setQuery( $query );
-		$this->rows = $database->loadObjectList();
+		$this->database->setQuery($query);
+		$this->rows = $this->database->loadObjectList();
 
+		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+	
+	//-----------
+	
+	public function display()
+	{
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_recentquestions');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+		
+		$juser =& JFactory::getUser();
+		
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+		
+		$this->run();
 	}
 }

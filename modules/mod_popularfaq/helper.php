@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'modPopularFaq'
@@ -39,28 +39,14 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modPopularFaq
 {
-
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
+	private $_attributes = array();
 
 	//-----------
 
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( $params )
+	public function __construct($params, $module) 
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	//-----------
@@ -77,7 +63,7 @@ class modPopularFaq
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
 
 	//-----------
@@ -93,34 +79,55 @@ class modPopularFaq
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
+	}
+	
+	//-----------
+	
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
 	}
 
 	//-----------
 
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function display()
+	public function run()
 	{
 		$database =& JFactory::getDBO();
-		$params   =& $this->params;
 
-		$limit = intval( $params->get( 'limit' ) );
-		$this->moduleid = $params->get( 'moduleid' );
+		$limit = intval($this->params->get('limit', 5));
+		$this->cssId = $this->params->get('cssId');
+		$this->cssClass = $this->params->get('cssClass');
 
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'article.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'category.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'helpful.php' );
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'article.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'category.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'helpful.php');
 
-		$a = new KbArticle( $database );
+		$a = new KbArticle($database);
 		$this->rows = $a->getArticles($limit, 'a.hits DESC');
+		
+		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+	
+	//-----------
+	
+	public function display()
+	{
+		$juser =& JFactory::getUser();
+		
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+		
+		$this->run();
 	}
 }

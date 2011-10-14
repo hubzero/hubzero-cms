@@ -29,13 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__) . DS . 'helper.php');
 
-$modeventscalendar = new modEventsCalendar($params);
+$modeventscalendar = new modEventsCalendar($params, $module);
 $modeventscalendar->display();
-
-require( JModuleHelper::getLayoutPath('mod_events_cal') );
-?>

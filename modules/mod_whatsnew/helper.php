@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'modWhatsNew'
@@ -39,28 +39,14 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modWhatsNew
 {
-
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
+	private $_attributes = array();
 
 	//-----------
 
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( $params )
+	public function __construct($params, $module) 
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	//-----------
@@ -77,11 +63,11 @@ class modWhatsNew
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
-
+	
 	//-----------
-
+	
 
 	/**
 	 * Short description for '__get'
@@ -93,9 +79,17 @@ class modWhatsNew
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
+	}
+	
+	//-----------
+	
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
 	}
 
 	//-----------
@@ -111,16 +105,17 @@ class modWhatsNew
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
-		if (!isset($this->searchareas) || empty($this->searchareas)) {
+		if (!isset($this->searchareas) || empty($this->searchareas)) 
+		{
 			// No - so we'll need to get it
 			$areas = array();
 
 			// Load the XSearch plugins
-			JPluginHelper::importPlugin( 'whatsnew' );
+			JPluginHelper::importPlugin('whatsnew');
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Trigger the functions that return the areas we'll be searching
-			$searchareas = $dispatcher->trigger( 'onWhatsNewAreas' );
+			$searchareas = $dispatcher->trigger('onWhatsNewAreas');
 
 			// Build an array of the areas
 			foreach ($searchareas as $area)
@@ -153,25 +148,29 @@ class modWhatsNew
 	{
 		$out = '';
 
-		if (count($tags) > 0) {
-			$out .= '<span class="taggi">'."\n";
+		if (count($tags) > 0) 
+		{
+			$out .= '<span class="taggi">' . "\n";
 			$counter = 0;
 
 			for ($i=0; $i< count($tags); $i++)
 			{
 				$counter = $counter + strlen(stripslashes($tags[$i]['raw_tag']));
-				if ($counter > $max) {
+				if ($counter > $max) 
+				{
 					$num = $num - 1;
 				}
-				if ($i < $num) {
+				if ($i < $num) 
+				{
 					// display tag
-					$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags&tag='.$tags[$i]['tag']).'">'.stripslashes($tags[$i]['raw_tag']).'</a> '."\n";
+					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $tags[$i]['tag']) . '">' . stripslashes($tags[$i]['raw_tag']) . '</a> ' . "\n";
 				}
 			}
-			if ($i > $num) {
+			if ($i > $num) 
+			{
 				$out .= ' (&#8230;)';
 			}
-			$out .= '</span>'."\n";
+			$out .= '</span>' . "\n";
 		}
 
 		return $out;
@@ -179,40 +178,33 @@ class modWhatsNew
 
 	//-----------
 
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function display()
+	public function run()
 	{
-		$module    =& $this->module;
-
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
+		
 		// Get some initial parameters
-		$params =& $this->params;
-		$count    = $params->get( 'count', 5 );
-		$this->feed     = $params->get( 'feed' );
-		$this->moduleid = $params->get( 'moduleid' );
-		$this->period   = $params->get( 'period', 'resources:month' );
-		$this->tagged   = $params->get( 'tagged', 0 );
+		$count        = intval($this->params->get('limit', 5));
+		$this->feed   = $this->params->get('feed');
+		$this->cssId  = $this->params->get('cssId');
+		$this->period = $this->params->get('period', 'resources:month');
+		$this->tagged = intval($this->params->get('tagged', 0));
 
 		$database =& JFactory::getDBO();
 
 		// Build the feed link if necessary
-		if ($this->feed) {
-			$feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period='.$this->period);
-			if (substr($feedlink,0,5) == 'https') {
-				$feedlink = ltrim($feedlink, 'https');
-				$feedlink = 'http'.$feedlink;
+		if ($this->feed) 
+		{
+			$this->feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period=' . $this->period);
+			if (substr($this->feedlink, 0, 5) == 'https') 
+			{
+				$this->feedlink = ltrim($this->feedlink, 'https');
+				$this->feedlink = 'http' . $this->feedlink;
 			}
-			if (substr($feedlink,0,1) == '/') {
+			if (substr($this->feedlink, 0, 1) == '/') 
+			{
 				$xhub =& Hubzero_Factory::getHub();
-				$feedlink = $xhub->getCfg('hubLongURL').$feedlink;
+				$this->feedlink = $xhub->getCfg('hubLongURL') . $this->feedlink;
 			}
-			$this->feedlink = $feedlink;
 		}
 
 		// Get categories
@@ -221,69 +213,77 @@ class modWhatsNew
 		$area = '';
 
 		// Check the search string for a category prefix
-		if ($this->period != NULL) {
+		if ($this->period != NULL) 
+		{
 			$searchstring = strtolower($this->period);
 			foreach ($areas as $c=>$t)
 			{
 				$regexp = "/" . $c . ":/";
-		    	if (strpos($searchstring, $c . ":") !== false) {
+				if (strpos($searchstring, $c . ":") !== false) 
+				{
 					// We found an active category
 					// NOTE: this will override any category sent in the querystring
 					$area = $c;
 					// Strip it off the search string
-    		    	$searchstring = preg_replace($regexp, "", $searchstring);
+					$searchstring = preg_replace($regexp, '', $searchstring);
 					break;
 				}
 				// Does the category contain sub-categories?
-				if (is_array($t) && !empty($t)) {
+				if (is_array($t) && !empty($t)) 
+				{
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc=>$st)
+					foreach ($t as $sc => $st) 
 					{
 						$regexp = "/" . $sc . ":/";
-				    	if (strpos($searchstring, $sc . ":") !== false) {
+						if (strpos($searchstring, $sc . ':') !== false) 
+						{
 							// We found an active category
 							// NOTE: this will override any category sent in the querystring
 							$area = $sc;
 							// Strip it off the search string
-		    		    	$searchstring = preg_replace($regexp, "", $searchstring);
+							$searchstring = preg_replace($regexp, '', $searchstring);
 							break;
 						}
 					}
 				}
 			}
-			$this->period = trim( $searchstring );
+			$this->period = trim($searchstring);
 		}
 		$this->area = $area;
 
 		// Get the active category
 		$activeareas = array();
-		if ($area) {
+		if ($area) 
+		{
 			$activeareas[] = $area;
 		}
 
 		// Load plugins
-		JPluginHelper::importPlugin( 'whatsnew' );
+		JPluginHelper::importPlugin('whatsnew');
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Process the keyword for exact time period
-		$p = new WhatsnewPeriod( $this->period );
+		$p = new WhatsnewPeriod($this->period);
 		$p->process();
 
 		// Get the search results
-		$results = $dispatcher->trigger( 'onWhatsnew', array(
+		$results = $dispatcher->trigger('onWhatsnew', array(
 				$p,
 				$count,
 				0,
 				$activeareas,
-				array())
-			);
+				array()
+			)
+		);
 
 		$rows = array();
 
-		if ($results) {
+		if ($results) 
+		{
 			foreach ($results as $result)
 			{
-				if (is_array($result) && !empty($result)) {
+				if (is_array($result) && !empty($result)) 
+				{
 					$rows = $result;
 					break;
 				}
@@ -293,16 +293,18 @@ class modWhatsNew
 		$this->rows = $rows;
 		$this->rows2 = null;
 
-		if ($this->tagged) {
+		if ($this->tagged) 
+		{
 			$juser =& JFactory::getUser();
 
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'tags.php' );
-			$mt = new MembersTags( $database );
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
+			$mt = new MembersTags($database);
 			$tags = $mt->get_tags_on_object($juser->get('id'), 0, 0, NULL, 0, 0);
 
 			$this->tags = $tags;
 
-			if (count($tags) > 0) {
+			if (count($tags) > 0) 
+			{
 				$tagids = array();
 				foreach ($tags as $tag)
 				{
@@ -310,20 +312,23 @@ class modWhatsNew
 				}
 
 				// Get the search results
-				$results2 = $dispatcher->trigger( 'onWhatsnew', array(
+				$results2 = $dispatcher->trigger('onWhatsnew', array(
 						$p,
 						$count,
 						0,
 						$activeareas,
-						$tagids)
-					);
+						$tagids
+					)
+				);
 
 				$rows2 = array();
 
-				if ($results2) {
+				if ($results2) 
+				{
 					foreach ($results2 as $result2)
 					{
-						if (is_array($result2) && !empty($result2)) {
+						if (is_array($result2) && !empty($result2)) 
+						{
 							$rows2 = $result2;
 							break;
 						}
@@ -333,9 +338,30 @@ class modWhatsNew
 				$this->rows2 = $rows2;
 			}
 		}
-
+		
+		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+	
+	//-----------
+	
+	public function display()
+	{
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_whatsnew');
+		Hubzero_Document::addModuleStyleSheet($this->module->Module);
+		
+		$juser =& JFactory::getUser();
+		
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+		
+		$this->run();
 	}
 }

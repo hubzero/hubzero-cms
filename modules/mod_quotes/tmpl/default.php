@@ -29,52 +29,56 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-$quotes = $modquotes->quotes;
-$filters = $modquotes->filters;
+defined('_JEXEC') or die('Restricted access');
 
 $html  = '';
-$html .= '<div id="content-header-extra">'."\n";
-$html .= ' <ul id="useroptions">'."\n";
-$html .= ' <li><a href="'.JRoute::_('index.php?option=com_feedback&task=success_story').'" class="add">'.JText::_('Add Your Success Story').'</a></li>'."\n";
-$html .= ' </ul>'."\n";
-$html .= '</div>'."\n";
+$html .= '<div id="content-header-extra">' . "\n";
+$html .= ' <ul id="useroptions">' . "\n";
+$html .= ' <li><a href="' . JRoute::_('index.php?option=com_feedback&task=success_story') . '" class="add">' . JText::_('Add Your Success Story') . '</a></li>' . "\n";
+$html .= ' </ul>' . "\n";
+$html .= '</div>' . "\n";
 // Did we get any results?
-if (count($quotes) > 0) {
+if (count($this->quotes) > 0) 
+{
 	// Yes - loop through and build the HTML
-	foreach ($quotes as $quote)
+	foreach ($this->quotes as $quote)
 	{
-		$quote->org = str_replace('<br>','<br />',$quote->org);
+		$quote->org = str_replace('<br>', '<br />', $quote->org);
 
-		if (isset($filters['id']) && $filters['id'] != '') {
-			$html .= '<div class="breadcrumbs"><p><a href="/about/quotes" class="breadcrumbs">'.JText::_('NOTABLE_QUOTES').'</a> &rsaquo; <strong>';
-			$html .= stripslashes($quote->fullname).'</strong></p></div>'."\n\n";
+		if (isset($this->filters['id']) && $this->filters['id'] != '') 
+		{
+			$html .= '<div class="breadcrumbs"><p><a href="/about/quotes" class="breadcrumbs">' . JText::_('NOTABLE_QUOTES') . '</a> &rsaquo; <strong>';
+			$html .= stripslashes($quote->fullname) . '</strong></p></div>' . "\n\n";
 		}
-		$html .= '<blockquote cite="'.stripslashes($quote->fullname).'">'."\n";
-		if (isset($filters['id']) && $filters['id'] != '') {
-			$html .= "\t".'<p>'.stripslashes($quote->quote).'</p>'."\n";
-		} else {
-			$html .= "\t".'<p>'.stripslashes($quote->short_quote)."\n";
-			if ($quote->short_quote != $quote->quote) {
-				$html .= "\t".' &#8230; <a href="/about/quotes/?quoteid='.$quote->id.'" title="'.JText::sprintf('VIEW_QUOTE_BY',stripslashes($quote->fullname)).'">'.JText::_('MORE').'</a>';
+		$html .= '<blockquote cite="' . stripslashes($quote->fullname) . '">' . "\n";
+		if (isset($this->filters['id']) && $this->filters['id'] != '') 
+		{
+			$html .= "\t" . '<p>' . stripslashes($quote->quote) . '</p>' . "\n";
+		} 
+		else 
+		{
+			$html .= "\t" . '<p>' . stripslashes($quote->short_quote) . "\n";
+			if ($quote->short_quote != $quote->quote) 
+			{
+				$html .= "\t" . ' &#8230; <a href="/about/quotes/?quoteid=' . $quote->id . '" title="' . JText::sprintf('VIEW_QUOTE_BY', stripslashes($quote->fullname)) . '">' . JText::_('MORE') . '</a>';
 			}
-			$html .= '</p>'."\n";
+			$html .= '</p>' . "\n";
 		}
-		$html .= '</blockquote>'."\n";
+		$html .= '</blockquote>' . "\n";
 		$html .= '<p class="cite">';
-		$html .= '<cite>'.stripslashes($quote->fullname).'</cite>';
+		$html .= '<cite>' . stripslashes($quote->fullname) . '</cite>';
 		$quote->org = stripslashes($quote->org);
 		$quote->org = str_replace('&amp;','&',$quote->org);
 		$quote->org = str_replace('&','&amp;',$quote->org);
-		$html .= '<br />'.$quote->org.'</p>'."\n\n";
+		$html .= '<br />' . $quote->org . '</p>' . "\n\n";
 
 	}
-} else {
+} 
+else 
+{
 	// No - show message
-	$html = '<p>'.JText::_('NO_QUOTES_FOUND').'</p>'."\n";
+	$html = '<p>' . JText::_('NO_QUOTES_FOUND') . '</p>' . "\n";
 }
 
 // Output HTML
 echo $html;
-?>

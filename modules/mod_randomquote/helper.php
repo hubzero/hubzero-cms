@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'modRandomQuote'
@@ -39,28 +39,14 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modRandomQuote
 {
-
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
+	private $_attributes = array();
 
 	//-----------
 
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( $params )
+	public function __construct($params, $module) 
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	//-----------
@@ -77,7 +63,7 @@ class modRandomQuote
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
 
 	//-----------
@@ -93,54 +79,49 @@ class modRandomQuote
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
 	}
 
 	//-----------
-
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function display()
+	
+	public function __isset($property)
 	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_feedback'.DS.'tables'.DS.'selectedquotes.php' );
+		return isset($this->_attributes[$property]);
+	}
+	
+	//-----------
+
+	public function run() 
+	{
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'selectedquotes.php');
 		ximport('Hubzero_View_Helper_Html');
 
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
 
 		//Get the admin configured settings
 		$filters = array();
 		$filters['limit'] = 1;
-		$this->charlimit = $params->get( 'charlimit', 150 );
-		$this->showauthor = $params->get( 'show_author', 1 );
-		$this->showall = $params->get( 'show_all_link', 1 );
-		$quotesrc = $params->get( 'quotesrc', 'miniquote' );
+		$this->charlimit = $this->params->get('charlimit', 150);
+		$this->showauthor = $this->params->get('show_author', 1);
+		$this->showall = $this->params->get('show_all_link', 1);
+		$quotesrc = $this->params->get('quotesrc', 'miniquote');
 
-		$pool = trim($params->get( 'quotepool'));
-		$filters['notable_quotes'] = $pool == 'notable_quotes' ?  1 : 0;
-		$filters['flash_rotation'] = $pool == 'flash_rotation' ?  1 : 0;
-		$filters['miniquote'] = $quotesrc == 'miniquote' ?  1 : 0;
+		$pool = trim($this->params->get('quotepool'));
+		$filters['notable_quotes'] = ($pool == 'notable_quotes') ?  1 : 0;
+		$filters['flash_rotation'] = ($pool == 'flash_rotation') ?  1 : 0;
+		$filters['miniquote'] = ($quotesrc == 'miniquote') ?  1 : 0;
 		$filters['sortby'] = 'RAND()';
 
 		$this->filters = $filters;
 
 		// Get quotes
-		$sq = new SelectedQuotes( $database );
-		$quotes = $sq->getResults( $filters );
-		$quote = $quotes ? $quotes[0] : '';
-
-		// Push some CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_randomquote');
+		$sq = new SelectedQuotes($database);
+		$quotes = $sq->getResults($filters);
+		$quote = ($quotes) ? $quotes[0] : '';
 
 		if ($quote) {
 			$this->quote_to_show = ($quotesrc == 'miniquote') ? stripslashes($quote->miniquote) : stripslashes($quote->short_quote);
@@ -148,6 +129,30 @@ class modRandomQuote
 			$this->quote_to_show = '';
 		}
 		$this->quote = $quote;
+		
+		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+	
+	//-----------
+	
+	public function display()
+	{
+		// Push some CSS to the template
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStylesheet($this->module->module);
+		
+		$juser =& JFactory::getUser();
+		
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+		
+		$this->run();
 	}
 }
-

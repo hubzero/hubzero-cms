@@ -30,62 +30,60 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$tags = $modfindresources->tags;
-$categories = $modfindresources->categories;
-
-// search
-$html  = '<form action="/search/" method="get" class="search">'."\n";
-$html .= ' <fieldset>'."\n";
-$html .= '  <p>'."\n";
-$html .= '   <label for="rsearchword">'.JText::_('Keyword or phrase:').'</label>'."\n";
-$html .= '   <input type="text" name="terms" id="rsearchword" value="" />'."\n";
-$html .= '   <input type="hidden" name="domains[]" value="resources" />'."\n";
-$html .= '   <input type="submit" value="'.JText::_('Search').'" />'."\n";
-$html .= '  </p>'."\n";
-$html .= ' </fieldset>'."\n";
-$html .= '</form>'."\n";
-
-$tl = array();
-if (count($tags) > 0) {
-	$html .= '<ol class="tags">'."\n";
-	$html .= "\t".'<li>'.JText::_('Popular Tags:').'</li>'."\n";
-	foreach ($tags as $tag)
-	{
-		$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
+?>
+<div<?php echo ($this->params->get('cssId')) ? ' id="' . $this->params->get('cssId') . '"' : ''; ?>>
+	<form action="/search/" method="get" class="search">
+		<fieldset>
+			<p>
+				<label for="rsearchword"><?php echo JText::_('Keyword or phrase:'); ?></label>
+				<input type="text" name="terms" id="rsearchword" value="" />
+				<input type="hidden" name="domains[]" value="resources" />
+				<input type="submit" value="<?php echo JText::_('Search'); ?>" />
+			</p>
+		</fieldset>
+	</form>
+<?php if (count($this->tags) > 0) { ?>
+	<ol class="tags">
+		<li><?php echo JText::_('Popular Tags:'); ?></li>
+<?php
+	foreach ($this->tags as $tag)
+	{ 
+?>
+		<li><a href="><?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo stripslashes($tag->raw_tag); ?></a></li>
+<?php
 	}
-	$html .= implode('',$tl);
-	$html .= "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags').'" class="showmore">'.JText::_('More tags').' &rsaquo;</a></li>'."\n";
-	$html .= '</ol>'."\n";
-} else {
-	$html .= '<p>'.JText::_('No tags found.').'</p>'."\n";
-}
+?>	
+		<li><a href="><?php echo JRoute::_('index.php?option=com_tags'); ?>" class="showmore"><?php echo JText::_('More tags &rsaquo;'); ?></a></li>
+	</ol>
+<?php } else { ?>
+	<p><?php echo JText::_('No tags found.'); ?></p>
+<?php } ?>
 
-if (count($categories) > 0) {
-	$html  .= '<p>'."\n";
+<?php if (count($this->categories) > 0) { ?>
+	<p>
+<?php
 	$i = 0;
-	foreach ($categories as $category)
+	foreach ($this->categories as $category) 
 	{
 		$i++;
-		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
-		$normalized = strtolower($normalized);
+		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($category->type));
 
 		if (substr($normalized, -3) == 'ies') {
 			$cls = $normalized;
 		} else {
 			$cls = substr($normalized, 0, -1);
 		}
-		$html  .= '<a href="'.JRoute::_('index.php?option=com_resources&type='.$normalized).'">'.stripslashes($category->type).'</a>';
-		$html  .= $i == count($categories) ? '...' : ', ';
-		$html  .= "\n";
+?>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
+<?php 
 	}
-	$html  .= '<a href="'.JRoute::_('index.php?option=com_resources').'" class="showmore">'.JText::_('All Categores &rsaquo;').'</a>';
-	$html  .= '</p>'."\n";
+?>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>" class="showmore"><?php echo JText::_('All Categores &rsaquo;'); ?></a>
+	</p>
+<?php
 }
-
-$html  .= '<div class="uploadcontent">'."\n";
-$html  .= "\t".'<h4>'.JText::_('Upload your own content!').' <span><a href="'.JRoute::_('index.php?option=com_contribute').'" class="contributelink">'.JText::_('Get started &rsaquo;').'</a></span></h4>'."\n";
-$html  .= '</div>'."\n";
-
-echo $html;
-
+?>
+	<div class="uploadcontent">
+		<h4><?php echo JText::_('Upload your own content!'); ?> <span><a href="<?php echo JRoute::_('index.php?option=com_contribute'); ?>" class="contributelink"><?php echo JText::_('Get started &rsaquo;'); ?></a></span></h4>
+	</div>
+</div><!-- / <?php echo ($this->params->get('cssId')) ? '#' . $this->params->get('cssId') : ''; ?> -->

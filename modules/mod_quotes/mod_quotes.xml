@@ -41,10 +41,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/default.php</filename>
 	</files>
 	<params>
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 		<param name="maxquotes" type="list" default="" label="Maximum Number of Quotes" description="Define max number of quotes to display on the page">
 			<option value="1">1</option>
@@ -54,9 +50,14 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="">All</option>
     	</param>
 	</params>
-        <languages>
-                <language tag="en-GB">en-GB.mod_quotes.ini</language>
-        </languages>
-
+	<params group="advanced">
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+	</params>
+	<languages>
+		<language tag="en-GB">en-GB.mod_quotes.ini</language>
+	</languages>
 </install>
-

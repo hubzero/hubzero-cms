@@ -30,16 +30,13 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$juser =& JFactory::getUser();
-
-$rows = $modpopularfaq->rows;
 ?>
-<div id="<?php echo $modpopularfaq->moduleid; ?>">
-<?php if ($rows) { ?>
+<div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : ''; echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
+<?php if ($this->rows) { ?>
 	<ul class="articles">
 <?php
-	foreach ($rows as $row)
+	$juser =& JFactory::getUser();
+	foreach ($this->rows as $row) 
 	{
 		if ($row->access <= $juser->get('aid')) {
 			$link = 'index.php?option=com_kb&amp;section='.$row->section;

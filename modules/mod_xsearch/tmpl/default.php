@@ -30,13 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
 ?>
-<form method="get" action="/search" id="searchform"<?php if ($modxsearch->clasfx) { echo ' class="'.$modxsearch->clasfx.'"'; } ?>>
+<form method="get" action="/search" id="searchform"<?php if ($this->clasfx) { echo ' class="'.$this->clasfx.'"'; } ?>>
 	<fieldset>
-		<legend><?php echo $modxsearch->text; ?></legend>
-		<label for="searchword" id="searchword-label"><?php echo $modxsearch->text; ?></label>
-		<input type="text" name="terms" id="searchword" size="<?php echo $modxsearch->width; ?>" value="<?php echo $modxsearch->text; ?>" />
+		<legend><?php echo $this->text; ?></legend>
+		<label for="searchword" id="searchword-label"><?php echo $this->text; ?></label>
+		<input type="text" name="terms" id="searchword" size="<?php echo $this->width; ?>" value="<?php echo $this->text; ?>" />
 	</fieldset>
 </form>
 

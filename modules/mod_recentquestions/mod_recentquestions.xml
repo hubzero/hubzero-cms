@@ -42,15 +42,22 @@ HUBzero is a registered trademark of Purdue University.
 	</files>
 	<params>
 		<param name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
-		<param name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
+		<param name="cssId" type="text" default="" label="CSS ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+		<param name="cssClass" type="text" default="" label="CSS Class" description="A CSS class to be applied to the module container, this allows individual module styling" />
 		<param name="state" type="list" default="both" label="Question state" description="The state (open or closed) of questions to be displayed">
 			<option value="open">Open</option>
 			<option value="closed">Closed</option>
 			<option value="both">Open and Closed</option>
 		</param>
 	</params>
-        <languages>
-                <language tag="en-GB">en-GB.mod_recentquestions.ini</language>
-        </languages>
+	<params group="advanced">
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+	</params>
+	<languages>
+		<language tag="en-GB">en-GB.mod_recentquestions.ini</language>
+	</languages>
 </install>
-

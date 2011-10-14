@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'modFindResources'
@@ -38,25 +38,14 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modFindResources
 {
+	private $_attributes = array();
 
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
+	//-----------
 
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( $params )
+	public function __construct($params, $module) 
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
@@ -70,9 +59,9 @@ class modFindResources
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
-
+	
 	/**
 	 * Short description for '__get'
 	 * 
@@ -83,31 +72,53 @@ class modFindResources
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
 	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function display()
+	
+	//-----------
+	
+	public function __isset($property)
 	{
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
+		return isset($this->_attributes[$property]);
+	}
+	
+	//-----------
+	
+	public function run() 
+	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 		$database =& JFactory::getDBO();
 
-		$obj = new TagsTag( $database );
+		$obj = new TagsTag($database);
 
-		$this->tags = $obj->getTopTags( $this->params->get( 'numtags', 25 ) );
+		$this->tags = $obj->getTopTags(intval($this->params->get('limit', 25)));
 
 		// Get major types
-		$t = new ResourcesType( $database );
+		$t = new ResourcesType($database);
 		$this->categories = $t->getMajorTypes();
+		
+		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+
+	public function display() 
+	{
+		$juser =& JFactory::getUser();
+		
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+		
+		$this->run();
 	}
 }

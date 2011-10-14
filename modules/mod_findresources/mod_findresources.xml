@@ -47,8 +47,13 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.mod_findresources.ini</language>
 	</languages>
 	<params>
-		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="numtags" type="text" default="25" label="Number of Tags" description="The number of tags to display." />
+		<param name="cssId" type="text" default="findresources" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+		<param name="limit" type="text" default="25" label="Number of Tags" description="The number of tags to display." />
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
 	</params>
 </install>
 

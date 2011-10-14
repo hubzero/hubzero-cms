@@ -29,13 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__) . DS . 'helper.php');
 
-$modeventslatest = new modEventsLatest($params);
+$modeventslatest = new modEventsLatest($params, $module);
 $modeventslatest->display();
-
-require( JModuleHelper::getLayoutPath('mod_events_latest') );
-?>

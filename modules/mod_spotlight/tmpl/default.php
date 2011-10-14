@@ -30,7 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-echo $modspotlight->display();
-
 ?>
+<div class="spotlightwrap">
+	<ul>
+		<?php echo $this->html; ?>
+	</ul>
+</div>

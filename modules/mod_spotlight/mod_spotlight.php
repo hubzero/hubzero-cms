@@ -29,45 +29,34 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n')) {
 
 /**
  * Description for ''t''
  */
-	define('t',"\t");
 
 /**
  * Description for ''n''
  */
-	define('n',"\n");
 
 /**
  * Description for ''r''
  */
-	define('r',"\r");
 
 /**
  * Description for ''br''
  */
-	define('br','<br />');
 
 /**
  * Description for ''sp''
  */
-	define('sp','&#160;');
 
 /**
  * Description for ''a''
  */
-	define('a','&amp;');
-}
-
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__) . DS . 'helper.php');
 
-$modspotlight = new modSpotlight( $params );
+$modspotlight = new modSpotlight($params, $module);
 $modspotlight->display();
-
-require( JModuleHelper::getLayoutPath('mod_spotlight') );

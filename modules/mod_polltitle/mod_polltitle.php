@@ -29,13 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__) . DS . 'helper.php');
 
-$modpolltitle = new modPollTitle( $params );
+$modpolltitle = new modPollTitle($params, $module);
 $modpolltitle->display();
-
-require( JModuleHelper::getLayoutPath('mod_polltitle') );
-
