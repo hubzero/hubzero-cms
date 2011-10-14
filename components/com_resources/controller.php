@@ -687,12 +687,14 @@ class ResourcesController extends Hubzero_Controller
 	protected function selectPresentation()
 	{
 		$presentation = JRequest::getVar("presentation", 0);
+		$database =& JFactory::getDBO();
 		
-		if($presentation != 0) {
-			$this->_id = $presentation;
-		}
+		$helper = new ResourcesHelper( $presentation, $database );
+		$helper->getFirstChild();
+		$resid = $helper->firstChild->id;
 		
-		$this->watch();
+		$this->_redirect = JRoute::_('index.php?option=com_resources&id='.$presentation.'&task=watch&resid='.$resid.'&tmpl=component');
+		return;
 	}
 	
 	protected function preWatch()
@@ -707,12 +709,16 @@ class ResourcesController extends Hubzero_Controller
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
 		
 		//get the presentation id
-		$id = JRequest::getVar("id","");
+		//$id = JRequest::getVar("id","");
+		$resid = JRequest::getVar("resid","");
+		if(!$resid) {
+			$errors[] = "Unable to find presentation.";
+		}
 		
 		//load resource
 		$activechild = new ResourcesResource( $database );
-		$activechild->load( $id );
-		
+		$activechild->load( $resid );
+	
 		//base url for the resource
 		$base = $this->config->get("uploadpath");
 		
@@ -850,7 +856,8 @@ class ResourcesController extends Hubzero_Controller
 				$view->database = $this->database;
 				$view->manifest = $manifest;
 				$view->content_folder = $content_folder;
-				$view->id = $this->_id;
+				$view->pid = $this->_id;
+				$view->resid = JRequest::getVar("resid", "");
 				
 				// Output HTML
 				if ($this->getError()) {
@@ -1153,7 +1160,7 @@ class ResourcesController extends Hubzero_Controller
 			
 			//if we have no errors
 			if( count($errors) > 0 ) {
-				$body = HUBpresenterHelper::errorMessage( $errors );
+				$body = PresenterHelper::errorMessage( $errors );
 			} else {
 				// Instantiate a new view
 				$view = new JView( array('name'=>'view','layout'=>'watch') );
@@ -1162,7 +1169,9 @@ class ResourcesController extends Hubzero_Controller
 				$view->database = $database;
 				$view->manifest = $manifest;
 				$view->content_folder = $content_folder;
-
+				$view->pid = $id;
+				$view->resid = JRequest::getVar("resid", "");
+				
 				// Output HTML
 				if ($this->getError()) {
 					$view->setError( $this->getError() );

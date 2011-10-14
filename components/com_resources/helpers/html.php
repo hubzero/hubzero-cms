@@ -2306,7 +2306,7 @@ class ResourcesHtml
 				break;
 
 				case 'hubpresenter':
-					$url = JRoute::_('index.php?option='.$option.'&id='.$id.'&task=watch');
+					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=watch');
 					break;
 				case 'breeze':
 					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=play');
@@ -2614,13 +2614,15 @@ class ResourcesHtml
 		}
 		$type = strtoupper($type);
 
-		$fs = '';
 
-		// Get the file size if the file exist
-		if (file_exists( $path )) {
-			$fs = filesize( $path );
+		//check to see if we have a json file (HUBpresenter)
+		if($type == "JSON") {
+			$type = "HTML5";
 		}
 
+		// Get the file size if the file exist
+		$fs = (file_exists( $path )) ? filesize( $path ) : '';
+		
 		$html  = '<span class="caption">('.$type;
 		if ($fs) {
 			switch ($type)
@@ -2629,7 +2631,10 @@ class ResourcesHtml
 				case 'HTML':
 				case 'PHP':
 				case 'ASF':
-				case 'SWF': $fs = ''; break;
+				case 'SWF': 
+				case 'HTML5':
+					$fs = ''; 
+					break;
 				default:
 					$fs = ($fsize) ? $fs : ResourcesHtml::formatsize($fs);
 					break;

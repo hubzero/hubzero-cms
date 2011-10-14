@@ -1683,3 +1683,13 @@
 	.supportingdocs .presentation { 
 		background: url("/components/com_resources/presenter/img/presenter.png") no-repeat 13px 50%; 
 		}
+	
+	/* Course View */
+	.html5 {
+		padding:1px 0 1px 20px;
+		background: url("/components/com_resources/images/html5.png") no-repeat 0 50%;
+		}
+	.flash {
+		padding:0 0 0 20px;
+		background: url("/components/com_resources/images/flash.png") no-repeat 4px 50%;
+		}

@@ -37,10 +37,10 @@ $presentation = $presentation->presentation;
 
 //get this resource
 $rr = new ResourcesResource( $this->database );
-$rr->load( $this->id );
+$rr->load( $this->resid );
 
 //get the parent resource
-$rh = new ResourcesHelper( $this->id, $this->database );
+$rh = new ResourcesHelper( $this->pid, $this->database );
 $rh->getParents();
 $parent = $rh->parents[0];
 
@@ -49,10 +49,32 @@ $rt = new ResourcesType( $this->database );
 $rt->load($parent->type);
 
 //if we have a series get children
-if($rt->type == "Series") {
+if($rt->type == "Series" || $rt->type == "Courses") {
 	$rh->getChildren( $parent->id, 0, 'yes' );
 	$children = $rh->children;
-}  
+	
+	//remove any children without a HUBpresenter
+	foreach($children as $k => $c) {
+		$rh = new ResourcesHelper( $c->id, $this->database );
+		$rh->getChildren();
+		$sub_child = $rh->children;
+		$hasHUBpresenter = false;
+		
+		foreach($sub_child as $sc) {
+			$rt = new ResourcesType( $this->database );
+			$rt->load($sc->type);
+			if(strtolower($rt->type) == "hubpresenter") {
+				$hasHUBpresenter = true;
+			}
+		}
+
+		if(!$hasHUBpresenter) {
+			unset($children[$k]);
+		}
+	}
+} else {
+	$children = NULL;
+}
 
 //get the contributors for the resource
 $sql = "SELECT authorid FROM #__author_assoc "
@@ -70,9 +92,9 @@ foreach($author_ids as $ai) {
 ?>
 
 <div id="presenter-nav-bar">
-	<a href="/resources/<?php echo $rr->id; ?>" id="nanohub" title="Back to nanoHUB.org">&larr; Back to nanoHUB.org</a>
+	<a href="/resources/<?php echo $rr->id; ?>" id="nanohub" title="Close Window">&times; Close Window</a>
 	
-	<?php if($rt->type == "Series") : ?>
+	<?php if($children) : ?>
 		<form name="presentation-picker" id="presentation-picker" method="post">
 			<label for="presentations">Select a different presentation: 
 				<select name="presentation" id="presentation">

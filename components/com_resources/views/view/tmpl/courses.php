@@ -316,12 +316,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				$html .= '<a name="series"></a>'."\n";
 				$html .= '<table class="child-listing" summary="'.JText::_('A table of resources associated to this resource').'">'."\n";
+				$html .= t.'<colgroup class="lecture_name"></colgroup>' . "\n";
+				$html .= t.'<colgroup class="lecture_online"></colgroup>' . "\n";
+				$html .= t.'<colgroup class="lecture_video"></colgroup>' . "\n";
+				$html .= t.'<colgroup class="lecture_notes"></colgroup>' . "\n";
+				$html .= t.'<colgroup class="lecture_supp"></colgroup>' . "\n";
+				$html .= t.'<colgroup class="lecture_exercises"></colgroup>' . "\n";
 				$html .= t.'<thead>'."\n";
 				$html .= t.t.'<tr>'."\n";
 				$html .= t.t.t.'<th>'.JText::_('Lecture Number/Topic').'</th>'."\n";
-				$html .= t.t.t.'<th>'.JText::_('Breeze').'</th>'."\n";
+				$html .= t.t.t.'<th width="12%">'.JText::_('Online Lecture').'</th>'."\n";
 				$html .= t.t.t.'<th>'.JText::_('Video').'</th>'."\n";
-				$html .= t.t.t.'<th>'.JText::_('Lecture Notes (PDF)').'</th>'."\n";
+				$html .= t.t.t.'<th>'.JText::_('Lecture Notes').'</th>'."\n";
 				$html .= t.t.t.'<th>'.JText::_('Supplemental Material').'</th>'."\n";
 				$html .= t.t.t.'<th>'.JText::_('Suggested Exercises').'</th>'."\n";
 				$html .= t.t.'</tr>'."\n";
@@ -356,29 +362,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 					$html .= '</td>'."\n";
 					if ($helper->children && count($helper->children) > 0) {
-						$videoi    = '';
-						$breeze    = '';
-						$pdf       = '';
-						$video     = '';
-						$exercises = '';
-						$supp      = '';
-						$grandchildren = $helper->children;
+						$videoi   		= '';
+						$breeze    		= '';
+						$hubpresenter 	= '';
+						$pdf       		= '';
+						$video     		= '';
+						$exercises 		= '';
+						$supp      		= '';
+						$grandchildren 	= $helper->children;
 						foreach ($grandchildren as $grandchild)
 						{
 							$grandchild->title = ResourcesHtml::encode_html($grandchild->title);
-
 							$grandchild->path = ResourcesHtml::processPath($option, $grandchild, $child->id);
 
-							switch ($grandchild->type)
+							$grandchild_rt = new ResourcesType( $database );
+							$grandchild_rt->load($grandchild->type);
+							$alias = $grandchild_rt->alias;
+							
+							switch ($alias) 
 							{
-								case 37:
-								case 15:
+								case "player":
+								case "quicktime":
 									$videoi .= (!$videoi) ? '<a href="'.$grandchild->path.'">'.JText::_('View').'</a>' : '';
 									break;
-								case 32:
-									$breeze .= (!$breeze) ? '<a class="breeze" href="'.$grandchild->path.'&amp;no_html=1" title="'.htmlentities(stripslashes($grandchild->title)).'">'.JText::_('View').'</a>' : '';
+								case "breeze":
+									$breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="'.$grandchild->path.'&amp;no_html=1" title="'.htmlentities(stripslashes($grandchild->title)).'">'.JText::_('View Flash').'</a>' : '';
 									break;
-								case 33:
+								case "hubpresenter":
+									$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.htmlentities(stripslashes($grandchild->title)).'">'.JText::_('View HTML').'</a>' : '';
+									break;
+								case "pdf":
 								default:
 									if ($grandchild->logicaltype == 14) {
 										$pdf .= '<a href="'.$grandchild->path.'">'.JText::_('Notes').'</a>'."\n";
@@ -390,8 +403,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 									break;
 							}
 						}
-
-						$html .= t.t.t.'<td>'.$breeze.'</td>'."\n";
+						
+						
+						if($hubpresenter) {
+							$html .= t.t.t.'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
+						} else {
+							$html .= t.t.t.'<td>'.$breeze.'</td>'."\n";
+						}
 						$html .= t.t.t.'<td>'.$videoi.'</td>'."\n";
 						$html .= t.t.t.'<td>'.$pdf.'</td>'."\n";
 						$html .= t.t.t.'<td>'.$supp.'</td>'."\n";

@@ -67,7 +67,9 @@ a:focus {
 	font-size:11px;
 	outline:none;
 	}
-
+#presenter-nav-bar #presentation-picker select {
+	max-width:300px;
+	}
 	
 /*---------------------------------------------------------------
     Container
