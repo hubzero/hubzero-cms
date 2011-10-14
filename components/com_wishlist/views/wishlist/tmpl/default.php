@@ -111,7 +111,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 			$sortbys['date'] = JText::_('DATE');
 			$sortbys['feedback'] = JText::_('FEEDBACK');
-
+			$sortbys['submitter'] = JText::_('Submitter');
 			if($wishlist->banking) {
 				$sortbys['bonus']=JText::_('BONUS_AND_POPULARITY');
 			}

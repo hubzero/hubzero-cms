@@ -384,13 +384,15 @@ class Wish extends JTable
 										break;
 				case 'latestcomment':   $sort = 'latestcomment DESC, ws.status ASC';
 										break;
+				case 'submitter':       $sort = 'xp.name ASC';       
+										break;
 				default: 				$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
 										break;
 		}
 
 		$sql = $fullinfo
 				? "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, "
-				: "SELECT ws.id, ws.wishlist, ws.proposed, ws.granted, ws.granted_vid, ws.status ";
+				: "SELECT ws.id, ws.wishlist, ws.proposed, ws.granted, ws.granted_vid, ws.status, xp.name AS authorname ";
 
 		if ($fullinfo) {
 			if ($uid) {
@@ -429,9 +431,9 @@ class Wish extends JTable
 			$sql .= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";
 		}
 		$sql .= "\n FROM #__wishlist_item AS ws";
-
-		if ($fullinfo) {
-			$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
+		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
+		if ($fullinfo) {			
+			//$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
 			$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
 			$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
 			if ($filters['tag']) {
