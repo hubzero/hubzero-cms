@@ -986,7 +986,7 @@ class SupportController extends Hubzero_Controller
 									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
 										$this->setError( JText::_('Failed to message ticket owner.') );
 									}
-									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$juser->get('name').' ('.$juser->get('username').') </li>';
+									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$juser->get('name').' ('.$juser->get('username').')</li>';
 								} else {
 									// Move on - nothing else we can do here
 									continue;

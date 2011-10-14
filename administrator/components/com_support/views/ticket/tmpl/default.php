@@ -236,31 +236,16 @@ if ($this->filters['_show'] != '') {
 						<td width="50%">
 							<label>
 								<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
+								<?php 
+							JPluginHelper::importPlugin( 'hubzero' );
+							$dispatcher =& JDispatcher::getInstance();
+							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])) );
+
+							if (count($tf) > 0) {
+								echo $tf[0];
+							} else { ?>
 								<input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="35" />
-								<?php
-								/*$html  = '<select name="category" id="category">'."\n";
-								foreach ($lists['sections'] as $section) 
-								{
-									$selected = ($section->txt == $this->row->section && $this->row->category == '')
-											  ? ' selected="selected"'
-											  : '';
-									$html .= '<optgroup label="'.htmlentities(stripslashes($section->txt)).'">'."\n";
-									$html .= '<option value="'.$section->id.':"'.$selected.'>All '.htmlentities(stripslashes($section->txt)).'</option>'."\n";
-									// Get categories
-									$sa = new SupportCategory( $database );
-									$categories = $sa->getCategories( $section->id );
-									foreach ($categories as $category) 
-									{
-										$selected = ($category->txt == $this->row->category)
-												  ? ' selected="selected"'
-												  : '';
-										$html .= '<option value="'.$section->id.':'.$category->id.'"'.$selected.'>'.htmlentities(stripslashes($category->txt)).'</option>'."\n";
-									}
-									$html .= '</optgroup>'."\n";
-								}
-								$html .= '</select>'."\n";
-								echo $html;*/
-								?>
+							<?php } ?>
 							</label>
 						</td>
 						<td width="50%">
@@ -289,8 +274,6 @@ if ($this->filters['_show'] != '') {
 							<label>
 								<?php echo JText::_('COMMENT_GROUP'); ?>:<br />
 								<?php 
-								JPluginHelper::importPlugin( 'hubzero' );
-								$dispatcher =& JDispatcher::getInstance();
 								$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','',$this->row->group,'','owner')) );
 								if (count($gc) > 0) {
 									echo $gc[0];
@@ -439,8 +422,15 @@ if ($this->filters['_show'] != '') {
 					<tr>
 						<td colspan="3">
 							<label>
-								<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?><br />
-								<input type="text" name="cc" id="cc" value="" style="width: 100%;" />
+								<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php 
+								// Autocompleter turned off because the autocomplete method of (front-end) com_members needs to know 
+								// if the user is logged in or not, which it can't do from the back-end
+								/*$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'cc', 'acmembers')) );
+								if (count($mc) > 0) {
+									echo '<span class="hint">supports usernames, user IDs, and email addresses</span>'.$mc[0];
+								} else { */?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+								<input type="text" name="cc" id="acmembers" value="" style="width: 100%;" />
+								<?php //} ?>
 							</label>
 						</td>
 					</tr>

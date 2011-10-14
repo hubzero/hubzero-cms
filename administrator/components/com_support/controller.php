@@ -1524,8 +1524,8 @@ class SupportController extends Hubzero_Controller
 							// Is this a username or email address?
 							if (!strstr( $acc, '@' )) {
 								// Username or user ID - load the user
-                                $acc = (is_string($acc)) ? strtolower($acc) : $acc;
-                                $juser =& JUser::getInstance( $acc );
+								$acc = (is_string($acc)) ? strtolower($acc) : $acc;
+								$juser =& JUser::getInstance( $acc );
 								// Did we find an account?
 								if (is_object($juser)) {
 									// Get the user's email address
@@ -1534,7 +1534,7 @@ class SupportController extends Hubzero_Controller
 									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
 										$this->setError( JText::_('Failed to message ticket owner.') );
 									}
-									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
+									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$juser->get('name').' ('.$juser->get('username').')</li>';
 								} else {
 									// Move on - nothing else we can do here
 									continue;
