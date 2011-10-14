@@ -141,11 +141,20 @@ class WikiController extends Hubzero_Controller
 			case 'savecomment':    $this->savecomment();    break;
 			case 'removecomment':  $this->removecomment();  break;
 			case 'reportcomment':  $this->reportcomment();  break;
-
+			case 'update': $this->_update(); break;
 			default: $this->view(); break;
 		}
 	}
 
+	private function _update() 
+	{
+		$wpa = new WikiPageAuthor($this->database);
+		if ($wpa->transitionAuthors()) {
+			echo 'Done.';
+		} else {
+			echo $wpa->getError();
+		}
+	}
 	/**
 	 * Short description for 'getScripts'
 	 * 
@@ -155,6 +164,7 @@ class WikiController extends Hubzero_Controller
 	 * @param      string $path Parameter description (if any) ...
 	 * @return     void
 	 */
+
 	private function getScripts($name='', $path='')
 	{
 		$document =& JFactory::getDocument();
@@ -394,12 +404,6 @@ class WikiController extends Hubzero_Controller
 		}
 		$view->display();
 
-		// Output HTML
-		/*echo WikiHtml::div( WikiHtml::hed( 2,ucwords($this->_name) ), 'full', 'content-header');
-		echo '<div class="main section">'.n;
-		ximport('Hubzero_Module_Helper');
-		Hubzero_Module_Helper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;*/
 	}
 
 	/**
@@ -411,8 +415,6 @@ class WikiController extends Hubzero_Controller
 	 */
 	protected function edit()
 	{
-	    //$juser =& JFactory::getUser();
-		//$database =& JFactory::getDBO();
 
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
@@ -431,13 +433,7 @@ class WikiController extends Hubzero_Controller
 		// Get the most recent version for editing
 		$revision = $this->page->getCurrentRevision();
 		$revision->created_by = $this->juser->get('id');
-
-		// If we have a specific section, extract it from the full text
-		/*$section = JRequest::getInt( 'section', 0 );
-		if ($section) {
-			$p = new WikiParser( $this->pagename );
-			$s = $p->getSection( $revision->pagetext, $section, '' );
-		}*/
+		
 
 		// If an existing page, pull its tags for editing
 		$tagstring = '';
@@ -455,20 +451,17 @@ class WikiController extends Hubzero_Controller
 			}
 
 			// Get the list of authors and find out their usernames
-			//$wa = new WikiAuthor( $database );
-			/*$auths = $wa->getAuthors( $this->page->id );
+			$wpa = new WikiPageAuthor($this->database);
+			$auths = $wpa->getAuthors($this->page->id);
+			$authors = '';
 			if (count($auths) > 0) {
 				$autharray = array();
 				foreach ($auths as $auth)
 				{
-					$zuser =& JUser::getInstance( trim($auth) );
-					if (is_object($zuser)) {
-						$autharray[] = $zuser->get('username');
-					}
+					$autharray[] = $auth->username;
 				}
-				$authors = implode( ', ', $autharray );
-			}*/
-			$authors = $this->page->authors;
+				$authors = implode(', ', $autharray);
+			}
 		} else {
 			$this->page->created_by = $this->juser->get('id');
 			$this->page->scope = $this->scope;
@@ -746,7 +739,10 @@ class WikiController extends Hubzero_Controller
 
 		if ($this->checkAuthorization()) {
 			// Get allowed authors
-			$page->authors = trim(JRequest::getVar( 'authors', '' ));
+			//$page->authors = trim(JRequest::getVar( 'authors', '', 'post' ));
+			if (!$page->updateAuthors(JRequest::getVar('authors', '', 'post'))) {
+				$this->setError($page->getError());
+			}
 
 			// Get parameters
 			$params = JRequest::getVar( 'params', '', 'post' );
@@ -2072,8 +2068,7 @@ class WikiController extends Hubzero_Controller
 				}
 
 				// Check if they're in the approved author list
-				$authors = $this->page->getAuthors();
-				if (in_array($this->juser->get('username'),$authors)) {
+				if ($this->page->isAuthor($this->juser->get('id'))) {
 					return true;
 				}
 
@@ -2085,7 +2080,7 @@ class WikiController extends Hubzero_Controller
 					if ($this->page->access == 1 || $this->page->access == 2) {
 						// This page is a private page
 						// So, we need to check if the current user is a member of the page's group
-						$usergroups = Hubzero_User_Helper::getGroups( $this->juser->get('id') );
+						$usergroups = Hubzero_User_Helper::getGroups($this->juser->get('id'));
 						if ($usergroups && count($usergroups) > 0) {
 							foreach ($usergroups as $ug)
 							{

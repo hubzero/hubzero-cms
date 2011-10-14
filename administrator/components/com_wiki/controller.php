@@ -228,6 +228,18 @@ class WikiController extends Hubzero_Controller
 			$row->created_by = $this->juser->get('id');
 		}
 
+		$wpa = new WikiPageAuthor($this->database);
+		$auths = $wpa->getAuthors($row->id);
+		$row->authors = '';
+		if (count($auths) > 0) {
+			$autharray = array();
+			foreach ($auths as $auth)
+			{
+				$autharray[] = $auth->username;
+			}
+			$row->authors = implode(', ', $autharray);
+		}
+		
 		$creator =& JUser::getInstance($row->created_by);
 
 		$view->creator = $creator;
@@ -341,6 +353,10 @@ class WikiController extends Hubzero_Controller
 				$txt[] = "$k=$v";
 			}
 			$row->params = implode( "\n", $txt );
+		}
+		
+		if (!$row->updateAuthors($page['authors'])) {
+			$this->setError($row->getError());
 		}
 
 		// Check content

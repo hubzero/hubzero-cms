@@ -262,12 +262,7 @@ class WikiHtml
 			$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$page->created_by).'">'.$author.'</a>';
 			foreach ($authors as $auth)
 			{
-				if ($auth != $ausername && trim($auth) != '') {
-					$zuser =& JUser::getInstance($auth);
-					if (is_object($zuser) && $zuser->get('name') != '') {
-						$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$zuser->get('id')).'">'.$zuser->get('name').'</a>';
-					}
-				}
+				$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$auth->user_id).'">'.stripslashes($auth->name).'</a>';
 			}
 			$auths = implode(', ',$auths);
 			$html .= '<p class="topic-authors">'. JText::_('by') .' '. $auths.'</p>'."\n";

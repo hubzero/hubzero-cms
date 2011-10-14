@@ -40,19 +40,19 @@ class WikiPage extends JTable
 {
 
 	/**
-	 * Description for 'id'
-	 * 
-	 * @var unknown
+	 * Primary key field in the table
+	 *
+	 * @var	integer
 	 */
-	var $id          = NULL;  // @var int(11) Primary key
+	public $id = NULL;
 
 
 	/**
-	 * Description for 'pagename'
-	 * 
-	 * @var string
+	 * Page name
+	 *
+	 * @var	string
 	 */
-	var $pagename    = NULL;  // @var varchar(100) Unique key
+	public $pagename = NULL;
 
 
 	/**
@@ -60,122 +60,116 @@ class WikiPage extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $hits        = NULL;  // @var int(11)
 
 
 	/**
-	 * Description for 'created_by'
-	 * 
-	 * @var unknown
+	 * Page hits
+	 *
+	 * @var	integer
 	 */
-	var $created_by  = NULL;  // @var int(11)
+	public $hits = NULL;
 
 
 	/**
-	 * Description for 'rating'
-	 * 
-	 * @var unknown
+	 * Creator of the page
+	 *
+	 * @var	integer
 	 */
-	var $rating      = NULL;  // @var decimal(2,1)
+	public $created_by  = NULL;  // @var int(11)
 
 
 	/**
-	 * Description for 'times_rated'
-	 * 
-	 * @var unknown
+	 * Page rating
+	 *
+	 * @var	integer
 	 */
-	var $times_rated = NULL;  // @var int(11)
+	public $rating = NULL;  // @var decimal(2,1)
 
 
 	/**
-	 * Description for 'title'
-	 * 
-	 * @var unknown
+	 * Number of times a page is rated
+	 *
+	 * @var	integer
 	 */
-	var $title       = NULL;  // @var varchar(255)
+	public $times_rated = NULL;
 
 
 	/**
-	 * Description for 'scope'
-	 * 
-	 * @var string
+	 * Page title
+	 *
+	 * @var	string
 	 */
-	var $scope       = NULL;  // @var varchar(255)
+	public $title = NULL;
 
 
 	/**
-	 * Description for 'params'
-	 * 
-	 * @var unknown
+	 * Scope
+	 *
+	 * @var	string
 	 */
-	var $params      = NULL;  // @var text
+	public $scope = NULL;
 
 
 	/**
-	 * Description for 'ranking'
-	 * 
-	 * @var unknown
+	 * Parameters
+	 *
+	 * @var	string
 	 */
-	var $ranking     = NULL;  // @var float
+	public $params = NULL;
 
 
 	/**
-	 * Description for 'authors'
-	 * 
-	 * @var unknown
+	 * Ranking of the page
+	 *
+	 * @var	integer
 	 */
-	var $authors     = NULL;  // @var varchar(255)
+	public $ranking = NULL;
 
 
 	/**
-	 * Description for 'access'
-	 * 
-	 * @var unknown
+	 * Access state
+	 *
+	 * @var	integer
 	 */
-	var $access      = NULL;  // @var tinyint(2)
+	public $access = NULL;
 
 
 	/**
-	 * Description for 'group'
-	 * 
-	 * @var unknown
+	 * Group the wiki page belongs to
+	 *
+	 * @var	string
 	 */
-	var $group       = NULL;  // @var varchar(255)
+	public $group = NULL;
 
 
 	/**
-	 * Description for 'state'
-	 * 
-	 * @var unknown
+	 * Published state
+	 *
+	 * @var	integer
 	 */
-	var $state       = NULL;  // @var tinyint(2)
+	public $state = NULL;
 
-	//-----------
 
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * Object constructor to set table and key field
+	 *
+	 * @param 	object 		$db JDatabase object
 	 * @return     void
 	 */
-	function __construct( &$db )
+	public function __construct(&$db) 
 	{
-		parent::__construct( '#__wiki_page', 'id', $db );
+		parent::__construct('#__wiki_page', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'load'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      string $scope Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * Loads a database record into the current object
+	 *
+	 * @param 	integer 	$oid
+	 * @param 	string 		$scope
+	 * @return 	boolean		True if data successfully loaded into object
 	 */
-	function load( $oid=NULL, $scope='' )
+	public function load($oid=NULL, $scope='') 
 	{
 		$s = "";
 		if ($oid !== NULL && !is_numeric($oid)) {
@@ -191,37 +185,33 @@ class WikiPage extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$oid' $s" );
-		//return $this->_db->loadObject( $this );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$oid' $s");
 		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
+			return $this->bind($result);
 		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getID'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
+	 * Returns the record ID for a given page
+	 *
+	 * @return 	integer
 	 */
-	function getID()
+	public function getID() 
 	{
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE pagename='". $this->pagename ."' AND scope='".$this->scope."'" );
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename='". $this->pagename ."' AND scope='".$this->scope."'");
 		$this->id = $this->_db->loadResult();
+		return $this->id;
 	}
 
 	/**
-	 * Short description for 'exist'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * Checks if a page exists
+	 *
+	 * @return 	boolean
 	 */
-	function exist()
+	public function exist()
 	{
 		if ($this->id !== NULL) {
 			return true;
@@ -231,15 +221,13 @@ class WikiPage extends JTable
 	}
 
 	/**
-	 * Short description for 'calculateRating'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
+	 * Calculates the average (5 star) rating for a page
+	 *
+	 * @return 	void
 	 */
-	function calculateRating()
+	public function calculateRating()
 	{
-		$this->_db->setQuery( "SELECT rating FROM #__wiki_comments WHERE pageid='$this->id' AND rating!=0" );
+		$this->_db->setQuery("SELECT rating FROM #__wiki_comments WHERE pageid='$this->id' AND rating!=0");
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -263,85 +251,73 @@ class WikiPage extends JTable
 	}
 
 	/**
-	 * Short description for 'getTags'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * Returns an array of tags associated with this page
+	 *
+	 * @param 	integer 	$admin
+	 * @return 	array
 	 */
-	function getTags($admin=0)
+	public function getTags($admin=0) 
 	{
-		$obj = new WikiTags( $this->_db );
+		$obj = new WikiTags($this->_db);
 		$tags = $obj->get_tags_on_object($this->id, 0, 0, '', 0, $admin);
 		return $tags;
 	}
 
 	/**
-	 * Short description for 'getRevision'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $version Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * Loads a specific page revision
+	 *
+	 * @param 	integer 	$version
+	 * @return 	object		WikiPageRevision
 	 */
-	function getRevision($version)
+	public function getRevision($version)
 	{
-		$obj = new WikiPageRevision( $this->_db );
-		$obj->loadByVersion( $this->id, $version );
+		$obj = new WikiPageRevision($this->_db);
+		$obj->loadByVersion($this->id, $version);
 		return $obj;
 	}
 
 	/**
-	 * Short description for 'getRevisionCount'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * Counts the number of revisions for a page
+	 *
+	 * @return 	integer
 	 */
 	public function getRevisionCount()
 	{
-		$obj = new WikiPageRevision( $this->_db );
+		$obj = new WikiPageRevision($this->_db);
 		$obj->pageid = $this->id;
 		return $obj->getRevisionCount();
 	}
 
 	/**
-	 * Short description for 'getCurrentRevision'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * Loads the most current page revision
+	 *
+	 * @return 	object		WikiPageRevision
 	 */
-	function getCurrentRevision()
+	public function getCurrentRevision()
 	{
-		$obj = new WikiPageRevision( $this->_db );
-		$obj->loadByVersion( $this->id );
+		$obj = new WikiPageRevision($this->_db);
+		$obj->loadByVersion($this->id);
 		return $obj;
 	}
 
 	/**
-	 * Short description for 'getTemplates'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * Returns an array of page templates
+	 *
+	 * @return 	array
 	 */
-	function getTemplates()
+	public function getTemplates()
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group`='$this->group' ORDER BY `pagename`" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group`='$this->group' ORDER BY `pagename`");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for '_check'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $pagename Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * Checks if a pagename is valid
+	 *
+	 * @param 	string 	$pagename
+	 * @return 	string 	$pagename
 	 */
-	function _check($pagename)
+	private function _check($pagename) 
 	{
 		// Compress internal white-space to single space character.
 		$pagename = preg_replace('/[\s\xa0]+/', ' ', $orig = $pagename);
@@ -356,33 +332,32 @@ class WikiPage extends JTable
 		}
 
 		if ($pagename != $orig) {
-			$this->setError( sprintf("Pagename: Leading %s not allowed", WIKI_SUBPAGE_SEPARATOR) );
+			$this->setError(JText::sprintf("Pagename: Leading %s not allowed", WIKI_SUBPAGE_SEPARATOR));
 		}
 
 		// not only for SQL, also to restrict url length
 		if (strlen($pagename) > WIKI_MAX_PAGENAME_LENGTH) {
 			$pagename = substr($pagename, 0, WIKI_MAX_PAGENAME_LENGTH);
-			$this->setError( 'Pagename too long' );
+			$this->setError(JText::_('Pagename too long'));
 		}
 
 		return $pagename;
 	}
 
 	/**
-	 * Short description for 'check'
-	 * 
-	 * Long description (if any) ...
+	 * Method for checking that fields are valid before sending to the database
 	 * 
 	 * @return     boolean Return description (if any) ...
 	 */
-	function check()
+	public function check() 
 	{
 		if (is_string($this->pagename) && trim($this->pagename) == '') {
-			$this->setError( 'Your page must have a name.' );
+			$this->setError(JText::_('Your page must have a name.'));
 			return false;
 		}
-		$this->pagename = $this->_check( $this->pagename );
-
+		
+		$this->pagename = $this->_check($this->pagename);
+		
 		if (trim($this->getError()) != '') {
 			return false;
 		}
@@ -390,122 +365,134 @@ class WikiPage extends JTable
 	}
 
 	/**
-	 * Short description for 'getAuthors'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * Returns an array of objects of user data for a given page ID
+	 *
+	 * @return 	array
 	 */
-	function getAuthors()
+	public function getAuthors()
 	{
-		$auths = explode(',',$this->authors);
-		for ($i=0, $n=count( $auths ); $i < $n; $i++)
-		{
-			$auths[$i] = trim($auths[$i]);
-		}
-
-		return $auths;
+		$wpa = new WikiPageAuthor($this->_db);
+		return $wpa->getAuthors($this->id);
 	}
 
 	/**
-	 * Short description for 'deleteBits'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     void
+	 * Saves a string of comma-separated usernames or IDs to authors table
+	 * Removes any database entries not found in the string of authors
+	 *
+	 * @param 	string 		$authors
+	 * @return 	boolean 	True if authors successfully saved
 	 */
-	function deleteBits( $id=NULL )
+	public function updateAuthors($authors=NULL)
+	{
+		$wpa = new WikiPageAuthor($this->_db);
+		return $wpa->updateAuthors($authors, $this->id);
+	}
+
+	/**
+	 * Returns whether a user is an author for a given page
+	 *
+	 * @param 	integer 	$user_id
+	 * @return 	boolean		True if user is an author
+	 */
+	public function isAuthor($user_id=NULL) 
+	{
+		$wpa = new WikiPageAuthor($this->_db);
+		return $wpa->isAuthor($this->id, $user_id);
+	}
+	
+	/**
+	 * Deletes all information associated with a page
+	 *
+	 * @param 	integer 	$id
+	 * @return 	boolean 	True if all info successfully deleted
+	 */
+	public function deleteBits($id=NULL) 
 	{
 		if (!$id) {
 			$id = $this->id;
 		}
+		if (!$id) {
+			$this->setError(JText::_('Missing page ID'));
+			return false;
+		}
 
 		// Delete the page's version history
-		$this->_db->setQuery( "DELETE FROM #__wiki_version WHERE pageid='".$id."'" );
+		$this->_db->setQuery("DELETE FROM #__wiki_version WHERE pageid='".$id."'");
 		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 		// Delete the page's tags
-		$this->_db->setQuery( "DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid='".$id."'" );
+		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid='".$id."'");
 		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 		// Delete the page's comments
-		$this->_db->setQuery( "DELETE FROM #__wiki_comments WHERE pageid='".$id."'" );
+		$this->_db->setQuery("DELETE FROM #__wiki_comments WHERE pageid='".$id."'");
 		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 		// Delete the page's attachments
-		$this->_db->setQuery( "DELETE FROM #__wiki_attachments WHERE pageid='".$id."'" );
+		$this->_db->setQuery("DELETE FROM #__wiki_attachments WHERE pageid='".$id."'");
 		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 		// Delete the page's authors
-		/*$this->_db->setQuery( "DELETE FROM #__wiki_authors WHERE pid='".$id."'" );
+		$this->_db->setQuery("DELETE FROM #__wiki_page_author WHERE page_id='".$id."'");
 		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
-		}*/
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 
 	/**
-	 * Short description for 'count'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * Returns a record count of the table
+	 *
+	 * @return 	integer
 	 */
-	function count( $filters=array() )
+	public function count()
 	{
-		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl" );
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getPagesCount'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * Returns a record count for a wiki
+	 * Accepts an array of filters used to build the query
+	 *
+	 * @param 	array 	$filters
+	 * @return 	integer
 	 */
-	public function getPagesCount( $filters=array() )
+	public function getPagesCount($filters=array())
 	{
 		$filters['limit'] = 0;
 		$filters['count'] = true;
 
-		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		$this->_db->setQuery($this->buildQuery($filters));
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getPages'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * Returns an array of records based on the filters passed to it
+	 *
+	 * @param 	array 	$filters
+	 * @return 	array
 	 */
-	public function getPages( $filters=array() )
+	public function getPages($filters=array())
 	{
-		//echo $this->buildQuery( $filters );
-		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		$this->_db->setQuery($this->buildQuery($filters));
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildQuery'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * Builds an SQL statement based on the filters passed to it
+	 *
+	 * @param 	array 	$filters
+	 * @return 	string
 	 */
 	public function buildQuery($filters)
 	{
@@ -531,14 +518,13 @@ class WikiPage extends JTable
 	}
 
 	/**
-	 * Short description for 'buildPluginQuery'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * Builds an SQL statement based on the filters passed to it
+	 * Used only in plugins for other components (e.g., com_tags)
+	 *
+	 * @param 	array 	$filters
+	 * @return 	string
 	 */
-	function buildPluginQuery( $filters=array() )
+	public function buildPluginQuery($filters=array()) 
 	{
 		//$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
@@ -557,7 +543,7 @@ class WikiPage extends JTable
 			}
 		} else {
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagehtml AS itext, NULL AS ftext, w.state, v.created, v.created AS modified, v.created AS publish_up, w.params, 
-					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS section, w.group AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
+					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS `section`, w.`group` AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
 			if (isset($filters['tags'])) {
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
@@ -605,9 +591,10 @@ class WikiPage extends JTable
 		$query .= "WHERE w.id=v.pageid AND v.approved=1 ";
 		if (isset($filters['author'])) {
 			$query .= "AND (w.created_by='".$filters['author']."'";
-			if (isset($filters['username']) && trim($filters['username']) != '') {
-				$query .= " OR w.authors LIKE '%".$filters['username']."%'";
-			}
+			//if (isset($filters['username']) && trim($filters['username']) != '') {
+				//$query .= " OR w.authors LIKE '%".$filters['username']."%'";
+				$query .= " OR ".$filters['author']." IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id)";
+			//}
 			$query .= ") ";
 		}
 		if (isset($filters['tags'])) {
@@ -726,4 +713,3 @@ class WikiPage extends JTable
 		return $query;
 	}
 }
-
