@@ -2444,8 +2444,7 @@ class ResourcesHtml
 					$class = 'download';
 				} elseif (in_array($rt_t->alias,$mediatypes)) {
 					$mesg  = 'View Presentation';
-					//$mediatypes = array('32','26');
-					$mediatypes = array('flash_paper','breeze');
+					$mediatypes = array('flash_paper','breeze','32','26');
 					if (in_array($firstChild->type,$mediatypes)) {
 						$class = 'play';
 					}
@@ -2497,7 +2496,7 @@ class ResourcesHtml
 						$h = (intval($height) > 0) ? intval($height) : 400;
 						//$action = 'onclick="popupWindow(\''.$url.'\', \''.$firstChild->title.'\', '.$w.', '.$h.', \'auto\');"';
 						$mesg  = 'View Resource';
-						//$class .= ' popup';
+						$class = 'play';
 					}
 
 					if (intval($width) > 0 && intval($height) > 0) {

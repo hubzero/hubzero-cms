@@ -132,6 +132,21 @@ if ($this->resource->type == 4) {
 	$attribs = new JParameter( $this->activechild->attribs );
 	$width  = $attribs->get( 'width', '' );
 	$height = $attribs->get( 'height', '' );
+	$attributes = $attribs->get('attributes', '');
+	if ($attributes) {
+		$a = explode(',', $attributes);
+		$bits = array();
+		if ($a && is_array($a)) {
+			foreach ($a as $b) 
+			{
+				if (strstr($b, ':')) {
+					$b = split(':', $b);
+					$bits[] = trim($b[0]) . '="' . trim($b[1]) . '"';
+				}
+			}
+		}
+		$attributes = implode(' ', $bits);
+	}
 
 	$type = '';
 	$arr  = explode('.',$url);
@@ -142,6 +157,9 @@ if ($this->resource->type == 4) {
 	$width = (intval($width) > 0) ? $width : 0;
 	$height = (intval($height) > 0) ? $height : 0;
 
+	$images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
+	$files = array('pdf');
+	
 	if (is_file(JPATH_ROOT.$url)) {
 		if (strtolower($type) == 'swf') {
 			$height = '400px';
@@ -156,8 +174,12 @@ if ($this->resource->type == 4) {
 			$html .= ' <param name="scale" value="showall" />'."\n";
 			$html .= ' <embed src="'. $url .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
 			$html .= '</object>'."\n";
+		} else if (in_array(strtolower($type), $images)) {
+			$html .= '<img ' . $attributes . ' src="' . $url . '" alt="Image" />'."\n";
+		} else if (in_array(strtolower($type), $files)) {
+			$html .= '<iframe src="'.$url.'" width="97%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
 		} else {
-			$html .= '<applet code="Silicon" archive="'. $url .'" width="';
+			$html .= '<applet ' . $attributes . ' archive="'. $url .'" width="';
 			$html .= ($width > 0) ? $width : '';
 			$html .= '" height="';
 			$html .= ($height > 0) ? $height : '';
@@ -175,4 +197,3 @@ if ($this->resource->type == 4) {
 	}
 }
 echo $html;
-?>
