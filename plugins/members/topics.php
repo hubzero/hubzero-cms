@@ -91,7 +91,7 @@ class plgMembersTopics extends JPlugin
 		//$query  = "SELECT COUNT(*) FROM #__wiki_page AS w WHERE (w.created_by='".$user_id."' OR w.authors LIKE '%".$username."%')";
 		$username = ($username == 'm.username') ? $username : "'".$username."'";
 		$query = "SELECT COUNT(*) FROM #__wiki_page AS w
-					WHERE ((".$user_id." > 0 AND (w.created_by = ".$user_id." OR w.authors LIKE CONCAT('%', ".$username.", '%'))) OR (".$user_id." <= 0 AND w.created_by = ".$user_id."))";
+					WHERE ((".$user_id." > 0 AND (w.created_by = ".$user_id." OR ".$user_id." IN (SELECT wpa.user_id FROM #__wiki_page_author AS wpa WHERE wpa.page_id=w.id))) OR (".$user_id." <= 0 AND w.created_by = ".$user_id."))"; 
 		if (!$authorized) {
 			$query .= " AND w.access!=1";
 		}
