@@ -1225,7 +1225,7 @@ class ResourcesHtml
 			} else {
 				$exp = '%I:%M %p, %B %d, %Y';
 			}
-			if (substr($attribs->get('timeof', ''), 0, 5) == '-') {
+			if (substr($attribs->get('timeof', ''), 4, 1) == '-') {
 			$seminar_time = ($attribs->get( 'timeof', '' ) != '0000-00-00 00:00:00' || $attribs->get( 'timeof', '' ) != '')
 						  ? JHTML::_('date', $attribs->get( 'timeof', '' ), $exp)
 							  : '';
