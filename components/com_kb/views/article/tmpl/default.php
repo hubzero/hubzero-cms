@@ -564,7 +564,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						<strong>Please keep comments relevant to this entry.</strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
 					</p>
 				</div>
 			</fieldset>

@@ -152,7 +152,7 @@ if ($this->row->parent) {
 						<strong>Please keep comments polite and on topic. Offensive posts may be removed.</strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
 					</p>
 				</div>
 			</fieldset>

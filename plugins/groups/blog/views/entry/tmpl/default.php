@@ -427,7 +427,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 			
 					<div class="sidenote">
 						<p><strong>Please keep comments relevant to this entry.</strong></p>
-						<p>Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.</p>
+						<p>Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.</p>
 					</div>
 				</fieldset>
 			</form>

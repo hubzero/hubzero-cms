@@ -140,7 +140,7 @@ if($type) {
 						ximport('Hubzero_Wiki_Editor');
 						$editor =& Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('module[content]', 'module[content]', stripslashes($content), '', '50', '15');
-						echo "<a href=\"\">Wiki Formatting</a> is allowed.";
+						echo '<a class="popup" href="'.JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting').'">Wiki Formatting</a> is allowed.';
 					} else {
 						echo str_replace('{{VALUE}}',$content,$module_details['input']);
 					}

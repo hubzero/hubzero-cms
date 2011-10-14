@@ -73,10 +73,10 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 						<td><sub>subscript</sub></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
+						<td colspan="2"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
+						<td colspan="2"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
 					</tr>
 				</tbody>
 			</table>
@@ -101,7 +101,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('entry[content]', 'entrycontent', stripslashes($this->entry->content), '', '50', '40');
 				?>
-				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->content) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>

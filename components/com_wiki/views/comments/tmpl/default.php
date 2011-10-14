@@ -221,7 +221,7 @@ if ($this->comments) {
 						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
 					</p>
 				</div>
 			</fieldset>

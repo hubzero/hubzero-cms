@@ -73,10 +73,10 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 					<td><sub>subscript</sub></td>
 				</tr>
 				<tr>
-					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>" class="popup 400x500">[[Image(filename.jpg)]]</a> includes an image</td>
+					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>" class="popup">[[Image(filename.jpg)]]</a> includes an image</td>
 				</tr>
 				<tr>
-					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>" class="popup 400x500">[[File(filename.pdf)]]</a> includes a file</td>
+					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>" class="popup">[[File(filename.pdf)]]</a> includes a file</td>
 				</tr>
 			</tbody>
 		</table>
@@ -100,7 +100,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		<label>
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?>
 			<?php echo $editor->display('entry[content]', 'entry_content', htmlentities(stripslashes($this->entry->content),ENT_COMPAT,'UTF-8'), '', '40', '35'); ?>
-			<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>" class="popup 400x500">Wiki formatting</a> is allowed.</span>
+			<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki formatting</a> is allowed.</span>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->content) { ?>
 			<p class="error"><?php echo JText::_('PLG_GROUPS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>

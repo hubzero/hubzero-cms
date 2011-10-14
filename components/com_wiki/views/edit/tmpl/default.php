@@ -184,7 +184,7 @@ if ($templates) {
 			echo $editor->display('pagetext', 'pagetext', $this->revision->pagetext, '', '35', '40');
 			?>
 		</label>
-		<p class="ta-right hint">See <a class="popup 400x500" href="/topics/Help:WikiFormatting">Help: Wiki Formatting</a> for help on editing content.</p>
+		<p class="ta-right hint">See <a class="popup" href="/topics/Help:WikiFormatting">Help: Wiki Formatting</a> for help on editing content.</p>
 <?php
 $mode = $params->get( 'mode', 'wiki' );
 if ($this->authorized) {

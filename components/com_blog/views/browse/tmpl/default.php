@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+ximport('Hubzero_Wiki_Parser');
+$p =& Hubzero_Wiki_Parser::getInstance();
+
 $juser =& JFactory::getUser();
 ?>
 <div id="content-header">
@@ -169,7 +172,23 @@ $juser =& JFactory::getUser();
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 
-				//$user =& JUser::getInstance($row->created_by);
+				$wikiconfig = array(
+					'option'   => $this->option,
+					'scope'    => 'blog',
+					'pagename' => $row->alias,
+					'pageid'   => 0,
+					'filepath' => $this->config->get('uploadpath'),
+					'domain'   => '' 
+				);
+				$row->content = $p->parse(stripslashes($row->content), $wikiconfig);
+				if ($this->config->get('cleanintro', 1)) {
+					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), 300, 0, 1);
+				} else {
+					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), 300, 0, 0);
+				}
+				if (substr($row->content, -7) == '&#8230;') {
+					$row->content .= '</p>';
+				}
 ?>
 
 					<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
@@ -208,7 +227,11 @@ switch ($row->state)
 <?php if ($this->config->get('show_authors')) { ?>
 							<p class="entry-author">Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo stripslashes($row->name); ?></a></cite></p>
 <?php } ?>
-							<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), 300, 0); ?> <a class="readmore" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('COM_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a></p>
+<?php if ($this->config->get('cleanintro', 1)) { ?>
+							<p><?php echo $row->content; ?> <a class="readmore" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('COM_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a></p>
+<?php } else { ?>
+							<?php echo $row->content; ?> <p><a class="readmore" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('COM_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a></p>
+<?php } ?>
 						</div>
 					</li>
 <?php
