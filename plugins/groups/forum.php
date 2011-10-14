@@ -31,26 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
+ximport('Hubzero_Plugin');
 JPlugin::loadLanguage( 'plg_groups_forum' );
 
-/**
- * Short description for 'plgGroupsForum'
- * 
- * Long description (if any) ...
- */
-class plgGroupsForum extends JPlugin
-{
+//-----------
 
-	/**
-	 * Short description for 'plgGroupsForum'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @return     void
-	 */
+class plgGroupsForum extends Hubzero_Plugin
+{
 	public function plgGroupsForum(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -253,9 +240,8 @@ class plgGroupsForum extends JPlugin
 		$view->limit = $filters['limit'];
 		$view->pageNav = $pageNav;
 		$view->option = $this->option;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
+		
+		$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 
 		// Return the output
 		return $view->loadTemplate();
@@ -329,9 +315,7 @@ class plgGroupsForum extends JPlugin
 		$view->pageNav = $pageNav;
 		$view->option = $this->option;
 		$view->limit = $filters['limit'];
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
+		$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 
 		// Return the output
 		return $view->loadTemplate();
@@ -367,22 +351,29 @@ class plgGroupsForum extends JPlugin
 		$database =& JFactory::getDBO();
 		$forum = new XForum( $database );
 
+		$forum->load($id);
+		$hasParent = $forum->parent;
+		
 		// Delete all replies on a topic
 		if (!$forum->deleteReplies( $id )) {
-			$app->enqueueMessage($forum->getError(),'error');
-			$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
+			$this->addPluginMessage( $forum->getError(),'error' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
 		}
 
 		// Delete the topic itself
 		if (!$forum->delete( $id )) {
-			$app->enqueueMessage($forum->getError(),'error');
-			$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
+			$this->addPluginMessage( $forum->getError(),'error' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
 		}
 
 		// Return the topics list
-		$app =& JFactory::getApplication();
-		$app->enqueueMessage('The topic was successfully deleted.','passed');
-		$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
+		if($hasParent) {
+			$this->addPluginMessage( 'The topic was successfully deleted.','passed' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=topic&topic='.$hasParent) );
+		} else {
+			$this->addPluginMessage( 'The topic was successfully deleted.','passed' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
+		}
 	}
 
 	/**
@@ -397,9 +388,8 @@ class plgGroupsForum extends JPlugin
 		//check to make sure editor is a member
 		if(!in_array($this->juser->get('id'),$this->members) && $this->authorized != 'admin') {
 			// Return the topics list
-			$app =& JFactory::getApplication();
-			$app->enqueueMessage( JText::sprintf('PLG_GROUPS_FORUM_MUST_MEMBER', 'create/edit a topic'),'warning');
-			$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
+			$this->addPluginMessage( JText::sprintf('PLG_GROUPS_FORUM_MUST_MEMBER', 'create/edit a topic'),'warning' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
 		}
 
 		// get the passed in topic
@@ -463,9 +453,8 @@ class plgGroupsForum extends JPlugin
 		//check to make sure editor is a member
 		if(!in_array($this->juser->get('id'),$this->members) && $this->authorized != 'admin') {
 			// Return the topics list
-			$app =& JFactory::getApplication();
-			$app->enqueueMessage( JText::sprintf('PLG_GROUPS_FORUM_MUST_MEMBER', 'create/edit a topic or reply'),'warning');
-			$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
+			$this->addPluginMessage( JText::sprintf('PLG_GROUPS_FORUM_MUST_MEMBER', 'create/edit a topic or reply'),'warning' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
 		}
 
 		//instantaite database object
@@ -530,13 +519,12 @@ class plgGroupsForum extends JPlugin
 		}
 
 		//if we are replying redirect back to that topic
-		$app =& JFactory::getApplication();
 		if ($row->parent) {
-			$app->enqueueMessage('You have successfully commented on the topic.','passed');
-			$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=topic&topic='.$row->parent) );
+			$this->addPluginMessage( 'You have successfully commented on the topic.','passed' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=topic&topic='.$row->parent) );
 		} else {
-			$app->enqueueMessage('You have successfully added a topic.','passed');
-			$app->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
+			$this->addPluginMessage( 'You have successfully added a topic.','passed' );
+			$this->redirect( JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') );
 		}
 	}
 
