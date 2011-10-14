@@ -514,7 +514,7 @@ class WikiController extends Hubzero_Controller
 		$editauthorized = $this->checkAuthorization('edit');
 
 		// Check if the page is locked and the user is authorized
-		if ($this->page->state == 1 && $authorized !== 'admin' && $authorized !== 'manager') {
+		if ($this->page->state == 1 && $editauthorized !== 'admin' && $editauthorized !== 'manager') {
 			//echo WikiHtml::div(WikiHtml::hed( 2, $pagetitle ), 'full', 'content-header');
 			//echo WikiHtml::warning( JText::_('WIKI_WARNING_NOT_AUTH_TO_MODIFY') );
 			//JError::raiseWarning( 403, JText::_('WIKI_WARNING_NOT_AUTH') );
@@ -537,7 +537,7 @@ class WikiController extends Hubzero_Controller
 		}
 
 		// Check if the page is group restricted and the user is authorized
-		if ($this->page->group != '' && $this->page->access != 0 && !$authorized) {
+		if ($this->page->group != '' && $this->page->access != 0 && !$editauthorized) {
 			//echo WikiHtml::div(WikiHtml::hed( 2, $pagetitle ), 'full', 'content-header');
 			//echo WikiHtml::warning( JText::_('WIKI_WARNING_NOT_AUTH_TO_MODIFY') );
 			//JError::raiseWarning( 403, JText::_('WIKI_WARNING_NOT_AUTH') );

@@ -68,7 +68,7 @@ if ($this->page->id) {
 
 <div class="main section">
 <?php
-if ($this->page->id && !$this->authorized) {
+if ($this->page->id && !$this->editauthorized) {
 	if ($params->get( 'allow_changes' ) == 1) { ?>
 		<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
 <?php } else { ?>
@@ -77,7 +77,7 @@ if ($this->page->id && !$this->authorized) {
 }
 ?>
 
-<?php if ($this->page->state == 1 && $this->authorized !== 'admin' && $this->authorized !== 'manager') { ?>
+<?php if ($this->page->state == 1 && $this->editauthorized !== 'admin' && $this->editauthorized !== 'manager') { ?>
 	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } ?>
 <?php if ($this->getError()) { ?>
@@ -112,7 +112,7 @@ if ($this->page->id) {
 		<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="index.php?option=com_wiki&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $lid; ?>"></iframe>
 	</div>
 	<fieldset>
-<?php if ($this->authorized) { ?>
+<?php if ($this->editauthorized) { ?>
 		<label>
 			<?php echo JText::_('WIKI_FIELD_TITLE'); ?>:
 	<?php if (!$this->page->pagename) { ?>
@@ -187,21 +187,21 @@ if ($templates) {
 		<p class="ta-right hint">See <a class="popup" href="/topics/Help:WikiFormatting">Help: Wiki Formatting</a> for help on editing content.</p>
 <?php
 $mode = $params->get( 'mode', 'wiki' );
-if ($this->authorized) {
+if ($this->editauthorized) {
 	$cls = '';
 	if ($mode && $mode != 'knol') {
 		$cls = ' class="hide"';
 	}
 
 		$juser =& JFactory::getUser();
-		if (!$this->page->id || $this->page->created_by == $juser->get('id') || $this->authorized === 'admin') {
+		if (!$this->page->id || $this->page->created_by == $juser->get('id') || $this->editauthorized === 'admin') {
 ?>
 			<label>
 				<?php echo JText::_('WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
 				<select name="params[mode]" id="params_mode">
 					<option value="knol"<?php if ($mode == 'knol') { echo ' selected="selected"'; } ?>>Knowledge article with specific authors</option>
 					<option value="wiki"<?php if ($mode == 'wiki') { echo ' selected="selected"'; } ?>>Wiki page anyone can edit</option>
-<?php 		if ($this->authorized === 'admin') { ?>
+<?php 		if ($this->editauthorized === 'admin') { ?>
 					<option value="static"<?php if ($mode == 'static') { echo ' selected="selected"'; } ?>>Static (open layout)</option>
 <?php 		} ?>
 				</select>
@@ -253,7 +253,7 @@ if (count($mc) > 0) {
 				<?php echo JText::_('WIKI_FIELD_ACCESS'); ?>
 			</label>
 <?php }
-	if ($this->authorized === 'admin' || $this->authorized === 'manager') { ?>
+	if ($this->editauthorized === 'admin' || $this->editauthorized === 'manager') { ?>
 			<label>
 				<input class="option" type="checkbox" name="state" id="state"<?php if ($this->page->state == 1) { echo ' checked="checked"'; } ?> value="1" />
 				<?php echo JText::_('WIKI_FIELD_STATE'); ?>
@@ -262,7 +262,7 @@ if (count($mc) > 0) {
 		</fieldset>
 		<div class="clear"></div>
 
-<?php if ($this->authorized) { ?>
+<?php if ($this->editauthorized) { ?>
 		<div class="explaination">
 			<p><?php echo JText::_('WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
 		</div>
