@@ -348,7 +348,7 @@ class modWhatsNew
 	{
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->Module);
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
 		
 		$juser =& JFactory::getUser();
 		
