@@ -716,8 +716,9 @@ class FeedbackController extends Hubzero_Controller
 
 			// Quick spam filter
 			$spam = $this->_detect_spam($problem['long'], $ip);
-
-			if ($answer != $key || $spam) {
+			$botcheck = JRequest::getVar('botcheck', '');
+			
+			if ($answer != $key || $spam || $botcheck) {
 				if ($no_html) {
 					// Output error messages (AJAX)
 					$view = new JView( array('name'=>'report', 'layout'=>'error') );

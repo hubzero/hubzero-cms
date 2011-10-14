@@ -104,6 +104,7 @@ $topics = array(
 			<input type="hidden" name="krhash" value="<?php echo $this->problem['key']; ?>" />
 <?php if ($this->verified) { ?>
 			<input type="hidden" name="answer" value="<?php echo $this->problem['sum']; ?>" />
+			<input type="hidden" name="botcheck" value="" />
 <?php } ?>
 			
 			<label>
@@ -185,8 +186,12 @@ $topics = array(
 				<input type="file" name="upload" id="trUpload" />
 				
 			</label>
-			
 <?php if (!$this->verified) { ?>
+			<label id="fbBotcheck-label" for="fbBotcheck">
+				<?php echo JText::_('Please leave this field blank.'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
+				<input type="text" name="botcheck" id="fbBotcheck" value="" />
+			</label>
+			
 			<label<?php echo ($this->getError() == 3) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::sprintf('COM_FEEDBACK_TROUBLE_MATH', $this->problem['operand1'], $this->problem['operand2']); ?>
 				<input type="text" name="answer" value="" size="3" id="answer" class="option" /> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>

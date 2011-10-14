@@ -28,7 +28,9 @@
 	#member-picture th {
 		border: none;
 		}
-		
+	#hubForm label#fbBotcheck-label {
+		display: none;
+		}
 /* Supporting styles missing from main.css */
 
 /* For the options to Poll */

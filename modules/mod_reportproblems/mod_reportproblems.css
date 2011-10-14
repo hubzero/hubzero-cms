@@ -76,16 +76,16 @@
 		margin: 0;
 		}
 	#help-container li.help-wish {
-		background: url("../../../../modules/mod_reportproblems/images/wishbone.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/wishbone.png") 0 0.7em no-repeat;
 		}
 	#help-container li.help-tickets {
-		background: url("../../../../modules/mod_reportproblems/images/ticket.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/ticket.png") 0 0.7em no-repeat;
 		}
 	#help-container li.help-kb {
-		background: url("../../../../modules/mod_reportproblems/images/bulb.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/bulb.png") 0 0.7em no-repeat;
 		}
 	#help-container li.help-qa {
-		background: url("../../../../modules/mod_reportproblems/images/qa.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/qa.png") 0 0.7em no-repeat;
 		}
 	#help-container li p {
 		margin: 0;
@@ -213,13 +213,16 @@
 	#trSuccess {
 		display: none;
 		}
+	#help-container label#trBotcheck-label {
+		display: none;
+		}
 	#help-btn-close {
 		position: absolute;
 		width: 30px;
 		height: 30px;
 		right: 40px;
 		top: 15px;
-		background: url("../../../../modules/mod_reportproblems/images/close.png") no-repeat top left;
+		background: url("/modules/mod_reportproblems/images/close.png") no-repeat top left;
 		border: none;
 		text-indent: -55em;
 		overflow: hidden;
@@ -258,7 +261,7 @@
 	#tab a span { 
 		padding: 1em 0 0 0;
 		padding-right: 25px;
-		background: transparent url("../../images/icons/help.png") 90% 50% no-repeat;
+		background: transparent url("/modules/mod_reportproblems/images/help.png") 90% 50% no-repeat;
 		color: #fff;
 		height: 2em;
 		display: block;
@@ -266,7 +269,7 @@
 		}
 	#tab a:hover {
 		color: #d7c2ef;
-		background: #616161 url("../../images/nav-background-hover.gif") 0 0 repeat-x;
+		background: #616161;
 		}
 	#tab a:hover span {
 		color: #d7c2ef;
