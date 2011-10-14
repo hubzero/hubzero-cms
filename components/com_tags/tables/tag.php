@@ -416,7 +416,7 @@ class TagsTag extends JTable
 	{
 		$tj = new TagsObject( $this->_db );
 
-		$sql = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
+		$sql = "SELECT t.tag, t.raw_tag, t.alias, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql.= "FROM $this->_tbl AS t  ";
 		$sql.= "JOIN ".$tj->getTableName()." AS tj ON t.id=tj.tagid ";
 		if ($exclude_private) {

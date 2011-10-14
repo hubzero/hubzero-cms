@@ -171,7 +171,7 @@ class TagsController extends Hubzero_Controller
 
 		// Ensure we were passed a tag
 		if (!$tagstring && !$addtag && !$search) {
-			JError::raiseError( 404, JText::_('COM_TAGS_NO_TAG') );
+			JError::raiseError(404, JText::_('COM_TAGS_NO_TAG'));
 			return;
 		}
 
@@ -253,8 +253,11 @@ class TagsController extends Hubzero_Controller
 		JPluginHelper::importPlugin('tags');
 		$dispatcher =& JDispatcher::getInstance();
 
+		// Get configuration
+		$config = JFactory::getConfig();
+		
 		// Incoming paging vars
-		$limit = JRequest::getInt( 'limit', 25 );
+		$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 		$limitstart = JRequest::getInt( 'limitstart', 0 );
 		$sort = JRequest::getVar( 'sort', 'date' );
 
@@ -444,13 +447,13 @@ class TagsController extends Hubzero_Controller
 		$filters = array();
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
-		$filters['search'] = trim(JRequest::getString( 'value', '' ));
+		$filters['search'] = trim(JRequest::getString('value', ''));
 
 		// Create a Tag object
-		$obj = new TagsTag( $this->database );
+		$obj = new TagsTag($this->database);
 
 		// Fetch results
-		$rows = $obj->getAutocomplete( $filters );
+		$rows = $obj->getAutocomplete($filters);
 
 		// Output search results in JSON format
 		$json = array();
@@ -458,7 +461,7 @@ class TagsController extends Hubzero_Controller
 			foreach ($rows as $row)
 			{
 				//$json[] = '"'.$row->raw_tag.'"';
-				$json[] = '["'.htmlentities(stripslashes($row->raw_tag),ENT_COMPAT,'UTF-8').'","'.$row->tag.'"]';
+				$json[] = '["'.htmlentities(stripslashes($row->raw_tag), ENT_COMPAT, 'UTF-8').'","'.$row->tag.'"]';
 			}
 		}
 
@@ -517,9 +520,12 @@ class TagsController extends Hubzero_Controller
 			}
 		}
 
+		// Get configuration
+		$config = JFactory::getConfig();
+		
 		// Paging variables
-		$limitstart = JRequest::getInt( 'limitstart', 0 );
-		$limit = JRequest::getInt( 'limit', 25 );
+		$limitstart = JRequest::getInt('limitstart', 0);
+		$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 
 		// Load plugins
 		JPluginHelper::importPlugin( 'tags' );
@@ -697,9 +703,9 @@ class TagsController extends Hubzero_Controller
 		// Instantiate a new view
 		$format = JRequest::getVar('format', '');
 		if ($format == 'xml') {
-			$view = new JView( array('name'=>'browse', 'layout'=>'xml') );
+			$view = new JView(array('name'=>'browse', 'layout'=>'xml'));
 		} else {
-			$view = new JView( array('name'=>'browse') );
+			$view = new JView(array('name'=>'browse'));
 		}
 		$view->option = $this->_option;
 		$view->title = JText::_(strtoupper($this->_option)) .': '. JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
@@ -714,27 +720,28 @@ class TagsController extends Hubzero_Controller
 		$view->filters = array();
 		$view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$view->filters['search'] = urldecode(JRequest::getString('search'));
+		$view->filters['sortby'] = JRequest::getVar('sortby', '');
 		$view->total = 0;
 
-		$t = new TagsTag( $this->database );
+		$t = new TagsTag($this->database);
 
 		$order = JRequest::getVar('order', '');
 		if ($order == 'usage') {
 			$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 
-			$view->rows = $t->getTopTags( $limit );
+			$view->rows = $t->getTopTags($limit);
 		} else {
 			// Record count
-			$view->total = $t->getCount( $view->filters );
+			$view->total = $t->getCount($view->filters);
 
 			$view->filters['limit'] = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 
 			// Get records
-			$view->rows = $t->getRecords( $view->filters );
+			$view->rows = $t->getRecords($view->filters);
 
 			// Initiate paging
 			jimport('joomla.html.pagination');
-			$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+			$view->pageNav = new JPagination($view->total, $view->filters['start'], $view->filters['limit']);
 		}
 
 		// Set the pathway
@@ -748,7 +755,7 @@ class TagsController extends Hubzero_Controller
 
 		// Output HTML
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		$view->display();
 	}
