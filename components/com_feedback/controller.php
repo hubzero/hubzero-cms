@@ -734,7 +734,7 @@ class FeedbackController extends Hubzero_Controller
 			// Quick bot check
 			$botcheck = JRequest::getVar('botcheck', '');
 			if ($botcheck) {
-				$this->setError(JText::_('Error: Invalid CAPTCHA response.'));
+				$this->setError(JText::_('Error: Invalid botcheck response.'));
 				return;
 			}
 		}
@@ -889,9 +889,34 @@ class FeedbackController extends Hubzero_Controller
 		}
 		$message .= $juri->base().$sef."\r\n";
 
-		// Send e-mail
-		ximport('Hubzero_Toolbox');
-		Hubzero_Toolbox::send_email($admin, $subject, $message);
+		// Load the support config
+		$params = JComponentHelper::getParams('com_support');
+		
+		// Get any set emails that should be notified of ticket submission
+		$defs = str_replace("\r", '', $params->def('emails','{config.mailfrom}'));
+		$defs = explode("\n", $defs);
+		if ($defs) 
+		{
+			// Import our mailer
+			ximport('Hubzero_Toolbox');
+			
+			// Loop through the addresses
+			foreach ($defs As $def) 
+			{
+				$def = trim($def);
+				// Check if the address should come from Joomla config
+				if ($def == '{config.mailfrom}') 
+				{
+					$def = $jconfig->getValue('config.mailfrom');
+				}
+				// Check for a valid address
+				if ($this->_check_validEmail($def))
+				{
+					// Send e-mail
+					Hubzero_Toolbox::send_email($def, $subject, $message);
+				}
+			}
+		}
 
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onTicketSubmission', array($row));
