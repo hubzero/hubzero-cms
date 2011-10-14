@@ -320,7 +320,6 @@ class ContribtoolController extends JObject
 		case 'orderupc':     	$this->reorder_author(); 		break;
 		case 'orderdownc':   	$this->reorder_author(); 		break;
 
-		//case 'test':   		$this->test(); 					break;	
 		case 'movess':   		$this->movess(); 				break;
 		case 'copyss':   		$this->copyss(); 				break;
 
@@ -342,25 +341,6 @@ class ContribtoolController extends JObject
 			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
 		}
 	}
-
-	//-----------
-	/*
-	public function testdoi()
-	{
-		// temp test function for doi handle creation
-		$database =& JFactory::getDBO();
-		$objDOI = new ResourcesDoi ($database);	
-		
-		$url = 'https://www3.nanohub.org';
-		$handle = 'nanohub-test123';
-		//$doiservice = isset($this->config->parameters['doi_service']) ? $this->config->parameters['doi_service'] : 'http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl';
-		
-		$doiservice = 'http://dir3.lib.purdue.edu:8080/axis/services/DeleteHandleService?wsdl';
-		
-		$objDOI->deleteDOIHandle($url, $handle, $doiservice);
-		
-	}
-	*/
 
 	//----------------------------------------------------------
 	// Views
@@ -2418,15 +2398,9 @@ class ContribtoolController extends JObject
 
 	}
 
-	/**
-	 * Short description for 'finalizeTool'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string &$out Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-	protected function finalizeTool(&$out)
+	//-----------
+
+	protected function finalizeTool(&$out = '')
 	{
 		$xlog =& Hubzero_Factory::getLogger();
 
@@ -2469,10 +2443,14 @@ class ContribtoolController extends JObject
 			$xlog->logDebug("finalizeTool(): checkpoint 3: $command");
 
 			if(!$this->invokescript($command, JText::_('NOTICE_VERSION_FINALIZED'), $output)) {
+				$out .= " invoke script failure";
 				return false;
 			}
 			else {
-
+				if($output['class'] == 'error') {
+					$out .= " invoke script failure";
+					return false;
+				}
 			 	// get tarball
 				$tar = explode("source tarball: /tmp/", $output['msg']);
 				$tar = $tar[1];
@@ -2489,7 +2467,7 @@ class ContribtoolController extends JObject
 				}
 				$xlog->logDebug("finalizeTool(): checkpoint 4: " . DS.'tmp'.DS.$tar . " to " .  $file_path.'/'.$tar);
 				if (!@copy(DS.'tmp'.DS.$tar, $file_path.'/'.$tar)) {
-    					$out.= " failed to copy $tar to $file_path";
+    				$out.= " failed to copy $tar to $file_path";
 					return false;
 				} else {
 					exec ('sudo -u apps rm -f /tmp/'.$tar, $out, $result);
@@ -2643,7 +2621,8 @@ class ContribtoolController extends JObject
 		$ldap_save = isset($this->config->parameters['ldap_save']) ? $this->config->parameters['ldap_save'] : 0;
 		$ldap_read = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$doiservice = isset($this->config->parameters['doi_service']) ? $this->config->parameters['doi_service'] : 'http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl';
-		$usedoi = isset($this->config->parameters['usedoi']) ? $this->config->parameters['usedoi'] : 0;
+		$old_doi = isset($this->config->parameters['usedoi']) ? $this->config->parameters['usedoi'] : 0;
+		$new_doi = isset($this->config->parameters['new_doi']) ? $this->config->parameters['new_doi'] : 0;
 		$doiprefix = $doiprefix ? $doiprefix : strtolower($hubShortName).'-r';
 		$invokedir = isset($this->config->parameters['invokescript_dir']) ? $this->config->parameters['invokescript_dir'] : DS.'apps';
 		$invokedir = rtrim($invokedir,"\\/");
@@ -2666,8 +2645,8 @@ class ContribtoolController extends JObject
 
 			// test - nicktest
 			if($this->_toolid == 349) {
-				$status['revision'] = 574;
-				$status['version']  = 'H';
+				$status['revision'] = 577;
+				$status['version']  = 'T';
 			}
 
 			// make checks
@@ -2704,7 +2683,7 @@ class ContribtoolController extends JObject
 		// run finalizetool
 
 		if($result) {
-			if($this->finalizeTool($out='')) {
+			if($this->finalizeTool($out)) {
 				$output['pass'] .= '<br />* Version finalized. '.$out;
 			}
 			else {
@@ -2714,26 +2693,93 @@ class ContribtoolController extends JObject
 		}
 
 		$xlog->logDebug("publish(): checkpoint 4:$result, running doi stuff");
-		// register DOI handle
+		
+		// Register DOI handle
+		if($result && ($old_doi || $new_doi)) {
 
-		if($result && $usedoi) {
+			// Collect metadata
+			$url = $livesite . '/resources/' . $status['resourceid'] . '/?rev='.$status['revision'];
 
-			$url = $livesite.'/resources/'.$status['resourceid'].'/?rev='.$status['revision'];
-
+			// Check if DOI exists for this revision
 			$objDOI = new ResourcesDoi ($database);
-			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision']);
+			$getFullDoi = ($new_doi) ? 1 : 0;
+			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision'], '', $getFullDoi);
 
-			if($bingo) { // handle already exists for this revision
-				$output['fail'] .= '<br />* '.JText::_('ERR_DOI_ALREADY_EXISTS');
+			// DOI already exists for this revision
+			if($bingo) { 
+				$output['fail'] .= '<br />* ' . JText::_('ERR_DOI_ALREADY_EXISTS') . ': ' . $bingo;
 			}
 			else {
 				$latestdoi = $objDOI->getLatestDoi($status['resourceid']);
 				$newlabel = ($latestdoi) ? (intval($latestdoi) + 1): 1;
-				$handle = $doiprefix.$status['resourceid'].'.'.$newlabel;
+				$handle = $doiprefix . $status['resourceid'] . '.' . $newlabel;
+				
+				// Register with the new DOI service
+				if($new_doi) {	
+					$doiSuccess = 0;
+									
+					// Get config
+					$config =& JComponentHelper::getParams( $this->_option );
+					$shoulder = $config->get('doi_shoulder', '10.9999' );
+					
+					// Make up service URL
+					$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;
+					
+					// Collect metadata
+					$metadata = array();
+					$metadata['targetURL'] = $url;
+					$metadata['title'] = htmlspecialchars($status['title']);
+					$metadata['publisher'] = htmlspecialchars($config->get('doi_publisher', $hubShortName ));
+					$metadata['pubYear'] = date( 'Y' );
+					
+					// Get first author
+					$objA = new ToolAuthor( $database);
+					$firstAuthor = $objA->getFirstAuthor($status['resourceid']);
+					$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : htmlspecialchars($juser->get('name'));
+					
+					// Format name
+					$nameParts   = explode(" ", $firstAuthor);
+					$authorName  = end($nameParts);
+					$authorName .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';									
+					$metadata['creator'] = $authorName;
+					
+					// Register DOI
+					$doiSuccess = $objDOI->registerDOI( $service, $metadata);
+						
+					// Also create a handle using the old service
+					if($doiSuccess && $old_doi) {
+						if($objDOI->createDOIHandle($url, $handle, $doiservice, $err)) {
+							$output['pass'] .= '<br />* ' . JText::_('Old-style DOI handle created:') . ' ' . $handle;
+						}
+						else {
+							$output['fail'] .= '<br />* '.JText::_('Old-style DOI handle creation failed');
+						}
+					}
+					
+					// Save [new] DOI record
+					if($doiSuccess) {
+						if(!$objDOI->loadDOI( $status['resourceid'], $status['revision'] )) {
+							if($objDOI->saveDOI( $status['revision'], $newlabel, $status['resourceid'], $status['toolname'], 0, $doiSuccess )) {
+								$output['pass'] .= '<br />* '.JText::_('SUCCESS_DOI_CREATED').' '.$doiSuccess;
+							}
+							else {
+								$output['fail'] .= '<br />* '.JText::_('ERR_DOI_STORE_FAILED');
+								$result = 0;
+							}
+						}
+						else {
+							$output['fail'] .= '<br />* '.JText::_('DOI already exists: ').$objDOI->doi;
+						}
+					}
+					else {
+						$output['fail'] .= '<br />* '.JText::_('ERR_DOI_STORE_FAILED');
+						$result = 0;
+					}
+					
+				}
+				else if($objDOI->createDOIHandle($url, $handle, $doiservice, $err)) {
 
-				if($objDOI->createDOIHandle($url, $handle, $doiservice, $err)) {
-
-					if($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'],$status['toolname'])) {
+					if($objDOI->saveDOI( $status['revision'], $newlabel, $status['resourceid'], $status['toolname'] )) {
 						$output['pass'] .= '<br />* '.JText::_('SUCCESS_DOI_CREATED').' '.$handle;
 					}
 					else {
@@ -2762,7 +2808,6 @@ class ContribtoolController extends JObject
 					$output['fail'] .= '<br />* '.$err;
 				}
 			}
-
 		}
 
 		$xlog->logDebug("publish(): checkpoint 5:$result, running ldap stuff");

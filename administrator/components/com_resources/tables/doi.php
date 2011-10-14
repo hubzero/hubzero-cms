@@ -61,7 +61,7 @@ class ResourcesDoi extends JTable
 	 * @var unknown
 	 */
 	var $rid            = NULL;  // @var int(11)
-
+	var $versionid      = NULL;  // @var int(11)
 
 	/**
 	 * Description for 'alias'
@@ -69,6 +69,7 @@ class ResourcesDoi extends JTable
 	 * @var unknown
 	 */
 	var $alias          = NULL;  // @var varchar(30)
+	var $doi            = NULL;  // @var varchar(100) - NEW
 
 	//-----------
 
@@ -101,17 +102,10 @@ class ResourcesDoi extends JTable
 		}
 		return true;
 	}
-
-	/**
-	 * Short description for 'getDoi'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $revision Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public function getDoi( $id=NULL, $revision=NULL )
+	
+	//-----------
+	
+	public function getDoi( $id = NULL, $revision = NULL, $versionid = 0, $get_full_doi = 0 )
 	{
 		if ($id == NULL) {
 			$id = $this->rid;
@@ -122,28 +116,22 @@ class ResourcesDoi extends JTable
 		if ($revision == NULL) {
 			$revision = $this->local_revision;
 		}
-		if ($revision == NULL) {
+		if ($revision == NULL && !$versionid) {
 			return false;
 		}
 
-		$query  = "SELECT d.doi_label as doi ";
+		$query  = $get_full_doi ? "SELECT doi " : "SELECT d.doi_label as doi ";
 		$query .= "FROM $this->_tbl as d ";
-		$query .= "WHERE d.rid='".$id."' AND d.local_revision='".$revision."' LIMIT 1";
+		$query .= "WHERE d.rid='".$id."' ";
+		$query .= $revision ? "AND d.local_revision='".$revision."' LIMIT 1" : "AND d.versionid='".$versionid."' LIMIT 1" ;
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-
-	/**
-	 * Short description for 'getLatestDoi'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      unknown $revision Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public function getLatestDoi( $id=NULL, $revision=NULL )
+	
+	//-----------
+	
+	public function getLatestDoi( $id = NULL, $get_full_doi = 0 )
 	{
 		if ($id == NULL) {
 			$id = $this->rid;
@@ -152,38 +140,94 @@ class ResourcesDoi extends JTable
 			return false;
 		}
 
-		$query  = "SELECT d.doi_label as doi ";
+		$query  = $get_full_doi ? "SELECT doi " : "SELECT d.doi_label as doi ";
 		$query .= "FROM $this->_tbl as d ";
 		$query .= "WHERE d.rid='".$id."' ORDER BY d.doi_label DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-
-	/**
-	 * Short description for 'saveDOI'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $revision Parameter description (if any) ...
-	 * @param      mixed $newlabel Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $alias Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-	public function saveDOI($revision=0, $newlabel=1, $rid, $alias='')
+	
+	//-----------
+	
+	public function loadDoi( $rid = NULL, $revision = 0 )
+	{
+		if ($rid === NULL || !$revision ) {
+			return false;
+		}
+		
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE rid=".$rid." AND local_revision=".$revision." LIMIT 1" );
+		if ($result = $this->_db->loadAssoc()) {
+			return $this->bind( $result );
+		} else {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+	}
+	
+	//-----------
+	
+	public function saveDOI( $revision = 0, $newlabel = 1, $rid = NULL, $alias='', $versionid = 0, $doi = '' ) 
 	{
 		if ($rid == NULL) {
 			return false;
 		}
+		if ($doi == NULL) {
+			return false;
+		}
 
-		$query = "INSERT INTO $this->_tbl (local_revision, doi_label, rid, alias) VALUES ('".$revision."','".$newlabel."','".$rid."','".$alias."')";
+		$query = "INSERT INTO $this->_tbl (local_revision, doi_label, rid, alias, versionid, doi) VALUES ('".$revision."','".$newlabel."','".$rid."','".$alias."', '".$versionid."', '".$doi."')";
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			return false;
 		} else {
 			return true;
 		}
+	}
+	
+	//-----------
+	
+	public function registerDOI( $service = NULL, $metadata = array() ) 
+	{
+		if($service == NULL or empty($metadata)) {
+			return false;
+		}
+		
+		// Start input
+		$input  = "_target: " . $metadata['targetURL'] ."\n";
+		$input .= "datacite.creator: " . $metadata['creator'] . "\n";
+		$input .= "datacite.title: ". $metadata['title'] . "\n";
+		$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
+		$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
+		$input .= "_profile: datacite";
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $service);
+		
+		/* Purdue Hubzero Username/Password */
+		curl_setopt($ch, CURLOPT_USERPWD, '');
+		curl_setopt($ch, CURLOPT_POST, true);
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER,
+		  array('Content-Type: text/plain; charset=UTF-8',
+		        'Content-Length: ' . strlen($input)));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$output = curl_exec($ch);
+		
+		/*returns HTTP Code for success or fail */
+		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($success === 201) {
+			$out = explode('/', $output);
+			$output = trim(end($out));
+		}
+		else {
+			$output = 0;
+		}
+				
+		curl_close($ch);
+	
+		return $output;		
 	}
 
 	/**

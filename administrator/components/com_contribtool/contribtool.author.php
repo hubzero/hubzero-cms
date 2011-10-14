@@ -169,19 +169,20 @@ class ToolAuthor extends  JTable
 		return $this->_db->loadObjectList();
 
 	}
-
-	/**
-	 * Short description for 'getToolAuthors'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $version Parameter description (if any) ...
-	 * @param      mixed $rid Parameter description (if any) ...
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      string $revision Parameter description (if any) ...
-	 * @param      array $authors Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
+	
+	//-----------
+	
+	public function getFirstAuthor( $rid = 0 )
+	{
+		$query = "SELECT x.name FROM #__xprofiles x ";
+		$query.= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= ".$rid." AND aa.subtable='resources' ";
+		$query.= " ORDER BY aa.ordering ASC LIMIT 1";
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
 		$juser = &JFactory::getUser();

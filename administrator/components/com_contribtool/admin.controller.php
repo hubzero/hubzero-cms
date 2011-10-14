@@ -173,14 +173,36 @@ class ContribtoolController extends JObject
 
 		switch ( $this->getTask() )
 		{
-		    	case  'edit': $this->edit();					break;
-			case  'apply': $this->apply();				break;
-			case  'save': $this->save();				break;
-			case  'cancel': $this->cancel();				break;
-			case  'editToolVersion': $this->editToolVersion();				break;
-			case  'view': $this->view();				break;
-			case  'editTool': $this->editTool();			break;
-			default: 		$this->pipeline(); 				break;
+		    case  'edit': 
+				$this->edit();					
+				break;
+			case  'apply': 
+				$this->apply();				
+				break;	
+			case  'save': 
+				$this->save();				
+				break;	
+			case  'cancel': 
+				$this->cancel();				
+				break;	
+			case  'editToolVersion': 
+				$this->editToolVersion();				
+				break;	
+			case  'view': 
+				$this->view();				
+				break;	
+			case  'editTool': 
+				$this->editTool();			
+				break;
+			case  'batch_doi': 
+				$this->_batchDoi();			
+				break;
+			case  'setup_doi': 
+				$this->_setupDoi();			
+				break;
+			default: 		
+				$this->view(); 				
+				break;
 		}
 	}
 
@@ -831,6 +853,150 @@ class ContribtoolController extends JObject
 
 	}
 
+	//-----------
+	// Temp function to issue new service DOIs for tool versions published previously
+	
+	private function _batchDoi()
+	{
+		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
+		
+		//  Limit one-time batch size
+		$limit = JRequest::getInt( 'limit', 2 );
+		
+		// Store output	
+		$created = array();
+		$failed = array();
+		
+		// Initiate extended database classes
+		$resource = new ResourcesResource( $database );
+		$objDOI = new ResourcesDoi ($database);
+		$objV = new ToolVersion( $database );
+		$objA = new ToolAuthor( $database);
+		
+		// Get hub config
+		$xhub =& Hubzero_Factory::getHub();
+		$livesite 		= $xhub->getCfg('hubLongURL');
+		$hubShortName 	= $xhub->getCfg('hubShortName');
+		
+		// Get service config
+		$shoulder = $this->config->get('doi_shoulder', '10.9999' );
+		$publisher = $this->config->get('doi_publisher', $hubShortName );
+				
+		// Make up service URL
+		$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;		
+		
+		// Get all tool publications without new DOI
+		$query = "SELECT * FROM #__doi_mapping WHERE doi='' OR doi IS NULL ";
+		$database->setQuery( $query );
+		$rows = $database->loadObjectList();
+		
+		if($rows) {
+			$i = 0;
+			foreach($rows as $row) {
+				if($limit && $i == $limit) {
+					// Temp for testing
+					print_r($created);
+					echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
+					return;
+				}
+				
+				// Skip entries with no resource information loaded / non-tool resources
+				if(!$resource->load($row->rid) || !$row->alias) {
+					continue;
+				}
+				
+				// Get version info
+				$query = "SELECT * FROM #__tool_version WHERE toolname='".$row->alias."' ";
+				$query.= "AND revision='".$row->local_revision."' AND state!=3 LIMIT 1";
+				$database->setQuery( $query );
+				$results = $database->loadObjectList();				
+				
+				if($results) {
+					$title = $results[0]->title ? $results[0]->title : $resource->title;
+					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, '%Y')) : date( 'Y' );
+				}
+				else {
+					// Skip if version not found
+					continue;
+				}
+				
+				// Collect metadata
+				$metadata = array();
+				$metadata['targetURL'] = $livesite . '/resources/' . $row->rid . '/?rev='.$row->local_revision;
+				$metadata['title'] = htmlspecialchars($title);
+				$metadata['publisher'] = htmlspecialchars($publisher);
+				$metadata['pubYear'] = $pubyear;
+							
+				// Get first author
+				$query = "SELECT x.name FROM #__xprofiles x ";
+				$query.= " JOIN #__tool_authors AS a ON x.uidNumber=a.uid ";
+				$query.= " AND a.toolname='".$row->alias."' AND a.revision='".$row->local_revision."'";
+				$query.= " ORDER BY a.ordering ASC LIMIT 1";
+				$database->setQuery( $query );
+				$firstAuthor = $database->loadResult();
+				$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
+				
+				// Format name
+				if($firstAuthor) {
+					$nameParts   = explode(" ", $firstAuthor);
+					$authorName  = end($nameParts);
+					$authorName .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
+				}
+				else {
+					$authorName = '';
+				}
+											
+				$metadata['creator'] = $authorName;
+				
+				// Register DOI			
+				$doiSuccess = $objDOI->registerDOI( $service, $metadata);
+				if($doiSuccess) {
+					$query = "UPDATE #__doi_mapping SET doi='$doiSuccess' ";
+					$query.= "WHERE rid=$row->rid AND local_revision=$row->local_revision";
+					$database->setQuery( $query );
+					if (!$database->query()) {
+						$failed[] = $doiSuccess;
+					}
+					else {
+						$created[] = $doiSuccess;
+					}
+				} 
+				
+				$i++;
+			}
+		}
+		
+		print_r($created);
+		echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
+		return;
+	}
+	
+	//-----------
+	// Temp function to ensure jos_doi_mapping table is updated
+	
+	private function _setupDoi()
+	{
+		$database =& JFactory::getDBO();
+		$fields = $database->getTableFields('jos_doi_mapping');
+		print_r($fields);
+
+		if(!array_key_exists('versionid', $fields['jos_doi_mapping'] )) {
+			$database->setQuery( "ALTER TABLE `jos_doi_mapping` ADD `versionid` int(11) default '0'" );
+			if (!$database->query()) {
+				echo $database->getErrorMsg();
+				return false;
+			}
+		}
+		if(!array_key_exists('doi', $fields['jos_doi_mapping'] )) {
+				$database->setQuery( "ALTER TABLE `jos_doi_mapping` ADD `doi` varchar(50) default NULL" );
+				if (!$database->query()) {
+					echo $database->getErrorMsg();
+					return false;
+				}
+		}
+		return;
+	}	
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
