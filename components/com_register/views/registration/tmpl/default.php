@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 	ximport('Hubzero_User_Helper');
+	ximport('Hubzero_Environment');
 	ximport('Hubzero_Geo');
 
 	$html  = '<div id="content-header" class="full">'."\n";
@@ -579,6 +580,11 @@ defined('_JEXEC') or die('Restricted access');
 			$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? RegistrationHelperHtml::error($this->xregistration->_invalid['countryorigin']) : '';
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
+			if (!$this->registration['countryorigin']) {
+				$userCountry = Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress());
+				$this->registration['countryorigin'] = $userCountry;
+			}
+			
 			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
 			$html .= "\t\t\t".'<legend>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>? ';
 			$html .= $required;
@@ -604,11 +610,12 @@ defined('_JEXEC') or die('Restricted access');
 			if (!$this->registration['countryorigin'] || $this->registration['countryorigin'] == 'US') {
 				$html .= "\t\t\t\t\t".'<option value="">'.JText::_('COM_REGISTER_FORM_SELECT_FROM_LIST').'</option>'."\n";
 			}
-
+			
 			$countries = Hubzero_Geo::getcountries();
 			if ($countries) {
-				foreach ($countries as $country) {
-					if ($country['code'] != 'US') {
+				foreach ($countries as $country) 
+				{
+					if (strtoupper($country['code']) != 'US') {
 						$html .= "\t\t\t\t\t".'<option value="' . $country['code'] . '"';
 						if ($this->registration['countryorigin'] == $country['code']) {
 							$html .= ' selected="selected"';
@@ -628,6 +635,13 @@ defined('_JEXEC') or die('Restricted access');
 			$message = (!empty($this->xregistration->_invalid['countryresident'])) ? RegistrationHelperHtml::error($this->xregistration->_invalid['countryresident']) : '';
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
+			if (!$this->registration['countryresident']) {
+				if (!$userCountry) {
+					$userCountry = Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress());
+				}
+				$this->registration['countryresident'] = $userCountry;
+			}
+			
 			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
 			$html .= "\t\t\t".'<legend>'.JText::_('Do you Currently Live in the <abbr title="United States">US</abbr>?').' ';
 			$html .= $required;
