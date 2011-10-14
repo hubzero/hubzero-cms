@@ -1225,9 +1225,13 @@ class ResourcesHtml
 			} else {
 				$exp = '%I:%M %p, %B %d, %Y';
 			}
+			if (substr($attribs->get('timeof', ''), 0, 5) == '-') {
 			$seminar_time = ($attribs->get( 'timeof', '' ) != '0000-00-00 00:00:00' || $attribs->get( 'timeof', '' ) != '')
 						  ? JHTML::_('date', $attribs->get( 'timeof', '' ), $exp)
-						  : '';
+							  : '';
+			} else {
+				$seminar_time = $attribs->get('timeof', '');
+			}
 			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TIME'),$seminar_time);
 		}
 		// If the resource had a specific location
