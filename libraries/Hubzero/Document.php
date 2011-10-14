@@ -34,27 +34,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.document.document');
 
 /**
- * Short description for 'Hubzero_Document'
- * 
- * Long description (if any) ...
+ * Class for adding stylesheets from components, modules, and plugins to the document
+ *
+ * @package     hubzero-cms
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 class Hubzero_Document
 {
 
 	/**
-	 * Short description for 'addComponentStylesheet'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $component Parameter description (if any) ...
-	 * @param      string $stylesheet Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      unknown $media Parameter description (if any) ...
-	 * @param      array $attribs Parameter description (if any) ...
+	 * Adds a linked stylesheet from a component to the page
+	 *
+	 * @param	string  $component	Component name
+	 * @param	string  $stylesheet	Stylesheet name (optional, uses component name if left blank)
+	 * @param	string  $type   	Mime encoding type
+	 * @param	string  $media  	Media type that this stylesheet applies to
+	 * @param	string  $attribs  	Attributes to add to the link
 	 * @param      boolean $augment Parameter description (if any) ...
-	 * @return     void
+	 * @return  void
 	 */
-	public static function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public static function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -70,27 +71,20 @@ class Hubzero_Document
 
 		$componentcss = DS . 'components' . DS . $component . DS . $stylesheet;
 
-		if (file_exists(JPATH_SITE . $templatecss))
-		{
-			if ($augment && file_exists(JPATH_SITE . $componentcss) ) {
-				$this->addStyleSheet($componentcss, $type, $media, $attribs);
-			}
-
+		if (file_exists(JPATH_SITE . $templatecss)) {
 			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
-        }
-		else if (file_exists(JPATH_SITE . $componentcss)) {
+        } else if (file_exists(JPATH_SITE . $componentcss)) {
 		    $jdocument->addStyleSheet($componentcss, $type, $media, $attribs);
 		}
 	}
 
 	/**
-	 * Short description for 'getComponentImage'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $component Parameter description (if any) ...
-	 * @param      string $image Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * Gets the path to a component image
+	 * checks template overrides first, then component
+	 *
+	 * @param	string  $component	Component name
+	 * @param	string  $image		Image to look for
+	 * @return  string	Path to an image file
 	 */
 	public static function getComponentImage($component, $image)
 	{
@@ -110,13 +104,12 @@ class Hubzero_Document
 	}
 
 	/**
-	 * Short description for 'getComponentStylesheet'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $component Parameter description (if any) ...
-	 * @param      string $stylesheet Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * Gets the path to a component stylesheet
+	 * checks template overrides first, then component
+	 *
+	 * @param	string  $component	Component name
+	 * @param	string  $stylesheet	Stylesheet to look for
+	 * @return  string	Path to a stylesheet
 	 */
 	public static function getComponentStylesheet($component, $stylesheet)
 	{
@@ -136,13 +129,12 @@ class Hubzero_Document
 	}
 
 	/**
-	 * Short description for 'getModuleImage'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $module Parameter description (if any) ...
-	 * @param      string $image Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * Gets the path to a module image
+	 * checks template overrides first, then module
+	 *
+	 * @param	string  $module	Module name
+	 * @param	string  $image	Image to look for
+	 * @return  string	Path to an image file
 	 */
 	public static function getModuleImage($module, $image)
 	{
@@ -162,12 +154,11 @@ class Hubzero_Document
 	}
 
 	/**
-	 * Short description for 'getHubImage'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $image Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * Gets the path to an image
+	 * checks template first, then com_hub
+	 *
+	 * @param	string  $image	Image to look for
+	 * @return  string	Path to an image file
 	 */
 	public static function getHubImage($image)
 	{
@@ -187,19 +178,16 @@ class Hubzero_Document
 	}
 
 	/**
-	 * Short description for 'addModuleStyleSheet'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $module Parameter description (if any) ...
-	 * @param      string $stylesheet Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      unknown $media Parameter description (if any) ...
-	 * @param      array $attribs Parameter description (if any) ...
-	 * @param      boolean $augment Parameter description (if any) ...
-	 * @return     void
+	 * Adds a linked stylesheet from a module to the page
+	 *
+	 * @param	string  $module		Module name
+	 * @param	string  $stylesheet	Stylesheet name (optional, uses module name if left blank)
+	 * @param	string  $type   	Mime encoding type
+	 * @param	string  $media  	Media type that this stylesheet applies to
+	 * @param	string  $attribs  	Attributes to add to the link
+	 * @return  void
 	 */
-	public static function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public static function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
 		$mainframe =& JFactory::getApplication();
 
@@ -216,9 +204,6 @@ class Hubzero_Document
 		$modulecss = DS . 'modules' . DS . $module . DS . $stylesheet;
 
 		if (file_exists(JPATH_SITE . $templatecss)) {
-			if ($augment) {
-				$this->addStyleSheet($modulecss, $type, $media, $attribs);
-			}
 			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
         } else {
 			$jdocument->addStyleSheet($modulecss, $type, $media, $attribs);
@@ -226,42 +211,35 @@ class Hubzero_Document
 	}
 
 	/**
-	 * Short description for 'addPluginStyleSheet'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $plugin_group Parameter description (if any) ...
-	 * @param      string $plugin Parameter description (if any) ...
-	 * @param      string $stylesheet Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      unknown $media Parameter description (if any) ...
-	 * @param      array $attribs Parameter description (if any) ...
-	 * @param      boolean $augment Parameter description (if any) ...
-	 * @return     void
+	 * Adds a linked stylesheet from a plugin to the page
+	 *
+	 * @param	string  $folder		Plugin folder name
+	 * @param	string  $plugin		Plugin name
+	 * @param	string  $stylesheet	Stylesheet name (optional, uses module name if left blank)
+	 * @param	string  $type   	Mime encoding type
+	 * @param	string  $media  	Media type that this stylesheet applies to
+	 * @param	string  $attribs  	Attributes to add to the link
+	 * @return  void
 	 */
-	public static function addPluginStyleSheet($plugin_group, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public static function addPluginStyleSheet($folder, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
 		$mainframe =& JFactory::getApplication();
 
-		$jdocument = &JFactory::getDocument();
+		$jdocument =& JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
 
 		if (empty($stylesheet)) {
 			$stylesheet = $plugin . '.css';
 		}
-		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_'.$plugin_group.'_'.$plugin . DS . $stylesheet;
+		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $stylesheet;
 
-		$plugincss = DS . 'plugins' . DS . $plugin_group . DS . $plugin . DS . $stylesheet;
+		$plugincss = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
 
 		if (file_exists(JPATH_SITE . $templatecss)) {
-			if ($augment) {
-				$this->addStyleSheet($plugincss, $type, $media, $attribs);
-			}
 			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
         } else {
 			$jdocument->addStyleSheet($plugincss, $type, $media, $attribs);
 		}
 	}
 }
-
