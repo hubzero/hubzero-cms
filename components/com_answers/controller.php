@@ -274,7 +274,10 @@ class AnswersController extends Hubzero_Controller
 		$when     = date( 'Y-m-d H:i:s');
 
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
+		// NOTE: Removed because applying "trim" can screw up wiki syntax in cases where the first character
+		// needs to be a space. e.g., if the comment starts with a bulleted list:
+		//  * item
+		//$_POST = array_map('trim',$_POST);
 
 		if (!$id && !$ajax) {
 			JError::raiseError( 500, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND') );
