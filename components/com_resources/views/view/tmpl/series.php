@@ -267,7 +267,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= ' </div><!-- / .aside launcharea -->'."\n";
 	$html .= ' </div><!-- / .subject -->'."\n";
 
-	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $authorized=0)) {
+	if ($resource->access == 3 && (($resource->group_owner && !in_array($resource->group_owner, $usersgroups)) || $authorized=0)) {
 		// show nothing else
 		$html .= '</div><!-- / .main section -->'."\n";
 	} else {
