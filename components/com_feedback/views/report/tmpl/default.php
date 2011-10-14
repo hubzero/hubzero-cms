@@ -101,7 +101,7 @@ $topics = array(
 			<input type="hidden" name="problem[browserver]" value="<?php echo htmlspecialchars($this->problem['browserver']); ?>" />
 			<input type="hidden" name="problem[short]" value="<?php echo htmlspecialchars($this->problem['short']); ?>" />
 			
-			<input type="hidden" name="no_html" value="1" />
+			<input type="hidden" name="no_html" value="0" />
 <?php if ($this->verified) { ?>
 			<input type="hidden" name="botcheck" value="" />
 <?php } ?>
