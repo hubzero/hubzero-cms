@@ -88,12 +88,14 @@ class modPollTitle
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Short description for 'run'
 	 * 
 	 * Long description (if any) ...
 	 * 
 	 * @return     void
 	 */
+
+	public function run()
 	{
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'poll.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'data.php');
