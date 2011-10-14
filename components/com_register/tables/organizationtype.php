@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -21,27 +24,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for organizations
+ * Table class for organization types
  *
  * @package     hubzero-cms
  * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-class RegisterOrganization extends JTable
+class RegisterOrganizationType extends JTable 
 {
-
 	/**
 	 * Primary key field in the table
 	 *
@@ -49,39 +46,44 @@ class RegisterOrganization extends JTable
 	 */
 	public $id = null;
 	
-
 	/**
-	 * The title of the organization
+	 * A normalized key (no spaces or punctuation)
 	 *
 	 * @var		string
 	 */
-	public $organization = null;
-
+	public $type = null;
+	
+	/**
+	 * The title of the organization type
+	 *
+	 * @var		string
+	 */
+	public $title = null;
+	
 	/**
 	 * Object constructor to set table and key field
 	 *
 	 * @param object $db JDatabase object
-	 * @return     void
 	 */
 	public function __construct(&$db) 
 	{
-		parent::__construct('#__xorganizations', 'id', $db);
+		parent::__construct('#__xorganization_types', 'id', $db);
 	}
-
+	
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 *
 	 * @return boolean True if the object is ok
 	 */
-	public function check()
+	public function check() 
 	{
-		if (trim($this->organization) == '') {
-			$this->setError(JText::_('Organization must contain text'));
+		if (trim($this->type) == '') {
+			$this->setError(JText::_('Organization Type must contain text'));
 			return false;
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Returns a record count
 	 *
@@ -92,13 +94,13 @@ class RegisterOrganization extends JTable
 	{
 		$query  = "SELECT COUNT(*) FROM $this->_tbl";
 		if (isset($filters['search']) && $filters['search'] != '') {
-			$query .= " WHERE organization LIKE '%" . $filters['search'] . "%'";
+			$query .= " WHERE type LIKE '%" . $filters['search'] . "%' OR title LIKE '%" . $filters['search'] . "%'";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-
+	
 	/**
 	 * Returns an array of objects
 	 *
@@ -109,9 +111,9 @@ class RegisterOrganization extends JTable
 	{
 		$query  = "SELECT * FROM $this->_tbl";
 		if (isset($filters['search']) && $filters['search'] != '') {
-			$query .= " WHERE organization LIKE '%" . $filters['search'] . "%'";
+			$query .= " WHERE type LIKE '%" . $filters['search'] . "%' OR title LIKE '%" . $filters['search'] . "%'";
 		}
-		$query .= " ORDER BY organization ASC";
+		$query .= " ORDER BY title ASC";
 		if (isset($filters['limit']) && $filters['limit'] != 'all') {
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
@@ -119,22 +121,42 @@ class RegisterOrganization extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-
+	
 	/**
-	 * Returns an array of organizations
+	 * Returns an associative array of types
 	 *
 	 * @param	array	$filters	An associative array of filters used to construct a query
 	 * @return	array
 	 */
-	public function getOrgs($filters = array()) 
+	public function getTypes($filters = array()) 
 	{
-		$orgs = array();
+		$types = array();
 		if ($records = $this->getRecords($filters)) {
 			foreach ($records as $record) {
-				$orgs[] = $record->organization;
+				$types[$record->type] = stripslashes($record->title);
 			}
 		}
-
-		return $orgs;
+		
+		return $types;
+	}
+	
+	/**
+	 * Loads a database row into the RegisterOrganizationType object
+	 *
+	 * @param	string	$type	The organization type field
+	 * @return	boolean
+	 */
+	public function loadType($type = null) 
+	{
+		if ($type === null) {
+			return false;
+		}
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `type`='$type' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) {
+			return $this->bind($result);
+		} else {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 	}
 }

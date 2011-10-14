@@ -116,52 +116,15 @@ if ($this->registration->Employment != REG_HIDE) {
 		$html .= '>'."\n";
 		$html .= "\t\t\t\t".'<th>'.JText::_('Employment Status').'</th>'."\n";
 		$html .= "\t\t\t\t".'<td><span class="userType">';
-		switch ($this->profile->get('orgtype'))
-		{
-			case '':
-				$html .= JText::_('n/a');
-				break;
-			case 'universityundergraduate':
-				$html .= JText::_('University / College Undergraduate');
-				break;
-			case 'universitygraduate':
-                                $html .= JText::_('University / College Graduate');
-				break;
-			case 'universitystudent':
-				$html .= JText::_('University / College Student');
-				break;
-			case 'university':
-			case 'universityfaculty':
-				$html .= JText::_('University / College Faculty');
-				break;
-			case 'universitystaff':
-				$html .= JText::_('University / College Staff');
-				break;
-			case 'precollege':
-			case 'precollegefacultystaff':
-				$html .= JText::_('K-12 (Pre-College) Faculty or Staff');
-				break;
-			case 'precollegestudent':
-				$html .= JText::_('K-12 (Pre-College) Student');
-				break;
-			case 'nationallab':
-				$html .= JText::_('National Laboratory');
-				break;
-			case 'industry':
-				$html .= JText::_('Industry / Private Company');
-				break;
-			case 'government':
-				$html .= JText::_('Government Agency');
-				break;
-			case 'military':
-				$html .= JText::_('Military');
-				break;
-			case 'unemployed':
-				$html .= JText::_('Retired / Unemployed');
-				break;
-			default:
-				$html .= htmlentities($this->profile->get('orgtype'),ENT_COMPAT,'UTF-8');
-				break;
+		
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
+		$database =& JFactory::getDBO();
+		$rot = new RegisterOrganizationType($database);
+		
+		if ($rot->loadType($this->profile->get('orgtype'))) {
+			$html .= stripslashes($rot->title);
+		} else {
+			$html .= htmlentities($this->profile->get('orgtype'), ENT_COMPAT, 'UTF-8');
 		}
 		$html .= '</span></td>'."\n";
 		if ($this->authorized) {

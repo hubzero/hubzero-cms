@@ -110,10 +110,18 @@ foreach ($this->a as $field => $value)
 	</td>
 	<td>
 		<?php
-		if ($field == 'Organization') {
-			echo '<a href="index.php?option=com_hub&amp;task=orgs">Edit Organization List</a>';
-		} else {
-			echo '&nbsp;';
+		switch ($field) {
+			case 'Organization':
+				echo '<a href="index.php?option=com_hub&amp;task=orgs">Edit Organization List</a>';
+			break;
+			
+			case 'Employment':
+				echo '<a href="index.php?option=com_hub&amp;task=orgtypes">Edit Employment Type List</a>';
+			break;
+			
+			default:
+				echo '&nbsp;';
+			break;
 		}
 		?>
 	</td>

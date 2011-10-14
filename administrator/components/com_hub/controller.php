@@ -72,13 +72,20 @@ class HubController extends Hubzero_Controller
 			case 'site':         $this->settings();            break;
 			case 'savesite':     $this->_save('site');         break;
 
-			case 'addorg': $this->addorg(); break;
-			case 'editorg': $this->editorg(); break;
+			case 'addorg':    $this->addorg();    break;
+			case 'editorg':   $this->editorg();   break;
 			case 'removeorg': $this->removeorg(); break;
-			case 'saveorg': $this->saveorg(); break;
+			case 'saveorg':   $this->saveorg();   break;
 			case 'cancelorg': $this->cancelorg(); break;
-			case 'orgs': $this->orgs(); break;
+			case 'orgs':      $this->orgs();      break;
 
+			case 'addorgtype':    $this->addorgtype();    break;
+			case 'editorgtype':   $this->editorgtype();   break;
+			case 'removeorgtype': $this->removeorgtype(); break;
+			case 'saveorgtype':   $this->saveorgtype();   break;
+			case 'cancelorgtype': $this->cancelorgtype(); break;
+			case 'orgtypes':      $this->orgtypes();      break;
+			
 			default: $this->settings(); break;
 		}
 
@@ -835,5 +842,161 @@ class HubController extends Hubzero_Controller
 	{
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgs';
 	}
-}
+	
+	//----------------------------------------------------------
+	//  Organization types
+	//----------------------------------------------------------
+	
+	protected function orgtypes()
+	{
+		$view = new JView( array('name'=>'organizationtypes') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 
+		// Get configuration
+		$app =& JFactory::getApplication();
+		$config = JFactory::getConfig();
+		
+		// Get filters
+		$view->filters = array();
+		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option . '.orgsearch', 'search', ''));
+		$view->filters['show']   = '';
+		
+		// Get paging variables
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
+
+		$obj = new RegisterOrganizationType($this->database);
+
+		// Get a record count
+		$view->total = $obj->getCount($view->filters);
+		
+		// Get records
+		$view->rows = $obj->getRecords($view->filters);
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination($view->total, $view->filters['start'], $view->filters['limit']);
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError($this->getError());
+		}
+
+		// Output the HTML
+		$view->display();
+	}
+	
+	//-----------
+
+	protected function addorgtype()
+	{
+		$this->editorgtype();
+	}
+
+	//-----------
+
+	protected function editorgtype() 
+	{
+		$view = new JView( array('name'=>'organizationtype') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		// Incoming
+		$ids = JRequest::getVar( 'id', array() );
+
+		// Get the single ID we're working with
+		if (is_array($ids)) {
+			$id = (!empty($ids)) ? $ids[0] : 0;
+		} else {
+			$id = 0;
+		}
+		
+		// Initiate database class and load info
+		$view->org = new RegisterOrganizationType($this->database);
+		$view->org->load($id);
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError($this->getError());
+		}
+
+		// Output the HTML
+		$view->display();
+	}
+	
+	//-----------
+	
+	protected function saveorgtype() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Load the tag object and bind the incoming data to it
+		$row = new RegisterOrganizationType($this->database);
+		if (!$row->bind($_POST)) {
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+
+		if (!$row->type && $row->title) {
+			$row->type = preg_replace("/[^a-zA-Z0-9]/", '', $row->title);
+		} else {
+			$row->type = preg_replace("/[^a-zA-Z0-9]/", '', $row->type);
+		}
+
+		// Check content
+		if (!$row->check()) {
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+
+		// Store new content
+		if (!$row->store()) {
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+	
+		// Redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgtypes';
+		$this->_message = JText::_('HUB_ORGTYPE_SAVED');
+	}
+	
+	//-----------
+
+	protected function removeorgtype() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$ids = JRequest::getVar('id', array(), 'post');
+
+		// Get the single ID we're working with
+		if (!is_array($ids)) {
+			$ids = array();
+		}
+
+		// Do we have any IDs?
+		if (!empty($ids)) {
+			$orgtype = new RegisterOrganizationType( $this->database );
+			
+			// Loop through each ID and delete the necessary items
+			foreach ($ids as $id) {
+				// Remove the organization type
+				$orgtype->delete($id);
+			}
+		}
+		
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgtypes';
+		$this->_message = JText::_('HUB_ORGTYPE_REMOVED');
+	}
+	
+	//-----------
+
+	protected function cancelorgtype()
+	{
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgtypes';
+	}
+}

@@ -45,14 +45,14 @@ ximport('Hubzero_Registration_Helper');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Helper');
 ximport('Hubzero_Toolbox');
-require_once( JPATH_COMPONENT.DS.'controller.php' );
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'controller.php');
 
 $jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL($option, 'manage', 'users', 'super administrator');
+$jacl->addACL($option, 'manage', 'users', 'administrator');
 
 // Instantiate controller
 $controller = new RegisterController();
 $controller->execute();
 $controller->redirect();
-
