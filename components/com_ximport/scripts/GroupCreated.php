@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright   Copyright 2008-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2008-2011 Purdue University. All rights reserved.
  *
@@ -21,32 +24,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2008-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$config = JFactory::getConfig();
 
-//if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-//}
-
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'script.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controller.php');
-
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
-
-// Instantiate controller
-$controller = new XImportController();
-$controller->execute();
-$controller->redirect();
+class GroupCreated extends XImportHelperScript
+{
+	protected $_description = 'Take group create date from group logs.';
+	
+	public function run() 
+	{
+		// import group library
+		ximport('Hubzero_Group');
+		
+		// select all logs where group was created
+		$sql = "SELECT * FROM #__xgroups_log WHERE action='group_created'";
+		$this->_db->setQuery($sql);
+		$logs = $this->_db->loadAssocList();
+		
+		foreach ($logs as $log) 
+		{
+			echo $log['gid'];
+			$group = Hubzero_Group::getInstance($log['gid']);
+			if (is_object($group)) 
+			{
+				$group->set('created', $log['timestamp']);
+				$group->set('created_by', $log['actorid']);
+				$group->update();
+			}
+		}
+	}
+}

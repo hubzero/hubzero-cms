@@ -58,13 +58,13 @@ function ximportParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments))
+	if (empty($segments)) {
 		return $vars;
+	}
 
-	if (isset($segments[0]))
+	if (isset($segments[0])) {
 		$vars['task'] = $segments[0];
+	}
 
 	return $vars;
 }
-
-?>
