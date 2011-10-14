@@ -1680,6 +1680,7 @@ class WikiController extends Hubzero_Controller
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
+		$file['name'] = urldecode($file['name']);
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
 
@@ -1811,7 +1812,7 @@ class WikiController extends Hubzero_Controller
 			} else {
 				// Delete the database entry for the file
 				$attachment = new WikiPageAttachment( $this->database );
-				$attachment->deleteFile( $delFile, $listdir );
+				$attachment->deleteFile( $file, $listdir );
 			}
 		}
 
@@ -2279,6 +2280,7 @@ class WikiController extends Hubzero_Controller
 		} else if (substr(strtolower($this->pagename), 0, 4) == 'file') {
 			$attachment->filename .= substr($this->pagename, 5);
 		}
+		$attachment->filename = urldecode($attachment->filename);
 
 		// Get the scope of the parent page the file is attached to
 		if (!$this->scope) {

@@ -3498,6 +3498,7 @@ class GroupsController extends Hubzero_Controller
 		} elseif (substr(strtolower($filename), 0, 4) == 'file') {
 			$file = substr($filename, 5);
 		}
+		$file = urldecode($file);
 
 		$authorized = $this->_authorize();
 
