@@ -207,7 +207,7 @@ class plgTagsResources extends JPlugin
 					$total += $l;
 				}
 
-				if ($total == 0) {
+				if (count($areas) <= 1 && $total == 0) {
 					return array();
 				}
 			}
