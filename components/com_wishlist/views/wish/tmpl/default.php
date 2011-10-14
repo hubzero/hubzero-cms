@@ -97,7 +97,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			 else  {
 				$html .='<div id="content-header">'.n;
-				$html .='	<h2>'.$title.'</h2>'.n;
+				$html .='	<h2>'.$title.' #'.$item->id.'</h2>'.n;
 				$html .='	<h3>'.JText::_('PROPOSED_ON').' '.JHTML::_('date',$item->proposed, '%d %b %Y').' ';
 				$html .= JText::_('AT').' '.JHTML::_('date', $item->proposed, '%I:%M %p').' '.JText::_('BY').' '.$name;
 				$html .= $assigned ? '; '.$assigned : '';
