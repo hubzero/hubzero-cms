@@ -89,7 +89,8 @@ class MembersController extends Hubzero_Controller
 
 			case 'whois':      $this->whois();      break;
 			case 'activity':   $this->activity();   break;
-
+			case 'myaccount':  $this->_myaccount(); break;
+			
 			default: $this->browse(); break;
 		}
 	}
@@ -271,13 +272,21 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
-	/**
-	 * Short description for 'view'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
-	 */
+	//-----------
+	protected function _myaccount() 
+	{
+		/*$tab = JRequest::getVar('active', '');
+		if (!$tab) {
+			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=my&active=profile');
+		}*/
+		if (!$this->juser->get('guest')) {
+			JRequest::setVar('id', $this->juser->get('id'));
+		} else {
+			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=browse');
+			return;
+		}
+		return $this->view();
+	}
 	protected function view()
 	{
 		// Build the page title
@@ -315,15 +324,6 @@ class MembersController extends Hubzero_Controller
 		// Get the member's info
 		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
-
-		// Check subscription to Employer Services
-		if ($this->config->get('employeraccess') && $tab == 'resume') {
-			JPluginHelper::importPlugin( 'members', 'resume' );
-			$dispatcher =& JDispatcher::getInstance();
-			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
-			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;
-			$authorized = $emp ? 1 : $authorized;
-		}
 
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) {
@@ -366,6 +366,15 @@ class MembersController extends Hubzero_Controller
 		// Get the active tab (section)
 		$tab = JRequest::getVar( 'active', 'profile' );
 
+		// Check subscription to Employer Services
+		if ($this->config->get('employeraccess') && $tab == 'resume') {
+			//JPluginHelper::importPlugin( 'members', 'resume' );
+			//$dispatcher =& JDispatcher::getInstance();
+			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
+			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
+			$authorized = $emp ? 1 : $authorized;
+		}
+		
 		// Trigger the functions that return the areas we'll be using
 		$cats = $dispatcher->trigger( 'onMembersAreas', array($authorized) );
 
@@ -471,6 +480,7 @@ class MembersController extends Hubzero_Controller
 		$view = new JView( array('name'=>'view') );
 		$view->option = $this->_option;
 		$view->config = $this->config;
+		$view->task = $this->_task;
 		$view->title = $title;
 		$view->authorized = $authorized;
 		$view->cats = $cats;
@@ -2019,23 +2029,22 @@ class MembersController extends Hubzero_Controller
 	protected function _authorize($uid=0)
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 
 		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
+		if ($this->juser->authorize($this->_option, 'manage')) {
 			return 'admin';
 		}
 
 		// Check if they're the member
 		if (is_numeric($uid)) {
-			if ($juser->get('id') == $uid) {
+			if ($this->juser->get('id') == $uid) {
 				return true;
 			}
 		} else {
-			if ($juser->get('username') == $uid) {
+			if ($this->juser->get('username') == $uid) {
 				return true;
 			}
 		}
