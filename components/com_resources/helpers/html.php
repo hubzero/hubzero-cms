@@ -2182,17 +2182,23 @@ class ResourcesHtml
 							$liclass = ' class="html"';
 							$title = stripslashes($child->title);
 						} else {
-							switch ($child->type)
+							$rt = new ResourcesType( $database );
+							$rt->load( $child->type );
+							switch ($rt->alias)
 							{
-								case 70:
+								case 'user_guide':
 									$liclass = ' class="guide"';
 									break;
-								case 12:
+								case 'ilink':
 									$liclass = ' class="html"';
 									break;
-								case 32:
+								case 'breeze':
 									$liclass = ' class="swf"';
 									$class = ' class="play"';
+									break;
+								case 'hubpresenter':
+								 	$liclass = ' class="presentation"';
+									$class = ' class="hubpresenter"';
 									break;
 								default:
 									$liclass = ' class="'.$ftype.'"';
@@ -2271,16 +2277,21 @@ class ResourcesHtml
 		$access = $item->access;
 		$type = $item->type;
 		$standalone = $item->standalone;
-		$path = $item->path;
+		$path = $item->path;   
 
+		$database =& JFactory::getDBO();
 	    $juser =& JFactory::getUser();
+                              
+		$rt = new ResourcesType( $database );
+		$rt->load( $type );
+	 	$type = $rt->alias;
 
 		if ($standalone == 1) {
 			$url = JRoute::_('index.php?option='.$option.'&id='. $id);
 		} else {
 			switch ($type)
 			{
-				case 12:
+				case 'ilink':
 					if ($path) {
 						// internal link, not a resource
 						$url = $path;
@@ -2290,7 +2301,10 @@ class ResourcesHtml
 					}
 				break;
 
-				case 32:
+				case 'hubpresenter':
+					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&task=watch');
+					break;
+				case 'breeze':
 					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=play');
 				break;
 
@@ -2325,6 +2339,8 @@ class ResourcesHtml
 	{
 	    $juser =& JFactory::getUser();
 
+		$database =& JFactory::getDBO(); 
+		
 		$html = '';
 
 		switch ($resource->type)
@@ -2406,15 +2422,26 @@ class ResourcesHtml
 				$firstChild->title = str_replace( '&amp;', '&', $firstChild->title );
 				$firstChild->title = str_replace( '&', '&amp;', $firstChild->title );
 
-				$mediatypes = array('11','20','34','19','37','32','15','40','41','15');
-				$downtypes = array('60','59','57','55');
+				//$mediatypes = array('11','20','34','19','37','32','15','40','41','15','76');
+				$mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
+				//$downtypes = array('60','59','57','55');
+				$downtypes = array('thesis','handout','manual','software_download');
 				$class = '';
-				if (in_array($firstChild->logicaltype,$downtypes)) {
+				
+				
+				$rt_lt = new ResourcesType( $database );
+				$rt_lt->load( $firstChild->logicaltype );
+				
+				$rt_t = new ResourcesType( $database );
+				$rt_t->load( $firstChild->type );
+							
+				if (in_array($rt_lt->alias,$downtypes)) {
 					$mesg  = 'Download';
 					$class = 'download';
-				} elseif (in_array($firstChild->type,$mediatypes)) {
+				} elseif (in_array($rt_t->alias,$mediatypes)) {
 					$mesg  = 'View Presentation';
-					$mediatypes = array('32','26');
+					//$mediatypes = array('32','26');
+					$mediatypes = array('flash_paper','breeze');
 					if (in_array($firstChild->type,$mediatypes)) {
 						$class = 'play';
 					}
@@ -2477,6 +2504,17 @@ class ResourcesHtml
 					//if ($firstChild->type == 13 || $firstChild->type == 15 || $firstChild->type == 33) {
 						$xtra = ' '. ResourcesHtml::getFileAttribs( $firstChild->path );
 					//}
+					
+					//load a resouce type object on child resource type
+					$rt = new ResourcesType( $database );
+					$rt->load( $firstChild->type );
+					                                                   
+					//if we are a hubpresenter resource type, do not show file type in button
+					if($rt->alias == "hubpresenter") {
+						$xtra = "";
+						//$class = "play 1000x600";
+						$class = "hubpresenter";
+					}                   
 
 					if ($xact) {
 						$action = $xact;

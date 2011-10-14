@@ -44,15 +44,15 @@ class ResourcesType extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
-
+	var $id       		= NULL;  // @var int(11) Primary key
+	var $alias	  		= NULL;	 // @var varchar(100)
 
 	/**
 	 * Description for 'type'
 	 * 
 	 * @var unknown
 	 */
-	var $type     = NULL;  // @var varchar(250)
+	var $type     		= NULL;  // @var varchar(250)
 
 
 	/**
@@ -60,7 +60,7 @@ class ResourcesType extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $category = NULL;  // @var int(11)
+	var $category		= NULL;  // @var int(11)
 
 
 	/**
@@ -68,7 +68,7 @@ class ResourcesType extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $description = NULL;  // @var text
+	var $description 	= NULL;  // @var text
 
 
 	/**
@@ -76,7 +76,7 @@ class ResourcesType extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $contributable = NULL;  // @var int(2)
+	var $contributable 	= NULL;  // @var int(2)
 
 
 	/**
@@ -84,7 +84,7 @@ class ResourcesType extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $customFields = NULL;  // @var text
+	var $customFields 	= NULL;  // @var text
 
 
 	/**
@@ -92,7 +92,7 @@ class ResourcesType extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $params = NULL;  // @var text
+	var $params 		= NULL;  // @var text
 
 	//-----------
 

@@ -148,7 +148,26 @@ HUB.Resources = {
 			primarydoc.addEvent('mouseout', function(e) {
 				primarydocpop.style.display = "none";
 			});
-		}
+		} 
+		
+		
+		//Hubpresenter
+		$$(".hubpresenter").each(function(el) {
+			if (el.href.indexOf('?') == -1) {
+				el.href = el.href + '?tmpl=component';
+			} else {
+				el.href = el.href + '&tmpl=component';
+			}
+		});
+		
+		//HUBpresenter open window
+		$$(".hubpresenter").addEvent("click", function(e) {
+			mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
+			if(!mobile) {
+				new Event(e).stop();
+		 		HUBpresenter_window = window.open(this.href,'name','height=650,width=1100');
+			}
+		});
 		
 		//------------------------
 		// screenshot thumbnail slider
