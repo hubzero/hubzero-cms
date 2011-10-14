@@ -101,9 +101,8 @@ $topics = array(
 			<input type="hidden" name="problem[browserver]" value="<?php echo htmlspecialchars($this->problem['browserver']); ?>" />
 			<input type="hidden" name="problem[short]" value="<?php echo htmlspecialchars($this->problem['short']); ?>" />
 			
-			<input type="hidden" name="krhash" value="<?php echo $this->problem['key']; ?>" />
+			<input type="hidden" name="no_html" value="1" />
 <?php if ($this->verified) { ?>
-			<input type="hidden" name="answer" value="<?php echo $this->problem['sum']; ?>" />
 			<input type="hidden" name="botcheck" value="" />
 <?php } ?>
 			
@@ -163,12 +162,6 @@ $topics = array(
 			</div><!-- / .group -->
 		</fieldset><div class="clear"></div>
 		
-<?php if (!$this->verified) { ?>
-		<div class="explaination">
-			<h4><?php echo JText::_('COM_FEEDBACK_WHY_THE_MATH_QUESTION'); ?></h4>
-			<p><?php echo JText::_('COM_FEEDBACK_MATH_EXPLANATION'); ?></p>
-		</div>
-<?php } ?>
 		<fieldset>
 			<legend><?php echo JText::_('COM_FEEDBACK_TROUBLE_YOUR_PROBLEM'); ?></legend>
 			
@@ -186,21 +179,32 @@ $topics = array(
 				<input type="file" name="upload" id="trUpload" />
 				
 			</label>
+		</fieldset><div class="clear"></div>
 <?php if (!$this->verified) { ?>
+		<div class="explaination">
+			<p><?php echo JText::_('COM_FEEDBACK_MATH_EXPLANATION'); ?></p>
+		</div>
+		<fieldset>
+			<legend><?php echo JText::_('Human Check'); ?></legend>
+			
 			<label id="fbBotcheck-label" for="fbBotcheck">
 				<?php echo JText::_('Please leave this field blank.'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
 				<input type="text" name="botcheck" id="fbBotcheck" value="" />
 			</label>
-			
-			<label<?php echo ($this->getError() == 3) ? ' class="fieldWithErrors"' : ''; ?>>
-				<?php echo JText::sprintf('COM_FEEDBACK_TROUBLE_MATH', $this->problem['operand1'], $this->problem['operand2']); ?>
-				<input type="text" name="answer" value="" size="3" id="answer" class="option" /> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
-			</label>
+<?php
+if (count($this->captchas) > 0) 
+{
+	foreach ($this->captchas as $captcha) 
+	{
+		echo $captcha;
+	}
+}
+?>
 			<?php if ($this->getError() == 3) { ?>
 			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_BAD_CAPTCHA_ANSWER'); ?></p>
 			<?php } ?>
-<?php } ?>
 		</fieldset><div class="clear"></div>
+<?php } ?>
 		<p class="submit"><input type="submit" name="submit" value="<?php echo JText::_('COM_FEEDBACK_SUBMIT'); ?>" /></p>
 	</form>
 </div><!-- / .main section -->

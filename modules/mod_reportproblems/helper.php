@@ -152,12 +152,12 @@ class modReportProblems
 		$this->referrer = str_replace( '&amp;', '&', $this->referrer );
 		$this->referrer = str_replace( '&', '&amp;', $this->referrer );
 
-		$problem = array();
+		/*$problem = array();
 		$problem['operand1'] = rand(0,10);
 		$problem['operand2'] = rand(0,10);
 		$this->problem = $problem;
 		$this->sum = $problem['operand1'] + $problem['operand2'];
-		$this->krhash = $this->_generate_hash($this->sum,date('j'));
+		$this->krhash = $this->_generate_hash($this->sum,date('j'));*/
 
 		ximport('Hubzero_Browser');
 		$browser = new Hubzero_Browser();

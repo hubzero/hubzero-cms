@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -21,22 +24,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="report-response">
-	<div>
-		<p><?php echo JText::_('COM_FEEDBACK_ERROR_PROCESSING_FORM'); ?></p>
-		<p><a href="javascript:HUB.ReportProblem.reshowForm();" title="<?php echo JText::_('COM_FEEDBACK_EDIT_REPORT'); ?>"><?php echo JText::_('COM_FEEDBACK_EDIT_REPORT'); ?></a></p>
-	</div>
-	<h3><?php echo JText::_('COM_FEEDBACK_ERROR'); ?></h3>
-	<p><?php echo JText::_('COM_FEEDBACK_ERROR_PROCESSING_DESCRIPTION'); ?></p>
-</div>
-<script type="text/javascript">window.top.window.HUB.ReportProblem.hideTimer();</script>
+<label for="captcha-answer<?php echo $this->total; ?>">
+	<?php echo $this->question['question']; ?> <span class="required"><?php echo JText::_('PLG_HUBZERO_CAPTCHA_REQUIRED'); ?></span>
+	<input type="text" name="captcha[answer]" id="captcha-answer<?php echo $this->total; ?>" value="" />
+</label>
+<input type="hidden" name="captcha[instance]" id="captcha-instance" value="<?php echo $this->total; ?>" />

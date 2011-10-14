@@ -144,7 +144,7 @@ if (typeof(Fx) === 'undefined') {
 			this.email   = $(this.options.emailId);
 			this.login   = $(this.options.loginId);
 			this.problem = $(this.options.problemId);
-			this.answer  = $(this.options.captchaId);
+			//this.answer  = $(this.options.captchaId);
 			this.upload  = $(this.options.uploadId);
 			
 			var res = new Element('div', {
@@ -251,9 +251,9 @@ if (typeof(Fx) === 'undefined') {
 			} else if (this.email.value == '' || this.validateEmail(this.email.value) === false) {
 				alert("Please provide a valid email address.");
 				this.email.focus();
-			} else if (this.answer.value == '') {
+			/*} else if (this.answer.value == '') {
 				alert("Please provide an answer to the math question.");
-				this.answer.focus();
+				this.answer.focus();*/
 			} else {
 				this.sendReport();
 			}

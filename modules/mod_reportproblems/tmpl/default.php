@@ -87,18 +87,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<input type="text" name="reporter[email]" id="trEmail" value="" />
 <?php } ?>
 						</label>
-<?php if (!$modreportproblems->verified) { ?>
+<?php 
+	JPluginHelper::importPlugin('support');
+	$dispatcher =& JDispatcher::getInstance();
+	$captchas = $dispatcher->trigger('onGetModuleCaptcha');
+	
+	if (count($captchas) > 0) 
+	{
+		foreach ($captchas as $captcha) 
+		{
+			echo $captcha;
+		}
+	}
+?>
 						<label id="trBotcheck-label" for="trBotcheck">
 							<?php echo JText::_('Please leave this field blank.'); ?> <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
 							<input type="text" name="botcheck" id="trBotcheck" value="" />
 						</label>
-	
-						<label for="trAnswer">
-							Anti-spam check: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span><br />
-							<?php echo JText::sprintf('MOD_REPORTPROBLEMS_MATH_CAPTCHA', $modreportproblems->problem['operand1'], $modreportproblems->problem['operand2']); ?>
-							<input type="text" name="answer" id="trAnswer" value="" class="option" size="3" />
-						</label>
-<?php } ?>
 					</fieldset>
 					<fieldset>
 						<label for="trProblem">
@@ -120,16 +125,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<input type="hidden" name="problem[osver]" value="<?php echo $modreportproblems->os_version; ?>" />
 						<input type="hidden" name="problem[browser]" value="<?php echo $modreportproblems->browser; ?>" />
 						<input type="hidden" name="problem[browserver]" value="<?php echo $modreportproblems->browser_ver; ?>" />
-						<input type="hidden" name="krhash" value="<?php echo $modreportproblems->krhash; ?>" />
 						<input type="hidden" name="verified" value="<?php echo $modreportproblems->verified; ?>" />
 						<input type="hidden" name="reporter[org]" value="<?php echo (!$modreportproblems->juser->get('guest')) ? $modreportproblems->juser->get('org') : ''; ?>" />
 						<input type="hidden" name="option" value="com_feedback" />
 						<input type="hidden" name="task" value="sendreport" />
 						<input type="hidden" name="no_html" value="1" />
-<?php if ($modreportproblems->verified) { ?>
-						<input type="hidden" name="botcheck" value="" />
-						<input type="hidden" name="answer" id="trAnswer" value="<?php echo $modreportproblems->sum; ?>" />
-<?php } ?>
 				 	</fieldset>
 					<div class="submit"><input type="submit" id="send-form" value="<?php echo JText::_('MOD_REPORTPROBLEMS_SUBMIT'); ?>" /></div>
 				</form>

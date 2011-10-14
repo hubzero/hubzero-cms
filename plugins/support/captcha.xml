@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install version="1.5" type="plugin" group="support">
+	<name>Support - CAPTCHA</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Generates either an image or text-based CAPTCHA</description>
+	<files>
+		<filename plugin="captcha">captcha.php</filename>
+	</files>
+	<params>
+		<param name="modCaptcha" type="list" default="text" label="Module CAPTCHA Type" description="Select the type of CAPTCHA to use for module forms.">
+			<option value="text">Text-based</option>
+			<option value="image">Image-based</option>
+		</param>
+		<param name="comCaptcha" type="list" default="image" label="Component CAPTCHA Type" description="Select the type of CAPTCHA to use for component forms.">
+			<option value="text">Text-based</option>
+			<option value="image">Image-based</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />	
+		<param name="bgColor" type="text" size="25" default="#2c8007" label="Background Color" description="Enter color(6 letter hex value )" />
+		<param name="textColor" type="text" size="25" default="#ffffff" label="Text Color" description="Enter color(6 letter hex value)" />
+		<param name="imageFunction" type="list" default="Adv" label="Select Image Function" description="Select wether you want to show distorted letters or plane letters">
+			<option value="Plain">Plain letters</option>
+			<option value="Adv">Distorted letters</option>
+		</param>
+	</params>
+</install>

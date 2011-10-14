@@ -333,11 +333,16 @@ class FeedbackController extends Hubzero_Controller
 			'tool' => JRequest::getVar( 'tool', '' )
 		);
 
+		$view = new JView( array('name'=>'report') );
+					 
 		// Generate a CAPTCHA
-		$problem['operand1'] = rand(0,10);
-		$problem['operand2'] = rand(0,10);
-		$problem['sum'] = $problem['operand1'] + $problem['operand2'];
-		$problem['key'] = $this->_generate_hash($problem['sum'],date('j'));
+		JPluginHelper::importPlugin('support');
+		$dispatcher =& JDispatcher::getInstance();
+		$view->captchas = $dispatcher->trigger('onGetComponentCaptcha');
+		//$problem['operand1'] = rand(0,10);
+		//$problem['operand2'] = rand(0,10);
+		//$problem['sum'] = $problem['operand1'] + $problem['operand2'];
+		//$problem['key'] = $this->_generate_hash($problem['sum'],date('j'));
 
 		// Set page title
 		$this->_buildTitle();
@@ -349,13 +354,12 @@ class FeedbackController extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Output HTML
-		$view = new JView( array('name'=>'report') );
 		$view->title = $this->_title;
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		$view->reporter = $this->_getUser();
 		$view->problem = $problem;
-		$view->verified = ($this->juser->get('guest')) ? 0 : 1;
+		$view->verified = $this->_isVerified();
 		$view->file_types = $this->config->get('file_ext');
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -638,18 +642,19 @@ class FeedbackController extends Hubzero_Controller
 	 */
 	protected function sendreport()
 	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
+		include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php');
+		include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php');
 
 		// Get plugins
-		JPluginHelper::importPlugin( 'support' );
+		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Trigger any events that need to be called before session stop
-		$dispatcher->trigger( 'onPreTicketSubmission', array() );
+		$dispatcher->trigger('onPreTicketSubmission', array());
 
 		// Incoming
-		$no_html  = JRequest::getInt( 'no_html', 0 );
+		$no_html  = JRequest::getInt('no_html', 0);
+		$verified = JRequest::getInt('verified', 0);
 		$reporter = array_map('trim', $_POST['reporter']);
 		$problem  = array_map('trim', $_POST['problem']);
 
@@ -666,7 +671,7 @@ class FeedbackController extends Hubzero_Controller
 
 		// Make sure email address is valid
 		$validemail = $this->_check_validEmail($reporter['email']);
-
+		
 		// Set page title
 		$this->_buildTitle();
 
@@ -676,19 +681,15 @@ class FeedbackController extends Hubzero_Controller
 		// Push some styles to the template
 		$this->_getStyles();
 
-		// Prep a new math question and hash in case any form validation fails
-		$problem['operand1'] = rand(0,10);
-		$problem['operand2'] = rand(0,10);
-		$sum = $problem['operand1'] + $problem['operand2'];
-		$problem['key'] = $this->_generate_hash($sum,date('j'));
 
 		// Trigger any events that need to be called
 		$customValidation = true;
-		$result = $dispatcher->trigger( 'onValidateTicketSubmission', array($reporter, $problem) );
+		$result = $dispatcher->trigger('onValidateTicketSubmission', array($reporter, $problem));
 		$customValidation = (is_array($result) && !empty($result)) ? $result[0] : $customValidation;
 
 		// Check for some required fields
 		if (!$reporter['name'] || !$reporter['email'] || !$validemail || !$problem['long'] || !$customValidation) {
+			JRequest::setVar('task', 'report_problems');
 			// Output form with error messages
 			$view = new JView( array('name'=>'report') );
 			$view->title = $this->_title;
@@ -696,7 +697,9 @@ class FeedbackController extends Hubzero_Controller
 			$view->task = 'report_problems';
 			$view->reporter = $reporter;
 			$view->problem = $problem;
-			$view->verified = ($this->juser->get('guest')) ? 0 : 1;
+			$view->verified = $verified;
+			$view->captchas = $dispatcher->trigger('onGetComponentCaptcha');
+			$view->file_types = $this->config->get('file_ext');
 			$view->setError(2);
 			$view->display();
 			return;
@@ -706,40 +709,60 @@ class FeedbackController extends Hubzero_Controller
 		$ip = $this->_ip_address();
 		$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 
-		// Are the logged in?
-		if ($this->juser->get('guest')) {
-			// No - don't trust user
-			// Check CAPTCHA
-			$key = JRequest::getVar( 'krhash', 0 );
-			$answer = JRequest::getInt( 'answer', 0 );
-			$answer = $this->_generate_hash($answer,date('j'));
+		// Check CAPTCHA
+		$validcaptchas = $dispatcher->trigger('onValidateCaptcha');
+		if (count($validcaptchas) > 0) 
+		{
+			foreach ($validcaptchas as $validcaptcha) 
+			{
+				if (!$validcaptcha) 
+				{
+					$this->setError(JText::_('Error: Invalid CAPTCHA response.'));
+				}
+			}
+		}
 
+		// Are they verified?
+		if (!$verified) 
+		{
 			// Quick spam filter
 			$spam = $this->_detect_spam($problem['long'], $ip);
+			if ($spam) {
+				$this->setError(JText::_('Error: Message flagged as spam.'));
+				return;
+			}
+			// Quick bot check
 			$botcheck = JRequest::getVar('botcheck', '');
-			
-			if ($answer != $key || $spam || $botcheck) {
-				if ($no_html) {
-					// Output error messages (AJAX)
-					$view = new JView( array('name'=>'report', 'layout'=>'error') );
-					if ($this->getError()) {
-						$view->setError( $this->getError() );
-					}
-					$view->display();
-					return;
-				} else {
-					// Output form with error messages
-					$view = new JView( array('name'=>'report') );
-					$view->title = $this->_title;
-					$view->option = $this->_option;
-					$view->task = 'report_problems';
-					$view->reporter = $reporter;
-					$view->problem = $problem;
-					$view->verified = ($this->juser->get('guest')) ? 0 : 1;
-					$view->setError(3);
-					$view->display();
-					return;
+			if ($botcheck) {
+				$this->setError(JText::_('Error: Invalid CAPTCHA response.'));
+				return;
+			}
+		}
+		
+		if ($this->getError()) {
+			if ($no_html) {
+				// Output error messages (AJAX)
+				$view = new JView( array('name'=>'report', 'layout'=>'error') );
+				if ($this->getError()) {
+					$view->setError($this->getError());
 				}
+				$view->display();
+				return;
+			} else {
+				JRequest::setVar('task', 'report_problems');
+				// Output form with error messages
+				$view = new JView( array('name'=>'report') );
+				$view->title = $this->_title;
+				$view->option = $this->_option;
+				$view->task = 'report_problems';
+				$view->reporter = $reporter;
+				$view->problem = $problem;
+				$view->verified = $verified;
+				$view->captchas = $dispatcher->trigger('onGetComponentCaptcha');
+				$view->file_types = $this->config->get('file_ext');
+				$view->setError(3);
+				$view->display();
+				return;
 			}
 		}
 
@@ -763,7 +786,7 @@ class FeedbackController extends Hubzero_Controller
 		// Cut suggestion at 70 characters
 		if (!$problem['short'] && $problem['long']) {
 			$problem['short'] = substr($problem['long'], 0, 70);
-			if (strlen($problem['short']) >=70 ) {
+			if (strlen($problem['short']) >= 70) {
 				$problem['short'] .= '...';
 			}
 		}
@@ -871,10 +894,10 @@ class FeedbackController extends Hubzero_Controller
 		Hubzero_Toolbox::send_email($admin, $subject, $message);
 
 		// Trigger any events that need to be called before session stop
-		$dispatcher->trigger( 'onTicketSubmission', array($row) );
+		$dispatcher->trigger('onTicketSubmission', array($row));
 
 		// Output Thank You message
-		$view = new JView( array('name'=>'report', 'layout'=>'thanks') );
+		$view = new JView(array('name'=>'report', 'layout'=>'thanks'));
 		$view->title = $this->_title;
 		$view->option = $this->_option;
 		$view->task = $this->_task;
@@ -884,6 +907,21 @@ class FeedbackController extends Hubzero_Controller
 			$view->setError( $this->getError() );
 		}
 		$view->display();
+	}
+	
+	//-----------
+	
+	private function _isVerified()
+	{
+		if (!$this->juser->get('guest')) {
+			ximport('Hubzero_User_Profile');
+			$profile = new Hubzero_User_Profile();
+			$profile->load($this->juser->get('id'));
+			if ($profile->get('emailConfirmed') == 1) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
