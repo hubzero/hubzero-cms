@@ -895,8 +895,12 @@ class ContribtoolController extends JObject
 			$i = 0;
 			foreach($rows as $row) {
 				if($limit && $i == $limit) {
-					// Temp for testing
-					print_r($created);
+					// Output status message
+					if($created) {
+						foreach ($created as $cr) {
+							echo '<p>'.$cr.'</p>';
+						}
+					}
 					echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
 					return;
 				}
@@ -935,7 +939,7 @@ class ContribtoolController extends JObject
 				$query.= " ORDER BY a.ordering ASC LIMIT 1";
 				$database->setQuery( $query );
 				$firstAuthor = $database->loadResult();
-				$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
+				$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : htmlspecialchars($juser->get('name'));
 				
 				// Format name
 				if($firstAuthor) {
@@ -950,7 +954,7 @@ class ContribtoolController extends JObject
 				$metadata['creator'] = $authorName;
 				
 				// Register DOI			
-				$doiSuccess = $objDOI->registerDOI( $service, $metadata);
+				$doiSuccess = $objDOI->registerDOI( $service, $metadata, $doierr);
 				if($doiSuccess) {
 					$query = "UPDATE #__doi_mapping SET doi='$doiSuccess' ";
 					$query.= "WHERE rid=$row->rid AND local_revision=$row->local_revision";
@@ -962,12 +966,24 @@ class ContribtoolController extends JObject
 						$created[] = $doiSuccess;
 					}
 				} 
+				else {
+					print_r($doierr);
+					echo '<br />';
+					print_r($metadata);
+					echo '<br />';
+					echo $service;
+				}
 				
 				$i++;
 			}
 		}
 		
-		print_r($created);
+		// Output status message
+		if($created) {
+			foreach ($created as $cr) {
+				echo '<p>'.$cr.'</p>';
+			}
+		}
 		echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
 		return;
 	}

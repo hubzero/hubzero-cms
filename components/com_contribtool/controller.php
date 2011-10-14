@@ -2644,10 +2644,11 @@ class ContribtoolController extends JObject
 			$objV->getToolVersions( $this->_toolid, $tools, '', $ldap_read, 1);
 
 			// test - nicktest
+			/*
 			if($this->_toolid == 349) {
 				$status['revision'] = 577;
 				$status['version']  = 'T';
-			}
+			} */
 
 			// make checks
 			if(!is_numeric($status['revision'])) {  // bad format
@@ -2676,15 +2677,14 @@ class ContribtoolController extends JObject
 			{
 				$result = 0; $output['fail'] .= '<br />* '.$error_v;
 			}
-
 		}
 
 		$xlog->logDebug("publish(): checkpoint 3:$result, running finalize tool");
-		// run finalizetool
-
+		
+		// Run finalizetool
 		if($result) {
 			if($this->finalizeTool($out)) {
-				$output['pass'] .= '<br />* Version finalized. '.$out;
+				$output['pass'] .= '<br />* Version finalized.';
 			}
 			else {
 				$output['fail'] .= ($out) ? '<br />* '.$out : '';
@@ -2744,7 +2744,7 @@ class ContribtoolController extends JObject
 					$metadata['creator'] = $authorName;
 					
 					// Register DOI
-					$doiSuccess = $objDOI->registerDOI( $service, $metadata);
+					$doiSuccess = $objDOI->registerDOI( $service, $metadata, $doierr);
 						
 					// Also create a handle using the old service
 					if($doiSuccess && $old_doi) {
@@ -2773,6 +2773,7 @@ class ContribtoolController extends JObject
 					}
 					else {
 						$output['fail'] .= '<br />* '.JText::_('ERR_DOI_STORE_FAILED');
+						$output['fail'] .= '<br />* '.$doierr;
 						$result = 0;
 					}
 					

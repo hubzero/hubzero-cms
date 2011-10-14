@@ -172,9 +172,6 @@ class ResourcesDoi extends JTable
 		if ($rid == NULL) {
 			return false;
 		}
-		if ($doi == NULL) {
-			return false;
-		}
 
 		$query = "INSERT INTO $this->_tbl (local_revision, doi_label, rid, alias, versionid, doi) VALUES ('".$revision."','".$newlabel."','".$rid."','".$alias."', '".$versionid."', '".$doi."')";
 		$this->_db->setQuery( $query );
@@ -187,7 +184,7 @@ class ResourcesDoi extends JTable
 	
 	//-----------
 	
-	public function registerDOI( $service = NULL, $metadata = array() ) 
+	public function registerDOI( $service = NULL, $metadata = array(), &$doierr='' ) 
 	{
 		if($service == NULL or empty($metadata)) {
 			return false;
@@ -222,6 +219,7 @@ class ResourcesDoi extends JTable
 			$output = trim(end($out));
 		}
 		else {
+			$doierr = $success . $output;
 			$output = 0;
 		}
 				
