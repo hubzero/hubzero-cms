@@ -5,6 +5,14 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/*
+
+	-- -- -- -- -- -- --
+	com_wiki CSS
+	-- -- -- -- -- -- --
+
+*/
+
 /* Sections */
 	.com_wiki .main {
 		border-top: 1px solid #fff;
@@ -133,11 +141,11 @@
 		}
 	/* Options */
 	.abuse {
-		background: url("images/abuse.gif") 0 0 no-repeat;
+		background: url("/components/com_wiki/images/abuse.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		}
 	.reply {
-		background: url("images/reply.gif") 0 0 no-repeat;
+		background: url("/components/com_wiki/images/reply.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		}
 	.abuse:hover,
@@ -165,18 +173,18 @@
 	ol.comments p.comment-member-photo {
 	    float: left;
 	    margin: 0;
-	    padding: 0 20px 0 0; /*105px;*/
+	    padding: 0 20px 0 0;
 		width: 50px;
 		height: 50px;
 		overflow: hidden;
 	    color: #777;
 	    font-size: 11px;
 	    text-align: right;
-		background: url("images/comment-arrow.gif") right 15px no-repeat;
+		background: url("/components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
 		}
 	/* Content */
 	ol.comments .comment-content {
-		margin: 0 0 1em 70px; /*125px;*/
+		margin: 0 0 1em 70px;
 		background-color: #fafafa;
 		border: 10px solid #f2f2f2;
 		padding: 0 1em;
@@ -196,7 +204,7 @@
 		}
 	ol.comments .author p.comment-member-photo,
 	ol.comments .author ol.comments .author p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right -129px no-repeat;
+		background: url("/components/com_wiki/mages/comment-arrow.gif") right -129px no-repeat;
 		}
 	ol.comments .author ol.comments .comment-content,
 	ol.comments .author ol.comments .author ol.comments .comment-content {
@@ -205,7 +213,7 @@
 		}
 	ol.comments .author ol.comments p.comment-member-photo,
 	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right 15px no-repeat;
+		background: url("/components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
 		}
 	/* Chosen comments */
 	ol.comments .chosen .comment-content {
@@ -213,7 +221,7 @@
 		border-color: #eeecf9;
 		}
 	ol.comments .chosen p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right -57px no-repeat;
+		background: url("/components/com_wiki/images/comment-arrow.gif") right -57px no-repeat;
 		}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
@@ -303,13 +311,13 @@
 		float: left;
 		margin: 0;
 		padding: 0 20px 0 0;
-		width: 50px; /*105px;*/
+		width: 50px;
 		height: 50px;
 		overflow: hidden;
 		color: #777;
 		font-size: 11px;
 		text-align: right;
-		background: url("images/comment-arrow.gif") right -201px no-repeat;
+		background: url("/components/com_wiki/images/comment-arrow.gif") right -201px no-repeat;
 		}
 	#commentform .sidenote {
 		border: 1px solid #edf0e8;
@@ -334,11 +342,6 @@
 		position: relative;
 		display: block;
 		}
-	/*#commentform label span {
-		position: absolute;
-		top: 1.5em;
-		right: 0;
-		}*/
 	#commentform .grouping {
 		position: relative;
 		margin-left: -3em;
@@ -563,11 +566,11 @@
 		}
 /* Links */
 	a.ext-link {
-		background: url("images/extlink.gif") 0 0.4em no-repeat;
+		background: url("/components/com_wiki/images/extlink.gif") 0 0.4em no-repeat;
 		padding-left: 15px;
 		}
 	a.missing {
-		background: url("images/missinglink.gif") 0 0.4em no-repeat;
+		background: url("/components/com_wiki/images/missinglink.gif") 0 0.4em no-repeat;
 		padding-left: 7px;
 		}
 /* Preview */
@@ -580,7 +583,7 @@
 		border: 2px solid #eee;
 		padding: 1em;
 		margin: 1em 1em 0 0;
-		background: url("images/draft.gif");
+		background: url("/components/com_wiki/images/draft.gif");
 		}
 /* Admonitions */
 	div.admon-caution, 
@@ -604,16 +607,26 @@
 	div.admon-warning p {
 		margin-top: 8px; /*to align text with bg graphic*/
 		}
-	div.admon-tip { background-image: url("images/admon-tip.png"); }
-	div.admon-note { background-image: url("images/admon-note.png"); }
-	div.admon-important { background-image: url("images/admon-important.png"); }
-	div.admon-caution { background-image: url("images/admon-caution.png"); }
-	div.admon-warning { background-image: url("images/admon-warning.png"); }
+	div.admon-tip { 
+		background-image: url("/components/com_wiki/images/admon-tip.png"); 
+		}
+	div.admon-note { 
+		background-image: url("/components/com_wiki/images/admon-note.png"); 
+		}
+	div.admon-important { 
+		background-image: url("/components/com_wiki/images/admon-important.png"); 
+		}
+	div.admon-caution { 
+		background-image: url("/components/com_wiki/images/admon-caution.png"); 
+		}
+	div.admon-warning { 
+		background-image: url("/components/com_wiki/images/admon-warning.png"); 
+		}
 /* Introduction page */
 	#introduction {
 		margin: 0 -15px 3em -15px;
 		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("images/topics-large.gif") 30px 25px no-repeat;
+		background: #fbf8ea url("/components/com_wiki/images/topics-large.gif") 30px 25px no-repeat;
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
 		color: #7c7266;
@@ -643,7 +656,7 @@
 	#introduction li {
 		margin: 0;
 		padding: 0 0 0 15px;
-		background: transparent url("images/bullets/arrow.gif") 0 50% no-repeat;
+		background: transparent url("/components/com_wiki/images/bullets/arrow.gif") 0 50% no-repeat;
 		}
 /* Four Columns */
 	.com_wiki .four {
@@ -671,6 +684,7 @@
 		margin: 0;
 		padding: 0.5em 0 0 0;
 		line-height: 1em;
+		border: none;
 		border-top: 2px solid #e0e0d7;
 		}
 	.com_wiki .second {

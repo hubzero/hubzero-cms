@@ -8,14 +8,14 @@
 /*
 
 	-- -- -- -- -- -- --
-	com_myhub
+	com_myhub CSS
 	-- -- -- -- -- -- --
 
 */
 	#personalize,
 	#finish {
 		padding-left: 20px;
-		background: url("images/cog.png") 0 0 no-repeat;
+		background: url("/components/com_myhub/images/cog.png") 0 0 no-repeat;
 		}
 /* Fix some content container problems */
 	#content {
@@ -30,15 +30,14 @@
 		padding-right: 15px;
 		}
 	#content .main {
-		background: #eee url("images/bg-myhub.gif");
+		background: #eee url("/components/com_myhub/images/bg-myhub.gif");
 		padding-left: 0;
 		padding-right: 0;
 		}
 	/* Setting a background image seems to cause IE7 to become extrememly slow when scrolling the page */
 	html>body #content .main {
 		*background: #eee;
-	}
-
+		}
 /* Sortable Table */
 	#droppables {
 		table-layout: fixed;
@@ -150,7 +149,7 @@
 		padding: 0.2em 0.5em;
 		}
 	div.draggable .close { 
-		background: url("images/close.png") 0 0 no-repeat; 
+		background: url("/components/com_myhub/images/close.png") 0 0 no-repeat; 
 		margin: -13px 0 0 0;
 		padding: 0;
 		width: 30px; 
@@ -202,7 +201,7 @@
 		float: left;
 		}
 	.undo {
-		background: url('images/arrow_undo.png') 0 0 no-repeat;
+		background: url("/components/com_myhub/images/arrow_undo.png") 0 0 no-repeat;
 		padding-left: 20px;
 		}
 /* Module nav buttons */
@@ -288,4 +287,3 @@
 		right: 10px;
 		font-size: 90%;
 		}
-

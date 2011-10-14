@@ -79,7 +79,7 @@
 		}
 	.ecalendar caption a,
 	.datenav a {
-		background: transparent url("images/calendar-next.png") no-repeat;
+		background: transparent url("/components/com_events/images/calendar-next.png") no-repeat;
 		margin-right: 1em;
 		padding: 15px 0 0 15px;
 		overflow: hidden;
@@ -90,7 +90,7 @@
 		}
 	.ecalendar caption a:first-child,
 	.datenav a:first-child {
-		background-image: url("images/calendar-previous.png");
+		background-image: url("/components/com_events/images/calendar-previous.png");
 		}
 	.ecalendar caption a:hover,
 	.datenav a:hover {
@@ -275,7 +275,7 @@
 /* Misc. */
 	.com_events .last a {
 		padding-left: 20px;
-		background: url("images/date_add.png") 0 0 no-repeat;
+		background: url("/components/com_events/images/date_add.png") 0 0 no-repeat;
 		}
 /* (sub) Tabs */
 	.com_events .main h3 {
@@ -359,7 +359,7 @@
 		}
 	* html .ecalendar caption a.prv,
 	* html .datenav a.prv {
-		background-image: url("images/calendar-previous.png");
+		background-image: url("/components/com_events/images/calendar-previous.png");
 		}
 	* html .ecalendar caption a:hover,
 	* html .datenav a:hover {

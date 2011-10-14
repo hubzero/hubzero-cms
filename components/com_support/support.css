@@ -130,7 +130,7 @@
 		margin-top: 0;
 		}
 	#ticket-details caption {
-		background: url("images/information.gif") 0 1em no-repeat;
+		background: url("/components/com_support/images/information.gif") 0 1em no-repeat;
 		margin: 0;
 		padding: 1em 0 0 0;
 		padding-left: 20px;
@@ -214,7 +214,7 @@
 		margin: 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
-		background: url("images/tag_orange.png") 0 0.2em no-repeat;
+		background: url("/components/com_support/images/tag_orange.png") 0 0.2em no-repeat;
 		}
 	.ticket .ticket-tags .tags li {
 		margin: 0;
@@ -231,12 +231,12 @@
 		padding: 0.5em;
 		text-align: center;
 		border: 5px solid #fff; 
-		background: #fff url("images/light-stripes.png");
+		background: #fff url("/components/com_support/images/light-stripes.png");
 		}
 	.ticket-status .open {
 		color: #c00;
 		border-color: #EFCCC2; 
-		background: #FFF2EF url("images/light-stripes.png");
+		background: #FFF2EF url("/components/com_support/images/light-stripes.png");
 		}
 	.ticket-status .closed {
 		color: #000;
@@ -326,14 +326,14 @@
 		}
 	/* Private comments */
 	ol.comments .private .comment-content {
-		background: #fdfbf8 url("images/light-stripes.png");
+		background: #fdfbf8 url("/components/com_support/images/light-stripes.png");
 		border-color: #f9f2ec;
 		}
 	ol.comments .private .comment-anchor {
 		border-color: transparent #f9f2ec transparent transparent;
 		}
 	ol.comments .private p.comment-title {
-		background: url("images/lock.png") right top no-repeat;
+		background: url("/components/com_support/images/lock.png") right top no-repeat;
 		}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
@@ -359,7 +359,7 @@
 		margin: 0 0 0.5em 0;
 		font-size: 90%;
 		color: #aaa;
-		background: url("images/page_edit.png") 10px 0.4em no-repeat;
+		background: url("/components/com_support/images/page_edit.png") 10px 0.4em no-repeat;
 		list-style: none;
 		}
 	ol.comments .changelog li {
@@ -380,7 +380,7 @@
 		padding: 0.2em 0.2em 0.2em 30px;
 		margin: 0;
 		font-size: 90%;
-		background: url("images/email.png") 10px 0.2em no-repeat;
+		background: url("/components/com_support/images/email.png") 10px 0.2em no-repeat;
 		}
 	ol.comments .emaillog li {
 		padding: 0.1em;
@@ -394,7 +394,7 @@
 		padding: 10px;
 		z-index: 13000;
 		text-align: left;
-		background: url("images/overlay.png") top left;
+		background: url("/components/com_support/images/overlay.png") top left;
 		}
 	.img-tip #keyword-guide {
 		color: #888;
@@ -412,7 +412,7 @@
 		margin: 1em 0 3em 0;
 		text-align: left;
 		border: 1px solid #EFCCC2; 
-		background: #FFF2EF url("images/stophand.gif") 10px 10px no-repeat;
+		background: #FFF2EF url("/components/com_support/images/stophand.gif") 10px 10px no-repeat;
 		}
 	.abuseitem h4 {
 		margin: 0;
@@ -473,13 +473,13 @@
 		color: #777;
 		}
 	#kb h3 a {
-		background: url("images/help-large.gif") 50% 30% no-repeat;
+		background: url("/components/com_support/images/help-large.gif") 50% 30% no-repeat;
 		}
 	#na h3 a {
-		background: url("images/answers-large.gif") 50% 30% no-repeat;
+		background: url("/components/com_support/images/answers-large.gif") 50% 30% no-repeat;
 		}
 	#rp h3 a {
-		background: url("images/alert-large.gif") 50% 30% no-repeat;
+		background: url("/components/com_support/images/alert-large.gif") 50% 30% no-repeat;
 		}
 	td .delete {
 		display: block;
@@ -599,7 +599,7 @@
 		padding-left: 10px;
 		}
 	#content-header-extra .ticket { 
-		background: url("images/note.png") 0 0 no-repeat; 
+		background: url("/components/com_support/images/note.png") 0 0 no-repeat; 
 		padding-left: 20px; 
 		}
 /* Comment form */
@@ -678,12 +678,6 @@
 		position: relative;
 		display: block;
 		}
-	/*#commentform label span {
-		position: absolute;
-		top: 1.5em;
-		right: 0;
-		display: none;
-		}*/
 	#commentform .grouping {
 		position: relative;
 		margin-left: -3em;
@@ -720,6 +714,6 @@
 		text-align: right;
 		}
 	#commentform.private fieldset {	
-		background: #fdfbf8 url("images/light-stripes.png");
+		background: #fdfbf8 url("/components/com_support/images/light-stripes.png");
 		border-color: #f9f2ec;
 		}

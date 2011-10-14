@@ -34,17 +34,13 @@
 /* Supporting styles missing from main.css */
 
 /* For the options to Poll */
-
-ul{
-margin: 1em 0 1em 0em;
-list-style:none;
-}
-
-.introtext{
-   margin-top:5px;
-}
-
-
+	ul {
+		margin: 1em 0 1em 0em;
+		list-style: none;
+		}
+	.introtext {
+		margin-top:5px;
+		}
 /* Four Columns */
 	.columns {
 		margin: 0;
@@ -54,7 +50,8 @@ list-style:none;
 		text-align: left;
 		}
 	.four {
-		width: 23%; background:none;
+		width: 23%; 
+		background: none;
 		}
 	.four.first {
 		padding: 0 1.25% 0 0;
@@ -70,7 +67,8 @@ list-style:none;
 		}
 	/* Two Columns */
 	.two {
-		width: 48%; background:none;
+		width: 48%; 
+		background: none;
 		}
 	.two.first {
 		padding: 0 2% 0 0;
@@ -80,7 +78,8 @@ list-style:none;
 		}
 /* Three Columns */
 	.three {
-		width: 31.5%; background:none;
+		width: 31.5%; 
+		background: none;
 		}
 	.three.first {
 		padding: 0 1.25% 0 0;
@@ -101,42 +100,42 @@ list-style:none;
 		}
 		
 /* Introduction columns */
-       .com_feedback .mainsection {
-               margin: 0 0 2em 0;
-               padding: 0;
-               border: 1px solid #F7F7F3;
-               background: #F7F7F3;
-               /* Rounded corners */
-               -moz-border-radius: 10px;
-               -webkit-border-radius: 10px;
-               -khtml-border-radius: 10px;
-               border-top-radius: 10px;
-               }
-       .com_feedback .mainsection h3 { 
-               text-align: center; 
-               margin: 0; 
-               padding: 0;
-               color: #000; 
+	.com_feedback .mainsection {
+		margin: 0 0 2em 0;
+		padding: 0;
+		border: 1px solid #F7F7F3;
+		background: #F7F7F3;
+		/* Rounded corners */
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;
+		border-top-radius: 10px;
 		}
-       .com_feedback .mainsection h3 a { 
-               color: #000;
-               border: none;
-               display: block;
-               margin: 0;
-               padding: 7em 0.9em 0 0.9em;
+	.com_feedback .mainsection h3 { 
+		text-align: center; 
+		margin: 0; 
+		padding: 0;
+		color: #000; 
 		}
-       .com_feedback .mainsection h3 a:hover {
-               color: blue;
-               border:none;
-               text-decoration: underline;
-               }
-       .com_feedback .mainsection p {
-               margin: 0;
-               padding: 1em 1em 1em 1em;
-               font-size: 1.2em;
-               line-height: 1.4em;
-               color: #777;
-               }
+	.com_feedback .mainsection h3 a { 
+		color: #000;
+		border: none;
+		display: block;
+		margin: 0;
+		padding: 7em 0.9em 0 0.9em;
+		}
+	.com_feedback .mainsection h3 a:hover {
+		color: blue;
+		border: none;
+		text-decoration: underline;
+		}
+	.com_feedback .mainsection p {
+		margin: 0;
+		padding: 1em 1em 1em 1em;
+		font-size: 1.2em;
+		line-height: 1.4em;
+		color: #777;
+		}
 	#srch h3,
 	#earn h3,
 	#ask h3,
@@ -145,15 +144,14 @@ list-style:none;
 		padding:0;
 		}
 	#story h3 a {
-		background: url("images/quotes-large.gif") 50% 30% no-repeat;
+		background: url("/components/com_events/images/quotes-large.gif") 50% 30% no-repeat;
 		}
 	#poll h3 a {
-		background: url("images/poll-large.gif") 50% 30% no-repeat;
+		background: url("/components/com_events/images/poll-large.gif") 50% 30% no-repeat;
 		}
 	#problem h3 a {
-		background: url("images/alert-large.gif") 50% 30% no-repeat;
+		background: url("/components/com_events/images/alert-large.gif") 50% 30% no-repeat;
 		}
 	#wish h3 a {
-		background: url("images/wishbone-large.gif") 50% 30% no-repeat;
+		background: url("/components/com_events/images/wishbone-large.gif") 50% 30% no-repeat;
 		}
-

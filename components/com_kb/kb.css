@@ -35,8 +35,8 @@
 		background: #f4f4f4;
 		}
 	.com_kb .data-entry {
-		border-color: #eef0e7; /*#F5F7F2;*/
-		background-color: #eef0e7; /*#F5F7F2;*/
+		border-color: #eef0e7;
+		background-color: #eef0e7;
 		}
 	.com_kb .container-block {
 		border: 2px solid #e9e9e9;
@@ -47,7 +47,7 @@
 	.com_kb .container-block h3 {
 		margin: 0 -15px 1em -15px;
 		padding: 0.5em 0.7em;
-		background: #f8f8f8 url("images/light-stripes.png");
+		background: #f8f8f8 url("/components/com_kb/images/light-stripes.png");
 		border-bottom: 2px solid #e9e9e9;
 		font-size: 135%;
 		}
@@ -93,7 +93,7 @@
 	.com_kb .entry-search input {
 		width: 95%;
 		border: 1px solid #A8A8A8;
-		background: #fff url("images/search.png") 5px 50% no-repeat;
+		background: #fff url("/components/com_kb/images/search.png") 5px 50% no-repeat;
 		padding: 5px 5px 5px 20px;
 		}
 	.com_kb .entry-search-submit {
@@ -159,20 +159,20 @@
 		padding: 0 0 0 0;
 		margin: 0.2em 0;
 		padding: 0 0 0 15px;
-		background: url("images/bullets_small.png") no-repeat 0px -730px; 
+		background: url("/components/com_kb/images/bullets_small.png") no-repeat 0px -730px; 
 		}
 	.com_kb .aside .container a.active {
 		color: #777;
 		font-weight: bold;
 		}
 	.com_kb .aside .questions li {
-		background: url("images/bullets_small.png") no-repeat 0px -425px;
+		background: url("/components/com_kb/images/bullets_small.png") no-repeat 0px -425px;
 		}
 	.com_kb .aside .articles li {
-		background: url("images/bullets_small.png") no-repeat 0px -575px;
+		background: url("/components/com_kb/images/bullets_small.png") no-repeat 0px -575px;
 		}
 	.com_kb .aside .categories li {
-		background: url("images/bullets_small.png") no-repeat 0px -730px;
+		background: url("/components/com_kb/images/bullets_small.png") no-repeat 0px -730px;
 		}
 /* Entries (list) */
 	.com_kb .articles li {
@@ -182,7 +182,7 @@
 	.com_kb ul.articles li {
 		padding: 0 0 0 17px;
 		margin: 0.3em 0;
-		background: url("images/bullets_medium.gif") no-repeat 0px 0px;
+		background: url("/components/com_kb/images/bullets_medium.gif") no-repeat 0px 0px;
 		}
 	.com_kb .entries .list-footer li {
 		background-image: none;
@@ -197,7 +197,7 @@
 		}
 	.com_kb .entries caption {
 		font-size: 115%;
-		background: #f8f8f8 url("images/light-stripes.png");
+		background: #f8f8f8 url("/components/com_kb/images/light-stripes.png");
 		border: 2px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		margin-right: -2px; /* Fix 2px issue */
@@ -229,7 +229,7 @@
 		display: none;
 		}
 	.com_kb .articles tbody th {
-		background: url("images/page_white.png") right 15px no-repeat;
+		background: url("/components/com_kb/images/page_white.png") right 15px no-repeat;
 		}
 	.com_kb .entries tbody td.voting,
 	.com_kb .voting {
@@ -302,11 +302,11 @@
 /* Voting */
 	.like span {
 		padding:1px 15px 0px 3px;
-		background: url("images/thumbs.png") 100% -5% no-repeat;
+		background: url("/components/com_kb/images/thumbs.png") 100% -5% no-repeat;
 		}
 	.dislike span {
 		padding:0 15px 0 0;
-		background: url("images/thumbs.png") 100% 95% no-repeat;
+		background: url("/components/com_kb/images/thumbs.png") 100% 95% no-repeat;
 		}
 	.like:hover {
 		color: #e8f0de;
@@ -366,7 +366,6 @@
 	.like-disabled:hover {
 		border-right:none;
 		}
-	
 	.like-chosen {
 		color: #e8f0de;
 		border: solid 1px #538312;
@@ -383,172 +382,13 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
 		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
-	}
-	 
-	
-/*
-	.vote-button {
-		display: inline-block;
-		zoom: 1; zoom and *display = ie7 hack for display:inline-block
-		*display: inline;
-		vertical-align: baseline;
-		margin: 0 2px;
-		outline: none;
-		cursor: pointer;
-		text-align: center;
-		text-decoration: none;
-		font: 11px/100% Arial, Helvetica, sans-serif;
-		padding: 0.2em 0.75em 0.275em 0.75em;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		-webkit-border-radius: .5em; 
-		-moz-border-radius: .5em;
-		border-radius: .5em;
-		opacity: 0.8;
 		}
-	.chosen .vote-button,
-	.vote-button:hover {
-		text-decoration: none;
-		opacity: 1;
-		}
-	.vote-button:active {
-		position: relative;
-		top: 1px;
-		opacity: 1;
-		}
-	.vote-like,
-	.vote-dislike {
-		margin: 0;
-		padding: 0;
-		}
-	.vote-like .vote-button {
-		margin-right: 0;
-		-moz-border-radius-bottomright: 0;
-		-moz-border-radius-topright: 0;
-		-webkit-border-bottom-right-radius: 0;
-		-webkit-border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		border-top-right-radius: 0;
-		}
-	.vote-dislike .vote-button {
-		margin-left: -5px;
-		-moz-border-radius-bottomleft: 0;
-		-moz-border-radius-topleft: 0;
-		-webkit-border-bottom-left-radius: 0;
-		-webkit-border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-		border-top-left-radius: 0;
-		}
-	
-	.vote-button,
-	a.vote-button {
-		color: #aaa;
-		border: solid 1px #b7b7b7;
-		background: #fff;
-		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
-		background: -moz-linear-gradient(top,  #fff,  #ededed);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
-		}
-	.vote-button:hover,
-	a.vote-button:hover {
-		color: #606060;
-		border: solid 1px #b7b7b7;
-		background: #ededed;
-		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
-		background: -moz-linear-gradient(top,  #fff,  #dcdcdc);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
-		}
-	.vote-button:active,
-	a.vote-button:active {
-		border: solid 1px #b7b7b7;
-		color: #999;
-		background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
-		background: -moz-linear-gradient(top,  #ededed,  #fff);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
-		}
-	
-	.chosen .dislike,
-	.voting:hover a.dislike,
-	.entries tr:hover a.dislike {
-		color: #fae7e9;
-		border: solid 1px #b73948;
-		background: #da5867;
-		background: -webkit-gradient(linear, left top, left bottom, from(#f16c7c), to(#bf404f));
-		background: -moz-linear-gradient(top,  #f16c7c,  #bf404f);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f16c7c', endColorstr='#bf404f');
-		}
-	.chosen .dislike:hover,
-	.voting:hover a.dislike:hover,
-	.entries tr:hover a.dislike:hover {
-		border: solid 1px #b73948;
-		background: #ba4b58;
-		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
-		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
-		}
-	.chosen .dislike:active,
-	.voting:hover a.dislike:active,
-	.entries tr:hover a.dislike:active {
-		border: solid 1px #b73948;
-		color: #dca4ab;
-		background: -webkit-gradient(linear, left top, left bottom, from(#bf404f), to(#f16c7c));
-		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
-		}
-
-	.chosen .like,
-	.voting:hover a.like,
-	.entries tr:hover a.like {
-		color: #e8f0de;
-		border: solid 1px #538312;
-		background: #64991e;
-		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
-		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
-		}
-	.chosen .like:hover,
-	.voting:hover a.like:hover,
-	.entries tr:hover a.like:hover {
-		border: solid 1px #538312;
-		background: #538018;
-		background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
-		background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
-		}
-	.chosen .like:active,
-	.voting:hover a.like:active,
-	.entries tr:hover a.like:active {
-		border: solid 1px #538312;
-		color: #a9c08c;
-		background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
-		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
-		}
-	
-	.vote-button span {
-		display: inline-block;
-		width: 14px;
-		height: 14px;
-		overflow: hidden;
-		text-indent: -55em;
-		padding: 0;
-		margin: 0 0 0 3px;
-		}
-	.vote-like .neutral span,
-	.like span {
-		background: url("images/thumbs.png") 0 0 no-repeat;
-		}
-	.vote-dislike .neutral span,
-	.dislike span {
-		background: url("images/thumbs.png") 0 -14px no-repeat;
-		}
-		
-		*/
 /* Article Listing */
 	.below h3 {
 		font-weight: normal;
 		text-transform: uppercase;
 		letter-spacing: 1px;
-		margin: 1em 0 1em 0; /*125px;*/
+		margin: 1em 0 1em 0;
 		padding: 0.5em 0 0.5em 0;
 		border-bottom: 1px solid #efefef;
 		}
@@ -565,7 +405,7 @@
 		margin: 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
-		background: url("images/tag_orange.png") 0 0.2em no-repeat;
+		background: url("/components/com_kb/images/tag_orange.png") 0 0.2em no-repeat;
 		}
 	ol.tags::after {
 		clear: left;
@@ -609,11 +449,11 @@
 		}
 	/* Options */
 	.abuse {
-		background: url("images/abuse.gif") 0 0 no-repeat;
+		background: url("/components/com_kb/images/abuse.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		}
 	.reply {
-		background: url("images/reply.gif") 0 0 no-repeat;
+		background: url("/components/com_kb/images/reply.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		}
 	.abuse:hover,
@@ -638,7 +478,7 @@
 	ol.comments p.comment-member-photo {
 	    float: left;
 	    margin: 0;
-	    padding: 0 20px 0 0; /*105px;*/
+	    padding: 0 20px 0 0;
 		width: 50px;
 		height: 50px;
 		overflow: hidden;
@@ -661,7 +501,7 @@
 		}
 	/* Content */
 	ol.comments .comment-content {
-		margin: 0 0 1em 70px; /*125px;*/
+		margin: 0 0 1em 70px;
 		background-color: #fafafa;
 		border: 10px solid #f2f2f2;
 		padding: 0 1em;
@@ -857,4 +697,3 @@
 		_border-left-color: pink;
 		_filter: chroma(color=pink);
 		}
-

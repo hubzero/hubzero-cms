@@ -25,10 +25,10 @@
 		background: transparent;
 		}
 	.storeitems li.featured {
-		background: transparent url("images/hot.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/hot.gif") 0 0 no-repeat;
 		}
 	.storeitems li.new {
-		background: transparent url("images/new.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/new.gif") 0 0 no-repeat;
 		}
 	.storeitems h4 { 
 		margin: 0;
@@ -45,17 +45,17 @@
 		}
 	
 	.shoppingcart {
-		background: transparent url("images/cart.gif") 0 0 no-repeat; 
+		background: transparent url("/components/com_store/images/cart.gif") 0 0 no-repeat; 
 		padding-left: 22px;
 		padding-bottom: 0.2em;
 		}
 	.storefront {
-		background: transparent url("images/storefront.gif") 0 0 no-repeat; 
+		background: transparent url("/components/com_store/images/storefront.gif") 0 0 no-repeat; 
 		padding-left: 20px;
 		padding-bottom: 0.2em; 
 		}
 	.mypoints {
-		background: #fff url("images/coin.gif") 0 0 no-repeat; 
+		background: #fff url("/components/com_store/images/coin.gif") 0 0 no-repeat; 
 		padding-left: 18px;
 		padding-bottom: 0.2em;
 		}
@@ -106,22 +106,22 @@
 		font-weight: bold;
 		}
 	.buy {
-		background: transparent url("images/buy.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/buy.gif") 0 0 no-repeat;
 		margin: 0.5em 0 0 1em;
 		padding: 15px 0 0 45px;
 		}
 	.update {
-		background: transparent url("images/update.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/update.gif") 0 0 no-repeat;
 		margin: -7px 0 0 0;
 		padding: 15px 0 0 45px;
 		}
 	.empty {
-		background: transparent url("images/empty.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/empty.gif") 0 0 no-repeat;
 		margin: -7px 0 0 0;
 		padding: 15px 0 0 45px;
 		}
 	.checkout {
-		background: transparent url("images/checkout.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/checkout.gif") 0 0 no-repeat;
 		margin: 0 0 0 -3em;
 		padding: 15px 0 0 80px;		
 		}
@@ -142,12 +142,12 @@
 		margin: 3.5em -4em 1em 0;
 		}
 	.process_order {
-		background: transparent url("images/confirm_order.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/confirm_order.gif") 0 0 no-repeat;
 		margin: 0.5em 0 0 -7em;
 		padding: 15px 30px 0 95px;
 		}	
 	.finalize_order {
-		background: #fff url("images/place_order.gif") 0 0 no-repeat;
+		background: #fff url("/components/com_store/images/place_order.gif") 0 0 no-repeat;
 		margin: -0.5em 0 0 -3em;
 		padding: 15px 0 0 95px;
 		height: 15px;
@@ -160,7 +160,7 @@
 		}
 	.checkout_disabled, 
 	.checkout_disabled:hover {
-		background: transparent url("images/checkout_disabled.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/checkout_disabled.gif") 0 0 no-repeat;
 		margin: 0;
 		padding: 15px 0 0 66px;
 		height: 15px;
@@ -168,7 +168,7 @@
 		}
 	.buy_disabled, 
 	.buy_disabled:hover {
-		background: transparent url("images/buy_disabled.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_store/images/buy_disabled.gif") 0 0 no-repeat;
 		margin: 0.5em 0 0 1em;
 		padding: 15px 0 0 45px;
 		}
@@ -190,7 +190,7 @@
 		display: block;
 		}
 	.price a {
-		background: transparent url("images/coin.gif") 0 1px  no-repeat;
+		background: transparent url("/components/com_store/images/coin.gif") 0 1px  no-repeat;
 		padding: 0 0 0 0;
 		border:0;
 		width:20px;
@@ -208,7 +208,7 @@
 		}
 	.coin, a.coin  {
 		margin: 0.3em 0 0 0.3em;
-		background: transparent url("images/coin.gif") 0 0  no-repeat;
+		background: transparent url("/components/com_store/images/coin.gif") 0 0  no-repeat;
 		padding: 0 0.5em 0 0.5em;
 		border: none;
 		display: block;
@@ -309,8 +309,8 @@
 		width: 12px;
 		}
 	.removeitem a { 
-		background: transparent url("images/delete.gif") 2px 2px no-repeat; 
-		padding: 0; /*.2em 0.8em 0.2em 0.8em*/
+		background: transparent url("/components/com_store/images/delete.gif") 2px 2px no-repeat; 
+		padding: 0;
 		margin: 0 0.8em; 
 		border:none; 
 		display: block;

@@ -42,7 +42,7 @@
 	.container-block h3 {
 		margin: 0 -15px 1em -15px;
 		padding: 0.5em 0.7em;
-		background: #f8f8f8 url("images/light-stripes.png");
+		background: #f8f8f8 url("/components/com_answers/images/light-stripes.png");
 		border-bottom: 2px solid #e9e9e9;
 		font-size: 135%;
 		}
@@ -83,7 +83,7 @@
 	.entry-search input {
 		width: 95%;
 		border: 1px solid #A8A8A8;
-		background: #fff url("images/search.png") 5px 50% no-repeat;
+		background: #fff url("/components/com_answers/images/search.png") 5px 50% no-repeat;
 		padding: 5px 5px 5px 20px;
 		}
 	.entry-search-submit {
@@ -149,20 +149,20 @@
 		padding: 0 0 0 0;
 		margin: 0.2em 0;
 		padding: 0 0 0 15px;
-		background: url("images/bullets_small.png") no-repeat 0px -730px; 
+		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -730px; 
 		}
 	.com_answers .aside .container a.active {
 		color: #777;
 		font-weight: bold;
 		}
 	.com_answers .aside .questions li {
-		background: url("images/bullets_small.png") no-repeat 0px -425px;
+		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -425px;
 		}
 	.com_answers .aside .articles li {
-		background: url("images/bullets_small.png") no-repeat 0px -575px;
+		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -575px;
 		}
 	.com_answers .aside .categories li {
-		background: url("images/bullets_small.png") no-repeat 0px -730px;
+		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -730px;
 		}
 /* Entries (list) */
 	ul.answers,
@@ -179,10 +179,10 @@
 	ul.questions li {
 		padding: 0 0 0 17px;
 		margin: 0.3em 0;
-		background: url("images/bullets_medium.gif") no-repeat 0px -133px;
+		background: url("/components/com_answers/images/bullets_medium.gif") no-repeat 0px -133px;
 		}
 	ul.answers li {
-		background: url("images/bullets_medium.gif") no-repeat 0px -442px;
+		background: url("/components/com_answers/images/bullets_medium.gif") no-repeat 0px -442px;
 		}
 	.entries .list-footer li {
 		background-image: none;
@@ -197,7 +197,7 @@
 		}
 	.entries caption {
 		font-size: 115%;
-		background: #f8f8f8 url("images/light-stripes.png");
+		background: #f8f8f8 url("/components/com_answers/images/light-stripes.png");
 		border: 2px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		margin-right: -2px; /* Fix 2px issue */
@@ -242,7 +242,7 @@
 		}
 	.entry-comments {
 		padding-right: 16px;
-		background: url("images/bullets_small.png") no-repeat right -428px;
+		background: url("/components/com_answers/images/bullets_small.png") no-repeat right -428px;
 		}
 	.entries .reward {
 		text-align: right;
@@ -252,22 +252,22 @@
 		display: none;
 		}
 	.questions tbody th {
-		background: url("images/question.png") right 15px no-repeat;
+		background: url("/components/com_answers/images/question.png") right 15px no-repeat;
 		}
 	.questions tbody tr.answered th {
-		background: url("images/question_answered.png") right 15px no-repeat;
+		background: url("/components/com_answers/images/question_answered.png") right 15px no-repeat;
 		}
 	.questions tbody tr.flagged th {
-		background: url("images/question_answered.png") right 15px no-repeat;
+		background: url("/components/com_answers/images/question_answered.png") right 15px no-repeat;
 		}
 	.questions tbody tr.answered {
-		background: #fcf9ff url("images/light-stripes.png");
+		background: #fcf9ff url("/components/com_answers/images/light-stripes.png");
 		}
 	.questions tbody tr.mine {
-		background: #ffe url("images/light-stripes.png");
+		background: #ffe url("/components/com_answers/images/light-stripes.png");
 		}
 	.questions tbody tr.flagged {
-		background: #FFF2EF url("images/light-stripes.png");
+		background: #FFF2EF url("/components/com_answers/images/light-stripes.png");
 		}
 	.entries tbody td.voting,
 	.voting {
@@ -492,11 +492,11 @@
 		}
 	.vote-like .neutral span,
 	.like span {
-		background: url("images/thumbs.png") 0 0 no-repeat;
+		background: url("/components/com_answers/images/thumbs.png") 0 0 no-repeat;
 		}
 	.vote-dislike .neutral span,
 	.dislike span {
-		background: url("images/thumbs.png") 0 -14px no-repeat;
+		background: url("/components/com_answers/images/thumbs.png") 0 -14px no-repeat;
 		}
 /* Breadcrumb */
 	.breadcrumbtrail {
@@ -516,18 +516,13 @@
 		font-size: 85%;
 		}
 	.entry-reward a {
-		background: url("images/coin.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/coin.gif") 0 0 no-repeat;
 		width: 16px;
 		height: 16px;
 		display: inline-block;
 		overflow: hidden;
 		text-indent: 55em;
 		}
-	/*.questions .rewardset { 
-		float: right;
-		color: #000000;
-		padding: 0 1em 0.5em 1.6em;
-		}*/
 /* Answer form */
 	#answerform fieldset {
 		padding: 0 1em 1em 1em;
@@ -567,7 +562,7 @@
 /* Introduction columns */
 	.pointvalue a, 
 	.questions .rewardset a {
-		background: url("images/coin.gif") 0 0  no-repeat;
+		background: url("/components/com_answers/images/coin.gif") 0 0  no-repeat;
 		margin: 0;
 		padding: 0;
 		border: none;
@@ -589,7 +584,7 @@
 		}
 /* Accept the answer */
 	.accept a {
-		background: url("images/checker.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/checker.gif") 0 0 no-repeat;
 		padding: 0.2em 0 0.4em 1.3em;
 		margin:0;
 		height:15px;
@@ -623,19 +618,6 @@
 		font-size:x-small;
 		font-weight:bold;
 		}
-	/*#questionstatus .intro,
-	#questionstatus .right_a,
-	.intro {
-		font-size:x-small;
-		color: #999;
-		text-transform: uppercase;
-		}
-	.status_display {
-		border-top:1px solid #efefef;
-		border-bottom:1px solid #efefef;
-		padding:1em 0 1em 0;
-		line-height:2em;
-		}*/
 	.sidenote {
 		margin-top: 4em;
 		padding: 0 0 0 2em;
@@ -673,7 +655,7 @@
 		}
 /* Comments */
 	.showreplyform {
-		background: url("images/reply.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/reply.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		font-size: inherit;	
 		border: none;
@@ -683,7 +665,7 @@
 		background-position: 0 -20px;
 		}
 	.replyby {
-		background: url("images/reply.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/reply.gif") 0 0 no-repeat;
 		padding: 0.5em 2em 0 1.5em;
 		margin:1em 2em 0 0;
 		color: #666;
@@ -810,7 +792,7 @@
 		margin: 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
-		background: url("images/tag_orange.png") 0 0.2em no-repeat;
+		background: url("/components/com_answers/images/tag_orange.png") 0 0.2em no-repeat;
 		}
 	.question .question-tags .tags li {
 		margin: 0;
@@ -848,10 +830,10 @@
 		text-indent: -55em;
 		}
 	.question .question-voting .question_vote a.voted {
-		background: url("images/thumbup_ok.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/thumbup_ok.gif") 0 0 no-repeat;
 		}
 	.question .question-voting .question_vote a {
-		background: url("images/thumbup.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/thumbup.gif") 0 0 no-repeat;
 		height: 15px;	
 		}
 	.question .question-voting .question_vote a:hover {
@@ -880,11 +862,11 @@
 		}
 	/* Options */
 	.abuse {
-		background: url("images/abuse.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/abuse.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		}
 	.reply {
-		background: url("images/reply.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/images/reply.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		}
 	.abuse:hover,
@@ -1158,7 +1140,7 @@
 		padding:0 1em 0 1em;
 		}
 	.myquestions {
-		background: transparent url("images/myquestions.png") 0 0 no-repeat; padding-left: 18px;padding-bottom:0.2em; 
+		background: transparent url("/components/com_answers/images/myquestions.png") 0 0 no-repeat; padding-left: 18px;padding-bottom:0.2em; 
 		margin-left:-1.5em;
 		margin-right:-0.5em;
 		}
