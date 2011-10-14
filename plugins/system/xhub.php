@@ -1153,7 +1153,7 @@ class plgSystemXhub extends JPlugin
 				// We should store userid not username in cookie, will save us a database query here
 				$username = $user['username'];
 
-				if ($id = JUserHelper::getUserId($id)) {
+				if ($id = JUserHelper::getUserId($username)) {
 					$myuser = JUser::getInstance($id);
 					if (is_object($myuser))
 					{
