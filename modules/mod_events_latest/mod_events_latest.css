@@ -8,7 +8,7 @@
 /*
 
 	-- -- -- -- -- -- --
-	mod_events_latest CSS
+	mod_events_latest
 	-- -- -- -- -- -- --
 
 */
@@ -16,7 +16,6 @@
 /* Search results */
 	table.latest_events_tbl {
 		border: none;
-		/*border-bottom: 1px solid #eee;*/
 		}
 	table.latest_events_tbl tr.odd,
 	table.latest_events_tbl tr.even {

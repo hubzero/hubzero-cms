@@ -18,5 +18,5 @@
 		font-size: 85%;
 		}
 	div.draggable .compactlist li.favorite {
-		background: url("images/heart.png") 0.7em 0.7em no-repeat;
+		background: url("/modules/mod_myfavorites/images/heart.png") 0.7em 0.7em no-repeat;
 		}

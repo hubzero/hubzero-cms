@@ -90,11 +90,11 @@
 		}	
 	.sortable .fav {
 		right: 50px;
-		background: url("images/fav_heart.gif") 0 0 no-repeat;
+		background: url("/modules/mod_mytools/images/fav_heart.gif") 0 0 no-repeat;
 		}
 	.sortable .launchtool {
 		right: 10px;
-		background: url("images/app_go.gif") 0 0 no-repeat;
+		background: url("/modules/mod_mytools/images/app_go.gif") 0 0 no-repeat;
 		}
 	.sortable .fav:hover,
 	.sortable .launchtool:hover {
@@ -108,7 +108,7 @@
 		background-color: #FFFFEB;
 		}
 	.sortable .favd .fav {
-		background: url("images/heart.png") 0 0 no-repeat;
+		background: url("/modules/mod_mytools/images/heart.png") 0 0 no-repeat;
 		}
 	.sortable #alltools li {
 		padding-right: 60px;

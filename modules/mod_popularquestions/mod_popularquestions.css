@@ -8,7 +8,7 @@
 /*
 
 	-- -- -- -- -- -- --
-	mod_recentquestions CSS
+	mod_popularquestions
 	-- -- -- -- -- -- --
 
 */
@@ -20,7 +20,7 @@
 	ul.questions li {
 		padding: 0 0 0 17px;
 		margin: 0.3em 0 1em 0;
-		background: url("../../components/com_answers/images/bullets_medium.gif") no-repeat 0px -133px;
+		background: url("/components/com_answers/images/bullets_medium.gif") no-repeat 0px -133px;
 		}
 	ul.questions li h4 {
 		}
@@ -29,7 +29,7 @@
 		}
 	ul.questions li .tags {
 		padding: 0 0 0 2px;
-		background: url("../../components/com_answers/images/tag_orange.png") no-repeat 0 0.5em;
+		background: url("/components/com_answers/images/tag_orange.png") no-repeat 0 0.5em;
 		}	
 	ul.questions li .tags li {
 		background: none;

@@ -20,10 +20,10 @@
 		position: relative;
 		}
 	div.draggable .expandedlist li.session {
-		background: url("images/application.png") 0.5em 0.7em no-repeat;
+		background: url("/modules/mod_mysessions/images/application.png") 0.5em 0.7em no-repeat;
 		}
 	div.draggable .expandedlist li.shared {
-		background: url("images/application_double.png") 0.5em 1.2em no-repeat;
+		background: url("/modules/mod_mysessions/images/application_double.png") 0.5em 1.2em no-repeat;
 		}
 	div.draggable .emphasis .expandedlist li {
 		border-color: #A0A0A0;
@@ -45,10 +45,10 @@
 		right: 10px;
 		}
 	div.draggable .expandedlist .disconnect {
-		background: url("images/disconnect.png") 0 0 no-repeat;
+		background: url("/modules/mod_mysessions/images/disconnect.png") 0 0 no-repeat;
 		}
 	div.draggable .expandedlist .closetool {
-		background: url("images/stop.png") 0 0 no-repeat;
+		background: url("/modules/mod_mysessions/images/stop.png") 0 0 no-repeat;
 		}
 	div.draggable .expandedlist .disconnect:hover,
 	div.draggable .expandedlist .closetool:hover {
@@ -58,12 +58,12 @@
 	div.draggable .emphasis .expandedlist .disconnect {
 		width: 28px;
 		height: 14px;
-		background: url("images/disconnect_dark.gif") 0 0 no-repeat;
+		background: url("/modules/mod_mysessions/images/disconnect_dark.gif") 0 0 no-repeat;
 		}
 	div.draggable .emphasis .expandedlist .closetool {
 		width: 14px;
 		height: 14px;
-		background: url("images/close.gif") 0 0 no-repeat;
+		background: url("/modules/mod_mysessions/images/close.gif") 0 0 no-repeat;
 		}
 	div.draggable .emphasis .expandedlist .disconnect:hover,
 	div.draggable .emphasis .expandedlist .closetool:hover {

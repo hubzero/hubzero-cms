@@ -8,13 +8,13 @@
 /*
 
 	-- -- -- -- -- -- --
-	mod_whatsnew CSS
+	mod_whatsnew
 	-- -- -- -- -- -- --
 
 */
 	div.draggable .expandedlist li.new,
 	#mod-whatsnew li {
-		background: url("new.png") 0.7em 0.7em no-repeat;
+		background: url("/modules/mod_whatsnew/new.png") 0.7em 0.7em no-repeat;
 		}
 	#mod-whatsnew ul {
 		list-style: none;

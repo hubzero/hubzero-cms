@@ -5,9 +5,15 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/*---------------------------------------------------------------
-	Calendar
----------------------------------------------------------------*/
+/*
+
+	-- -- -- -- -- -- --
+	mod_events_cal
+	-- -- -- -- -- -- --
+
+*/
+
+/* Calendar */
 	.mod_events_calendar {
 		margin: 0 0 2em 0;
 		}
@@ -20,9 +26,7 @@
 	.mod_events_calendar .daywithevents {
 		background-color: #F7F7F3;
 		}
-/*---------------------------------------------------------------
-	Upcoming Events
----------------------------------------------------------------*/
+/* Upcoming Events */
 	.upcoming-events {
 		margin: 1em 0;
 		padding: 0;

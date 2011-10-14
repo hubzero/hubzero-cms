@@ -5,22 +5,25 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/*---------------------------------------------------------------
-	wish list module
----------------------------------------------------------------*/
+/*
+
+	-- -- -- -- -- -- --
+	mod_mywishes
+	-- -- -- -- -- -- --
+
+*/
+
 	div.draggable .expandedlist li.wishlist {
-		background: url('images/wishlist.gif') 0.7em 1em no-repeat;
+		background: url("/modules/mod_mywishes/images/wishlist.gif") 0.7em 1em no-repeat;
 		}
 	div.draggable .expandedlist li.wishlist .pending {
-	
 		}
 	div.draggable .expandedlist li.wishlist .accepted {
-		color:#009900;
+		color: #009900;
 		}
 	div.draggable .expandedlist li.wishlist .rejected {
-		color:red;
+		color: red;
 		}
-
 	div.draggable .expandedlist li.wishlist span {
 		color: #fff;
 		}
