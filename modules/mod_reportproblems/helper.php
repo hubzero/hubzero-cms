@@ -137,8 +137,17 @@ class modReportProblems
 	public function display()
 	{
 		$this->juser = JFactory::getUser();
+		
+		$this->verified = 0;
+		if (!$this->juser->get('guest')) {
+			ximport('Hubzero_User_Profile');
+			$profile = new Hubzero_User_Profile();
+			$profile->load($this->juser->get('id'));
+			if ($profile->get('emailConfirmed') == 1) {
+				$this->verified = 1;
+			}
+		}
 
-		$this->verified = (!$this->juser->get('guest')) ? 1 : 0;
 		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
 		$this->referrer = str_replace( '&amp;', '&', $this->referrer );
 		$this->referrer = str_replace( '&', '&amp;', $this->referrer );
