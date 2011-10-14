@@ -48,4 +48,7 @@
 		letter-spacing: 1px;
 		color: #777;
 		}
+	#hubForm label#botcheck-label {
+		display: none;
+		}
 

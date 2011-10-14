@@ -1057,6 +1057,32 @@ if (!defined("n")) {
 		$html .= t.'</fieldset><div class="clear"></div>'.n;
 	}
 
+	if ($this->registrationCAPTCHA != REG_HIDE)
+	{
+		$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<p class="error">'.$this->xregistration->_invalid['captcha'].'</p>' : '';
+		$required = ($this->registrationCAPTCHA == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
+		
+		JPluginHelper::importPlugin( 'hubzero' );
+		$dispatcher =& JDispatcher::getInstance();
+		$captchas = $dispatcher->trigger( 'onGetCaptcha' );
+		
+		if (count($captchas) > 0) {
+			$html .= t.'<fieldset>'.n;
+			$html .= t.t.'<legend>'.JText::_('Human Check').'</legend>'.n;
+			$html .= ($message) ? $message : '';
+		}
+		$html .= t.t.'<label id="botcheck-label" for="botcheck">'.n;
+		$html .= t.t.t.JText::_('Please leave this field blank.').' '.$required.n;
+		$html .= t.t.t.'<input type="text" name="botcheck" id="botcheck" value="" />'.n;
+		$html .= t.t.'</label>'.n;
+		if (count($captchas) > 0) {
+			foreach ($captchas as $captcha) {
+				$html .= $captcha;
+			}
+			$html .= t.'</fieldset>'.n;
+		}
+	}
+
 	if ($this->registrationTOU != REG_HIDE)
 	{
 		$html .= t.'<fieldset>'.n;

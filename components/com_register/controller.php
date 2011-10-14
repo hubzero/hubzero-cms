@@ -996,6 +996,7 @@ class RegisterController extends Hubzero_Controller
 		$view->registrationInterests = $this->_registrationField('registrationInterests','HHHH',$task);
 		$view->registrationReason = $this->_registrationField('registrationReason','HHHH',$task);
 		$view->registrationOptIn = $this->_registrationField('registrationOptIn','HHHH',$task);
+		$view->registrationCAPTCHA = $this->_registrationField('registrationCAPTCHA','HHHH',$task);
 		$view->registrationTOU = $this->_registrationField('registrationTOU','HHHH',$task);
 
 		if ($view->task == 'update') {

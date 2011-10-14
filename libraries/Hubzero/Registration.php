@@ -178,6 +178,7 @@ class Hubzero_Registration
 		$this->_registration['sex'] = null;
 		$this->_registration['usageAgreement'] = null;
 		$this->_registration['mailPreferenceOption'] = null;
+		$this->_registration['captcha'] = null;
 	}
 
 	/**
@@ -626,6 +627,7 @@ class Hubzero_Registration
 		$registrationInterests = $this->registrationField('registrationInterests','HHHH',$task);
 		$registrationReason = $this->registrationField('registrationReason','HHHH',$task);
 		$registrationOptIn = $this->registrationField('registrationOptIn','HHHH',$task);
+		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA','HHHH',$task);
 		$registrationTOU = $this->registrationField('registrationTOU','HHHH',$task);
 
 		if ($task == 'update')
@@ -1021,6 +1023,24 @@ class Hubzero_Registration
 			{
 				$this->_missing['mailPreferenceOption'] = 'Opt-In for mailings';
 				$this->_invalid['mailPreferenceOption'] = 'Registration requires Opt-In of mailings.';
+			}
+		}
+		
+		if ($registrationCAPTCHA == REG_REQUIRED) 
+		{
+			$botcheck = JRequest::getVar('botcheck','');
+			if ($botcheck) {
+				$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
+			}
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			$validcaptchas = $dispatcher->trigger( 'onValidateCaptcha' );
+			if (count($validcaptchas) > 0) {
+				foreach ($validcaptchas as $validcaptcha) {
+					if (!$validcaptcha) {
+						$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
+					}
+				}
 			}
 		}
 
