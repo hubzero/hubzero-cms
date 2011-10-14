@@ -4,18 +4,17 @@
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
+ Author:
+ -----------------		
+ Christopher Smoak <csmoak@purdue.edu>
 
-Author:
------------------		
-Christopher Smoak <csmoak@purdue.edu>
+ Created:
+ -----------------
+ April 2011
 
-Created:
------------------
-April 2011
-
-Requires:
------------------
-Mootools 1.1
+ Requires:
+ -----------------
+ Mootools 1.1
 
 */
 
