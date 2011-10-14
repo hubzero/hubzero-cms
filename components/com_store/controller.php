@@ -222,9 +222,12 @@ class StoreController extends Hubzero_Controller
 		$view = new JView( array('name'=>'storefront') );
 		$view->option = $this->_option;
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']  = JRequest::getInt( 'limit', 25 );
+		$view->filters['limit']  = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
 		$view->filters['sortby'] = JRequest::getVar( 'sortby', '' );
 

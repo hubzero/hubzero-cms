@@ -101,9 +101,12 @@ class FeaturesController extends Hubzero_Controller
 		$view->title = JText::_(strtoupper($this->_option));
 		$view->option = $this->_option;
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']  = JRequest::getInt( 'limit', 25, 'request' );
+		$view->filters['limit']  = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit'), 'request' );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
 		$view->filters['type']   = JRequest::getVar( 'type', '' );
 

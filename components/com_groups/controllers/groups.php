@@ -452,8 +452,11 @@ class GroupsController extends Hubzero_Controller
 		// Get a record count
 		$view->total = Hubzero_Group::find($view->filters);
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+
 		// Filters for returning results
-		$view->filters['limit']  = JRequest::getInt('limit', 25);
+		$view->filters['limit']  = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['limit']  = ($view->filters['limit']) ? $view->filters['limit'] : 'all';
 		$view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$view->filters['fields'] = array('cn','description','published','gidNumber','type','public_desc','join_policy');
@@ -592,8 +595,11 @@ class GroupsController extends Hubzero_Controller
 		// Render the modules for display
 		$group_modules = $GModules->renderModules($group, $p);
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Incoming
-		$limit = JRequest::getInt('limit', 25);
+		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 
 		// Get plugins

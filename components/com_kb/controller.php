@@ -122,11 +122,14 @@ class KbController extends Hubzero_Controller
 	 */
 	protected function browse()
 	{
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'browse') );
 
 		$view->filters = array();
-		$view->filters['limit'] = JRequest::getInt('limit', 25);
+		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 		$view->filters['order'] = JRequest::getVar('order', 'recent');
 		$view->filters['section'] = 'all';
@@ -215,8 +218,11 @@ class KbController extends Hubzero_Controller
 			}
 		}
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+
 		$view->filters = array();
-		$view->filters['limit'] = JRequest::getInt('limit', 25);
+		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 		$view->filters['order'] = JRequest::getVar('order', 'recent');
 		$view->filters['section'] = $sect;

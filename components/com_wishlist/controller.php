@@ -3029,14 +3029,18 @@ class WishlistController extends JObject
 		$filters['search'] = trim(JRequest::getVar( 'search', '' ));
 		$filters['tag'] = trim(JRequest::getVar( 'tags', '' ));
 
-		if($admin) {	$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : 'ranking'; }
-		else {
+		if ($admin) {
+			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : 'ranking'; 
+		} else { 
 			$default = $this->banking ? 'bonus' : 'date';
 			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
 		}
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Paging vars
-		$filters['limit'] = JRequest::getInt( 'limit', 25 );
+		$filters['limit'] = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$filters['start'] = JRequest::getInt( 'limitstart', 0);
 		$filters['new']   = JRequest::getInt( 'newsearch', 0);
 		$filters['start'] = $filters['new'] ? 0 : $filters['start'];

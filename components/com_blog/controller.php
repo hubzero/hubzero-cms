@@ -183,9 +183,12 @@ class BlogController extends Hubzero_Controller
 		$view->authorized = $this->_authorize();
 		$view->config = $this->config;
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit'] = JRequest::getInt('limit', 25);
+		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 		$view->filters['year'] = JRequest::getInt('year', 0);
 		$view->filters['month'] = JRequest::getInt('month', 0);
@@ -802,9 +805,12 @@ class BlogController extends Hubzero_Controller
 		$params =& $app->getParams();
 		$doc->link = JRoute::_('index.php?option='.$this->_option);
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+
 		// Incoming
 		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 25);
+		$filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$filters['start'] = JRequest::getInt('limitstart', 0);
 		$filters['year'] = JRequest::getInt('year', 0);
 		$filters['month'] = JRequest::getInt('month', 0);

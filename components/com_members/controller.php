@@ -187,18 +187,17 @@ class MembersController extends Hubzero_Controller
 		$this->_getStyles();
 		$this->_getScripts();
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+
 		// Incoming
 		$filters = array();
-		$filters['limit']  = JRequest::getVar( 'limit', 25, 'request' );
-		$filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
-		$filters['show']   = JRequest::getVar( 'show', $this->_view );
-		$filters['sortby'] = JRequest::getVar( 'sortby', 'name' );
-		$filters['search'] = JRequest::getVar( 'search', '' );
-		$filters['index']  = JRequest::getVar( 'index', '' );
-
-		/*if ($filters['limit'] == 0) {
-			$filters['limit'] = 100;
-		}*/
+		$filters['limit']  = JRequest::getVar('limit', $jconfig->getValue('config.list_limit'), 'request');
+		$filters['start']  = JRequest::getInt('limitstart', 0, 'get');
+		$filters['show']   = JRequest::getVar('show', $this->_view);
+		$filters['sortby'] = JRequest::getVar('sortby', 'name');
+		$filters['search'] = JRequest::getVar('search', '');
+		$filters['index']  = JRequest::getVar('index', '');
 
 		// Build the page title
 		if ($filters['show'] == 'contributors') {
@@ -273,12 +272,9 @@ class MembersController extends Hubzero_Controller
 	}
 
 	//-----------
+	
 	protected function _myaccount() 
 	{
-		/*$tab = JRequest::getVar('active', '');
-		if (!$tab) {
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=my&active=profile');
-		}*/
 		if (!$this->juser->get('guest')) {
 			JRequest::setVar('id', $this->juser->get('id'));
 		} else {
@@ -287,6 +283,8 @@ class MembersController extends Hubzero_Controller
 		}
 		return $this->view();
 	}
+	//-----------
+
 	protected function view()
 	{
 		// Build the page title
@@ -338,17 +336,6 @@ class MembersController extends Hubzero_Controller
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_PUBLIC') );
-			/*
-			$view = new JView( array('name'=>'view', 'layout'=>'private') );
-			$view->option = $this->_option;
-			$view->title = $title;
-			$view->authorized = $authorized;
-			$view->profile = $profile;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
-			$view->display();
-			*/
 			return;
 		}
 
@@ -1509,7 +1496,7 @@ class MembersController extends Hubzero_Controller
 	 */
 	private function _get_summarybyfilter($args)
 	{
-		return( $this->_get_attrsbyfilter('username uidNumber email name',$args) );
+		return $this->_get_attrsbyfilter('username uidNumber email name', $args);
 	}
 
 	/**
@@ -1522,7 +1509,7 @@ class MembersController extends Hubzero_Controller
 	 */
 	private function _get_usernamesbyfilter($args)
 	{
-		return( $this->_get_attrsbyfilter('username',$args) );
+		return $this->_get_attrsbyfilter('username', $args);
 	}
 
 	/**
@@ -1628,7 +1615,7 @@ class MembersController extends Hubzero_Controller
 				elseif (strtolower($match[2]) == "false" || $match[2] == 0) {
 					$thisresult = false;
 				}
-				if($thisresult === true || $thisresult === false) {
+				if ($thisresult === true || $thisresult === false) {
 					if ($match[1] == "!=") {
 						$thisresult = !$thisresult;
 					}

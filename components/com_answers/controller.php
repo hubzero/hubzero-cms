@@ -191,9 +191,12 @@ class AnswersController extends Hubzero_Controller
 		$view->infolink = $this->infolink;
 		$view->banking = $this->banking;
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']    = JRequest::getInt( 'limit', 25 );
+		$view->filters['limit']    = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$view->filters['start']    = JRequest::getInt( 'limitstart', 0 );
 		$view->filters['tag']      = JRequest::getVar( 'tag', '' );
 		$view->filters['q']        = JRequest::getVar( 'q', '' );
@@ -471,9 +474,12 @@ class AnswersController extends Hubzero_Controller
 		$view->banking = $this->banking;
 		$view->task = $this->_task;
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']    = JRequest::getInt( 'limit', 25 );
+		$view->filters['limit']    = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$view->filters['start']    = JRequest::getInt( 'limitstart', 0 );
 		$view->filters['tag']      = JRequest::getVar( 'tag', '' );
 		$view->filters['q']        = JRequest::getVar( 'q', '' );
@@ -589,9 +595,12 @@ class AnswersController extends Hubzero_Controller
 		$view->banking = $this->banking;
 		$view->task = $this->_task;
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']    = JRequest::getInt( 'limit', 25 );
+		$view->filters['limit']    = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$view->filters['start']    = JRequest::getInt( 'limitstart', 0 );
 		$view->filters['tag']      = JRequest::getVar( 'tags', '' );
 		$view->filters['tag']      = ($view->filters['tag']) ? $view->filters['tag'] : JRequest::getVar( 'tag', '' );

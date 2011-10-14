@@ -77,9 +77,12 @@ class WhatsnewController extends Hubzero_Controller
 		// Incoming
 		$period = JRequest::getVar( 'period', 'month' );
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Paging variables
 		$start = JRequest::getInt( 'limitstart', 0 );
-		$limit = JRequest::getInt( 'limit', 25 );
+		$limit = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 
 		// Get some needed CSS and JS
 		$this->_getStyles();
@@ -281,9 +284,12 @@ class WhatsnewController extends Hubzero_Controller
 		// Incoming
 		$period = JRequest::getVar( 'period', 'month' );
 
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		
 		// Paging variables
 		$start = JRequest::getInt( 'limitstart', 0 );
-		$limit = JRequest::getInt( 'limit', 25 );
+		$limit = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 
 		// Get categories
 		$areas = $this->_getAreas();

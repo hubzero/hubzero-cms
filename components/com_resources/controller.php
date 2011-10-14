@@ -230,13 +230,16 @@ class ResourcesController extends Hubzero_Controller
 		if ($this->config->get('show_ranking')) {
 			$default_sort = 'ranking';
 		}
+		
+		// Get configuration
+		$jconfig = JFactory::getConfig();
 
 		// Incoming
 		$view->filters = array();
 		$view->filters['tag']    = JRequest::getVar( 'tag', '' );
 		$view->filters['type']   = JRequest::getVar( 'type', '' );
 		$view->filters['sortby'] = JRequest::getVar( 'sortby', $default_sort );
-		$view->filters['limit']  = JRequest::getInt( 'limit', 25 );
+		$view->filters['limit']  = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
 
 		// Determine if user can edit
