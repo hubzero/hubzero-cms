@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-----------
 
 jimport( 'joomla.plugin.plugin' );
-JPlugin::loadLanguage( 'plg_groups_memberoptions' );
+JPlugin::loadLanguage( 'PLG_GROUPS_MEMBEROPTIONS' );
 
 	
 //-----------
@@ -55,7 +55,7 @@ class plgGroupsMemberOptions extends JPlugin
 	{
 		$area = array(
 			'name' => 'memberoptions',
-			'title' => JText::_('PLG_GROUPS_MEMBEROPTIONS'),
+			'title' => JText::_('GROUP_MEMBEROPTIONS'),
 			'default_access' => 'registered'
 		);
 		

@@ -29,7 +29,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 $juser =& JFactory::getUser();
+$params = $params = &JComponentHelper::getParams('com_groups');
 
+$allowEmailResponses = $params->get('email_comment_processing');
+
+// Be sure to update this if you add more options
+if($allowEmailResponses)
+	$atLeastOneOption = true;
+else
+	$atLeastOneOption = false;
+	
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=memberoptions'); ?>" method="post" id="memberoptionform">
@@ -39,12 +48,31 @@ $juser =& JFactory::getUser();
 	<input type="hidden" name="task" value="savememberoptions" />
 	<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID;?>" />
 
-	<div>
-		<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if($this->recvEmailOptionValue == 1) echo "checked"; else echo "";?> > 
-		<label for="recvpostemail"><?php echo JText::_('PLG_GROUPS_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
+	<div class="group-content-header">
+		<h3><?php echo JText::_('GROUP_MEMBEROPTIONS'); ?></h3>
 	</div>
 
-	<input type="submit" value="Save">
+	<p><?php echo JText::_('GROUP_MEMBEROPTIONS_DESC'); ?></p>
+	
+	<?php if ($allowEmailResponses) { ?>
+		<div style="padding-top:25px;">
+			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if($this->recvEmailOptionValue == 1) echo "checked"; else echo "";?> > 
+			<label for="recvpostemail"><?php echo JText::_('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
+		</div>
+	<?php
+	}
+	?>
+	
+	<?php if ($atLeastOneOption) { ?>
+		<div style="padding-top:25px;">
+			<input type="submit" value="Save">
+		</div>
+	<?php
+	}
+	else{
+		echo JText::_('GROUP_MEMBEROPTIONS_NONE'); 
+	}
+	?>
 	
 </form>
 	

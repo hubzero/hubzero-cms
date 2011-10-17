@@ -524,10 +524,10 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		// Build outgoing email message
-        $originalMessage = $row->comment;
+		$originalMessage = $row->comment;
 		$originalMessage .= "\n\n%%tokenplaceholder%%\n";
-        $originalMessage .= "NOTE: The above line is required in any email reply to this discussion. \nOnly text before this section will be added to the discussion\n";
-        $originalMessage .= "When you reply you might want to remove the previous message text if it is included in the reply\n\n\n";
+		$originalMessage .= "NOTE: The above line is required in any email reply to this discussion. \nOnly text before this section will be added to the discussion.\n";
+		$originalMessage .= "When you reply you might want to remove the previous message text if it is included in the reply\n\n\n";
 
 		// Translate the message wiki formatting to html
 		/*
@@ -547,8 +547,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		$originalMessage = $p->parse( "\n".stripslashes($originalMessage), $wikiconfig );		
 		*/
 
-		$params = $params = &JComponentHelper::getParams('com_support');
-		$allowEmailResponses = $params->get('email_processing');
+		$params = $params = &JComponentHelper::getParams('com_groups');
+		$allowEmailResponses = $params->get('email_comment_processing');
 
 		// Email the group and insert email tokens to allow them to respond to group posts
 		// via email
