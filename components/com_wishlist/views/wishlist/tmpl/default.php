@@ -134,9 +134,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$filters['tag'])) );	
 				
 			if (count($tf) > 0) {
-				$html .= $tf[0] . '??????1';
+				$html .= $tf[0];
 			} else {
-				$html .= t.t.t.'??????2<input type="text" name="tags" id="tags-men" value="'. htmlentities($filters['tag'], ENT_QUOTES ) .'" />'.n;
+				$html .= t.t.t.'<input type="text" name="tags" id="tags-men" value="'. htmlentities($filters['tag'], ENT_QUOTES ) .'" />'.n;
 			}
 			$html .= '</label>';
 			// get popular tags
