@@ -48,6 +48,7 @@ $juser =& JFactory::getUser();
 	$view->msgs = 0;
 	$view->ajax = 0;
 	$view->writelink = 1;
+	$view->total = $this->total;
 	$view->display();
 
 	if ($this->app['percent'] >= 100 && isset($this->app['remaining'])) {

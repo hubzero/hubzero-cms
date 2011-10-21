@@ -981,6 +981,7 @@ class ToolsController extends Hubzero_Controller
 		$view->output = $output;
 		$view->toolname = $toolname;
 		$view->rtrn = $rtrn;
+		$view->total = $this->total;
 		if ($app['sess']) {
 			// Get the middleware database
 			$mwdb =& MwUtils::getMWDBO();
