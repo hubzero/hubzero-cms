@@ -1490,12 +1490,12 @@ class EventsController extends Hubzero_Controller
 		$ep->deletePages( $id );
 
 		// Delete any associated respondents
-		$ep = new EventsRespondent( array() );
+		$er = new EventsRespondent( array() );
 		$er->deleteRespondents( $id );
 
 		// Delete tags on this event
 		$rt = new EventsTags( $this->database );
-		$rt->remove_all_tags($id);
+		$rt->remove_all_tags( $id );
 
 		// Load the event's category and update the count
 		$category = new EventsCategory( $this->database );
