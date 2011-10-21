@@ -49,11 +49,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 	foreach ($this->tags as $tag)
 	{ 
 ?>
-		<li><a href="><?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo stripslashes($tag->raw_tag); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo stripslashes($tag->raw_tag); ?></a></li>
 <?php
 	}
 ?>	
-		<li><a href="><?php echo JRoute::_('index.php?option=com_tags'); ?>" class="showmore"><?php echo JText::_('More tags &rsaquo;'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_tags'); ?>" class="showmore"><?php echo JText::_('More tags &rsaquo;'); ?></a></li>
 	</ol>
 <?php } else { ?>
 	<p><?php echo JText::_('No tags found.'); ?></p>
