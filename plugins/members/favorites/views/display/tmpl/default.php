@@ -106,7 +106,7 @@ if (count($links) > 0) {
 	// No - nothing to output
 	$html = '';
 }
-$html .= "\t".'<input type="hidden" name="category" value="'.$this->active.'" />'."\n";
+$html .= "\t".'<input type="hidden" name="area" value="'.$this->active.'" />'."\n";
 echo $html;
 ?>
 </div><!-- / .aside -->
@@ -220,7 +220,15 @@ foreach ($this->results as $category)
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination( $this->total, $this->start, $this->limit );
 
-			$html .= $pageNav->getListFooter();
+			$pn = $pageNav->getListFooter();
+			if (!strstr($pn, 'members/' . $this->member->get('uidNumber')))
+			{
+				$pn = str_replace('members/?', 'members/' . $this->member->get('uidNumber') . '/favorites?area='.$this->active.'&amp;', $pn);
+			}
+			$pn = str_replace('members/?/members', 'members', $pn);
+			$pn = str_replace('favorites&amp;', 'favorites?area='.$this->active.'&amp;', $pn);
+			
+			$html .= $pn;
 		} else {
 			$html .= '<p class="moreresults">'.JText::sprintf('PLG_MEMBERS_FAVORITES_NUMBER_SHOWN', $amt);
 			// Ad a "more" link if necessary
