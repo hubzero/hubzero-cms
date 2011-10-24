@@ -22,10 +22,10 @@
 		position: relative;
 		text-align: center;
 		width: 100%;
-		}
+	}
 	#help-pane .threecolumn {
 		border: none;
-		}
+	}
 	#help-container {
 		padding: 0 30px;
 		border: 8px solid #000;
@@ -33,18 +33,18 @@
 		color: #aaa;
 		background: #151515;
 		visibility: hidden;
-		}
+	}
 	#help-container h1 {
 		display: none;
-		}
+	}
 	#help-container a { 
 		color: #D0C7B1; 
 		border-bottom: 1px solid #726545; 
-		}
+	}
 	#help-container a:hover { 
 		color: #DAC887; 
 		border-bottom: 1px solid #D0C7B1; 
-		}
+	}
 	#help-container h2 { 
 		color: #fff; 
 		padding-bottom: 3px; 
@@ -52,50 +52,50 @@
 		border-bottom: 1px solid #333; 
 		text-shadow: none; 
 		position: relative;
-		}
+	}
 	#help-container .columns {
 		border: none;
 		background: transparent;
 		margin-bottom: 1em;
-		}
+	}
 
 	#help-container ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		}
+	}
 	#help-container li {
 		margin: 0;
 		padding: 0.7em 0em 0.7em 3em;
 		border-bottom: 1px solid #222;
 		list-style: none;
-		}
+	}
 	#help-container li h3 {
 		padding: 0;
 		border: none;
 		margin: 0;
-		}
+	}
 	#help-container li.help-wish {
 		background: url("/modules/mod_reportproblems/images/wishbone.png") 0 0.7em no-repeat;
-		}
+	}
 	#help-container li.help-tickets {
 		background: url("/modules/mod_reportproblems/images/ticket.png") 0 0.7em no-repeat;
-		}
+	}
 	#help-container li.help-kb {
 		background: url("/modules/mod_reportproblems/images/bulb.png") 0 0.7em no-repeat;
-		}
+	}
 	#help-container li.help-qa {
 		background: url("/modules/mod_reportproblems/images/qa.png") 0 0.7em no-repeat;
-		}
+	}
 	#help-container li p {
 		margin: 0;
-		}
+	}
 
 	#help-container form {
 		margin: 0;
 		padding: 0;
 		text-align: right;
-		}
+	}
 	#help-container fieldset {
 		background: transparent;
 		margin: 0;
@@ -105,117 +105,117 @@
 		float: right;
 		width: 52%;
 		color: #aaa;
-		}
+	}
 	#help-container fieldset.reporter {
 		margin: 0;
 		padding: 0;
 		float: left;
 		width: 45%;
-		}
+	}
 	#help-container .required,
 	#help-container .optional {
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		font-size: 80%;
-		}
+	}
 	#help-container .required {
 		color: #AD6456;
-		}
+	}
 	#help-container .optional {
 		color: #888;
-		}
+	}
 	#help-container label {
 		padding-top: 1.2em;
 		position: relative;
 		display: inline-block;
 		margin: 0;
 		width: 100%;
-		}
+	}
 	#help-container label span.required,
 	#help-container label span.optional {
 		position: absolute;
 		top: 1.5em;
 		right: 0;
-		}
+	}
 	#help-container label span.info-block {
 		display: block;
 		border: 1px solid #555;
 		padding: 0.2em;
 		background-color: #333;
-		}
+	}
 	#help-container input, 
 	#help-container select, 
 	#help-container textarea {
 		margin-top: 0.25em;
 		width: 100%;
-		}
+	}
 	#help-container textarea {
 		height: 126px;
-		}
+	}
 	#help-container textarea.long {
 		height: 166px;
-		}
+	}
 	#trUpload {
-		margin-bottom: 1.5em;
-		}
+		
+	}
 	#help-container .submit {
 		clear: both;
 		margin: 0.5em -0.5em 0.5em 0;
 		padding: 0.2em 0 0 0;
 		text-align: right;
 		border-top: 1px solid #333; 
-		}
+	}
 	#help-container .submit input,
 	#help-container .option {
 		width: auto;
-		}
+	}
 
 	#trSuccess strong,
 	#trSuccess h3 {
 		color: #fff;
-		}
+	}
 	#trSuccess div {
 		text-align: center;
 		float: right;
 		width: 20%;
 		margin-top: 1em;
-		}
+	}
 	#trSuccess div p {
 		margin-top: 0;
 		padding-top: 0;
-		}
+	}
 	#trSuccess div span {
 		display: block;
 		font-size: 2em;
 		color: #FAF196;
 		margin: 1em 0 1em 0;
-		}
+	}
 	#trSuccess div span a {
 		color: #FAF196;
 		border: none;
-		}
+	}
 	#trSuccess div span a:hover {
 		color: #fff;
 		border: none;
-		}
+	}
 
 	#trSending {
 		text-align: center;
-		}
+	}
 	#trSending p {
 		text-align: center;
 		font-size: 1.5em;
 		width: 10em;
 		margin: 0 auto;
 		padding: 3em 0 0 0;
-		}
+	}
 	#trSending,
 	#trSuccess {
 		display: none;
-		}
+	}
 	#help-container label#trBotcheck-label {
 		display: none;
-		}
+	}
 	#help-btn-close {
 		position: absolute;
 		width: 30px;
@@ -227,13 +227,15 @@
 		text-indent: -55em;
 		overflow: hidden;
 		cursor: pointer;
-		}
+	}
 	#help-btn-close:hover {
 		background-position: 0 -30px;
-		}
+	}
 	.filetypes {
-		color:#F00;
-		font-size:0.5em;
+		color: #aaa;
+		font-size: 0.9em;
+		display: inline-block;
+		margin-bottom: 1.5em;
 	}
 /* Help Tab */
 	#tab {
@@ -247,17 +249,17 @@
 		margin: 0;
 		line-height: 1.2em;
 		font-size: 90%;
-		}
+	}
 	#tab.active {
 		background: #000;
-		}
+	}
 	#tab a { 
 		padding: 0;
 		color: #fff;
 		height: 3em;
 		display: block;
 		border: none;
-		}
+	}
 	#tab a span { 
 		padding: 1em 0 0 0;
 		padding-right: 25px;
@@ -266,11 +268,11 @@
 		height: 2em;
 		display: block;
 		border: none;
-		}
+	}
 	#tab a:hover {
 		color: #d7c2ef;
 		background: #616161;
-		}
+	}
 	#tab a:hover span {
 		color: #d7c2ef;
-		}
+	}
