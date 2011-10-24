@@ -798,7 +798,13 @@ class Hubzero_Content_Mimetypes
 				finfo_close($finfo);
 				return $MIMEType;
 			}
-		} else return "##INVALID_FILE##";
+		} else {
+			$extension = $this->_getExtension($file);
+			if (array_key_exists($extension, $this->mimeTypes)) {
+				return $this->mimeTypes[$extension];
+			}
+		}
+		return "##INVALID_FILE##";
 	}
 
 	/**
