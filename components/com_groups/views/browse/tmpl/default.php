@@ -233,6 +233,8 @@ if ($this->groups) {
 $pn = $this->pageNav->getListFooter();
 $pn = str_replace('/?','/browse/?',$pn);
 $pn = str_replace('&amp;&amp;','&amp;',$pn);
+$pn = str_replace('?/groups/browse&amp;','?',$pn);
+$pn = str_replace('?','?index='.$this->filters['index'].'&amp;sortby='.$this->filters['sortby'],$pn);
 $pn = preg_replace('/(&amp;sortby=\D{0,5})\&?/', '$1&', $pn);
 echo $pn;
 ?>
