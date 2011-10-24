@@ -557,6 +557,23 @@ class JSession extends JObject
 		if($this->_force_ssl) {
 			$cookie['secure'] = true;
 		}
+		
+		$config = JFactory::getConfig();
+		
+		$uri = JURI::getInstance($config->getValue('config.live_site'));
+		
+		if ($uri->getHost())
+		{
+			if ($config->getValue('config.cookiesubdomains'))
+			{
+				$cookie['domain'] = '.' . $uri->getHost();
+			}
+			else
+			{
+				$cookie['domain'] = $uri->getHost();
+			}
+		}
+		
 		session_set_cookie_params( $cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'] );
 	}
 
@@ -629,8 +646,7 @@ class JSession extends JObject
 	{
 		// set name
 		if( isset( $options['name'] ) ) {
-			//session_name( md5($options['name']) ); /* Joomla! version */
-			session_name( $options['name'] );        /* HUBzero version */
+			session_name( md5($options['name']) );
 		}
 
 		// set id

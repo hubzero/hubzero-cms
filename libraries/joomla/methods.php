@@ -52,7 +52,7 @@ class JRoute
 
 		// Build route
 		$uri = &$router->build($url);
-		$url = $uri->toString(array('path', 'query', 'fragment'));
+		$url = $uri->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'));
 
 		// Replace spaces
 		$url = preg_replace('/\s/u', '%20', $url);

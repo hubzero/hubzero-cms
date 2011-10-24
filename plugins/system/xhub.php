@@ -235,6 +235,17 @@ class XRouter extends JRouter
 		//Add basepath to the uri
 		$uri->setPath(JURI::base(true).'/'.$route);
 
+		
+		if (!empty($_SERVER['REWROTE_FROM']))
+		{
+			if (stripos($uri->toString(), $_SERVER['REWROTE_TO']->getPath()) !== false)
+			{
+				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(),'',$uri->getPath()));				
+				$uri->setHost($_SERVER['REWROTE_FROM']->getHost());
+				$uri->setScheme($_SERVER['REWROTE_FROM']->getScheme());
+			}
+		}		
+		
 		return $uri;
 	}
 
@@ -302,6 +313,48 @@ class XRouter extends JRouter
 	function _parseSefRoute(&$uri)
 	{
 		$vars   = array();
+		$app = JFactory::getApplication();
+		
+		if ($app->getCfg('sef_groups'))
+		{
+			$servername = $app->getCfg('live_site');
+			$serveruri = JURI::getInstance($servername);
+			$sfqdn = $serveruri->getHost();
+			$rfqdn = $uri->getHost();
+
+			if ($rfqdn != $sfqdn)
+			{
+				list($rhostname, $rdomainname) = explode('.', $rfqdn, 2);
+				list($shostname, $sdomainname) = explode('.', $sfqdn, 2);
+				
+				if ( ($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
+				{
+					ximport('Hubzero_Group');
+					$suri = JURI::getInstance();
+					$group = Hubzero_Group::getInstance($rhostname);
+
+					if (!empty($group) && ($group->type == 3)) // only special groups get internal redirection abilities
+					{
+						$_SERVER['REWROTE_FROM'] = clone($suri);
+						$uri->setHost($sfqdn);
+						$uri->setPath('groups/'.$rhostname.'/'.$uri->getPath());		
+						$suri->setHost($sfqdn);
+						$suri->setPath('/groups/'.$rhostname.'/'.$suri->getPath());
+						$_SERVER['HTTP_HOST'] = $suri->getHost();
+						$_SERVER['SERVER_NAME'] = $suri->getHost();
+						$_SERVER['SCRIPT_URI'] = $suri->toString(array('scheme','host','port','path'));
+						$_SERVER['REDIRECT_SCRIPT_URI'] = $suri->toString(array('scheme','host','port','path'));
+						$_SERVER['REDIRECT_SCRIPT_URL'] = $suri->getPath();
+						$_SERVER['REDIRECT_URL'] = $suri->getPath();
+						$_SERVER['SCRIPT_URL'] = $suri->getPath();
+						$_SERVER['REQUEST_URI'] = $suri->toString(array('path','query','fragment'));						
+						$suri->setPath('/groups/'.$rhostname);
+						$_SERVER['REWROTE_TO'] = clone($suri);
+					}
+				}
+			}
+			
+		}
 
 		$menu  =& JSite::getMenu(true);
 		$route = $uri->getPath();
@@ -612,7 +665,7 @@ class XRouter extends JRouter
 			$item = $menu->getItem($query['Itemid']);
 
 			if (is_object($item) && $query['option'] == $item->component) {
-				$tmp = !empty($tmp) ? $item->route.'/'.$tmp : $item->route;
+				$tmp = $item->route.$tmp;
 				$built = true;
 			}
 		}

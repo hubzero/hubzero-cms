@@ -38,6 +38,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				<?php echo $lists['sef_suffix']; ?>
 			</td>
 		</tr>
+		<tr>
+			<td width="185" class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Search Engine Friendly Groups' ); ?>::<?php echo JText::_('TIPSSEFGROUPS'); ?>">
+					<?php echo JText::_( 'Search Engine Friendly Group URLs' ); ?>
+				</span>
+			</td>
+			<td>
+				<?php echo $lists['sef_groups']; ?>
+			</td>
+		</tr>
 		</tbody>
 	</table>
 </fieldset>

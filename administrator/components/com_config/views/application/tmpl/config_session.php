@@ -25,6 +25,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 					<strong><?php echo $lists['session_handlers']; ?></strong>
 				</td>
 			</tr>
+			<tr>
+				<td class="key">
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Session Cookie Domain' ); ?>::<?php echo JText::_( 'TIPSESSIONCOOKIEDOMAIN' ); ?>">
+						<?php echo JText::_( 'Session Cookie Domain' ); ?>
+					</span>
+				</td>
+				<td>
+					<input type="radio" name="cookiesubdomains" id="cookiesubdomains0" value="0" checked="checked" class="inputbox" /> 
+					<label for="cookiesubdomains0">Site</label> 
+					<input type="radio" name="cookiesubdomains" id="cookiesubdomains1" value="1" class="inputbox" /> 
+					<label for="cookiesubdomains1">All Subdomains</label> 
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </fieldset>

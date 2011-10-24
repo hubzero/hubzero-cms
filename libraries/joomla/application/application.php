@@ -95,10 +95,14 @@ class JApplication extends JObject
 
 		//create the configuration object
 		$this->_createConfiguration(JPATH_CONFIGURATION.DS.$config['config_file']);
-
+		
+		$cfg =& JFactory::getConfig();
+		$uri = JURI::getInstance($cfg->getValue('live_site'));
+		
 		//create the session if a session name is passed
 		if($config['session'] !== false) {
-			$this->_createSession(JUtility::getHash($config['session_name']));
+			//$this->_createSession(JUtility::getHash($config['session_name'])); /* Joomla! Version */
+			$this->_createSession($uri->getHost().':'.$config['session_name']);  /* HUBzero Version */
 		}
 
 		$this->set( 'requestTime', gmdate('Y-m-d H:i') );

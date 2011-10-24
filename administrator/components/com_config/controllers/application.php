@@ -199,6 +199,7 @@ class ConfigControllerApplication extends ConfigController
 		$lists['sef'] 		= JHTML::_('select.booleanlist', 'sef', 'class="inputbox"', $row->sef);
 		$lists['sef_rewrite'] 	= JHTML::_('select.booleanlist', 'sef_rewrite', 'class="inputbox"', $row->sef_rewrite);
 		$lists['sef_suffix'] 	= JHTML::_('select.booleanlist', 'sef_suffix', 'class="inputbox"', $row->sef_suffix);
+		$lists['sef_groups'] 	= JHTML::_('select.booleanlist', 'sef_groups', 'class="inputbox"', $row->sef_groups);
 
 		// FEED SETTINGS
 		$formats	= array (JHTML::_('select.option', 'RSS2.0', JText::_('RSS')), JHTML::_('select.option', 'Atom', JText::_('Atom')));
@@ -311,6 +312,7 @@ class ConfigControllerApplication extends ConfigController
 		$config_array['sef']			= JRequest::getVar('sef', 0, 'post', 'int');
 		$config_array['sef_rewrite']	= JRequest::getVar('sef_rewrite', 0, 'post', 'int');
 		$config_array['sef_suffix']		= JRequest::getVar('sef_suffix', 0, 'post', 'int');
+		$config_array['sef_groups']		= JRequest::getVar('sef_groups', 0, 'post', 'int');
 
 		// FEED SETTINGS
 		$config_array['feed_limit']		= JRequest::getVar('feed_limit', 10, 'post', 'int');
@@ -371,6 +373,7 @@ class ConfigControllerApplication extends ConfigController
 		// SESSION SETTINGS
 		$config_array['lifetime']			= JRequest::getVar('lifetime', 0, 'post', 'int');
 		$config_array['session_handler']	= JRequest::getVar('session_handler', 'none', 'post', 'word');
+		$config_array['cookiesubdomains']   = JRequest::getVar('cookiesubdomain', 0, 'post', 'int');
 
 		//LANGUAGE SETTINGS
 		//$config_array['lang']				= JRequest::getVar('lang', 'none', 'english', 'cmd');
