@@ -44,7 +44,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id				= NULL;  // @var int(11) Primary key
 
 
 	/**
@@ -52,7 +52,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created		= NULL;  // @var datetime (0000-00-00 00:00:00)
 
 
 	/**
@@ -60,7 +60,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by		= NULL;  // @var int(11)
 
 
 	/**
@@ -68,7 +68,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $message    = NULL;  // @var text
+	var $message		= NULL;  // @var text
 
 
 	/**
@@ -76,7 +76,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $subject    = NULL;  // @var varchar(150)
+	var $subject		= NULL;  // @var varchar(150)
 
 
 	/**
@@ -84,7 +84,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $component  = NULL;  // @var varchar(100)
+	var $component		= NULL;  // @var varchar(100)
 
 
 	/**
@@ -92,7 +92,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $type       = NULL;  // @var varchar(100)
+	var $type			= NULL;  // @var varchar(100)
 
 
 	/**
@@ -100,7 +100,7 @@ class Hubzero_Message_Message extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $group_id   = NULL;  // @var int(11)
+	var $group_id		= NULL;  // @var int(11)
 
 	//-----------
 

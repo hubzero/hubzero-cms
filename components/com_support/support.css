@@ -382,6 +382,22 @@
 		font-size: 90%;
 		background: url("/components/com_support/images/email.png") 10px 0.2em no-repeat;
 		}
+	ol.comments ul.emaillog,
+	ol.comments .changelog ul.email-out-log {
+		border-top: 1px solid #ddd;
+		padding: 0.2em 0.2em 0.2em 38px;
+		margin: 0;
+		font-size: 90%;
+		background: url("images/email-out.png") 10px 0.2em no-repeat;
+		}
+	ol.comments ul.emaillog,
+	ol.comments .changelog ul.email-in-log {
+		border-top: 1px solid #ddd;
+		padding: 0.2em 0.2em 0.2em 38px;
+		margin: 0;
+		font-size: 90%;
+		background: url("images/email-in.png") 10px 0.2em no-repeat;
+		}
 	ol.comments .emaillog li {
 		padding: 0.1em;
 		margin: 0;

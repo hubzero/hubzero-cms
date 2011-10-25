@@ -112,15 +112,35 @@ class plgXMessageEmail extends JPlugin
 		$headers = "MIME-Version: 1.0\n";
 		$headers .= "Content-type: text/plain; charset=utf-8\n";
 		$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
-		$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
+
+		// In case a different reply to email address is specified
+		if(array_key_exists('replytoemail', $from))
+			$headers .= "Reply-To: " . $from['name'] . " <" . $from['replytoemail'] . ">\n";
+		else
+			$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
+    
 		$headers .= "X-Priority: 3\n";
 		$headers .= "X-MSMail-Priority: High\n";
 		$headers .= "X-Mailer: " . $from['name'] . "\n";
 
-		if (mail($email, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args)) {
-			return true;
+		// Want to add some extra headers? We put them into the from array 
+		// If none are there, this breaks nothing
+        if(array_key_exists('xheaders', $from)) 
+		{
+			$hs = $from['xheaders'];
+
+			// The xheaders array has name and value pairs
+			foreach($hs as $n => $v) 
+			{
+				$headers .= $n . ": " . $v . "\n";
+			}
 		}
 
+		if (mail($email, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args)) 
+		{
+			return true;
+		}
+		   
 		return false;
 	}
 }

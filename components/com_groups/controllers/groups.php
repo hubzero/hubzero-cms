@@ -626,6 +626,7 @@ class GroupsController extends Hubzero_Controller
 
 		$limit = ($limit == 0) ? 'all' : $limit;
 
+
 		// Get the sections
 		$sections = $dispatcher->trigger( 'onGroup', array(
 				$group,
@@ -687,7 +688,7 @@ class GroupsController extends Hubzero_Controller
 		$view->hub_group_plugins = $hub_group_plugins;
 		$view->group_plugin_access = $group_plugin_access;
 		$view->pages = $pages;
-
+			
 		$view->sections = $sections;
 		$view->tab = $tab;
 

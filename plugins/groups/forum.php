@@ -32,6 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Plugin');
+include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Emailtoken.php');
 JPlugin::loadLanguage( 'plg_groups_forum' );
 
 //-----------
@@ -464,8 +465,12 @@ class plgGroupsForum extends Hubzero_Plugin
 		$incoming = JRequest::getVar('topic',array(),'post');
 
 		//instantiate forum object
+		/* @var $row XForum */
 		$row = new XForum( $database );
 
+		/* @var $group Hubzero_Group */
+		$group = $this->group;
+		
 		//bind the data
 		if (!$row->bind( $incoming )) {
 			$this->setError( $row->getError() );
@@ -506,7 +511,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$row->access = 0;
 		}
 
-		// Check content
+   		// Check content
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
 			return $this->edittopic();
@@ -517,6 +522,93 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->setError( $row->getError() );
 			return $this->edittopic();
 		}
+
+		// Build outgoing email message
+        $originalMessage = $row->comment;
+		$originalMessage .= "\n\n%%tokenplaceholder%%\n";
+        $originalMessage .= "NOTE: The above line is required in any email reply to this discussion. \nOnly text before this section will be added to the discussion\n";
+        $originalMessage .= "When you reply you might want to remove the previous message text if it is included in the reply\n\n\n";
+
+		// Translate the message wiki formatting to html
+		/*
+		ximport('Hubzero_Wiki_Parser');
+
+		$p =& Hubzero_Wiki_Parser::getInstance();
+		
+		$wikiconfig = array(
+			'option'   => $this->option,
+			'scope'    => 'group'.DS.'forum',
+			'pagename' => 'group',
+			'pageid'   => $this->group->get('gidNumber'),
+			'filepath' => '',
+			'domain'   => ''
+		);
+		
+		$originalMessage = $p->parse( "\n".stripslashes($originalMessage), $wikiconfig );		
+		*/
+		
+        $encryptor = new Hubzero_Email_Token();
+
+		// Figure out who should be notified about this comment (all group members for now)
+        $members = $this->group->get('members');
+		$userIDsToEmail = array();
+		
+		foreach($members as $mbr) 
+        {
+			//Look up user info 
+			$user = new JUser();
+				
+			if($user->load($mbr)){
+				
+				include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'memberoptions'.DS.'memberoption.class.php');
+				
+				// Find the user's group settings, do they want to get email (0 or 1)?
+				$groupMemberOption = new XGroups_MemberOption($database);
+				$groupMemberOption->loadRecord($group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+
+				if($groupMemberOption->id)
+					$sendEmail = $groupMemberOption->optionvalue;
+				else
+					$sendEmail = 0;
+				
+				if($sendEmail)
+					$userIDsToEmail[] = $user->id;	
+			}
+		}
+		
+        JPluginHelper::importPlugin( 'xmessage' );
+        $dispatcher =& JDispatcher::getInstance();
+
+		// Email each group member separately, each needs a user specific token
+		foreach($userIDsToEmail as $userID) 
+		{
+
+			// Construct User specific Email ThreadToken
+            // Version, type, userid, xforumid
+            // Note, for original posts, $row->parent will be 0, so we take the id instead
+            $token = $encryptor->buildEmailToken(1, 2, $user->id, $row->id);
+
+			// Put Token into generic message
+			$subject = $group->get('cn') . ' group discussion post (' . $row->id . ')';
+            
+			$message = str_replace('%%tokenplaceholder%%', $token, $originalMessage);
+			
+            $jconfig =& JFactory::getConfig();
+			$from = array();
+			$from['name']  = $jconfig->getValue('config.sitename').' ';
+			$from['email'] = $jconfig->getValue('config.mailfrom');
+		
+	        if (!$dispatcher->trigger( 'onSendMessage', array( 'group_message', $subject, $message, $from, array($userID), $this->_option, null, '', $this->group->get('gidNumber') ))) {
+	            $this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
+	        }
+
+		}
+
+		//print_r($usersToEmail);
+		//return;
+		//exit;
+
+		
 
 		//if we are replying redirect back to that topic
 		if ($row->parent) {

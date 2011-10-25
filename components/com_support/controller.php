@@ -674,7 +674,7 @@ class SupportController extends Hubzero_Controller
 			// Strip html from feed item description text
 			$description = html_entity_decode(stripslashes($row->report)); //SupportHtml::shortenText($row->report);
 			$author      = ($row->login) ? $row->name.' ('.$row->login.')' : $row->name;
-			@$date       = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
+			$date       = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
 
 			// Load individual item creator class
 			$item = new JFeedItem();
@@ -703,7 +703,7 @@ class SupportController extends Hubzero_Controller
 	 */
 	protected function save()
 	{
-	    $juser =& JFactory::getUser();
+        $juser =& JFactory::getUser();
 
 		// Make sure we are still logged in
 		if ($juser->get('guest')) {
@@ -882,7 +882,7 @@ class SupportController extends Hubzero_Controller
 					// Build e-mail components
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
-					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('TICKET').' #'.$row->id.' comment '.md5($row->id);
+					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('TICKET').' #'.$row->id.' comment ';
 
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
@@ -905,6 +905,10 @@ class SupportController extends Hubzero_Controller
 						}
 					}
 					$message .= $attach->parse($comment)."\r\n\r\n";
+
+					// Prepare message to allow email responses to be parsed and added to the ticket
+					$message = "NOTE: The above line is required in any email reply to this ticket. \nAll text before this section will be added to the ticket discussion\n\n\n" . $message;
+					$message = "%%tokenplaceholder%%\n" . $message;
 
 					$juri =& JURI::getInstance();
 					$sef = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='. $row->id);
@@ -941,8 +945,16 @@ class SupportController extends Hubzero_Controller
 										$type = 'support_close_submitted';
 									}
 								}
+								
+								// Replace token holdertext with user specific token (tokens contain userID, so they are user specific)
+								$hubEmailToken = SupportUtilities::buildEmailToken(1, 1, $zuser->get('id'), $id);		                             
+								$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
 
-								if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, array($zuser->get('id')), $this->_option ))) {
+								// put these in the from array (even though they are extended headers), 
+								// this seems to be the least obtursive way to do it without ripping things apart
+								$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
+
+								if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $newMessage, $from, array($zuser->get('id')), $this->_option ) ) ) {
 									$this->setError( JText::_('Failed to message ticket submitter.') );
 								} else {
 									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
@@ -959,13 +971,27 @@ class SupportController extends Hubzero_Controller
 					if ($email_owner == 1) {
 						if ($row->owner) {
 							$juser =& JUser::getInstance($row->owner);
-							if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
+
+							// Replace token holdertext with user specific token (tokens contain userID, so they are user specific)
+							$hubEmailToken = SupportUtilities::buildEmailToken(1, 1, $juser->get('id'), $id);		                             
+							$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
+
+							// put these in the from array (even though they are extended headers), 
+							// this seems to be the least obtursive way to do it without ripping things apart
+							$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
+
+							if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $newMessage, $from, array($juser->get('id')), $this->_option ) ) ) {
 								$this->setError( JText::_('Failed to message ticket owner.') );
 							} else {
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_OWNER').' - '.$juser->get('email').'</li>';
 							}
 						}
 					}
+
+					// We're allowing email responses from anonymous users (for now)
+					// Since the email token stores the userid, we need to use -1 for the userid
+					$hubEmailToken = SupportUtilities::buildEmailToken(1, 1, -1, $id);       
+					$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
 
 					// Add any CCs to the e-mail list
 					$cc = JRequest::getVar( 'cc', '' );
@@ -983,7 +1009,7 @@ class SupportController extends Hubzero_Controller
 								// Did we find an account?
 								if (is_object($juser)) {
 									// Get the user's email address
-									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
+									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $newMessage, $from, array($juser->get('id')), $this->_option ) ) ) {
 										$this->setError( JText::_('Failed to message ticket owner.') );
 									}
 									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$juser->get('name').' ('.$juser->get('username').')</li>';
@@ -1002,7 +1028,7 @@ class SupportController extends Hubzero_Controller
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						SupportUtilities::sendEmail($email, $subject, $message, $from);
+						SupportUtilities::sendEmail($email, $subject, $message, $from, null, array('name' => 'X-HubEmailToken', 'value' => $hubEmailToken));
 					}
 
 					// Were there any changes?

@@ -141,7 +141,7 @@ class plgXMessageHandler extends JPlugin
 		if (!$message) {
 			return false;
 		}
-
+			
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
@@ -191,13 +191,14 @@ class plgXMessageHandler extends JPlugin
 		}
 
 		// Store the message in the database
-		$xmessage->subject    = $subject;
-		$xmessage->message    = $message;
-		$xmessage->created    = date( 'Y-m-d H:i:s', time() );
-		$xmessage->created_by = $juser->get('id');
-		$xmessage->component  = $component;
-		$xmessage->type       = $type;
-		$xmessage->group_id   = $group_id;
+		$xmessage->subject			= $subject;
+		$xmessage->message			= $message;
+		$xmessage->created			= date( 'Y-m-d H:i:s', time() );
+		$xmessage->created_by		= $juser->get('id');
+		$xmessage->component		= $component;
+		$xmessage->type				= $type;
+		$xmessage->group_id			= $group_id;
+				
 		if (!$xmessage->store()) {
 			return $xmessage->getError();
 		}
@@ -247,7 +248,6 @@ class plgXMessageHandler extends JPlugin
 					foreach ($methods as $method)
 					{
 						$action = strtolower($method->method);
-
 						if ($action == 'internal') {
 							if (!$recipient->store()) {
 								$this->setError( $recipient->getError() );
