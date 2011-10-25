@@ -75,8 +75,18 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=myquestions'); ?>" class="myquestions"><span><?php echo JText::_('COM_ANSWERS_MY_QUESTIONS'); ?></span></a></li>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search'); ?>"><span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span></a></li>
+		<!-- <li><a href="<?php //echo JRoute::_('index.php?option='.$this->option.'&task=myquestions'); ?>" class="myquestions"><span><?php //echo JText::_('COM_ANSWERS_MY_QUESTIONS'); ?></span></a></li> -->
+		<?php if ($this->question->prev) { ?>
+			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->prev); ?>" class=""><span><?php echo '&lsaquo; ' . JText::_('COM_ANSWERS_PREVIOUS_QUESTION'); ?></span></a></li>
+		<?php } else { ?>
+			<li><span><?php echo '&lsaquo; ' . JText::_('COM_ANSWERS_PREVIOUS_QUESTION'); ?></span></li>
+		<?php } ?>
+		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search'); ?>"><span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span></a></li>
+		<?php if ($this->question->next) { ?>
+			<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->next); ?>" class=""><span><?php echo JText::_('COM_ANSWERS_NEXT_QUESTION') .' &rsaquo;' ; ?></span></a></li>
+		<?php } else { ?>
+			<li><span><?php echo JText::_('COM_ANSWERS_NEXT_QUESTION') .' &rsaquo;' ; ?></span></li>
+		<?php } ?>
 	</ul>
 </div><!-- / #content-header-extra -->
 

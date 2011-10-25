@@ -743,6 +743,10 @@ class AnswersController extends Hubzero_Controller
 		$ar = new AnswersResponse( $this->database );
 		$responses = $ar->getRecords( array('ip'=>$ip,'qid'=>$id) );
 
+		// Grab the previous and next links for navigation
+		$question->prev = $question->getQuestionID( $id, 'prev' );
+		$question->next = $question->getQuestionID( $id, 'next' );
+		
 		// Calculate max award
 		if ($this->banking) {
 			$AE = new AnswersEconomy( $this->database );

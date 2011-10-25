@@ -311,5 +311,20 @@ class AnswersQuestion extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
+	
+	//-----------
+	
+	public function getQuestionID( $id, $which ) 
+	{
+		$query  = "SELECT a.id ";
+		$query .= "FROM #__answers_questions AS a ";
+		$query .= "WHERE a.state != 2 AND ";
+		$query .= ($which == 'prev')  ? "a.id < '".$id."' " : "a.id > '".$id."'";
+		$query .= ($which == 'prev') ? " ORDER BY a.id DESC " : " ORDER BY a.id ASC ";
+		$query .= " LIMIT 1";
+
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();
+	}
 }
 
