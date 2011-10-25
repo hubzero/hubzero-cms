@@ -40,5 +40,13 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
 		<param name="group" type="text" menu="hide" label="Group" default="" description="Group ID to pull users from" />
 		<param name="emails" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="Notify when ticket created" description="Add a line for each email address a new ticket should be sent to." />
-	</params>
+		<param name="" type="text" menu="hide" label="Enable email processing" default="" description="Allow ticket/ticket comments input via email" />
+
+        <param name="email_forum_comments" type="list" default="0" label="Enable email interface" description="Allow for processing of responses via e-mail to ticketting system">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+
+    
+    </params>
 </config>

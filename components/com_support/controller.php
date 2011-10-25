@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Controller');
+include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Emailtoken.php');
 
 /**
  * Short description for 'SupportController'
@@ -704,7 +705,14 @@ class SupportController extends Hubzero_Controller
 	protected function save()
 	{
         $juser =& JFactory::getUser();
-
+        
+        $params = $params = &JComponentHelper::getParams('com_support');
+		$allowEmailResponses = $params->get('email_processing');
+       
+		if($allowEmailResponses){
+			$encryptor = new Hubzero_Email_Token();
+		}
+		
 		// Make sure we are still logged in
 		if ($juser->get('guest')) {
 			return $this->login();
@@ -906,9 +914,11 @@ class SupportController extends Hubzero_Controller
 					}
 					$message .= $attach->parse($comment)."\r\n\r\n";
 
-					// Prepare message to allow email responses to be parsed and added to the ticket
-					$message = "NOTE: The above line is required in any email reply to this ticket. \nAll text before this section will be added to the ticket discussion\n\n\n" . $message;
-					$message = "%%tokenplaceholder%%\n" . $message;
+                    // Prepare message to allow email responses to be parsed and added to the ticket
+					if ($allowEmailResponses){
+						$message = "NOTE: The above line is required in any email reply to this ticket. \nAll text before this section will be added to the ticket discussion\n\n\n" . $message;
+						$message = "%%tokenplaceholder%%\n" . $message;
+					}
 
 					$juri =& JURI::getInstance();
 					$sef = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='. $row->id);
@@ -945,15 +955,21 @@ class SupportController extends Hubzero_Controller
 										$type = 'support_close_submitted';
 									}
 								}
+
+								// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
+								if($allowEmailResponses){
+									// Replace token holdertext with user specific token (tokens contain userID, so they are user specific)
+									$hubEmailToken = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);		                             
+									$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
+
+									// put these in the from array (even though they are extended headers), 
+									// this seems to be the least obtursive way to do it without ripping things apart
+									$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
+								}
+								else{
+									$newMessage = $message;
+								}
 								
-								// Replace token holdertext with user specific token (tokens contain userID, so they are user specific)
-								$hubEmailToken = SupportUtilities::buildEmailToken(1, 1, $zuser->get('id'), $id);		                             
-								$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
-
-								// put these in the from array (even though they are extended headers), 
-								// this seems to be the least obtursive way to do it without ripping things apart
-								$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
-
 								if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $newMessage, $from, array($zuser->get('id')), $this->_option ) ) ) {
 									$this->setError( JText::_('Failed to message ticket submitter.') );
 								} else {
@@ -972,13 +988,18 @@ class SupportController extends Hubzero_Controller
 						if ($row->owner) {
 							$juser =& JUser::getInstance($row->owner);
 
-							// Replace token holdertext with user specific token (tokens contain userID, so they are user specific)
-							$hubEmailToken = SupportUtilities::buildEmailToken(1, 1, $juser->get('id'), $id);		                             
-							$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
+							// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
+							if($allowEmailResponses){
+								$hubEmailToken = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);		                             
+								$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
 
-							// put these in the from array (even though they are extended headers), 
-							// this seems to be the least obtursive way to do it without ripping things apart
-							$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
+								// put these in the from array (even though they are extended headers), 
+								// this seems to be the least obtursive way to do it without ripping things apart
+								$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
+							}
+							else{
+								$newMessage = $message;
+							}
 
 							if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $newMessage, $from, array($juser->get('id')), $this->_option ) ) ) {
 								$this->setError( JText::_('Failed to message ticket owner.') );
@@ -988,11 +1009,17 @@ class SupportController extends Hubzero_Controller
 						}
 					}
 
-					// We're allowing email responses from anonymous users (for now)
-					// Since the email token stores the userid, we need to use -1 for the userid
-					$hubEmailToken = SupportUtilities::buildEmailToken(1, 1, -1, $id);       
-					$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
+					if($allowEmailResponses){
+						// We're allowing email responses from anonymous users (for now)
+						// Since the email token stores the userid, we need to use -1 for the userid
+						$hubEmailToken = $encryptor->buildEmailToken(1, 1, -1, $id);		                             
 
+						$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
+					}
+					else{
+						$newMessage = $message;
+					}
+					
 					// Add any CCs to the e-mail list
 					$cc = JRequest::getVar( 'cc', '' );
 					if (trim($cc)) {
@@ -1028,7 +1055,10 @@ class SupportController extends Hubzero_Controller
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						SupportUtilities::sendEmail($email, $subject, $message, $from, null, array('name' => 'X-HubEmailToken', 'value' => $hubEmailToken));
+						if($allowEmailResponses)
+							SupportUtilities::sendEmail($email, $subject, $message, $from, null, array('name' => 'X-HubEmailToken', 'value' => $hubEmailToken));
+						else
+							SupportUtilities::sendEmail($email, $subject, $message, $from);
 					}
 
 					// Were there any changes?

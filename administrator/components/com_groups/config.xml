@@ -60,6 +60,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+        
+		<param name="email_comment_processing" type="list" default="0" label="Enable discussion comments via E-mail" description="Enable logic to send group discussion comments via email and process and add responses via email">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        
 	</params>
 </config>
 

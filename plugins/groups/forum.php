@@ -546,68 +546,71 @@ class plgGroupsForum extends Hubzero_Plugin
 		
 		$originalMessage = $p->parse( "\n".stripslashes($originalMessage), $wikiconfig );		
 		*/
-		
-        $encryptor = new Hubzero_Email_Token();
 
-		// Figure out who should be notified about this comment (all group members for now)
-        $members = $this->group->get('members');
-		$userIDsToEmail = array();
-		
-		foreach($members as $mbr) 
-        {
-			//Look up user info 
-			$user = new JUser();
-				
-			if($user->load($mbr)){
-				
-				include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'memberoptions'.DS.'memberoption.class.php');
-				
-				// Find the user's group settings, do they want to get email (0 or 1)?
-				$groupMemberOption = new XGroups_MemberOption($database);
-				$groupMemberOption->loadRecord($group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+		$params = $params = &JComponentHelper::getParams('com_support');
+		$allowEmailResponses = $params->get('email_processing');
 
-				if($groupMemberOption->id)
-					$sendEmail = $groupMemberOption->optionvalue;
-				else
-					$sendEmail = 0;
-				
-				if($sendEmail)
-					$userIDsToEmail[] = $user->id;	
+		// Email the group and insert email tokens to allow them to respond to group posts
+		// via email
+		if($allowEmailResponses){
+			
+			$encryptor = new Hubzero_Email_Token();
+
+			// Figure out who should be notified about this comment (all group members for now)
+			$members = $this->group->get('members');
+			$userIDsToEmail = array();
+
+			foreach($members as $mbr) 
+			{
+				//Look up user info 
+				$user = new JUser();
+
+				if($user->load($mbr)){
+
+					include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'memberoptions'.DS.'memberoption.class.php');
+
+					// Find the user's group settings, do they want to get email (0 or 1)?
+					$groupMemberOption = new XGroups_MemberOption($database);
+					$groupMemberOption->loadRecord($group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+
+					if($groupMemberOption->id)
+						$sendEmail = $groupMemberOption->optionvalue;
+					else
+						$sendEmail = 0;
+
+					if($sendEmail)
+						$userIDsToEmail[] = $user->id;	
+				}
+			}
+
+			JPluginHelper::importPlugin( 'xmessage' );
+			$dispatcher =& JDispatcher::getInstance();
+
+			// Email each group member separately, each needs a user specific token
+			foreach($userIDsToEmail as $userID) 
+			{
+
+				// Construct User specific Email ThreadToken
+				// Version, type, userid, xforumid
+				// Note, for original posts, $row->parent will be 0, so we take the id instead
+				$token = $encryptor->buildEmailToken(1, 2, $user->id, $row->id);
+
+				// Put Token into generic message
+				$subject = $group->get('cn') . ' group discussion post (' . $row->id . ')';
+
+				$message = str_replace('%%tokenplaceholder%%', $token, $originalMessage);
+
+				$jconfig =& JFactory::getConfig();
+				$from = array();
+				$from['name']  = $jconfig->getValue('config.sitename').' ';
+				$from['email'] = $jconfig->getValue('config.mailfrom');
+
+				if (!$dispatcher->trigger( 'onSendMessage', array( 'group_message', $subject, $message, $from, array($userID), $this->_option, null, '', $this->group->get('gidNumber') ))) {
+					$this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
+				}
+
 			}
 		}
-		
-        JPluginHelper::importPlugin( 'xmessage' );
-        $dispatcher =& JDispatcher::getInstance();
-
-		// Email each group member separately, each needs a user specific token
-		foreach($userIDsToEmail as $userID) 
-		{
-
-			// Construct User specific Email ThreadToken
-            // Version, type, userid, xforumid
-            // Note, for original posts, $row->parent will be 0, so we take the id instead
-            $token = $encryptor->buildEmailToken(1, 2, $user->id, $row->id);
-
-			// Put Token into generic message
-			$subject = $group->get('cn') . ' group discussion post (' . $row->id . ')';
-            
-			$message = str_replace('%%tokenplaceholder%%', $token, $originalMessage);
-			
-            $jconfig =& JFactory::getConfig();
-			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename').' ';
-			$from['email'] = $jconfig->getValue('config.mailfrom');
-		
-	        if (!$dispatcher->trigger( 'onSendMessage', array( 'group_message', $subject, $message, $from, array($userID), $this->_option, null, '', $this->group->get('gidNumber') ))) {
-	            $this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
-	        }
-
-		}
-
-		//print_r($usersToEmail);
-		//return;
-		//exit;
-
 		
 
 		//if we are replying redirect back to that topic
