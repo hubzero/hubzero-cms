@@ -180,6 +180,7 @@ $juser =& JFactory::getUser();
 		} else {
 			// Calculate the percentage of spaced used
 			bcscale(6);
+			$total = $du['softspace'] / 1024000000;
 			$val = ($du['softspace'] > 0) ? bcdiv($du['space'], $du['softspace']) : 0;
 			$percent = round( $val * 100 );
 
@@ -192,7 +193,11 @@ $juser =& JFactory::getUser();
 ?>
 <dl id="diskusage">
 	<dt><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_tools&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</dt>
-	<dd id="du-amount"><div style="width:<?php echo $amount; ?>%;"><strong>&nbsp;</strong><span><?php echo $amount; ?>%</span></div></dd>
+	<?php if ($percent < 50) { ?>
+		<dd id="du-amount" class="amount-low"><div style="width:<?php echo $amount; ?>%;"><strong></strong><span id="du-amount-low"><?php echo $amount . '% of ' . $total . 'GB'; ?></span></div></dd>
+	<?php } else { ?>
+		<dd id="du-amount" class="amount-high"><div style="width:<?php echo $amount; ?>%;"><strong></strong><span id="du-amount-high"><?php echo $amount . '% of ' . $total . 'GB'; ?></span></div></dd>
+	<?php } ?>
 <?php if ($percent == 100) { ?>
 	<dd id="du-msg"><p class="warning"><?php echo JText::_('MOD_MYSESSIONS_MAXIMUM_STORAGE'); ?></p></dd>
 <?php } ?>

@@ -293,6 +293,7 @@
 		line-height: 1.5em;
 		color: #fff;
 		text-indent: 7px;
+		width: 75px;
 		}
     #diskusage #du-amount div { 
         position: relative;

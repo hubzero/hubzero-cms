@@ -455,6 +455,7 @@ class ToolsController extends Hubzero_Controller
 			$view->msgs = 0;
 			$view->ajax = 0;
 			$view->writelink = 0;
+			$view->total = $this->total;
 			$monitor = $view->loadTemplate();
 		}
 
@@ -1152,9 +1153,11 @@ class ToolsController extends Hubzero_Controller
 		}
 		$percent = round( $val * 100 );
 		$percent = ($percent > 100) ? 100 : $percent;
+		$total = $du['softspace'] / 1024000000;
 
 		$this->remaining = (isset($du['remaining'])) ? $du['remaining'] : 0;
 		$this->percent = $percent;
+		$this->total = $total;
 
 		//if ($this->percent >= 100 && $this->remaining == 0) {
 		if ($this->percent >= 100) {
@@ -1219,11 +1222,13 @@ class ToolsController extends Hubzero_Controller
 		}
 
 		$amt = ($percent > 100) ? '100' : $percent;
+		$total = $du['softspace'] / 1024000000;
 
 		// Instantiate the view
 		$view = new JView( array('name'=>'monitor') );
 		$view->option = $this->_option;
 		$view->amt = $amt;
+		$view->total = $total;
 		$view->du = $du;
 		$view->percent = $percent;
 		$view->msgs = $msgs;

@@ -40,7 +40,7 @@ if ($this->writelink) {
 } else {
 	$html .= "\t".'<dt>Storage</dt>'."\n";
 }
-$html .= "\t".'<dd id="du-amount"><div style="width:'.$this->amt.'%;"><strong>&nbsp;</strong><span>'.$this->amt.'%</span></div></dd>'."\n";
+$html .= "\t".'<dd id="du-amount"><div style="width:'.$this->amt.'%;"><strong>&nbsp;</strong><span>'.$this->amt.'% of '.$this->total.'GB</span></div></dd>'."\n";
 if ($this->msgs) {
 	if (count($this->du) <=1) {
 		$html .= "\t".'<dd id="du-msg"><p class="error">Error trying to retrieve disk usage.</p></dd>'."\n";
