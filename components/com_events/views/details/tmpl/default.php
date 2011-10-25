@@ -157,10 +157,10 @@ if ($this->row) {
 		}
 		//if ($config->getCfg('repeatview') == 'YES') {
 			if ($this->row->start_date == $this->row->stop_date) {
-				$html .= $this->row->start_date .', '.$this->row->start_time.'&nbsp;-&nbsp;'.$this->row->stop_time.'<br />';
+				$html .= $this->row->start_date .', '.$this->row->start_time.'&nbsp;-&nbsp;'.$this->row->stop_time.'&nbsp;('.$this->row->time_zone.') <br />';
 			} else {
-				$html .= JText::_('EVENTS_CAL_LANG_FROM').' '.$this->row->start_date.'&nbsp;-&nbsp;'.$this->row->start_time.'<br />'.
-					JText::_('EVENTS_CAL_LANG_TO').' '.$this->row->stop_date.'&nbsp;-&nbsp;'.$this->row->stop_time.'<br />';
+				$html .= JText::_('EVENTS_CAL_LANG_FROM').' '.$this->row->start_date.'&nbsp;-&nbsp;'.$this->row->start_time.'&nbsp;('.$this->row->time_zone.') <br />'.
+					JText::_('EVENTS_CAL_LANG_TO').' '.$this->row->stop_date.'&nbsp;-&nbsp;'.$this->row->stop_time.'&nbsp;('.$this->row->time_zone.') <br />';
 			}
 		/*} else {
 			$html .= $this->row->start_date .', '.$this->row->start_time.'&nbsp;-&nbsp;'.$this->row->stop_time.'<br />';

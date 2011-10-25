@@ -652,6 +652,8 @@ class EventsController extends Hubzero_Controller
 			$event_down->addDays(1);
 		}
 
+		$row->time_zone = JText::_(strtoupper($row->time_zone));
+		
 		// Parse http and mailto
 		$alphadigit = "([a-z]|[A-Z]|[0-9])";
 
@@ -1258,6 +1260,8 @@ class EventsController extends Hubzero_Controller
 			$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
 			$end_time = $event_down->hour .':'. $event_down->minute;
 
+			$time_zone = $row->time_zone;
+			
 			$event_registerby = new EventsDate( $row->registerby );
 			$registerby_date = sprintf( "%4d-%02d-%02d",$event_registerby->year,$event_registerby->month,$event_registerby->day);
 			$registerby_time = $event_registerby->hour .':'. $event_registerby->minute;
@@ -1291,6 +1295,8 @@ class EventsController extends Hubzero_Controller
 				$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
 				$end_time = $event_down->hour .':'. $event_down->minute;
 
+				$time_zone = $row->time_zone;
+
 				$event_registerby = new EventsDate( $row->registerby );
 				$registerby_date = sprintf( "%4d-%02d-%02d",$event_registerby->year,$event_registerby->month,$event_registerby->day);
 				$registerby_time = $event_registerby->hour .':'. $event_registerby->minute;
@@ -1315,6 +1321,7 @@ class EventsController extends Hubzero_Controller
 				$start_time = "08:00";
 				$end_time = "17:00";
 				$registerby_time = "08:00";
+				$time_zone = "est";
 			}
 
 			// If user hits refresh, try to maintain event form state
@@ -1390,6 +1397,8 @@ class EventsController extends Hubzero_Controller
 		$times['end_time'] = $end_time;
 		$times['end_pm'] = $end_pm;
 
+		$times['time_zone'] = $time_zone;
+		
 		$times['registerby_date'] = $registerby_date;
 		$times['registerby_time'] = $registerby_time;
 		$times['registerby_pm'] = $registerby_pm;
@@ -1539,6 +1548,7 @@ class EventsController extends Hubzero_Controller
 		$end_time   = JRequest::getVar( 'end_time', '17:00', 'post' );
 		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = JRequest::getInt( 'end_pm', 0, 'post' );
+		$time_zone	= JRequest::getVar( 'time_zone', 'est', 'post');
 
 		$reccurweekdays = JRequest::getVar( 'reccurweekdays', array(), 'post' );
 		$reccurweeks    = JRequest::getVar( 'reccurweeks', array(), 'post' );

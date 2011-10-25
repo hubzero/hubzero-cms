@@ -329,15 +329,26 @@ class EventsHtml
 		return $clist;
 	}
 
-	/**
-	 * Short description for 'buildWeekDaysCheck'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $reccurweekdays Parameter description (if any) ...
-	 * @param      string $args Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
+	//-----------
+
+	public function buildTimeZoneSelect($tzselected, $args)
+	{	
+		$timezones[] = JHTML::_('select.option', 'est', JText::_('EVENTS_CAL_TIME_ZONE_EST'), 'value', 'text');
+		$timezones[] = JHTML::_('select.option', 'edt', JText::_('EVENTS_CAL_TIME_ZONE_EDT'), 'value', 'text');
+		$timezones[] = JHTML::_('select.option', 'cst', JText::_('EVENTS_CAL_TIME_ZONE_CST'), 'value', 'text');
+		$timezones[] = JHTML::_('select.option', 'cdt', JText::_('EVENTS_CAL_TIME_ZONE_CDT'), 'value', 'text');
+		$timezones[] = JHTML::_('select.option', 'mst', JText::_('EVENTS_CAL_TIME_ZONE_MST'), 'value', 'text');
+		$timezones[] = JHTML::_('select.option', 'mdt', JText::_('EVENTS_CAL_TIME_ZONE_MDT'), 'value', 'text');
+		$timezones[] = JHTML::_('select.option', 'pst', JText::_('EVENTS_CAL_TIME_ZONE_PST'), 'value', 'text');
+		$timezones[] = JHTML::_('select.option', 'pdt', JText::_('EVENTS_CAL_TIME_ZONE_PDT'), 'value', 'text');
+		
+		$tzlist = JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected, false, false );
+		
+		return $tzlist;
+	}
+
+	//-----------
+
 	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
