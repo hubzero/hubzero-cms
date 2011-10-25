@@ -2308,14 +2308,30 @@ class Hubzero_Tool
     }
 
 	/**
-	 * Short description for 'saveTicketId'
+	 * Returns the list of groups to which the launching of a tool is restricted
 	 * 
-	 * Long description (if any) ...
+	 * @FIXME: This should really be a part of the above function, getToolGroups.  The problem seems to be related to the jos_tool_groups table.
+	 *         If there is a tool that was at one point restricted to a group, but it isn't anymore, there remains a jos_tool_groups entry.  
+	 *         The above function will grab that restriction and undoly say that the tool is restricted to a group.  The solution seems to be 
+	 *         removing the jos_tool_groups entry if the tool is changed to no longer be restricted to a group.  At the moment, this function also
+	 *         checks to ensure that toolaccess='@GROUP' from the jos_tool_version table
 	 * 
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      string $ticketid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $toolid is the tool id
+	 * @param      string $instance is the tool version instance
+	 * @return     array Return list of groups
 	 */
+	static public function getToolGroupsRestriction($toolid, $instance)
+    {		
+		$db = &JFactory::getDBO();
+		$query  = "SELECT tv.toolname, tg.cn ";
+		$query .= "FROM #__tool_groups AS tg, #__tool_version AS tv ";
+		$query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $toolid . " AND role=0 AND tv.instance='" . $instance ."' AND tv.toolaccess='@GROUP'";
+        $db->setQuery( $query );
+        $groups = $db->loadObjectList();
+
+        return  $groups;
+    }
+
 	static public function saveTicketId($toolid=NULL, $ticketid=NULL)
     {
 		$db = &JFactory::getDBO();

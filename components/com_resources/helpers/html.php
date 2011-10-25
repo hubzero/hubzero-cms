@@ -2387,7 +2387,43 @@ class ResourcesHtml
 						$lurl = 'index.php?option=com_tools&task=invoke&app='.$resource->alias;
 					}
 
-					if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
+					// Import a few things to look up the tool
+					ximport('Hubzero_Tool');
+					ximport('Hubzero_Tool_Version');
+					ximport('Hubzero_User_Helper');
+
+					// Create some tool objects
+					$hztv = Hubzero_Tool_Version::getInstance($resource->tool);
+					$ht = Hubzero_Tool::getInstance($hztv->toolid);
+					if ($ht) { // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
+						$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->tool);
+					}
+
+					// Get current users groups
+					$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
+					$ingroup = false;
+					$groups = array();
+					if ($xgroups) {
+						foreach ($xgroups as $xgroup) 
+						{
+							$groups[] = $xgroup->cn;
+						}
+						if ($toolgroups) {
+							foreach ($toolgroups as $toolgroup) 
+							{
+								if (in_array($toolgroup->cn, $groups)) {
+									$ingroup = true;
+								}
+							}
+						}
+					}
+
+					if (!$juser->get('guest') && !$ingroup && $toolgroups) { // see if tool is restricted to a group and if current user is in that group
+						$pop = ResourcesHtml::warning(JText::_('
+							WARNING: This tool is currently restricted to authorized members of the hub.
+							If you need access, please submit a ticket to that effect and include the reason for your request.'));
+						$html .= ResourcesHtml::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
+					} else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
 						//if ($juser->get('guest')) { 
 							// Not logged-in = show message
 							//$html .= ResourcesHtml::primaryButton('launchtool disabled', $lurl, 'Launch Tool');
