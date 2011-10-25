@@ -603,6 +603,7 @@ class HubController extends JObject
 		ximport('Hubzero_User_Profile');
 
 		$xprofile =& Hubzero_Factory::getProfile();
+		$juser =& JFactory::getUser();
 
 		$this->_view = $this->_task;
 
@@ -640,12 +641,15 @@ class HubController extends JObject
 		if ($view->reset) {
 			// Attempt to load a user with the given username
 			$xprofile =& Hubzero_User_Profile::getInstance($view->login);
+			$juser =& JUser::getInstance($view->login);
 
 			// Ensure we have a user with this login and e-mail
 			if (!is_object($xprofile)) {
 				$this->setError( JText::_('No account could be located matching this login. Please be sure to list your information exactly as originally specified.'));
 			} elseif ($xprofile->get('email') != $view->email) {
 				$this->setError( JText::_('Incorrect email address for this login. Please be sure to list your information exactly as originally specified.'));
+			} elseif ($juser->get('block') == '1') {
+				$this->setError( JText::_('You cannot change your password because your account is currenty blocked.'));
 			}
 
 			if ($this->getError()) {
