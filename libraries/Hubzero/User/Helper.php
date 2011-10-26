@@ -311,7 +311,7 @@ class Hubzero_User_Helper
 		$db =& JFactory::getDBO();
 
 		$g = '';
-		if ($cat) {
+		if ($cat == 1) {
 			$g .= "(g.type='".$cat."' OR g.type='3') AND";
 		}
 
