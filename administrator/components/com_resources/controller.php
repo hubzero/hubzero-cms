@@ -695,6 +695,7 @@ class ResourcesController extends Hubzero_Controller
 		$view = new JView( array('name'=>'resource') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
+		$view->isnew = $isnew;
 
 		// Get the resource component config
 		$view->rconfig = $this->config;
