@@ -5,7 +5,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-#stats-filter {
+	#stats-filter {
 		background-color: #FFFDEF;
 	}
 	#stats-filter label {
@@ -41,30 +41,48 @@
 	}
 	
 	#tktlist tbody tr.critical,
-	#tktlist tbody tr.critical:hover { background: #fed; color: #a22; }
-	#tktlist tbody tr.critical a { color: #a22; border-bottom: 1px solid #EFC5BE; }
+	#tktlist tbody tr.critical:hover { 
+		background: #fed; 
+		color: #a22;
+	}
+	#tktlist tbody tr.critical a { 
+		color: #a22; 
+		border-bottom: 1px solid #EFC5BE; 
+	}
 	#tktlist tbody tr.major,
-	#tktlist tbody tr.major:hover { background: #ffd; color: #880; }
-	#tktlist tbody tr.major a { color: #880; border-bottom: 1px solid #EAE7B1; }
-	#tktlist tbody tr.normal {  }
-	/*#tktlist tbody tr.normal a { color: #333; border-bottom: 1px dotted #333; }*/
+	#tktlist tbody tr.major:hover { 
+		background: #ffd; 
+		color: #880; 
+	}
+	#tktlist tbody tr.major a { 
+		color: #880; 
+		border-bottom: 1px solid #EAE7B1; 
+	}
 	#tktlist tbody tr.minor,
-	#tktlist tbody tr.minor:hover { background: #dff; color: #099; }
-	#tktlist tbody tr.minor a { color: #099; border-bottom: 1px solid #BFEBEB; }
+	#tktlist tbody tr.minor:hover { 
+		background: #dff; 
+		color: #099; 
+	}
+	#tktlist tbody tr.minor a { 
+		color: #099; 
+		border-bottom: 1px solid #BFEBEB; 
+	}
 	#tktlist tbody tr.trivial,
-	#tktlist tbody tr.trivial:hover { background: #dde7ff; color: #469 }
-	#tktlist tbody tr.trivial a { color: #469; border-bottom: 1px solid #C4CDEB; }
-	/*#tktlist tbody tr.closed,
-	#tktlist tbody tr.closed:hover { background: #F7F7F7; color: #999 }
-	#tktlist tbody tr.closed a { color: #999; border-bottom: 1px solid #ccc; }
-	#tktlist tbody tr.closed a:hover,*/
+	#tktlist tbody tr.trivial:hover { 
+		background: #dde7ff; 
+		color: #469;
+	}
+	#tktlist tbody tr.trivial a {
+		color: #469; 
+		border-bottom: 1px solid #C4CDEB; 
+	}
 	#tktlist tbody tr.critical a:hover,
 	#tktlist tbody tr.major a:hover,
 	#tktlist tbody tr.normal a:hover,
 	#tktlist tbody tr.minor a:hover,
 	#tktlist tbody tr.trivial a:hover {
 		color: #00f;
-		}
+	}
 
 	#keyword-guide {
 		border: 5px solid #eee;
@@ -103,13 +121,7 @@
 		background: url("images/quoteopen.gif") 0 0 no-repeat;
 	}
 	
-	/* Ticket details */
-	/*#ticket-details {
-		font-size: 90%;
-		color: #999;
-		border-top: 2px solid #ddd;
-		margin-top: 0;
-	}*/
+/* Ticket details */
 	#ticket-details caption {
 		background: url("images/information.gif") 0 1em no-repeat;
 		margin: 0;
@@ -125,9 +137,9 @@
 		line-height: 1.7em;
 		white-space: nowrap;
 	}
-.hide {
-	display: none;
-}
+	.hide {
+		display: none;
+	}
 
 /* Comment lists */
 .add {
@@ -144,6 +156,7 @@ ol.comments > li {
 	margin: 0 !important;
 	padding: 0 0 2em 125px;
 	border-top: 1px solid #efefef;
+	background-color: #fff;
 }
 ol.comments li li {
 	margin-left:  20px;
@@ -260,7 +273,22 @@ ol.comments .emaillog li {
 		margin-top: -2em;
 	}
 	#primary {
-		background-color: #f3f3f3;
+		/*background-color: #f3f3f3;*/
+		border: none;
+		padding: 0;
+		margin: 1em 0 0 0;
+		background: transparent;
+	}
+	/*#primary table.admintable fieldset,
+	#primary fieldset.adminform {
+		background: transparent;
+	}*/
+	#primary fieldset.adminform table.admintable,
+	#primary fieldset.adminform table.admintable td {
+		border: none;
+	}
+	#primary fieldset.adminform table.admintable tr {
+		background-color: #f6f6f6;
 	}
 	strong.open {
 		text-transform: uppercase;
