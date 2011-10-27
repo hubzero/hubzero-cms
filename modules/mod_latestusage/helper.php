@@ -163,7 +163,7 @@ class modLatestusage
 		$params =& $this->params;
 
 		//$count = $this->_getOnlineCount();
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_usage'.DS.'usage.helper.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_usage'.DS.'helpers'.DS.'helper.php' );
 		$udb =& UsageHelper::getUDBO();
 
 		$this->cls = trim($params->get( 'moduleclass_sfx' ));
