@@ -2238,7 +2238,22 @@ class Hubzero_Group
 		}
 
 		if(isset($filters['authorized']) && $filters['authorized'] === 'admin') {
-			$where_clause .= "";
+			if (isset($filters['privacy']) && $filters['privacy']) {
+				if ($where_clause != '') {
+					$where_clause .= " AND";
+				}
+				else {
+					$where_clause .= "WHERE";
+				}
+				switch ($filters['privacy']) 
+				{
+					case 'private':   $where_clause .= " privacy=4"; break;
+					case 'protected': $where_clause .= " privacy=1"; break;
+					case 'public':    $where_clause .= " privacy=0"; break;
+				}
+			} else {
+				$where_clause .= "";
+			}
 		} else {
 			if ($where_clause != '') {
 				$where_clause .= " AND";
