@@ -70,7 +70,7 @@ function submitbutton(pressbutton)
 			<select name="privacy">
 				<option value=""<?php echo ($this->filters['privacy'] == '-1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('ALL'); ?></option>
 				<option value="public"<?php echo ($this->filters['privacy'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-				<option value="restricted"<?php echo ($this->filters['privacy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
+				<option value="protected"<?php echo ($this->filters['privacy'] == 'protected') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
 				<option value="private"<?php echo ($this->filters['privacy'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
 			</select>
 		</label>
