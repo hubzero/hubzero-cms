@@ -108,17 +108,21 @@ class modSupportTickets
 		
 		$opened['new'] = $st->getTicketsCount($filters, true);
 		
-		$filters['status'] = 'open';
-		$filters['reportedby'] = $juser->get('username');
-		$my['open'] = $st->getTicketsCount($filters, true);
-		
-		$filters['reportedby'] = '';
-		$filters['status'] = 'open';
-		$filters['owner'] = $juser->get('username');
-		$my['assigned'] = $st->getTicketsCount($filters, true);
-		
 		$this->opened = $opened;
-		$this->my = $my;
+		
+		if ($this->params->get('showMine', 1))
+		{
+			$filters['status'] = 'open';
+			$filters['reportedby'] = $juser->get('username');
+			$my['open'] = $st->getTicketsCount($filters, true);
+		
+			$filters['reportedby'] = '';
+			$filters['status'] = 'open';
+			$filters['owner'] = $juser->get('username');
+			$my['assigned'] = $st->getTicketsCount($filters, true);
+			
+			$this->my = $my;
+		}
 		
 		// Get avgerage lifetime
 		$this->lifetime = $st->getAverageLifeOfTicket($this->type, $this->year, $this->group);
@@ -127,7 +131,7 @@ class modSupportTickets
 		//Hubzero_Document::addModuleStyleSheet($this->module->module);
 		
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . substr($this->module->module, 4). '.css');
+		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 		
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
