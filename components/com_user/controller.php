@@ -478,13 +478,13 @@ class UserController extends JController
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Get the input
-		$email		= JRequest::getVar('email', null, 'post', 'string');
+		$username		= JRequest::getVar('username', null, 'post', 'string');
 
 		// Get the model
 		$model = &$this->getModel('Reset');
 
 		// Request a reset
-		if ($model->requestReset($email) === false)
+		if ($model->requestReset($username) === false)
 		{
 			$message = JText::sprintf('PASSWORD_RESET_REQUEST_FAILED', $model->getError());
 			$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset'), $message);

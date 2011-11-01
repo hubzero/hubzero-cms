@@ -57,10 +57,10 @@ class UserModelRemind extends JModel
 		}
 
 		$db = &JFactory::getDBO();
-		$db->setQuery('SELECT username FROM #__users WHERE email = '.$db->Quote($email), 0, 1);
+		$db->setQuery('SELECT username FROM #__users WHERE email = '.$db->Quote($email));
 
 		// Get the username
-		if (!($username = $db->loadResult()))
+		if (!($username = $db->loadResultArray()))
 		{
 			$this->setError(JText::_('COULD_NOT_FIND_EMAIL'));
 			return false;
@@ -96,8 +96,16 @@ class UserModelRemind extends JModel
 		$from		= $config->getValue('mailfrom');
 		$fromname	= $config->getValue('fromname');
 		$subject	= JText::sprintf('USERNAME_REMINDER_EMAIL_TITLE', $config->getValue('sitename'));
-		$body		= JText::sprintf('USERNAME_REMINDER_EMAIL_TEXT', $config->getValue('sitename'), $username, $url);
-
+		
+		if (count($username) == 1)
+		{
+			$body		= JText::sprintf('USERNAME_REMINDER_EMAIL_TEXT', $config->getValue('sitename'), $username[0], $url);
+		}
+		else
+		{
+			$body		= JText::sprintf('USERNAME_REMINDER_EMAIL_TEXT_MULTIPLE', $config->getValue('sitename'), implode("\n",$username), $url);
+		}
+		
 		if (!JUtility::sendMail($from, $fromname, $email, $subject, $body))
 		{
 			$this->setError('ERROR_SENDING_REMINDER_EMAIL');

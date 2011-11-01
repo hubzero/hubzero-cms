@@ -15,10 +15,10 @@
 		</tr>
 		<tr>
 			<td height="40">
-				<label for="email" class="hasTip" title="<?php echo JText::_('RESET_PASSWORD_EMAIL_TIP_TITLE'); ?>::<?php echo JText::_('RESET_PASSWORD_EMAIL_TIP_TEXT'); ?>"><?php echo JText::_('Email Address'); ?>:</label>
+				<label for="username" class="hasTip" title="<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TITLE'); ?>::<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TEXT'); ?>"><?php echo JText::_('User Name'); ?>:</label>
 			</td>
 			<td>
-				<input id="email" name="email" type="text" class="required validate-email" />
+				<input id="username" name="username" type="text" class="required" size="36" />
 			</td>
 		</tr>
 	</table>

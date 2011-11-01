@@ -70,7 +70,7 @@ class UserViewLogout extends JView
 		else {
 			$params = new JParameter( '' );
 			$template = JFactory::getApplication()->getTemplate();
-            		$inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';                     
+            $inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';                     
 			if (file_exists($inifile)) {
 				$params->loadINI( file_get_contents($inifile) );
 			}
@@ -91,7 +91,7 @@ class UserViewLogout extends JView
 		}
 
 		$params->def( 'pageclass_sfx', 			'' );
-		$params->def( 'logout', 				JRoute::_('index.php') );
+		$params->def( 'logout', 				'/');
 		$params->def( 'description_logout', 		1 );
 		$params->def( 'description_logout_text',	JText::_( 'LOGOUT_DESCRIPTION' ) );
 		$params->def( 'image_logout', 				'key.jpg' );

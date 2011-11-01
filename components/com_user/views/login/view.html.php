@@ -64,7 +64,7 @@ class UserViewLogin extends JView
 		}
 
 		$params->def( 'pageclass_sfx', 			'' );
-		$params->def( 'login', 					JRoute::_('index.php') );
+		$params->def( 'login', 					'/');
 		$params->def( 'description_login', 		1 );
 		$params->def( 'description_login_text', 	JText::_( 'LOGIN_DESCRIPTION' ) );
 		$params->def( 'image_login', 				'key.jpg' );

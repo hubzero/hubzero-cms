@@ -44,34 +44,31 @@ class UserModelReset extends JModel
 	 * @param	string	E-mail address
 	 * @return	bool	True on success/false on failure
 	 */
-	function requestReset($email)
+	function requestReset($username)
 	{
 		jimport('joomla.mail.helper');
 		jimport('joomla.user.helper');
 
 		$db = &JFactory::getDBO();
 
-		// Make sure the e-mail address is valid
-		if (!JMailHelper::isEmailAddress($email))
-		{
-			$this->setError(JText::_('INVALID_EMAIL_ADDRESS'));
-			return false;
-		}
-
 		// Build a query to find the user
-		$query	= 'SELECT id FROM #__users'
-				. ' WHERE email = '.$db->Quote($email)
+		$query	= 'SELECT id, email FROM #__users'
+				. ' WHERE username = '.$db->Quote($username)
 				. ' AND block = 0';
 
 		$db->setQuery($query);
+		$result = $db->loadAssoc();
 
 		// Check the results
-		if (!($id = $db->loadResult()))
+		if ($result === false)
 		{
 			$this->setError(JText::_('COULD_NOT_FIND_USER'));
 			return false;
 		}
 
+		$id = $result['id'];
+		$email = $result['email'];
+		
 		// Generate a new token
 		$token = JUtility::getHash(JUserHelper::genRandomPassword());
 		$salt = JUserHelper::getSalt('crypt-md5');
