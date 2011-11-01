@@ -1,0 +1,119 @@
+/* General styles */
+	.component fieldset {
+		border: none;
+		margin: 0;
+		padding: 0;
+	}
+	.component fieldset div {
+		margin: 1.1em 20px 0 0;
+	}
+	.component .configuration {
+		margin: 0;
+		padding: 0 0 0 20px;
+		text-shadow: 0px 1px 3px #000;
+		font-size: 16px;
+		font-weight: normal;
+		color: #eee;
+		line-height: 44px;
+		background: #53667a url("../images/sharkskin.gif") left center repeat-x;
+	}
+	.component fieldset legend {
+		border-top: 1px solid #eee;
+		border-bottom: 1px solid #fff;
+		float: left;
+	    margin: 0;
+	    padding: 6px 0 6px 0;
+	    width: 100%;
+		color: #555; 
+	    font-size: 12px;
+	    font-weight: bold;
+	    line-height: 16px;
+	    text-decoration: none;
+		text-indent: 20px;
+	    text-shadow: 1px 1px 0 #eee;
+		background: #ccc;
+		background: -moz-linear-gradient(-90deg,#ddd,#ccc);
+		background: -o-linear-gradient(top, #ddd, #ccc);
+		background: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#ccc));
+		background: -webkit-linear-gradient(#ddd, #ccc);
+		background: linear-gradient(top, #ddd, #ccc);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#dddddd', EndColorStr='#cccccc')"; /* IE8 */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#dddddd', endColorStr='#cccccc'); /* IE6,IE7 */
+	}
+	.component table {
+		margin: 0;
+		padding: 0;
+	}
+	.component table.paramlist tr {
+		background-color: #fff;
+	}
+	.component table.paramlist tr td {
+		padding: 0.7em;
+	}
+	.component table.paramlist tr td.paramlist_key {
+		background: #f9f9f9;
+	}
+	.component table.paramlist tr:nth-child(even),
+	.component table.paramlist tr.row1 { 
+		background-color: #f9f9f9; 
+	}
+	.component table.paramlist tr:nth-child(even) td.paramlist_key,
+	.component table.paramlist tr.row1 td.paramlist_key { 
+		background-color: #eeeeee; 
+	}
+	.component table.paramlist hr {
+		display: none;
+	}
+	.component table.paramlist tr:hover th,
+	.component table.paramlist tr:hover td.paramlist_key,
+	.component table.paramlist tr:hover td,
+	.component table.paramlist tr:hover td.paramlist_value,
+	.component table.paramlist tr.row0:hover th,
+	.component table.paramlist tr.row1:hover th,
+	.component table.paramlist tr.row0:hover td,
+	.component table.paramlist tr.row1:hover td { 
+		background-color: #ffd;
+	}
+	
+	div.message {
+		text-align: center;
+		font-size: 12px;
+		padding: 3px;
+		border: 1px solid #e0e0e0;
+		margin-bottom: 10px;
+		font-weight: bold;
+		color: #333;
+	}
+	.helpIndex {
+		border: 0px;
+		width: 100%;
+		height: 100%;
+		padding: 0px 0px 0px 0px;
+		overflow: auto;
+	}
+	.helpFrame {
+		border-left: 0px solid #222;
+		border-right: none;
+		border-top: none;
+		border-bottom: none;
+		width: 100%;
+		height: 800px;
+		padding: 0px 5px 0px 10px;
+	}
+	#treecellhelp {
+		width: 25%;
+		display: block;
+		position: relative;
+		float: left;
+		margin: 0;
+		padding: 2px;
+		overflow: hidden;
+	}
+	#datacellhelp {
+		width: 73%;
+		display: block;
+		float: left;
+		margin: 0;
+		padding: 2px 0px 0px 0px;
+	}
+

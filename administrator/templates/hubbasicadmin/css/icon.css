@@ -1,0 +1,27 @@
+/* toolbar icons */
+.icon-32-send      { background-image: url(../images/toolbar/icon-32-send.png); }
+.icon-32-delete    { background-image: url(../images/toolbar/icon-32-delete.png); }
+.icon-32-help      { background-image: url(../images/toolbar/icon-32-help.png); }
+.icon-32-cancel    { background-image: url(../images/toolbar/icon-32-cancel.png); }
+.icon-32-config    { background-image: url(../images/toolbar/icon-32-config.png); }
+.icon-32-apply     { background-image: url(../images/toolbar/icon-32-apply.png); }
+.icon-32-back      { background-image: url(../images/toolbar/icon-32-back.png); }
+.icon-32-forward   { background-image: url(../images/toolbar/icon-32-forward.png); }
+.icon-32-save      { background-image: url(../images/toolbar/icon-32-save.png); }
+.icon-32-edit      { background-image: url(../images/toolbar/icon-32-edit.png); }
+.icon-32-copy      { background-image: url(../images/toolbar/icon-32-copy.png); }
+.icon-32-move      { background-image: url(../images/toolbar/icon-32-move.png); }
+.icon-32-new       { background-image: url(../images/toolbar/icon-32-new.png); }
+.icon-32-upload    { background-image: url(../images/toolbar/icon-32-upload.png); }
+.icon-32-assign    { background-image: url(../images/toolbar/icon-32-publish.png); }
+.icon-32-html      { background-image: url(../images/toolbar/icon-32-html.png); }
+.icon-32-css       { background-image: url(../images/toolbar/icon-32-css.png); }
+.icon-32-menus     { background-image: url(../images/toolbar/icon-32-menu.png); }
+.icon-32-publish   { background-image: url(../images/toolbar/icon-32-publish.png); }
+.icon-32-unpublish { background-image: url(../images/toolbar/icon-32-unpublish.png);}
+.icon-32-restore   { background-image: url(../images/toolbar/icon-32-revert.png); }
+.icon-32-trash     { background-image: url(../images/toolbar/icon-32-trash.png); }
+.icon-32-archive   { background-image: url(../images/toolbar/icon-32-archive.png); }
+.icon-32-unarchive { background-image: url(../images/toolbar/icon-32-unarchive.png); }
+.icon-32-preview   { background-image: url(../images/toolbar/icon-32-preview.png); }
+.icon-32-default   { background-image: url(../images/toolbar/icon-32-default.png); }
