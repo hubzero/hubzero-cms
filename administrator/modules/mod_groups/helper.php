@@ -72,6 +72,14 @@ class modGroups
 		$this->database = JFactory::getDBO();
 
 		$type = $this->params->get('type', '1');
+		
+		switch ($type)
+		{
+			case '0': $this->type = 'system'; break;
+			case '1': $this->type = 'hub'; break;
+			case '2': $this->type = 'project'; break;
+			case '3': $this->type = 'partner'; break;
+		}
 
 		// Privacy
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND privacy=0 AND type='$type'");

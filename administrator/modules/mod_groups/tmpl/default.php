@@ -39,9 +39,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="public"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;privacy=0" title="<?php echo JText::_('View public groups'); ?>"><?php echo $this->public; ?></a></td>
-			<td class="protected"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;privacy=3" title="<?php echo JText::_('View protected groups'); ?>"><?php echo $this->protected; ?></a></td>
-			<td class="private"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;privacy=4" title="<?php echo JText::_('View private groups'); ?>"><?php echo $this->private; ?></a></td>
+			<td class="public"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;privacy=public&amp;policy=" title="<?php echo JText::_('View public groups'); ?>"><?php echo $this->public; ?></a></td>
+			<td class="protected"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;privacy=protected&amp;policy=" title="<?php echo JText::_('View protected groups'); ?>"><?php echo $this->protected; ?></a></td>
+			<td class="private"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;privacy=private&amp;policy=" title="<?php echo JText::_('View private groups'); ?>"><?php echo $this->private; ?></a></td>
 		</tr>
 	</tbody>
 </table>
@@ -57,10 +57,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="closed"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;join_policy=3" title="<?php echo JText::_('View closed groups'); ?>"><?php echo $this->closed; ?></a></td>
-			<td class="invite"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;join_policy=2" title="<?php echo JText::_('View invite only groups'); ?>"><?php echo $this->invite; ?></a></td>
-			<td class="restricted"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;join_poliy=1" title="<?php echo JText::_('View restricted groups'); ?>"><?php echo $this->restricted; ?></a></td>
-			<td class="open"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;join_policy=0" title="<?php echo JText::_('View open groups'); ?>"><?php echo $this->open; ?></a></td>
+			<td class="closed"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;privacy=&amp;policy=closed" title="<?php echo JText::_('View closed groups'); ?>"><?php echo $this->closed; ?></a></td>
+			<td class="invite"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;privacy=&amp;policy=invite" title="<?php echo JText::_('View invite only groups'); ?>"><?php echo $this->invite; ?></a></td>
+			<td class="restricted"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;privacy=&amp;policy=restricted" title="<?php echo JText::_('View restricted groups'); ?>"><?php echo $this->restricted; ?></a></td>
+			<td class="open"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;privacy=&amp;policy=open" title="<?php echo JText::_('View open groups'); ?>"><?php echo $this->open; ?></a></td>
 		</tr>
 	</tbody>
 </table>
@@ -75,9 +75,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="approved"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;published=1" title="<?php echo JText::_('View approved groups'); ?>"><?php echo $this->approved; ?></a></td>
-			<td class="pending"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;published=0" title="<?php echo JText::_('View pending groups'); ?>"><?php echo $this->pending; ?></a></td>
-			<td class="newest"><a href="index.php?option=com_groups&amp;type=<?php echo $this->type; ?>&amp;created=pastday" title="<?php echo JText::_('View groups created in the last 24 hours'); ?>"><?php echo $this->pastDay; ?></a></td>
+			<td class="approved"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;published=1&amp;privacy=&amp;policy=" title="<?php echo JText::_('View approved groups'); ?>"><?php echo $this->approved; ?></a></td>
+			<td class="pending"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;published=0&amp;privacy=&amp;policy=" title="<?php echo JText::_('View pending groups'); ?>"><?php echo $this->pending; ?></a></td>
+			<td class="newest"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;created=pastday&amp;privacy=&amp;policy=" title="<?php echo JText::_('View groups created in the last 24 hours'); ?>"><?php echo $this->pastDay; ?></a></td>
 		</tr>
 	</tbody>
 </table>
