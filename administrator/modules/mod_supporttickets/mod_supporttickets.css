@@ -1,0 +1,72 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_dashboard/dashboard.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.support-stats-overview {
+		border-top: none;
+		border-bottom: none;
+		margin: 0;
+		width: 100%;
+		text-align: left;
+		font-size: 1em;
+		border-collapse: collapse;
+		background: #fff;
+	}
+	.support-stats-overview thead th {
+		color: #aaa;
+		font-weight: normal;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		border-bottom: none;
+		padding: 5px 10px;
+	}
+	.support-stats-overview tbody td {
+		padding: 5px 10px 15px 10px;
+		font-size: 3em;
+		font-weight: bold;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		color: #777;
+		border-bottom: 1px solid #dfdfdf;
+	}
+	.support-stats-overview tbody td.block {
+		padding-bottom: 10px;
+	}
+	.support-stats-overview tbody td.block,
+	.support-stats-overview tbody td.block a,
+	.my-tickets tbody td,
+	.my-tickets tbody td a {
+		color: #999; /*#b18fbc; purple*/
+	}
+	.open-tickets tbody td.critical,
+	.open-tickets tbody td.critical a {
+		color: red;
+	}
+	.open-tickets tbody td.major,
+	.open-tickets tbody td.major a {
+		color: #ce7d7d;
+	}
+	.open-tickets tbody td.newt,
+	.open-tickets tbody td.newt a {
+		color: #ff1177;
+		background: transparent;
+	}
+	.support-stats-overview tbody td a {
+		border: none;
+	}
+	.support-stats-overview tbody td a:hover {
+		color: #000;
+		text-decoration: none;
+		border: none;
+	}
+	.support-stats-overview tbody td span {
+		color: #aaa;
+		font-size: 14px;
+		line-height: 14px;
+		font-weight: normal;
+		margin: 0 1.5em 0 0;
+		padding: 0;
+	}

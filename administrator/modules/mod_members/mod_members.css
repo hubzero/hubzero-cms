@@ -1,0 +1,75 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_dashboard/dashboard.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.members-stats-overview {
+		border-top: none;
+		border-bottom: none;
+		margin: 0;
+		width: 100%;
+		text-align: left;
+		font-size: 1em;
+		border-collapse: collapse;
+		background: #fff;
+	}
+	.members-stats-overview thead th {
+		/*font-size: 85%;*/
+		color: #aaa;
+		font-weight: normal;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		border-bottom: none;
+		padding: 5px 10px;
+		/*width: 20%;*/
+	}
+	.members-stats-overview tbody td {
+		padding: 5px 10px 15px 10px;
+		font-size: 3em;
+		font-weight: bold;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		color: #777;
+		border-bottom: 1px solid #dfdfdf;
+	}
+	.members-stats-overview tbody td.newest,
+	.members-stats-overview tbody td.newest a {
+		color: #999;
+	}
+	.members-stats-overview tbody td.confirmed,
+	.members-stats-overview tbody td.confirmed a {
+		color: #999;
+	}
+	.members-stats-overview tbody td.unconfirmed,
+	.members-stats-overview tbody td.unconfirmed a {
+		color: #999;
+	}
+	.members-stats-overview tbody td.admin,
+	.members-stats-overview tbody td.admin a {
+		color: #999;
+	}
+	.members-stats-overview tbody td.loggedin,
+	.members-stats-overview tbody td.loggedin a {
+		color: #999;
+	}
+	.members-stats-overview tbody td.banned,
+	.members-stats-overview tbody td.banned a {
+		color: #999;
+	}
+	
+	.members-stats-overview tbody td a {
+		border: none;
+	}
+	.members-stats-overview tbody td a:hover {
+		color: #000;
+	}
+	.members-stats-overview tbody td span {
+		color: #aaa;
+		font-size: 14px;
+		line-height: 14px;
+		font-weight: normal;
+		margin: 0 1.5em 0 0;
+		padding: 0;
+	}
