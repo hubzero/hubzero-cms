@@ -44,3 +44,16 @@
 		border-bottom:1px solid #dfc6b1;
 	}
 	#element-box table.adminform { border:none; background:none; }
+
+	#dashboard .adminlist thead th {
+		text-align: left;
+		padding: 0.7em;
+	}
+	#dashboard .adminlist thead th.numerical-data,
+	#dashboard .adminlist tbody td {
+		text-align: right;
+	}
+	#dashboard .adminlist tbody th,
+	#dashboard .adminlist tbody td {
+		padding: 0.7em;
+	}
