@@ -62,6 +62,8 @@ $app =& JFactory::getApplication();
 					<select name="authid" id="authid">
 						<option value=""><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_SELECT'); ?></option>
 					<?php
+				if ($this->rows)
+				{
 					foreach ($this->rows as $row)
 					{
 						if ($row->lname || $row->fname) {
@@ -76,6 +78,7 @@ $app =& JFactory::getApplication();
 
 						echo '<option value="'.$row->uidNumber.'">'.$name.'</option>'."\n";
 					}
+				}
 					?> 
 					</select>
 					<?php echo JText::_('COM_CONTRIBUTE_OR'); ?>
