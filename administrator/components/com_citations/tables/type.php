@@ -31,20 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/**
- * Short description for 'CitationsFormatAbstract'
- * 
- * Long description (if any) ...
- */
 
-	/**
-	 * Short description for 'cleanUrl'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $url Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
+class CitationsType extends JTable 
 {
 	var $id    			= NULL;  
 	var $type			= NULL;

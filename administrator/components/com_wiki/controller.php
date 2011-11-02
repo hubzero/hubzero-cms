@@ -239,7 +239,7 @@ class WikiController extends Hubzero_Controller
 			}
 			$row->authors = implode(', ', $autharray);
 		}
-		
+
 		$creator =& JUser::getInstance($row->created_by);
 
 		$view->creator = $creator;

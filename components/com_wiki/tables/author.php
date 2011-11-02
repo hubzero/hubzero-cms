@@ -292,6 +292,7 @@ class WikiPageAuthor extends JTable
 		return true;
 	}
 	
+	
 	public function transitionAuthors() 
 	{
 		$this->_db->setQuery("SELECT id, authors FROM #__wiki_page WHERE authors!='' AND authors IS NOT NULL");

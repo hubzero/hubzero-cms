@@ -685,6 +685,8 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	//-----------
+	
 	protected function selectPresentation()
 	{
 		$presentation = JRequest::getVar("presentation", 0);
@@ -697,6 +699,8 @@ class ResourcesController extends Hubzero_Controller
 		$this->_redirect = JRoute::_('index.php?option=com_resources&id='.$presentation.'&task=watch&resid='.$resid.'&tmpl=component');
 		return;
 	}
+	
+	//----------
 	
 	protected function preWatch()
 	{
@@ -812,6 +816,8 @@ class ResourcesController extends Hubzero_Controller
 		
 		return $return;
 	}
+	
+	//-----------
 	
 	protected function watch()
 	{
@@ -2398,7 +2404,6 @@ class ResourcesController extends Hubzero_Controller
 	 * @param      object $resource Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	private function checkGroupAccess($resource)
 	{
 		//$juser =& Hubzero_Factory::getUser();
 		if (!$juser) {

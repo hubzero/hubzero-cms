@@ -87,6 +87,7 @@ class modXSearch
 	
 	//-----------
 
+	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);

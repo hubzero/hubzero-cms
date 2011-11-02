@@ -467,7 +467,6 @@ class CitationsController extends Hubzero_Controller
 			}
 		}
 
-		
 		//check if we are allowing tags
 		if($this->config->get("citation_allow_tags","no") == "yes") {
 			$ct = new CitationTags( $this->database );
@@ -1168,6 +1167,7 @@ class CitationsController extends Hubzero_Controller
 		}
 		return $e;
 	}
+	
 	
 	private function _serveup($inline = false, $p, $f, $mime)
 	{

@@ -239,6 +239,7 @@ class modRecentQuestions
 	
 	//-----------
 	
+	
 	public function display()
 	{
 		// Push the module CSS to the template

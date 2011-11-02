@@ -61,4 +61,3 @@ HUB.Members = {
 }
 
 window.addEvent('domready', HUB.Members.initialize);
-

@@ -283,6 +283,7 @@ class MembersController extends Hubzero_Controller
 		}
 		return $this->view();
 	}
+
 	//-----------
 
 	protected function view()

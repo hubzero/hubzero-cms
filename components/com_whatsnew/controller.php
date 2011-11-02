@@ -79,7 +79,7 @@ class WhatsnewController extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Paging variables
 		$start = JRequest::getInt( 'limitstart', 0 );
 		$limit = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
@@ -286,7 +286,7 @@ class WhatsnewController extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Paging variables
 		$start = JRequest::getInt( 'limitstart', 0 );
 		$limit = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );

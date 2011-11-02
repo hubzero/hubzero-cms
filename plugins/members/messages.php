@@ -107,9 +107,9 @@ class plgMembersMessages extends JPlugin
 		$this->authorized = $authorized;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) {
+		if (is_array($areas)) {
 			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
-			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($authorized)))) {
 				$returnhtml = false;
 			}
 		}
@@ -439,9 +439,8 @@ class plgMembersMessages extends JPlugin
 		$mids = JRequest::getVar('mid', array(0), 'post');
 
 		if (count($mids) > 0) {
-			foreach ($mids as $mid)
-			{
-				$recipient = new Hubzero_Message_Recipient( $database );
+			foreach ($mids as $mid) {
+				$recipient = new Hubzero_Message_Recipient($database);
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -479,9 +478,8 @@ class plgMembersMessages extends JPlugin
 		$mids = JRequest::getVar('mid', array(0), 'post');
 
 		if (count($mids) > 0) {
-			foreach ($mids as $mid)
-			{
-				$recipient = new Hubzero_Message_Recipient( $database );
+			foreach ($mids as $mid) {
+				$recipient = new Hubzero_Message_Recipient($database);
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -510,8 +508,7 @@ class plgMembersMessages extends JPlugin
 		$mids = JRequest::getVar('mid', array(0), 'post');
 
 		if (count($mids) > 0) {
-			foreach ($mids as $mid)
-			{
+			foreach ($mids as $mid) {
 				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
@@ -573,9 +570,8 @@ class plgMembersMessages extends JPlugin
 		$mids = JRequest::getVar('mid', array(0), 'post');
 
 		if (count($mids) > 0) {
-			foreach ($mids as $mid)
-			{
-				$recipient = new Hubzero_Message_Recipient( $database );
+			foreach ($mids as $mid) {
+				$recipient = new Hubzero_Message_Recipient($database);
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -603,9 +599,8 @@ class plgMembersMessages extends JPlugin
 		$ids = JRequest::getVar('mid', array(0), 'post');
 
 		if (count($ids) > 0) {
-			foreach ($ids as $mid)
-			{
-				$xseen = new Hubzero_Message_Seen( $database );
+			foreach ($ids as $mid) {
+				$xseen = new Hubzero_Message_Seen($database);
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
 				$xseen->loadRecord();
@@ -742,9 +737,8 @@ class plgMembersMessages extends JPlugin
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
-		for ($i = 0; $i < $length; $i++)
-		{
-			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
+		for ($i = 0; $i < $length; $i++) {
+			$obfuscatedEmail .= '&#' . ord($email[$i]) . ';';
 		}
 
 		return $obfuscatedEmail;
@@ -825,8 +819,7 @@ class plgMembersMessages extends JPlugin
 		}
 
 		$settings = array();
-		foreach ($components as $component)
-		{
+		foreach ($components as $component) {
 			$settings[$component->action] = array();
 		}
 
@@ -846,8 +839,7 @@ class plgMembersMessages extends JPlugin
 		// Get the user's selected methods
 		$methods = $notify->getRecords($member->get('uidNumber'));
 		if ($methods) {
-			foreach ($methods as $method)
-			{
+			foreach ($methods as $method) {
 				$settings[$method->type]['methods'][] = $method->method;
 				$settings[$method->type]['ids'][$method->method] = $method->id;
 			}
@@ -899,10 +891,8 @@ class plgMembersMessages extends JPlugin
 		// Ensure we have data to work with
 		if ($settings && count($settings) > 0) {
 			// Loop through each setting
-			foreach ($settings as $key=>$value)
-			{
-				foreach ($value as $v)
-				{
+			foreach ($settings as $key => $value) {
+				foreach ($value as $v) {
 					if ($v) {
 						// Instantiate a Notify object and set its values
 						$notify = new Hubzero_Message_Notify($database);
@@ -928,10 +918,8 @@ class plgMembersMessages extends JPlugin
 			}
 
 			$notify = new Hubzero_Message_Notify($database);
-			foreach ($ids as $key=>$value)
-			{
-				foreach ($value as $k=>$v)
-				{
+			foreach ($ids as $key => $value) {
+				foreach ($value as $k => $v) {
 					if ($v > 0) {
 						$notify->delete($v);
 						//echo 'deleted: '.$v.'<br />';
@@ -942,9 +930,8 @@ class plgMembersMessages extends JPlugin
 			// If they previously had everything turned off, we need to remove that entry saying so
 			$records = $notify->getRecords($member->get('uidNumber'), 'all');
 			if ($records) {
-				foreach ($records as $record)
-				{
-					$notify->delete( $record->id );
+				foreach ($records as $record) {
+					$notify->delete($record->id);
 				}
 			}
 		} else {
