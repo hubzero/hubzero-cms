@@ -76,7 +76,7 @@ class YoutubeMacro extends WikiMacro
 		$content = $this->args;
 
 		//declare the partial youtube embed url
-		$youtube_url = "http://www.youtube.com/embed/";
+		$youtube_url = "https://www.youtube.com/embed/";
 
 		// args will be null if the macro is called without parenthesis.
 		if (!$content) {
