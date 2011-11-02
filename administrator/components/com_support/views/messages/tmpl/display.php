@@ -73,7 +73,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<td><input type="checkbox" name="id" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;c=<?php echo $this->controller ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $this->escape($row->title); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $this->escape($row->title); ?></a></td>
 			</tr>
 <?php
 		$k = 1 - $k;
@@ -83,7 +83,7 @@ function submitbutton(pressbutton)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="c" value="<?php echo $this->controller ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 

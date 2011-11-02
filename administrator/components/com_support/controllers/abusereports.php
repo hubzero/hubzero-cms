@@ -31,103 +31,16 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reportabuse.php');
+
 class SupportControllerAbusereports extends Hubzero_Controller
 {
-	/**
-	 * A list of executable tasks
-	 *
-	 * @param array
-	 */
-	protected $_taskMap = array('__default' => 'display');
-	
-	/**
-	 * The name of the task to be executed
-	 *
-	 * @param string
-	 */
-	protected $_doTask = null;
-	
-	/**
-	 * The name of this controller
-	 *
-	 * @param string
-	 */
-	protected $_controller = null;
-	
-	/**
-	 * Determines task being called and attempts to execute it
-	 *
-	 * @return	void
-	 */
-	public function execute()
-	{
-		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'reportabuse.php');
-		
-		// Determine the methods to exclude from the base class.
-		$xMethods = get_class_methods('Hubzero_Controller');
-		
-		$r = new ReflectionClass($this);
-		$methods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
-		foreach ($methods as $method)
-		{
-			$name = $method->getName();
-
-			// Add default display method if not explicitly declared.
-			if (!in_array($name, $xMethods) || $name == 'display') 
-			{
-				//$this->methods[] = strtolower($mName);
-				// Auto register the methods as tasks.
-				$this->_taskMap[strtolower($name)] = $name;
-			}
-		}
-		
-		$this->_task = strtolower(JRequest::getWord('task', 'display'));
-
-		if (isset($this->_taskMap[$this->_task])) 
-		{
-			$doTask = $this->_taskMap[$this->_task];
-		}
-		elseif (isset($this->_taskMap['__default'])) 
-		{
-			$doTask = $this->_taskMap['__default'];
-		}
-		else 
-		{
-			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
-		}
-
-		if (preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
-		{
-			$this->_controller = strtolower($r[1]);
-			
-			$this->view = new JView(array(
-				'name' => $this->_controller,
-				'layout' => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
-			));
-		}
-		else
-		{
-			$this->view = new JView(array(
-				'name' => $doTask
-			));
-		}
-		
-		$this->view->option = $this->_option;
-		$this->view->task = $doTask;
-		$this->view->controller = $this->_controller;
-		
-		// Record the actual task being fired
-		$this->_doTask = $doTask;
-		
-		$this->$doTask();
-	}
-	
 	/**
 	 * Displays a list of records
 	 *
 	 * @return	void
 	 */
-	public function display()
+	public function displayTask()
 	{
 		// Get configuration
 		$app =& JFactory::getApplication();
@@ -181,7 +94,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function view()
+	public function viewTask()
 	{
 		// Incoming
 		$id = JRequest::getInt('id', 0);
@@ -190,7 +103,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
 		}
 		
@@ -279,7 +192,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function release() 
+	public function releaseTask() 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -290,7 +203,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
 		}
 		
@@ -305,7 +218,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		}
 		
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('ITEM_RELEASED_SUCCESSFULLY');
 	}
 
@@ -314,7 +227,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function remove() 
+	public function removeTask() 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -326,7 +239,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
 		}
 
@@ -409,14 +322,14 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			// Build the email message
 			if ($note) 
 			{
-				$message .= "\r\n".'---------------------------'."\r\n";
+				$message .= "\r\n" . '---------------------------' . "\r\n";
 				$message .= $note;
-				$message .= "\r\n".'---------------------------'."\r\n";
+				$message .= "\r\n" . '---------------------------' . "\r\n";
 			}
 			$message .= "\r\n";
-			$message .= JText::_('YOUR_POSTING').': '."\r\n";
-			$message .= $reported->text."\r\n";
-			$message .= '---------------------------'."\r\n";
+			$message .= JText::_('YOUR_POSTING') . ': ' . "\r\n";
+			$message .= $reported->text . "\r\n";
+			$message .= '---------------------------' . "\r\n";
 			$message .= JText::_('PLEASE_CONTACT_SUPPORT');
 
 			// Send the email
@@ -450,7 +363,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		
 		// Redirect
 		$this->_message = JTexT::_('ITEM_TAKEN_DOWN');
-		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 	
 	/**
@@ -458,8 +371,8 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function cancel()
+	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 }

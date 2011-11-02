@@ -73,8 +73,8 @@ function submitbutton(pressbutton)
 ?>
 			<tr>
 				<td><input type="checkbox" name="id" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;c=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $row->tag; ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;c=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $row->description.' ('.$row->cn.')'; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $row->tag; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $row->description.' ('.$row->cn.')'; ?></a></td>
 				<td><?php echo $row->priority; ?></td>
 				<td><?php echo $this->pageNav->orderUpIcon( $i, ($row->position == @$rows[$i-1]->position) ); ?></td>
 				<td><?php echo $this->pageNav->orderDownIcon( $i, $n, ($row->position == @$rows[$i+1]->position) ); ?></td>
@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="c" value="<?php echo $this->controller ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 

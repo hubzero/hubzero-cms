@@ -190,7 +190,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						$calt = JText::_( 'yes' );
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=read&amp;value=<?php echo $data['tickets']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=read&amp;value=<?php echo $data['tickets']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
 						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
 					</a>
 				</td>
@@ -203,7 +203,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						$calt = JText::_( 'yes' );
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=update&amp;value=<?php echo $data['tickets']['update'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=update&amp;value=<?php echo $data['tickets']['update'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
 						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
 					</a>
 				</td>
@@ -216,7 +216,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						$calt = JText::_( 'yes' );
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=delete&amp;value=<?php echo $data['tickets']['delete'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=delete&amp;value=<?php echo $data['tickets']['delete'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
 						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
 					</a>
 				</td>
@@ -230,7 +230,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						$calt = JText::_( 'yes' );
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
 						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
 					</a>
 				</td>
@@ -243,7 +243,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						$calt = JText::_( 'yes' );
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
 						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
 					</a>
 				</td>
@@ -257,7 +257,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						$calt = JText::_( 'yes' );
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['private_comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['private_comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
 						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
 					</a>
 				</td>
@@ -270,7 +270,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						$calt = JText::_( 'yes' );
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['private_comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['private_comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
 						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
 					</a>
 				</td>
@@ -284,7 +284,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="c" value="<?php echo $this->controller ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 

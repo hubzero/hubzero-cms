@@ -34,98 +34,11 @@ ximport('Hubzero_Controller');
 class SupportControllerTickets extends Hubzero_Controller
 {
 	/**
-	 * A list of executable tasks
-	 *
-	 * @param array
-	 */
-	protected $_taskMap = array('__default' => 'display');
-	
-	/**
-	 * The name of the task to be executed
-	 *
-	 * @param string
-	 */
-	protected $_doTask = null;
-	
-	/**
-	 * The name of this controller
-	 *
-	 * @param string
-	 */
-	protected $_controller = null;
-	
-	/**
-	 * Determines task being called and attempts to execute it
-	 *
-	 * @return	void
-	 */
-	public function execute()
-	{
-		// Determine the methods to exclude from the base class.
-		$xMethods = get_class_methods('Hubzero_Controller');
-		
-		$r = new ReflectionClass($this);
-		$methods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
-		foreach ($methods as $method)
-		{
-			$name = $method->getName();
-
-			// Add default display method if not explicitly declared.
-			if (!in_array($name, $xMethods) || $name == 'display') 
-			{
-				//$this->methods[] = strtolower($mName);
-				// Auto register the methods as tasks.
-				$this->_taskMap[strtolower($name)] = $name;
-			}
-		}
-		
-		$this->_task = strtolower(JRequest::getWord('task', 'display'));
-
-		if (isset($this->_taskMap[$this->_task])) 
-		{
-			$doTask = $this->_taskMap[$this->_task];
-		}
-		elseif (isset($this->_taskMap['__default'])) 
-		{
-			$doTask = $this->_taskMap['__default'];
-		}
-		else 
-		{
-			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
-		}
-
-		if (preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
-		{
-			$this->_controller = strtolower($r[1]);
-			
-			$this->view = new JView(array(
-				'name' => $this->_controller,
-				'layout' => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
-			));
-		}
-		else
-		{
-			$this->view = new JView(array(
-				'name' => $doTask
-			));
-		}
-		
-		$this->view->option = $this->_option;
-		$this->view->task = $doTask;
-		$this->view->controller = $this->_controller;
-		
-		// Record the actual task being fired
-		$this->_doTask = $doTask;
-		
-		$this->$doTask();
-	}
-	
-	/**
 	 * Displays a list of tickets
 	 *
 	 * @return	void
 	 */
-	public function display()
+	public function displayTask()
 	{
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
@@ -160,10 +73,10 @@ class SupportControllerTickets extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function add() 
+	public function addTask() 
 	{
 		$this->view->setLayout('edit');
-		$this->edit();
+		$this->editTask();
 	}
 
 	/**
@@ -171,7 +84,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function edit() 
+	public function editTask() 
 	{
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
@@ -322,7 +235,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 *
 	 * @return void
 	 */
-	public function save() 
+	public function saveTask() 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -751,7 +664,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$filters = str_replace('&amp;','&',$filters);
 
 		// output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller . '&' . $filters;
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&' . $filters;
 		$this->_message = JText::sprintf('TICKET_SUCCESSFULLY_SAVED', $row->id);
 	}
 	
@@ -760,7 +673,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function remove() 
+	public function removeTask() 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -771,7 +684,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_TICKET_TO_DELETE');
 			return;
 		}
@@ -794,7 +707,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::sprintf('TICKET_SUCCESSFULLY_DELETED', count($ids));
 	}
 
@@ -803,9 +716,9 @@ class SupportControllerTickets extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function cancel()
+	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 	
 	/**
@@ -936,7 +849,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 *
 	 * @return void
 	 */
-	protected function download()
+	public function downloadTask()
 	{
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
@@ -1063,7 +976,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 * @param  $listdir Sub-directory to upload files to
 	 * @return string   Key to use in comment bodies (parsed into links or img tags)
 	 */
-	protected function upload($listdir)
+	public function uploadTask($listdir)
 	{
 		// Incoming
 		$description = JRequest::getVar('description', '');
@@ -1098,10 +1011,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
-		$file['name'] = str_replace(' ','_',$file['name']);
+		$file['name'] = str_replace(' ', '_', $file['name']);
 		
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $file_path.DS.$file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $file_path . DS . $file['name'])) 
 		{
 			$this->setError(JText::_('COM_SUPPORT_ERROR_UPLOADING'));
 			return '';
@@ -1132,7 +1045,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				$row->getID();
 			}
 			
-			return '{attachment#'.$row->id.'}';
+			return '{attachment#' . $row->id . '}';
 		}
 	}
 }

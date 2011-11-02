@@ -61,7 +61,7 @@ include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' )
 ximport('Hubzero_Filter');
 ximport('Hubzero_User_Profile');
 
-$controllerName = JRequest::getCmd('c', 'tickets');
+$controllerName = JRequest::getCmd('controller', 'tickets');
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'SupportController' . ucfirst($controllerName);
 

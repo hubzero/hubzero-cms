@@ -102,7 +102,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $status;  ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;c=<?php echo $this->controller; ?>&amp;task=view&amp;id=<?php echo $row->id; ?>&amp;cat=<?php echo $row->category; ?>"><?php echo ($row->category.' #'.$row->referenceid); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=view&amp;id=<?php echo $row->id; ?>&amp;cat=<?php echo $row->category; ?>"><?php echo ($row->category.' #'.$row->referenceid); ?></a></td>
 				<td><?php echo $row->subject; ?></td>
 				<td><?php echo $juser->get('username');  ?></td>
 				<td><?php echo JHTML::_('date', $row->created, '%d %b, %Y'); ?></td>	   
@@ -115,7 +115,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="c" value="<?php echo $this->controller ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="display" />
 
 	<?php echo JHTML::_( 'form.token' ); ?>

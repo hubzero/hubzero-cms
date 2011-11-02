@@ -43,8 +43,8 @@ JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
  	</div>
 	<div class="m">
 		<ul id="submenu">
-			<li><a<?php if ($this->type == 0) { echo ' class="active"'; } ?> rel="submitted" href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=stats"><span>Submitted Tickets</span></a></li>
-			<li><a<?php if ($this->type == 1) { echo ' class="active"'; } ?> rel="automatic" href="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>&amp;task=stats&amp;type=automatic"><span>Automatic Tickets</span></a></li>
+			<li><a<?php if ($this->type == 0) { echo ' class="active"'; } ?> rel="submitted" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>"><span>Submitted Tickets</span></a></li>
+			<li><a<?php if ($this->type == 1) { echo ' class="active"'; } ?> rel="automatic" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;type=automatic"><span>Automatic Tickets</span></a></li>
 		</ul>
 		<div class="clr"></div>
 	</div>
@@ -209,10 +209,10 @@ $max = ceil($number/10)*10;
 		<table class="support-stats-people" summary="Breakdown of people and the number of tickets closed">
 			<thead>
 				<tr>
-					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=name&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by name">&darr; Person</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=year&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by year count">&darr; Closed this year</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=month&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by month count">&darr; Closed this month</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=week&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by week count">&darr; Closed this week</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=name&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by name">&darr; Person</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=year&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by year count">&darr; Closed this year</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=month&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by month count">&darr; Closed this month</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=week&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by week count">&darr; Closed this week</a></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -240,6 +240,6 @@ if ($this->users) {
 </div><!-- / .section -->
 <input type="hidden" name="task" value="display" />
 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-<input type="hidden" name="c" value="<?php echo $this->controller; ?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+<?php echo JHTML::_('form.token'); ?>
 </form>

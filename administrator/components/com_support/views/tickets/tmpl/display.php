@@ -39,7 +39,7 @@ JToolBarHelper::deleteList();
 JHTML::_('behavior.tooltip');
 ?>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;c=<?php echo $this->controller; ?>" method="post" name="adminForm">
+<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
 	<fieldset id="filter">
 		<label>
 			<?php echo JText::_('SUPPORT_FIND'); ?>:
@@ -169,7 +169,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;c=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo stripslashes($row->summary); ?></a>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo stripslashes($row->summary); ?></a>
 					<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]='.$this->escape($row->login).'">'.$this->escape($row->login).'</a>)' : ''; ?>, tags: <?php echo $tags; ?></span>
 				</td>
 				<td><span class="<?php echo $status; ?> status"><?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' ('.$this->escape($row->resolved).')' : ''; ?></span></td>
@@ -186,7 +186,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="c" value="<?php echo $this->controller ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 

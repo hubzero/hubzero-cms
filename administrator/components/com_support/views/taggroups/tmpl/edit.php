@@ -31,8 +31,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 JToolBarHelper::title( JText::_( 'Tag/Group' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-JToolBarHelper::save('savetg');
-JToolBarHelper::cancel('canceltg');
+JToolBarHelper::save();
+JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<td class="key"><label for="group"><?php echo JText::_('GROUP_TEXT'); ?>: <span class="required">*</span></label></td>
-					<td><input type="text" name="group" id="group" value="<?php echo $this->group->cn; ?>" size="50" /></td>
+					<td><input type="text" name="group" id="group" value="<?php echo (is_object($this->group)) ? $this->escape($this->group->cn) : ''; ?>" size="50" /></td>
 				</tr>
 			</tbody>
 		</table>
@@ -76,8 +76,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="taggroup[priority]" value="<?php echo $this->row->priority; ?>" />
 	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="c" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="savecat" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
 
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

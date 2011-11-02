@@ -39,12 +39,6 @@ $juser =& JFactory::getUser();
 
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
-
-/*if ($this->filters['_show'] != '') {
-	$fstring = urlencode(trim($this->filters['_show']));
-} else {
-	$fstring = urlencode(trim($this->filters['_find']));
-}*/
 ?>
 <?php if ($this->row->id) { ?>
 <h3><?php echo JText::_('TICKET'); echo ($this->row->id) ? ' #'.$this->row->id : ''; ?></h3>
@@ -54,14 +48,14 @@ $editor =& JEditor::getInstance();
 			echo '<p id="prev-next">';
 			$prv = $this->row->getTicketId('prev', $this->filters, 'admin');
 			if ( $prv ) {
-				echo '<a href="index.php?option='.$this->option.'&amp;task=edit&amp;id='. $prv .'">'.JText::_('PREVIOUS_TICKET').'</a>';
+				echo '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;id='. $prv .'">'.JText::_('PREVIOUS_TICKET').'</a>';
 			} else {
 				echo '<span style="color:#ccc;">'.JText::_('PREVIOUS_TICKET').'</span>';
 			}
 			echo ' &nbsp;&nbsp; ';
 			$nxt = $this->row->getTicketId('next', $this->filters, 'admin');
 			if ( $nxt ) {
-				echo '<a href="index.php?option='.$this->option.'&amp;task=edit&amp;id='. $nxt .'">'.JText::_('NEXT_TICKET').'</a>';
+				echo '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;id='. $nxt .'">'.JText::_('NEXT_TICKET').'</a>';
 			} else {
 				echo '<span style="color:#ccc;">'.JText::_('NEXT_TICKET').'</span>';
 			}
@@ -447,12 +441,9 @@ $editor =& JEditor::getInstance();
 	
 	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
 	<input type="hidden" name="task" value="save" />
-	<!-- <input type="hidden" name="find" value="<?php echo urlencode($this->filters['_find']); ?>" />
-	<input type="hidden" name="show" value="<?php echo urlencode($this->filters['_show']); ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" /> -->
 	
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

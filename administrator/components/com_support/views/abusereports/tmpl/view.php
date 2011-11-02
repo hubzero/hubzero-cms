@@ -106,7 +106,7 @@ function submitbutton(pressbutton)
 	</table>
 	
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="c" value="<?php echo $this->controller ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->report->id ?>" />
 	<input type="hidden" name="parentid" value="<?php echo $this->parentid ?>" />
 
