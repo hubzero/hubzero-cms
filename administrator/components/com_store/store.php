@@ -36,27 +36,44 @@ error_reporting(E_ALL);
 
 // Ensure user has access to this function
 $jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+$jacl->addACL($option, 'manage', 'users', 'super administrator');
+$jacl->addACL($option, 'manage', 'users', 'administrator');
+$jacl->addACL($option, 'manage', 'users', 'manager');
 
 // Authorization check
 $user = & JFactory::getUser();
-if (!$user->authorize( $option, 'manage' )) {
-	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+if (!$user->authorize($option, 'manage')) 
+{
+	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
 }
 
 // Include scripts
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'store.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'order.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'orderitem.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'cart.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'store.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'order.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'orderitem.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'cart.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+//require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
 ximport('Hubzero_Filter');
 
+$controllerName = JRequest::getCmd('controller', 'orders');
+
+if ($controllerName == 'items')
+{
+	JSubMenuHelper::addEntry(JText::_('Orders'), 'index.php?option=' .  $option . '&controller=orders');
+	JSubMenuHelper::addEntry(JText::_('Store Items'), 'index.php?option=' .  $option . '&controller=items', true);
+}
+else 
+{
+	JSubMenuHelper::addEntry(JText::_('Orders'), 'index.php?option=' .  $option . '&controller=orders', true);
+	JSubMenuHelper::addEntry(JText::_('Store Items'), 'index.php?option=' .  $option . '&controller=items');
+}
+
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'StoreController' . ucfirst($controllerName);
+
 // Instantiate controller
-$controller = new StoreController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

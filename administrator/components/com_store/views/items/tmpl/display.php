@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title( JText::_( 'Store Manager' ).$text, 'addedit.png' );
+JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'addedit.png');
 JToolBarHelper::preferences('com_store', '550');
 
 ?>
@@ -47,9 +47,6 @@ public function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-
-<p class="extranav"><?php echo JText::_('VIEW'); ?>: <a href="index2.php?option=<?php echo $this->option; ?>&amp;task=orders"><?php echo JText::_('ORDERS'); ?></a> | <strong><?php echo JText::_('STORE'); ?> <?php echo JText::_('ITEMS'); ?></strong></p>
-
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter">
 		<?php echo count($this->rows); ?> <?php echo JText::_('ITEMS_DISPLAYED'); ?>.
@@ -105,13 +102,15 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	{
 		case '1':
 			$a_class = 'published';
-			$a_task = 'unavail';
+			$a_task = 'unavailable';
 			$a_alt = JText::_('TIP_MARK_UNAVAIL');
+			$a_img = 'publish_g.png';
 			break;
 		case '0':
 			$a_class = 'unpublished';
-			$a_task = 'avail';
+			$a_task = 'available';
 			$a_alt = JText::_('TIP_MARK_AVAIL');
+			$a_img = 'publish_x.png';
 			break;
 	}
 	switch ($row->published)
@@ -120,23 +119,33 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$p_class = 'published';
 			$p_task = 'unpublish';
 			$p_alt = JText::_('TIP_REMOVE_ITEM');
+			$p_img = 'publish_g.png';
 			break;
 		case '0':
 			$p_class = 'unpublished';
 			$p_task = 'publish';
 			$p_alt = JText::_('TIP_ADD_ITEM');
+			$p_img = 'publish_x.png';
 			break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=storeitem&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>"><?php echo $row->id; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>"><?php echo $row->id; ?></a></td>
 				<td><?php echo $row->category;  ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=storeitem&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>"><?php echo stripslashes($row->title); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>"><?php echo stripslashes($row->title); ?></a></td>
 				<td><?php echo Hubzero_View_Helper_Html::shortenText($row->description, 300);  ?></td>
 				<td><?php echo $row->price ?></td>
 				<td><?php echo ($row->allorders) ? $row->allorders : '0';  ?></td>
-				<td><a class="<?php echo $a_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>"><span><?php echo $a_alt; ?></span></a></td>
-				<td><a class="<?php echo $p_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>"><span><?php echo $p_alt; ?></span></a></td>
+				<td>
+					<a class="<?php echo $a_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>">
+						<img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" />
+					</a>
+				</td>
+				<td>
+					<a class="<?php echo $p_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>">
+						<img src="images/<?php echo $p_img; ?>" width="16" height="16" border="0" alt="<?php echo $p_alt; ?>" />
+					</a>
+				</td>
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -146,7 +155,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="task" value="storeitems" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="" />
 
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

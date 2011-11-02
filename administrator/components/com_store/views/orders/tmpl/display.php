@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title( JText::_( 'Store Manager' ).$text, 'addedit.png' );
+JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'addedit.png');
 JToolBarHelper::preferences('com_store', '550');
 
 ?>
@@ -47,9 +47,6 @@ public function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-
-<p class="extranav"><?php echo JText::_('VIEW'); ?>: <strong><?php echo JText::_('ORDERS'); ?></strong> | <a href="index.php?option=<?php echo $this->option; ?>&amp;task=storeitems"><?php echo JText::_('STORE'); ?> <?php echo JText::_('ITEMS'); ?></a></p>
-
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter">
 	    <?php echo count($this->rows); ?> <?php echo JText::_('ORDERS_DISPLAYED'); ?>.
@@ -107,13 +104,13 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ORDER'); ?>"><?php echo $row->id; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ORDER'); ?>"><?php echo $row->id; ?></a></td>
 				<td><?php echo $status;  ?></td>
 				<td><?php echo $row->itemtitles; ?></td>
 				<td><?php echo $row->total; ?></td>
 				<td><?php echo $row->author;  ?></td>
 				<td><?php echo JHTML::_('date', $row->ordered, '%d %b, %Y'); ?></td>	   
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ORDER'); ?>"><?php echo JText::_('DETAILS'); ?></a><?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="index.php?option='.$this->option.'&amp;task=receipt&amp;id='.$row->id.'">'.JText::_('Receipt').'</a>'; } ?></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ORDER'); ?>"><?php echo JText::_('DETAILS'); ?></a><?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="index.php?option='.$this->option.'&amp;task=receipt&amp;id='.$row->id.'">'.JText::_('Receipt').'</a>'; } ?></td>
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -124,7 +121,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 
 	<?php echo $this->pageNav->getListFooter(); ?>
 
-	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 

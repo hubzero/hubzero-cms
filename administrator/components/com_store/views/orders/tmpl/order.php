@@ -29,9 +29,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
-JToolBarHelper::title( JText::_( 'Store Manager' ).$text, 'addedit.png' );
-JToolBarHelper::save('saveorder', 'Save Order Details' );
+JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'addedit.png');
+JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 $order_date = (intval( $this->row->ordered ) <> 0) ? JHTML::_('date', $this->row->ordered, '%d %b, %Y') : NULL ;
@@ -66,9 +67,6 @@ public function submitbutton(pressbutton)
 
 }
 </script>
-
-<p class="extranav" style="margin-left:1.5em;"><?php echo JText::_('VIEW'); ?>: <a href="index.php?option=<?php echo $this->option; ?>"><?php echo JText::_('STORE').' '. JText::_('ORDERS'); ?></a></p>
-
 <form action="index.php" method="post" name="adminForm">
 	<div class="col width-60">
 		<fieldset class="adminform">
@@ -177,7 +175,8 @@ public function submitbutton(pressbutton)
 	<div class="clr"></div>				 
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="saveorder" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
 <?php  } // end if id exists ?>
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
