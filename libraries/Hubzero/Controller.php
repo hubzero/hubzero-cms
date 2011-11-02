@@ -67,6 +67,27 @@ class Hubzero_Controller extends JObject
 	 * @var		string
 	 */
 	protected $_task = NULL;
+	
+	/**
+	 * A list of executable tasks
+	 *
+	 * @param array
+	 */
+	protected $_taskMap = array('__default' => 'display');
+	
+	/**
+	 * The name of the task to be executed
+	 *
+	 * @param string
+	 */
+	protected $_doTask = null;
+	
+	/**
+	 * The name of this controller
+	 *
+	 * @param string
+	 */
+	protected $_controller = null;
 
 	/**
 	 * Constructor
@@ -75,31 +96,37 @@ class Hubzero_Controller extends JObject
 	 * @param	array	$config		Optional configurations to be used
 	 * @return	void
 	 */
-	public function __construct( $config=array() )
+	public function __construct($config=array())
 	{
 		$this->_redirect = NULL;
 		$this->_message = NULL;
 		$this->_messageType = 'message';
 
 		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
+		if (empty($this->_name)) 
+		{
+			if (isset($config['name'])) 
+			{
 				$this->_name = $config['name'];
-			} else {
+			} 
+			else 
+			{
 				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
+				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) 
+				{
+					return JError::raiseError(500, JText::_('Controller::__construct() : Can\'t get or parse class name.'));
 				}
-				$this->_name = strtolower( $r[1] );
+				$this->_name = strtolower($r[1]);
 			}
 		}
 
 		// Set the component name
-		$this->_option = 'com_'.$this->_name;
+		$this->_option = 'com_' . $this->_name;
 
+		// Set some commonly used vars
 		$this->juser = JFactory::getUser();
 		$this->database = JFactory::getDBO();
-		$this->config = JComponentHelper::getParams( $this->_option );
+		$this->config = JComponentHelper::getParams($this->_option);
 
 		// Clear component messages - for cross component messages
 		$this->getComponentMessage();
@@ -131,12 +158,84 @@ class Hubzero_Controller extends JObject
 	}
 
 	/**
-	 * Overloadable method
+	 * Determines task being called and attempts to execute it
 	 *
 	 * @return	void
 	 */
 	public function execute()
 	{
+		// Determine the methods to exclude from the base class.
+		$xMethods = get_class_methods('Hubzero_Controller');
+		
+		// Get all the public methods of this class
+		$r = new ReflectionClass($this);
+		$methods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
+		foreach ($methods as $method)
+		{
+			$name = $method->getName();
+
+			// Ensure task isn't in the exclude list and ends in 'Task'
+			if (!in_array($name, $xMethods) 
+			 || $name == 'displayTask'
+			 || substr(strtolower($name), -4) == 'task') 
+			{
+				// Remove the 'Task' suffix
+				$name = substr($name, 0, -4);
+				// Auto register the methods as tasks.
+				$this->_taskMap[strtolower($name)] = $name;
+			}
+		}
+		
+		// Incoming task
+		$this->_task = strtolower(JRequest::getWord('task', 'display'));
+
+		// Check if the task is in the taskMap
+		if (isset($this->_taskMap[$this->_task])) 
+		{
+			$doTask = $this->_taskMap[$this->_task];
+		}
+		// Check if the default task is set
+		elseif (isset($this->_taskMap['__default'])) 
+		{
+			$doTask = $this->_taskMap['__default'];
+		}
+		// Raise an error (hopefully, this shouldn't happen)
+		else 
+		{
+			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
+		}
+		
+		//$this->_controller = JRequest::getCmd('controller', '');
+		// Attempt to parse the controller name from the class name
+		if (preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
+		{
+			$this->_controller = strtolower($r[1]);
+			
+			// Instantiate a view with layout the same name as the task
+			$this->view = new JView(array(
+				'name' => $this->_controller,
+				'layout' => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
+			));
+		}
+		// No controller name found - single controller component
+		else
+		{
+			$this->view = new JView(array(
+				'name' => $doTask
+			));
+		}
+
+		// Set some commonly used vars
+		$this->view->option = $this->_option;
+		$this->view->task = $doTask;
+		$this->view->controller = $this->_controller;
+		
+		// Record the actual task being fired
+		$doTask .= 'Task';
+		$this->_doTask = $doTask;
+		
+		// Call the task
+		$this->$doTask();
 	}
 
 	/**
@@ -146,7 +245,8 @@ class Hubzero_Controller extends JObject
 	 */
 	public function redirect()
 	{
-		if ($this->_redirect != NULL) {
+		if ($this->_redirect != NULL) 
+		{
 			$app =& JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
@@ -162,8 +262,13 @@ class Hubzero_Controller extends JObject
 	public function addComponentMessage($message, $type='message')
 	{
 		//if message is somthing
-		if ($message != '') {
-			$this->componentMessageQueue[] = array('message' => $message, 'type' => strtolower($type), 'option' => $this->_option);
+		if ($message != '') 
+		{
+			$this->componentMessageQueue[] = array(
+				'message' => $message, 
+				'type' => strtolower($type), 
+				'option' => $this->_option
+			);
 		}
 
 		$session =& JFactory::getSession();
@@ -177,17 +282,21 @@ class Hubzero_Controller extends JObject
 	 */
 	public function getComponentMessage()
 	{
-		if (!count($this->componentMessageQueue)) {
+		if (!count($this->componentMessageQueue)) 
+		{
 			$session =& JFactory::getSession();
 			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage)) {
+			if (count($componentMessage)) 
+			{
 				$this->componentMessageQueue = $componentMessage;
 				$session->set('component.message.queue', null);
 			}
 		}
 
-		foreach ($this->componentMessageQueue as $k => $cmq) {
-			if ($cmq['option'] != $this->_option) {
+		foreach ($this->componentMessageQueue as $k => $cmq) 
+		{
+			if ($cmq['option'] != $this->_option) 
+			{
 				$this->componentMessageQueue[$k] = array();
 			}
 		}
@@ -225,8 +334,9 @@ class Hubzero_Controller extends JObject
 		$option = ($option) ? $option : $this->_option;
 		$script = ($script) ? $script : $this->_name;
 
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$option.DS.$script.'.js')) {
-			$document->addScript('components'.DS.$option.DS.$script.'.js');
+		if (is_file(JPATH_ROOT . DS . 'components' . DS . $option . DS . $script . '.js')) 
+		{
+			$document->addScript('components' . DS . $option . DS . $script . '.js');
 		}
 	}
 
@@ -240,16 +350,18 @@ class Hubzero_Controller extends JObject
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) {
+		if (count($pathway->getPathWay()) <= 0) 
+		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
-				'index.php?option='.$this->_option
+				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task) {
+		if ($this->_task) 
+		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-				'index.php?option='.$this->_option.'&task='.$this->_task
+				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
 	}
@@ -262,8 +374,9 @@ class Hubzero_Controller extends JObject
 	protected function _buildTitle()
 	{
 		$title = JText::_(strtoupper($this->_option));
-		if ($this->_task) {
-			$title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		if ($this->_task) 
+		{
+			$title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
@@ -277,12 +390,14 @@ class Hubzero_Controller extends JObject
 	protected function _authorize()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) {
+		if ($this->juser->get('guest')) 
+		{
 			return false;
 		}
 
 		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage')) {
+		if ($this->juser->authorize($this->_option, 'manage')) 
+		{
 			return true;
 		}
 
