@@ -1,0 +1,393 @@
+<?php
+/**
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+ximport('Hubzero_Controller');
+
+class SupportControllerTaggroups extends Hubzero_Controller
+{
+	/**
+	 * A list of executable tasks
+	 *
+	 * @param array
+	 */
+	protected $_taskMap = array('__default' => 'display');
+	
+	/**
+	 * The name of the task to be executed
+	 *
+	 * @param string
+	 */
+	protected $_doTask = null;
+	
+	/**
+	 * The name of this controller
+	 *
+	 * @param string
+	 */
+	protected $_controller = null;
+	
+	/**
+	 * Determines task being called and attempts to execute it
+	 *
+	 * @return	void
+	 */
+	public function execute()
+	{
+		// Determine the methods to exclude from the base class.
+		$xMethods = get_class_methods('Hubzero_Controller');
+		
+		$r = new ReflectionClass($this);
+		$methods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
+		foreach ($methods as $method)
+		{
+			$name = $method->getName();
+
+			// Add default display method if not explicitly declared.
+			if (!in_array($name, $xMethods) || $name == 'display') 
+			{
+				//$this->methods[] = strtolower($mName);
+				// Auto register the methods as tasks.
+				$this->_taskMap[strtolower($name)] = $name;
+			}
+		}
+		
+		$this->_task = strtolower(JRequest::getWord('task', 'display'));
+
+		if (isset($this->_taskMap[$this->_task])) 
+		{
+			$doTask = $this->_taskMap[$this->_task];
+		}
+		elseif (isset($this->_taskMap['__default'])) 
+		{
+			$doTask = $this->_taskMap['__default'];
+		}
+		else 
+		{
+			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
+		}
+
+		if (preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
+		{
+			$this->_controller = strtolower($r[1]);
+			
+			$this->view = new JView(array(
+				'name' => $this->_controller,
+				'layout' => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
+			));
+		}
+		else
+		{
+			$this->view = new JView(array(
+				'name' => $doTask
+			));
+		}
+		
+		$this->view->option = $this->_option;
+		$this->view->task = $doTask;
+		$this->view->controller = $this->_controller;
+		
+		// Record the actual task being fired
+		$this->_doTask = $doTask;
+		
+		$this->$doTask();
+	}
+
+	/**
+	 * Displays a list of tickets
+	 *
+	 * @return	void
+	 */
+	public function display()
+	{
+		// Get configuration
+		$app =& JFactory::getApplication();
+		$config = JFactory::getConfig();
+	
+		// Incoming
+		$this->view->filters = array();
+		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+			$this->_option . '.taggroups.limit', 
+			'limit', 
+			$config->getValue('config.list_limit'), 
+			'int'
+		);
+		$this->view->filters['start'] = $app->getUserStateFromRequest(
+			$this->_option . '.taggroups.limitstart', 
+			'limitstart', 
+			0, 
+			'int'
+		);
+		$this->view->filters['sortby'] = JRequest::getVar('sortby', 'priority ASC');
+		
+		$model = new TagsGroup($this->database);
+		
+		// Get record count
+		$this->view->total = $model->getCount();
+		
+		// Get records
+		$this->view->rows  = $model->getRecords();
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
+
+		// Set any errors
+		if ($this->getError()) {
+			$this->view->setError($this->getError());
+		}
+		
+		// Output the HTML
+		$this->view->display();
+	}
+	
+	/**
+	 * Create a new record
+	 *
+	 * @return	void
+	 */
+	public function add() 
+	{
+		$this->view->setLayout('edit');
+		$this->edit();
+	}
+	
+	/**
+	 * Display a form for adding/editing a record
+	 *
+	 * @return	void
+	 */
+	public function edit($row=null) 
+	{
+		ximport('Hubzero_Group');
+		
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else
+		{
+			// Incoming
+			$id = JRequest::getInt('id', 0);
+
+			// Initiate database class and load info
+			$this->view->row = new TagsGroup($this->database);
+			$this->view->row->load($id);
+			
+			$this->view->tag = new TagsTag($this->database);
+			$this->view->tag->load($this->view->row->tagid);
+
+			$this->view->group = Hubzero_Group::getInstance($this->view->row->groupid);
+		}
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+		
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Save changes to a record
+	 *
+	 * @return	void
+	 */
+	public function save() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+		
+		ximport('Hubzero_Group');
+		
+		$taggroup = JRequest::getVar('taggroup', array(), 'post');
+		
+		// Initiate class and bind posted items to database fields
+		$row = new TagsGroup($this->database);
+		if (!$row->bind($taggroup)) 
+		{
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+	
+		// Incoming tag
+		$tag = trim(JRequest::getVar('tag', '', 'post'));
+		
+		// Attempt to load the tag
+		$ttag = new TagsTag($this->database);
+		$ttag->loadTag($tag);
+		
+		// Set the group ID
+		if ($ttag->id) 
+		{
+			$row->tagid = $ttag->id;
+		}
+		
+		// Incoming group
+		$group = trim(JRequest::getVar('group', '', 'post'));
+		
+		// Attempt to load the group
+		$hzg = Hubzero_Group::getInstance($group);
+		
+		// Set the group ID
+		if ($hzg->get('gidNumber')) 
+		{
+			$row->groupid = $hzg->get('gidNumber');
+		}
+		
+		// Check content
+		if (!$row->check()) 
+		{
+			$this->setError($row->getError());
+			$this->edit($row);
+			return;
+		}
+
+		// Store new content
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			$this->edit($row);
+			return;
+		}
+		
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+		$this->_message = JText::_('ENTRY_SUCCESSFULLY_SAVED');
+	}
+	
+	/**
+	 * Delete one or more records
+	 *
+	 * @return	void
+	 */
+	public function remove() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+	
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+			$this->_message = JText::_('SUPPORT_ERROR_SELECT_ENTRY_TO_DELETE');
+			return;
+		}
+		
+		$tg = new TagsGroup($this->database);
+		foreach ($ids as $id) 
+		{
+			// Delete entry
+			$tg->delete(intval($id));
+		}
+		
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+		$this->_message = JText::sprintf('ENTRY_SUCCESSFULLY_DELETED', count($ids));
+	}
+	
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return	void
+	 */
+	public function cancel()
+	{
+		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+	}
+	
+	/**
+	 * Reorder entries in the database
+	 *
+	 * @return	void
+	 */
+	public function reorder() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$id = JRequest::getVar('id', array());
+		$id = intval($id[0]);
+
+		// Ensure we have an ID to work with
+		if (!$id) 
+		{
+			$this->_message = JText::_('No entry ID found.');
+			$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+			return;
+		}
+
+		// Get the element moving down - item 1
+		$tg1 = new TagsGroup($this->database);
+		$tg1->load($id);
+
+		// Get the element directly after it in ordering - item 2
+		$tg2 = clone($tg1);
+		$tg2->getNeighbor($this->_task);
+
+		switch ($this->_task) 
+		{
+			case 'orderup':				
+				// Switch places: give item 1 the position of item 2, vice versa
+				$orderup = $tg2->priority;
+				$orderdn = $tg1->priority;
+				
+				$tg1->priority = $orderup;
+				$tg2->priority = $orderdn;
+			break;
+			
+			case 'orderdown':
+				// Switch places: give item 1 the position of item 2, vice versa
+				$orderup = $tg1->priority;
+				$orderdn = $tg2->priority;
+				
+				$tg1->priority = $orderdn;
+				$tg2->priority = $orderup;
+			break;
+		}
+		
+		// Save changes
+		$tg1->store();
+		$tg2->store();
+		
+		// Redirect
+		$this->_redirect = 'index.php?option=' . $this->_option . '&c=' . $this->_controller;
+	}
+}
