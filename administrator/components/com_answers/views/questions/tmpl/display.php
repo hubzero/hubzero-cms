@@ -28,7 +28,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Answers Manager' ) . '</a>', 'addedit.png');
 JToolBarHelper::preferences($this->option, '550');
@@ -112,7 +112,11 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
             	<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="Edit this question"><?php echo stripslashes($row->subject); ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span></a></td>
+				<td>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+					</a>
+				</td>
 				<td><?php echo JHTML::_('date', $row->created, '%d %b, %Y') ?></td>
 				<td><?php echo $row->created_by; if ($row->anonymous) { echo ' (anon)'; } ?></td>
 <?php if ($row->answers > 0) { ?>
