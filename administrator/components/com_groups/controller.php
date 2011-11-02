@@ -298,6 +298,8 @@ class GroupsController extends Hubzero_Controller
 		$view->filters = array();
 		$view->filters['type']   = array(JRequest::getVar( 'type', 'all' ));
 		$view->filters['search'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.browse.search', 'search', '')));
+		$view->filters['privacy'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.browse.privacy', 'privacy', '')));
+		$view->filters['policy'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.browse.policy', 'policy', '')));
 
 		// Filters for getting a result count
 		$view->filters['limit'] = 'all';

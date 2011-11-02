@@ -103,7 +103,8 @@ if (empty($this->post)) {
         </table>
       </fieldset>
     </div>
-    <input type="hidden" name="option" value="com_groups">
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>">
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
     <input type="hidden" name="task" value="importldap">
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>

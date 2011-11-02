@@ -46,7 +46,7 @@ if ($this->getError()) {
 	echo '<p style="color: #c00;"><strong>'.$this->getError().'</p>';
 }
 ?>
-<form action="index.php" name="adminForm" method="post">
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" method="post">
 	<fieldset>
 		<label>
 			<?php echo JText::_('ADD_USERNAME'); ?>
@@ -90,5 +90,6 @@ if ($this->getError()) {
 	<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
 	<input type="hidden" name="task" value="manage" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

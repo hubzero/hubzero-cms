@@ -75,6 +75,7 @@ if ($this->getError()) {
 			
 			<input type="hidden" name="group[gidNumber]" value="<?php echo $this->group->gidNumber; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
 			
 			<table class="admintable">

@@ -28,23 +28,27 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'GROUPS' ).': <small><small>[ '.JText::_('System').' ]</small></small>', 'user.png' );
-JToolBarHelper::cancel();
+defined('_JEXEC') or die('Restricted access');
 
+JToolBarHelper::title(JText::_('GROUPS') . ': <small><small>[ ' . JText::_('System') . ' ]</small></small>', 'user.png');
+//JToolBarHelper::cancel();
 ?>
 
-<br /> 
-LDAP Connection: <?echo $this->status['ldap'];?> <br />
-LDAP organizationalUnit "ou=groups" exists: <?echo $this->status['ldap_groupou'];?> <br />
-LDAP objectClass "hubGroup" exists: <?echo $this->status['ldap_hubgroup'];?> <br />
-LDAP objectClass "posixGroup" exists: <?echo $this->status['ldap_posixgroup'];?> <br />
-<br />
-<br />
-<a href="index.php?option=com_groups&task=exporttoldap">Export to LDAP</a>
-<br />
-<br />
-<a href="index.php?option=com_groups&task=importldap">Import from LDAP</a>
-<br />
-<br />
+<dl> 
+	<dt>LDAP Connection:</dt>
+	<dd><?php echo $this->status['ldap']; ?></dd>
+	
+	<dt>LDAP organizationalUnit "ou=groups" exists:</dt>
+	<dd><?php echo $this->status['ldap_groupou']; ?></dd>
+	
+	<dt>LDAP objectClass "hubGroup" exists:</dt>
+	<dd><?php echo $this->status['ldap_hubgroup']; ?></dd>
+	
+	<dt>LDAP objectClass "posixGroup" exists:</dt>
+	<dd><?php echo $this->status['ldap_posixgroup']; ?></dd>
+</dl>
 
+<ul>
+	<li><a href="index.php?option=com_groups&amp;controller=<?php echo $this->controller; ?>&amp;task=exporttoldap">Export to LDAP</a></li>
+	<li><a href="index.php?option=com_groups&amp;controller=<?php echo $this->controller; ?>&amp;task=importldap">Import from LDAP</a></li>
+</ul>

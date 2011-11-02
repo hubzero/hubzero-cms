@@ -170,4 +170,3 @@ $html .= "\t".'</table>'."\n";
 $html .= '</fieldset><br /><br />'."\n";
 
 echo $html;
-?>

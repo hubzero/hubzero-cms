@@ -49,7 +49,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter">
 		<label>
 			<?php echo JText::_('SEARCH'); ?>: 
@@ -63,6 +63,25 @@ function submitbutton(pressbutton)
 				<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>system</option>
 				<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>project</option>
 				<option value="partner"<?php echo ($this->filters['type'][0] == 'partner') ? ' selected="selected"' : ''; ?>>partner</option>
+			</select>
+		</label>
+		<label>
+			<?php echo JText::_('Privacy'); ?>:
+			<select name="privacy">
+				<option value=""<?php echo ($this->filters['privacy'] == '-1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('ALL'); ?></option>
+				<option value="public"<?php echo ($this->filters['privacy'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
+				<option value="restricted"<?php echo ($this->filters['privacy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
+				<option value="private"<?php echo ($this->filters['privacy'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
+			</select>
+		</label>
+		<label>
+			<?php echo JText::_('Policy'); ?>:
+			<select name="policy">
+				<option value=""<?php echo ($this->filters['policy'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('ALL'); ?></option>
+				<option value="open"<?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Open'); ?></option>
+				<option value="restricted"<?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Restricted'); ?></option>
+				<option value="invite"<?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Invite only'); ?></option>
+				<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Closed'); ?></option>
 			</select>
 		</label>
 		
@@ -118,23 +137,23 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->cn ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->gidNumber; ?></td>
 				<td><?php echo $row->cn; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>"><?php echo stripslashes($row->description); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>"><?php echo stripslashes($row->description); ?></a></td>
 				<td><?php echo $type; ?></td>
 				<td>
 					<?php 
 						if($row->published) {
 							//echo '<span class="check">'.JText::_('YES').'</span>';
-							echo ' <a href="index.php?option='.$this->option.'&amp;task=unpublish&amp;id[]='.$row->cn.'" title="Unpublish Group"><img src="/administrator/images/publish_g.png" /></a>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=unpublish&amp;id[]='.$row->cn.'" title="Unpublish Group"><img src="/administrator/images/publish_g.png" /></a>';
 						} else {
 							//echo '<span class="off">'.JText::_('No').'</span>';
-							echo ' <a href="index.php?option='.$this->option.'&amp;task=publish&amp;id[]='.$row->cn.'" title="Publish Group"><img src="/administrator/images/publish_x.png" /></a>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=publish&amp;id[]='.$row->cn.'" title="Publish Group"><img src="/administrator/images/publish_x.png" /></a>';
 						}
 					?>
 				</td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $applicants; ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $invitees; ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $managers; ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $members; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $applicants; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $invitees; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $managers; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $members; ?></a></td>
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -144,6 +163,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo JHTML::_( 'form.token' ); ?>

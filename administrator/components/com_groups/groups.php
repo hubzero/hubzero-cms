@@ -29,32 +29,35 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 error_reporting(E_ALL);
-@ini_set('display_errors','1');
+@ini_set('display_errors', '1');
 
 // Set access levels
 $jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+$jacl->addACL($option, 'manage', 'users', 'super administrator');
+$jacl->addACL($option, 'manage', 'users', 'administrator');
+$jacl->addACL($option, 'manage', 'users', 'manager');
 
 // Authorization check
 $user = & JFactory::getUser();
-if (!$user->authorize( $option, 'manage' )) {
-	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+if (!$user->authorize($option, 'manage')) 
+{
+	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
 }
 
 // Include scripts
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'reason.php' );
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reason.php');
 ximport('Hubzero_User_Helper');
 ximport('Hubzero_Group');
 
-// Initiate controller
-$controller = new GroupsController();
+$controllerName = JRequest::getCmd('controller', 'manage');
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'GroupsController' . ucfirst($controllerName);
+
+// Instantiate controller
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-
