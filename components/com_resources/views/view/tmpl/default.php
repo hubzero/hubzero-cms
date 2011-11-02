@@ -101,10 +101,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 	}
 
 	// Display "at a glance"
-	$html .= '<p class="ataglance">';
-	$html .= $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 250, 0) : '';
+	//$html .= '<p class="ataglance">';
+	//$html .= $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 250, 0) : '';
 	//$html .= ' <a href="">'.JText::_('Learn more').' &rsaquo;</a>'."\n";
-	$html .= '</p>'."\n";
+	//$html .= JText::_('in') . ' <a href="' . JRoute::_('index.php?option=' . $option . '&type=' . $resource->_type->alias). '">' . $resource->_type->type . '</a>';
+	//$html .= '</p>'."\n";
 	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
 
 	$html .= ' <div class="aside launcharea">'."\n";

@@ -1687,7 +1687,8 @@ class ResourcesController extends Hubzero_Controller
 			exit();
 		}
 		$row->contributable = ($row->contributable) ? $row->contributable : '0';
-
+		$row->alias = ($row->alias) ? $row->alias : preg_replace("/[^a-zA-Z0-9\-_]/", "", strtolower($row->type));
+		
 		// Get the custom fields
 		$fields = JRequest::getVar('fields', array(), 'post');
 		if (is_array($fields)) {

@@ -78,19 +78,14 @@ class plgResourcesAbouttool extends JPlugin
 				$rtrn = 'metadata';
 			}
 		}
-		
-		// Display only for tools
-		if ($resource->type != 7) {
-			return $arr;
-		}
-		
+
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			// Instantiate a view
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
-					'element' => 'about',
+					'element' => 'abouttool',
 					'name'    => 'index'
 				)
 			);

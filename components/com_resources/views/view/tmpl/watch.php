@@ -162,6 +162,7 @@ foreach($author_ids as $ai) {
 					<a id="previous" href="#" title="Previous Slide">Previous</a>
 					<a id="play-pause" href="#" title="Play Presentation">Pause</a>
 					<a id="next" href="#" title="Next Slide">Next</a>
+					<a id="link" href="#" title="Link to this Spot in Presentation">Link</a>
 					<a id="switch" href="#" title="Switch Placement of Video and Slides">Switch</a>
 				</div>
 				<div id="control-progress">
@@ -226,3 +227,7 @@ foreach($author_ids as $ai) {
 </div>
 <a href="" id="shortcuts" title="Keyboard Shortcuts">Keyboard Shortcuts</a>
 <div id="twofinger">Use two Fingers to Scroll</div>
+
+<?php
+$this->doc->setTitle($rr->title);
+?>

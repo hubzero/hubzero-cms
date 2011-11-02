@@ -68,6 +68,7 @@ class ResourcesController extends Hubzero_Controller
 			case 'view':       $this->view();       break;
 			case 'play':       $this->play();       break;
 			case 'watch':	   $this->watch();		break;
+			case 'video':	   $this->video();		break;
 			case 'citation':   $this->citation();   break;
 			case 'download':   $this->download();   break;
 			case 'sourcecode': $this->sourcecode(); break;
@@ -858,6 +859,7 @@ class ResourcesController extends Hubzero_Controller
 				$view->content_folder = $content_folder;
 				$view->pid = $this->_id;
 				$view->resid = JRequest::getVar("resid", "");
+				$view->doc = $jdoc;
 				
 				// Output HTML
 				if ($this->getError()) {
@@ -870,13 +872,72 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 	
-	/**
-	 * Short description for 'view'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
-	 */
+	//-----------
+	
+	protected function video()
+	{
+		$parent = JRequest::getInt("id", "");
+		$child = JRequest::getVar("resid", "");
+		
+		//document object
+		$jdoc =& JFactory::getDocument();
+		$jdoc->_scripts = array();
+
+		//add the HUBpresenter stylesheet
+		$jdoc->addStyleSheet("/components/com_resources/resources.css");
+		
+		//add the required javascript files
+		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
+		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
+		$jdoc->addScript("/components/com_resources/presenter/js/flowplayer.js");
+		$jdoc->addScript("/components/com_resources/video/js/video.js");
+		$jdoc->addStyleSheet("/components/com_resources/video/css/video.css");
+		
+		//load resource
+		$activechild = new ResourcesResource( $this->database );
+		$activechild->load( $child );
+		
+		//base url for the resource
+		$base = $this->config->get("uploadpath");
+		
+		//make sure we have a leading slash on base
+		if (substr($base, 0, 1) != DS) { 
+			$base = DS.$base;
+		}
+		
+		//remove trailing slash on base
+		if (substr($base, -1) == DS) { 
+			$base = substr($base, 0, -1);
+		}
+		
+		//build the rest of the resource path and combine with base
+		$path = ResourcesHtml::build_path( $activechild->created, $activechild->id, '' );
+		$path =  $base . $path;
+		
+		//get the videos
+		$videos = JFolder::files( JPATH_ROOT . DS . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM' );
+		$video_mp4 = JFolder::files( JPATH_ROOT . DS . $path, '.mp4|.MP4' );
+		$subs = JFolder::files( JPATH_ROOT . DS . $path, '.srt|.SRT' );
+
+		// Instantiate a new view
+		$view = new JView( array('name'=>'view','layout'=>'video') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
+		$view->database = $this->database;
+		
+		$view->path = $path;
+		$view->videos = $videos;
+		$view->subs = $subs;
+		
+		// Output HTML
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}	
+		$view->display();
+	}
+	
+	//-----------
+
 	protected function view()
 	{
 		// Incoming
@@ -1035,7 +1096,7 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		// Record the hit
-		$resource->hit( $id );
+		$resource->hit($id);
 
 		// Initiate a resource helper class
 		/*$helper = new ResourcesHelper( $resource->id, $database );
@@ -1045,28 +1106,42 @@ class ResourcesController extends Hubzero_Controller
 		$authorized = $this->_authorize( $helper->contributorIDs );*/
 
 		// Do not show for tool versions
-		if ($thistool && $revision!='dev') {
+		if ($thistool && $revision != 'dev') {
 			$authorized = false;
 		}
 
 		// Get Resources plugins
-		JPluginHelper::importPlugin( 'resources' );
+		JPluginHelper::importPlugin('resources');
 		$dispatcher =& JDispatcher::getInstance();
 
 		$sections = array();
 		$cats = array();
 
-		$resource->_type = new ResourcesType( $database );
+		$resource->_type = new ResourcesType($database);
 		$resource->_type->load($resource->type);
-		$resource->_type->_params = new JParameter( $resource->_type->params );
+		$resource->_type->_params = new JParameter($resource->_type->params);
 
 		// We need to do this here because we need some stats info to pass to the body
 		if (!$thistool) {
+			$resource->authorized = $authorized;
+			$resource->thistool = $thistool;
+			$resource->alltools = $alltools;
+			$resource->curtool  = $curtool;
+			
 			// Trigger the functions that return the areas we'll be using
-			$cats = $dispatcher->trigger( 'onResourcesAreas', array($resource) );
+			$cats = $dispatcher->trigger('onResourcesAreas', array(
+					$resource
+				)
+			);
 
 			// Get the sections
-			$sections = $dispatcher->trigger( 'onResources', array($resource, $this->_option, array($tab), 'all') );
+			$sections = $dispatcher->trigger('onResources', array(
+					$resource, 
+					$this->_option, 
+					array($tab), 
+					'all',
+				)
+			);
 		}
 
 		$available = array('play');
@@ -1082,12 +1157,12 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		// Get parameters and merge with the component params
-		$rparams = new JParameter( $resource->params );
+		$rparams = new JParameter($resource->params);
 		$params = $this->config;
-		$params->merge( $rparams );
+		$params->merge($rparams);
 
 		// Get attributes
-		$attribs = new JParameter( $resource->attribs );
+		$attribs = new JParameter($resource->attribs);
 
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
@@ -1099,23 +1174,7 @@ class ResourcesController extends Hubzero_Controller
 			$usersgroups = array();
 		}
 
-		$no_html = JRequest::getInt( 'no_html', 0 );
-
-		$body = '';
-		// Build the HTML of the "about" tab
-		if ($resource->type == 7 && $resource->alias && !$no_html && strtolower($tab) == 'about') {
-			// Tool page view
-			$body = ResourcesHtml::abouttool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $resource->revision, $params, $attribs, $this->_option, $fsize );
-		} else if (strtolower($tab) == 'about') {
-			// Default view of about tab
-			$body = ResourcesHtml::aboutnontool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $params, $attribs, $this->_option, $fsize );
-		}
-
-		// Add the default "About" section to the beginning of the lists
-		$cat = array();
-		$cat['about'] = JText::_('COM_RESOURCES_ABOUT');
-		array_unshift($cats, $cat);
-		array_unshift($sections, array('html'=>$body,'metadata'=>''));
+		$no_html = JRequest::getInt('no_html', 0);
 
 		// Display different main text if "playing" a resource
 		if ($this->_task == 'play') {
@@ -1142,10 +1201,9 @@ class ResourcesController extends Hubzero_Controller
 			$cat = array();
 			$cat['play'] = JText::_('COM_RESOURCES_PLAY');
 			$cats[] = $cat;
-			$sections[] = array('html'=>$body,'metadata'=>'');
+			$sections[] = array('html' => $body, 'metadata' => '');
 			$tab = 'play';
-		} elseif($this->_task == "watch") {
-			
+		} elseif ($this->_task == 'watch') {
 			//test to make sure HUBpresenter is ready to go
 			$pre = $this->preWatch();
 			
@@ -1159,8 +1217,8 @@ class ResourcesController extends Hubzero_Controller
 			$content_folder = $pre['content_folder'];
 			
 			//if we have no errors
-			if( count($errors) > 0 ) {
-				$body = PresenterHelper::errorMessage( $errors );
+			if (count($errors) > 0) {
+				$body = PresenterHelper::errorMessage($errors);
 			} else {
 				// Instantiate a new view
 				$view = new JView( array('name'=>'view','layout'=>'watch') );
@@ -1171,6 +1229,7 @@ class ResourcesController extends Hubzero_Controller
 				$view->content_folder = $content_folder;
 				$view->pid = $id;
 				$view->resid = JRequest::getVar("resid", "");
+				$view->doc =& JFactory::getDocument();
 				
 				// Output HTML
 				if ($this->getError()) {
@@ -1777,7 +1836,26 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
-		$juser =& JFactory::getUser();
+		if (($token = JRequest::getVar('token', '', 'get'))) {
+			$token = base64_decode($token);
+			
+			jimport('joomla.utilities.simplecrypt');
+			$crypter = new JSimpleCrypt();
+			$session_id = $crypter->decrypt($token);
+			
+			$db	=& JFactory::getDBO();
+			$query = "SELECT * FROM #__session WHERE session_id = ".$db->Quote($session_id);
+			$db->setQuery($query);
+			$session = $db->loadObject();
+			
+			$juser =& JFactory::getUser($session->userid);
+			$juser->guest = 0;
+			$juser->id = $session->userid;
+			$juser->usertype = $session->usertype;
+		} else {
+			$juser =& JFactory::getUser();
+		}
+		
 		if ($resource->access == 1 && $juser->get('guest')) {
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
@@ -1785,7 +1863,7 @@ class ResourcesController extends Hubzero_Controller
 
 		// Check if the resource is "private" and the user is allowed to view it
 		if ($resource->access == 4 || $resource->access == 3 || !$resource->standalone) {
-			if ($this->checkGroupAccess($resource)) {
+			if ($this->checkGroupAccess($resource, $juser)) {
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
 			}
@@ -2323,7 +2401,9 @@ class ResourcesController extends Hubzero_Controller
 	private function checkGroupAccess($resource)
 	{
 		//$juser =& Hubzero_Factory::getUser();
-		$juser =& JFactory::getUser();
+		if (!$juser) {
+			$juser =& JFactory::getUser();
+		}
 		if (!$juser->get('guest')) {
 			// Check if they're a site admin (from Joomla)
 			if ($juser->authorize($this->_option, 'manage')) {

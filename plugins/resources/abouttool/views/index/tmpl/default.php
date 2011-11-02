@@ -129,6 +129,10 @@ if ($shots) {
 ?>
 	<table class="resource" summary="<?php echo JText::_('RESOURCE_TBL_SUMMARY'); ?>">
 		<tbody>
+			<tr>
+				<th><?php echo JText::_('Category'); ?></th>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo $this->resource->_type->type; ?></a></td>
+			</tr>
 <?php
 // Check how much we can display
 if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
@@ -146,15 +150,11 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 				<td><?php echo $maintext; ?></td>
 			</tr>
 <?php
-$name = JText::_('PLG_RESOURCES_ABOUT_ANONYMOUS');
+/*$name = JText::_('PLG_RESOURCES_ABOUT_ANONYMOUS');
 if ($this->resource->created_by) {
 	$xuser =& JUser::getInstance($this->resource->created_by);
 	if (is_object($xuser) && $xuser->get('name')) {
 		$name  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->resource->created_by) . '">' . stripslashes($xuser->get('name')) . '</a>';
-		/*$types = array('manager', 'administrator', 'super administrator', 'publisher', 'editor');
-		if (in_array(strtolower($xuser->usertype), $types)) {
-			$name .= ' <span class="user-badges"><span>' . str_replace(' ', '-', strtolower($xuser->usertype)) . '</span></span>';
-		}*/
 		$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
 		if (isset($types[$xuser->gid])) {
 			$name .= ' <span class="user-badges"><span>' . str_replace(' ', '-', $types[$xuser->gid]) . '</span></span>';
@@ -167,6 +167,7 @@ if ($this->resource->created_by) {
 				<td><?php echo $name; ?></td>
 			</tr>
 <?php
+*/
 	$citations = '';
 	foreach ($fields as $field) 
 	{
@@ -263,13 +264,13 @@ if ($this->attribs->get('location', '')) {
 // Tags
 if (!$this->thistool && $this->revision != 'dev') {
 	if ($this->params->get('show_assocs')) {
-		$this->helper->getTagCloud($this->authorized);
+		$tagCloud = $this->helper->getTagCloud($this->authorized);
 
-		if ($this->helper->tagCloud) { 
+		if ($tagCloud) { 
 ?>
 			<tr>
 				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></th>
-				<td><?php echo $this->helper->tagCloud; ?></td>
+				<td><?php echo $tagCloud; ?></td>
 			</tr>
 <?php
 		}

@@ -93,9 +93,13 @@ $maintext = str_replace('</blink>', '', $maintext);
 <div class="subject abouttab">
 	<table class="resource" summary="<?php echo JText::_('RESOURCE_TBL_SUMMARY'); ?>">
 		<tbody>
+			<tr>
+				<th><?php echo JText::_('Category'); ?></th>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo $this->resource->_type->type; ?></a></td>
+			</tr>
 <?php
 // Check how much we can display
-if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
+if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $this->usersgroups) || !$this->authorized)) {
 	// Protected - only show the introtext
 ?>
 			<tr>
@@ -121,7 +125,7 @@ if ($this->resource->created_by) {
 		}*/
 		$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
 		if (isset($types[$xuser->gid])) {
-			$name .= ' <span class="user-badges"><span>' . str_replace(' ', '-', $types[$xuser->gid]) . '</span></span>';
+			$name .= ' <ul class="badges"><li>' . str_replace(' ', '-', $types[$xuser->gid]) . '</li></ul>';
 		}
 	}
 }
@@ -219,13 +223,13 @@ if ($this->attribs->get('location', '')) {
 }
 // Tags
 if ($this->params->get('show_assocs')) {
-	$this->helper->getTagCloud($this->authorized);
+	$tagCloud = $this->helper->getTagCloud($this->authorized);
 
-	if ($this->helper->tagCloud) { 
+	if ($tagCloud) { 
 ?>
 			<tr>
 				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></th>
-				<td><?php echo $this->helper->tagCloud; ?></td>
+				<td><?php echo $tagCloud; ?></td>
 			</tr>
 <?php
 	}

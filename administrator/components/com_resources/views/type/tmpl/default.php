@@ -34,6 +34,7 @@ JToolBarHelper::title( '<a href="index.php?option=com_resources">'.JText::_( 'Re
 JToolBarHelper::save('savetype');
 JToolBarHelper::cancel('canceltype');
 
+$params = new JParameter($this->row->params);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -64,7 +65,14 @@ function submitbutton(pressbutton)
 			<tbody>
 				<tr>
 					<td class="key"><label for="type"><?php echo JText::_('RESOURCES_TYPES_TITLE'); ?>: <span class="required">*</span></label></td>
-					<td><input type="text" name="type" id="type" size="30" maxlength="100" value="<?php echo $this->row->type; ?>" /></td>
+					<td><input type="text" name="type" id="type" size="30" maxlength="100" value="<?php echo $this->escape($this->row->type); ?>" /></td>
+				</tr>
+				<tr>
+					<td class="key"><label for="alias"><?php echo JText::_('Alias'); ?>:</label></td>
+					<td>
+						<input type="text" name="alias" id="alias" size="30" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" /><br />
+						<span class="hint"><?php echo JText::_('If no alias provided, one will be generated from the title.'); ?></span>
+					</td>
 				</tr>
 				<tr>
 					<td class="key"><label><?php echo JText::_('RESOURCES_TYPES_CATEGORY'); ?>:</label></td>
@@ -74,6 +82,19 @@ function submitbutton(pressbutton)
 					<td class="key"><label for="contributable"><?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE'); ?>:</label></td>
 					<td><input type="checkbox" name="contributable" id="contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE_EXPLANATION'); ?></td>
 				</tr>
+<?php if ($this->row->category != 27) { ?>
+				<tr>
+					<td class="key"><label for="params-linkaction"><?php echo JText::_('Linked file action'); ?>:</label></td>
+					<td>
+						<select name="params[linkAction]" id="params-linkaction">
+							<option value="extension"<?php echo ($params->get('linkAction') == 'extension') ? ' selected="selected"':''; ?>><?php echo JText::_('Determine by file extension'); ?></option>
+							<option value="external"<?php echo ($params->get('linkAction') == 'external') ? ' selected="selected"':''; ?>><?php echo JText::_('New window'); ?></option>
+							<option value="lightbox"<?php echo ($params->get('linkAction') == 'lightbox') ? ' selected="selected"':''; ?>><?php echo JText::_('Lightbox'); ?></option>
+							<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo JText::_('Download'); ?></option>
+						</select>
+					</td>
+				</tr>
+<?php } ?>
 				<tr>
 					<td class="key"><label><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label></td>
 					<td><?php 
@@ -154,9 +175,6 @@ function submitbutton(pressbutton)
 			</thead>
 			<tbody>
 			<?php 
-
-			$params = new JParameter( $this->row->params );
-
 			$database =& JFactory::getDBO();
 			$database->setQuery( "SELECT * FROM #__plugins WHERE folder='resources'" );
 			$plugins = $database->loadObjectList();

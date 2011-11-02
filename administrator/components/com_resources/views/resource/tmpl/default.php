@@ -29,7 +29,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
 $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 JToolBarHelper::title( JText::_( 'Resource' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
 JToolBarHelper::spacer();
@@ -462,6 +461,7 @@ $tagcontent = end($field);
 							<option value="0"<?php if (!$this->params->get('link_action')) { echo ' selected="selected"'; } ?>>Default action</option>
 							<option value="1"<?php if ($this->params->get('link_action') == 1) { echo ' selected="selected"'; } ?>>New window</option>
 							<option value="2"<?php if ($this->params->get('link_action') == 2) { echo ' selected="selected"'; } ?>>Lightbox</option>
+							<option value="3"<?php if ($this->params->get('link_action') == 3) { echo ' selected="selected"'; } ?>>Download</option>
 						</select>
 					</td>
 				</tr>

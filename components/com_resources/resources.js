@@ -45,7 +45,7 @@ HUB.Resources = {
 						}
 					}
 
-					SqueezeBoxHub.fromElement(el,{handler: 'url', size: {x: w, y: h}, ajaxOptions: {method: 'get'}});
+					SqueezeBoxHub.fromElement(el,{handler: 'url', size: {x: w, y: h}, ajaxOptions: {method: 'get',evalScripts:true}});
 				});
 			});
 			
@@ -152,7 +152,7 @@ HUB.Resources = {
 		
 		
 		//Hubpresenter
-		$$(".hubpresenter").each(function(el) {
+		$$(".hubpresenter, .video").each(function(el) {
 			if (el.href.indexOf('?') == -1) {
 				el.href = el.href + '?tmpl=component';
 			} else {
@@ -166,6 +166,33 @@ HUB.Resources = {
 			if(!mobile) {
 				new Event(e).stop();
 		 		HUBpresenter_window = window.open(this.href,'name','height=650,width=1100');
+			}
+		});
+		
+		$$(".video").addEvent("click", function(e) {
+			mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
+			if(!mobile) {
+				new Event(e).stop();
+				var w = 0,
+					h = 0,
+					dw = 900,
+					dh = 600;
+			
+				//get the dimensions from classs name
+				dim = this.className.split(" ").pop();
+				
+				//if we have dimensions then parse them
+				if(dim.match(/[0-9]{2,}x[0-9]{2,}/g)) {
+					dim = dim.split("x");
+					w = dim[0];
+					h = dim[1];
+				} else {
+					w = dw;
+					h = dh;
+				}
+				
+				//open poup
+		 		video_window = window.open( this.href,'videowindow','height=' + h + ', width=' + w + ', menubar=no, toolbar=no, titlebar=no, resizable=no');
 			}
 		});
 		
@@ -263,4 +290,3 @@ HUB.Resources = {
 }
 
 window.addEvent('domready', HUB.Resources.initialize);
-

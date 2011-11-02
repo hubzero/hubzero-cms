@@ -158,7 +158,7 @@ if ($this->resource->type == 4) {
 	$height = (intval($height) > 0) ? $height : 0;
 
 	$images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
-	$files = array('pdf');
+	$files = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
 	
 	if (is_file(JPATH_ROOT.$url)) {
 		if (strtolower($type) == 'swf') {
@@ -177,7 +177,24 @@ if ($this->resource->type == 4) {
 		} else if (in_array(strtolower($type), $images)) {
 			$html .= '<img ' . $attributes . ' src="' . $url . '" alt="Image" />'."\n";
 		} else if (in_array(strtolower($type), $files)) {
-			$html .= '<iframe src="'.$url.'" width="97%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
+			$token = '';
+			$juser =& JFactory::getUser();
+			if (!$juser->get('guest'))
+			{
+				$session =& JFactory::getSession();
+
+				$session_id = $session->getId();
+				
+				jimport('joomla.utilities.simplecrypt');
+				$crypter = new JSimpleCrypt();
+				$token = base64_encode($crypter->encrypt($session_id));
+			}
+			$juri =& JURI::getInstance();
+			$sef = JRoute::_('index.php?option=com_resources&id='.$this->activechild->id.'&task=download&file='.basename($this->activechild->path).'&token='.$token);
+			if (substr($sef,0,1) == '/') {
+				$sef = substr($sef,1,strlen($sef));
+			}
+			$html .= '<iframe src="https://docs.google.com/viewer?url='.urlencode($juri->base().$sef).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
 		} else {
 			$html .= '<applet ' . $attributes . ' archive="'. $url .'" width="';
 			$html .= ($width > 0) ? $width : '';

@@ -1077,474 +1077,6 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'aboutnontool'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      integer $show_edit Parameter description (if any) ...
-	 * @param      unknown $usersgroups Parameter description (if any) ...
-	 * @param      mixed $resource Parameter description (if any) ...
-	 * @param      object $helper Parameter description (if any) ...
-	 * @param      object $config Parameter description (if any) ...
-	 * @param      unknown $sections Parameter description (if any) ...
-	 * @param      object $params Parameter description (if any) ...
-	 * @param      object $attribs Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      unknown $fsize Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function aboutnontool( $database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $params, $attribs, $option, $fsize )
-	{
-		$xhub =& Hubzero_Factory::getHub();
-		$helper->getChildren();
-
-		$url = 'index.php?option='.$option.'&id='.$resource->id;
-		$sef = JRoute::_($url);
-
-		// Set the display date
-		switch ($params->get('show_date'))
-		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = $resource->created;    break;
-			case 2: $thedate = $resource->modified;   break;
-			case 3: $thedate = $resource->publish_up; break;
-		}
-
-		// Prepare/parse text
-		$introtext = stripslashes($resource->introtext);
-		$maintext  = ($resource->fulltext)
-				   ? stripslashes($resource->fulltext)
-				   : stripslashes($resource->introtext);
-
-		$maintext = stripslashes($maintext);
-
-		if ($introtext) {
-			$document =& JFactory::getDocument();
-			$document->setDescription(ResourcesHtml::encode_html(strip_tags($introtext)));
-		}
-
-		// Parse for <nb: > tags
-		$type = new ResourcesType( $database );
-		$type->load( $resource->type );
-
-		$fields = array();
-		if (trim($type->customFields) != '') {
-			$fs = explode("\n", trim($type->customFields));
-			foreach ($fs as $f)
-			{
-				$fields[] = explode('=', $f);
-			}
-		} else {
-			$flds = $config->get('tagstool');
-			$flds = explode(',',$flds);
-			foreach ($flds as $fld)
-			{
-				$fields[] = array($fld, $fld, 'textarea', 0);
-			}
-		}
-
-		if (!empty($fields)) {
-			for ($i=0, $n=count( $fields ); $i < $n; $i++)
-			{
-				// Explore the text and pull out all matches
-				array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
-
-				// Clean the original text of any matches
-				$maintext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$maintext);
-			}
-			$maintext = trim($maintext);
-		}
-
-		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
-		$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
-		$maintext = str_replace('<blink>','',$maintext);
-		$maintext = str_replace('</blink>','',$maintext);
-
-		$html  = '<div class="subject abouttab">'."\n";
-		$html .= "\t".'<table class="resource" summary="'.JText::_('RESOURCE_TBL_SUMMARY').'">'."\n";
-		$html .= "\t\t".'<tbody>'."\n";
-
-		// Check how much we can display
-		if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $show_edit=0)) {
-			// Protected - only show the introtext
-			$html .= ResourcesHtml::tableRow('',$introtext);
-		} else {
-			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_ABSTRACT'), $maintext );
-
-			$citations = '';
-			foreach ($fields as $field)
-			{
-				if (end($field) != NULL) {
-					if ($field[0] == 'citations') {
-						$citations = end($field);
-					} else {
-						$html .= ResourcesHtml::tableRow( $field[1], end($field) );
-					}
-				}
-			}
-
-			if ($params->get('show_citation')) {
-				if ($params->get('show_citation') == 1 || $params->get('show_citation') == 2) {
-					// Citation instructions
-					$helper->getUnlinkedContributors();
-
-					// Build our citation object
-					$cite = new stdClass();
-					$cite->title = $resource->title;
-					$cite->year = JHTML::_('date', $thedate, '%Y');
-					$juri =& JURI::getInstance();
-					if (substr($sef,0,1) == '/') {
-						$sef = substr($sef,1,strlen($sef));
-					}
-					$cite->location = $juri->base().$sef;
-					$cite->date = date( "Y-m-d H:i:s" );
-					$cite->url = '';
-					$cite->type = '';
-					$cite->author = $helper->ul_contributors;
-					if (isset($resource->doi)) {
-						$cite->doi = $config->get('doi').'r'.$resource->id.'.'.$resource->doi;
-					}
-
-					if ($params->get('show_citation') == 2) {
-						$citations = '';
-					}
-				} else {
-					$cite = null;
-				}
-
-				$citeinstruct  = ResourcesHtml::citation( $option, $cite, $resource->id, $citations, $resource->type );
-				$citeinstruct .= ResourcesHtml::citationCOins($cite, $resource, $config, $helper);
-				$html .= ResourcesHtml::tableRow( '<a name="citethis"></a>'.JText::_('COM_RESOURCES_CITE_THIS'), $citeinstruct );
-			}
-		}
-		// If the resource had a specific event date/time
-		if ($attribs->get( 'timeof', '' )) {
-			if (substr($attribs->get( 'timeof', '' ), -8, 8) == '00:00:00') {
-				$exp = '%B %d, %Y';
-			} else {
-				$exp = '%I:%M %p, %B %d, %Y';
-			}
-			if (substr($attribs->get('timeof', ''), 4, 1) == '-') {
-			$seminar_time = ($attribs->get( 'timeof', '' ) != '0000-00-00 00:00:00' || $attribs->get( 'timeof', '' ) != '')
-						  ? JHTML::_('date', $attribs->get( 'timeof', '' ), $exp)
-							  : '';
-			} else {
-				$seminar_time = $attribs->get('timeof', '');
-			}
-			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TIME'),$seminar_time);
-		}
-		// If the resource had a specific location
-		if ($attribs->get( 'location', '' )) {
-			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_LOCATION'),$attribs->get( 'location', '' ));
-		}
-		// Tags
-		if ($params->get('show_assocs')) {
-			$helper->getTagCloud( $show_edit );
-
-			$juser =& JFactory::getUser();
-			$frm = '';
-			/*Jif (!$juser->get('guest') && !isset($resource->tagform)) {
-				$rt = new ResourcesTags($database);
-				$usertags = $rt->get_tag_string( $resource->id, 0, 0, $juser->get('id'), 0, 0 );
-					
-				$document =& JFactory::getDocument();
-				$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
-					
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher =& JDispatcher::getInstance();
-
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$usertags)) );
-					
-				$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
-				$frm .= "\t".'<fieldset>'."\n";
-				$frm .= "\t\t".'<label class="tag">'."\n";
-				$frm .= "\t\t\t".JText::_('Your tags').': '."\n";
-				if (count($tf) > 0) {
-					$frm .= $tf[0];
-				} else {
-					$frm .= "\t\t\t".'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />'."\n";
-				}
-				$frm .= "\t\t".'</label>'."\n";
-				$frm .= "\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_SAVE').'"/>'."\n";
-				$frm .= "\t\t".'<input type="hidden" name="task" value="savetags" />'."\n";
-				$frm .= "\t".'</fieldset>'."\n";
-				$frm .= '</form>'."\n";
-			}*/
-
-			if ($helper->tagCloud) {
-				$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TAGS'),$helper->tagCloud.$frm);
-			}
-		}
-
-		$html .= "\t".' </tbody>'."\n";
-		$html .= "\t".'</table>'."\n";
-		$html .= '</div><!-- / .subject -->'."\n";
-		$html .= '<div class="clear"></div>'."\n";
-		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" />'."\n";
-
-		return $html;
-	}
-
-	/**
-	 * Short description for 'abouttool'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      integer $show_edit Parameter description (if any) ...
-	 * @param      unknown $usersgroups Parameter description (if any) ...
-	 * @param      mixed $resource Parameter description (if any) ...
-	 * @param      object $helper Parameter description (if any) ...
-	 * @param      mixed $config Parameter description (if any) ...
-	 * @param      unknown $sections Parameter description (if any) ...
-	 * @param      unknown $thistool Parameter description (if any) ...
-	 * @param      object $curtool Parameter description (if any) ...
-	 * @param      unknown $alltools Parameter description (if any) ...
-	 * @param      string $revision Parameter description (if any) ...
-	 * @param      object $params Parameter description (if any) ...
-	 * @param      object $attribs Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      unknown $fsize Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function abouttool( $database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $option, $fsize )
-	{
-		$xhub =& Hubzero_Factory::getHub();
-
-		if (!$thistool) {
-			$helper->getChildren();
-		}
-
-		if ($resource->alias) {
-			$url = 'index.php?option='.$option.'&alias='.$resource->alias;
-		} else {
-			$url = 'index.php?option='.$option.'&id='.$resource->id;
-		}
-		$sef = JRoute::_($url);
-
-		// Set the display date
-		switch ($params->get('show_date'))
-		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = $resource->created;    break;
-			case 2: $thedate = $resource->modified;   break;
-			case 3: $thedate = $resource->publish_up; break;
-		}
-		if ($curtool) {
-			$thedate = $curtool->released;
-		}
-
-		// Prepare/parse text
-		$introtext = stripslashes($resource->introtext);
-		$maintext  = ($resource->fulltext)
-				   ? stripslashes($resource->fulltext)
-				   : stripslashes($resource->introtext);
-
-		$maintext = stripslashes($maintext);
-
-		if ($introtext) {
-			$document =& JFactory::getDocument();
-			$document->setDescription(ResourcesHtml::encode_html(strip_tags($introtext)));
-		}
-
-		// Parse for <nb: > tags
-		$type = new ResourcesType( $database );
-		$type->load( $resource->type );
-
-		$fields = array();
-		if (trim($type->customFields) != '') {
-			$fs = explode("\n", trim($type->customFields));
-			foreach ($fs as $f)
-			{
-				$fields[] = explode('=', $f);
-			}
-		} else {
-			$flds = $config->get('tagstool');
-			$flds = explode(',',$flds);
-			foreach ($flds as $fld)
-			{
-				$fields[] = array($fld, $fld, 'textarea', 0);
-			}
-		}
-
-		if (!empty($fields)) {
-			for ($i=0, $n=count( $fields ); $i < $n; $i++)
-			{
-				// Explore the text and pull out all matches
-				array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
-
-				// Clean the original text of any matches
-				$maintext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$maintext);
-			}
-			$maintext = trim($maintext);
-		}
-
-		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
-		$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
-		$maintext = str_replace('<blink>','',$maintext);
-		$maintext = str_replace('</blink>','',$maintext);
-
-		if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
-				// Do nothing
-		} else {
-				// Get the wiki parser and parse the full description
-				$wikiconfig = array(
-					'option'   => $option,
-					'scope'    => 'resources'.DS.$resource->id,
-					'pagename' => 'resources',
-					'pageid'   => $resource->id,
-					'filepath' => $config->get('uploadpath'),
-					'domain'   => ''
-				);
-				ximport('Hubzero_Wiki_Parser');
-				$p =& Hubzero_Wiki_Parser::getInstance();
-				$maintext = $p->parse($maintext, $wikiconfig);
-		}
-
-		$html  = '<div class="subject abouttab">'."\n";
-
-		// Screenshots
-		$ss = new ResourceScreenshot($database);
-		$shots = ResourcesHtml::screenshots($resource->id, $resource->created, $config->get('uploadpath'), $config->get('uploadpath'), $resource->versionid, $ss->getScreenshots($resource->id, $resource->versionid), 1);
-		if($shots) {
-			$html .= ' <div class="sscontainer">'."\n";
-			$html .= $shots;
-			$html .= ' </div><!-- / .sscontainer -->'."\n";
-		}
-
-		$html .= "\t".'<table class="resource" summary="'.JText::_('COM_RESOURCES_RESOURCE_TBL_SUMMARY').'">'."\n";
-		$html .= "\t\t".'<tbody>'."\n";
-
-		// Check how much we can display
-		if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $show_edit=0)) {
-			// Protected - only show the introtext
-			$html .= ResourcesHtml::tableRow('',$introtext);
-		} else {
-
-			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_DESCRIPTION'), $maintext );
-
-			$citations = '';
-			foreach ($fields as $field)
-			{
-				if (end($field) != NULL) {
-					if ($field[0] == 'citations') {
-						$citations = end($field);
-					} else {
-						$html .= ResourcesHtml::tableRow( $field[1], end($field) );
-					}
-				}
-			}
-
-			if ($params->get('show_citation')) {
-				if ($params->get('show_citation') == 1 || $params->get('show_citation') == 2) {
-					// Citation instructions
-					$helper->getUnlinkedContributors();
-
-					// Build our citation object
-					$cite = new stdClass();
-					$cite->title = $resource->title;
-					$cite->year = JHTML::_('date', $thedate, '%Y');
-					if ($alltools && $resource->doi) {
-						$cite->location = ' <a href="'.$config->get('aboutdoi').'" title="'.JText::_('COM_RESOURCES_ABOUT_DOI').'">DOI</a>: '.$config->get('doi').'r'.$resource->id.'.'.$resource->doi;
-						$cite->date = '';
-					} else {
-						$juri =& JURI::getInstance();
-						if (substr($sef,0,1) == '/') {
-							$sef = substr($sef,1,strlen($sef));
-						}
-						$cite->location = $juri->base().$sef;
-						$cite->date = date( "Y-m-d H:i:s" );
-					}
-					$cite->url = '';
-					$cite->type = '';
-					$cite->author = $helper->ul_contributors;
-					if ($revision != 'dev' && $resource->doi) {
-						$cite->doi = $config->get('doi').'r'.$resource->id.'.'.$resource->doi;
-					}
-
-					if ($params->get('show_citation') == 2) {
-						$citations = '';
-					}
-				} else {
-					$cite = null;
-				}
-
-				$helper->getUnlinkedContributors();
-
-				$citeinstruct  = ResourcesHtml::citation( $option, $cite, $resource->id, $citations, $resource->type, $revision );
-				$citeinstruct .= ResourcesHtml::citationCOins($cite, $resource, $config, $helper);
-				$html .= ResourcesHtml::tableRow( '<a name="citethis"></a>'.JText::_('COM_RESOURCES_CITE_THIS'), $citeinstruct );
-
-			}
-		}
-		// If the resource had a specific event date/time
-		if ($attribs->get( 'timeof', '' )) {
-			if (substr($attribs->get( 'timeof', '' ), -8, 8) == '00:00:00') {
-				$exp = '%B %d, %Y';
-			} else {
-				$exp = '%I:%M %p, %B %d, %Y';
-			}
-			$seminar_time = ($attribs->get( 'timeof', '' ) != '0000-00-00 00:00:00' || $attribs->get( 'timeof', '' ) != '')
-						  ? JHTML::_('date', $attribs->get( 'timeof', '' ), $exp)
-						  : '';
-			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TIME'),$seminar_time);
-		}
-		// If the resource had a specific location
-		if ($attribs->get( 'location', '' )) {
-			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_LOCATION'),$attribs->get( 'location', '' ));
-		}
-		// Tags
-		if (!$thistool && $revision!='dev') {
-			if ($params->get('show_assocs')) {
-				$helper->getTagCloud( $show_edit );
-
-				$juser =& JFactory::getUser();
-				$frm = '';
-				/*if (!$juser->get('guest') && !isset($resource->tagform)) {
-					$rt = new ResourcesTags($database);
-					$usertags = $rt->get_tag_string( $resource->id, 0, 0, $juser->get('id'), 0, 0 );
-					
-					$document =& JFactory::getDocument();
-					$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
-					
-					JPluginHelper::importPlugin( 'hubzero' );
-					$dispatcher =& JDispatcher::getInstance();
-
-					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$usertags)) );
-					
-					$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
-					$frm .= "\t".'<fieldset>'."\n";
-					$frm .= "\t\t".'<label class="tag">'."\n";
-					$frm .= "\t\t\t".JText::_('Your tags').': '."\n";
-					if (count($tf) > 0) {
-						$frm .= $tf[0];
-					} else {
-						//$frm .= "\t\t\t".'<textarea name="tags" id="tags-men" rows="6" cols="35">'. $usertags .'</textarea>'."\n";
-						$frm .= "\t\t\t".'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />'."\n";
-					}
-					$frm .= "\t\t".'</label>'."\n";
-					$frm .= "\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_SAVE').'"/>'."\n";
-					$frm .= "\t\t".'<input type="hidden" name="task" value="savetags" />'."\n";
-					$frm .= "\t".'</fieldset>'."\n";
-					$frm .= '</form>'."\n";
-				}*/
-
-				if ($helper->tagCloud) {
-					$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TAGS'),$helper->tagCloud.$frm);
-				}
-			}
-		}
-		$html .= "\t".' </tbody>'."\n";
-		$html .= "\t".'</table>'."\n";
-		$html .= '</div><!-- / .subject -->'."\n";
-		$html .= '<div class="clear"></div>'."\n";
-		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" />'."\n";
-		return $html;
-
-	}
-
-	/**
 	 * Short description for 'about'
 	 * 
 	 * Long description (if any) ...
@@ -2172,22 +1704,97 @@ class ResourcesHtml
 		$blorp = '';
 		if ($children != NULL) {
 			$out .= '<ul>'."\n";
-				$base = $config->get('uploadpath');
-				foreach ($children as $child)
-				{
-					if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) {
+			$base = $config->get('uploadpath');
+			foreach ($children as $child) 
+			{
+				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) {
+					$ftype = ResourcesHtml::getFileExtension($child->path);
 
-						$ftype = ResourcesHtml::getFileExtension($child->path);
-
-						$url = ResourcesHtml::processPath($option, $child, $pid);
+					//$url = ResourcesHtml::processPath($option, $child, $pid);
 
 						$class = '';
+						$action = '';
 						if ($child->standalone == 1) {
 							$liclass = ' class="html"';
 							$title = stripslashes($child->title);
 						} else {
-							$rt = new ResourcesType( $database );
-							$rt->load( $child->type );
+							$rt = new ResourcesType($database);
+							$rt->load($child->type);
+							$tparams = new JParameter($rt->params);
+							
+							$lt = new ResourcesType($database);
+							$lt->load($child->logicaltype);
+							$ltparams = new JParameter($lt->params);
+							
+							// Check the link action by child's type
+							if ($child->logicaltype) {
+								$rtLinkAction = $ltparams->get('linkAction', 'extension');
+							} else {
+								$rtLinkAction = $tparams->get('linkAction', 'extension');
+							}
+							
+							switch ($rtLinkAction) 
+							{
+								case 'download':
+									$class = 'download';
+									$linkAction = 3;
+								break;
+
+								case 'lightbox':
+									$class = 'play';
+									$linkAction = 2;
+								break;
+
+								case 'newwindow':
+									$action = 'rel="external"';
+									$linkAction = 1;
+								break;
+
+								case 'extension':
+								default:
+									$linkAction = 0;
+
+									//$mediatypes = array('11','20','34','19','37','32','15','40','41','15','76');
+									$mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
+									//$downtypes = array('60','59','57','55');
+									$downtypes = array('thesis','handout','manual','software_download');
+
+									if (in_array($lt->alias, $downtypes)) {
+										$class = 'download';
+									} elseif (in_array($rt->alias, $mediatypes)) {
+										$mediatypes = array('flash_paper','breeze','32','26');
+										if (in_array($child->type, $mediatypes)) {
+											$class = 'play';
+										}
+									} else {
+										$class = 'download';
+									}
+								break;
+							}
+							
+							// Check for any link action overrides on the child itself
+							$childParams = new JParameter($child->params);
+							$linkAction = intval($childParams->get('link_action', $linkAction));
+							switch ($linkAction) 
+							{
+								case 3:
+									$class = 'download';
+								break;
+
+								case 2:
+									$class = 'play';
+								break;
+
+								case 1:
+									$action = 'rel="external"';
+								break;
+
+								case 0:
+								default:
+									// Do nothing
+								break;
+							}
+							
 							switch ($rt->alias)
 							{
 								case 'user_guide':
@@ -2198,45 +1805,45 @@ class ResourcesHtml
 									break;
 								case 'breeze':
 									$liclass = ' class="swf"';
-									$class = ' class="play"';
+									//$class = ' class="play"';
 									break;
+								
 								case 'hubpresenter':
 								 	$liclass = ' class="presentation"';
-									$class = ' class="hubpresenter"';
+									$class = 'hubpresenter';
 									break;
 								default:
-									$liclass = ' class="'.$ftype.'"';
+									$liclass = ' class="'.strtolower($ftype).'"';
 									break;
 							}
-							//if (stripslashes($child->title) == stripslashes($resource->title)) {
-								$title = ($child->logicaltitle)
-								       ? $child->logicaltitle
-									   : stripslashes($child->title);
-							/*} else {
-								$title = ($child->title) 
-								       ? stripslashes($child->title) 
-									   : $child->logicaltitle;
-							}*/
+							
+							$title = ($child->logicaltitle) ? $child->logicaltitle : stripslashes($child->title);
 						}
 
-						$child->title = str_replace( '"', '&quot;', $child->title );
-						$child->title = str_replace( '&amp;', '&', $child->title );
-						$child->title = str_replace( '&', '&amp;', $child->title );
-						$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
+					$url = ResourcesHtml::processPath($option, $child, $pid, $linkAction);
+						
+					$child->title = str_replace('"', '&quot;', $child->title);
+					$child->title = str_replace('&amp;', '&', $child->title);
+					$child->title = str_replace('&', '&amp;', $child->title);
+					$child->title = str_replace('&amp;quot;', '&quot;', $child->title);
 
-						// user guide 
-						$guide = 0;
-						if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) {
-							$liclass = ' class="guide"';
-							$guide = 1;
-						}
-
-						$out .= ' <li'.$liclass.'>';
-						$out .= ' '. ResourcesHtml::getFileAttribs( $child->path, $base, $fsize );
-						$out .= '<a'.$class.' href="'.$url.'" title="'.stripslashes($child->title).'">'.$title.'</a>';
-						$out .= '</li>'."\n";
+					// user guide 
+					//$guide = 0;
+					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) {
+						$liclass = ' class="guide"';
+						//$guide = 1;
 					}
-				}
+
+					$out .= "\t" . '<li' . $liclass . '>' . "\n";
+					$out .= "\t\t" . ResourcesHtml::getFileAttribs( $child->path, $base, $fsize ) . "\n";
+					$out .= "\t\t" . '<a';
+					$out .= ($class) ? ' class="' . $class . '"' : '';
+					$out .= ' href="' . $url . '"';
+					$out .= ($action)  ? ' ' . $action : '';
+					$out .= ' title="' . stripslashes($child->title) . '">' . $title . '</a>' . "\n";
+					$out .= "\t" . '</li>'."\n";
+				}	
+			}
 			$out .= '</ul>'."\n";
 		} else {
 			$out .= '<p>[ none ]</p>';
@@ -2255,8 +1862,8 @@ class ResourcesHtml
 	public function getFileExtension($url)
 	{
 		$type = '';
-		$arr  = explode('.',$url);
-		$type = end($arr);
+		$arr  = explode('.', $url);
+		$type = strtolower(end($arr));
 		$type = (strlen($type) > 4) ? 'html' : $type;
 		$type = (strlen($type) > 3)
 			  ? substr($type, 0, 3)
@@ -2303,15 +1910,16 @@ class ResourcesHtml
 						// internal link but a resource
 						$url = JRoute::_('index.php?option='.$option.'&id='. $id);
 					}
-				break;
-
+					break;
+				case 'video':
+					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=video');
+					break;
 				case 'hubpresenter':
 					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=watch');
 					break;
 				case 'breeze':
 					$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=play');
-				break;
-
+					break;
 				default:
 					if ($action == 2) {
 						$url = JRoute::_('index.php?option='.$option.'&id='.$pid.'&resid='.$id.'&task=play');
@@ -2462,98 +2070,154 @@ class ResourcesHtml
 				$firstChild->title = str_replace( '&amp;', '&', $firstChild->title );
 				$firstChild->title = str_replace( '&', '&amp;', $firstChild->title );
 
-				//$mediatypes = array('11','20','34','19','37','32','15','40','41','15','76');
-				$mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
-				//$downtypes = array('60','59','57','55');
-				$downtypes = array('thesis','handout','manual','software_download');
+				$mesg = '';
 				$class = '';
+				$action = '';
+				$xtra = '';
 				
+				$lt = new ResourcesType($database);
+				$lt->load($firstChild->logicaltype);
+				$ltparams = new JParameter($lt->params);
 				
-				$rt_lt = new ResourcesType( $database );
-				$rt_lt->load( $firstChild->logicaltype );
+				$rt = new ResourcesType($database);
+				$rt->load($firstChild->type);
+				$tparams = new JParameter($rt->params);
 				
-				$rt_t = new ResourcesType( $database );
-				$rt_t->load( $firstChild->type );
-							
-				if (in_array($rt_lt->alias,$downtypes)) {
-					$mesg  = 'Download';
-					$class = 'download';
-				} elseif (in_array($rt_t->alias,$mediatypes)) {
-					$mesg  = 'View Presentation';
-					$mediatypes = array('flash_paper','breeze','32','26');
-					if (in_array($firstChild->type,$mediatypes)) {
-						$class = 'play';
-					}
+				if ($firstChild->logicaltype) {
+					$rtLinkAction = $ltparams->get('linkAction', 'extension');
 				} else {
-					$mesg  = 'Download';
-					$class = 'download';
+					$rtLinkAction = $tparams->get('linkAction', 'extension');
 				}
+				
+				switch ($rtLinkAction) 
+				{
+					case 'download':
+						$mesg  = 'Download';
+						$class = 'download';
+						//$action = 'rel="download"';
+						$linkAction = 3;
+					break;
+					
+					case 'lightbox':
+						$mesg = 'View Resource';
+						$class = 'play';
+						//$action = 'rel="internal"';
+						$linkAction = 2;
+					break;
+					
+					case 'newwindow':
+						$mesg = 'View Resource';
+						//$class = 'popup';
+						$action = 'rel="external"';
+						$linkAction = 1;
+					break;
+					
+					case 'extension':
+					default:
+						$linkAction = 0;
+						
+						//$mediatypes = array('11','20','34','19','37','32','15','40','41','15','76');
+						$mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
+						//$downtypes = array('60','59','57','55');
+						$downtypes = array('thesis','handout','manual','software_download');
+						
+						if (in_array($lt->alias, $downtypes)) {
+							$mesg  = 'Download';
+							$class = 'download';
+						} elseif (in_array($rt->alias, $mediatypes)) {
+							$mesg  = 'View Presentation';
+							$mediatypes = array('flash_paper','breeze','32','26');
+							if (in_array($firstChild->type, $mediatypes)) {
+								$class = 'play';
+							}
+						} else {
+							$mesg  = 'Download';
+							$class = 'download';
+						}
 
-				if ($firstChild->standalone == 1) {
-					$mesg  = 'View Resource';
-					$class = ''; //'play';
-				}
+						if ($firstChild->standalone == 1) {
+							$mesg  = 'View Resource';
+							$class = ''; //'play';
+						}
 
-				if (substr($firstChild->path, 0, 7) == 'http://'
-				 || substr($firstChild->path, 0, 8) == 'https://'
-				 || substr($firstChild->path, 0, 6) == 'ftp://'
-				 || substr($firstChild->path, 0, 9) == 'mainto://'
-				 || substr($firstChild->path, 0, 9) == 'gopher://'
-				 || substr($firstChild->path, 0, 7) == 'file://'
-				 || substr($firstChild->path, 0, 7) == 'news://'
-				 || substr($firstChild->path, 0, 7) == 'feed://'
-				 || substr($firstChild->path, 0, 6) == 'mms://') {
-					$mesg  = 'View Link';
+						if (substr($firstChild->path, 0, 7) == 'http://' 
+						 || substr($firstChild->path, 0, 8) == 'https://'
+						 || substr($firstChild->path, 0, 6) == 'ftp://'
+						 || substr($firstChild->path, 0, 9) == 'mainto://'
+						 || substr($firstChild->path, 0, 9) == 'gopher://'
+						 || substr($firstChild->path, 0, 7) == 'file://'
+						 || substr($firstChild->path, 0, 7) == 'news://'
+						 || substr($firstChild->path, 0, 7) == 'feed://'
+						 || substr($firstChild->path, 0, 6) == 'mms://') {
+							$mesg  = 'View Link';
+						}
+					break;
 				}
 
 				// IF (not a simulator) THEN show the first child as the primary button
 				if ($firstChild->access==1 && $juser->get('guest')) {
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>'."\n";
-					$html .= ResourcesHtml::primaryButton($class.' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
+					$html .= ResourcesHtml::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
 					//$html .= t.'<p class="warning" style="clear: none;">You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can download.</p>'."\n";
 				} else {
-					$child_params = new JParameter( $firstChild->params );
-					$link_action = $child_params->get( 'link_action', '' );
+					$childParams = new JParameter($firstChild->params);
+					$linkAction = intval($childParams->get('link_action', $linkAction));
 
-					$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $link_action);
+					$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $linkAction);
 
-					//$class .= ($firstChild->type == 32) ? ' breeze' : '';
-
-					$attribs = new JParameter( $firstChild->attribs );
-					$width  = $attribs->get( 'width', '' );
-					$height = $attribs->get( 'height', '' );
-
-					$action = '';
-					if ($link_action == 1) {
-						$action = 'rel="external"';
-					} elseif ($link_action == 2) {
-						$w = (intval($width) > 0) ? intval($width) : 400;
-						$h = (intval($height) > 0) ? intval($height) : 400;
-						//$action = 'onclick="popupWindow(\''.$url.'\', \''.$firstChild->title.'\', '.$w.', '.$h.', \'auto\');"';
-						$mesg  = 'View Resource';
-						$class = 'play';
+					switch ($linkAction) 
+					{
+						case 3:
+							$mesg  = 'Download';
+							$class = 'download';
+						break;
+						
+						case 2:
+							$mesg  = 'View Resource';
+							$class = 'play';
+						break;
+						
+						case 1:
+							$mesg = 'View Resource';
+							//$class = 'popup';
+							$action = 'rel="external"';
+						break;
+						
+						case 0:
+						default:
+							// Do nothing
+						break;
 					}
 
-					if (intval($width) > 0 && intval($height) > 0) {
-						$class .= ' '.($width + 20).'x'.($height + 60);
+					$attribs = new JParameter($firstChild->attribs);
+					$width  = intval($attribs->get('width', 0));
+					$height = intval($attribs->get('height', 0));
+					if ($width > 0 && $height > 0) {
+						$class .= ' ' . ($width + 20) . 'x' . ($height + 60);
 					}
 
-					$xtra = '';
+					//$xtra = '';
 					//if ($firstChild->type == 13 || $firstChild->type == 15 || $firstChild->type == 33) {
-						$xtra = ' '. ResourcesHtml::getFileAttribs( $firstChild->path );
+						//$xtra = ' '. ResourcesHtml::getFileAttribs($firstChild->path);
 					//}
 					
 					//load a resouce type object on child resource type
-					$rt = new ResourcesType( $database );
-					$rt->load( $firstChild->type );
+					//$rt = new ResourcesType( $database );
+					//$rt->load( $firstChild->type );
 					                                                   
 					//if we are a hubpresenter resource type, do not show file type in button
-					if($rt->alias == "hubpresenter") {
-						$xtra = "";
+					if ($rt->alias == 'hubpresenter') {
+						//$xtra = "";
 						//$class = "play 1000x600";
-						$class = "hubpresenter";
-					}                   
+						$class = 'hubpresenter';
+					} else {
+						$mesg .= ' ' . ResourcesHtml::getFileAttribs($firstChild->path);
+					} 
+					
+					if($rt->alias == 'video') {
+						$class = 'video'.$class;
+					}       
 
 					if ($xact) {
 						$action = $xact;
@@ -2584,19 +2248,34 @@ class ResourcesHtml
 	 */
 	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
-		$title = htmlentities($title, ENT_QUOTES);
 		$out = '';
 
-		if ($disabled) {
-			$out .= "\t".'<p id="primary-document"><span class="'.$class.'" >'.$msg.'</span></p>'."\n";
-		} else {
-			$out .= "\t".'<p id="primary-document"><a class="'.$class.'" href="'.$href.'" title="'.$title.'" '.$action.'>'.$msg;
-			$out .= $xtra ? $xtra : '';
-			$out .= '</a></p>'."\n";
+		if ($disabled) 
+		{
+			$out .= "\t" . '<p id="primary-document">' . "\n";
+			$out .= "\t\t" . '<span class="' . $class . '">' . $msg . '</span>' . "\n";
+			$out .= "\t" . '</p>' . "\n";
+		} 
+		else 
+		{
+			$title = htmlentities($title, ENT_QUOTES);
+			
+			$out .= "\t" . '<p id="primary-document">' . "\n";
+			$out .= "\t\t" . '<a';
+			$out .= ($class)  ? ' class="' . $class . '"' : '';
+			$out .= ($href)   ? ' href="' . $href . '"'   : '';
+			$out .= ($title)  ? ' title="' . $title . '"' : '';
+			$out .= ($action) ? ' ' . $action             : '';
+			$out .= '>' . $msg . '</a>' . "\n";
+			//$out .= $xtra ? $xtra : '';
+			$out .= "\t" . '</p>'."\n";
 		}
-
-		if ($pop) {
-			$out .= "\t".'<div id="primary-document_pop"><div>'.$pop.'</div></div>'."\n";
+		
+		if ($pop) 
+		{
+			$out .= "\t" . '<div id="primary-document_pop">' . "\n";
+			$out .= "\t\t" . '<div>' . $pop . '</div>' . "\n";
+			$out .= "\t" . '</div>' . "\n";
 		}
 
 		return $out;

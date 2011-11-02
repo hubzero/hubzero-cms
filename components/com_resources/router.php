@@ -127,6 +127,7 @@ function ResourcesParseRoute($segments)
 			case 'download': $vars['task'] = 'download'; break;
 			case 'play':     $vars['task'] = 'play';     break;
 			case 'watch':	 $vars['task'] = 'watch';	 break;
+			case 'video':	 $vars['task'] = 'video';	 break;
 			//case 'license':  $vars['task'] = 'license';  break;
 			case 'citation': $vars['task'] = 'citation'; break;
 			case 'feed.rss': $vars['task'] = 'feed';     break;
