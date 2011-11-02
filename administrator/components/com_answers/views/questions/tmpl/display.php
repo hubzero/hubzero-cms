@@ -29,11 +29,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_( 'Answers Manager' ).'</a>', 'addedit.png' );
+
+JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Answers Manager' ) . '</a>', 'addedit.png');
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
-JToolBarHelper::addNew( 'newq', 'New Question');
-JToolBarHelper::deleteList( '', 'remove', 'Delete Question' );
+JToolBarHelper::addNew();
+JToolBarHelper::deleteList();
 
 ?>
 <script type="text/javascript">
@@ -110,12 +111,12 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
             	<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editq&amp;id[]=<?php echo $row->id; ?>" title="Edit this question"><?php echo stripslashes($row->subject); ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="Edit this question"><?php echo stripslashes($row->subject); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span></a></td>
 				<td><?php echo JHTML::_('date', $row->created, '%d %b, %Y') ?></td>
 				<td><?php echo $row->created_by; if ($row->anonymous) { echo ' (anon)'; } ?></td>
 <?php if ($row->answers > 0) { ?>
-				<td><a href="index.php?option=<?php echo $option ?>&amp;task=answers&amp;qid=<? echo $row->id; ?>" title="View the answers for this Question"><?php echo $row->answers; ?> response<?php if ($row->answers != 1) { echo 's'; } ?></a></td>
+				<td><a href="index.php?option=<?php echo $option ?>&amp;controller=answers&amp;qid=<? echo $row->id; ?>" title="View the answers for this Question"><?php echo $row->answers; ?> response<?php if ($row->answers != 1) { echo 's'; } ?></a></td>
 <?php } else { ?>
 				<td><?php echo $row->answers; ?></td>
 <?php } ?>
@@ -127,7 +128,8 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
@@ -139,4 +141,3 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	<li class="published"><img src="images/publish_g.png" width="16" height="16" border="0" alt="Open" /> = Open Question</li>
 	<li class="unpublished"><img src="images/publish_x.png" width="16" height="16" border="0" alt="Closed" /> = Closed Question</li>
 </ul>
-

@@ -28,11 +28,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_( 'Answers Manager' ).'</a>', 'addedit.png' );
-JToolBarHelper::addNew( 'newa', 'New Answer' );
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Answers Manager') . '</a>', 'addedit.png');
+JToolBarHelper::addNew();
 JToolBarHelper::editList();
-JToolBarHelper::deleteList( '', 'deletea', 'Delete' );
+JToolBarHelper::deleteList();
 
 ximport('Hubzero_View_Helper_Html');
 
@@ -50,7 +51,7 @@ function submitbutton(pressbutton) {
 </script>
 
 <h3>
-    <a href="index.php?option=<?php echo $this->option; ?>&amp;task=editq&amp;id[]=<?php echo $this->filters['qid']; ?>" title="Edit this question"><?php echo stripslashes($this->question->subject); ?></a>
+    <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->filters['qid']; ?>" title="Edit this question"><?php echo $this->escape(stripslashes($this->question->subject)); ?></a>
 </h3>
 
 <form action="index.php" method="post" name="adminForm">
@@ -113,14 +114,14 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	}
 
 	$row->answer = stripslashes($row->answer);
-	$row->answer = Hubzero_View_Helper_Html::shortenText($row->answer, 75);
+	$row->answer = Hubzero_View_Helper_Html::shortenText($row->answer, 75, 0);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edita&amp;id[]=<?php echo $row->id; ?>&amp;qid=<?php echo $this->question->id; ?>" title="Edit this Answer"><?php echo $row->answer; ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;qid=<?php echo $this->question->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><span><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;qid=<?php echo $this->question->id; ?>" title="Edit this Answer"><?php echo $row->answer; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;qid=<?php echo $this->question->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><span><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span></a></td>
 				<td><?php echo $row->created; ?></td>
-				<td><?php echo stripslashes($row->name).' ('.$row->created_by.')'; if ($row->anonymous) { echo ' (anon)'; } ?></td>
+				<td><?php echo $this->escape(stripslashes($row->name)).' ('.$row->created_by.')'; if ($row->anonymous) { echo ' (anon)'; } ?></td>
 				<td>+<?php echo $row->helpful; ?> -<?php echo $row->nothelpful; ?></td>
 			</tr>
 <?php
@@ -132,10 +133,11 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 
 	<input type="hidden" name="qid" value="<?php echo $this->question->id ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="task" value="answers" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
 
 <p>State: (click icon above to toggle state)</p>
@@ -143,4 +145,3 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	<li class="published"><img src="images/publish_g.png" width="16" height="16" border="0" alt="Accepted" /> = Accepted Answer</li>
 	<li class="unpublished"><img src="images/publish_x.png" width="16" height="16" border="0" alt="Unaccepted" /> = Unaccepted Answer</li>
 </ul>
-

@@ -28,16 +28,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-$text = ( $this->task == 'edita' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'Answer' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-JToolBarHelper::save( 'savea', 'Save Answer' );
+$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+JToolBarHelper::title(JText::_('Answer') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 $create_date = NULL;
-if (intval( $this->row->created ) <> 0) {
-	$create_date = JHTML::_('date', $this->row->created );
+if (intval( $this->row->created ) <> 0) 
+{
+	$create_date = JHTML::_('date', $this->row->created);
 }
 
 jimport('joomla.html.editor');
@@ -136,7 +137,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="answer[qid]" value="<?php echo $this->question->id; ?>" />
 	<input type="hidden" name="answer[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="savea" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
