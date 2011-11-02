@@ -77,6 +77,7 @@ class plgResourcesCitations extends JPlugin
 		} else {
 			$areas = array();
 		}
+		
 		return $areas;
 	}
 
@@ -101,9 +102,12 @@ class plgResourcesCitations extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
 			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) )
-			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
+			 && !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				$rtrn = 'metadata';
 			}
+		}
+		if (!$resource->_type->_params->get('plg_citations')) {
+			return $arr;
 		}
 
 		$database =& JFactory::getDBO();
