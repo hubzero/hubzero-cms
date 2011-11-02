@@ -30,12 +30,38 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$allow_tags = $this->config->get("citation_allow_tags","no");
+$allow_badges = $this->config->get("citation_allow_badges","no");
+
+$fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
+$fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
+$fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and Badges" : $fieldset_label;
+
+
+$t = array();
+$b = array();
+foreach($this->tags as $tag) {
+	$t[] = $tag->raw_tag;
+}
+foreach($this->badges as $badge) {
+	$b[] = $badge->raw_tag;
+}
+
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
+
+$tags_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', implode(",",$t))) );
+$badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))) );
+
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div>
 <div class="main section">
-
+	<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('Please enter the information for the work that references content on this site. <strong>Not all fields may apply to the citation</strong> - fill in only those that do.'); ?></p>
@@ -44,16 +70,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<h3><?php echo JText::_('DETAILS'); ?></h3>
 
 			<div class="group twoup">
-			<label for="type">
-				<?php echo JText::_('TYPE'); ?>:
-				<?php echo CitationsHtml::select('type', $this->types, $this->row->type); ?>
-			</label>
+				<label for="type">
+					<?php echo JText::_('TYPE'); ?>:
+					<select name="type" id="type">
+						<?php
+							foreach($this->types as $t) {
+								$sel = ($this->row->type == $t['id']) ? "selected=\"selected\"" : "";
+ 								echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
+							}	
+						?>
+					</select>
+				</label>
 
-			<label for="cite">
-				<?php echo JText::_('CITE_KEY'); ?>:
-				<input type="text" name="cite" id="cite" size="30" maxlength="250" value="<?php echo $this->row->cite; ?>" />
-				<span class="hint"><?php echo JText::_('CITE_KEY_EXPLANATION'); ?></span>
-			</label>
+				<label for="cite">
+					<?php echo JText::_('CITE_KEY'); ?>:
+					<input type="text" name="cite" id="cite" size="30" maxlength="250" value="<?php echo $this->row->cite; ?>" />
+					<span class="hint"><?php echo JText::_('CITE_KEY_EXPLANATION'); ?></span>
+				</label>
 			</div>
 
 			<label for="ref_type">
@@ -62,42 +95,46 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 			
 			<div class="group threeup">
-			<label for="date_submit">
-				<?php echo JText::_('DATE_SUBMITTED'); ?>:
-				<input type="text" name="date_submit" id="date_submit" size="30" maxlength="250" value="<?php echo $this->row->date_submit; ?>" />
-				<span class="hint">YYYY-MM-DD HH:MM:SS</span>
-			</label>
+				<label for="date_submit">
+					<?php echo JText::_('DATE_SUBMITTED'); ?>:
+					<input type="text" name="date_submit" id="date_submit" size="30" maxlength="250" value="<?php echo $this->row->date_submit; ?>" />
+					<span class="hint">YYYY-MM-DD HH:MM:SS</span>
+				</label>
 
-			<label for="date_accept">
-				<?php echo JText::_('DATE_ACCEPTED'); ?>:
-				<input type="text" name="date_accept" id="date_accept" size="30" maxlength="250" value="<?php echo $this->row->date_accept; ?>" />
-				<span class="hint">YYYY-MM-DD HH:MM:SS</span>
-			</label>
+				<label for="date_accept">
+					<?php echo JText::_('DATE_ACCEPTED'); ?>:
+					<input type="text" name="date_accept" id="date_accept" size="30" maxlength="250" value="<?php echo $this->row->date_accept; ?>" />
+					<span class="hint">YYYY-MM-DD HH:MM:SS</span>
+				</label>
 
-			<label for="date_publish">
-				<?php echo JText::_('DATE_PUBLISHED'); ?>:
-				<input type="text" name="date_publish" id="date_publish" size="30" maxlength="250" value="<?php echo $this->row->date_publish; ?>" />
-				<span class="hint">YYYY-MM-DD HH:MM:SS</span>
-			</label>
+				<label for="date_publish">
+					<?php echo JText::_('DATE_PUBLISHED'); ?>:
+					<input type="text" name="date_publish" id="date_publish" size="30" maxlength="250" value="<?php echo $this->row->date_publish; ?>" />
+					<span class="hint">YYYY-MM-DD HH:MM:SS</span>
+				</label>
 			</div>
 
-			<!--
 			<div class="group twoup">
-			<label for="year">
-				<?php echo JText::_('YEAR'); ?>:
-				<input type="text" name="year" id="year" size="4" maxlength="4" value="<?php echo $this->row->year; ?>" />
-			</label>
+				<label for="year">
+					<?php echo JText::_('YEAR'); ?>:
+					<input type="text" name="year" id="year" size="4" maxlength="4" value="<?php echo $this->row->year; ?>" />
+				</label>
 
-			<label for="month">
-				<?php echo JText::_('MONTH'); ?>:
-				<input type="text" name="month" id="month" size="11" maxlength="50" value="<?php echo $this->row->month; ?>" />
-			</label>
-			</div> -->
+				<label for="month">
+					<?php echo JText::_('MONTH'); ?>:
+					<input type="text" name="month" id="month" size="11" maxlength="50" value="<?php echo $this->row->month; ?>" />
+				</label>
+			</div> 
 
 			<label for="author">
 				<?php echo JText::_('AUTHORS'); ?>:
 				<input type="text" name="author" id="author" size="30" value="<?php echo $this->row->author; ?>" />
 				<span class="hint"><?php echo JText::_('Lastname, Firstname; Lastname, Firstname; Lastname ...'); ?></span>
+			</label>
+			
+			<label for="authoraddress">
+				<?php echo JText::_('Author Address'); ?>:
+				<input type="text" name="author_address" id="authoraddress" size="30" value="<?php echo $this->row->author_address; ?>" />
 			</label>
 
 			<label for="editor">
@@ -107,13 +144,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 
 			<label for="title">
-				<?php echo JText::_('TITLE_CHAPTER'); ?>:
+				<?php echo JText::_('TITLE_CHAPTER'); ?>:  <span class="required">Required</span>
 				<input type="text" name="title" id="title" size="30" maxlength="250" value="<?php echo $this->row->title; ?>" />
 			</label>
 
 			<label for="booktitle">
 				<?php echo JText::_('BOOK_TITLE'); ?>:
 				<input type="text" name="booktitle" id="booktitle" size="30" maxlength="250" value="<?php echo $this->row->booktitle; ?>" />
+			</label>
+			
+			<label for="shorttitle">
+				<?php echo JText::_('Short Title'); ?>:
+				<input type="text" name="short_title" id="shorttitle" size="30" maxlength="250" value="<?php echo $this->row->short_title; ?>" />
 			</label>
 
 			<label for="journal">
@@ -122,32 +164,44 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 			
 			<div class="group threeup">
-			<label for="volume">
-				<?php echo JText::_('VOLUME'); ?>:
-				<input type="text" name="volume" id="volume" size="11" maxlength="11" value="<?php echo $this->row->volume; ?>" />
-			</label>
+				<label for="volume">
+					<?php echo JText::_('VOLUME'); ?>:
+					<input type="text" name="volume" id="volume" size="11" maxlength="11" value="<?php echo $this->row->volume; ?>" />
+				</label>
 
-			<label for="number">
-				<?php echo JText::_('ISSUE'); ?>:
-				<input type="text" name="number" id="number" size="11" maxlength="50" value="<?php echo $this->row->number; ?>" />
-			</label>
+				<label for="number">
+					<?php echo JText::_('ISSUE'); ?>:
+					<input type="text" name="number" id="number" size="11" maxlength="50" value="<?php echo $this->row->number; ?>" />
+				</label>
 
-			<label for="pages">
-				<?php echo JText::_('PAGES'); ?>:
-				<input type="text" name="pages" id="pages" size="11" maxlength="250" value="<?php echo $this->row->pages; ?>" />
-			</label>
+				<label for="pages">
+					<?php echo JText::_('PAGES'); ?>:
+					<input type="text" name="pages" id="pages" size="11" maxlength="250" value="<?php echo $this->row->pages; ?>" />
+				</label>
 			</div>
 			
 			<div class="group twoup">
-			<label for="isbn">
-				<?php echo JText::_('ISBN'); ?>:
-				<input type="text" name="isbn" id="isbn" size="11" maxlength="50" value="<?php echo $this->row->isbn; ?>" />
-			</label>
+				<label for="isbn">
+					<?php echo JText::_('ISBN'); ?>:
+					<input type="text" name="isbn" id="isbn" size="11" maxlength="50" value="<?php echo $this->row->isbn; ?>" />
+				</label>
 
-			<label for="doi">
-				<abbr title="<?php echo JText::_('Digital Object Identifier'); ?>"><?php echo JText::_('DOI'); ?></abbr>:
-				<input type="text" name="doi" id="doi" size="30" maxlength="250" value="<?php echo $this->row->doi; ?>" />
-			</label>
+				<label for="doi">
+					<abbr title="<?php echo JText::_('Digital Object Identifier'); ?>"><?php echo JText::_('DOI'); ?></abbr>:
+					<input type="text" name="doi" id="doi" size="30" maxlength="250" value="<?php echo $this->row->doi; ?>" />
+				</label>
+			</div>
+			
+			<div class="group twoup">
+				<label for="callnumber">
+					<?php echo JText::_('Call Number'); ?>:
+					<input type="text" name="call_number" id="callnumber" value="<?php echo $this->row->call_number; ?>" />
+				</label>
+
+				<label for="accessionnumber">
+					<?php echo JText::_('Accession Number'); ?>:
+					<input type="text" name="accession_number" id="accessionnumber"  value="<?php echo $this->row->accession_number; ?>" />
+				</label>
 			</div>
 
 			<label for="series">
@@ -206,10 +260,75 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 
 			<label>
-				<?php echo JText::_('NOTES'); ?>:
-				<textarea name="note" rows="15" cols="10"><?php echo stripslashes($this->row->note); ?></textarea>
+				<?php echo JText::_('Abstract'); ?>:
+				<textarea name="abstract" rows="8" cols="10"><?php echo stripslashes($this->row->abstract); ?></textarea>
 			</label>
+			
+			<label>
+				<?php echo JText::_('Notes'); ?>:
+				<textarea name="note" rows="8" cols="10"><?php echo stripslashes($this->row->note); ?></textarea>
+			</label>
+			
+			<label>
+				<?php echo JText::_('Keywords'); ?>:
+				<textarea name="keywords" rows="8" cols="10"><?php echo stripslashes($this->row->keywords); ?></textarea>
+			</label>
+				
+			<label>
+				<?php echo JText::_('Research Notes'); ?>:
+				<textarea name="research_notes" rows="8" cols="10"><?php echo stripslashes($this->row->research_notes); ?></textarea>
+			</label>
+			
+			<div class="group twoup">
+				<label for="language">
+					<?php echo JText::_('Language'); ?>:
+					<input type="text" name="language" id="language" size="11" maxlength="50" value="<?php echo $this->row->language; ?>" />
+				</label>
+
+				<label for="label">
+					<?php echo JText::_('Label'); ?>:
+					<input type="text" name="label" id="label" size="30" maxlength="250" value="<?php echo $this->row->label; ?>" />
+				</label>
+			</div>
 		</fieldset><div class="clear"></div>
+		
+		<?php if($allow_tags == "yes" || $allow_badges == "yes") : ?>
+			<div class="explaination">
+				<p><?php echo JText::_(''); ?></p>
+			</div>
+			<fieldset>
+				<h3><?php echo $fieldset_label; ?></h3>
+				<?php if($allow_tags == "yes") : ?>
+					<label>
+						Tags: <span class="optional">Optional</span>
+						<?php 
+							if (count($tags_list) > 0) {
+								echo $tags_list[0];
+							} else {
+								echo "<input type=\"text\" name=\"tags\" value=\"{$tags}\" />";
+							} 
+						?>
+						<span class="hint"><?php echo JText::_('Enter tags separated by commas (e.g. negf theory, ion transport).'); ?></span>
+					</label>
+				<?php endif; ?>
+				
+				<?php if($allow_badges == "yes") : ?>
+					<label class="badges">
+						Badges: <span class="optional">Optional</span>
+						<?php 
+							if (count($badges_list) > 0) {
+								echo $badges_list[0];
+							} else {
+								echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
+							} 
+						?>
+						<span class="hint"><?php echo JText::_('Enter badges separated by commas (e.g.evidence-based, peer-reviewed).'); ?></span>
+					</label>
+				<?php endif; ?>
+			</fieldset><div class="clear"></div>
+		<?php endif; ?>
+		
+		
 		<div class="explaination">
 			<p><?php echo JText::_('Please enter all the resources, articles, or topic pages the work references.'); ?></p>
 		</div>

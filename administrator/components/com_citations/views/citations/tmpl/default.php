@@ -30,6 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title( JText::_( 'CITATIONS' ), 'addedit.png' );
+JToolBarHelper::preferences( 'com_citations', 600, 800 );
 JToolBarHelper::addNew( 'add', JText::_('NEW') );
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
@@ -73,9 +74,9 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th width="100px"><?php echo JText::_('TYPE'); ?></th>
 				<th><?php echo JText::_('TITLE'); ?> / <?php echo JText::_('AUTHORS'); ?></th>
 				<th><?php echo JText::_('YEAR'); ?></th>
-				<th><?php echo JText::_('TYPE'); ?></th>
 				<th><?php echo JText::_('AFFILIATED'); ?></th>
 				<th><?php echo JText::_('FUNDED_BY'); ?></th>
 			</tr>
@@ -98,9 +99,19 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
+				<td>
+					<?php 
+						$type = "";	
+						foreach($this->types as $t) {
+							if($row->type == $t['id']) {
+								$type = $t['type_title'];
+							}
+						}
+						echo ($type) ? $type : "Generic";
+					?>
+				</td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id; echo $filterstring; ?>"><?php echo $row->title; ?></a><br /><small><?php echo $row->author; ?></small></a></td>
 				<td><?php echo $row->year; ?></td>
-				<td><?php echo $row->type; ?></td>
 				<td><?php if ($row->affiliated == 1) { echo '<span class="check">'.JText::_('YES').'</span>'; } ?></td>
 				<td><?php if ($row->fundedby == 1) { echo '<span class="check">'.JText::_('YES').'</span>'; } ?></td>
 			</tr>

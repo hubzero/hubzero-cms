@@ -32,6 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
+jimport('joomla.filesystem.folder');
+jimport('joomla.filesystem.file');
 
 /**
  * Short description for 'CitationsController'
@@ -50,43 +52,31 @@ class CitationsController extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$this->types = array(
-			'article'=>JText::_('ARTICLE'),
-			'book'=>JText::_('BOOK'),
-			'booklet'=>JText::_('BOOKLET'),
-			'conference'=>JText::_('CONFERENCE'),
-			'inbook'=>JText::_('INBOOK'),
-			'incollection'=>JText::_('INCOLLECTION'),
-			'inproceedings'=>JText::_('INPROCEEDINGS'),
-			'journal'=>JText::_('JOURNAL'),
-			'magazine'=>JText::_('MAGAZINE'),
-			'manual'=>JText::_('MANUAL'),
-			'mastersthesis'=>JText::_('MASTERSTHESIS'),
-			'misc'=>JText::_('MISC'),
-			'phdthesis'=>JText::_('PHDTHESIS'),
-			'proceedings'=>JText::_('PROCEEDINGS'),
-			'techreport'=>JText::_('TECHREPORT'),
-			'unpublished'=>JText::_('UNPUBLISHED'),
-			'patent appl'=>JText::_('PATENT'),
-			'chapter'=>JText::_('CHAPTER'),
-			'notes'=>JText::_('NOTES'),
-			'letter'=>JText::_('LETTER'),
-			'xarchive'=>JText::_('XARCHIVE'),
-			'manuscript'=>JText::_('MANUSCRIPT')
-
-		);
 
 		$this->_task = strtolower(JRequest::getVar('task', ''));
 
 		switch ($this->_task)
 		{
-			case 'download': $this->download(); break;
-			case 'save':     $this->save();     break;
-			case 'edit':     $this->edit();     break;
-			case 'add':      $this->add();      break;
-			case 'delete':   $this->delete();   break;
-			case 'browse':   $this->browse();   break;
 			case 'intro':    $this->intro();    break;
+			case 'browse':   $this->browse();   break;
+			case 'add':      $this->add();      break;
+			case 'edit':     $this->edit();     break;
+			case 'save':     $this->save();     break;
+			case 'delete':   $this->delete();   break;
+			
+			//download
+			case 'download': 		$this->download(); 			break;
+			case 'downloadbatch':	$this->download_batch();	break;
+			
+			//import
+			case 'import':			$this->import();			break;
+			case 'import_upload':	$this->import_upload();		break;
+			case 'import_review':	$this->import_review();		break;
+			case 'import_save':		$this->import_save();		break;
+			case 'import_saved':	$this->import_saved();		break;
+			
+			//ajax 			
+			case 'getformat':		$this->getFormatTemplate();	break;
 
 			default: $this->intro(); break;
 		}
@@ -128,16 +118,19 @@ class CitationsController extends Hubzero_Controller
 
 		// Get some stats
 		$view->typestats = array();
-		$types = $this->types;
-		foreach ($types as $t=>$x)
+		$ct = new CitationsType( $this->database );
+		$types = $ct->getType();
+		foreach ($types as $t) 
 		{
-			$view->typestats[$x] = $row->getCount( array('type'=>$t), false );
+			$view->typestats[$t['type_title']] = $row->getCount( array('type'=>$t['id']), false );
 		}
 
+		//are we allowing importing
+		$view->allow_import = $this->config->get("citation_import", 1);
+		
 		// Output HTML
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
+		$view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		
 		$view->display();
 	}
 
@@ -155,15 +148,12 @@ class CitationsController extends Hubzero_Controller
 		$view->title = JText::_(strtoupper($this->_name));
 		$view->option = $this->_option;
 		$view->database = $this->database;
+		$view->config = $this->config;
+		//$view->format = ($this->config->get('format')) ? $this->config->get('format') : 'APA';
 
-		$view->format = ($this->config->get('format')) ? $this->config->get('format') : 'APA';
-
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']  = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit'), 'request' );
+		$view->filters['limit']  = JRequest::getInt( 'limit', 50, 'request' );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
 		$view->filters['type']   = JRequest::getVar( 'type', '' );
 		$view->filters['filter'] = JRequest::getVar( 'filter', '' );
@@ -192,7 +182,8 @@ class CitationsController extends Hubzero_Controller
 		$view->citations = $obj->getRecords( $view->filters, false );
 
 		// Add some data to our view for form filtering/sorting
-		$view->types = array_merge(array('all'=>JText::_('ALL')), $this->types);
+		$ct = new CitationsType( $this->database );
+		$view->types = $ct->getType();
 
 		$view->filter = array(
 			'all'=>JText::_('ALL'),
@@ -209,9 +200,35 @@ class CitationsController extends Hubzero_Controller
 			'journal ASC'=>JText::_('JOURNAL')
 		);
 
+		//get the resolver
+		$cURL = curl_init();
+		curl_setopt( $cURL, CURLOPT_URL, "http://worldcatlibraries.org/registry/lookup?IP=requestor" );
+		curl_setopt( $cURL, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt( $cURL, CURLOPT_TIMEOUT, 10 );
+		$r = curl_exec( $cURL );
+		curl_close( $cURL );
+		
+		//parse the returned xml
+		if($r) {
+			$xml = simplexml_load_string( $r );
+			$resolver = $xml->resolverRegistryEntry->resolver;
+			
+			//set some needed urls
+			$view->openurl['link'] = $resolver->baseURL;
+			$view->openurl['text'] = $resolver->linkText;
+			$view->openurl['icon'] = $resolver->linkIcon;
+		}
+		
 		// Push some styles to the template
 		$this->_getStyles();
 
+		//push jquery to doc
+		$document =& JFactory::getDocument();
+		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
+		
+		//push scripts
+		$this->_getScripts();
+		
 		// Set the page title
 		$this->_buildTitle();
 
@@ -222,6 +239,10 @@ class CitationsController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
+		
+		//get any messages
+		$view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		
 		$view->display();
 	}
 
@@ -286,7 +307,7 @@ class CitationsController extends Hubzero_Controller
 		$view = new JView( array('name'=>'edit') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		$view->option = $this->_option;
-		$view->types = $this->types;
+		$view->config = $this->config;
 
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getVar( 'id', array() );
@@ -313,11 +334,24 @@ class CitationsController extends Hubzero_Controller
 
 			// It's new - no associations to get
 			$view->assocs = array();
+			
+			//tags & badges
+			$view->tags = array();
+			$view->badges = array();
 		} else {
 			// Get the associations
 			$view->assocs = $assoc->getRecords( array('cid'=>$id) );
+			
+			//get the citations tags and badges
+			$t = new TagsTag( $this->database );
+			$view->tags = $t->getCloud( "citations", "", $id);
+			$view->badges = $t->getCloud( "citations", "badges", $id);
 		}
 
+		//get the citation types
+		$ct = new CitationsType( $this->database );
+		$view->types = $ct->getType();
+		
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -325,6 +359,7 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
@@ -346,9 +381,20 @@ class CitationsController extends Hubzero_Controller
 			return;
 		}
 
+		//get the posted vars
+		$c = $_POST;
+		
+		//get tags
+		$tags = trim(JRequest::getVar("tags", ""));
+		unset($c['tags']);
+		
+		//get badges
+		$badges = trim(JRequest::getVar("badges",""));
+		unset($c['badges']);
+		
 		// Bind incoming data to object
 		$row = new CitationsCitation( $this->database );
-		if (!$row->bind( $_POST )) {
+		if (!$row->bind( $c )) {
 			$this->setError( $row->getError() );
 			$this->edit();
 			return;
@@ -421,39 +467,24 @@ class CitationsController extends Hubzero_Controller
 			}
 		}
 
+		
+		//check if we are allowing tags
+		if($this->config->get("citation_allow_tags","no") == "yes") {
+			$ct = new CitationTags( $this->database );
+			$ct->tag_object($this->juser->get("id"), $row->id, $tags, 1, false, "");
+		}
+		
+		//check if we are allowing badges
+		if($this->config->get("citation_allow_badges","no") == "yes") {
+			$ct = new CitationTags( $this->database );
+			$ct->tag_object($this->juser->get("id"), $row->id, $badges, 1, false, "badge");
+		}
+		
+			
 		// Redirect
-		$this->_redirect = 'index.php?option='.$this->_option;
-	}
-
-	/**
-	 * Short description for '_isempty'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $b Parameter description (if any) ...
-	 * @param      array $ignored Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-	private function _isempty($b, $ignored=array())
-	{
-		foreach ($ignored as $ignore)
-		{
-			if (array_key_exists($ignore,$b)) {
-				$b[$ignore] = NULL;
-			}
-		}
-		if (array_key_exists('id',$b)) {
-			$b['id'] = NULL;
-		}
-		$values = array_values($b);
-		$e = true;
-		foreach ($values as $v)
-		{
-			if ($v) {
-				$e = false;
-			}
-		}
-		return $e;
+		$this->addComponentMessage( "You have successfully added a new citation.", "passed" );
+		$this->_redirect = 'index.php?option='.$this->_option."&task=browse";
+		return;
 	}
 
 	/**
@@ -508,11 +539,497 @@ class CitationsController extends Hubzero_Controller
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
+	
+	
+	//---------------------------------------------------------------------
+	//	Import
+	//---------------------------------------------------------------------
+	
+	protected function import()
+	{
+		//get user object
+        $juser =& JFactory::getUser();
 
-	//----------------------------------------------------------
-	// Download
-	//----------------------------------------------------------
+		//are we allowing importing
+		$import_param = $this->config->get("citation_import", 1);
+		
+		//if importing is turned off go to intro page
+		if($import_param == 0) {
+			return $this->intro();
+		}
+		
+		//Check if they're logged in
+        if ($juser->get('guest')) {
+        	return $this->login();
+        }
 
+		//are we only allowing admins?
+		$isAdmin = $juser->authorize('com_citations','manage');
+		if($import_param == 2 && !$isAdmin) {
+			$this->addComponentMessage( "You must be a site administrator to import citations.", "warning" );
+			$this->_redirect = JRoute::_('index.php?option=com_citations');
+			return;
+		}
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Set the page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		//citation temp file cleanup
+		$this->citation_cleanup();
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'import') );
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
+		
+		//import the plugins
+		JPluginHelper::importPlugin( 'citation' );
+        $dispatcher =& JDispatcher::getInstance();
+	
+		//call the plugins
+		$view->accepted_files = $dispatcher->trigger( 'onImportAcceptedFiles' , array() );
+		
+		//get any messages
+		$view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		
+		//display view
+		$view->display();
+	}
+	
+	//------
+	
+	protected function import_upload()
+	{
+		//get user object
+        $juser =& JFactory::getUser();
+
+		//Check if they're logged in
+        if ($juser->get('guest')) {
+			return $this->intro();
+        }
+
+		//get file
+		$file = JRequest::getVar("citations_file", null, "files", "array");
+		
+		//make sure we have a file
+		if(!$file['name']) {
+			$this->addComponentMessage( "You must upload a file.", "error" );
+			$this->_redirect = JRoute::_('index.php?option=com_citations&task=import');
+			return;
+		}
+		
+		//make sure file is under 4MB
+		if($file['size'] > 4000000) {
+			$this->addComponentMessage( "The file you uploaded exceeds the maximum file size of 4MB.", "error" );
+			$this->_redirect = JRoute::_('index.php?option=com_citations&task=import');
+			return;	
+		}
+		
+		//make sure we dont have any file errors
+		if($file['error'] > 0) {
+			JError::raiseError(	500, "An error occurred while trying to upload the file." );
+		}
+		
+		//load citation import plugins
+		JPluginHelper::importPlugin( 'citation' );
+        $dispatcher =& JDispatcher::getInstance();
+	
+		//call the plugins
+		$citations = $dispatcher->trigger( 'onImport' , array($file) );
+		$citations = array_values(array_filter($citations));
+		
+		//did we get citations from the citation plugins
+		if(!$citations) {
+			$this->addComponentMessage( "An error occurred while trying to process your file. Your citations file is currently not in the right format", "error" );
+			$this->_redirect = JRoute::_('index.php?option=com_citations&task=import');
+			return;
+		}
+		
+		//get the session object
+		$session =& JFactory::getSession();
+		$sessionid = $session->getId();
+		
+		//write the citation data to files
+		$p1 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$file1 = JFile::write($p1, serialize($citations[0]['attention']));
+		$file2 = JFile::write($p2, serialize($citations[0]['no_attention']));
+		
+		//review imported citations
+		$this->_redirect = JRoute::_('index.php?option=com_citations&task=import_review');
+		return;
+	}
+	
+	//------
+	
+	protected function import_review()
+	{
+		//get user object
+        $juser =& JFactory::getUser();
+
+		//get the session object
+		$session =& JFactory::getSession();
+		$sessionid = $session->getId();
+		
+		//get the citations
+		$p1 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$citations_require_attention = unserialize(JFile::read($p1));
+		$citations_require_no_attention = unserialize(JFile::read($p2));
+		
+		//make sure we have some citations
+		if(!$citations_require_attention && !$citations_require_no_attention) {
+			$this->addComponentMessage( "You must upload a citations file before continuing.", "error" );
+			$this->_redirect = JRoute::_('index.php?option=com_citations&task=import');
+			return;
+		}
+		
+		//push jquery to doc
+		$document =& JFactory::getDocument();
+		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		// Push some scripts to the template
+		$this->_getScripts();
+		// Set the page title
+		$this->_buildTitle();
+		// Set the pathway
+		$this->_buildPathway();
+		
+		//include tag handler
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'import', 'layout' => 'import_review') );
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
+		$view->citations_require_attention = $citations_require_attention;
+		$view->citations_require_no_attention = $citations_require_no_attention;
+		//$view->session = $session;
+		
+		//get any messages
+		$view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		
+		//display view
+		$view->display();
+	}
+	
+	//------
+	
+	protected function import_save()
+	{
+		//get user object
+        $juser =& JFactory::getUser();
+
+		//get the session object
+		$session =& JFactory::getSession();
+		$sessionid = $session->getId();
+		
+		//read in contents of citations file
+		$p1 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$cites_require_attention = unserialize(JFile::read($p1));
+		$cites_require_no_attention = unserialize(JFile::read($p2));
+		
+		//action for citations needing attention
+		$citations_action_attention = JRequest::getVar("citation_action_attention", array());
+		
+		//action for citations needing no attention
+		$citations_action_no_attention = JRequest::getVar("citation_action_no_attention", array());
+		
+		//check to make sure we have citations
+		if(!$cites_require_attention && !$cites_require_no_attention) {
+			$this->addComponentMessage( "You must upload a citations file before continuing.", "error" );
+			$this->_redirect = JRoute::_('index.php?option=com_citations&task=import');
+			return;
+		}
+		
+		//vars
+		$citations_saved = array();
+		$citations_not_saved = array();
+		$now = date("Y-m-d H:i:s");
+		$user = $this->juser->get("id");
+		$allow_tags = $this->config->get("citation_allow_tags","no");
+		$allow_badges = $this->config->get("citation_allow_badges","no");
+		
+		
+		//loop through each citation that required attention from user
+		if($cites_require_attention) 
+		{
+			foreach($cites_require_attention as $k => $cra) 
+			{
+			
+				//new citation object
+				$cc = new CitationsCitation( $this->database );
+			
+				//add a couple of needed keys
+				$cra['uid'] = $user;
+				$cra['created'] = $now;
+			
+				//remove errors
+				unset( $cra['errors'] );
+			
+				//if tags were sent over
+				if(array_key_exists("tags", $cra)) {
+					$tags = $cra['tags'];
+					unset($cra['tags']);
+				}
+			
+				//if badges were sent over
+				if(array_key_exists("badges", $cra)) {
+					$badges = $cra['badges'];
+					unset($cra['badges']);
+				}
+				
+				//take care fo type
+				$ct = new CitationsType( $this->database );
+				$types = $ct->getType();
+				
+				$type = "";
+				foreach($types as $t) {
+					if( strtolower($t['type_title']) == strtolower($cra['type']) ) {
+						$type = $t['id'];
+					}
+				}
+				$cra['type'] = ($type) ? $type : "";
+			
+				switch ($citations_action_attention[$k]) 
+				{
+					case 'overwrite':
+						$cra['id'] = $cra['duplicate'];
+						break;
+					case 'both':
+						break;
+					case 'discard':
+						$citations_not_saved[] = $cra;
+						continue 2;
+						break;
+				}
+			
+				//remove duplicate flag
+				unset( $cra['duplicate'] );
+			
+				//save the citation
+				if(!$cc->save( $cra )) {
+					echo "houston we have a problem.";
+					$citations_not_saved[] = $cra;
+					return;
+				} else{
+					//tags
+					if($allow_tags == "yes") {
+						$this->tag_citation( $user, $cc->id, $tags, "" );
+					}
+
+					//badges
+					if($allow_badges == "yes") {
+						$this->tag_citation( $user, $cc->id, $badges, "badge" );
+					}	
+
+					//add the citattion to the saved 
+					$citations_saved[] = $cc->id;
+				}
+			}
+		}
+		
+		//
+		foreach($cites_require_no_attention as $k => $crna)
+		{
+			$tags = "";
+			$badges = "";
+			
+			//new citation object
+			$cc = new CitationsCitation( $this->database );
+			
+			//add a couple of needed keys
+			$crna['uid'] = $user;
+			$crna['created'] = $now;
+			
+			//remove errors
+			unset( $crna['errors'] );
+			
+			//if tags were sent over
+			if(array_key_exists("tags", $crna)) {
+				$tags = $crna['tags'];
+				unset($crna['tags']);
+			}
+			
+			//if badges were sent over
+			if(array_key_exists("badges", $crna)) {
+				$badges = $crna['badges'];
+				unset($crna['badges']);
+			}
+			
+			//verify we haad this one checked to be submitted
+			if($citations_action_no_attention[$k] != 1) {
+				$citations_not_saved[] = $crna;
+				continue;
+			}
+			
+			//take care fo type
+			$ct = new CitationsType( $this->database );
+			$types = $ct->getType();
+			
+			$type = "";
+			foreach($types as $t) {
+				if( strtolower($t['type_title']) == strtolower($crna['type']) ) {
+					$type = $t['id'];
+				}
+			}
+			$crna['type'] = ($type) ? $type : "";
+			
+			//remove duplicate flag
+			unset( $crna['duplicate'] );
+			
+			//save the citation
+			if(!$cc->save( $crna )) {
+				echo "houston we have a problem.";
+				$citations_not_saved[] = $crna;
+				return;
+			} else{
+				//tags
+				if($allow_tags == "yes") {
+					$this->tag_citation( $user, $cc->id, $tags, "" );
+				}
+
+				//badges
+				if($allow_badges == "yes") {
+					$this->tag_citation( $user, $cc->id, $badges, "badge" );
+				}	
+
+				//add the citattion to the saved 
+				$citations_saved[] = $cc->id;
+			}
+		}
+		
+		//success message a redirect
+		$this->addComponentMessage( "You have successfully uploaded <strong>" . count($citations_saved) . "</strong> new citation(s). Your citation(s) can be viewed below.", "passed" );
+		
+		//if we have citations not getting saved
+		if(count($citations_not_saved) > 0) {
+			$this->addComponentMessage( "<strong>" . count($citations_not_saved) . "</strong> citation(s) NOT uploaded.", "warning" );
+		}
+		
+		
+		//get the session object
+		$session =& JFactory::getSession();
+		
+		//ids of sessions saved and not saved
+		$session->set("citations_saved", $citations_saved);
+		$session->set("citations_not_saved", $citations_not_saved);
+		
+		//delete the temp files that hold citation data
+		JFile::delete($p1);
+		JFile::delete($p2);
+		
+		//redirect
+		$this->_redirect = JRoute::_('index.php?option=com_citations&task=import_saved');
+		return;
+	}
+	
+	//-----
+	
+	protected function import_saved()
+	{
+		//get the session object
+		$session =& JFactory::getSession();
+		
+		//get the citations
+		$citations_saved = $session->get("citations_saved");
+		$citations_not_saved = $session->get("citations_not_saved");
+		
+		//check to make sure we have citations
+		if(!$citations_saved && !$citations_not_saved) {
+			$this->addComponentMessage( "You must upload a citations file before continuing.", "error" );
+			$this->_redirect = JRoute::_('index.php?option=com_citations&task=import');
+			return;
+		}
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		// Push some scripts to the template
+		$this->_getScripts();
+		// Set the page title
+		$this->_buildTitle();
+		// Set the pathway
+		$this->_buildPathway();
+		
+		//filters for gettiung jsut previously uploaded
+		$filters = array();
+		$filters['start'] = 0;
+		$filters['search'] = "";
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'import', 'layout' => 'import_saved') );
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
+		$view->config = $this->config;
+		$view->database = $this->database;
+		$view->filters = $filters;
+		$view->citations = array();
+		
+		foreach($citations_saved as $cs) {
+			$cc = new CitationsCitation( $this->database );
+			$cc->load($cs);
+			$view->citations[] = $cc;
+		}
+		
+		$view->openurl['link'] = "";
+		$view->openurl['text'] = "";
+		$view->openurl['icon'] = "";
+		
+		//take care fo type
+		$ct = new CitationsType( $this->database );
+		$view->types = $ct->getType();
+		
+		//get any messages
+		$view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		
+		//display view
+		$view->display();
+	}
+
+	//-----
+	
+	protected function tag_citation( $userid, $objectid, $tag_string, $label)
+	{
+		if($tag_string) {
+			$ct = new CitationTags( $this->database );
+			$ct->tag_object( $userid, $objectid, $tag_string, 1, false, $label );
+		}
+	}
+	
+	//-----
+	
+	protected function citation_cleanup()
+	{
+		$p = JPATH_ROOT . DS . 'tmp' . DS . 'citations';
+		
+		if(is_dir($p)) {
+			$tmp = JFolder::files($p);
+		
+			if($tmp) {
+				foreach($tmp as $t) {
+					$ft= filemtime( $p . DS . $t);
+			
+					if($ft < strtotime("-1 DAY")) {
+						JFile::delete( $p . DS . $t );
+					}
+				} 
+			}
+		}
+	}
+	
+	
+	//---------------------------------------------------------------------
+	//	Export
+	//---------------------------------------------------------------------
 
 	/**
 	 * Short description for 'download'
@@ -578,17 +1095,80 @@ class CitationsController extends Hubzero_Controller
 		die; // REQUIRED
 	}
 
-	/**
-	 * Short description for '_serveup'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $inline Parameter description (if any) ...
-	 * @param      string $p Parameter description (if any) ...
-	 * @param      string $f Parameter description (if any) ...
-	 * @param      string $mime Parameter description (if any) ...
-	 * @return     void
-	 */
+	//-----
+	
+	protected function download_batch()
+	{
+		//get the submit buttons value
+		$download = JRequest::getVar("download", "", "post");
+		
+		//get the citations we want to export
+		$citations = JRequest::getVar("download_marker", array(), "post");
+	
+		//return to browse mode if we really dont wanna download
+		if(strtolower($download) != "endnote" && strtolower($download) != "bibtex") {
+			return $this->browse();
+		}
+		
+		//load the downloader
+		include_once( JPATH_COMPONENT.DS.'helpers'.DS.'citations.download.php' );
+		
+		//var to hold output
+		$doc = "";
+		
+		//for each citation we want to downlaod
+		foreach($citations as $c) 
+		{
+			$cc = new CitationsCitation( $this->database );
+			$cc->load( $c );
+			
+			$cd = new CitationsDownload();
+			$cd->setFormat( strtolower($download) );
+			$doc .= $cd->formatReference( $cc ) . "\r\n\r\n";
+			
+			$mine = $cd->getMimeType();
+		} 
+		
+		$ext = (strtolower($download) == 'bibtex') ? ".bib" : ".enw"; 
+		
+		//filename
+		$filename = "citations_export_" . strtolower($download) . "_" . date("Y_m_d") . $ext;
+
+		//output file
+		header("Content-Type: application/octet-stream");
+		header("Content-Disposition: Attachment; filename={$filename}");
+		header("Pragma: no-cache");
+		echo $doc;
+		exit();
+	}
+	
+	
+	//----------------------------------------------------------
+	// 	Utilites
+	//----------------------------------------------------------
+	
+	private function _isempty($b, $ignored=array())
+	{
+		foreach ($ignored as $ignore)
+		{
+			if (array_key_exists($ignore,$b)) {
+				$b[$ignore] = NULL;
+			}
+		}
+		if (array_key_exists('id',$b)) {
+			$b['id'] = NULL;
+		}
+		$values = array_values($b);
+		$e = true;
+		foreach ($values as $v) 
+		{
+			if ($v) {
+				$e = false;
+			}
+		}
+		return $e;
+	}
+	
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
@@ -694,6 +1274,14 @@ class CitationsController extends Hubzero_Controller
 		}
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
+	}
+	
+	//-----
+	
+	public function getFormatTemplate() 
+	{
+		$format = JRequest::getVar("format", "apa");
+		echo "format" . $format;
 	}
 }
 

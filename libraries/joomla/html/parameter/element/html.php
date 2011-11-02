@@ -28,41 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('JPATH_BASE') or die();
 
-/**
- * Short description for 'CitationsHtml'
- * 
- * Long description (if any) ...
- */
-class CitationsHtml
+class JElementHTML extends JElement
 {
+	var	$_name = 'HTML';
 
-	/**
-	 * Short description for 'select'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function select($name, $array, $value, $class='')
+	function fetchElement($name, $value, &$node, $control_name)
 	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
-		foreach ($array as $avalue => $alabel)
-		{
-			$selected = ($avalue == $value || $alabel == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$out .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'."\n";
-		}
-		$out .= '</select>'."\n";
-		return $out;
+		return $node->_data;
 	}
 }
-?>

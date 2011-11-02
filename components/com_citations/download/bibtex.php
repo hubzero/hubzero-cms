@@ -66,11 +66,26 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 	public function format($row)
 	{
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'BibTex.php');
-
 		$bibtex = new Structures_BibTex();
 
 		$addarray = array();
-		$addarray['type']    = $row->type;
+		
+		//get all the citation types
+		$db =& JFactory::getDBO();
+		$ct = new CitationsType( $db );
+		$types = $ct->getType();
+		
+		//find the right title
+		$type = "";
+		foreach($types as $t) {
+			if($t['id'] == $row->type) {
+				$type = $t['type'];
+			}
+		}
+		$type = ($type != "") ? $type : "Generic";
+		
+		
+		$addarray['type']    = $type;
 		$addarray['cite']    = $row->cite;
 		$addarray['title']   = $row->title;
 		$addarray['address'] = $row->address;
@@ -78,22 +93,16 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		for ($i=0, $n=count( $auths ); $i < $n; $i++)
 		{
 			$author = trim($auths[$i]);
-			$author = preg_replace('/\{\{(.+)\}\}/i','',$author);
-			if (strstr( $author, ',' )) {
-				$author_arr = explode(',',$author);
-				$author_arr = array_map('trim',$author_arr);
+			$author_arr = explode(',',$author);
+			$author_arr = array_map('trim',$author_arr);
+			
+			$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
+			$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
 
-				$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? trim($author_arr[1]) : '';
-				$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? trim($author_arr[0]) : '';
-			} else {
-				$author_arr = explode(' ',$author);
-				$author_arr = array_map('trim',$author_arr);
-
-				$last = array_pop($author_arr);
-				$addarray['author'][$i]['first'] = (count($author_arr) > 0) ? implode(' ',$author_arr) : '';
-				$addarray['author'][$i]['last']  = ($last) ? trim($last) : '';
-			}
+			$addarray['author'][$i]['first'] = preg_replace('/\{\{\d+\}\}/',"", $addarray['author'][$i]['first']);
+			$addarray['author'][$i]['last'] = preg_replace('/\{\{\d+\}\}/',"", $addarray['author'][$i]['last']);
 		}
+		
 		$addarray['booktitle']    = $row->booktitle;
 		$addarray['chapter']      = $row->chapter;
 		$addarray['edition']      = $row->edition;
@@ -121,6 +130,16 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 			$addarray['isbn']     = $row->isbn;
 		}
 		$addarray['doi']          = $row->doi;
+		
+		$addarray['language'] 			  = $row->language;
+		$addarray['accession_number'] 	  = $row->accession_number;
+		$addarray['short_title'] 		  = html_entity_decode($row->short_title);
+		$addarray['author_address'] 	  = $row->author_address;
+		$addarray['keywords'] 			  = str_replace("\r\n",", ",$row->keywords);
+		$addarray['abstract'] 			  = $row->abstract;
+		$addarray['call_number'] 	      = $row->call_number;
+		$addarray['label'] 			      = $row->label;
+		$addarray['research_notes'] 	  = $row->research_notes;
 
 		$bibtex->addEntry($addarray);
 

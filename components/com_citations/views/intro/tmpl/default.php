@@ -30,17 +30,25 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div>
+
+<?php
+	foreach($this->messages as $message) {
+		echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+	}
+?>
 
 <div id="introduction" class="section">
 	<div class="aside">
 		<h3>Help</h3>
 		<ul>
 			<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">Submit a citation</a></li>
+			<?php if($this->allow_import == 1 || $this->allow_import == 2) : ?>
+				<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=import'); ?>">Import citations</a></li>
+			<?php endif; ?>	
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">

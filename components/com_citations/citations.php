@@ -33,10 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $config = JFactory::getConfig();
 
-if ($config->getValue('config.debug')) {
+//if ($config->getValue('config.debug')) {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
-}
+//}
 
 jimport('joomla.application.component.helper');
 
@@ -44,8 +44,11 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'citation.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'association.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'author.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'secondary.php' );
-require_once( JPATH_COMPONENT.DS.'citations.format.php' );
-require_once( JPATH_COMPONENT.DS.'citations.html.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'tags.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'type.php' );
+require_once( JPATH_COMPONENT.DS.'helpers'.DS.'citations.format.php' );
+require_once( JPATH_COMPONENT.DS.'helpers'.DS.'citations.html.php' );
+require_once( JPATH_COMPONENT.DS.'helpers'.DS.'citations.download.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 // Editor usertype check

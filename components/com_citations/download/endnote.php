@@ -64,62 +64,30 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 	 * @return     string Return description (if any) ...
 	 */
 	public function format($row)
-	{
+	{ 
+		//var to hold document conetnt
 		$doc = '';
-		switch ($row->type)
-		{
-			case 'article':
-				$doc .= "%0 Journal Article\r\n";
-				if ($row->journal) $doc .= "%J " . trim(stripslashes($row->journal)) . "\r\n";
-				break; // journal
-			case 'conference':
-				$doc .= "%0 Conference Paper\r\n";
-				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
-				break;
-			case 'proceedings':
-			case 'inproceedings':
-				$doc .= "%0 Conference Proceedings\r\n";
-				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
-				break; // conference proceedings 
-			case 'techreport':
-				$doc .= "%0 Tech Report\r\n";
-				break; // report
-			case 'book':
-				$doc .= "%0 Book\r\n";
-				break; // book
-			case 'inbook':
-				$doc .= "%0 Book Excerpt\r\n";
-				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
-				break; // book section
-			case 'mastersthesis':
-				$doc .= "%0 Masters Thesis\r\n";
-				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
-				break;
-			case 'phdthesis':
-				$doc .= "%0 PhD Thesis\r\n";
-				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
-				break; // thesis
-			case 'patent':
-				$doc .= "%0 Patent\r\n";
-				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
-				break; // patent
-			case 'xarchive':
-			case 'magazine':
-			case 'patent appl':
-			case 'chapter':
-			case 'notes':
-			case 'letter':
-			case 'manuscript':
-			case 'booklet':
-			case 'manual':
-			case 'misc':
-			case 'unpublished':
-			default:
-				$doc .= "%0 Generic\r\n";
-				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
-				if ($row->journal) $doc .= "%B " . trim(stripslashes($row->journal)) . "\r\n";
-				break; // generic
+		
+		//get all the citation types
+		$db =& JFactory::getDBO();
+		$ct = new CitationsType( $db );
+		$types = $ct->getType();
+		
+		//find the right title
+		$type = "";
+		foreach($types as $t) {
+			if($t['id'] == $row->type) {
+				$type = $t['type_title'];
+			}
 		}
+		$type = ($type != "") ? $type : "Generic";
+		
+		//set the type
+		$doc .= "%0 {$type}" . "\r\n";
+		
+		if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
+		if ($row->journal) $doc .= "%J " . trim(stripslashes($row->journal)) . "\r\n";
+		
 		$doc .= "%D " . trim($row->year) . "\r\n";
 		$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
@@ -154,6 +122,16 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		if ($row->month)     $doc .= "%8 " . trim($row->month) . "\r\n";
 		if ($row->isbn)      $doc .= "%@ " . trim($row->isbn) . "\r\n";
 		if ($row->doi)       $doc .= "%1 " . trim($row->doi) . "\r\n";
+		
+		if($row->keywords)   		$doc .= "%K " . trim($row->keywords) . "\r\n";
+		if($row->research_notes)    $doc .= "%< " . trim($row->research_notes) . "\r\n";
+		if($row->abstract)   		$doc .= "%X " . trim($row->abstract) . "\r\n";
+		if($row->label)			    $doc .= "%F " . trim($row->label) . "\r\n";
+		if($row->language)		    $doc .= "%G " . trim($row->language) . "\r\n";
+		if($row->author_address)    $doc .= "%+ " . trim($row->author_address) . "\r\n";
+		if($row->accession_number)  $doc .= "%M " . trim($row->accession_number) . "\r\n";
+		if($row->call_number)  		$doc .= "%L " . trim($row->call_number) . "\r\n";
+		if($row->short_title)       $doc .= "%! " . trim($row->short_title) . "\r\n";
 
 		$doc .= "\r\n";
 

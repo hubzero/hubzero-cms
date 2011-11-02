@@ -109,7 +109,11 @@ class CitationsController extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
-
+		
+		//get the dynamic citation types
+		$ct = new CitationsType( $this->database );
+		$view->types = $ct->getType();
+		
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -144,6 +148,7 @@ class CitationsController extends Hubzero_Controller
 		$view = new JView( array('name'=>'citation') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
+		$view->config = $this->config;
 
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getVar( 'id', array() );
@@ -174,6 +179,31 @@ class CitationsController extends Hubzero_Controller
 			// Get the associations
 			$view->assocs = $assoc->getRecords( array('cid'=>$id) );
 		}
+
+		//get the citations tags
+		$database =& JFactory::getDBO();
+		$sql = "SELECT t.*
+				FROM #__tags_object to1 
+				INNER JOIN #__tags t ON t.id = to1.tagid 
+				WHERE to1.tbl='citations' 
+				AND to1.objectid={$id}
+				AND to1.label=''";
+		$database->setQuery( $sql );
+		$view->tags = $database->loadAssocList();
+		
+		//get the badges
+		$sql = "SELECT t.*
+				FROM #__tags_object to1 
+				INNER JOIN #__tags t ON t.id = to1.tagid 
+				WHERE to1.tbl='citations' 
+				AND to1.objectid={$id}
+				AND to1.label='badge'";
+		$database->setQuery( $sql );
+		$view->badges = $database->loadAssocList();
+		
+		
+		$ct = new CitationsType( $this->database );
+		$view->types = $ct->getType();
 
 		// Set any errors
 		if ($this->getError()) {
@@ -211,6 +241,105 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	
+	//----------------------------------------------------------
+	// Citation Types
+	//----------------------------------------------------------
+	
+	protected function types()
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'types') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		$ct = new CitationsType( $this->database );
+		$view->types = $ct->getType();
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
+	
+	//-----
+	
+	protected function addtype()
+	{
+		$this->edittype();
+	}
+	
+	//-----
+	
+	protected function edittype()
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'type') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->config = $this->config;
+		
+		//
+		$id = JRequest::getVar( 'id', "" );
+		
+		//
+		if($id) {
+			$ct = new CitationsType( $this->database );
+			$ct->load($id);
+			$view->type = $ct;
+		} else {
+			$view->type = NULL;
+		}
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
+	
+	//-----
+	
+	protected function deletetype()
+	{
+		$id = JRequest::getVar("id","");
+		
+		if(!$id) {
+			JError::raiseError( 500, "You are missing the citation identifier." );
+			return $this->types();
+		}
+		
+		$ct = new CitationsType( $this->database );
+		if(!$ct->delete( $id )) {
+			return JError::raiseError( 500, "An error occurred while trying to delete the citation type." );
+		}
+		
+		$this->_redirect = 'index.php?option=com_citations&task=types';
+		$this->_message = JText::_( 'The citation type was successfully deleted.', 'passed');
+	}
+	
+	//----------
+	
+	protected function savetype()
+	{
+		$type = JRequest::getVar("type", array());
+		
+		$ct = new CitationsType( $this->database );
+		
+		if(!$ct->save( $type )) {
+			return JError::raiseError( 500, "An error occurred while trying to save the citation type." );
+		}
+		
+		$this->_redirect = 'index.php?option=com_citations&task=types';
+		$this->_message = JText::_( 'The citation type was successfully saved.', 'passed');
+	}
+	
+	
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
@@ -228,6 +357,8 @@ class CitationsController extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
+		$juser =& JFactory::getUser();
+		
 		$citation = JRequest::getVar('citation', array(), 'post');
 		$citation = array_map('trim', $citation);
 
@@ -296,6 +427,21 @@ class CitationsController extends Hubzero_Controller
 			}
 		}
 
+		//citation tags object
+		$ct = new CitationTags( $this->database );
+		
+		//get the tags
+		$tags = trim(JRequest::getVar("tags", ""));
+		
+		//get the badges
+		$badges = trim(JRequest::getVar("badges", ""));
+		
+		//add tags
+		$ct->tag_object( $juser->get("id"), $row->id, $tags, 1, false, "");
+		
+		//add badges
+		$ct->tag_object( $juser->get("id"), $row->id, $badges, 1, false, "badge");
+		
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_( 'CITATION_SAVED' );
@@ -371,6 +517,10 @@ class CitationsController extends Hubzero_Controller
 
 				// Delete the citation
 				$citation->delete( $id );
+				
+				//citation tags
+				$ct = new CitationTags( $this->database );
+				$ct->remove_all_tags( $id );
 			}
 
 			$this->_message = JText::_('CITATION_REMOVED');
@@ -381,5 +531,52 @@ class CitationsController extends Hubzero_Controller
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
+	
+	//----------
+	
+	public function getformat() 
+	{
+		//get the format being sent via json
+		$format = JRequest::getVar("format", "apa");
+		
+		//include citations format class
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');
+		
+		//new citations format object
+		$cf = new CitationFormat();
+		
+		//get the default template for the format being passed in
+		$format_template = $cf->getDefaultFormat( $format );
+		
+		//return the template
+		echo $format_template;
+	}
+	
+	//-----------
+	
+	public function gettemplatekeys() 
+	{
+		//include citations format class
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');
+		
+		//new citations format object
+		$cf = new CitationFormat();
+		
+		//get the keys
+	 	$keys = $cf->getTemplateKeys();
+
+		//var to hold html data
+		$html = "";
+
+		//create row for each key pair
+		foreach($keys as $k => $v) {
+			$html .= "<tr><td>{$v}</td><td>{$k}</td></tr>";
+		}
+		
+		//return html
+		echo $html;
+	}
+
+	//-----------
 }
 

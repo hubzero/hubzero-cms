@@ -36,8 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  * 
  * Long description (if any) ...
  */
-abstract class CitationsFormatAbstract
-{
 
 	/**
 	 * Short description for 'cleanUrl'
@@ -47,69 +45,31 @@ abstract class CitationsFormatAbstract
 	 * @param      unknown $url Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function cleanUrl($url)
+{
+	var $id    			= NULL;  
+	var $type			= NULL;
+	var $type_title		= NULL;
+	var $type_desc 		= NULL;
+	var $type_export  	= NULL;
+	
+	//-----------
+	
+	public function __construct( &$db )
 	{
-		$url = stripslashes($url);
-		$url = str_replace('&amp;', '&', $url);
-		$url = str_replace('&', '&amp;', $url);
-
-		return $url;
+		parent::__construct( '#__citations_types', 'id', $db );
 	}
-
-	/**
-	 * Short description for 'keyExistsOrIsNotEmpty'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $key Parameter description (if any) ...
-	 * @param      object $row Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-	public function keyExistsOrIsNotEmpty($key,$row)
+	
+	//-----------
+	
+	public function getType( $id = "" ) 
 	{
-		if (isset($row->$key)) {
-			if ($row->$key != '' && $row->$key != '0') {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Short description for 'grammarCheck'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $html Parameter description (if any) ...
-	 * @param      string $punct Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function grammarCheck($html, $punct=',')
-	{
-		if (substr($html,-1) == '"') {
-			$html = substr($html,0,strlen($html)-1).$punct.'"';
-		} else {
-			$html .= $punct;
-		}
-		return $html;
-	}
-
-	/**
-	 * Short description for 'format'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $row Parameter description (if any) ...
-	 * @param      string $link Parameter description (if any) ...
-	 * @param      string $highlight Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function format($row, $link='none', $highlight='')
-	{
-		return '';
+		$where = ($id != "") ? "WHERE id='{$id}'" : "";
+		
+		$sql = "SELECT * FROM {$this->_tbl} {$where} ORDER BY type";
+		$this->_db->setQuery( $sql );
+		$results = $this->_db->loadAssocList();
+		
+		return $results;
 	}
 }
 

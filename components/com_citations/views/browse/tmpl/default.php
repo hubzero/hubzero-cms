@@ -31,17 +31,56 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+//helper lib
+ximport('Hubzero_View_Helper_Html');
+
+//citation params
+$label = $this->config->get("citation_label", "number"); 
+$rollover = $this->config->get("citation_rollover", "no");
+$template = $this->config->get("citation_format", "");
+
+//batch downloads
+$batch_download = $this->config->get("citation_batch_download", 1);
+
+//Include COinS
+$coins = $this->config->get("citation_coins", 1);
+
+//do we want to number li items
+if($label == "none") { 
+	$citations_label_class = "no-label"; 
+} elseif($label == "number") {
+	$citations_label_class = "number-label";
+} elseif($label == "type") { 
+	$citations_label_class = "type-label"; 
+} elseif($label == "both") {
+	$citations_label_class = "both-label";
+} 
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
-<?php /*<div id="content-header-extra">
-	<p><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('Add a citation'); ?></a></p>
-</div><!-- / #content-header-extra -->*/ ?>
+
 
 <div class="main section">
+	
+	<?php
+		foreach($this->messages as $message) {
+			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+		}
+	?>
+	
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="post">
 		<div class="aside">
+			<?php if($batch_download) : ?>
+				<fieldset>
+					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
+					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
+					
+					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
+					| 
+					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
+				</fieldset>
+			<?php endif; ?>
 			<fieldset>
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
@@ -50,7 +89,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 				<label>
 					<?php echo JText::_('Type'); ?>
-					<?php echo CitationsHtml::select('type',$this->types,$this->filters['type']); ?>
+					<select name="type" id="type">
+						<option value="all">All</option>
+						<?php
+							foreach($this->types as $t) {
+								$sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : "";
+ 								echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
+							}	
+						?>
+					</select>
 				</label>
 				
 				<label>
@@ -142,94 +189,118 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</fieldset>
 		</div><!-- / .aside -->
 		<div class="subject">
-<?php
-	if (count($this->citations) > 0) {
-		$formatter = new CitationsFormat;
-		$formatter->setFormat($this->format);
+			<?php if(count($this->citations) > 0) : ?>
+				<?php
+					$formatter = new CitationFormat();
+					$formatter->setTemplate( $template );
 
-		$html = '<ol class="citations results" start="'.($this->filters['start']+1).'">'."\n";
-		foreach ($this->citations as $cite)
-		{
-			// Get the associations
-			$assoc = new CitationsAssociation( $this->database );
-			$assocs = $assoc->getRecords( array('cid'=>$cite->id) );
+					$counter = 1;
+				?>
+				<table class="citations">
+					<thead>
+						<tr>
+							<?php if($batch_download) : ?>
+								<th class="batch">
+									<input type="checkbox" class="checkall-download" />
+								</th>
+							<?php endif; ?>
+							<th colspan="2">Citations</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach($this->citations as $cite) : ?>
+							<tr>
+								<?php if($batch_download) : ?>
+									<td class="batch">
+										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+									</td>
+								<?php endif; ?>
+								
+								<?php if($label != "none") : ?>
+									<td class="citation-label <?php echo $citations_label_class; ?>">
+										<?php 
+											$type = "";
+											foreach($this->types as $t) {
+												if($t['id'] == $cite->type) {
+													$type = $t['type_title'];
+												}
+											}
+											$type = ($type != "") ? $type : "Generic";
+			
+											switch($label) 
+											{
+												case "number":
+													echo "<span class=\"number\">{$counter}.</span>";
+													break;
+												case "type":	
+													echo "<span class=\"type\">{$type}</span>";
+													break;
+												case "both":
+													echo "<span class=\"number\">{$counter}.</span>";
+													echo "<span class=\"type\">{$type}</span>";
+													break;
+											}
+										?>
+									</td>
+								<?php endif; ?>
+								<td class="citation-container">
+									<?php echo $formatter->formatCitation( $cite, $this->filters['search'], $coins, $this->config ); ?>
+								
+									<?php if($rollover == "yes" && $cite->abstract != "") : ?>
+										<div class="citation-notes"><p><?php echo nl2br($cite->abstract); ?></p></div>
+									<?php endif; ?>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="<?php if($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
+									<?php echo $formatter->citationDetails( $cite, $this->database, $this->config, $this->openurl ); ?>
+								
+									<?php if($this->config->get("citation_show_badges","no") == "yes") : ?>
+										<?php echo $formatter->citationBadges( $cite, $this->database ); ?>
+									<?php endif; ?>
 
-			$html .= ' <li>'."\n";
-			//$html .= CitationsFormatter::formatReference( $cite, $cite->url );
-			$html .= $formatter->formatReference($cite, $this->filters['search']);
-			$html .= "\t".'<p class="details">'."\n";
-			$html .= "\t\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&task=download&id='.$cite->id.'&format=bibtex&no_html=1').'" title="'.JText::_('DOWNLOAD_BIBTEX').'">BibTex</a> <span>|</span> '."\n";
-			$html .= "\t\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&task=download&id='.$cite->id.'&format=endnote&no_html=1').'" title="'.JText::_('DOWNLOAD_ENDNOTE').'">EndNote</a>'."\n";
-			if (count($assocs) > 0 || $cite->eprint) {
-				if (count($assocs) > 0) {
-					if (count($assocs) > 1) {
-						$html .= "\t\t".' <span>|</span> '.JText::_('RESOURCES_CITED').': '."\n";
-						$k = 0;
-						$rrs = array();
-						foreach ($assocs as $rid)
-						{
-							if ($rid->table == 'resource') {
-								$this->database->setQuery( "SELECT published FROM #__resources WHERE id=".$rid->oid );
-								$state = $this->database->loadResult();
-								if ($state == 1) {
-									$k++;
-									$rrs[] = '<a href="'.JRoute::_('index.php?option=com_resources&id='.$rid->oid).'">['.$k.']</a>';
-								}
-							}
-						}
-						$html .= "\t\t".implode(', ',$rrs)."\n";
-					} else {
-						if ($assocs[0]->table == 'resource') {
-							$this->database->setQuery( "SELECT published FROM #__resources WHERE id=".$assocs[0]->oid );
-							$state = $this->database->loadResult();
-							if ($state == 1) {
-								$html .= "\t\t".' <span>|</span> <a href="'.JRoute::_('index.php?option=com_resources&id='.$assocs[0]->oid).'">'.JText::_('RESOURCE_CITED').'</a>'."\n";
-							}
-						}
-					}
-				}
-				if ($cite->eprint) {
-					$html .= "\t\t".' <span>|</span> <a href="'.Hubzero_View_Helper_Html::ampReplace($cite->eprint).'">'.JText::_('ELECTRONIC_PAPER').'</a>'."\n";
-				}
-			}
-			$html .= "\t".'</p>'."\n";
-			$html .= ' </li>'."\n";
-		}
-		$html .= '</ol>'."\n";
-		echo $html;
-
-		$qs = '';
-		foreach ($this->filters as $key=>$value)
-		{
-			switch ($key)
-			{
-				case 'limit':
-				case 'start':
-				break;
-
-				case 'reftype':
-				case 'aff':
-				case 'geo':
-					foreach ($value as $k=>$v)
+									<?php if($this->config->get("citation_show_tags","no") == "yes") : ?>
+										<?php echo $formatter->citationTags( $cite, $this->database ); ?>
+									<?php endif; ?>
+								</td>
+							</tr>
+							<?php $counter++; ?>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php else: ?>
+				<p class="warning"><?php echo JText::_('NO_CITATIONS_FOUND'); ?></p>
+			<?php endif; ?>
+			
+			<?php 
+				$qs = '';
+				foreach ($this->filters as $key=>$value) 
+				{
+					switch ($key) 
 					{
-						$qs .= $key.'['.$k.']='.$v.'&';
-					}
-				break;
+						case 'limit':
+						case 'start':
+						break;
 
-				default:
-					$qs .= $key.'='.$value.'&';
-				break;
-			}
-		}
-		$paging = $this->pageNav->getListFooter();
-		$paging = str_replace('citations/?','citations/browse?'.$qs,$paging);
-		echo $paging;
-	} else {
-?>
-			<p class="warning"><?php echo JText::_('NO_CITATIONS_FOUND'); ?></p>
-<?php
-	}
-?>
+						case 'reftype':
+						case 'aff':
+						case 'geo':
+							foreach ($value as $k=>$v) 
+							{
+								$qs .= $key.'['.$k.']='.$v.'&';
+							}
+						break;
+
+						default:
+							$qs .= $key.'='.$value.'&';
+						break;
+					}
+				}
+				$paging = $this->pageNav->getListFooter();
+				$paging = str_replace('citations/?','citations/browse?'.$qs,$paging);
+				echo $paging;
+			?>
+			
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</form>

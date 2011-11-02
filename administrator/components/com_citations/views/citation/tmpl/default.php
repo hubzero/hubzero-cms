@@ -35,8 +35,6 @@ JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '. $text.' ]</s
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-$types = array('article','book','booklet','conference','inbook','incollection','inproceedings','magazine','manual','mastersthesis','misc','phdthesis','proceedings','techreport','unpublished','patent appl','chapter','notes','letter','manuscript');
-
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
 
@@ -70,16 +68,14 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="type"><?php echo JText::_('TYPE'); ?>:</label></td>
-						<td colspan="3"><select name="citation[type]" id="type"><?php 
-						for ($i=0, $n=count( $types ); $i < $n; $i++)
-						{
-							echo '<option value="'.$types[$i].'"';
-							if ($this->row->type == $types[$i]) {
-								echo ' selected="selected"';
-							}
-							echo '>'.$types[$i].'</option>';
-						}
-						?></select></td>
+						<td colspan="3">
+							<select name="citation[type]" id="type">
+								<?php foreach($this->types as $t) : ?>
+									<?php $sel = ($t['id'] == $this->row->type) ? "selected=\"selected\"" : "" ?>
+									<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?> (<?php echo $t['type']; ?>)</option>
+								<?php endforeach; ?>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="cite"><?php echo JText::_('CITE_KEY'); ?>:</label></td>
@@ -110,23 +106,31 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="author"><?php echo JText::_('AUTHORS'); ?>:</label></td>
-						<td colspan="3"><input type="text" name="citation[author]" id="author" size="30" value="<?php echo htmlentities($this->row->author,ENT_COMPAT,'UTF-8'); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[author]" id="author" size="100" value="<?php echo htmlentities($this->row->author,ENT_COMPAT,'UTF-8'); ?>" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="author_address"><?php echo JText::_('Author Address'); ?>:</label></td>
+						<td colspan="3"><input type="text" name="citation[author_address]" id="author_address" size="100" value="<?php echo htmlentities($this->row->author_address,ENT_COMPAT,'UTF-8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="editor"><?php echo JText::_('EDITORS'); ?>:</label></td>
-						<td colspan="3"><input type="text" name="citation[editor]" id="editor" size="30" maxlength="250" value="<?php echo htmlentities($this->row->editor,ENT_COMPAT,'UTF-8'); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[editor]" id="editor" size="100" maxlength="250" value="<?php echo htmlentities($this->row->editor,ENT_COMPAT,'UTF-8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="title"><?php echo JText::_('TITLE_CHAPTER'); ?>:</label></td>
-						<td colspan="3"><input type="text" name="citation[title]" id="title" size="30" maxlength="250" value="<?php echo htmlentities($this->row->title,ENT_COMPAT,'UTF-8'); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[title]" id="title" size="100" maxlength="250" value="<?php echo htmlentities($this->row->title,ENT_COMPAT,'UTF-8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="booktitle"><?php echo JText::_('BOOK_TITLE'); ?>:</label></td>
-						<td colspan="3"><input type="text" name="citation[booktitle]" id="booktitle" size="30" maxlength="250" value="<?php echo htmlentities($this->row->booktitle,ENT_COMPAT,'UTF-8'); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[booktitle]" id="booktitle" size="100" maxlength="250" value="<?php echo htmlentities($this->row->booktitle,ENT_COMPAT,'UTF-8'); ?>" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="shorttitle"><?php echo JText::_('Short Title'); ?>:</label></td>
+						<td colspan="3"><input type="text" name="citation[short_title]" id="shorttitle" size="100" maxlength="250" value="<?php echo htmlentities($this->row->short_title,ENT_COMPAT,'UTF-8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="journal"><?php echo JText::_('JOURNAL'); ?>:</label></td>
-						<td colspan="3"><input type="text" name="citation[journal]" id="journal" size="30" maxlength="250" value="<?php echo htmlentities($this->row->journal,ENT_COMPAT,'UTF-8'); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[journal]" id="journal" size="100" maxlength="250" value="<?php echo htmlentities($this->row->journal,ENT_COMPAT,'UTF-8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="volume"><?php echo JText::_('VOLUME'); ?>:</label></td>
@@ -144,6 +148,15 @@ function submitbutton(pressbutton)
 						<td class="key"><label for="doi"><?php echo JText::_('DOI'); ?>:</label></td>
 						<td colspan="3"><input type="text" name="citation[doi]" id="doi" size="30" maxlength="250" value="<?php echo $this->row->doi; ?>" /></td>
 					</tr>
+					<tr>
+						<td class="key"><label for="callnumber"><?php echo JText::_('Call Number'); ?>:</label></td>
+						<td colspan="3"><input type="text" name="citation[call_number]" id="callnumber" size="30" maxlength="250" value="<?php echo $this->row->call_number; ?>" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="accessionnumber"><?php echo JText::_('Accession Number'); ?>:</label></td>
+						<td colspan="3"><input type="text" name="citation[accession_number]" id="accessionnumber" size="30" maxlength="250" value="<?php echo $this->row->accession_number; ?>" /></td>
+					</tr>
+					
 					<tr>
 						<td class="key"><label for="series"><?php echo JText::_('SERIES'); ?>:</label></td>
 						<td colspan="3"><input type="text" name="citation[series]" id="series" size="30" maxlength="250" value="<?php echo $this->row->series; ?>" /></td>
@@ -200,9 +213,27 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
+						<td class="key"><?php echo JText::_('Abstract'); ?>:</td>
+						<td colspan="3">
+							<?php echo $editor->display('citation[abstract]', stripslashes($this->row->abstract), '500px', '100px', '50', '10'); ?>
+						</td>
+					</tr>
+					<tr>
 						<td class="key"><?php echo JText::_('NOTES'); ?>:</td>
 						<td colspan="3">
-							<?php echo $editor->display('citation[note]', stripslashes($this->row->note), '360px', '200px', '50', '10'); ?>
+							<?php echo $editor->display('citation[note]', stripslashes($this->row->note), '500px', '100px', '50', '10'); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><?php echo JText::_('Keywords'); ?>:</td>
+						<td colspan="3">
+							<?php echo $editor->display('citation[keywords]', stripslashes($this->row->keywords), '500px', '100px', '50', '10'); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><?php echo JText::_('Research Notes'); ?>:</td>
+						<td colspan="3">
+							<?php echo $editor->display('citation[research_notes]', stripslashes($this->row->research_notes), '500px', '100px', '50', '10'); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -293,15 +324,56 @@ function submitbutton(pressbutton)
 					</tr>
 				</tbody>
 			</table>
-			
-			<input type="hidden" name="citation[uid]" value="<?php echo $this->row->uid; ?>" />
-			<input type="hidden" name="citation[created]" value="<?php echo $this->row->created; ?>" />
-			<input type="hidden" name="citation[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="task" value="save" />
 		</fieldset>
+		
+		<?php if($this->config->get("citation_allow_tags", "no") == "yes") : ?>
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('Tags'); ?></legend>
+				<table class="adminform">
+					<tbody>
+						<tr>
+							<td>
+								<?php
+									$t = array();
+									foreach($this->tags as $tag) { 
+										$t[] = $tag['raw_tag'];
+									}
+								?>
+								<textarea name="tags" rows="10" style="width:98%;"><?php echo implode(",", $t); ?></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+		<?php endif; ?>
+		
+		<?php if($this->config->get("citation_allow_badges", "no") == "yes") : ?>
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('Badges'); ?></legend>
+				<table class="adminform">
+					<tbody>
+						<tr>
+							<td>
+								<?php
+									$b = array();
+									foreach($this->badges as $badge) { 
+										$b[] = $badge['raw_tag'];
+									}
+								?>
+								<textarea name="badges" rows="10" style="width:98%;"><?php echo implode(",", $b); ?></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+		<?php endif; ?>
 	</div>
 	<div class="clr"></div>
 	
+	<input type="hidden" name="citation[uid]" value="<?php echo $this->row->uid; ?>" />
+	<input type="hidden" name="citation[created]" value="<?php echo $this->row->created; ?>" />
+	<input type="hidden" name="citation[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="task" value="save" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

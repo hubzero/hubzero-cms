@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<config>
+	<params>
+		<param name="citation_label" type="list" default="number" label="Citation Label" description="Displayed to the left of each citation.">
+			<option value="number">Number</option>
+			<option value="type">Type</option>
+			<option value="both">Number and Type</option>
+			<option value="none">None</option>
+		</param>
+		<param name="citation_rollover" type="list" default="no" label="Citations Rollover" description="Display citation notes when mousing over each citation. Can be overridden per citation.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</param>
+		
+		<param type="spacer" />
+		
+		<param name="citation_import" type="list" default="1" label="Allow Import" description="Allow importing of citations">
+			<option value="0">Not Allowed</option>
+			<option value="1">All Users</option>
+			<option value="2">Only Site Admins</option>
+		</param>
+		
+		<param type="spacer" />
+		
+		<param name="citation_download" type="list" default="1" label="Allow Download" description="Allow downloading of citations">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		
+		<param name="citation_batch_download" type="list" default="1" label="Allow Batch Download" description="Allow batch downloading of citations">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		
+		<param type="spacer" />
+		
+		<param name="citation_coins" type="list" default="1" label="Include COinS" description="Include COinS data in citations.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		
+		<param name="citation_openurl" type="list" default="1" label="Use Open URL's" description="Display links to get citation sources through Open URL's.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		
+		<param type="spacer" />
+		
+		<param name="citation_url" type="list" default="url" label="Citation Link" description="The link for the title of the citation.">
+			<option value="url">URL</option>
+			<option value="custom">Custom URL</option>
+		</param>
+		
+		<param name="citation_custom_url" type="text" default="" label="Custom Citation URL" description="If custom URL is selected above, insert custom URL here." size="80" />
+		
+		<param type="spacer" />
+		
+		<param name="citation_show_tags" type="list" default="no" label="Show Tags?" description="Show tags related to citation?">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</param>
+		<param name="citation_allow_tags" type="list" default="no" label="Allow Tagging?" description="Allow tagging on citations?">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</param>
+		
+		<param name="citation_show_badges" type="list" default="no" label="Show Badges?" description="Show badges that are attaches to citations? Badges are basically tags used for labeling purposes only.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</param>
+		<param name="citation_allow_badges" type="list" default="no" label="Allow Badges?" description="Allow attaching badges to citations? Badges are basically tags used for labeling purposes only.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</param>
+		
+		<param type="spacer" />
+		<param name="citation_keys_premade" type="html" label="Citation Formats" description="Predefined Citation Formats">
+			<![CDATA[
+				<a href="#" class="format_type" rel="apa" id="apa_format">APA Format</a> |
+				<a href="#" class="format_type" rel="ieee" id="ieee_format">IEEE Format</a> |
+				<a href="#" class="format_type" rel="custom" id="custom_format">Custom Format</a>
+				
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+				<script>
+					var $jQ = jQuery.noConflict();
+					
+					$jQ(document).ready(function(e) { 
+						var current_format = $jQ("#paramscitation_format").val();
+						
+						$jQ(".format_type").live("click", function(e) {
+							var content, format = this.rel;
+							
+							if(format == "custom") {
+								$jQ("#paramscitation_format").val( current_format );
+							} else {
+								$jQ.post("index.php?option=com_citations&task=getformat&no_html=1", { format: format }, function(data) {
+									$jQ("#paramscitation_format").val( data );
+								});
+							}
+							
+							//prevent default link action
+							e.preventDefault();
+						});
+					});
+				</script>
+			]]>
+		</param>	
+		
+		<param name="citation_format" type="textarea" rows="10" cols="85" default="" label="Citation Format" description="Format that citations are displayed in. Use placeholders displayed below to create order of citation parts." />
+		
+		<param name="citation_keys" type="html" label="Citation Formatting Placeholders">
+			<![CDATA[
+				<script>
+					$jQ(document).ready(function(e) { 
+						$jQ.get("index.php?option=com_citations&task=gettemplatekeys&no_html=1", function(data) {
+							$jQ(".adminlist tbody").append( data );
+						});
+					});
+				</script>
+				
+				<table class="adminlist">
+					<thead>
+						<th>Placeholder</th>
+						<th>Value</th>
+					</thead>
+					<tbody></tbody>
+				</table>
+			]]>
+		</param>
+	</params>
+</config>
