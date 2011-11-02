@@ -23,35 +23,67 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$html = '';
-if ($modfeaturedresource->error) {
-	$html .= '<p class="error">'.JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS').'</p>'."\n";
-} else {
-	ximport('Hubzero_View_Helper_Html');
-
-	if ($modfeaturedresource->row) {
-		$html .= '<div class="'.$modfeaturedresource->cls.'">'."\n";
-		$html .= '<h3>'.JText::_('MOD_FEATUREDRESOURCE_FEATURED').' '.$modfeaturedresource->row->typetitle.'</h3>'."\n";
-		if (is_file(JPATH_ROOT.$modfeaturedresource->thumb)) {
-			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_resources&id='.$modfeaturedresource->id).'"><img width="50" height="50" src="'.$modfeaturedresource->thumb.'" alt="" /></a></p>'."\n";
-		}
-		$html .= '<p><a href="'.JRoute::_('index.php?option=com_resources&id='.$modfeaturedresource->id).'">'.stripslashes($modfeaturedresource->row->title).'</a>: '."\n";
-		if ($modfeaturedresource->row->introtext) {
-			$html .= Hubzero_View_Helper_Html::shortenText($modfeaturedresource->encode_html(strip_tags($modfeaturedresource->row->introtext)), $modfeaturedresource->txt_length, 0)."\n";
-		}
-		$html .= '</p>'."\n";
-		$html .= '</div>'."\n";
-	}
-}
-
-// Output HTML
-echo $html;
 ?>
+<div<?php echo ($this->params->get('cssId')) ? ' id="' . $this->params->get('cssId') . '"' : ''; ?>>
+	<form action="/search/" method="get" class="search">
+		<fieldset>
+			<p>
+				<label for="rsearchword"><?php echo JText::_('Keyword or phrase:'); ?></label>
+				<input type="text" name="terms" id="rsearchword" value="" />
+				<input type="hidden" name="domains[]" value="resources" />
+				<input type="submit" value="<?php echo JText::_('Search'); ?>" />
+			</p>
+		</fieldset>
+	</form>
+<?php if (count($this->tags) > 0) { ?>
+	<ol class="tags">
+		<li><?php echo JText::_('Popular Tags:'); ?></li>
+<?php
+	foreach ($this->tags as $tag)
+	{ 
+?>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo stripslashes($tag->raw_tag); ?></a></li>
+<?php
+	}
+?>	
+		<li><a href="<?php echo JRoute::_('index.php?option=com_tags'); ?>" class="showmore"><?php echo JText::_('More tags &rsaquo;'); ?></a></li>
+	</ol>
+<?php } else { ?>
+	<p><?php echo JText::_('No tags found.'); ?></p>
+<?php } ?>
+
+<?php if (count($this->categories) > 0) { ?>
+	<p>
+<?php
+	$i = 0;
+	foreach ($this->categories as $category) 
+	{
+		$i++;
+		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($category->type));
+		
+		if (substr($normalized, -3) == 'ies') {
+			$cls = $normalized;
+		} else {
+			$cls = substr($normalized, 0, -1);
+		}
+?>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
+<?php 
+	}
+?>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>" class="showmore"><?php echo JText::_('All Categores &rsaquo;'); ?></a>
+	</p>
+<?php
+}
+?>
+	<div class="uploadcontent">
+		<h4><?php echo JText::_('Upload your own content!'); ?> <span><a href="<?php echo JRoute::_('index.php?option=com_contribute'); ?>" class="contributelink"><?php echo JText::_('Get started &rsaquo;'); ?></a></span></h4>
+	</div>
+</div><!-- / <?php echo ($this->params->get('cssId')) ? '#' . $this->params->get('cssId') : ''; ?> -->
