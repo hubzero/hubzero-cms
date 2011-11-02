@@ -50,20 +50,21 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-		
-<?php 
-if ($this->type == 'regular') {
-	echo ('<h3>'.JText::_('FEEDBACK_SUBMITTED_QUOTES').'</h3><p class="extranav"><a href="index.php?option='.$this->option.'&amp;type=selected">'.JText::_('FEEDBACK_SELECTED_QUOTES').'</a>.</p>');
-} else {
-	echo ('<h3>'.JText::_('FEEDBACK_SELECTED_QUOTES').'</h3><p class="extranav"><a href="index.php?option='.$this->option.'">'.JText::_('FEEDBACK_SUBMITTED_QUOTES').'</a>.</p>');
-}
-?>
+
 	<fieldset id="filter">
 		<label>
 			<?php echo JText::_('FEEDBACK_SEARCH'); ?>: 
 			<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
 		</label>
 	
+		<label>
+			<?php echo JText::_('Filter'); ?>: 
+			<select name="type" id="type">
+				<option value="regular"<?php if (!$this->type || $this->type == 'regular') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEEDBACK_SUBMITTED_QUOTES'); ?></option>
+				<option value="selected"<?php if ($this->type == 'selected') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEEDBACK_SELECTED_QUOTES'); ?></option>
+			</select>
+		</label>
+		
 		<label>
 			<?php echo JText::_('FEEDBACK_SORT'); ?>: 
 			<select name="sortby" id="sortby">
