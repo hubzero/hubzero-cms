@@ -1345,10 +1345,9 @@ class MembersController extends Hubzero_Controller
 		$user  = array();
 		$users = array();
 
-		$sql = "SELECT s.username, x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
-				FROM #__session AS s, #__xsession AS x
-				WHERE s.username <> '' AND s.session_id=x.session_id
-				ORDER BY username, host, ip, idle DESC";
+		$sql = "SELECT s.username, s.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
+				FROM #__session AS s WHERE s.username <> '' 
+				ORDER BY username, ip, idle DESC";
 
 		$database->setQuery( $sql );
 		$result = $database->loadObjectList();
@@ -1370,7 +1369,7 @@ class MembersController extends Hubzero_Controller
 					$prevuser = $row->username;
 					$user = array();
 				}
-				array_push($user, array('host' => $row->host, 'ip' => $row->ip, 'idle' => $row->idle));
+				array_push($user, array('ip' => $row->ip, 'idle' => $row->idle));
 			}
 			if ($user) {
 				$xprofile = new Hubzero_User_Profile();
@@ -1385,10 +1384,9 @@ class MembersController extends Hubzero_Controller
 		}
 
 		$guests = array();
-		$sql = "SELECT x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
-				FROM #__session AS s, #__xsession AS x 
-				WHERE s.username = '' AND s.session_id=x.session_id
-				ORDER BY host DESC, ip, idle DESC";
+		$sql = "SELECT s.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
+				FROM #__session AS s WHERE s.username = '' 
+				ORDER BY ip, idle DESC";
 
 		$database->setQuery( $sql );
 		$result = $database->loadObjectList();
@@ -1396,7 +1394,7 @@ class MembersController extends Hubzero_Controller
 			if (count($result) > 0) {
 				foreach($result as $row)
 				{
-					array_push($guests, array('host' => $row->host, 'ip' => $row->ip, 'idle' => $row->idle));
+					array_push($guests, array('ip' => $row->ip, 'idle' => $row->idle));
 				}
 			}
 		}

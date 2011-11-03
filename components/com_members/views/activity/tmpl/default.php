@@ -46,7 +46,6 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo JText::_('Org Type'); ?></th>
 				<th><?php echo JText::_('Organization'); ?></th>
 				<th><?php echo JText::_('Resident'); ?></th>
-				<th><?php echo JText::_('Host'); ?></th>
 				<th><?php echo JText::_('IP'); ?></th>
 				<th><?php echo JText::_('Idle'); ?></th>
 			</tr>
@@ -107,7 +106,6 @@ defined('_JEXEC') or die('Restricted access');
 							$html .= t.t.t.'<td class="textual-data">'. stripslashes($users[$userkey]['org']) .'</td>'.n;
 							$html .= t.t.t.'<td class="textual-data">'. $users[$userkey]['countryresident'] .'</td>'.n;
 						}
-						$html .= t.t.t.'<td class="textual-data">'. $users[$userkey][$i]['host'] .'</td>'.n;
 						$html .= t.t.t.'<td class="textual-data">'. $users[$userkey][$i]['ip'] .'</td>'.n;
 						$html .= t.t.t.'<td class="textual-data">'. MembersHtml::valformat($users[$userkey][$i]['idle'], 3) .'</td>'.n;
 						$html .= t.t.'</tr>'.n;
@@ -128,7 +126,6 @@ defined('_JEXEC') or die('Restricted access');
 		<thead>
 			<tr>
 				<th><?php echo JText::_('Name'); ?></th>
-				<th><?php echo JText::_('Host'); ?></th>
 				<th><?php echo JText::_('IP'); ?></th>
 				<th><?php echo JText::_('Idle'); ?></th>
 			</tr>
@@ -149,12 +146,10 @@ defined('_JEXEC') or die('Restricted access');
 			{
 				$cls = (($cls == 'even') ? 'odd' : 'even');
 
-				$guest['host'] = ($guest['host']) ? $guest['host'] : JText::_('Unknown');
 				$guest['ip'] = ($guest['ip']) ? $guest['ip'] : JText::_('Unknown');
 
 				$html .= t.t.'<tr class="'.$cls.'">'.n;
 				$html .= t.t.t.'<td class="textual-data">'.JText::_('(guest)').'</td>'.n;
-				$html .= t.t.t.'<td class="textual-data">'.$guest['host'].'</td>'.n;
 				$html .= t.t.t.'<td class="textual-data">'.$guest['ip'].'</td>'.n;
 				$html .= t.t.t.'<td class="textual-data">'.MembersHtml::valformat($guest['idle'], 3).'</td>'.n;
 				$html .= t.t.'</tr>'.n;
