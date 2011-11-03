@@ -363,6 +363,14 @@ class XSearchController extends Hubzero_Controller
 		return $this->searchareas;
 	}
 
+	/**
+	 * Short description for '_makeSafe'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $text Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _makeSafe($text)
 	{
 		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);

@@ -178,6 +178,12 @@ class EventsEvent extends JTable
 	 * @var unknown
 	 */
 	var $publish_up       = NULL;
+
+	/**
+	 * Description for 'time_zone'
+	 * 
+	 * @var unknown
+	 */
 	var $time_zone        = NULL;
 	/**
 	 * Description for 'publish_down'

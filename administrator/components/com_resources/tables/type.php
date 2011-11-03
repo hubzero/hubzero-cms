@@ -45,6 +45,12 @@ class ResourcesType extends JTable
 	 * @var unknown
 	 */
 	var $id       		= NULL;  // @var int(11) Primary key
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
 	var $alias	  		= NULL;	 // @var varchar(100)
 
 	/**

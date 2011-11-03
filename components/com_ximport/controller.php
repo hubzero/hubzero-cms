@@ -33,6 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'XImportController'
+ * 
+ * Long description (if any) ...
+ */
 class XImportController extends Hubzero_Controller
 {
 	/**

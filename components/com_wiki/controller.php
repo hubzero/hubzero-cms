@@ -146,6 +146,13 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for '_update'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function _update()
 	{
 		$wpa = new WikiPageAuthor($this->database);

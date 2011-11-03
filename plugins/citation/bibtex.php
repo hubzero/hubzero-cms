@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,8 +36,23 @@ jimport('joomla.filesystem.file');
 
 JPlugin::loadLanguage( 'plg_citation_bibtex' );
 
+/**
+ * Short description for 'plgCitationBibtex'
+ * 
+ * Long description (if any) ...
+ */
 class plgCitationBibtex extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgCitationBibtex'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgCitationBibtex(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -45,11 +62,26 @@ class plgCitationBibtex extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onImportAcceptedFiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function onImportAcceptedFiles()
 	{
 		return ".bib <small>(BibTex File)</small>";
 	}
 
+	/**
+	 * Short description for 'onImport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $file Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onImport( $file )
 	{
 		//file type
@@ -107,6 +139,14 @@ class plgCitationBibtex extends JPlugin
 		return $final;
 	}
 
+	/**
+	 * Short description for 'checkDuplicateCitation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $citation Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function checkDuplicateCitation( $citation )
 	{
 		//vars

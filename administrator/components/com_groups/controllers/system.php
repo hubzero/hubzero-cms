@@ -1,9 +1,6 @@
 <?php
 /**
- * @package	 hubzero-cms
- * @author	  Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'GroupsControllerSystem'
+ * 
+ * Long description (if any) ...
+ */
 class GroupsControllerSystem extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'displayTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function displayTask()
 	{
 		// Get configuration
@@ -63,6 +78,13 @@ class GroupsControllerSystem extends Hubzero_Controller
 		$this->view->display();
 	}
 
+	/**
+	 * Short description for 'exporttoldapTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function exporttoldapTask()
 	{
 		// Instantiate a new view
@@ -143,6 +165,13 @@ class GroupsControllerSystem extends Hubzero_Controller
 		$this->view->display();
 	}
 
+	/**
+	 * Short description for 'importldapTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function importldapTask()
 	{
 		$this->view->post = (JRequest::getMethod() == 'POST');

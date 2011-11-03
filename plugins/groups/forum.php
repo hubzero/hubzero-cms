@@ -35,8 +35,23 @@ ximport('Hubzero_Plugin');
 include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Emailtoken.php');
 JPlugin::loadLanguage( 'plg_groups_forum' );
 
+/**
+ * Short description for 'plgGroupsForum'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsForum extends Hubzero_Plugin
 {
+
+	/**
+	 * Short description for 'plgGroupsForum'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsForum(&$subject, $config)
 	{
 		parent::__construct($subject, $config);

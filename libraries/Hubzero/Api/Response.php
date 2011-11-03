@@ -28,25 +28,124 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/**
+ * Short description for 'Hubzero_API_Response'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_API_Response
 {
+
+	/**
+	 * Description for 'suppress_response_codes'
+	 * 
+	 * @var boolean
+	 */
 	public  $suppress_response_codes = false;
+
+	/**
+	 * Description for '_request_accept'
+	 * 
+	 * @var string
+	 */
 	private $_request_accept = '*/*';
+
+	/**
+	 * Description for '_response_accept'
+	 * 
+	 * @var string
+	 */
 	private $_response_accept = 'text/plain';
+
+	/**
+	 * Description for '_request_accept_encoding'
+	 * 
+	 * @var unknown
+	 */
 	private $_request_accept_encoding = null;
+
+	/**
+	 * Description for '_response_accept_encoding'
+	 * 
+	 * @var unknown
+	 */
 	private $_response_accept_encoding = null;
+
+	/**
+	 * Description for '_autoencode'
+	 * 
+	 * @var boolean
+	 */
 	private $_autoencode = false;
+
+	/**
+	 * Description for '_cachable'
+	 * 
+	 * @var boolean
+	 */
 	private $_cachable = true;
+
+	/**
+	 * Description for '_sent'
+	 * 
+	 * @var boolean
+	 */
 	private $_sent = false;
+
+	/**
+	 * Description for '_http_version'
+	 * 
+	 * @var string
+	 */
 	private $_http_version = 'HTTP/1.1';
+
+	/**
+	 * Description for '_status_code'
+	 * 
+	 * @var mixed
+	 */
 	private $_status_code = 200;
+
+	/**
+	 * Description for '_reason'
+	 * 
+	 * @var string
+	 */
 	private $_reason = 'OK';
+
+	/**
+	 * Description for '_headers'
+	 * 
+	 * @var array
+	 */
 	private $_headers = array();
 
+	/**
+	 * Description for '_content_type'
+	 * 
+	 * @var unknown
+	 */
 	private $_content_type = null;
+
+	/**
+	 * Description for '_encoding'
+	 * 
+	 * @var unknown
+	 */
 	private $_encoding = null;
+
+	/**
+	 * Description for '_body'
+	 * 
+	 * @var array
+	 */
 	private $_body = array();
 
+	/**
+	 * Description for '_reasons'
+	 * 
+	 * @var array
+	 */
 	private static $_reasons = array(
 		200 => 'OK',
 		404 => 'Not Found',
@@ -54,6 +153,13 @@ class Hubzero_API_Response
 		500 => 'Internal Server Error',
 	);
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function __construct()
 	{
 		$headers = headers_list();
@@ -65,6 +171,14 @@ class Hubzero_API_Response
 
 	}
 
+	/**
+	 * Short description for 'setStatusCode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $code Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setStatusCode($code)
 	{
 		if ($this->_sent)
@@ -77,11 +191,26 @@ class Hubzero_API_Response
 		return true;
 	}
 
+	/**
+	 * Short description for 'getStatusCode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	function getStatusCode()
 	{
 		return (integer) $this->_status_code;
 	}
 
+	/**
+	 * Short description for 'setHttpVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $version Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setHttpVersion($version)
 	{
 		if ($this->_sent)
@@ -94,11 +223,26 @@ class Hubzero_API_Response
 		return true;
 	}
 
+	/**
+	 * Short description for 'getHttpVersion'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function getHttpVersion()
 	{
 		return (string) $this->_http_version;
 	}
 
+	/**
+	 * Short description for 'setReason'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $reason Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setReason($reason)
 	{
 		if ($this->_sent)
@@ -111,11 +255,26 @@ class Hubzero_API_Response
 		return true;
 	}
 
+	/**
+	 * Short description for 'getReason'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function getReason()
 	{
 		return (string) $this->_reason;
 	}
 
+	/**
+	 * Short description for 'setStatusLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setStatusLine($string = null)
 	{
 		if ($this->_sent)
@@ -150,11 +309,26 @@ class Hubzero_API_Response
 		return true;
 	}
 
+	/**
+	 * Short description for 'getStatusLine'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function getStatusLine()
 	{
 		return (string) $this->getHttpVersion() . " " . $this->getStatusCode() . " " . $this->getReason();
 	}
 
+	/**
+	 * Short description for 'setHeader'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setHeader($string)
 	{
 		if ($this->_sent)
@@ -165,6 +339,15 @@ class Hubzero_API_Response
 		return $this->addHeader($string, true);
 	}
 
+	/**
+	 * Short description for 'addHeader'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @param      boolean $replace Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function addHeader($string, $replace = false)
 	{
 		if ($this->_sent)
@@ -188,6 +371,13 @@ class Hubzero_API_Response
         return true;
 	}
 
+	/**
+	 * Short description for 'removeAllHeaders'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function removeAllHeaders()
 	{
 		if ($this->_sent)
@@ -203,6 +393,14 @@ class Hubzero_API_Response
 		return true;
 	}
 
+	/**
+	 * Short description for 'removeHeader'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function removeHeader($name)
 	{
 		if ($this->_sent)
@@ -221,6 +419,14 @@ class Hubzero_API_Response
 		return true;
 	}
 
+	/**
+	 * Short description for 'getHeader'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function getHeader($name)
 	{
 		$result = array();
@@ -236,6 +442,13 @@ class Hubzero_API_Response
 		return $result;
 	}
 
+	/**
+	 * Short description for 'getAllHeaders'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getAllHeaders()
 	{
 		$result = array();
@@ -249,6 +462,13 @@ class Hubzero_API_Response
 
 	}
 
+	/**
+	 * Short description for 'headersSent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function headersSent()
 	{
 		if (PHP_SAPI == 'cli')
@@ -259,6 +479,13 @@ class Hubzero_API_Response
 		return $this->_sent && headers_sent();
 	}
 
+	/**
+	 * Short description for 'sendHeaders'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function sendHeaders()
 	{
 		$this->_sent = true;
@@ -283,6 +510,14 @@ class Hubzero_API_Response
 		return true;
 	}
 
+	/**
+	 * Short description for 'setEncodeOnOutput'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setEncodeOnOutput($value)
 	{
 		if ($value)
@@ -295,11 +530,26 @@ class Hubzero_API_Response
 		}
 	}
 
+	/**
+	 * Short description for 'getEncodeOnOutput'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function getEncodeOnOutput()
 	{
 		return (boolean) $this->_autoencode;
 	}
 
+	/**
+	 * Short description for 'setCachable'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setCachable($value)
 	{
 		if ($value)
@@ -312,23 +562,62 @@ class Hubzero_API_Response
 		}
 	}
 
+	/**
+	 * Short description for 'getCachable'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function getCachable()
 	{
 		return $this->_cachable;
 	}
 
+	/**
+	 * Short description for 'setBody'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $content Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setBody($content) {
 		$this->_body = array((string) $content);
 	}
 
+	/**
+	 * Short description for 'prependBody'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $content Parameter description (if any) ...
+	 * @return     void
+	 */
 	function prependBody($content) {
 		array_unshift($this->_body, (string) $content);
 	}
 
+	/**
+	 * Short description for 'appendBody'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $content Parameter description (if any) ...
+	 * @return     void
+	 */
 	function appendBody($content) {
 		array_push($this->_body, (string) $content);
 	}
 
+	/**
+	 * Short description for 'getBody'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $toArray Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	function getBody($toArray = false)
 	{
 		if ($toArray) {
@@ -342,6 +631,14 @@ class Hubzero_API_Response
 		return ob_get_clean();
 	}
 
+	/**
+	 * Short description for 'setSuppressResponseCodes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setSuppressResponseCodes($value)
 	{
 		if ($value)
@@ -354,11 +651,26 @@ class Hubzero_API_Response
 		}
 	}
 
+	/**
+	 * Short description for 'getSuppressResponseCodes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function getSuppressResponseCodes()
 	{
 		return $this->suppress_response_codes;
 	}
 
+	/**
+	 * Short description for '_parse_accept'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $input Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _parse_accept($input)
 	{
 		static $_types = array(
@@ -399,6 +711,14 @@ class Hubzero_API_Response
   		return $accept;
 	}
 
+	/**
+	 * Short description for '_parse_encoding'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $input Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _parse_encoding($input)
 	{
   		$accept = array();
@@ -422,6 +742,14 @@ class Hubzero_API_Response
   		return $accept;
 	}
 
+	/**
+	 * Short description for 'setRequestAccepts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $accept Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setRequestAccepts($accept)
 	{
 		$accepts = $this->_parse_accept($accept);
@@ -439,11 +767,26 @@ class Hubzero_API_Response
 		return false;
 	}
 
+	/**
+	 * Short description for 'getRequestAccepts'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function getRequestAccepts()
 	{
 		return $this->_request_accept;
 	}
 
+	/**
+	 * Short description for 'setResponseProvides'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $provide Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setResponseProvides($provide)
 	{
 		$accepts = $this->_parse_accept($this->_request_accept);
@@ -461,11 +804,25 @@ class Hubzero_API_Response
 		return false;
 	}
 
+	/**
+	 * Short description for 'getResponseProvides'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function getResponseProvides()
 	{
 		return $this->_response_accept;
 	}
 
+	/**
+	 * Short description for 'getContentType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getContentType()
 	{
 		$accepts = $this->_parse_accept($this->_request_accept);
@@ -478,6 +835,14 @@ class Hubzero_API_Response
 		return $this->_content_type;
 	}
 
+	/**
+	 * Short description for 'setRequestAcceptsEncodings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $accept Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setRequestAcceptsEncodings($accept)
 	{
 		$accepts = $this->_parse_encoding($accept);
@@ -495,11 +860,26 @@ class Hubzero_API_Response
 		return false;
 	}
 
+	/**
+	 * Short description for 'getRequestAcceptsEncodings'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getRequestAcceptsEncodings()
 	{
 		return $this->_request_accept_encoding;
 	}
 
+	/**
+	 * Short description for 'setResponseProvideEncoding'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $provide Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function setResponseProvideEncoding($provide)
 	{
 		$accepts = $this->_parse_encoding($this->_request_accept_encoding);
@@ -517,11 +897,25 @@ class Hubzero_API_Response
 		return false;
 	}
 
+	/**
+	 * Short description for 'getResponseProvideEncoding'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getResponseProvideEncoding()
 	{
 		return $this->_response_accept_encoding;
 	}
 
+	/**
+	 * Short description for 'getEncoding'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getEncoding()
 	{
 		$accepts = $this->_parse_accept($this->_request_accept_encoding);
@@ -535,6 +929,15 @@ class Hubzero_API_Response
 		return $this->_encoding;
 	}
 
+	/**
+	 * Short description for '_resolveContentType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $accept Parameter description (if any) ...
+	 * @param      array $provide Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _resolveContentType($accept, $provide)
 	{
 		$best_type = '';
@@ -582,6 +985,15 @@ class Hubzero_API_Response
 			return $best_type;
 	}
 
+	/**
+	 * Short description for '_resolveEncoding'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $accept Parameter description (if any) ...
+	 * @param      array $provide Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _resolveEncoding($accept, $provide)
 	{
 		$best_type = '';
@@ -608,6 +1020,14 @@ class Hubzero_API_Response
 			return $best_type;
 	}
 
+	/**
+	 * Short description for '_encode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $data Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _encode( $data )
 	{
 		$encoding = $this->getEncoding();
@@ -640,6 +1060,13 @@ class Hubzero_API_Response
 		return $gzdata;
 	}
 
+	/**
+	 * Short description for 'send'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function send()
 	{
 		if (!$this->_cachable)
@@ -666,6 +1093,15 @@ class Hubzero_API_Response
 		echo $data;
 	}
 
+	/**
+	 * Short description for '_serializeResponseObject'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $mixed Parameter description (if any) ...
+	 * @param      boolean $encode Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	private function _serializeResponseObject($mixed, $encode = true)
 	{
 		$suppress_response_codes = $this->suppress_response_codes;
@@ -812,6 +1248,16 @@ class Hubzero_API_Response
 		return $data;
 	}
 
+	/**
+	 * Short description for 'setMessage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $message Parameter description (if any) ...
+	 * @param      unknown $status Parameter description (if any) ...
+	 * @param      unknown $reason Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setMessage($message = null, $status = null, $reason = null)
 	{
 		if ($status != null)
@@ -840,6 +1286,16 @@ class Hubzero_API_Response
 		}
 	}
 
+	/**
+	 * Short description for 'setErrorMessage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $status Parameter description (if any) ...
+	 * @param      unknown $reason Parameter description (if any) ...
+	 * @param      unknown $message Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	function setErrorMessage($status = null, $reason = null, $message = null)
 	{
 		return $this->setMessage($message,$status,$reason);

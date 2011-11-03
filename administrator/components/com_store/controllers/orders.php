@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'StoreControllerOrders'
+ * 
+ * Long description (if any) ...
+ */
 class StoreControllerOrders extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
@@ -45,6 +60,13 @@ class StoreControllerOrders extends Hubzero_Controller
 		parent::execute();
 	}
 
+	/**
+	 * Short description for 'displayTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function displayTask()
 	{
 		// Instantiate a new view
@@ -129,6 +151,13 @@ class StoreControllerOrders extends Hubzero_Controller
 		$this->view->display();
 	}
 
+	/**
+	 * Short description for 'receiptTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function receiptTask()
 	{
 		// Incoming
@@ -236,6 +265,13 @@ class StoreControllerOrders extends Hubzero_Controller
 		exit();
 	}
 
+	/**
+	 * Short description for 'orderTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function orderTask()
 	{
 		$this->view->store_enabled = $this->config->get('store_enabled');

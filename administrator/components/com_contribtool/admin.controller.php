@@ -852,6 +852,13 @@ class ContribtoolController extends JObject
 	//-----------
 	// Temp function to issue new service DOIs for tool versions published previously
 
+	/**
+	 * Short description for '_batchDoi'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _batchDoi()
 	{
 		$database =& JFactory::getDBO();
@@ -987,6 +994,13 @@ class ContribtoolController extends JObject
 	//-----------
 	// Temp function to ensure jos_doi_mapping table is updated
 
+	/**
+	 * Short description for '_setupDoi'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _setupDoi()
 	{
 		$database =& JFactory::getDBO();

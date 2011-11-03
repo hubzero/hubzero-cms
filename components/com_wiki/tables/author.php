@@ -31,6 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'WikiPageAuthor'
+ * 
+ * Long description (if any) ...
+ */
 class WikiPageAuthor extends JTable
 {
 	/**
@@ -288,6 +293,13 @@ class WikiPageAuthor extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'transitionAuthors'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function transitionAuthors()
 	{
 		$this->_db->setQuery("SELECT id, authors FROM #__wiki_page WHERE authors!='' AND authors IS NOT NULL");

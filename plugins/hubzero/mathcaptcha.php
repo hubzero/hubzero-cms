@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -28,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_hubzero_mathcaptcha' );
 
+/**
+ * Short description for 'plgHubzeroMathcaptcha'
+ * 
+ * Long description (if any) ...
+ */
 class plgHubzeroMathcaptcha extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgHubzeroMathcaptcha'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgHubzeroMathcaptcha(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -39,6 +60,13 @@ class plgHubzeroMathcaptcha extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onGetCaptcha'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function onGetCaptcha()
 	{
 		// Generate a CAPTCHA
@@ -59,6 +87,13 @@ class plgHubzeroMathcaptcha extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Short description for 'onValidateCaptcha'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function onValidateCaptcha()
 	{
 		$key = JRequest::getVar('captcha_krhash', 0);
@@ -71,6 +106,15 @@ class plgHubzeroMathcaptcha extends JPlugin
 		return false;
 	}
 
+	/**
+	 * Short description for '_generateHash'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $input Parameter description (if any) ...
+	 * @param      string $day Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _generateHash($input, $day)
 	{
 		// Add date:

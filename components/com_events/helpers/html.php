@@ -329,6 +329,15 @@ class EventsHtml
 		return $clist;
 	}
 
+	/**
+	 * Short description for 'buildTimeZoneSelect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $tzselected Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function buildTimeZoneSelect($tzselected, $args)
 	{
 		$timezones[] = JHTML::_('select.option', 'est', JText::_('EVENTS_CAL_TIME_ZONE_EST'), 'value', 'text');
@@ -345,6 +354,15 @@ class EventsHtml
 		return $tzlist;
 	}
 
+	/**
+	 * Short description for 'buildWeekDaysCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $reccurweekdays Parameter description (if any) ...
+	 * @param      string $args Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',

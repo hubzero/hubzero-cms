@@ -931,6 +931,13 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_isVerified'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _isVerified()
 	{
 		if (!$this->juser->get('guest')) {

@@ -1,34 +1,56 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'CitationFormat'
+ * 
+ * Long description (if any) ...
+ */
 class CitationFormat
 {
 
+	/**
+	 * Description for '_template'
+	 * 
+	 * @var string
+	 */
 	protected $_template = "apa";
+
+	/**
+	 * Description for '_template_keys'
+	 * 
+	 * @var array
+	 */
 	protected $_template_keys = array(
 									"type" => "{TYPE}",
 									"cite" => "{CITE KEY}",
@@ -65,6 +87,11 @@ class CitationFormat
 									"sec_cnt" => "{SECONDARY COUNT}"
 									);
 
+	/**
+	 * Description for '_coins_keys'
+	 * 
+	 * @var array
+	 */
 	protected $_coins_keys = array(
 								'title' => 'rft.atitle',
 								//'journal' => 'rft.jtitle',
@@ -80,6 +107,11 @@ class CitationFormat
 								'author' => 'rft.au'
  								);
 
+	/**
+	 * Description for '_default_format'
+	 * 
+	 * @var array
+	 */
 	protected $_default_format = array(
 		"apa" => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: pg. {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
 
@@ -368,6 +400,17 @@ class CitationFormat
 	//	citation links and badges
 	//------------------------------------------------------------------
 
+	/**
+	 * Short description for 'citationDetails'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $citation Parameter description (if any) ...
+	 * @param      object $database Parameter description (if any) ...
+	 * @param      object $config Parameter description (if any) ...
+	 * @param      array $openurl Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function citationDetails( $citation, $database, $config, $openurl )
 	{
 		$downloading = $config->get("citation_download", 1);
@@ -437,6 +480,15 @@ class CitationFormat
 		return $html;
 	}
 
+	/**
+	 * Short description for 'citationBadges'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $citation Parameter description (if any) ...
+	 * @param      object $database Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function citationBadges( $citation, $database )
 	{
 		$html = "";
@@ -462,6 +514,15 @@ class CitationFormat
 		return $html;
 	}
 
+	/**
+	 * Short description for 'citationTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $citation Parameter description (if any) ...
+	 * @param      object $database Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function citationTags( $citation, $database )
 	{
 		$html = "";
@@ -492,6 +553,14 @@ class CitationFormat
 	//	Utility Functions
 	//------------------------------------------------------------------
 
+	/**
+	 * Short description for 'cleanUrl'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $url Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function cleanUrl($url)
 	{
 		$url = stripslashes($url);
@@ -501,6 +570,15 @@ class CitationFormat
 		return $url;
 	}
 
+	/**
+	 * Short description for 'keyExistsOrIsNotEmpty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $key Parameter description (if any) ...
+	 * @param      object $row Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function keyExistsOrIsNotEmpty($key,$row)
 	{
 		if (isset($row->$key)) {
@@ -514,6 +592,15 @@ class CitationFormat
 		}
 	}
 
+	/**
+	 * Short description for 'grammarCheck'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $html Parameter description (if any) ...
+	 * @param      string $punct Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function grammarCheck($html, $punct=',')
 	{
 		if (substr($html,-1) == '"') {
@@ -528,6 +615,16 @@ class CitationFormat
 	//	Formatting Resources
 	//------------------------------------------------------------------
 
+	/**
+	 * Short description for 'formatReference'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed &$row Parameter description (if any) ...
+	 * @param      string $link Parameter description (if any) ...
+	 * @param      string $highlight Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	public function formatReference(&$row, $link='none', $highlight='')
 	{
 		ximport('Hubzero_View_Helper_Html');

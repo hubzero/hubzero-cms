@@ -243,6 +243,13 @@ class CitationsController extends Hubzero_Controller
 	// Citation Types
 	//----------------------------------------------------------
 
+	/**
+	 * Short description for 'types'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function types()
 	{
 		// Instantiate a new view
@@ -262,11 +269,25 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'addtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addtype()
 	{
 		$this->edittype();
 	}
 
+	/**
+	 * Short description for 'edittype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function edittype()
 	{
 		// Instantiate a new view
@@ -296,6 +317,13 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'deletetype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function deletetype()
 	{
 		$id = JRequest::getVar("id","");
@@ -314,6 +342,13 @@ class CitationsController extends Hubzero_Controller
 		$this->_message = JText::_( 'The citation type was successfully deleted.', 'passed');
 	}
 
+	/**
+	 * Short description for 'savetype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	protected function savetype()
 	{
 		$type = JRequest::getVar("type", array());
@@ -519,6 +554,13 @@ class CitationsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
+	/**
+	 * Short description for 'getformat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function getformat()
 	{
 		//get the format being sent via json
@@ -537,6 +579,13 @@ class CitationsController extends Hubzero_Controller
 		echo $format_template;
 	}
 
+	/**
+	 * Short description for 'gettemplatekeys'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function gettemplatekeys()
 	{
 		//include citations format class

@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      David Benham <dbenham@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,19 +21,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    David Benham <dbenham@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_Email_Token'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Email_Token
 {
+
+	/**
+	 * Description for 'mailTokenTicket'
+	 */
     const emailTokenTicket = 1;
+
+	/**
+	 * Description for 'mailTokenGroupThread'
+	 */
     const emailTokenGroupThread = 2;
 
+	/**
+	 * Description for '_currentVersion'
+	 * 
+	 * @var string
+	 */
     private $_currentVersion;
+
+	/**
+	 * Description for '_iv'
+	 * 
+	 * @var unknown
+	 */
     private $_iv;
+
+	/**
+	 * Description for '_key'
+	 * 
+	 * @var unknown
+	 */
     private $_key;
+
+	/**
+	 * Description for '_blocksize'
+	 * 
+	 * @var number
+	 */
     private $_blocksize;
 
     /**
@@ -74,10 +112,10 @@ class Hubzero_Email_Token
 
     /**
      *
-     * @param int $version
-     * @param int $action
-     * @param int $userid
-     * @param int $id
+     * @param  int    $version
+     * @param  int    $action 
+     * @param  int    $userid 
+     * @param  int    $id     
      * @return string - base 16 string representing token
      */
     public function buildEmailToken($version, $action, $userid, $id)

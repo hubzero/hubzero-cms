@@ -31,11 +31,36 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'Hubzero_User'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_User
 {
+
+	/**
+	 * Description for '_profile'
+	 * 
+	 * @var object
+	 */
 	private $_profile = null;
+
+	/**
+	 * Description for '_user'
+	 * 
+	 * @var object
+	 */
 	private $_user = null;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct($user = null)
 	{
 		if (!is_null($user))
@@ -44,6 +69,14 @@ class Hubzero_User
 		}
 	}
 
+	/**
+	 * Short description for 'getInstance'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $user Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	function getInstance($user)
 	{
 		$instance = new Hubzero_User($user);
@@ -55,11 +88,26 @@ class Hubzero_User
 
 	}
 
+	/**
+	 * Short description for '_load_profile'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function _load_profile()
 	{
 		$this->_profile = Hubzero_User_Profile::getInstance($this->_user->get('username'));
 	}
 
+	/**
+	 * Short description for 'comparePassword'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $password Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function comparePassword($password)
 	{
 		if (is_null($this->_profile))
@@ -87,6 +135,13 @@ class Hubzero_User
 		return false;
 	}
 
+	/**
+	 * Short description for 'getUserId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	function getUserId()
 	{
 		return $this->_user->get('id');

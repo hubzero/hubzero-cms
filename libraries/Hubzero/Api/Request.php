@@ -28,13 +28,50 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/**
+ * Short description for 'Hubzero_API_Request'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_API_Request
 {
+
+	/**
+	 * Description for 'method'
+	 * 
+	 * @var string
+	 */
 	public $method = 'GET';
+
+	/**
+	 * Description for 'suppress_response_codes'
+	 * 
+	 * @var boolean
+	 */
 	public $suppress_response_codes = false;
+
+	/**
+	 * Description for 'accepts'
+	 * 
+	 * @var string
+	 */
 	public $accepts = "text/plain";
+
+	/**
+	 * Description for 'path'
+	 * 
+	 * @var string
+	 */
 	public $path = '';
 
+	/**
+	 * Short description for 'getHeaderField'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $header Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function getHeaderField($header)
 	{
 		$header = strtoupper($header);
@@ -54,6 +91,13 @@ class Hubzero_API_Request
 		return null;
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function __construct()
 	{
 		$this->path = $_SERVER['SCRIPT_URL'];
@@ -106,16 +150,38 @@ class Hubzero_API_Request
 		}
 	}
 
+	/**
+	 * Short description for 'getMethod'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function getMethod()
 	{
 		return $this->method;
 	}
 
+	/**
+	 * Short description for 'getSuppressResponseCodes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	function getSuppressResponseCodes()
 	{
 		return $this->suppress_response_codes;
 	}
 
+	/**
+	 * Short description for '_parse_accept'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $input Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function _parse_accept($input)
 	{
 		static $_types = array(

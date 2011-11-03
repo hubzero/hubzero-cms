@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,8 +36,23 @@ jimport('joomla.filesystem.file');
 
 JPlugin::loadLanguage( 'plg_citation_endnote' );
 
+/**
+ * Short description for 'plgCitationEndnote'
+ * 
+ * Long description (if any) ...
+ */
 class plgCitationEndnote extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgCitationEndnote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgCitationEndnote(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -45,11 +62,26 @@ class plgCitationEndnote extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onImportAcceptedFiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function onImportAcceptedFiles()
 	{
 		return ".enw <small>(EndNote File)</small>";
 	}
 
+	/**
+	 * Short description for 'onImport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $file Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function onImport( $file )
 	{
 		//endnote format
@@ -71,6 +103,14 @@ class plgCitationEndnote extends JPlugin
 		return $this->onImportProcessEndnote( $raw_citations );
 	}
 
+	/**
+	 * Short description for 'onImportProcessEndnote'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $raw_citations_text Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	protected function onImportProcessEndnote( $raw_citations_text )
 	{
 		//make sure we have some citation data to process
@@ -181,6 +221,13 @@ class plgCitationEndnote extends JPlugin
 		return $final;
 	}
 
+	/**
+	 * Short description for 'getCitationVars'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	protected function getCitationVars()
 	{
 		//get all the vars that a citation can have
@@ -197,6 +244,13 @@ class plgCitationEndnote extends JPlugin
 		return array_values($keys);
 	}
 
+	/**
+	 * Short description for 'getEndnoteTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	protected function getEndnoteTags()
 	{
 		$tags = array(
@@ -246,6 +300,14 @@ class plgCitationEndnote extends JPlugin
 		return $tags;
 	}
 
+	/**
+	 * Short description for 'checkDuplicateCitation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $citation Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	protected function checkDuplicateCitation( $citation )
 	{
 		//vars
@@ -313,6 +375,14 @@ class plgCitationEndnote extends JPlugin
 		return $match;
 	}
 
+	/**
+	 * Short description for '_cleanText'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _cleanText( $string )
 	{
 		$translations = get_html_translation_table(HTML_ENTITIES);

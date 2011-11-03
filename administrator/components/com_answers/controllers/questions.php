@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,8 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+/**
+ * Short description for 'AnswersControllerQuestions'
+ * 
+ * Long description (if any) ...
+ */
 class AnswersControllerQuestions extends Hubzero_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
@@ -46,6 +61,13 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		parent::execute();
 	}
 
+	/**
+	 * Short description for 'displayTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function displayTask()
 	{
 		// Get Joomla configuration
@@ -210,6 +232,13 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->display();
 	}
 
+	/**
+	 * Short description for 'saveTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
@@ -264,6 +293,13 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->_message = JText::_('Question Successfully Saved');
 	}
 
+	/**
+	 * Short description for 'removeTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
@@ -348,16 +384,37 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
+	/**
+	 * Short description for 'openTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function openTask()
 	{
 		$this->stateTask();
 	}
 
+	/**
+	 * Short description for 'closeTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function closeTask()
 	{
 		$this->stateTask();
 	}
 
+	/**
+	 * Short description for 'stateTask'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function stateTask()
 	{
 		// Check for request forgeries
@@ -441,11 +498,26 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
+	/**
+	 * Short description for 'cancel'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function cancel()
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
+	/**
+	 * Short description for '_getPointReward'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _getPointReward($id)
 	{
 		// Check if question owner assigned a reward for answering his Q
@@ -453,6 +525,15 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		return $BT->getAmount('answers', 'hold', $id);
 	}
 
+	/**
+	 * Short description for '_getAbuseReports'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _getAbuseReports($id, $cat)
 	{
 		// Incoming
@@ -467,6 +548,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		return $ra->getCount($filters);
 	}
 
+	/**
+	 * Short description for '_getTags'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      mixed $tagger_id Parameter description (if any) ...
+	 * @param      mixed $strength Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getTags($id, $tagger_id=0, $strength=0)
 	{
 		$sql = "SELECT DISTINCT t.* FROM #__tags AS t, #__tags_object AS rt WHERE rt.objectid=" . $id . " AND rt.tbl='answers' AND rt.tagid=t.id";

@@ -45,18 +45,69 @@ ini_set('zlib.output_compression','0');
 ini_set('output_hander','');
 ini_set('implicit_flush','0');
 
+/**
+ * Description for ''_JEXEC''
+ */
 define('_JEXEC', 1);
+
+/**
+ * Description for ''DS''
+ */
 define('DS', DIRECTORY_SEPARATOR);
+
+/**
+ * Description for ''JPATH_ROOT''
+ */
 define('JPATH_ROOT', dirname( dirname(__FILE__) ));
+
+/**
+ * Description for ''JPATH_BASE''
+ */
 define('JPATH_BASE', JPATH_ROOT);
+
+/**
+ * Description for ''JPATH_SITE''
+ */
 define('JPATH_SITE', JPATH_ROOT);
+
+/**
+ * Description for ''JPATH_CONFIGURATION''
+ */
 define('JPATH_CONFIGURATION', JPATH_ROOT);
+
+/**
+ * Description for ''JPATH_INSTALLATION''
+ */
 define('JPATH_INSTALLATION', JPATH_ROOT . DS . 'installation');
+
+/**
+ * Description for ''JPATH_ADMINISTRATOR''
+ */
 define('JPATH_ADMINISTRATOR', JPATH_ROOT . DS . 'administrator');
+
+/**
+ * Description for ''JPATH_API''
+ */
 define('JPATH_API', JPATH_ROOT . DS . 'api');
+
+/**
+ * Description for ''JPATH_XMLRPC''
+ */
 define('JPATH_XMLRPC', JPATH_ROOT . DS . 'xmlrpc');
+
+/**
+ * Description for ''JPATH_LIBRARIES''
+ */
 define('JPATH_LIBRARIES', JPATH_ROOT . DS . 'libraries');
+
+/**
+ * Description for ''JPATH_PLUGINS''
+ */
 define('JPATH_PLUGINS', JPATH_ROOT . DS . 'plugins');
+
+/**
+ * Description for ''JPATH_CACHE''
+ */
 define('JPATH_CACHE', JPATH_BASE . DS . 'cache');
 
 require(JPATH_LIBRARIES.DS.'loader.php');

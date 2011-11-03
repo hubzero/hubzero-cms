@@ -39,8 +39,23 @@ defined('_JEXEC') or die('Restricted access');
  */
 class modXSearch
 {
+
+	/**
+	 * Description for '_attributes'
+	 * 
+	 * @var array
+	 */
 	private $_attributes = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      unknown $module Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($params, $module)
 	{
 		$this->params = $params;
@@ -77,11 +92,26 @@ class modXSearch
 		}
 	}
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
 
+	/**
+	 * Short description for 'run'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function run()
 	{
 		$this->width  = intval($this->params->get('width', 20));

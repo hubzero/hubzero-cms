@@ -845,6 +845,13 @@ class HubController extends Hubzero_Controller
 	//  Organization types
 	//----------------------------------------------------------
 
+	/**
+	 * Short description for 'orgtypes'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function orgtypes()
 	{
 		$view = new JView( array('name'=>'organizationtypes') );
@@ -885,11 +892,25 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'addorgtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function addorgtype()
 	{
 		$this->editorgtype();
 	}
 
+	/**
+	 * Short description for 'editorgtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function editorgtype()
 	{
 		$view = new JView( array('name'=>'organizationtype') );
@@ -919,6 +940,13 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'saveorgtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function saveorgtype()
 	{
 		// Check for request forgeries
@@ -954,6 +982,13 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_('HUB_ORGTYPE_SAVED');
 	}
 
+	/**
+	 * Short description for 'removeorgtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function removeorgtype()
 	{
 		// Check for request forgeries
@@ -983,6 +1018,13 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_('HUB_ORGTYPE_REMOVED');
 	}
 
+	/**
+	 * Short description for 'cancelorgtype'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function cancelorgtype()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgtypes';

@@ -539,6 +539,13 @@ class CitationsController extends Hubzero_Controller
 	//	Import
 	//---------------------------------------------------------------------
 
+	/**
+	 * Short description for 'import'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function import()
 	{
 		//get user object
@@ -598,6 +605,13 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'import_upload'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function import_upload()
 	{
 		//get user object
@@ -660,6 +674,13 @@ class CitationsController extends Hubzero_Controller
 		return;
 	}
 
+	/**
+	 * Short description for 'import_review'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function import_review()
 	{
 		//get user object
@@ -712,6 +733,13 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'import_save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function import_save()
 	{
 		//get user object
@@ -920,6 +948,13 @@ class CitationsController extends Hubzero_Controller
 		return;
 	}
 
+	/**
+	 * Short description for 'import_saved'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function import_saved()
 	{
 		//get the session object
@@ -979,6 +1014,17 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'tag_citation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $userid Parameter description (if any) ...
+	 * @param      unknown $objectid Parameter description (if any) ...
+	 * @param      unknown $tag_string Parameter description (if any) ...
+	 * @param      unknown $label Parameter description (if any) ...
+	 * @return     void
+	 */
 	protected function tag_citation( $userid, $objectid, $tag_string, $label)
 	{
 		if($tag_string) {
@@ -987,6 +1033,13 @@ class CitationsController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'citation_cleanup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function citation_cleanup()
 	{
 		$p = JPATH_ROOT . DS . 'tmp' . DS . 'citations';
@@ -1074,6 +1127,13 @@ class CitationsController extends Hubzero_Controller
 		die; // REQUIRED
 	}
 
+	/**
+	 * Short description for 'download_batch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function download_batch()
 	{
 		//get the submit buttons value
@@ -1123,6 +1183,15 @@ class CitationsController extends Hubzero_Controller
 	// 	Utilites
 	//----------------------------------------------------------
 
+	/**
+	 * Short description for '_isempty'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $b Parameter description (if any) ...
+	 * @param      array $ignored Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function _isempty($b, $ignored=array())
 	{
 		foreach ($ignored as $ignore)
@@ -1145,6 +1214,17 @@ class CitationsController extends Hubzero_Controller
 		return $e;
 	}
 
+	/**
+	 * Short description for '_serveup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $inline Parameter description (if any) ...
+	 * @param      string $p Parameter description (if any) ...
+	 * @param      string $f Parameter description (if any) ...
+	 * @param      string $mime Parameter description (if any) ...
+	 * @return     void
+	 */
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
@@ -1252,6 +1332,13 @@ class CitationsController extends Hubzero_Controller
 		$document->setTitle( $title );
 	}
 
+	/**
+	 * Short description for 'getFormatTemplate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function getFormatTemplate()
 	{
 		$format = JRequest::getVar("format", "apa");

@@ -31,8 +31,21 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Short description for 'OauthApiController'
+ * 
+ * Long description (if any) ...
+ */
 class OauthApiController extends Hubzero_Api_Controller
 {
+
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function execute()
 	{
 		$segments = $this->getRouteSegments();
@@ -58,6 +71,13 @@ class OauthApiController extends Hubzero_Api_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'token_info'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function token_info()
 	{
 		$provider = $this->getProvider();
@@ -66,6 +86,13 @@ class OauthApiController extends Hubzero_Api_Controller
 		$response->setMessage($provider->getTokenData(),200,'OK');
 	}
 
+	/**
+	 * Short description for 'not_found'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function not_found()
 	{
 		$response = $this->getResponse();
@@ -73,6 +100,13 @@ class OauthApiController extends Hubzero_Api_Controller
 		$response->setErrorMessage(404,'Not Found');
 	}
 
+	/**
+	 * Short description for 'request_token'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	private function request_token()
 	{
 		$provider = $this->getProvider();
@@ -98,6 +132,13 @@ class OauthApiController extends Hubzero_Api_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'authorize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	private function authorize()
 	{
 		$provider = $this->getProvider();
@@ -161,6 +202,13 @@ class OauthApiController extends Hubzero_Api_Controller
 		$this->setErrorMessage(500, "Internal Server Error");
 	}
 
+	/**
+	 * Short description for 'access_token'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function access_token()
 	{
 		$provider = $this->getProvider();

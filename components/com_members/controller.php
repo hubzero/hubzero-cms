@@ -270,6 +270,13 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for '_myaccount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function _myaccount()
 	{
 		if (!$this->juser->get('guest')) {
@@ -281,6 +288,13 @@ class MembersController extends Hubzero_Controller
 		return $this->view();
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Build the page title

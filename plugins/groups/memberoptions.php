@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      David Benham <dbenham@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    David Benham <dbenham@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,8 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'PLG_GROUPS_MEMBEROPTIONS' );
 
+/**
+ * Short description for 'plgGroupsMemberOptions'
+ * 
+ * Long description (if any) ...
+ */
 class plgGroupsMemberOptions extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgGroupsMemberOptions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgGroupsMemberOptions(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -44,6 +61,13 @@ class plgGroupsMemberOptions extends JPlugin
 
 	}
 
+	/**
+	 * Short description for 'onGroupAreas'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	public function &onGroupAreas()
 	{
 		$area = array(
@@ -56,6 +80,21 @@ class plgGroupsMemberOptions extends JPlugin
 	}
 	//-----------
 
+	/**
+	 * Short description for 'onGroup'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $group Parameter description (if any) ...
+	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      unknown $authorized Parameter description (if any) ...
+	 * @param      integer $limit Parameter description (if any) ...
+	 * @param      integer $limitstart Parameter description (if any) ...
+	 * @param      string $action Parameter description (if any) ...
+	 * @param      unknown $access Parameter description (if any) ...
+	 * @param      unknown $areas Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		ximport('Hubzero_Document');
@@ -92,6 +131,17 @@ class plgGroupsMemberOptions extends JPlugin
 
 	}
 
+	/**
+	 * Short description for 'edit'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      object $user Parameter description (if any) ...
+	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
+	 * @param      unknown $recvEmailOptionValue Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	protected function edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
 		// HTML output
@@ -131,6 +181,17 @@ class plgGroupsMemberOptions extends JPlugin
 
 	}
 
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      object $group Parameter description (if any) ...
+	 * @param      object $user Parameter description (if any) ...
+	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
+	 * @param      unknown $recvEmailOptionValue Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
 		/* @var $group Hubzero_Group */

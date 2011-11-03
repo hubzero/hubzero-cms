@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Christopher Smoak <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,8 +36,23 @@ jimport('joomla.filesystem.file');
 
 JPlugin::loadLanguage( 'plg_citation_endnote' );
 
+/**
+ * Short description for 'plgCitationDefault'
+ * 
+ * Long description (if any) ...
+ */
 class plgCitationDefault extends JPlugin
 {
+
+	/**
+	 * Short description for 'plgCitationDefault'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$subject Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function plgCitationDefault(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -45,11 +62,26 @@ class plgCitationDefault extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
+	/**
+	 * Short description for 'onImportAcceptedFiles'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	public function onImportAcceptedFiles()
 	{
 		return ".txt <small>(Text File)</small>";
 	}
 
+	/**
+	 * Short description for 'onImport'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $file Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function onImport( $file )
 	{
 		//array of acceptable file types

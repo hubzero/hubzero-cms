@@ -2332,6 +2332,15 @@ class Hubzero_Tool
         return  $groups;
     }
 
+	/**
+	 * Short description for 'saveTicketId'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $toolid Parameter description (if any) ...
+	 * @param      string $ticketid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	static public function saveTicketId($toolid=NULL, $ticketid=NULL)
     {
 		$db = &JFactory::getDBO();

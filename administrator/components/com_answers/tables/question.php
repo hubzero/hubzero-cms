@@ -302,6 +302,15 @@ class AnswersQuestion extends JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Short description for 'getQuestionID'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $which Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getQuestionID( $id, $which )
 	{
 		$query  = "SELECT a.id ";

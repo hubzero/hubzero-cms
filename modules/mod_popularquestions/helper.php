@@ -39,8 +39,23 @@ defined('_JEXEC') or die('Restricted access');
  */
 class modPopularQuestions
 {
+
+	/**
+	 * Description for '_attributes'
+	 * 
+	 * @var array
+	 */
 	private $_attributes = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      unknown $module Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($params, $module)
 	{
 		$this->params = $params;
@@ -77,6 +92,14 @@ class modPopularQuestions
 		}
 	}
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
@@ -175,6 +198,13 @@ class modPopularQuestions
 		return $text;
 	}
 
+	/**
+	 * Short description for 'run'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	public function run()
 	{
 		$this->database = JFactory::getDBO();
@@ -221,6 +251,13 @@ class modPopularQuestions
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function display()
 	{
 		// Push the module CSS to the template

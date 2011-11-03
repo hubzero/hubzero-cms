@@ -39,6 +39,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class modEventsCalendar
 {
+
+	/**
+	 * Description for '_attributes'
+	 * 
+	 * @var array
+	 */
 	private $_attributes = array();
 	/**
 	 * Description for 'attributes'
@@ -82,6 +88,14 @@ class modEventsCalendar
 		}
 	}
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
@@ -114,6 +128,13 @@ class modEventsCalendar
 		$this->run();
 	}
 
+	/**
+	 * Short description for 'run'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function run()
 	{
 		$lang =& JFactory::getLanguage();
@@ -192,6 +213,10 @@ class modEventsCalendar
 		$startday = $this->params->get('start_day');
 		if (!defined('_CAL_CONF_STARDAY'))
 		{
+
+	/**
+	 * Description for ''_CAL_CONF_STARDAY''
+	 */
 			define('_CAL_CONF_STARDAY', $startday);
 		}
 		//define('_CAL_CONF_DATEFORMAT',1);

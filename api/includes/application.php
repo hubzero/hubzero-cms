@@ -31,16 +31,64 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Short description for 'Hubzero_API'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_API extends JApplication
 {
+
+	/**
+	 * Description for '_enabled'
+	 * 
+	 * @var boolean
+	 */
 	private $_enabled = false; // is api server enabled
+
+	/**
+	 * Description for '_component'
+	 * 
+	 * @var boolean
+	 */
 	private $_component = false; // component we are routing to
+
+	/**
+	 * Description for '_route'
+	 * 
+	 * @var array
+	 */
 	private $_route = array(); // path segments to pass to api controller
 
+	/**
+	 * Description for '_response'
+	 * 
+	 * @var object
+	 */
 	private $_response = null;
+
+	/**
+	 * Description for '_request'
+	 * 
+	 * @var object
+	 */
 	private $_request = null;
+
+	/**
+	 * Description for '_provider'
+	 * 
+	 * @var unknown
+	 */
 	private $_provider = null;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $config Parameter description (if any) ...
+	 * @return     void
+	 */
 	function __construct($config = array())
 	{
 		JLoader::import('joomla.version');
@@ -50,6 +98,9 @@ class Hubzero_API extends JApplication
 
 		$version = new JVersion();
 
+	/**
+	 * Description for ''JVERSION''
+	 */
 		define('JVERSION', $version->getShortVersion());
 
 		$config['clientId'] = 4;
@@ -58,6 +109,13 @@ class Hubzero_API extends JApplication
         parent::__construct($config);
 	}
 
+	/**
+	 * Short description for 'handle_method_override'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function handle_method_override()
 	{
 		if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']))
@@ -71,6 +129,13 @@ class Hubzero_API extends JApplication
 		}
 	}
 
+	/**
+	 * Short description for 'fix_http_headers'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function fix_http_headers()
 	{
 		if (function_exists('apache_request_headers'))
@@ -92,6 +157,13 @@ class Hubzero_API extends JApplication
 		}
 	}
 
+	/**
+	 * Short description for 'unregister_long_arrays'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function unregister_long_arrays()
 	{
 		if (ini_get('register_long_arrays'))
@@ -106,6 +178,13 @@ class Hubzero_API extends JApplication
 		}
 	}
 
+	/**
+	 * Short description for 'unregister_globals'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function unregister_globals()
 	{
 		if (ini_get('register_globals'))
@@ -157,6 +236,13 @@ class Hubzero_API extends JApplication
 
 	// static function &getInstance($client, $config, $prefix) inherited
 
+	/**
+	 * Short description for 'initialise'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function initialise()
 	{
 		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Response.php";
@@ -178,6 +264,13 @@ class Hubzero_API extends JApplication
 		$this->_enabled = (JFactory::getConfig()->getValue('config.api_server') == true);
 	}
 
+	/**
+	 * Short description for 'route'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function route()
 	{
 		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Controller.php";
@@ -223,6 +316,13 @@ class Hubzero_API extends JApplication
 		}
 	}
 
+	/**
+	 * Short description for 'authenticate'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function authenticate()
 	{
 		if (!$this->_route)
@@ -250,6 +350,13 @@ class Hubzero_API extends JApplication
 		$this->_provider = $oauthp;
 	}
 
+	/**
+	 * Short description for 'dispatch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function dispatch()
 	{
 		if (!$this->_provider)
@@ -270,6 +377,13 @@ class Hubzero_API extends JApplication
 		}
 	}
 
+	/**
+	 * Short description for 'render'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function render()
 	{
 		global $_HUBZERO_API_START;
@@ -279,6 +393,13 @@ class Hubzero_API extends JApplication
 		$this->_response->send();
 	}
 
+	/**
+	 * Short description for 'execute'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function execute()
 	{
 		$this->initialise();
@@ -292,21 +413,51 @@ class Hubzero_API extends JApplication
 		$this->render();
 	}
 
+	/**
+	 * Short description for 'close'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function close()
 	{
 		die('close() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'redirect'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function redirect()
 	{
 		die('redirect() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'enqueueMessage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $msg Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     void
+	 */
 	function enqueueMessage( $msg, $type = 'message' )
 	{
 		die('enqueueMessage() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getMessageQueue'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getMessageQueue()
 	{
 		die('getMessageQueue() invalid in API application context');
@@ -314,151 +465,400 @@ class Hubzero_API extends JApplication
 
 	// function getCfg( $varname ) inherited
 
+	/**
+	 * Short description for 'getName'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
 	function getName()
     {
         return 'api';
     }
 
+	/**
+	 * Short description for 'getUserState'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @return     void
+	 */
 	function getUserState( $key )
 	{
 		die('getUserState() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'setUserState'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setUserState( $key, $value )
 	{
 		die('setUserState() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getUserStateFromRequest'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $key Parameter description (if any) ...
+	 * @param      unknown $request Parameter description (if any) ...
+	 * @param      unknown $default Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @return     void
+	 */
 	function getUserStateFromRequest( $key, $request, $default = null, $type = 'none' )
 	{
 		die('getUserStateFromRequest() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'registerEvent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $event Parameter description (if any) ...
+	 * @param      unknown $handler Parameter description (if any) ...
+	 * @return     void
+	 */
 	function registerEvent($event, $handler)
 	{
 		die('registerEvent() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'triggerEvent'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $event Parameter description (if any) ...
+	 * @param      unknown $args Parameter description (if any) ...
+	 * @return     void
+	 */
 	function triggerEvent($event, $args=null)
 	{
 		die('triggerEvent() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'login'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $credentials Parameter description (if any) ...
+	 * @param      array $options Parameter description (if any) ...
+	 * @return     void
+	 */
 	function login($credentials, $options = array())
 	{
 		die('login() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'logout'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $userid Parameter description (if any) ...
+	 * @param      array $options Parameter description (if any) ...
+	 * @return     void
+	 */
 	function logout($userid = null, $options = array())
 	{
 		die('logout() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getRouter'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      array $options Parameter description (if any) ...
+	 * @return     void
+	 */
 	function &getRouter($name = null, $options = array())
 	{
 		die('getRouter() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getPathway'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      array $options Parameter description (if any) ...
+	 * @return     void
+	 */
 	function &getPathway($name = null, $options = array())
 	{
 		die('getPathway() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getMenu'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      array $options Parameter description (if any) ...
+	 * @return     void
+	 */
 	function &getMenu($name = null, $options = array())
 	{
 		die('getMenu() invalid in API application context');
 	}
 
+	/**
+	 * Short description for '_createSession'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @return     void
+	 */
 	function &_createSession( $name )
 	{
 		die('_createSession() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'appendPathWay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $link Parameter description (if any) ...
+	 * @return     void
+	 */
 	function appendPathWay( $name, $link = null )
 	{
 		die('appendPathWay() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getCustomPathWay'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getCustomPathWay()
 	{
 		die('getCustomPathWay() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getHead'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getHead()
 	{
 		die('getHead() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'addMetaTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $content Parameter description (if any) ...
+	 * @param      string $prepend Parameter description (if any) ...
+	 * @param      string $append Parameter description (if any) ...
+	 * @return     void
+	 */
 	function addMetaTag( $name, $content, $prepend = '', $append = '' )
 	{
 		die('addMetaTag() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'appendMetaTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $content Parameter description (if any) ...
+	 * @return     void
+	 */
 	function appendMetaTag( $name, $content )
 	{
 		die('appendMetaTag() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'prependMetaTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      unknown $content Parameter description (if any) ...
+	 * @return     void
+	 */
 	function prependMetaTag( $name, $content )
 	{
 		die('prependMetaTag() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'addCustomHeadTag'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $html Parameter description (if any) ...
+	 * @return     void
+	 */
 	function addCustomHeadTag( $html )
 	{
 		die('addCustomHeadTag() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getBlogSectionCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getBlogSectionCount( )
 	{
 		die('getBlogSectionCount() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getBlogCategoryCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getBlogCategoryCount( )
 	{
 		die('getBlogCategoryCount() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getGlobalBlogSectionCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getGlobalBlogSectionCount( )
 	{
 		die('getGlobalBlogSectionCount() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getStaticContentCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getStaticContentCount( )
 	{
 		die('getStaticContentCount() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getContentItemLinkCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getContentItemLinkCount( )
 	{
 		die('getContentItemLinkCount() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $varname Parameter description (if any) ...
+	 * @param      unknown $user_option Parameter description (if any) ...
+	 * @return     void
+	 */
 	function getPath($varname, $user_option = null)
 	{
 		die('getPath() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getBasePath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $client Parameter description (if any) ...
+	 * @param      boolean $addTrailingSlash Parameter description (if any) ...
+	 * @return     void
+	 */
 	function getBasePath($client=0, $addTrailingSlash = true)
 	{
 		die('getBasePath() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getUser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function &getUser()
 	{
 		die('getUser() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getItemid'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     void
+	 */
 	function getItemid( $id )
 	{
 		die('getItemid() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'setPageTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $title Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setPageTitle( $title=null )
 	{
 		die('setPageTitle() invalid in API application context');
 	}
 
+	/**
+	 * Short description for 'getPageTitle'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function getPageTitle()
 	{
 		die('getPageTitle() invalid in API application context');

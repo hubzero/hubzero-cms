@@ -38,12 +38,29 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class modYoutubeHelper
 {
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      unknown $module Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
 
+	/**
+	 * Short description for 'render'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function render()
 	{
 		//get the document
@@ -257,6 +274,14 @@ class modYoutubeHelper
 		}
 	}
 
+	/**
+	 * Short description for '_formatTime'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $seconds Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _formatTime($seconds)
 	{
 		$minutes = floor($seconds / 60);

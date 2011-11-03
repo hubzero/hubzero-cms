@@ -698,6 +698,14 @@ class WikiPage extends JTable
 		return $query;
 	}
 
+	/**
+	 * Short description for 'getMetrics'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function getMetrics($filters=array())
  	{
  		$this->_db->setQuery("SELECT visitors, visits FROM jos_wiki_page_metrics WHERE pageid = ".$this->id);

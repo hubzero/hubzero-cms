@@ -332,19 +332,89 @@ class CitationsCitation extends JTable
 	 * @var unknown
 	 */
  	var $notes          	= NULL;  // @var text
+
+	/**
+	 * Description for 'published'
+	 * 
+	 * @var unknown
+	 */
 	var $published      	= NULL;  // @var int(3)
 
+	/**
+	 * Description for 'abstract'
+	 * 
+	 * @var unknown
+	 */
 	var $abstract 			= NULL;
+
+	/**
+	 * Description for 'keywords'
+	 * 
+	 * @var unknown
+	 */
 	var $keywords			= NULL;
+
+	/**
+	 * Description for 'language'
+	 * 
+	 * @var unknown
+	 */
 	var $language			= NULL;
+
+	/**
+	 * Description for 'accession_number'
+	 * 
+	 * @var unknown
+	 */
 	var $accession_number	= NULL;
+
+	/**
+	 * Description for 'short_title'
+	 * 
+	 * @var unknown
+	 */
 	var $short_title 		= NULL;
+
+	/**
+	 * Description for 'research_notes'
+	 * 
+	 * @var unknown
+	 */
 	var $research_notes		= NULL;
+
+	/**
+	 * Description for 'author_address'
+	 * 
+	 * @var unknown
+	 */
 	var $author_address 	= NULL;
+
+	/**
+	 * Description for 'call_number'
+	 * 
+	 * @var unknown
+	 */
 	var $call_number		= NULL;
+
+	/**
+	 * Description for 'label'
+	 * 
+	 * @var unknown
+	 */
 	var $label 				= NULL;
 
+	/**
+	 * Description for 'badges'
+	 * 
+	 * @var unknown
+	 */
 	var $badges				= NULL;
+
+	/**
+	 * Description for 'tags'
+	 * 
+	 * @var unknown
+	 */
 	var $tags				= NULL;
 	 *
 	 * @var unknown

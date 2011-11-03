@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright   Copyright 2008-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2008-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2008-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,12 +33,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_User_Profile');
 
+/**
+ * Short description for 'ImportAuthors'
+ * 
+ * Long description (if any) ...
+ */
 class ImportAuthors extends XImportHelperScript
 {
+
+	/**
+	 * Description for '_description'
+	 * 
+	 * @var string
+	 */
 	protected $_description = 'Import user profiles from LDAP.';
 
+	/**
+	 * Description for '_options'
+	 * 
+	 * @var array
+	 */
 	protected $_options = array(array('override' => '1'));
 
+	/**
+	 * Short description for 'run'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function run()
 	{
 		$override = JRequest::getVar('override', false);
@@ -93,6 +118,15 @@ class ImportAuthors extends XImportHelperScript
 		return true;
 	}
 
+	/**
+	 * Short description for '_importAuthor'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      boolean $override Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _importAuthor($row = null, $override = false)
 	{
 		if ($row == 0)

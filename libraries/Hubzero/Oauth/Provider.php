@@ -31,36 +31,122 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Short description for 'Hubzero_Oauth_Provider'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Oauth_Provider
 {
+
+	/**
+	 * Description for '_provider'
+	 * 
+	 * @var mixed
+	 */
 	private $_provider = null;
+
+	/**
+	 * Description for '_consumer_data'
+	 * 
+	 * @var unknown
+	 */
 	private $_consumer_data = null;
+
+	/**
+	 * Description for '_token_data'
+	 * 
+	 * @var unknown
+	 */
 	private $_token_data = null;
+
+	/**
+	 * Description for '_response'
+	 * 
+	 * @var object
+	 */
 	private $_response = null;
+
+	/**
+	 * Description for '_request_token_path'
+	 * 
+	 * @var unknown
+	 */
 	private $_request_token_path = null;
+
+	/**
+	 * Description for '_access_token_path'
+	 * 
+	 * @var unknown
+	 */
 	private $_access_token_path = null;
+
+	/**
+	 * Description for '_authorize_path'
+	 * 
+	 * @var unknown
+	 */
 	private $_authorize_path = null;
 
+	/**
+	 * Short description for 'setResponse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $response Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setResponse($response)
 	{
 		$this->_response = $response;
 	}
 
+	/**
+	 * Short description for 'setRequestTokenPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $path Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setRequestTokenPath($path)
 	{
 		$this->_request_token_path = trim($path,'/');
 	}
 
+	/**
+	 * Short description for 'setAccessTokenPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $path Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setAccessTokenPath($path)
 	{
 		$this->_access_token_path = trim($path,'/');
 	}
 
+	/**
+	 * Short description for 'setAuthorizePath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $path Parameter description (if any) ...
+	 * @return     void
+	 */
 	function setAuthorizePath($path)
 	{
 		$this->_authorize_path = trim($path,'/');
 	}
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	function __construct()
 	{
 		$this->_provider = new OAuthProvider();
@@ -71,6 +157,14 @@ class Hubzero_Oauth_Provider
 
 	// @FIXME: validateRequest() is still a bit awkward and needs to be refactored
 
+	/**
+	 * Short description for 'validateRequest'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $uri Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	function validateRequest($uri = null)
 	{
 		$endpoint = false;
@@ -200,26 +294,61 @@ class Hubzero_Oauth_Provider
 		return false;
 	}
 
+	/**
+	 * Short description for 'getToken'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	function getToken()
 	{
 		return $this->_provider->token;
 	}
 
+	/**
+	 * Short description for 'getConsumerKey'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     mixed Return description (if any) ...
+	 */
 	function getConsumerKey()
 	{
 		return $this->_provider->consumer_key;
 	}
 
+	/**
+	 * Short description for 'getConsumerData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getConsumerData()
 	{
 		return $this->_consumer_data;
 	}
 
+	/**
+	 * Short description for 'getTokenData'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	function getTokenData()
 	{
 		return $this->_token_data;
 	}
 
+	/**
+	 * Short description for 'lookupConsumer'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
  	function lookupConsumer()
 	{
 		$db = JFactory::getDBO();
@@ -255,6 +384,13 @@ class Hubzero_Oauth_Provider
 		return OAUTH_OK;
 	}
 
+	/**
+	 * Short description for 'timestampNonceChecker'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
 	function timestampNonceChecker()
 	{
 		$timediff = abs(time() - $this->_provider->timestamp);
@@ -288,6 +424,13 @@ class Hubzero_Oauth_Provider
 		return OAUTH_OK;
 	}
 
+	/**
+	 * Short description for 'tokenHandler'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     integer Return description (if any) ...
+	 */
 	function tokenHandler()
 	{
 		$db = JFactory::getDBO();

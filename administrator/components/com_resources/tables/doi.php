@@ -59,6 +59,12 @@ class ResourcesDoi extends JTable
 	 * @var unknown
 	 */
 	var $rid            = NULL;  // @var int(11)
+
+	/**
+	 * Description for 'versionid'
+	 * 
+	 * @var unknown
+	 */
 	var $versionid      = NULL;  // @var int(11)
 
 	/**
@@ -67,6 +73,12 @@ class ResourcesDoi extends JTable
 	 * @var unknown
 	 */
 	var $alias          = NULL;  // @var varchar(30)
+
+	/**
+	 * Description for 'doi'
+	 * 
+	 * @var unknown
+	 */
 	var $doi            = NULL;  // @var varchar(100) - NEW
 
 	//-----------
@@ -100,6 +112,17 @@ class ResourcesDoi extends JTable
 		return true;
 	}
 
+	/**
+	 * Short description for 'getDoi'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      string $revision Parameter description (if any) ...
+	 * @param      mixed $versionid Parameter description (if any) ...
+	 * @param      integer $get_full_doi Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getDoi( $id = NULL, $revision = NULL, $versionid = 0, $get_full_doi = 0 )
 	{
 		if ($id == NULL) {
@@ -124,6 +147,15 @@ class ResourcesDoi extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'getLatestDoi'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @param      integer $get_full_doi Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function getLatestDoi( $id = NULL, $get_full_doi = 0 )
 	{
 		if ($id == NULL) {
@@ -141,6 +173,15 @@ class ResourcesDoi extends JTable
 		return $this->_db->loadResult();
 	}
 
+	/**
+	 * Short description for 'loadDoi'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      mixed $revision Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function loadDoi( $rid = NULL, $revision = 0 )
 	{
 		if ($rid === NULL || !$revision ) {
@@ -156,6 +197,19 @@ class ResourcesDoi extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'saveDOI'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $revision Parameter description (if any) ...
+	 * @param      mixed $newlabel Parameter description (if any) ...
+	 * @param      string $rid Parameter description (if any) ...
+	 * @param      string $alias Parameter description (if any) ...
+	 * @param      mixed $versionid Parameter description (if any) ...
+	 * @param      string $doi Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function saveDOI( $revision = 0, $newlabel = 1, $rid = NULL, $alias='', $versionid = 0, $doi = '' )
 	{
 		if ($rid == NULL) {
@@ -171,6 +225,16 @@ class ResourcesDoi extends JTable
 		}
 	}
 
+	/**
+	 * Short description for 'registerDOI'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $service Parameter description (if any) ...
+	 * @param      array $metadata Parameter description (if any) ...
+	 * @param      string &$doierr Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	public function registerDOI( $service = NULL, $metadata = array(), &$doierr='' )
 	{
 		if($service == NULL or empty($metadata)) {

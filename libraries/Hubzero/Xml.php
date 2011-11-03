@@ -32,14 +32,48 @@
 defined('_JEXEC') or die('Restricted access');
 
 //define('XML_ERROR_NONE', 0);
+
+/**
+ * Description for ''XML_ERROR_DEPTH''
+ */
 define('XML_ERROR_DEPTH', 1);
+
+/**
+ * Description for ''XML_ERROR_STATE_MISMATCH''
+ */
 define('XML_ERROR_STATE_MISMATCH', 2);
+
+/**
+ * Description for ''XML_ERROR_CTRL_CHAR''
+ */
 define('XML_ERROR_CTRL_CHAR', 3);
 //define('XML_ERROR_SYNTAX', 4);
+
+/**
+ * Description for ''XML_ERROR_UTF8''
+ */
 define('XML_ERROR_UTF8', 5);
 
+/**
+ * Short description for 'Hubzero_Xml'
+ * 
+ * Long description (if any) ...
+ */
 class Hubzero_Xml
 {
+
+	/**
+	 * Short description for 'encode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $mixed Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @param      string $attributes Parameter description (if any) ...
+	 * @param      number $depth Parameter description (if any) ...
+	 * @param      boolean $show_declaration Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	function encode($mixed, $tag='root', $attributes='', $depth = 1, $show_declaration = true)
 	{
 		$declaration = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
@@ -160,6 +194,14 @@ class Hubzero_Xml
 	    return $xml;
 	}
 
+	/**
+	 * Short description for 'last_error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @return     integer Return description (if any) ...
+	 */
 	function last_error($id)
 	{
 		static $last_error = 0;
@@ -170,6 +212,14 @@ class Hubzero_Xml
 		return $last_error;
 	}
 
+	/**
+	 * Short description for 'decode'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $xml Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	function decode($xml)
 	{
 		$p = xml_parser_create();

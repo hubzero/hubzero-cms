@@ -31,21 +31,58 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Short description for 'modSpotlight'
+ * 
+ * Long description (if any) ...
+ */
 class modSpotlight
 {
+
+	/**
+	 * Description for '_attributes'
+	 * 
+	 * @var array
+	 */
 	private $_attributes = array();
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      unknown $module Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
 
+	/**
+	 * Short description for '__set'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->_attributes[$property] = $value;
 	}
 
+	/**
+	 * Short description for '__get'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __get($property)
 	{
 		if (isset($this->_attributes[$property]))
@@ -54,11 +91,26 @@ class modSpotlight
 		}
 	}
 
+	/**
+	 * Short description for '__isset'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $property Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
 
+	/**
+	 * Short description for 'display'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function display()
 	{
 		$juser =& JFactory::getUser();
@@ -76,6 +128,13 @@ class modSpotlight
 		$this->run();
 	}
 
+	/**
+	 * Short description for 'run'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function run()
 	{
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
@@ -354,6 +413,17 @@ class modSpotlight
 		require(JModuleHelper::getLayoutPath('mod_spotlight'));
 	}
 
+	/**
+	 * Short description for '_composeEntry'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $row Parameter description (if any) ...
+	 * @param      string $tbl Parameter description (if any) ...
+	 * @param      number $txtLength Parameter description (if any) ...
+	 * @param      integer $getid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _composeEntry($row, $tbl, $txtLength=100, $getid=0)
 	{
 		$out = '';
@@ -595,6 +665,14 @@ class modSpotlight
 		return $out;
 	}
 
+	/**
+	 * Short description for '_getAverageRanking'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _getAverageRanking($uid)
 	{
 		if ($uid === NULL)
@@ -614,6 +692,14 @@ class modSpotlight
 		return $this->database->loadResult();
 	}
 
+	/**
+	 * Short description for '_countContributions'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _countContributions($uid)
 	{
 		if ($uid === NULL)
@@ -625,6 +711,14 @@ class modSpotlight
 		return $this->database->loadResult();
 	}
 
+	/**
+	 * Short description for '_getImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getImage($path)
 	{
 		$d = @dir(JPATH_ROOT . $path);
@@ -664,6 +758,15 @@ class modSpotlight
 		}
 	}
 
+	/**
+	 * Short description for '_getToolImage'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $path Parameter description (if any) ...
+	 * @param      integer $versionid Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
@@ -716,6 +819,14 @@ class modSpotlight
 		}
 	}
 
+	/**
+	 * Short description for '_thumbnail'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $pic Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _thumbnail($pic)
 	{
 		$pic = explode('.', $pic);
@@ -727,6 +838,14 @@ class modSpotlight
 		return $tn;
 	}
 
+	/**
+	 * Short description for '_thumb'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $thumb Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _thumb($thumb)
 	{
 		$image = explode('.', $thumb);
@@ -739,6 +858,16 @@ class modSpotlight
 		return $thumb;
 	}
 
+	/**
+	 * Short description for '_buildPath'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $date Parameter description (if any) ...
+	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      string $base Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
 	private function _buildPath($date, $id, $base='')
 	{
 		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
@@ -761,6 +890,14 @@ class modSpotlight
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
 
+	/**
+	 * Short description for '_niceIdFormat'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $someid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
 	private function _niceIdFormat($someid)
 	{
 		$pre = '';
@@ -776,6 +913,15 @@ class modSpotlight
 		return $pre . $someid;
 	}
 
+	/**
+	 * Short description for '_encodeHtml'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @param      integer $quotes Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
 	private function _encodeHtml($str, $quotes=1)
 	{
 		$str = $this->_ampersands($str);
@@ -797,6 +943,14 @@ class modSpotlight
 		return strtr($str, $a);
 	}
 
+	/**
+	 * Short description for '_ampersands'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $str Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	private function _ampersands($str)
 	{
 		$str = stripslashes($str);

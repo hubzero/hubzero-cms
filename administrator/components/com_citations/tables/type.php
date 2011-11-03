@@ -31,19 +31,70 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'CitationsType'
+ * 
+ * Long description (if any) ...
+ */
 class CitationsType extends JTable
 {
+
+	/**
+	 * Description for 'id'
+	 * 
+	 * @var unknown
+	 */
 	var $id    			= NULL;
+
+	/**
+	 * Description for 'type'
+	 * 
+	 * @var unknown
+	 */
 	var $type			= NULL;
+
+	/**
+	 * Description for 'type_title'
+	 * 
+	 * @var unknown
+	 */
 	var $type_title		= NULL;
+
+	/**
+	 * Description for 'type_desc'
+	 * 
+	 * @var unknown
+	 */
 	var $type_desc 		= NULL;
+
+	/**
+	 * Description for 'type_export'
+	 * 
+	 * @var unknown
+	 */
 	var $type_export  	= NULL;
 
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__citations_types', 'id', $db );
 	}
 
+	/**
+	 * Short description for 'getType'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $id Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
 	public function getType( $id = "" )
 	{
 		$where = ($id != "") ? "WHERE id='{$id}'" : "";

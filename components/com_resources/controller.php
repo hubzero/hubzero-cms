@@ -683,6 +683,13 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'selectPresentation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function selectPresentation()
 	{
 		$presentation = JRequest::getVar("presentation", 0);
@@ -696,6 +703,13 @@ class ResourcesController extends Hubzero_Controller
 		return;
 	}
 
+	/**
+	 * Short description for 'preWatch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     array Return description (if any) ...
+	 */
 	protected function preWatch()
 	{
 		//var to hold error messages
@@ -811,6 +825,13 @@ class ResourcesController extends Hubzero_Controller
 		return $return;
 	}
 
+	/**
+	 * Short description for 'watch'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function watch()
 	{
 		//document object
@@ -870,6 +891,13 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
+	/**
+	 * Short description for 'video'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
 	protected function video()
 	{
 		$parent = JRequest::getInt("id", "");
@@ -932,6 +960,13 @@ class ResourcesController extends Hubzero_Controller
 		$view->display();
 	}
 
+	/**
+	 * Short description for 'view'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
 	protected function view()
 	{
 		// Incoming

@@ -31,6 +31,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Short description for 'ximport'
+ * 
+ * Long description (if any) ...
+ * 
+ * @param  string $path Parameter description (if any) ...
+ * @return string Return description (if any) ...
+ */
 function ximport($path) {
     if (substr(strtolower($path),0,7) == 'hubzero') {
         return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');

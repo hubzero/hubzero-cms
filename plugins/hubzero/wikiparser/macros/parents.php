@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,11 +21,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Short description for 'ParentsMacro'
+ * 
+ * Long description (if any) ...
+ */
 class ParentsMacro extends WikiMacro
 {
 	/**
@@ -121,7 +128,7 @@ class ParentsMacro extends WikiMacro
 	/**
      * Build a tree of parents
      *
-     * @param  array $rows An array of objects
+     * @param  array  $rows An array of objects
      * @return string
      */
 	private function _buildTree($rows)
@@ -157,7 +164,7 @@ class ParentsMacro extends WikiMacro
      *
      * @param  integer $depth How far back to look for ancestors
 	 * @param  string  $scope The URI path to traverse
-     * @return array
+     * @return array  
      */
 	private function _fetchPointer($depth, $scope)
     {
@@ -209,7 +216,7 @@ class ParentsMacro extends WikiMacro
      *
      * @param  integer $depth How far back to look for ancestors
 	 * @param  string  $scope The URI path to traverse
-     * @return array
+     * @return array  
      */
     private function _getPageByAlias($alias, $scope)
     {

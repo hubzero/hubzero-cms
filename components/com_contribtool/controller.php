@@ -2390,6 +2390,14 @@ class ContribtoolController extends JObject
 
 	}
 
+	/**
+	 * Short description for 'finalizeTool'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string &$out Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	protected function finalizeTool(&$out = '')
 	{
 		$xlog =& Hubzero_Factory::getLogger();
