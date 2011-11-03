@@ -146,9 +146,12 @@ class Hubzero_View_Helper_Html
 	 * @param      integer $p Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function shortenText($text, $chars=300, $p=1)
+	public static function shortenText($text, $chars=300, $p=1, $striptags=1)
 	{
-		$text = strip_tags($text);
+		if ($striptags)
+		{
+			$text = strip_tags($text);
+		}
 		$text = trim($text);
 
 		if (strlen($text) > $chars)
