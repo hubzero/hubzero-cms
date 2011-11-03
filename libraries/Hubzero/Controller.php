@@ -253,6 +253,28 @@ class Hubzero_Controller extends JObject
 	}
 
 	/**
+	 * Set a URL for browser redirection.
+	 *
+	 * @access	public
+	 * @param	string URL to redirect to.
+	 * @param	string	Message to display on redirect. Optional, defaults to
+	 * 			value set internally by controller, if any.
+	 * @param	string	Message type. Optional, defaults to 'message'.
+	 * @return	void
+	 * @since	1.5
+	 */
+	public function setRedirect($url, $msg=null, $type='message')
+	{
+		$this->_redirect = $url;
+		if ($msg !== null) 
+		{
+			// controller may have set this directly
+			$this->_message	= $msg;
+		}
+		$this->_messageType	= $type;
+	}
+
+	/**
 	 * Method to add a message to the component message que
 	 *
 	 * @param	string	$message	The message to add
