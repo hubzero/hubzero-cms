@@ -334,7 +334,7 @@ class WikiPage extends JTable
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return		boolean      	True if all fields are valid
 	 */
 	public function check() 
 	{
@@ -698,5 +698,17 @@ class WikiPage extends JTable
 		}
 		//echo '<!-- '.$query.' -->';
 		return $query;
+	}
+
+	public function getMetrics($filters=array())
+ 	{
+ 		$this->_db->setQuery("SELECT visitors, visits FROM jos_wiki_page_metrics WHERE pageid = ".$this->id);
+		$vals = $this->_db->loadObjectList();
+ 		foreach($vals as $val) 
+		{
+			$stats['visitors'] = $val->visitors;
+			$stats['visits'] = $val->visits;
+		}
+		return $stats;
 	}
 }
