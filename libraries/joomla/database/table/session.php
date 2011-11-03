@@ -95,6 +95,7 @@ class JTableSession extends JTable
 	{
 		$this->session_id	= $sessionId;
 		$this->client_id	= $clientId;
+		$this->ip = $_SERVER['REMOTE_ADDR'];
 
 		$this->time = time();
 		$ret = $this->_db->insertObject( $this->_tbl, $this, 'session_id' );
@@ -110,8 +111,14 @@ class JTableSession extends JTable
 	function update( $updateNulls = false )
 	{
 		$this->time = time();
+		$this->ip = $_SERVER['REMOTE_ADDR'];
 		$ret = $this->_db->updateObject( $this->_tbl, $this, 'session_id', $updateNulls );
 
+		if ($ret)
+		{
+			$ret = ($this->_db->getAffectedRows() > 0);
+		}		
+		
 		if( !$ret ) {
 			$this->setError(strtolower(get_class( $this ))."::". JText::_( 'store failed' ) ." <br />" . $this->_db->stderr());
 			return false;

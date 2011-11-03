@@ -103,6 +103,18 @@ class JSession extends JObject
 
 		//disable transparent sid support
 		ini_set('session.use_trans_sid', '0');
+		
+		if ($store == 'database')
+		{
+			if (ini_get('session.gc_probability') < 1)
+			{
+				ini_set('session.gc_probability',1);
+			}
+			if (ini_get('session.gc_divisor') < 1)
+			{
+				ini_set('session.gc_divisor',100);
+			}
+		}
 
 		//create handler
 		$this->_store =& JSessionStorage::getInstance($store, $options);

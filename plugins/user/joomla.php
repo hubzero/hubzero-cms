@@ -135,9 +135,12 @@ class plgUserJoomla extends JPlugin
 		$table->userid 		= intval($instance->get('id'));
 		$table->usertype 	= $instance->get('usertype');
 		$table->gid 		= intval($instance->get('gid'));
-
-		$table->update();
-
+		
+		if (!$table->update())
+		{
+			$table->insert($table->session_id, JFactory::getApplication()->getClientId());
+		}
+		
 		// Hit the user last visit field
 		$instance->setLastVisit();
 

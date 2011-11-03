@@ -87,16 +87,16 @@ class JSessionStorageDatabase extends JSessionStorage
 		}
 
 		$session = & JTable::getInstance('session');
-		if ($session->load($id)) {
-			$session->data = $session_data;
-			$session->store();
-		} else {
-			// if load failed then we assume that it is because
-			// the session doesn't exist in the database
-			// therefore we use insert instead of store
-			$app = &JFactory::getApplication();
-			$session->data = $session_data;
-			$session->insert($id, $app->getClientId());
+
+		$session->data = $session_data;
+		$session->session_id = $id;
+		$session->guest 	= null; // set to null so we don't overwrite
+		$session->username = null; // set to null so we don't overwrite
+		$session->gid 		= null; // set to null so we don't overwrite
+				
+		if (!$session->update())
+		{
+			$session->insert($id, JFactory::getApplication()->getClientId());
 		}
 
 		return true;

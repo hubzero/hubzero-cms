@@ -772,25 +772,35 @@ class JApplication extends JObject
 		}
 
 		$session =& JFactory::getSession($options);
+		
+		if (($this->getCfg('session_handler') != 'database'))
+		{
+			jimport('joomla.database.table');
+			$storage = & JTable::getInstance('session');
 
-		jimport('joomla.database.table');
-		$storage = & JTable::getInstance('session');
-		$storage->purge($session->getExpire());
+			$storage->purge($session->getExpire());
 
-		// Session exists and is not expired, update time in session table
-		if ($storage->load($session->getId())) {
-			$storage->update();
-			return $session;
+			// Session exists and is not expired, update time in session table
+			if ($storage->load($session->getId())) {
+				$storage->update();
+				return $session;
+			}
+
+			//Session doesn't exist yet, initalise and store it in the session table
+			$session->set('registry',	new JRegistry('session'));
+			$session->set('user',		new JUser());
+
+			if (!$storage->insert( $session->getId(), $this->getClientId())) {
+				jexit( $storage->getError());
+			}
 		}
-
-		//Session doesn't exist yet, initalise and store it in the session table
-		$session->set('registry',	new JRegistry('session'));
-		$session->set('user',		new JUser());
-
-		if (!$storage->insert( $session->getId(), $this->getClientId())) {
-			jexit( $storage->getError());
+		else if ($session->isNew())
+		{
+			//Session doesn't exist yet, initalise and store it in the session table
+			$session->set('registry',	new JRegistry('session'));
+			$session->set('user',		new JUser());
 		}
-
+		
 		return $session;
 	}
 
