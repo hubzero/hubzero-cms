@@ -416,9 +416,6 @@ class CitationsCitation extends JTable
 	 * @var unknown
 	 */
 	var $tags				= NULL;
-	 *
-	 * @var unknown
-	 */
 
 	/**
 	 * Short description for '__construct'
