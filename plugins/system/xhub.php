@@ -1131,9 +1131,6 @@ class plgSystemXhub extends JPlugin
 	 */
 	function onAfterInitialise()
 	{
-		//jimport('joomla.database.table');
-		ximport('Hubzero_Session_Helper');
-
 		$app = &JFactory::getApplication();
 		$router = &$app->getRouter();
 		$options = array();
@@ -1163,10 +1160,6 @@ class plgSystemXhub extends JPlugin
 		$expired = ($now - $last) >= $lifetime;
 		$newsession = ($start == $now) && ($start == $last);
 		$knownsession = !empty($_COOKIE[$sname]) && $_COOKIE[$sname] == $sid;
-
-		$table = & JTable::getInstance('session');
-		$table->load($sid);
-		Hubzero_Session_Helper::purge();
 
 		$myuser = $session->get('user');
 		$jid = (is_object($myuser)) ? $myuser->get('id') : '0';
@@ -1217,8 +1210,6 @@ class plgSystemXhub extends JPlugin
 				}
 			}
 		}
-
-		Hubzero_Session_Helper::set_ip($session->getId(), $_SERVER['REMOTE_ADDR']);
 	}
 
 	/**
