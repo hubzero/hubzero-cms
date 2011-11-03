@@ -2396,13 +2396,14 @@ class ResourcesController extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'checkGroupAccess'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $resource Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * Check if a user has access to a group-owned resource
+	 * Uses current user session if no user object is supplied
+	 *
+	 * @param      object $resource ResourcesResource
+	 * @param      object $juser    JUser (optional)
+	 *  @return     boolean True if user has access to a group-owned resource
 	 */
+	private function checkGroupAccess($resource, $juser=null)
 	{
 		//$juser =& Hubzero_Factory::getUser();
 		if (!$juser) {
