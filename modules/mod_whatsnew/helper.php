@@ -120,7 +120,7 @@ class modWhatsNew
 			// No - so we'll need to get it
 			$areas = array();
 
-			// Load the XSearch plugins
+			// Load the whatsnew plugins
 			JPluginHelper::importPlugin('whatsnew');
 			$dispatcher =& JDispatcher::getInstance();
 

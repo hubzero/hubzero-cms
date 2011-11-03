@@ -223,7 +223,7 @@ class plgTagsMembers extends JPlugin
 			}
 			if ($row->id < 0) {
 				$id = abs($row->id);
-				$thumb .= DS.'n'.plgXSearchMembers::niceidformat($id).DS.$row->picture;
+				$thumb .= DS.'n'.plgTagsMembers::niceidformat($id).DS.$row->picture;
 			} else {
 				$thumb .= DS.plgTagsMembers::niceidformat($row->id).DS.$row->picture;
 			}

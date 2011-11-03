@@ -485,7 +485,7 @@ class WhatsnewController extends Hubzero_Controller
 
 			$areas = array();
 
-			// Load the XSearch plugins
+			// Load the whatsnew plugins
 			JPluginHelper::importPlugin( 'whatsnew' );
 			$dispatcher =& JDispatcher::getInstance();
 
