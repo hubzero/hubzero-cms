@@ -82,6 +82,13 @@ if (!$mode || ($mode && $mode != 'static')) {
 ?>
 <div class="main section">
 	<div class="aside">
+		<?php $stats = $this->page->getMetrics();?>
+		<?php if ($stats) { ?>
+		<div class="metadata">
+			<p class="usage"><?php print $stats['visitors']; ?> Visitors</p>
+			<p class="usage"><?php print $stats['visits']; ?> Visits</p>
+		</div>
+		<?php } ?>
 		<div class="article-toc">
 			<h3><?php echo JText::_('WIKI_PAGE_TABLE_OF_CONTENTS'); ?></h3>
 			<?php echo $this->output['toc']; ?>
