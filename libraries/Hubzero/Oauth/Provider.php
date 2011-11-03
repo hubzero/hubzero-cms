@@ -48,7 +48,7 @@ class Hubzero_Oauth_Provider
 
 	function setRequestTokenPath($path)
 	{
-		$this->_request_token_path = trim($path,'/');	
+		$this->_request_token_path = trim($path,'/');
 	}
 
 	function setAccessTokenPath($path)
@@ -70,7 +70,7 @@ class Hubzero_Oauth_Provider
 	}
 
 	// @FIXME: validateRequest() is still a bit awkward and needs to be refactored
-	
+
 	function validateRequest($uri = null)
 	{
 		$endpoint = false;
@@ -105,14 +105,14 @@ class Hubzero_Oauth_Provider
 			// @FIXME: this code is here for future use if/when pecl oauth 
 			//         provider is fixed
 
-			if (isset($_GET['x_auth_mode']) 
-				|| isset($_GET['x_auth_username']) 
-				|| isset($_GET['x_auth_password']) 
-				|| isset($_POST['x_auth_mode']) 
-				|| isset($_POST['x_auth_username']) 
+			if (isset($_GET['x_auth_mode'])
+				|| isset($_GET['x_auth_username'])
+				|| isset($_GET['x_auth_password'])
+				|| isset($_POST['x_auth_mode'])
+				|| isset($_POST['x_auth_username'])
 				|| isset($_POST['x_auth_password'])
-				|| !strpos($header,'x_auth_mode') 
-				|| !strpos($header,'x_auth_username') 
+				|| !strpos($header,'x_auth_mode')
+				|| !strpos($header,'x_auth_username')
 				|| !strpos($header,'x_auth_mode'))
 			{
 				$this->_provider->is2LeggedEndpoint(true);
@@ -121,7 +121,7 @@ class Hubzero_Oauth_Provider
 				$this->_provider->addRequiredParameter ('x_auth_password');
 			}
 
-			$endpoint = true;			
+			$endpoint = true;
 		}
 
 		$E = null;
@@ -141,7 +141,7 @@ class Hubzero_Oauth_Provider
 		}
 
 		// unsigned requests pass
-		if (!$endpoint 
+		if (!$endpoint
 			&& ($this->_provider->consumer_key === null)
 			&& ($this->_provider->consumer_secret === null)
 			&& ($this->_provider->nonce === null)
@@ -152,7 +152,7 @@ class Hubzero_Oauth_Provider
 			&& ($this->_provider->signature_method === null)
 			&& ($this->_provider->callback === null)
 			)
-		{			
+		{
 			return true;
 		}
 
@@ -168,7 +168,7 @@ class Hubzero_Oauth_Provider
 				&& ($this->_provider->signature_method === null)
 				&& ($this->_provider->callback === null)
 				)
-			{			
+			{
 				return true;
 			}
 		}
@@ -176,8 +176,8 @@ class Hubzero_Oauth_Provider
 		$status = 401;
 		$reason = 'Unauthorized';
 
-		$message = OAuthProvider::reportProblem($E, false);		
-			
+		$message = OAuthProvider::reportProblem($E, false);
+
 		if ($message == "oauth_problem=signature_method_rejected")
 		{
 			$reason = 'Bad Request';
@@ -220,7 +220,7 @@ class Hubzero_Oauth_Provider
 		return $this->_token_data;
 	}
 
- 	function lookupConsumer() 
+ 	function lookupConsumer()
 	{
 		$db = JFactory::getDBO();
 
@@ -229,7 +229,7 @@ class Hubzero_Oauth_Provider
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" 
+		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token="
 			. $db->Quote($this->_provider->consumer_key) . " LIMIT 1;");
 
 		$result = $db->loadObject();
@@ -255,15 +255,15 @@ class Hubzero_Oauth_Provider
 		return OAUTH_OK;
 	}
 
-	function timestampNonceChecker() 
-	{	
+	function timestampNonceChecker()
+	{
 		$timediff = abs(time() - $this->_provider->timestamp);
 
 		if ($timediff > 600)
 		{
 			return OAUTH_BAD_TIMESTAMP;
-		}		
-		
+		}
+
 		$db = JFactory::getDBO();
 
 		if (!is_object($db))
@@ -272,7 +272,7 @@ class Hubzero_Oauth_Provider
 		}
 
 		$db->setQuery("INSERT INTO #__oauthp_nonces (nonce,stamp,created) "
-				. " VALUES (" . $db->Quote($this->_provider->nonce) . "," 
+				. " VALUES (" . $db->Quote($this->_provider->nonce) . ","
 				. $db->Quote($this->_provider->timestamp) . ", NOW());");
 
 		if (($db->query() === false) && ($db->getErrorNum() != 1062))
@@ -288,7 +288,7 @@ class Hubzero_Oauth_Provider
 		return OAUTH_OK;
 	}
 
-	function tokenHandler() 
+	function tokenHandler()
 	{
 		$db = JFactory::getDBO();
 

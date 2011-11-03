@@ -132,7 +132,6 @@ class ForumController extends Hubzero_Controller
 	// Views                                      //
 	////////////////////////////////////////////////
 
-
 	/**
 	 * Short description for 'topics'
 	 * 

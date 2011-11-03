@@ -432,7 +432,6 @@ class WhatsnewController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_jtext'
 	 * 

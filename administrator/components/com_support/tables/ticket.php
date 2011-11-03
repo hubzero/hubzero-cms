@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'SupportTicket'
  * 
@@ -51,14 +50,12 @@ class SupportTicket extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'status'
 	 * 
 	 * @var unknown
 	 */
 	var $status     = NULL;  // @var int(3)  --  0 = new, 1 = accepted, 2 = closed
-
 
 	/**
 	 * Description for 'created'
@@ -67,14 +64,12 @@ class SupportTicket extends JTable
 	 */
 	var $created    = NULL;  // @var datetime
 
-
 	/**
 	 * Description for 'login'
 	 * 
 	 * @var unknown
 	 */
 	var $login      = NULL;  // @var string(200)
-
 
 	/**
 	 * Description for 'severity'
@@ -83,14 +78,12 @@ class SupportTicket extends JTable
 	 */
 	var $severity   = NULL;  // @var string(30)
 
-
 	/**
 	 * Description for 'owner'
 	 * 
 	 * @var unknown
 	 */
 	var $owner      = NULL;  // @var string(50)
-
 
 	/**
 	 * Description for 'category'
@@ -99,14 +92,12 @@ class SupportTicket extends JTable
 	 */
 	var $category   = NULL;  // @var string(50)
 
-
 	/**
 	 * Description for 'summary'
 	 * 
 	 * @var unknown
 	 */
 	var $summary    = NULL;  // @var string(250)
-
 
 	/**
 	 * Description for 'report'
@@ -115,14 +106,12 @@ class SupportTicket extends JTable
 	 */
 	var $report     = NULL;  // @var text
 
-
 	/**
 	 * Description for 'resolved'
 	 * 
 	 * @var unknown
 	 */
 	var $resolved   = NULL;  // @var string(50)
-
 
 	/**
 	 * Description for 'email'
@@ -131,14 +120,12 @@ class SupportTicket extends JTable
 	 */
 	var $email      = NULL;  // @var string(200)
 
-
 	/**
 	 * Description for 'name'
 	 * 
 	 * @var unknown
 	 */
 	var $name       = NULL;  // @var string(200)
-
 
 	/**
 	 * Description for 'os'
@@ -147,14 +134,12 @@ class SupportTicket extends JTable
 	 */
 	var $os         = NULL;  // @var string(50)
 
-
 	/**
 	 * Description for 'browser'
 	 * 
 	 * @var unknown
 	 */
 	var $browser    = NULL;  // @var string(50)
-
 
 	/**
 	 * Description for 'ip'
@@ -163,14 +148,12 @@ class SupportTicket extends JTable
 	 */
 	var $ip         = NULL;  // @var string(200)
 
-
 	/**
 	 * Description for 'hostname'
 	 * 
 	 * @var unknown
 	 */
 	var $hostname   = NULL;  // @var string(200)
-
 
 	/**
 	 * Description for 'uas'
@@ -179,14 +162,12 @@ class SupportTicket extends JTable
 	 */
 	var $uas        = NULL;  // @var string(250)
 
-
 	/**
 	 * Description for 'referrer'
 	 * 
 	 * @var unknown
 	 */
 	var $referrer   = NULL;  // @var string(250)
-
 
 	/**
 	 * Description for 'cookies'
@@ -195,14 +176,12 @@ class SupportTicket extends JTable
 	 */
 	var $cookies    = NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'instances'
 	 * 
 	 * @var unknown
 	 */
 	var $instances  = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'section'
@@ -211,14 +190,12 @@ class SupportTicket extends JTable
 	 */
 	var $section    = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'type'
 	 * 
 	 * @var unknown
 	 */
 	var $type       = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'group'
@@ -228,7 +205,6 @@ class SupportTicket extends JTable
 	var $group      = NULL;  // @var string(250)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

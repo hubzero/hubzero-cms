@@ -45,14 +45,12 @@ class FeedbackQuotes extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'userid'
 	 * 
 	 * @var unknown
 	 */
 	var $userid	    = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'fullname'
@@ -61,14 +59,12 @@ class FeedbackQuotes extends JTable
 	 */
 	var $fullname   = NULL;  // @var string
 
-
 	/**
 	 * Description for 'org'
 	 * 
 	 * @var unknown
 	 */
 	var $org	    = NULL;  // @var string
-
 
 	/**
 	 * Description for 'quote'
@@ -77,14 +73,12 @@ class FeedbackQuotes extends JTable
 	 */
 	var $quote      = NULL;  // @var text
 
-
 	/**
 	 * Description for 'picture'
 	 * 
 	 * @var string
 	 */
 	var $picture    = NULL;  // @var string
-
 
 	/**
 	 * Description for 'date'
@@ -93,7 +87,6 @@ class FeedbackQuotes extends JTable
 	 */
 	var $date	    = NULL;  // @var datetime	
 
-
 	/**
 	 * Description for 'publish_ok'
 	 * 
@@ -101,14 +94,12 @@ class FeedbackQuotes extends JTable
 	 */
 	var $publish_ok = NULL;  // @var int(1)
 
-
 	/**
 	 * Description for 'contact_ok'
 	 * 
 	 * @var unknown
 	 */
 	var $contact_ok = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'notes'
@@ -118,7 +109,6 @@ class FeedbackQuotes extends JTable
 	var $notes 		= NULL;	 // @var string
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

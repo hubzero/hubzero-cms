@@ -31,19 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->error) 
-{ 
+if ($this->error)
+{
 ?>
 	<p class="error"><?php echo $this->error; ?></p>
 <?php 
-} 
-else 
-{ 
+}
+else
+{
 ?>
 <table class="latest_events_tbl" summary="<?php echo JText::_('MOD_EVENTS_LATEST_TABLE_SUMMARY'); ?>">
 	<tbody>
 <?php
-if ($this->eventsByRelDay) 
+if ($this->eventsByRelDay)
 {
 	$cls = 'even';
 	foreach ($this->eventsByRelDay as $relDay => $daysEvents)
@@ -66,7 +66,7 @@ if ($this->eventsByRelDay)
 
 			$cls = ($cls == 'even') ? 'odd' : 'even';
 
-			if ($dayEvent->announcement == 1) 
+			if ($dayEvent->announcement == 1)
 			{
 				$cls .= ' announcement';
 			}
@@ -78,8 +78,8 @@ if ($this->eventsByRelDay)
 <?php 
 		}
 	}
-} 
-else 
+}
+else
 {
 ?>
 		<tr class="odd">
@@ -92,5 +92,5 @@ else
 </table>
 <p class="more"><a href="<?php echo JRoute::_('index.php?option=com_events&year=' . strftime("%Y", time()) . '&month=' . strftime("%m", time())); ?>"><?php echo JText::_('MOD_EVENTS_LATEST_MORE'); ?></a></p>
 <?php 
-} 
+}
 ?>

@@ -46,7 +46,6 @@ class Order extends JTable
 	 */
 	var $id         		= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
@@ -55,14 +54,12 @@ class Order extends JTable
 	var $uid    			= NULL;  // @var int(11)
 	//var $type    			= NULL;  // @var varchar(20)
 
-
 	/**
 	 * Description for 'total'
 	 * 
 	 * @var unknown
 	 */
 	var $total      		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'status'
@@ -71,14 +68,12 @@ class Order extends JTable
 	 */
 	var $status     		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'details'
 	 * 
 	 * @var unknown
 	 */
 	var $details  			= NULL;  // @var text
-
 
 	/**
 	 * Description for 'email'
@@ -87,7 +82,6 @@ class Order extends JTable
 	 */
 	var $email    			= NULL;  // @var varchar(150)
 
-
 	/**
 	 * Description for 'ordered'
 	 * 
@@ -95,14 +89,12 @@ class Order extends JTable
 	 */
 	var $ordered  			= NULL;  // @var datetime
 
-
 	/**
 	 * Description for 'status_changed'
 	 * 
 	 * @var unknown
 	 */
 	var $status_changed  	= NULL;  // @var datetime
-
 
 	/**
 	 * Description for 'notes'
@@ -116,7 +108,6 @@ class Order extends JTable
 	// 0 - 'placed (newly received)'
 	// 1 - 'processed' (account debited)
 	// 2 - 'cancelled'
-
 
 	/**
 	 * Short description for '__construct'

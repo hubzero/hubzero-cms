@@ -37,7 +37,7 @@ JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 $create_date = NULL;
-if (intval($this->row->created) <> 0) 
+if (intval($this->row->created) <> 0)
 {
 	$create_date = JHTML::_('date', $this->row->created);
 }

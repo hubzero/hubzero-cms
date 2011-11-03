@@ -115,7 +115,6 @@ class ResourcesController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'resources'
 	 * 
@@ -461,7 +460,6 @@ class ResourcesController extends Hubzero_Controller
 	// Children
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'addchild'
 	 * 
@@ -679,7 +677,6 @@ class ResourcesController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Resource Functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'edit'
@@ -1181,7 +1178,6 @@ class ResourcesController extends Hubzero_Controller
 	// Processors
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'regroup'
 	 * 
@@ -1567,7 +1563,6 @@ class ResourcesController extends Hubzero_Controller
 	// Types
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'viewtypes'
 	 * 
@@ -1796,7 +1791,6 @@ class ResourcesController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Media manager
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'upload'
@@ -2217,7 +2211,6 @@ class ResourcesController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'buildRedirectURL'
 	 * 
@@ -2346,7 +2339,6 @@ class ResourcesController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Functions for tagging a resource
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'edittags'

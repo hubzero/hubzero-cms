@@ -2321,7 +2321,7 @@ class Hubzero_Tool
 	 * @return     array Return list of groups
 	 */
 	static public function getToolGroupsRestriction($toolid, $instance)
-    {		
+    {
 		$db = &JFactory::getDBO();
 		$query  = "SELECT tv.toolname, tg.cn ";
 		$query .= "FROM #__tool_groups AS tg, #__tool_version AS tv ";

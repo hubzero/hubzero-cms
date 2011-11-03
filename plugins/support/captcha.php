@@ -25,12 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//-----------
-
 jimport('joomla.plugin.plugin');
 JPlugin::loadLanguage('plg_support_captcha');
-
-//-----------
 
 class plgSupportCaptcha extends JPlugin
 {
@@ -218,7 +214,7 @@ class plgSupportCaptcha extends JPlugin
 	 *
 	 * @return string
 	 */
-	public function onGetModuleCaptcha() 
+	public function onGetModuleCaptcha()
 	{
 		return $this->onGetCaptcha('mod');
 	}
@@ -228,7 +224,7 @@ class plgSupportCaptcha extends JPlugin
 	 *
 	 * @return string
 	 */
-	public function onGetComponentCaptcha() 
+	public function onGetComponentCaptcha()
 	{
 		return $this->onGetCaptcha('com');
 	}
@@ -238,16 +234,16 @@ class plgSupportCaptcha extends JPlugin
 	 *
 	 * @return string
 	 */
-	public function onGetCaptcha($ext='com') 
+	public function onGetCaptcha($ext='com')
 	{
-		if ($this->_verified) 
+		if ($this->_verified)
 		{
 			return;
 		}
 
 		$ext = strtolower($ext);
 
-		if ($ext != 'com' && $ext != 'mod') 
+		if ($ext != 'com' && $ext != 'mod')
 		{
 			return;
 		}
@@ -264,9 +260,9 @@ class plgSupportCaptcha extends JPlugin
 	 *
 	 * @return boolean True if valid CAPTCHA response
 	 */
-	public function onValidateCaptcha() 
+	public function onValidateCaptcha()
 	{
-		if ($this->_verified) 
+		if ($this->_verified)
 		{
 			return true;
 		}
@@ -298,7 +294,7 @@ class plgSupportCaptcha extends JPlugin
 	 *
 	 * @return string
 	 */
-	private function _generateTextCaptcha() 
+	private function _generateTextCaptcha()
 	{
 		if (!isset($GLOBALS['totalCaptchas']))
 		{
@@ -392,7 +388,7 @@ class plgSupportCaptcha extends JPlugin
 	 *
 	 * @return string
 	 */
-	private function _generateImageCaptcha() 
+	private function _generateImageCaptcha()
 	{
 		$showCaptcha = JRequest::getVar('showCaptcha', '');
 		if ($showCaptcha)
@@ -489,7 +485,7 @@ class plgSupportCaptcha extends JPlugin
 	 *
 	 * @return void
 	 */
-	private function _createImageAdv() 
+	private function _createImageAdv()
 	{
 		$alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 		$allowed_symbols = "23456789abcdeghkmnpqsuvxyz";
@@ -512,14 +508,14 @@ class plgSupportCaptcha extends JPlugin
 		do
 		{
 			// generating random keystring
-			while (true) 
+			while (true)
 			{
 				$this->keystring = '';
 				for ($i=0; $i<$length; $i++)
 				{
 					$this->keystring .= $allowed_symbols{mt_rand(0, strlen($allowed_symbols)-1)};
 				}
-				if (!preg_match('/cp|cb|ck|c6|c9|rn|rm|mm|co|do|cl|db|qp|qb|dp|ww/', $this->keystring)) 
+				if (!preg_match('/cp|cb|ck|c6|c9|rn|rm|mm|co|do|cl|db|qp|qb|dp|ww/', $this->keystring))
 				{
 					break;
 				}
@@ -539,14 +535,14 @@ class plgSupportCaptcha extends JPlugin
 			{
 				$transparent = (imagecolorat($font, $i, 0) >> 24) == 127;
 
-				if (!$reading_symbol && !$transparent) 
+				if (!$reading_symbol && !$transparent)
 				{
 					$font_metrics[$alphabet{$symbol}] = array('start'=>$i);
 					$reading_symbol = true;
 					continue;
 				}
 
-				if ($reading_symbol && $transparent) 
+				if ($reading_symbol && $transparent)
 				{
 					$font_metrics[$alphabet{$symbol}]['end'] = $i;
 					$reading_symbol = false;
@@ -586,7 +582,7 @@ class plgSupportCaptcha extends JPlugin
 								{
 									$left = $sx-$m['start']+$x;
 									$py = $sy+$y;
-									if ($py > $height) 
+									if ($py > $height)
 									{
 										break;
 									}
@@ -611,7 +607,7 @@ class plgSupportCaptcha extends JPlugin
 						}
 
 					}
-				} 
+				}
 				else
 				{
 					$shift = 1;
@@ -627,7 +623,7 @@ class plgSupportCaptcha extends JPlugin
 		$img2 = imagecreatetruecolor($width, $height);
 		$foreground = imagecolorallocate($img2, $foreground_color[0], $foreground_color[1], $foreground_color[2]);
 		$background = imagecolorallocate($img2, $background_color[0], $background_color[1], $background_color[2]);
-		imagefilledrectangle($img2, 0, 0, $width-1, $height-1, $background);		
+		imagefilledrectangle($img2, 0, 0, $width-1, $height-1, $background);
 		imagefilledrectangle($img2, 0, $height, $width-1, $height+12, $foreground);
 
 		// periods
@@ -688,7 +684,7 @@ class plgSupportCaptcha extends JPlugin
 						$color_xy*$frsx*$frsy
 					);
 
-					if ($newcolor > 255) 
+					if ($newcolor > 255)
 					{
 						$newcolor = 255;
 					}
@@ -704,9 +700,9 @@ class plgSupportCaptcha extends JPlugin
 			}
 		}
 
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); 
-		header('Cache-Control: no-store, no-cache, must-revalidate'); 
-		header('Cache-Control: post-check=0, pre-check=0', FALSE); 
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header('Cache-Control: no-store, no-cache, must-revalidate');
+		header('Cache-Control: post-check=0, pre-check=0', FALSE);
 		header('Pragma: no-cache');
 
 		if (function_exists('imagejpeg'))
@@ -744,7 +740,7 @@ class plgSupportCaptcha extends JPlugin
 		$md5_hash = md5(rand(0,999));
 
 		// We don't need a 32 character long string so we trim it down to 5 
-		$security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5)); 
+		$security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5));
 		$security_code = $this->_generateHash($security_code, date('j'));
 
 		// Set the session to store the security code
@@ -753,7 +749,7 @@ class plgSupportCaptcha extends JPlugin
 
 		$width = 120;
 		$height = 40;
-		$image = imagecreate($width, $height);  
+		$image = imagecreate($width, $height);
 		$this->_setColors();
 		$foreground_color = $this->_hexToRgb($this->_textColor);
 		$background_color = $this->_hexToRgb($this->_bgColor);
@@ -764,7 +760,7 @@ class plgSupportCaptcha extends JPlugin
 		$grey = imagecolorallocate($image, 204, 204, 204);
 
 		// Make the background black 
-		imagefill($image, 0, 0, $black); 
+		imagefill($image, 0, 0, $black);
 
 		$size = 10;
 		$this->ly = (int)(2.4 * $size);
@@ -788,18 +784,18 @@ class plgSupportCaptcha extends JPlugin
 	 * @param  string $hex Hex value to convert
 	 * @return string
 	 */
-	private function _hexToRgb($hex) 
+	private function _hexToRgb($hex)
 	{
 		$hex = ereg_replace("#", '', $hex);
 		$color = array();
 
-		if (strlen($hex) == 3) 
+		if (strlen($hex) == 3)
 		{
 			$color['r'] = hexdec(substr($hex, 0, 1) . $r);
 			$color['g'] = hexdec(substr($hex, 1, 1) . $g);
 			$color['b'] = hexdec(substr($hex, 2, 1) . $b);
 		}
-		else if (strlen($hex) == 6) 
+		else if (strlen($hex) == 6)
 		{
 			$color['r'] = hexdec(substr($hex, 0, 2));
 			$color['g'] = hexdec(substr($hex, 2, 2));
@@ -817,7 +813,7 @@ class plgSupportCaptcha extends JPlugin
 	 * @param  string $b B color to convert
 	 * @return string
 	 */
-	private function _rgbToHex($r, $g, $b) 
+	private function _rgbToHex($r, $g, $b)
 	{
 		$hex  = '#';
 		$hex .= dechex($r);

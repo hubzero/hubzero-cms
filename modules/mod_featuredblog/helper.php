@@ -47,9 +47,6 @@ class modFeaturedblog
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modFeaturedblog
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modFeaturedblog
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modFeaturedblog
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'niceidformat'
@@ -122,9 +110,6 @@ class modFeaturedblog
 		}
 		return $pre.$someid;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'encode_html'
@@ -152,9 +137,6 @@ class modFeaturedblog
 		return strtr($str, $a);
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'ampersands'
 	 * 
@@ -172,9 +154,6 @@ class modFeaturedblog
 		$str = str_replace('*-*','&#', $str);
 		return $str;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'thumb'
@@ -195,9 +174,6 @@ class modFeaturedblog
 
 		return $thumb;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

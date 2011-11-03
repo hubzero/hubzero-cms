@@ -193,7 +193,6 @@ class ToolsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'tools'
 	 * 
@@ -1170,7 +1169,6 @@ class ToolsController extends Hubzero_Controller
 	// Views called through AJAX
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'renames'
 	 * 
@@ -1245,7 +1243,6 @@ class ToolsController extends Hubzero_Controller
 	// Record the usage of a tool
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'recordUsage'
 	 * 
@@ -1314,7 +1311,6 @@ class ToolsController extends Hubzero_Controller
 	// Invoke the Python script to do real work.
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'middleware'
 	 * 
@@ -1358,7 +1354,6 @@ class ToolsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Authorization checks
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_authorize'

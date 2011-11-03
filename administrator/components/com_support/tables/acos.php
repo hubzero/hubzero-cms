@@ -46,14 +46,12 @@ class SupportAco extends JTable
 	 */
 	var $id    = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'model'
 	 * 
 	 * @var unknown
 	 */
 	var $model = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'foreign_key'
@@ -63,7 +61,6 @@ class SupportAco extends JTable
 	var $foreign_key = NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

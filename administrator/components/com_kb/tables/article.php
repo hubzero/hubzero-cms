@@ -46,14 +46,12 @@ class KbArticle extends JTable
 	 */
 	var $id           = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title        = NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'params'
@@ -62,14 +60,12 @@ class KbArticle extends JTable
 	 */
 	var $params       = NULL;  // @var text
 
-
 	/**
 	 * Description for 'fulltext'
 	 * 
 	 * @var unknown
 	 */
 	var $fulltext     = NULL;  // @var text
-
 
 	/**
 	 * Description for 'created'
@@ -78,14 +74,12 @@ class KbArticle extends JTable
 	 */
 	var $created      = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'created_by'
 	 * 
 	 * @var unknown
 	 */
 	var $created_by   = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'modified'
@@ -94,14 +88,12 @@ class KbArticle extends JTable
 	 */
 	var $modified     = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'modified_by'
 	 * 
 	 * @var unknown
 	 */
 	var $modified_by  = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'checked_out'
@@ -110,14 +102,12 @@ class KbArticle extends JTable
 	 */
 	var $checked_out  = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'checked_out_time'
 	 * 
 	 * @var unknown
 	 */
 	var $checked_out_time = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'state'
@@ -126,14 +116,12 @@ class KbArticle extends JTable
 	 */
 	var $state        = NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'access'
 	 * 
 	 * @var unknown
 	 */
 	var $access       = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'hits'
@@ -142,14 +130,12 @@ class KbArticle extends JTable
 	 */
 	var $hits         = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'version'
 	 * 
 	 * @var unknown
 	 */
 	var $version      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'section'
@@ -158,14 +144,12 @@ class KbArticle extends JTable
 	 */
 	var $section      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'category'
 	 * 
 	 * @var unknown
 	 */
 	var $category     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'helpful'
@@ -174,14 +158,12 @@ class KbArticle extends JTable
 	 */
 	var $helpful      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'nothelpful'
 	 * 
 	 * @var unknown
 	 */
 	var $nothelpful   = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'alias'
@@ -191,7 +173,6 @@ class KbArticle extends JTable
 	var $alias        = NULL;  // @var varchar(200)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -427,7 +408,6 @@ class KbArticle extends JTable
 	//----
 
 	//-----------
-
 
 	/**
 	 * Short description for 'buildQuery'

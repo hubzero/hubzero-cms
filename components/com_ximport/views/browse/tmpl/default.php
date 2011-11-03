@@ -94,7 +94,7 @@ if ($this->paths) {
 						<input type="submit" value="Run Script" />
 					</form>
 <?php 
-	if ($args) { 
+	if ($args) {
 		foreach ($args as $arg) {
 ?>
 					<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
@@ -103,7 +103,7 @@ if ($this->paths) {
 						<input type="hidden" name="script" value="<?php echo $scriptName; ?>" />
 <?php 
 			$str = array();
-			foreach ($arg as $key => $val) { 
+			foreach ($arg as $key => $val) {
 				$str[] = $key . '=' . $val;
 ?>
 						<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $val; ?>" />

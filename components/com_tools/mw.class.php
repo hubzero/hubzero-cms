@@ -669,7 +669,6 @@ class MwViewperm extends JTable
 // Narwhal class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'MiddlewareApp'
  * 
@@ -766,7 +765,6 @@ class MiddlewareApp
 // Host class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'class'
  * 
@@ -818,7 +816,6 @@ class Host
 // Hosttype class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'Hosttype'
  * 
@@ -869,7 +866,6 @@ class Hosttype
 //----------------------------------------------------------
 // Recent tools class
 //----------------------------------------------------------
-
 
 /**
  * Short description for 'class'

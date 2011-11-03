@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Report Abuse database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ReportAbuse'
  * 
@@ -51,14 +50,12 @@ class ReportAbuse extends JTable
 	 */
 	var $id         	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'report'
 	 * 
 	 * @var unknown
 	 */
 	var $report   		= NULL;  // @var text
-
 
 	/**
 	 * Description for 'created'
@@ -67,14 +64,12 @@ class ReportAbuse extends JTable
 	 */
 	var $created    	= NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'created_by'
 	 * 
 	 * @var unknown
 	 */
 	var $created_by 	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'state'
@@ -83,7 +78,6 @@ class ReportAbuse extends JTable
 	 */
 	var $state      	= NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'referenceid'
 	 * 
@@ -91,14 +85,12 @@ class ReportAbuse extends JTable
 	 */
 	var $referenceid    = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'category'
 	 * 
 	 * @var unknown
 	 */
 	var $category		= NULL;  // @var varchar(50)
-
 
 	/**
 	 * Description for 'subject'
@@ -108,7 +100,6 @@ class ReportAbuse extends JTable
 	var $subject		= NULL;  // @var varchar(150)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

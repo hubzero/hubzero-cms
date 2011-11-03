@@ -30,7 +30,7 @@
 
 class Hubzero_API_Response
 {
-	public  $suppress_response_codes = false;	
+	public  $suppress_response_codes = false;
 	private $_request_accept = '*/*';
 	private $_response_accept = 'text/plain';
 	private $_request_accept_encoding = null;
@@ -212,7 +212,7 @@ class Hubzero_API_Response
 
 		foreach($this->_headers as $header)
 		{
-			if ($name == $header['name']) 
+			if ($name == $header['name'])
 			{
             	unset($this->_headers[$key]);
 			}
@@ -277,7 +277,7 @@ class Hubzero_API_Response
 				echo $header['name'] . ': ' . $header['value'] . "\n";
 			}
 
-			echo "\n";		
+			echo "\n";
 		}
 
 		return true;
@@ -315,8 +315,8 @@ class Hubzero_API_Response
 	function getCachable()
 	{
 		return $this->_cachable;
-	}	
-	
+	}
+
 	function setBody($content) {
 		$this->_body = array((string) $content);
 	}
@@ -476,8 +476,8 @@ class Hubzero_API_Response
 			$this->_content_type = $this->_resolveContentType($accepts, $provides);
 		}
 		return $this->_content_type;
-	}	
-		
+	}
+
 	function setRequestAcceptsEncodings($accept)
 	{
 		$accepts = $this->_parse_encoding($accept);
@@ -492,7 +492,7 @@ class Hubzero_API_Response
 			return true;
 		}
 
-		return false;		
+		return false;
 	}
 
 	function getRequestAcceptsEncodings()
@@ -533,8 +533,8 @@ class Hubzero_API_Response
 		}
 
 		return $this->_encoding;
-	}	
-	
+	}
+
 	private function _resolveContentType($accept, $provide)
 	{
 		$best_type = '';
@@ -543,7 +543,7 @@ class Hubzero_API_Response
 
 		foreach($accept as $client_type=>$client_value)
 		{
-			if ($client_type == 'text/*') 
+			if ($client_type == 'text/*')
 			{
 				foreach($provide as $provider_type=>$provider_value)
 				{
@@ -551,7 +551,7 @@ class Hubzero_API_Response
 					{
 						$score = $client_value * $provider_value;
 						$client_type = $provider_type;
-						break;						
+						break;
 					}
 				}
 			}
@@ -561,7 +561,7 @@ class Hubzero_API_Response
 				{
 					$score = $client_value * $provider_value;
 					$client_type = $provider_type;
-					break;						
+					break;
 				}
 			}
 			else if (isset($provide[$client_type]))
@@ -630,7 +630,7 @@ class Hubzero_API_Response
 		}
 		else if ($encoding == 'deflate' || $encoding == 'x-deflate')
 		{
-			return gzcompress($data);	
+			return gzcompress($data);
 		}
 		else
 		{
@@ -648,8 +648,8 @@ class Hubzero_API_Response
 			$this->setHeader( 'Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
 			$this->setHeader( 'Cache-Control: no-store, no-cache, must-revalidate');
 			$this->addHeader( 'Cache-Control: post-check=0, pre-check=0');
-			$this->setHeader( 'Pragma: no-cache' );	
-			$this->setHeader( 'Connection: close' );	
+			$this->setHeader( 'Pragma: no-cache' );
+			$this->setHeader( 'Connection: close' );
 		}
 
 		$content_type = $this->getContentType();
@@ -687,8 +687,8 @@ class Hubzero_API_Response
 			$response->message = $message;
 		}
 		else
-			$response = $message;		
-		
+			$response = $message;
+
 		if ($content_type == 'text/plain')
 		{
 			if ($suppress_response_codes)
@@ -776,7 +776,7 @@ class Hubzero_API_Response
 		}
 		else if ($content_type == "application/xml")
 		{
-			echo Hubzero_XML::encode($response);				
+			echo Hubzero_XML::encode($response);
 		}
 		else if ($content_type == 'application/json')
 		{

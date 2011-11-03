@@ -172,7 +172,6 @@ class ResourcesController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'intro'
 	 * 
@@ -427,7 +426,6 @@ class ResourcesController extends Hubzero_Controller
 
 	//-----------
 	// NOTE: This view should only be called through AJAX
-
 
 	/**
 	 * Short description for 'browser'
@@ -685,8 +683,6 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-	
 	protected function selectPresentation()
 	{
 		$presentation = JRequest::getVar("presentation", 0);
@@ -700,8 +696,6 @@ class ResourcesController extends Hubzero_Controller
 		return;
 	}
 
-	//----------
-	
 	protected function preWatch()
 	{
 		//var to hold error messages
@@ -728,12 +722,12 @@ class ResourcesController extends Hubzero_Controller
 		$base = $this->config->get("uploadpath");
 
 		//make sure we have a leading slash on base
-		if (substr($base, 0, 1) != DS) { 
+		if (substr($base, 0, 1) != DS) {
 			$base = DS.$base;
 		}
 
 		//remove trailing slash on base
-		if (substr($base, -1) == DS) { 
+		if (substr($base, -1) == DS) {
 			$base = substr($base, 0, -1);
 		}
 
@@ -751,7 +745,7 @@ class ResourcesController extends Hubzero_Controller
 			if( !file_exists($manifest_path_xml) ) {
 				$errors[] = "Missing outline used to build presentation.";
 			} else {
-				$job = PresenterHelper::createJsonManifest( $path, $manifest_path_xml ); 
+				$job = PresenterHelper::createJsonManifest( $path, $manifest_path_xml );
 				if($job != "") {
 					$errors[] = $job;
 				}
@@ -790,7 +784,7 @@ class ResourcesController extends Hubzero_Controller
 				$name = implode(".", $parts);
 
 				if(in_array($ext, array("mp4","m4v","webm","ogv"))) {
-					$slide_video[$name][$ext] = $name.".".$ext; 
+					$slide_video[$name][$ext] = $name.".".$ext;
 				}
 			}
 
@@ -817,8 +811,6 @@ class ResourcesController extends Hubzero_Controller
 		return $return;
 	}
 
-	//-----------
-	
 	protected function watch()
 	{
 		//document object
@@ -870,7 +862,7 @@ class ResourcesController extends Hubzero_Controller
 				// Output HTML
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
-				}	
+				}
 				$view->display();
 			}
 		} else {
@@ -878,8 +870,6 @@ class ResourcesController extends Hubzero_Controller
 		}
 	}
 
-	//-----------
-	
 	protected function video()
 	{
 		$parent = JRequest::getInt("id", "");
@@ -907,12 +897,12 @@ class ResourcesController extends Hubzero_Controller
 		$base = $this->config->get("uploadpath");
 
 		//make sure we have a leading slash on base
-		if (substr($base, 0, 1) != DS) { 
+		if (substr($base, 0, 1) != DS) {
 			$base = DS.$base;
 		}
 
 		//remove trailing slash on base
-		if (substr($base, -1) == DS) { 
+		if (substr($base, -1) == DS) {
 			$base = substr($base, 0, -1);
 		}
 
@@ -938,11 +928,9 @@ class ResourcesController extends Hubzero_Controller
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
-		}	
+		}
 		$view->display();
 	}
-
-	//-----------
 
 	protected function view()
 	{
@@ -1142,9 +1130,9 @@ class ResourcesController extends Hubzero_Controller
 
 			// Get the sections
 			$sections = $dispatcher->trigger('onResources', array(
-					$resource, 
-					$this->_option, 
-					array($tab), 
+					$resource,
+					$this->_option,
+					array($tab),
 					'all',
 				)
 			);
@@ -1240,7 +1228,7 @@ class ResourcesController extends Hubzero_Controller
 				// Output HTML
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
-				}	
+				}
 				$body = $view->loadTemplate();
 			}
 
@@ -1773,7 +1761,6 @@ class ResourcesController extends Hubzero_Controller
 	//-----------
 	// NOTE: This view should only be called through AJAX
 
-
 	/**
 	 * Short description for 'plugin'
 	 * 
@@ -1956,7 +1943,6 @@ class ResourcesController extends Hubzero_Controller
 	// Tools
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'sourcecode'
 	 * 
@@ -2075,7 +2061,6 @@ class ResourcesController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Citations
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'citation'
@@ -2321,7 +2306,6 @@ class ResourcesController extends Hubzero_Controller
 	// Other Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'savetags'
 	 * 
@@ -2357,7 +2341,6 @@ class ResourcesController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//	Checks
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_authorize'

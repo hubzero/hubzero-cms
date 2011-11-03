@@ -33,7 +33,7 @@ class CompareGroups extends XImportHelperScript
 {
 	protected $_description = 'Compare groups from LDAP.';
 
-	public function run() 
+	public function run()
 	{
 		$xhub = &Hubzero_Factory::getHub();
            $conn = &Hubzero_Factory::getPLDC();
@@ -59,7 +59,7 @@ class CompareGroups extends XImportHelperScript
 		echo "<table>";
 
            do
-           {	
+           {
                 $attributes = ldap_get_attributes($conn, $entry);
 			$rowhtml = '';
 				$showrow = false;
@@ -73,7 +73,7 @@ class CompareGroups extends XImportHelperScript
 				{
 					if (in_array($key,array('objectClass','structuralObjectClass','entryUUID','entryCSN','creatorsName','modifiersName','entryDN','subschemaSubentry','hasSubordinates')))
 						continue; // don't care about these
-				
+
 					//if (in_array($key,array('member')))
 					//	continue; // don't care about these for the moment
 

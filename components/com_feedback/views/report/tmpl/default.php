@@ -192,9 +192,9 @@ $topics = array(
 				<input type="text" name="botcheck" id="fbBotcheck" value="" />
 			</label>
 <?php
-if (count($this->captchas) > 0) 
+if (count($this->captchas) > 0)
 {
-	foreach ($this->captchas as $captcha) 
+	foreach ($this->captchas as $captcha)
 	{
 		echo $captcha;
 	}

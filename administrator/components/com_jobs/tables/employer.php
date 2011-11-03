@@ -46,14 +46,12 @@ class Employer extends JTable
 	 */
 	var $id         		= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid				= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'added'
@@ -62,14 +60,12 @@ class Employer extends JTable
 	 */
 	var $added    			= NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'subscriptionid'
 	 * 
 	 * @var unknown
 	 */
 	var $subscriptionid		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'companyName'
@@ -78,14 +74,12 @@ class Employer extends JTable
 	 */
 	var $companyName		= NULL;  // @var varchar (250)
 
-
 	/**
 	 * Description for 'companyLocation'
 	 * 
 	 * @var unknown
 	 */
 	var $companyLocation	= NULL;  // @var varchar (250)
-
 
 	/**
 	 * Description for 'companyWebsite'
@@ -95,7 +89,6 @@ class Employer extends JTable
 	var $companyWebsite		= NULL;  // @var varchar (250)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

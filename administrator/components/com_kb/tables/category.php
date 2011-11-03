@@ -46,14 +46,12 @@ class KbCategory extends JTable
 	 */
 	var $id           = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title        = NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'description'
@@ -62,14 +60,12 @@ class KbCategory extends JTable
 	 */
 	var $description  = NULL;  // @var text
 
-
 	/**
 	 * Description for 'section'
 	 * 
 	 * @var unknown
 	 */
 	var $section      = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'state'
@@ -78,14 +74,12 @@ class KbCategory extends JTable
 	 */
 	var $state        = NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'access'
 	 * 
 	 * @var unknown
 	 */
 	var $access       = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'alias'
@@ -95,7 +89,6 @@ class KbCategory extends JTable
 	var $alias        = NULL;  // @var varchar(200)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

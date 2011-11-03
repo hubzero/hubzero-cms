@@ -46,14 +46,12 @@ class Wish extends JTable
 	 */
 	var $id         	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'wishlist'
 	 * 
 	 * @var unknown
 	 */
 	var $wishlist       = NULL;  // @var int
-
 
 	/**
 	 * Description for 'subject'
@@ -62,14 +60,12 @@ class Wish extends JTable
 	 */
 	var $subject		= NULL;  // @var varchar(200)
 
-
 	/**
 	 * Description for 'about'
 	 * 
 	 * @var unknown
 	 */
 	var $about			= NULL;  // @var text
-
 
 	/**
 	 * Description for 'status'
@@ -83,14 +79,12 @@ class Wish extends JTable
 		// 3 rejected
 		// 4 withdrawn
 
-
 	/**
 	 * Description for 'proposed'
 	 * 
 	 * @var unknown
 	 */
 	var $proposed    	= NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'granted'
@@ -99,14 +93,12 @@ class Wish extends JTable
 	 */
 	var $granted    	= NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'proposed_by'
 	 * 
 	 * @var unknown
 	 */
 	var $proposed_by 	= NULL;  // @var int(50)
-
 
 	/**
 	 * Description for 'granted_by'
@@ -115,14 +107,12 @@ class Wish extends JTable
 	 */
 	var $granted_by 	= NULL;  // @var int(50)
 
-
 	/**
 	 * Description for 'granted_vid'
 	 * 
 	 * @var unknown
 	 */
 	var $granted_vid 	= NULL;  // @var int(50)
-
 
 	/**
 	 * Description for 'assigned'
@@ -131,14 +121,12 @@ class Wish extends JTable
 	 */
 	var $assigned 		= NULL;  // @var int(50)
 
-
 	/**
 	 * Description for 'effort'
 	 * 
 	 * @var unknown
 	 */
 	var $effort		    = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'due'
@@ -147,14 +135,12 @@ class Wish extends JTable
 	 */
 	var $due    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'anonymous'
 	 * 
 	 * @var unknown
 	 */
 	var $anonymous		= NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'ranking'
@@ -163,7 +149,6 @@ class Wish extends JTable
 	 */
 	var $ranking		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'private'
 	 * 
@@ -171,14 +156,12 @@ class Wish extends JTable
 	 */
 	var $private		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'accepted'
 	 * 
 	 * @var unknown
 	 */
 	var $accepted		= NULL;  // @var int(11) 
-
 
 	/**
 	 * Description for 'points'
@@ -190,7 +173,6 @@ class Wish extends JTable
 		// 2 wish author accepted solution
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -384,7 +366,7 @@ class Wish extends JTable
 										break;
 				case 'latestcomment':   $sort = 'latestcomment DESC, ws.status ASC';
 										break;
-				case 'submitter':       $sort = 'xp.name ASC';       
+				case 'submitter':       $sort = 'xp.name ASC';
 										break;
 				default: 				$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
 										break;
@@ -432,7 +414,7 @@ class Wish extends JTable
 		}
 		$sql .= "\n FROM #__wishlist_item AS ws";
 		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
-		if ($fullinfo) {			
+		if ($fullinfo) {
 			//$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
 			$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
 			$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
@@ -618,7 +600,6 @@ class Wish extends JTable
 
 	//----------
 	// Does the wish exist on this list?
-
 
 	/**
 	 * Short description for 'check_wish'

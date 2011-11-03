@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'SupportComment'
  * 
@@ -51,14 +50,12 @@ class SupportComment extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'ticket'
 	 * 
 	 * @var unknown
 	 */
 	var $ticket     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'comment'
@@ -67,14 +64,12 @@ class SupportComment extends JTable
 	 */
 	var $comment    = NULL;  // @var text
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    = NULL;  // @var datetime
-
 
 	/**
 	 * Description for 'created_by'
@@ -83,14 +78,12 @@ class SupportComment extends JTable
 	 */
 	var $created_by = NULL;  // @var var(50)
 
-
 	/**
 	 * Description for 'changelog'
 	 * 
 	 * @var unknown
 	 */
 	var $changelog  = NULL;  // @var text
-
 
 	/**
 	 * Description for 'access'
@@ -100,7 +93,6 @@ class SupportComment extends JTable
 	var $access     = NULL;  // @var int(3)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

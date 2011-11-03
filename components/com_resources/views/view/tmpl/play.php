@@ -137,7 +137,7 @@ if ($this->resource->type == 4) {
 		$a = explode(',', $attributes);
 		$bits = array();
 		if ($a && is_array($a)) {
-			foreach ($a as $b) 
+			foreach ($a as $b)
 			{
 				if (strstr($b, ':')) {
 					$b = split(':', $b);

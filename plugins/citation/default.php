@@ -29,16 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 jimport('joomla.filesystem.file');
 
-//-----------
-
 JPlugin::loadLanguage( 'plg_citation_endnote' );
-
-//-----------
 
 class plgCitationDefault extends JPlugin
 {
@@ -51,15 +45,11 @@ class plgCitationDefault extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----
-	
 	public function onImportAcceptedFiles()
 	{
 		return ".txt <small>(Text File)</small>";
 	}
 
-	//-----
-	
 	public function onImport( $file )
 	{
 		//array of acceptable file types
@@ -96,6 +86,4 @@ class plgCitationDefault extends JPlugin
 		}
 	}
 
-	//-----
-	
 }

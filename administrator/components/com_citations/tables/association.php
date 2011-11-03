@@ -46,14 +46,12 @@ class CitationsAssociation extends JTable
 	 */
 	var $id    = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'cid'
 	 * 
 	 * @var unknown
 	 */
 	var $cid   = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'oid'
@@ -62,14 +60,12 @@ class CitationsAssociation extends JTable
 	 */
 	var $oid   = NULL;  // @var varchar(200)
 
-
 	/**
 	 * Description for 'type'
 	 * 
 	 * @var unknown
 	 */
 	var $type  = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'table'
@@ -79,7 +75,6 @@ class CitationsAssociation extends JTable
 	var $table = NULL;  // @var int(3)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

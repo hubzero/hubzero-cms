@@ -46,14 +46,12 @@ class MembersAssociation extends JTable
 	 */
 	var $subtable = NULL;  // @var varchar(50) Primary Key
 
-
 	/**
 	 * Description for 'subid'
 	 * 
 	 * @var unknown
 	 */
 	var $subid    = NULL;  // @var int(11) Primary Key
-
 
 	/**
 	 * Description for 'authorid'
@@ -62,14 +60,12 @@ class MembersAssociation extends JTable
 	 */
 	var $authorid = NULL;  // @var int(11) Primary Key
 
-
 	/**
 	 * Description for 'ordering'
 	 * 
 	 * @var unknown
 	 */
 	var $ordering = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'role'
@@ -79,7 +75,6 @@ class MembersAssociation extends JTable
 	var $role     = NULL;  // @var varchar(50)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

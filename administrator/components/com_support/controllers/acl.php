@@ -49,7 +49,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		$this->view->rows = $aro->getRecords();
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -73,23 +73,23 @@ class SupportControllerAcl extends Hubzero_Controller
 		$row = new SupportAroAco($this->database);
 		$row->load($id);
 
-		switch ($action) 
+		switch ($action)
 		{
 			case 'create': $row->action_create = $value; break;
 			case 'read':   $row->action_read   = $value; break;
 			case 'update': $row->action_update = $value; break;
 			case 'delete': $row->action_delete = $value; break;
-		} 
-		
+		}
+
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -112,22 +112,22 @@ class SupportControllerAcl extends Hubzero_Controller
 
 		$ids = JRequest::getVar('id', array());
 
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			$row = new SupportAro($this->database);
 			$row->load(intval($id));
 
-			if ($row->id) 
+			if ($row->id)
 			{
 				$aro_aco = new SupportAroAco($this->database);
-				if (!$aro_aco->deleteRecordsByAro($row->id)) 
+				if (!$aro_aco->deleteRecordsByAro($row->id))
 				{
 					JError::raiseError(500, $aro_aco->getError());
 					return;
 				}
 			}
 
-			if (!$row->delete()) 
+			if (!$row->delete())
 			{
 				JError::raiseError(500, $row->getError());
 				return;
@@ -155,31 +155,31 @@ class SupportControllerAcl extends Hubzero_Controller
 
 		// Initiate class and bind posted items to database fields
 		$row = new SupportAro($this->database);
-		if (!$row->bind($aro)) 
+		if (!$row->bind($aro))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
-		if (!$row->foreign_key || !$row->alias) 
+		if (!$row->foreign_key || !$row->alias)
 		{
-			switch ($row->model) 
+			switch ($row->model)
 			{
 				case 'user':
-					if (!$row->foreign_key) 
+					if (!$row->foreign_key)
 					{
 						$user = JUser::getInstance($row->alias);
-						if (!is_object($user)) 
+						if (!is_object($user))
 						{
 							JError::raiseError(500, 'Cannot find user');
 							return;
 						}
 						$row->foreign_key = $user->get('id');
-					} 
-					else 
+					}
+					else
 					{
 						$user = JUser::getInstance($row->foreign_key);
-						if (!is_object($user)) 
+						if (!is_object($user))
 						{
 							JError::raiseError(500, 'Cannot find user');
 							return;
@@ -190,20 +190,20 @@ class SupportControllerAcl extends Hubzero_Controller
 
 				case 'group':
 					ximport('Hubzero_Group');
-					if (!$row->foreign_key) 
+					if (!$row->foreign_key)
 					{
 						$group = Hubzero_Group::getInstance($row->alias);
-						if (!is_object($group)) 
+						if (!is_object($group))
 						{
 							JError::raiseError(500, 'Cannot find group');
 							return;
 						}
 						$row->foreign_key = $group->gidNumber;
-					} 
-					else 
+					}
+					else
 					{
 						$group = Hubzero_Group::getInstance($row->foreign_key);
-						if (!is_object($group)) 
+						if (!is_object($group))
 						{
 							JError::raiseError(500, 'Cannot find group');
 							return;
@@ -215,20 +215,20 @@ class SupportControllerAcl extends Hubzero_Controller
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			$row->id = $this->database->insertid();
 		}
@@ -236,11 +236,11 @@ class SupportControllerAcl extends Hubzero_Controller
 		// Trim and addslashes all posted items
 		$map = JRequest::getVar('map', array(), 'post');
 
-		foreach ($map as $k => $v) 
+		foreach ($map as $k => $v)
 		{
 			// Initiate class and bind posted items to database fields
 			$aroaco = new SupportAroAco($this->database);
-			if (!$aroaco->bind($v)) 
+			if (!$aroaco->bind($v))
 			{
 				JError::raiseError(500, $row->getError());
 				return;
@@ -248,14 +248,14 @@ class SupportControllerAcl extends Hubzero_Controller
 			$aroaco->aro_id = (!$aroaco->aro_id) ? $row->id : $aroaco->aro_id;
 
 			// Check content
-			if (!$aroaco->check()) 
+			if (!$aroaco->check())
 			{
 				JError::raiseError(500, $aroaco->getError());
 				return;
 			}
 
 			// Store new content
-			if (!$aroaco->store()) 
+			if (!$aroaco->store())
 			{
 				JError::raiseError(500, $aroaco->getError());
 				return;

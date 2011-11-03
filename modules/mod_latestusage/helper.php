@@ -47,9 +47,6 @@ class modLatestusage
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modLatestusage
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modLatestusage
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modLatestusage
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_getOnlineCount'
@@ -145,9 +133,6 @@ class modLatestusage
 
 		return $result;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

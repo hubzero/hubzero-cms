@@ -46,14 +46,12 @@ class XPollPoll extends JTable
 	 */
 	var $id               = NULL; // @var int Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title            = NULL; // @var string
-
 
 	/**
 	 * Description for 'voters'
@@ -62,14 +60,12 @@ class XPollPoll extends JTable
 	 */
 	var $voters           = NULL; // @var int(9)
 
-
 	/**
 	 * Description for 'checked_out'
 	 * 
 	 * @var unknown
 	 */
 	var $checked_out      = NULL; // @var int(11)
-
 
 	/**
 	 * Description for 'checked_out_time'
@@ -78,14 +74,12 @@ class XPollPoll extends JTable
 	 */
 	var $checked_out_time = NULL; // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'published'
 	 * 
 	 * @var unknown
 	 */
 	var $published        = NULL; // @var tinyint(1)
-
 
 	/**
 	 * Description for 'access'
@@ -94,14 +88,12 @@ class XPollPoll extends JTable
 	 */
 	var $access	          = NULL; // @var int(11)
 
-
 	/**
 	 * Description for 'lag'
 	 * 
 	 * @var integer
 	 */
 	var $lag              = NULL; // @var int(11)
-
 
 	/**
 	 * Description for 'open'
@@ -111,7 +103,6 @@ class XPollPoll extends JTable
 	var $open             = NULL; // @var tinyint(1)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

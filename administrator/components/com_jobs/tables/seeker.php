@@ -46,7 +46,6 @@ class JobSeeker extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
@@ -54,14 +53,12 @@ class JobSeeker extends JTable
 	 */
 	var $uid		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'active'
 	 * 
 	 * @var unknown
 	 */
 	var $active		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'lookingfor'

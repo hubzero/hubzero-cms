@@ -37,7 +37,7 @@ class compareusers extends XImportHelperScript
 
 	private $_mycount = 0;
 
-	public function run() 
+	public function run()
 	{
 		$this->_compareusers();
 	}
@@ -73,7 +73,7 @@ class compareusers extends XImportHelperScript
 		echo "<tr><td>uidNumber</td><td>key</td><td>mysql</td><td>ldap</td><td>action</td></tr>";
 
 		do
-	    {	
+	    {
 	   		$attributes = ldap_get_attributes($conn, $entry);
 			$rowhtml = '';
 			$showrow = false;
@@ -295,7 +295,7 @@ class compareusers extends XImportHelperScript
 										$profile->update('mysql');
 										$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 									}
-									else 
+									else
 									{
 										$profile->set('name',$dbvalue);
 										$profile->update('ldap');
@@ -317,7 +317,7 @@ class compareusers extends XImportHelperScript
 										$profile->update('mysql');
 										$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 									}
-									else 
+									else
 									{
 										$profile->set('orgtype',$dbvalue);
 										$profile->update('ldap');
@@ -339,7 +339,7 @@ class compareusers extends XImportHelperScript
 										$profile->update('mysql');
 										$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 									}
-									else 
+									else
 									{
 										$profile->set('emailConfirmed',$dbvalue);
 										$profile->update('ldap');
@@ -361,7 +361,7 @@ class compareusers extends XImportHelperScript
 										$profile->update('mysql');
 										$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
 									}
-									else 
+									else
 									{
 										$profile->set('name',$dbvalue);
 										$profile->update('ldap');
@@ -545,7 +545,7 @@ class compareusers extends XImportHelperScript
 								if ($j > 0)
 									die('unexpected multivalue');
 
-								if ($key == 'userPassword') 
+								if ($key == 'userPassword')
 								{	ximport('Hubzero_User_Helper');
 									if ((strncmp($value[$j],"{MD5}",5) != 0) && (strncmp($value[$j],"{SSHA}",6) != 0)) {
 										$profile->set('userPassword',  Hubzero_User_Helper::encrypt_password($value[$j]));

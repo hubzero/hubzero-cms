@@ -38,27 +38,27 @@ $html .= ' <li><a href="' . JRoute::_('index.php?option=com_feedback&task=succes
 $html .= ' </ul>' . "\n";
 $html .= '</div>' . "\n";
 // Did we get any results?
-if (count($this->quotes) > 0) 
+if (count($this->quotes) > 0)
 {
 	// Yes - loop through and build the HTML
 	foreach ($this->quotes as $quote)
 	{
 		$quote->org = str_replace('<br>', '<br />', $quote->org);
 
-		if (isset($this->filters['id']) && $this->filters['id'] != '') 
+		if (isset($this->filters['id']) && $this->filters['id'] != '')
 		{
 			$html .= '<div class="breadcrumbs"><p><a href="/about/quotes" class="breadcrumbs">' . JText::_('NOTABLE_QUOTES') . '</a> &rsaquo; <strong>';
 			$html .= stripslashes($quote->fullname) . '</strong></p></div>' . "\n\n";
 		}
 		$html .= '<blockquote cite="' . stripslashes($quote->fullname) . '">' . "\n";
-		if (isset($this->filters['id']) && $this->filters['id'] != '') 
+		if (isset($this->filters['id']) && $this->filters['id'] != '')
 		{
 			$html .= "\t" . '<p>' . stripslashes($quote->quote) . '</p>' . "\n";
-		} 
-		else 
+		}
+		else
 		{
 			$html .= "\t" . '<p>' . stripslashes($quote->short_quote) . "\n";
-			if ($quote->short_quote != $quote->quote) 
+			if ($quote->short_quote != $quote->quote)
 			{
 				$html .= "\t" . ' &#8230; <a href="/about/quotes/?quoteid=' . $quote->id . '" title="' . JText::sprintf('VIEW_QUOTE_BY', stripslashes($quote->fullname)) . '">' . JText::_('MORE') . '</a>';
 			}
@@ -73,8 +73,8 @@ if (count($this->quotes) > 0)
 		$html .= '<br />' . $quote->org . '</p>' . "\n\n";
 
 	}
-} 
-else 
+}
+else
 {
 	// No - show message
 	$html = '<p>' . JText::_('NO_QUOTES_FOUND') . '</p>' . "\n";

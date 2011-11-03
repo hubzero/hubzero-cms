@@ -46,14 +46,12 @@ class WishRank extends JTable
 	 */
 	var $id         	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'wishid'
 	 * 
 	 * @var unknown
 	 */
 	var $wishid      	= NULL;  // @var int
-
 
 	/**
 	 * Description for 'userid'
@@ -62,14 +60,12 @@ class WishRank extends JTable
 	 */
 	var $userid 		= NULL;  // @var int
 
-
 	/**
 	 * Description for 'voted'
 	 * 
 	 * @var unknown
 	 */
 	var $voted    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'importance'
@@ -78,14 +74,12 @@ class WishRank extends JTable
 	 */
 	var $importance     = NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'effort'
 	 * 
 	 * @var unknown
 	 */
 	var $effort		    = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'due'
@@ -95,7 +89,6 @@ class WishRank extends JTable
 	var $due    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

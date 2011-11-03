@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'Hubzero_Filter'
  * 
@@ -45,7 +44,6 @@ class Hubzero_Filter
 {
 	//-----------
 	// clean out any cross site scripting attempts (XSS)
-
 
 	/**
 	 * Short description for 'cleanXss'

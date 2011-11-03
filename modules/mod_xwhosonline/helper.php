@@ -47,9 +47,6 @@ class modXWhosonline
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modXWhosonline
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modXWhosonline
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modXWhosonline
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

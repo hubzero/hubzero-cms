@@ -75,7 +75,6 @@ class ContribtoolHtml
 	// Misc. 
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'error'
 	 * 

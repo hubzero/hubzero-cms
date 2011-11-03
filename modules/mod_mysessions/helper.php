@@ -47,9 +47,6 @@ class modMySessions
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modMySessions
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modMySessions
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modMySessions
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_setTimeout'
@@ -118,9 +106,6 @@ class modMySessions
 		$ms->timeout = 1209600;
 		$ms->store();
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_getTimeout'
@@ -153,9 +138,6 @@ class modMySessions
 		}
 		return $tl;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

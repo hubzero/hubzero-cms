@@ -363,14 +363,14 @@ class XSearchController extends Hubzero_Controller
 		return $this->searchareas;
 	}
 
-	private function _makeSafe($text) 
+	private function _makeSafe($text)
 	{
 		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
 		$text = preg_replace("'<style[^>]*>.*?</style[^>]*>'si", '', $text);
 		$text = preg_replace("'<script[^>]*>.*?</script[^>]*>'si", '', $text);
 		$text = preg_replace('/<!--.+?-->/', '', $text);
 
-		$badchars = array('#','>','<','\\'); 
+		$badchars = array('#','>','<','\\');
 		$text = trim(str_replace($badchars, '', $text));
 
 		return $text;

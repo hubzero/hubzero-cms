@@ -41,16 +41,11 @@ class modWhatsNew
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -66,9 +61,6 @@ class modWhatsNew
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-	
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -79,21 +71,16 @@ class modWhatsNew
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_getAreas'
@@ -105,7 +92,7 @@ class modWhatsNew
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
-		if (!isset($this->searchareas) || empty($this->searchareas)) 
+		if (!isset($this->searchareas) || empty($this->searchareas))
 		{
 			// No - so we'll need to get it
 			$areas = array();
@@ -131,9 +118,6 @@ class modWhatsNew
 		return $this->searchareas;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'formatTags'
 	 * 
@@ -148,7 +132,7 @@ class modWhatsNew
 	{
 		$out = '';
 
-		if (count($tags) > 0) 
+		if (count($tags) > 0)
 		{
 			$out .= '<span class="taggi">' . "\n";
 			$counter = 0;
@@ -156,17 +140,17 @@ class modWhatsNew
 			for ($i=0; $i< count($tags); $i++)
 			{
 				$counter = $counter + strlen(stripslashes($tags[$i]['raw_tag']));
-				if ($counter > $max) 
+				if ($counter > $max)
 				{
 					$num = $num - 1;
 				}
-				if ($i < $num) 
+				if ($i < $num)
 				{
 					// display tag
 					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $tags[$i]['tag']) . '">' . stripslashes($tags[$i]['raw_tag']) . '</a> ' . "\n";
 				}
 			}
-			if ($i > $num) 
+			if ($i > $num)
 			{
 				$out .= ' (&#8230;)';
 			}
@@ -175,8 +159,6 @@ class modWhatsNew
 
 		return $out;
 	}
-
-	//-----------
 
 	public function run()
 	{
@@ -192,15 +174,15 @@ class modWhatsNew
 		$database =& JFactory::getDBO();
 
 		// Build the feed link if necessary
-		if ($this->feed) 
+		if ($this->feed)
 		{
 			$this->feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period=' . $this->period);
-			if (substr($this->feedlink, 0, 5) == 'https') 
+			if (substr($this->feedlink, 0, 5) == 'https')
 			{
 				$this->feedlink = ltrim($this->feedlink, 'https');
 				$this->feedlink = 'http' . $this->feedlink;
 			}
-			if (substr($this->feedlink, 0, 1) == '/') 
+			if (substr($this->feedlink, 0, 1) == '/')
 			{
 				$xhub =& Hubzero_Factory::getHub();
 				$this->feedlink = $xhub->getCfg('hubLongURL') . $this->feedlink;
@@ -213,13 +195,13 @@ class modWhatsNew
 		$area = '';
 
 		// Check the search string for a category prefix
-		if ($this->period != NULL) 
+		if ($this->period != NULL)
 		{
 			$searchstring = strtolower($this->period);
 			foreach ($areas as $c=>$t)
 			{
 				$regexp = "/" . $c . ":/";
-				if (strpos($searchstring, $c . ":") !== false) 
+				if (strpos($searchstring, $c . ":") !== false)
 				{
 					// We found an active category
 					// NOTE: this will override any category sent in the querystring
@@ -229,13 +211,13 @@ class modWhatsNew
 					break;
 				}
 				// Does the category contain sub-categories?
-				if (is_array($t) && !empty($t)) 
+				if (is_array($t) && !empty($t))
 				{
 					// It does - loop through them and perform the same check
-					foreach ($t as $sc => $st) 
+					foreach ($t as $sc => $st)
 					{
 						$regexp = "/" . $sc . ":/";
-						if (strpos($searchstring, $sc . ':') !== false) 
+						if (strpos($searchstring, $sc . ':') !== false)
 						{
 							// We found an active category
 							// NOTE: this will override any category sent in the querystring
@@ -253,7 +235,7 @@ class modWhatsNew
 
 		// Get the active category
 		$activeareas = array();
-		if ($area) 
+		if ($area)
 		{
 			$activeareas[] = $area;
 		}
@@ -278,11 +260,11 @@ class modWhatsNew
 
 		$rows = array();
 
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $result)
 			{
-				if (is_array($result) && !empty($result)) 
+				if (is_array($result) && !empty($result))
 				{
 					$rows = $result;
 					break;
@@ -293,7 +275,7 @@ class modWhatsNew
 		$this->rows = $rows;
 		$this->rows2 = null;
 
-		if ($this->tagged) 
+		if ($this->tagged)
 		{
 			$juser =& JFactory::getUser();
 
@@ -303,7 +285,7 @@ class modWhatsNew
 
 			$this->tags = $tags;
 
-			if (count($tags) > 0) 
+			if (count($tags) > 0)
 			{
 				$tagids = array();
 				foreach ($tags as $tag)
@@ -323,11 +305,11 @@ class modWhatsNew
 
 				$rows2 = array();
 
-				if ($results2) 
+				if ($results2)
 				{
 					foreach ($results2 as $result2)
 					{
-						if (is_array($result2) && !empty($result2)) 
+						if (is_array($result2) && !empty($result2))
 						{
 							$rows2 = $result2;
 							break;
@@ -342,8 +324,6 @@ class modWhatsNew
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
-	//-----------
-	
 	public function display()
 	{
 		// Push the module CSS to the template
@@ -352,7 +332,7 @@ class modWhatsNew
 
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);

@@ -89,7 +89,6 @@ class RegisterController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'edit'
 	 * 
@@ -1094,7 +1093,6 @@ class RegisterController extends Hubzero_Controller
 	//  Email (account confirmation)
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'resend'
 	 * 
@@ -1458,7 +1456,6 @@ class RegisterController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Private Functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_buildPathway'

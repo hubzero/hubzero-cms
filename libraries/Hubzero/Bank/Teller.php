@@ -46,14 +46,12 @@ class Hubzero_Bank_Teller extends JObject
 	 */
 	var $_db      = NULL;  // Database
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var string
 	 */
 	var $uid      = NULL;  // User ID
-
 
 	/**
 	 * Description for 'balance'
@@ -62,7 +60,6 @@ class Hubzero_Bank_Teller extends JObject
 	 */
 	var $balance  = NULL;  // Current point balance
 
-
 	/**
 	 * Description for 'earnings'
 	 * 
@@ -70,14 +67,12 @@ class Hubzero_Bank_Teller extends JObject
 	 */
 	var $earnings = NULL;  // Lifetime point earnings
 
-
 	/**
 	 * Description for 'credit'
 	 * 
 	 * @var mixed
 	 */
 	var $credit   = NULL;  // Credit point balance 
-
 
 	/**
 	 * Description for '_error'
@@ -91,7 +86,6 @@ class Hubzero_Bank_Teller extends JObject
 	// Constructor
 	// Find the balance from the most recent transaction.
 	// If no balance is found, create an initial transaction.
-
 
 	/**
 	 * Short description for '__construct'
@@ -126,7 +120,6 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Get the current balance
 
-
 	/**
 	 * Short description for 'summary'
 	 * 
@@ -142,7 +135,6 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Get the current credit balance
 
-
 	/**
 	 * Short description for 'credit_summary'
 	 * 
@@ -157,7 +149,6 @@ class Hubzero_Bank_Teller extends JObject
 
 	//-----------
 	// Add points
-
 
 	/**
 	 * Short description for 'deposit'
@@ -189,7 +180,6 @@ class Hubzero_Bank_Teller extends JObject
 
 	//-----------
 	// Withdraw (spend) points
-
 
 	/**
 	 * Short description for 'withdraw'
@@ -225,7 +215,6 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Set points aside (credit)
 
-
 	/**
 	 * Short description for 'hold'
 	 * 
@@ -260,7 +249,6 @@ class Hubzero_Bank_Teller extends JObject
 	//-------------
 	// Make credit adjustment
 
-
 	/**
 	 * Short description for 'credit_adjustment'
 	 * 
@@ -278,7 +266,6 @@ class Hubzero_Bank_Teller extends JObject
 
 	//-----------
 	// Get a history of transactions
-
 
 	/**
 	 * Short description for 'history'
@@ -313,7 +300,6 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Check that they have enough in their account 
 	// to perform the transaction.
-
 
 	/**
 	 * Short description for '_creditCheck'
@@ -382,7 +368,6 @@ class Hubzero_Bank_Teller extends JObject
 	//-----------
 	// Save the current balance
 
-
 	/**
 	 * Short description for '_saveBalance'
 	 * 
@@ -411,7 +396,6 @@ class Hubzero_Bank_Teller extends JObject
 
 	//-----------
 	// Record the transaction
-
 
 	/**
 	 * Short description for '_saveTransaction'

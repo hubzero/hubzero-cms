@@ -125,7 +125,6 @@ class FeedbackController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'login'
 	 * 
@@ -370,7 +369,6 @@ class FeedbackController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'sendstory'
@@ -710,11 +708,11 @@ class FeedbackController extends Hubzero_Controller
 
 		// Check CAPTCHA
 		$validcaptchas = $dispatcher->trigger('onValidateCaptcha');
-		if (count($validcaptchas) > 0) 
+		if (count($validcaptchas) > 0)
 		{
-			foreach ($validcaptchas as $validcaptcha) 
+			foreach ($validcaptchas as $validcaptcha)
 			{
-				if (!$validcaptcha) 
+				if (!$validcaptcha)
 				{
 					$this->setError(JText::_('Error: Invalid CAPTCHA response.'));
 				}
@@ -722,7 +720,7 @@ class FeedbackController extends Hubzero_Controller
 		}
 
 		// Are they verified?
-		if (!$verified) 
+		if (!$verified)
 		{
 			// Quick spam filter
 			$spam = $this->_detect_spam($problem['long'], $ip);
@@ -894,17 +892,17 @@ class FeedbackController extends Hubzero_Controller
 		// Get any set emails that should be notified of ticket submission
 		$defs = str_replace("\r", '', $params->def('emails','{config.mailfrom}'));
 		$defs = explode("\n", $defs);
-		if ($defs) 
+		if ($defs)
 		{
 			// Import our mailer
 			ximport('Hubzero_Toolbox');
 
 			// Loop through the addresses
-			foreach ($defs As $def) 
+			foreach ($defs As $def)
 			{
 				$def = trim($def);
 				// Check if the address should come from Joomla config
-				if ($def == '{config.mailfrom}') 
+				if ($def == '{config.mailfrom}')
 				{
 					$def = $jconfig->getValue('config.mailfrom');
 				}
@@ -933,8 +931,6 @@ class FeedbackController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
 	private function _isVerified()
 	{
 		if (!$this->juser->get('guest')) {
@@ -1138,7 +1134,6 @@ class FeedbackController extends Hubzero_Controller
 	//  Image handling
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'upload'
 	 * 
@@ -1334,7 +1329,6 @@ class FeedbackController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_getUser'

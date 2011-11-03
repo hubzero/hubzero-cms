@@ -219,7 +219,6 @@ class Hubzero_Registration_Helper
 	// display various forms. placeholders until we develop a template override system
 	// for them.
 
-
 	/**
 	 * Short description for 'select_form'
 	 * 

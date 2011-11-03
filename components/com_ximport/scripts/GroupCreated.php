@@ -33,7 +33,7 @@ class GroupCreated extends XImportHelperScript
 {
 	protected $_description = 'Take group create date from group logs.';
 
-	public function run() 
+	public function run()
 	{
 		// import group library
 		ximport('Hubzero_Group');
@@ -43,11 +43,11 @@ class GroupCreated extends XImportHelperScript
 		$this->_db->setQuery($sql);
 		$logs = $this->_db->loadAssocList();
 
-		foreach ($logs as $log) 
+		foreach ($logs as $log)
 		{
 			echo $log['gid'];
 			$group = Hubzero_Group::getInstance($log['gid']);
-			if (is_object($group)) 
+			if (is_object($group))
 			{
 				$group->set('created', $log['timestamp']);
 				$group->set('created_by', $log['actorid']);

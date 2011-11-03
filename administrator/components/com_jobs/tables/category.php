@@ -46,14 +46,12 @@ class JobCategory extends JTable
 	 */
 	var $id         	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'category'
 	 * 
 	 * @var unknown
 	 */
 	var $category		= NULL;  // @var varchar(150)
-
 
 	/**
 	 * Description for 'description'
@@ -63,7 +61,6 @@ class JobCategory extends JTable
 	var $description	= NULL;  // @var varchar(255)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

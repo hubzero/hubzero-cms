@@ -131,7 +131,6 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getTask'
 	 * 
@@ -173,35 +172,35 @@ class ContribtoolController extends JObject
 
 		switch ( $this->getTask() )
 		{
-		    case  'edit': 
-				$this->edit();					
+		    case  'edit':
+				$this->edit();
 				break;
-			case  'apply': 
-				$this->apply();				
-				break;	
-			case  'save': 
-				$this->save();				
-				break;	
-			case  'cancel': 
-				$this->cancel();				
-				break;	
-			case  'editToolVersion': 
-				$this->editToolVersion();				
-				break;	
-			case  'view': 
-				$this->view();				
-				break;	
-			case  'editTool': 
-				$this->editTool();			
+			case  'apply':
+				$this->apply();
 				break;
-			case  'batch_doi': 
-				$this->_batchDoi();			
+			case  'save':
+				$this->save();
 				break;
-			case  'setup_doi': 
-				$this->_setupDoi();			
+			case  'cancel':
+				$this->cancel();
 				break;
-			default: 		
-				$this->view(); 				
+			case  'editToolVersion':
+				$this->editToolVersion();
+				break;
+			case  'view':
+				$this->view();
+				break;
+			case  'editTool':
+				$this->editTool();
+				break;
+			case  'batch_doi':
+				$this->_batchDoi();
+				break;
+			case  'setup_doi':
+				$this->_setupDoi();
+				break;
+			default:
+				$this->view();
 				break;
 		}
 	}
@@ -209,7 +208,6 @@ class ContribtoolController extends JObject
 	//----------------------------------------------------------
 	// Setup component
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'defaultParams'
@@ -244,7 +242,6 @@ class ContribtoolController extends JObject
 
 	}
 	//-------------
-
 
 	/**
 	 * Short description for 'cancel'
@@ -673,7 +670,6 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'createTicket'
 	 * 
@@ -855,7 +851,7 @@ class ContribtoolController extends JObject
 
 	//-----------
 	// Temp function to issue new service DOIs for tool versions published previously
-	
+
 	private function _batchDoi()
 	{
 		$database =& JFactory::getDBO();
@@ -884,8 +880,8 @@ class ContribtoolController extends JObject
 		$publisher = $this->config->get('doi_publisher', $hubShortName );
 
 		// Make up service URL
-		$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;		
-		
+		$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;
+
 		// Get all tool publications without new DOI
 		$query = "SELECT * FROM #__doi_mapping WHERE doi='' OR doi IS NULL ";
 		$database->setQuery( $query );
@@ -914,8 +910,8 @@ class ContribtoolController extends JObject
 				$query = "SELECT * FROM #__tool_version WHERE toolname='".$row->alias."' ";
 				$query.= "AND revision='".$row->local_revision."' AND state!=3 LIMIT 1";
 				$database->setQuery( $query );
-				$results = $database->loadObjectList();				
-				
+				$results = $database->loadObjectList();
+
 				if($results) {
 					$title = $results[0]->title ? $results[0]->title : $resource->title;
 					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, '%Y')) : date( 'Y' );
@@ -965,7 +961,7 @@ class ContribtoolController extends JObject
 					else {
 						$created[] = $doiSuccess;
 					}
-				} 
+				}
 				else {
 					print_r($doierr);
 					echo '<br />';
@@ -990,7 +986,7 @@ class ContribtoolController extends JObject
 
 	//-----------
 	// Temp function to ensure jos_doi_mapping table is updated
-	
+
 	private function _setupDoi()
 	{
 		$database =& JFactory::getDBO();
@@ -1012,11 +1008,10 @@ class ContribtoolController extends JObject
 				}
 		}
 		return;
-	}	
+	}
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'pipeline'

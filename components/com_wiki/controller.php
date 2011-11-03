@@ -146,7 +146,7 @@ class WikiController extends Hubzero_Controller
 		}
 	}
 
-	private function _update() 
+	private function _update()
 	{
 		$wpa = new WikiPageAuthor($this->database);
 		if ($wpa->transitionAuthors()) {
@@ -182,7 +182,6 @@ class WikiController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Page/Source Views
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'view'
@@ -1124,7 +1123,6 @@ class WikiController extends Hubzero_Controller
 	// History Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'history'
 	 * 
@@ -1378,7 +1376,6 @@ class WikiController extends Hubzero_Controller
 	// Comment Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'comments'
 	 * 
@@ -1628,7 +1625,6 @@ class WikiController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// media manager
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'upload'
@@ -1943,7 +1939,6 @@ class WikiController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'make_path'
 	 * 
@@ -2227,7 +2222,6 @@ class WikiController extends Hubzero_Controller
 	// "\xaa" and "\xba" in [:alpha:].)
 	//
 	// So for now, this will do.  --Jeff <dairiki@dairiki.org> 14 Mar, 2001
-
 
 	/**
 	 * Short description for 'pcre_fix_posix_classes'

@@ -40,13 +40,13 @@ defined('_JEXEC') or die('Restricted access');
 
 	ximport('Hubzero_View_Helper_Html');
 
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		$name = JText::_('MOD_POPULARQUESTIONS_ANONYMOUS');
-		if ($row->anonymous == 0) 
+		if ($row->anonymous == 0)
 		{
 			$juser =& JUser::getInstance($row->created_by);
-			if (is_object($juser)) 
+			if (is_object($juser))
 			{
 				$name = $juser->get('name');
 			}

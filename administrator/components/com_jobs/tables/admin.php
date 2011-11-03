@@ -46,14 +46,12 @@ class JobAdmin extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'jid'
 	 * 
 	 * @var unknown
 	 */
 	var $jid		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'uid'
@@ -63,7 +61,6 @@ class JobAdmin extends JTable
 	var $uid		= NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

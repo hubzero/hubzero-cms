@@ -46,14 +46,12 @@ class Hubzero_Bank_Transaction extends JTable
 	 */
 	var $id          = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid         = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'type'
@@ -62,14 +60,12 @@ class Hubzero_Bank_Transaction extends JTable
 	 */
 	var $type        = NULL;  // @var varchar(20)
 
-
 	/**
 	 * Description for 'category'
 	 * 
 	 * @var unknown
 	 */
 	var $category    = NULL;  // @var varchar(50)
-
 
 	/**
 	 * Description for 'referenceid'
@@ -78,14 +74,12 @@ class Hubzero_Bank_Transaction extends JTable
 	 */
 	var $referenceid = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'amount'
 	 * 
 	 * @var unknown
 	 */
 	var $amount      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'description'
@@ -94,14 +88,12 @@ class Hubzero_Bank_Transaction extends JTable
 	 */
 	var $description = NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created     = NULL;  // @var datetime
-
 
 	/**
 	 * Description for 'balance'
@@ -111,7 +103,6 @@ class Hubzero_Bank_Transaction extends JTable
 	var $balance     = NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

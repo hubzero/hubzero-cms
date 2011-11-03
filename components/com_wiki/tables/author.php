@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class WikiPageAuthor extends JTable 
+class WikiPageAuthor extends JTable
 {
 	/**
 	 * Primary key field in the table
@@ -59,7 +59,7 @@ class WikiPageAuthor extends JTable
 	 *
 	 * @param 	object 		$db JDatabase object
 	 */
-	public function __construct(&$db) 
+	public function __construct(&$db)
 	{
 		parent::__construct('#__wiki_page_author', 'id', $db);
 	}
@@ -70,7 +70,7 @@ class WikiPageAuthor extends JTable
 	 * @return 	boolean 	True if all fields are valid
 	 * @return     void
 	 */
-	public function check() 
+	public function check()
 	{
 		if (!$this->page_id) {
 			$this->setError(JText::_('Author entry must have a page ID.'));
@@ -90,7 +90,7 @@ class WikiPageAuthor extends JTable
 	 * @param 	integer 	$user_id
 	 * @return 	integer
 	 */
-	public function getId($page_id=NULL, $user_id=NULL) 
+	public function getId($page_id=NULL, $user_id=NULL)
 	{
 		if (!$page_id) {
 			$page_id = $this->page_id;
@@ -116,7 +116,7 @@ class WikiPageAuthor extends JTable
 	 * @param 	integer 	$user_id
 	 * @return 	boolean		True if user is an author
 	 */
-	public function isAuthor($page_id=NULL, $user_id=NULL) 
+	public function isAuthor($page_id=NULL, $user_id=NULL)
 	{
 		$id = $this->getId($page_id, $user_id);
 		if ($id) {
@@ -238,7 +238,7 @@ class WikiPageAuthor extends JTable
 		if ($authors) {
 			$authArray = explode(',', $authors);
 			$authArray = array_map('trim', $authArray);
-			foreach ($authArray as $author) 
+			foreach ($authArray as $author)
 			{
 				// Attempt to load each user
 				$targetuser =& JUser::getInstance($author);
@@ -273,7 +273,7 @@ class WikiPageAuthor extends JTable
 		}
 		// Loop through the old author list and check for nay entries not in the new list
 		// Remove any entries not found in the new list
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			if (!in_array($id, $auths)) {
 				$wpa = new WikiPageAuthor($this->_db);
@@ -288,16 +288,16 @@ class WikiPageAuthor extends JTable
 		return true;
 	}
 
-	public function transitionAuthors() 
+	public function transitionAuthors()
 	{
 		$this->_db->setQuery("SELECT id, authors FROM #__wiki_page WHERE authors!='' AND authors IS NOT NULL");
 		$pages = $this->_db->loadObjectList();
 		if ($pages) {
-			foreach ($pages as $page) 
+			foreach ($pages as $page)
 			{
 				$authors = explode(',', $page->authors);
 				$authors = array_map('trim', $authors);
-				foreach ($authors as $author) 
+				foreach ($authors as $author)
 				{
 					$targetuser =& JUser::getInstance($author);
 

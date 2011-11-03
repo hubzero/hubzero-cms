@@ -66,16 +66,11 @@ class modEventsLatest
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -91,9 +86,6 @@ class modEventsLatest
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-	
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -104,20 +96,16 @@ class modEventsLatest
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-
-	//-----------
 
 	/**
 	 * Short description for 'display'
@@ -126,14 +114,14 @@ class modEventsLatest
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function display() 
+	public function display()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);
@@ -146,18 +134,16 @@ class modEventsLatest
 		$this->run();
 	}
 
-	//-----------
-
 	public function run()
 	{
 		// Check the events component
-		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php')) 
-		{ 
+		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php'))
+		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
-		} 
-		else 
+		}
+		else
 		{
 			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
 			return;
@@ -168,7 +154,6 @@ class modEventsLatest
 
 	//-----------
 	// This custom sort compare function compares the start times of events that are refernced by the a & b vars
-
 
 	/**
 	 * Short description for 'cmpByStartTime'
@@ -183,7 +168,7 @@ class modEventsLatest
 	{
 		list($date, $aStrtTime) = split(' ', $a->publish_up);
 		list($date, $bStrtTime) = split(' ', $b->publish_up);
-		if ($aStrtTime == $bStrtTime) 
+		if ($aStrtTime == $bStrtTime)
 		{
 			return 0;
 		}
@@ -195,7 +180,6 @@ class modEventsLatest
 	// except no actual output is performed.  Rather this function returns an array of references to
 	// $rows within the $rows (ie events) input array which occur on the input '$date'.  This
 	// is determined by the complicated com_event algorithm according to the event's repeatting type.
-
 
 	/**
 	 * Short description for '_getEventsByDate'
@@ -215,7 +199,7 @@ class modEventsLatest
 
 		$eventCheck = new EventsRepeat;
 
-		if ($num_events > 0) 
+		if ($num_events > 0)
 		{
 			$year  = date('Y', $date);
 	    	$month = date('m', $date);
@@ -224,11 +208,11 @@ class modEventsLatest
 			for ($r = 0; $r < count($rows); $r++)
 			{
 				$row = $rows[$r];
-				if (isset($seenThisEvent[$row->id]) && $noRepeats) 
+				if (isset($seenThisEvent[$row->id]) && $noRepeats)
 				{
 					continue;
 				}
-				if ($eventCheck->EventsRepeat($row, $year, $month, $day)) 
+				if ($eventCheck->EventsRepeat($row, $year, $month, $day))
 				{
 					$seenThisEvent[$row->id] = 1;
 					$new_rows_events[] =& $rows[$r];
@@ -240,9 +224,6 @@ class modEventsLatest
 
 		return $new_rows_events;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_displayLatestEvents'
@@ -277,13 +258,13 @@ class modEventsLatest
 		$announcements     = $this->params->get('announcements')       ? abs(intval($this->params->get('announcements'))) : 0;
 
 		// Can't have a mode greater than 4
-		if ($mode > 4) 
+		if ($mode > 4)
 		{
 			$mode = 0;
 		}
 
 		// Hardcoded to 10 for now to avoid bad mistakes in params
-		if (!$maxEvents || $maxEvents > 100) 
+		if (!$maxEvents || $maxEvents > 100)
 		{
 			$maxEvents = 10;
 		}
@@ -294,7 +275,7 @@ class modEventsLatest
 
 		// Get the start day
 		$startday = $this->params->get('start_day');
-		if (!defined('_CAL_CONF_STARDAY')) 
+		if (!defined('_CAL_CONF_STARDAY'))
 		{
 	/**
 	 * Description for ''_CAL_CONF_STARDAY''
@@ -373,13 +354,13 @@ class modEventsLatest
 		$content  = '';
 		$seenThisEvent = array();
 
-		if (count($rows)) 
+		if (count($rows))
 		{
 			while ($date <= $lastDate)
 			{
 				// Get the events for this $date
 				$eventsThisDay = $this->_getEventsByDate($rows, $date, $seenThisEvent, $norepeat);
-				if (count($eventsThisDay)) 
+				if (count($eventsThisDay))
 				{
 					// dmcd May 7/04  bug fix to not exceed maxEvents
 					$eventsToAdd = min($maxEvents-$events, count($eventsThisDay));
@@ -387,7 +368,7 @@ class modEventsLatest
 					$eventsByRelDay[$i] = $eventsThisDay;
 					$events += count($eventsByRelDay[$i]);
 				}
-				if ($events >= $maxEvents) 
+				if ($events >= $maxEvents)
 				{
 					break;
 				}
@@ -397,7 +378,7 @@ class modEventsLatest
 		}
 
 		// Do we actually have any events to display?
-		if ($events < $maxEvents && ($mode==1 || $mode==3)) 
+		if ($events < $maxEvents && ($mode==1 || $mode==3))
 		{
 			// Display some recent previous events too up to a total of $maxEvents
 			// Changed by Swaroop to display only events that are not announcements
@@ -416,7 +397,7 @@ class modEventsLatest
 			// Retrieve the list of returned records as an array of objects
 			$prows = $database->loadObjectList();
 
-			if (count($prows)) 
+			if (count($prows))
 			{
 				// Start from yesterday
 				$date = mktime(23, 59, 59, date('m'), date('d') - 1, date('Y'));
@@ -427,12 +408,12 @@ class modEventsLatest
 				{
 					// Get the events for this $date
 					$eventsThisDay = $this->_getEventsByDate($prows, $date, $seenThisEvent, $norepeat);
-					if (count($eventsThisDay)) 
+					if (count($eventsThisDay))
 					{
 						$eventsByRelDay[$i] = $eventsThisDay;
 						$events += count($eventsByRelDay[$i]);
 					}
-					if ($events >= $maxEvents) 
+					if ($events >= $maxEvents)
 					{
 						break;
 					}
@@ -442,15 +423,15 @@ class modEventsLatest
 			}
 		}
 
-		if (isset($eventsByRelDay) && count($eventsByRelDay)) 
+		if (isset($eventsByRelDay) && count($eventsByRelDay))
 		{
 			// Now to display these events, we just start at the smallest index of the $eventsByRelDay array and work our way up.
 			ksort($eventsByRelDay, SORT_NUMERIC);
 			reset($eventsByRelDay);
 
 			$this->eventsByRelDay = $eventsByRelDay;
-		} 
-		else 
+		}
+		else
 		{
 			$this->eventsByRelDay = null;
 		}

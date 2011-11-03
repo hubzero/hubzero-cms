@@ -77,7 +77,6 @@ class ResourcesHtml
 	// Misc HTML
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'encode_html'
 	 * 
@@ -328,7 +327,6 @@ class ResourcesHtml
 	// Misc views parts
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'adminIcon'
 	 * 
@@ -376,7 +374,6 @@ class ResourcesHtml
 	//-------------------------------------------------------------
 	// Main view parts
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'parseTag'
@@ -846,7 +843,6 @@ class ResourcesHtml
 	//-------------------------------------------------------------
 	// Sections
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'sections'
@@ -1651,7 +1647,6 @@ class ResourcesHtml
 	// Bits
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'getRatingClass'
 	 * 
@@ -1705,7 +1700,7 @@ class ResourcesHtml
 		if ($children != NULL) {
 			$out .= '<ul>'."\n";
 			$base = $config->get('uploadpath');
-			foreach ($children as $child) 
+			foreach ($children as $child)
 			{
 				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) {
 					$ftype = ResourcesHtml::getFileExtension($child->path);
@@ -1733,7 +1728,7 @@ class ResourcesHtml
 								$rtLinkAction = $tparams->get('linkAction', 'extension');
 							}
 
-							switch ($rtLinkAction) 
+							switch ($rtLinkAction)
 							{
 								case 'download':
 									$class = 'download';
@@ -1775,7 +1770,7 @@ class ResourcesHtml
 							// Check for any link action overrides on the child itself
 							$childParams = new JParameter($child->params);
 							$linkAction = intval($childParams->get('link_action', $linkAction));
-							switch ($linkAction) 
+							switch ($linkAction)
 							{
 								case 3:
 									$class = 'download';
@@ -1842,7 +1837,7 @@ class ResourcesHtml
 					$out .= ($action)  ? ' ' . $action : '';
 					$out .= ' title="' . stripslashes($child->title) . '">' . $title . '</a>' . "\n";
 					$out .= "\t" . '</li>'."\n";
-				}	
+				}
 			}
 			$out .= '</ul>'."\n";
 		} else {
@@ -1888,7 +1883,7 @@ class ResourcesHtml
 		$access = $item->access;
 		$type = $item->type;
 		$standalone = $item->standalone;
-		$path = $item->path;   
+		$path = $item->path;
 
 		$database =& JFactory::getDBO();
 	    $juser =& JFactory::getUser();
@@ -1951,8 +1946,8 @@ class ResourcesHtml
 	{
 	    $juser =& JFactory::getUser();
 
-		$database =& JFactory::getDBO(); 
-		
+		$database =& JFactory::getDBO();
+
 		$html = '';
 
 		switch ($resource->type)
@@ -2012,12 +2007,12 @@ class ResourcesHtml
 					$ingroup = false;
 					$groups = array();
 					if ($xgroups) {
-						foreach ($xgroups as $xgroup) 
+						foreach ($xgroups as $xgroup)
 						{
 							$groups[] = $xgroup->cn;
 						}
 						if ($toolgroups) {
-							foreach ($toolgroups as $toolgroup) 
+							foreach ($toolgroups as $toolgroup)
 							{
 								if (in_array($toolgroup->cn, $groups)) {
 									$ingroup = true;
@@ -2089,7 +2084,7 @@ class ResourcesHtml
 					$rtLinkAction = $tparams->get('linkAction', 'extension');
 				}
 
-				switch ($rtLinkAction) 
+				switch ($rtLinkAction)
 				{
 					case 'download':
 						$mesg  = 'Download';
@@ -2140,7 +2135,7 @@ class ResourcesHtml
 							$class = ''; //'play';
 						}
 
-						if (substr($firstChild->path, 0, 7) == 'http://' 
+						if (substr($firstChild->path, 0, 7) == 'http://'
 						 || substr($firstChild->path, 0, 8) == 'https://'
 						 || substr($firstChild->path, 0, 6) == 'ftp://'
 						 || substr($firstChild->path, 0, 9) == 'mainto://'
@@ -2166,7 +2161,7 @@ class ResourcesHtml
 
 					$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $linkAction);
 
-					switch ($linkAction) 
+					switch ($linkAction)
 					{
 						case 3:
 							$mesg  = 'Download';
@@ -2201,11 +2196,11 @@ class ResourcesHtml
 					//if ($firstChild->type == 13 || $firstChild->type == 15 || $firstChild->type == 33) {
 						//$xtra = ' '. ResourcesHtml::getFileAttribs($firstChild->path);
 					//}
-					
+
 					//load a resouce type object on child resource type
 					//$rt = new ResourcesType( $database );
 					//$rt->load( $firstChild->type );
-					                                                   
+
 					//if we are a hubpresenter resource type, do not show file type in button
 					if ($rt->alias == 'hubpresenter') {
 						//$xtra = "";
@@ -2213,11 +2208,11 @@ class ResourcesHtml
 						$class = 'hubpresenter';
 					} else {
 						$mesg .= ' ' . ResourcesHtml::getFileAttribs($firstChild->path);
-					} 
-					
+					}
+
 					if($rt->alias == 'video') {
 						$class = 'video'.$class;
-					}       
+					}
 
 					if ($xact) {
 						$action = $xact;
@@ -2250,13 +2245,13 @@ class ResourcesHtml
 	{
 		$out = '';
 
-		if ($disabled) 
+		if ($disabled)
 		{
 			$out .= "\t" . '<p id="primary-document">' . "\n";
 			$out .= "\t\t" . '<span class="' . $class . '">' . $msg . '</span>' . "\n";
 			$out .= "\t" . '</p>' . "\n";
-		} 
-		else 
+		}
+		else
 		{
 			$title = htmlentities($title, ENT_QUOTES);
 
@@ -2271,7 +2266,7 @@ class ResourcesHtml
 			$out .= "\t" . '</p>'."\n";
 		}
 
-		if ($pop) 
+		if ($pop)
 		{
 			$out .= "\t" . '<div id="primary-document_pop">' . "\n";
 			$out .= "\t\t" . '<div>' . $pop . '</div>' . "\n";
@@ -2344,9 +2339,9 @@ class ResourcesHtml
 				case 'HTML':
 				case 'PHP':
 				case 'ASF':
-				case 'SWF': 
+				case 'SWF':
 				case 'HTML5':
-					$fs = ''; 
+					$fs = '';
 					break;
 				default:
 					$fs = ($fsize) ? $fs : ResourcesHtml::formatsize($fs);
@@ -2385,7 +2380,6 @@ class ResourcesHtml
 	//-------------------------------------------------------------
 	// Results
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'writeResults'

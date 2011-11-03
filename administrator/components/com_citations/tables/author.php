@@ -46,14 +46,12 @@ class CitationsAuthor extends JTable
 	 */
 	var $id              = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'cid'
 	 * 
 	 * @var unknown
 	 */
 	var $cid             = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'author'
@@ -62,14 +60,12 @@ class CitationsAuthor extends JTable
 	 */
 	var $author          = NULL;  // @var varchar(64)
 
-
 	/**
 	 * Description for 'author_uid'
 	 * 
 	 * @var unknown
 	 */
 	var $author_uid      = NULL;  // @var int(20)
-
 
 	/**
 	 * Description for 'ordering'
@@ -78,14 +74,12 @@ class CitationsAuthor extends JTable
 	 */
 	var $ordering        = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'givenName'
 	 * 
 	 * @var unknown
 	 */
 	var $givenName       = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'middleName'
@@ -94,14 +88,12 @@ class CitationsAuthor extends JTable
 	 */
 	var $middleName      = NULL;  // @var varchar(255)
 
-
 	/**
 	 * Description for 'surname'
 	 * 
 	 * @var unknown
 	 */
 	var $surname         = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'organization'
@@ -110,14 +102,12 @@ class CitationsAuthor extends JTable
 	 */
 	var $organization    = NULL;  // @var varchar(255)
 
-
 	/**
 	 * Description for 'org_dept'
 	 * 
 	 * @var unknown
 	 */
 	var $org_dept        = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'orgtype'
@@ -126,14 +116,12 @@ class CitationsAuthor extends JTable
 	 */
 	var $orgtype         = NULL;  // @var varchar(255)
 
-
 	/**
 	 * Description for 'countryresident'
 	 * 
 	 * @var unknown
 	 */
 	var $countryresident = NULL;  // @var char(2)
-
 
 	/**
 	 * Description for 'email'
@@ -143,7 +131,6 @@ class CitationsAuthor extends JTable
 	var $email           = NULL;  // @var varchar(100)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

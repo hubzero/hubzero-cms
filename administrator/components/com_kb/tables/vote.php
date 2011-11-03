@@ -46,14 +46,12 @@ class KbVote extends JTable
 	 */
 	var $id        = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'object_id'
 	 * 
 	 * @var unknown
 	 */
 	var $object_id = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'ip'
@@ -62,14 +60,12 @@ class KbVote extends JTable
 	 */
 	var $ip        = NULL;  // @var varchar(15)
 
-
 	/**
 	 * Description for 'vote'
 	 * 
 	 * @var unknown
 	 */
 	var $vote      = NULL;  // @var varchar(10)
-
 
 	/**
 	 * Description for 'user_id'
@@ -79,7 +75,6 @@ class KbVote extends JTable
 	var $user_id   = NULL;  // @var int(11)
 	//var $voted     = NULL;  // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'type'
 	 * 
@@ -88,7 +83,6 @@ class KbVote extends JTable
 	var $type      = NULL;  // @var varchar(255)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

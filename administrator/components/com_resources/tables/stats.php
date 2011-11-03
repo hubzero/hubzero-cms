@@ -46,7 +46,6 @@ class ResourcesStats extends JTable
 	 */
 	var $id       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'resid'
 	 * 
@@ -54,14 +53,12 @@ class ResourcesStats extends JTable
 	 */
 	var $resid    = NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'restype'
 	 * 
 	 * @var unknown
 	 */
 	var $restype  = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'users'
@@ -197,7 +194,6 @@ class ResourcesStatsTools extends JTable
 	 */
 	var $id       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'resid'
 	 * 
@@ -205,14 +201,12 @@ class ResourcesStatsTools extends JTable
 	 */
 	var $resid    = NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'restype'
 	 * 
 	 * @var unknown
 	 */
 	var $restype  = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'users'
@@ -228,14 +222,12 @@ class ResourcesStatsTools extends JTable
 	 */
 	var $sessions    = NULL;  // @var int(20)
 
-
 	/**
 	 * Description for 'simulations'
 	 * 
 	 * @var unknown
 	 */
 	var $simulations = NULL;  // @var int(20)
-
 
 	/**
 	 * Description for 'jobs'
@@ -392,7 +384,6 @@ class ResourcesStatsToolsTop extends JTable
 	 */
 	var $top    = NULL;  // @var tinyint(4) Primary key
 
-
 	/**
 	 * Description for 'name'
 	 * 
@@ -400,14 +391,12 @@ class ResourcesStatsToolsTop extends JTable
 	 */
 	var $name   = NULL;  // @var varchar(128)
 
-
 	/**
 	 * Description for 'valfmt'
 	 * 
 	 * @var unknown
 	 */
 	var $valfmt = NULL;  // @var tinyint(4)
-
 
 	/**
 	 * Description for 'size'
@@ -417,7 +406,6 @@ class ResourcesStatsToolsTop extends JTable
 	var $size   = NULL;  // @var tinyint(4)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -464,14 +452,12 @@ class ResourcesStatsToolsTopvals extends JTable
 	 */
 	var $id    = NULL;  // @var int(20)
 
-
 	/**
 	 * Description for 'top'
 	 * 
 	 * @var unknown
 	 */
 	var $top   = NULL;  // @var tinyint(4)
-
 
 	/**
 	 * Description for 'rank'
@@ -480,14 +466,12 @@ class ResourcesStatsToolsTopvals extends JTable
 	 */
 	var $rank  = NULL;  // @var tinyint(4)
 
-
 	/**
 	 * Description for 'name'
 	 * 
 	 * @var unknown
 	 */
 	var $name  = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'value'
@@ -497,7 +481,6 @@ class ResourcesStatsToolsTopvals extends JTable
 	var $value = NULL;  // @var int(20)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -572,14 +555,12 @@ class ResourcesStatsToolsUsers extends JTable
 	 */
 	var $id          = NULL;  // @var int(20) Primary key
 
-
 	/**
 	 * Description for 'resid'
 	 * 
 	 * @var unknown
 	 */
 	var $resid       = NULL;  // @var int(20)
-
 
 	/**
 	 * Description for 'restype'
@@ -588,14 +569,12 @@ class ResourcesStatsToolsUsers extends JTable
 	 */
 	var $restype     = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'user'
 	 * 
 	 * @var unknown
 	 */
 	var $user        = NULL;  // @var varchar(32)
-
 
 	/**
 	 * Description for 'sessions'
@@ -604,14 +583,12 @@ class ResourcesStatsToolsUsers extends JTable
 	 */
 	var $sessions    = NULL;  // @var int(20)
 
-
 	/**
 	 * Description for 'simulations'
 	 * 
 	 * @var unknown
 	 */
 	var $simulations = NULL;  // @var int(20)
-
 
 	/**
 	 * Description for 'jobs'
@@ -620,14 +597,12 @@ class ResourcesStatsToolsUsers extends JTable
 	 */
 	var $jobs        = NULL;  // @var int(20)
 
-
 	/**
 	 * Description for 'tot_wall'
 	 * 
 	 * @var unknown
 	 */
 	var $tot_wall    = NULL;  // @var double
-
 
 	/**
 	 * Description for 'tot_cpu'
@@ -636,7 +611,6 @@ class ResourcesStatsToolsUsers extends JTable
 	 */
 	var $tot_cpu     = NULL;  // @var double
 
-
 	/**
 	 * Description for 'tot_view'
 	 * 
@@ -644,14 +618,12 @@ class ResourcesStatsToolsUsers extends JTable
 	 */
 	var $tot_view    = NULL;  // @var double
 
-
 	/**
 	 * Description for 'datetime'
 	 * 
 	 * @var unknown
 	 */
 	var $datetime    = NULL;  // @var datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'period'
@@ -661,7 +633,6 @@ class ResourcesStatsToolsUsers extends JTable
 	var $period      = NULL;  // @var tinyint(4)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -729,14 +700,12 @@ class ResourcesStatsClusters extends JTable
 	 */
 	var $id       		= NULL;	// @var bigint(20) Primary key
 
-
 	/**
 	 * Description for 'cluster'
 	 * 
 	 * @var unknown
 	 */
 	var $cluster  		= NULL;	// @var varchar(255)
-
 
 	/**
 	 * Description for 'username'
@@ -745,14 +714,12 @@ class ResourcesStatsClusters extends JTable
 	 */
 	var $username 		= NULL; // @var varchar(32)
 
-
 	/**
 	 * Description for 'uidNumber'
 	 * 
 	 * @var unknown
 	 */
 	var $uidNumber 		= NULL;	// @var int(11)
-
 
 	/**
 	 * Description for 'toolname'
@@ -761,14 +728,12 @@ class ResourcesStatsClusters extends JTable
 	 */
 	var $toolname 		= NULL;	// @var varchar(80)
 
-
 	/**
 	 * Description for 'resid'
 	 * 
 	 * @var unknown
 	 */
  	var $resid   		= NULL;	// @var int(11)
-
 
 	/**
 	 * Description for 'clustersize'
@@ -777,14 +742,12 @@ class ResourcesStatsClusters extends JTable
 	 */
 	var $clustersize  	= NULL;	// @var varchar(255)
 
-
 	/**
 	 * Description for 'cluster_start'
 	 * 
 	 * @var unknown
 	 */
 	var $cluster_start 	= NULL;	// @var datetime
-
 
 	/**
 	 * Description for 'cluster_end'
@@ -793,14 +756,12 @@ class ResourcesStatsClusters extends JTable
 	 */
 	var $cluster_end 	= NULL;	// @var datetime
 
-
 	/**
 	 * Description for 'instituion'
 	 * 
 	 * @var unknown
 	 */
 	var $instituion 	= NULL;	// @var varchar(255)
-
 
 	/**
 	 * Description for 'users'
@@ -816,7 +777,6 @@ class ResourcesStatsClusters extends JTable
 	 */
 	var $classes 	= NULL;
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

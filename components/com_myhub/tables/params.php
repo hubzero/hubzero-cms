@@ -46,14 +46,12 @@ class MyhubParams extends JTable
 	 */
 	var $uid    = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'mid'
 	 * 
 	 * @var string
 	 */
 	var $mid    = NULL;  // int(11)
-
 
 	/**
 	 * Description for 'params'
@@ -63,7 +61,6 @@ class MyhubParams extends JTable
 	var $params = NULL;  // text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

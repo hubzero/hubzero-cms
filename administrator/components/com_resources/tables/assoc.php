@@ -46,7 +46,6 @@ class ResourcesAssoc extends JTable
 	 */
 	var $parent_id = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'child_id'
 	 * 
@@ -54,14 +53,12 @@ class ResourcesAssoc extends JTable
 	 */
 	var $child_id  = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'ordering'
 	 * 
 	 * @var string
 	 */
 	var $ordering  = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'grouping'
@@ -71,7 +68,6 @@ class ResourcesAssoc extends JTable
 	var $grouping  = NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

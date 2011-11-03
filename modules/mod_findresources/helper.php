@@ -40,9 +40,7 @@ class modFindResources
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
@@ -72,22 +70,18 @@ class modFindResources
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
 
-	//-----------
-	
-	public function run() 
+	public function run()
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
@@ -105,11 +99,11 @@ class modFindResources
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
-	public function display() 
+	public function display()
 	{
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);

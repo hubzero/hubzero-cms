@@ -72,7 +72,6 @@ class BlogController extends Hubzero_Controller
 	// Our tasks
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'entries'
 	 * 

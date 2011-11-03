@@ -36,7 +36,6 @@ jimport( 'joomla.plugin.plugin' );
 
 //-----------
 
-
 /**
  * Short description for 'plgHubzeroAutocompleter'
  * 

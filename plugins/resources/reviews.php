@@ -410,7 +410,6 @@ class PlgResourcesReviewsHelper extends JObject
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'redirect'
 	 * 

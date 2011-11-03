@@ -37,7 +37,6 @@ require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.p
 // Topics Tagging class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'WikiTags'
  * 

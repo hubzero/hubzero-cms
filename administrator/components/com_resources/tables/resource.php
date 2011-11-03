@@ -46,14 +46,12 @@ class ResourcesResource extends JTable
 	 */
 	var $id               = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title            = NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'type'
@@ -62,14 +60,12 @@ class ResourcesResource extends JTable
 	 */
 	var $type             = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'logical_type'
 	 * 
 	 * @var unknown
 	 */
 	var $logical_type     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'introtext'
@@ -78,14 +74,12 @@ class ResourcesResource extends JTable
 	 */
 	var $introtext        = NULL;  // @var text
 
-
 	/**
 	 * Description for 'fulltext'
 	 * 
 	 * @var unknown
 	 */
 	var $fulltext         = NULL;  // @var text
-
 
 	/**
 	 * Description for 'footertext'
@@ -94,14 +88,12 @@ class ResourcesResource extends JTable
 	 */
 	var $footertext       = NULL;  // @var text
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created          = NULL;  // @var datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -110,14 +102,12 @@ class ResourcesResource extends JTable
 	 */
 	var $created_by       = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'modified'
 	 * 
 	 * @var unknown
 	 */
 	var $modified         = NULL;  // @var boolean
-
 
 	/**
 	 * Description for 'modified_by'
@@ -126,14 +116,12 @@ class ResourcesResource extends JTable
 	 */
 	var $modified_by      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'published'
 	 * 
 	 * @var unknown
 	 */
 	var $published        = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'publish_up'
@@ -142,14 +130,12 @@ class ResourcesResource extends JTable
 	 */
 	var $publish_up       = NULL;  // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'publish_down'
 	 * 
 	 * @var unknown
 	 */
 	var $publish_down     = NULL;  // @var datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'access'
@@ -158,14 +144,12 @@ class ResourcesResource extends JTable
 	 */
 	var $access           = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'hits'
 	 * 
 	 * @var unknown
 	 */
 	var $hits             = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'path'
@@ -174,14 +158,12 @@ class ResourcesResource extends JTable
 	 */
 	var $path             = NULL;  // @var varchar(200)
 
-
 	/**
 	 * Description for 'checked_out'
 	 * 
 	 * @var unknown
 	 */
 	var $checked_out      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'checked_out_time'
@@ -190,14 +172,12 @@ class ResourcesResource extends JTable
 	 */
 	var $checked_out_time = NULL;  // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'standalone'
 	 * 
 	 * @var unknown
 	 */
 	var $standalone       = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'group_owner'
@@ -206,14 +186,12 @@ class ResourcesResource extends JTable
 	 */
 	var $group_owner      = NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'group_access'
 	 * 
 	 * @var string
 	 */
 	var $group_access     = NULL;  // @var text
-
 
 	/**
 	 * Description for 'rating'
@@ -222,14 +200,12 @@ class ResourcesResource extends JTable
 	 */
 	var $rating           = NULL;  // @var decimal(2,1)
 
-
 	/**
 	 * Description for 'times_rated'
 	 * 
 	 * @var unknown
 	 */
 	var $times_rated      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'params'
@@ -238,7 +214,6 @@ class ResourcesResource extends JTable
 	 */
 	var $params           = NULL;  // @var text
 
-
 	/**
 	 * Description for 'attribs'
 	 * 
@@ -246,14 +221,12 @@ class ResourcesResource extends JTable
 	 */
 	var $attribs          = NULL;  // @var text
 
-
 	/**
 	 * Description for 'alias'
 	 * 
 	 * @var unknown
 	 */
 	var $alias            = NULL;  // @var varchar(100)
-
 
 	/**
 	 * Description for 'ranking'
@@ -263,7 +236,6 @@ class ResourcesResource extends JTable
 	var $ranking          = NULL;  // @var float
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

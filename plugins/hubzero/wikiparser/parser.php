@@ -36,7 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 //  Trac's parser, and Textile.
 //-------------------------------------------------------------
 
-
 /**
  * Short description for 'WikiParser'
  * 
@@ -261,7 +260,6 @@ class WikiParser
 	//  Turns raw wiki text to HTML
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'parse'
 	 * 
@@ -374,7 +372,6 @@ class WikiParser
 	//-------------------------------------------------------------
 	// Links
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'q1'
@@ -699,7 +696,6 @@ class WikiParser
 	//-------------------------------------------------------------
 	// The following portions are for handling code and pre blocks
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'strip'
@@ -1092,7 +1088,6 @@ class WikiParser
 	//  Admonitions
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'admonitions'
 	 * 
@@ -1133,7 +1128,6 @@ class WikiParser
 	//-------------------------------------------------------------
 	// Math
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'math'
@@ -1234,7 +1228,6 @@ class WikiParser
 	// Macros
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'includes'
 	 * 
@@ -1309,7 +1302,6 @@ class WikiParser
 	//-------------------------------------------------------------
 	// Macros
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'macros'
@@ -1412,7 +1404,6 @@ class WikiParser
 	//-------------------------------------------------------------
 	// Misc.
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'glyphs'
@@ -1681,7 +1672,6 @@ class WikiParser
 	// Headings
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'headings'
 	 * 
@@ -1706,7 +1696,6 @@ class WikiParser
 	//-------------------------------------------------------------
 	// Quotes
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'doAllQuotes'
@@ -1900,7 +1889,6 @@ class WikiParser
 	// Tables
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'tables'
 	 * 
@@ -1960,7 +1948,6 @@ class WikiParser
 	// Block levels
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'closeParagraph'
 	 * 
@@ -1982,7 +1969,6 @@ class WikiParser
 	//------------
 	// Returns the length of the longest common substring
 	// of both arguments, starting at the beginning of both.
-
 
 	/**
 	 * Short description for 'getCommon'
@@ -2008,7 +1994,6 @@ class WikiParser
 	//------------
 	// These next three functions open, continue, and close the list
 	// element appropriate to the prefix character passed into them.
-
 
 	/**
 	 * Short description for 'openList'
@@ -2145,7 +2130,6 @@ class WikiParser
 
 	//------------
 	// Make lists from lines starting with 'some text::', '*', '#', etc.
-
 
 	/**
 	 * Short description for 'doBlockLevels'
@@ -2346,7 +2330,6 @@ class WikiParser
 	//                for "replace", the whole page with the section replaced.
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'extractSections'
 	 * 
@@ -2469,7 +2452,6 @@ class WikiParser
 	// @return string text of the requested section
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'getSection'
 	 * 
@@ -2503,7 +2485,6 @@ class WikiParser
 	//-------------------------------------------------------------
 	//  Builds a Table of Contents and links to headings
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'formatHeadings'

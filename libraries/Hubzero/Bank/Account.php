@@ -46,14 +46,12 @@ class Hubzero_Bank_Account extends JTable
 	 */
 	var $id       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'balance'
@@ -62,14 +60,12 @@ class Hubzero_Bank_Account extends JTable
 	 */
 	var $balance  = NULL;  // @var decimal(11,2)
 
-
 	/**
 	 * Description for 'earnings'
 	 * 
 	 * @var unknown
 	 */
 	var $earnings = NULL;  // @var decimal(11,2)
-
 
 	/**
 	 * Description for 'credit'
@@ -79,7 +75,6 @@ class Hubzero_Bank_Account extends JTable
 	var $credit   = NULL;  // @var decimal(11,2)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

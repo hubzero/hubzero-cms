@@ -46,7 +46,6 @@ class AnswersLog extends JTable
 	 */
 	var $id      = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'rid'
 	 * 
@@ -54,14 +53,12 @@ class AnswersLog extends JTable
 	 */
 	var $rid     = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'ip'
 	 * 
 	 * @var unknown
 	 */
 	var $ip      = NULL;  // @var varchar(15)
-
 
 	/**
 	 * Description for 'helpful'
@@ -71,7 +68,6 @@ class AnswersLog extends JTable
 	var $helpful = NULL;  // @var varchar(10)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

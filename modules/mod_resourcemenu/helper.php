@@ -47,9 +47,6 @@ class modResourceMenu
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modResourceMenu
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modResourceMenu
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modResourceMenu
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_xHubTags'
@@ -136,9 +124,6 @@ class modResourceMenu
 		return $ctext;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '_xHubTagsModules'
 	 * 
@@ -165,9 +150,6 @@ class modResourceMenu
 
 	    return Hubzero_Module_Helper::renderModules($position[2],$style[2]);
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

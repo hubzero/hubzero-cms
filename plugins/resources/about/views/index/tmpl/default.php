@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 $sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id);
 
 // Set the display date
-switch ($this->params->get('show_date')) 
+switch ($this->params->get('show_date'))
 {
 	case 0: $thedate = ''; break;
 	case 1: $thedate = $this->resource->created;    break;
@@ -42,8 +42,8 @@ switch ($this->params->get('show_date'))
 
 // Prepare/parse text
 $introtext = stripslashes($this->resource->introtext);
-$maintext  = ($this->resource->fulltext) 
-		   ? stripslashes($this->resource->fulltext) 
+$maintext  = ($this->resource->fulltext)
+		   ? stripslashes($this->resource->fulltext)
 		   : stripslashes($this->resource->introtext);
 
 //$maintext = stripslashes($maintext);
@@ -60,21 +60,21 @@ $type->load($this->resource->type);
 $fields = array();
 if (trim($type->customFields) != '') {
 	$fs = explode("\n", trim($type->customFields));
-	foreach ($fs as $f) 
+	foreach ($fs as $f)
 	{
 		$fields[] = explode('=', $f);
 	}
 } else {
 	$flds = $this->config->get('tagstool');
 	$flds = explode(',', $flds);
-	foreach ($flds as $fld) 
+	foreach ($flds as $fld)
 	{
 		$fields[] = array($fld, $fld, 'textarea', 0);
 	}
 }
 
 if (!empty($fields)) {
-	for ($i=0, $n=count($fields); $i < $n; $i++) 
+	for ($i=0, $n=count($fields); $i < $n; $i++)
 	{
 		// Explore the text and pull out all matches
 		array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
@@ -136,7 +136,7 @@ if ($this->resource->created_by) {
 			</tr>
 <?php
 	$citations = '';
-	foreach ($fields as $field) 
+	foreach ($fields as $field)
 	{
 		if (end($field) != NULL) {
 			if ($field[0] == 'citations') {
@@ -166,7 +166,7 @@ if ($this->resource->created_by) {
 				$sef = substr($sef, 1, strlen($sef));
 			}
 			$cite->location = $juri->base() . $sef;
-			$cite->date = date( "Y-m-d H:i:s" );			
+			$cite->date = date( "Y-m-d H:i:s" );
 			$cite->url = '';
 			$cite->type = '';
 			$cite->author = $this->helper->ul_contributors;
@@ -199,8 +199,8 @@ if ($this->attribs->get('timeof', '')) {
 		$exp = '%I:%M %p, %B %d, %Y';
 	}
 	if (substr($this->attribs->get('timeof', ''), 4, 1) == '-') {
-		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '') 
-					  ? JHTML::_('date', $this->attribs->get('timeof', ''), $exp) 
+		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '')
+					  ? JHTML::_('date', $this->attribs->get('timeof', ''), $exp)
 					  : '';
 	} else {
 		$seminarTime = $this->attribs->get('timeof', '');
@@ -225,7 +225,7 @@ if ($this->attribs->get('location', '')) {
 if ($this->params->get('show_assocs')) {
 	$tagCloud = $this->helper->getTagCloud($this->authorized);
 
-	if ($tagCloud) { 
+	if ($tagCloud) {
 ?>
 			<tr>
 				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></th>

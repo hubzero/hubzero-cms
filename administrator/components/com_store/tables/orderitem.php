@@ -46,14 +46,12 @@ class OrderItem extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'oid'
 	 * 
 	 * @var unknown
 	 */
 	var $oid    	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'uid'
@@ -62,14 +60,12 @@ class OrderItem extends JTable
 	 */
 	var $uid    	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'itemid'
 	 * 
 	 * @var unknown
 	 */
 	var $itemid     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'price'
@@ -78,14 +74,12 @@ class OrderItem extends JTable
 	 */
 	var $price    	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'quantity'
 	 * 
 	 * @var unknown
 	 */
 	var $quantity   = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'selections'
@@ -95,7 +89,6 @@ class OrderItem extends JTable
 	var $selections = NULL;  // @var text
 
 	//----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -329,10 +329,8 @@ class EventsHtml
 		return $clist;
 	}
 
-	//-----------
-
 	public function buildTimeZoneSelect($tzselected, $args)
-	{	
+	{
 		$timezones[] = JHTML::_('select.option', 'est', JText::_('EVENTS_CAL_TIME_ZONE_EST'), 'value', 'text');
 		$timezones[] = JHTML::_('select.option', 'edt', JText::_('EVENTS_CAL_TIME_ZONE_EDT'), 'value', 'text');
 		$timezones[] = JHTML::_('select.option', 'cst', JText::_('EVENTS_CAL_TIME_ZONE_CST'), 'value', 'text');
@@ -346,8 +344,6 @@ class EventsHtml
 
 		return $tzlist;
 	}
-
-	//-----------
 
 	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{

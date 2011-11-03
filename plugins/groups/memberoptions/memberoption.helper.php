@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Forum helper class
 //----------------------------------------------------------
 
-class MemberOptionHelper 
+class MemberOptionHelper
 {
 
 }

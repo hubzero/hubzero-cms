@@ -41,16 +41,11 @@ class modRecentQuestions
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -66,9 +61,6 @@ class modRecentQuestions
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -79,20 +71,16 @@ class modRecentQuestions
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-
-	//-----------
 
 	/**
 	 * Short description for 'mkt'
@@ -104,15 +92,12 @@ class modRecentQuestions
 	 */
 	public function mkt($stime)
 	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs)) 
+		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs))
 		{
 			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'timeAgoo'
@@ -164,9 +149,6 @@ class modRecentQuestions
 		return $text;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'timeAgo'
 	 * 
@@ -185,8 +167,6 @@ class modRecentQuestions
 		$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
 		return $text;
 	}
-
-	//-----------
 
 	public function run()
 	{
@@ -209,21 +189,21 @@ class modRecentQuestions
 		$this->tag = JRequest::getVar('tag', '', 'get');
 		$this->style = JRequest::getVar('style', '', 'get');
 
-		if ($this->tag) 
+		if ($this->tag)
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
 				." FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg"
 				." WHERE a.id=t.questionid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='" . $this->tag . "' OR tg.raw_tag='" . $this->tag . "' OR tg.alias='" . $this->tag . "')";
-			if ($st) 
+			if ($st)
 			{
 				$query .= " AND " . $st;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
 				." FROM #__answers_questions AS a";
-			if ($st) 
+			if ($st)
 			{
 				$query .= " WHERE " . $st;
 			}
@@ -237,9 +217,6 @@ class modRecentQuestions
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
-	//-----------
-	
-	
 	public function display()
 	{
 		// Push the module CSS to the template
@@ -248,7 +225,7 @@ class modRecentQuestions
 
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);

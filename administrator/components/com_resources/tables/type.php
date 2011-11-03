@@ -54,14 +54,12 @@ class ResourcesType extends JTable
 	 */
 	var $type     		= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'category'
 	 * 
 	 * @var unknown
 	 */
 	var $category		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'description'
@@ -70,7 +68,6 @@ class ResourcesType extends JTable
 	 */
 	var $description 	= NULL;  // @var text
 
-
 	/**
 	 * Description for 'contributable'
 	 * 
@@ -78,14 +75,12 @@ class ResourcesType extends JTable
 	 */
 	var $contributable 	= NULL;  // @var int(2)
 
-
 	/**
 	 * Description for 'customFields'
 	 * 
 	 * @var unknown
 	 */
 	var $customFields 	= NULL;  // @var text
-
 
 	/**
 	 * Description for 'params'
@@ -95,7 +90,6 @@ class ResourcesType extends JTable
 	var $params 		= NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

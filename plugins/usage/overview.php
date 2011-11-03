@@ -79,7 +79,6 @@ class plgUsageOverview extends JPlugin
 	//  Strip Usage GET variables  //
 	//-----------------------------//
 
-
 	/**
 	 * Short description for '_usageurlstrip'
 	 * 
@@ -102,7 +101,6 @@ class plgUsageOverview extends JPlugin
 	//  Returns TRUE if there is data in the database
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
-
 
 	/**
 	 * Short description for '_check_for_data'

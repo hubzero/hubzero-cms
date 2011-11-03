@@ -72,7 +72,6 @@ class TagsController extends Hubzero_Controller
 	// Tag functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'browse'
 	 * 

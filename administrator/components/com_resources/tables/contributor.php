@@ -46,14 +46,12 @@ class ResourcesContributor extends JTable
 	 */
 	var $subtable = NULL;  // @var varchar(50) Primary Key
 
-
 	/**
 	 * Description for 'subid'
 	 * 
 	 * @var unknown
 	 */
 	var $subid    = NULL;  // @var int(11) Primary Key
-
 
 	/**
 	 * Description for 'authorid'
@@ -62,14 +60,12 @@ class ResourcesContributor extends JTable
 	 */
 	var $authorid = NULL;  // @var int(11) Primary Key
 
-
 	/**
 	 * Description for 'ordering'
 	 * 
 	 * @var unknown
 	 */
 	var $ordering = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'role'
@@ -78,14 +74,12 @@ class ResourcesContributor extends JTable
 	 */
 	var $role     = NULL;  // @var varchar(50)
 
-
 	/**
 	 * Description for 'name'
 	 * 
 	 * @var unknown
 	 */
 	var $name     = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'organization'
@@ -95,7 +89,6 @@ class ResourcesContributor extends JTable
 	var $organization = NULL;  // @var varchar(255)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -181,7 +181,6 @@ class plgGroupsMessages extends JPlugin
 	// Views
 	//---------------------------------
 
-
 	/**
 	 * Short description for '_sent'
 	 * 
@@ -471,7 +470,6 @@ class plgGroupsMessages extends JPlugin
 	//---------------------------------
 	// Functions 
 	//---------------------------------
-
 
 	/**
 	 * Short description for 'autolink'

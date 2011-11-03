@@ -222,7 +222,6 @@ class EventsController extends Hubzero_Controller
 	// Checks (private)
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_setup'
 	 * 
@@ -239,7 +238,6 @@ class EventsController extends Hubzero_Controller
 		$this->config = $config;
 
 		// Set some defines
-
 
 	/**
 	 * Description for ''_CAL_CONF_STARDAY''
@@ -309,7 +307,6 @@ class EventsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'year'
@@ -1448,7 +1445,6 @@ class EventsController extends Hubzero_Controller
 	// Actions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'delete'
 	 * 
@@ -1783,7 +1779,6 @@ class EventsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_sendEmail'

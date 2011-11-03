@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'PLG_GROUPS_MEMBEROPTIONS' );
-
-//-----------
 
 class plgGroupsMemberOptions extends JPlugin
 {
@@ -48,9 +44,7 @@ class plgGroupsMemberOptions extends JPlugin
 
 	}
 
-	//-----------
-	
-	public function &onGroupAreas() 
+	public function &onGroupAreas()
 	{
 		$area = array(
 			'name' => 'memberoptions',
@@ -81,16 +75,16 @@ class plgGroupsMemberOptions extends JPlugin
 
 		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'memberoptions'.DS.'memberoption.class.php');
 
-		switch ($action) 
+		switch ($action)
 		{
-			case 'editmemberoptions':   
-				$arr['html'] .= $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);   
+			case 'editmemberoptions':
+				$arr['html'] .= $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
 				break;
-			case 'savememberoptions':   
-				$arr['html'] .= $this->save($group, $user, $recvEmailOptionID, $recvEmailOptionValue);   
+			case 'savememberoptions':
+				$arr['html'] .= $this->save($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
 				break;
-			default: 			
-				$arr['html'] .= $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);   
+			default:
+				$arr['html'] .= $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
 				break;
 		}
 
@@ -137,7 +131,7 @@ class plgGroupsMemberOptions extends JPlugin
 
 	}
 
-	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue) 
+	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
 		/* @var $group Hubzero_Group */
 
@@ -150,9 +144,9 @@ class plgGroupsMemberOptions extends JPlugin
 
 		//bind the data
 		$rowdata = array( 'id' => $recvEmailOptionID,
-				'userid' => $user->id, 
-				'gidNumber' => $group->get('gidNumber'), 
-				'optionname' => GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION, 
+				'userid' => $user->id,
+				'gidNumber' => $group->get('gidNumber'),
+				'optionname' => GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION,
 				'optionvalue' => $recvEmailOptionValue );
 
 		$row->bind($rowdata);

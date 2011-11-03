@@ -46,14 +46,12 @@ class Resume extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'created'
@@ -84,7 +82,6 @@ class Resume extends JTable
 	var $main		= NULL;  // tinyint  0 - no, 1 - yes
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -181,7 +181,6 @@ class plgTagsEvents extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'documents'
 	 * 

@@ -46,7 +46,6 @@ class Store extends  JTable
 	 */
 	var $id         	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
@@ -117,7 +116,6 @@ class Store extends  JTable
 	 */
 	var $created  		= NULL;  // @var datetime
 
-
 	/**
 	 * Description for 'params'
 	 * 
@@ -126,7 +124,6 @@ class Store extends  JTable
 	var $params 		= NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -41,16 +41,11 @@ class modRandomQuote
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -66,9 +61,6 @@ class modRandomQuote
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -79,22 +71,18 @@ class modRandomQuote
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
 
-	//-----------
-
-	public function run() 
+	public function run()
 	{
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'selectedquotes.php');
 		ximport('Hubzero_View_Helper_Html');
@@ -132,8 +120,6 @@ class modRandomQuote
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
-	//-----------
-	
 	public function display()
 	{
 		// Push some CSS to the template
@@ -142,7 +128,7 @@ class modRandomQuote
 
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);

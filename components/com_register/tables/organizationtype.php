@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-class RegisterOrganizationType extends JTable 
+class RegisterOrganizationType extends JTable
 {
 	/**
 	 * Primary key field in the table
@@ -65,7 +65,7 @@ class RegisterOrganizationType extends JTable
 	 *
 	 * @param object $db JDatabase object
 	 */
-	public function __construct(&$db) 
+	public function __construct(&$db)
 	{
 		parent::__construct('#__xorganization_types', 'id', $db);
 	}
@@ -75,7 +75,7 @@ class RegisterOrganizationType extends JTable
 	 *
 	 * @return boolean True if the object is ok
 	 */
-	public function check() 
+	public function check()
 	{
 		if (trim($this->type) == '') {
 			$this->setError(JText::_('Organization Type must contain text'));
@@ -107,7 +107,7 @@ class RegisterOrganizationType extends JTable
 	 * @param	array	$filters	An associative array of filters used to construct a query
 	 * @return	array
 	 */
-	public function getRecords($filters = array()) 
+	public function getRecords($filters = array())
 	{
 		$query  = "SELECT * FROM $this->_tbl";
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -128,7 +128,7 @@ class RegisterOrganizationType extends JTable
 	 * @param	array	$filters	An associative array of filters used to construct a query
 	 * @return	array
 	 */
-	public function getTypes($filters = array()) 
+	public function getTypes($filters = array())
 	{
 		$types = array();
 		if ($records = $this->getRecords($filters)) {
@@ -146,7 +146,7 @@ class RegisterOrganizationType extends JTable
 	 * @param	string	$type	The organization type field
 	 * @return	boolean
 	 */
-	public function loadType($type = null) 
+	public function loadType($type = null)
 	{
 		if ($type === null) {
 			return false;

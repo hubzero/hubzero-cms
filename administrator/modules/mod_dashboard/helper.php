@@ -33,39 +33,29 @@ class modDashboard
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
 
 	public function __set($property, $value)
 	{
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-	
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-
-	//-----------
 
 	public function display()
 	{
@@ -75,12 +65,12 @@ class modDashboard
 		$xhub =& Hubzero_Factory::getHub();
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
 		$banking =  $upconfig->get('bankAccounts');
-		$hubname = $xhub->getCfg('hubShortName'); 
-				
+		$hubname = $xhub->getCfg('hubShortName');
+
 		$threemonths 	= date( 'Y-m-d H:i:s', time() - (92 * 24 * 60 * 60));
 		$onemonth 		= date( 'Y-m-d H:i:s', time() - (30 * 24 * 60 * 60) );
 
-		if($banking) {		
+		if($banking) {
 			// get new store orders
 			$database->setQuery( "SELECT count(*) FROM #__orders WHERE status=0");
 			$orders = $database->loadResult();
@@ -138,7 +128,7 @@ class modDashboard
 			// Check if main wishlist exists, create one if missing
 			$mainlist = $obj->get_wishlistID(1, 'general');
 			if(!$mainlist) {
-				$mainlist = $obj->createlist('general', 1);	
+				$mainlist = $obj->createlist('general', 1);
 			}
 			$filters = array('filterby'=>'pending', 'sortby'=>'date');
 			$wishes = $objWish->get_wishes($mainlist, $filters, 1, $juser);

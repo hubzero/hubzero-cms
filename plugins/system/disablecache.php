@@ -58,7 +58,7 @@ class plgSystemDisablecache extends JPlugin
 	 *
 	 * @return 	void
 	 */
-	public function onAfterRoute() 
+	public function onAfterRoute()
 	{
 		if ($this->_checkRules() && JFactory::getApplication()->isSite()) {
 			$this->_caching = JFactory::getConfig()->getValue('config.caching');
@@ -72,7 +72,7 @@ class plgSystemDisablecache extends JPlugin
 	 *
 	 * @return 	void
 	 */
-	public function onAfterDispatch() 
+	public function onAfterDispatch()
 	{
 		if ($this->_checkRules() && JFactory::getApplication()->isSite()) {
 			if ($this->_params->def('reenable_afterdispatch', 0)) {
@@ -86,7 +86,7 @@ class plgSystemDisablecache extends JPlugin
 	 *
 	 * @return 	boolean	True if the current page is a rule
 	 */
-	private function _checkRules() 
+	private function _checkRules()
 	{
 		if (!$this->_path) {
 			$juri =& JURI::getInstance();
@@ -95,7 +95,7 @@ class plgSystemDisablecache extends JPlugin
 		$defs = str_replace("\r", '', $this->_params->def('definitions',''));
 		$defs = explode("\n", $defs);
 
-		foreach ($defs As $def) 
+		foreach ($defs As $def)
 		{
 			$result = $this->_parseQueryString($def);
 			if ($result == $this->_path) {
@@ -111,7 +111,7 @@ class plgSystemDisablecache extends JPlugin
 	 * @param	string	$str
 	 * @return 	string
 	 */
-	private function _parseQueryString($str) 
+	private function _parseQueryString($str)
 	{
 		$str = trim($str);
 		if (substr($str, 0, 1) == '/') {

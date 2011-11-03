@@ -103,7 +103,7 @@ class CitationFormat
 	 * 
 	 * @return 		String		Template string that is being used to format citations
 	 */
-	public function getTemplate() 
+	public function getTemplate()
 	{
 		return $this->_template;
 	}
@@ -125,7 +125,7 @@ class CitationFormat
 	 * 
 	 * @return 		String		Template string that is being used to format citations
 	 */
-	public function getTemplateKeys() 
+	public function getTemplateKeys()
 	{
 		return $this->_template_keys;
 	}
@@ -136,9 +136,9 @@ class CitationFormat
 	 * @param 		Object		Citation object
 	 * @param 		String		String that we want to highlight
 	 * @return 		String		Formatted citation
-	 */ 
+	 */
 	public function formatCitation( $citation , $highlight = NULL, $include_coins = true, $config )
-	{	
+	{
 		//get hub specific details
 		ximport('Hubzero_Hub');
 		$hub = new Hubzero_Hub();
@@ -187,20 +187,20 @@ class CitationFormat
 		$template = $this->getTemplate();
 
 		//get the template keys
-		$template_keys = $this->getTemplateKeys();	
-		
+		$template_keys = $this->getTemplateKeys();
+
 		foreach( $template_keys as $k => $v ) {
 
 			if(!$this->keyExistsOrIsNotEmpty( $k, $citation)) {
 				$replace_values[$v] = "";
 			} else {
-				$replace_values[$v] = $citation->$k; 
-			
+				$replace_values[$v] = $citation->$k;
+
 				//add to coins data if we can but not authors as that will get processed below
 				if( in_array($k,array_keys($this->_coins_keys)) && $k != 'author' ) {
 
 					//key specific
-					switch($k) 
+					switch($k)
 					{
 						case 'isbn':
 							$coins_data[] = ($c_type == 'book') ? "rft.isbn={$citation->$k}" : "rft.issn={$citation->$k}";
@@ -233,7 +233,7 @@ class CitationFormat
 								if(is_object($user)) {
 									$a[] = "<a rel=\"external\" href=\"/members/{$matches[1]}\">" . str_replace($matches[0],"",$author) . "</a>";
 								} else {
-									$a[] = $author; 
+									$a[] = $author;
 								}
 							}
 						} else {
@@ -281,7 +281,7 @@ class CitationFormat
 		$cite = strtr($template, $replace_values);
 
 		// Strip empty tags
-		$pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/"; 
+		$pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";
 		$cite = preg_replace($pattern, '', $cite);
 
 		//reformat dates
@@ -289,7 +289,7 @@ class CitationFormat
 		$cite = preg_replace($pattern, "$2-$3-$1", $cite);
 
 		// Reduce multiple spaces to one
-		$pattern = "/\s/s"; 
+		$pattern = "/\s/s";
 		$cite = preg_replace($pattern, ' ', $cite);
 
 		// Strip empty punctuation inside
@@ -362,14 +362,12 @@ class CitationFormat
 	public function getDefaultFormat( $format )
 	{
 		return $this->_default_format[$format];
-	} 
-	
-	
-	
+	}
+
 	//------------------------------------------------------------------
 	//	citation links and badges
 	//------------------------------------------------------------------
-	
+
 	public function citationDetails( $citation, $database, $config, $openurl )
 	{
 		$downloading = $config->get("citation_download", 1);
@@ -380,7 +378,7 @@ class CitationFormat
 		//are we allowing downloading
 		if($downloading) {
 			$html .= "<a href=".JRoute::_('index.php?option=com_citations&task=download&id='.$citation->id.'&format=bibtex&no_html=1')." title=".JText::_('DOWNLOAD_BIBTEX').">BibTex</a>";
-			$html .= "<span> | </span>"; 
+			$html .= "<span> | </span>";
 			$html .= "<a href=".JRoute::_('index.php?option=com_citations&task=download&id='.$citation->id.'&format=endnote&no_html=1')." title=".JText::_('DOWNLOAD_ENDNOTE').">EndNote</a>";
 		}
 
@@ -394,8 +392,8 @@ class CitationFormat
 			$link .= "&issn=" . $citation->isbn;
 
 			$link_text = ($icon != "") ? "<img src=\"{$icon}\" />" : $text;
-			$html .= "<span> | </span>"; 
-			$html .= "<a rel=\"external\" href=\"{$link}\" title=\"{$text}\">{$link_text}</a>";	
+			$html .= "<span> | </span>";
+			$html .= "<a rel=\"external\" href=\"{$link}\" title=\"{$text}\">{$link_text}</a>";
 		}
 
 		// Get the associations
@@ -407,7 +405,7 @@ class CitationFormat
 				$html .= '<span>|</span> '.JText::_('RESOURCES_CITED').': ';
 				$k = 0;
 				$rrs = array();
-				foreach ($assocs as $rid) 
+				foreach ($assocs as $rid)
 				{
 					if ($rid->table == 'resource') {
 						$database->setQuery( "SELECT published FROM #__resources WHERE id=".$rid->oid );
@@ -439,8 +437,6 @@ class CitationFormat
 		return $html;
 	}
 
-	//-----------
-	
 	public function citationBadges( $citation, $database )
 	{
 		$html = "";
@@ -466,8 +462,6 @@ class CitationFormat
 		return $html;
 	}
 
-	//----------
-	
 	public function citationTags( $citation, $database )
 	{
 		$html = "";
@@ -498,7 +492,7 @@ class CitationFormat
 	//	Utility Functions
 	//------------------------------------------------------------------
 
-	public function cleanUrl($url) 
+	public function cleanUrl($url)
 	{
 		$url = stripslashes($url);
 		$url = str_replace('&amp;', '&', $url);
@@ -506,8 +500,6 @@ class CitationFormat
 
 		return $url;
 	}
-
-	//-----------
 
 	public function keyExistsOrIsNotEmpty($key,$row)
 	{
@@ -522,9 +514,7 @@ class CitationFormat
 		}
 	}
 
-	//-----------
-	
-	public function grammarCheck($html, $punct=',') 
+	public function grammarCheck($html, $punct=',')
 	{
 		if (substr($html,-1) == '"') {
 			$html = substr($html,0,strlen($html)-1).$punct.'"';
@@ -548,7 +538,7 @@ class CitationFormat
 			$app   =& JFactory::getApplication();
 			$auths = explode(';',$row->author);
 			$a = array();
-			foreach ($auths as $auth) 
+			foreach ($auths as $auth)
 			{
 				preg_match('/{{(.*?)}}/s',$auth, $matches);
 				if (isset($matches[0]) && $matches[0]!='') {
@@ -595,7 +585,7 @@ class CitationFormat
 				$html .= ', "<a href="'.CitationFormat::cleanUrl($row->url).'">'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->title),array($highlight)).'</a>';
 			}
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('journal',$row) 
+		if (CitationFormat::keyExistsOrIsNotEmpty('journal',$row)
 		|| CitationFormat::keyExistsOrIsNotEmpty('edition',$row)
 		|| CitationFormat::keyExistsOrIsNotEmpty('booktitle',$row)) {
 			$html .= ',';
@@ -607,7 +597,7 @@ class CitationFormat
 			$html .= ' <i>'.stripslashes($row->booktitle).'</i>';
 		}
 		if ($row->type) {
-			switch ($row->type) 
+			switch ($row->type)
 			{
 				case 'phdthesis': $html .= ' ('.JText::_('PhD Thesis').')'; break;
 				case 'mastersthesis': $html .= ' ('.JText::_('Masters Thesis').')'; break;

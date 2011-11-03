@@ -47,9 +47,6 @@ class modFeaturedquestion
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modFeaturedquestion
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modFeaturedquestion
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modFeaturedquestion
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'niceidformat'
@@ -117,9 +105,6 @@ class modFeaturedquestion
 		}
 		return $someid;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'shortenText'
@@ -154,9 +139,6 @@ class modFeaturedquestion
 		return $text;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'encode_html'
 	 * 
@@ -183,9 +165,6 @@ class modFeaturedquestion
 		return strtr($str, $a);
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'ampersands'
 	 * 
@@ -204,9 +183,6 @@ class modFeaturedquestion
 		return $str;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'mkt'
 	 * 
@@ -222,9 +198,6 @@ class modFeaturedquestion
 		}
 		return $stime;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'timeAgoo'
@@ -276,9 +249,6 @@ class modFeaturedquestion
 		return $text;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'timeAgo'
 	 * 
@@ -297,9 +267,6 @@ class modFeaturedquestion
 		$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
 		return $text;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

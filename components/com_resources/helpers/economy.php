@@ -55,7 +55,6 @@ class ResourcesEconomy extends JObject
 
 	//-----------
 
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -125,7 +124,6 @@ class ResourcesEconomy extends JObject
 // Stores economy funtions for reviews on resources
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'class'
  * 
@@ -142,7 +140,6 @@ class ReviewsEconomy extends JObject
 	var $_db = NULL;  // Database
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

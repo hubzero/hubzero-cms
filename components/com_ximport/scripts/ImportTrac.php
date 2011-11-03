@@ -33,7 +33,7 @@ class ImportTrac extends XImportHelperScript
 {
 	protected $_description = 'Import trac permissions from old form.';
 
-	public function run() 
+	public function run()
 	{
 		$xhub = &Hubzero_Factory::getHub();
 	    $conn = &Hubzero_Factory::getPLDC();

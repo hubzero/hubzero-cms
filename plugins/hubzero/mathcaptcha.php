@@ -25,12 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_hubzero_mathcaptcha' );
-
-//-----------
 
 class plgHubzeroMathcaptcha extends JPlugin
 {
@@ -43,9 +39,7 @@ class plgHubzeroMathcaptcha extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----------
-	
-	public function onGetCaptcha() 
+	public function onGetCaptcha()
 	{
 		// Generate a CAPTCHA
 		$problem = array();
@@ -55,7 +49,7 @@ class plgHubzeroMathcaptcha extends JPlugin
 		$problem['key'] = $this->_generateHash($problem['sum'], date('j'));
 
 		// Build the fields
-		
+
 		$html  = '<label for="captcha_answer">'."\n";
 		$html .= JText::sprintf('PLG_HUBZERO_MATHCAPTCHA_TROUBLE_MATH', $problem['operand1'], $problem['operand2']);
 		$html .= "\t".'<input type="text" name="captcha_answer" id="captcha_answer" value="" size="3" id="answer" class="option" /> <span class="required">'.JText::_('PLG_HUBZERO_MATHCAPTCHA_REQUIRED').'</span>'."\n";
@@ -65,9 +59,7 @@ class plgHubzeroMathcaptcha extends JPlugin
 		return $html;
 	}
 
-	//-----------
-	
-	public function onValidateCaptcha() 
+	public function onValidateCaptcha()
 	{
 		$key = JRequest::getVar('captcha_krhash', 0);
 		$answer = JRequest::getInt('captcha_answer', 0);
@@ -79,8 +71,6 @@ class plgHubzeroMathcaptcha extends JPlugin
 		return false;
 	}
 
-	//-----------
-	
 	private function _generateHash($input, $day)
 	{
 		// Add date:

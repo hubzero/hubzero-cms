@@ -46,7 +46,6 @@ class XPollMenu extends JTable
 	 */
 	var $pollid  = NULL; // @var int(11)
 
-
 	/**
 	 * Description for 'menuid'
 	 * 
@@ -55,7 +54,6 @@ class XPollMenu extends JTable
 	var $menuid  = NULL; // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for 'XPollMenu'

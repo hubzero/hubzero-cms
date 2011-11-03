@@ -103,16 +103,16 @@ class Hubzero_Controller extends JObject
 		$this->_messageType = 'message';
 
 		// Set the controller name
-		if (empty($this->_name)) 
+		if (empty($this->_name))
 		{
-			if (isset($config['name'])) 
+			if (isset($config['name']))
 			{
 				$this->_name = $config['name'];
-			} 
-			else 
+			}
+			else
 			{
 				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) 
+				if (!preg_match('/(.*)Controller/i', get_class($this), $r))
 				{
 					return JError::raiseError(500, JText::_('Controller::__construct() : Can\'t get or parse class name.'));
 				}
@@ -175,9 +175,9 @@ class Hubzero_Controller extends JObject
 			$name = $method->getName();
 
 			// Ensure task isn't in the exclude list and ends in 'Task'
-			if (!in_array($name, $xMethods) 
+			if (!in_array($name, $xMethods)
 			 || $name == 'displayTask'
-			 || substr(strtolower($name), -4) == 'task') 
+			 || substr(strtolower($name), -4) == 'task')
 			{
 				// Remove the 'Task' suffix
 				$name = substr($name, 0, -4);
@@ -190,17 +190,17 @@ class Hubzero_Controller extends JObject
 		$this->_task = strtolower(JRequest::getWord('task', 'display'));
 
 		// Check if the task is in the taskMap
-		if (isset($this->_taskMap[$this->_task])) 
+		if (isset($this->_taskMap[$this->_task]))
 		{
 			$doTask = $this->_taskMap[$this->_task];
 		}
 		// Check if the default task is set
-		elseif (isset($this->_taskMap['__default'])) 
+		elseif (isset($this->_taskMap['__default']))
 		{
 			$doTask = $this->_taskMap['__default'];
 		}
 		// Raise an error (hopefully, this shouldn't happen)
-		else 
+		else
 		{
 			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
 		}
@@ -245,7 +245,7 @@ class Hubzero_Controller extends JObject
 	 */
 	public function redirect()
 	{
-		if ($this->_redirect != NULL) 
+		if ($this->_redirect != NULL)
 		{
 			$app =& JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
@@ -266,7 +266,7 @@ class Hubzero_Controller extends JObject
 	public function setRedirect($url, $msg=null, $type='message')
 	{
 		$this->_redirect = $url;
-		if ($msg !== null) 
+		if ($msg !== null)
 		{
 			// controller may have set this directly
 			$this->_message	= $msg;
@@ -284,11 +284,11 @@ class Hubzero_Controller extends JObject
 	public function addComponentMessage($message, $type='message')
 	{
 		//if message is somthing
-		if ($message != '') 
+		if ($message != '')
 		{
 			$this->componentMessageQueue[] = array(
-				'message' => $message, 
-				'type' => strtolower($type), 
+				'message' => $message,
+				'type' => strtolower($type),
 				'option' => $this->_option
 			);
 		}
@@ -304,20 +304,20 @@ class Hubzero_Controller extends JObject
 	 */
 	public function getComponentMessage()
 	{
-		if (!count($this->componentMessageQueue)) 
+		if (!count($this->componentMessageQueue))
 		{
 			$session =& JFactory::getSession();
 			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage)) 
+			if (count($componentMessage))
 			{
 				$this->componentMessageQueue = $componentMessage;
 				$session->set('component.message.queue', null);
 			}
 		}
 
-		foreach ($this->componentMessageQueue as $k => $cmq) 
+		foreach ($this->componentMessageQueue as $k => $cmq)
 		{
-			if ($cmq['option'] != $this->_option) 
+			if ($cmq['option'] != $this->_option)
 			{
 				$this->componentMessageQueue[$k] = array();
 			}
@@ -356,7 +356,7 @@ class Hubzero_Controller extends JObject
 		$option = ($option) ? $option : $this->_option;
 		$script = ($script) ? $script : $this->_name;
 
-		if (is_file(JPATH_ROOT . DS . 'components' . DS . $option . DS . $script . '.js')) 
+		if (is_file(JPATH_ROOT . DS . 'components' . DS . $option . DS . $script . '.js'))
 		{
 			$document->addScript('components' . DS . $option . DS . $script . '.js');
 		}
@@ -372,14 +372,14 @@ class Hubzero_Controller extends JObject
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task) 
+		if ($this->_task)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
@@ -396,7 +396,7 @@ class Hubzero_Controller extends JObject
 	protected function _buildTitle()
 	{
 		$title = JText::_(strtoupper($this->_option));
-		if ($this->_task) 
+		if ($this->_task)
 		{
 			$title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
@@ -412,13 +412,13 @@ class Hubzero_Controller extends JObject
 	protected function _authorize()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
 		}
 
 		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage')) 
+		if ($this->juser->authorize($this->_option, 'manage'))
 		{
 			return true;
 		}

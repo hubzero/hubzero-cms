@@ -64,7 +64,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 	 * @return     string Return description (if any) ...
 	 */
 	public function format($row)
-	{ 
+	{
 		//var to hold document conetnt
 		$doc = '';
 

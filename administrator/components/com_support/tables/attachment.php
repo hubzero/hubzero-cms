@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Support Attachments class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'SupportAttachment'
  * 
@@ -51,7 +50,6 @@ class SupportAttachment extends JTable
 	 */
 	var $id          = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'ticket'
 	 * 
@@ -59,14 +57,12 @@ class SupportAttachment extends JTable
 	 */
 	var $ticket      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'filename'
 	 * 
 	 * @var string
 	 */
 	var $filename    = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'description'
@@ -76,7 +72,6 @@ class SupportAttachment extends JTable
 	var $description = NULL;  // @var varchar(255)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

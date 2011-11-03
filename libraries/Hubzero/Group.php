@@ -2245,7 +2245,7 @@ class Hubzero_Group
 				else {
 					$where_clause .= "WHERE";
 				}
-				switch ($filters['privacy']) 
+				switch ($filters['privacy'])
 				{
 					case 'private':   $where_clause .= " privacy=4"; break;
 					case 'protected': $where_clause .= " privacy=1"; break;
@@ -2852,7 +2852,6 @@ class Hubzero_Group
 	// New function for new groups (Chris)
 	//----
 
-
 	/**
 	 * Short description for 'search_roles'
 	 * 
@@ -2886,7 +2885,6 @@ class Hubzero_Group
 	//----
 	// New function with new groups (Chris)
 	//----
-
 
 	/**
 	 * Short description for 'getPluginAccess'

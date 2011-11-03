@@ -120,7 +120,6 @@ class XPollController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'vote'
 	 * 

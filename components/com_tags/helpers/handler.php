@@ -58,14 +58,12 @@ class TagsHandler extends JObject
 	 */
 	public $_db  = NULL;  // Database
 
-
 	/**
 	 * Description for '_tbl'
 	 * 
 	 * @var string
 	 */
 	public $_tbl = 'tags';  // Secondary tag table, used for linking objects (such as resources) to tags
-
 
 	/**
 	 * Description for '_oid'
@@ -74,14 +72,12 @@ class TagsHandler extends JObject
 	 */
 	public $_oid = NULL;  // The object to be tagged
 
-
 	/**
 	 * Description for '_tag_tbl'
 	 * 
 	 * @var string
 	 */
 	public $_tag_tbl = '#__tags';  // The primary tag table
-
 
 	/**
 	 * Description for '_obj_tbl'

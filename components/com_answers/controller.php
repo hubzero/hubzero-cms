@@ -151,7 +151,6 @@ class AnswersController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'login'
 	 * 
@@ -1008,7 +1007,6 @@ class AnswersController extends Hubzero_Controller
 	// Retrievers
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_getVote'
 	 * 
@@ -1092,7 +1090,6 @@ class AnswersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'saveq'
@@ -1652,7 +1649,6 @@ class AnswersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Misc Functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_server'

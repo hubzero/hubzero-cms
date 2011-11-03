@@ -76,7 +76,7 @@ function submitbutton(pressbutton)
 				<td>
 					<h4><?php echo '<a href="'.$link.'">'.$this->escape($this->title).'</a>: ' ?></h4>
 					<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
-                    <?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') { 
+                    <?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
 						echo '<p>'.$this->escape(stripslashes($this->reported->subject)) .'</p>';
 					} ?>
 					<p style="color:#999;">

@@ -76,7 +76,6 @@ class MyhubController extends Hubzero_Controller
 	//  Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'select'
 	 * 
@@ -169,7 +168,6 @@ class MyhubController extends Hubzero_Controller
 
 	// The main "My HUB" page
 
-
 	/**
 	 * Short description for 'manage'
 	 * 
@@ -252,7 +250,6 @@ class MyhubController extends Hubzero_Controller
 
 	// Rebuild the "available modules" list
 
-
 	/**
 	 * Short description for 'rebuild'
 	 * 
@@ -286,7 +283,6 @@ class MyhubController extends Hubzero_Controller
 	//-----------
 	// Save preferences (i.e., the list of modules 
 	// to be displayed and their locations)
-
 
 	/**
 	 * Short description for 'save'
@@ -397,7 +393,6 @@ class MyhubController extends Hubzero_Controller
 	//-----------
 	// Reload the contents of a module
 
-
 	/**
 	 * Short description for 'refresh'
 	 * 
@@ -416,7 +411,6 @@ class MyhubController extends Hubzero_Controller
 	// it also builds the title, parameters form, and container
 	// for the module
 
-
 	/**
 	 * Short description for 'addmodule'
 	 * 
@@ -432,7 +426,6 @@ class MyhubController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// outputs a group of modules, each contained in a list item
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'outputModules'
@@ -497,7 +490,6 @@ class MyhubController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Fetchers
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'getUnusedModules'

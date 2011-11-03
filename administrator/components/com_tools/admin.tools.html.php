@@ -147,7 +147,6 @@ class ToolsHtml
 	// An administrative active link.
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'admlink'
 	 * 
@@ -185,7 +184,6 @@ class ToolsHtml
 	//----------------------------------------------------------
 	// ListEdit widget.
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'listedit'
@@ -239,7 +237,6 @@ class ToolsHtml
 	//----------------------------------------------------------
 	// Table widget.
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'table'

@@ -88,7 +88,6 @@ class KbController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'login'
 	 * 
@@ -398,7 +397,6 @@ class KbController extends Hubzero_Controller
 	// Private Functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_buildPathway'
 	 * 
@@ -668,7 +666,6 @@ class KbController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Comments
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'savecomment'

@@ -46,7 +46,6 @@ define( 'MW_DIFF_VERSION', '1.11a' );
 // Copyright (C) 2000, 2001 Geoffrey T. Dairiki <dairiki@dairiki.org>
 // You may copy this code freely under the conditions of the GPL.
 
-
 /**
  * Description for ''USE_ASSERTS''
  */
@@ -429,7 +428,6 @@ class _DiffEngine
 
 	// Returns the whole line if it's small enough, or the MD5 hash otherwise
 
-
 	/**
 	 * Short description for '_line_hash'
 	 * 
@@ -462,7 +460,6 @@ class _DiffEngine
 	// of the two files do not match, and likewise that the last lines do not
 	// match.  The caller must trim matching lines from the beginning and end
 	// of the portions it is going to specify.
-
 
 	/**
 	 * Short description for '_diag'
@@ -598,7 +595,6 @@ class _DiffEngine
 	// Note that XLIM, YLIM are exclusive bounds.
 	// All line numbers are origin-0 and discarded lines are not counted.
 
-
 	/**
 	 * Short description for '_compareseq'
 	 * 
@@ -666,7 +662,6 @@ class _DiffEngine
 	// to be the "change".
 	//
 	// This is extracted verbatim from analyze.c (GNU diffutils-2.7).
-
 
 	/**
 	 * Short description for '_shift_boundaries'
@@ -805,7 +800,6 @@ class Diff
 	//		  (Typically these are lines from a file.)
 	// @param $to_lines array An array of strings.
 
-
 	/**
 	 * Short description for 'Diff'
 	 * 
@@ -831,7 +825,6 @@ class Diff
 	// @return object A Diff object representing the inverse of the
 	//				  original diff.
 
-
 	/**
 	 * Short description for 'reverse'
 	 * 
@@ -852,7 +845,6 @@ class Diff
 	// Check for empty diff.
 	//
 	// @return bool True iff two sequences were identical.
-
 
 	/**
 	 * Short description for 'isEmpty'
@@ -875,7 +867,6 @@ class Diff
 	// This is mostly for diagnostic purposed.
 	//
 	// @return int The length of the LCS.
-
 
 	/**
 	 * Short description for 'lcs'
@@ -900,7 +891,6 @@ class Diff
 	// constructor.
 	//
 	// @return array The original sequence of strings.
-
 
 	/**
 	 * Short description for 'orig'
@@ -927,7 +917,6 @@ class Diff
 	//
 	// @return array The sequence of strings.
 
-
 	/**
 	 * Short description for 'closing'
 	 * 
@@ -949,7 +938,6 @@ class Diff
 	// Check a Diff for validity.
 	//
 	// This is here only for debugging purposes.
-
 
 	/**
 	 * Short description for '_check'
@@ -1014,7 +1002,6 @@ class MappedDiff extends Diff
 	// @param $mapped_to_lines array This array should
 	//	have the same number of elements as $to_lines.
 
-
 	/**
 	 * Short description for 'MappedDiff'
 	 * 
@@ -1074,7 +1061,6 @@ class DiffFormatter
 	// This should be left at zero for this class, but subclasses
 	// may want to set this to other values.
 
-
 	/**
 	 * Description for 'leading_context_lines'
 	 * 
@@ -1086,7 +1072,6 @@ class DiffFormatter
 	//
 	// This should be left at zero for this class, but subclasses
 	// may want to set this to other values.
-
 
 	/**
 	 * Description for 'trailing_context_lines'
@@ -1106,7 +1091,6 @@ class DiffFormatter
 	//
 	// @param $diff object A Diff object.
 	// @return string The formatted output.
-
 
 	/**
 	 * Short description for 'format'
@@ -1366,12 +1350,10 @@ class DiffFormatter
 //  partly taken from diff.php, phpwiki-1.3.3
 //-------------------------------------------------------------
 
-
 /**
  * Description for ''NBSP''
  */
 define('NBSP', '&#160;');	// iso-8859-x non-breaking space.
-
 
 /**
  * Short description for 'class'
@@ -1682,7 +1664,6 @@ class TableDiffFormatter extends DiffFormatter
 
 	// HTML-escape parameter before calling this
 
-
 	/**
 	 * Short description for 'addedLine'
 	 * 
@@ -1699,7 +1680,6 @@ class TableDiffFormatter extends DiffFormatter
 
 	// HTML-escape parameter before calling this
 
-
 	/**
 	 * Short description for 'deletedLine'
 	 * 
@@ -1715,7 +1695,6 @@ class TableDiffFormatter extends DiffFormatter
 	}
 
 	// HTML-escape parameter before calling this
-
 
 	/**
 	 * Short description for 'contextLine'
@@ -1951,7 +1930,6 @@ class DivDiffFormatter extends DiffFormatter
 
 	// HTML-escape parameter before calling this
 
-
 	/**
 	 * Short description for 'addedLine'
 	 * 
@@ -1967,7 +1945,6 @@ class DivDiffFormatter extends DiffFormatter
 
 	// HTML-escape parameter before calling this
 
-
 	/**
 	 * Short description for 'deletedLine'
 	 * 
@@ -1982,7 +1959,6 @@ class DivDiffFormatter extends DiffFormatter
 	}
 
 	// HTML-escape parameter before calling this
-
 
 	/**
 	 * Short description for 'contextLine'

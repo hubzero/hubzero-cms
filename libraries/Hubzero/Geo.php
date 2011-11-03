@@ -40,7 +40,6 @@ class Hubzero_Geo
 {
 	// Get a list of existing application sessions.
 
-
 	/**
 	 * Short description for 'getGODBO'
 	 * 

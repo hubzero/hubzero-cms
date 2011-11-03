@@ -46,7 +46,6 @@ class WishlistPlan extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'wishid'
 	 * 
@@ -54,14 +53,12 @@ class WishlistPlan extends JTable
 	 */
 	var $wishid		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'version'
 	 * 
 	 * @var unknown
 	 */
 	var $version	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'created'

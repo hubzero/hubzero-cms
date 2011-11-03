@@ -77,7 +77,6 @@ class UserpointsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'summary'
 	 * 
@@ -557,7 +556,6 @@ class UserpointsController extends Hubzero_Controller
 	//--------------------------------------------------------
 	// Process Royalties
 	//--------------------------------------------------------
-
 
 	/**
 	 * Short description for 'royalty'

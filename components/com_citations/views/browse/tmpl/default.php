@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_View_Helper_Html');
 
 //citation params
-$label = $this->config->get("citation_label", "number"); 
+$label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
 $template = $this->config->get("citation_format", "");
 
@@ -46,15 +46,15 @@ $batch_download = $this->config->get("citation_batch_download", 1);
 $coins = $this->config->get("citation_coins", 1);
 
 //do we want to number li items
-if($label == "none") { 
-	$citations_label_class = "no-label"; 
+if($label == "none") {
+	$citations_label_class = "no-label";
 } elseif($label == "number") {
 	$citations_label_class = "number-label";
-} elseif($label == "type") { 
-	$citations_label_class = "type-label"; 
+} elseif($label == "type") {
+	$citations_label_class = "type-label";
 } elseif($label == "both") {
 	$citations_label_class = "both-label";
-} 
+}
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -95,7 +95,7 @@ if($label == "none") {
 							foreach($this->types as $t) {
 								$sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : "";
  								echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
-							}	
+							}
 						?>
 					</select>
 				</label>
@@ -227,12 +227,12 @@ if($label == "none") {
 											}
 											$type = ($type != "") ? $type : "Generic";
 
-											switch($label) 
+											switch($label)
 											{
 												case "number":
 													echo "<span class=\"number\">{$counter}.</span>";
 													break;
-												case "type":	
+												case "type":
 													echo "<span class=\"type\">{$type}</span>";
 													break;
 												case "both":
@@ -274,9 +274,9 @@ if($label == "none") {
 			
 			<?php 
 				$qs = '';
-				foreach ($this->filters as $key=>$value) 
+				foreach ($this->filters as $key=>$value)
 				{
-					switch ($key) 
+					switch ($key)
 					{
 						case 'limit':
 						case 'start':
@@ -285,7 +285,7 @@ if($label == "none") {
 						case 'reftype':
 						case 'aff':
 						case 'geo':
-							foreach ($value as $k=>$v) 
+							foreach ($value as $k=>$v)
 							{
 								$qs .= $key.'['.$k.']='.$v.'&';
 							}

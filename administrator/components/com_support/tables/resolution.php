@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'SupportResolution'
  * 
@@ -51,14 +50,12 @@ class SupportResolution extends JTable
 	 */
 	var $id    = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title = NULL;  // @var varchar(100)
-
 
 	/**
 	 * Description for 'alias'
@@ -68,7 +65,6 @@ class SupportResolution extends JTable
 	var $alias = NULL;  // @var varchar(100)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

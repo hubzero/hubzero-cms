@@ -101,7 +101,6 @@ class WikiController extends Hubzero_Controller
 	// Collection functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'pages'
 	 * 
@@ -306,7 +305,6 @@ class WikiController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Processers
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'savepage'

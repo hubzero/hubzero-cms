@@ -86,7 +86,6 @@ class CitationsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'intro'
 	 * 
@@ -120,7 +119,7 @@ class CitationsController extends Hubzero_Controller
 		$view->typestats = array();
 		$ct = new CitationsType( $this->database );
 		$types = $ct->getType();
-		foreach ($types as $t) 
+		foreach ($types as $t)
 		{
 			$view->typestats[$t['type_title']] = $row->getCount( array('type'=>$t['id']), false );
 		}
@@ -363,7 +362,6 @@ class CitationsController extends Hubzero_Controller
 	// Processors
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'save'
 	 * 
@@ -540,7 +538,7 @@ class CitationsController extends Hubzero_Controller
 	//---------------------------------------------------------------------
 	//	Import
 	//---------------------------------------------------------------------
-	
+
 	protected function import()
 	{
 		//get user object
@@ -600,8 +598,6 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//------
-	
 	protected function import_upload()
 	{
 		//get user object
@@ -626,7 +622,7 @@ class CitationsController extends Hubzero_Controller
 		if($file['size'] > 4000000) {
 			$this->addComponentMessage( "The file you uploaded exceeds the maximum file size of 4MB.", "error" );
 			$this->_redirect = JRoute::_('index.php?option=com_citations&task=import');
-			return;	
+			return;
 		}
 
 		//make sure we dont have any file errors
@@ -664,8 +660,6 @@ class CitationsController extends Hubzero_Controller
 		return;
 	}
 
-	//------
-	
 	protected function import_review()
 	{
 		//get user object
@@ -710,7 +704,7 @@ class CitationsController extends Hubzero_Controller
 		$view->citations_require_attention = $citations_require_attention;
 		$view->citations_require_no_attention = $citations_require_no_attention;
 		//$view->session = $session;
-		
+
 		//get any messages
 		$view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 
@@ -718,8 +712,6 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//------
-	
 	protected function import_save()
 	{
 		//get user object
@@ -757,9 +749,9 @@ class CitationsController extends Hubzero_Controller
 		$allow_badges = $this->config->get("citation_allow_badges","no");
 
 		//loop through each citation that required attention from user
-		if($cites_require_attention) 
+		if($cites_require_attention)
 		{
-			foreach($cites_require_attention as $k => $cra) 
+			foreach($cites_require_attention as $k => $cra)
 			{
 
 				//new citation object
@@ -796,7 +788,7 @@ class CitationsController extends Hubzero_Controller
 				}
 				$cra['type'] = ($type) ? $type : "";
 
-				switch ($citations_action_attention[$k]) 
+				switch ($citations_action_attention[$k])
 				{
 					case 'overwrite':
 						$cra['id'] = $cra['duplicate'];
@@ -826,7 +818,7 @@ class CitationsController extends Hubzero_Controller
 					//badges
 					if($allow_badges == "yes") {
 						$this->tag_citation( $user, $cc->id, $badges, "badge" );
-					}	
+					}
 
 					//add the citattion to the saved 
 					$citations_saved[] = $cc->id;
@@ -897,7 +889,7 @@ class CitationsController extends Hubzero_Controller
 				//badges
 				if($allow_badges == "yes") {
 					$this->tag_citation( $user, $cc->id, $badges, "badge" );
-				}	
+				}
 
 				//add the citattion to the saved 
 				$citations_saved[] = $cc->id;
@@ -928,8 +920,6 @@ class CitationsController extends Hubzero_Controller
 		return;
 	}
 
-	//-----
-	
 	protected function import_saved()
 	{
 		//get the session object
@@ -989,8 +979,6 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----
-	
 	protected function tag_citation( $userid, $objectid, $tag_string, $label)
 	{
 		if($tag_string) {
@@ -999,8 +987,6 @@ class CitationsController extends Hubzero_Controller
 		}
 	}
 
-	//-----
-	
 	protected function citation_cleanup()
 	{
 		$p = JPATH_ROOT . DS . 'tmp' . DS . 'citations';
@@ -1015,7 +1001,7 @@ class CitationsController extends Hubzero_Controller
 					if($ft < strtotime("-1 DAY")) {
 						JFile::delete( $p . DS . $t );
 					}
-				} 
+				}
 			}
 		}
 	}
@@ -1088,8 +1074,6 @@ class CitationsController extends Hubzero_Controller
 		die; // REQUIRED
 	}
 
-	//-----
-	
 	protected function download_batch()
 	{
 		//get the submit buttons value
@@ -1110,7 +1094,7 @@ class CitationsController extends Hubzero_Controller
 		$doc = "";
 
 		//for each citation we want to downlaod
-		foreach($citations as $c) 
+		foreach($citations as $c)
 		{
 			$cc = new CitationsCitation( $this->database );
 			$cc->load( $c );
@@ -1120,10 +1104,10 @@ class CitationsController extends Hubzero_Controller
 			$doc .= $cd->formatReference( $cc ) . "\r\n\r\n";
 
 			$mine = $cd->getMimeType();
-		} 
-		
-		$ext = (strtolower($download) == 'bibtex') ? ".bib" : ".enw"; 
-		
+		}
+
+		$ext = (strtolower($download) == 'bibtex') ? ".bib" : ".enw";
+
 		//filename
 		$filename = "citations_export_" . strtolower($download) . "_" . date("Y_m_d") . $ext;
 
@@ -1138,7 +1122,7 @@ class CitationsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// 	Utilites
 	//----------------------------------------------------------
-	
+
 	private function _isempty($b, $ignored=array())
 	{
 		foreach ($ignored as $ignore)
@@ -1152,7 +1136,7 @@ class CitationsController extends Hubzero_Controller
 		}
 		$values = array_values($b);
 		$e = true;
-		foreach ($values as $v) 
+		foreach ($values as $v)
 		{
 			if ($v) {
 				$e = false;
@@ -1268,9 +1252,7 @@ class CitationsController extends Hubzero_Controller
 		$document->setTitle( $title );
 	}
 
-	//-----
-	
-	public function getFormatTemplate() 
+	public function getFormatTemplate()
 	{
 		$format = JRequest::getVar("format", "apa");
 		echo "format" . $format;

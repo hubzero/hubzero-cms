@@ -46,7 +46,6 @@ class WhatsnewPeriod extends JObject
 	 */
 	private $_period = NULL;     // The original search text - should NEVER BE CHANGED
 
-
 	/**
 	 * Description for '_data'
 	 * 
@@ -55,7 +54,6 @@ class WhatsnewPeriod extends JObject
 	private $_data   = array();  // Processed text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

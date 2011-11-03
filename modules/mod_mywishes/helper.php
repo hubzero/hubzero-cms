@@ -47,9 +47,6 @@ class modMyWishes
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__set'
 	 * 
@@ -63,9 +60,6 @@ class modMyWishes
 	{
 		$this->attributes[$property] = $value;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__get'
@@ -81,9 +75,6 @@ class modMyWishes
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_convertTime'
@@ -101,9 +92,6 @@ class modMyWishes
 		}
 		return $stime;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_calculateTime'
@@ -155,9 +143,6 @@ class modMyWishes
 		return $text;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '_timeAgo'
 	 * 
@@ -180,9 +165,6 @@ class modMyWishes
 		$text  = $parts[0].' '.$parts[1];
 		return $text;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_shortenText'
@@ -215,9 +197,6 @@ class modMyWishes
 
 		return $text;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_wishlist'
@@ -253,9 +232,6 @@ class modMyWishes
 
 		return $html;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

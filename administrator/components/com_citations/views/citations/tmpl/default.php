@@ -101,7 +101,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td>
 					<?php 
-						$type = "";	
+						$type = "";
 						foreach($this->types as $t) {
 							if($row->type == $t['id']) {
 								$type = $t['type_title'];

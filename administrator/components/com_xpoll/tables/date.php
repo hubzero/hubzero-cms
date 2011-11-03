@@ -46,14 +46,12 @@ class XPollDate extends JTable
 	 */
 	var $id       = NULL; // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'date'
 	 * 
 	 * @var unknown
 	 */
 	var $date     = NULL; // @var datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'vote_id'
@@ -62,14 +60,12 @@ class XPollDate extends JTable
 	 */
 	var $vote_id  = NULL; // @var int(11)
 
-
 	/**
 	 * Description for 'poll_id'
 	 * 
 	 * @var string
 	 */
 	var $poll_id  = NULL; // @var int(11)
-
 
 	/**
 	 * Description for 'voter_ip'
@@ -79,7 +75,6 @@ class XPollDate extends JTable
 	var $voter_ip = NULL; // @var varchar(50)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

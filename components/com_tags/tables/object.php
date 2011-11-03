@@ -46,14 +46,12 @@ class TagsObject extends JTable
 	 */
 	var $id       = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'objectid'
 	 * 
 	 * @var unknown
 	 */
 	var $objectid = NULL;  // int(11)
-
 
 	/**
 	 * Description for 'tagid'
@@ -62,14 +60,12 @@ class TagsObject extends JTable
 	 */
 	var $tagid    = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'strength'
 	 * 
 	 * @var unknown
 	 */
 	var $strength = NULL;  // tinyint(3)
-
 
 	/**
 	 * Description for 'taggerid'
@@ -78,14 +74,12 @@ class TagsObject extends JTable
 	 */
 	var $taggerid = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'taggedon'
 	 * 
 	 * @var unknown
 	 */
 	var $taggedon = NULL;  // datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'tbl'
@@ -95,7 +89,6 @@ class TagsObject extends JTable
 	var $tbl      = NULL;  // varchar(255)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -380,7 +380,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$grandchild_rt->load($grandchild->type);
 							$alias = $grandchild_rt->alias;
 
-							switch ($alias) 
+							switch ($alias)
 							{
 								case "player":
 								case "quicktime":

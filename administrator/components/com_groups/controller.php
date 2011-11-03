@@ -86,7 +86,6 @@ class GroupsController extends Hubzero_Controller
 	//  Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'mytest'
 	 * 
@@ -841,7 +840,6 @@ class GroupsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  User management functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'addusers'

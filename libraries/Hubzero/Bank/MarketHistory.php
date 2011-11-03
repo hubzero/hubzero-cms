@@ -36,7 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Logs batch transactions, royalty distributions and other big transactions
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'Hubzero_Bank_MarketHistory'
  * 
@@ -52,14 +51,12 @@ class Hubzero_Bank_MarketHistory extends JTable
 	 */
 	var $id          	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'itemid'
 	 * 
 	 * @var unknown
 	 */
 	var $itemid      	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'category'
@@ -68,14 +65,12 @@ class Hubzero_Bank_MarketHistory extends JTable
 	 */
 	var $category    	= NULL;  // @var varchar(50)
 
-
 	/**
 	 * Description for 'market_value'
 	 * 
 	 * @var unknown
 	 */
 	var $market_value	= NULL;  // @var decimal(11,2)
-
 
 	/**
 	 * Description for 'date'
@@ -84,14 +79,12 @@ class Hubzero_Bank_MarketHistory extends JTable
 	 */
 	var $date      		= NULL;  // @var datetime
 
-
 	/**
 	 * Description for 'action'
 	 * 
 	 * @var unknown
 	 */
 	var $action	 		= NULL;  // @var varchar(50)
-
 
 	/**
 	 * Description for 'log'
@@ -101,7 +94,6 @@ class Hubzero_Bank_MarketHistory extends JTable
 	var $log    		= NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

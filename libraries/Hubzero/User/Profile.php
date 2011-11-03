@@ -42,7 +42,6 @@ class Hubzero_User_Profile extends JObject
 {
 	// properties
 
-
 	/**
 	 * Description for 'uidNumber'
 	 * 
@@ -310,7 +309,6 @@ class Hubzero_User_Profile extends JObject
 	private $note = null;
 	// properties stored in auxilliary tables
 
-
 	/**
 	 * Description for '_auxs_bio'
 	 * 
@@ -318,7 +316,6 @@ class Hubzero_User_Profile extends JObject
 	 */
 	private $_auxs_bio = null;
 	// multi-value properties stored in auxilliary tables
-
 
 	/**
 	 * Description for '_auxv_disability'
@@ -378,7 +375,6 @@ class Hubzero_User_Profile extends JObject
 	//private $_auxv_tag = array();
 	// private class variables
 
-
 	/**
 	 * Description for '_password'
 	 * 
@@ -394,7 +390,6 @@ class Hubzero_User_Profile extends JObject
 	private $_params = null;
 
 	// static class variables
-
 
 	/**
 	 * Description for '_s_propertyattrmap'

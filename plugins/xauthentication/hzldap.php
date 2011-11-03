@@ -139,7 +139,6 @@ class plgXAuthenticationHzldap extends JPlugin
 
         // Funtion to log out of Breeze
 
-
 	/**
 	 * Short description for 'logoutofbreeze'
 	 * 

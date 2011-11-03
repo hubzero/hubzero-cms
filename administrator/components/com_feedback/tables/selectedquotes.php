@@ -33,7 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'SelectedQuotes'
  * 
@@ -49,14 +48,12 @@ class SelectedQuotes extends JTable
 	 */
 	var $id             = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'userid'
 	 * 
 	 * @var unknown
 	 */
 	var $userid         = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'fullname'
@@ -65,14 +62,12 @@ class SelectedQuotes extends JTable
 	 */
 	var $fullname       = NULL;  // @var string
 
-
 	/**
 	 * Description for 'org'
 	 * 
 	 * @var unknown
 	 */
 	var $org            = NULL;  // @var string
-
 
 	/**
 	 * Description for 'miniquote'
@@ -81,14 +76,12 @@ class SelectedQuotes extends JTable
 	 */
 	var $miniquote      = NULL;  // @var text
 
-
 	/**
 	 * Description for 'short_quote'
 	 * 
 	 * @var unknown
 	 */
 	var $short_quote    = NULL;  // @var text
-
 
 	/**
 	 * Description for 'quote'
@@ -97,14 +90,12 @@ class SelectedQuotes extends JTable
 	 */
 	var $quote          = NULL;  // @var text
 
-
 	/**
 	 * Description for 'picture'
 	 * 
 	 * @var string
 	 */
 	var $picture        = NULL;  // @var string
-
 
 	/**
 	 * Description for 'date'
@@ -113,7 +104,6 @@ class SelectedQuotes extends JTable
 	 */
 	var $date           = NULL;  // @var datetime	
 
-
 	/**
 	 * Description for 'flash_rotation'
 	 * 
@@ -121,14 +111,12 @@ class SelectedQuotes extends JTable
 	 */
 	var $flash_rotation = NULL;  // @var int(1)
 
-
 	/**
 	 * Description for 'notable_quotes'
 	 * 
 	 * @var unknown
 	 */
 	var $notable_quotes = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'notes'
@@ -138,7 +126,6 @@ class SelectedQuotes extends JTable
 	var $notes          = NULL;	 // @var string
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

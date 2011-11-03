@@ -46,14 +46,12 @@ class WikiPageComment extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'pageid'
 	 * 
 	 * @var unknown
 	 */
 	var $pageid     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'version'
@@ -62,14 +60,12 @@ class WikiPageComment extends JTable
 	 */
 	var $version    = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    = NULL;  // @var datetime
-
 
 	/**
 	 * Description for 'created_by'
@@ -78,14 +74,12 @@ class WikiPageComment extends JTable
 	 */
 	var $created_by = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'ctext'
 	 * 
 	 * @var unknown
 	 */
 	var $ctext      = NULL;  // @var text
-
 
 	/**
 	 * Description for 'chtml'
@@ -94,14 +88,12 @@ class WikiPageComment extends JTable
 	 */
 	var $chtml      = NULL;  // @var text
 
-
 	/**
 	 * Description for 'rating'
 	 * 
 	 * @var unknown
 	 */
 	var $rating     = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'anonymous'
@@ -110,14 +102,12 @@ class WikiPageComment extends JTable
 	 */
 	var $anonymous  = NULL;  // @var int(1)
 
-
 	/**
 	 * Description for 'parent'
 	 * 
 	 * @var unknown
 	 */
 	var $parent     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'status'
@@ -127,7 +117,6 @@ class WikiPageComment extends JTable
 	var $status     = NULL;  // @var int(1)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

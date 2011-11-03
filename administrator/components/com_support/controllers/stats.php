@@ -38,7 +38,7 @@ class SupportControllerStats extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function displayTask() 
+	public function displayTask()
 	{
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
@@ -61,21 +61,21 @@ class SupportControllerStats extends Hubzero_Controller
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 		$day   = strftime("%d", time()+($this->offset*60*60));
-		if ($day<="9"&ereg("(^[1-9]{1})",$day)) 
+		if ($day<="9"&ereg("(^[1-9]{1})",$day))
 		{
 			$day = "0$day";
 		}
-		if ($month<="9"&ereg("(^[1-9]{1})",$month)) 
+		if ($month<="9"&ereg("(^[1-9]{1})",$month))
 		{
 			$month = "0$month";
 		}
 
 		$startday = 0;
 		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
-		if ($numday == -1) 
+		if ($numday == -1)
 		{
 			$numday = 6;
-		} 
+		}
 		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year);
 		$week = strftime("%d", $week_start);
 
@@ -108,14 +108,14 @@ class SupportControllerStats extends Hubzero_Controller
 		// Users
 		$this->view->users = null;
 
-		if ($this->view->group) 
+		if ($this->view->group)
 		{
 			$query = "SELECT a.username, a.name, a.id"
 				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
 				. "\n WHERE g.cn='".$this->view->group."' AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
 				. "\n ORDER BY a.name";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT a.username, a.name, a.id"
 				. "\n FROM #__users AS a"
@@ -128,12 +128,12 @@ class SupportControllerStats extends Hubzero_Controller
 
 		$this->database->setQuery($query);
 		$users = $this->database->loadObjectList();
-		if ($users) 
+		if ($users)
 		{
 			$u = array();
 			$p = array();
 			$g = array();
-			foreach ($users as $user) 
+			foreach ($users as $user)
 			{
 				$user->closed = array();
 
@@ -145,7 +145,7 @@ class SupportControllerStats extends Hubzero_Controller
 				$user->closed['week'] = $st->getCountOfTicketsClosed($this->view->type, $year, $month, $week, $user->username, $this->view->group);
 
 				$p[$user->id] = $user;
-				switch ($this->view->sort) 
+				switch ($this->view->sort)
 				{
 					case 'year':
 						$u[$user->id] = $user->closed['year'];
@@ -162,15 +162,15 @@ class SupportControllerStats extends Hubzero_Controller
 					break;
 				}
 			}
-			if ($this->view->sort != 'name') 
+			if ($this->view->sort != 'name')
 			{
 				arsort($u);
-			} 
-			else 
+			}
+			else
 			{
 				asort($u);
 			}
-			foreach ($u as $k => $v) 
+			foreach ($u as $k => $v)
 			{
 				$g[] = $p[$k];
 			}
@@ -183,29 +183,29 @@ class SupportControllerStats extends Hubzero_Controller
 
 		// Tickets over time
 		$this->view->closedmonths = array();
-		for ($i = 1; $i <= 12; $i++) 
+		for ($i = 1; $i <= 12; $i++)
 		{
 			$this->view->closedmonths[$i] = $st->getCountOfTicketsClosedInMonth(
-				$this->view->type, 
-				$year, 
-				sprintf("%02d",$i), 
+				$this->view->type,
+				$year,
+				sprintf("%02d",$i),
 				$this->view->group
 			);
 		}
 
 		$this->view->openedmonths = array();
-		for ($i = 1; $i <= 12; $i++) 
+		for ($i = 1; $i <= 12; $i++)
 		{
 			$this->view->openedmonths[$i] = $st->getCountOfTicketsOpenedInMonth(
-				$this->view->type, 
-				$year, 
-				sprintf("%02d",$i), 
+				$this->view->type,
+				$year,
+				sprintf("%02d",$i),
 				$this->view->group
 			);
 		}
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}

@@ -62,7 +62,7 @@ class RegisterOrganization extends JTable
 	 * @param object $db JDatabase object
 	 * @return     void
 	 */
-	public function __construct(&$db) 
+	public function __construct(&$db)
 	{
 		parent::__construct('#__xorganizations', 'id', $db);
 	}
@@ -104,7 +104,7 @@ class RegisterOrganization extends JTable
 	 * @param	array	$filters	An associative array of filters used to construct a query
 	 * @return	array
 	 */
-	public function getRecords($filters = array()) 
+	public function getRecords($filters = array())
 	{
 		$query  = "SELECT * FROM $this->_tbl";
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -125,7 +125,7 @@ class RegisterOrganization extends JTable
 	 * @param	array	$filters	An associative array of filters used to construct a query
 	 * @return	array
 	 */
-	public function getOrgs($filters = array()) 
+	public function getOrgs($filters = array())
 	{
 		$orgs = array();
 		if ($records = $this->getRecords($filters)) {

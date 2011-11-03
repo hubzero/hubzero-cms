@@ -35,8 +35,6 @@ ximport('Hubzero_Plugin');
 include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Emailtoken.php');
 JPlugin::loadLanguage( 'plg_groups_forum' );
 
-//-----------
-
 class plgGroupsForum extends Hubzero_Plugin
 {
 	public function plgGroupsForum(&$subject, $config)
@@ -560,7 +558,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$members = $this->group->get('members');
 			$userIDsToEmail = array();
 
-			foreach($members as $mbr) 
+			foreach($members as $mbr)
 			{
 				//Look up user info 
 				$user = new JUser();
@@ -579,7 +577,7 @@ class plgGroupsForum extends Hubzero_Plugin
 						$sendEmail = 0;
 
 					if($sendEmail)
-						$userIDsToEmail[] = $user->id;	
+						$userIDsToEmail[] = $user->id;
 				}
 			}
 
@@ -587,7 +585,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Email each group member separately, each needs a user specific token
-			foreach($userIDsToEmail as $userID) 
+			foreach($userIDsToEmail as $userID)
 			{
 
 				// Construct User specific Email ThreadToken

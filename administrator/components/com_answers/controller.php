@@ -90,7 +90,6 @@ class AnswersController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'questions'
 	 * 
@@ -328,7 +327,6 @@ class AnswersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Processers
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'saveQuestion'
@@ -869,7 +867,6 @@ class AnswersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Retrievers
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'get_tags'

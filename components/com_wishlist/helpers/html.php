@@ -250,7 +250,6 @@ class WishlistHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'browseForm'
 	 * 

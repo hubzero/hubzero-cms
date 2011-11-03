@@ -35,7 +35,7 @@ class ImportUsers extends XImportHelperScript
 {
 	protected $_description = 'Import user profiles from LDAP.';
 
-	public function run() 
+	public function run()
 	{
         echo "import users...<br />";
 
@@ -57,7 +57,7 @@ class ImportUsers extends XImportHelperScript
         mysql_free_result( $result );
 	}
 
-	private function _importUser($name) 
+	private function _importUser($name)
 	{
 		$profile = new Hubzero_User_Profile();
     	$profile->load($name,'ldap');

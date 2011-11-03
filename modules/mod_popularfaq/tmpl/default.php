@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<ul class="articles">
 <?php
 	$juser =& JFactory::getUser();
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		if ($row->access <= $juser->get('aid')) {
 			$link = 'index.php?option=com_kb&amp;section='.$row->section;

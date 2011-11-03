@@ -215,7 +215,6 @@ class plgGroupsCalendar extends JPlugin
 	// Functions						//
 	/////////////////////////////////////
 
-
 	/**
 	 * Short description for '_generateCalendarPicker'
 	 * 
@@ -281,7 +280,6 @@ class plgGroupsCalendar extends JPlugin
 	//////////////////////////////////////
 	// Views							//
 	/////////////////////////////////////
-
 
 	/**
 	 * Short description for 'display'

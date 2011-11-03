@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Information retrieval for items/info linked to a resource
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ResourcesHelper'
  * 
@@ -117,7 +116,6 @@ class ResourcesHelper extends JObject
 	//----------------------------------------------------------
 	// Contributors
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'getUnlinkedContributors'
@@ -386,7 +384,6 @@ class ResourcesHelper extends JObject
 	// Citations
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'getCitations'
 	 * 
@@ -456,7 +453,6 @@ class ResourcesHelper extends JObject
 	// Tags
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'getTags'
 	 * 
@@ -525,7 +521,6 @@ class ResourcesHelper extends JObject
 	//----------------------------------------------------------
 	// Children, parents, etc.
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'getChildren'
@@ -681,7 +676,6 @@ class ResourcesHelper extends JObject
 	// Reviews
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'getReviews'
 	 * 
@@ -719,7 +713,6 @@ class ResourcesHelper extends JObject
 	// For storing screenshots information
 	//----------------------------------------------------------
 
-
 /**
  * Short description for 'class'
  * 
@@ -735,14 +728,12 @@ class ResourcesHelper extends JObject
 	 */
 		var $id      	   = NULL;  // @var int (primary key)
 
-
 	/**
 	 * Description for 'versionid'
 	 * 
 	 * @var unknown
 	 */
 		var $versionid     = NULL;  // @var int
-
 
 	/**
 	 * Description for 'title'
@@ -751,7 +742,6 @@ class ResourcesHelper extends JObject
 	 */
 		var $title         = NULL;  // @var string (127)
 
-
 	/**
 	 * Description for 'ordering'
 	 * 
@@ -759,14 +749,12 @@ class ResourcesHelper extends JObject
 	 */
 		var $ordering      = NULL;  // @var int (11)
 
-
 	/**
 	 * Description for 'filename'
 	 * 
 	 * @var string
 	 */
 		var $filename 	   = NULL;  // @var string (100)
-
 
 	/**
 	 * Description for 'resourceid'
@@ -776,7 +764,6 @@ class ResourcesHelper extends JObject
 		var $resourceid    = NULL;  // @var int
 
 		//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -842,7 +829,6 @@ class ResourcesHelper extends JObject
 		}
 		//-----------
 
-
 	/**
 	 * Short description for 'getScreenshot'
 	 * 
@@ -897,7 +883,6 @@ class ResourcesHelper extends JObject
 
 		}
 		//-----------
-
 
 	/**
 	 * Short description for 'saveScreenshot'

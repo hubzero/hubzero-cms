@@ -90,7 +90,6 @@ class KbController extends Hubzero_Controller
 	// Collection functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'categories'
 	 * 
@@ -388,7 +387,6 @@ class KbController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Processers
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'savefaq'

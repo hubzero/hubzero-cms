@@ -46,14 +46,12 @@ class Cart extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid    	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'itemid'
@@ -62,14 +60,12 @@ class Cart extends JTable
 	 */
 	var $itemid     = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'type'
 	 * 
 	 * @var unknown
 	 */
 	var $type    	= NULL;  // @var varchar(20)
-
 
 	/**
 	 * Description for 'quantity'
@@ -78,14 +74,12 @@ class Cart extends JTable
 	 */
 	var $quantity   = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'added'
 	 * 
 	 * @var unknown
 	 */
 	var $added  	= NULL;  // @var datetime
-
 
 	/**
 	 * Description for 'selections'
@@ -95,7 +89,6 @@ class Cart extends JTable
 	var $selections = NULL;  // @var text
 
 	//------------
-
 
 	/**
 	 * Short description for '__construct'

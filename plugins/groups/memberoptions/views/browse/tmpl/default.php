@@ -70,7 +70,7 @@ else
 	<?php
 	}
 	else{
-		echo JText::_('GROUP_MEMBEROPTIONS_NONE'); 
+		echo JText::_('GROUP_MEMBEROPTIONS_NONE');
 	}
 	?>
 	

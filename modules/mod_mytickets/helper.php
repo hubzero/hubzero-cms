@@ -47,9 +47,6 @@ class modMyTickets
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modMyTickets
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modMyTickets
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modMyTickets
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_convertTime'
@@ -117,9 +105,6 @@ class modMyTickets
 		}
 		return $stime;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_calculateTime'
@@ -171,9 +156,6 @@ class modMyTickets
 		return $text;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'timeAgo'
 	 * 
@@ -196,9 +178,6 @@ class modMyTickets
 		$text  = $parts[0].' '.$parts[1];
 		return $text;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

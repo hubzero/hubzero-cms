@@ -29,14 +29,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class ParentsMacro extends WikiMacro 
+class ParentsMacro extends WikiMacro
 {
 	/**
      * Returns a description of how to use the macro
      *
      * @return string
      */
-	public function description() 
+	public function description()
 	{
 		$txt = array();
 		$txt['wiki'] = 'Inserts a nested list of ancestor pages (parents) of the current page into the output. Accepts one parameter:
@@ -54,36 +54,36 @@ class ParentsMacro extends WikiMacro
      *
      * @return string
      */
-	public function render() 
+	public function render()
 	{
 		$depth = 1;
 		$description = 0;
 
-		if ($this->args) 
+		if ($this->args)
 		{
 			$args = split(',', $this->args);
-			if (is_array($args)) 
+			if (is_array($args))
 			{
-				foreach ($args as $arg) 
+				foreach ($args as $arg)
 				{
 					$arg = trim($arg);
-					if (substr($arg, 0, 6) == 'depth=') 
+					if (substr($arg, 0, 6) == 'depth=')
 					{
 		                $bits = split('=', $arg);
 						$depth = intval(trim(end($bits)));
 		                continue;
 					}
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$arg = trim($args);
-				if (substr($arg, 0, 6) == 'depth=') 
+				if (substr($arg, 0, 6) == 'depth=')
 				{
 	                $bits = split('=', $arg);
 					$depth = intval(trim(end($bits)));
-				} 
-				else 
+				}
+				else
 				{
 					$depth = intval(trim($arg));
 					$depth = ($depth) ? $depth : 1;
@@ -92,13 +92,13 @@ class ParentsMacro extends WikiMacro
 		}
 
 		// $depth needs to be 1 or more
-		if ($depth == 0) 
+		if ($depth == 0)
 		{
 			return '';
 		}
 
 		// If no scope, then this is a top-level page (ie, no parents)
-		if (!$this->scope) 
+		if (!$this->scope)
 		{
 			return '';
 		}
@@ -107,12 +107,12 @@ class ParentsMacro extends WikiMacro
 		$rows = $this->_fetchPointer($depth, $this->scope);
 
 		// Check for any results
-		if ($rows && is_array($rows)) 
+		if ($rows && is_array($rows))
 		{
 			// Return nested lists
 			return $this->_buildTree($rows);
-		} 
-		else 
+		}
+		else
 		{
 			return '';
 		}
@@ -124,11 +124,11 @@ class ParentsMacro extends WikiMacro
      * @param  array $rows An array of objects
      * @return string
      */
-	private function _buildTree($rows) 
+	private function _buildTree($rows)
 	{
 		$html = '';
 
-		if ($rows && count($rows) > 0) 
+		if ($rows && count($rows) > 0)
 		{
 			// Get the last element in the array
 			$row = array_pop($rows);
@@ -164,7 +164,7 @@ class ParentsMacro extends WikiMacro
 		$uri = explode('/', $scope);
 
 		$pages = array();
-		if (!is_array($uri)) 
+		if (!is_array($uri))
 		{
 			return $pages;
 		}
@@ -174,11 +174,11 @@ class ParentsMacro extends WikiMacro
 		$subscope = null;
 
 		$i = 0;
-		foreach ($uri as $uriPart) 
+		foreach ($uri as $uriPart)
 		{
 			$i++;
 
-			if (!$subscope) 
+			if (!$subscope)
 			{
 				$subscope = array_reverse($uri);
 			}
@@ -188,7 +188,7 @@ class ParentsMacro extends WikiMacro
             $pointer = $this->_getPageByAlias($uriPart, implode('/', $subscope));
 
             // if the page was not found then return null
-			if (null == $pointer) 
+			if (null == $pointer)
 			{
 				return $pages;
             }
@@ -196,7 +196,7 @@ class ParentsMacro extends WikiMacro
 			//set the parent id to the current pointer to traverse down the tree
 			$pages[] = $pointer;
 
-			if ($i == $depth) 
+			if ($i == $depth)
 			{
 				break;
 			}
@@ -227,11 +227,11 @@ class ParentsMacro extends WikiMacro
 		$page->load($alias, $scope);
 
 		// Check for a result
-		if ($page && $page->id) 
+		if ($page && $page->id)
 		{
 			return $page;
-		} 
-		else 
+		}
+		else
 		{
 			return null;
 		}

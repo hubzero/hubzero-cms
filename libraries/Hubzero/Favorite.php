@@ -46,14 +46,12 @@ class Hubzero_Favorite extends JTable
 	 */
 	var $id    = NULL;  // int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid   = NULL;  // int(11)
-
 
 	/**
 	 * Description for 'oid'
@@ -62,14 +60,12 @@ class Hubzero_Favorite extends JTable
 	 */
 	var $oid   = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'tbl'
 	 * 
 	 * @var unknown
 	 */
 	var $tbl   = NULL;  // int(11)
-
 
 	/**
 	 * Description for 'faved'
@@ -79,7 +75,6 @@ class Hubzero_Favorite extends JTable
 	var $faved = NULL;  // datetime(0000-00-00 00:00:00)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

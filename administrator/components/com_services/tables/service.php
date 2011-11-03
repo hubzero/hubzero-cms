@@ -46,14 +46,12 @@ class Service extends JTable
 	 */
 	var $id          	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title       	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'category'
@@ -62,14 +60,12 @@ class Service extends JTable
 	 */
 	var $category    	= NULL;  // @var varchar(50)
 
-
 	/**
 	 * Description for 'alias'
 	 * 
 	 * @var unknown
 	 */
 	var $alias		 	= NULL;  // @var varchar(50)
-
 
 	/**
 	 * Description for 'description'
@@ -78,14 +74,12 @@ class Service extends JTable
 	 */
 	var $description 	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'unitprice'
 	 * 
 	 * @var unknown
 	 */
 	var $unitprice   	= NULL;  // @var float
-
 
 	/**
 	 * Description for 'pointsprice'
@@ -94,14 +88,12 @@ class Service extends JTable
 	 */
 	var $pointsprice   	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'currency'
 	 * 
 	 * @var unknown
 	 */
 	var $currency    	= NULL;  // @var varchar(11)
-
 
 	/**
 	 * Description for 'maxunits'
@@ -110,14 +102,12 @@ class Service extends JTable
 	 */
 	var $maxunits 		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'minunits'
 	 * 
 	 * @var unknown
 	 */
 	var $minunits   	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'unitsize'
@@ -126,14 +116,12 @@ class Service extends JTable
 	 */
 	var $unitsize   	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'status'
 	 * 
 	 * @var unknown
 	 */
 	var $status   		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'restricted'
@@ -142,14 +130,12 @@ class Service extends JTable
 	 */
 	var $restricted   	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'ordering'
 	 * 
 	 * @var unknown
 	 */
 	var $ordering   	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'unitmeasure'
@@ -158,14 +144,12 @@ class Service extends JTable
 	 */
 	var $unitmeasure    = NULL;  // @var varchar
 
-
 	/**
 	 * Description for 'changed'
 	 * 
 	 * @var unknown
 	 */
 	var $changed     	= NULL;  // @var datetime
-
 
 	/**
 	 * Description for 'params'
@@ -175,7 +159,6 @@ class Service extends JTable
 	var $params   		= NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

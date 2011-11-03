@@ -139,7 +139,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= "\t\t\t".htmlentities($this->registration['login'],ENT_COMPAT,'UTF-8')."\n";
 			$html .= "\t\t\t".'<input name="login" id="login" type="hidden" value="'. htmlentities($this->registration['login'],ENT_COMPAT,'UTF-8') .'" />'."\n";
 			$html .= "\t\t".'</label>'."\n";
-		} else if ($this->registrationUsername != REG_HIDE) {	
+		} else if ($this->registrationUsername != REG_HIDE) {
 			$required = ($this->registrationUsername == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
 			$message = (!empty($this->xregistration->_invalid['login'])) ? '<span class="error">' . $this->xregistration->_invalid['login'] . '</span>' : '';
 			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
@@ -328,9 +328,9 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	// Personal information section
-	if ($this->registrationEmployment != REG_HIDE 
-	 || $this->registrationOrganization != REG_HIDE 
-	 || $this->registrationInterests != REG_HIDE 
+	if ($this->registrationEmployment != REG_HIDE
+	 || $this->registrationOrganization != REG_HIDE
+	 || $this->registrationInterests != REG_HIDE
 	 || $this->registrationReason != REG_HIDE
 	) {
 		$html .= "\t".'<div class="explaination">'."\n";
@@ -339,9 +339,9 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= ', and we will <em>not</em> contact your employer';
 		}
 		$html .= '.</p>'."\n";
-		if ($this->registrationCitizenship != REG_HIDE 
-		 || $this->registrationResidency != REG_HIDE 
-		 || $this->registrationSex != REG_HIDE 
+		if ($this->registrationCitizenship != REG_HIDE
+		 || $this->registrationResidency != REG_HIDE
+		 || $this->registrationSex != REG_HIDE
 		 || $this->registrationDisability != REG_HIDE
 		) {
 			$html .= "\t\t".'<p>We operate as a community service and are committed to serving a diverse population of users. This information helps us assess our progress towards that goal.</p>'."\n";
@@ -552,11 +552,11 @@ defined('_JEXEC') or die('Restricted access');
 		$html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 	}
 
-	if ($this->registrationCitizenship != REG_HIDE 
-	 || $this->registrationResidency != REG_HIDE 
-	 || $this->registrationSex != REG_HIDE 
-	 || $this->registrationDisability != REG_HIDE 
-	 || $this->registrationHispanic != REG_HIDE 
+	if ($this->registrationCitizenship != REG_HIDE
+	 || $this->registrationResidency != REG_HIDE
+	 || $this->registrationSex != REG_HIDE
+	 || $this->registrationDisability != REG_HIDE
+	 || $this->registrationHispanic != REG_HIDE
 	 || $this->registrationRace != REG_HIDE
 	) {
 		$html .= "\t".'<div class="explaination">'."\n";
@@ -566,7 +566,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		if ($this->registrationRace != REG_HIDE) {
 			$html .= ', but only United States citizens and Permanent Resident Visa holders need answer the next section';
-		}	
+		}
 		$html .= '</p>'."\n";
 
 		$html .= "\t\t".'<p>Please provide this information if you feel comfortable doing so. This information will not affect the level of service you receive.</p>'."\n";
@@ -613,7 +613,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			$countries = Hubzero_Geo::getcountries();
 			if ($countries) {
-				foreach ($countries as $country) 
+				foreach ($countries as $country)
 				{
 					if (strtoupper($country['code']) != 'US') {
 						$html .= "\t\t\t\t\t".'<option value="' . $country['code'] . '"';
@@ -718,15 +718,15 @@ defined('_JEXEC') or die('Restricted access');
 					if (!$disabilityyes) {
 						$disabilityyes = true;
 					}
-					if ($disabilityitem != 'blind' 
-					 && $disabilityitem != 'deaf' 
-					 && $disabilityitem != 'physical' 
-					 && $disabilityitem != 'learning' 
-					 && $disabilityitem != 'vocal' 
+					if ($disabilityitem != 'blind'
+					 && $disabilityitem != 'deaf'
+					 && $disabilityitem != 'physical'
+					 && $disabilityitem != 'learning'
+					 && $disabilityitem != 'vocal'
 					 && $disabilityitem != 'yes'
 					) {
 						$disabilityother = $disabilityitem;
-					}	
+					}
 				}
 			}
 
@@ -798,12 +798,12 @@ defined('_JEXEC') or die('Restricted access');
 					if (!$hispanicyes) {
 						$hispanicyes = true;
 					}
-					if ($hispanicitem != 'cuban' 
-					 && $hispanicitem != 'mexican' 
+					if ($hispanicitem != 'cuban'
+					 && $hispanicitem != 'mexican'
 					 && $hispanicitem != 'puertorican'
 					) {
 						$hispanicother = $hispanicitem;
-					}	
+					}
 				}
 			}
 

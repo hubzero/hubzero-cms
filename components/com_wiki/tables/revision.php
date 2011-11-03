@@ -46,14 +46,12 @@ class WikiPageRevision extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'pageid'
 	 * 
 	 * @var unknown
 	 */
 	var $pageid     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'version'
@@ -62,14 +60,12 @@ class WikiPageRevision extends JTable
 	 */
 	var $version    = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    = NULL;  // @var datetime
-
 
 	/**
 	 * Description for 'created_by'
@@ -78,14 +74,12 @@ class WikiPageRevision extends JTable
 	 */
 	var $created_by = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'minor_edit'
 	 * 
 	 * @var unknown
 	 */
 	var $minor_edit = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'pagetext'
@@ -94,7 +88,6 @@ class WikiPageRevision extends JTable
 	 */
 	var $pagetext   = NULL;  // @var text
 
-
 	/**
 	 * Description for 'pagehtml'
 	 * 
@@ -102,14 +95,12 @@ class WikiPageRevision extends JTable
 	 */
 	var $pagehtml   = NULL;  // @var text
 
-
 	/**
 	 * Description for 'approved'
 	 * 
 	 * @var unknown
 	 */
 	var $approved   = NULL;  // @var int(1)
-
 
 	/**
 	 * Description for 'summary'
@@ -119,7 +110,6 @@ class WikiPageRevision extends JTable
 	var $summary    = NULL;  // @var varchar(255)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -47,9 +47,6 @@ class modWishVoters
 	 */
 	private $params;
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modWishVoters
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modWishVoters
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modWishVoters
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_list'
@@ -141,9 +129,6 @@ class modWishVoters
 
 		return $html;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

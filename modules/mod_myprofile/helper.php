@@ -47,9 +47,6 @@ class modMyProfile
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modMyProfile
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -79,9 +73,6 @@ class modMyProfile
 	{
 		$this->attributes[$property] = $value;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__get'
@@ -100,7 +91,6 @@ class modMyProfile
 
 	//-----------
 	// TODO: needs a lot of work, esp w/r/t configuration
-
 
 	/**
 	 * Short description for 'display'

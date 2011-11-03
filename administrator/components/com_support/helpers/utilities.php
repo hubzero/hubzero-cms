@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Support Utilities class
 //----------------------------------------------------------
 
-
 /**
  * Long description (if any) ...
  */

@@ -111,7 +111,6 @@ Class GroupPages extends JTable
 	// Displaying Pages
 	///////////////////////////////////////
 
-
 	/**
 	 * Short description for 'getPages'
 	 * 

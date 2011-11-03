@@ -335,7 +335,7 @@ function submitbutton(pressbutton)
 							<td>
 								<?php
 									$t = array();
-									foreach($this->tags as $tag) { 
+									foreach($this->tags as $tag) {
 										$t[] = $tag['raw_tag'];
 									}
 								?>
@@ -356,7 +356,7 @@ function submitbutton(pressbutton)
 							<td>
 								<?php
 									$b = array();
-									foreach($this->badges as $badge) { 
+									foreach($this->badges as $badge) {
 										$b[] = $badge['raw_tag'];
 									}
 								?>

@@ -40,7 +40,6 @@ class UsageHelper
 {
 	// Get the database for storing stats
 
-
 	/**
 	 * Short description for 'getUDBO'
 	 * 
@@ -80,7 +79,6 @@ class UsageHelper
 	//----------------------------------//
 	//  Print Top X List from Database  //
 	//----------------------------------//
-
 
 	/**
 	 * Short description for 'toplist'
@@ -273,7 +271,6 @@ class UsageHelper
 	//  Reindexing All Elements
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'array_unique_reindex'
 	 * 
@@ -299,7 +296,6 @@ class UsageHelper
 	//  Returns TRUE if there is data in the database
 	//  for the date passed to it, FALSE otherwise.
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'check_for_data'
@@ -373,7 +369,6 @@ class UsageHelper
 	// Date Format functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'dateformat'
 	 * 
@@ -445,7 +440,6 @@ class UsageHelper
 	//----------------------------------------------------------
 	// Selected Date functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'seldate_value'

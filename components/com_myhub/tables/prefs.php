@@ -46,14 +46,12 @@ class MyhubPrefs extends JTable
 	 */
 	var $uid   = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'prefs'
 	 * 
 	 * @var unknown
 	 */
 	var $prefs = NULL;  // varchar(200)
-
 
 	/**
 	 * Description for 'modified'
@@ -63,7 +61,6 @@ class MyhubPrefs extends JTable
 	var $modified = NULL;  // datetime(0000-00-00 00:00:00)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -47,7 +47,7 @@ class XImportController extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function execute() 
+	public function execute()
 	{
 		if (!$this->_authorize()) {
 			JError::raiseError(403, JText::_('Access Restricted'));
@@ -58,10 +58,10 @@ class XImportController extends Hubzero_Controller
 
 		$this->_task = strtolower(JRequest::getVar('task', 'browse'));
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
-			case 'run': 
-				$this->_run(); 
+			case 'run':
+				$this->_run();
 			break;
 
 			case 'browse':
@@ -76,7 +76,7 @@ class XImportController extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	protected function _buildPathway() 
+	protected function _buildPathway()
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -100,7 +100,7 @@ class XImportController extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	protected function _browse() 
+	protected function _browse()
 	{
 		$this->_buildPathway();
 
@@ -122,7 +122,7 @@ class XImportController extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	protected function _run() 
+	protected function _run()
 	{
 		// Instantiate a new view
 		$view = new JView(array('name'=>'run'));
@@ -178,7 +178,7 @@ class XImportController extends Hubzero_Controller
 	 * @param	string	$dir	Directory to scan
 	 * @return	array
 	 */
-	private function _scanDirectory($dir) 
+	private function _scanDirectory($dir)
 	{
 	   $path = array();
 	   $stack[] = $dir;
@@ -208,7 +208,7 @@ class XImportController extends Hubzero_Controller
 	 *
 	 * @return	array()
 	 */
-	private function _readLog() 
+	private function _readLog()
 	{
 		$log = array();
 
@@ -216,16 +216,16 @@ class XImportController extends Hubzero_Controller
 			return $log;
 		}
 
-		$fp = fopen($this->_log, "r"); 
-		if ($fp) { 
-			while (!feof($fp)) 
+		$fp = fopen($this->_log, "r");
+		if ($fp) {
+			while (!feof($fp))
 			{
 				$line = fgets($fp);
 				$timestamp = substr($line, 0, 19);
 				$script = trim(str_replace($timestamp, '', $line));
 				if (!isset($log[$script])) {
 					$log[$script] = array(
-						'lastRun' => '', 
+						'lastRun' => '',
 						'totalRuns' => 0
 					);
 				}

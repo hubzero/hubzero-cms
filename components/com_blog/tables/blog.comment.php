@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Blog Comment database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'BlogComment'
  * 
@@ -51,14 +50,12 @@ class BlogComment extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) primary key
 
-
 	/**
 	 * Description for 'entry_id'
 	 * 
 	 * @var unknown
 	 */
 	var $entry_id   = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'content'
@@ -67,14 +64,12 @@ class BlogComment extends JTable
 	 */
 	var $content    = NULL;  // @var text
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    = NULL;  // @var datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -83,14 +78,12 @@ class BlogComment extends JTable
 	 */
 	var $created_by = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'anonymous'
 	 * 
 	 * @var unknown
 	 */
 	var $anonymous  = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'parent'
@@ -100,7 +93,6 @@ class BlogComment extends JTable
 	var $parent     = NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -47,15 +47,15 @@ class SupportControllerCategories extends Hubzero_Controller
 		// Get paging variables
 		$this->view->filters = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.categories.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.categories.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.categories.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.categories.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -70,8 +70,8 @@ class SupportControllerCategories extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -89,7 +89,7 @@ class SupportControllerCategories extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function addTask() 
+	public function addTask()
 	{
 		$this->view->setLayout('edit');
 		$this->editTask();
@@ -100,13 +100,13 @@ class SupportControllerCategories extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask($row=null) 
+	public function editTask($row=null)
 	{
 		if (is_object($edit))
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$id = JRequest::getInt('id', 0);
@@ -116,7 +116,7 @@ class SupportControllerCategories extends Hubzero_Controller
 			$this->view->row->load($id);
 
 			// Set action
-			if (!$this->view->row->id) 
+			if (!$this->view->row->id)
 			{
 				$this->view->row->category = '';
 				$this->view->row->section = 1;
@@ -128,7 +128,7 @@ class SupportControllerCategories extends Hubzero_Controller
 		$this->view->sections = $ss->getSections();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -142,7 +142,7 @@ class SupportControllerCategories extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function saveTask() 
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -162,7 +162,7 @@ class SupportControllerCategories extends Hubzero_Controller
 		$row->category = trim($row->category);
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -170,7 +170,7 @@ class SupportControllerCategories extends Hubzero_Controller
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -187,27 +187,27 @@ class SupportControllerCategories extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function removeTask() 
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array(0);
 		}
 
 		// Check for an ID
-		if (count($ids) < 1) 
+		if (count($ids) < 1)
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE');
 			return;
 		}
 
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Delete message
 			$cat = new SupportCategory($this->database);

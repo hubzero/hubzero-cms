@@ -79,7 +79,6 @@ class plgUsageRegion extends JPlugin
 	//  Print Region List from Database
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'regionlist'
 	 * 

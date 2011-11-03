@@ -46,14 +46,12 @@ class SupportAroAco extends JTable
 	 */
 	var $id      = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'aro_id'
 	 * 
 	 * @var unknown
 	 */
 	var $aro_id  = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'aco_id'
@@ -62,14 +60,12 @@ class SupportAroAco extends JTable
 	 */
 	var $aco_id  = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'action_create'
 	 * 
 	 * @var unknown
 	 */
 	var $action_create = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'action_read'
@@ -78,14 +74,12 @@ class SupportAroAco extends JTable
 	 */
 	var $action_read   = NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'action_update'
 	 * 
 	 * @var unknown
 	 */
 	var $action_update = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'action_delete'
@@ -95,7 +89,6 @@ class SupportAroAco extends JTable
 	var $action_delete = NULL;  // @var int(3)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

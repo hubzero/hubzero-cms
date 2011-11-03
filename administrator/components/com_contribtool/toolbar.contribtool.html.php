@@ -36,7 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Class for toolbar generation
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ContribtoolToolbar'
  * 

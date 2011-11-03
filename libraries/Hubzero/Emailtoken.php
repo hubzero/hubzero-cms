@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class Hubzero_Email_Token  
+class Hubzero_Email_Token
 {
     const emailTokenTicket = 1;
     const emailTokenGroupThread = 2;
@@ -42,7 +42,7 @@ class Hubzero_Email_Token
     /**
      * Read encryption configuration from config file
      */
-    public function __construct() 
+    public function __construct()
 	{
 		$config = JFactory::getConfig();
 		if(empty($config))

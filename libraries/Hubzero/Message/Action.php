@@ -46,7 +46,6 @@ class Hubzero_Message_Action extends JTable
 	 */
 	var $id          = NULL;  // @var int(11) Primary key
 
-
 /**
  * Description for 'class'
  * 
@@ -54,14 +53,12 @@ class Hubzero_Message_Action extends JTable
  */
 	var $class       = NULL;  // @var varchar(20)
 
-
 	/**
 	 * Description for 'element'
 	 * 
 	 * @var unknown
 	 */
 	var $element     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'description'
@@ -71,7 +68,6 @@ class Hubzero_Message_Action extends JTable
 	var $description = NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

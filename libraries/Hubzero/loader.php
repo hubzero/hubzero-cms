@@ -37,5 +37,5 @@ function ximport($path) {
     } else {
         return JLoader::import('.' . $path, JPATH_PLUGINS . DS . "xhub" . DS . "xlibraries
 ");
-    } 
+    }
 }

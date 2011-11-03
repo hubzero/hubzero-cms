@@ -268,14 +268,12 @@ class Hubzero_Tool_Version
     //  Database Column Name			LDAP Field Name		Database Table Name
     //  ======================================================================
 
-
 	/**
 	 * Description for 'id'
 	 * 
 	 * @var unknown
 	 */
     private $id = null;                 //					    jos_tool_version
-
 
 	/**
 	 * Description for 'toolname'
@@ -284,14 +282,12 @@ class Hubzero_Tool_Version
 	 */
     private $toolname = null;           //					    jos_tool_version
 
-
 	/**
 	 * Description for 'instance'
 	 * 
 	 * @var string
 	 */
     private $instance = null;           // tool				    jos_tool_version
-
 
 	/**
 	 * Description for 'title'
@@ -300,14 +296,12 @@ class Hubzero_Tool_Version
 	 */
     private $title = null;              // cn				    jos_tool_version
 
-
 	/**
 	 * Description for 'description'
 	 * 
 	 * @var unknown
 	 */
     private $description = null;        // description			jos_tool_version
-
 
 	/**
 	 * Description for 'fulltext'
@@ -316,14 +310,12 @@ class Hubzero_Tool_Version
 	 */
     private $fulltext = null;           //					    jos_tool_version
 
-
 	/**
 	 * Description for 'version'
 	 * 
 	 * @var unknown
 	 */
     private $version = null;            // version			    jos_tool_version
-
 
 	/**
 	 * Description for 'revision'
@@ -332,14 +324,12 @@ class Hubzero_Tool_Version
 	 */
     private $revision = null;           // revision			    jos_tool_version
 
-
 	/**
 	 * Description for 'toolaccess'
 	 * 
 	 * @var unknown
 	 */
     private $toolaccess = null;         // public				jos_tool_version
-
 
 	/**
 	 * Description for 'codeaccess'
@@ -348,14 +338,12 @@ class Hubzero_Tool_Version
 	 */
     private $codeaccess = null;         // sourcePublic		    jos_tool_version
 
-
 	/**
 	 * Description for 'wikiaccess'
 	 * 
 	 * @var unknown
 	 */
     private $wikiaccess = null;         // projectPublic		jos_tool_version
-
 
 	/**
 	 * Description for 'state'
@@ -364,14 +352,12 @@ class Hubzero_Tool_Version
 	 */
     private $state = null;              // state				jos_tool_version
 
-
 	/**
 	 * Description for 'released_by'
 	 * 
 	 * @var unknown
 	 */
     private $released_by = null;        //					    jos_tool_version
-
 
 	/**
 	 * Description for 'released'
@@ -380,14 +366,12 @@ class Hubzero_Tool_Version
 	 */
     private $released = null;           // publishDate			jos_tool_version
 
-
 	/**
 	 * Description for 'unpublished'
 	 * 
 	 * @var unknown
 	 */
     private $unpublished = null;        // unpublishDate		jos_tool_version
-
 
 	/**
 	 * Description for 'exportControl'
@@ -396,14 +380,12 @@ class Hubzero_Tool_Version
 	 */
     private $exportControl = null;      // exportControl		jos_tool_version
 
-
 	/**
 	 * Description for 'license'
 	 * 
 	 * @var unknown
 	 */
     private $license = null;            // usageAgreementText   jos_tool_version
-
 
 	/**
 	 * Description for 'vnc_geometry'
@@ -412,14 +394,12 @@ class Hubzero_Tool_Version
 	 */
     private $vnc_geometry = null;       // vncGeometry			jos_tool_version
 
-
 	/**
 	 * Description for 'vnc_depth'
 	 * 
 	 * @var unknown
 	 */
     private $vnc_depth = null;          // vncDepth			    jos_tool_version
-
 
 	/**
 	 * Description for 'vnc_timeout'
@@ -428,14 +408,12 @@ class Hubzero_Tool_Version
 	 */
     private $vnc_timeout = null;        // vncTimeout			jos_tool_version
 
-
 	/**
 	 * Description for 'vnc_command'
 	 * 
 	 * @var unknown
 	 */
     private $vnc_command = null;        // vncCommand			jos_tool_version
-
 
 	/**
 	 * Description for 'mw'
@@ -444,14 +422,12 @@ class Hubzero_Tool_Version
 	 */
     private $mw = null;                 // defaultMiddleware	jos_tool_version
 
-
 	/**
 	 * Description for 'priority'
 	 * 
 	 * @var unknown
 	 */
     private $priority = null;           // priority			    jos_tool_version
-
 
 	/**
 	 * Description for 'toolid'
@@ -460,14 +436,12 @@ class Hubzero_Tool_Version
 	 */
     private $toolid = null;             //					    jos_tool_version
 
-
 	/**
 	 * Description for 'alias'
 	 * 
 	 * @var array
 	 */
     private $alias = array();           // alias [array]		jos_tool_aliases
-
 
 	/**
 	 * Description for 'middleware'
@@ -476,14 +450,12 @@ class Hubzero_Tool_Version
 	 */
     private $middleware = array();      // middleware [array]	jos_tool_middleware
 
-
 	/**
 	 * Description for 'hostreq'
 	 * 
 	 * @var array
 	 */
     private $hostreq = array();         // vncHostReq [array]	jos_tool_hostreq
-
 
 	/**
 	 * Description for 'author'
@@ -492,7 +464,6 @@ class Hubzero_Tool_Version
 	 */
     private $author = array();          // author [array]		jos_tool_authors
 
-
 	/**
 	 * Description for 'member'
 	 * 
@@ -500,14 +471,12 @@ class Hubzero_Tool_Version
 	 */
     private $member = array();          // member [array]		jos_tool_groups
 
-
 	/**
 	 * Description for 'owner'
 	 * 
 	 * @var array
 	 */
     private $owner = array();           // owner [array]		jos_tool_groups
-
 
 	/**
 	 * Description for '_list_keys'

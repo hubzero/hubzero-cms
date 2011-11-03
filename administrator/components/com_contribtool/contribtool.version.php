@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ToolVersion'
  * 
@@ -51,14 +50,12 @@ class ToolVersion extends  JTable
 	 */
 	var $id      	   = NULL;  // @var int (primary key)
 
-
 	/**
 	 * Description for 'toolid'
 	 * 
 	 * @var string
 	 */
 	var $toolid        = NULL;  // @var int (11)
-
 
 	/**
 	 * Description for 'toolname'
@@ -67,14 +64,12 @@ class ToolVersion extends  JTable
 	 */
 	var $toolname      = NULL;  // @var string (15)
 
-
 	/**
 	 * Description for 'instance'
 	 * 
 	 * @var unknown
 	 */
 	var $instance      = NULL; // @var string (30)
-
 
 	/**
 	 * Description for 'title'
@@ -83,14 +78,12 @@ class ToolVersion extends  JTable
 	 */
 	var $title         = NULL;  // @var string (127)
 
-
 	/**
 	 * Description for 'description'
 	 * 
 	 * @var unknown
 	 */
 	var $description   = NULL;  // @var text
-
 
 	/**
 	 * Description for 'fulltext'
@@ -99,14 +92,12 @@ class ToolVersion extends  JTable
 	 */
 	var $fulltext      = NULL;  // @var text
 
-
 	/**
 	 * Description for 'toolaccess'
 	 * 
 	 * @var unknown
 	 */
 	var $toolaccess    = NULL;  // @var string (15)
-
 
 	/**
 	 * Description for 'codeaccess'
@@ -115,14 +106,12 @@ class ToolVersion extends  JTable
 	 */
 	var $codeaccess	   = NULL;  // @var string (15)
 
-
 	/**
 	 * Description for 'wikiaccess'
 	 * 
 	 * @var unknown
 	 */
 	var $wikiaccess	   = NULL;  // @var string (15)
-
 
 	/**
 	 * Description for 'version'
@@ -131,14 +120,12 @@ class ToolVersion extends  JTable
 	 */
 	var $version       = NULL;  // @var string (15)
 
-
 	/**
 	 * Description for 'revision'
 	 * 
 	 * @var unknown
 	 */
 	var $revision 	   = NULL;  // @var int
-
 
 	/**
 	 * Description for 'state'
@@ -147,14 +134,12 @@ class ToolVersion extends  JTable
 	 */
 	var $state         = NULL;  // @var int (11)
 
-
 	/**
 	 * Description for 'vnc_geometry'
 	 * 
 	 * @var unknown
 	 */
 	var $vnc_geometry  = NULL;  // @var string (15)
-
 
 	/**
 	 * Description for 'vnc_command'
@@ -163,14 +148,12 @@ class ToolVersion extends  JTable
 	 */
 	var $vnc_command   = NULL;  // @var string (100)
 
-
 	/**
 	 * Description for 'mw'
 	 * 
 	 * @var unknown
 	 */
 	var $mw   		   = NULL;  // @var string (15)
-
 
 	/**
 	 * Description for 'released'
@@ -179,14 +162,12 @@ class ToolVersion extends  JTable
 	 */
 	var $released      = NULL;  // @var dateandtime
 
-
 	/**
 	 * Description for 'released_by'
 	 * 
 	 * @var unknown
 	 */
 	var $released_by   = NULL;  // @var string
-
 
 	/**
 	 * Description for 'unpublished'
@@ -195,7 +176,6 @@ class ToolVersion extends  JTable
 	 */
 	var $unpublished   = NULL;  // @var dateandtime
 
-
 	/**
 	 * Description for 'license'
 	 * 
@@ -203,14 +183,12 @@ class ToolVersion extends  JTable
 	 */
 	var $license	   = NULL;  // @var text
 
-
 	/**
 	 * Description for 'params'
 	 * 
 	 * @var unknown
 	 */
 	var $params        = NULL;  // @var text
-
 
 	/**
 	 * Description for 'exportControl'
@@ -220,7 +198,6 @@ class ToolVersion extends  JTable
 	var $exportControl = NULL;  // @var string (15)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -268,7 +245,6 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'loadFromInstance'
 	 * 
@@ -314,7 +290,6 @@ class ToolVersion extends  JTable
 		return $this->_db->loadObjectList();
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getVersions'
@@ -430,7 +405,6 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'setUnpublishDate'
 	 * 
@@ -465,7 +439,6 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'unpublish'
 	 * 
@@ -499,7 +472,6 @@ class ToolVersion extends  JTable
 		}
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'save'
@@ -583,7 +555,6 @@ class ToolVersion extends  JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getToolVersions'
 	 * 
@@ -639,7 +610,6 @@ class ToolVersion extends  JTable
 		return $versions;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getVersionInfo'
@@ -771,7 +741,6 @@ class ToolVersion extends  JTable
 	// Validate input
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'validLicense'
 	 * 
@@ -808,7 +777,6 @@ class ToolVersion extends  JTable
 
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'validToolReg'
@@ -982,7 +950,6 @@ class ToolVersion extends  JTable
 
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getToolname'

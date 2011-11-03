@@ -99,7 +99,7 @@ function pagination_list_render($list)
 	return $html;
 }
 
-function pagination_item_active(&$item) 
+function pagination_item_active(&$item)
 {
 	if ($item->base > 0) {
 		return '<a title="' . $item->text . '" onclick="javascript: document.adminForm.limitstart.value=' . $item->base . '; submitform();return false;">' . $item->text . '</a>';
@@ -134,7 +134,7 @@ function pagination_getLimitBox($total, $limit)
 	return $html;
 }
 
-function pagination_item_inactive(&$item) 
+function pagination_item_inactive(&$item)
 {
 	return '<span>'.$item->text.'</span>';
 }

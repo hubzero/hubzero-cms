@@ -46,14 +46,12 @@ class Hubzero_Message_Notify extends JTable
 	 */
 	var $id       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'method'
@@ -62,14 +60,12 @@ class Hubzero_Message_Notify extends JTable
 	 */
 	var $method   = NULL;  // @var text
 
-
 	/**
 	 * Description for 'type'
 	 * 
 	 * @var unknown
 	 */
 	var $type     = NULL;  // @var text
-
 
 	/**
 	 * Description for 'priority'
@@ -79,7 +75,6 @@ class Hubzero_Message_Notify extends JTable
 	var $priority = NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

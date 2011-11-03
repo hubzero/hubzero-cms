@@ -69,7 +69,6 @@ class FeaturesController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_login'
 	 * 

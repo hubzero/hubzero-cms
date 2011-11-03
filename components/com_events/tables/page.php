@@ -45,14 +45,12 @@ class EventsPage extends JTable
 	 */
 	var $id          = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'event_id'
 	 * 
 	 * @var string
 	 */
 	var $event_id    = NULL;  // int(11)
-
 
 	/**
 	 * Description for 'alias'
@@ -61,14 +59,12 @@ class EventsPage extends JTable
 	 */
 	var $alias       = NULL;  // string(100)
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title       = NULL;  // string(250)
-
 
 	/**
 	 * Description for 'pagetext'
@@ -77,14 +73,12 @@ class EventsPage extends JTable
 	 */
 	var $pagetext    = NULL;  // text
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created     = NULL;  // datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -93,14 +87,12 @@ class EventsPage extends JTable
 	 */
 	var $created_by  = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'modified'
 	 * 
 	 * @var unknown
 	 */
 	var $modified    = NULL;  // datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'modified_by'
@@ -109,14 +101,12 @@ class EventsPage extends JTable
 	 */
 	var $modified_by = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'ordering'
 	 * 
 	 * @var string
 	 */
 	var $ordering    = NULL;  // int(11)
-
 
 	/**
 	 * Description for 'params'
@@ -126,7 +116,6 @@ class EventsPage extends JTable
 	var $params      = NULL;  // text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -46,7 +46,6 @@ class JobApplication extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'jid'
 	 * 
@@ -54,14 +53,12 @@ class JobApplication extends JTable
 	 */
 	var $jid		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'applied'

@@ -31,24 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class CitationsType extends JTable 
+class CitationsType extends JTable
 {
-	var $id    			= NULL;  
+	var $id    			= NULL;
 	var $type			= NULL;
 	var $type_title		= NULL;
 	var $type_desc 		= NULL;
 	var $type_export  	= NULL;
 
-	//-----------
-	
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__citations_types', 'id', $db );
 	}
 
-	//-----------
-	
-	public function getType( $id = "" ) 
+	public function getType( $id = "" )
 	{
 		$where = ($id != "") ? "WHERE id='{$id}'" : "";
 

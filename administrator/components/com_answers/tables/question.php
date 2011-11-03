@@ -46,14 +46,12 @@ class AnswersQuestion extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'subject'
 	 * 
 	 * @var unknown
 	 */
 	var $subject    = NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'question'
@@ -62,14 +60,12 @@ class AnswersQuestion extends JTable
 	 */
 	var $question   = NULL;  // @var text
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -78,14 +74,12 @@ class AnswersQuestion extends JTable
 	 */
 	var $created_by = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'state'
 	 * 
 	 * @var unknown
 	 */
 	var $state      = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'anonymous'
@@ -94,7 +88,6 @@ class AnswersQuestion extends JTable
 	 */
 	var $anonymous  = NULL;  // @var int(2)
 
-
 	/**
 	 * Description for 'email'
 	 * 
@@ -102,14 +95,12 @@ class AnswersQuestion extends JTable
 	 */
 	var $email      = NULL;  // @var int(2)
 
-
 	/**
 	 * Description for 'helpful'
 	 * 
 	 * @var unknown
 	 */
 	var $helpful    = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'reward'
@@ -119,7 +110,6 @@ class AnswersQuestion extends JTable
 	var $reward 	= NULL;  // @var int(2)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -312,9 +302,7 @@ class AnswersQuestion extends JTable
 		return $this->_db->loadObjectList();
 	}
 
-	//-----------
-	
-	public function getQuestionID( $id, $which ) 
+	public function getQuestionID( $id, $which )
 	{
 		$query  = "SELECT a.id ";
 		$query .= "FROM #__answers_questions AS a ";

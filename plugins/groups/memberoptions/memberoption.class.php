@@ -38,17 +38,15 @@ class XGroups_MemberOption extends JTable
 	var $userid			= NULL;		// int		
 	var $optionname		= NULL;		// varchar(100)
 	var $optionvalue	= NULL;		// varchar(100)
-	
+
 	//-----------
-	
+
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__xgroups_memberoption', 'id', $db );
 	}
 
-	//-----------
-	
-	public function check() 
+	public function check()
 	{
 
 		if (trim( $this->gidNumber ) == ''){
@@ -74,18 +72,16 @@ class XGroups_MemberOption extends JTable
 		return true;
 	}
 
-	//-----------
-	
-	public function loadRecord($gidNumber=NULL, $userid=NULL, $optionname=NULL) 
+	public function loadRecord($gidNumber=NULL, $userid=NULL, $optionname=NULL)
 	{
 
-		if (!$gidNumber) 	
+		if (!$gidNumber)
 			$gidNumber = $this->gidNumber;
 
-		if (!$userid) 
+		if (!$userid)
 			$usuerid = $this->userid;
 
-		if (!$optionname) 
+		if (!$optionname)
 			$optionname = $this->optionname;
 
 		if (!$gidNumber || !$userid || !$optionname)
@@ -95,13 +91,13 @@ class XGroups_MemberOption extends JTable
 
 //		echo ($sql);
 //		exit;
-		
+
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
@@ -109,7 +105,5 @@ class XGroups_MemberOption extends JTable
 
 	}
 
-	//-----------
-	
 }
 

@@ -63,7 +63,6 @@ class UsageController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'view'
 	 * 

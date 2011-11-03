@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Forum helper class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ForumHelper'
  * 

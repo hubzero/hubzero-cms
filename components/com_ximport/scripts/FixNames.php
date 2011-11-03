@@ -35,7 +35,7 @@ class FixNames extends XImportHelperScript
 {
 	protected $_description = 'Import givenName/middleName/surname from name.';
 
-	public function run() 
+	public function run()
 	{
 		echo 'Fixing names...<br />';
 
@@ -45,13 +45,13 @@ class FixNames extends XImportHelperScript
 
 		$result = $this->_db->query();
 
-		if ($result === false) 
+		if ($result === false)
 		{
 			echo 'Error retrieving data from xprofiles table: ' . $this->_db->getErrorMsg();
 			return false;
 		}
 
-		while ($row = mysql_fetch_assoc( $result )) 
+		while ($row = mysql_fetch_assoc( $result ))
 		{
 			$this->_fixName($row['uidNumber']);
 		}

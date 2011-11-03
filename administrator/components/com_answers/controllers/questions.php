@@ -38,7 +38,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
 		$this->banking = $upconfig->get('bankAccounts');
 
-		if ($this->banking) 
+		if ($this->banking)
 		{
 			ximport('Hubzero_Bank');
 		}
@@ -55,35 +55,35 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Filters
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.questions.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.questions.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.questions.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.questions.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		$this->view->filters['tag']      = $app->getUserStateFromRequest(
-			$this->_option . '.questions.tag', 
-			'tag', 
+			$this->_option . '.questions.tag',
+			'tag',
 			''
 		);
 		$this->view->filters['q']        = $app->getUserStateFromRequest(
-			$this->_option . '.questions.q', 
-			'q', 
+			$this->_option . '.questions.q',
+			'q',
 			''
 		);
 		$this->view->filters['filterby'] = $app->getUserStateFromRequest(
-			$this->_option . '.questions.filterby', 
-			'filterby', 
+			$this->_option . '.questions.filterby',
+			'filterby',
 			'all'
 		);
 		$this->view->filters['sortby']   = $app->getUserStateFromRequest(
-			$this->_option . '.questions.sortby', 
-			'sortby', 
+			$this->_option . '.questions.sortby',
+			'sortby',
 			'date'
 		);
 
@@ -96,22 +96,22 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->results = $aq->getResults($this->view->filters);
 
 		// Did we get any results?
-		if (count($this->view->results) > 0) 
+		if (count($this->view->results) > 0)
 		{
 			$ip = Hubzero_Environment::ipAddress();
 			$ar = new AnswersResponse($this->database);
 			$at = new AnswersTags($this->database);
 
 			// Do some processing on the results
-			for ($i=0; $i < count($this->view->results); $i++) 
+			for ($i=0; $i < count($this->view->results); $i++)
 			{
 				$row =& $this->view->results[$i];
 
-				if ($this->banking) 
+				if ($this->banking)
 				{
 					$row->points = $this->_getPointReward($row->id);
-				} 
-				else 
+				}
+				else
 				{
 					$row->points = 0;
 				}
@@ -129,13 +129,13 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -160,11 +160,11 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask() 
+	public function editTask()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
-		if (is_array($ids)) 
+		if (is_array($ids))
 		{
 			$id = $ids[0];
 		}
@@ -173,7 +173,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->row = new AnswersQuestion($this->database);
 		$this->view->row->load($id);
 
-		if ($id) 
+		if ($id)
 		{
 			// Remove some tags so edit box only displays text (no HTML)
 			$this->view->row->question = AnswersHtml::unpee($this->view->row->question);
@@ -184,8 +184,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			{
 				$mytagarray[] = $tag_men->raw_tag;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			// Creating new
 			$this->view->row->subject     = '';
@@ -201,7 +201,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->tags = implode(', ', $mytagarray);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -210,7 +210,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->display();
 	}
 
-	public function saveTask() 
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -220,7 +220,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$question = array_map('trim', $question);
 
 		// Ensure we have at least one tag
-		if (!$question['tags']) 
+		if (!$question['tags'])
 		{
 			echo AnswersHtml::alert(JText::_('Question must have at least 1 tag'));
 			exit();
@@ -228,7 +228,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Initiate extended database class
 		$row = new AnswersQuestion($this->database);
-		if (!$row->bind($question)) 
+		if (!$row->bind($question))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -242,14 +242,14 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$row->question = nl2br($row->question);
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
 		// Store content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -264,7 +264,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->_message = JText::_('Question Successfully Saved');
 	}
 
-	public function removeTask() 
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -272,7 +272,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		if (count($ids) <= 0) 
+		if (count($ids) <= 0)
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
@@ -290,7 +290,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$aq->reward = 0;
 
 			// Store new content
-			if (!$aq->store()) 
+			if (!$aq->store())
 			{
 				JError::raiseError(500, $aq->getError());
 				return;
@@ -305,7 +305,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				$creator =& JUser::getInstance($aq->created_by);
 
 				// Make credit adjustment
-				if (is_object($creator)) 
+				if (is_object($creator))
 				{
 					$BTL = new Hubzero_Bank_Teller($this->database, $creator->get('id'));
 					$credit = $BTL->credit_summary();
@@ -318,19 +318,19 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$ip = Hubzero_Environment::ipAddress();
 			$answers = $ar->getRecords(array('ip' => $ip, 'qid' => $id));
 
-			if ($answers) 
+			if ($answers)
 			{
 				foreach ($answers as $answer)
 				{
 					// Delete response's log entry
-					if (!$al->deleteLog($answer->id)) 
+					if (!$al->deleteLog($answer->id))
 					{
 						JError::raiseError(500, $al->getError());
 						return;
 					}
 
 					// Delete response
-					if (!$ar->deleteResponse($answer->id)) 
+					if (!$ar->deleteResponse($answer->id))
 					{
 						JError::raiseError(500, $ar->getError());
 						return;
@@ -344,7 +344,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_message = JText::_('Question deleted');		
+		$this->_message = JText::_('Question deleted');
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
@@ -358,7 +358,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->stateTask();
 	}
 
-	public function stateTask() 
+	public function stateTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
@@ -369,7 +369,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$publish = ($this->_task == 'close') ? 1 : 0;
 
 		// Check for an ID
-		if (count($ids) < 1) 
+		if (count($ids) < 1)
 		{
 			$action = ($publish == 1) ? JText::_('close') : JText::_('open');
 
@@ -383,27 +383,27 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher =& JDispatcher::getInstance();
 
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Update record(s)
 			$aq = new AnswersQuestion($this->database);
 			$aq->load(intval($id));
 			$aq->state = $publish;
-			if ($publish == 1) 
+			if ($publish == 1)
 			{
 				$aq->reward = 0;
 			}
-			if (!$aq->store()) 
+			if (!$aq->store())
 			{
 				JError::raiseError(500, $aq->getError());
 				return;
 			}
 
-			if ($publish == 1) 
+			if ($publish == 1)
 			{
 				$creator =& JUser::getInstance($aq->created_by);
 
-				if ($this->banking) 
+				if ($this->banking)
 				{
 					// Remove hold
 					$BT = new Hubzero_Bank_Transaction($this->database);
@@ -411,7 +411,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 					$BT->deleteRecords('answers', 'hold', $id);
 
 					// Make credit adjustment
-					if (is_object($creator)) 
+					if (is_object($creator))
 					{
 						$BTL = new Hubzero_Bank_Teller($this->database, $creator->get('id'));
 						$credit = $BTL->credit_summary();
@@ -421,7 +421,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				}
 
 				// Call the plugin
-				if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($creator->get('id')), $this->_option, $id))) 
+				if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($creator->get('id')), $this->_option, $id)))
 				{
 					$this->setError(JText::_('Failed to remove alert.'));
 				}
@@ -429,11 +429,11 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// set message
-		if ($publish == 1) 
+		if ($publish == 1)
 		{
 			$this->_message = JText::_(count($ids) . ' Item(s) successfully Closed');
-		} 
-		else if ($publish == 0) 
+		}
+		else if ($publish == 0)
 		{
 			$this->_message = JText::_(count($ids) . ' Item(s) successfully Opened');
 		}
@@ -441,15 +441,11 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
-	//-----------
-
 	public function cancel()
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
-	//-----------
-	
 	private function _getPointReward($id)
 	{
 		// Check if question owner assigned a reward for answering his Q
@@ -457,8 +453,6 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		return $BT->getAmount('answers', 'hold', $id);
 	}
 
-	//-----------
-	
 	private function _getAbuseReports($id, $cat)
 	{
 		// Incoming
@@ -473,25 +467,23 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		return $ra->getCount($filters);
 	}
 
-	//-----------
-
 	private function _getTags($id, $tagger_id=0, $strength=0)
 	{
 		$sql = "SELECT DISTINCT t.* FROM #__tags AS t, #__tags_object AS rt WHERE rt.objectid=" . $id . " AND rt.tbl='answers' AND rt.tagid=t.id";
-		if ($tagger_id != 0) 
+		if ($tagger_id != 0)
 		{
 			$sql .= " AND rt.taggerid=" . $tagger_id;
 		}
-		if ($strength) 
+		if ($strength)
 		{
 			$sql .= " AND rt.strength=" . $strength;
 		}
 		$this->database->setQuery($sql);
-		if ($this->database->query()) 
+		if ($this->database->query())
 		{
 			$tags = $this->database->loadObjectList();
-		} 
-		else 
+		}
+		else
 		{
 			$tags = NULL;
 		}

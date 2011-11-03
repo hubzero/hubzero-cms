@@ -42,7 +42,6 @@ class ContribtoolHelper
 	// Misceleneous contribtool functions
 	//------------------------------------
 
-
 	/**
 	 * Short description for 'makeArray'
 	 * 
@@ -98,7 +97,6 @@ class ContribtoolHelper
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getLicenses'
 	 * 
@@ -141,7 +139,6 @@ class ContribtoolHelper
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getLogins'
 	 * 
@@ -163,7 +160,6 @@ class ContribtoolHelper
 		return $logins;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'record_view'

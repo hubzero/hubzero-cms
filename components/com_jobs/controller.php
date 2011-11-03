@@ -145,7 +145,6 @@ class JobsController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_buildTitle'
 	 * 
@@ -244,7 +243,6 @@ class JobsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'login'
 	 * 
@@ -265,7 +263,6 @@ class JobsController extends Hubzero_Controller
 
 	//-----------
 	// NOTE: This view should only be called through AJAX
-
 
 	/**
 	 * Short description for 'plugin'
@@ -326,7 +323,6 @@ class JobsController extends Hubzero_Controller
 	//-----------------------------
 	// Introductory page/ Jobs list
 	//-----------------------------
-
 
 	/**
 	 * Short description for 'view'
@@ -427,7 +423,6 @@ class JobsController extends Hubzero_Controller
 	//-----------------------------
 	// List of candidates
 	//-----------------------------
-
 
 	/**
 	 * Short description for 'resumes'
@@ -532,7 +527,6 @@ class JobsController extends Hubzero_Controller
 	// Subscription form
 	//-----------------------------
 
-
 	/**
 	 * Short description for 'subscribe'
 	 * 
@@ -636,7 +630,6 @@ class JobsController extends Hubzero_Controller
 	//-----------------------------
 	// Subscription confirmation
 	//-----------------------------
-
 
 	/**
 	 * Short description for 'confirm'
@@ -823,7 +816,6 @@ class JobsController extends Hubzero_Controller
 	// Subscription cancellation
 	//-----------------------------
 
-
 	/**
 	 * Short description for 'cancel'
 	 * 
@@ -891,7 +883,6 @@ class JobsController extends Hubzero_Controller
 	//-----------------------------
 	// Dashboard
 	//-----------------------------
-
 
 	/**
 	 * Short description for 'dashboard'
@@ -1017,7 +1008,6 @@ class JobsController extends Hubzero_Controller
 	// Intro screen for employers before they login
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'intro_employer'
 	 * 
@@ -1055,7 +1045,6 @@ class JobsController extends Hubzero_Controller
 	// Link to Add Resume (goes to profile "Resume" tab)
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'addresume'
 	 * 
@@ -1080,7 +1069,6 @@ class JobsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Apply to a job
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'apply'
@@ -1172,7 +1160,6 @@ class JobsController extends Hubzero_Controller
 	// Save job application
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'saveapp'
 	 * 
@@ -1239,7 +1226,6 @@ class JobsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Job posting
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'job'
@@ -1371,7 +1357,6 @@ class JobsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Save job
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'savejob'
@@ -1527,7 +1512,6 @@ class JobsController extends Hubzero_Controller
 	// Add/edit job form
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'editjob'
 	 * 
@@ -1669,7 +1653,6 @@ class JobsController extends Hubzero_Controller
 	// Authorizations
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'authorize_employer'
 	 * 
@@ -1768,7 +1751,6 @@ class JobsController extends Hubzero_Controller
 	// Search Preferences
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'updatePrefs'
 	 * 
@@ -1862,7 +1844,6 @@ class JobsController extends Hubzero_Controller
 	// Search filters
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'getFilters'
 	 * 
@@ -1914,7 +1895,6 @@ class JobsController extends Hubzero_Controller
 	//-----------------------------
 	// Batch resume download
 	//-----------------------------
-
 
 	/**
 	 * Short description for 'batch'
@@ -1983,7 +1963,6 @@ class JobsController extends Hubzero_Controller
 	//-----------------------------
 	// Create resume archive
 	//-----------------------------
-
 
 	/**
 	 * Short description for 'archiveResumes'
@@ -2064,7 +2043,6 @@ class JobsController extends Hubzero_Controller
 	// Check job ad quota depending on subscription
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'checkQuota'
 	 * 
@@ -2094,7 +2072,6 @@ class JobsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Initial setup of default services
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'setupServices'
@@ -2170,7 +2147,6 @@ maxads=3'
 	//----------------------------------------------------------
 	// Get service params
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'getServiceParams'

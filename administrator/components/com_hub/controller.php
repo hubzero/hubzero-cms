@@ -156,7 +156,6 @@ class HubController extends Hubzero_Controller
 	// Config functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'loadConfiguration'
 	 * 
@@ -662,7 +661,6 @@ class HubController extends Hubzero_Controller
 	//  Organizations
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'orgs'
 	 * 
@@ -846,7 +844,7 @@ class HubController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Organization types
 	//----------------------------------------------------------
-	
+
 	protected function orgtypes()
 	{
 		$view = new JView( array('name'=>'organizationtypes') );
@@ -887,16 +885,12 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-
 	protected function addorgtype()
 	{
 		$this->editorgtype();
 	}
 
-	//-----------
-
-	protected function editorgtype() 
+	protected function editorgtype()
 	{
 		$view = new JView( array('name'=>'organizationtype') );
 		$view->option = $this->_option;
@@ -925,9 +919,7 @@ class HubController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function saveorgtype() 
+	protected function saveorgtype()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -962,9 +954,7 @@ class HubController extends Hubzero_Controller
 		$this->_message = JText::_('HUB_ORGTYPE_SAVED');
 	}
 
-	//-----------
-
-	protected function removeorgtype() 
+	protected function removeorgtype()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -992,8 +982,6 @@ class HubController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgtypes';
 		$this->_message = JText::_('HUB_ORGTYPE_REMOVED');
 	}
-
-	//-----------
 
 	protected function cancelorgtype()
 	{

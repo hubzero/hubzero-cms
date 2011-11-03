@@ -33,39 +33,29 @@ class modSupportTickets
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
 
 	public function __set($property, $value)
 	{
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-	
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-
-	//-----------
 
 	public function display()
 	{
@@ -129,7 +119,7 @@ class modSupportTickets
 
 		//ximport('Hubzero_Document');
 		//Hubzero_Document::addModuleStyleSheet($this->module->module);
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 

@@ -45,14 +45,12 @@ class ResourceAudience extends JTable
 	 */
 	var $id       	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'rid'
 	 * 
 	 * @var unknown
 	 */
 	var $rid 		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'versionid'
@@ -61,14 +59,12 @@ class ResourceAudience extends JTable
 	 */
 	var $versionid 	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'level0'
 	 * 
 	 * @var unknown
 	 */
 	var $level0 	= NULL;  // @var tinyint
-
 
 	/**
 	 * Description for 'level1'
@@ -77,14 +73,12 @@ class ResourceAudience extends JTable
 	 */
 	var $level1 	= NULL;  // @var tinyint
 
-
 	/**
 	 * Description for 'level2'
 	 * 
 	 * @var unknown
 	 */
 	var $level2 	= NULL;  // @var tinyint
-
 
 	/**
 	 * Description for 'level3'
@@ -93,14 +87,12 @@ class ResourceAudience extends JTable
 	 */
 	var $level3 	= NULL;  // @var tinyint
 
-
 	/**
 	 * Description for 'level4'
 	 * 
 	 * @var unknown
 	 */
 	var $level4 	= NULL;  // @var tinyint	
-
 
 	/**
 	 * Description for 'level5'
@@ -109,7 +101,6 @@ class ResourceAudience extends JTable
 	 */
 	var $level5 	= NULL;  // @var tinyint
 
-
 	/**
 	 * Description for 'comments'
 	 * 
@@ -117,14 +108,12 @@ class ResourceAudience extends JTable
 	 */
 	var $comments 	= NULL;  // @var varchar(255)
 
-
 	/**
 	 * Description for 'addedBy'
 	 * 
 	 * @var unknown
 	 */
 	var $addedBy	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'added'
@@ -134,7 +123,6 @@ class ResourceAudience extends JTable
 	var $added		= NULL;  // @var datetime
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

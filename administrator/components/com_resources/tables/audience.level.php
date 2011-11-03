@@ -45,7 +45,6 @@ class ResourceAudienceLevel extends JTable
 	 */
 	var $id       		= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'label'
 	 * 
@@ -53,14 +52,12 @@ class ResourceAudienceLevel extends JTable
 	 */
 	var $label 			= NULL;  // @var 
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title 			= NULL;  // @var
-
 
 	/**
 	 * Description for 'description'
@@ -70,7 +67,6 @@ class ResourceAudienceLevel extends JTable
 	var $description 	= NULL;  // @var
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

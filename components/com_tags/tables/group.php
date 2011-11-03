@@ -46,7 +46,6 @@ class TagsGroup extends JTable
 	 */
 	var $id      = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'groupid'
 	 * 
@@ -54,14 +53,12 @@ class TagsGroup extends JTable
 	 */
 	var $groupid = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'tagid'
 	 * 
 	 * @var unknown
 	 */
 	var $tagid   = NULL;  // int(11)
-
 
 	/**
 	 * Description for 'priority'
@@ -71,7 +68,6 @@ class TagsGroup extends JTable
 	var $priority = NULL;  // int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -46,14 +46,12 @@ class Subscription extends JTable
 	 */
 	var $id       		= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid      		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'serviceid'
@@ -62,14 +60,12 @@ class Subscription extends JTable
 	 */
 	var $serviceid  	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'units'
 	 * 
 	 * @var unknown
 	 */
 	var $units 			= NULL;  //	@var int(11)
-
 
 	/**
 	 * Description for 'status'
@@ -78,14 +74,12 @@ class Subscription extends JTable
 	 */
 	var $status 		= NULL;  //	@var int(11)
 
-
 	/**
 	 * Description for 'code'
 	 * 
 	 * @var unknown
 	 */
 	var $code 			= NULL;  //	@var varchar
-
 
 	/**
 	 * Description for 'contact'
@@ -94,14 +88,12 @@ class Subscription extends JTable
 	 */
 	var $contact 		= NULL;  //	@var varchar
 
-
 	/**
 	 * Description for 'added'
 	 * 
 	 * @var unknown
 	 */
 	var $added 			= NULL;  //	@var datetime
-
 
 	/**
 	 * Description for 'updated'
@@ -110,14 +102,12 @@ class Subscription extends JTable
 	 */
 	var $updated 		= NULL;  //	@var datetime
 
-
 	/**
 	 * Description for 'expires'
 	 * 
 	 * @var unknown
 	 */
 	var $expires 		= NULL;  //	@var datetime
-
 
 	/**
 	 * Description for 'pendingunits'
@@ -126,14 +116,12 @@ class Subscription extends JTable
 	 */
 	var $pendingunits 	= NULL;  //	@var int(11)
 
-
 	/**
 	 * Description for 'installment'
 	 * 
 	 * @var unknown
 	 */
 	var $installment 	= NULL;  //	@var int(11)
-
 
 	/**
 	 * Description for 'pendingpayment'
@@ -142,7 +130,6 @@ class Subscription extends JTable
 	 */
 	var $pendingpayment = NULL;  //	@var int(11)
 
-
 	/**
 	 * Description for 'totalpaid'
 	 * 
@@ -150,14 +137,12 @@ class Subscription extends JTable
 	 */
 	var $totalpaid 		= NULL;  //	@var int(11)
 
-
 	/**
 	 * Description for 'notes'
 	 * 
 	 * @var unknown
 	 */
 	var $notes 			= NULL;  //	@var text
-
 
 	/**
 	 * Description for 'usepoints'
@@ -167,7 +152,6 @@ class Subscription extends JTable
 	var $usepoints 		= NULL;  //	@var tinyint
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

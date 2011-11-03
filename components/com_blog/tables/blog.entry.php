@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Blog Entry database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'BlogEntry'
  * 
@@ -51,14 +50,12 @@ class BlogEntry extends JTable
 	 */
 	var $id           = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title        = NULL;  // @var varchar(150)
-
 
 	/**
 	 * Description for 'alias'
@@ -67,14 +64,12 @@ class BlogEntry extends JTable
 	 */
 	var $alias        = NULL;  // @var varchar(150)
 
-
 	/**
 	 * Description for 'content'
 	 * 
 	 * @var unknown
 	 */
 	var $content      = NULL;  // @var text
-
 
 	/**
 	 * Description for 'created'
@@ -83,14 +78,12 @@ class BlogEntry extends JTable
 	 */
 	var $created      = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'created_by'
 	 * 
 	 * @var unknown
 	 */
 	var $created_by   = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'state'
@@ -99,14 +92,12 @@ class BlogEntry extends JTable
 	 */
 	var $state        = NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'publish_up'
 	 * 
 	 * @var unknown
 	 */
 	var $publish_up   = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'publish_down'
@@ -115,14 +106,12 @@ class BlogEntry extends JTable
 	 */
 	var $publish_down = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'params'
 	 * 
 	 * @var unknown
 	 */
 	var $params		  = NULL;  // @var text
-
 
 	/**
 	 * Description for 'group_id'
@@ -131,7 +120,6 @@ class BlogEntry extends JTable
 	 */
 	var $group_id     = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'hits'
 	 * 
@@ -139,14 +127,12 @@ class BlogEntry extends JTable
 	 */
 	var $hits         = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'allow_comments'
 	 * 
 	 * @var unknown
 	 */
 	var $allow_comments = NULL;  // @var int(2)
-
 
 	/**
 	 * Description for 'scope'
@@ -156,7 +142,6 @@ class BlogEntry extends JTable
 	var $scope        = NULL;  // @var varchar(100)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

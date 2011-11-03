@@ -40,7 +40,7 @@ define('XML_ERROR_UTF8', 5);
 
 class Hubzero_Xml
 {
-	function encode($mixed, $tag='root', $attributes='', $depth = 1, $show_declaration = true) 
+	function encode($mixed, $tag='root', $attributes='', $depth = 1, $show_declaration = true)
 	{
 		$declaration = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 
@@ -55,7 +55,7 @@ class Hubzero_Xml
 			$i = 0;
 
 			foreach($mixed as $key=>$value)
-			{	
+			{
 				if ($key !== $i)
 				{
 					$element_type = 'a-array';
@@ -88,7 +88,7 @@ class Hubzero_Xml
 
 		if (is_array($mixed) || is_object($mixed))
 		{
-	        foreach ($mixed as $key=>$value) 
+	        foreach ($mixed as $key=>$value)
 			{
 				if (!isset($first))
 				{
@@ -245,8 +245,8 @@ class Hubzero_Xml
 				}
 				else if ($v['attributes']['type'] == 'number')
 				{
-					$value = $v['value']; 
-	
+					$value = $v['value'];
+
 					if (!is_numeric($value))
 					{
 						die('invalid numeric value');
@@ -308,7 +308,7 @@ class Hubzero_Xml
 					$prev[1][$prev[0]] = $obj;
 				}
 				else if (is_null($prev[1]))
-				{	
+				{
 					break;
 				}
 				else
@@ -321,8 +321,8 @@ class Hubzero_Xml
 			else
 				die('unknown parse part');
 
-		}		
-	
+		}
+
 		self::last_error(XML_ERROR_NONE);
 		return $obj;
 	}

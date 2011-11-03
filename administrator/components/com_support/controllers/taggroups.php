@@ -47,15 +47,15 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.taggroups.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.taggroups.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.taggroups.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.taggroups.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		$this->view->filters['sortby'] = JRequest::getVar('sortby', 'priority ASC');
@@ -71,8 +71,8 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -90,7 +90,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function addTask() 
+	public function addTask()
 	{
 		$this->view->setLayout('edit');
 		$this->editTask();
@@ -101,7 +101,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask($row=null) 
+	public function editTask($row=null)
 	{
 		ximport('Hubzero_Group');
 
@@ -125,7 +125,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$this->view->group = Hubzero_Group::getInstance($this->view->row->groupid);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -139,7 +139,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function saveTask() 
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -150,7 +150,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 
 		// Initiate class and bind posted items to database fields
 		$row = new TagsGroup($this->database);
-		if (!$row->bind($taggroup)) 
+		if (!$row->bind($taggroup))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -164,7 +164,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$ttag->loadTag($tag);
 
 		// Set the group ID
-		if ($ttag->id) 
+		if ($ttag->id)
 		{
 			$row->tagid = $ttag->id;
 		}
@@ -176,13 +176,13 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$hzg = Hubzero_Group::getInstance($group);
 
 		// Set the group ID
-		if ($hzg->get('gidNumber')) 
+		if ($hzg->get('gidNumber'))
 		{
 			$row->groupid = $hzg->get('gidNumber');
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -190,7 +190,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -207,7 +207,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function removeTask() 
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -216,7 +216,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$ids = JRequest::getVar('id', array());
 
 		// Check for an ID
-		if (count($ids) < 1) 
+		if (count($ids) < 1)
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_ENTRY_TO_DELETE');
@@ -224,7 +224,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		}
 
 		$tg = new TagsGroup($this->database);
-		foreach ($ids as $id) 
+		foreach ($ids as $id)
 		{
 			// Delete entry
 			$tg->delete(intval($id));
@@ -250,7 +250,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function reorderTask() 
+	public function reorderTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -260,7 +260,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$id = intval($id[0]);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->_message = JText::_('No entry ID found.');
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
@@ -275,9 +275,9 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$tg2 = clone($tg1);
 		$tg2->getNeighbor($this->_task);
 
-		switch ($this->_task) 
+		switch ($this->_task)
 		{
-			case 'orderup':				
+			case 'orderup':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $tg2->priority;
 				$orderdn = $tg1->priority;

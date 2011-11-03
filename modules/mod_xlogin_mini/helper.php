@@ -54,9 +54,6 @@ class modXLoginMini
 	 */
 	var $debug = 0;
 
-	//-----------
-
-
 	/**
 	 * Short description for 'setObject'
 	 * 
@@ -70,9 +67,6 @@ class modXLoginMini
 	{
 		$this->_objects[$name] =& $object;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'getObject'

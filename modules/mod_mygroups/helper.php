@@ -47,9 +47,6 @@ class modMyGroups
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modMyGroups
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modMyGroups
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modMyGroups
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_getGroups'
@@ -165,9 +153,6 @@ class modMyGroups
 		return $result;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'getStatus'
 	 * 
@@ -198,9 +183,6 @@ class modMyGroups
 		return $status;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'display'
 	 * 
@@ -221,7 +203,7 @@ class modMyGroups
 		// Get the user's groups
 		$members  = $this->_getGroups( $juser->get('id'), 'all' );
 
-		foreach ($members as $mem) 
+		foreach ($members as $mem)
 		{
 			$groups[] = $mem;
 		}

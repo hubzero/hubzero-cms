@@ -41,16 +41,11 @@ class modPopularQuestions
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -66,9 +61,6 @@ class modPopularQuestions
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -79,21 +71,16 @@ class modPopularQuestions
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'mkt'
@@ -105,15 +92,12 @@ class modPopularQuestions
 	 */
 	public function mkt($stime)
 	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs)) 
+		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs))
 		{
 			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'timeAgoo'
@@ -143,7 +127,7 @@ class modPopularQuestions
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) 
+		if ($val < 0)
 		{
 			$val = 0;
 		}
@@ -155,7 +139,7 @@ class modPopularQuestions
 		$number = floor($number);
 
 		// If required create a plural
-		if ($number != 1) 
+		if ($number != 1)
 		{
 			$periods[$val] .= "s";
 		}
@@ -164,16 +148,13 @@ class modPopularQuestions
 		$text = sprintf("%d %s ", $number, $periods[$val]);
 
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)) 
+		if (($val >= 1) && (($current_time - $new_time) > 0))
 		{
 			$text .= $this->timeAgoo($new_time);
 		}
 
 		return $text;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'timeAgo'
@@ -193,8 +174,6 @@ class modPopularQuestions
 		$text .= ($parts[2]) ? ' ' . $parts[2] . ' ' . $parts[3] : '';
 		return $text;
 	}
-
-	//-----------
 
 	public function run()
 	{
@@ -217,19 +196,19 @@ class modPopularQuestions
 		$this->tag = JRequest::getVar('tag', '', 'get');
 		$this->style = JRequest::getVar('style', '', 'get');
 
-		if ($this->tag) 
+		if ($this->tag)
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
 				." FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg, #__answers_responses AS r"
 				." WHERE r.qid=a.id AND a.id=t.objectid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag='" . $this->tag . "' OR tg.raw_tag='" . $this->tag . "' OR tg.alias='" . $this->tag . "')";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
 				." FROM #__answers_questions AS a, #__answers_responses AS r"
 				." WHERE r.qid=a.id";
 		}
-		if ($st) 
+		if ($st)
 		{
 			$query .= " AND ".$st;
 		}
@@ -242,8 +221,6 @@ class modPopularQuestions
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
-	//-----------
-
 	public function display()
 	{
 		// Push the module CSS to the template
@@ -252,7 +229,7 @@ class modPopularQuestions
 
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);

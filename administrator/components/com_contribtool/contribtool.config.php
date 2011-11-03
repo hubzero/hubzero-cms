@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Store configuration
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ContribtoolConfig'
  * 

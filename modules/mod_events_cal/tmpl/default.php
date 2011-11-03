@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->error) 
-{ 
+if ($this->error)
+{
 ?>
 	<p class="error"><?php echo $this->error; ?></p>
 <?php 
-} 
-else 
+}
+else
 {
-	echo $this->content; 
+	echo $this->content;
 }
 ?>

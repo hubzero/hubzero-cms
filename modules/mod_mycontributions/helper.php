@@ -47,9 +47,6 @@ class modMyContributions
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modMyContributions
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modMyContributions
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modMyContributions
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_getContributions'
@@ -157,9 +145,6 @@ class modMyContributions
 
 		return $database->loadObjectList();
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_getToollist'
@@ -296,9 +281,6 @@ class modMyContributions
 		return $rows;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'getState'
 	 * 
@@ -324,9 +306,6 @@ class modMyContributions
 		return $state;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'getType'
 	 * 
@@ -348,9 +327,6 @@ class modMyContributions
 		}
 		return $type;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

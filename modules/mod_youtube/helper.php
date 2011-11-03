@@ -44,8 +44,6 @@ class modYoutubeHelper
 		$this->module = $module;
 	}
 
-	//-----
-	
 	public function render()
 	{
 		//get the document
@@ -209,7 +207,7 @@ class modYoutubeHelper
 			//display the videos
 			$html .= "<ul>";
 			$counter = 1;
-			foreach ($entries as $entry) 
+			foreach ($entries as $entry)
 			{
 				if ($counter <= $num_videos) {
 					$media = $entry['media$group'];
@@ -259,9 +257,7 @@ class modYoutubeHelper
 		}
 	}
 
-	//-----
-	
-	private function _formatTime($seconds)  
+	private function _formatTime($seconds)
 	{
 		$minutes = floor($seconds / 60);
 		$seconds = $seconds % 60;

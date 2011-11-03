@@ -35,7 +35,6 @@ jimport( 'joomla.plugin.plugin' );
 
 // TODO: hzldap plugin should be built into here maybe
 
-
 /**
  * Short description for 'plgAuthenticationXauth'
  * 

@@ -168,7 +168,6 @@ class ContributeController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'login'
 	 * 
@@ -274,7 +273,6 @@ class ContributeController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Steps
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'step_type'
@@ -666,7 +664,6 @@ class ContributeController extends Hubzero_Controller
 	//  Pre Processing
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'step_type_process'
 	 * 
@@ -912,7 +909,6 @@ class ContributeController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Final submission
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'submit'
@@ -1323,7 +1319,6 @@ class ContributeController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Attachments
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'attach_rename'
@@ -1854,7 +1849,6 @@ class ContributeController extends Hubzero_Controller
 	// contributors manager
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'author_save'
 	 * 
@@ -2157,7 +2151,6 @@ class ContributeController extends Hubzero_Controller
 	// Checks
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'step_type_check'
 	 * 
@@ -2266,7 +2259,6 @@ class ContributeController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Misc
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_txtClean'

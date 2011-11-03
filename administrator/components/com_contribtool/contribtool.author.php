@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ToolAuthor'
  * 
@@ -51,14 +50,12 @@ class ToolAuthor extends  JTable
 	 */
 	var $toolname     	   = NULL;  // @var varchar (50)
 
-
 	/**
 	 * Description for 'revision'
 	 * 
 	 * @var unknown
 	 */
 	var $revision          = NULL;  // @var int (11)
-
 
 	/**
 	 * Description for 'uid'
@@ -67,14 +64,12 @@ class ToolAuthor extends  JTable
 	 */
 	var $uid      	   	   = NULL;  // @var int (11)
 
-
 	/**
 	 * Description for 'ordering'
 	 * 
 	 * @var unknown
 	 */
 	var $ordering     	   = NULL;  // @var int (11)
-
 
 	/**
 	 * Description for 'version_id'
@@ -83,14 +78,12 @@ class ToolAuthor extends  JTable
 	 */
 	var $version_id        = NULL;  // @var int (11)
 
-
 	/**
 	 * Description for 'name'
 	 * 
 	 * @var unknown
 	 */
 	var $name        	   = NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'organization'
@@ -100,7 +93,6 @@ class ToolAuthor extends  JTable
 	var $organization      = NULL;  // @var varchar(250)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -170,8 +162,6 @@ class ToolAuthor extends  JTable
 
 	}
 
-	//-----------
-	
 	public function getFirstAuthor( $rid = 0 )
 	{
 		$query = "SELECT x.name FROM #__xprofiles x ";
@@ -181,8 +171,6 @@ class ToolAuthor extends  JTable
 		return $this->_db->loadResult();
 	}
 
-	//-----------
-	
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
 		$juser = &JFactory::getUser();
@@ -225,7 +213,6 @@ class ToolAuthor extends  JTable
 		return $authors;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'saveAuthors'
@@ -343,7 +330,6 @@ class ToolAuthor extends  JTable
 		return true;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for '_author_check'

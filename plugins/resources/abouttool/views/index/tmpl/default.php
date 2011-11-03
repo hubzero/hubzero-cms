@@ -36,7 +36,7 @@ if ($this->resource->alias) {
 }
 
 // Set the display date
-switch ($this->params->get('show_date')) 
+switch ($this->params->get('show_date'))
 {
 	case 0: $thedate = ''; break;
 	case 1: $thedate = $this->resource->created;    break;
@@ -49,8 +49,8 @@ if ($this->curtool) {
 
 // Prepare/parse text
 $introtext = stripslashes($this->resource->introtext);
-$maintext  = ($this->resource->fulltext) 
-		   ? stripslashes($this->resource->fulltext) 
+$maintext  = ($this->resource->fulltext)
+		   ? stripslashes($this->resource->fulltext)
 		   : stripslashes($this->resource->introtext);
 
 //$maintext = stripslashes($maintext);
@@ -67,21 +67,21 @@ $type->load($this->resource->type);
 $fields = array();
 if (trim($type->customFields) != '') {
 	$fs = explode("\n", trim($type->customFields));
-	foreach ($fs as $f) 
+	foreach ($fs as $f)
 	{
 		$fields[] = explode('=', $f);
 	}
 } else {
 	$flds = $this->config->get('tagstool');
 	$flds = explode(',', $flds);
-	foreach ($flds as $fld) 
+	foreach ($flds as $fld)
 	{
 		$fields[] = array($fld, $fld, 'textarea', 0);
 	}
 }
 
 if (!empty($fields)) {
-	for ($i=0, $n=count($fields); $i < $n; $i++) 
+	for ($i=0, $n=count($fields); $i < $n; $i++)
 	{
 		// Explore the text and pull out all matches
 		array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
@@ -107,7 +107,7 @@ if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 			'pagename' => 'resources',
 			'pageid'   => $this->resource->id,
 			'filepath' => $this->config->get('uploadpath'),
-			'domain'   => '' 
+			'domain'   => ''
 		);
 		ximport('Hubzero_Wiki_Parser');
 		$p =& Hubzero_Wiki_Parser::getInstance();
@@ -117,9 +117,9 @@ if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 <div class="subject abouttab">
 <?php
 // Screenshots
-$ss = new ResourceScreenshot($this->database);			
-$shots = ResourcesHtml::screenshots($this->resource->id, $this->resource->created, $this->config->get('uploadpath'), $this->config->get('uploadpath'), $this->resource->versionid, $ss->getScreenshots($this->resource->id, $this->resource->versionid), 1);	
-if ($shots) { 
+$ss = new ResourceScreenshot($this->database);
+$shots = ResourcesHtml::screenshots($this->resource->id, $this->resource->created, $this->config->get('uploadpath'), $this->config->get('uploadpath'), $this->resource->versionid, $ss->getScreenshots($this->resource->id, $this->resource->versionid), 1);
+if ($shots) {
 ?>
 	<div class="sscontainer">
 		<?php echo $shots; ?>
@@ -169,7 +169,7 @@ if ($this->resource->created_by) {
 <?php
 */
 	$citations = '';
-	foreach ($fields as $field) 
+	foreach ($fields as $field)
 	{
 		if (end($field) != NULL) {
 			if ($field[0] == 'citations') {
@@ -193,7 +193,7 @@ if ($this->resource->created_by) {
 			// Build our citation object
 			$cite = new stdClass();
 			$cite->title = $this->resource->title;
-			$cite->year = JHTML::_('date', $thedate, '%Y');			
+			$cite->year = JHTML::_('date', $thedate, '%Y');
 			if ($this->alltools && $this->resource->doi) {
 				$cite->location = ' <a href="'.$this->config->get('aboutdoi').'" title="'.JText::_('PLG_RESOURCES_ABOUT_ABOUT_DOI').'">DOI</a>: '.$this->config->get('doi').'r'.$this->resource->id.'.'.$this->resource->doi;
 				$cite->date = '';
@@ -239,8 +239,8 @@ if ($this->attribs->get('timeof', '')) {
 		$exp = '%I:%M %p, %B %d, %Y';
 	}
 	if (substr($this->attribs->get('timeof', ''), 4, 1) == '-') {
-		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '') 
-					  ? JHTML::_('date', $this->attribs->get('timeof', ''), $exp) 
+		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '')
+					  ? JHTML::_('date', $this->attribs->get('timeof', ''), $exp)
 					  : '';
 	} else {
 		$seminarTime = $this->attribs->get('timeof', '');
@@ -266,7 +266,7 @@ if (!$this->thistool && $this->revision != 'dev') {
 	if ($this->params->get('show_assocs')) {
 		$tagCloud = $this->helper->getTagCloud($this->authorized);
 
-		if ($tagCloud) { 
+		if ($tagCloud) {
 ?>
 			<tr>
 				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></th>

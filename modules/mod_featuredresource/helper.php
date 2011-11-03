@@ -47,9 +47,6 @@ class modFeaturedresource
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modFeaturedresource
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modFeaturedresource
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modFeaturedresource
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'niceidformat'
@@ -117,9 +105,6 @@ class modFeaturedresource
 		}
 		return $someid;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'encode_html'
@@ -147,9 +132,6 @@ class modFeaturedresource
 		return strtr($str, $a);
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'ampersands'
 	 * 
@@ -167,9 +149,6 @@ class modFeaturedresource
 		$str = str_replace('*-*','&#', $str);
 		return $str;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'
@@ -360,9 +339,6 @@ class modFeaturedresource
 		}
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'getImage'
 	 * 
@@ -405,9 +381,6 @@ class modFeaturedresource
 			}
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'getToolImage'
@@ -466,9 +439,6 @@ class modFeaturedresource
 		}
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'thumbnail'
 	 * 
@@ -487,9 +457,6 @@ class modFeaturedresource
 		$tn = implode('.',$pic);
 		return $tn;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'build_path'

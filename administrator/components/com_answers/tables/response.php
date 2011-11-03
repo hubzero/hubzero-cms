@@ -46,14 +46,12 @@ class AnswersResponse extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'qid'
 	 * 
 	 * @var unknown
 	 */
 	var $qid        = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'answer'
@@ -62,14 +60,12 @@ class AnswersResponse extends JTable
 	 */
 	var $answer     = NULL;  // @var text
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -78,14 +74,12 @@ class AnswersResponse extends JTable
 	 */
 	var $created_by = NULL;  // @var varchar(200)
 
-
 	/**
 	 * Description for 'helpful'
 	 * 
 	 * @var unknown
 	 */
 	var $helpful    = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'nothelpful'
@@ -94,14 +88,12 @@ class AnswersResponse extends JTable
 	 */
 	var $nothelpful = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'state'
 	 * 
 	 * @var unknown
 	 */
 	var $state      = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'anonymous'
@@ -111,7 +103,6 @@ class AnswersResponse extends JTable
 	var $anonymous  = NULL;  // @var int(2)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

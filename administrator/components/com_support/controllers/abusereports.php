@@ -49,15 +49,15 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.reports.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.reports.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.reports.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.reports.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		$this->view->filters['state']  = JRequest::getInt('state', 0);
@@ -74,13 +74,13 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -101,7 +101,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$cat = JRequest::getVar('cat', '');
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
@@ -123,11 +123,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Check the results returned for a parent ID
 		$parentid = 0;
-		if ($results) 
+		if ($results)
 		{
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
-				if ($result) 
+				if ($result)
 				{
 					$parentid = $result;
 				}
@@ -143,11 +143,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Check the results returned for a reported item
 		$reported = null;
-		if ($results) 
+		if ($results)
 		{
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
-				if ($result) 
+				if ($result)
 				{
 					$reported = $result[0];
 				}
@@ -162,11 +162,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Check the results returned for a title
 		$title = null;
-		if ($titles) 
+		if ($titles)
 		{
-			foreach ($titles as $t) 
+			foreach ($titles as $t)
 			{
-				if ($t) 
+				if ($t)
 				{
 					$title = $t;
 				}
@@ -192,7 +192,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function releaseTask() 
+	public function releaseTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -201,7 +201,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
@@ -211,7 +211,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 		$report->state = 1;
-		if (!$report->store()) 
+		if (!$report->store())
 		{
 			JError::raiseError(500, $report->getError());
 			return;
@@ -227,7 +227,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function removeTask() 
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -237,7 +237,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$parentid = JRequest::getInt('parentid', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
@@ -266,11 +266,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Check the results returned for a reported item
 		$reported = null;
-		if ($results) 
+		if ($results)
 		{
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
-				if ($result) 
+				if ($result)
 				{
 					$reported = $result[0];
 				}
@@ -285,11 +285,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$message
 		));
 
-		if ($results) 
+		if ($results)
 		{
-			foreach ($results as $result) 
+			foreach ($results as $result)
 			{
-				if ($result) 
+				if ($result)
 				{
 					$message .= $result;
 				}
@@ -298,7 +298,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Mark abuse report as deleted	
 		$report->state = 2;
-		if (!$report->store()) 
+		if (!$report->store())
 		{
 			JError::raiseError(500, $report->getError());
 			return;
@@ -307,8 +307,8 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$jconfig =& JFactory::getConfig();
 
 		// Notify item owner
-		if ($email) 
-		{			
+		if ($email)
+		{
 			$juser =& JUser::getInstance($reported->author);
 
 			// Email "from" info
@@ -320,7 +320,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT',$jconfig->getValue('config.sitename'));
 
 			// Build the email message
-			if ($note) 
+			if ($note)
 			{
 				$message .= "\r\n" . '---------------------------' . "\r\n";
 				$message .= $note;
@@ -333,7 +333,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$message .= JText::_('PLEASE_CONTACT_SUPPORT');
 
 			// Send the email
-			if (SupportUtilities::checkValidEmail($juser->get('email'))) 
+			if (SupportUtilities::checkValidEmail($juser->get('email')))
 			{
 				SupportUtilities::sendEmail($juser->get('email'), $subject, $message, $from);
 			}
@@ -344,16 +344,16 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$banking = $upconfig->get('bankAccounts');
 
 		// Give some points to whoever reported abuse
-		if ($banking && $gratitude) 
+		if ($banking && $gratitude)
 		{
 			ximport('Hubzero_Bank');
 
 			$BC = new Hubzero_Bank_Config($this->database);
 			$ar = $BC->get('abusereport');  // How many points?
-			if ($ar) 
+			if ($ar)
 			{
 				$ruser =& JUser::getInstance($report->created_by);
-				if (is_object($ruser) && $ruser->get('id')) 
+				if (is_object($ruser) && $ruser->get('id'))
 				{
 					$BTL = new Hubzero_Bank_Teller($this->database, $ruser->get('id'));
 					$BTL->deposit($ar, JText::_('ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);

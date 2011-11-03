@@ -35,7 +35,7 @@ class ShowUsers extends XImportHelperScript
 {
 	protected $_description = 'Show users from LDAP.';
 
-	public function run() 
+	public function run()
 	{
 		Hubzero_User_Profile_Helper::iterate_profiles('printuser','ldap');
 		return;
@@ -65,7 +65,7 @@ function printuser($name)
 		echo "no xprofile entry for $name<br />";
 		echo "created one<br />";
 	}
-	else if ($profile->get('uidNumber') != $profile2->get('uidNumber')) 
+	else if ($profile->get('uidNumber') != $profile2->get('uidNumber'))
 	{
 		echo "profile mismatch name $name " . $profile->get('uidNumber') . " " . $profile2->get('uidNumber') . '<br />';
 	}

@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'Tool'
  * 
@@ -51,14 +50,12 @@ class Tool extends JTable
 	 */
 	var $id      	   = NULL;  // @var int (primary key)
 
-
 	/**
 	 * Description for 'toolname'
 	 * 
 	 * @var unknown
 	 */
 	var $toolname      = NULL;  // @var string (15)
-
 
 	/**
 	 * Description for 'published'
@@ -67,14 +64,12 @@ class Tool extends JTable
 	 */
 	var $published	   = NULL;  // @var tinyint
 
-
 	/**
 	 * Description for 'state'
 	 * 
 	 * @var unknown
 	 */
 	var $state         = NULL;  // @var int (11)
-
 
 	/**
 	 * Description for 'priority'
@@ -83,14 +78,12 @@ class Tool extends JTable
 	 */
 	var $priority      = NULL;  // @var int (11)
 
-
 	/**
 	 * Description for 'registered'
 	 * 
 	 * @var unknown
 	 */
 	var $registered    = NULL;  // @var dateandtime
-
 
 	/**
 	 * Description for 'registered_by'
@@ -99,7 +92,6 @@ class Tool extends JTable
 	 */
 	var $registered_by = NULL;  // @var string (31)
 
-
 	/**
 	 * Description for 'ticketid'
 	 * 
@@ -107,14 +99,12 @@ class Tool extends JTable
 	 */
 	var $ticketid	   = NULL;  // @var int
 
-
 	/**
 	 * Description for 'state_changed'
 	 * 
 	 * @var unknown
 	 */
 	var $state_changed = NULL;  // @var dateandtime
-
 
 	/**
 	 * Description for 'title'
@@ -135,7 +125,6 @@ class Tool extends JTable
 	//var $license	   = NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -262,7 +251,6 @@ class Tool extends JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getMyTools'
 	 * 
@@ -328,7 +316,6 @@ class Tool extends JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getTicketId'
 	 * 
@@ -347,7 +334,6 @@ class Tool extends JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getResourceId'
 	 * 
@@ -365,7 +351,6 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getToolInstanceFromResource'
@@ -397,7 +382,6 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getToolIdFromResource'
@@ -450,7 +434,6 @@ class Tool extends JTable
 		return $this->_db->loadResult();
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'saveTicketId'
@@ -584,7 +567,6 @@ class Tool extends JTable
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getToolGroups'
 	 * 
@@ -605,7 +587,6 @@ class Tool extends JTable
 		return  $groups;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getToolStatus'

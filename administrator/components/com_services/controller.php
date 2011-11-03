@@ -71,7 +71,6 @@ class ServicesController extends Hubzero_Controller
 	// Subscriptions List
 	//---------------------
 
-
 	/**
 	 * Short description for 'subscriptions'
 	 * 
@@ -117,7 +116,6 @@ class ServicesController extends Hubzero_Controller
 	//---------------------
 	// Subscription
 	//---------------------
-
 
 	/**
 	 * Short description for 'subscription'
@@ -165,7 +163,6 @@ class ServicesController extends Hubzero_Controller
 	//---------------------
 	// Save Subscription
 	//---------------------
-
 
 	/**
 	 * Short description for 'savesubscription'
@@ -313,7 +310,6 @@ class ServicesController extends Hubzero_Controller
 	// Services List
 	//---------------------
 
-
 	/**
 	 * Short description for 'services'
 	 * 
@@ -360,7 +356,6 @@ class ServicesController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Initial setup of default jobs services
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'setupServices'
@@ -437,7 +432,6 @@ maxads=3'
 	// Service
 	//---------------------
 
-
 	/**
 	 * Short description for 'service'
 	 * 
@@ -464,7 +458,6 @@ maxads=3'
 	//---------------------
 	// Save service
 	//---------------------
-
 
 	/**
 	 * Short description for 'saveservice'

@@ -46,14 +46,12 @@ class SefEntry extends JTable
 	 */
 	var $id	     = null;  // @var int
 
-
 	/**
 	 * Description for 'cpt'
 	 * 
 	 * @var unknown
 	 */
 	var $cpt     = null;  // @var int
-
 
 	/**
 	 * Description for 'oldurl'
@@ -62,14 +60,12 @@ class SefEntry extends JTable
 	 */
 	var $oldurl	 = null;  // @var string
 
-
 	/**
 	 * Description for 'newurl'
 	 * 
 	 * @var unknown
 	 */
 	var $newurl	 = null;  // @var string
-
 
 	/**
 	 * Description for 'dateadd'
@@ -79,7 +75,6 @@ class SefEntry extends JTable
 	var $dateadd = null;  // @var date
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

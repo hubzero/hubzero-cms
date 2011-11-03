@@ -41,7 +41,7 @@ $jacl->addACL($option, 'manage', 'users', 'manager');
 
 // Authorization check
 $user = & JFactory::getUser();
-if (!$user->authorize('com_contact', 'manage')) 
+if (!$user->authorize('com_contact', 'manage'))
 {
 	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
 }

@@ -29,16 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 jimport('joomla.filesystem.file');
 
-//-----------
-
 JPlugin::loadLanguage( 'plg_citation_endnote' );
-
-//-----------
 
 class plgCitationEndnote extends JPlugin
 {
@@ -51,15 +45,11 @@ class plgCitationEndnote extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----
-	
 	public function onImportAcceptedFiles()
 	{
 		return ".enw <small>(EndNote File)</small>";
 	}
 
-	//-----
-	
 	public function onImport( $file )
 	{
 		//endnote format
@@ -81,8 +71,6 @@ class plgCitationEndnote extends JPlugin
 		return $this->onImportProcessEndnote( $raw_citations );
 	}
 
-	//-----
-	
 	protected function onImportProcessEndnote( $raw_citations_text )
 	{
 		//make sure we have some citation data to process
@@ -93,14 +81,14 @@ class plgCitationEndnote extends JPlugin
 		//split multiple citations and remove empties and reset keys
 		//$raw_citations = explode("\r\n\r\n", $raw_citations_text);
 		//$raw_citations = array_values(array_filter($raw_citations));
-		
+
 		$raw_citation = array();
 		$raw_citations = array();
 
-		foreach($raw_citations_text as $line) 
+		foreach($raw_citations_text as $line)
 		{
 			$line = $this->_cleanText(trim($line));
-			if($line == '') 
+			if($line == '')
 			{
 				$raw_citations[] = $raw_citation;
 				$raw_citation = array();
@@ -170,7 +158,7 @@ class plgCitationEndnote extends JPlugin
 				}
 
 				//if we have fields in our imported citation data that dont exist in the database report errors
-				if(!in_array($k, $citation_vars) && array_key_exists($v, $citation)) { 
+				if(!in_array($k, $citation_vars) && array_key_exists($v, $citation)) {
 					$cite['errors'][] = "Failed to add '{$k}' to this citation.";
 				}
 			}
@@ -193,8 +181,6 @@ class plgCitationEndnote extends JPlugin
 		return $final;
 	}
 
-	//-----
-	
 	protected function getCitationVars()
 	{
 		//get all the vars that a citation can have
@@ -211,8 +197,6 @@ class plgCitationEndnote extends JPlugin
 		return array_values($keys);
 	}
 
-	//------
-	
 	protected function getEndnoteTags()
 	{
 		$tags = array(
@@ -254,7 +238,7 @@ class plgCitationEndnote extends JPlugin
 		foreach($custom_tags as $ct) {
 			if($ct) {
 				$parts = explode("-",$ct);
-				$tags[$parts[0]] = $parts[1]; 
+				$tags[$parts[0]] = $parts[1];
 			}
 		}
 
@@ -262,8 +246,6 @@ class plgCitationEndnote extends JPlugin
 		return $tags;
 	}
 
-	//-----
-	
 	protected function checkDuplicateCitation( $citation )
 	{
 		//vars
@@ -331,14 +313,12 @@ class plgCitationEndnote extends JPlugin
 		return $match;
 	}
 
-	//-----
-	
 	protected function _cleanText( $string )
 	{
 		$translations = get_html_translation_table(HTML_ENTITIES);
 		$encoded = strtr( $string, $translations );
 		return $encoded;
-	} 
-	
+	}
+
 	//-----
 }

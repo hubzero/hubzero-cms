@@ -55,7 +55,6 @@ class WishlistEconomy extends JObject
 
 	//-----------
 
-
 	/**
 	 * Short description for '__construct'
 	 * 

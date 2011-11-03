@@ -170,7 +170,6 @@ class ContribtoolHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'mkt'
 	 * 
@@ -258,9 +257,6 @@ class ContribtoolHtml
 		return $text;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'formSelect'
 	 * 
@@ -289,9 +285,6 @@ class ContribtoolHtml
 		$out .= '</select>'."\n";
 		return $out;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'primaryButton'
@@ -365,7 +358,6 @@ class ContribtoolHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'toolWIP'
 	 * 
@@ -403,7 +395,6 @@ class ContribtoolHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getStatusClass'
 	 * 
@@ -426,7 +417,6 @@ class ContribtoolHtml
 		return $statusClass;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getStatusName'
@@ -456,7 +446,6 @@ class ContribtoolHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getStatusNum'
 	 * 
@@ -485,7 +474,6 @@ class ContribtoolHtml
 		return $statusNum;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getPriority'
@@ -598,7 +586,6 @@ class ContribtoolHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'getCodeAccess'
 	 * 
@@ -641,7 +628,6 @@ class ContribtoolHtml
 		return $wikiaccess;
 	}
 	//------------
-
 
 	/**
 	 * Short description for 'writeWhatNext'
@@ -855,7 +841,6 @@ class ContribtoolHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'writeResourceEditStage'
 	 * 
@@ -992,7 +977,6 @@ class ContribtoolHtml
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'selectAccess'
 	 * 
@@ -1019,7 +1003,6 @@ class ContribtoolHtml
 		return $html;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'selectGroup'
@@ -1049,7 +1032,6 @@ class ContribtoolHtml
 	//-----------------------------------------------------
 	// Tool registration/edit form
 	//-----------------------------------------------------
-
 
 	/**
 	 * Short description for 'writeToolForm'
@@ -1200,7 +1182,6 @@ class ContribtoolHtml
 	//-----------------------------------------------------
 	// Version Approval Steps
 	//-----------------------------------------------------
-
 
 	/**
 	 * Short description for 'writeFinalizeVersion'
@@ -1624,7 +1605,6 @@ class ContribtoolHtml
 	// Status
 	//-----------------------------------------------------
 
-
 	/**
 	 * Short description for 'writeToolStatus'
 	 * 
@@ -1922,7 +1902,6 @@ class ContribtoolHtml
 	// Pipeline
 	//-----------------------------------------------------
 
-
 	/**
 	 * Short description for 'summary'
 	 * 
@@ -2072,7 +2051,6 @@ class ContribtoolHtml
 	// Resource page editing
 	//-------------------------------------------------------------
 
-
 	/**
 	 * Short description for 'writeResourceEditForm'
 	 * 
@@ -2218,7 +2196,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
         <?php	
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'stepAttach'
@@ -2441,7 +2418,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 	//-------------------------------------------------------------
 	// Other views
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'ss_pop'
@@ -2961,7 +2937,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 	//-------------------------------------------------------------
 	// Media manager functions
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'pageTop'

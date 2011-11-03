@@ -46,14 +46,12 @@ class AnswersQuestionsLog extends JTable
 	 */
 	var $id      = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'qid'
 	 * 
 	 * @var unknown
 	 */
 	var $qid     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'expires'
@@ -62,14 +60,12 @@ class AnswersQuestionsLog extends JTable
 	 */
 	var $expires = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'voter'
 	 * 
 	 * @var unknown
 	 */
 	var $voter   = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'ip'
@@ -79,7 +75,6 @@ class AnswersQuestionsLog extends JTable
 	var $ip      = NULL;  // @var varchar(15)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

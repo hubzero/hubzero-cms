@@ -39,13 +39,13 @@ if (count($this->rows) > 0) {
 	ximport('Hubzero_View_Helper_Html');
 
 	$html  = "\t\t" . '<ul class="questions">' . "\n";
-	foreach ($this->rows as $row) 
+	foreach ($this->rows as $row)
 	{
 		$name = JText::_('MOD_RECENTQUESTIONS_ANONYMOUS');
-		if ($row->anonymous == 0) 
+		if ($row->anonymous == 0)
 		{
 			$juser =& JUser::getInstance($row->created_by);
-			if (is_object($juser)) 
+			if (is_object($juser))
 			{
 				$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '">' . stripslashes($juser->get('name')) . '</a>';
 			}

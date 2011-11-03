@@ -38,7 +38,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
 		$this->banking = $upconfig->get('bankAccounts');
 
-		if ($this->banking) 
+		if ($this->banking)
 		{
 			ximport('Hubzero_Bank');
 		}
@@ -55,31 +55,31 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// Filters
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.answers.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.answers.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.answers.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.answers.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		$this->view->filters['filterby'] = $app->getUserStateFromRequest(
-			$this->_option . '.answers.filterby', 
-			'filterby', 
+			$this->_option . '.answers.filterby',
+			'filterby',
 			'all'
 		);
 		$this->view->filters['sortby']   = $app->getUserStateFromRequest(
-			$this->_option . '.answers.sortby', 
-			'sortby', 
+			$this->_option . '.answers.sortby',
+			'sortby',
 			'm.id DESC'
 		);
 		$this->view->filters['qid']      = $app->getUserStateFromRequest(
-			$this->_option . '.answers.qid', 
-			'qid', 
-			0, 
+			$this->_option . '.answers.qid',
+			'qid',
+			0,
 			'int'
 		);
 
@@ -97,13 +97,13 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -135,11 +135,11 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// Incoming
 		$qid = JRequest::getInt('qid', 0);
 		$ids = JRequest::getVar('id', array());
-		if (is_array($ids) && !empty($ids)) 
+		if (is_array($ids) && !empty($ids))
 		{
 			$id = $ids[0];
 		}
-		if (!$qid) 
+		if (!$qid)
 		{
 			$qid = $id;
 			$id = 0;
@@ -149,7 +149,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->view->row = new AnswersResponse($this->database);
 		$this->view->row->load($id);
 
-		if ($this->_task == 'add') 
+		if ($this->_task == 'add')
 		{
 			$this->view->row->answer     = '';
 			$this->view->row->created    = date('Y-m-d H:i:s', time());
@@ -157,8 +157,8 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			$this->view->row->qid        = $qid;
 			$this->view->row->helpful    = 0;
 			$this->view->row->nothelpful = 0;
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->row->answer = AnswersHtml::unpee($this->view->row->answer);
 		}
@@ -168,7 +168,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->view->qid = $qid;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -177,9 +177,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->view->display();
 	}
 
-	//-----------
-
-	public function saveTask() 
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -190,7 +188,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		// Initiate extended database class
 		$row = new AnswersResponse($this->database);
-		if (!$row->bind($answer)) 
+		if (!$row->bind($answer))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -203,26 +201,26 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$row->state = (isset($answer['state'])) ? 1 : 0;
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
 		// Store content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
 		// Close the question if the answer is accepted
-		if ($row->state == 1) 
+		if ($row->state == 1)
 		{
 			$aq = new AnswersQuestion($this->database);
 			$aq->load($answer['qid']);
 			$aq->state = 1;
-			if (!$aq->store()) 
+			if (!$aq->store())
 			{
 				JError::raiseError(500, $aq->getError());
 				return;
@@ -234,9 +232,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->_message = JText::_('Answer Successfully Saved');
 	}
 
-	//-----------
-
-	public function removeTask() 
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -246,26 +242,26 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$ids = JRequest::getVar('id', array());
 
 		// Do we have any IDs?
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			// Instantiate some objects
 			$ar = new AnswersResponse($this->database);
 			$al = new AnswersLog($this->database);
 
 			// Loop through each ID
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
-				if (!$ar->delete($id)) 
+				if (!$ar->delete($id))
 				{
 					JError::raiseError(500, $ar->getError());
 					return;
 				}
 
-				if (!$al->deleteLog($id)) 
+				if (!$al->deleteLog($id))
 				{
 					JError::raiseError(500, $al->getError());
 					return;
-				}	
+				}
 			}
 		}
 
@@ -273,9 +269,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
-	//-----------
-	
-	public function acceptTask() 
+	public function acceptTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
@@ -284,7 +278,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$qid = JRequest::getInt('qid', 0);
 		$id = JRequest::getVar('id', array(0));
 
-		if (!is_array($id)) 
+		if (!is_array($id))
 		{
 			$id = array(0);
 		}
@@ -292,13 +286,13 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$publish = ($this->_task == 'accept') ? 1 : 0;
 
 		// Check for an ID
-		if (count($id) < 1) 
+		if (count($id) < 1)
 		{
 			$action = ($publish == 1) ? 'accept' : 'unaccept';
 			echo AnswersHtml::alert(JText::_('Select an answer to ' . $action));
 			exit;
-		} 
-		else if (count($id) > 1) 
+		}
+		else if (count($id) > 1)
 		{
 			echo AnswersHtml::alert(JText::_('A question can only have one accepted answer'));
 			exit;
@@ -307,7 +301,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$ar = new AnswersResponse($this->database);
 		$ar->load($id[0]);
 		$ar->state = $publish;
-		if (!$ar->store()) 
+		if (!$ar->store())
 		{
 			JError::raiseError(500, $ar->getError());
 			return;
@@ -317,21 +311,21 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$aq = new AnswersQuestion($this->database);
 		$aq->load($qid);
 
-		if ($publish == 1) 
+		if ($publish == 1)
 		{
 			$aq->state = 1;
 			$aq->reward = 0;
 
-			if (!$aq->store()) 
+			if (!$aq->store())
 			{
 				JError::raiseError(500, $aq->getError());
 				return;
 			}
 
-			if ($this->banking) 
+			if ($this->banking)
 			{
 				// Calculate and distribute earned points
-				$AE = new AnswersEconomy($this->database);			
+				$AE = new AnswersEconomy($this->database);
 				$AE->distribute_points($qid, $aq->created_by, $ar->created_by, 'closure');
 			}
 
@@ -342,15 +336,15 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Call the plugin
-			if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($zuser->get('id')), $this->_option, $qid))) 
+			if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($zuser->get('id')), $this->_option, $qid)))
 			{
 				$this->setError(JText::_('Failed to remove alert.'));
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$aq->state = 0;
-			if (!$aq->store()) 
+			if (!$aq->store())
 			{
 				JError::raiseError(500, $aq->getError());
 				return;
@@ -358,11 +352,11 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 
 		// Set message
-		if ($publish == '1') 
+		if ($publish == '1')
 		{
 			$this->_message = JText::_('Item successfully Accepted');
-		} 
-		else if ($publish == '0') 
+		}
+		else if ($publish == '0')
 		{
 			$this->_message = JText::_('Item successfully Unaccepted');
 		}
@@ -370,14 +364,10 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
-	//-----------
-
 	public function cancelTask()
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-
-	//-----------
 
 	public function resetTask()
 	{
@@ -392,7 +382,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$ar->load(intval($answer['id']));
 		$ar->helpful = 0;
 		$ar->nothelpful = 0;
-		if (!$ar->store()) 
+		if (!$ar->store())
 		{
 			JError::raiseError(500, $ar->getError());
 			return;
@@ -400,7 +390,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		// Clear the history of "helpful" clicks
 		$al = new AnswersLog($this->database);
-		if (!$al->deleteLog(intval($answer['id']))) 
+		if (!$al->deleteLog(intval($answer['id'])))
 		{
 			JError::raiseError(500, $al->getError());
 			return;

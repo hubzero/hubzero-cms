@@ -36,7 +36,7 @@ class Hubzero_API extends JApplication
 	private $_enabled = false; // is api server enabled
 	private $_component = false; // component we are routing to
 	private $_route = array(); // path segments to pass to api controller
-	
+
 	private $_response = null;
 	private $_request = null;
 	private $_provider = null;
@@ -68,7 +68,7 @@ class Hubzero_API extends JApplication
 			{
 				$_SERVER['REQUEST_METHOD'] = $method;
 			}
-		}		
+		}
 	}
 
 	function fix_http_headers()
@@ -92,7 +92,7 @@ class Hubzero_API extends JApplication
 		}
 	}
 
-	function unregister_long_arrays() 
+	function unregister_long_arrays()
 	{
 		if (ini_get('register_long_arrays'))
 		{
@@ -114,7 +114,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"E") !== false)
 			{
-				foreach($_ENV as $key => $value) 
+				foreach($_ENV as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -122,7 +122,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"G") !== false)
 			{
-				foreach($_GET as $key => $value) 
+				foreach($_GET as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -130,7 +130,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"P") !== false)
 			{
-				foreach($_POST as $key => $value) 
+				foreach($_POST as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -138,7 +138,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"C") !== false)
 			{
-				foreach($_COOKIE as $key => $value) 
+				foreach($_COOKIE as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -146,7 +146,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"S") !== false)
 			{
-				foreach($_SERVER as $key => $value) 
+				foreach($_SERVER as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -156,7 +156,7 @@ class Hubzero_API extends JApplication
 	}
 
 	// static function &getInstance($client, $config, $prefix) inherited
-	
+
 	function initialise()
 	{
 		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Response.php";
@@ -184,7 +184,7 @@ class Hubzero_API extends JApplication
 
 		if (!$this->_enabled)
 		{
-			return;	
+			return;
 		}
 
 		$route = $this->_request->path;
@@ -207,7 +207,7 @@ class Hubzero_API extends JApplication
 				array_shift($segments);
 			}
 
-			$filename = JPATH_SITE . DS . 'components' . DS . 'com_' 
+			$filename = JPATH_SITE . DS . 'components' . DS . 'com_'
 				. $segments[0] . DS . 'api' . DS . 'controller.php';
 
 			if (is_file($filename))
@@ -237,7 +237,7 @@ class Hubzero_API extends JApplication
 		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Xml.php';
 
 		$oauthp = new Hubzero_Oauth_Provider();
-		$oauthp->setResponse($this->_response);		
+		$oauthp->setResponse($this->_response);
 		$oauthp->setRequestTokenPath('/api/oauth/request_token');
 		$oauthp->setAccessTokenPath('/api/oauth/access_token');
 		$oauthp->setAuthorizePath('/api/oauth/authorize');
@@ -260,12 +260,12 @@ class Hubzero_API extends JApplication
 		$classname = ucfirst($this->_component) . 'ApiController';
 
 		if (class_exists($classname))
-		{				
+		{
 			$controller = new $classname();
 			$controller->setRequest($this->_request);
 			$controller->setResponse($this->_response);
 			$controller->setProvider($this->_provider);
-			$controller->setRouteSegments($this->_route);			
+			$controller->setRouteSegments($this->_route);
 			$controller->execute();
 		}
 	}
@@ -313,7 +313,7 @@ class Hubzero_API extends JApplication
 	}
 
 	// function getCfg( $varname ) inherited
-	
+
 	function getName()
     {
         return 'api';
@@ -346,12 +346,12 @@ class Hubzero_API extends JApplication
 
 	function login($credentials, $options = array())
 	{
-		die('login() invalid in API application context');	
+		die('login() invalid in API application context');
 	}
 
 	function logout($userid = null, $options = array())
 	{
-		die('logout() invalid in API application context');	
+		die('logout() invalid in API application context');
 	}
 
 	function &getRouter($name = null, $options = array())
@@ -462,5 +462,5 @@ class Hubzero_API extends JApplication
 	function getPageTitle()
 	{
 		die('getPageTitle() invalid in API application context');
-	}	
+	}
 }

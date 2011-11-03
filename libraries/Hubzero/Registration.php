@@ -1026,7 +1026,7 @@ class Hubzero_Registration
 			}
 		}
 
-		if ($registrationCAPTCHA == REG_REQUIRED) 
+		if ($registrationCAPTCHA == REG_REQUIRED)
 		{
 			$botcheck = JRequest::getVar('botcheck','');
 			if ($botcheck) {

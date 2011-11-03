@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'GroupsReason'
  * 
@@ -51,14 +50,12 @@ class GroupsReason extends JTable
 	 */
 	var $id       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uidNumber'
 	 * 
 	 * @var unknown
 	 */
 	var $uidNumber = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'gidNumber'
@@ -67,14 +64,12 @@ class GroupsReason extends JTable
 	 */
 	var $gidNumber      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'reason'
 	 * 
 	 * @var unknown
 	 */
 	var $reason   = NULL;  // @var text
-
 
 	/**
 	 * Description for 'date'
@@ -84,7 +79,6 @@ class GroupsReason extends JTable
 	var $date     = NULL;  // @var datetime
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

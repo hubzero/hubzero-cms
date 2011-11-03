@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Image manipulation class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'MembersImgHandler'
  * 

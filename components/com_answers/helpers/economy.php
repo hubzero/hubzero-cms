@@ -55,7 +55,6 @@ class AnswersEconomy extends JObject
 
 	//-----------
 
-
 	/**
 	 * Short description for '__construct'
 	 * 

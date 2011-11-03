@@ -42,7 +42,7 @@ $jacl->addACL($option, 'manage', 'users', 'manager');
 
 // Authorization check
 $user = & JFactory::getUser();
-if (!$user->authorize($option, 'manage')) 
+if (!$user->authorize($option, 'manage'))
 {
 	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
 }
@@ -63,7 +63,7 @@ if ($controllerName == 'items')
 	JSubMenuHelper::addEntry(JText::_('Orders'), 'index.php?option=' .  $option . '&controller=orders');
 	JSubMenuHelper::addEntry(JText::_('Store Items'), 'index.php?option=' .  $option . '&controller=items', true);
 }
-else 
+else
 {
 	JSubMenuHelper::addEntry(JText::_('Orders'), 'index.php?option=' .  $option . '&controller=orders', true);
 	JSubMenuHelper::addEntry(JText::_('Store Items'), 'index.php?option=' .  $option . '&controller=items');

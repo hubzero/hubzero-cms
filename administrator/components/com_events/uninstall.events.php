@@ -33,7 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //Events//
 
-
 /**
  * Short description for 'com_uninstall'
  * 

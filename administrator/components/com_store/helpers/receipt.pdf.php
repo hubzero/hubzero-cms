@@ -78,7 +78,6 @@ class PDF extends FPDF
 	//-----------
 	// Page header
 
-
 	/**
 	 * Short description for 'Header'
 	 * 
@@ -134,7 +133,6 @@ class PDF extends FPDF
 	//-----------
 	// Page footer
 
-
 	/**
 	 * Short description for 'Footer'
 	 * 
@@ -165,7 +163,6 @@ class PDF extends FPDF
 	//-----------
 	// Page title
 
-
 	/**
 	 * Short description for 'mainTitle'
 	 * 
@@ -183,7 +180,6 @@ class PDF extends FPDF
 
 	//-----------
 	// Warning 
-
 
 	/**
 	 * Short description for 'warning'
@@ -203,7 +199,6 @@ class PDF extends FPDF
 
 	//-----------
 	// Order Details
-
 
 	/**
 	 * Short description for 'orderDetails'

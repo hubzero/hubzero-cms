@@ -171,7 +171,6 @@ class ToolsController
 	//  Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'middleware'
 	 * 
@@ -289,7 +288,6 @@ class ToolsController
 	// History
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'history_body'
 	 * 
@@ -345,7 +343,6 @@ class ToolsController
 	//----------------------------------------------------------
 	// Host
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'host_body'
@@ -688,7 +685,6 @@ class ToolsController
 	//----------------------------------------------------------
 	// Hosttype
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'hosttype_refs'

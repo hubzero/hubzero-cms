@@ -46,14 +46,12 @@ class WishlistOwner extends JTable
 	 */
 	var $id       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'wishlist'
 	 * 
 	 * @var unknown
 	 */
 	var $wishlist = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'userid'
@@ -63,7 +61,6 @@ class WishlistOwner extends JTable
 	var $userid	  = NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

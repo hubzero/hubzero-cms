@@ -73,14 +73,12 @@ class MwModApp
 	 */
 	var $middleware; // which environment to run in
 
-
 	/**
 	 * Description for 'session'
 	 * 
 	 * @var unknown
 	 */
 	var $session;    // sessionid of application
-
 
 	/**
 	 * Description for 'owner'
@@ -89,14 +87,12 @@ class MwModApp
 	 */
 	var $owner;      // owner of a running session
 
-
 	/**
 	 * Description for 'num'
 	 * 
 	 * @var unknown
 	 */
 	var $num;        // Nth occurrence of this application in a list
-
 
 	/**
 	 * Description for 'public'
@@ -105,14 +101,12 @@ class MwModApp
 	 */
 	var $public;     // is this tool public?
 
-
 	/**
 	 * Description for 'revision'
 	 * 
 	 * @var unknown
 	 */
 	var $revision;   // what license is in use?
-
 
 	/**
 	 * Short description for '__construct'
@@ -165,9 +159,6 @@ class modToolList
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -180,9 +171,6 @@ class modToolList
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -197,9 +185,6 @@ class modToolList
 	{
 		$this->attributes[$property] = $value;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__get'
@@ -218,7 +203,6 @@ class modToolList
 
 	//-----------
 	// Get a list of applications that the user might invoke.
-
 
 	/**
 	 * Short description for '_getToollist'
@@ -294,9 +278,6 @@ class modToolList
 		return $toollist;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '_prepText'
 	 * 
@@ -311,9 +292,6 @@ class modToolList
 		$txt = str_replace('"','&quot;',$txt);
 		return $txt;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'buildList'
@@ -402,9 +380,6 @@ class modToolList
 		}
 		return $html;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

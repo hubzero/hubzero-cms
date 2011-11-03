@@ -84,7 +84,6 @@ class plgGroupsWishlist extends JPlugin
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'onGroup'
 	 * 

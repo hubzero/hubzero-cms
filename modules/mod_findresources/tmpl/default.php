@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<li><?php echo JText::_('Popular Tags:'); ?></li>
 <?php
 	foreach ($this->tags as $tag)
-	{ 
+	{
 ?>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo stripslashes($tag->raw_tag); ?></a></li>
 <?php
@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p>
 <?php
 	$i = 0;
-	foreach ($this->categories as $category) 
+	foreach ($this->categories as $category)
 	{
 		$i++;
 		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($category->type));

@@ -46,14 +46,12 @@ class FeaturesHistory extends JTable
 	 */
 	var $id          = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'featured'
 	 * 
 	 * @var unknown
 	 */
 	var $featured    = NULL;  // datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'objectid'
@@ -62,14 +60,12 @@ class FeaturesHistory extends JTable
 	 */
 	var $objectid    = NULL;  // string(100)
 
-
 	/**
 	 * Description for 'tbl'
 	 * 
 	 * @var unknown
 	 */
 	var $tbl         = NULL;  // string(100)
-
 
 	/**
 	 * Description for 'note'
@@ -79,7 +75,6 @@ class FeaturesHistory extends JTable
 	var $note        = NULL;  // string(100)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

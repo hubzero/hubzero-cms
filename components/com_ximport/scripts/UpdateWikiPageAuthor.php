@@ -33,7 +33,7 @@ class UpdateWikiPageAuthor extends XImportHelperScript
 {
 	protected $_description = 'Transitions wiki page "authors" string to table of user IDs.';
 
-	public function run() 
+	public function run()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
 
@@ -53,11 +53,11 @@ class UpdateWikiPageAuthor extends XImportHelperScript
 		$this->_db->setQuery("SELECT id, authors FROM #__wiki_page WHERE authors!='' AND authors IS NOT NULL");
 		$pages = $this->_db->loadObjectList();
 		if ($pages) {
-			foreach ($pages as $page) 
+			foreach ($pages as $page)
 			{
 				$authors = explode(',', $page->authors);
 				$authors = array_map('trim', $authors);
-				foreach ($authors as $author) 
+				foreach ($authors as $author)
 				{
 					$targetuser =& JUser::getInstance($author);
 

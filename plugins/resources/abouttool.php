@@ -29,12 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//-----------
-
 jimport('joomla.plugin.plugin');
 JPlugin::loadLanguage('plg_resources_abouttool');
-
-//-----------
 
 class plgResourcesAbouttool extends JPlugin
 {
@@ -47,9 +43,7 @@ class plgResourcesAbouttool extends JPlugin
 		$this->_params = new JParameter($this->_plugin->params);
 	}
 
-	//-----------
-
-	public function &onResourcesAreas($resource) 
+	public function &onResourcesAreas($resource)
 	{
 		if ($resource->_type->_params->get('plg_abouttool', 0)) {
 			$areas = array(
@@ -61,8 +55,6 @@ class plgResourcesAbouttool extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
 	//public function onResources($resource, $authorized, $option, $areas, $rtrn='all', $data=array())
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
@@ -73,7 +65,7 @@ class plgResourcesAbouttool extends JPlugin
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) {
-			if (!array_intersect($areas, $this->onResourcesAreas($resource)) 
+			if (!array_intersect($areas, $this->onResourcesAreas($resource))
 			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) {
 				$rtrn = 'metadata';
 			}

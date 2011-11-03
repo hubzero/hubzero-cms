@@ -81,7 +81,6 @@ class StoreController extends Hubzero_Controller
 	// Private functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_buildPathway'
 	 * 
@@ -190,7 +189,6 @@ class StoreController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'login'
@@ -463,7 +461,6 @@ class StoreController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'finalize'

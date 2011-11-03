@@ -38,7 +38,7 @@ jimport( 'joomla.plugin.plugin' );
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 class Hubzero_Plugin extends JPlugin
-{	
+{
 	/**
 	 * Container for component messages
 	 * @var		array
@@ -120,8 +120,8 @@ class Hubzero_Plugin extends JPlugin
 			if ($cmq['option'] != $this->option) {
 				$this->pluginMessageQueue[$k] = array();
 			}
-		} 
-		
+		}
+
 		return $this->pluginMessageQueue;
 	}
 

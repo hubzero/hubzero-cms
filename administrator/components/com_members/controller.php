@@ -74,7 +74,6 @@ class MembersController extends Hubzero_Controller
 	//  Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'browse'
 	 * 
@@ -499,7 +498,6 @@ class MembersController extends Hubzero_Controller
 	//  Image handling
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'upload'
 	 * 
@@ -837,7 +835,6 @@ class MembersController extends Hubzero_Controller
 	//  Hosts
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'addhost'
 	 * 
@@ -970,7 +967,6 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Managers
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'addmanager'

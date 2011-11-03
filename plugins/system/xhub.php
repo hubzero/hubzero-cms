@@ -239,12 +239,12 @@ class XRouter extends JRouter
 		{
 			if (stripos($uri->toString(), $_SERVER['REWROTE_TO']->getPath()) !== false)
 			{
-				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(),'',$uri->getPath()));				
+				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(),'',$uri->getPath()));
 				$uri->setHost($_SERVER['REWROTE_FROM']->getHost());
 				$uri->setScheme($_SERVER['REWROTE_FROM']->getScheme());
 			}
-		}		
-		
+		}
+
 		return $uri;
 	}
 
@@ -336,7 +336,7 @@ class XRouter extends JRouter
 					{
 						$_SERVER['REWROTE_FROM'] = clone($suri);
 						$uri->setHost($sfqdn);
-						$uri->setPath('groups/'.$rhostname.'/'.$uri->getPath());		
+						$uri->setPath('groups/'.$rhostname.'/'.$uri->getPath());
 						$suri->setHost($sfqdn);
 						$suri->setPath('/groups/'.$rhostname.'/'.$suri->getPath());
 						$_SERVER['HTTP_HOST'] = $suri->getHost();
@@ -346,7 +346,7 @@ class XRouter extends JRouter
 						$_SERVER['REDIRECT_SCRIPT_URL'] = $suri->getPath();
 						$_SERVER['REDIRECT_URL'] = $suri->getPath();
 						$_SERVER['SCRIPT_URL'] = $suri->getPath();
-						$_SERVER['REQUEST_URI'] = $suri->toString(array('path','query','fragment'));						
+						$_SERVER['REQUEST_URI'] = $suri->toString(array('path','query','fragment'));
 						$suri->setPath('/groups/'.$rhostname);
 						$_SERVER['REWROTE_TO'] = clone($suri);
 					}

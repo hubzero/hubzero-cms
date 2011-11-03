@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Contains functions used by multiple Session/Tool modules
 //-------------------------------------------------------------
 
-
 /**
  * Short description for 'MwUtils'
  * 
@@ -44,7 +43,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 class MwUtils
 {
 	// Get a list of existing application sessions.
-
 
 	/**
 	 * Short description for 'getMWDBO'

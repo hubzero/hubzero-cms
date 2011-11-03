@@ -136,7 +136,7 @@ $no_show = array("errors","duplicate");
 																<td>
 																	<span class="old delete">
 																		<?php 
-																			switch($k) 
+																			switch($k)
 																			{
 																				case 'tags':	echo $tags;				break;
 																				case 'badges':	echo $badges;			break;

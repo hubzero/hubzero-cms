@@ -35,45 +35,35 @@ class modSpotlight
 {
 	private $_attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
 
 	public function __set($property, $value)
 	{
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-	
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
 
-	//-----------
-
-	public function display() 
+	public function display()
 	{
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);
@@ -86,9 +76,7 @@ class modSpotlight
 		$this->run();
 	}
 
-	//-----------
-
-	public function run() 
+	public function run()
 	{
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
@@ -97,12 +85,12 @@ class modSpotlight
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');	
-		
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
+
 		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_View_Helper_Html');
 
-		if (!class_exists('FeaturesHistory')) 
+		if (!class_exists('FeaturesHistory'))
 		{
 			$this->error = true;
 			return false;
@@ -127,8 +115,8 @@ class modSpotlight
 		$spots[5] = trim($this->params->get('spotsix'));
 		$spots[6] = trim($this->params->get('spotseven'));
 
-		$numspots = $this->params->get('numspots', 3);			
-		
+		$numspots = $this->params->get('numspots', 3);
+
 		// some collectors
 		$activespots = array();
 		$rows = array();
@@ -142,12 +130,12 @@ class modSpotlight
 
 		$this->html = '';
 		$k = 1;
-		$out = '';		
-					
-		for ($i = 0, $n = $numspots; $i < $numspots; $i++) 
+		$out = '';
+
+		for ($i = 0, $n = $numspots; $i < $numspots; $i++)
 		{
 			$spot = $spots[$i];
-			if ($spot == '') 
+			if ($spot == '')
 			{
 				continue;
 			}
@@ -155,8 +143,8 @@ class modSpotlight
 			$row = null;
 			$out = '';
 			$tbl = '';
-			$fh = new FeaturesHistory($this->database);		
-		
+			$fh = new FeaturesHistory($this->database);
+
 			$tbl = ($spot == 'tools' || $spot == 'nontools') ? 'resources' : '';
 			$tbl = $spot == ('members') ? 'profiles' : $tbl;
 			$tbl = $spot == ('topics')  ? 'topics'   : $tbl;
@@ -169,8 +157,8 @@ class modSpotlight
 			$fh->loadActive($start, $tbl, $spot . $k);
 
 			// Did we find a feature for today?
-		
-			if ($fh->id && $fh->objectid) 
+
+			if ($fh->id && $fh->objectid)
 			{
 				switch ($fh->tbl)
 				{
@@ -179,7 +167,7 @@ class modSpotlight
 						// Load the resource
 						$row = new ResourcesResource($this->database);
 						$row->load($fh->objectid);
-						if ($row) 
+						if ($row)
 						{
 							$row->typetitle = $row->getTypetitle();
 						}
@@ -218,8 +206,8 @@ class modSpotlight
 					break;
 				}
 			}
-			else 
-			{ 
+			else
+			{
 				// No - so we need to randomly choose one					
 				switch ($tbl)
 				{
@@ -233,7 +221,7 @@ class modSpotlight
 						$filters['tag'] = ($spot == 'tools') ? trim($this->params->get('tag')) : ''; // tag is set for tools only
 
 						// Get records
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);						
+						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);
 					break;
 
 					case 'profiles':
@@ -250,7 +238,7 @@ class modSpotlight
 						$mp = new MembersProfile($this->database);
 
 						// Get records
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);							
+						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);
 					break;
 
 					case 'topics':
@@ -258,28 +246,28 @@ class modSpotlight
 						$topics_tag = trim($this->params->get('topics_tag'));
 						$query  = "SELECT DISTINCT w.id, w.pagename, w.title ";
 						$query .= " FROM #__wiki_page AS w ";
-						if ($topics_tag) 
+						if ($topics_tag)
 						{
 							$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=w.id AND RTA.tbl='wiki' ";
 							$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
 						}
-						else 
+						else
 						{
 							$query .= ", #__wiki_version AS v ";
 						}
 						$query .= " WHERE w.access!=1 AND w.scope = ''  ";
-						if ($topics_tag) 
+						if ($topics_tag)
 						{
 							$query .= " AND (TA.tag='" . $topics_tag . "' OR TA.raw_tag='" . $topics_tag . "') ";
-						}		
-						else 
+						}
+						else
 						{
 							$query .= " AND v.pageid=w.id AND v.approved = 1 AND v.pagetext != '' ";
 						}
 						$query .= " ORDER BY RAND() ";
 						$this->database->setQuery($query);
 
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();					
+						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();
 					break;
 
 					case 'itunes':
@@ -290,19 +278,19 @@ class modSpotlight
 						$filters['tag'] = trim($this->params->get('itunes_tag'));
 
 						// Get records
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);						
+						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);
 					break;
 
 					case 'answers':
 						$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.anonymous  ";
 						$query .= ", (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount ";
 						$query .= " FROM #__answers_questions AS C ";
-						$query .= " WHERE C.state=0 ";	
-						$query .= " AND (C.reward > 0 OR C.helpful > 0) ";		
+						$query .= " WHERE C.state=0 ";
+						$query .= " AND (C.reward > 0 OR C.helpful > 0) ";
 						$query .= " ORDER BY RAND() ";
 						$this->database->setQuery($query);
 
-						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();	
+						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();
 					break;
 
 					case 'blog':
@@ -323,33 +311,33 @@ class modSpotlight
 					break;
 				}
 
-				if ($rows && count($rows[$spot]) > 0) 
+				if ($rows && count($rows[$spot]) > 0)
 				{
 					$row = $rows[$spot][0];
 				}
 
 				// make sure we aren't pulling the same item
-				if ($k != 1 && in_array($spot, $activespots) && $rows && count($rows[$spot]) > 1) 
+				if ($k != 1 && in_array($spot, $activespots) && $rows && count($rows[$spot]) > 1)
 				{
 					$row = (count($rows[$spot]) < $k) ? $rows[$spot][$k-1] : $rows[$spot][1]; // get the next one
-				}									
-			} 
-							
+				}
+			}
+
 			// pull info
-			if ($row) 
-			{				
+			if ($row)
+			{
 				$out = $this->_composeEntry($row, $tbl, $txtLength);
 				$itemid = $this->_composeEntry($row, $tbl, 0, 1);
-				$activespots[] = $spot;		
+				$activespots[] = $spot;
 			}
 
 			// Did we get any results?
-			if ($out) 
+			if ($out)
 			{
 				$this->html .= '<li class="spot_' . $k . '">' . $out . '</li>' . "\n";
 
 				// Check if this has been saved in the feature history					
-				if (!$fh->id || !$fh->objectid) 
+				if (!$fh->id || !$fh->objectid)
 				{
 					$fh->featured = $start;
 					$fh->objectid = $itemid;
@@ -359,26 +347,24 @@ class modSpotlight
 				}
 
 				$k++;
-			}		
+			}
 		}
 
 		// Output HTML
 		require(JModuleHelper::getLayoutPath('mod_spotlight'));
 	}
 
-	//-----------
-	
-	private function _composeEntry($row, $tbl, $txtLength=100, $getid=0) 
+	private function _composeEntry($row, $tbl, $txtLength=100, $getid=0)
 	{
 		$out = '';
 
 		// Do we have a picture?
 		$thumb = '';
 
-		switch ($tbl) 
+		switch ($tbl)
 		{
 			case 'profiles':
-				if ($getid) 
+				if ($getid)
 				{
 					return $row->uidNumber;
 				}
@@ -389,27 +375,27 @@ class modSpotlight
 
 				$mconfig =& JComponentHelper::getParams('com_members');
 
-				if (isset($row->picture) && $row->picture != '') 
+				if (isset($row->picture) && $row->picture != '')
 				{
 					// Yes - so build the path to it
 					$thumb  = $mconfig->get('webpath');
-					if (substr($thumb, 0, 1) != DS) 
+					if (substr($thumb, 0, 1) != DS)
 					{
 						$thumb = DS . $thumb;
 					}
-					if (substr($thumb, -1, 1) == DS) 
+					if (substr($thumb, -1, 1) == DS)
 					{
 						$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 					}
 					$thumb .= DS . $this->_niceIdFormat($row->uidNumber) . DS . $row->picture;
 
 					// No - use default picture
-					if (is_file(JPATH_ROOT . $thumb)) 
+					if (is_file(JPATH_ROOT . $thumb))
 					{
 						// Build a thumbnail filename based off the picture name
 						$thumb = $this->_thumb($thumb);
 
-						if (!is_file(JPATH_ROOT . $thumb)) 
+						if (!is_file(JPATH_ROOT . $thumb))
 						{
 							// Create a thumbnail image
 							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
@@ -422,19 +408,19 @@ class modSpotlight
 							$ih->set('outputName', $ih->createThumbName());
 						}
 					}
-				}	
+				}
 				// No - use default picture
-				if (!$thumb || !is_file(JPATH_ROOT . $thumb)) 
+				if (!$thumb || !is_file(JPATH_ROOT . $thumb))
 				{
 					$thumb = $mconfig->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) 
+					if (substr($thumb, 0, 1) != DS)
 					{
 						$thumb = DS . $thumb;
 					}
-				}	
+				}
 
 				$title = $row->name;
-				if (!trim($title)) 
+				if (!trim($title))
 				{
 					$title = $row->givenName . ' ' . $row->surname;
 				}
@@ -450,15 +436,15 @@ class modSpotlight
 				$profile = new Hubzero_User_Profile();
 				$profile->load($row->created_by);
 
-				if ($getid) 
+				if ($getid)
 				{
 					return $row->id;
-				}				
-				if (!$row->title) 
+				}
+				if (!$row->title)
 				{
 					$out = '';
 				}
-				else 
+				else
 				{
 					$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->title)).'" /></a></span>'."\n";
 					$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias).'">'.$row->title.'</a></span> ';
@@ -468,7 +454,7 @@ class modSpotlight
 			break;
 
 			case 'topics':
-				if ($getid) 
+				if ($getid)
 				{
 					return $row->id;
 				}
@@ -482,17 +468,17 @@ class modSpotlight
 			break;
 
 			case 'answers':
-				if ($getid) 
+				if ($getid)
 				{
 					return $row->id;
 				}
 				$thumb = trim($this->params->get('default_questionpic', '/modules/mod_spotlight/default.gif'));
 
 				$name = JText::_('Anonymous');
-				if ($row->anonymous == 0) 
+				if ($row->anonymous == 0)
 				{
 					$juser =& JUser::getInstance($row->created_by);
-					if (is_object($juser)) 
+					if (is_object($juser))
 					{
 						$name = $juser->get('name');
 					}
@@ -504,30 +490,30 @@ class modSpotlight
 			break;
 
 			default:
-				if ($getid) 
+				if ($getid)
 				{
 					return $row->id;
 				}
 
-				if ($tbl == 'itunes') 
+				if ($tbl == 'itunes')
 				{
 					$thumb = trim($this->params->get('default_itunespic', '/modules/mod_spotlight/default.gif'));
-				}	
-				else 
+				}
+				else
 				{
 					$rconfig =& JComponentHelper::getParams('com_resources');
 					$path = $rconfig->get('uploadpath');
-					if (substr($path, 0, 1) != DS) 
+					if (substr($path, 0, 1) != DS)
 					{
 						$path = DS . $path;
 					}
-					if (substr($path, -1, 1) == DS) 
+					if (substr($path, -1, 1) == DS)
 					{
 						$path = substr($path, 0, (strlen($path) - 1));
 					}
 					$path = $this->_buildPath($row->created, $row->id, $path);
 
-					if ($row->type == 7) 
+					if ($row->type == 7)
 					{
 						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.version.php');
 
@@ -536,18 +522,18 @@ class modSpotlight
 						$versionid = $tv->getVersionIdFromResource($row->id, 'current');
 
 						$picture = $this->_getToolImage($path, $versionid);
-					} 
-					else 
+					}
+					else
 					{
 						$picture = $this->_getImage($path);
 					}
 
 					$thumb = $path . DS . $picture;
 
-					if (!is_file(JPATH_ROOT . $thumb) or !$picture) 
+					if (!is_file(JPATH_ROOT . $thumb) or !$picture)
 					{
 						$thumb = $rconfig->get('defaultpic', '/modules/mod_spotlight/default.gif');
-						if (substr($thumb, 0, 1) != DS) 
+						if (substr($thumb, 0, 1) != DS)
 						{
 							$thumb = DS . $thumb;
 						}
@@ -564,11 +550,11 @@ class modSpotlight
 				$remaining = $txtLength - $chars;
 				$remaining = ($remaining <= 0) ? 0 : $remaining;
 				$titlecut  = ($remaining) ? 0 : $txtLength - strlen($row->typetitle);
-				if ($titlecut) 
+				if ($titlecut)
 				{
 					$title = Hubzero_View_Helper_Html::shortenText(($row->title), $titlecut, 0);
-				} 
-				else 
+				}
+				else
 				{
 					$title = $row->title;
 				}
@@ -582,38 +568,36 @@ class modSpotlight
 				$out .= '<span class="spotlight-item">' . "\n";
 				$out .= "\t" . '<a href="' . JRoute::_('index.php?option=com_resources&id=' . $row->id) . '">' . $title . '</a>' . "\n";
 				$out .= '</span>' . "\n";
-				if ($row->type == 7 && $remaining > 30) 
+				if ($row->type == 7 && $remaining > 30)
 				{
 					// Show bit of description for tools
-					if ($row->introtext) 
+					if ($row->introtext)
 					{
 						$out .= ': '.Hubzero_View_Helper_Html::shortenText($this->_encodeHtml(strip_tags($row->introtext)), $txtLength, 0);
 					}
-					else 
+					else
 					{
 						$out .= ': '.Hubzero_View_Helper_Html::shortenText($this->_encodeHtml(strip_tags($row->fulltext)), $txtLength, 0);
 					}
 				}
-				if ($tbl == 'itunes') 
+				if ($tbl == 'itunes')
 				{
 					$out .=  ' - ' . JText::_('featured on') .' <a href="/itunes">' . JText::_('iTunes') . ' U</a>' . "\n";
 				}
-				else 
+				else
 				{
 					$out .=  ' - ' . JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_resources&type=' . $normalized) . '">' . $row->typetitle . '</a>' . "\n";
 				}
-				$out .= '<div class="clear"></div>' . "\n";			
+				$out .= '<div class="clear"></div>' . "\n";
 			break;
 		}
 
-		return $out;		
+		return $out;
 	}
 
-	//-----------
-	
-	private function _getAverageRanking($uid) 
+	private function _getAverageRanking($uid)
 	{
-		if ($uid === NULL) 
+		if ($uid === NULL)
 		{
 			 return 0;
 		}
@@ -627,14 +611,12 @@ class modSpotlight
 		$query .= "AND R.published=1 AND R.standalone=1 AND R.access!=2 AND R.access!=4";
 
 		$this->database->setQuery($query);
-		return $this->database->loadResult();		
+		return $this->database->loadResult();
 	}
 
-	//-----------
-	
-	private function _countContributions($uid) 
+	private function _countContributions($uid)
 	{
-		if ($uid === NULL) 
+		if ($uid === NULL)
 		{
 			 return 0;
 		}
@@ -643,23 +625,21 @@ class modSpotlight
 		return $this->database->loadResult();
 	}
 
-	//-----------
-	
-	private function _getImage($path) 
+	private function _getImage($path)
 	{
 		$d = @dir(JPATH_ROOT . $path);
 
 		$images = array();
 
-		if ($d) 
+		if ($d)
 		{
-			while (false !== ($entry = $d->read())) 
+			while (false !== ($entry = $d->read()))
 			{
-				if (is_file(JPATH_ROOT . $path . DS . $entry) 
-				 && substr($entry,0,1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if (is_file(JPATH_ROOT . $path . DS . $entry)
+				 && substr($entry,0,1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry)) 
+					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry))
 					{
 						$images[] = $entry;
 					}
@@ -668,15 +648,15 @@ class modSpotlight
 			$d->close();
 		}
 
-		if ($images) 
+		if ($images)
 		{
-			foreach ($images as $ima) 
+			foreach ($images as $ima)
 			{
 				$bits = explode('.', $ima);
 				$type = array_pop($bits);
 				$img  = implode('.', $bits);
 
-				if ($img == 'thumb') 
+				if ($img == 'thumb')
 				{
 					return $ima;
 				}
@@ -684,16 +664,14 @@ class modSpotlight
 		}
 	}
 
-	//-----------
-	
-	private function _getToolImage($path, $versionid=0) 
+	private function _getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
 		$tconfig =& JComponentHelper::getParams('com_contribtool');
 		$allowversions = $tconfig->get('screenshot_edit');
 
-		if ($versionid && $allowversions) 
-		{ 
+		if ($versionid && $allowversions)
+		{
 			// Add version directory
 			//$path .= DS.$versionid;
 		}
@@ -705,15 +683,15 @@ class modSpotlight
 		//$all = array();
 		//$ordering = array();
 
-		if ($d) 
+		if ($d)
 		{
-			while (false !== ($entry = $d->read())) 
+			while (false !== ($entry = $d->read()))
 			{
-				if (is_file(JPATH_ROOT . $path . DS . $entry) 
-				 && substr($entry,0,1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if (is_file(JPATH_ROOT . $path . DS . $entry)
+				 && substr($entry,0,1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry)) 
+					if (preg_match("/^bmp|gif|jpg|jpe|jpeg|png$/i", $entry))
 					{
 						$images[] = $entry;
 					}
@@ -722,23 +700,21 @@ class modSpotlight
 			$d->close();
 		}
 
-		if ($images) 
+		if ($images)
 		{
-			foreach ($images as $ima) 
+			foreach ($images as $ima)
 			{
 				$bits = explode('.', $ima);
 				$type = array_pop($bits);
 				$img  = implode('.', $bits);
 
-				if ($img == 'thumb') 
+				if ($img == 'thumb')
 				{
 					return $ima;
 				}
 			}
 		}
 	}
-
-	//-----------
 
 	private function _thumbnail($pic)
 	{
@@ -751,9 +727,7 @@ class modSpotlight
 		return $tn;
 	}
 
-	//-----------
-
-	private function _thumb($thumb) 
+	private function _thumb($thumb)
 	{
 		$image = explode('.', $thumb);
 		$n = count($image);
@@ -765,21 +739,19 @@ class modSpotlight
 		return $thumb;
 	}
 
-	//-----------
-
 	private function _buildPath($date, $id, $base='')
 	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 
-		if ($date) 
+		if ($date)
 		{
 			$dir_year  = date('Y', $date);
 			$dir_month = date('m', $date);
-		} 
-		else 
+		}
+		else
 		{
 			$dir_year  = date('Y');
 			$dir_month = date('m');
@@ -789,24 +761,20 @@ class modSpotlight
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
 
-	//-----------
-
-	private function _niceIdFormat($someid) 
+	private function _niceIdFormat($someid)
 	{
 		$pre = '';
-		if ($someid < 0) 
+		if ($someid < 0)
 		{
 			$pre = 'n';
 			$someid = abs($someid);
 		}
-		while (strlen($someid) < 5) 
+		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
 		return $pre . $someid;
 	}
-
-	//-----------
 
 	private function _encodeHtml($str, $quotes=1)
 	{
@@ -818,7 +786,7 @@ class modSpotlight
 			'>' => '&#62;',
 		);
 
-		if ($quotes) 
+		if ($quotes)
 		{
 			$a = $a + array(
 				"'" => '&#39;',
@@ -829,9 +797,7 @@ class modSpotlight
 		return strtr($str, $a);
 	}
 
-	//-----------
-
-	private function _ampersands($str) 
+	private function _ampersands($str)
 	{
 		$str = stripslashes($str);
 		$str = str_replace('&#','*-*', $str);

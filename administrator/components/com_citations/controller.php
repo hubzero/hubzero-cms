@@ -70,7 +70,6 @@ class CitationsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'browse'
 	 * 
@@ -243,7 +242,7 @@ class CitationsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Citation Types
 	//----------------------------------------------------------
-	
+
 	protected function types()
 	{
 		// Instantiate a new view
@@ -263,15 +262,11 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----
-	
 	protected function addtype()
 	{
 		$this->edittype();
 	}
 
-	//-----
-	
 	protected function edittype()
 	{
 		// Instantiate a new view
@@ -301,8 +296,6 @@ class CitationsController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----
-	
 	protected function deletetype()
 	{
 		$id = JRequest::getVar("id","");
@@ -321,8 +314,6 @@ class CitationsController extends Hubzero_Controller
 		$this->_message = JText::_( 'The citation type was successfully deleted.', 'passed');
 	}
 
-	//----------
-	
 	protected function savetype()
 	{
 		$type = JRequest::getVar("type", array());
@@ -340,7 +331,6 @@ class CitationsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'save'
@@ -529,9 +519,7 @@ class CitationsController extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 	}
 
-	//----------
-	
-	public function getformat() 
+	public function getformat()
 	{
 		//get the format being sent via json
 		$format = JRequest::getVar("format", "apa");
@@ -549,9 +537,7 @@ class CitationsController extends Hubzero_Controller
 		echo $format_template;
 	}
 
-	//-----------
-	
-	public function gettemplatekeys() 
+	public function gettemplatekeys()
 	{
 		//include citations format class
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');

@@ -54,7 +54,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 		$this->view->status = Hubzero_Group::status();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -134,7 +134,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -188,7 +188,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 
 			$extended = JRequest::getVar('extended', null, 'post', 'int');
 
-			if ($extended != 0 && $extended != 1) 
+			if ($extended != 0 && $extended != 1)
 			{
 				jexit('Invalid POST Data');
 			}
@@ -198,7 +198,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}

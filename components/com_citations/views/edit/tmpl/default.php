@@ -76,7 +76,7 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 							foreach($this->types as $t) {
 								$sel = ($this->row->type == $t['id']) ? "selected=\"selected\"" : "";
  								echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
-							}	
+							}
 						?>
 					</select>
 				</label>
@@ -305,7 +305,7 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 								echo $tags_list[0];
 							} else {
 								echo "<input type=\"text\" name=\"tags\" value=\"{$tags}\" />";
-							} 
+							}
 						?>
 						<span class="hint"><?php echo JText::_('Enter tags separated by commas (e.g. negf theory, ion transport).'); ?></span>
 					</label>
@@ -319,7 +319,7 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 								echo $badges_list[0];
 							} else {
 								echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
-							} 
+							}
 						?>
 						<span class="hint"><?php echo JText::_('Enter badges separated by commas (e.g.evidence-based, peer-reviewed).'); ?></span>
 					</label>

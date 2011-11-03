@@ -46,7 +46,6 @@ class JobStats extends JTable
 	 */
 	var $id         	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'itemid'
 	 * 
@@ -54,14 +53,12 @@ class JobStats extends JTable
 	 */
 	var $itemid			= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'category'
 	 * 
 	 * @var unknown
 	 */
 	var $category		= NULL;  // job / seeker  / employer
-
 
 	/**
 	 * Description for 'total_viewed'

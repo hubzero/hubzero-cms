@@ -178,7 +178,7 @@ $juser =& JFactory::getUser();
 					'pagename' => $row->alias,
 					'pageid'   => 0,
 					'filepath' => $this->config->get('uploadpath'),
-					'domain'   => '' 
+					'domain'   => ''
 				);
 				$row->content = $p->parse(stripslashes($row->content), $wikiconfig);
 				if ($this->config->get('cleanintro', 1)) {

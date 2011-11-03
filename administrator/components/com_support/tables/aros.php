@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'SupportAro'
  * 
@@ -51,7 +50,6 @@ class SupportAro extends JTable
 	 */
 	var $id      = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'model'
 	 * 
@@ -59,14 +57,12 @@ class SupportAro extends JTable
 	 */
 	var $model   = NULL;  // @var varchar(100)
 
-
 	/**
 	 * Description for 'foreign_key'
 	 * 
 	 * @var unknown
 	 */
 	var $foreign_key = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'alias'
@@ -76,7 +72,6 @@ class SupportAro extends JTable
 	var $alias   = NULL;  // @var varchar(250)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

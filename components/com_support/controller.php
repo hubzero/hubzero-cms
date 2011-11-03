@@ -139,7 +139,6 @@ class SupportController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'stats'
 	 * 
@@ -959,12 +958,12 @@ class SupportController extends Hubzero_Controller
 								// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 								if($allowEmailResponses){
 									// Replace token holdertext with user specific token (tokens contain userID, so they are user specific)
-									$hubEmailToken = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);		                             
+									$hubEmailToken = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
 									$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
 
 									// put these in the from array (even though they are extended headers), 
 									// this seems to be the least obtursive way to do it without ripping things apart
-									$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
+									$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);
 								}
 								else{
 									$newMessage = $message;
@@ -990,12 +989,12 @@ class SupportController extends Hubzero_Controller
 
 							// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 							if($allowEmailResponses){
-								$hubEmailToken = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);		                             
+								$hubEmailToken = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);
 								$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
 
 								// put these in the from array (even though they are extended headers), 
 								// this seems to be the least obtursive way to do it without ripping things apart
-								$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);		
+								$from['xheaders'] = array('X-HubEmailToken' => $hubEmailToken);
 							}
 							else{
 								$newMessage = $message;
@@ -1012,7 +1011,7 @@ class SupportController extends Hubzero_Controller
 					if($allowEmailResponses){
 						// We're allowing email responses from anonymous users (for now)
 						// Since the email token stores the userid, we need to use -1 for the userid
-						$hubEmailToken = $encryptor->buildEmailToken(1, 1, -1, $id);		                             
+						$hubEmailToken = $encryptor->buildEmailToken(1, 1, -1, $id);
 
 						$newMessage = str_replace("%%tokenplaceholder%%", $hubEmailToken, $message);
 					}
@@ -1309,7 +1308,6 @@ class SupportController extends Hubzero_Controller
 	// Report abuse
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'reportabuse'
 	 * 
@@ -1493,7 +1491,6 @@ class SupportController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// General functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_getFilters'
@@ -1959,7 +1956,6 @@ class SupportController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// misc.
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'authorize'

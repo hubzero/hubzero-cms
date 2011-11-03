@@ -92,7 +92,6 @@ class JobsController extends Hubzero_Controller
 	// Jobs List
 	//---------------------
 
-
 	/**
 	 * Short description for 'jobs'
 	 * 
@@ -149,7 +148,6 @@ class JobsController extends Hubzero_Controller
 	//---------------------
 	// Save Job Posting
 	//---------------------
-
 
 	/**
 	 * Short description for 'save'
@@ -292,7 +290,6 @@ class JobsController extends Hubzero_Controller
 	// Check job ad quota depending on subscription
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'checkQuota'
 	 * 
@@ -319,7 +316,6 @@ class JobsController extends Hubzero_Controller
 	//---------------------
 	// Remove Job Posting
 	//---------------------
-
 
 	/**
 	 * Short description for 'remove'
@@ -359,7 +355,6 @@ class JobsController extends Hubzero_Controller
 	//---------------------
 	// Edit Job Posting
 	//---------------------
-
 
 	/**
 	 * Short description for 'edit'
@@ -459,7 +454,6 @@ class JobsController extends Hubzero_Controller
 	//---------------------
 	// Categores
 	//---------------------
-
 
 	/**
 	 * Short description for 'categories'
@@ -651,7 +645,6 @@ class JobsController extends Hubzero_Controller
 	//---------------------
 	// Types
 	//---------------------
-
 
 	/**
 	 * Short description for 'types'

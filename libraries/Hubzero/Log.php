@@ -37,7 +37,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // A work in progress. 
 //
 
-
 /**
  * Description for ''HUBZERO_LOG_EMERG''
  */

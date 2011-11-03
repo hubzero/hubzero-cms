@@ -80,7 +80,6 @@ class plgUsageChart extends JPlugin
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
 
-
 	/**
 	 * Short description for 'check_for_data'
 	 * 

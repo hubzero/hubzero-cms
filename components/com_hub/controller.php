@@ -242,7 +242,6 @@ class HubController extends JObject
 	// Tasks
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'logout'
 	 * 

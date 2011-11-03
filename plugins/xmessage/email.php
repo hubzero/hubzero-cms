@@ -125,18 +125,18 @@ class plgXMessageEmail extends JPlugin
 
 		// Want to add some extra headers? We put them into the from array 
 		// If none are there, this breaks nothing
-        if(array_key_exists('xheaders', $from)) 
+        if(array_key_exists('xheaders', $from))
 		{
 			$hs = $from['xheaders'];
 
 			// The xheaders array has name and value pairs
-			foreach($hs as $n => $v) 
+			foreach($hs as $n => $v)
 			{
 				$headers .= $n . ": " . $v . "\n";
 			}
 		}
 
-		if (mail($email, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args)) 
+		if (mail($email, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args))
 		{
 			return true;
 		}

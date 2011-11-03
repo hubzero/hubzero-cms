@@ -75,7 +75,6 @@ class TagsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'intro'
 	 * 
@@ -690,7 +689,6 @@ class TagsController extends Hubzero_Controller
 	//  Administrative Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'browse'
 	 * 
@@ -924,7 +922,6 @@ class TagsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_buildPathway'

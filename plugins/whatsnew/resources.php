@@ -264,7 +264,6 @@ class plgWhatsnewResources extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'documents'
 	 * 

@@ -46,14 +46,12 @@ class Wishlist extends JTable
 	 */
 	var $id         	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'category'
 	 * 
 	 * @var unknown
 	 */
 	var $category       = NULL;  // @var varchar(50)
-
 
 	/**
 	 * Description for 'referenceid'
@@ -62,14 +60,12 @@ class Wishlist extends JTable
 	 */
 	var $referenceid	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'description'
 	 * 
 	 * @var unknown
 	 */
 	var $description	= NULL;  // @var text
-
 
 	/**
 	 * Description for 'title'
@@ -78,14 +74,12 @@ class Wishlist extends JTable
 	 */
 	var $title			= NULL;  // @var varchar(150)
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    	= NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -94,14 +88,12 @@ class Wishlist extends JTable
 	 */
 	var $created_by 	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'state'
 	 * 
 	 * @var unknown
 	 */
 	var $state     		= NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'public'
@@ -111,7 +103,6 @@ class Wishlist extends JTable
 	var $public			= NULL;  // @var int(3)  // can any user view and submit to it?
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -367,7 +358,6 @@ class Wishlist extends JTable
 		return $wishlist;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'get_parent_versions'

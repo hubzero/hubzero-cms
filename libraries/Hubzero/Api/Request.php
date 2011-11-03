@@ -66,7 +66,7 @@ class Hubzero_API_Request
 		{
 			$this->accepts = $this->_parse_accept($_POST['format']);
 		}
-		else if (isset($_SERVER['HTTP_ACCEPT'])) 
+		else if (isset($_SERVER['HTTP_ACCEPT']))
 		{
 			$this->accepts = $_SERVER['HTTP_ACCEPT'];
 		}
@@ -100,7 +100,7 @@ class Hubzero_API_Request
 		{
 			$this->method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
 		}
-		else 
+		else
 		{
 			$this->method = $_SERVER['REQUEST_METHOD'];
 		}

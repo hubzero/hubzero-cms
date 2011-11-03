@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'Hubzero_Plugin_Params'
  * 
@@ -51,14 +50,12 @@ class Hubzero_Plugin_Params extends JTable
 	 */
 	var $id        = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'object_id'
 	 * 
 	 * @var unknown
 	 */
 	var $object_id = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'folder'
@@ -67,14 +64,12 @@ class Hubzero_Plugin_Params extends JTable
 	 */
 	var $folder    = NULL;  // @var varchar(100)
 
-
 	/**
 	 * Description for 'element'
 	 * 
 	 * @var unknown
 	 */
 	var $element   = NULL;  // @var varchar(100)
-
 
 	/**
 	 * Description for 'params'
@@ -84,7 +79,6 @@ class Hubzero_Plugin_Params extends JTable
 	var $params    = NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

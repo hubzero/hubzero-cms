@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Comment database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ResourcesRecommendation'
  * 
@@ -51,14 +50,12 @@ class ResourcesRecommendation extends JTable
 	 */
 	var $fromID       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'toID'
 	 * 
 	 * @var unknown
 	 */
 	var $toID         = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'contentScore'
@@ -67,7 +64,6 @@ class ResourcesRecommendation extends JTable
 	 */
 	var $contentScore = NULL;  // @var float
 
-
 	/**
 	 * Description for 'tagScore'
 	 * 
@@ -75,14 +71,12 @@ class ResourcesRecommendation extends JTable
 	 */
 	var $tagScore     = NULL;  // @var float
 
-
 	/**
 	 * Description for 'titleScore'
 	 * 
 	 * @var unknown
 	 */
 	var $titleScore   = NULL;  // @var float
-
 
 	/**
 	 * Description for 'timestamp'
@@ -92,7 +86,6 @@ class ResourcesRecommendation extends JTable
 	var $timestamp    = NULL;  // @var datetime (0000-00-00 00:00:00)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_View_Helper_Html');
 
 //citation params
-$label = $this->config->get("citation_label", "number"); 
+$label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
 $template = $this->config->get("citation_format", "");
 
@@ -41,10 +41,10 @@ $template = $this->config->get("citation_format", "");
 $batch_download = $this->config->get("citation_batch_download", 1);
 
 //do we want to number li items
-if($label == "none") { 
-	$citations_label_class = " no-label"; 
-} elseif($label == "type") { 
-	$citations_label_class = " type-label"; 
+if($label == "none") {
+	$citations_label_class = " no-label";
+} elseif($label == "type") {
+	$citations_label_class = " type-label";
 } elseif($label == "both") {
 	$citations_label_class = " both-label";
 }
@@ -93,12 +93,12 @@ if($label == "none") {
 									}
 									$type = ($type != "") ? $type : "Generic";
 
-									switch($label) 
+									switch($label)
 									{
 										case "number":
 											echo "<span class=\"number\">{$counter}.</span>";
 											break;
-										case "type":	
+										case "type":
 											echo "<span class=\"type\">{$type}</span>";
 											break;
 										case "both":

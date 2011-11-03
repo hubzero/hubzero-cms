@@ -46,14 +46,12 @@ class Hubzero_Message_Recipient extends JTable
 	 */
 	var $id       = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'mid'
 	 * 
 	 * @var unknown
 	 */
 	var $mid      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'uid'
@@ -62,14 +60,12 @@ class Hubzero_Message_Recipient extends JTable
 	 */
 	var $uid      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created  = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'expires'
@@ -78,14 +74,12 @@ class Hubzero_Message_Recipient extends JTable
 	 */
 	var $expires  = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'actionid'
 	 * 
 	 * @var unknown
 	 */
 	var $actionid = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'state'
@@ -95,7 +89,6 @@ class Hubzero_Message_Recipient extends JTable
 	var $state    = NULL;  // @var tinyint(2)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

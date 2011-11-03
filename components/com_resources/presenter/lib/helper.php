@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class PresenterHelper extends JObject 
+class PresenterHelper extends JObject
 {
 	/**
 	 * Displays Error Messages to the User
@@ -62,7 +62,7 @@ class PresenterHelper extends JObject
 	 */
 	public function createJsonManifest( $resource_path, $xml_path )
 	{
-		ini_set('display_errors', 1); 
+		ini_set('display_errors', 1);
 		error_reporting(E_ALL);
 		//verify once again the file exists
 		if (file_exists( $xml_path )) {
@@ -70,7 +70,7 @@ class PresenterHelper extends JObject
 		}
 
 		//set the media
-		$old_media = $manifest->media; 
+		$old_media = $manifest->media;
 		foreach($old_media->source as $source) {
 			$old_media_parts = explode('\\', $source);
 			$source = array_pop($old_media_parts);
@@ -121,7 +121,7 @@ class PresenterHelper extends JObject
 
 			$new_slides[] = array(
 								"title" => $title,
-								"type"	=> $type, 
+								"type"	=> $type,
 								"media" => $media,
 								"time"	=> $time,
 								"slide" => $slide

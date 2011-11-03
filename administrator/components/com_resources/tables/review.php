@@ -46,14 +46,12 @@ class ResourcesReview extends JTable
 	 */
 	var $resource_id = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'user_id'
 	 * 
 	 * @var unknown
 	 */
 	var $user_id     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'rating'
@@ -62,14 +60,12 @@ class ResourcesReview extends JTable
 	 */
 	var $rating      = NULL;  // @var decimal(2,1)
 
-
 	/**
 	 * Description for 'comment'
 	 * 
 	 * @var unknown
 	 */
 	var $comment     = NULL;  // @var text
-
 
 	/**
 	 * Description for 'created'
@@ -78,14 +74,12 @@ class ResourcesReview extends JTable
 	 */
 	var $created     = NULL;  // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'anonymous'
 	 * 
 	 * @var unknown
 	 */
 	var $anonymous   = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'id'
@@ -95,7 +89,6 @@ class ResourcesReview extends JTable
 	var $id          = NULL;  // @var int(11) primary key
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

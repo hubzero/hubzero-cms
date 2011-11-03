@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Base class for resource usage
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ResourcesUsage'
  * 
@@ -282,7 +281,6 @@ class ResourcesUsage
 // Extended resource stats class (Tools)
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'class'
  * 
@@ -452,7 +450,6 @@ class ToolStats extends ResourcesUsage
 //----------------------------------------------------------
 // Extended resource stats class (And More)
 //----------------------------------------------------------
-
 
 /**
  * Short description for 'AndmoreStats'

@@ -46,7 +46,6 @@ class WishAttachment extends JTable
 	 */
 	var $id = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'wish'
 	 * 
@@ -54,14 +53,12 @@ class WishAttachment extends JTable
 	 */
 	var $wish = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'filename'
 	 * 
 	 * @var string
 	 */
 	var $filename = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'description'
@@ -71,7 +68,6 @@ class WishAttachment extends JTable
 	var $description = NULL;  // @var varchar(255)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -46,14 +46,12 @@ class TagsTag extends JTable
 	 */
 	var $id          = NULL;  // int(11)
 
-
 	/**
 	 * Description for 'tag'
 	 * 
 	 * @var unknown
 	 */
 	var $tag         = NULL;  // string(100)
-
 
 	/**
 	 * Description for 'raw_tag'
@@ -62,7 +60,6 @@ class TagsTag extends JTable
 	 */
 	var $raw_tag     = NULL;  // string(100)
 
-
 	/**
 	 * Description for 'alias'
 	 * 
@@ -70,14 +67,12 @@ class TagsTag extends JTable
 	 */
 	var $alias       = NULL;  // string(100)
 
-
 	/**
 	 * Description for 'description'
 	 * 
 	 * @var unknown
 	 */
 	var $description = NULL;  // text
-
 
 	/**
 	 * Description for 'admin'
@@ -87,7 +82,6 @@ class TagsTag extends JTable
 	var $admin       = NULL;  // tinyint(3)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

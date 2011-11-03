@@ -46,14 +46,12 @@ class Shortlist extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'emp'
 	 * 
 	 * @var unknown
 	 */
 	var $emp		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'seeker'
@@ -62,7 +60,6 @@ class Shortlist extends JTable
 	 */
 	var $seeker		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'category'
 	 * 
@@ -70,14 +67,12 @@ class Shortlist extends JTable
 	 */
 	var $category	= NULL;  // @var varchar (job / resume)
 
-
 	/**
 	 * Description for 'jobid'
 	 * 
 	 * @var unknown
 	 */
 	var $jobid		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'added'
@@ -87,7 +82,6 @@ class Shortlist extends JTable
 	var $added		= NULL;  // @var datetime
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

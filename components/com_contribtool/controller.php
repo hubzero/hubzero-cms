@@ -131,7 +131,6 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
-
 	/**
 	 * Short description for '__set'
 	 * 
@@ -161,7 +160,6 @@ class ContribtoolController extends JObject
 		}
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'getStyles'
@@ -233,7 +231,6 @@ class ContribtoolController extends JObject
 		return $task;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'execute'
@@ -345,7 +342,6 @@ class ContribtoolController extends JObject
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'login'
@@ -1049,7 +1045,6 @@ class ContribtoolController extends JObject
 	//----------------------------------------------------------
 	// Process
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'setTracAccess'
@@ -1868,7 +1863,6 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'updateTicket'
 	 * 
@@ -2011,7 +2005,6 @@ class ContribtoolController extends JObject
 
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'createTicket'
@@ -2259,7 +2252,6 @@ class ContribtoolController extends JObject
 	// Run scripts
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'licenseTool'
 	 * 
@@ -2397,8 +2389,6 @@ class ContribtoolController extends JObject
 		}
 
 	}
-
-	//-----------
 
 	protected function finalizeTool(&$out = '')
 	{
@@ -2706,7 +2696,7 @@ class ContribtoolController extends JObject
 			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision'], '', $getFullDoi);
 
 			// DOI already exists for this revision
-			if($bingo) { 
+			if($bingo) {
 				$output['fail'] .= '<br />* ' . JText::_('ERR_DOI_ALREADY_EXISTS') . ': ' . $bingo;
 			}
 			else {
@@ -2715,7 +2705,7 @@ class ContribtoolController extends JObject
 				$handle = $doiprefix . $status['resourceid'] . '.' . $newlabel;
 
 				// Register with the new DOI service
-				if($new_doi) {	
+				if($new_doi) {
 					$doiSuccess = 0;
 
 					// Get config
@@ -2740,7 +2730,7 @@ class ContribtoolController extends JObject
 					// Format name
 					$nameParts   = explode(" ", $firstAuthor);
 					$authorName  = end($nameParts);
-					$authorName .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';									
+					$authorName .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
 					$metadata['creator'] = $authorName;
 
 					// Register DOI
@@ -2950,7 +2940,6 @@ class ContribtoolController extends JObject
 	//----------------------------------------------------------
 	// Resource page editing
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'edit_resource'
@@ -3315,7 +3304,6 @@ class ContribtoolController extends JObject
 	// Misc resource editing
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'txt_shorten'
 	 * 
@@ -3395,7 +3383,6 @@ class ContribtoolController extends JObject
 	//----------------------------------------------------------
 	// Attachments
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'attach_rename'
@@ -3889,7 +3876,6 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'ss_delete'
 	 * 
@@ -4226,7 +4212,6 @@ class ContribtoolController extends JObject
 		}
     }
 	//----------
-
 
 	/**
 	 * Short description for 'copyss'
@@ -4681,7 +4666,6 @@ class ContribtoolController extends JObject
 	// contributors manager
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'author_save'
 	 * 
@@ -5010,7 +4994,6 @@ class ContribtoolController extends JObject
 	//----------------------------------------------------------
 	// misc.
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'check_access'

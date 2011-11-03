@@ -46,7 +46,6 @@ class XPollData extends JTable
 	 */
 	var $id     = NULL; // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'pollid'
 	 * 
@@ -54,14 +53,12 @@ class XPollData extends JTable
 	 */
 	var $pollid = NULL; // @var int(11)
 
-
 	/**
 	 * Description for 'text'
 	 * 
 	 * @var unknown
 	 */
 	var $text   = NULL; // @var text
-
 
 	/**
 	 * Description for 'hits'
@@ -71,7 +68,6 @@ class XPollData extends JTable
 	var $hits   = NULL; // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

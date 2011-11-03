@@ -64,7 +64,7 @@ class XImportHelperScript extends JObject
 	 *
 	 * @return	void
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		$this->_juser = JFactory::getUser();
 		$this->_db = JFactory::getDBO();
@@ -75,7 +75,7 @@ class XImportHelperScript extends JObject
 	 *
 	 * @return	string
 	 */
-	public function getDescription() 
+	public function getDescription()
 	{
 		return $this->_description;
 	}
@@ -85,7 +85,7 @@ class XImportHelperScript extends JObject
 	 *
 	 * @return	array
 	 */
-	public function getOptions() 
+	public function getOptions()
 	{
 		return $this->_options;
 	}
@@ -97,7 +97,7 @@ class XImportHelperScript extends JObject
 	 *
 	 * @return	void
 	 */
-	public function run() 
+	public function run()
 	{
 	}
 }

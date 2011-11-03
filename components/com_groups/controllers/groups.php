@@ -44,7 +44,6 @@ class GroupsController extends Hubzero_Controller
 {
 	//var $notifications = array();
 
-
 	/**
 	 * Short description for 'execute'
 	 * 
@@ -334,7 +333,6 @@ class GroupsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Main displays
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'abort'
@@ -698,7 +696,6 @@ class GroupsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// User actions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'join'
@@ -1180,7 +1177,6 @@ class GroupsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Group management
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'edit'
@@ -2135,7 +2131,6 @@ class GroupsController extends Hubzero_Controller
 	// Group Customization
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'customize'
 	 * 
@@ -2867,7 +2862,6 @@ class GroupsController extends Hubzero_Controller
 	// media manager
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'upload'
 	 * 
@@ -3206,7 +3200,6 @@ class GroupsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Misc Functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_authorize'

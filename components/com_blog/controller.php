@@ -1105,7 +1105,6 @@ class BlogController extends Hubzero_Controller
 	// media manager
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_upload'
 	 * 

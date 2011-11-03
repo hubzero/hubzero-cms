@@ -46,14 +46,12 @@ class Vote extends JTable
 	 */
 	var $id      		= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'referenceid'
 	 * 
 	 * @var unknown
 	 */
 	var $referenceid    = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'voted'
@@ -62,14 +60,12 @@ class Vote extends JTable
 	 */
 	var $voted 			= NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'voter'
 	 * 
 	 * @var unknown
 	 */
 	var $voter   		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'helpful'
@@ -78,14 +74,12 @@ class Vote extends JTable
 	 */
 	var $helpful     	= NULL;  // @var varchar(11)
 
-
 	/**
 	 * Description for 'ip'
 	 * 
 	 * @var unknown
 	 */
 	var $ip      		= NULL;  // @var varchar(15)
-
 
 	/**
 	 * Description for 'category'
@@ -95,7 +89,6 @@ class Vote extends JTable
 	var $category     	= NULL;  // @var varchar(50)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -26,13 +26,13 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get the manifest for the presentation
-$contents = file_get_contents($this->manifest); 
+$contents = file_get_contents($this->manifest);
 
 //content folder
 $content_folder = $this->content_folder;
 
 //decode the json formatted manifest so we can use the information
-$presentation = json_decode( $contents );  
+$presentation = json_decode( $contents );
 $presentation = $presentation->presentation;
 
 //get this resource
@@ -204,9 +204,9 @@ foreach($author_ids as $ai) {
 										$max = 30;
 										$elipsis = "&hellip;";
 										echo ($num) . ". ";
-										echo substr($slide->title, 0, $max); 
-									
-										if(strlen($slide->title) > $max) 
+										echo substr($slide->title, 0, $max);
+
+										if(strlen($slide->title) > $max)
 											echo $elipsis;
 									?>
 								</span>
@@ -217,7 +217,7 @@ foreach($author_ids as $ai) {
 						<?php endif; ?>
 						<?php 
 							$last_slide_id = $slide->slide;
-							$counter++; 
+							$counter++;
 						?>
 					<?php endforeach; ?>
 				</ul>

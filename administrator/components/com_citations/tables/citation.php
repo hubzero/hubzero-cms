@@ -46,14 +46,12 @@ class CitationsCitation extends JTable
 	 */
 	var $id             	= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid            	= NULL;  // @var varchar(200)
-
 
 	/**
 	 * Description for 'affiliated'
@@ -62,14 +60,12 @@ class CitationsCitation extends JTable
 	 */
 	var $affiliated     	= NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'fundedby'
 	 * 
 	 * @var unknown
 	 */
 	var $fundedby       	= NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'created'
@@ -78,14 +74,12 @@ class CitationsCitation extends JTable
 	 */
 	var $created        	= NULL;  // @var datetime
 
-
 	/**
 	 * Description for 'address'
 	 * 
 	 * @var unknown
 	 */
 	var $address        	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'author'
@@ -94,14 +88,12 @@ class CitationsCitation extends JTable
 	 */
 	var $author         	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'booktitle'
 	 * 
 	 * @var unknown
 	 */
 	var $booktitle      	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'chapter'
@@ -110,14 +102,12 @@ class CitationsCitation extends JTable
 	 */
 	var $chapter        	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'cite'
 	 * 
 	 * @var unknown
 	 */
 	var $cite           	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'edition'
@@ -126,14 +116,12 @@ class CitationsCitation extends JTable
 	 */
 	var $edition        	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'editor'
 	 * 
 	 * @var unknown
 	 */
 	var $editor         	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'eprint'
@@ -142,14 +130,12 @@ class CitationsCitation extends JTable
 	 */
 	var $eprint         	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'howpublished'
 	 * 
 	 * @var unknown
 	 */
 	var $howpublished   	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'institution'
@@ -158,14 +144,12 @@ class CitationsCitation extends JTable
 	 */
 	var $institution    	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'isbn'
 	 * 
 	 * @var unknown
 	 */
 	var $isbn           	= NULL;  // @var varchar(50)
-
 
 	/**
 	 * Description for 'journal'
@@ -174,14 +158,12 @@ class CitationsCitation extends JTable
 	 */
 	var $journal        	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'key'
 	 * 
 	 * @var unknown
 	 */
 	var $key            	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'location'
@@ -190,14 +172,12 @@ class CitationsCitation extends JTable
 	 */
 	var $location       	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'month'
 	 * 
 	 * @var unknown
 	 */
 	var $month          	= NULL;  // @var int(2)
-
 
 	/**
 	 * Description for 'note'
@@ -206,14 +186,12 @@ class CitationsCitation extends JTable
 	 */
 	var $note           	= NULL;  // @var text
 
-
 	/**
 	 * Description for 'number'
 	 * 
 	 * @var unknown
 	 */
 	var $number         	= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'organization'
@@ -222,14 +200,12 @@ class CitationsCitation extends JTable
 	 */
 	var $organization   	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'pages'
 	 * 
 	 * @var unknown
 	 */
 	var $pages          	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'publisher'
@@ -238,14 +214,12 @@ class CitationsCitation extends JTable
 	 */
 	var $publisher      	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'school'
 	 * 
 	 * @var unknown
 	 */
 	var $school         	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'series'
@@ -254,14 +228,12 @@ class CitationsCitation extends JTable
 	 */
 	var $series         	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title          	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'type'
@@ -270,14 +242,12 @@ class CitationsCitation extends JTable
 	 */
 	var $type           	= NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'url'
 	 * 
 	 * @var unknown
 	 */
 	var $url            	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'volume'
@@ -286,14 +256,12 @@ class CitationsCitation extends JTable
 	 */
 	var $volume         	= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'year'
 	 * 
 	 * @var unknown
 	 */
 	var $year           	= NULL;  // @var int(4)
-
 
 	/**
 	 * Description for 'doi'
@@ -302,14 +270,12 @@ class CitationsCitation extends JTable
 	 */
 	var $doi            	= NULL;  // @var varchar(50)
 
-
 	/**
 	 * Description for 'ref_type'
 	 * 
 	 * @var unknown
 	 */
 	var $ref_type       	= NULL;  // @var varchar(50)
-
 
 	/**
 	 * Description for 'date_submit'
@@ -318,14 +284,12 @@ class CitationsCitation extends JTable
 	 */
 	var $date_submit    	= NULL;  // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'date_accept'
 	 * 
 	 * @var unknown
 	 */
 	var $date_accept    	= NULL;  // @var datetime(0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'date_publish'
@@ -334,14 +298,12 @@ class CitationsCitation extends JTable
 	 */
 	var $date_publish   	= NULL;  // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'software_use'
 	 * 
 	 * @var unknown
 	 */
 	var $software_use   	= NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'res_edu'
@@ -350,14 +312,12 @@ class CitationsCitation extends JTable
 	 */
     var	$res_edu 			= NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'exp_list_exp_data'
 	 * 
 	 * @var unknown
 	 */
 	var $exp_list_exp_data  = NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'exp_data'
@@ -366,7 +326,6 @@ class CitationsCitation extends JTable
 	 */
  	var $exp_data       	= NULL;  // @var int(3)
 
-
 	/**
 	 * Description for 'notes'
 	 * 
@@ -374,7 +333,7 @@ class CitationsCitation extends JTable
 	 */
  	var $notes          	= NULL;  // @var text
 	var $published      	= NULL;  // @var int(3)
-	
+
 	var $abstract 			= NULL;
 	var $keywords			= NULL;
 	var $language			= NULL;
@@ -387,12 +346,9 @@ class CitationsCitation extends JTable
 
 	var $badges				= NULL;
 	var $tags				= NULL;
-	 * 
+	 *
 	 * @var unknown
 	 */
-
-	//-----------
-
 
 	/**
 	 * Short description for '__construct'

@@ -46,14 +46,12 @@ class WikiPageMath extends JTable
 	 */
 	var $id               = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'inputhash'
 	 * 
 	 * @var unknown
 	 */
 	var $inputhash        = NULL;  // @var varbinary(16)
-
 
 	/**
 	 * Description for 'outputhash'
@@ -62,7 +60,6 @@ class WikiPageMath extends JTable
 	 */
 	var $outputhash       = NULL;  // @var varbinary(16)
 
-
 	/**
 	 * Description for 'conservativeness'
 	 * 
@@ -70,14 +67,12 @@ class WikiPageMath extends JTable
 	 */
 	var $conservativeness = NULL;  // @var tinyint
 
-
 	/**
 	 * Description for 'html'
 	 * 
 	 * @var unknown
 	 */
 	var $html             = NULL;  // @var text
-
 
 	/**
 	 * Description for 'mathml'
@@ -87,7 +82,6 @@ class WikiPageMath extends JTable
 	var $mathml           = NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

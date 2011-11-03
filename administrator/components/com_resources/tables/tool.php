@@ -250,7 +250,6 @@ class ToolLicense extends JTable
 	 */
 	var $id  = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'name'
 	 * 
@@ -258,14 +257,12 @@ class ToolLicense extends JTable
 	 */
 	var $name     = NULL;  // @var varchar(250)
 
-
 	/**
 	 * Description for 'text'
 	 * 
 	 * @var unknown
 	 */
 	var $text = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'title'

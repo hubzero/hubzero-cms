@@ -456,7 +456,6 @@ class MathRenderer
 
 	// Select among PNG, HTML, or MathML output depending on
 
-
 	/**
 	 * Short description for '_doRender'
 	 * 

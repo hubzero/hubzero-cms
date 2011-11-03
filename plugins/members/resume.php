@@ -811,7 +811,6 @@ class plgMembersResume extends JPlugin
 	// media manager
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'upload'
 	 * 

@@ -46,16 +46,11 @@ class modEventsCalendar
 	 * @var array
 	 */
 
-	//-----------
-
-	public function __construct($params, $module) 
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -71,9 +66,6 @@ class modEventsCalendar
 		$this->_attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -84,21 +76,16 @@ class modEventsCalendar
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->_attributes[$property]))
 		{
 			return $this->_attributes[$property];
 		}
 	}
 
-	//-----------
-	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'
@@ -107,14 +94,14 @@ class modEventsCalendar
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function display() 
+	public function display()
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);
@@ -127,16 +114,14 @@ class modEventsCalendar
 		$this->run();
 	}
 
-	//-----------
-	
 	public function run()
 	{
 		$lang =& JFactory::getLanguage();
 		$Config_lang = $lang->getBackwardLang();
 
 		// Check the events component
-		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php')) 
-		{ 
+		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php'))
+		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
@@ -205,13 +190,13 @@ class modEventsCalendar
 
 		// Get the start day
 		$startday = $this->params->get('start_day');
-		if (!defined('_CAL_CONF_STARDAY')) 
+		if (!defined('_CAL_CONF_STARDAY'))
 		{
 			define('_CAL_CONF_STARDAY', $startday);
 		}
 		//define('_CAL_CONF_DATEFORMAT',1);
 		//define('_CAL_CONF_MAILVIEW','YES');
-		if ((!$startday) || ($startday > 1)) 
+		if ((!$startday) || ($startday > 1))
 		{
 			$startday = 0;
 		}
@@ -235,7 +220,7 @@ class modEventsCalendar
 		$daysLeftInMonth = date("t", $timeWithOffset) - date("j", $timeWithOffset) + 1;
 
 		// Display last month?
-		if ($disp_lastMonth && (!$disp_lastMonthDays || $thisDayOfMonth <= $disp_lastMonthDays)) 
+		if ($disp_lastMonth && (!$disp_lastMonthDays || $thisDayOfMonth <= $disp_lastMonthDays))
 		{
 			// Build last month calendar
 			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") - 1, 1, date("Y")), JText::_('_CAL_LANG_LAST_MONTH'), $day_name, $disp_lastMonth == 2);
@@ -245,7 +230,7 @@ class modEventsCalendar
 		$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n"), 1, date("Y")), JText::_('EVENTS_CAL_LANG_THIS_MONTH'), $day_name);
 
 		// Display next month?
-		if ($disp_nextMonth && (!$disp_nextMonthDays || $daysLeftInMonth <= $disp_nextMonthDays)) 
+		if ($disp_nextMonth && (!$disp_nextMonthDays || $daysLeftInMonth <= $disp_nextMonthDays))
 		{
 			// Build next month calendar
 			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") + 1, 1, date("Y")), JText::_('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
@@ -253,9 +238,6 @@ class modEventsCalendar
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_calendar'
@@ -333,7 +315,7 @@ class modEventsCalendar
 
 			for ($r = 0; $r < count($rows); $r++)
 			{
-				if ($eventCheck->EventsRepeat($rows[$r], $cal_year, $cal_month, $do)) 
+				if ($eventCheck->EventsRepeat($rows[$r], $cal_year, $cal_month, $do))
 				{
 					$monthHasEvent = true;
 					$mark_bold = '<b>';
@@ -345,11 +327,11 @@ class modEventsCalendar
 
 			// Only adds link if event scheduled that day
 			$content .= '   <td class="'.$class.'">';
-			if ($class == 'todaywithevents' || $class == 'daywithevents') 
+			if ($class == 'todaywithevents' || $class == 'daywithevents')
 			{
 				$content .= '<a class="mod_events_daylink" href="'.JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month.'&day='.$do).'">'.$d.'</a>';
-			} 
-			else 
+			}
+			else
 			{
 				$content .= "$d";
 			}
@@ -357,7 +339,7 @@ class modEventsCalendar
 			$rd++;
 
 			// Check if Next week row
-			if ((1 + $dayOfWeek++)%7 == $startday) 
+			if ((1 + $dayOfWeek++)%7 == $startday)
 			{
 				$content .= '  </tr>'."\n".'  <tr>'."\n";
 				$rd = ($rd >= 7) ? 0 : $rd;
@@ -376,11 +358,11 @@ class modEventsCalendar
 		$content .= '</table>'."\n";
 
 		// Now check to see if this month needs to have at least 1 event in order to display
-		if (!$monthMustHaveEvent || $monthHasEvent) 
+		if (!$monthMustHaveEvent || $monthHasEvent)
 		{
 			return $content;
-		} 
-		else 
+		}
+		else
 		{
 			return '';
 		}

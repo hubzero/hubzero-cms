@@ -47,9 +47,6 @@ class modNotices
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modNotices
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modNotices
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modNotices
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_countdown'
@@ -134,9 +122,6 @@ class modNotices
 		return $left;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '_mkt'
 	 * 
@@ -152,9 +137,6 @@ class modNotices
 		}
 		return $stime;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '_convert'
@@ -176,9 +158,6 @@ class modNotices
 		return $t;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '_timeto'
 	 * 
@@ -199,9 +178,6 @@ class modNotices
 		}
 		return $o;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

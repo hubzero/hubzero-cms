@@ -54,9 +54,6 @@ class modXLogin
 	 */
 	var $debug = 0;
 
-	//-----------
-
-
 	/**
 	 * Short description for 'setObject'
 	 * 
@@ -70,9 +67,6 @@ class modXLogin
 	{
 		$this->_objects[$name] =& $object;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'getObject'

@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // XForum database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'XForum'
  * 
@@ -51,14 +50,12 @@ class XForum extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'topic'
 	 * 
 	 * @var unknown
 	 */
 	var $topic      = NULL;  // @var varchar(255)
-
 
 	/**
 	 * Description for 'comment'
@@ -67,14 +64,12 @@ class XForum extends JTable
 	 */
 	var $comment    = NULL;  // @var text
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -83,14 +78,12 @@ class XForum extends JTable
 	 */
 	var $created_by = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'modified'
 	 * 
 	 * @var unknown
 	 */
 	var $modified   = NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'modified_by'
@@ -99,14 +92,12 @@ class XForum extends JTable
 	 */
 	var $modified_by = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'state'
 	 * 
 	 * @var unknown
 	 */
 	var $state      = NULL;  // @var int(2)
-
 
 	/**
 	 * Description for 'sticky'
@@ -115,14 +106,12 @@ class XForum extends JTable
 	 */
 	var $sticky     = NULL;  // @var int(2)
 
-
 	/**
 	 * Description for 'parent'
 	 * 
 	 * @var unknown
 	 */
 	var $parent     = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'hits'
@@ -131,7 +120,6 @@ class XForum extends JTable
 	 */
 	var $hits       = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'group'
 	 * 
@@ -139,14 +127,12 @@ class XForum extends JTable
 	 */
 	var $group      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'access'
 	 * 
 	 * @var unknown
 	 */
 	var $access     = NULL;  // @var tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
-
 
 	/**
 	 * Description for 'anonymous'
@@ -156,7 +142,6 @@ class XForum extends JTable
 	var $anonymous  = NULL;  // @var tinyint(2)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -324,7 +309,6 @@ class XForum extends JTable
 // XForum pagination class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'class'
  * 
@@ -340,14 +324,12 @@ class XForumPagination extends JObject
 	 */
 	var $limitstart = null;  // The record number to start dislpaying from
 
-
 	/**
 	 * Description for 'limit'
 	 * 
 	 * @var number
 	 */
 	var $limit = null;       // Number of rows to display per page
-
 
 	/**
 	 * Description for 'total'
@@ -356,14 +338,12 @@ class XForumPagination extends JObject
 	 */
 	var $total = null;       // Total number of rows
 
-
 	/**
 	 * Description for '_viewall'
 	 * 
 	 * @var boolean
 	 */
 	var $_viewall = false;   // View all flag
-
 
 	/**
 	 * Description for 'forum'
@@ -373,7 +353,6 @@ class XForumPagination extends JObject
 	var $forum = null;       // The forum we're paging for
 
 	// Constructor
-
 
 	/**
 	 * Short description for '__construct'
@@ -430,7 +409,6 @@ class XForumPagination extends JObject
 
 	// Return the rationalised offset for a row with a given index.
 
-
 	/**
 	 * Short description for 'getRowOffset'
 	 * 
@@ -445,7 +423,6 @@ class XForumPagination extends JObject
 	}
 
 	// Return the pagination data object, only creating it if it doesn't already exist
-
 
 	/**
 	 * Short description for 'getData'
@@ -464,7 +441,6 @@ class XForumPagination extends JObject
 	}
 
 	// Create and return the pagination page list string, ie. Previous, Next, 1 2 3 ... x
-
 
 	/**
 	 * Short description for 'getPagesLinks'
@@ -612,7 +588,6 @@ class XForumPagination extends JObject
 //----------------------------------------------------------
 // XForum Pagination object representing a particular item in the pagination lists
 //----------------------------------------------------------
-
 
 /**
  * Short description for 'XForumPaginationObject'

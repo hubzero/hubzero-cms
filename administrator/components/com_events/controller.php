@@ -152,7 +152,6 @@ class EventsController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'events'
 	 * 
@@ -848,7 +847,6 @@ class EventsController extends Hubzero_Controller
 	// Configuration
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'configure'
 	 * 
@@ -970,7 +968,6 @@ class EventsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Categories
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'cats'
@@ -1418,7 +1415,6 @@ class EventsController extends Hubzero_Controller
 	//  Respondents
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'viewrespondent'
 	 * 
@@ -1563,7 +1559,6 @@ class EventsController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Pages
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'pages'

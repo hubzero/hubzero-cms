@@ -29,16 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//-----------
-
 jimport( 'joomla.plugin.plugin' );
 jimport('joomla.filesystem.file');
 
-//-----------
-
 JPlugin::loadLanguage( 'plg_citation_bibtex' );
-
-//-----------
 
 class plgCitationBibtex extends JPlugin
 {
@@ -51,15 +45,11 @@ class plgCitationBibtex extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
-	//-----
-	
 	public function onImportAcceptedFiles()
 	{
 		return ".bib <small>(BibTex File)</small>";
 	}
 
-	//-----
-	
 	public function onImport( $file )
 	{
 		//file type
@@ -92,7 +82,7 @@ class plgCitationBibtex extends JPlugin
 		for($i=0;$i<count($citations); $i++) {
 			$auths = $citations[$i]['author'];
 			foreach($auths as $a) {
-				$authors[] = $a['last'] . " " . $a['jr'] . ", " . $a['first']; 
+				$authors[] = $a['last'] . " " . $a['jr'] . ", " . $a['first'];
 			}
 
 			$citations[$i]['author'] = implode("; ", $authors);
@@ -117,8 +107,6 @@ class plgCitationBibtex extends JPlugin
 		return $final;
 	}
 
-	//-----
-	
 	protected function checkDuplicateCitation( $citation )
 	{
 		//vars

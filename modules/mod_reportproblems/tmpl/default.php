@@ -92,9 +92,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$dispatcher =& JDispatcher::getInstance();
 	$captchas = $dispatcher->trigger('onGetModuleCaptcha');
 
-	if (count($captchas) > 0) 
+	if (count($captchas) > 0)
 	{
-		foreach ($captchas as $captcha) 
+		foreach ($captchas as $captcha)
 		{
 			echo $captcha;
 		}

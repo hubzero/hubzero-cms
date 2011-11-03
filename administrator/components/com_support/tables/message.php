@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'SupportMessage'
  * 
@@ -51,14 +50,12 @@ class SupportMessage extends JTable
 	 */
 	var $id      = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'title'
 	 * 
 	 * @var unknown
 	 */
 	var $title   = NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'message'
@@ -68,7 +65,6 @@ class SupportMessage extends JTable
 	var $message = NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

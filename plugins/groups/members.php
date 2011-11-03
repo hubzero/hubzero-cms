@@ -335,7 +335,6 @@ class plgGroupsMembers extends JPlugin
 	// Manage group members
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'approve'
 	 * 
@@ -1228,7 +1227,6 @@ class plgGroupsMembers extends JPlugin
 	//----------------------------------------------------------
 	// Messaging
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'notifyAdmin'

@@ -46,7 +46,6 @@ class XSearchPhrase
 	 */
 	private $_text  = NULL;     // The original search text - should NEVER BE CHANGED
 
-
 	/**
 	 * Description for '_stem'
 	 * 
@@ -54,14 +53,12 @@ class XSearchPhrase
 	 */
 	private $_stem  = NULL;     // A flag for if we should stem words or not
 
-
 	/**
 	 * Description for '_data'
 	 * 
 	 * @var array
 	 */
 	private $_data  = array();  // Processed text
-
 
 	/**
 	 * Description for '_error'
@@ -71,7 +68,6 @@ class XSearchPhrase
 	private $_error = NULL;     // Error holder
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

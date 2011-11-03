@@ -71,7 +71,6 @@ class XFlashController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'edit'
 	 * 
@@ -160,7 +159,6 @@ class XFlashController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Save 
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'save'
@@ -292,7 +290,6 @@ class XFlashController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// media manager
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'upload'

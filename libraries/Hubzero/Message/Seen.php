@@ -46,14 +46,12 @@ class Hubzero_Message_Seen extends JTable
 	 */
 	var $mid      = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'whenseen'
@@ -63,7 +61,6 @@ class Hubzero_Message_Seen extends JTable
 	var $whenseen = NULL;  // @var datetime(0000-00-00 00:00:00)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

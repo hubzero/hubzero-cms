@@ -47,9 +47,6 @@ class modMySubmissions
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modMySubmissions
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -79,9 +73,6 @@ class modMySubmissions
 	{
 		$this->attributes[$property] = $value;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__get'
@@ -102,7 +93,6 @@ class modMySubmissions
 	// Checks
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'step_type_check'
 	 * 
@@ -116,9 +106,6 @@ class modMySubmissions
 		// do nothing
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'step_compose_check'
 	 * 
@@ -131,9 +118,6 @@ class modMySubmissions
 	{
 		return $id;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'step_attach_check'
@@ -155,9 +139,6 @@ class modMySubmissions
 		return $total;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'step_authors_check'
 	 * 
@@ -178,9 +159,6 @@ class modMySubmissions
 
 		return $contributors;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'step_tags_check'
@@ -204,9 +182,6 @@ class modMySubmissions
 		}
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'step_review_check'
 	 * 
@@ -219,9 +194,6 @@ class modMySubmissions
 	{
 		return 0;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

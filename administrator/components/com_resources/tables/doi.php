@@ -46,14 +46,12 @@ class ResourcesDoi extends JTable
 	 */
 	var $local_revision = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'doi_label'
 	 * 
 	 * @var unknown
 	 */
 	var $doi_label      = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'rid'
@@ -72,7 +70,6 @@ class ResourcesDoi extends JTable
 	var $doi            = NULL;  // @var varchar(100) - NEW
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -103,8 +100,6 @@ class ResourcesDoi extends JTable
 		return true;
 	}
 
-	//-----------
-	
 	public function getDoi( $id = NULL, $revision = NULL, $versionid = 0, $get_full_doi = 0 )
 	{
 		if ($id == NULL) {
@@ -129,8 +124,6 @@ class ResourcesDoi extends JTable
 		return $this->_db->loadResult();
 	}
 
-	//-----------
-	
 	public function getLatestDoi( $id = NULL, $get_full_doi = 0 )
 	{
 		if ($id == NULL) {
@@ -148,8 +141,6 @@ class ResourcesDoi extends JTable
 		return $this->_db->loadResult();
 	}
 
-	//-----------
-	
 	public function loadDoi( $rid = NULL, $revision = 0 )
 	{
 		if ($rid === NULL || !$revision ) {
@@ -165,9 +156,7 @@ class ResourcesDoi extends JTable
 		}
 	}
 
-	//-----------
-	
-	public function saveDOI( $revision = 0, $newlabel = 1, $rid = NULL, $alias='', $versionid = 0, $doi = '' ) 
+	public function saveDOI( $revision = 0, $newlabel = 1, $rid = NULL, $alias='', $versionid = 0, $doi = '' )
 	{
 		if ($rid == NULL) {
 			return false;
@@ -182,9 +171,7 @@ class ResourcesDoi extends JTable
 		}
 	}
 
-	//-----------
-	
-	public function registerDOI( $service = NULL, $metadata = array(), &$doierr='' ) 
+	public function registerDOI( $service = NULL, $metadata = array(), &$doierr='' )
 	{
 		if($service == NULL or empty($metadata)) {
 			return false;
@@ -225,7 +212,7 @@ class ResourcesDoi extends JTable
 
 		curl_close($ch);
 
-		return $output;		
+		return $output;
 	}
 
 	/**

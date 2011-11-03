@@ -237,7 +237,6 @@ class ResourcesHtml
 	// Form <select> builders
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'selectAccess'
 	 * 
@@ -455,7 +454,6 @@ class ResourcesHtml
 	//-------------------------------------------------------------
 	// Media manager functions
 	//-------------------------------------------------------------
-
 
 	/**
 	 * Short description for 'dir_name'

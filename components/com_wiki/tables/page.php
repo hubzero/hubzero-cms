@@ -73,14 +73,12 @@ class WikiPage extends JTable
 	 */
 	public $created_by  = NULL;  // @var int(11)
 
-
 	/**
 	 * Page rating
 	 *
 	 * @var	integer
 	 */
 	public $rating = NULL;  // @var decimal(2,1)
-
 
 	/**
 	 * Number of times a page is rated
@@ -144,7 +142,7 @@ class WikiPage extends JTable
 	 * @param 	object 		$db JDatabase object
 	 * @return     void
 	 */
-	public function __construct(&$db) 
+	public function __construct(&$db)
 	{
 		parent::__construct('#__wiki_page', 'id', $db);
 	}
@@ -156,7 +154,7 @@ class WikiPage extends JTable
 	 * @param 	string 		$scope
 	 * @return 	boolean		True if data successfully loaded into object
 	 */
-	public function load($oid=NULL, $scope='') 
+	public function load($oid=NULL, $scope='')
 	{
 		$s = "";
 		if ($oid !== NULL && !is_numeric($oid)) {
@@ -186,7 +184,7 @@ class WikiPage extends JTable
 	 *
 	 * @return 	integer
 	 */
-	public function getID() 
+	public function getID()
 	{
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename='". $this->pagename ."' AND scope='".$this->scope."'");
 		$this->id = $this->_db->loadResult();
@@ -243,7 +241,7 @@ class WikiPage extends JTable
 	 * @param 	integer 	$admin
 	 * @return 	array
 	 */
-	public function getTags($admin=0) 
+	public function getTags($admin=0)
 	{
 		$obj = new WikiTags($this->_db);
 		$tags = $obj->get_tags_on_object($this->id, 0, 0, '', 0, $admin);
@@ -304,7 +302,7 @@ class WikiPage extends JTable
 	 * @param 	string 	$pagename
 	 * @return 	string 	$pagename
 	 */
-	private function _check($pagename) 
+	private function _check($pagename)
 	{
 		// Compress internal white-space to single space character.
 		$pagename = preg_replace('/[\s\xa0]+/', ' ', $orig = $pagename);
@@ -336,7 +334,7 @@ class WikiPage extends JTable
 	 * 
 	 * @return		boolean      	True if all fields are valid
 	 */
-	public function check() 
+	public function check()
 	{
 		if (is_string($this->pagename) && trim($this->pagename) == '') {
 			$this->setError(JText::_('Your page must have a name.'));
@@ -381,7 +379,7 @@ class WikiPage extends JTable
 	 * @param 	integer 	$user_id
 	 * @return 	boolean		True if user is an author
 	 */
-	public function isAuthor($user_id=NULL) 
+	public function isAuthor($user_id=NULL)
 	{
 		$wpa = new WikiPageAuthor($this->_db);
 		return $wpa->isAuthor($this->id, $user_id);
@@ -393,7 +391,7 @@ class WikiPage extends JTable
 	 * @param 	integer 	$id
 	 * @return 	boolean 	True if all info successfully deleted
 	 */
-	public function deleteBits($id=NULL) 
+	public function deleteBits($id=NULL)
 	{
 		if (!$id) {
 			$id = $this->id;
@@ -511,7 +509,7 @@ class WikiPage extends JTable
 	 * @param 	array 	$filters
 	 * @return 	string
 	 */
-	public function buildPluginQuery($filters=array()) 
+	public function buildPluginQuery($filters=array())
 	{
 		//$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
@@ -704,7 +702,7 @@ class WikiPage extends JTable
  	{
  		$this->_db->setQuery("SELECT visitors, visits FROM jos_wiki_page_metrics WHERE pageid = ".$this->id);
 		$vals = $this->_db->loadObjectList();
- 		foreach($vals as $val) 
+ 		foreach($vals as $val)
 		{
 			$stats['visitors'] = $val->visitors;
 			$stats['visits'] = $val->visits;

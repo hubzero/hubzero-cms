@@ -99,7 +99,6 @@ class MembersController extends Hubzero_Controller
 	// Views
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'autocomplete'
 	 * 
@@ -271,9 +270,7 @@ class MembersController extends Hubzero_Controller
 		$view->display();
 	}
 
-	//-----------
-	
-	protected function _myaccount() 
+	protected function _myaccount()
 	{
 		if (!$this->juser->get('guest')) {
 			JRequest::setVar('id', $this->juser->get('id'));
@@ -283,8 +280,6 @@ class MembersController extends Hubzero_Controller
 		}
 		return $this->view();
 	}
-
-	//-----------
 
 	protected function view()
 	{
@@ -360,7 +355,7 @@ class MembersController extends Hubzero_Controller
 		//   Doing so will can have negative affects.
 		if ($this->config->get('employeraccess') && $tab == 'resume') {
 			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
-			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
+			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;
 			$authorized = $emp ? 1 : $authorized;
 		}
 
@@ -1031,7 +1026,6 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Processors
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'save'
@@ -1765,7 +1759,6 @@ class MembersController extends Hubzero_Controller
 	//  Image handling
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'upload'
 	 * 
@@ -2005,7 +1998,6 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//	Private functions
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for '_authorize'

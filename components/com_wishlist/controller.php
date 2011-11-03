@@ -267,7 +267,6 @@ class WishlistController extends JObject
 	// Private functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for '_getStyles'
 	 * 
@@ -288,7 +287,6 @@ class WishlistController extends JObject
 
 	}
 	//-----------
-
 
 	/**
 	 * Short description for '_getScripts'
@@ -335,7 +333,6 @@ class WishlistController extends JObject
 		$document->setTitle( $this->_title );
 	}
 	//-----------
-
 
 	/**
 	 * Short description for '_buildPathway'
@@ -408,7 +405,6 @@ class WishlistController extends JObject
 	}
 	//------------
 
-
 	/**
 	 * Short description for 'startPath'
 	 * 
@@ -449,7 +445,6 @@ class WishlistController extends JObject
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'abort'
@@ -943,7 +938,6 @@ class WishlistController extends JObject
 	// Manage List
 	//----------------------------------------------------------			
 
-
 	/**
 	 * Short description for 'savesettings'
 	 * 
@@ -1137,7 +1131,6 @@ class WishlistController extends JObject
 	// Manage Plan
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'saveplan'
 	 * 
@@ -1315,7 +1308,6 @@ class WishlistController extends JObject
 	//----------------------------------------------------------
 	// Manage Wishes
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'addwish'
@@ -1845,7 +1837,6 @@ class WishlistController extends JObject
 	}
 	//-----------
 
-
 	/**
 	 * Short description for 'movewish'
 	 * 
@@ -2244,7 +2235,6 @@ class WishlistController extends JObject
 	// Admin votes
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'savevote'
 	 * 
@@ -2499,7 +2489,6 @@ class WishlistController extends JObject
 	//----------------------------------------------------------
 	// Comments and Ratings
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'savereply'
@@ -2902,7 +2891,6 @@ class WishlistController extends JObject
 	// Misc retrievers
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'getWebPath'
 	 * 
@@ -3030,8 +3018,8 @@ class WishlistController extends JObject
 		$filters['tag'] = trim(JRequest::getVar( 'tags', '' ));
 
 		if ($admin) {
-			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : 'ranking'; 
-		} else { 
+			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : 'ranking';
+		} else {
 			$default = $this->banking ? 'bonus' : 'date';
 			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
 		}
@@ -3050,7 +3038,6 @@ class WishlistController extends JObject
 		return $filters;
 	}
 	//------------
-
 
 	/**
 	 * Short description for 'authorize_admin'
@@ -3144,7 +3131,6 @@ class WishlistController extends JObject
 	//----------------------------------------------------------
 	// Misc
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'mkt'
@@ -3451,7 +3437,6 @@ class WishlistController extends JObject
 	//----------------------------------------------------------
 	// media manager
 	//----------------------------------------------------------
-
 
 	/**
 	 * Short description for 'upload'

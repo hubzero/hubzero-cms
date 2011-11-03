@@ -46,14 +46,12 @@ class Prefs extends JTable
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid		= NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'filters'
@@ -63,7 +61,6 @@ class Prefs extends JTable
 	var $filters	= NULL;  // @var text
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

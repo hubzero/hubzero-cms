@@ -46,14 +46,12 @@ class Hubzero_Message_Message extends JTable
 	 */
 	var $id				= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'created'
 	 * 
 	 * @var unknown
 	 */
 	var $created		= NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'created_by'
@@ -62,14 +60,12 @@ class Hubzero_Message_Message extends JTable
 	 */
 	var $created_by		= NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'message'
 	 * 
 	 * @var unknown
 	 */
 	var $message		= NULL;  // @var text
-
 
 	/**
 	 * Description for 'subject'
@@ -78,7 +74,6 @@ class Hubzero_Message_Message extends JTable
 	 */
 	var $subject		= NULL;  // @var varchar(150)
 
-
 	/**
 	 * Description for 'component'
 	 * 
@@ -86,14 +81,12 @@ class Hubzero_Message_Message extends JTable
 	 */
 	var $component		= NULL;  // @var varchar(100)
 
-
 	/**
 	 * Description for 'type'
 	 * 
 	 * @var unknown
 	 */
 	var $type			= NULL;  // @var varchar(100)
-
 
 	/**
 	 * Description for 'group_id'
@@ -103,7 +96,6 @@ class Hubzero_Message_Message extends JTable
 	var $group_id		= NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

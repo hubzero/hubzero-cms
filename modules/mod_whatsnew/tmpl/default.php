@@ -36,24 +36,24 @@ $html  = '<div';
 $html .= ($this->cssId) ? ' id="' . $this->cssId . '"' : '';
 $html .= '>' . "\n";
 
-if ($this->feed) 
+if ($this->feed)
 {
 	$html .= "\t" . '<h3>' . $module->title;
 	$html .= ' <a class="newsfeed" href="' . $this->feedlink . '" title="' . JText::_('MOD_WHATSNEW_SUBSCRIBE') . '">' . JText::_('MOD_WHATSNEW_NEWS_FEED') . '</a>';
 	$html .= '</h3>' . "\n";
 }
 
-if (!$this->tagged) 
+if (!$this->tagged)
 {
 	$rows = $this->rows;
-	if (count($rows) > 0) 
+	if (count($rows) > 0)
 	{
 		$count = 0;
 
 		$html .= "\t" . '<ul>' . "\n";
 		foreach ($rows as $row)
 		{
-			if (empty($row)) 
+			if (empty($row))
 			{
 				continue;
 			}
@@ -61,49 +61,49 @@ if (!$this->tagged)
 			$html .= '<a href="' . JRoute::_($row->href) . '">' . stripslashes($row->title) . '</a><br />';
 			$html .= '<span>' . JText::_('in') . ' ';
 			$html .= ($row->area) ? JText::_($row->area) : JText::_(strtoupper($row->section));
-			if ($row->publish_up) 
+			if ($row->publish_up)
 			{
 				$html .= ', ' . JHTML::_('date', $row->publish_up, ' %b %d, %Y');
 			}
 			$html .= '</span></li>' . "\n";
 
 			$count++;
-			if ($count >= 6) 
+			if ($count >= 6)
 			{
 				break;
 			}
 		}
 		$html .= "\t" . '</ul>' . "\n";
-	} 
-	else 
+	}
+	else
 	{
 		$html .= "\t" . '<p>' . JText::_('MOD_WHATSNEW_NO_RESULTS') . '</p>' . "\n";
 	}
-} 
-else 
+}
+else
 {
 	$juser =& JFactory::getUser();
 	$rows2 = $this->rows2;
 
 	$html .= "\t" . '<p class="category-header-details">' . "\n";
-	if (count($this->tags) > 0) 
+	if (count($this->tags) > 0)
 	{
 		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&task=edit&id=' . $juser->get('id')) . '">' . JText::_('MOD_WHATSNEW_EDIT').'</a>]</span>' . "\n";
-	} 
-	else 
+	}
+	else
 	{
 		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&task=edit&id=' . $juser->get('id')) . '">' . JText::_('MOD_WHATSNEW_ADD_INTERESTS').'</a>]</span>' . "\n";
 	}
 	$html .= "\t\t" . '<span class="q">'.JText::_('MOD_WHATSNEW_MY_INTERESTS') . ': ' . $this->formatTags($this->tags) . '</span>' . "\n";
 	$html .= "\t" . '</p>' . "\n";
-	if (count($rows2) > 0) 
+	if (count($rows2) > 0)
 	{
 		$count = 0;
 
 		$html .= "\t".'<ul class="expandedlist">'."\n";
 		foreach ($rows2 as $row2)
 		{
-			if (empty($row2)) 
+			if (empty($row2))
 			{
 				continue;
 			}
@@ -111,21 +111,21 @@ else
 			$html .= '<a href="' . JRoute::_($row2->href) . '">' . stripslashes($row2->title) . '</a><br />';
 			$html .= '<span>' . JText::_('MOD_WHATSNEW_IN') . ' ';
 			$html .= ($row2->section) ? JText::_($row2->area) : JText::_(strtoupper($row2->section));
-			if ($row2->publish_up) 
+			if ($row2->publish_up)
 			{
 				$html .= ', ' . JHTML::_('date', $row2->publish_up, ' %b %d, %Y');
 			}
 			$html .= '</span></li>' . "\n";
 
 			$count++;
-			if ($count >= 6) 
+			if ($count >= 6)
 			{
 				break;
 			}
 		}
 		$html .= "\t" . '</ul>' . "\n";
-	} 
-	else 
+	}
+	else
 	{
 		$html .= "\t" . '<p>' . JText::_('MOD_WHATSNEW_NO_RESULTS') . '</p>' . "\n";
 	}

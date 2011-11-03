@@ -46,14 +46,12 @@ class Job extends JTable
 	 */
 	var $id         		= NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'cid'
 	 * 
 	 * @var unknown
 	 */
 	var $cid       			= NULL;  // @var int
-
 
 	/**
 	 * Description for 'employerid'
@@ -62,14 +60,12 @@ class Job extends JTable
 	 */
 	var $employerid      	= NULL;  // @var int
 
-
 	/**
 	 * Description for 'code'
 	 * 
 	 * @var unknown
 	 */
 	var $code      			= NULL;  // @var int
-
 
 	/**
 	 * Description for 'title'
@@ -78,14 +74,12 @@ class Job extends JTable
 	 */
 	var $title				= NULL;  // @var varchar(200)
 
-
 	/**
 	 * Description for 'companyName'
 	 * 
 	 * @var unknown
 	 */
 	var $companyName		= NULL;  // @var varchar(200)
-
 
 	/**
 	 * Description for 'companyLocation'
@@ -94,14 +88,12 @@ class Job extends JTable
 	 */
 	var $companyLocation	= NULL;  // @var varchar(200)
 
-
 	/**
 	 * Description for 'companyLocationCountry'
 	 * 
 	 * @var unknown
 	 */
 	var $companyLocationCountry	= NULL;  // @var varchar(100)
-
 
 	/**
 	 * Description for 'companyWebsite'
@@ -110,14 +102,12 @@ class Job extends JTable
 	 */
 	var $companyWebsite		= NULL;  // @var varchar(200)
 
-
 	/**
 	 * Description for 'description'
 	 * 
 	 * @var unknown
 	 */
 	var $description		= NULL;  // @var text
-
 
 	/**
 	 * Description for 'addedBy'
@@ -126,14 +116,12 @@ class Job extends JTable
 	 */
 	var $addedBy 			= NULL;  // @var int(50)
 
-
 	/**
 	 * Description for 'editedBy'
 	 * 
 	 * @var unknown
 	 */
 	var $editedBy 			= NULL;  // @var int(50)
-
 
 	/**
 	 * Description for 'added'
@@ -142,14 +130,12 @@ class Job extends JTable
 	 */
 	var $added    			= NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'edited'
 	 * 
 	 * @var unknown
 	 */
 	var $edited	    		= NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'status'
@@ -163,14 +149,12 @@ class Job extends JTable
 		// 3 inactive
 		// 4 draft
 
-
 	/**
 	 * Description for 'type'
 	 * 
 	 * @var unknown
 	 */
 	var $type				= NULL;  // @var int(3)
-
 
 	/**
 	 * Description for 'opendate'
@@ -179,14 +163,12 @@ class Job extends JTable
 	 */
 	var $opendate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'closedate'
 	 * 
 	 * @var unknown
 	 */
 	var $closedate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
-
 
 	/**
 	 * Description for 'startdate'
@@ -195,14 +177,12 @@ class Job extends JTable
 	 */
 	var $startdate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'applyExternalUrl'
 	 * 
 	 * @var unknown
 	 */
 	var $applyExternalUrl	= NULL;  // @var varchar(250)
-
 
 	/**
 	 * Description for 'applyInternal'
@@ -211,7 +191,6 @@ class Job extends JTable
 	 */
 	var $applyInternal 		= NULL;  // @var varchar(50)
 
-
 	/**
 	 * Description for 'contactName'
 	 * 
@@ -219,14 +198,12 @@ class Job extends JTable
 	 */
 	var $contactName		= NULL;  // @var varchar(100)
 
-
 	/**
 	 * Description for 'contactEmail'
 	 * 
 	 * @var unknown
 	 */
 	var $contactEmail		= NULL;  // @var varchar(100)
-
 
 	/**
 	 * Description for 'contactPhone'
@@ -236,7 +213,6 @@ class Job extends JTable
 	var $contactPhone		= NULL;  // @var varchar(100)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

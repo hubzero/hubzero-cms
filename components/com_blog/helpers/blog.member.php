@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Blog helper class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'BlogHelperMember'
  * 

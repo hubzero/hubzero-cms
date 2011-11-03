@@ -146,7 +146,6 @@ class plgWhatsnewEvents extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'documents'
 	 * 

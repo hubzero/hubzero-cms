@@ -82,7 +82,6 @@ class SefController extends Hubzero_Controller
 	// Tag functions
 	//----------------------------------------------------------
 
-
 	/**
 	 * Short description for 'info'
 	 * 

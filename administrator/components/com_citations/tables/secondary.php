@@ -46,7 +46,6 @@ class CitationsSecondary extends JTable
 	 */
 	var $id            = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'cid'
 	 * 
@@ -54,14 +53,12 @@ class CitationsSecondary extends JTable
 	 */
 	var $cid           = NULL;  // @var int(11)
 
-
 	/**
 	 * Description for 'sec_cits_cnt'
 	 * 
 	 * @var unknown
 	 */
 	var $sec_cits_cnt  = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'search_string'
@@ -71,7 +68,6 @@ class CitationsSecondary extends JTable
 	var $search_string = NULL;  // @var tinytext()
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

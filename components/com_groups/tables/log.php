@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'XGroupLog'
  * 
@@ -51,14 +50,12 @@ class XGroupLog extends JTable
 	 */
 	var $id        = NULL;  // @var int(11) Primary key
 
-
 	/**
 	 * Description for 'gid'
 	 * 
 	 * @var unknown
 	 */
 	var $gid       = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'timestamp'
@@ -67,14 +64,12 @@ class XGroupLog extends JTable
 	 */
 	var $timestamp = NULL;  // @var datetime(0000-00-00 00:00:00)
 
-
 	/**
 	 * Description for 'uid'
 	 * 
 	 * @var unknown
 	 */
 	var $uid       = NULL;  // @var int(11)
-
 
 	/**
 	 * Description for 'action'
@@ -83,14 +78,12 @@ class XGroupLog extends JTable
 	 */
 	var $action    = NULL;  // @var varchar(50)
 
-
 	/**
 	 * Description for 'comments'
 	 * 
 	 * @var unknown
 	 */
 	var $comments  = NULL;  // @var text
-
 
 	/**
 	 * Description for 'actorid'
@@ -100,7 +93,6 @@ class XGroupLog extends JTable
 	var $actorid   = NULL;  // @var int(11)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'

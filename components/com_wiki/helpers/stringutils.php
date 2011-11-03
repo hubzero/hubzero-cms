@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 //  A collection of static methods to play with strings.
 //-------------------------------------------------------------
 
-
 /**
  * Short description for 'StringUtils'
  * 
@@ -49,7 +48,6 @@ class StringUtils
 	// Compared to delimiterReplace(), this implementation is fast but memory-
 	// hungry and inflexible. The memory requirements are such that I don't 
 	// recommend using it on anything but guaranteed small chunks of text.
-
 
 	/**
 	 * Short description for 'hungryDelimiterReplace'
@@ -92,7 +90,6 @@ class StringUtils
 	// regex. In this implementation, the end must share no characters with the 
 	// start, so e.g. /*/ is not considered to be both the start and end of a 
 	// comment. /*/xy/*/ is considered to be a single comment with contents /xy/. 
-
 
 	/**
 	 * Short description for 'delimiterReplaceCallback'
@@ -186,7 +183,6 @@ class StringUtils
 	// @param string $subject String to search
 	// @return string The string with the matches replaced
 
-
 	/**
 	 * Short description for 'delimiterReplace'
 	 * 
@@ -210,7 +206,6 @@ class StringUtils
 	// @param string $separator
 	// @param string $text
 	// @return array
-
 
 	/**
 	 * Short description for 'explodeMarkup'
@@ -246,7 +241,6 @@ class StringUtils
 	// replacement parameter.
 	// @param string $string
 	// @return string
-
 
 	/**
 	 * Short description for 'escapeRegexReplacement'
@@ -461,7 +455,6 @@ class ReplacementArray
 	// Create an object with the specified replacement array
 	// The array should have the same form as the replacement array for strtr()
 
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -501,7 +494,6 @@ class ReplacementArray
 
 	// Set the whole replacement array at once
 
-
 	/**
 	 * Short description for 'setArray'
 	 * 
@@ -529,7 +521,6 @@ class ReplacementArray
 	}
 
 	// Set an element of the replacement array
-
 
 	/**
 	 * Short description for 'setPair'

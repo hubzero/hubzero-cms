@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Extended database class
 //----------------------------------------------------------
 
-
 /**
  * Short description for 'ToolGroup'
  * 
@@ -51,14 +50,12 @@ class ToolGroup extends  JTable
 	 */
 	var $cn      	   = NULL;  // @var varchar (255)
 
-
 	/**
 	 * Description for 'toolid'
 	 * 
 	 * @var unknown
 	 */
 	var $toolid        = NULL;  // @var int (11)
-
 
 	/**
 	 * Description for 'role'
@@ -68,7 +65,6 @@ class ToolGroup extends  JTable
 	var $role      	   = NULL;  // @var tinyint(2)
 
 	//-----------
-
 
 	/**
 	 * Short description for '__construct'
@@ -106,7 +102,6 @@ class ToolGroup extends  JTable
 		return true;
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'save'
@@ -172,7 +167,6 @@ class ToolGroup extends  JTable
 
 	}
 	//-----------
-
 
 	/**
 	 * Short description for 'saveMemberGroups'

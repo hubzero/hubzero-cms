@@ -47,9 +47,6 @@ class modMyQuestions
 	 */
 	private $attributes = array();
 
-	//-----------
-
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -62,9 +59,6 @@ class modMyQuestions
 	{
 		$this->params = $params;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for '__set'
@@ -80,9 +74,6 @@ class modMyQuestions
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for '__get'
 	 * 
@@ -97,9 +88,6 @@ class modMyQuestions
 			return $this->attributes[$property];
 		}
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'formatTags'
@@ -142,9 +130,6 @@ class modMyQuestions
 		return $out;
 	}
 
-	//-----------
-
-
 	/**
 	 * Short description for 'getInterests'
 	 * 
@@ -170,9 +155,6 @@ class modMyQuestions
 
 		return $tags;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'getQuestions'
@@ -266,9 +248,6 @@ class modMyQuestions
 
 		return $results;
 	}
-
-	//-----------
-
 
 	/**
 	 * Short description for 'display'

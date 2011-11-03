@@ -37,7 +37,7 @@ class ImportAuthors extends XImportHelperScript
 
 	protected $_options = array(array('override' => '1'));
 
-	public function run() 
+	public function run()
 	{
 		$override = JRequest::getVar('override', false);
 		$override = $override ? true : false;
@@ -85,7 +85,7 @@ class ImportAuthors extends XImportHelperScript
                     return false;
                 }
 
-                while ($row = mysql_fetch_assoc( $result )) 
+                while ($row = mysql_fetch_assoc( $result ))
                     $this->_importAuthor($row, $override);
 
                 mysql_free_result( $result );
@@ -93,7 +93,7 @@ class ImportAuthors extends XImportHelperScript
 		return true;
 	}
 
-	private function _importAuthor($row = null, $override = false) 
+	private function _importAuthor($row = null, $override = false)
 	{
 		if ($row == 0)
 			return;
