@@ -85,7 +85,7 @@ class HubController extends Hubzero_Controller
 			case 'saveorgtype':   $this->saveorgtype();   break;
 			case 'cancelorgtype': $this->cancelorgtype(); break;
 			case 'orgtypes':      $this->orgtypes();      break;
-			
+
 			default: $this->settings(); break;
 		}
 
@@ -842,7 +842,7 @@ class HubController extends Hubzero_Controller
 	{
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgs';
 	}
-	
+
 	//----------------------------------------------------------
 	//  Organization types
 	//----------------------------------------------------------
@@ -856,12 +856,12 @@ class HubController extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get filters
 		$view->filters = array();
 		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option . '.orgsearch', 'search', ''));
 		$view->filters['show']   = '';
-		
+
 		// Get paging variables
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
@@ -870,7 +870,7 @@ class HubController extends Hubzero_Controller
 
 		// Get a record count
 		$view->total = $obj->getCount($view->filters);
-		
+
 		// Get records
 		$view->rows = $obj->getRecords($view->filters);
 
@@ -886,7 +886,7 @@ class HubController extends Hubzero_Controller
 		// Output the HTML
 		$view->display();
 	}
-	
+
 	//-----------
 
 	protected function addorgtype()
@@ -901,7 +901,7 @@ class HubController extends Hubzero_Controller
 		$view = new JView( array('name'=>'organizationtype') );
 		$view->option = $this->_option;
 		$view->task = $this->_task;
-		
+
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
 
@@ -911,11 +911,11 @@ class HubController extends Hubzero_Controller
 		} else {
 			$id = 0;
 		}
-		
+
 		// Initiate database class and load info
 		$view->org = new RegisterOrganizationType($this->database);
 		$view->org->load($id);
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError($this->getError());
@@ -924,14 +924,14 @@ class HubController extends Hubzero_Controller
 		// Output the HTML
 		$view->display();
 	}
-	
+
 	//-----------
 	
 	protected function saveorgtype() 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Load the tag object and bind the incoming data to it
 		$row = new RegisterOrganizationType($this->database);
 		if (!$row->bind($_POST)) {
@@ -956,19 +956,19 @@ class HubController extends Hubzero_Controller
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-	
+
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgtypes';
 		$this->_message = JText::_('HUB_ORGTYPE_SAVED');
 	}
-	
+
 	//-----------
 
 	protected function removeorgtype() 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array(), 'post');
 
@@ -980,19 +980,19 @@ class HubController extends Hubzero_Controller
 		// Do we have any IDs?
 		if (!empty($ids)) {
 			$orgtype = new RegisterOrganizationType( $this->database );
-			
+
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id) {
 				// Remove the organization type
 				$orgtype->delete($id);
 			}
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgtypes';
 		$this->_message = JText::_('HUB_ORGTYPE_REMOVED');
 	}
-	
+
 	//-----------
 
 	protected function cancelorgtype()

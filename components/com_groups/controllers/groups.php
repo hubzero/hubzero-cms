@@ -597,7 +597,7 @@ class GroupsController extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Incoming
 		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
@@ -625,7 +625,6 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		$limit = ($limit == 0) ? 'all' : $limit;
-
 
 		// Get the sections
 		$sections = $dispatcher->trigger( 'onGroup', array(
@@ -688,7 +687,7 @@ class GroupsController extends Hubzero_Controller
 		$view->hub_group_plugins = $hub_group_plugins;
 		$view->group_plugin_access = $group_plugin_access;
 		$view->pages = $pages;
-			
+
 		$view->sections = $sections;
 		$view->tab = $tab;
 
@@ -1110,13 +1109,13 @@ class GroupsController extends Hubzero_Controller
 		} else {
 			$invitees = $group->get('invitees');
 			$members = $group->get("members");
-			
+
 			if(in_array($this->juser->get('id'),$members)) {
 				global $mainframe;
 				$mainframe->redirect( JRoute::_('index.php?option=com_groups&gid=' . $group->get("cn")) );
 				exit();
 			}
-			
+
 			if (!in_array($this->juser->get('id'), $invitees)) {
 				JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
 				return;

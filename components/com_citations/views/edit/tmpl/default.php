@@ -38,7 +38,6 @@ $fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
 $fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
 $fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and Badges" : $fieldset_label;
 
-
 $t = array();
 $b = array();
 foreach($this->tags as $tag) {

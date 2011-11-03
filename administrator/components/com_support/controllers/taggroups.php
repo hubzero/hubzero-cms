@@ -43,7 +43,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-	
+
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
@@ -59,12 +59,12 @@ class SupportControllerTaggroups extends Hubzero_Controller
 			'int'
 		);
 		$this->view->filters['sortby'] = JRequest::getVar('sortby', 'priority ASC');
-		
+
 		$model = new TagsGroup($this->database);
-		
+
 		// Get record count
 		$this->view->total = $model->getCount();
-		
+
 		// Get records
 		$this->view->rows  = $model->getRecords();
 
@@ -80,11 +80,11 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		if ($this->getError()) {
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Create a new record
 	 *
@@ -95,7 +95,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$this->view->setLayout('edit');
 		$this->editTask();
 	}
-	
+
 	/**
 	 * Display a form for adding/editing a record
 	 *
@@ -104,7 +104,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	public function editTask($row=null) 
 	{
 		ximport('Hubzero_Group');
-		
+
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -118,10 +118,10 @@ class SupportControllerTaggroups extends Hubzero_Controller
 			$this->view->row = new TagsGroup($this->database);
 			$this->view->row->load($id);
 		}
-		
+
 		$this->view->tag = new TagsTag($this->database);
 		$this->view->tag->load($this->view->row->tagid);
-		
+
 		$this->view->group = Hubzero_Group::getInstance($this->view->row->groupid);
 
 		// Set any errors
@@ -129,7 +129,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -143,11 +143,11 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		ximport('Hubzero_Group');
-		
+
 		$taggroup = JRequest::getVar('taggroup', array(), 'post');
-		
+
 		// Initiate class and bind posted items to database fields
 		$row = new TagsGroup($this->database);
 		if (!$row->bind($taggroup)) 
@@ -155,32 +155,32 @@ class SupportControllerTaggroups extends Hubzero_Controller
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-	
+
 		// Incoming tag
 		$tag = trim(JRequest::getVar('tag', '', 'post'));
-		
+
 		// Attempt to load the tag
 		$ttag = new TagsTag($this->database);
 		$ttag->loadTag($tag);
-		
+
 		// Set the group ID
 		if ($ttag->id) 
 		{
 			$row->tagid = $ttag->id;
 		}
-		
+
 		// Incoming group
 		$group = trim(JRequest::getVar('group', '', 'post'));
-		
+
 		// Attempt to load the group
 		$hzg = Hubzero_Group::getInstance($group);
-		
+
 		// Set the group ID
 		if ($hzg->get('gidNumber')) 
 		{
 			$row->groupid = $hzg->get('gidNumber');
 		}
-		
+
 		// Check content
 		if (!$row->check()) 
 		{
@@ -196,12 +196,12 @@ class SupportControllerTaggroups extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('ENTRY_SUCCESSFULLY_SAVED');
 	}
-	
+
 	/**
 	 * Delete one or more records
 	 *
@@ -211,10 +211,10 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-	
+
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
@@ -222,19 +222,19 @@ class SupportControllerTaggroups extends Hubzero_Controller
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_ENTRY_TO_DELETE');
 			return;
 		}
-		
+
 		$tg = new TagsGroup($this->database);
 		foreach ($ids as $id) 
 		{
 			// Delete entry
 			$tg->delete(intval($id));
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::sprintf('ENTRY_SUCCESSFULLY_DELETED', count($ids));
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
@@ -244,7 +244,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-	
+
 	/**
 	 * Reorder entries in the database
 	 *
@@ -254,7 +254,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$id = JRequest::getVar('id', array());
 		$id = intval($id[0]);
@@ -281,25 +281,25 @@ class SupportControllerTaggroups extends Hubzero_Controller
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $tg2->priority;
 				$orderdn = $tg1->priority;
-				
+
 				$tg1->priority = $orderup;
 				$tg2->priority = $orderdn;
 			break;
-			
+
 			case 'orderdown':
 				// Switch places: give item 1 the position of item 2, vice versa
 				$orderup = $tg1->priority;
 				$orderdn = $tg2->priority;
-				
+
 				$tg1->priority = $orderdn;
 				$tg2->priority = $orderup;
 			break;
 		}
-		
+
 		// Save changes
 		$tg1->store();
 		$tg2->store();
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}

@@ -47,7 +47,7 @@ class modWishlist
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -57,7 +57,7 @@ class modWishlist
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -82,30 +82,30 @@ class modWishlist
 				$wishlist = $obj->createlist('general', 1);	
 			}
 		}
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=1");
 		$this->granted = $this->database->loadResult();
 
 		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND accepted=0 AND status=0");
 		$this->pending = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND accepted=1 AND status=0");
 		$this->accepted = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=3");
 		$this->rejected = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=4");
 		$this->withdrawn = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=2");
 		$this->removed = $this->database->loadResult();
-		
+
 		if ($this->params->get('showMine', 0))
 		{
 			$juser =& JFactory::getUser();
 			$this->username = $juser->get('username');
-			
+
 			$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND status=1 AND proposed_by=" . $juser->get('id'));
 			$this->granted = $this->database->loadResult();
 
@@ -115,10 +115,10 @@ class modWishlist
 			$this->database->setQuery("SELECT count(*) FROM #__wishlist_item WHERE wishlist='$wishlist' AND accepted=1 AND status=0 AND proposed_by=" . $juser->get('id'));
 			$this->accepted = $this->database->loadResult();
 		}
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

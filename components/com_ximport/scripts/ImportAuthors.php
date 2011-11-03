@@ -34,9 +34,9 @@ ximport('Hubzero_User_Profile');
 class ImportAuthors extends XImportHelperScript
 {
 	protected $_description = 'Import user profiles from LDAP.';
-	
+
 	protected $_options = array(array('override' => '1'));
-	
+
 	public function run() 
 	{
 		$override = JRequest::getVar('override', false);
@@ -92,7 +92,7 @@ class ImportAuthors extends XImportHelperScript
 
 		return true;
 	}
-	
+
 	private function _importAuthor($row = null, $override = false) 
 	{
 		if ($row == 0)

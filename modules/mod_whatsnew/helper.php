@@ -65,7 +65,7 @@ class modWhatsNew
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 
@@ -84,7 +84,7 @@ class modWhatsNew
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -181,7 +181,7 @@ class modWhatsNew
 	public function run()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
-		
+
 		// Get some initial parameters
 		$count        = intval($this->params->get('limit', 5));
 		$this->feed   = $this->params->get('feed');
@@ -338,10 +338,10 @@ class modWhatsNew
 				$this->rows2 = $rows2;
 			}
 		}
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	//-----------
 	
 	public function display()
@@ -349,9 +349,9 @@ class modWhatsNew
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -361,7 +361,7 @@ class modWhatsNew
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

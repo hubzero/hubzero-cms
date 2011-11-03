@@ -159,7 +159,7 @@ if ($this->resource->type == 4) {
 
 	$images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
 	$files = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
-	
+
 	if (is_file(JPATH_ROOT.$url)) {
 		if (strtolower($type) == 'swf') {
 			$height = '400px';
@@ -184,7 +184,7 @@ if ($this->resource->type == 4) {
 				$session =& JFactory::getSession();
 
 				$session_id = $session->getId();
-				
+
 				jimport('joomla.utilities.simplecrypt');
 				$crypter = new JSimpleCrypt();
 				$token = base64_encode($crypter->encrypt($session_id));

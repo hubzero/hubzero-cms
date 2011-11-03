@@ -47,7 +47,7 @@ class modSupportTickets
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -57,7 +57,7 @@ class modSupportTickets
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -70,32 +70,32 @@ class modSupportTickets
 	public function display()
 	{
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		$this->database = JFactory::getDBO();
-		
+
 		$jconfig =& JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
-		
+
 		$type = JRequest::getVar('type', 'submitted');
 		$this->type  = ($type == 'automatic') ? 1 : 0;
-		
+
 		$this->group = JRequest::getVar('group', '');
-		
+
 		$this->year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
-		
+
 		$st = new SupportTicket($this->database);
-		
+
 		$opened = array();
 		$my = array();
-		
+
 		// Currently open tickets
 		$opened['open'] = $st->getCountOfOpenTickets($this->type, false, $this->group);
-		
+
 		// Currently unassigned tickets
 		$opened['unassigned'] = $st->getCountOfOpenTickets($this->type, true, $this->group);
-		
+
 		$filters = array();
 		$filters['search'] = '';
 		$filters['status'] = 'new';
@@ -105,34 +105,34 @@ class modSupportTickets
 		$filters['severity'] = '';
 		$filters['sort'] = 'created';
 		$filters['sortdir'] = 'DESC';
-		
+
 		$opened['new'] = $st->getTicketsCount($filters, true);
-		
+
 		$this->opened = $opened;
-		
+
 		if ($this->params->get('showMine', 1))
 		{
 			$filters['status'] = 'open';
 			$filters['reportedby'] = $juser->get('username');
 			$my['open'] = $st->getTicketsCount($filters, true);
-		
+
 			$filters['reportedby'] = '';
 			$filters['status'] = 'open';
 			$filters['owner'] = $juser->get('username');
 			$my['assigned'] = $st->getTicketsCount($filters, true);
-			
+
 			$this->my = $my;
 		}
-		
+
 		// Get avgerage lifetime
 		$this->lifetime = $st->getAverageLifeOfTicket($this->type, $this->year, $this->group);
-		
+
 		//ximport('Hubzero_Document');
 		//Hubzero_Document::addModuleStyleSheet($this->module->module);
 		
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

@@ -47,7 +47,7 @@ class modGroups
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -57,7 +57,7 @@ class modGroups
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -72,7 +72,7 @@ class modGroups
 		$this->database = JFactory::getDBO();
 
 		$type = $this->params->get('type', '1');
-		
+
 		switch ($type)
 		{
 			case '0': $this->type = 'system'; break;
@@ -84,42 +84,42 @@ class modGroups
 		// Privacy
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND privacy=0 AND type='$type'");
 		$this->public = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND privacy=1 AND type='$type'");
 		$this->protected = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND privacy=4 AND type='$type'");
 		$this->private = $this->database->loadResult();
-		
+
 		// Join policy
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=3 AND type='$type'");
 		$this->closed = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=2 AND type='$type'");
 		$this->invite = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=1 AND type='$type'");
 		$this->restricted = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=0 AND type='$type'");
 		$this->open = $this->database->loadResult();
-		
+
 		// Approved
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND type='$type'");
 		$this->approved = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=0 AND type='$type'");
 		$this->pending = $this->database->loadResult();
-		
+
 		// Last 24 hours
 		$lastDay = date('Y-m-d', (mktime() - 24*3600)) . ' 00:00:00';
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE created >= '$lastDay' AND type='$type'");
 		$this->pastDay = $this->database->loadResult();
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

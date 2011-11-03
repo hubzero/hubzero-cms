@@ -705,14 +705,14 @@ class SupportController extends Hubzero_Controller
 	protected function save()
 	{
         $juser =& JFactory::getUser();
-        
+
         $params = $params = &JComponentHelper::getParams('com_support');
 		$allowEmailResponses = $params->get('email_processing');
-       
+
 		if($allowEmailResponses){
 			$encryptor = new Hubzero_Email_Token();
 		}
-		
+
 		// Make sure we are still logged in
 		if ($juser->get('guest')) {
 			return $this->login();
@@ -969,7 +969,7 @@ class SupportController extends Hubzero_Controller
 								else{
 									$newMessage = $message;
 								}
-								
+
 								if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $newMessage, $from, array($zuser->get('id')), $this->_option ) ) ) {
 									$this->setError( JText::_('Failed to message ticket submitter.') );
 								} else {
@@ -1019,7 +1019,7 @@ class SupportController extends Hubzero_Controller
 					else{
 						$newMessage = $message;
 					}
-					
+
 					// Add any CCs to the e-mail list
 					$cc = JRequest::getVar( 'cc', '' );
 					if (trim($cc)) {

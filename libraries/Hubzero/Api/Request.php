@@ -34,30 +34,30 @@ class Hubzero_API_Request
 	public $suppress_response_codes = false;
 	public $accepts = "text/plain";
 	public $path = '';
-		
+
 	function getHeaderField($header)
 	{
 		$header = strtoupper($header);
-		
+
 		if ($header == 'ACCEPT')
 		{
 			return $this->accepts;
 		}
-		
+
 		$key = 'HTTP_' . strtoupper($header);
-		
+
 		if (isset($_SERVER[$key]))
 		{
 			return $SERVER[$key];
 		}
-		
+
 		return null;
 	}
-	
+
 	function __construct()
 	{
 		$this->path = $_SERVER['SCRIPT_URL'];
-		
+
 		if (isset($_GET['format']))
 		{
 			$this->accepts = $this->_parse_accept($_GET['format']);
@@ -70,32 +70,32 @@ class Hubzero_API_Request
 		{
 			$this->accepts = $_SERVER['HTTP_ACCEPT'];
 		}
-		
+
 		if (empty($this->accepts))
 		{
 			$format = strrchr($_SERVER['REQUEST_URI'],'.');
-		
+
 			if (strchr($format,'/') === false)
 			{
 				$this->accepts = $this->_parse_accept(substr($format,1));
 			}
 		}
-		
+
 		if (isset($_GET['suppress_response_codes']))
 		{
 			$this->suppress_response_codes = true;
 		}
-		
+
 		if (isset($_POST['suppress_response_codes']))
 		{
 			$this->suppress_response_codes = true;
 		}
-		
+
 		if (isset($_SERVER['HTTP_X_HTTP_SUPPRESS_RESPONSE_CODES']))
 		{
 			$this->suppress_response_codes = true;
 		}
-		
+
 		if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']))
 		{
 			$this->method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
@@ -105,17 +105,17 @@ class Hubzero_API_Request
 			$this->method = $_SERVER['REQUEST_METHOD'];
 		}
 	}
-		
+
 	function getMethod()
 	{
 		return $this->method;
 	}
-	
+
 	function getSuppressResponseCodes()
 	{
 		return $this->suppress_response_codes;
 	}
-	
+
 	function _parse_accept($input)
 	{
 		static $_types = array(
@@ -129,13 +129,13 @@ class Hubzero_API_Request
 			'php_serialized' => 'application/vnd.php.serialized',
 			'php' => 'application/php',
 		);
-		
+
 		if (isset($_types[$input]))
 		{
 			return $_types[$input];
 		}
-		
+
 		return '';
 	}
-	
+
 }	

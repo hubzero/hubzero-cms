@@ -61,7 +61,7 @@ class modFindResources
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	/**
 	 * Short description for '__get'
 	 * 
@@ -77,14 +77,14 @@ class modFindResources
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
-	
+
 	//-----------
 	
 	public function run() 
@@ -101,14 +101,14 @@ class modFindResources
 		// Get major types
 		$t = new ResourcesType($database);
 		$this->categories = $t->getMajorTypes();
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
 	public function display() 
 	{
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -118,7 +118,7 @@ class modFindResources
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

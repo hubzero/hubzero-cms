@@ -89,7 +89,7 @@ class modEventsCalendar
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -111,9 +111,9 @@ class modEventsCalendar
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -123,10 +123,10 @@ class modEventsCalendar
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
-	
+
 	//-----------
 	
 	public function run()

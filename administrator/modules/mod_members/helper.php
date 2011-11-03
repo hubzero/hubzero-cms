@@ -47,7 +47,7 @@ class modMembers
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -57,7 +57,7 @@ class modMembers
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -73,18 +73,18 @@ class modMembers
 
 		$this->database->setQuery("SELECT count(u.id) FROM #__users AS u, #__xprofiles AS m WHERE m.uidNumber=u.id AND m.emailConfirmed > 1");
 		$this->unconfirmed = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(u.id) FROM #__users AS u, #__xprofiles AS m WHERE m.uidNumber=u.id AND m.emailConfirmed = 1");
 		$this->confirmed = $this->database->loadResult();
-		
+
 		$lastDay = date('Y-m-d', (mktime() - 24*3600)) . ' 00:00:00';
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__users WHERE registerDate >= '$lastDay'");
 		$this->pastDay = $this->database->loadResult();
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

@@ -35,7 +35,7 @@ class Hubzero_User
 {
 	private $_profile = null;
 	private $_user = null;
-	
+
 	function __construct($user = null)
 	{
 		if (!is_null($user))
@@ -43,7 +43,7 @@ class Hubzero_User
 			$this->_user = JUser::getInstance($user);
 		}
 	}
-	
+
 	function getInstance($user)
 	{
 		$instance = new Hubzero_User($user);
@@ -54,26 +54,26 @@ class Hubzero_User
 		return $instance;
 
 	}
-	
+
 	private function _load_profile()
 	{
 		$this->_profile = Hubzero_User_Profile::getInstance($this->_user->get('username'));
 	}
-	
+
 	function comparePassword($password)
 	{
 		if (is_null($this->_profile))
 		{
 			$this->_load_profile();
 		}
-		
+
 		if (is_null($this->_profile))
 		{
 			return false;
 		}
-		
+
 		$password = Hubzero_User_Helper::encrypt_password($password);
-		
+
 		if (empty($password))
 		{
 			return false;
@@ -86,10 +86,10 @@ class Hubzero_User
 
 		return false;
 	}
-	
+
 	function getUserId()
 	{
 		return $this->_user->get('id');
 	}
-	
+
 }

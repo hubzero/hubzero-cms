@@ -185,7 +185,7 @@ class BlogController extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Filters for returning results
 		$view->filters = array();
 		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));

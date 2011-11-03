@@ -73,7 +73,7 @@ $no_show = array("errors","duplicate");
 							//load the duplicate citation
 							$cc = new CitationsCitation( $database );
 							$cc->load($c['duplicate']);
-							
+
 							//get citations tags
 							$th = new TagsHandler( $database );
 							$th->_tbl = "citations";

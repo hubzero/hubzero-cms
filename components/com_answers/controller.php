@@ -193,7 +193,7 @@ class AnswersController extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']    = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
@@ -479,7 +479,7 @@ class AnswersController extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']    = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
@@ -600,7 +600,7 @@ class AnswersController extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['limit']    = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
@@ -746,7 +746,7 @@ class AnswersController extends Hubzero_Controller
 		// Grab the previous and next links for navigation
 		$question->prev = $question->getQuestionID( $id, 'prev' );
 		$question->next = $question->getQuestionID( $id, 'next' );
-		
+
 		// Calculate max award
 		if ($this->banking) {
 			$AE = new AnswersEconomy( $this->database );

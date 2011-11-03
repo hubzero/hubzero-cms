@@ -49,7 +49,7 @@ class modSpotlight
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -59,7 +59,7 @@ class modSpotlight
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -72,7 +72,7 @@ class modSpotlight
 	public function display() 
 	{
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -82,7 +82,7 @@ class modSpotlight
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 
@@ -101,23 +101,23 @@ class modSpotlight
 		
 		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_View_Helper_Html');
-		
+
 		if (!class_exists('FeaturesHistory')) 
 		{
 			$this->error = true;
 			return false;
 		}
-		
+
 		$this->database = JFactory::getDBO();
 
 		// Get the admin configured settings
 		$filters = array();
 		$filters['limit'] = 5;
 		$filters['start'] = 0;
-		
+
 		// featured items
 		$tbls = array('resources', 'profiles');
-		
+
 		$spots    = array();
 		$spots[0] = trim($this->params->get('spotone'));
 		$spots[1] = trim($this->params->get('spottwo'));
@@ -126,20 +126,20 @@ class modSpotlight
 		$spots[4] = trim($this->params->get('spotfive'));
 		$spots[5] = trim($this->params->get('spotsix'));
 		$spots[6] = trim($this->params->get('spotseven'));
-		
+
 		$numspots = $this->params->get('numspots', 3);			
 		
 		// some collectors
 		$activespots = array();
 		$rows = array();
-												
+
 		// styling
 		$cls = trim($this->params->get('moduleclass_sfx'));
 		$txtLength = trim($this->params->get('txt_length'));
-		
+
 		$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
 		$end = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 23:59:59';
-		
+
 		$this->html = '';
 		$k = 1;
 		$out = '';		
@@ -151,7 +151,7 @@ class modSpotlight
 			{
 				continue;
 			}
-			
+
 			$row = null;
 			$out = '';
 			$tbl = '';
@@ -164,10 +164,10 @@ class modSpotlight
 			$tbl = $spot == ('answers') ? 'answers'  : $tbl;
 			$tbl = $spot == ('blog')    ? 'blog'     : $tbl;
 			$tbl = (!$tbl) ? array_rand($tbls, 1) : $tbl;
-					
+
 			// Check the feature history for today's feature
 			$fh->loadActive($start, $tbl, $spot . $k);
-			
+
 			// Did we find a feature for today?
 		
 			if ($fh->id && $fh->objectid) 
@@ -184,35 +184,35 @@ class modSpotlight
 							$row->typetitle = $row->getTypetitle();
 						}
 					break;
-					
+
 					case 'profiles':
 						// Load the member profile
 						$row = new MembersProfile($this->database);
 						$row->load($fh->objectid);
 					break;
-					
+
 					case 'topics':
 						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 						// Yes - load the topic page
 						$row = new WikiPage($this->database);
 						$row->load($fh->objectid);
 					break;
-					
+
 					case 'answers':
 						// Yes - load the question
 						$row = new AnswersQuestion($this->database);
 						$row->load($fh->objectid);
-					
+
 						$ar = new AnswersResponse($this->database);
 						$row->rcount = count($ar->getIds($row->id));
 					break;
-					
+
 					case 'blog':
 						// Yes - load the blog
 						$row = new BlogEntry($this->database);
 						$row->load($fh->objectid);
 					break;
-					
+
 					default:
 						// Nothing
 					break;
@@ -246,13 +246,13 @@ class modSpotlight
 						$filters['tag'] = '';
 						$filters['contributions'] = trim($this->params->get('min_contributions'));
 						$filters['show'] = trim($this->params->get('show'));
-				
+
 						$mp = new MembersProfile($this->database);
-					
+
 						// Get records
 						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);							
 					break;
-				
+
 					case 'topics':
 						// No - so we need to randomly choose one
 						$topics_tag = trim($this->params->get('topics_tag'));
@@ -278,10 +278,10 @@ class modSpotlight
 						}
 						$query .= " ORDER BY RAND() ";
 						$this->database->setQuery($query);
-					
+
 						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();					
 					break;
-				
+
 					case 'itunes':
 						// Initiate a resource object
 						$rr = new ResourcesResource($this->database);
@@ -292,7 +292,7 @@ class modSpotlight
 						// Get records
 						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $rr->getRecords($filters, false);						
 					break;
-					
+
 					case 'answers':
 						$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.anonymous  ";
 						$query .= ", (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount ";
@@ -301,10 +301,10 @@ class modSpotlight
 						$query .= " AND (C.reward > 0 OR C.helpful > 0) ";		
 						$query .= " ORDER BY RAND() ";
 						$this->database->setQuery($query);
-	
+
 						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $this->database->loadObjectList();	
 					break;
-					
+
 					case 'blog':
 						$filters = array();
 						$filters['limit'] = 1;
@@ -322,12 +322,12 @@ class modSpotlight
 						$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $entry;
 					break;
 				}
-				
+
 				if ($rows && count($rows[$spot]) > 0) 
 				{
 					$row = $rows[$spot][0];
 				}
-				
+
 				// make sure we aren't pulling the same item
 				if ($k != 1 && in_array($spot, $activespots) && $rows && count($rows[$spot]) > 1) 
 				{
@@ -342,12 +342,12 @@ class modSpotlight
 				$itemid = $this->_composeEntry($row, $tbl, 0, 1);
 				$activespots[] = $spot;		
 			}
-		
+
 			// Did we get any results?
 			if ($out) 
 			{
 				$this->html .= '<li class="spot_' . $k . '">' . $out . '</li>' . "\n";
-									
+
 				// Check if this has been saved in the feature history					
 				if (!$fh->id || !$fh->objectid) 
 				{
@@ -357,24 +357,24 @@ class modSpotlight
 					$fh->note = $spot . $k;
 					$fh->store();
 				}
-				
+
 				$k++;
 			}		
 		}
-			
+
 		// Output HTML
 		require(JModuleHelper::getLayoutPath('mod_spotlight'));
 	}
-	
+
 	//-----------
 	
 	private function _composeEntry($row, $tbl, $txtLength=100, $getid=0) 
 	{
 		$out = '';
-		
+
 		// Do we have a picture?
 		$thumb = '';
-				
+
 		switch ($tbl) 
 		{
 			case 'profiles':
@@ -556,7 +556,7 @@ class modSpotlight
 
 				$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $row->typetitle);
 				$normalized = strtolower($normalized);
-				
+
 				$row->typetitle = trim(stripslashes($row->typetitle));
 				$row->title = stripslashes($row->title);
 
@@ -605,10 +605,10 @@ class modSpotlight
 				$out .= '<div class="clear"></div>' . "\n";			
 			break;
 		}
-	
+
 		return $out;		
 	}
-	
+
 	//-----------
 	
 	private function _getAverageRanking($uid) 
@@ -617,7 +617,7 @@ class modSpotlight
 		{
 			 return 0;
 		}
-		
+
 		// get average ranking of contributed resources
 		$query  = "SELECT AVG (R.ranking) ";
 		$query .= "FROM #__author_assoc AS AA,  #__resources AS R ";
@@ -625,11 +625,11 @@ class modSpotlight
 		$query .= "AND R.id = AA.subid ";
 		$query .= "AND AA.subtable = 'resources' ";
 		$query .= "AND R.published=1 AND R.standalone=1 AND R.access!=2 AND R.access!=4";
-	
+
 		$this->database->setQuery($query);
 		return $this->database->loadResult();		
 	}
-	
+
 	//-----------
 	
 	private function _countContributions($uid) 
@@ -638,11 +638,11 @@ class modSpotlight
 		{
 			 return 0;
 		}
-		
+
 		$this->database->setQuery('SELECT total_count FROM #__contributors_view WHERE uidNumber = ' . $uid);
 		return $this->database->loadResult();
 	}
-	
+
 	//-----------
 	
 	private function _getImage($path) 
@@ -650,7 +650,7 @@ class modSpotlight
 		$d = @dir(JPATH_ROOT . $path);
 
 		$images = array();
-		
+
 		if ($d) 
 		{
 			while (false !== ($entry = $d->read())) 
@@ -675,7 +675,7 @@ class modSpotlight
 				$bits = explode('.', $ima);
 				$type = array_pop($bits);
 				$img  = implode('.', $bits);
-				
+
 				if ($img == 'thumb') 
 				{
 					return $ima;
@@ -683,7 +683,7 @@ class modSpotlight
 			}
 		}
 	}
-	
+
 	//-----------
 	
 	private function _getToolImage($path, $versionid=0) 
@@ -691,7 +691,7 @@ class modSpotlight
 		// Get contribtool parameters
 		$tconfig =& JComponentHelper::getParams('com_contribtool');
 		$allowversions = $tconfig->get('screenshot_edit');
-		
+
 		if ($versionid && $allowversions) 
 		{ 
 			// Add version directory
@@ -729,7 +729,7 @@ class modSpotlight
 				$bits = explode('.', $ima);
 				$type = array_pop($bits);
 				$img  = implode('.', $bits);
-				
+
 				if ($img == 'thumb') 
 				{
 					return $ima;
@@ -750,7 +750,7 @@ class modSpotlight
 		$tn = implode('.', $pic);
 		return $tn;
 	}
-	
+
 	//-----------
 
 	private function _thumb($thumb) 
@@ -761,10 +761,10 @@ class modSpotlight
 		$end = array_pop($image);
 		$image[] = $end;
 		$thumb = implode('.', $image);
-		
+
 		return $thumb;
 	}
-	
+
 	//-----------
 
 	private function _buildPath($date, $id, $base='')
@@ -773,7 +773,7 @@ class modSpotlight
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		
+
 		if ($date) 
 		{
 			$dir_year  = date('Y', $date);
@@ -788,7 +788,7 @@ class modSpotlight
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
-	
+
 	//-----------
 
 	private function _niceIdFormat($someid) 
@@ -817,7 +817,7 @@ class modSpotlight
 			'<' => '&#60;',
 			'>' => '&#62;',
 		);
-		
+
 		if ($quotes) 
 		{
 			$a = $a + array(

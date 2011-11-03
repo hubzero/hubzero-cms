@@ -169,7 +169,7 @@ class ToolAuthor extends  JTable
 		return $this->_db->loadObjectList();
 
 	}
-	
+
 	//-----------
 	
 	public function getFirstAuthor( $rid = 0 )
@@ -180,7 +180,7 @@ class ToolAuthor extends  JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	//-----------
 	
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())

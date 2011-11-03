@@ -43,7 +43,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		// Instantiate a new view
 		$this->view->acl = SupportACL::getACL();
 		$this->view->database = $this->database;
-		
+
 		// Fetch results
 		$aro = new SupportAro($this->database);
 		$this->view->rows = $aro->getRecords();
@@ -55,7 +55,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		}
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Update an existing record
 	 *
@@ -69,10 +69,10 @@ class SupportControllerAcl extends Hubzero_Controller
 		$id     = JRequest::getInt('id', 0);
 		$action = JRequest::getVar('action', '');
 		$value  = JRequest::getInt('value', 0);
-		
+
 		$row = new SupportAroAco($this->database);
 		$row->load($id);
-		
+
 		switch ($action) 
 		{
 			case 'create': $row->action_create = $value; break;
@@ -99,7 +99,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('ACL successfully updated');
 	}
-	
+
 	/**
 	 * Delete one or more records
 	 *
@@ -111,7 +111,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		$ids = JRequest::getVar('id', array());
-		
+
 		foreach ($ids as $id) 
 		{
 			$row = new SupportAro($this->database);
@@ -138,7 +138,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('ACL successfully removed');
 	}
-	
+
 	/**
 	 * Save a new record
 	 *
@@ -152,7 +152,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		// Trim and addslashes all posted items
 		$aro = JRequest::getVar('aro', array(), 'post');
 		$aro = array_map('trim', $aro);
-	
+
 		// Initiate class and bind posted items to database fields
 		$row = new SupportAro($this->database);
 		if (!$row->bind($aro)) 
@@ -160,7 +160,7 @@ class SupportControllerAcl extends Hubzero_Controller
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		
+
 		if (!$row->foreign_key || !$row->alias) 
 		{
 			switch ($row->model) 
@@ -187,7 +187,7 @@ class SupportControllerAcl extends Hubzero_Controller
 						$row->alias = $user->get('username');
 					}
 				break;
-				
+
 				case 'group':
 					ximport('Hubzero_Group');
 					if (!$row->foreign_key) 
@@ -213,7 +213,7 @@ class SupportControllerAcl extends Hubzero_Controller
 				break;
 			}
 		}
-		
+
 		// Check content
 		if (!$row->check()) 
 		{
@@ -266,7 +266,7 @@ class SupportControllerAcl extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('ACL successfully created');
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

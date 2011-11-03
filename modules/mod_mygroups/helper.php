@@ -118,7 +118,7 @@ class modMyGroups
 		$query1 = "SELECT g.published, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_applicants AS m 
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		
+
 		$query2 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_members AS m 
 				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN 
@@ -126,11 +126,11 @@ class modMyGroups
 						 FROM #__xgroups_managers AS manager
 						 WHERE manager.gidNumber = m.gidNumber)
 				   AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		
+
 		$query3 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_managers AS m 
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		
+
 		$query4 = "SELECT g.published, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_invitees AS m 
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;

@@ -341,9 +341,9 @@ class EventsHtml
 		$timezones[] = JHTML::_('select.option', 'mdt', JText::_('EVENTS_CAL_TIME_ZONE_MDT'), 'value', 'text');
 		$timezones[] = JHTML::_('select.option', 'pst', JText::_('EVENTS_CAL_TIME_ZONE_PST'), 'value', 'text');
 		$timezones[] = JHTML::_('select.option', 'pdt', JText::_('EVENTS_CAL_TIME_ZONE_PDT'), 'value', 'text');
-		
+
 		$tzlist = JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected, false, false );
-		
+
 		return $tzlist;
 	}
 

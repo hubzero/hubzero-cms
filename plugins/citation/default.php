@@ -57,31 +57,31 @@ class plgCitationDefault extends JPlugin
 	{
 		return ".txt <small>(Text File)</small>";
 	}
-	
+
 	//-----
 	
 	public function onImport( $file )
 	{
 		//array of acceptable file types
 		$acceptable = array("txt");
-		
+
 		//get the file extension
 		$file_info = pathinfo($file['name']);
-		
+
 		//only process acceptable files
 		if(!in_array($file_info['extension'], $acceptable)) {
 			return;
 		}
-		
+
 		//get the file contents
 		$raw_contents = file_get_contents($file['tmp_name']);
-		
+
 		//check to see if this is endnote content
 		if( preg_match('/%A|%0|%T/', $raw_contents) ) {
 			//load citation import plugins
 			JPluginHelper::importPlugin( 'citation' );
 	        $dispatcher =& JDispatcher::getInstance();
-			
+
 			//make new file to pass to dispatcher
 			$new_file = array(
 				'name' => $file_info['filename'] . ".enw",
@@ -90,12 +90,12 @@ class plgCitationDefault extends JPlugin
 				'error' => $file['error'],
 				'size' => $file['size']
 			);
-			
+
 			$return = $dispatcher->trigger( 'onImport' , array($new_file) );
 			return $return[0];
 		}
 	}
-	
+
 	//-----
 	
 }

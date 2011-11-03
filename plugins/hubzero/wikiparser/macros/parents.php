@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class ParentsMacro extends WikiMacro 
 {
 	/**
@@ -49,7 +48,7 @@ class ParentsMacro extends WikiMacro
 		<p>Example usage: <code>[[Parents(depth=3)]]</code></p>';
 		return $txt['html'];
 	}
-	
+
 	/**
      * Renders the macro
      *
@@ -59,7 +58,7 @@ class ParentsMacro extends WikiMacro
 	{
 		$depth = 1;
 		$description = 0;
-		
+
 		if ($this->args) 
 		{
 			$args = split(',', $this->args);
@@ -103,7 +102,7 @@ class ParentsMacro extends WikiMacro
 		{
 			return '';
 		}
-		
+
 		// Get an array of ancestors
 		$rows = $this->_fetchPointer($depth, $this->scope);
 
@@ -118,7 +117,7 @@ class ParentsMacro extends WikiMacro
 			return '';
 		}
 	}
-	
+
 	/**
      * Build a tree of parents
      *
@@ -128,18 +127,18 @@ class ParentsMacro extends WikiMacro
 	private function _buildTree($rows) 
 	{
 		$html = '';
-		
+
 		if ($rows && count($rows) > 0) 
 		{
 			// Get the last element in the array
 			$row = array_pop($rows);
-			
+
 			$title = ($row->title) ? $row->title : $row->pagename;
 
 			$url  = substr($this->option, 4, strlen($this->option)) . DS;
 			$url .= ($row->scope) ? $row->scope . DS : '';
 			$url .= $row->pagename;
-			
+
 			// Build the HTML
 			$html .= '<ul>';
 			$html .= '<li><a href="' . $url . '">';
@@ -149,7 +148,7 @@ class ParentsMacro extends WikiMacro
 			$html .= '</li>'."\n";
 			$html .= '</ul>';
 		}
-		
+
 		return $html;
 	}
 
@@ -163,13 +162,13 @@ class ParentsMacro extends WikiMacro
 	private function _fetchPointer($depth, $scope)
     {
 		$uri = explode('/', $scope);
-		
+
 		$pages = array();
 		if (!is_array($uri)) 
 		{
 			return $pages;
 		}
-		
+
 		$uri = array_reverse($uri);
 
 		$subscope = null;
@@ -178,13 +177,13 @@ class ParentsMacro extends WikiMacro
 		foreach ($uri as $uriPart) 
 		{
 			$i++;
-			
+
 			if (!$subscope) 
 			{
 				$subscope = array_reverse($uri);
 			}
 			array_pop($subscope);
-			
+
             // fetch the pointer to the current uri part
             $pointer = $this->_getPageByAlias($uriPart, implode('/', $subscope));
 
@@ -196,7 +195,7 @@ class ParentsMacro extends WikiMacro
 
 			//set the parent id to the current pointer to traverse down the tree
 			$pages[] = $pointer;
-			
+
 			if ($i == $depth) 
 			{
 				break;
@@ -223,10 +222,10 @@ class ParentsMacro extends WikiMacro
 		if (!class_exists('WikiPage') && is_file(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php')) {
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
 		}
-		
+
 		$page = new WikiPage($this->_db);
 		$page->load($alias, $scope);
-		
+
 		// Check for a result
 		if ($page && $page->id) 
 		{

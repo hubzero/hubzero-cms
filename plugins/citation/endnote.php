@@ -50,7 +50,7 @@ class plgCitationEndnote extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'citation', 'endnote' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
+
 	//-----
 	
 	public function onImportAcceptedFiles()
@@ -64,7 +64,7 @@ class plgCitationEndnote extends JPlugin
 	{
 		//endnote format
 		$active = "enw";
-		
+
 		//get the file extension
 		$file_info = pathinfo($file['name']);
 
@@ -72,15 +72,15 @@ class plgCitationEndnote extends JPlugin
 		if($active != $file_info['extension']) {
 			return;
 		}
-		
+
 		//get the file contents
 		//$raw_citations = file_get_contents($file['tmp_name']);
 		$raw_citations = file($file['tmp_name']);
-			
+
 		//process the uploaded citation data
 		return $this->onImportProcessEndnote( $raw_citations );
 	}
-	
+
 	//-----
 	
 	protected function onImportProcessEndnote( $raw_citations_text )
@@ -89,14 +89,14 @@ class plgCitationEndnote extends JPlugin
 		if(empty($raw_citations_text)) {
 			return;
 		}
-		
+
 		//split multiple citations and remove empties and reset keys
 		//$raw_citations = explode("\r\n\r\n", $raw_citations_text);
 		//$raw_citations = array_values(array_filter($raw_citations));
 		
 		$raw_citation = array();
 		$raw_citations = array();
-		
+
 		foreach($raw_citations_text as $line) 
 		{
 			$line = $this->_cleanText(trim($line));
@@ -109,29 +109,28 @@ class plgCitationEndnote extends JPlugin
 			$raw_citation[] = $line;
 		}
 		$raw_citations[] = $raw_citation;
-		
+
 		//remove empties
 		$raw_citations = array_values(array_filter($raw_citations));
-		
+
 		foreach($raw_citations as $k => $rc) {
 			foreach($rc as $r => $line) {
 				//echo $line .'<br>';
 				$raw_citations[$k] .= $line . "\r\n";
 			}
 		}
-		
-		
+
 		//vars used 
 		$citations = array();
-		
+
 		//loop through each citations raw data
 		for($i=0; $i<count($raw_citations); $i++) {
 			//split citation data match % sign followed by char
 			$citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
-			
+
 			//array to hold each citation
 			$citation = array();
-			
+
 			//build array of citation data
 			foreach($citation_data as $cd) {
 				if(!empty($cd[0])) {
@@ -148,19 +147,19 @@ class plgCitationEndnote extends JPlugin
 					}
 				}
 			}
-			
+
 			$citations[] = $citation;
 		}
-	
+
 		//get the citation objects vars
 		$citation_vars = $this->getCitationVars();
-		
+
 		//get the endnote tags
 		$endnote_tags = $this->getEndnoteTags();
-		
+
 		//array to hold final citations
 		$final_citations = array();
-		
+
 		//loop through the split up citations
 		foreach($citations as $citation) {
 			$cite = array();
@@ -169,7 +168,7 @@ class plgCitationEndnote extends JPlugin
 				if(array_key_exists($v, $citation)) {
 					$cite[$k] = $citation[$v];
 				}
-				
+
 				//if we have fields in our imported citation data that dont exist in the database report errors
 				if(!in_array($k, $citation_vars) && array_key_exists($v, $citation)) { 
 					$cite['errors'][] = "Failed to add '{$k}' to this citation.";
@@ -177,11 +176,11 @@ class plgCitationEndnote extends JPlugin
 			}
 			$final_citations[] = $cite;
 		}
-	
+
 		//check for duplicates
 		for($i = 0; $i < count($final_citations); $i++) {
 			$duplicate = $this->checkDuplicateCitation( $final_citations[$i] );
-			
+
 			if($duplicate) {
 				$final_citations[$i]['duplicate'] = $duplicate;
 				$final['attention'][] = $final_citations[$i];
@@ -190,28 +189,28 @@ class plgCitationEndnote extends JPlugin
 				$final['no_attention'][] = $final_citations[$i];
 			}
 		}
-	
+
 		return $final;
 	}
-	
+
 	//-----
 	
 	protected function getCitationVars()
 	{
 		//get all the vars that a citation can have
 		$keys = array_keys(get_class_vars("CitationsCitation"));
-		
+
 		//remove any private vars
 		foreach($keys as $k => $v) {
 			if(substr($v,0,1) == "_") {
 				unset($keys[$k]);
 			}
 		}
-		
+
 		//return keys with keys reset
 		return array_values($keys);
 	}
-	
+
 	//------
 	
 	protected function getEndnoteTags()
@@ -235,7 +234,7 @@ class plgCitationEndnote extends JPlugin
 			'year' => '%D',
 			'isbn' => '%@',
 			'doi' => '%1',
-			
+
 			'abstract' => '%X',
 			'keywords' => '%K',
 			'label' => '%F',
@@ -246,11 +245,11 @@ class plgCitationEndnote extends JPlugin
 			'research_notes' => '%<',
 			'author_address' => '%+'
 		);
-		
+
 		//get any custom tags that we want to use
 		$custom_tags = $this->_params->get("custom_tags");
 		$custom_tags = explode( "\n", $custom_tags);
-		
+
 		//loop through each custom tag in the parameter and add it to the tag list
 		foreach($custom_tags as $ct) {
 			if($ct) {
@@ -258,52 +257,52 @@ class plgCitationEndnote extends JPlugin
 				$tags[$parts[0]] = $parts[1]; 
 			}
 		}
-		
+
 		//return endnote tags
 		return $tags;
 	}
-	 
+
 	//-----
 	
 	protected function checkDuplicateCitation( $citation )
 	{
 		//vars
 		$title = ""; $doi = ""; $isbn = ""; $match = 0; $title_does_match = false;
-		
+
 		//default percentage to match title
 		$default_title_match = 90;
-		
+
 		//get the % amount that titles should be alike to be considered a duplicate
 		$title_match = $this->params->get("title_match_percent", $default_title_match);
-		
+
 		//force title match percent to be integer and remove any unnecessary % signs
 		$title_match = (int)str_replace("%", "", $title_match);
-		
+
 		//make sure 0 is not the %
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
-		
+
 		//database object
 		$db =& JFactory::getDBO();
-		
+
 		//table we a going to query
 		$tbl = "#__citations";
-		
+
 		//query
 		$sql = "SELECT id, title, doi, isbn FROM {$tbl}";
-		
+
 		//set the query
 		$db->setQuery( $sql );
-		
+
 		//get the result
 		$result = $db->loadObjectList();
-		
+
 		//loop through all current citations
 		foreach($result as $r) {
 			$id 	= $r->id;
 			$title 	= $r->title;
 			$doi 	= $r->doi;
 			$isbn	= $r->isbn;
-			
+
 			//match titles based on percect param
 			similar_text( $title, $citation['title'], $similar);
 			if($similar >= $title_match) {
@@ -315,20 +314,20 @@ class plgCitationEndnote extends JPlugin
 				$match = $id;
 				break;
 			}
-			
+
 			//direct matches on isbn
 			if(isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != "" && $title_does_match)) {
 				$match = $id;
 				break;
 			}
-			
+
 			//
 			if($title_does_match) {
 				$match = $id;
 				break;
 			}
 		}
-		
+
 		return $match;
 	}
 

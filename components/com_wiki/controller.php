@@ -433,7 +433,6 @@ class WikiController extends Hubzero_Controller
 		// Get the most recent version for editing
 		$revision = $this->page->getCurrentRevision();
 		$revision->created_by = $this->juser->get('id');
-		
 
 		// If an existing page, pull its tags for editing
 		$tagstring = '';

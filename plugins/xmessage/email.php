@@ -118,7 +118,7 @@ class plgXMessageEmail extends JPlugin
 			$headers .= "Reply-To: " . $from['name'] . " <" . $from['replytoemail'] . ">\n";
 		else
 			$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
-    
+
 		$headers .= "X-Priority: 3\n";
 		$headers .= "X-MSMail-Priority: High\n";
 		$headers .= "X-Mailer: " . $from['name'] . "\n";
@@ -140,7 +140,7 @@ class plgXMessageEmail extends JPlugin
 		{
 			return true;
 		}
-		   
+
 		return false;
 	}
 }

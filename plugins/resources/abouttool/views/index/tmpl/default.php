@@ -85,7 +85,7 @@ if (!empty($fields)) {
 	{
 		// Explore the text and pull out all matches
 		array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
-		
+
 		// Clean the original text of any matches
 		$maintext = str_replace('<nb:' . $fields[$i][0] . '>' . end($fields[$i]) . '</nb:' . $fields[$i][0] . '>', '', $maintext);
 	}
@@ -184,7 +184,7 @@ if ($this->resource->created_by) {
 			}
 		}
 	}
-	
+
 	if ($this->params->get('show_citation')) {
 		if ($this->params->get('show_citation') == 1 || $this->params->get('show_citation') == 2) {
 			// Citation instructions
@@ -211,14 +211,14 @@ if ($this->resource->created_by) {
 			if (isset($this->resource->doi)) {
 				$cite->doi = $this->config->get('doi').'r'.$this->resource->id.'.'.$this->resource->doi;
 			}
-			
+
 			if ($this->params->get('show_citation') == 2) {
 				$citations = '';
 			}
 		} else {
 			$cite = null;
 		}
-		
+
 		$this->helper->getUnlinkedContributors();
 
 		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->resource->id, $citations, $this->resource->type);

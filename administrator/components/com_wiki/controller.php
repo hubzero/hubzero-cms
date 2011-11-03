@@ -354,7 +354,7 @@ class WikiController extends Hubzero_Controller
 			}
 			$row->params = implode( "\n", $txt );
 		}
-		
+
 		if (!$row->updateAuthors($page['authors'])) {
 			$this->setError($row->getError());
 		}

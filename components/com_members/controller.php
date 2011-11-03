@@ -90,7 +90,7 @@ class MembersController extends Hubzero_Controller
 			case 'whois':      $this->whois();      break;
 			case 'activity':   $this->activity();   break;
 			case 'myaccount':  $this->_myaccount(); break;
-			
+
 			default: $this->browse(); break;
 		}
 	}
@@ -363,7 +363,7 @@ class MembersController extends Hubzero_Controller
 			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
 			$authorized = $emp ? 1 : $authorized;
 		}
-		
+
 		// Trigger the functions that return the areas we'll be using
 		$cats = $dispatcher->trigger( 'onMembersAreas', array($authorized) );
 

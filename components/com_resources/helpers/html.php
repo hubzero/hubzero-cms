@@ -1721,18 +1721,18 @@ class ResourcesHtml
 							$rt = new ResourcesType($database);
 							$rt->load($child->type);
 							$tparams = new JParameter($rt->params);
-							
+
 							$lt = new ResourcesType($database);
 							$lt->load($child->logicaltype);
 							$ltparams = new JParameter($lt->params);
-							
+
 							// Check the link action by child's type
 							if ($child->logicaltype) {
 								$rtLinkAction = $ltparams->get('linkAction', 'extension');
 							} else {
 								$rtLinkAction = $tparams->get('linkAction', 'extension');
 							}
-							
+
 							switch ($rtLinkAction) 
 							{
 								case 'download':
@@ -1771,7 +1771,7 @@ class ResourcesHtml
 									}
 								break;
 							}
-							
+
 							// Check for any link action overrides on the child itself
 							$childParams = new JParameter($child->params);
 							$linkAction = intval($childParams->get('link_action', $linkAction));
@@ -1794,7 +1794,7 @@ class ResourcesHtml
 									// Do nothing
 								break;
 							}
-							
+
 							switch ($rt->alias)
 							{
 								case 'user_guide':
@@ -1807,7 +1807,7 @@ class ResourcesHtml
 									$liclass = ' class="swf"';
 									//$class = ' class="play"';
 									break;
-								
+
 								case 'hubpresenter':
 								 	$liclass = ' class="presentation"';
 									$class = 'hubpresenter';
@@ -1816,12 +1816,12 @@ class ResourcesHtml
 									$liclass = ' class="'.strtolower($ftype).'"';
 									break;
 							}
-							
+
 							$title = ($child->logicaltitle) ? $child->logicaltitle : stripslashes($child->title);
 						}
 
 					$url = ResourcesHtml::processPath($option, $child, $pid, $linkAction);
-						
+
 					$child->title = str_replace('"', '&quot;', $child->title);
 					$child->title = str_replace('&amp;', '&', $child->title);
 					$child->title = str_replace('&', '&amp;', $child->title);
@@ -1892,7 +1892,7 @@ class ResourcesHtml
 
 		$database =& JFactory::getDBO();
 	    $juser =& JFactory::getUser();
-                              
+
 		$rt = new ResourcesType( $database );
 		$rt->load( $type );
 	 	$type = $rt->alias;
@@ -2074,21 +2074,21 @@ class ResourcesHtml
 				$class = '';
 				$action = '';
 				$xtra = '';
-				
+
 				$lt = new ResourcesType($database);
 				$lt->load($firstChild->logicaltype);
 				$ltparams = new JParameter($lt->params);
-				
+
 				$rt = new ResourcesType($database);
 				$rt->load($firstChild->type);
 				$tparams = new JParameter($rt->params);
-				
+
 				if ($firstChild->logicaltype) {
 					$rtLinkAction = $ltparams->get('linkAction', 'extension');
 				} else {
 					$rtLinkAction = $tparams->get('linkAction', 'extension');
 				}
-				
+
 				switch ($rtLinkAction) 
 				{
 					case 'download':
@@ -2097,30 +2097,30 @@ class ResourcesHtml
 						//$action = 'rel="download"';
 						$linkAction = 3;
 					break;
-					
+
 					case 'lightbox':
 						$mesg = 'View Resource';
 						$class = 'play';
 						//$action = 'rel="internal"';
 						$linkAction = 2;
 					break;
-					
+
 					case 'newwindow':
 						$mesg = 'View Resource';
 						//$class = 'popup';
 						$action = 'rel="external"';
 						$linkAction = 1;
 					break;
-					
+
 					case 'extension':
 					default:
 						$linkAction = 0;
-						
+
 						//$mediatypes = array('11','20','34','19','37','32','15','40','41','15','76');
 						$mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
 						//$downtypes = array('60','59','57','55');
 						$downtypes = array('thesis','handout','manual','software_download');
-						
+
 						if (in_array($lt->alias, $downtypes)) {
 							$mesg  = 'Download';
 							$class = 'download';
@@ -2172,18 +2172,18 @@ class ResourcesHtml
 							$mesg  = 'Download';
 							$class = 'download';
 						break;
-						
+
 						case 2:
 							$mesg  = 'View Resource';
 							$class = 'play';
 						break;
-						
+
 						case 1:
 							$mesg = 'View Resource';
 							//$class = 'popup';
 							$action = 'rel="external"';
 						break;
-						
+
 						case 0:
 						default:
 							// Do nothing
@@ -2259,7 +2259,7 @@ class ResourcesHtml
 		else 
 		{
 			$title = htmlentities($title, ENT_QUOTES);
-			
+
 			$out .= "\t" . '<p id="primary-document">' . "\n";
 			$out .= "\t\t" . '<a';
 			$out .= ($class)  ? ' class="' . $class . '"' : '';
@@ -2270,7 +2270,7 @@ class ResourcesHtml
 			//$out .= $xtra ? $xtra : '';
 			$out .= "\t" . '</p>'."\n";
 		}
-		
+
 		if ($pop) 
 		{
 			$out .= "\t" . '<div id="primary-document_pop">' . "\n";
@@ -2328,7 +2328,6 @@ class ResourcesHtml
 		}
 		$type = strtoupper($type);
 
-
 		//check to see if we have a json file (HUBpresenter)
 		if($type == "JSON") {
 			$type = "HTML5";
@@ -2336,7 +2335,7 @@ class ResourcesHtml
 
 		// Get the file size if the file exist
 		$fs = (file_exists( $path )) ? filesize( $path ) : '';
-		
+
 		$html  = '<span class="caption">('.$type;
 		if ($fs) {
 			switch ($type)

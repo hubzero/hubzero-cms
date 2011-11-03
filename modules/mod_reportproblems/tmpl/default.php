@@ -91,7 +91,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	JPluginHelper::importPlugin('support');
 	$dispatcher =& JDispatcher::getInstance();
 	$captchas = $dispatcher->trigger('onGetModuleCaptcha');
-	
+
 	if (count($captchas) > 0) 
 	{
 		foreach ($captchas as $captcha) 

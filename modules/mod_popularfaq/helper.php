@@ -84,7 +84,7 @@ class modPopularFaq
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -108,16 +108,16 @@ class modPopularFaq
 
 		$a = new KbArticle($database);
 		$this->rows = $a->getArticles($limit, 'a.hits DESC');
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	//-----------
 	
 	public function display()
 	{
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -127,7 +127,7 @@ class modPopularFaq
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

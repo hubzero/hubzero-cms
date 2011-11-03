@@ -77,7 +77,7 @@ class plgResourcesCitations extends JPlugin
 		} else {
 			$areas = array();
 		}
-		
+
 		return $areas;
 	}
 

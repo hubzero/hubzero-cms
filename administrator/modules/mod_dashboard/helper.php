@@ -47,7 +47,7 @@ class modDashboard
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -57,7 +57,7 @@ class modDashboard
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -71,7 +71,7 @@ class modDashboard
 	{
 		$mosConfig_bankAccounts = 0;
 		$database =& JFactory::getDBO();
-		
+
 		$xhub =& Hubzero_Factory::getHub();
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
 		$banking =  $upconfig->get('bankAccounts');
@@ -79,13 +79,13 @@ class modDashboard
 				
 		$threemonths 	= date( 'Y-m-d H:i:s', time() - (92 * 24 * 60 * 60));
 		$onemonth 		= date( 'Y-m-d H:i:s', time() - (30 * 24 * 60 * 60) );
-		
+
 		if($banking) {		
 			// get new store orders
 			$database->setQuery( "SELECT count(*) FROM #__orders WHERE status=0");
 			$orders = $database->loadResult();
 		}
-		
+
 		// get open support tickets over 3 months old
 		/*$sql = "SELECT count(*) FROM #__support_tickets WHERE status=1 AND created < '".$threemonths."' AND section!=2 AND type=0";
 		$database->setQuery($sql);
@@ -95,34 +95,34 @@ class modDashboard
 		$sql = "SELECT count(*) FROM #__support_tickets WHERE status=0 AND section!=2 AND type=0 AND (owner is NULL OR owner='') AND report != ''";
 		$database->setQuery($sql);
 		$newtickets = $database->loadResult();*/
-		
+
 		// get abuse reports
 		$sql = "SELECT count(*) FROM #__abuse_reports WHERE state=0";
 		$database->setQuery($sql);
 		$reports = $database->loadResult();
-		
+
 		// get pending resources
 		$sql = "SELECT count(*) FROM #__resources WHERE published=3";
 		$database->setQuery($sql);
 		$pending = $database->loadResult();
-		
+
 		// get contribtool entries requiring admin attention
 		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=3  WHERE t.state=1 OR t.state=3 OR t.state=5 OR t.state=6";
 		$database->setQuery($sql);
 		$contribtool = $database->loadResult();
-		
+
 		// get recent quotes
 		$sql = "SELECT count(*) FROM #__feedback WHERE date > '".$onemonth."'";
 		$database->setQuery($sql);
 		$quotes = $database->loadResult();
-		
+
 		// get wishes from main wishlist - to come
 		$wishes = 0;
-		
+
 		// Check if component entry is there
 		$database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_wishlist' AND enabled=1" );
 		$found = $database->loadResult();
-		
+
 		if($found) {
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php' );
@@ -134,7 +134,7 @@ class modDashboard
 			$obj = new Wishlist( $database );
 			$objWish = new Wish( $database );
 			$juser 	  =& JFactory::getUser();
-			
+
 			// Check if main wishlist exists, create one if missing
 			$mainlist = $obj->get_wishlistID(1, 'general');
 			if(!$mainlist) {
@@ -144,11 +144,11 @@ class modDashboard
 			$wishes = $objWish->get_wishes($mainlist, $filters, 1, $juser);
 			$wishes = count($wishes);
 		}
-		
+
 		// Get styles
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . substr($this->module->module, 4). '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

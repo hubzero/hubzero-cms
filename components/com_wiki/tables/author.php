@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class WikiPageAuthor extends JTable 
 {
 	/**
@@ -40,7 +39,6 @@ class WikiPageAuthor extends JTable
 	 * @var		integer
 	 */
 	public $id = NULL;
-	
 
 	/**
 	 * User ID
@@ -48,7 +46,6 @@ class WikiPageAuthor extends JTable
 	 * @var		integer
 	 */
 	public $user_id = NULL;
-	
 
 	/**
 	 * Wiki page ID
@@ -57,7 +54,6 @@ class WikiPageAuthor extends JTable
 	 */
 	public $page_id = NULL;
 
-	
 	/**
 	 * Object constructor to set table and key field
 	 *
@@ -67,7 +63,7 @@ class WikiPageAuthor extends JTable
 	{
 		parent::__construct('#__wiki_page_author', 'id', $db);
 	}
-	
+
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 *
@@ -86,7 +82,7 @@ class WikiPageAuthor extends JTable
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns the record ID for a given page ID/user ID combo
 	 *
@@ -166,7 +162,7 @@ class WikiPageAuthor extends JTable
 		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, #__users AS u WHERE wa.page_id='$page_id' AND u.id=wa.user_id");
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Removes an author for a page
 	 *
@@ -216,7 +212,7 @@ class WikiPageAuthor extends JTable
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Saves a string of comma-separated usernames or IDs to authors table
 	 *
@@ -235,9 +231,9 @@ class WikiPageAuthor extends JTable
 		}
 		// Get the list of existing authors
 		$ids = $this->getAuthorIds($page_id);
-			
+
 		$auths = array();
-		
+
 		// Turn the comma-separated string of authors into an array and loop through it
 		if ($authors) {
 			$authArray = explode(',', $authors);
@@ -291,8 +287,7 @@ class WikiPageAuthor extends JTable
 		}
 		return true;
 	}
-	
-	
+
 	public function transitionAuthors() 
 	{
 		$this->_db->setQuery("SELECT id, authors FROM #__wiki_page WHERE authors!='' AND authors IS NOT NULL");

@@ -743,7 +743,7 @@ class Hubzero_Content_Mimetypes
 		'swf'		=> 'application/x-shockwave-flash2-preview',
 		'swf'		=> 'application/futuresplash',
 		'swf'		=> 'image/vnd.rn-realflash',
-		
+
 		'docx'		=> 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 		'dotx'		=> 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
 		'xlsx'		=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -751,7 +751,7 @@ class Hubzero_Content_Mimetypes
 		'ppsx'		=> 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
 		'potx'		=> 'application/vnd.openxmlformats-officedocument.presentationml.template',
 		'xltx' 		=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
-		
+
 		'dmg'		=> 'application/x-apple-diskimage'
 		);
 	}

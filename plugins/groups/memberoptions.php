@@ -34,7 +34,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'PLG_GROUPS_MEMBEROPTIONS' );
 
-	
 //-----------
 
 class plgGroupsMemberOptions extends JPlugin
@@ -46,9 +45,9 @@ class plgGroupsMemberOptions extends JPlugin
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'groups', 'memberoptions' );
 		$this->_params = new JParameter( $this->_plugin->params );
-	
+
 	}
-	
+
 	//-----------
 	
 	public function &onGroupAreas() 
@@ -58,7 +57,7 @@ class plgGroupsMemberOptions extends JPlugin
 			'title' => JText::_('GROUP_MEMBEROPTIONS'),
 			'default_access' => 'registered'
 		);
-		
+
 		return $area;
 	}
 	//-----------
@@ -75,11 +74,11 @@ class plgGroupsMemberOptions extends JPlugin
 		$user =& JFactory::getUser();
 		$this->group = $group;
 		$this->option = $option;
-		
+
 		// Things we need from the form
 		$recvEmailOptionID = JRequest::getInt('memberoptionid', 0);
 		$recvEmailOptionValue = JRequest::getInt('recvpostemail', 0);
-		
+
 		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'memberoptions'.DS.'memberoption.class.php');
 
 		switch ($action) 
@@ -95,11 +94,10 @@ class plgGroupsMemberOptions extends JPlugin
 				break;
 		}
 
-		
 		return $arr;
-		
+
 	}
-	
+
 	protected function edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
 		// HTML output
@@ -130,24 +128,22 @@ class plgGroupsMemberOptions extends JPlugin
 			$view->recvEmailOptionValue = 0;
 		}
 
-		
 		// Pass the view some info
 		$view->option = $this->option;
 		$view->group = $this->group;
 
 		// Return the output
 		return $view->loadTemplate();
-			
+
 	}
-	
-	
+
 	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue) 
 	{
 		/* @var $group Hubzero_Group */
 
 		//instantaite database object
 		$database =& JFactory::getDBO();
-	
+
 		// Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
 		/* @var $row XForum */
 		$row = new XGroups_MemberOption($database);
@@ -158,25 +154,25 @@ class plgGroupsMemberOptions extends JPlugin
 				'gidNumber' => $group->get('gidNumber'), 
 				'optionname' => GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION, 
 				'optionvalue' => $recvEmailOptionValue );
-		
+
 		$row->bind($rowdata);
-		
+
 		// Check content
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
 			return;
 		}
-	
+
 		// Store content
 		if (!$row->store()) {
 			$this->setError( $row->getError() );
 			return $this->edittopic();
 		}
-		
+
 		$app =& JFactory::getApplication();
 		$app->enqueueMessage('You have successfully updated your member options.','Message');
 		$app->redirect( JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=memberoptions&task=edit' ) );
-		
+
 	}
 
 }

@@ -39,19 +39,19 @@ class plgSupportCaptcha extends JPlugin
 	 * @var	boolean
 	 */
 	private $_verified = false;
-	
+
 	/**
 	 * Image background color
 	 * @var	string
 	 */
 	private $_bgColor = '#000000';
-	
+
 	/**
 	 * Text color
 	 * @var	string
 	 */
 	private $_textColor = '#ff0000';
-	
+
 	/**
 	 * Pseudo-randomized sequences for lists
 	 * @var	array
@@ -68,7 +68,7 @@ class plgSupportCaptcha extends JPlugin
 		array(4,2,3,0,1),
 		array(2,0,3,1,4)
 	);
-	
+
 	/**
 	 * Text-based CAPTCHA questions
 	 * @var	array
@@ -182,7 +182,7 @@ class plgSupportCaptcha extends JPlugin
 			'answer' => 'Mouse'
 		)
 	);
-	
+
 	/**
 	 * Constructor
 	 *
@@ -201,7 +201,7 @@ class plgSupportCaptcha extends JPlugin
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin('support', 'captcha');
 		$this->_params = new JParameter($this->_plugin->params);
-		
+
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			ximport('Hubzero_User_Profile');
@@ -212,7 +212,7 @@ class plgSupportCaptcha extends JPlugin
 			}
 		}
 	}
-	
+
 	/**
 	 * Displays either an image or text-based CAPTCHA for module forms
 	 *
@@ -222,7 +222,7 @@ class plgSupportCaptcha extends JPlugin
 	{
 		return $this->onGetCaptcha('mod');
 	}
-	
+
 	/**
 	 * Displays either an image or text-based CAPTCHA for component forms
 	 *
@@ -232,7 +232,7 @@ class plgSupportCaptcha extends JPlugin
 	{
 		return $this->onGetCaptcha('com');
 	}
-	
+
 	/**
 	 * Displays either an image or text-based CAPTCHA
 	 *
@@ -244,21 +244,21 @@ class plgSupportCaptcha extends JPlugin
 		{
 			return;
 		}
-		
+
 		$ext = strtolower($ext);
-		
+
 		if ($ext != 'com' && $ext != 'mod') 
 		{
 			return;
 		}
-		
+
 		$type = $this->_params->get($ext . 'Captcha', 'image');
 		$type = '_generate' . ucfirst(strtolower($type)) . 'Captcha';
-		
+
 		// Return the HTML
 		return $this->$type();
 	}
-	
+
 	/**
 	 * Checks for a CAPTCHA response and Calls the CAPTCHA validity check
 	 *
@@ -270,7 +270,7 @@ class plgSupportCaptcha extends JPlugin
 		{
 			return true;
 		}
-		
+
 		$captcha = JRequest::getVar('captcha', array());
 		$task = JRequest::getVar('task', '');
 
@@ -278,7 +278,7 @@ class plgSupportCaptcha extends JPlugin
 		{
 			return false;
 		}
-		
+
 		if ($captcha['instance'] < 0 || trim($captcha['answer']) == '')
 		{
 			return false;
@@ -289,10 +289,10 @@ class plgSupportCaptcha extends JPlugin
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Randomly chooses a text-based CAPTCHA to display
 	 *
@@ -306,7 +306,7 @@ class plgSupportCaptcha extends JPlugin
 		}
 
 		$GLOBALS['totalCaptchas']++;
-		
+
 		$nqs = count($this->_questions);
 		$use = rand(0, $nqs-1);
 		$question = $this->_questions[$use];
@@ -321,11 +321,11 @@ class plgSupportCaptcha extends JPlugin
 				$problem['operand1'] = rand(0, 10);
 				$problem['operand2'] = rand(0, 10);
 				$key = $problem['operand1'] + $problem['operand2'];
-				
+
 				$html .= "\t" . JText::sprintf($question['question'], $problem['operand1'], $problem['operand2']);
 				$html .= "\t" . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" size="3" class="option" />' . "\n";
 			break;
-			
+
 			case 'list':
 				$key = strtolower($question['answer']);
 				$numseq = count($this->_sequence);
@@ -340,32 +340,32 @@ class plgSupportCaptcha extends JPlugin
 				}
 				$html .= "\t" . '</select>' . "\n";
 			break;
-			
+
 			case 'text':
 			default:
 				$key = strtolower($question['answer']);
-			
+
 				$html .= "\t" . JText::_($question['question']) . "\n";
 				$html .= "\t" . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" />' . "\n";
 			break;
 		}
-		
+
 		//$html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
 		//$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 		$html .= '</label>' . "\n";
-		
+
 		$currentSession =& JFactory::getSession();
 		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
-		
+
 		if ($this->_verified) {
 			$html  = '<input type="hidden" name="captcha[answer]" id="captcha-answer" value="' . $key . '" />' . "\n";
 		}
-		
+
 		$html .= '<input type="hidden" name="captcha[instance]" id="captcha-instance" value="' . $GLOBALS['totalCaptchas'] . '" />' . "\n";
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Generates a hash
 	 *
@@ -380,13 +380,13 @@ class plgSupportCaptcha extends JPlugin
 
 		// Get MD5 and reverse it
 		$enc = strrev(md5($input));
-	
+
 		// Get only a few chars out of the string
 		$enc = substr($enc, 26, 1) . substr($enc, 10, 1) . substr($enc, 23, 1) . substr($enc, 3, 1) . substr($enc, 19, 1);
-	
+
 		return $enc;
 	}
-	
+
 	/**
 	 * Displays either a CAPTCHA image or form field
 	 *
@@ -401,7 +401,7 @@ class plgSupportCaptcha extends JPlugin
 		}
 		return $this->_getImageCaptchaHtml();
 	}
-	
+
 	/**
 	 * Displays a CAPTCHA image
 	 *
@@ -411,13 +411,13 @@ class plgSupportCaptcha extends JPlugin
 	{
 		$imageFunction = '_createImage' . $this->_params->get('imageFunction');
 		$imageFunction = (!method_exists($this, $imageFunction)) ? '_createImageAdv' : $imageFunction;
-		
+
 		$this->$imageFunction();
 		exit;
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Checks if a CAPTCHA response is valid
 	 *
@@ -428,7 +428,7 @@ class plgSupportCaptcha extends JPlugin
 	private function _confirm($word, $instanceNo='')
 	{
 		$word = $this->_generateHash(strtolower($word), date('j'));
-		
+
 		$currentSession =& JFactory::getSession();
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
@@ -438,7 +438,7 @@ class plgSupportCaptcha extends JPlugin
 		   return false;
 		}
 	}
-	
+
 	/**
 	 * Displays a form field and image
 	 *
@@ -452,7 +452,7 @@ class plgSupportCaptcha extends JPlugin
 		}
 
 		$GLOBALS['totalCaptchas']++;
-		
+
 		$document =& JFactory::getDocument();
 		$document->addScript(DS . 'plugins' . DS . 'support' . DS . 'captcha' . DS . 'captcha.js');
 		$document->addStyleSheet(DS . 'plugins' . DS . 'support' . DS . 'captcha' . DS . 'captcha.css');
@@ -472,7 +472,7 @@ class plgSupportCaptcha extends JPlugin
 
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Sets some internal variables
 	 *
@@ -483,7 +483,7 @@ class plgSupportCaptcha extends JPlugin
 		$this->_bgColor   = $this->_params->get('bgColor', $this->_bgColor);
 		$this->_textColor = $this->_params->get('textColor', $this->_textColor);
 	}
-	
+
 	/**
 	 * Creates a distorted image
 	 *
@@ -493,22 +493,22 @@ class plgSupportCaptcha extends JPlugin
 	{
 		$alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 		$allowed_symbols = "23456789abcdeghkmnpqsuvxyz";
-		
+
 		$length = 5;
 		$width = 120;
 		$height = 60;
 		$fluctuation_amplitude = 5;
 		$no_spaces = true;
-		
+
 		$this->_setColors();
-		
+
 		$foreground_color = $this->_hexToRgb($this->_textColor);
 		$background_color = $this->_hexToRgb($this->_bgColor);
-		
+
 		$jpeg_quality = 90;
-		
+
 		$alphabet_length = strlen($alphabet);
-		
+
 		do
 		{
 			// generating random keystring
@@ -524,7 +524,7 @@ class plgSupportCaptcha extends JPlugin
 					break;
 				}
 			}
-		
+
 			$font_file = $font_file = dirname(__FILE__) . DS . 'captcha' . DS . 'adlibBT.png';
 			$font = imagecreatefrompng($font_file);
 			imagealphablending($font, true);
@@ -629,7 +629,7 @@ class plgSupportCaptcha extends JPlugin
 		$background = imagecolorallocate($img2, $background_color[0], $background_color[1], $background_color[2]);
 		imagefilledrectangle($img2, 0, 0, $width-1, $height-1, $background);		
 		imagefilledrectangle($img2, 0, $height, $width-1, $height+12, $foreground);
-		
+
 		// periods
 		$rand1 = mt_rand(750000,1200000)/10000000;
 		$rand2 = mt_rand(750000,1200000)/10000000;
@@ -703,12 +703,12 @@ class plgSupportCaptcha extends JPlugin
 				imagesetpixel($img2, $x, $y, imagecolorallocate($img2, $newred, $newgreen, $newblue));
 			}
 		}
-		
+
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); 
 		header('Cache-Control: no-store, no-cache, must-revalidate'); 
 		header('Cache-Control: post-check=0, pre-check=0', FALSE); 
 		header('Pragma: no-cache');
-		
+
 		if (function_exists('imagejpeg'))
 		{
 			header('Content-Type: image/jpeg');
@@ -732,7 +732,7 @@ class plgSupportCaptcha extends JPlugin
 		$width = 120;
 		$height = 40;
 	}
-	
+
 	/**
 	 * Creates a plain letter image
 	 *
@@ -742,27 +742,27 @@ class plgSupportCaptcha extends JPlugin
 	{
 		// Let's generate a totally random string using md5
 		$md5_hash = md5(rand(0,999));
-		
+
 		// We don't need a 32 character long string so we trim it down to 5 
 		$security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5)); 
 		$security_code = $this->_generateHash($security_code, date('j'));
-		
+
 		// Set the session to store the security code
 		$currentSession =& JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
-		
+
 		$width = 120;
 		$height = 40;
 		$image = imagecreate($width, $height);  
 		$this->_setColors();
 		$foreground_color = $this->_hexToRgb($this->_textColor);
 		$background_color = $this->_hexToRgb($this->_bgColor);
-		
+
 		// We are making three colors, white, black and gray
 		$white = imagecolorallocate($image, $foreground_color[0], $foreground_color[1], $foreground_color[2]);
 		$black = imagecolorallocate($image, $background_color[0], $background_color[1], $background_color[2]);
 		$grey = imagecolorallocate($image, 204, 204, 204);
-		
+
 		// Make the background black 
 		imagefill($image, 0, 0, $black); 
 
@@ -773,7 +773,7 @@ class plgSupportCaptcha extends JPlugin
 		{
 			$angle = rand(-45,45);
 			$y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
-			
+
 			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, dirname(__FILE__) . DS . 'captcha' . DS . 'adlibBT.TTF', $security_code[$i]);
 			$x += ($size *2);
 		}
@@ -781,7 +781,7 @@ class plgSupportCaptcha extends JPlugin
 		header('Content-type: image/png');
 		imagepng($image);
 	}
-	
+
 	/**
 	 * Converts HEX color to RGB
 	 *
@@ -792,7 +792,7 @@ class plgSupportCaptcha extends JPlugin
 	{
 		$hex = ereg_replace("#", '', $hex);
 		$color = array();
-		
+
 		if (strlen($hex) == 3) 
 		{
 			$color['r'] = hexdec(substr($hex, 0, 1) . $r);
@@ -805,7 +805,7 @@ class plgSupportCaptcha extends JPlugin
 			$color['g'] = hexdec(substr($hex, 2, 2));
 			$color['b'] = hexdec(substr($hex, 4, 2));
 		}
-		
+
 		return array_values($color);
 	}
 
@@ -823,7 +823,7 @@ class plgSupportCaptcha extends JPlugin
 		$hex .= dechex($r);
 		$hex .= dechex($g);
 		$hex .= dechex($b);
-		
+
 		return $hex;
 	}
 }

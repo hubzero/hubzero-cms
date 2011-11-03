@@ -42,7 +42,7 @@ class plgHubzeroMathcaptcha extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'hubzero', 'mathcaptcha' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-	
+
 	//-----------
 	
 	public function onGetCaptcha() 
@@ -64,7 +64,7 @@ class plgHubzeroMathcaptcha extends JPlugin
 		// Return the HTML
 		return $html;
 	}
-	
+
 	//-----------
 	
 	public function onValidateCaptcha() 
@@ -78,7 +78,7 @@ class plgHubzeroMathcaptcha extends JPlugin
 		}
 		return false;
 	}
-	
+
 	//-----------
 	
 	private function _generateHash($input, $day)
@@ -88,10 +88,10 @@ class plgHubzeroMathcaptcha extends JPlugin
 
 		// Get MD5 and reverse it
 		$enc = strrev(md5($input));
-	
+
 		// Get only a few chars out of the string
 		$enc = substr($enc, 26, 1) . substr($enc, 10, 1) . substr($enc, 23, 1) . substr($enc, 3, 1) . substr($enc, 19, 1);
-	
+
 		return $enc;
 	}
 }

@@ -43,7 +43,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['type']    = array(trim($app->getUserStateFromRequest(
@@ -66,7 +66,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			'policy', 
 			''
 		));
-		
+
 		// Filters for getting a result count
 		$this->view->filters['limit'] = 'all';
 		$this->view->filters['fields'] = array('COUNT(*)');
@@ -110,11 +110,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Manage group memberships
 	 *
@@ -133,40 +133,40 @@ class GroupsControllerManage extends Hubzero_Controller
 			$this->_messageType = 'error';
 			return;
 		}
-		
+
 		// Load the group page
 		$group = new Hubzero_Group();
 		$group->read($gid);
-		
+
 		$this->gid = $gid;
 		$this->group = $group;
-		
+
 		$action = JRequest::getVar('action','');
-		
+
 		$this->action = $action;
 		$this->authorized = 'admin';
-		
+
 		// Do we need to perform any actions?
 		$out = '';
 		if ($action) 
 		{
 			$action = strtolower(trim($action));
 			$action = str_replace(' ', '', $action);
-			
+
 			// Perform the action
 			if (in_array($action, $this->_taskMap))
 			{
 				$action .= 'Task';
 				$this->$action();
 			}
-		
+
 			// Did the action return anything? (HTML)
 			if ($this->output != '') 
 			{
 				$out = $this->output;
 			}
 		}
-		
+
 		// Get group members based on their status
 		// Note: this needs to happen *after* any potential actions ar performed above
 		$invitees = $group->get('invitees');
@@ -193,7 +193,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			$this->view->members    = $memberss;
 			$this->view->managers   = $managers;
 			$this->view->authorized = 'admin';
-			
+
 			// Set any errors
 			if ($this->getError()) 
 			{
@@ -229,7 +229,7 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-		
+
 		// Get the single ID we're working with
 		if (is_array($ids)) 
 		{
@@ -242,13 +242,13 @@ class GroupsControllerManage extends Hubzero_Controller
 
 		$this->view->group = new Hubzero_Group();
 		$this->view->group->read($id);
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -263,15 +263,15 @@ class GroupsControllerManage extends Hubzero_Controller
 	protected function _multiArrayMap($func, $arr) 
 	{
 		$newArr = array();
-	    
+
 		foreach ($arr as $key => $value) 
 		{
 			$newArr[$key] = (is_array($value) ? $this->_multiArrayMap($func, $value) : $func($value));
 	    }
-	    
+
 		return $newArr;
 	}
-	
+
 	/**
 	 * Saves changes to a group or saves a new entry if creating
 	 *
@@ -281,20 +281,20 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$g = JRequest::getVar('group', array(), 'post');
 		$g = $this->_multiArrayMap('trim', $g);
-		
+
 		// Instantiate an Hubzero_Group object
 		$group = new Hubzero_Group();
-		
+
 		// Is this a new entry or updating?
 		$isNew = false;
 		if (!$g['gidNumber']) 
 		{
 			$isNew = true;
-			
+
 			// Set the task - if anything fails and we re-enter edit mode 
 			// we need to know if we were creating new or editing existing
 			$this->_task = 'new';
@@ -302,7 +302,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		else 
 		{
 			$this->_task = 'edit';
-			
+
 			// Load the group
 			$group->read($g['gidNumber']);
 		}
@@ -316,7 +316,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			$this->setError(JText::_('GROUPS_ERROR_MISSING_INFORMATION') . ': ' . JText::_('GROUPS_TITLE'));
 		}
-		
+
 		// Push back into edit mode if any errors
 		if ($this->getError()) 
 		{
@@ -333,9 +333,9 @@ class GroupsControllerManage extends Hubzero_Controller
 			$this->view->display();
 			return;
 		}
-		
+
 		$g['cn'] = strtolower($g['cn']);
-		
+
 		// Ensure the data passed is valid
 		if (!$this->_validCn($g['cn'], $g['type'])) 
 		{
@@ -345,7 +345,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			$this->setError(JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST'));
 		}
-		
+
 		// Push back into edit mode if any errors
 		if ($this->getError()) 
 		{
@@ -362,26 +362,26 @@ class GroupsControllerManage extends Hubzero_Controller
 			$this->view->display();
 			return;
 		}
-		
+
 		// group params
 		$gparams = new JParameter($group->get('params'));
-		
+
 		// set membership control param
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
 		$gparams->set('membership_control', $membership_control);
-		
+
 		// make array of params
 		$gparams = $gparams->toArray();
-		
+
 		// array to hold params
 		$params = array();
-		
+
 		// create key=val from each param
 		foreach ($gparams as $key => $val) 
 		{
 			$params[] = $key . '=' . $val;
 		}
-		
+
 		//each param must have its own line
 		$params = implode("\n", $params);	
 				
@@ -391,11 +391,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		if ($isNew) 
 		{
 			$group->create();
-			
+
 			$group->set('published', 1);
 			$group->set('created', date("Y-m-d H:i:s"));
 			$group->set('created_by', $this->juser->get('id'));
-			
+
 			$group->add('managers', array($this->juser->get('id')));
 			$group->add('members', array($this->juser->get('id')));
 		}
@@ -411,14 +411,14 @@ class GroupsControllerManage extends Hubzero_Controller
 		$group->set('overview_content', $g['overview_content']);
 		$group->set('plugins', $g['plugins']);	
 		$group->set('params', $params);
-		
+
 		$group->update();
 
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('GROUP_SAVED');
 	}
-	
+
 	/**
 	 * Removes a group and all associated information
 	 *
@@ -428,7 +428,7 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
@@ -444,7 +444,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			// Get plugins
 			JPluginHelper::importPlugin('groups');
 			$dispatcher =& JDispatcher::getInstance();
-			
+
 			foreach ($ids as $id) 
 			{
 				// Load the group page
@@ -504,12 +504,12 @@ class GroupsControllerManage extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Redirect back to the groups page
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('GROUPS_REMOVED');
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
@@ -519,7 +519,7 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-	
+
 	/**
 	 * Publish a group
 	 *
@@ -553,11 +553,11 @@ class GroupsControllerManage extends Hubzero_Controller
 				{
 					continue;
 				}
-				
+
 				//set the group to be published and update
 				$group->set('published',1);
 				$group->update();
-				
+
 				// Log the group approval
 				$log = new XGroupLog($this->database);
 				$log->gid = $group->get('gidNumber');
@@ -569,14 +569,14 @@ class GroupsControllerManage extends Hubzero_Controller
 				{
 					$this->setError($log->getError());
 				}
-				
+
 				// Output messsage and redirect
 				$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 				$this->_message = JText::_('Group has been published.');
 			}
 		}
 	}
-	
+
 	/**
 	 * Unpublish a group
 	 *
@@ -611,11 +611,11 @@ class GroupsControllerManage extends Hubzero_Controller
 				{
 					continue;
 				}
-				
+
 				//set the group to be published and update
 				$group->set('published',0);
 				$group->update();
-				
+
 				// Log the group approval
 				$log = new XGroupLog($this->database);
 				$log->gid = $group->get('gidNumber');
@@ -627,14 +627,14 @@ class GroupsControllerManage extends Hubzero_Controller
 				{
 					$this->setError($log->getError());
 				}
-				
+
 				// Output messsage and redirect
 				$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 				$this->_message = JText::_('Group has been unpublished.');
 			}
 		}
 	}
-	
+
 	/**
 	 * Add user(s) to a group members list (invitee, applicant, member, manager)
 	 *
@@ -644,36 +644,36 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Set a flag for emailing any changes made
 		$users = array();
 
 		$tbl = JRequest::getVar('tbl', '', 'post');
-		
+
 		// Get all invitees of this group
 		$invitees = $this->group->get('invitees');
-		
+
 		// Get all applicants of this group
 		$applicants = $this->group->get('applicants');
-		
+
 		// Get all normal members (non-managers) of this group
 		$members = $this->group->get('members');
-		
+
 		// Get all nmanagers of this group
 		$managers = $this->group->get('managers');
-		
+
 		// Incoming array of users to add
 		$m = JRequest::getVar('usernames', '', 'post');
 		$mbrs = explode(',', $m);
-		
+
 		jimport('joomla.user.helper');
-		
+
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
 			$mbr = trim($mbr);
 			$uid = JUserHelper::getUserId($mbr);
-			
+
 			// Ensure we found an account
 			if ($uid) 
 			{
@@ -685,7 +685,7 @@ class GroupsControllerManage extends Hubzero_Controller
 					$this->setError(JText::sprintf('ALREADY_A_MEMBER_OF_TABLE', $mbr));
 					continue;
 				}
-				
+
 				// They user is not already a member, so we can go ahead and add them
 				$users[] = $uid;
 			} 
@@ -699,7 +699,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		$this->group->remove('applicants', $users);
 		$this->group->remove('members', $users);
 		$this->group->remove('managers', $users);
-		
+
 		// Add users to the list that was chosen
 		$this->group->add($tbl, $users);
 		if ($tbl == 'managers') 
@@ -710,7 +710,7 @@ class GroupsControllerManage extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('User(s) added to group as %s.', $tbl);
 	}
 
@@ -723,13 +723,13 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Set a flag for emailing any changes made
 		$users = array();
-		
+
 		// Get all normal members (non-managers) of this group
 		$members = $this->group->get('members');
-			
+
 		// Incoming array of users to promote
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 
@@ -737,19 +737,19 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			// Retrieve user's account info
 			$targetuser =& JUser::getInstance($mbr);
-				
+
 			// Ensure we found an account
 			if (is_object($targetuser)) 
 			{
 				$uid = $targetuser->get('id');
-				
+
 				// Loop through existing members and make sure the user isn't already a member
 				if (in_array($uid, $members)) 
 				{
 					$this->setError(JText::sprintf('ALREADY_A_MEMBER', $mbr));
 					continue;
 				}
-				
+
 				// Remove record of reason wanting to join group
 				//$reason = new GroupsReason($this->database);
 				//$reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));
@@ -762,16 +762,16 @@ class GroupsControllerManage extends Hubzero_Controller
 				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
-		
+
 		// Remove users from applicants list
 		$this->group->remove('invitees', $users);
-		
+
 		// Add users to members list
 		$this->group->add('members', $users);
-		
+
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('User(s) invite accepted.');
 	}
 
@@ -784,13 +784,13 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Set a flag for emailing any changes made
 		$users = array();
-		
+
 		// Get all normal members (non-managers) of this group
 		$members = $this->group->get('members');
-			
+
 		// Incoming array of users to promote
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 
@@ -798,23 +798,23 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			// Retrieve user's account info
 			$targetuser =& JUser::getInstance($mbr);
-				
+
 			// Ensure we found an account
 			if (is_object($targetuser)) 
 			{
 				$uid = $targetuser->get('id');
-				
+
 				// Loop through existing members and make sure the user isn't already a member
 				if (in_array($uid, $members)) 
 				{
 					$this->setError(JText::sprintf('ALREADY_A_MEMBER', $mbr));
 					continue;
 				}
-				
+
 				// Remove record of reason wanting to join group
 				$reason = new GroupsReason($this->database);
 				$reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));
-					
+
 				// They user is not already a member, so we can go ahead and add them
 				$users[] = $uid;
 			} 
@@ -823,19 +823,19 @@ class GroupsControllerManage extends Hubzero_Controller
 				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
-		
+
 		// Remove users from applicants list
 		$this->group->remove('applicants', $users);
-		
+
 		// Add users to members list
 		$this->group->add('members', $users);
-		
+
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('User(s) membership approved.');
 	}
-	
+
 	/**
 	 * Promotes member(s) to manager status
 	 *
@@ -845,25 +845,25 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$users = array();
-		
+
 		// Get all managers of this group
 		$managers = $this->group->get('managers');
-			
+
 		// Incoming array of users to promote
 		$mbrs = JRequest::getVar('users', array(0), 'post');
-			
+
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
 			$targetuser =& JUser::getInstance($mbr);
-				
+
 			// Ensure we found an account
 			if (is_object($targetuser)) 
 			{
 				$uid = $targetuser->get('id');
-				
+
 				// Loop through existing managers and make sure the user isn't already a manager
 				if (in_array($uid, $managers)) 
 				{
@@ -879,16 +879,16 @@ class GroupsControllerManage extends Hubzero_Controller
 				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
-		
+
 		// Add users to managers list
 		$this->group->add('managers', $users);
-		
+
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('Member(s) promoted.');
 	}
-	
+
 	/**
 	 * Demotes group manager(s) to "member" status
 	 * Disallows demotion of last manager (group must have at least one)
@@ -899,12 +899,12 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$authorized = $this->authorized;
-		
+
 		// Get all managers of this group
 		$managers = $this->group->get('managers');
-		
+
 		// Get a count of the number of managers
 		$nummanagers = count($managers);
 
@@ -914,17 +914,17 @@ class GroupsControllerManage extends Hubzero_Controller
 			$this->setError(JText::_('GROUPS_LAST_MANAGER'));
 			return;
 		}
-		
+
 		$users = array();
-		
+
 		// Incoming array of users to demote
 		$mbrs = JRequest::getVar('users', array(0), 'post');
-		
+
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
 			$targetuser =& JUser::getInstance($mbr);
-				
+
 			// Ensure we found an account
 			if (is_object($targetuser)) 
 			{
@@ -935,23 +935,23 @@ class GroupsControllerManage extends Hubzero_Controller
 				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
-		
+
 		// Make sure there's always at least one manager left
 		if ($authorized != 'admin' && count($users) >= count($managers)) 
 		{
 			$this->setError(JText::_('GROUPS_LAST_MANAGER'));
 			return;
 		}
-		
+
 		// Remove users from managers list
 		$this->group->remove('managers', $users);
-		
+
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('Member(s) demoted.');
 	}
-	
+
 	/**
 	 * Remove member(s) from a group
 	 * Disallows removal of last manager (group must have at least one)
@@ -962,28 +962,28 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$authorized = $this->authorized;
 
 		// Get all the group's managers
 		$managers = $this->group->get('managers');
-		
+
 		// Get all the group's managers
 		$members = $this->group->get('members');
-		
+
 		// Get a count of the number of managers
 		$nummanagers = count($managers);
-		
+
 		// Only admins can demote the last manager
 		if ($authorized != 'admin' && $nummanagers <= 1) 
 		{
 			$this->setError(JText::_('GROUPS_LAST_MANAGER'));
 			return;
 		}
-		
+
 		$users_mem = array();
 		$users_man = array();
-		
+
 		// Incoming array of users to demote
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 
@@ -991,12 +991,12 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			// Retrieve user's account info
 			$targetuser =& JUser::getInstance($mbr);
-			
+
 			// Ensure we found an account
 			if (is_object($targetuser)) 
 			{
 				$uid = $targetuser->get('id');
-				
+
 				if (in_array($uid, $members)) 
 				{
 					$users_mem[] = $uid;
@@ -1029,10 +1029,10 @@ class GroupsControllerManage extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('Member(s) removed.');
 	}
-	
+
 	/**
 	 * Cancels invite(s)
 	 *
@@ -1042,14 +1042,14 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$authorized = $this->authorized;
-		
+
 		$users = array();
-		
+
 		// Get all the group's invitees
 		$invitees = $this->group->get('invitees');
-		
+
 		// Incoming array of users to demote
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 
@@ -1057,12 +1057,12 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			// Retrieve user's account info
 			$targetuser =& JUser::getInstance($mbr);
-			
+
 			// Ensure we found an account
 			if (is_object($targetuser)) 
 			{
 				$uid = $targetuser->get('id');
-				
+
 				if (in_array($uid,$invitees)) 
 				{
 					$users[] = $uid;
@@ -1079,10 +1079,10 @@ class GroupsControllerManage extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('Member(s) uninvited.');
 	}
-	
+
 	/**
 	 * Denies user(s) group membership
 	 *
@@ -1092,10 +1092,10 @@ class GroupsControllerManage extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// An array for the users we're going to deny
 		$users = array();
-		
+
 		// Incoming array of users to demote
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 
@@ -1103,7 +1103,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			// Retrieve user's account info
 			$targetuser =& JUser::getInstance($mbr);
-				
+
 			// Ensure we found an account
 			if (is_object($targetuser)) 
 			{
@@ -1125,10 +1125,10 @@ class GroupsControllerManage extends Hubzero_Controller
 
 		// Save changes
 		$this->group->update();
-		
+
 		$this->_message = JText::sprintf('Users(s) denied membership.');
 	}
-	
+
 	/**
 	 * Checks if a CN (alias) is valid
 	 *
@@ -1144,7 +1144,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			$admin = true;
 		}
-		
+
 		if (($admin && eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $name)) 
 		 || (!$admin && eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $name))) 
 		{

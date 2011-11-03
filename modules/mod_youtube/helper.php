@@ -43,7 +43,7 @@ class modYoutubeHelper
 		$this->params = $params;
 		$this->module = $module;
 	}
-	
+
 	//-----
 	
 	public function render()
@@ -258,7 +258,7 @@ class modYoutubeHelper
 			$this->html = $html;
 		}
 	}
-	
+
 	//-----
 	
 	private function _formatTime($seconds)  

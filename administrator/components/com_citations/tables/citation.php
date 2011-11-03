@@ -384,13 +384,12 @@ class CitationsCitation extends JTable
 	var $author_address 	= NULL;
 	var $call_number		= NULL;
 	var $label 				= NULL;
-	
+
 	var $badges				= NULL;
 	var $tags				= NULL;
 	 * 
 	 * @var unknown
 	 */
-	
 
 	//-----------
 

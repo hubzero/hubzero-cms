@@ -43,7 +43,7 @@ class SupportControllerCategories extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get paging variables
 		$this->view->filters = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
@@ -58,15 +58,15 @@ class SupportControllerCategories extends Hubzero_Controller
 			0, 
 			'int'
 		);
-		
+
 		$model = new SupportCategory($this->database);
-		
+
 		// Record count
 		$this->view->total = $model->getCount($this->view->filters);
-		
+
 		// Fetch results
 		$this->view->rows  = $model->getRecords($this->view->filters);
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination(
@@ -79,11 +79,11 @@ class SupportControllerCategories extends Hubzero_Controller
 		if ($this->getError()) {
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Create a new record
 	 *
@@ -114,7 +114,7 @@ class SupportControllerCategories extends Hubzero_Controller
 			// Initiate database class and load info
 			$this->view->row = new SupportCategory($this->database);
 			$this->view->row->load($id);
-			
+
 			// Set action
 			if (!$this->view->row->id) 
 			{
@@ -122,7 +122,7 @@ class SupportControllerCategories extends Hubzero_Controller
 				$this->view->row->section = 1;
 			}
 		}
-		
+
 		// Get support sections
 		$ss = new SupportSection($this->database);
 		$this->view->sections = $ss->getSections();
@@ -132,7 +132,7 @@ class SupportControllerCategories extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -146,21 +146,21 @@ class SupportControllerCategories extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-	
+
 		// Trim and addslashes all posted items
 		$cat = JRequest::getVar('cat', array(), 'post');
 		$cat = array_map('trim', $cat);
-	
+
 		// Initiate class and bind posted items to database fields
 		$row = new SupportCategory($this->database);
 		if (!$row->bind($cat)) {
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-	
+
 		// Code cleaner for xhtml transitional compliance
 		$row->category = trim($row->category);
-		
+
 		// Check content
 		if (!$row->check()) 
 		{
@@ -176,7 +176,7 @@ class SupportControllerCategories extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('CATEGORY_SUCCESSFULLY_SAVED');
@@ -191,14 +191,14 @@ class SupportControllerCategories extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
 		if (!is_array($ids)) 
 		{
 			$ids = array(0);
 		}
-	
+
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
@@ -206,14 +206,14 @@ class SupportControllerCategories extends Hubzero_Controller
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE');
 			return;
 		}
-		
+
 		foreach ($ids as $id) 
 		{
 			// Delete message
 			$cat = new SupportCategory($this->database);
 			$cat->delete(intval($id));
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::sprintf('CATEGORY_SUCCESSFULLY_DELETED', count($ids));

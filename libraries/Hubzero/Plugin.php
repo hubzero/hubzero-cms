@@ -44,8 +44,7 @@ class Hubzero_Plugin extends JPlugin
 	 * @var		array
 	 */
 	public $pluginMessageQueue = array();
-	
-	
+
 	public $_redirect = NULL;
 
 	/**
@@ -58,12 +57,11 @@ class Hubzero_Plugin extends JPlugin
 	public function __construct( $subject, $config )
 	{
 		parent::__construct( $subject, $config );
-		
+
 		$this->option = "com_" . $config['type'];
 		$this->plugin = $config['name'];
 	}
-	
-	
+
 	/**
 	 * Method to add a message to the component message que
 	 *
@@ -74,17 +72,16 @@ class Hubzero_Plugin extends JPlugin
 	{
 		$url = ($url != "") ? $url : $this->_redirect;
 		$url = str_replace('&amp;', '&', $url);
-		
+
 		$msg = ($msg) ? $msg : $this->_message;
 		$msgType = ($msgType) ? $msgType : $this->_messageType;
-		
+
 		if ($url) {
 			$app =& JFactory::getApplication();
 			$app->redirect($url, $msg, $msgType);
 		}
 	}
 
-	
 	/**
 	 * Method to add a message to the component message que
 	 *
@@ -98,11 +95,11 @@ class Hubzero_Plugin extends JPlugin
 		if ($message != '') {
 			$this->pluginMessageQueue[] = array('message' => $message, 'type' => strtolower($type), 'option' => $this->option, 'plugin' => $this->plugin);
 		}
-		
+
 		$session =& JFactory::getSession();
 		$session->set('plugin.message.queue', $this->pluginMessageQueue);
 	}
-	
+
 	/**
 	 * Method to get component messages
 	 *
@@ -118,7 +115,7 @@ class Hubzero_Plugin extends JPlugin
 				$session->set('plugin.message.queue', null);
 			}
 		}
-		
+
 		foreach ($this->pluginMessageQueue as $k => $cmq) {
 			if ($cmq['option'] != $this->option) {
 				$this->pluginMessageQueue[$k] = array();
@@ -127,6 +124,6 @@ class Hubzero_Plugin extends JPlugin
 		
 		return $this->pluginMessageQueue;
 	}
-	
+
 }
 

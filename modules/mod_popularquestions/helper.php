@@ -84,7 +84,7 @@ class modPopularQuestions
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -202,7 +202,7 @@ class modPopularQuestions
 
 		$this->cssId = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
-		
+
 		$state = $this->params->get('state', 'open');
 		$limit = intval($this->params->get('limit', 5));
 
@@ -238,10 +238,10 @@ class modPopularQuestions
 
 		$this->database->setQuery($query);
 		$this->rows = $this->database->loadObjectList();
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	//-----------
 
 	public function display()
@@ -249,9 +249,9 @@ class modPopularQuestions
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -261,7 +261,7 @@ class modPopularQuestions
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

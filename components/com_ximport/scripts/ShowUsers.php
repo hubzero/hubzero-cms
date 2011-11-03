@@ -34,7 +34,7 @@ ximport('Hubzero_User_Profile');
 class ShowUsers extends XImportHelperScript
 {
 	protected $_description = 'Show users from LDAP.';
-	
+
 	public function run() 
 	{
 		Hubzero_User_Profile_Helper::iterate_profiles('printuser','ldap');
@@ -47,7 +47,7 @@ $mycount = 0;
 function printuser($name)
 {
 	global $mycount;
-	
+
 	if ($mycount > 1000) {
 		exit();
 	}

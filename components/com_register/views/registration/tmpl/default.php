@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= '<a href="'.JRoute::_('index.php?option=com_members&task=whois').'">whois page</a>, under their confirmation email.</p>'."\n";
 			$html .= '</div>'."\n";
 		break;
-		
+
 		default:
 		break;
 	}
@@ -309,7 +309,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= ($message) ? "\t\t\t\t" . $message . "\n" : '';
 			$html .= "\t\t\t".'</label>'."\n";
 		}
-		
+
 		// Telephone
 		if ($this->registrationPhone != REG_HIDE) {
 			$required = ($this->registrationPhone == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
@@ -409,7 +409,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			$orgtext = $this->registration['org'];
 			$org_known = 0;
-			
+
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organization.php');
 			$database =& JFactory::getDBO();
 			$xo = new RegisterOrganization($database);
@@ -438,7 +438,7 @@ defined('_JEXEC') or die('Restricted access');
 				$html .= JText::_('COM_REGISTER_FORM_SELECT_OR_ENTER');
 			}
 			$html .= '</option>'."\n";
-			
+
 			foreach ($orgs as $org) {
 				$html .= "\t\t\t\t\t".'<option value="'. htmlentities($org, ENT_COMPAT, 'UTF-8') .'"';
 				if ($org == $this->registration['org']) {
@@ -448,7 +448,7 @@ defined('_JEXEC') or die('Restricted access');
 				$html .= '>' . htmlentities($org, ENT_COMPAT, 'UTF-8') . '</option>' . "\n";
 			}
 			$html .= "\t\t\t\t" . '</select>' . "\n";
-			
+
 			$html .= ($message) ? "\t\t\t\t". $message . "\n" : '';
 			$html .= "\t\t\t".'</label>'."\n";
 			$html .= "\t\t\t".'<input name="orgtext" id="orgtext" type="text" value="'.htmlentities($this->registration['orgtext'], ENT_COMPAT, 'UTF-8').'" />'."\n";
@@ -584,7 +584,7 @@ defined('_JEXEC') or die('Restricted access');
 				$userCountry = Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress());
 				$this->registration['countryorigin'] = $userCountry;
 			}
-			
+
 			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
 			$html .= "\t\t\t".'<legend>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>? ';
 			$html .= $required;
@@ -610,7 +610,7 @@ defined('_JEXEC') or die('Restricted access');
 			if (!$this->registration['countryorigin'] || $this->registration['countryorigin'] == 'US') {
 				$html .= "\t\t\t\t\t".'<option value="">'.JText::_('COM_REGISTER_FORM_SELECT_FROM_LIST').'</option>'."\n";
 			}
-			
+
 			$countries = Hubzero_Geo::getcountries();
 			if ($countries) {
 				foreach ($countries as $country) 
@@ -641,7 +641,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				$this->registration['countryresident'] = $userCountry;
 			}
-			
+
 			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
 			$html .= "\t\t\t".'<legend>'.JText::_('Do you Currently Live in the <abbr title="United States">US</abbr>?').' ';
 			$html .= $required;
@@ -683,7 +683,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= "\t\t\t".'</label>'."\n";
 			$html .= "\t\t".'</fieldset>'."\n";
 		}
-		
+
 		// Sex
 		if ($this->registrationSex != REG_HIDE) {
 			$required = ($this->registrationSex == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
@@ -860,7 +860,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			$html .= "\t\t".'</fieldset>'."\n";
 		}
-		
+
 		// Racial background
 		if ($this->registrationRace != REG_HIDE) {
 			$required = ($this->registrationRace == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
@@ -928,7 +928,7 @@ defined('_JEXEC') or die('Restricted access');
 		$required = ($this->registrationOptIn == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
 		$message = (!empty($this->xregistration->_invalid['mailPreferenceOption'])) ? RegistrationHelperHtml::error($this->xregistration->_invalid['mailPreferenceOption']) : '';
 		$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
-	
+
 		$html .= "\t".'<fieldset>'."\n";
 		$html .= "\t\t".'<legend>'.JText::_('Updates').'</legend>'."\n";
 		$html .= "\t\t".'<input type="hidden" name="mailPreferenceOption" value="unset" />'."\n";
@@ -945,11 +945,11 @@ defined('_JEXEC') or die('Restricted access');
 	if ($this->registrationCAPTCHA != REG_HIDE) {
 		$required = ($this->registrationCAPTCHA == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
 		$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? RegistrationHelperHtml::error($this->xregistration->_invalid['captcha']) : '';
-		
+
 		JPluginHelper::importPlugin( 'hubzero' );
 		$dispatcher =& JDispatcher::getInstance();
 		$captchas = $dispatcher->trigger( 'onGetCaptcha' );
-		
+
 		if (count($captchas) > 0) {
 			$html .= "\t".'<fieldset>'."\n";
 			$html .= "\t\t".'<legend>'.JText::_('Human Check').'</legend>'."\n";

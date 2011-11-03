@@ -137,7 +137,7 @@ class modReportProblems
 	public function display()
 	{
 		$this->juser = JFactory::getUser();
-		
+
 		$this->verified = 0;
 		if (!$this->juser->get('guest')) {
 			ximport('Hubzero_User_Profile');

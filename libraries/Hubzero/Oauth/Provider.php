@@ -45,22 +45,22 @@ class Hubzero_Oauth_Provider
 	{
 		$this->_response = $response;
 	}
-	
+
 	function setRequestTokenPath($path)
 	{
 		$this->_request_token_path = trim($path,'/');	
 	}
-	
+
 	function setAccessTokenPath($path)
 	{
 		$this->_access_token_path = trim($path,'/');
 	}
-	
+
 	function setAuthorizePath($path)
 	{
 		$this->_authorize_path = trim($path,'/');
 	}
-		
+
 	function __construct()
 	{
 		$this->_provider = new OAuthProvider();
@@ -74,16 +74,16 @@ class Hubzero_Oauth_Provider
 	function validateRequest($uri = null)
 	{
 		$endpoint = false;
-		
+
 		if (is_null($uri))
 		{
 			$uri = $_SERVER['SCRIPT_URI'];
 		}
-		
+
 		$parts = parse_url($uri);
-		
+
 		$path = trim($parts['path'],'/');
-		
+
 		if ($path == $this->_request_token_path)
 		{
 			$this->_provider->isRequestTokenEndpoint(true);
@@ -97,7 +97,7 @@ class Hubzero_Oauth_Provider
 			{
 				$header = $_SERVER['HTTP_AUTHORTIZATION'];
 			}
-		
+
 			// @FIXME: header check is inexact and could give false positives
 			// @FIXME: pecl oauth provider doesn't handle x_auth in header
 			// @FIXME: api application should convert xauth variables in 
@@ -120,10 +120,10 @@ class Hubzero_Oauth_Provider
 				$this->_provider->addRequiredParameter ('x_auth_username');
 				$this->_provider->addRequiredParameter ('x_auth_password');
 			}
-			
+
 			$endpoint = true;			
 		}
-		
+
 		$E = null;
 
 		try
@@ -155,7 +155,7 @@ class Hubzero_Oauth_Provider
 		{			
 			return true;
 		}
-				
+
 		if ($path == $this->_authorize_path)
 		{
 			// request to authorize path can have token and callback params, but are unsigned
@@ -172,7 +172,7 @@ class Hubzero_Oauth_Provider
 				return true;
 			}
 		}
-		
+
 		$status = 401;
 		$reason = 'Unauthorized';
 
@@ -193,57 +193,57 @@ class Hubzero_Oauth_Provider
 			$reason = 'Bad Request';
 			$status = 400;
 		}
-			
+
 		$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
 		$this->_response->setMessage($message,$status,$reason);
 
 		return false;
 	}
-		
+
 	function getToken()
 	{
 		return $this->_provider->token;
 	}
-	
+
 	function getConsumerKey()
 	{
 		return $this->_provider->consumer_key;
 	}
-	
+
 	function getConsumerData()
 	{
 		return $this->_consumer_data;
 	}
-	
+
 	function getTokenData()
 	{
 		return $this->_token_data;
 	}
-	
+
  	function lookupConsumer() 
 	{
 		$db = JFactory::getDBO();
-		
+
 		if (!is_object($db))
 		{
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
-		
+
 		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" 
 			. $db->Quote($this->_provider->consumer_key) . " LIMIT 1;");
-		
+
 		$result = $db->loadObject();
 
 		if ($result === false)
 		{
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
-		
+
 		if (empty($result))
 		{
 			return OAUTH_CONSUMER_KEY_UNKNOWN;
 		}
-		
+
 		if ($result->state != 1)
 		{
 			return OAUTH_CONSUMER_KEY_REFUSED;
@@ -254,27 +254,27 @@ class Hubzero_Oauth_Provider
 
 		return OAUTH_OK;
 	}
-	
+
 	function timestampNonceChecker() 
 	{	
 		$timediff = abs(time() - $this->_provider->timestamp);
-		
+
 		if ($timediff > 600)
 		{
 			return OAUTH_BAD_TIMESTAMP;
 		}		
 		
 		$db = JFactory::getDBO();
-		
+
 		if (!is_object($db))
 		{
 			return 500;
 		}
-		
+
 		$db->setQuery("INSERT INTO #__oauthp_nonces (nonce,stamp,created) "
 				. " VALUES (" . $db->Quote($this->_provider->nonce) . "," 
 				. $db->Quote($this->_provider->timestamp) . ", NOW());");
-		
+
 		if (($db->query() === false) && ($db->getErrorNum() != 1062))
 		{
 			return 550;
@@ -291,32 +291,32 @@ class Hubzero_Oauth_Provider
 	function tokenHandler() 
 	{
 		$db = JFactory::getDBO();
-		
+
 		if (!is_object($db))
 		{
 			return 500;
 		}
-		
+
 		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="
 			. $db->Quote($this->_provider->token) . ";");
-				
+
 		$result = $db->loadObject();
 
 		if ($result === false)
 		{
 			return 500;
 		}
-		
+
 		if (empty($result))
 		{
 			return OAUTH_TOKEN_REJECTED;
 		}
-		
+
 		if ($result->state != '1')
 		{
 			return OAUTH_TOKEN_REJECTED;
 		}
-		
+
 		if ($result->user_id == '0') // check verifier on non-access tokens
 		{
 			if ($result->verifier != $this->_provider->verifier)
@@ -327,7 +327,7 @@ class Hubzero_Oauth_Provider
 
 		$this->_token_data = $result;
 		$this->_provider->token_secret = $result->token_secret;
-		
+
 		return OAUTH_OK;
 	}
 }

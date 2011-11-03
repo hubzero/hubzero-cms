@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 class CompareLicenses extends XImportHelperScript
 {
 	protected $_description = 'Compare licenses from LDAP.';
-	
+
 	public function run() 
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -118,7 +118,7 @@ class CompareLicenses extends XImportHelperScript
 
 							$db->setQuery($query);
 							$result = $db->loadObject();
-							
+
 							if (!is_object($result))
 							{
 								$query = "INSERT INTO #__licenses_tools (license_id,tool_id) VALUES (" . $db->Quote($license_id) . "," . $db->Quote($tool_id) . ");";
@@ -135,7 +135,7 @@ class CompareLicenses extends XImportHelperScript
 								$showrow = false;
 								$rowhtml .= "<td>Already exists</td>";
 							}
-							
+
 						}
 						$rowhtml .= "</tr>";
 					}
@@ -146,7 +146,6 @@ class CompareLicenses extends XImportHelperScript
                                $ldate = strftime("%F %T",strtotime($myvalue));
                                $dts = strtotime($ddate);
                                $lts = strtotime($ldate);
-
 
                                if (($ddate == "0000-00-00 00:00:00") || ($lts < $dts))
                                {
@@ -159,7 +158,7 @@ class CompareLicenses extends XImportHelperScript
 
 							$query = "UPDATE #__licenses SET created=" . $db->Quote($ldate) . " WHERE alias=" . $db->Quote( $attributes['license'][0] );
 							$result = $db->execute($query);
-                               	
+
 							if ($result)
 								$rowhtml .= "<td>FIXED</td></tr>";
 							else
@@ -175,7 +174,6 @@ class CompareLicenses extends XImportHelperScript
                                $dts = strtotime($ddate);
                                $lts = strtotime($ldate);
 
-
                                if (($ddate == "0000-00-00 00:00:00") || ($lts > $dts))
                                {
                                	$showrow = true;
@@ -187,7 +185,7 @@ class CompareLicenses extends XImportHelperScript
 
 							$query = "UPDATE #__licenses SET modified=" . $db->Quote($ldate) . " WHERE alias=" . $db->Quote( $attributes['license'][0] );
 							$result = $db->execute($query);
-                               	
+
 							if ($result)
 								$rowhtml .= "<td>FIXED</td></tr>";
 							else

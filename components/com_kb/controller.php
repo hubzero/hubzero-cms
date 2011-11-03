@@ -124,7 +124,7 @@ class KbController extends Hubzero_Controller
 	{
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'browse') );
 

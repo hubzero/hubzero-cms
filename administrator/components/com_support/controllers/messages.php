@@ -43,7 +43,7 @@ class SupportControllerMessages extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get paging variables
 		$this->view->filter = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
@@ -60,13 +60,13 @@ class SupportControllerMessages extends Hubzero_Controller
 		);
 
 		$model = new SupportMessage($this->database);
-		
+
 		// Record count
 		$this->view->total = $model->getCount($this->view->filters);
-		
+
 		// Fetch results
 		$this->view->rows  = $model->getRecords($this->view->filters);
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -79,7 +79,7 @@ class SupportControllerMessages extends Hubzero_Controller
 		if ($this->getError()) {
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -121,7 +121,7 @@ class SupportControllerMessages extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -135,11 +135,11 @@ class SupportControllerMessages extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-	
+
 		// Trim and addslashes all posted items
 		$msg = JRequest::getVar('msg', array(), 'post');
 		$msg = array_map('trim', $msg);
-	
+
 		// Initiate class and bind posted items to database fields
 		$row = new SupportMessage($this->database);
 		if (!$row->bind($msg)) 
@@ -147,11 +147,11 @@ class SupportControllerMessages extends Hubzero_Controller
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-	
+
 		// Code cleaner for xhtml transitional compliance
 		$row->title   = trim($row->title);
 		$row->message = trim($row->message);
-		
+
 		// Check content
 		if (!$row->check()) 
 		{
@@ -167,7 +167,7 @@ class SupportControllerMessages extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('MESSAGE_SUCCESSFULLY_SAVED');
@@ -182,10 +182,10 @@ class SupportControllerMessages extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-	
+
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
@@ -193,14 +193,14 @@ class SupportControllerMessages extends Hubzero_Controller
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE');
 			return;
 		}
-		
+
 		foreach ($ids as $id) 
 		{
 			// Delete message
 			$msg = new SupportMessage($this->database);
 			$msg->delete(intval($id));
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::sprintf('MESSAGE_SUCCESSFULLY_DELETED', count($ids));

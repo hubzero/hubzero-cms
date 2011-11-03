@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class XImportHelperScript extends JObject
 {
 	/**
@@ -38,28 +37,28 @@ class XImportHelperScript extends JObject
 	 * @var	object JUser
 	 */
 	protected $_juser = null;
-	
+
 	/**
 	 * Database connector
 	 *
 	 * @var	object JDatabase
 	 */
 	protected $_db = null;
-	
+
 	/**
 	 * Extra options the script can be run with
 	 *
 	 * @var	array
 	 */
 	protected $_options = array();
-	
+
 	/**
 	 * Path to a log file
 	 *
 	 * @var	string
 	 */
 	protected $_description = '';
-	
+
 	/**
 	 * Object constructor to set database and juser field
 	 *
@@ -70,7 +69,7 @@ class XImportHelperScript extends JObject
 		$this->_juser = JFactory::getUser();
 		$this->_db = JFactory::getDBO();
 	}
-	
+
 	/**
 	 * Returns description
 	 *
@@ -80,7 +79,7 @@ class XImportHelperScript extends JObject
 	{
 		return $this->_description;
 	}
-	
+
 	/**
 	 * Returns options
 	 *
@@ -90,7 +89,7 @@ class XImportHelperScript extends JObject
 	{
 		return $this->_options;
 	}
-	
+
 	/**
 	 * Generic run method
 	 *

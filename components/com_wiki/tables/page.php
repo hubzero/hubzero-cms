@@ -46,7 +46,6 @@ class WikiPage extends JTable
 	 */
 	public $id = NULL;
 
-
 	/**
 	 * Page name
 	 *
@@ -54,13 +53,11 @@ class WikiPage extends JTable
 	 */
 	public $pagename = NULL;
 
-
 	/**
 	 * Description for 'hits'
 	 * 
 	 * @var unknown
 	 */
-
 
 	/**
 	 * Page hits
@@ -68,7 +65,6 @@ class WikiPage extends JTable
 	 * @var	integer
 	 */
 	public $hits = NULL;
-
 
 	/**
 	 * Creator of the page
@@ -93,14 +89,12 @@ class WikiPage extends JTable
 	 */
 	public $times_rated = NULL;
 
-
 	/**
 	 * Page title
 	 *
 	 * @var	string
 	 */
 	public $title = NULL;
-
 
 	/**
 	 * Scope
@@ -109,14 +103,12 @@ class WikiPage extends JTable
 	 */
 	public $scope = NULL;
 
-
 	/**
 	 * Parameters
 	 *
 	 * @var	string
 	 */
 	public $params = NULL;
-
 
 	/**
 	 * Ranking of the page
@@ -125,14 +117,12 @@ class WikiPage extends JTable
 	 */
 	public $ranking = NULL;
 
-
 	/**
 	 * Access state
 	 *
 	 * @var	integer
 	 */
 	public $access = NULL;
-
 
 	/**
 	 * Group the wiki page belongs to
@@ -141,15 +131,12 @@ class WikiPage extends JTable
 	 */
 	public $group = NULL;
 
-
 	/**
 	 * Published state
 	 *
 	 * @var	integer
 	 */
 	public $state = NULL;
-
-
 
 	/**
 	 * Object constructor to set table and key field
@@ -355,9 +342,9 @@ class WikiPage extends JTable
 			$this->setError(JText::_('Your page must have a name.'));
 			return false;
 		}
-		
+
 		$this->pagename = $this->_check($this->pagename);
-		
+
 		if (trim($this->getError()) != '') {
 			return false;
 		}
@@ -399,7 +386,7 @@ class WikiPage extends JTable
 		$wpa = new WikiPageAuthor($this->_db);
 		return $wpa->isAuthor($this->id, $user_id);
 	}
-	
+
 	/**
 	 * Deletes all information associated with a page
 	 *

@@ -635,7 +635,7 @@ class plgMembersMessages extends JPlugin
 		} elseif (!$xmr->loadRecord($mid, $juser->get('id'))) {
 			return '<p class="warning">' . JText::_('Not authorized to view this message.') . '</p>';
 		}
-		
+
 		$xmessage = new Hubzero_Message_Message($database);
 		$xmessage->load($mid);
 		$xmessage->message = stripslashes($xmessage->message);

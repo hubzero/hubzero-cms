@@ -43,21 +43,21 @@ class SupportControllerStats extends Hubzero_Controller
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . $this->_name . '.css');
-		
+
 		// Instantiate a new view
 		$this->view->title = JText::_(strtoupper($this->_name));
-		
+
 		$type = JRequest::getVar('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
-		
+
 		$this->view->group = JRequest::getVar('group', '');
-		
+
 		$this->view->sort = JRequest::getVar('sort', 'name');
-		
+
 		// Set up some dates
 		$jconfig =& JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
-		
+
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 		$day   = strftime("%d", time()+($this->offset*60*60));
@@ -69,7 +69,7 @@ class SupportControllerStats extends Hubzero_Controller
 		{
 			$month = "0$month";
 		}
-		
+
 		$startday = 0;
 		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
 		if ($numday == -1) 
@@ -78,36 +78,36 @@ class SupportControllerStats extends Hubzero_Controller
 		} 
 		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year);
 		$week = strftime("%d", $week_start);
-		
+
 		$this->view->year = $year;
 		$this->view->opened = array();
 		$this->view->closed = array();
-		
+
 		$st = new SupportTicket($this->database);
-		
+
 		// Get opened ticket information
 		$this->view->opened['year'] = $st->getCountOfTicketsOpened($this->view->type, $year, '01', '01', $this->view->group);
-		
+
 		$this->view->opened['month'] = $st->getCountOfTicketsOpened($this->view->type, $year, $month, '01', $this->view->group);
-		
+
 		$this->view->opened['week'] = $st->getCountOfTicketsOpened($this->view->type, $year, $month, $week, $this->view->group);
-		
+
 		// Currently open tickets
 		$this->view->opened['open'] = $st->getCountOfOpenTickets($this->view->type, false, $this->view->group);
-		
+
 		// Currently unassigned tickets
 		$this->view->opened['unassigned'] = $st->getCountOfOpenTickets($this->view->type, true, $this->view->group);
-		
+
 		// Get closed ticket information
 		$this->view->closed['year'] = $st->getCountOfTicketsClosed($this->view->type, $year, '01', '01', null, $this->view->group);
-		
+
 		$this->view->closed['month'] = $st->getCountOfTicketsClosed($this->view->type, $year, $month, '01', null, $this->view->group);
-		
+
 		$this->view->closed['week'] = $st->getCountOfTicketsClosed($this->view->type, $year, $month, $week, null, $this->view->group);
-		
+
 		// Users
 		$this->view->users = null;
-		
+
 		if ($this->view->group) 
 		{
 			$query = "SELECT a.username, a.name, a.id"
@@ -125,7 +125,7 @@ class SupportControllerStats extends Hubzero_Controller
 				. "\n WHERE a.block = '0' AND g.id=25"
 				. "\n ORDER BY a.name";
 		}
-		
+
 		$this->database->setQuery($query);
 		$users = $this->database->loadObjectList();
 		if ($users) 
@@ -136,14 +136,14 @@ class SupportControllerStats extends Hubzero_Controller
 			foreach ($users as $user) 
 			{
 				$user->closed = array();
-				
+
 				// Get closed ticket information
 				$user->closed['year'] = $st->getCountOfTicketsClosed($this->view->type, $year, '01', '01', $user->username, $this->view->group);
 
 				$user->closed['month'] = $st->getCountOfTicketsClosed($this->view->type, $year, $month, '01', $user->username, $this->view->group);
 
 				$user->closed['week'] = $st->getCountOfTicketsClosed($this->view->type, $year, $month, $week, $user->username, $this->view->group);
-				
+
 				$p[$user->id] = $user;
 				switch ($this->view->sort) 
 				{
@@ -174,13 +174,13 @@ class SupportControllerStats extends Hubzero_Controller
 			{
 				$g[] = $p[$k];
 			}
-			
+
 			$this->view->users = $g;
 		}
 
 		// Get avgerage lifetime
 		$this->view->lifetime = $st->getAverageLifeOfTicket($this->view->type, $year, $this->view->group);
-		
+
 		// Tickets over time
 		$this->view->closedmonths = array();
 		for ($i = 1; $i <= 12; $i++) 
@@ -192,7 +192,7 @@ class SupportControllerStats extends Hubzero_Controller
 				$this->view->group
 			);
 		}
-		
+
 		$this->view->openedmonths = array();
 		for ($i = 1; $i <= 12; $i++) 
 		{
@@ -203,7 +203,7 @@ class SupportControllerStats extends Hubzero_Controller
 				$this->view->group
 			);
 		}
-		
+
 		// Output HTML
 		if ($this->getError()) 
 		{

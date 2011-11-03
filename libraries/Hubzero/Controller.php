@@ -67,21 +67,21 @@ class Hubzero_Controller extends JObject
 	 * @var		string
 	 */
 	protected $_task = NULL;
-	
+
 	/**
 	 * A list of executable tasks
 	 *
 	 * @param array
 	 */
 	protected $_taskMap = array('__default' => 'display');
-	
+
 	/**
 	 * The name of the task to be executed
 	 *
 	 * @param string
 	 */
 	protected $_doTask = null;
-	
+
 	/**
 	 * The name of this controller
 	 *
@@ -166,7 +166,7 @@ class Hubzero_Controller extends JObject
 	{
 		// Determine the methods to exclude from the base class.
 		$xMethods = get_class_methods('Hubzero_Controller');
-		
+
 		// Get all the public methods of this class
 		$r = new ReflectionClass($this);
 		$methods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
@@ -185,7 +185,7 @@ class Hubzero_Controller extends JObject
 				$this->_taskMap[strtolower($name)] = $name;
 			}
 		}
-		
+
 		// Incoming task
 		$this->_task = strtolower(JRequest::getWord('task', 'display'));
 
@@ -204,13 +204,13 @@ class Hubzero_Controller extends JObject
 		{
 			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
 		}
-		
+
 		//$this->_controller = JRequest::getCmd('controller', '');
 		// Attempt to parse the controller name from the class name
 		if (preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
 		{
 			$this->_controller = strtolower($r[1]);
-			
+
 			// Instantiate a view with layout the same name as the task
 			$this->view = new JView(array(
 				'name' => $this->_controller,
@@ -229,11 +229,11 @@ class Hubzero_Controller extends JObject
 		$this->view->option = $this->_option;
 		$this->view->task = $doTask;
 		$this->view->controller = $this->_controller;
-		
+
 		// Record the actual task being fired
 		$doTask .= 'Task';
 		$this->_doTask = $doTask;
-		
+
 		// Call the task
 		$this->$doTask();
 	}

@@ -47,7 +47,7 @@ class modResources
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -57,7 +57,7 @@ class modResources
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -73,25 +73,25 @@ class modResources
 
 		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=5 AND standalone=1");
 		$this->draftInternal = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=2 AND standalone=1");
 		$this->draftUser = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=3 AND standalone=1");
 		$this->pending = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=1 AND standalone=1");
 		$this->published = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=0 AND standalone=1");
 		$this->unpublished = $this->database->loadResult();
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=4 AND standalone=1");
 		$this->removed = $this->database->loadResult();
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

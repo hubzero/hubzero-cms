@@ -85,17 +85,17 @@ function pagination_list_render($list)
 	// Initialize variables
 	$html  = "\t".'<li class="start">'.$list['start']['data'].'</li>'."\n";
 	$html .= "\t".'<li class="prev">'.$list['previous']['data'].'</li>'."\n";
-	
+
 	foreach ($list['pages'] as $page)
 	{
 		$html .= "\t".'<li class="page">';
 		$html .= str_replace('span', 'strong', $page['data']);
 		$html .= '</li>'."\n";
 	}
-	
+
 	$html .= "\t".'<li class="next">'.$list['next']['data'].'</li>'."\n";
 	$html .= "\t".'<li class="end">'.$list['end']['data'].'</li>'."\n";
-	
+
 	return $html;
 }
 
@@ -130,7 +130,7 @@ function pagination_getLimitBox($total, $limit)
 
 	// Build the select list
 	$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
-	
+
 	return $html;
 }
 

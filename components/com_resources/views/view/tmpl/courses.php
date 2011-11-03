@@ -379,7 +379,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$grandchild_rt = new ResourcesType( $database );
 							$grandchild_rt->load($grandchild->type);
 							$alias = $grandchild_rt->alias;
-							
+
 							switch ($alias) 
 							{
 								case "player":
@@ -404,8 +404,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 									break;
 							}
 						}
-						
-						
+
 						if($hubpresenter) {
 							$html .= t.t.t.'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
 						} else {

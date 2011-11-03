@@ -116,11 +116,11 @@ if ($this->registration->Employment != REG_HIDE) {
 		$html .= '>'."\n";
 		$html .= "\t\t\t\t".'<th>'.JText::_('Employment Status').'</th>'."\n";
 		$html .= "\t\t\t\t".'<td><span class="userType">';
-		
+
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
 		$database =& JFactory::getDBO();
 		$rot = new RegisterOrganizationType($database);
-		
+
 		if ($rot->loadType($this->profile->get('orgtype'))) {
 			$html .= stripslashes($rot->title);
 		} else {

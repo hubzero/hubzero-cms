@@ -58,7 +58,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -138,7 +138,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -197,13 +197,12 @@ class GroupsControllerSystem extends Hubzero_Controller
 			Hubzero_Group::importSQLfromLDAP($extended, $replace, $update, $legacy, true /* verbose */, false /* dryrun */);
 		}
 
-		
 		// Set any errors
 		if ($this->getError()) 
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}

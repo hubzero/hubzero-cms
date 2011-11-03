@@ -48,13 +48,13 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->view->filters = SupportUtilities::getFilters();
 
 		$obj = new SupportTicket($this->database);
-		
+
 		// Record count
 		$this->view->total = $obj->getTicketsCount($this->view->filters, true);
-		
+
 		// Fetch results
 		$this->view->rows = $obj->getTickets($this->view->filters, true);
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination($this->view->total, $this->view->filters['start'], $this->view->filters['limit']);
@@ -63,7 +63,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		if ($this->getError()) {
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -93,7 +93,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		
 		// Incoming
 		$id = JRequest::getInt('id', 0);
-		
+
 		$this->view->filters = SupportUtilities::getFilters();
 
 		// Initiate database class and load info
@@ -106,7 +106,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			// Get comments
 			$sc = new SupportComment($this->database);
 			$comments = $sc->getComments('admin', $row->id);
-			
+
 			// Parse comment text for attachment tags
 			$juri =& JURI::getInstance();
 			$webpath = str_replace('/administrator/', '/', $juri->base() . $this->config->get('webpath') . DS . $id);
@@ -129,7 +129,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				$comment =& $comments[$i];
 				$comment->comment = $attach->parse($comment->comment);
 			}
-			
+
 			$row->statustext = SupportHtml::getStatus($row->status);
 		} 
 		else 
@@ -142,28 +142,28 @@ class SupportControllerTickets extends Hubzero_Controller
 			$row->name     = $this->juser->get('name');
 			$row->email    = $this->juser->get('email');
 			$row->cookies  = 1;
-			
+
 			ximport('Hubzero_Browser');
 			$browser = new Hubzero_Browser();
 
 			$row->os = $browser->getOs() . ' ' . $browser->getOsVersion();
 			$row->browser = $browser->getBrowser() . ' ' . $browser->getBrowserVersion();
-			
+
 			$row->uas = JRequest::getVar('HTTP_USER_AGENT','','server');
-			
+
 			ximport('Hubzero_Environment');
 			$row->ip = Hubzero_Environment::ipAddress();
 			$row->hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			$row->section = 1;
-			
+
 			$comments = array();
 		}
-		
+
 		// Do some text cleanup
 		$row->summary = html_entity_decode(stripslashes($row->summary), ENT_COMPAT, 'UTF-8');
 		$row->summary = str_replace('&quote;','&quot;',$row->summary);
 		$row->summary = htmlentities($row->summary, ENT_COMPAT, 'UTF-8');
-		
+
 		$row->report  = html_entity_decode(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
 		$row->report  = str_replace('&quote;','&quot;',$row->report);
 		$row->report  = str_replace("<br />","",$row->report);
@@ -171,18 +171,18 @@ class SupportControllerTickets extends Hubzero_Controller
 		$row->report  = nl2br($row->report);
 		$row->report  = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
 		$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
-		
+
 		if ($id) 
 		{
 			$row->report = $attach->parse($row->report);
 		}
-		
+
 		$this->view->lists = array();
-		
+
 		// Get resolutions
 		$sr = new SupportResolution($this->database);
 		$this->view->lists['resolutions'] = $sr->getResolutions();
-		
+
 		// Get messages
 		$sm = new SupportMessage($this->database);
 		$this->view->lists['messages'] = $sm->getMessages();
@@ -199,10 +199,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		$st = new SupportTags($this->database);
 		$this->view->lists['tags'] = $st->get_tag_string($row->id, 0, 0, NULL, 0, 1);
 		$this->view->lists['tagcloud'] = $st->get_tag_cloud(3, 1, $row->id);
-		
+
 		// Get severities
 		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
-		
+
 		if (trim($row->group)) 
 		{
 			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->owner, 1, '', trim($row->group));
@@ -218,17 +218,17 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$this->view->row = $row;
 		$this->view->comments = $comments;
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Saves changes to a ticket, adds a new comment/changelog,
 	 * notifies any relevant parties
@@ -245,20 +245,20 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Instantiate the tagging class - we'll need this a few times
 		$st = new SupportTags($this->database);
-		
+
 		// Load the old ticket so we can compare for the changelog
 		if ($id) 
 		{
 			$old = new SupportTicket($this->database);
 			$old->load($id);
-			
+
 			// Get Tags
 			$oldtags = $st->get_tag_string($id, 0, 0, NULL, 0, 1);
 		}
-	
+
 		// Trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
-	
+
 		// Initiate class and bind posted items to database fields
 		$row = new SupportTicket($this->database);
 		if (!$row->bind($_POST)) 
@@ -266,7 +266,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		
+
 		if (!$row->id && !trim($row->summary)) 
 		{
 			$row->summary = substr($row->report, 0, 70);
@@ -280,7 +280,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$row->created = date("Y-m-d H:i:s");
 		}
-		
+
 		//$bits = explode(':',$row->category);
 		//$row->category = end($bits);
 		//$row->section = $bits[0];
@@ -303,13 +303,13 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$row->status = 0;
 		}
-		
+
 		// Set the status to just "open" if no owner and no resolution
 		if (!$row->owner && !$row->resolved) 
 		{
 			$row->status = 0;
 		}
-		
+
 		// If status is "open" or "waiting", ensure the resolution is empty
 		if ($row->status == 0 || $row->status == 1) 
 		{
@@ -329,14 +329,14 @@ class SupportControllerTickets extends Hubzero_Controller
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		
+
 		$row->load($id);
-		
+
 		// Save the tags
 		$tags = JRequest::getVar('tags', '', 'post');
 
 		$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
-		
+
 		// We must have a ticket ID before we can do anything else
 		if ($id) 
 		{
@@ -361,7 +361,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					$row->store();
 				}
 			}
-			
+
 			// Compare fields to find out what has changed for this ticket
 			// and build a changelog
 			$changelog = array();
@@ -428,10 +428,10 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				$log = '<ul class="changelog">' . "\n" . $log . '</ul>'."\n";
 			}
-			
+
 			$attachment = $this->upload($row->id);
 			$comment .= ($attachment) ? "\n\n".$attachment : '';
-			
+
 			// Create a new support comment object and populate it
 			$rowc = new SupportComment($this->database);
 			$rowc->ticket     = $id;
@@ -455,26 +455,26 @@ class SupportControllerTickets extends Hubzero_Controller
 					JError::raiseError(500, $rowc->getError());
 					return;
 				}
-			
+
 				// Only do the following if a comment was posted or ticket was reassigned
 				// otherwise, we're only recording a changelog
 				if ($comment || $row->owner != $old->owner) 
 				{
 					$juri =& JURI::getInstance();
 					$jconfig =& JFactory::getConfig();
-					
+
 					$base = $juri->base();
 					if (substr($base, -14) == 'administrator/') 
 					{
 						$base = substr($base, 0, strlen($base)-14); 
 					}
-					
+
 					$webpath = $this->config->get('webpath');
 					if (substr($webpath, 0, 1) == '/') 
 					{
 						$webpath = substr($webpath, 1, strlen($webpath));
 					}
-					
+
 					// Parse comments for attachments
 					$attach = new SupportAttachment($this->database);
 					$attach->webpath = $base . $webpath . DS . $id;
@@ -483,13 +483,13 @@ class SupportControllerTickets extends Hubzero_Controller
 
 					// Build e-mail components
 					$admin_email = $jconfig->getValue('config.mailfrom');
-					
+
 					$subject = ucfirst($this->_name) . ', Ticket #' . $row->id . ' comment ' . md5($row->id);
-					
+
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename') . ' ' . ucfirst($this->_name);
 					$from['email'] = $jconfig->getValue('config.mailfrom');
-		
+
 					$message  = '----------------------------'."\r\n";
 					$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
 					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
@@ -522,15 +522,15 @@ class SupportControllerTickets extends Hubzero_Controller
 						$sef = substr($sef, 1, strlen($sef));
 					}
 					$message .= $base . $sef . "\r\n";
-						
+
 					// An array for all the addresses to be e-mailed
 					$emails = array();
 					$emaillog = array();
-					
+
 					// Send e-mail to admin?
 					JPluginHelper::importPlugin('xmessage');
 					$dispatcher =& JDispatcher::getInstance();
-					
+
 					// Send e-mail to ticket submitter?
 					$email_submitter = JRequest::getInt('email_submitter', 0);
 					if ($email_submitter == 1) 
@@ -575,7 +575,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							}
 						}
 					}
-					
+
 					// Send e-mail to ticket owner?
 					$email_owner = JRequest::getInt('email_owner', 0);
 					if ($email_owner == 1) 
@@ -583,7 +583,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						if ($row->owner) 
 						{
 							$juser =& JUser::getInstance($row->owner);
-							
+
 							if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
 							{
 								$this->setError(JText::_('Failed to message ticket owner.'));
@@ -594,7 +594,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							}
 						}
 					}
-					
+
 					// Add any CCs to the e-mail list
 					$cc = JRequest::getVar('cc', '');
 					if (trim($cc)) 
@@ -603,7 +603,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						foreach ($cc as $acc)
 						{
 							$acc = trim($acc);
-							
+
 							// Is this a username or email address?
 							if (!strstr($acc, '@')) 
 							{
@@ -642,13 +642,13 @@ class SupportControllerTickets extends Hubzero_Controller
 					{
 						SupportUtilities::sendEmail($email, $subject, $message, $from);
 					}
-					
+
 					// Were there any changes?
 					$elog = implode("\n", $emaillog);
 					if ($elog != '') 
 					{
 						$rowc->changelog .= '<ul class="emaillog">' . "\n" . $elog . '</ul>' . "\n";
-						
+
 						// Save the data
 						if (!$rowc->store()) 
 						{
@@ -667,7 +667,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&' . $filters;
 		$this->_message = JText::sprintf('TICKET_SUCCESSFULLY_SAVED', $row->id);
 	}
-	
+
 	/**
 	 * Removes a ticket and all associated records (tags, comments, etc.)
 	 *
@@ -677,10 +677,10 @@ class SupportControllerTickets extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-	
+
 		// Check for an ID
 		if (count($ids) < 1)
 		{
@@ -688,7 +688,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_TICKET_TO_DELETE');
 			return;
 		}
-		
+
 		foreach ($ids as $id) 
 		{
 			$id = intval($id);
@@ -720,7 +720,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-	
+
 	/**
 	 * Generates a select list of Super Administrator names
 	 *
@@ -756,7 +756,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		return $users;
 	}
-	
+
 	/**
 	 * Generates a select list of names based off group membership
 	 *
@@ -774,9 +774,9 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 		}
-		
+
 		ximport('Hubzero_Group');
-		
+
 		if (strstr($group, ',')) 
 		{
 			$groups = explode(',', $group);
@@ -838,12 +838,12 @@ class SupportControllerTickets extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		$users = JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}
-	
+
 	/**
 	 * Serves up files only after passing access checks
 	 *
@@ -860,7 +860,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			JError::raiseError(500, JText::_('SUPPORT_DATABASE_NOT_FOUND'));
 			return;
 		}
-		
+
 		// Get the ID of the file requested
 		$id = JRequest::getInt('id', 0);
 
@@ -873,7 +873,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			return;
 		}
 		$file = $attach->filename;
-		
+
 		// Ensure we have a path
 		if (empty($file)) 
 		{
@@ -908,7 +908,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
 			return;
 		}
-		
+
 		// Get the configured upload path
 		$basePath = $this->config->get('webpath');
 		if ($basePath) 
@@ -925,7 +925,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			}
 		}
 		$basePath .= DS . $attach->ticket;
-		
+
 		// Does the path start with a slash?
 		if (substr($file, 0, 1) != DS)
 		{ 
@@ -941,10 +941,10 @@ class SupportControllerTickets extends Hubzero_Controller
 				$file = $basePath . $file;
 			}
 		}
-		
+
 		// Add JPATH_ROOT
 		$filename = JPATH_ROOT . $file;
-		
+
 		// Ensure the file exist
 		if (!file_exists($filename)) 
 		{
@@ -986,7 +986,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$this->setError(JText::_('COM_SUPPORT_NO_ID'));
 			return '';
 		}
-		
+
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
@@ -1012,7 +1012,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		
+
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $file_path . DS . $file['name'])) 
 		{
@@ -1024,7 +1024,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			// File was uploaded
 			// Create database entry
 			$description = htmlspecialchars($description);
-			
+
 			$row = new SupportAttachment($this->database);
 			$row->bind(array(
 				'id' => 0,
@@ -1044,7 +1044,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				$row->getID();
 			}
-			
+
 			return '{attachment#' . $row->id . '}';
 		}
 	}

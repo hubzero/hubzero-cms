@@ -52,14 +52,14 @@ $rt->load($parent->type);
 if($rt->type == "Series" || $rt->type == "Courses") {
 	$rh->getChildren( $parent->id, 0, 'yes' );
 	$children = $rh->children;
-	
+
 	//remove any children without a HUBpresenter
 	foreach($children as $k => $c) {
 		$rh = new ResourcesHelper( $c->id, $this->database );
 		$rh->getChildren();
 		$sub_child = $rh->children;
 		$hasHUBpresenter = false;
-		
+
 		foreach($sub_child as $sc) {
 			$rt = new ResourcesType( $this->database );
 			$rt->load($sc->type);

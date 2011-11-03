@@ -71,7 +71,7 @@ if($label == "none") {
 		<?php
 			$formatter = new CitationFormat();
 			$formatter->setTemplate( $template );
-			
+
 			$counter = 1;
 		?>
 		<div style="float:right;" class="back-links">
@@ -92,7 +92,7 @@ if($label == "none") {
 										}
 									}
 									$type = ($type != "") ? $type : "Generic";
-									
+
 									switch($label) 
 									{
 										case "number":

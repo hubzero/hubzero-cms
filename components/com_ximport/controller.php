@@ -41,7 +41,7 @@ class XImportController extends Hubzero_Controller
 	 * @var	string
 	 */
 	private $_log = '';
-	
+
 	/**
 	 * Executes the task passed to it
 	 *
@@ -53,24 +53,24 @@ class XImportController extends Hubzero_Controller
 			JError::raiseError(403, JText::_('Access Restricted'));
 			return;
 		}
-		
+
 		$this->_log = JPATH_ROOT . DS . 'components' . DS . 'com_ximport' . DS . 'logs' . DS . 'runs.log';
-		
+
 		$this->_task = strtolower(JRequest::getVar('task', 'browse'));
-		
+
 		switch ($this->_task) 
 		{
 			case 'run': 
 				$this->_run(); 
 			break;
-			
+
 			case 'browse':
 			default:
 				$this->_browse();
 			break;
 		}
 	}
-	
+
 	/**
 	 * Method to set the document path
 	 *
@@ -80,7 +80,7 @@ class XImportController extends Hubzero_Controller
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		
+
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
 				JText::_('XImport'),
@@ -94,7 +94,7 @@ class XImportController extends Hubzero_Controller
 			);
 		}
 	}
-	
+
 	/**
 	 * Outputs a list of available scripts
 	 *
@@ -103,20 +103,20 @@ class XImportController extends Hubzero_Controller
 	protected function _browse() 
 	{
 		$this->_buildPathway();
-		
+
 		$view = new JView(array('name'=>'browse'));
 		$view->option = $this->_option;
-		
+
 		$view->path = JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'scripts';
 		$view->paths = $this->_scanDirectory($view->path);
 		$view->log = $this->_readLog();
-		
+
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 	}
-	
+
 	/**
 	 * Runs a script and echos the script's output
 	 *
@@ -126,19 +126,19 @@ class XImportController extends Hubzero_Controller
 	{
 		// Instantiate a new view
 		$view = new JView(array('name'=>'run'));
-		
+
 		// Get posted script name
 		$view->script = JRequest::getVar('script', '', 'post');
-		
+
 		// If no script name passed, default to the _browse method
 		if (!$view->script) {
 			$this->_task = 'browse';
 			return $this->_browse();
 		}
-		
+
 		// Build the path to the script file
 		$path = JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'scripts' . DS . $view->script . '.php';
-		
+
 		// Check for the script file
 		if (is_file($path)) {
 			// Include the script
@@ -152,18 +152,18 @@ class XImportController extends Hubzero_Controller
 					$job->run();
 					$view->content = ob_get_contents();
 					ob_end_clean();
-					
+
 					// Log the script run
 					ximport('Hubzero_Log_FileHandler');
-					
+
 					$logger = new Hubzero_Log_FileHandler($this->_log);
 					$logger->log(64, $view->script);
 				}
 			}
 		}
-		
+
 		$this->_buildPathway();
-		
+
 		// Display the view
 		$view->option = $this->_option;
 		if ($this->getError()) {
@@ -171,7 +171,7 @@ class XImportController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
+
 	/**
 	 * Scans a directory and builds an array of PHP files
 	 *
@@ -202,7 +202,7 @@ class XImportController extends Hubzero_Controller
 	   }
 	   return $path;
 	}
-	
+
 	/**
 	 * Returns an array of script names with their last run and total runs
 	 *
@@ -211,11 +211,11 @@ class XImportController extends Hubzero_Controller
 	private function _readLog() 
 	{
 		$log = array();
-		
+
 		if (!file_exists($this->_log)) {
 			return $log;
 		}
-		
+
 		$fp = fopen($this->_log, "r"); 
 		if ($fp) { 
 			while (!feof($fp)) 
@@ -233,7 +233,7 @@ class XImportController extends Hubzero_Controller
 				$log[$script]['totalRuns'] = $log[$script]['totalRuns'] + 1;
 			}
 		}
-		
+
 		return $log;
 	}
 
@@ -249,12 +249,12 @@ class XImportController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return false;
 		}
-		
+
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }

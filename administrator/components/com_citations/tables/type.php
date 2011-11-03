@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class CitationsType extends JTable 
 {
 	var $id    			= NULL;  
@@ -39,24 +38,24 @@ class CitationsType extends JTable
 	var $type_title		= NULL;
 	var $type_desc 		= NULL;
 	var $type_export  	= NULL;
-	
+
 	//-----------
 	
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__citations_types', 'id', $db );
 	}
-	
+
 	//-----------
 	
 	public function getType( $id = "" ) 
 	{
 		$where = ($id != "") ? "WHERE id='{$id}'" : "";
-		
+
 		$sql = "SELECT * FROM {$this->_tbl} {$where} ORDER BY type";
 		$this->_db->setQuery( $sql );
 		$results = $this->_db->loadAssocList();
-		
+
 		return $results;
 	}
 }

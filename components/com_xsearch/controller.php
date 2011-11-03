@@ -73,7 +73,7 @@ class XSearchController extends Hubzero_Controller
 		// Get the search string
 		$keyword = urldecode(JRequest::getString('searchword'));
 		$keyword = trim($this->_makeSafe($keyword));
-		
+
 		// Do we have a search string?
 		if (!$keyword) {
 			$view = new JView( array('name'=>'nokeyword') );
@@ -362,17 +362,17 @@ class XSearchController extends Hubzero_Controller
 		// Return the array
 		return $this->searchareas;
 	}
-	
+
 	private function _makeSafe($text) 
 	{
 		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
 		$text = preg_replace("'<style[^>]*>.*?</style[^>]*>'si", '', $text);
 		$text = preg_replace("'<script[^>]*>.*?</script[^>]*>'si", '', $text);
 		$text = preg_replace('/<!--.+?-->/', '', $text);
-		
+
 		$badchars = array('#','>','<','\\'); 
 		$text = trim(str_replace($badchars, '', $text));
-		
+
 		return $text;
 	}
 }

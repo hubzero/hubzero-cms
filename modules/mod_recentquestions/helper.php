@@ -91,7 +91,7 @@ class modRecentQuestions
 	{
 		return isset($this->_attributes[$property]);
 	}
-	
+
 	//-----------
 
 	/**
@@ -194,7 +194,7 @@ class modRecentQuestions
 
 		$this->cssId = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
-		
+
 		$state = $this->params->get('state', 'open');
 		$limit = intval($this->params->get('limit', 5));
 
@@ -208,7 +208,7 @@ class modRecentQuestions
 
 		$this->tag = JRequest::getVar('tag', '', 'get');
 		$this->style = JRequest::getVar('style', '', 'get');
-		
+
 		if ($this->tag) 
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount"
@@ -236,7 +236,7 @@ class modRecentQuestions
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	//-----------
 	
 	
@@ -245,9 +245,9 @@ class modRecentQuestions
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -257,7 +257,7 @@ class modRecentQuestions
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

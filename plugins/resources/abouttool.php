@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 JPlugin::loadLanguage('plg_resources_abouttool');
-	
+
 //-----------
 
 class plgResourcesAbouttool extends JPlugin
@@ -70,7 +70,7 @@ class plgResourcesAbouttool extends JPlugin
 			'html' => '',
 			'metadata' => ''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) {
 			if (!array_intersect($areas, $this->onResourcesAreas($resource)) 
@@ -94,7 +94,7 @@ class plgResourcesAbouttool extends JPlugin
 			$view->authorized = $resource->authorized;
 			$view->database   = JFactory::getDBO();
 			$view->juser      = JFactory::getUser();
-			
+
 			if (!$view->juser->get('guest')) {
 				ximport('Hubzero_User_Helper');
 				$xgroups = Hubzero_User_Helper::getGroups($view->juser->get('id'), 'all');
@@ -103,28 +103,28 @@ class plgResourcesAbouttool extends JPlugin
 			} else {
 				$view->usersgroups = array();
 			}
-			
+
 			$view->attribs = new JParameter($resource->attribs);
 			$view->config  = JComponentHelper::getParams($option);
-			
+
 			$rparams = new JParameter($resource->params);
 			$params = $view->config;
 			$params->merge($rparams);
-			
+
 			$view->params   = $params;
 			$view->helper   = new ResourcesHelper($resource->id, $view->database);
 			$view->thistool = $resource->thistool;
 			$view->curtool  = $resource->curtool;
 			$view->alltools = $resource->alltools;
 			$view->revision = $resource->revision;
-			
+
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
 
 		return $arr;
 	}
-	
+
 	private function _getUsersGroups($groups)
 	{
 		$arr = array();

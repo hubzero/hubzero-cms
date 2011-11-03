@@ -90,7 +90,7 @@ class modEventsLatest
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 
@@ -109,7 +109,7 @@ class modEventsLatest
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -130,9 +130,9 @@ class modEventsLatest
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -142,7 +142,7 @@ class modEventsLatest
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 
@@ -454,7 +454,7 @@ class modEventsLatest
 		{
 			$this->eventsByRelDay = null;
 		}
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

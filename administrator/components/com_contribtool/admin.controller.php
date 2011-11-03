@@ -860,29 +860,29 @@ class ContribtoolController extends JObject
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-		
+
 		//  Limit one-time batch size
 		$limit = JRequest::getInt( 'limit', 2 );
-		
+
 		// Store output	
 		$created = array();
 		$failed = array();
-		
+
 		// Initiate extended database classes
 		$resource = new ResourcesResource( $database );
 		$objDOI = new ResourcesDoi ($database);
 		$objV = new ToolVersion( $database );
 		$objA = new ToolAuthor( $database);
-		
+
 		// Get hub config
 		$xhub =& Hubzero_Factory::getHub();
 		$livesite 		= $xhub->getCfg('hubLongURL');
 		$hubShortName 	= $xhub->getCfg('hubShortName');
-		
+
 		// Get service config
 		$shoulder = $this->config->get('doi_shoulder', '10.9999' );
 		$publisher = $this->config->get('doi_publisher', $hubShortName );
-				
+
 		// Make up service URL
 		$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;		
 		
@@ -890,7 +890,7 @@ class ContribtoolController extends JObject
 		$query = "SELECT * FROM #__doi_mapping WHERE doi='' OR doi IS NULL ";
 		$database->setQuery( $query );
 		$rows = $database->loadObjectList();
-		
+
 		if($rows) {
 			$i = 0;
 			foreach($rows as $row) {
@@ -904,12 +904,12 @@ class ContribtoolController extends JObject
 					echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
 					return;
 				}
-				
+
 				// Skip entries with no resource information loaded / non-tool resources
 				if(!$resource->load($row->rid) || !$row->alias) {
 					continue;
 				}
-				
+
 				// Get version info
 				$query = "SELECT * FROM #__tool_version WHERE toolname='".$row->alias."' ";
 				$query.= "AND revision='".$row->local_revision."' AND state!=3 LIMIT 1";
@@ -924,14 +924,14 @@ class ContribtoolController extends JObject
 					// Skip if version not found
 					continue;
 				}
-				
+
 				// Collect metadata
 				$metadata = array();
 				$metadata['targetURL'] = $livesite . '/resources/' . $row->rid . '/?rev='.$row->local_revision;
 				$metadata['title'] = htmlspecialchars($title);
 				$metadata['publisher'] = htmlspecialchars($publisher);
 				$metadata['pubYear'] = $pubyear;
-							
+
 				// Get first author
 				$query = "SELECT x.name FROM #__xprofiles x ";
 				$query.= " JOIN #__tool_authors AS a ON x.uidNumber=a.uid ";
@@ -940,7 +940,7 @@ class ContribtoolController extends JObject
 				$database->setQuery( $query );
 				$firstAuthor = $database->loadResult();
 				$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
-				
+
 				// Format name
 				if($firstAuthor) {
 					$nameParts   = explode(" ", $firstAuthor);
@@ -950,9 +950,9 @@ class ContribtoolController extends JObject
 				else {
 					$authorName = '';
 				}
-											
+
 				$metadata['creator'] = $authorName;
-				
+
 				// Register DOI			
 				$doiSuccess = $objDOI->registerDOI( $service, $metadata, $doierr);
 				if($doiSuccess) {
@@ -973,11 +973,11 @@ class ContribtoolController extends JObject
 					echo '<br />';
 					echo $service;
 				}
-				
+
 				$i++;
 			}
 		}
-		
+
 		// Output status message
 		if($created) {
 			foreach ($created as $cr) {
@@ -987,7 +987,7 @@ class ContribtoolController extends JObject
 		echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
 		return;
 	}
-	
+
 	//-----------
 	// Temp function to ensure jos_doi_mapping table is updated
 	

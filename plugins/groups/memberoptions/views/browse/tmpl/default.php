@@ -38,7 +38,7 @@ if($allowEmailResponses)
 	$atLeastOneOption = true;
 else
 	$atLeastOneOption = false;
-	
+
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=memberoptions'); ?>" method="post" id="memberoptionform">

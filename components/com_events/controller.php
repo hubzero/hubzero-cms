@@ -653,7 +653,7 @@ class EventsController extends Hubzero_Controller
 		}
 
 		$row->time_zone = JText::_(strtoupper($row->time_zone));
-		
+
 		// Parse http and mailto
 		$alphadigit = "([a-z]|[A-Z]|[0-9])";
 
@@ -1261,7 +1261,7 @@ class EventsController extends Hubzero_Controller
 			$end_time = $event_down->hour .':'. $event_down->minute;
 
 			$time_zone = $row->time_zone;
-			
+
 			$event_registerby = new EventsDate( $row->registerby );
 			$registerby_date = sprintf( "%4d-%02d-%02d",$event_registerby->year,$event_registerby->month,$event_registerby->day);
 			$registerby_time = $event_registerby->hour .':'. $event_registerby->minute;
@@ -1398,7 +1398,7 @@ class EventsController extends Hubzero_Controller
 		$times['end_pm'] = $end_pm;
 
 		$times['time_zone'] = $time_zone;
-		
+
 		$times['registerby_date'] = $registerby_date;
 		$times['registerby_time'] = $registerby_time;
 		$times['registerby_pm'] = $registerby_pm;

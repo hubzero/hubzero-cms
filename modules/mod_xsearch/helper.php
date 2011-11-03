@@ -84,10 +84,10 @@ class modXSearch
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 
-	
+
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
@@ -100,10 +100,10 @@ class modXSearch
 		$this->width  = intval($this->params->get('width', 20));
 		$this->text   = $this->params->get('text', JText::_('SEARCH_BOX'));
 		$this->clasfx = $this->params->get('moduleclass_sfx');
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	//-----------
 
 	/**
@@ -116,7 +116,7 @@ class modXSearch
 	public function display()
 	{
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -126,7 +126,7 @@ class modXSearch
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

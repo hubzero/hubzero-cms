@@ -41,19 +41,19 @@ class StoreControllerOrders extends Hubzero_Controller
 		{
 			ximport('Hubzero_Bank');
 		}
-		
+
 		parent::execute();
 	}
-	
+
 	public function displayTask() 
 	{
 		// Instantiate a new view
 		$this->view->store_enabled = $this->config->get('store_enabled');
-		
+
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get paging variables
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
@@ -81,7 +81,7 @@ class StoreControllerOrders extends Hubzero_Controller
 		
 		// Get cart object
 		$objOrder = new Order($this->database);
-		
+
 		// Get record count
 		$this->view->total = $objOrder->getOrders('count', $this->view->filters);
 
@@ -94,7 +94,7 @@ class StoreControllerOrders extends Hubzero_Controller
 		);
 
 		$this->view->rows = $objOrder->getOrders('', $this->view->filters);
-		
+
 		if ($this->view->rows) 
 		{
 			$oi = new OrderItem($this->database);
@@ -103,14 +103,14 @@ class StoreControllerOrders extends Hubzero_Controller
 				$items = '';
 
 				$results = $oi->getOrderItems($o->id);
-				
+
 				foreach ($results as $r) 
 				{
 					$items .= $r->title;
 					$items .= ($r != end($results)) ? '; ' : '';
 				}
 				$o->itemtitles = $items;
-				
+
 				$targetuser =& JUser::getInstance($o->uid);
 				$o->author = $targetuser->get('username');
 			}
@@ -124,23 +124,23 @@ class StoreControllerOrders extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	public function receiptTask() 
 	{
 		// Incoming
 		$id = JRequest::getInt('id', 0);
-		
+
 		// Load the order
 		$row = new Order($this->database);
 		$row->load($id);
-		
+
 		// Instantiate an OrderItem object
 		$oi = new OrderItem($this->database);
-		
+
 		if ($id) 
 		{
 			// Get order items
@@ -151,14 +151,14 @@ class StoreControllerOrders extends Hubzero_Controller
 				{
 					$params = new JParameter($r->params);
 					$selections = new JParameter($r->selections);
-					
+
 					// Get size selection
 					$r->sizes    		= $params->get('size', '');
 					$r->sizes 			= str_replace(" ","",$r->sizes);				
 					$r->selectedsize    = trim($selections->get('size', ''));
 					$r->sizes    		= split(',',$r->sizes);
 					$r->sizeavail		= in_array($r->selectedsize, $r->sizes) ? 1 : 0;
-					
+
 					// Get color selection
 					$r->colors    		= $params->get('color', '');
 					$r->colors 			= str_replace(" ","",$r->colors);				
@@ -169,13 +169,13 @@ class StoreControllerOrders extends Hubzero_Controller
 
 			$customer =& JUser::getInstance($row->uid);
 		}
-		
+
 		// Include needed libraries
 		require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
 
 		// Get the Joomla config
 		$jconfig =& JFactory::getConfig();
-		
+
 		// Build the link displayed
 		$juri =& JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $this->_option);
@@ -193,7 +193,7 @@ class StoreControllerOrders extends Hubzero_Controller
 		{
 			$webpath = str_replace(':/', '://', $webpath);
 		}
-		
+
 		// Start building the PDF
 		$pdf = new PDF();
 		$hubaddress = array();
@@ -213,10 +213,10 @@ class StoreControllerOrders extends Hubzero_Controller
 		$pdf->receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
-		
+
 		// Title
 		$pdf->mainTitle();
-		
+
 		// Order details
 		if ($id) 
 		{
@@ -226,7 +226,7 @@ class StoreControllerOrders extends Hubzero_Controller
 		{
 			$pdf->Warning('No information available. Please supply order ID');
 		}
-		
+
 		// Thank-you line
 		/*for($i=1;$i<=40;$i++) 
 		{
@@ -235,22 +235,22 @@ class StoreControllerOrders extends Hubzero_Controller
 		$pdf->Output();
 		exit();
 	}
-	
+
 	//-----------
 
 	public function orderTask() 
 	{
 		$this->view->store_enabled = $this->config->get('store_enabled');
-		
+
 		// Incoming
 		$id = JRequest::getInt('id', 0);
-		
+
 		// Load data
 		$this->view->row = new Order($this->database);
 		$this->view->row->load($id);
-		
+
 		$oi = new OrderItem($this->database);
-	
+
 		$this->view->orderitems = array();
 		$this->view->customer = null;
 		$this->view->funds = 0;
@@ -264,14 +264,14 @@ class StoreControllerOrders extends Hubzero_Controller
 				{
 					$params = new JParameter($r->params);
 					$selections = new JParameter($r->selections);
-					
+
 					// Get size selection
 					$r->sizes = $params->get('size', '');
 					$r->sizes = str_replace(' ', '', $r->sizes);				
 					$r->sizes = split(',', $r->sizes);
 					$r->selectedsize = trim($selections->get('size', ''));
 					$r->sizeavail = in_array($r->selectedsize, $r->sizes) ? 1 : 0;
-					
+
 					// Get color selection
 					$r->colors = $params->get('color', '');
 					$r->colors = str_replace(' ', '', $r->colors);
@@ -281,7 +281,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			}
 
 			$this->view->customer =& JUser::getInstance($this->view->row->uid);
-			
+
 			// Check available user funds		
 			$BTL = new Hubzero_Bank_Teller($this->database, $this->view->row->uid);
 			$balance = $BTL->summary();			
@@ -294,11 +294,11 @@ class StoreControllerOrders extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Saves changes to an order
 	 *
@@ -308,9 +308,9 @@ class StoreControllerOrders extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$jconfig =& JFactory::getConfig();
-		
+
 		$statusmsg = '';
 		$email = 1; // turn emailing on/off
 		$emailbody = '';
@@ -329,12 +329,12 @@ class StoreControllerOrders extends Hubzero_Controller
 			$row->notes = Hubzero_Filter::cleanXss($data['notes']);
 			$hold = $row->total;
 			$row->total = $cost;
-			
+
 			// get user bank account
 			//$xprofile =& Hubzero_User_Profile::getInstance($row->uid);
 			$xprofile =& JUser::getInstance($row->uid);
 			$BTL_Q = new Hubzero_Bank_Teller($this->database, $xprofile->get('id'));
-			
+
 			// start email message
 			$emailbody .= JText::_('THANKYOU').' '.JText::_('IN_THE').' '.$jconfig->getValue('config.sitename').' '.JText::_('STORE').'!'."\r\n\r\n";
 			$emailbody .= JText::_('EMAIL_UPDATE').':'."\r\n";
@@ -343,7 +343,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			$emailbody .= "\t".JText::_('ORDER').' '.JText::_('TOTAL').': '. $cost ."\r\n";
 			$emailbody .= "\t\t".JText::_('PLACED').': '. JHTML::_('date', $row->ordered, '%d %b, %Y')."\r\n";
 			$emailbody .= "\t\t".JText::_('STATUS').': ';
-				
+
 			switch ($action)
 			{
 				case 'complete_order':
@@ -371,7 +371,7 @@ class StoreControllerOrders extends Hubzero_Controller
 					$row->status = 1;
 					$statusmsg = JText::_('ORDER') . ' #' . $id . ' ' . JText::_('HAS_BEEN') . ' ' . strtolower(JText::_('COMPLETED')) . '.';
 				break;
-					
+
 				case 'cancel_order':
 					// adjust credit
 					$credit = $BTL_Q->credit_summary();
@@ -389,10 +389,10 @@ class StoreControllerOrders extends Hubzero_Controller
 					// update order information
 					$row->status_changed = date("Y-m-d H:i:s");
 					$row->status = 2;
-					
+
 					$statusmsg = JText::_('ORDER') . ' #' . $id . ' ' . JText::_('HAS_BEEN') . ' ' . strtolower(JText::_('CANCELLED')) . '.';
 				break;
-					
+
 				case 'message': 
 					$statusmsg = JText::_('MSG_SENT') . '.';
 				break;	
@@ -401,21 +401,21 @@ class StoreControllerOrders extends Hubzero_Controller
 					$statusmsg = JText::_('ORDER_DETAILS_UPDATED') . '.';
 				break;
 			}
-		
+
 			// check content
 			if (!$row->check()) 
 			{
 				JError::raiseError(500, $row->getError());
 				return;
 			}
-			
+
 			// store new content
 			if (!$row->store()) 
 			{
 				JError::raiseError(500, $row->getError());
 				return;
 			}
-			
+
 			switch ($row->status)
 			{
 				case 0: ;
@@ -431,7 +431,7 @@ class StoreControllerOrders extends Hubzero_Controller
 					$emailbody .= JText::_('EMAIL_CANCELLED').'.'."\r\n";
 					break;
 			}
-			
+
 			if ($data['message']) 
 			{ // add custom message			
 				$emailbody .= $data['message']."\r\n";				
@@ -447,12 +447,12 @@ class StoreControllerOrders extends Hubzero_Controller
 					$subject     = $jconfig->getValue('config.sitename') . ' ' . JText::_('STORE') . ': ' . JText::_('EMAIL_UPDATE_SHORT') . ' #' . $id;
 					$from        = $jconfig->getValue('config.sitename') . ' ' . JText::_('STORE');
 					$hub         = array('email' => $admin_email, 'name' => $from);
-														
+
 					Hubzero_Toolbox::send_email($hub, $row->email, $subject, $emailbody);
 				}
 			}
 		}
-	
+
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = $statusmsg;
 	}

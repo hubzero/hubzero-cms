@@ -45,21 +45,21 @@ class RegisterOrganizationType extends JTable
 	 * @var		integer
 	 */
 	public $id = null;
-	
+
 	/**
 	 * A normalized key (no spaces or punctuation)
 	 *
 	 * @var		string
 	 */
 	public $type = null;
-	
+
 	/**
 	 * The title of the organization type
 	 *
 	 * @var		string
 	 */
 	public $title = null;
-	
+
 	/**
 	 * Object constructor to set table and key field
 	 *
@@ -69,7 +69,7 @@ class RegisterOrganizationType extends JTable
 	{
 		parent::__construct('#__xorganization_types', 'id', $db);
 	}
-	
+
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 *
@@ -83,7 +83,7 @@ class RegisterOrganizationType extends JTable
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns a record count
 	 *
@@ -100,7 +100,7 @@ class RegisterOrganizationType extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Returns an array of objects
 	 *
@@ -121,7 +121,7 @@ class RegisterOrganizationType extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Returns an associative array of types
 	 *
@@ -136,10 +136,10 @@ class RegisterOrganizationType extends JTable
 				$types[$record->type] = stripslashes($record->title);
 			}
 		}
-		
+
 		return $types;
 	}
-	
+
 	/**
 	 * Loads a database row into the RegisterOrganizationType object
 	 *

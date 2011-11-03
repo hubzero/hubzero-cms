@@ -34,14 +34,14 @@ ximport('Hubzero_User_Profile');
 class compareusers extends XImportHelperScript
 {
 	protected $_description = 'Compare users from LDAP.';
-	
+
 	private $_mycount = 0;
-	
+
 	public function run() 
 	{
 		$this->_compareusers();
 	}
-	
+
 	private function _compareusers($mode = 0)
 	{
 		$mycount = 0;
@@ -621,7 +621,6 @@ class compareusers extends XImportHelperScript
 								echo "$key: " . $value[$j] . "<br>";
 							}
 						}
-
 
 					}
 						if ($showrow) echo $rowhtml . "\n";

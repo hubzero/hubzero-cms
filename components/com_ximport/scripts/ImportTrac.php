@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 class ImportTrac extends XImportHelperScript
 {
 	protected $_description = 'Import trac permissions from old form.';
-	
+
 	public function run() 
 	{
 		$xhub = &Hubzero_Factory::getHub();
@@ -138,7 +138,6 @@ class ImportTrac extends XImportHelperScript
 			}
 		}
 
-
 	    die();
 
 	    $group_projects = array( 'alam_group','group_p_in_si','klimeck','koslowski','mse597g','piezo_frg','strachangroup' );
@@ -170,7 +169,6 @@ class ImportTrac extends XImportHelperScript
 			}
 		}
 
-
 	    die();
 	}
 		$query = "SELECT jt.toolname,jtv.toolid,p.tool_version_id,p.tracperm FROM jos_tool_version_tracperm AS p, jos_tool_version AS jtv, jos_tool AS jt WHERE p.tool_version_id=jtv.id AND jtv.state=3 AND jt.id=jtv.toolid";
@@ -200,7 +198,6 @@ class ImportTrac extends XImportHelperScript
 			}
 			else
 				$trac_project_id = $projects[$entry['toolid']];
-
 
 			$query = "INSERT IGNORE INTO jos_trac_user_permission (user_id,action,trac_project_id) VALUE ('0'," . $db->Quote($entry['tracperm'])  . "," . $db->Quote($trac_project_id) . ");";
 			$db->setQuery($query);

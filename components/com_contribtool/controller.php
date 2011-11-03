@@ -2680,7 +2680,7 @@ class ContribtoolController extends JObject
 		}
 
 		$xlog->logDebug("publish(): checkpoint 3:$result, running finalize tool");
-		
+
 		// Run finalizetool
 		if($result) {
 			if($this->finalizeTool($out)) {
@@ -2693,7 +2693,7 @@ class ContribtoolController extends JObject
 		}
 
 		$xlog->logDebug("publish(): checkpoint 4:$result, running doi stuff");
-		
+
 		// Register DOI handle
 		if($result && ($old_doi || $new_doi)) {
 
@@ -2713,39 +2713,39 @@ class ContribtoolController extends JObject
 				$latestdoi = $objDOI->getLatestDoi($status['resourceid']);
 				$newlabel = ($latestdoi) ? (intval($latestdoi) + 1): 1;
 				$handle = $doiprefix . $status['resourceid'] . '.' . $newlabel;
-				
+
 				// Register with the new DOI service
 				if($new_doi) {	
 					$doiSuccess = 0;
-									
+
 					// Get config
 					$config =& JComponentHelper::getParams( $this->_option );
 					$shoulder = $config->get('doi_shoulder', '10.9999' );
-					
+
 					// Make up service URL
 					$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;
-					
+
 					// Collect metadata
 					$metadata = array();
 					$metadata['targetURL'] = $url;
 					$metadata['title'] = htmlspecialchars($status['title']);
 					$metadata['publisher'] = htmlspecialchars($config->get('doi_publisher', $hubShortName ));
 					$metadata['pubYear'] = date( 'Y' );
-					
+
 					// Get first author
 					$objA = new ToolAuthor( $database);
 					$firstAuthor = $objA->getFirstAuthor($status['resourceid']);
 					$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
-					
+
 					// Format name
 					$nameParts   = explode(" ", $firstAuthor);
 					$authorName  = end($nameParts);
 					$authorName .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';									
 					$metadata['creator'] = $authorName;
-					
+
 					// Register DOI
 					$doiSuccess = $objDOI->registerDOI( $service, $metadata, $doierr);
-						
+
 					// Also create a handle using the old service
 					if($doiSuccess && $old_doi) {
 						if($objDOI->createDOIHandle($url, $handle, $doiservice, $err)) {
@@ -2755,7 +2755,7 @@ class ContribtoolController extends JObject
 							$output['fail'] .= '<br />* '.JText::_('Old-style DOI handle creation failed');
 						}
 					}
-					
+
 					// Save [new] DOI record
 					if($doiSuccess) {
 						if(!$objDOI->loadDOI( $status['resourceid'], $status['revision'] )) {
@@ -2776,7 +2776,7 @@ class ContribtoolController extends JObject
 						$output['fail'] .= '<br />* '.$doierr;
 						$result = 0;
 					}
-					
+
 				}
 				else if($objDOI->createDOIHandle($url, $handle, $doiservice, $err)) {
 

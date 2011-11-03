@@ -102,7 +102,7 @@ class ResourcesDoi extends JTable
 		}
 		return true;
 	}
-	
+
 	//-----------
 	
 	public function getDoi( $id = NULL, $revision = NULL, $versionid = 0, $get_full_doi = 0 )
@@ -128,7 +128,7 @@ class ResourcesDoi extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	//-----------
 	
 	public function getLatestDoi( $id = NULL, $get_full_doi = 0 )
@@ -147,7 +147,7 @@ class ResourcesDoi extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	//-----------
 	
 	public function loadDoi( $rid = NULL, $revision = 0 )
@@ -155,7 +155,7 @@ class ResourcesDoi extends JTable
 		if ($rid === NULL || !$revision ) {
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE rid=".$rid." AND local_revision=".$revision." LIMIT 1" );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
@@ -164,7 +164,7 @@ class ResourcesDoi extends JTable
 			return false;
 		}
 	}
-	
+
 	//-----------
 	
 	public function saveDOI( $revision = 0, $newlabel = 1, $rid = NULL, $alias='', $versionid = 0, $doi = '' ) 
@@ -181,7 +181,7 @@ class ResourcesDoi extends JTable
 			return true;
 		}
 	}
-	
+
 	//-----------
 	
 	public function registerDOI( $service = NULL, $metadata = array(), &$doierr='' ) 
@@ -189,7 +189,7 @@ class ResourcesDoi extends JTable
 		if($service == NULL or empty($metadata)) {
 			return false;
 		}
-		
+
 		// Start input
 		$input  = "_target: " . $metadata['targetURL'] ."\n";
 		$input .= "datacite.creator: " . $metadata['creator'] . "\n";
@@ -197,21 +197,21 @@ class ResourcesDoi extends JTable
 		$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
 		$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
 		$input .= "_profile: datacite";
-		
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $service);
-		
+
 		/* Purdue Hubzero Username/Password */
 		curl_setopt($ch, CURLOPT_USERPWD, '');
 		curl_setopt($ch, CURLOPT_POST, true);
-		
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
 		  array('Content-Type: text/plain; charset=UTF-8',
 		        'Content-Length: ' . strlen($input)));
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$output = curl_exec($ch);
-		
+
 		/*returns HTTP Code for success or fail */
 		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($success === 201) {
@@ -222,9 +222,9 @@ class ResourcesDoi extends JTable
 			$doierr = $success . $output;
 			$output = 0;
 		}
-				
+
 		curl_close($ch);
-	
+
 		return $output;		
 	}
 

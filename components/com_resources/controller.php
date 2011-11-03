@@ -84,7 +84,7 @@ class ResourcesController extends Hubzero_Controller
 			case 'browser':    $this->browser();    break;
 			case 'plugin':     $this->plugin();     break;
 			case 'savetags':   $this->savetags();   break;
-			
+
 			case 'selectpresentation':	$this->selectPresentation(); 	break;
 
 			default: $this->intro(); break;
@@ -231,7 +231,7 @@ class ResourcesController extends Hubzero_Controller
 		if ($this->config->get('show_ranking')) {
 			$default_sort = 'ranking';
 		}
-		
+
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
@@ -691,60 +691,60 @@ class ResourcesController extends Hubzero_Controller
 	{
 		$presentation = JRequest::getVar("presentation", 0);
 		$database =& JFactory::getDBO();
-		
+
 		$helper = new ResourcesHelper( $presentation, $database );
 		$helper->getFirstChild();
 		$resid = $helper->firstChild->id;
-		
+
 		$this->_redirect = JRoute::_('index.php?option=com_resources&id='.$presentation.'&task=watch&resid='.$resid.'&tmpl=component');
 		return;
 	}
-	
+
 	//----------
 	
 	protected function preWatch()
 	{
 		//var to hold error messages
 		$errors = array();
-		
+
 		//database object                      
 		$database =& JFactory::getDBO();
-		
+
 		//inlude the HUBpresenter library
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
-		
+
 		//get the presentation id
 		//$id = JRequest::getVar("id","");
 		$resid = JRequest::getVar("resid","");
 		if(!$resid) {
 			$errors[] = "Unable to find presentation.";
 		}
-		
+
 		//load resource
 		$activechild = new ResourcesResource( $database );
 		$activechild->load( $resid );
-	
+
 		//base url for the resource
 		$base = $this->config->get("uploadpath");
-		
+
 		//make sure we have a leading slash on base
 		if (substr($base, 0, 1) != DS) { 
 			$base = DS.$base;
 		}
-		
+
 		//remove trailing slash on base
 		if (substr($base, -1) == DS) { 
 			$base = substr($base, 0, -1);
 		}
-		
+
 		//build the rest of the resource path and combine with base
 		$path = ResourcesHtml::build_path( $activechild->created, $activechild->id, '' );
 		$path =  $base . $path;
-		
+
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
 		$manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
 		$manifest_path_xml = JPATH_ROOT . $path . DS . 'presentation.xml';
-		
+
 		//check if the formatted json exists
 		if( !file_exists($manifest_path_json) ) {
 			//check to see if we just havent converted yet
@@ -757,10 +757,10 @@ class ResourcesController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		//path to media
 		$media_path = JPATH_ROOT . $path;
-		
+
 		//check if path exists
 		if(!is_dir($media_path)) {
 			$errors[] = "Path to media does not exist.";
@@ -770,53 +770,53 @@ class ResourcesController extends Hubzero_Controller
 			foreach($media as $m) {
 				$ext[] = array_pop(explode(".",$m));
 			}
-		
+
 			//if we dont have all the necessary media formats
 			if( (in_array("mp4", $ext) && count($ext) < 3) || (in_array("mp3", $ext) && count($ext) < 2) )  {
 				$errors[] = "Missing necessary media formats for video or audio.";
 			}
-		
+
 			//make sure if any slides are video we have three formats of video and backup image for mobile
 			$slide_path = $media_path . DS . 'slides';
 			$slides = JFolder::files($slide_path,'',false,false);
-		
+
 			//array to hold slides with video clips
 			$slide_video = array();
-		
+
 			//build array for checking slide video formats
 			foreach($slides as $s) {
 				$parts = explode(".",$s);
 				$ext = array_pop($parts);
 				$name = implode(".", $parts);
-			
+
 				if(in_array($ext, array("mp4","m4v","webm","ogv"))) {
 					$slide_video[$name][$ext] = $name.".".$ext; 
 				}
 			}
-		
+
 			//make sure for each of the slide videos we have all three formats
 			//and has a backup image for the slide
 			foreach($slide_video as $k => $v) {
 				if(count($v) < 3) {
 					$errors[] = "Video Slides must be Uploaded in the Three Standard Formats. You currently only have " . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ").";
 				}
-			
+
 				if( !file_exists($slide_path . DS . $k .'.png') ) {
 					$errors[] = "Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename '" . $k . ".png" . "'.";
 				}
 			}
-		
+
 			$this->database = $database;
 		}
-		
+
 		$return = array();
 		$return['errors'] = $errors;
 		$return['content_folder'] = $path;
 		$return['manifest'] = $manifest_path_json;
-		
+
 		return $return;
 	}
-	
+
 	//-----------
 	
 	protected function watch()
@@ -826,7 +826,7 @@ class ResourcesController extends Hubzero_Controller
 
 		//add the HUBpresenter stylesheet
 		$jdoc->addStyleSheet("/components/com_resources/presenter/css/app.css");
-		
+
 		//add the HUBpresenter required javascript files
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
@@ -837,21 +837,21 @@ class ResourcesController extends Hubzero_Controller
 		$jdoc->addScript("/components/com_resources/presenter/js/jquery.hotkeys.js");
 		$jdoc->addScript("/components/com_resources/presenter/js/flowplayer.js");
 		$jdoc->addScript("/components/com_resources/presenter/js/app.js");
-		
+
 		//do we have javascript?
 		$js = JRequest::getVar("tmpl", "");
 		if($js != "") {
 			$pre = $this->preWatch();
-			
+
 			//get the errors
 			$errors = $pre['errors'];
-			
+
 			//get the manifest
 			$manifest = $pre['manifest'];
-			
+
 			//get the content path
 			$content_folder = $pre['content_folder'];
-			
+
 			//if we have no errors
 			if( count($errors) > 0 ) {
 				echo PresenterHelper::errorMessage( $errors );
@@ -866,7 +866,7 @@ class ResourcesController extends Hubzero_Controller
 				$view->pid = $this->_id;
 				$view->resid = JRequest::getVar("resid", "");
 				$view->doc = $jdoc;
-				
+
 				// Output HTML
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
@@ -877,49 +877,49 @@ class ResourcesController extends Hubzero_Controller
 			$this->view();
 		}
 	}
-	
+
 	//-----------
 	
 	protected function video()
 	{
 		$parent = JRequest::getInt("id", "");
 		$child = JRequest::getVar("resid", "");
-		
+
 		//document object
 		$jdoc =& JFactory::getDocument();
 		$jdoc->_scripts = array();
 
 		//add the HUBpresenter stylesheet
 		$jdoc->addStyleSheet("/components/com_resources/resources.css");
-		
+
 		//add the required javascript files
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
 		$jdoc->addScript("/components/com_resources/presenter/js/flowplayer.js");
 		$jdoc->addScript("/components/com_resources/video/js/video.js");
 		$jdoc->addStyleSheet("/components/com_resources/video/css/video.css");
-		
+
 		//load resource
 		$activechild = new ResourcesResource( $this->database );
 		$activechild->load( $child );
-		
+
 		//base url for the resource
 		$base = $this->config->get("uploadpath");
-		
+
 		//make sure we have a leading slash on base
 		if (substr($base, 0, 1) != DS) { 
 			$base = DS.$base;
 		}
-		
+
 		//remove trailing slash on base
 		if (substr($base, -1) == DS) { 
 			$base = substr($base, 0, -1);
 		}
-		
+
 		//build the rest of the resource path and combine with base
 		$path = ResourcesHtml::build_path( $activechild->created, $activechild->id, '' );
 		$path =  $base . $path;
-		
+
 		//get the videos
 		$videos = JFolder::files( JPATH_ROOT . DS . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM' );
 		$video_mp4 = JFolder::files( JPATH_ROOT . DS . $path, '.mp4|.MP4' );
@@ -930,18 +930,18 @@ class ResourcesController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->config = $this->config;
 		$view->database = $this->database;
-		
+
 		$view->path = $path;
 		$view->videos = $videos;
 		$view->subs = $subs;
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}	
 		$view->display();
 	}
-	
+
 	//-----------
 
 	protected function view()
@@ -1133,7 +1133,7 @@ class ResourcesController extends Hubzero_Controller
 			$resource->thistool = $thistool;
 			$resource->alltools = $alltools;
 			$resource->curtool  = $curtool;
-			
+
 			// Trigger the functions that return the areas we'll be using
 			$cats = $dispatcher->trigger('onResourcesAreas', array(
 					$resource
@@ -1212,16 +1212,16 @@ class ResourcesController extends Hubzero_Controller
 		} elseif ($this->_task == 'watch') {
 			//test to make sure HUBpresenter is ready to go
 			$pre = $this->preWatch();
-			
+
 			//get the errors
 			$errors = $pre['errors'];
-			
+
 			//get the manifest
 			$manifest = $pre['manifest'];
-			
+
 			//get the content path
 			$content_folder = $pre['content_folder'];
-			
+
 			//if we have no errors
 			if (count($errors) > 0) {
 				$body = PresenterHelper::errorMessage($errors);
@@ -1236,21 +1236,20 @@ class ResourcesController extends Hubzero_Controller
 				$view->pid = $id;
 				$view->resid = JRequest::getVar("resid", "");
 				$view->doc =& JFactory::getDocument();
-				
+
 				// Output HTML
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
 				}	
 				$body = $view->loadTemplate();
 			}
-			
+
 			$cat = array();
 			$cat['watch'] = JText::_('Watch Presentation');
 			$cats[] = $cat;
 			$sections[] = array('html'=>$body,'metadata'=>'');
 			$tab = 'watch';
 		}
-		
 
 		// Get filters (for series & workshops listing)
 		$filters = array();
@@ -1844,16 +1843,16 @@ class ResourcesController extends Hubzero_Controller
 		// Check if the resource is for logged-in users only and the user is logged-in
 		if (($token = JRequest::getVar('token', '', 'get'))) {
 			$token = base64_decode($token);
-			
+
 			jimport('joomla.utilities.simplecrypt');
 			$crypter = new JSimpleCrypt();
 			$session_id = $crypter->decrypt($token);
-			
+
 			$db	=& JFactory::getDBO();
 			$query = "SELECT * FROM #__session WHERE session_id = ".$db->Quote($session_id);
 			$db->setQuery($query);
 			$session = $db->loadObject();
-			
+
 			$juser =& JFactory::getUser($session->userid);
 			$juser->guest = 0;
 			$juser->id = $session->userid;
@@ -1861,7 +1860,7 @@ class ResourcesController extends Hubzero_Controller
 		} else {
 			$juser =& JFactory::getUser();
 		}
-		
+
 		if ($resource->access == 1 && $juser->get('guest')) {
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;

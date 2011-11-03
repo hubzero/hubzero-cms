@@ -67,12 +67,12 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 	{ 
 		//var to hold document conetnt
 		$doc = '';
-		
+
 		//get all the citation types
 		$db =& JFactory::getDBO();
 		$ct = new CitationsType( $db );
 		$types = $ct->getType();
-		
+
 		//find the right title
 		$type = "";
 		foreach($types as $t) {
@@ -81,13 +81,13 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 			}
 		}
 		$type = ($type != "") ? $type : "Generic";
-		
+
 		//set the type
 		$doc .= "%0 {$type}" . "\r\n";
-		
+
 		if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
 		if ($row->journal) $doc .= "%J " . trim(stripslashes($row->journal)) . "\r\n";
-		
+
 		$doc .= "%D " . trim($row->year) . "\r\n";
 		$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
@@ -122,7 +122,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		if ($row->month)     $doc .= "%8 " . trim($row->month) . "\r\n";
 		if ($row->isbn)      $doc .= "%@ " . trim($row->isbn) . "\r\n";
 		if ($row->doi)       $doc .= "%1 " . trim($row->doi) . "\r\n";
-		
+
 		if($row->keywords)   		$doc .= "%K " . trim($row->keywords) . "\r\n";
 		if($row->research_notes)    $doc .= "%< " . trim($row->research_notes) . "\r\n";
 		if($row->abstract)   		$doc .= "%X " . trim($row->abstract) . "\r\n";

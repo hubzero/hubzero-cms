@@ -34,9 +34,9 @@ jimport( 'joomla.plugin.plugin' );
 class plgSystemDisablecache extends JPlugin
 {
 	private $_caching = 0;
-	
+
 	private $_path = '';
-	
+
 	/**
 	 * Constructor
 	 *
@@ -52,7 +52,7 @@ class plgSystemDisablecache extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin('system', 'disablecache');
 		$this->_params = new JParameter($this->_plugin->params);
 	}
-	
+
 	/**
 	 * Check if caching is disabled for this page and set the site config accordingly
 	 *
@@ -65,7 +65,7 @@ class plgSystemDisablecache extends JPlugin
 			JFactory::getConfig()->setValue('config.caching', 0);
 		}
 	}
-	
+
 	/**
 	 * Check if caching should be re-enabled for this page if it was disabled and 
 	 * set the site config accordingly
@@ -104,7 +104,7 @@ class plgSystemDisablecache extends JPlugin
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Trim leading and trailing slashes off a URI
 	 *

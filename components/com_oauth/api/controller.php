@@ -57,27 +57,27 @@ class OauthApiController extends Hubzero_Api_Controller
 				break;
 		}
 	}
-	
+
 	private function token_info()
 	{
 		$provider = $this->getProvider();
 		$response = $this->getResponse();
-		
+
 		$response->setMessage($provider->getTokenData(),200,'OK');	
 	}
 
 	private function not_found()
 	{
 		$response = $this->getResponse();
-		
+
 		$response->setErrorMessage(404,'Not Found');		
 	}
-	
+
 	private function request_token()
 	{
 		$provider = $this->getProvider();
 		$response = $this->getResponse();
-		
+
         $token = sha1(OAuthProvider::generateToken(20,false));
 		$token_secret = sha1(OAuthProvider::generateToken(20,false));
 
@@ -86,7 +86,7 @@ class OauthApiController extends Hubzero_Api_Controller
 		$db->setQuery("INSERT INTO #__oauthp_tokens (consumer_id,user_id,state,token,token_secret,callback_url) " .
 			"SELECT id, '0', '1', " . $db->Quote($token) . "," . $db->Quote($token_secret) . ", callback_url ".
 			"FROM #__oauthp_consumers WHERE token=" . $db->Quote($provider->getConsumerKey()) . " LIMIT 1;");
-			
+
 		if (!$db->query())
 		{
 			$response->setErrorMessage(500,'Internal Server Error');
@@ -97,18 +97,18 @@ class OauthApiController extends Hubzero_Api_Controller
 			$response->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret,200,'OK');
 		}
 	}
-	
+
 	private function authorize()
 	{
 		$provider = $this->getProvider();
 		$response = $this->getResponse();
-				
+
 		if (!isset($_REQUEST['oauth_token']))
 		{
 			$response->setErrorMessage(400,'Invalid Request');
 			return;
 		}
-		
+
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
 			require 'authorize.html';	
@@ -116,7 +116,7 @@ class OauthApiController extends Hubzero_Api_Controller
 		else if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			$useraccount = Hubzero_User::getInstance($username);
-			
+
 			if ($useraccount->checkPassword($password))
 			{
 				// user grants application 'consumer_key' permission to act on their behalf
@@ -124,30 +124,29 @@ class OauthApiController extends Hubzero_Api_Controller
 				
 				
 				$db->setQuery("SELECT access_token FROM #__user_accesstokens WHERE user_id=" . $db->Quote($useraccount->getUserId()) . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
-			
-						
+
 				$verifier = sha1(OAuthProvider::generateToken(20,false));
-		
+
 				$db = JFactory::getDBO();
-		
+
 				$db->setQuery("SELECT callback_url FROM #__oauthp_token WHERE type='2' AND state='1' AND token=" . $db->Quote($_REQUEST['oauth_token']) . ';' );
-		
+
 				$callback_url = $db->loadResult();
-		
+
 				if ($callback_url === false)
 				{	
 					$this->setErrorMessage(500, "Internal Server Error");
 					return false;
 				}
-	
+
 				$db->setQuery('UPDATE #__oauthp_token SET verifier=' . $db->Quote($verifier) . "WHERE type='2' AND state='1' AND token=" . $db->Quote( $_REQUEST['oauth_token'] ) . ';');
-			
+
 				if (!$db->query())
 				{	
 					$this->setErrorMessage(500, "Internal Server Error");
 					return false;
 				}
-			
+
 				if (!empty($callback_url))
 				{
 					$this->setErrorMessage($callback_url . "?oauth_token=" . $_REQUEST['oauth_token'] . "&oauth_verifier=" . $verifier,302, "Redirect");
@@ -162,7 +161,7 @@ class OauthApiController extends Hubzero_Api_Controller
 
 		$this->setErrorMessage(500, "Internal Server Error");
 	}
-	
+
 	private function access_token()
 	{
 		$provider = $this->getProvider();
@@ -176,7 +175,7 @@ class OauthApiController extends Hubzero_Api_Controller
 		{
 			$header = $_SERVER['HTTP_AUTHORTIZATION'];
 		}
-		
+
 		// @FIXME: header check is inexact and could give false positives
 		// @FIXME: pecl oauth provider doesn't handle x_auth in header
 		// @FIXME: api application should convert xauth variables in 
@@ -279,13 +278,13 @@ class OauthApiController extends Hubzero_Api_Controller
 				$response->setErrorMessage('oauth_problem=permission_denied 3',401,'Unauthorized');
 				return;
 			}
-			
+
 			$db = JFactory::getDBO();
-		
+
 			$db->setQuery("SELECT token,token_secret FROM #__oauthp_tokens WHERE consumer_id=" 
 				. $db->Quote($provider->getConsumerData()->id) . " AND user_id =" 
 				. $db->Quote($useraccount->getUserId()) . " LIMIT 1;");
-			
+
 			$result = $db->loadObject();
 
 			if ($result === false)
@@ -306,7 +305,7 @@ class OauthApiController extends Hubzero_Api_Controller
 				$token_secret = sha1(OAuthProvider::generateToken(20,false));
 
 				$db = JFactory::getDBO();
-								
+
 				$db->setQuery("INSERT INTO #__oauthp_tokens (consumer_id,user_id,state,token,token_secret,callback_url) VALUE ("
 					. $db->Quote($provider->getConsumerData()->id) . ","
 					. $db->Quote($useraccount->getUserId()) . "," 
@@ -315,7 +314,7 @@ class OauthApiController extends Hubzero_Api_Controller
 					. $db->Quote($token_secret) . ","
 					. $db->Quote($provider->getConsumerData()->callback_url)
 					. ");");
-		
+
 				if (!$db->query())
 				{
 					$response->setErrorMessage(502, 'Internal Server Error');
@@ -336,14 +335,14 @@ class OauthApiController extends Hubzero_Api_Controller
 				$response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');				
 				$response->setMessage("oauth_token=".$result->token."&oauth_token_secret=".$result->token_secret);
 			}
-			
+
 			return;
 		}
 		else 
 		{
 			$response->setErrorMessage(503, 'Internal Server Error');
 			return;
-			
+
 			// @FIXME: we don't support 3-legged auth yet
 			// lookup request token to access token, give out access token
 			// check verifier

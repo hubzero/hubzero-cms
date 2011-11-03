@@ -33,12 +33,12 @@ class Hubzero_Email_Token
 {
     const emailTokenTicket = 1;
     const emailTokenGroupThread = 2;
-    
+
     private $_currentVersion;
     private $_iv;
     private $_key;
     private $_blocksize;
-    
+
     /**
      * Read encryption configuration from config file
      */
@@ -56,7 +56,7 @@ class Hubzero_Email_Token
 
 		//**** Grab the encryption info for that version
 		$encryption_info = $config->getValue('config.email_token_encryption_info_v' . $this->_currentVersion, '');
-		
+
 		if(empty($encryption_info))
 			throw new Exception("Class Hubzero_Email_Token: config.email_token_encryption_info_vX not found for version: " . $tokenVersion);
 
@@ -83,12 +83,12 @@ class Hubzero_Email_Token
     public function buildEmailToken($version, $action, $userid, $id)
 	{
         $rv = '';
-        
+
 		$binaryString = pack("NNN", $userid, $id, intval(time()));
 
 		//**** Add PKCS7 style padding before encryption
 		$pad = $this->_blocksize - (strlen($binaryString) % $this->_blocksize);
-		
+
         $binaryString .= str_repeat(chr($pad), $pad);
 
 		//**** Do the encryption
@@ -99,16 +99,10 @@ class Hubzero_Email_Token
 
 		//**** Prepend an unencrypted version byte and action byte (in base16) 
 		$rv = bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted);
-        
+
 		// Put delimiters on here, so nobody else needs to worry
 		return "@hts@" . $rv . "@hte@";
  	}
-
-
-    
-    
-
-
 
 }
 

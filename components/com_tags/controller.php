@@ -255,7 +255,7 @@ class TagsController extends Hubzero_Controller
 
 		// Get configuration
 		$config = JFactory::getConfig();
-		
+
 		// Incoming paging vars
 		$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 		$limitstart = JRequest::getInt( 'limitstart', 0 );
@@ -522,7 +522,7 @@ class TagsController extends Hubzero_Controller
 
 		// Get configuration
 		$config = JFactory::getConfig();
-		
+
 		// Paging variables
 		$limitstart = JRequest::getInt('limitstart', 0);
 		$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));

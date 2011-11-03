@@ -235,7 +235,6 @@ class XRouter extends JRouter
 		//Add basepath to the uri
 		$uri->setPath(JURI::base(true).'/'.$route);
 
-		
 		if (!empty($_SERVER['REWROTE_FROM']))
 		{
 			if (stripos($uri->toString(), $_SERVER['REWROTE_TO']->getPath()) !== false)
@@ -314,7 +313,7 @@ class XRouter extends JRouter
 	{
 		$vars   = array();
 		$app = JFactory::getApplication();
-		
+
 		if ($app->getCfg('sef_groups'))
 		{
 			$servername = $app->getCfg('live_site');
@@ -326,7 +325,7 @@ class XRouter extends JRouter
 			{
 				list($rhostname, $rdomainname) = explode('.', $rfqdn, 2);
 				list($shostname, $sdomainname) = explode('.', $sfqdn, 2);
-				
+
 				if ( ($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
 				{
 					ximport('Hubzero_Group');
@@ -353,7 +352,7 @@ class XRouter extends JRouter
 					}
 				}
 			}
-			
+
 		}
 
 		$menu  =& JSite::getMenu(true);

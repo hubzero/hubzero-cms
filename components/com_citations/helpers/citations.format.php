@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class CitationFormat
 {
-	
+
 	protected $_template = "apa";
 	protected $_template_keys = array(
 									"type" => "{TYPE}",
@@ -64,7 +64,7 @@ class CitationFormat
 									"search_string" => "{SECONDARY LINK}",
 									"sec_cnt" => "{SECONDARY COUNT}"
 									);
-									
+
 	protected $_coins_keys = array(
 								'title' => 'rft.atitle',
 								//'journal' => 'rft.jtitle',
@@ -79,14 +79,13 @@ class CitationFormat
 								'doi' => 'rft_id=info:doi/',
 								'author' => 'rft.au'
  								);
-									
+
 	protected $_default_format = array(
 		"apa" => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: pg. {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
-		
+
 		"ieee" => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: pg. {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})"
 	);
-	
-	
+
 	/**
 	 * Function to set the formatters template to use
 	 * 
@@ -98,8 +97,7 @@ class CitationFormat
 			$this->_template = trim($template);
 		}
 	}
-	
-	
+
 	/**
 	 * Function to get the formatter template being used
 	 * 
@@ -109,8 +107,7 @@ class CitationFormat
 	{
 		return $this->_template;
 	}
-	
-	
+
 	/**
 	 * Function to set the template keys the formatter will use
 	 * 
@@ -122,8 +119,7 @@ class CitationFormat
 			$this->_template_keys = $template_keys;
 		}
 	}
-	
-	
+
 	/**
 	 * Function to get the formatter template keys being used
 	 * 
@@ -133,8 +129,7 @@ class CitationFormat
 	{
 		return $this->_template_keys;
 	}
-	
-	
+
 	/**
 	 * Function to format citation based on template
 	 * 
@@ -149,19 +144,19 @@ class CitationFormat
 		$hub = new Hubzero_Hub();
 		$hub_name = $hub->getCfg("hubShortName");
 		$hub_url = $hub->getCfg("hubLongURL");
-		
+
 		$c_type = "journal";
-		
+
 		$db =& JFactory::getDBO();
 		$ct = new CitationsType( $db );
 		$types = $ct->getType();
-		
+
 		foreach($types as $t) {
 			if($t['id'] == $citation->type) {
 				$type = $t['type'];
 			}
 		}
-		
+
 		switch( strtolower($type) )
 		{
 			case 'book':
@@ -177,20 +172,20 @@ class CitationFormat
 				$c_type = "journal";
 				break;
 		}
-		
+
 		//var to hold COinS data
 		$coins_data = array(
 			"ctx_ver=Z39.88-2004",
 			"rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
 			"rfr_id=info:sid/{$hub_url}:{$hub_name}"
 			);
-		
+
 		//array to hold replace vals
 		$replace_values = array();
-		
+
 		//get the template
 		$template = $this->getTemplate();
-		
+
 		//get the template keys
 		$template_keys = $this->getTemplateKeys();	
 		
@@ -203,7 +198,7 @@ class CitationFormat
 			
 				//add to coins data if we can but not authors as that will get processed below
 				if( in_array($k,array_keys($this->_coins_keys)) && $k != 'author' ) {
-					
+
 					//key specific
 					switch($k) 
 					{
@@ -223,12 +218,12 @@ class CitationFormat
 							$coins_data[] = $this->_coins_keys[$k] . "=" . $citation->$k;
 					}
 				}
-			
+
 				if($k == "author") {
 					$a = array();
 					$author_string = $citation->$k;
 					$authors = explode(";", $author_string);
-				
+
 					foreach($authors as $author) {
 						preg_match('/{{(.*?)}}/s',$author, $matches);
 						if(!empty($matches)) {
@@ -244,20 +239,18 @@ class CitationFormat
 						} else {
 							$a[] = $author;
 						}
-						
+
 						//add author coins
 						$coins_data[] = "rft.au=" . trim(preg_replace('/\{\{\d+\}\}/',"",trim($author)));
 					}
-				
+
 					$replace_values[$v] = implode(", ", $a);
 				}
-				
-				
-				
+
 				if($k == "title") {
 					$url_format = $config->get("citation_url", "url");
 					$custom_url = $config->get("citation_custom_url", "");
-					
+
 					if($url_format == "custom" && $custom_url != "") {
  						//parse custom url to make sure we are not using any vars
 						preg_match( '/\{(\w+)\}/', $custom_url, $matches);
@@ -273,24 +266,24 @@ class CitationFormat
 					} else {
 						$url = $citation->url;
 					}
-					
+
 					$title = ($url != "" && preg_match('/http:|https:/', $url)) ? "<a rel=\"external\" class=\"citation-title\" href=\"{$url}\">".html_entity_decode($citation->$k)."</a>" : "<span class=\"citation-title\">" . html_entity_decode($citation->$k) . "</span>";
-					
+
 					$replace_values[$v] = "\"" . $title . "\"";
  				}
-				
+
 				if($k == "pages") {
 					$replace_values[$v] = "pg: " . $citation->$k;
 				}
  			}
 		}
-		
+
 		$cite = strtr($template, $replace_values);
-		
+
 		// Strip empty tags
 		$pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/"; 
 		$cite = preg_replace($pattern, '', $cite);
-		
+
 		//reformat dates
 		$pattern = "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/";
 		$cite = preg_replace($pattern, "$2-$3-$1", $cite);
@@ -298,7 +291,7 @@ class CitationFormat
 		// Reduce multiple spaces to one
 		$pattern = "/\s/s"; 
 		$cite = preg_replace($pattern, ' ', $cite);
-		
+
 		// Strip empty punctuation inside
 		$b = array(
 			"''" => '',
@@ -315,7 +308,7 @@ class CitationFormat
 			'","'=> ''
 			//","  => ''
 		);
-		
+
 		foreach ($b as $k => $i) {
 			$cite = str_replace($k, $i, $cite);
 		}
@@ -333,34 +326,33 @@ class CitationFormat
 			': ',
 			'; '
 		);
-		
+
 		foreach ($c as $k) {
 			if (substr($cite,0,2) == $k) {
 				$cite = substr($cite,2);
 			}
 		}
-		
+
 		//remove trailing commas
 		$cite = trim($cite);
 		if(substr($cite, -1) == ',') {
 			$cite = substr($cite, 0, strlen($cite)-1);
 		}
-		
+
 		//percent encode chars
 		$chars = array(" ","/",":",'"',"&amp;");
 		$replace = array("%20","%2F","%3A","%22", "%26");
 		$coins_data = str_replace( $chars, $replace, implode("&",$coins_data));
-		
+
 		//if we want coins add them
 		if($include_coins) {
 			$cite .= "<span class=\"Z3988\" title=\"{$coins_data}\"></span>";
 		}
-		
+
 		//output the citation
 		return ($highlight) ? Hubzero_View_Helper_Html::str_highlight( $cite, array($highlight) ) : $cite;
 	}
-	
-	
+
 	/**
 	 * Function to return the default formats (APA, IEEE, etc)
 	 *
@@ -382,30 +374,29 @@ class CitationFormat
 	{
 		$downloading = $config->get("citation_download", 1);
 		$openurls = $config->get("citation_openurl", 1);
-		
+
 		$html  = "";
-		
+
 		//are we allowing downloading
 		if($downloading) {
 			$html .= "<a href=".JRoute::_('index.php?option=com_citations&task=download&id='.$citation->id.'&format=bibtex&no_html=1')." title=".JText::_('DOWNLOAD_BIBTEX').">BibTex</a>";
 			$html .= "<span> | </span>"; 
 			$html .= "<a href=".JRoute::_('index.php?option=com_citations&task=download&id='.$citation->id.'&format=endnote&no_html=1')." title=".JText::_('DOWNLOAD_ENDNOTE').">EndNote</a>";
 		}
-		
+
 		if( $openurl['link'] && $openurls ) {
 			$text = $openurl['text'];
 			$icon = $openurl['icon'];
 			$link = $openurl['link'];
-			
+
 			$link .= "?doi=" . $citation->doi;
 			$link .= "&isbn=" . $citation->isbn;
 			$link .= "&issn=" . $citation->isbn;
-			
+
 			$link_text = ($icon != "") ? "<img src=\"{$icon}\" />" : $text;
 			$html .= "<span> | </span>"; 
 			$html .= "<a rel=\"external\" href=\"{$link}\" title=\"{$text}\">{$link_text}</a>";	
 		}
-		
 
 		// Get the associations
 		$assoc = new CitationsAssociation( $database );
@@ -447,14 +438,14 @@ class CitationFormat
 
 		return $html;
 	}
-	
+
 	//-----------
 	
 	public function citationBadges( $citation, $database )
 	{
 		$html = "";
 		$badges = array();
-		
+
 		$sql = "SELECT t.*
 				FROM #__tags_object to1 
 				INNER JOIN #__tags t ON t.id = to1.tagid 
@@ -463,7 +454,7 @@ class CitationFormat
 				AND to1.label='badge'";
 		$database->setQuery( $sql );
 		$badges = $database->loadAssocList();
-		
+
 		if($badges) {
 			$html = "<ul class=\"badges\">";
 			foreach($badges as $badge) {
@@ -471,17 +462,17 @@ class CitationFormat
 			}
 			$html .= "</ul>";
 		}
-		
+
 		return $html;
 	}
-	
+
 	//----------
 	
 	public function citationTags( $citation, $database )
 	{
 		$html = "";
 		$tags = array();
-		
+
 		$sql = "SELECT t.*
 				FROM #__tags_object to1 
 				INNER JOIN #__tags t ON t.id = to1.tagid 
@@ -490,7 +481,7 @@ class CitationFormat
 				AND to1.label=''";
 		$database->setQuery( $sql );
 		$tags = $database->loadAssocList();
-		
+
 		if($tags) {
 			$html = "<ul class=\"tags\">";
 			$html .= "<li>Tags: </li>";
@@ -499,11 +490,10 @@ class CitationFormat
 			}
 			$html .= "</ul>";
 		}
-		
+
 		return $html;
 	}
-	
-	
+
 	//------------------------------------------------------------------
 	//	Utility Functions
 	//------------------------------------------------------------------
@@ -513,10 +503,10 @@ class CitationFormat
 		$url = stripslashes($url);
 		$url = str_replace('&amp;', '&', $url);
 		$url = str_replace('&', '&amp;', $url);
-		
+
 		return $url;
 	}
-	
+
 	//-----------
 
 	public function keyExistsOrIsNotEmpty($key,$row)
@@ -531,7 +521,7 @@ class CitationFormat
 			return false;
 		}
 	}
-	
+
 	//-----------
 	
 	public function grammarCheck($html, $punct=',') 
@@ -551,7 +541,7 @@ class CitationFormat
 	public function formatReference(&$row, $link='none', $highlight='')
 	{
 		ximport('Hubzero_View_Helper_Html');
-		
+
 		$html = "\t".'<p>';
 		if (CitationFormat::keyExistsOrIsNotEmpty('author',$row)) {
 			$xprofile =& Hubzero_Factory::getProfile();
@@ -588,7 +578,7 @@ class CitationFormat
 				}
 			}
 			$row->author = implode('; ', $a);
-	
+
 			$html .= stripslashes($row->author);
 		} elseif (CitationFormat::keyExistsOrIsNotEmpty('editor',$row)) {
 			$html .= stripslashes($row->editor);
@@ -597,7 +587,7 @@ class CitationFormat
 		if (CitationFormat::keyExistsOrIsNotEmpty('year',$row)) {
 			$html .= ' ('.$row->year.')';
 		}
-		
+
 		if (CitationFormat::keyExistsOrIsNotEmpty('title',$row)) {
 			if (!$row->url) {
 				$html .= ', "'.stripslashes($row->title);

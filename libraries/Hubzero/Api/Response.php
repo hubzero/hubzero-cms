@@ -42,11 +42,11 @@ class Hubzero_API_Response
 	private $_status_code = 200;
 	private $_reason = 'OK';
 	private $_headers = array();
-		
+
 	private $_content_type = null;
 	private $_encoding = null;
 	private $_body = array();
-	
+
 	private static $_reasons = array(
 		200 => 'OK',
 		404 => 'Not Found',
@@ -64,16 +64,16 @@ class Hubzero_API_Response
 		}
 
 	}
-	
+
 	function setStatusCode($code)
 	{
 		if ($this->_sent)
 		{
 			return false;
 		}
-		
+
 		$this->_status_code = $code;
-		
+
 		return true;
 	}
 
@@ -88,9 +88,9 @@ class Hubzero_API_Response
 		{
 			return false;
 		}
-		
+
 		$this->_http_version = $version;
-		
+
 		return true;
 	}
 
@@ -105,9 +105,9 @@ class Hubzero_API_Response
 		{
 			return false;
 		}
-		
+
 		$this->_reason = $reason;
-		
+
 		return true;
 	}
 
@@ -122,12 +122,12 @@ class Hubzero_API_Response
 		{
 			return false;
 		}
-		
+
 		if (is_null($string))
 		{
 			return false;
 		}
-		
+
 		if (empty($string))
 		{
 			$this->setStatusCode(200);
@@ -135,18 +135,18 @@ class Hubzero_API_Response
 			$this->setHttpVersion('HTTP/1.1');
 			return true;
 		}
-			
+
 		list($v, $s, $r) = explode(' ',$string,3);
-		
+
 		if (!is_numeric($s))
 		{
 			return false;
 		}
-		
+
 		$this->setStatusCode($s);
 		$this->setReason($r);
 		$this->setHttpVersion($v);
-		
+
 		return true;
 	}
 
@@ -171,12 +171,12 @@ class Hubzero_API_Response
 		{
 			return false;
 		}
-		
+
 		list($name , $value) = explode(':',$string,2);
-        
+
         $name   = trim($name);
         $value  = trim($value);
-        
+
         if (empty($value))
 			return false;
 
@@ -194,12 +194,12 @@ class Hubzero_API_Response
 		{
 			return false;
 		}
-		
+
 		$this->_headers = array();
 		$this->setStatusCode(200);
 		$this->setReason('OK');
 		$this->setHttpVersion('HTTP/1.1');
-		
+
 		return true;
 	}
 
@@ -209,7 +209,7 @@ class Hubzero_API_Response
 		{
 			return false;
 		}
-		
+
 		foreach($this->_headers as $header)
 		{
 			if ($name == $header['name']) 
@@ -217,7 +217,7 @@ class Hubzero_API_Response
             	unset($this->_headers[$key]);
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -276,13 +276,13 @@ class Hubzero_API_Response
 			{
 				echo $header['name'] . ': ' . $header['value'] . "\n";
 			}
-			
+
 			echo "\n";		
 		}
 
 		return true;
 	}
-	
+
 	function setEncodeOnOutput($value)
 	{
 		if ($value)
@@ -294,12 +294,12 @@ class Hubzero_API_Response
 			$this->_autoencode = false;
 		}
 	}
-	
+
 	function getEncodeOnOutput()
 	{
 		return (boolean) $this->_autoencode;
 	}
-	
+
 	function setCachable($value)
 	{
 		if ($value)
@@ -311,7 +311,7 @@ class Hubzero_API_Response
 			$this->_cachable = false;
 		}
 	}
-	
+
 	function getCachable()
 	{
 		return $this->_cachable;
@@ -320,7 +320,7 @@ class Hubzero_API_Response
 	function setBody($content) {
 		$this->_body = array((string) $content);
 	}
-	
+
 	function prependBody($content) {
 		array_unshift($this->_body, (string) $content);
 	}
@@ -341,7 +341,7 @@ class Hubzero_API_Response
 		}
 		return ob_get_clean();
 	}
-	
+
 	function setSuppressResponseCodes($value)
 	{
 		if ($value)
@@ -353,12 +353,12 @@ class Hubzero_API_Response
 			$this->suppress_response_codes = false;
 		}
 	}
-	
+
 	function getSuppressResponseCodes()
 	{
 		return $this->suppress_response_codes;
 	}
-	
+
 	private function _parse_accept($input)
 	{
 		static $_types = array(
@@ -372,22 +372,22 @@ class Hubzero_API_Response
 			'php_serialized' => 'application/vnd.php.serialized',
 			'php' => 'application/php',
 		);
-		
+
   		$accept = array();
-  		
+
   		foreach (explode(',', $input) as $header)
   		{
     		$result = preg_split('/;\s*q=/', $header);
-    		
+
     		$type = isset($result[0]) ? $result[0] : null;
-    		
+
     		$q = isset($result[1]) ? $result[1] : 1;
-    		
+
     		if (isset($_types[$type]))
     		{
     			$type = $_types[$type];
     		}
-    		
+
     		if (!empty($type))
     		{
       			$accept[$type] = $q;
@@ -398,19 +398,19 @@ class Hubzero_API_Response
 
   		return $accept;
 	}
-	
+
 	private function _parse_encoding($input)
 	{
   		$accept = array();
-  		
+
   		foreach (explode(',', $input) as $header)
   		{
     		$result = preg_split('/;\s*q=/', $header);
-    		
+
     		$type = isset($result[0]) ? $result[0] : null;
-    		
+
     		$q = isset($result[1]) ? $result[1] : 1;
-    		  		
+
     		if (!empty($type))
     		{
       			$accept[$type] = $q;
@@ -421,12 +421,12 @@ class Hubzero_API_Response
 
   		return $accept;
 	}
-	
+
 	function setRequestAccepts($accept)
 	{
 		$accepts = $this->_parse_accept($accept);
 		$provides = $this->_parse_accept($this->_response_accept);
-		
+
 		$new_content_type = $this->_resolveContentType($accepts, $provides);
 
 		if (empty($this->_body) || $this->_content_type === null || $this->_content_type == $new_content_type)
@@ -435,37 +435,37 @@ class Hubzero_API_Response
 			$this->_request_accept = $accept;
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	function getRequestAccepts()
 	{
 		return $this->_request_accept;
 	}
-	
+
 	function setResponseProvides($provide)
 	{
 		$accepts = $this->_parse_accept($this->_request_accept);
 		$provides = $this->_parse_accept($provide);
-		
+
 		$new_content_type = $this->_resolveContentType($accepts, $provides);
-	
+
 		if (empty($this->_body) || $this->_content_type === null || $this->_content_type == $new_content_type)
 		{
 			$this->_content_type = $new_content_type;
 			$this->_response_accept = $provide;
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	function getResponseProvides()
 	{
 		return $this->_response_accept;
 	}
-	
+
 	function getContentType()
 	{
 		$accepts = $this->_parse_accept($this->_request_accept);
@@ -482,7 +482,7 @@ class Hubzero_API_Response
 	{
 		$accepts = $this->_parse_encoding($accept);
 		$provides = $this->_parse_encoding($this->_response_accept_encoding);
-		
+
 		$new_encoding = $this->_resolveEncoding($accepts, $provides);
 
 		if (empty($this->_body) || $this->_encoding === null || $this->_encoding == $new_encoding)
@@ -491,37 +491,37 @@ class Hubzero_API_Response
 			$this->_request_accept_encoding = $accept;
 			return true;
 		}
-		
+
 		return false;		
 	}
-	
+
 	function getRequestAcceptsEncodings()
 	{
 		return $this->_request_accept_encoding;
 	}
-	
+
 	function setResponseProvideEncoding($provide)
 	{
 		$accepts = $this->_parse_encoding($this->_request_accept_encoding);
 		$provides = $this->_parse_encoding($provide);
-		
+
 		$new_encoding = $this->_resolveEncoding($accepts, $provides);
-	
+
 		if (empty($this->_body) || $this->_encoding === null || $this->_encoding == $new_encoding)
 		{
 			$this->_encoding = $new_encoding;
 			$this->_response_accpet_encoding = $provide;
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	function getResponseProvideEncoding()
 	{
 		return $this->_response_accept_encoding;
 	}
-	
+
 	function getEncoding()
 	{
 		$accepts = $this->_parse_accept($this->_request_accept_encoding);
@@ -531,7 +531,7 @@ class Hubzero_API_Response
 		{
 			$this->_encoding = $this->_resolveEncoding($accepts, $provides);
 		}
-		
+
 		return $this->_encoding;
 	}	
 	
@@ -568,7 +568,7 @@ class Hubzero_API_Response
 			{
 				$score = $client_value * $provide[$client_type];
 			}
-			
+
 			if ($score > $best_score)
 			{
 				$best_score = $score;
@@ -581,7 +581,7 @@ class Hubzero_API_Response
 		else
 			return $best_type;
 	}
-	
+
 	private function _resolveEncoding($accept, $provide)
 	{
 		$best_type = '';
@@ -594,7 +594,7 @@ class Hubzero_API_Response
 			{
 				$score = $client_value * $provide[$client_type];
 			}
-			
+
 			if ($score > $best_score)
 			{
 				$best_score = $score;
@@ -607,7 +607,7 @@ class Hubzero_API_Response
 		else
 			return $best_type;
 	}
-	
+
 	private function _encode( $data )
 	{
 		$encoding = $this->getEncoding();
@@ -616,10 +616,10 @@ class Hubzero_API_Response
 		{
 			return $data;
 		}
-		
+
 		if (!in_array($encoding, array('gzip','x-gzip','deflate','x-deflate')))
 			return false;
-			
+
 		if (!extension_loaded('zlib')) {
 			return false;
 		}
@@ -639,7 +639,7 @@ class Hubzero_API_Response
 
 		return $gzdata;
 	}
-	
+
 	function send()
 	{
 		if (!$this->_cachable)
@@ -651,21 +651,21 @@ class Hubzero_API_Response
 			$this->setHeader( 'Pragma: no-cache' );	
 			$this->setHeader( 'Connection: close' );	
 		}
-		
+
 		$content_type = $this->getContentType();
 
 		$this->setHeader('Content-Type: ' . $content_type);
 
 		$this->sendHeaders();
-		
+
 		$data = $this->getBody();
 
 		if ($this->_autoencode)
 			$data = $this->_encode($data);
-		
+
 		echo $data;
 	}
-			
+
 	private function _serializeResponseObject($mixed, $encode = true)
 	{
 		$suppress_response_codes = $this->suppress_response_codes;
@@ -673,12 +673,12 @@ class Hubzero_API_Response
 		$reason = $this->_reason;
 		$status = $this->_status_code;
 		$message = $mixed;
-		
+
 		if ($content_type == null)
 			return 406;
 
 		ob_start();
-		
+
 		if ($suppress_response_codes)
 		{
 			$response = new stdClass();
@@ -697,7 +697,7 @@ class Hubzero_API_Response
 				echo "Reason: $reason\n";
 				echo "\n";
 			}
-			
+
 			if (!is_object($message))
 			{
 				echo $message;
@@ -720,14 +720,14 @@ class Hubzero_API_Response
 			echo "</head>\n";
 			echo "<body>\n";
 			echo '<div class="error">' . "\n";
-			
+
 			echo '<h1 id="reason">' . $reason . "</h1>\n";
-			
+
 			if ($suppress_response_codes)
 			{
 				echo '<p id="status">' . htmlspecialchars($status) . "</p>\n";
 			}
-			
+
 			if (!is_object($message))
 			{
 				echo '<p id ="message">' . $message . "</p>\n";
@@ -736,7 +736,7 @@ class Hubzero_API_Response
 			{
 				echo '<p id ="message">' . json_encode($message) . "</p>\n";
 			}
-			
+
 			echo "</div>\n";
 			echo "</body>\n";
 			echo "</html>";
@@ -745,7 +745,7 @@ class Hubzero_API_Response
 		{
 			$reason = htmlspecialchars($reason);
 			$message = htmlspecialchars($message);
-			
+
 			echo '<?xml version="1.0" ?>' . "\n";
 			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
 			echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">' . "\n";
@@ -754,9 +754,9 @@ class Hubzero_API_Response
 			echo "</head>\n";
 			echo "<body>\n";
 			echo '<div class="error">' . "\n";
-			
+
 			echo '<h1 id="reason">' . $reason . "</h1>\n";
-			
+
 			if ($suppress_response_codes)
 			{
 				echo '<p id="status">' . htmlspecialchars($status) . "</p>\n";
@@ -769,7 +769,7 @@ class Hubzero_API_Response
 			{
 				echo '<p id ="message">' . json_encode($message) . "</p>\n";
 			}
-						
+
 			echo "</div>\n";
 			echo "</body>\n";
 			echo "</html>";
@@ -801,9 +801,9 @@ class Hubzero_API_Response
 				echo json_encode($message);
 			}
 		}
-		
+
 		$data = ob_get_clean();
-		
+
 		if ($encode)
 		{
 			$data = $this->_encode($data);
@@ -811,21 +811,21 @@ class Hubzero_API_Response
 
 		return $data;
 	}
-		
+
 	function setMessage($message = null, $status = null, $reason = null)
 	{
 		if ($status != null)
 		{
 			$this->setStatusCode($status);
 		}
-		
+
 		if ($reason != null)
 		{
 			$this->setReason($reason);
 		}
-		
+
 		$message = $this->_serializeResponseObject($message);
-		
+
 		if ($message === 406)
 		{
 			$this->setStatusCode(406);

@@ -45,7 +45,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-	
+
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
@@ -62,12 +62,12 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		);
 		$this->view->filters['state']  = JRequest::getInt('state', 0);
 		$this->view->filters['sortby'] = JRequest::getVar('sortby', 'a.created DESC');
-		
+
 		$model = new ReportAbuse($this->database);
-		
+
 		// Get record count
 		$this->view->total = $model->getCount($this->view->filters);
-		
+
 		// Get records
 		$this->view->rows  = $model->getRecords($this->view->filters);
 
@@ -84,11 +84,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Display a record
 	 *
@@ -99,18 +99,18 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 		$cat = JRequest::getVar('cat', '');
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
 		}
-		
+
 		// Load the report
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
-		
+
 		// Load plugins
 		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
@@ -140,7 +140,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$cat,
 			$parentid
 		));
-		
+
 		// Check the results returned for a reported item
 		$reported = null;
 		if ($results) 
@@ -159,7 +159,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$report->category,
 			$parentid
 		));
-		
+
 		// Check the results returned for a title
 		$title = null;
 		if ($titles) 
@@ -177,12 +177,12 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$this->view->reported = $reported;
 		$this->view->parentid = $parentid;
 		$this->view->title = $title;
-		
+
 		// Set any errors
 		if ($this->getError()) {
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -206,7 +206,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 			return;
 		}
-		
+
 		// Load the report
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
@@ -216,7 +216,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			JError::raiseError(500, $report->getError());
 			return;
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('ITEM_RELEASED_SUCCESSFULLY');
@@ -231,11 +231,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 		$parentid = JRequest::getInt('parentid', 0);
-		
+
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
@@ -246,7 +246,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$email     = 1; // Turn off/on
 		$gratitude = 1; // Turn off/on
 		$message   = '';
-		
+
 		$note = JRequest::getVar('note', '');
 
 		// Load the report
@@ -256,14 +256,14 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Load plugins
 		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Get the reported item
 		$results = $dispatcher->trigger('getReportedItem', array(
 			$report->referenceid,
 			$report->category,
 			$parentid
 		));
-		
+
 		// Check the results returned for a reported item
 		$reported = null;
 		if ($results) 
@@ -276,7 +276,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Remove the reported item and any other related processes that need be performed
 		$results = $dispatcher->trigger('deleteReportedItem', array(
 			$report->referenceid,
@@ -284,7 +284,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$report->category,
 			$message
 		));
-		
+
 		if ($results) 
 		{
 			foreach ($results as $result) 
@@ -295,7 +295,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Mark abuse report as deleted	
 		$report->state = 2;
 		if (!$report->store()) 
@@ -303,22 +303,22 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			JError::raiseError(500, $report->getError());
 			return;
 		}
-		
+
 		$jconfig =& JFactory::getConfig();
-		
+
 		// Notify item owner
 		if ($email) 
 		{			
 			$juser =& JUser::getInstance($reported->author);
-			
+
 			// Email "from" info
 			$from = array();
 			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('SUPPORT');
 			$from['email'] = $jconfig->getValue('config.mailfrom');
-			
+
 			// Email subject
 			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT',$jconfig->getValue('config.sitename'));
-			
+
 			// Build the email message
 			if ($note) 
 			{
@@ -338,16 +338,16 @@ class SupportControllerAbusereports extends Hubzero_Controller
 				SupportUtilities::sendEmail($juser->get('email'), $subject, $message, $from);
 			}
 		}
-		
+
 		// Check the HUB configuration to see if banking is turned on
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
 		$banking = $upconfig->get('bankAccounts');
-		
+
 		// Give some points to whoever reported abuse
 		if ($banking && $gratitude) 
 		{
 			ximport('Hubzero_Bank');
-			
+
 			$BC = new Hubzero_Bank_Config($this->database);
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar) 
@@ -360,12 +360,12 @@ class SupportControllerAbusereports extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Redirect
 		$this->_message = JTexT::_('ITEM_TAKEN_DOWN');
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

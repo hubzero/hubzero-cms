@@ -37,15 +37,15 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	{
 		$upconfig =& JComponentHelper::getParams('com_userpoints');
 		$this->banking = $upconfig->get('bankAccounts');
-		
+
 		if ($this->banking) 
 		{
 			ximport('Hubzero_Bank');
 		}
-		
+
 		parent::execute();
 	}
-	
+
 	public function displayTask()
 	{
 		// Get Joomla configuration
@@ -87,7 +87,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->view->question->load($this->view->filters['qid']);
 
 		$ar = new AnswersResponse($this->database);
-		
+
 		// Get a record count
 		$this->view->total = $ar->getCount($this->view->filters);
 
@@ -109,7 +109,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 
 		$this->view->qid = $this->view->filters['qid'];
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -144,11 +144,11 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			$qid = $id;
 			$id = 0;
 		}
-	
+
 		// load infor from database
 		$this->view->row = new AnswersResponse($this->database);
 		$this->view->row->load($id);
-		
+
 		if ($this->_task == 'add') 
 		{
 			$this->view->row->answer     = '';
@@ -172,7 +172,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -183,7 +183,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$answer = JRequest::getVar('answer', array(), 'post');
 		$answer = array_map('trim', $answer);
@@ -240,18 +240,18 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$qid = JRequest::getInt('qid', 0);
 		$ids = JRequest::getVar('id', array());
-		
+
 		// Do we have any IDs?
 		if (count($ids) > 0) 
 		{
 			// Instantiate some objects
 			$ar = new AnswersResponse($this->database);
 			$al = new AnswersLog($this->database);
-			
+
 			// Loop through each ID
 			foreach ($ids as $id) 
 			{
@@ -268,7 +268,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 				}	
 			}
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
@@ -279,11 +279,11 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$qid = JRequest::getInt('qid', 0);
 		$id = JRequest::getVar('id', array(0));
-		
+
 		if (!is_array($id)) 
 		{
 			$id = array(0);
@@ -316,7 +316,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// Close the question if the answer is accepted
 		$aq = new AnswersQuestion($this->database);
 		$aq->load($qid);
-		
+
 		if ($publish == 1) 
 		{
 			$aq->state = 1;
@@ -327,20 +327,20 @@ class AnswersControllerAnswers extends Hubzero_Controller
 				JError::raiseError(500, $aq->getError());
 				return;
 			}
-			
+
 			if ($this->banking) 
 			{
 				// Calculate and distribute earned points
 				$AE = new AnswersEconomy($this->database);			
 				$AE->distribute_points($qid, $aq->created_by, $ar->created_by, 'closure');
 			}
-			
+
 			$zuser =& JUser::getInstance($aq->created_by);
-			
+
 			// Load the plugins
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
-			
+
 			// Call the plugin
 			if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($zuser->get('id')), $this->_option, $qid))) 
 			{
@@ -369,24 +369,24 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-	
+
 	//-----------
 
 	public function cancelTask()
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-	
+
 	//-----------
 
 	public function resetTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$answer = JRequest::getVar('answer', array());
-		
+
 		// Reset some values
 		$ar = new AnswersResponse($this->database);
 		$ar->load(intval($answer['id']));
@@ -397,7 +397,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			JError::raiseError(500, $ar->getError());
 			return;
 		}
-	
+
 		// Clear the history of "helpful" clicks
 		$al = new AnswersLog($this->database);
 		if (!$al->deleteLog(intval($answer['id']))) 
@@ -405,7 +405,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			JError::raiseError(500, $al->getError());
 			return;
 		}
-		
+
 		// Redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}

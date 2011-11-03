@@ -25,7 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class PresenterHelper extends JObject 
 {
 	/**
@@ -48,13 +47,12 @@ class PresenterHelper extends JObject
 			}
 			$html .= "</ol>";
 			$html .= "</div>";
-			
+
 			//echo out content;
 			return $html;
 		}
 	}
-	
-	
+
 	/**
 	 * Generates JSON Manifest from XML doc uploaded
 	 * 
@@ -70,7 +68,7 @@ class PresenterHelper extends JObject
 		if (file_exists( $xml_path )) {
 		    $manifest = simplexml_load_file( $xml_path );
 		}
-		
+
 		//set the media
 		$old_media = $manifest->media; 
 		foreach($old_media->source as $source) {
@@ -81,13 +79,12 @@ class PresenterHelper extends JObject
 			$new_media[] = array("source" => $source, "type" => $ext);
 		}
 
-
 		//set the title
 		$new_title = (string)$manifest->webtitle;
 
 		//set the type
 		$new_type = (in_array( $ext, array("webm","mp4","ogv") )) ? "Video" : "Audio";
-		
+
 		$new_slides = array();
 		for($i=0;$i<count($manifest->event);$i++) {
 			$title = (string)$manifest->event[$i]->title;
@@ -95,7 +92,6 @@ class PresenterHelper extends JObject
 			$media = "slides" . DS . (string)$manifest->event[$i]->path;
 			$time = (string)$manifest->event[$i]->start;
 			$slide = (string)$manifest->event[$i]->slide;
-
 
 			if(strtolower($type) == "video") {
 				$orig_media = $media;
@@ -111,12 +107,12 @@ class PresenterHelper extends JObject
 					$media[1]["source"] = $name.".webm";
 					$media[1]["type"] = "webm";
 				}
-				
+
 				if(file_exists( JPATH_ROOT . DS . $resource_path . DS . 'content' . DS . $name . '.ogv' )) {
 					$media[2]["source"] = $name.".ogv";
 					$media[2]["type"] = "ogg";
 				}
-				
+
 				if(file_exists( JPATH_ROOT . DS . $resource_path . DS . 'content' . DS . $name . '.png' )) {
 					$media[3]["source"] = $name.".png";
 					$media[3]["type"] = "imagereplacement";
@@ -131,7 +127,7 @@ class PresenterHelper extends JObject
 								"slide" => $slide
 								);
 		}
-		
+
 		$data = array();
 		$data['presentation']['title'] = $new_title;
 		$data['presentation']['type'] = $new_type;
@@ -139,13 +135,12 @@ class PresenterHelper extends JObject
 		$data['presentation']['slides'] = $new_slides;
 
 		$json = json_encode( $data );
-		
+
 		$new_file = JPATH_ROOT . DS . $resource_path . DS . "presentation.json";
 		$file_handle = fopen( $new_file, 'w') or die("An Error Occured While Trying to Create the Presentation Manifest.");
 		fwrite( $file_handle, $json );
 	}
-	
-	
+
 	/**
 	 * Gets the file extension from filename
 	 * 
@@ -157,7 +152,6 @@ class PresenterHelper extends JObject
 		return array_pop($parts);
 	}
 
-	
 	/**
 	 * Gets just the name of file from filename
 	 * 
@@ -169,6 +163,5 @@ class PresenterHelper extends JObject
 		return $parts[0];
 	}
 }
-
 
 ?>

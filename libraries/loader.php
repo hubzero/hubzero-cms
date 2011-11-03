@@ -119,7 +119,6 @@ class JLoader
 		return $classes;
 	}
 
-
 	/**
 	 * Load the file for a class
 	 *
@@ -144,7 +143,6 @@ class JLoader
 		return false;
 	}
 }
-
 
 /**
  * When calling a class that hasn't been defined, __autoload will attempt to

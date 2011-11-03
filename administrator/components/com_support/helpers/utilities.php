@@ -60,12 +60,12 @@ class SupportUtilities
 			$headers  = "MIME-Version: 1.0\n";
 			$headers .= "Content-type: text/plain; charset=utf-8\n";
 			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			
+
 			if(!is_null($replyto))
 			  $headers .= 'Reply-To: ' . $reply['name'] .' <'. $reply['email'] . ">\n";
 			else
 			  $headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			
+
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
 			$headers .= 'X-Mailer: '. $from['name'] ."\n";
@@ -76,7 +76,7 @@ class SupportUtilities
 				{
 					$headers .= $header['name'] . ": " . $header['value'] . "\n";
 				}
-				
+
 			}
 
 			if (mail($email, $subject, $message, $headers, $args)) {

@@ -227,7 +227,7 @@ foreach ($this->results as $category)
 			}
 			$pn = str_replace('members/?/members', 'members', $pn);
 			$pn = str_replace('favorites&amp;', 'favorites?area='.$this->active.'&amp;', $pn);
-			
+
 			$html .= $pn;
 		} else {
 			$html .= '<p class="moreresults">'.JText::sprintf('PLG_MEMBERS_FAVORITES_NUMBER_SHOWN', $amt);

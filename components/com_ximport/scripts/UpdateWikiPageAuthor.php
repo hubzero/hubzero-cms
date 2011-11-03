@@ -29,15 +29,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class UpdateWikiPageAuthor extends XImportHelperScript
 {
 	protected $_description = 'Transitions wiki page "authors" string to table of user IDs.';
-	
+
 	public function run() 
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
-		
+
 		$this->_db->setQuery("SHOW TABLES");
 		$tables = $this->_db->loadResultArray();
 		if (!in_array('jos_wiki_page_author', $tables)) {

@@ -1025,7 +1025,7 @@ class Hubzero_Registration
 				$this->_invalid['mailPreferenceOption'] = 'Registration requires Opt-In of mailings.';
 			}
 		}
-		
+
 		if ($registrationCAPTCHA == REG_REQUIRED) 
 		{
 			$botcheck = JRequest::getVar('botcheck','');

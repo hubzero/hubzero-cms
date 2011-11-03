@@ -67,7 +67,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	{
 		$i++;
 		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($category->type));
-		
+
 		if (substr($normalized, -3) == 'ies') {
 			$cls = $normalized;
 		} else {

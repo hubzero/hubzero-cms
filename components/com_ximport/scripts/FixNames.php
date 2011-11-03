@@ -34,35 +34,35 @@ ximport('Hubzero_User_Profile');
 class FixNames extends XImportHelperScript
 {
 	protected $_description = 'Import givenName/middleName/surname from name.';
-	
+
 	public function run() 
 	{
 		echo 'Fixing names...<br />';
-		
+
 		$query = "SELECT uidNumber FROM #__xprofiles;";
-		
+
 		$this->_db->setQuery($query);
-		
+
 		$result = $this->_db->query();
-		
+
 		if ($result === false) 
 		{
 			echo 'Error retrieving data from xprofiles table: ' . $this->_db->getErrorMsg();
 			return false;
 		}
-		
+
 		while ($row = mysql_fetch_assoc( $result )) 
 		{
 			$this->_fixName($row['uidNumber']);
 		}
-		
+
 		mysql_free_result( $result );
 	}
-	
+
 	private function _fixName($name)
 	{
 		$xprofile = new Hubzero_User_Profile();
- 
+
 		if ($xprofile->load($name) === false)
 			 echo "Error loading $name\n";
 		else
@@ -103,7 +103,7 @@ class FixNames extends XImportHelperScript
 					$firstname = $words[0];
 					$lastname = $words[$count-1];
 					$middlename = $words[1];
-				
+
 					for($i = 2; $i < $count-1; $i++)
 						$middlename .= ' ' .$words[$i];
 				}

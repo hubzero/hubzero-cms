@@ -241,7 +241,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$view->limit = $filters['limit'];
 		$view->pageNav = $pageNav;
 		$view->option = $this->option;
-		
+
 		$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 
 		// Return the output
@@ -354,7 +354,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		$forum->load($id);
 		$hasParent = $forum->parent;
-		
+
 		// Delete all replies on a topic
 		if (!$forum->deleteReplies( $id )) {
 			$this->addPluginMessage( $forum->getError(),'error' );
@@ -470,7 +470,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		/* @var $group Hubzero_Group */
 		$group = $this->group;
-		
+
 		//bind the data
 		if (!$row->bind( $incoming )) {
 			$this->setError( $row->getError() );
@@ -553,7 +553,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Email the group and insert email tokens to allow them to respond to group posts
 		// via email
 		if($allowEmailResponses){
-			
+
 			$encryptor = new Hubzero_Email_Token();
 
 			// Figure out who should be notified about this comment (all group members for now)
@@ -611,7 +611,6 @@ class plgGroupsForum extends Hubzero_Plugin
 
 			}
 		}
-		
 
 		//if we are replying redirect back to that topic
 		if ($row->parent) {

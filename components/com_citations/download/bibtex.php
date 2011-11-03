@@ -69,12 +69,12 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		$bibtex = new Structures_BibTex();
 
 		$addarray = array();
-		
+
 		//get all the citation types
 		$db =& JFactory::getDBO();
 		$ct = new CitationsType( $db );
 		$types = $ct->getType();
-		
+
 		//find the right title
 		$type = "";
 		foreach($types as $t) {
@@ -83,8 +83,7 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 			}
 		}
 		$type = ($type != "") ? $type : "Generic";
-		
-		
+
 		$addarray['type']    = $type;
 		$addarray['cite']    = $row->cite;
 		$addarray['title']   = $row->title;
@@ -95,14 +94,14 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 			$author = trim($auths[$i]);
 			$author_arr = explode(',',$author);
 			$author_arr = array_map('trim',$author_arr);
-			
+
 			$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
 			$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
 
 			$addarray['author'][$i]['first'] = preg_replace('/\{\{\d+\}\}/',"", $addarray['author'][$i]['first']);
 			$addarray['author'][$i]['last'] = preg_replace('/\{\{\d+\}\}/',"", $addarray['author'][$i]['last']);
 		}
-		
+
 		$addarray['booktitle']    = $row->booktitle;
 		$addarray['chapter']      = $row->chapter;
 		$addarray['edition']      = $row->edition;
@@ -130,7 +129,7 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 			$addarray['isbn']     = $row->isbn;
 		}
 		$addarray['doi']          = $row->doi;
-		
+
 		$addarray['language'] 			  = $row->language;
 		$addarray['accession_number'] 	  = $row->accession_number;
 		$addarray['short_title'] 		  = html_entity_decode($row->short_title);

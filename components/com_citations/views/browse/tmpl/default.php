@@ -226,7 +226,7 @@ if($label == "none") {
 												}
 											}
 											$type = ($type != "") ? $type : "Generic";
-			
+
 											switch($label) 
 											{
 												case "number":

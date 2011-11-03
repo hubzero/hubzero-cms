@@ -43,7 +43,7 @@ class SupportControllerResolutions extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		// Get paging variables
 		$this->view->filters = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
@@ -60,13 +60,13 @@ class SupportControllerResolutions extends Hubzero_Controller
 		);
 
 		$obj = new SupportResolution($this->database);
-		
+
 		// Record count
 		$this->view->total = $obj->getCount($this->view->filters);
-		
+
 		// Fetch results
 		$this->view->rows = $obj->getRecords($this->view->filters);
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -80,7 +80,7 @@ class SupportControllerResolutions extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -111,18 +111,18 @@ class SupportControllerResolutions extends Hubzero_Controller
 		{
 			// Incoming
 			$id = JRequest::getInt('id', 0);
-			
+
 			// Initiate database class and load info
 			$this->view->row = new SupportResolution($this->database);
 			$this->view->row->load($id);
 		}
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -136,11 +136,11 @@ class SupportControllerResolutions extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-	
+
 		// Trim and addslashes all posted items
 		$res = JRequest::getVar('res', array(), 'post');
 		$res = array_map('trim', $res);
-	
+
 		// Initiate class and bind posted items to database fields
 		$row = new SupportResolution($this->database);
 		if (!$row->bind($res)) 
@@ -148,7 +148,7 @@ class SupportControllerResolutions extends Hubzero_Controller
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-	
+
 		// Code cleaner for xhtml transitional compliance
 		$row->title = trim($row->title);
 		if (!$row->alias) 
@@ -156,7 +156,7 @@ class SupportControllerResolutions extends Hubzero_Controller
 			$row->alias = preg_replace("/[^a-zA-Z0-9]/", '', $row->title);
 			$row->alias = strtolower($row->alias);
 		}
-		
+
 		// Check content
 		if (!$row->check()) 
 		{
@@ -172,7 +172,7 @@ class SupportControllerResolutions extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::_('RESOLUTION_SUCCESSFULLY_SAVED');
@@ -187,10 +187,10 @@ class SupportControllerResolutions extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-	
+
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
@@ -198,19 +198,19 @@ class SupportControllerResolutions extends Hubzero_Controller
 			$this->_message = JText::_('SUPPORT_ERROR_SELECT_RESOLUTION_TO_DELETE');
 			return;
 		}
-		
+
 		foreach ($ids as $id) 
 		{
 			// Delete message
 			$msg = new SupportResolution($this->database);
 			$msg->delete(intval($id));
 		}
-		
+
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 		$this->_message = JText::sprintf('RESOLUTION_SUCCESSFULLY_DELETED', count($ids));
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

@@ -39,13 +39,13 @@ class plgHubzeroImagecaptcha extends JPlugin
 	 * @var	string
 	 */
 	private $_bgColor = '#000000';
-	
+
 	/**
 	 * Text color
 	 * @var	string
 	 */
 	private $_textColor = '#ff0000';
-	
+
 	/**
 	 * Constructor
 	 *
@@ -65,7 +65,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin('hubzero', 'imagecaptcha');
 		$this->_params = new JParameter($this->_plugin->params);
 	}
-	
+
 	/**
 	 * Displays either a CAPTCHA image or form field
 	 *
@@ -90,13 +90,13 @@ class plgHubzeroImagecaptcha extends JPlugin
 	{
 		$imageFunction = '_createImage' . $this->_params->get('imageFunction');
 		$imageFunction = (!method_exists($this, $imageFunction)) ? '_createImageAdv' : $imageFunction;
-		
+
 		$this->$imageFunction();
 		exit;
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Checks if a CAPTCHA response is valid
 	 *
@@ -105,16 +105,16 @@ class plgHubzeroImagecaptcha extends JPlugin
 	private function _confirm($word, $instanceNo='')
 	{
 		$currentSession =& JFactory::getSession();
-		
+
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
-		
+
 		if ($word == $securiy_code  &&  ($word != '')) {
 		   return true;
 		} else {
 		   return false;
 		}
 	}
-	
+
 	/**
 	 * Checks for a CAPTCHA response and Calls the CAPTCHA validity check
 	 *
@@ -124,10 +124,10 @@ class plgHubzeroImagecaptcha extends JPlugin
 	{
 		$imgCatchaTxt = JRequest::getVar('imgCatchaTxt', '');
 		$imgCatchaTxtInst = JRequest::getVar('imgCatchaTxtInst', '');
-		
+
 		$option = JRequest::getVar('option');
 		$task = JRequest::getVar('task');
-		
+
 		if ($imgCatchaTxtInst == '' || $imgCatchaTxt == '')
 		{
 			return false;
@@ -139,10 +139,10 @@ class plgHubzeroImagecaptcha extends JPlugin
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Displays a form field and image
 	 *
@@ -156,7 +156,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		}
 
 		$GLOBALS['totalCaptchas']++;
-		
+
 		$document =& JFactory::getDocument();
 		$document->addScript(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.js');
 		$document->addStyleSheet(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.css');
@@ -176,7 +176,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Sets some internal variables
 	 *
@@ -187,7 +187,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		$this->_bgColor   = $this->_params->get('bgColor', $this->_bgColor);
 		$this->_textColor = $this->_params->get('textColor', $this->_textColor);
 	}
-	
+
 	/**
 	 * Creates a distorted image
 	 *
@@ -197,22 +197,22 @@ class plgHubzeroImagecaptcha extends JPlugin
 	{
 		$alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 		$allowed_symbols = "23456789abcdeghkmnpqsuvxyz";
-		
+
 		$length = 5;
 		$width = 120;
 		$height = 60;
 		$fluctuation_amplitude = 5;
 		$no_spaces = true;
-		
+
 		$this->_setColors();
-		
+
 		$foreground_color = $this->_hexToRgb($this->_textColor);
 		$background_color = $this->_hexToRgb($this->_bgColor);
-		
+
 		$jpeg_quality = 90;
-		
+
 		$alphabet_length = strlen($alphabet);
-		
+
 		do
 		{
 			// generating random keystring
@@ -227,7 +227,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 					break;
 				}
 			}
-		
+
 			$font_file = $font_file = dirname(__FILE__) . DS . 'imagecaptcha' . DS . 'adlibBT.png';
 			$font = imagecreatefrompng($font_file);
 			imagealphablending($font, true);
@@ -332,7 +332,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		$background = imagecolorallocate($img2, $background_color[0], $background_color[1], $background_color[2]);
 		imagefilledrectangle($img2, 0, 0, $width-1, $height-1, $background);		
 		imagefilledrectangle($img2, 0, $height, $width-1, $height+12, $foreground);
-		
+
 		// periods
 		$rand1 = mt_rand(750000,1200000)/10000000;
 		$rand2 = mt_rand(750000,1200000)/10000000;
@@ -406,12 +406,12 @@ class plgHubzeroImagecaptcha extends JPlugin
 				imagesetpixel($img2, $x, $y, imagecolorallocate($img2, $newred, $newgreen, $newblue));
 			}
 		}
-		
+
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); 
 		header('Cache-Control: no-store, no-cache, must-revalidate'); 
 		header('Cache-Control: post-check=0, pre-check=0', FALSE); 
 		header('Pragma: no-cache');
-		
+
 		if (function_exists('imagejpeg'))
 		{
 			header('Content-Type: image/jpeg');
@@ -428,14 +428,14 @@ class plgHubzeroImagecaptcha extends JPlugin
 			imagepng($img2);
 		}
 		$security_code = $this->keystring;
-		
+
 		//Set the session to store the security code
 		$currentSession =& JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
 		$width = 120;
 		$height = 40;
 	}
-	
+
 	/**
 	 * Creates a plain letter image
 	 *
@@ -445,26 +445,26 @@ class plgHubzeroImagecaptcha extends JPlugin
 	{
 		// Let's generate a totally random string using md5
 		$md5_hash = md5(rand(0,999));
-		
+
 		// We don't need a 32 character long string so we trim it down to 5 
 		$security_code = str_replace(array("0","O","o"), array("p"),substr($md5_hash, 15, 5)); 
 		
 		// Set the session to store the security code
 		$currentSession =& JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
-		
+
 		$width = 120;
 		$height = 40;
 		$image = imagecreate($width, $height);  
 		$this->_setColors();
 		$foreground_color = $this->_hexToRgb($this->_textColor);
 		$background_color = $this->_hexToRgb($this->_bgColor);
-		
+
 		// We are making three colors, white, black and gray
 		$white = imagecolorallocate($image, $foreground_color[0], $foreground_color[1], $foreground_color[2]);
 		$black = imagecolorallocate($image, $background_color[0], $background_color[1], $background_color[2]);
 		$grey = imagecolorallocate($image, 204, 204, 204);
-		
+
 		// Make the background black 
 		imagefill($image, 0, 0, $black); 
 
@@ -475,7 +475,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		{
 			$angle = rand(-45,45);
 			$y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
-			
+
 			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, dirname(__FILE__) . DS . 'imagecaptcha' . DS . 'adlibBT.TTF', $security_code[$i]);
 			$x += ($size *2);
 		}
@@ -483,7 +483,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		header('Content-type: image/png');
 		imagepng($image);
 	}
-	
+
 	/**
 	 * Converts HEX color to RGB
 	 *
@@ -493,7 +493,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 	{
 		$hex = ereg_replace("#", '', $hex);
 		$color = array();
-		
+
 		if (strlen($hex) == 3) 
 		{
 			$color['r'] = hexdec(substr($hex, 0, 1) . $r);
@@ -506,7 +506,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 			$color['g'] = hexdec(substr($hex, 2, 2));
 			$color['b'] = hexdec(substr($hex, 4, 2));
 		}
-		
+
 		return array_values($color);
 	}
 
@@ -521,7 +521,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		$hex .= dechex($r);
 		$hex .= dechex($g);
 		$hex .= dechex($b);
-		
+
 		return $hex;
 	}
 }

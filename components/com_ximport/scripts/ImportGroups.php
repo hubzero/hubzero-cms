@@ -29,16 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class ImportGroups extends XImportHelperScript
 {
 	protected $_description = 'Import groups from LDAP.';
-	
+
 	public function run() 
 	{
 		echo 'This functionality is now in groups admin component.';
 	}
-	
+
 	private function _importGroup($group) 
 	{
 		echo 'This functionality is now in groups admin component.';

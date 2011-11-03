@@ -48,7 +48,6 @@ class RegisterOrganization extends JTable
 	 * @var		integer
 	 */
 	public $id = null;
-	
 
 	/**
 	 * The title of the organization

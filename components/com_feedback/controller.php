@@ -334,7 +334,7 @@ class FeedbackController extends Hubzero_Controller
 		);
 
 		$view = new JView( array('name'=>'report') );
-					 
+
 		// Generate a CAPTCHA
 		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
@@ -671,7 +671,7 @@ class FeedbackController extends Hubzero_Controller
 
 		// Make sure email address is valid
 		$validemail = $this->_check_validEmail($reporter['email']);
-		
+
 		// Set page title
 		$this->_buildTitle();
 
@@ -680,7 +680,6 @@ class FeedbackController extends Hubzero_Controller
 
 		// Push some styles to the template
 		$this->_getStyles();
-
 
 		// Trigger any events that need to be called
 		$customValidation = true;
@@ -738,7 +737,7 @@ class FeedbackController extends Hubzero_Controller
 				return;
 			}
 		}
-		
+
 		if ($this->getError()) {
 			if ($no_html) {
 				// Output error messages (AJAX)
@@ -891,7 +890,7 @@ class FeedbackController extends Hubzero_Controller
 
 		// Load the support config
 		$params = JComponentHelper::getParams('com_support');
-		
+
 		// Get any set emails that should be notified of ticket submission
 		$defs = str_replace("\r", '', $params->def('emails','{config.mailfrom}'));
 		$defs = explode("\n", $defs);
@@ -899,7 +898,7 @@ class FeedbackController extends Hubzero_Controller
 		{
 			// Import our mailer
 			ximport('Hubzero_Toolbox');
-			
+
 			// Loop through the addresses
 			foreach ($defs As $def) 
 			{
@@ -933,7 +932,7 @@ class FeedbackController extends Hubzero_Controller
 		}
 		$view->display();
 	}
-	
+
 	//-----------
 	
 	private function _isVerified()

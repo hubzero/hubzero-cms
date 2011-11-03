@@ -84,7 +84,7 @@ class modQuotes
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -97,7 +97,7 @@ class modQuotes
 	public function run() 
 	{
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'selectedquotes.php');
-		
+
 		$this->database = JFactory::getDBO();
 
 		//Get the admin configured settings
@@ -111,16 +111,16 @@ class modQuotes
 		// Get quotes
 		$sq = new SelectedQuotes($this->database);
 		$this->quotes = $sq->getResults($filters);
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	//-----------
 	
 	public function display()
 	{
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -130,7 +130,7 @@ class modQuotes
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

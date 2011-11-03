@@ -34,42 +34,42 @@ class Hubzero_Api_Controller
 	private $_request = null;
 	private $_provider = null;
 	private $_segments = array();
-	
+
 	function setRequest($request)
 	{
 		$this->_request = $request;
 	}
-	
+
 	function getRequest()
 	{
 		return $this->_request;
 	}
-	
+
 	function setResponse($response)
 	{
 		$this->_response = $response;
 	}
-	
+
 	function getResponse()
 	{
 		return $this->_response;
 	}
-	
+
 	function setProvider($provider)
 	{
 		$this->_provider = $provider;
 	}
-	
+
 	function getProvider()
 	{
 		return $this->_provider;
 	}
-	
+
 	function setRouteSegments($segments)
 	{
 		$this->_segments = $segments;
 	}
-	
+
 	function getRouteSegments()
 	{
 		return $this->_segments;

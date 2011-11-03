@@ -311,7 +311,7 @@ class AnswersQuestion extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	//-----------
 	
 	public function getQuestionID( $id, $which ) 

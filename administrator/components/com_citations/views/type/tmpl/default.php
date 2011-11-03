@@ -33,7 +33,6 @@ JToolBarHelper::title( JText::_( 'Citation Type' ).': <small><small>[ '. $text.'
 JToolBarHelper::save('savetype');
 JToolBarHelper::cancel('types');
 
-
 $id = NULL;
 $type = NULL;
 $title = NULL;

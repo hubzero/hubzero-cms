@@ -55,19 +55,19 @@ if ($this->paths) {
 	{
 		$scriptName = str_replace($this->path . DS, '', $path);
 		$scriptName = str_replace('.php', '', $scriptName);
-		
+
 		$job = null;
 		$description = '';
 		$form = false;
 		$lastRun = '-';
 		$totalRuns = '0';
 		$args = null;
-		
+
 		if (isset($this->log[$scriptName])) {
 			$lastRun = $this->log[$scriptName]['lastRun'];
 			$totalRuns = $this->log[$scriptName]['totalRuns'];
 		}
-		
+
 		include_once($path);
 		if (class_exists($scriptName)) {
 			$job = new $scriptName();
@@ -77,7 +77,7 @@ if ($this->paths) {
 				$args = $job->getOptions();
 			}
 		}
-		
+
 		$cls = ($cls == 'even') ? 'odd' : 'even';
 ?>
 			<tr class="<?php echo $cls; ?>">

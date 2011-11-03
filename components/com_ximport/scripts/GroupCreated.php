@@ -29,21 +29,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
 class GroupCreated extends XImportHelperScript
 {
 	protected $_description = 'Take group create date from group logs.';
-	
+
 	public function run() 
 	{
 		// import group library
 		ximport('Hubzero_Group');
-		
+
 		// select all logs where group was created
 		$sql = "SELECT * FROM #__xgroups_log WHERE action='group_created'";
 		$this->_db->setQuery($sql);
 		$logs = $this->_db->loadAssocList();
-		
+
 		foreach ($logs as $log) 
 		{
 			echo $log['gid'];

@@ -45,12 +45,12 @@ class XGroups_MemberOption extends JTable
 	{
 		parent::__construct( '#__xgroups_memberoption', 'id', $db );
 	}
-	
+
 	//-----------
 	
 	public function check() 
 	{
-		
+
 		if (trim( $this->gidNumber ) == ''){
 			$this->setError( JText::_('Please provide a gidNumber') );
 			return false;
@@ -70,8 +70,7 @@ class XGroups_MemberOption extends JTable
 			$this->setError( JText::_('Please provide an optionvalue') );
 			return false;
 		}
-		
-		
+
 		return true;
 	}
 
@@ -82,18 +81,18 @@ class XGroups_MemberOption extends JTable
 
 		if (!$gidNumber) 	
 			$gidNumber = $this->gidNumber;
-		
+
 		if (!$userid) 
 			$usuerid = $this->userid;
 
 		if (!$optionname) 
 			$optionname = $this->optionname;
-		
+
 		if (!$gidNumber || !$userid || !$optionname)
 			return false;
-		
+
 		$sql = "SELECT * FROM $this->_tbl WHERE userid='$userid' AND gidNumber='$gidNumber' and optionname='$optionname'";
-		
+
 //		echo ($sql);
 //		exit;
 		
@@ -107,10 +106,9 @@ class XGroups_MemberOption extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		
+
 	}
 
-	
 	//-----------
 	
 }

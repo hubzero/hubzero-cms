@@ -47,7 +47,7 @@ class modAnswers
 	{
 		$this->_attributes[$property] = $value;
 	}
-	
+
 	//-----------
 	
 	public function __get($property)
@@ -57,7 +57,7 @@ class modAnswers
 			return $this->_attributes[$property];
 		}
 	}
-	
+
 	//-----------
 	
 	public function __isset($property)
@@ -74,17 +74,17 @@ class modAnswers
 		// Open
 		$this->database->setQuery("SELECT count(*) FROM #__answers_questions WHERE state=1");
 		$this->closed = $this->database->loadResult();
-		
+
 		// Closed
 		$this->database->setQuery("SELECT count(*) FROM #__answers_questions WHERE state=0");
 		$this->open = $this->database->loadResult();
-		
+
 		// Last 24 hours
 		$lastDay = date('Y-m-d', (mktime() - 24*3600)) . ' 00:00:00';
-		
+
 		$this->database->setQuery("SELECT count(*) FROM #__answers_questions WHERE created >= '$lastDay'");
 		$this->pastDay = $this->database->loadResult();
-		
+
 		if ($this->params->get('showMine', 0))
 		{
 			// My Open
@@ -98,10 +98,10 @@ class modAnswers
 			$this->database->setQuery("SELECT count(*) FROM #__answers_questions WHERE state=0 AND created_by=" . $juser->get('id'));
 			$this->myopen = $this->database->loadResult();
 		}
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

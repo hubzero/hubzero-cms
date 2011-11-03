@@ -3038,7 +3038,7 @@ class WishlistController extends JObject
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Paging vars
 		$filters['limit'] = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$filters['start'] = JRequest::getInt( 'limitstart', 0);

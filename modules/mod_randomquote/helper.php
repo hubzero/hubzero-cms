@@ -91,7 +91,7 @@ class modRandomQuote
 	{
 		return isset($this->_attributes[$property]);
 	}
-	
+
 	//-----------
 
 	public function run() 
@@ -100,7 +100,6 @@ class modRandomQuote
 		ximport('Hubzero_View_Helper_Html');
 
 		$database =& JFactory::getDBO();
-
 
 		//Get the admin configured settings
 		$filters = array();
@@ -129,10 +128,10 @@ class modRandomQuote
 			$this->quote_to_show = '';
 		}
 		$this->quote = $quote;
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	//-----------
 	
 	public function display()
@@ -140,9 +139,9 @@ class modRandomQuote
 		// Push some CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet($this->module->module);
-		
+
 		$juser =& JFactory::getUser();
-		
+
 		if (!$juser->get('guest') && intval($this->params->get('cache', 0))) 
 		{
 			$cache =& JFactory::getCache('callback');
@@ -152,7 +151,7 @@ class modRandomQuote
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
-		
+
 		$this->run();
 	}
 }

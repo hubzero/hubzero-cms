@@ -141,7 +141,7 @@ class plgXMessageHandler extends JPlugin
 		if (!$message) {
 			return false;
 		}
-			
+
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
@@ -198,7 +198,7 @@ class plgXMessageHandler extends JPlugin
 		$xmessage->component		= $component;
 		$xmessage->type				= $type;
 		$xmessage->group_id			= $group_id;
-				
+
 		if (!$xmessage->store()) {
 			return $xmessage->getError();
 		}
