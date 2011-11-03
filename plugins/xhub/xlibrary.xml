@@ -85,7 +85,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>xlibraries/xuser.php</filename>
 		<filename>xlibraries/xuserhelper.php</filename>
 		<filename>xlibraries/xmessage.php</filename>
-		<filename>xlibraries/xsession.php</filename>
 		<filename>xlibraries/fileupload.php</filename>
 		<filename>xlibraries/fileuploadutils.php</filename>
 		<filename>xlibraries/textfilter.php</filename>
