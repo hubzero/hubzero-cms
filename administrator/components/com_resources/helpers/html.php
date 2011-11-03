@@ -277,7 +277,7 @@ class ResourcesHtml
 		if (!$groups) {
 			$html .= ' disabled="disabled"';
 		}
-		$html .= '>'."\n";
+		$html .= ' style="max-width: 15em;">'."\n";
 		$html .= ' <option value="">'.JText::_('Select group ...').'</option>'."\n";
 		if ($groups) {
 			foreach ($groups as $group)

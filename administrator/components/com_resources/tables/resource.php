@@ -829,5 +829,167 @@ class ResourcesResource extends JTable
 //echo '<!-- '.$query.' -->';
 		return $query;
 	}
+	
+	public function getItemCount($filters=array())
+	{
+		$sql = "SELECT count(*) 
+				FROM $this->_tbl AS r 
+				WHERE r.standalone=1";
+		if (isset($filters['status']) && $filters['status'] != 'all') 
+		{
+			$sql .= " AND r.published=" . $filters['status'];
+		}
+		if (isset($filters['type']) && $filters['type']) 
+		{
+			$sql .= " AND r.type=" . $filters['type'];
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$sql .= " AND (LOWER(r.title) LIKE '%" . addslashes($filters['search']) . "%'";
+			if (is_numeric($filters['search'])) 
+			{
+				$sql .= " OR r.id=" . $filters['search'];
+			}
+			$sql .= ")";
+		}
+		
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
+	}
+	
+	public function getItems($filters=array())
+	{
+		$sql = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, 
+				r.published, r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.params, u.name AS editor, 
+				g.name AS groupname, t.type AS typetitle, 
+				(SELECT count(*) FROM #__resource_assoc AS ra WHERE ra.parent_id=r.id) AS children 
+				FROM $this->_tbl AS r 
+				LEFT JOIN #__users AS u ON u.id = r.checked_out 
+				LEFT JOIN #__groups AS g ON g.id = r.access
+				LEFT JOIN #__resource_types AS t ON r.type=t.id
+				WHERE r.standalone=1";
+		if (isset($filters['status']) && $filters['status'] != 'all') 
+		{
+			$sql .= " AND r.published=" . $filters['status'];
+		}
+		if (isset($filters['type']) && $filters['type']) 
+		{
+			$sql .= " AND r.type=" . $filters['type'];
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$sql .= " AND (LOWER(r.title) LIKE '%" . addslashes($filters['search']) . "%'";
+			if (is_numeric($filters['search'])) 
+			{
+				$sql .= " OR r.id=" . $filters['search'];
+			}
+			$sql .= ")";
+		}
+		if (!isset($filters['sort']) || !$filters['sort'])
+		{
+			$filters['sort'] = 'created';
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$sql .= " ORDER BY " . $filters['sort'] . " " . strtoupper($filters['sort_Dir']);
+		if (isset($filters['limit']) && $filters['limit'] && $filters['limit'] != 'all')
+		{
+			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+		
+		$this->_db->setQuery($sql);
+		return $this->_db->loadObjectList();
+	}
+	
+	public function getItemChildrenCount($filters=array())
+	{
+		if (isset($filters['parent_id']) && $filters['parent_id'] > 0)
+		{
+			$sql = "SELECT count(*) 
+					FROM $this->_tbl AS r, 
+					#__resource_assoc AS ra 
+					WHERE ra.child_id=r.id AND ra.parent_id=" . $filters['parent_id'];
+		}
+		else 
+		{
+			$sql = "SELECT count(*) 
+					FROM $this->_tbl AS r 
+					WHERE standalone!=1 
+					AND NOT EXISTS(SELECT * FROM #__resource_assoc AS a WHERE a.child_id = r.id)";
+		}
+		
+		if (isset($filters['status']) && $filters['status'] != 'all') 
+		{
+			$sql .= " AND r.published=" . $filters['status'];
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$sql .= " AND (LOWER(r.title) LIKE '%" . $filters['search'] . "%'";
+			if (is_numeric($filters['search'])) 
+			{
+				$sql .= " OR r.id=" . $filters['search'];
+			}
+			$sql .= ")";
+		}
+
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
+	}
+	
+	public function getItemChildren($filters=array())
+	{
+		if (isset($filters['parent_id']) && $filters['parent_id'] > 0)
+		{
+			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published, 
+						r.publish_up, r.publish_down, r.path, r.checked_out, r.checked_out_time, r.standalone, u.name AS editor, g.name AS groupname, 
+						lt.type AS logicaltitle, ra.*, gt.type as grouptitle, t.type AS typetitle, NULL as position, 
+						(SELECT count(*) FROM #__resource_assoc AS rraa WHERE rraa.child_id=r.id AND rraa.parent_id!=" . $filters['parent_id'] . ") AS multiuse
+						FROM #__resource_types AS t, 
+						$this->_tbl AS r
+						LEFT JOIN #__users AS u ON u.id = r.checked_out
+						LEFT JOIN #__groups AS g ON g.id = r.access
+						LEFT JOIN #__resource_types AS lt ON lt.id=r.logical_type, 
+						#__resource_assoc AS ra 
+						LEFT JOIN #__resource_types AS gt ON gt.id=ra.grouping
+						WHERE r.type=t.id AND ra.child_id=r.id AND ra.parent_id=" . $filters['parent_id'];
+		}
+		else 
+		{
+			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published, 
+						r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.path, r.standalone, u.name AS editor, g.name AS groupname, 
+						t.type AS typetitle, NULL as logicaltitle
+						FROM $this->_tbl AS r
+						LEFT JOIN #__users AS u ON u.id = r.checked_out
+						LEFT JOIN #__groups AS g ON g.id = r.access
+						LEFT JOIN #__resource_types AS t ON t.id=r.type
+						WHERE r.standalone!=1 
+						AND NOT EXISTS(SELECT * FROM #__resource_assoc AS a WHERE a.child_id = r.id)";
+		}
+		if (isset($filters['status']) && $filters['status'] != 'all') 
+		{
+			$sql .= " AND r.published=" . $filters['status'];
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$sql .= " AND (LOWER(r.title) LIKE '%" . $filters['search'] . "%'";
+			if (is_numeric($filters['search'])) 
+			{
+				$sql .= " OR r.id=" . $filters['search'];
+			}
+			$sql .= ")";
+		}
+		if (!isset($filters['sort']) || !$filters['sort'])
+		{
+			$filters['sort'] = 'created';
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$sql .= " ORDER BY " . $filters['sort'] . " " . strtoupper($filters['sort_Dir']);
+		if (isset($filters['limit']) && $filters['limit'] && $filters['limit'] != 'all')
+		{
+			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+		
+		$this->_db->setQuery($sql);
+		return $this->_db->loadObjectList();
+	}
 }
 
