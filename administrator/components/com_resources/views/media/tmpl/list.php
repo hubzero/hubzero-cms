@@ -81,13 +81,13 @@ for ($i=0; $i<count($folders); $i++)
 	$folderName = key($folders);
 
 	$numFiles = 0;
-	if (is_dir(JPATH_ROOT . DS . $folders[$folderName])) 
+	if (is_dir(JPATH_ROOT . DS . $folders[$folderName]))
 	{
 		$d = @dir(JPATH_ROOT . DS . $folders[$folderName]);
 
 		while (false !== ($entry = $d->read()))
 		{
-			if (substr($entry, 0, 1) != '.') 
+			if (substr($entry, 0, 1) != '.')
 			{
 				$numFiles++;
 			}
@@ -95,7 +95,7 @@ for ($i=0; $i<count($folders); $i++)
 		$d->close();
 	}
 
-	if ($this->listdir == '/') 
+	if ($this->listdir == '/')
 	{
 		$this->listdir = '';
 	}

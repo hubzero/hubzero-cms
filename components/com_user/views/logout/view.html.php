@@ -1,6 +1,8 @@
 <?php
 /**
  * HUBzero CMS
+ *                       *
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -36,13 +38,12 @@
  *                      other free or open source software licenses.
  *                      See COPYRIGHT.php for copyright notices and details.
 
- * @package             hubzero-cms-joomla
- * @file                components/com_user/views/logout/view.html.php
- * @author              Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright           Copyright (c) 2010-2011 Purdue University. All rights reserved.
- * @license             http://www.gnu.org/licenses/gpl-3.0.html GPLv3
- *                      
-*/
+ * @package   hubzero-cms-joomla
+ * @file      components/com_user/views/logout/view.html.php
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright (c) 2010-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );

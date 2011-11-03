@@ -41,9 +41,9 @@ if ($this->getError()) { ?>
 	</thead>
 	<tbody>
 <?php 
-foreach ($rows as $row) 
+foreach ($rows as $row)
 {
-	if (intval($row->created) <> 0) 
+	if (intval($row->created) <> 0)
 	{
 		$thedate = JHTML::_('date', $row->created);
 	}

@@ -42,7 +42,7 @@ $jacl->addACL($option, 'manage', 'users', 'manager');
 
 // Authorization check
 $user = & JFactory::getUser();
-if (!$user->authorize($option, 'manage')) 
+if (!$user->authorize($option, 'manage'))
 {
 	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
 }

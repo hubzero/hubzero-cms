@@ -47,8 +47,8 @@ class ResourcesUtilities
 	public static function buildUploadPath($dir, $subdir='')
 	{
 		$config = JComponentHelper::getParams('com_resources');
-		
-		if ($subdir) 
+
+		if ($subdir)
 		{
 			// Normalize path
 			$subdir = ResourcesUtilities::normalizePath($subdir);
@@ -62,13 +62,13 @@ class ResourcesUtilities
 		$dir = ResourcesUtilities::normalizePath($dir);
 
 		// Does the beginning of the $dir match the config path?
-		if (substr($dir, 0, strlen($base)) == $base) 
+		if (substr($dir, 0, strlen($base)) == $base)
 		{
 			// Yes - ... this really shouldn't happen
 			JError::raiseError(500, JText::_('Paths match.'));
 			return;
-		} 
-		else 
+		}
+		else
 		{
 			// No - append it
 			$dir = $base . $dir;
@@ -87,16 +87,16 @@ class ResourcesUtilities
 	public static function normalizePath($path)
 	{
 		jimport('joomla.filesystem.path');
-		
+
 		$path = JPath::clean($path);
-		
+
 		// Make sure the path doesn't end with a slash
 		$path = rtrim($path, DS);
-		
+
 		// Ensure the path starts with a slash
 		$path = ltrim($path, DS);
 		$path = DS . $path;
-		
+
 		return $path;
 	}
 }

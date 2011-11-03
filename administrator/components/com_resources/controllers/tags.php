@@ -55,7 +55,7 @@ class ResourcesControllerTags extends Hubzero_Controller
 		$query  = "SELECT id, tag, raw_tag, alias, admin FROM #__tags ORDER BY raw_tag ASC";
 		$this->database->setQuery($query);
 		$this->view->tags = $this->database->loadObjectList();
-		if ($this->database->getErrorNum()) 
+		if ($this->database->getErrorNum())
 		{
 			echo $this->database->stderr();
 			return false;
@@ -76,7 +76,7 @@ class ResourcesControllerTags extends Hubzero_Controller
 		$this->view->objtags->tagMen = implode(', ', $myrawtagarray);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -105,7 +105,7 @@ class ResourcesControllerTags extends Hubzero_Controller
 		$tagging = new ResourcesTags($this->database);
 		$tagArray  = $tagging->_parse_tags($entered);
 		$tagArray2 = $tagging->_parse_tags($entered, 1);
-		
+
 		$diffTags = array_diff($tagArray, $selected);
 		foreach ($diffTags as $diffed)
 		{
@@ -120,7 +120,7 @@ class ResourcesControllerTags extends Hubzero_Controller
 			JText::_('Tags updated for resource #' . $id)
 		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

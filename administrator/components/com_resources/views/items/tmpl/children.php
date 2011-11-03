@@ -31,12 +31,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Resource Manager') . '</a>', 'addedit.png');
-if ($this->filters['parent_id'] > 0) 
+if ($this->filters['parent_id'] > 0)
 {
 	JToolBarHelper::addNew('addchild', 'Add Child');
 	JToolBarHelper::deleteList('', 'removechild', 'Remove Child');
-} 
-else 
+}
+else
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
@@ -48,15 +48,15 @@ JToolBarHelper::deleteList();
 JHTML::_('behavior.tooltip');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 
-if ($this->filters['parent_id'] > 0) 
+if ($this->filters['parent_id'] > 0)
 {
 	$colspan = 9;
-	if ($this->parent->type == 5) 
+	if ($this->parent->type == 5)
 	{
 		$colspan = 10;
 	}
-} 
-else 
+}
+else
 {
 	$colspan = 7;
 }
@@ -236,29 +236,29 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		}
 	}*/
 
-	if ($row->logicaltitle) 
+	if ($row->logicaltitle)
 	{
 		$typec  = $this->escape($row->logicaltitle);
 		$typec .= ' (' . $this->escape($row->typetitle) . ')';
-	} 
-	else 
+	}
+	else
 	{
 		$typec = $this->escape($row->typetitle);
 	}
 
 	// See if it's checked out or not
-	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') 
+	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
 		$checked = JHTMLGrid::_checkedOut($row);
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				 ? JText::_('Checked out') . ': ' . JHTML::_('date', $row->checked_out_time, '%d %b, %Y') . '<br />'
 				 : '';
-		if ($row->editor) 
+		if ($row->editor)
 		{
 			$info .= JText::_('Checked out by') . ': ' . $this->escape($row->editor);
 		}
-	} 
-	else 
+	}
+	else
 	{
 		$checked = JHTML::_('grid.id', $i, $row->id, false, 'id');
 	}

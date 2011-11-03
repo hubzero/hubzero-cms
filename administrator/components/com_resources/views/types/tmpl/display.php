@@ -72,7 +72,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 
 	foreach ($this->cats as $cat)
 	{
-		if ($row->category == $cat->id) 
+		if ($row->category == $cat->id)
 		{
 			$cat_title = $cat->type;
 		}

@@ -52,31 +52,31 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.types.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.types.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.types.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.types.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.types.sort', 
-			'filter_order', 
+			$this->_option . '.types.sort',
+			'filter_order',
 			'category'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.types.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.types.sortdir',
+			'filter_order_Dir',
 			'DESC'
 		));
 		$this->view->filters['category'] = $app->getUserStateFromRequest(
-			$this->_option . '.types.category', 
-			'category', 
-			0, 
+			$this->_option . '.types.category',
+			'category',
+			0,
 			'int'
 		);
 
@@ -92,8 +92,8 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		// initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -101,7 +101,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		$this->view->cats = $rt->getTypes('0');
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -132,15 +132,15 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming (expecting an array)
 			$id = JRequest::getVar('id', array(0));
-			if (is_array($id)) 
+			if (is_array($id))
 			{
 				$id = $id[0];
-			} 
-			else 
+			}
+			else
 			{
 				$id = 0;
 			}
@@ -154,7 +154,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		$this->view->categories = $this->view->row->getTypes(0);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -175,22 +175,22 @@ class ResourcesControllerTypes extends Hubzero_Controller
 
 		// Initiate extended database class
 		$row = new ResourcesType($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			echo ResourcesHtml::alert($row->getError());
 			exit();
 		}
 		$row->contributable = ($row->contributable) ? $row->contributable : '0';
 		$row->alias = ($row->alias) ? $row->alias : $this->_normalize($row->type, true);
-		
+
 		// Get the custom fields
 		$fields = JRequest::getVar('fields', array(), 'post');
-		if (is_array($fields)) 
+		if (is_array($fields))
 		{
 			$txta = array();
 			foreach ($fields as $val)
 			{
-				if ($val['title']) 
+				if ($val['title'])
 				{
 					$k = $this->_normalize(trim($val['title']));
 					$t = str_replace('=', '-', $val['title']);
@@ -205,7 +205,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 
 		// Get parameters
 		$params = JRequest::getVar('params', '', 'post');
-		if (is_array($params)) 
+		if (is_array($params))
 		{
 			$txt = array();
 			foreach ($params as $k => $v)
@@ -216,7 +216,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->_message = $row->getError();
 			$this->_messageType = 'error';
@@ -225,7 +225,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->_message = $row->getError();
 			$this->_messageType = 'error';
@@ -271,7 +271,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		$ids = JRequest::getVar('id', array());
 
 		// Ensure we have an ID to work with
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			// Redirect with error message
 			$this->setRedirect(
@@ -289,7 +289,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 			// Check if the type is being used
 			$total = $rt->checkUsage($id);
 
-			if ($total > 0) 
+			if ($total > 0)
 			{
 				// Redirect with error message
 				$this->setRedirect(
@@ -310,7 +310,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 			JText::_('Type successfully saved')
 		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

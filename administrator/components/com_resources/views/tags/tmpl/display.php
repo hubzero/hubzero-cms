@@ -91,11 +91,11 @@ function addtag(tag)
 	 <tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count($this->tags); $i < $n; $i++) 
+for ($i=0, $n=count($this->tags); $i < $n; $i++)
 {
 	$thistag = &$this->tags[$i];
 	$check = '';
-	if ($thistag->admin == 1) 
+	if ($thistag->admin == 1)
 	{
 		$check = '<span class="check">admin</span>';
 	}

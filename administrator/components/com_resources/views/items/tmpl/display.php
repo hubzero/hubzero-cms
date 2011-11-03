@@ -212,18 +212,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$tags = count($rt->getTags($row->id, 0, 0, 1));
 
 	// See if it's checked out or not
-	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') 
+	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
 		$checked = JHTMLGrid::_checkedOut($row);
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, '%d %b, %Y').'<br />'
 				 : '';
-		if ($row->editor) 
+		if ($row->editor)
 		{
 			$info .= JText::_('Checked out by') . ': ' . $this->escape($row->editor);
 		}
-	} 
-	else 
+	}
+	else
 	{
 		$checked = JHTML::_('grid.id', $i, $row->id, false, 'id');
 	}

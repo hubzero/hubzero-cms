@@ -829,34 +829,50 @@ class ResourcesResource extends JTable
 //echo '<!-- '.$query.' -->';
 		return $query;
 	}
-	
+
+	/**
+	 * Short description for 'getItemCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getItemCount($filters=array())
 	{
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl AS r 
 				WHERE r.standalone=1";
-		if (isset($filters['status']) && $filters['status'] != 'all') 
+		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
 			$sql .= " AND r.published=" . $filters['status'];
 		}
-		if (isset($filters['type']) && $filters['type']) 
+		if (isset($filters['type']) && $filters['type'])
 		{
 			$sql .= " AND r.type=" . $filters['type'];
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE '%" . addslashes($filters['search']) . "%'";
-			if (is_numeric($filters['search'])) 
+			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR r.id=" . $filters['search'];
 			}
 			$sql .= ")";
 		}
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
-	
+
+	/**
+	 * Short description for 'getItems'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getItems($filters=array())
 	{
 		$sql = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, 
@@ -868,18 +884,18 @@ class ResourcesResource extends JTable
 				LEFT JOIN #__groups AS g ON g.id = r.access
 				LEFT JOIN #__resource_types AS t ON r.type=t.id
 				WHERE r.standalone=1";
-		if (isset($filters['status']) && $filters['status'] != 'all') 
+		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
 			$sql .= " AND r.published=" . $filters['status'];
 		}
-		if (isset($filters['type']) && $filters['type']) 
+		if (isset($filters['type']) && $filters['type'])
 		{
 			$sql .= " AND r.type=" . $filters['type'];
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE '%" . addslashes($filters['search']) . "%'";
-			if (is_numeric($filters['search'])) 
+			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR r.id=" . $filters['search'];
 			}
@@ -895,11 +911,19 @@ class ResourcesResource extends JTable
 		{
 			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
+	/**
+	 * Short description for 'getItemChildrenCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getItemChildrenCount($filters=array())
 	{
 		if (isset($filters['parent_id']) && $filters['parent_id'] > 0)
@@ -909,22 +933,22 @@ class ResourcesResource extends JTable
 					#__resource_assoc AS ra 
 					WHERE ra.child_id=r.id AND ra.parent_id=" . $filters['parent_id'];
 		}
-		else 
+		else
 		{
 			$sql = "SELECT count(*) 
 					FROM $this->_tbl AS r 
 					WHERE standalone!=1 
 					AND NOT EXISTS(SELECT * FROM #__resource_assoc AS a WHERE a.child_id = r.id)";
 		}
-		
-		if (isset($filters['status']) && $filters['status'] != 'all') 
+
+		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
 			$sql .= " AND r.published=" . $filters['status'];
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE '%" . $filters['search'] . "%'";
-			if (is_numeric($filters['search'])) 
+			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR r.id=" . $filters['search'];
 			}
@@ -934,7 +958,15 @@ class ResourcesResource extends JTable
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
-	
+
+	/**
+	 * Short description for 'getItemChildren'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
 	public function getItemChildren($filters=array())
 	{
 		if (isset($filters['parent_id']) && $filters['parent_id'] > 0)
@@ -952,7 +984,7 @@ class ResourcesResource extends JTable
 						LEFT JOIN #__resource_types AS gt ON gt.id=ra.grouping
 						WHERE r.type=t.id AND ra.child_id=r.id AND ra.parent_id=" . $filters['parent_id'];
 		}
-		else 
+		else
 		{
 			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published, 
 						r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.path, r.standalone, u.name AS editor, g.name AS groupname, 
@@ -964,14 +996,14 @@ class ResourcesResource extends JTable
 						WHERE r.standalone!=1 
 						AND NOT EXISTS(SELECT * FROM #__resource_assoc AS a WHERE a.child_id = r.id)";
 		}
-		if (isset($filters['status']) && $filters['status'] != 'all') 
+		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
 			$sql .= " AND r.published=" . $filters['status'];
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE '%" . $filters['search'] . "%'";
-			if (is_numeric($filters['search'])) 
+			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR r.id=" . $filters['search'];
 			}
@@ -987,7 +1019,7 @@ class ResourcesResource extends JTable
 		{
 			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}

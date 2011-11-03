@@ -31,11 +31,11 @@
  * 		@copyright  Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * 		@license    GNU/GPL, see LICENSE.php
  *
- * @package    hubzero-cms-joomla
- * @file       components/com_user/views/logout/tmpl/default.php
- * @author     Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright  Copyright (c) 2010-2011 Purdue University. All rights reserved.
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ * @package   hubzero-cms-joomla
+ * @file      components/com_user/views/logout/tmpl/default.php
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright (c) 2010-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  */
 ?>
 <?php defined('_JEXEC') or die('Restricted access'); ?>

@@ -23,22 +23,22 @@
  * This file incorporates work covered by the following copyright and  
  * permission notice:  
  *
- *     @version             $Id: view.php 14401 2010-01-26 14:10:00Z louis $
- *     @package             Joomla
- *     @subpackage  Config
- *     @copyright   Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- *     @license             GNU/GPL, see LICENSE.php
- *     Joomla! is free software. This version may have been modified pursuant
- *     to the GNU General Public License, and as distributed it includes or
- *     is derivative of works licensed under the GNU General Public License or
- *     other free or open source software licenses.
- *     See COPYRIGHT.php for copyright notices and details.
- *
- * @package      hubzero-cms-joomla
- * @file         administrator/components/com_config/views/application/tmpl/config_ldap.php
- * @author       Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright    Copyright (c) 2010-2011 Purdue University. All rights reserved.
- * @license      http://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ * @version    $Id: view.php 14401 2010-01-26 14:10:00Z louis $
+ * @package    Joomla
+ * @subpackage Config
+ * @copyright  Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
+ * @license    GNU/GPL, see LICENSE.php
+ *             Joomla! is free software. This version may have been modified pursuant
+ *             to the GNU General Public License, and as distributed it includes or
+ *             is derivative of works licensed under the GNU General Public License or
+ *             other free or open source software licenses.
+ *             See COPYRIGHT.php for copyright notices and details.
+ *             
+ * @package    hubzero-cms-joomla
+ * @file       administrator/components/com_config/views/application/tmpl/config_ldap.php
+ * @author     Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright  Copyright (c) 2010-2011 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  */
 
 // Check to ensure this file is included in Joomla!

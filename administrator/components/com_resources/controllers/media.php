@@ -52,7 +52,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar('listdir', '', 'post');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
 			$this->displayTask();
@@ -67,24 +67,24 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Are we creating a new folder?
 		$foldername = JRequest::getVar('foldername', '', 'post');
-		if ($foldername != '') 
+		if ($foldername != '')
 		{
 			// Make sure the name is valid
-			if (eregi("[^0-9a-zA-Z_]", $foldername)) 
+			if (eregi("[^0-9a-zA-Z_]", $foldername))
 			{
 				$this->setError(JText::_('Directory name must only contain alphanumeric characters and no spaces please.'));
-			} 
-			else 
+			}
+			else
 			{
-				if (!is_dir($path . DS . $foldername)) 
+				if (!is_dir($path . DS . $foldername))
 				{
 					jimport('joomla.filesystem.folder');
-					if (!JFolder::create($path . DS . $foldername, 0777)) 
+					if (!JFolder::create($path . DS . $foldername, 0777))
 					{
 						$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
-				} 
-				else 
+				}
+				else
 				{
 					$this->setError(JText::_('Directory already exists'));
 				}
@@ -92,10 +92,10 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			// Directory created
 		} else {
 			// Make sure the upload path exist
-			if (!is_dir($path)) 
+			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path, 0777)) 
+				if (!JFolder::create($path, 0777))
 				{
 					$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 					$this->displayTask();
@@ -105,7 +105,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 			// Incoming file
 			$file = JRequest::getVar('upload', '', 'files', 'array');
-			if (!$file['name']) 
+			if (!$file['name'])
 			{
 				$this->setError(JText::_('RESOURCES_NO_FILE'));
 				$this->displayTask();
@@ -118,17 +118,17 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			$file['name'] = str_replace(' ', '_', $file['name']);
 
 			// Perform the upload
-			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
 				$this->setError(JText::_('ERROR_UPLOADING'));
-			} 
-			else 
+			}
+			else
 			{
 				// File was uploaded
 
 				// Was the file an archive that needs unzipping?
 				$batch = JRequest::getInt('batch', 0, 'post');
-				if ($batch) 
+				if ($batch)
 				{
 					//$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $file['name']);
 
@@ -141,13 +141,13 @@ class ResourcesControllerMedia extends Hubzero_Controller
 					}*/
 					require_once(JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php');
 
-					if (!extension_loaded('zlib')) 
+					if (!extension_loaded('zlib'))
 					{
 						$this->setError(JText::_('ZLIB_PACKAGE_REQUIRED'));
-					} 
-					else 
+					}
+					else
 					{
-						if (substr($path, -1, 1) == DS) 
+						if (substr($path, -1, 1) == DS)
 						{
 							$path = substr($path, 0, -1);
 						}
@@ -155,11 +155,11 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 						// unzip the file
 						$do = $zip->extract($path);
-						if (!$do) 
+						if (!$do)
 						{
 							$this->setError(JText::_('UNABLE_TO_EXTRACT_PACKAGE'));
-						} 
-						else 
+						}
+						else
 						{
 							@unlink($path . DS . $file['name']);
 						}
@@ -186,7 +186,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar('listdir', '');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
 			$this->displayTask();
@@ -201,7 +201,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Incoming directory to delete
 		$folder = JRequest::getVar('delFolder', '');
-		if (!$folder) 
+		if (!$folder)
 		{
 			$this->setError(JText::_('RESOURCES_NO_DIRECTORY'));
 			$this->displayTask();
@@ -213,12 +213,12 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		// Check if the folder even exists
 		if (!is_dir($path . $folder) or !$folder) {
 			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::delete($path . $folder)) 
+			if (!JFolder::delete($path . $folder))
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -242,7 +242,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar('listdir', '');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
 			$this->displayTask();
@@ -257,7 +257,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Incoming file to delete
 		$file = JRequest::getVar('delFile', '');
-		if (!$file) 
+		if (!$file)
 		{
 			$this->setError(JText::_('RESOURCES_NO_FILE'));
 			$this->displayTask();
@@ -265,15 +265,15 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		}
 
 		// Check if the file even exists
-		if (!file_exists($path . DS . $file) or !$file) 
+		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('FILE_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 			}
@@ -292,7 +292,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->listdir = JRequest::getVar('listdir', '');
-		if (!$this->view->listdir) 
+		if (!$this->view->listdir)
 		{
 			echo ResourcesHtml::error(JText::_('No list directory provided.'));
 			return;
@@ -300,7 +300,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Incoming sub-directory
 		$this->view->subdir = JRequest::getVar('subdir', '');
-		if (!$this->view->subdir) 
+		if (!$this->view->subdir)
 		{
 			$this->view->subdir = JRequest::getVar('dirPath', '', 'post');
 		}
@@ -313,7 +313,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		$folders   = array();
 		$folders[] = JHTML::_('select.option', '/');
-		if ($dirs) 
+		if ($dirs)
 		{
 			foreach ($dirs as $dir)
 			{
@@ -324,17 +324,17 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		// Create folder <select> list
 		$this->view->dirPath = JHTML::_(
-			'select.genericlist', 
-			$folders, 
-			'dirPath', 
+			'select.genericlist',
+			$folders,
+			'dirPath',
 			'onchange="goUpDir()" ',
-			'value', 
-			'text', 
+			'value',
+			'text',
 			$this->view->subdir
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -352,7 +352,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->listdir = JRequest::getVar('listdir', '');
-		if (!$this->view->listdir) 
+		if (!$this->view->listdir)
 		{
 			echo ResourcesHtml::error(JText::_('No list directory provided.'));
 			return;
@@ -371,28 +371,28 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
 			$dirIterator = new DirectoryIterator($path);
-			foreach ($dirIterator as $file) 
+			foreach ($dirIterator as $file)
 			{
-				if ($file->isDot()) 
+				if ($file->isDot())
 				{
 					continue;
 				}
-				
+
 				if ($file->isDir())
 				{
 					$folders[$path . DS . $name] = $name;
 					continue;
 				}
-				
+
 				if ($file->isFile())
 				{
 					$name = $file->getFilename();
-					if (('cvs' == strtolower($name)) 
-					 || ('.svn' == strtolower($name))) 
+					if (('cvs' == strtolower($name))
+					 || ('.svn' == strtolower($name)))
 					{
 						continue;
 					}
-					
+
 					$docs[$path . DS . $name] = $name;
 				}
 			}
@@ -404,8 +404,8 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		$this->view->docs = $docs;
 		$this->view->folders = $folders;
 		$this->view->config = $this->config;
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -423,12 +423,12 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		static $filelist = array();
 		static $dirlist  = array();
 
-		if (is_dir($base)) 
+		if (is_dir($base))
 		{
 			$dh = opendir($base);
 			while (false !== ($dir = readdir($dh)))
 			{
-				if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') 
+				if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs')
 				{
 					$subbase    = $base . DS . $dir;
 					$dirlist[]  = $subbase;
