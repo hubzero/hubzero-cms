@@ -112,7 +112,6 @@ if (!$juser->get('guest')) {
 <?php if ($this->countModules( 'banner' )) : ?>
 			<jdoc:include type="modules" name="banner" />
 <?php else : ?>
-			<img src="/templates/hubbasic/html/mod_xflash/images/noflash.jpg" alt="" />
 <?php endif; ?>
 		</div><!-- / #features -->
 <?php if ($this->countModules( 'welcome' )) : ?>
