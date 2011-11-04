@@ -1,0 +1,541 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+ximport('Hubzero_Controller');
+
+/**
+ * Manage site members
+ */
+class MembersControllerMembers extends Hubzero_Controller
+{
+	/**
+	 * Display a list of site members
+	 * 
+	 * @return     void
+	 */
+	public function displayTask()
+	{
+		// Get configuration
+		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
+
+		// Get filters
+		$this->view->filters = array();
+		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.search', 
+			'search', 
+			''
+		));
+		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.search_field', 
+			'search_field', 
+			'name'
+		));
+		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.sort', 
+			'sort', 
+			'surname'
+		));
+		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.sortdir', 
+			'sort_Dir', 
+			'ASC'
+		));
+		$this->view->filters['show']         = '';
+		$this->view->filters['scope']        = '';
+		$this->view->filters['authorized']   = true;
+
+		$this->view->filters['sortby']       = $this->view->filters['sort'].' '.$this->view->filters['sort_Dir'];
+
+		// Get paging variables
+		$this->view->filters['limit']        = $app->getUserStateFromRequest(
+			$this->_option . '.limit', 
+			'limit', 
+			$config->getValue('config.list_limit'), 
+			'int'
+		);
+		$this->view->filters['start']        = $app->getUserStateFromRequest(
+			$this->_option . '.limitstart', 
+			'limitstart', 
+			0, 
+			'int'
+		);
+
+		$obj = new MembersProfile($this->database);
+
+		// Get a record count
+		$this->view->total = $obj->getCount($this->view->filters, true);
+
+		// Get records
+		$this->view->rows = $obj->getRecords($this->view->filters, true);
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Create a new member
+	 * 
+	 * @return     void
+	 */
+	public function addTask()
+	{
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Edit a member's information
+	 * 
+	 * @param      integer $id ID of member to edit
+	 * @return     void
+	 */
+	public function editTask($id=0)
+	{
+		if (!$id) 
+		{
+			// Incoming
+			$ids = JRequest::getVar('id', array());
+
+			// Get the single ID we're working with
+			if (is_array($ids)) 
+			{
+				$id = (!empty($ids)) ? $ids[0] : 0;
+			} 
+			else 
+			{
+				$id = 0;
+			}
+		}
+
+		// Initiate database class and load info
+		$this->view->profile = new Hubzero_User_Profile();
+		$this->view->profile->load($id);
+
+		// Get the user's interests (tags)
+		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
+
+		$mt = new MembersTags($this->database);
+		$this->view->tags = $mt->get_tag_string($id);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Short description for 'apply'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(0);
+	}
+
+	/**
+	 * Short description for 'save'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      integer $redirect Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function saveTask($redirect=1)
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming user ID
+		$id = JRequest::getInt('id', 0, 'post');
+
+		// Do we have an ID?
+		if (!$id) 
+		{
+			JError::raiseError(500, JText::_('MEMBERS_NO_ID'));
+			return;
+		}
+
+		// Incoming profile edits
+		$p = JRequest::getVar('profile', array(), 'post');
+
+		// Load the profile
+		$profile = new Hubzero_User_Profile();
+		$profile->load($id);
+
+		// Set the new info
+		$profile->set('givenName', trim($p['givenName']));
+		$profile->set('middleName', trim($p['middleName']));
+		$profile->set('surname', trim($p['surname']));
+		
+		$name  = trim($p['givenName']).' ';
+		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
+		$name .= trim($p['surname']);
+		
+		$profile->set('name', $name);
+		if (isset($p['vip'])) 
+		{
+			$profile->set('vip',$p['vip']);
+		} 
+		else 
+		{
+			$profile->set('vip',0);
+		}
+		$profile->set('url', trim($p['url']));
+		$profile->set('phone', trim($p['phone']));
+		$profile->set('orgtype', trim($p['orgtype']));
+		$profile->set('organization', trim($p['organization']));
+		$profile->set('bio', trim($p['bio']));
+		if (isset($p['public'])) 
+		{
+			$profile->set('public',$p['public']);
+		} 
+		else 
+		{
+			$profile->set('public',0);
+		}
+		$profile->set('modifiedDate', date('Y-m-d H:i:s', time()));
+
+		$profile->set('jobsAllowed', intval(trim($p['jobsAllowed'])));
+
+		$ec = JRequest::getInt('emailConfirmed', 0, 'post');
+		if ($ec) 
+		{
+			$profile->set('emailConfirmed', 1);
+		} 
+		else 
+		{
+			ximport('Hubzero_Registration_Helper');
+			$confirm = Hubzero_Registration_Helper::genemailconfirm();
+			$profile->set('emailConfirmed', $confirm);
+		}
+		$se = JRequest::getInt('shadowExpire', 0, 'post');
+		if ($se) 
+		{
+		    $profile->set('shadowExpire','1');
+		} 
+		else 
+		{
+		    $profile->set('shadowExpire', null);
+		}
+		if (isset($p['email'])) 
+		{
+			$profile->set('email', trim($p['email']));
+		}
+		if (isset($p['mailPreferenceOption'])) 
+		{
+			$profile->set('mailPreferenceOption', trim($p['mailPreferenceOption']));
+		} 
+		else 
+		{
+			$profile->set('mailPreferenceOption', 0);
+		}
+
+		if (!empty($p['gender'])) 
+		{
+			$profile->set('gender', trim($p['gender']));
+		}
+
+		if (!empty($p['disability'])) 
+		{
+			if ($p['disability'] == 'yes') 
+			{
+				if (!is_array($p['disabilities'])) 
+				{
+					$p['disabilities'] = array();
+				}
+				if (count($p['disabilities']) == 1 
+				 && isset($p['disabilities']['other']) 
+				 && empty($p['disabilities']['other'])) 
+				{
+					$profile->set('disability',array('no'));
+				} 
+				else 
+				{
+					$profile->set('disability',$p['disabilities']);
+				}
+			} 
+			else 
+			{
+				$profile->set('disability',array($p['disability']));
+			}
+		}
+
+		if (!empty($p['hispanic'])) 
+		{
+			if ($p['hispanic'] == 'yes') 
+			{
+				if (!is_array($p['hispanics'])) 
+				{
+					$p['hispanics'] = array();
+				}
+				if (count($p['hispanics']) == 1 
+				 && isset($p['hispanics']['other']) 
+				 && empty($p['hispanics']['other'])) 
+				{
+					$profile->set('hispanic', array('no'));
+				} 
+				else 
+				{
+					$profile->set('hispanic',$p['hispanics']);
+				}
+			} 
+			else 
+			{
+				$profile->set('hispanic',array($p['hispanic']));
+			}
+		}
+
+		if (isset($p['race']) && is_array($p['race'])) 
+		{
+			$profile->set('race',$p['race']);
+		}
+
+		// Do we have a new pass?
+		$newpass = trim(JRequest::getVar('newpass', '', 'post'));
+		if ($newpass != '') 
+		{
+			ximport('Hubzero_User_Helper');
+			 // Encrypt the password and update the profile
+			$userPassword = Hubzero_User_Helper::encrypt_password($newpass);
+			$profile->set('userPassword', $userPassword);
+		}
+
+		// Save the changes
+		if (!$profile->update()) 
+		{
+			JError::raiseWarning('', $profile->getError());
+			return false;
+		}
+
+		// Get the user's interests (tags)
+		$tags = trim(JRequest::getVar('tags', ''));
+
+		// Process tags
+		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
+
+		$mt = new MembersTags($this->database);
+		$mt->tag_object($id, $id, $tags, 1, 1);
+
+		// Make sure certain changes make it back to the Joomla user table
+		$juser =& JUser::getInstance($id);
+		$juser->set('name', $name);
+		$juser->set('email', $profile->get('email'));
+		if (!$juser->save()) 
+		{
+			JError::raiseWarning('', JText::_($juser->getError()));
+			return false;
+		}
+
+		if ($redirect) 
+		{
+			// Redirect
+			$this->setRedirect(
+				JRoute::_('index.php?option='.$this->_option),
+				JText::_('MEMBER_SAVED')
+			);
+		} 
+		else 
+		{
+			$this->view->setLayout('edit');
+			$this->editTask($id);
+		}
+	}
+
+	/**
+	 * Removes a profile entry, associated picture, and redirects to main listing
+	 * 
+	 * @return     void
+	 */
+	public function removeTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('ids', array());
+
+		// Do we have any IDs?
+		if (!empty($ids)) 
+		{
+			// Loop through each ID and delete the necessary items
+			foreach ($ids as $id)
+			{
+				$id = intval($id);
+				
+				// Delete any associated pictures
+				$path = JPATH_ROOT . DS . $this->config->get('webpath') . DS . Hubzero_View_Helper_Html::niceidformat($id);
+				if (!file_exists($path . DS . $file) or !$file) 
+				{
+					$this->setError(JText::_('FILE_NOT_FOUND'));
+				} 
+				else 
+				{
+					unlink($path . DS . $file);
+				}
+
+				// Remove any contribution associations
+				$assoc = new MembersAssociation($this->database);
+				$assoc->authorid = $id;
+				$assoc->deleteAssociations();
+
+				// Remove the profile
+				$profile = new Hubzero_User_Profile();
+				$profile->load($id);
+				$profile->delete();
+			}
+		}
+
+		// Output messsage and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('MEMBER_REMOVED')
+		);
+	}
+
+	/**
+	 * Set a member's emailConfirmed to confirmed
+	 *
+	 * @return     void
+	 */
+	public function confirmTask()
+	{
+		$this->stateTask(1);
+	}
+	
+	/**
+	 * Set a member's emailConfirmed to unconfirmed
+	 *
+	 * @return     void
+	 */
+	public function unconfirmTask()
+	{
+		$this->stateTask(0);
+	}
+	
+	/**
+	 * Sets the emailConfirmed state of a member
+	 *
+	 * @return     void
+	 */
+	public function stateTask($state=1)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming user ID
+		$ids = JRequest::getVar('id', array());
+
+		// Do we have an ID?
+		if (empty($ids)) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('MEMBERS_NO_ID'),
+				'error'
+			);
+			return;
+		}
+		
+		foreach ($ids as $id)
+		{
+			// Load the profile
+			$profile = new Hubzero_User_Profile();
+			$profile->load(intval($id));
+
+			if ($state) 
+			{
+				$profile->set('emailConfirmed', $state);
+			} 
+			else 
+			{
+				ximport('Hubzero_Registration_Helper');
+				$confirm = Hubzero_Registration_Helper::genemailconfirm();
+				$profile->set('emailConfirmed', $confirm);
+			}
+
+			if (!$profile->update()) 
+			{
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					$profile->getError(),
+					'error'
+				);
+				return;
+			}
+		}
+		
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('MEMBERS_CONFIRMATION_CHANGED')
+		);
+	}
+
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return     void
+	 */
+	public function cancelTask()
+	{
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+	}
+}
+

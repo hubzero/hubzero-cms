@@ -74,6 +74,7 @@ function submitbutton(pressbutton)
 			
 			<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 			
 			<table class="admintable">
@@ -423,7 +424,7 @@ function submitbutton(pressbutton)
 				$pics = explode(DS, $pics);
 				$file = end($pics);
 			?>
-			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index3.php?option=<?php echo $this->option; ?>&amp;task=img&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 			<?php
 			} else {
 				echo '<p class="warning">'.JText::_('MEMBER_PICTURE_ADDED_LATER').'</p>';
@@ -434,19 +435,19 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('GROUPS'); ?></legend>
 			
-			<iframe width="100%" height="200" name="grouper" id="grouper" frameborder="0" src="index3.php?option=<?php echo $this->option; ?>&amp;task=group&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+			<iframe width="100%" height="200" name="grouper" id="grouper" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=groups&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 		</fieldset>
 		
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('HOSTS'); ?></legend>
 
-			<iframe width="100%" height="200" name="hosts" id="hosts" frameborder="0" src="index3.php?option=<?php echo $this->option; ?>&amp;task=hosts&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+			<iframe width="100%" height="200" name="hosts" id="hosts" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 		</fieldset>
 		
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('Managers'); ?></legend>
 
-			<iframe width="100%" height="200" name="managers" id="managers" frameborder="0" src="index3.php?option=<?php echo $this->option; ?>&amp;task=managers&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+			<iframe width="100%" height="200" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=managers&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

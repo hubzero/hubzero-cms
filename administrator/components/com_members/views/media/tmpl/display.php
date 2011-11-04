@@ -28,23 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-$app =& JFactory::getApplication();
+defined('_JEXEC') or die('Restricted access');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-	<title><?php echo JText::_('MEMBER_PICTURE'); ?></title>
-
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-
-	<style type="text/css" media="screen">@import url(/templates/<?php echo $app->getTemplate(); ?>/css/main.css);</style>
-	<style type="text/css" media="screen">
-	body { min-width: 20px; background: #fff; margin: 0; padding: 0; }
-	</style>
- </head>
- <body>
+<div id="media">
    <form action="index2.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 	<table class="formed">
 	 <thead>
@@ -56,7 +42,8 @@ $app =& JFactory::getApplication();
 	  <tr>
 	   <td>
 	    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="no_html" value="1" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="task" value="upload" />
 		
@@ -81,12 +68,13 @@ $app =& JFactory::getApplication();
 <?php
 	$k = 0;
 
-	if ($this->file && file_exists( $this->path.DS.$this->file )) {
-		$this_size = filesize($this->path.DS.$this->file);
-		list($width, $height, $type, $attr) = getimagesize($this->path.DS.$this->file);
+	if ($this->file && file_exists($this->path . DS . $this->file)) 
+	{
+		$this_size = filesize($this->path . DS . $this->file);
+		list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
 ?>
 	  <tr>
-	   <td rowspan="6"><img src="<?php echo '../'.$this->config->get('uploadpath').DS.$this->dir.DS.$this->file; ?>" alt="<?php echo JText::_('MEMBER_PICTURE'); ?>" id="conimage" /></td>
+	   <td rowspan="6"><img src="<?php echo '../' . $this->config->get('uploadpath') . DS . $this->dir . DS . $this->file; ?>" alt="<?php echo JText::_('MEMBER_PICTURE'); ?>" id="conimage" /></td>
 	   <td><?php echo JText::_('FILE'); ?>:</td>
 	   <td><?php echo $this->file; ?></td>
 	  </tr>
@@ -104,18 +92,16 @@ $app =& JFactory::getApplication();
 	  </tr>
 	  <tr>
 	   <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-	   <td><a href="index3.php?option=<?php echo $this->option; ?>&amp;task=deleteimg&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+	   <td><a href="index3.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=remove&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 	  </tr>
 <?php } else { ?>
 	  <tr>
-	   <td colspan="4"><img src="<?php echo '..'.$this->config->get('defaultpic'); ?>" alt="<?php echo JText::_('NO_MEMBER_PICTURE'); ?>" />
+	   <td colspan="4"><img src="<?php echo '..' . $this->config->get('defaultpic'); ?>" alt="<?php echo JText::_('NO_MEMBER_PICTURE'); ?>" />
 		<input type="hidden" name="currentfile" value="" /></td>
 	  </tr>
 <?php } ?>
 	 </tbody>
 	</table>
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
    </form>
- </body>
-</html>
-
+</div>

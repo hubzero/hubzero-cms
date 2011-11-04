@@ -342,10 +342,10 @@ class MembersProfile extends JTable
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
-		$bits = $dispatcher->trigger( 'onMembersContributionsCount', array($filters['authorized']) );
 
 		$select = "";
 		if (!isset($filters['count'])) {
+			$bits = $dispatcher->trigger( 'onMembersContributionsCount', array($filters['authorized']) );
 			$select .= ', COALESCE(cv.total_count, 0) AS rcount, COALESCE(cv.resource_count, 0) AS resource_count, COALESCE(cv.wiki_count, 0) AS wiki_count ';
 		}
 
@@ -485,13 +485,14 @@ class MembersProfile extends JTable
 	{
 		if ($admin) {
 			$filters['authorized'] = true;
+			//$filters['count'] = true;
 		}
 
 		if ($filters['sortby'] == 'fullname ASC') {
 			$filters['sortby'] = 'lname ASC, fname ASC';
 		}
 
-		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, NULL AS lastvisitDate, ";
+		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, m.emailConfirmed, NULL AS lastvisitDate, ";
 		/*$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
 		   CONCAT(m.surname, ', ', m.givenName, COALESCE(CONCAT(' ', m.middleName), ''))
 		ELSE
