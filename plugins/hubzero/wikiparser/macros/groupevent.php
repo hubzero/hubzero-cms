@@ -68,15 +68,16 @@ class GroupEventMacro extends WikiMacro
 		}
 
 		//set final args
-		foreach($kv as $k) {
-			$arg[$k[0]] = $k[1];
+		foreach ($kv as $k) 
+		{
+			$arg[$k[0]] = (isset($k[1])) ? $k[1] : $k[0];
 		}
 
 		//set a default
 		$default_events = 3;
 
 		//get the user defined # of events
-		$user_events = $arg['number'];
+		$user_events = (isset($arg['number'])) ? $arg['number'] : $default_events;
 
 		//decide whether or not to use default number of events
 		$num_events = (is_int($user_events) && $user_events != 0) ? $user_events : $default_events;
