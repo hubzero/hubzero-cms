@@ -327,7 +327,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
 			return;
 		}
-		
+echo $this->config->get('webpath');
 		$this->view->database = $this->database;
 
 		// Incoming
@@ -708,8 +708,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$row->getId();
 		}
 
-		//$sconfig = JComponentHelper::getParams('com_support');
-		$attachment = $this->uploadTask($row->id, $this->config);
+		$attachment = $this->uploadTask($row->id);
 		$row->report .= ($attachment) ? "\n\n" . $attachment : '';
 		$problem['long'] .= ($attachment) ? "\n\n" . $attachment : '';
 
