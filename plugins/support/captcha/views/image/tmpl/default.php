@@ -42,14 +42,14 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 		<tbody>
 			<tr>
 				<td>
-					<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
+					<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
 				</td>
 				<td>
 					<script type="text/javascript">
 					//<![CDATA[
 					function reloadCapthcha<?php echo $this->total; ?>(instanceNo)
 					{
-						var captchaSrc = "<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&task=<?php echo $this->task; ?>&no_html=1&showCaptcha=True&instanceNo="+instanceNo+"&time="+ new Date().getTime();
+						var captchaSrc = "<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&task=<?php echo $this->task; ?>&no_html=1&showCaptcha=True&instanceNo="+instanceNo+"&time="+ new Date().getTime();
 						document.getElementById('captchaCode'+instanceNo).src = captchaSrc;
 					}
 					//]]>

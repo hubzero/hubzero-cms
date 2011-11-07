@@ -50,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<p><?php echo JText::_('Suggest a new site feature or improvement.'); ?></p>
 					</li>
 					<li class="help-tickets">
-						<h3><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>"><?php echo JText::_('Support Tickets'); ?></a></h3>
+						<h3><a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=display'); ?>"><?php echo JText::_('Support Tickets'); ?></a></h3>
 						<p><?php echo JText::_('Check on status of your tickets.'); ?></p>
 					</li>
 				</ul>
@@ -127,8 +127,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<input type="hidden" name="problem[browserver]" value="<?php echo $modreportproblems->browser_ver; ?>" />
 						<input type="hidden" name="verified" value="<?php echo $modreportproblems->verified; ?>" />
 						<input type="hidden" name="reporter[org]" value="<?php echo (!$modreportproblems->juser->get('guest')) ? htmlentities($modreportproblems->juser->get('org'),ENT_QUOTES) : ''; ?>" />
-						<input type="hidden" name="option" value="com_feedback" />
-						<input type="hidden" name="task" value="sendreport" />
+						<input type="hidden" name="option" value="com_support" />
+						<input type="hidden" name="controller" value="tickets" />
+						<input type="hidden" name="task" value="save" />
 						<input type="hidden" name="no_html" value="1" />
 				 	</fieldset>
 					<div class="submit"><input type="submit" id="send-form" value="<?php echo JText::_('MOD_REPORTPROBLEMS_SUBMIT'); ?>" /></div>

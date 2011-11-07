@@ -474,6 +474,7 @@ class plgSupportCaptcha extends JPlugin
 		);
 
 		$view->task = JRequest::getVar('task', '');
+		$view->controller = JRequest::getVar('controller', '');
 		$view->option = JRequest::getVar('option', '');
 		$view->total = $GLOBALS['totalCaptchas'];
 
