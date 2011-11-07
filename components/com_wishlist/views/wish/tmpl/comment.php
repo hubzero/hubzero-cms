@@ -63,7 +63,7 @@ $commenttype = $this->reply->admin && $this->reply->anonymous != 1 ? 'admincomme
 	if ($this->level < 3) {
 		echo '<a ';
 		if (!$this->juser->get('guest')) {
-			echo 'class="showreplyform" href="javascript:void(0);"';
+			echo 'class="reply" href="javascript:void(0);"';
 		} else {
 			echo 'class="rep" href="'.JRoute::_('index.php?option='.$this->option.a.'task=reply'.a.'cat=wishcomment'.a.'id='.$this->listid.a.'refid='.$this->reply->id.a.'wishid='.$this->wishid).'" ';
 		}
