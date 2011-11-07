@@ -1615,14 +1615,14 @@ class ResourcesHtml
 	 */
 	public function citation( $option, $cite, $id, $citations, $type, $rev='')
 	{
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'citations.formatter.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'helpers'.DS.'citations.format.php' );
 
 		$html  = '<p>'.JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS').'</p>'."\n";
 		$html .= $citations;
 		if ($cite) {
 			$html .= '<ul class="citations results">'."\n";
 			$html .= "\t".'<li>'."\n";
-			$html .= CitationsFormatter::formatReference($cite);
+			$html .= CitationFormat::formatReference($cite);
 			if ($rev!='dev') {
 				$html .= "\t\t".'<p class="details">'."\n";
 				$html .= "\t\t\t".'<a href="index.php?option='.$option.'&task=citation&id='.$id.'&format=bibtex&no_html=1&rev='.$rev.'" title="'.JText::_('DOWNLOAD_BIBTEX_FORMAT').'">BibTex</a> <span>|</span> '."\n";
