@@ -77,10 +77,10 @@ class SupportControllerIndex extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		$this->view->title = $this->_title;
-
 		// Set the page title
 		$this->_buildTitle();
+		
+		$this->view->title = $this->_title;
 
 		// Set the pathway
 		$this->_buildPathway();
