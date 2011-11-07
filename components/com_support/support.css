@@ -13,6 +13,98 @@
 
 */
 
+/* Intro */
+	#introduction {
+		margin: 0 -15px 3em -15px;
+		padding: 25px 15px 25px 120px;
+		background: #fbf8ea url("/components/com_support/images/support-large.gif") 30px 25px no-repeat;
+		border-top: 2px solid #e7dac4;
+		border-bottom: 2px solid #e7dac4;
+		color: #7c7266;
+	}
+	#introduction .aside,
+	#introduction .subject {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		background: transparent;
+		border: none;
+	}
+	#introduction h3 {
+		margin-top: 0;
+		color: #7c7266;
+	}
+	#introduction .columns {
+		border: none;
+	}
+	#introduction ul,
+	#introduction li {
+		list-style: none;
+		margin: 1em 0;
+		padding: 0;
+	}
+	#introduction li {
+		margin: 0;
+		padding: 0 0 0 15px;
+		background: transparent url("/components/com_support/images/arrow.gif") 0 50% no-repeat;
+	}
+/* Four Columns */
+	.com_support .four {
+		border-top: 1px solid #e0e0d7;
+		margin-bottom: 3em;
+	}
+	.com_support .four h3 { 
+		color: #000; 
+		margin-top: 1em; 
+		padding-top: 0em;
+	}
+	.com_support .four h3 a { 
+		color: #000; 
+		border-bottom: none; 
+	}
+	.com_support .four ul {
+		margin: 1em 0;
+	}
+	.com_support .four li {
+		margin: 1em 0;
+	}
+	.com_support .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border: none;
+		border-top: 2px solid #e0e0d7;
+	}
+	.com_support .fourth { 
+		border-right: none;
+	}
+	.com_support .big {
+		height: 3em;
+	}
+	.com_support .four {
+		margin-bottom: 3em;
+	}
+	.com_support .browse a {
+		font-weight: bold;
+		font-size: 1.2em;
+	}
+	.com_support form.search {
+		background-position: 0 0.9em;
+		border: 1px solid #fff;
+	}
+	.columns .ticket { 
+		padding-left: 23px; 
+		background: url("/components/com_support/images/fc-ticket.gif") 0 0em no-repeat; 
+	}
+	.columns .idea { 
+		padding-left: 23px; 
+		background: url("/components/com_support/images/fc-idea.gif") 0 0em no-repeat; 
+	}
+	#hubForm label#fbBotcheck-label {
+		display: none;
+	}
 /* Filters */
 	fieldset.filters {
 		margin: 2em 0 2em 0;
@@ -20,115 +112,115 @@
 		background: #F5F7F2;
 		border-top: 1px solid #DEE4CD;
 		border-bottom: 1px solid #DEE4CD;
-		}
+	}
 	fieldset.filters label {
 		font-weight: bold;
 		margin-left: 0.5em;
 		margin-right: 0.5em;
-		}
+	}
 /* Columns */
 	#comment {
 		margin: 0;
-		}
+	}
 	.main .aside p {
 		margin-top: 0;
-		}
+	}
 	.com_support .below {
 		margin-top: 0;
-		}
+	}
 	.com_support .below .subject {
 		margin-top: 0;
 		background: transparent;
 		border-top: 1px solid #efefef;
 		border-bottom: 1px solid transparent;
 		padding: 1em 0 0 0;
-		}
+	}
 	.com_support .below .aside {
 		padding: 1em 0 0 0;
-		}
+	}
 	.com_support .below h3 {
 		font-weight: normal;
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		margin: 1em 0 0 70px;
 		padding: 0.5em 0;
-		}
+	}
 /* Ticket list */
 	#tktlist {
 		margin-bottom: 2em;
-		}
+	}
 	#tktlist tbody .reporter {
 		display: block;
 		font-size: 85%;
-		}
+	}
 	#tktlist tbody span.status {
 		font-weight: bold;
-		}
+	}
 	#tktlist tbody span.open {
 		color: #66AA00;
-		}
+	}
 	#tktlist tbody span.new {
 		color: #ff1177;
-		}
+	}
 	#tktlist tbody span.waiting {
 		color: #AA3300;
-		}
+	}
 	#tktlist tbody span.closed {
 		color: #aaaaaa;
-		}
+	}
 	#tktlist tbody span a {
 		color: #999;
 		border-bottom: 1px solid #999;
-		}
+	}
 	#tktlist tbody td {
 		border-top: 1px solid #efefef;
 		border-bottom: 1px solid #efefef;
-		}
+	}
 	#tktlist tbody tr.critical {
 		background: #fed;
 		color: #a22;
-		}
+	}
 	#tktlist tbody tr.major {
 		background: #ffd;
 		color: #880;
-		}
+	}
 	#tktlist tbody tr.normal {
-		}
+	}
 	#tktlist tbody tr.minor {
 		background: #dff;
 		color: #099;
-		}
+	}
 	#tktlist tbody tr.trivial {
 		background: #dde7ff;
 		color: #469;
-		}
+	}
 /* Keyword guide */
 	#keyword-guide {
 		border: 5px solid #eee;
 		font-size: 90%;
 		margin: 0 0 1em 0;
-		}
+	}
 	#keyword-guide tbody td,
 	#keyword-guide tbody th {
 		border-top: 1px solid #eee;
 		border-bottom: 1px solid #eee;
 		background-color: #fff;
-		}
+	}
 	#keyword-guide tbody th {
 		text-align: right;
 		font-weight: bold;
-		}
+	}
 	#keyword-guide thead th {
 		color: #fff;
 		background-color: #333;
-		}
+	}
 /* Ticket details */
 	#ticket-details {
 		font-size: 90%;
 		color: #999;
 		border-top: 2px solid #ddd;
 		margin-top: 0;
-		}
+	}
 	#ticket-details caption {
 		background: url("/components/com_support/images/information.gif") 0 1em no-repeat;
 		margin: 0;
@@ -140,25 +232,25 @@
 		color: #555;
 		font-size: 90%;
 		width: 100%;
-		}
+	}
 	#ticket-details tbody {
 		margin: 0;
 		padding: 0;
-		}
+	}
 	#ticket-details tbody th {
 		white-space: nowrap;
 		border-color: #F7F7F2;
 		background-color: #fff;
-		}
+	}
 	#ticket-details tbody td {
 		border-color: #F7F7F2;
 		background-color: #fff;
-		}
+	}
 /* Ticket */
 	.ticket {
 		margin: 1em 0;
 		padding: 0;
-		}
+	}
 	/* Member photo */
 	.ticket p.ticket-member-photo {
 	    float: left;
@@ -171,7 +263,7 @@
 	    font-size: 11px;
 	    text-align: right;
 		position: relative;
-		}
+	}
 	.ticket .ticket-anchor {
 		border-color: transparent #F4F4ee transparent transparent;
 		border-style: dashed solid dashed dashed;
@@ -183,47 +275,47 @@
 		position: absolute;
 		top: 20px;
 		right: 0px;
-		}
+	}
 	/* Content */
 	.ticket .ticket-content {
 		margin: 0 0 0 70px;
 		background-color: #F7F7F2;
 		border: 10px solid #F4F4ee;
 		padding: 0 1em;
-		}
+	}
 	/* Permalink */
 	.ticket .permalink {
 		border: none;
 		color: #bfbfbf;
-		}
+	}
 	.ticket .permalink:hover {
 		color: #000;
 		border: none;
-		}
+	}
 	/* Tags */
 	.ticket .ticket-tags {
 		margin: 0;
 		padding: 0 0 1em 0;
 		
 		color: #aaa;
-		}
+	}
 	.ticket .ticket-tags p {
 		display: none;
-		}
+	}
 	.ticket .ticket-tags .tags {
 		margin: 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
 		background: url("/components/com_support/images/tag_orange.png") 0 0.2em no-repeat;
-		}
+	}
 	.ticket .ticket-tags .tags li {
 		margin: 0;
-		}
+	}
 	/* Status */
 	.ticket-status {
 		margin: 0;
 		padding: 0;
-		}
+	}
 	.ticket-status p {
 		text-transform: uppercase;
 		letter-spacing: 1px;
@@ -232,17 +324,17 @@
 		text-align: center;
 		border: 5px solid #fff; 
 		background: #fff url("/components/com_support/images/light-stripes.png");
-		}
+	}
 	.ticket-status .open {
 		color: #c00;
 		border-color: #EFCCC2; 
 		background: #FFF2EF url("/components/com_support/images/light-stripes.png");
-		}
+	}
 	.ticket-status .closed {
 		color: #000;
 		border-color: #ccc;
 		background-color: #eee;
-		}
+	}
 /* Comments */
 	ol.comments {
 		list-style-type: none !important;
@@ -250,20 +342,20 @@
 		padding: 0;
 		background: transparent;
 		border: none;
-		}
+	}
 	ol.comments li {
 		clear: left;
 		margin: 0;
 		padding: 0;
 		border-top: 1px solid transparent;
-		}
+	}
 	ol.comments ol {
 		margin: 0;
 		padding: 0;
-		}
+	}
 	ol.comments li ol.comments li {
 		padding-left: 70px;
-		}
+	}
 	/* Options */
 	/* Member photo */
 	ol.comments p.comment-member-photo {
@@ -277,7 +369,7 @@
 	    font-size: 11px;
 	    text-align: right;
 		position: relative;
-		}
+	}
 	ol.comments .comment-anchor {
 		border-color: transparent #f2f2f2 transparent transparent;
 		border-style: dashed solid dashed dashed;
@@ -289,14 +381,14 @@
 		position: absolute;
 		top: 20px;
 		right: 0px;
-		}
+	}
 	/* Content */
 	ol.comments .comment-content {
 		margin: 0 0 1em 70px;
 		background-color: #fafafa;
 		border: 10px solid #f2f2f2;
 		padding: 0 1em;
-		}
+	}
 	ol.comments .comment-content blockquote {
 		margin: 0;
 		padding: 0;
@@ -304,54 +396,54 @@
 		border: none;
 		color: #333;
 		font-style: normal;
-		}
+	}
 	/* Author comments */
 	ol.comments .submitter .comment-content,
 	ol.comments .submitter ol.comments .submitter .comment-content {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
-		}
+	}
 	ol.comments .submitter .comment-anchor,
 	ol.comments .submitter ol.comments .submitter .comment-anchor {
 		border-color: transparent #eeecf9 transparent transparent;
-		}
+	}
 	ol.comments .submitter ol.comments .comment-content,
 	ol.comments .submitter ol.comments .submitter ol.comments .comment-content {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
-		}
+	}
 	ol.comments .submitter ol.comments .comment-anchor,
 	ol.comments .submitter ol.comments .submitter ol.comments .comment-anchor {
 		border-color: transparent #f2f2f2 transparent transparent;
-		}
+	}
 	/* Private comments */
 	ol.comments .private .comment-content {
 		background: #fdfbf8 url("/components/com_support/images/light-stripes.png");
 		border-color: #f9f2ec;
-		}
+	}
 	ol.comments .private .comment-anchor {
 		border-color: transparent #f9f2ec transparent transparent;
-		}
+	}
 	ol.comments .private p.comment-title {
 		background: url("/components/com_support/images/lock.png") right top no-repeat;
-		}
+	}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
 		color: #bfbfbf;
-		}
+	}
 	/* Permalink */
 	ol.comments .permalink {
 		border: none;
 		color: #bfbfbf;
-		}
+	}
 	ol.comments .permalink:hover {
 		color: #000;
 		border: none;
-		}
+	}
 	ol.comments .odd,
 	ol.comments .even {
 		background: transparent;
-		}
+	}
 /* Changelog */
 	ol.comments .changelog ul {
 		border-top: 1px solid #ddd;
@@ -361,18 +453,18 @@
 		color: #aaa;
 		background: url("/components/com_support/images/page_edit.png") 10px 0.4em no-repeat;
 		list-style: none;
-		}
+	}
 	ol.comments .changelog li {
 		padding: 0.1em;
 		margin: 0;
 		background-image: none;
-		}
+	}
 	ol.comments .changelog em {
 		font-style: italic;
-		}
+	}
 	.no-comments {
 		margin-left: 70px;
-		}
+	}
 /* Email log */
 	ol.comments ul.emaillog,
 	ol.comments .changelog ul.emaillog {
@@ -381,28 +473,28 @@
 		margin: 0;
 		font-size: 90%;
 		background: url("/components/com_support/images/email.png") 10px 0.2em no-repeat;
-		}
+	}
 	ol.comments ul.emaillog,
 	ol.comments .changelog ul.email-out-log {
 		border-top: 1px solid #ddd;
 		padding: 0.2em 0.2em 0.2em 38px;
 		margin: 0;
 		font-size: 90%;
-		background: url("images/email-out.png") 10px 0.2em no-repeat;
-		}
+		background: url("/components/com_support/images/email-out.png") 10px 0.2em no-repeat;
+	}
 	ol.comments ul.emaillog,
 	ol.comments .changelog ul.email-in-log {
 		border-top: 1px solid #ddd;
 		padding: 0.2em 0.2em 0.2em 38px;
 		margin: 0;
 		font-size: 90%;
-		background: url("images/email-in.png") 10px 0.2em no-repeat;
-		}
+		background: url("/components/com_support/images/email-in.png") 10px 0.2em no-repeat;
+	}
 	ol.comments .emaillog li {
 		padding: 0.1em;
 		margin: 0;
 		background-image: none;
-		}
+	}
 /* Tooltips */
 	.img-tip {
 		color: #fff;
@@ -411,17 +503,17 @@
 		z-index: 13000;
 		text-align: left;
 		background: url("/components/com_support/images/overlay.png") top left;
-		}
+	}
 	.img-tip #keyword-guide {
 		color: #888;
 		margin: 0;
-		}
+	}
 	#ticket-feed {
 		margin-left: 2em;
-		}
+	}
 	.fixedImgTip {
 		margin-right: 1em;
-		}
+	}
 /* Abuse Item */
 	.abuseitem {
 		padding: 10px 10px 10px 50px; 
@@ -429,108 +521,58 @@
 		text-align: left;
 		border: 1px solid #EFCCC2; 
 		background: #FFF2EF url("/components/com_support/images/stophand.gif") 10px 10px no-repeat;
-		}
+	}
 	.abuseitem h4 {
 		margin: 0;
 		font-size: 100%;
 		color: #666666;
 		font-weight: normal;
-		}
+	}
 	.abuseitem p {
 		margin: 0.5em 0 0.5em 0;
-		}
+	}
 	.abuseitem a {
 		color: #666;
 		border-bottom: 1px solid #ccc;
-		}
+	}
 /* Forms */
 	#hubForm .multiple-option label {
 		padding-right: 1.5em;
-		}
-/* Index */
-	.com_support .middle {
-		border-right: 1px solid #E0E0D7;
-		border-left: 1px solid #E0E0D7;
-		}
-	.com_support .mainsection {
-		margin: 0 0 2em 0;
-		padding: 0;
-		border: 1px solid #F7F7F3;
-		background: #F7F7F3;
-		/* Rounded corners */
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;
-		border-top-radius: 10px;
-		}
-	.com_support .mainsection h3 { 
-		text-align: center; 
-		margin: 0; 
-		padding: 0;
-		color: #000; 
-		}
-	.com_support .mainsection h3 a { 
-		color: #000;
-		border: none;
-		display: block;
-		margin: 0;
-		padding: 7em 0.9em 0 0.9em;
-		}
-	.com_support .mainsection h3 a:hover {
-		color: blue;
-		border:none;
-		text-decoration: underline;
-		}
-	.com_support .mainsection p {
-		margin: 0;
-		padding: 1em 1em 1em 1em;
-		font-size: 1.2em;
-		line-height: 1.4em;
-		color: #777;
-		}
-	#kb h3 a {
-		background: url("/components/com_support/images/help-large.gif") 50% 30% no-repeat;
-		}
-	#na h3 a {
-		background: url("/components/com_support/images/answers-large.gif") 50% 30% no-repeat;
-		}
-	#rp h3 a {
-		background: url("/components/com_support/images/alert-large.gif") 50% 30% no-repeat;
-		}
-	td .delete {
+	}
+	.com_support td .delete {
 		display: block;
 		width: 16px;
 		height: 16px;
 		border: none;
 		text-indent: -55em;
 		overflow: hidden;
-		}
+	}
 /* Stats */
 	#ticket-stats {
 		border-top: 1px solid #fff;
-		}
+	}
 	#ticket-stats h3 {
 		display: none;
-		}
+	}
 	#ticket-stats .aside {
 		width: 475px;
 		padding-top: 1em;
-		}
+	}
 	#ticket-stats .subject {
 		margin-right: 505px;
 		padding-top: 1em;
-		}
+	}
 	#ticket-stats .aside h3,
 	#ticket-stats .subject h3 {
 		display: block;
 		margin-top: 0;
 		border-bottom: 1px solid #ccc;
-		}
+	}
 	.support-stats-overview {
 		border-top: none;
 		border-bottom: none;
 		margin: 1em 0;
-		}
+	}
 	.support-stats-overview thead th {
 		font-size: 85%;
 		color: #aaa;
@@ -540,7 +582,7 @@
 		border-bottom: none;
 		padding-bottom: 0;
 		width: 20%;
-		}
+	}
 	.support-stats-overview tbody td {
 		padding-top: 0;
 		font-size: 3em;
@@ -550,23 +592,23 @@
 		color: #777;
 		border-bottom: 1px solid #eee;
 		width: 20%;
-		}
+	}
 	.support-stats-overview thead th.block,
 	.support-stats-overview tbody td.block {
 		width: 40%;
-		}
+	}
 	.support-stats-overview tbody td.block {
 		color: #b18fbc;
-		}
+	}
 	.open-tickets tbody td.critical {
 		color: red;
-		}
+	}
 	.open-tickets tbody td.major {
 		color: #ce7d7d;
-		}
+	}
 	.closed-tickets tbody td {
 		color: green;
-		}
+	}
 	.support-stats-overview tbody td span {
 		color: #aaa;
 		font-size: 12px;
@@ -574,55 +616,55 @@
 		font-weight: normal;
 		margin: 0 1.5em 0 0;
 		padding: 0;
-		}
+	}
 	.support-stats-people {
 		border-top: none;
 		border-bottom: none;
 		margin: 1em 0;
-		}
+	}
 	.support-stats-people thead th {
 		font-size: 85%;
 		color: #aaa;
 		font-weight: normal;
 		border-bottom: 1px solid #eee;
-		}
+	}
 	.support-stats-people tbody th {
 		font-weight: bold;
 		border-bottom: 1px solid #eee;
-		}
+	}
 	.support-stats-people a.active {
 		color: #aaa;
-		}
+	}
 	.support-stats-people thead th.group {
 		background-image: none;
 		padding-left: 10px;
-		}
+	}
 	.support-stats-people tbody td {
 		font-weight: normal;
 		border-bottom: 1px solid #eee;
-		}
+	}
 	.support-stats-people tbody tr.odd {
 		background-color: transparent;
-		}
+	}
 	.support-stats-people tbody tr.odd .group {
 		background-color: transparent;
 		background-image: none;
 		padding-left: 10px;
-		}
+	}
 	.support-stats-people tbody tr.even .group {
 		background-color: transparent;
 		background-image: none;
 		padding-left: 10px;
-		}
+	}
 	#content-header-extra .ticket { 
 		background: url("/components/com_support/images/note.png") 0 0 no-repeat; 
 		padding-left: 20px; 
-		}
+	}
 /* Comment form */
 	#commentform {
 		margin: 0;
 		padding: 0;
-		}
+	}
 	#commentform fieldset {
 		background: #F5F7F2;
 		border: 10px solid #DEE4CD;
@@ -630,15 +672,15 @@
 		padding: 0 1em 0em 1em;
 		text-align: left;
 		color: #777;
-		}
+	}
 	#commentform fieldset fieldset {
 		border-width: 1px;
 		padding: 0 1em 1em 1em;
 		margin: 1em 0;
-		}
+	}
 	#commentform fieldset fieldset legend{
 		font-weight: bold;
-		}
+	}
 	#commentform p.comment-member-photo {
 		float: left;
 		margin: 0;
@@ -650,7 +692,7 @@
 		font-size: 11px;
 		text-align: right;
 		position: relative;
-		}
+	}
 	#commentform .comment-anchor {
 		border-color: transparent #DEE4CD transparent transparent;
 		border-style: dashed solid dashed dashed;
@@ -662,38 +704,38 @@
 		position: absolute;
 		top: 20px;
 		right: 0px;
-		}
+	}
 	#commentform.private .comment-anchor {
 		border-color: transparent #f9f2ec transparent transparent;
-		}
+	}
 	#commentform .sidenote {
 		border: 1px solid #edf0e8;
 		padding: 0 1em;
 		margin: 0 -1em 0 -1em;
 		color: #aaa;
 		background-color: #edf0e8;
-		}
+	}
 	#commentform .required,
 	#commentform .optional {
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		font-size: 80%;
-		}
+	}
 	#commentform .required {
 		color: #AD6456;
-		}
+	}
 	#commentform .optional {
 		color: #888;
-		}
+	}
 	#commentform .hint {
 		color: #aaa;
 		font-size: 90%;
-		}
+	}
 	#commentform label {
 		padding-top: 1em;
 		position: relative;
 		display: block;
-		}
+	}
 	#commentform .grouping {
 		position: relative;
 		margin-left: -3em;
@@ -701,35 +743,35 @@
 		overflow: hidden;
 		top: 1em;
 		left: 1.5em;
-		}
+	}
 	#commentform .grouping label {
 		padding: 0;
 		float: left;
 		width: 50%;
-		}
+	}
 	#commentform .grouping label:first-child {
 		margin: 0 2em 0 -3.5em;
-		}
+	}
 	#commentform .grouping label span {
 		top: 0;
-		}
+	}
 	#commentform input, 
 	#commentform select, 
 	#commentform textarea {
 		margin-top: 0.25em;
 		width: 100%;
-		}
+	}
 	#commentform .submit {
 		text-align: center;
-		}
+	}
 	#commentform .submit input,
 	#commentform .option {
 		width: auto;
-		}
+	}
 	#commentform .top label {
 		text-align: right;
-		}
+	}
 	#commentform.private fieldset {	
 		background: #fdfbf8 url("/components/com_support/images/light-stripes.png");
 		border-color: #f9f2ec;
-		}
+	}

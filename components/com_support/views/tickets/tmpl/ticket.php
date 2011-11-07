@@ -29,11 +29,11 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 $juser =& JFactory::getUser();
 //$database =& JFactory::getDBO();
 
-JPluginHelper::importPlugin( 'hubzero' );
+JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
 
 $status = SupportHtml::getStatus($this->row->status);
@@ -41,7 +41,7 @@ $status = SupportHtml::getStatus($this->row->status);
 $fstring = urlencode(trim($this->filters['_find']));
 ?>
 <div id="content-header">
-	<h2><?php echo $this->title; ?>: #<?php echo $this->row->id; ?></h2>
+	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
 <div id="content-header-extra">
@@ -95,8 +95,8 @@ $fstring = urlencode(trim($this->filters['_find']));
 		$name = JText::_('Unknown');
 		$submitter = new Hubzero_User_Profile();
 		if ($this->row->login) {
-			//$juseri =& JUser::getInstance( $comment->created_by );
-			$submitter->load( $this->row->login );
+			//$juseri =& JUser::getInstance($comment->created_by);
+			$submitter->load($this->row->login);
 			if (is_object($submitter) && $submitter->get('name')) {
 				$name = '<a rel="profile" href="'.JRoute::_('index.php?option=com_members&id='.$submitter->get('uidNumber')).'">'.stripslashes($submitter->get('name')).'</a>';
 				$unknown = 0;
@@ -125,7 +125,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 					</a>
 				</p><!-- / .ticket-title -->
 				<p><?php echo preg_replace('/  /', ' &nbsp;',$this->row->report); ?></p>
-<?php if ($this->acl->check('update','tickets') > 0) { ?>
+<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 				<table id="ticket-details" summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
 					<caption id="toggle-details"><?php echo JText::_('TICKET_DETAILS'); ?></caption>
 					<tbody id="ticket-details-body" class="hide">
@@ -157,12 +157,12 @@ $fstring = urlencode(trim($this->filters['_find']));
 	</div><!-- / .subject -->
 </div><!-- / .main section -->
 
-<?php if ($this->acl->check('read','comments')) { ?>
+<?php if ($this->acl->check('read', 'comments')) { ?>
 <div class="below section">
 	<h3><a name="comments"></a><?php echo JText::_('TICKET_COMMENTS'); ?></h3>
 			
 	<div class="aside">
-<?php if ($this->acl->check('create','comments')) { ?>
+<?php if ($this->acl->check('create', 'comments')) { ?>
 		<p class="add"><a href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a></p>
 <?php } ?>
 	</div><!-- / .aside -->
@@ -176,7 +176,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 			$i = 0;
 			foreach ($this->comments as $comment)
 			{
-				if (!$this->acl->check('read','private_comments') && $comment->access == 1) {
+				if (!$this->acl->check('read', 'private_comments') && $comment->access == 1) {
 					continue;
 				}
 				$i++;
@@ -192,9 +192,9 @@ $fstring = urlencode(trim($this->filters['_find']));
 
 				$name = JText::_('Unknown');
 				if ($comment->created_by) {
-					//$juseri =& JUser::getInstance( $comment->created_by );
+					//$juseri =& JUser::getInstance($comment->created_by);
 					$juseri = new Hubzero_User_Profile();
-					$juseri->load( $comment->created_by );
+					$juseri->load($comment->created_by);
 					if (is_object($juseri) && $juseri->get('name')) {
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$juseri->get('uidNumber')).'">'.stripslashes($juseri->get('name')).'</a>';
 					}
@@ -239,7 +239,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 </div><!-- / .below section -->
 <?php } // ACL can read comments ?>
 
-<?php if ($this->acl->check('create','comments') || $this->acl->check('update','tickets')) { ?>
+<?php if ($this->acl->check('create', 'comments') || $this->acl->check('update', 'tickets')) { ?>
 <div class="below section">
 	<h3>
 		<?php echo JText::_('COMMENT_FORM'); ?>
@@ -250,16 +250,16 @@ $fstring = urlencode(trim($this->filters['_find']));
 	</div><!-- / .aside -->
 	
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update'); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"><a name="commentform"></a></span>
 			<?php
 				if (!$juser->get('guest')) {
 					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load( $juser->get('id') );
+					$jxuser->load($juser->get('id'));
 					$thumb = SupportHtml::getMemberPhoto($jxuser, 0);
 				} else {
-					$config =& JComponentHelper::getParams( 'com_members' );
+					$config =& JComponentHelper::getParams('com_members');
 					$thumb = $config->get('defaultpic');
 					if (substr($thumb, 0, 1) != DS) {
 						$thumb = DS.$dfthumb;
@@ -272,22 +272,23 @@ $fstring = urlencode(trim($this->filters['_find']));
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="ticket[id]" id="ticketid" value="<?php echo $this->row->id; ?>" />
-				<input type="hidden" name="option" value="<?php echo $option; ?>" />
-				<input type="hidden" name="task" value="save" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="update" />
 				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
 				<input type="hidden" name="find" value="<?php echo htmlentities(urldecode($fstring), ENT_QUOTES); ?>" />
-<?php if (!$this->acl->check('create','private_comments')) { ?>
+<?php if (!$this->acl->check('create', 'private_comments')) { ?>
 				<input type="hidden" name="access" value="0" />
 <?php } ?>
 
-<?php if ($this->acl->check('update','tickets')) { ?>
+<?php if ($this->acl->check('update', 'tickets')) { ?>
 				<fieldset>
-<?php if ($this->acl->check('update','tickets') > 0) { ?>
+<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 					<legend>Ticket Details</legend>
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
 						<?php 
-					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])) );
+					$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '',$this->lists['tags'])));
 
 					if (count($tf) > 0) {
 						echo $tf[0];
@@ -300,7 +301,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 					<label>
 						<?php echo JText::_('COMMENT_GROUP'); ?>:
 						<?php 
-					$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup','',$this->row->group,'','ticketowner')) );
+					$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '',$this->row->group, '', 'ticketowner')));
 					if (count($gc) > 0) {
 						echo $gc[0];
 					} else { ?>
@@ -355,20 +356,20 @@ $fstring = urlencode(trim($this->filters['_find']));
 						?>
 						</select>
 					</label>
-<?php if ($this->acl->check('update','tickets') > 0) { ?>
+<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 				</div>
 <?php } ?>
 				<div class="clear"></div>
 				</fieldset>
 
 <?php } // ACL can update tickets ?>
-<?php if ($this->acl->check('create','comments') || $this->acl->check('create','private_comments')) { ?>
+<?php if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
-<?php if ($this->acl->check('create','comments') > 0 || $this->acl->check('create','private_comments')) { ?>
+<?php if ($this->acl->check('create', 'comments') > 0 || $this->acl->check('create', 'private_comments')) { ?>
 					<div class="top grouping">
 <?php } ?>
-<?php if ($this->acl->check('create','comments') > 0) { ?>
+<?php if ($this->acl->check('create', 'comments') > 0) { ?>
 						<label>
 							<?php
 							$hi = array();
@@ -377,9 +378,9 @@ $fstring = urlencode(trim($this->filters['_find']));
 							$jconfig =& JFactory::getConfig();
 							foreach ($this->lists['messages'] as $message)
 							{
-								$message->message = str_replace('"','&quot;',$message->message);
-								$message->message = str_replace('&quote;','&quot;',$message->message);
-								$message->message = str_replace('#XXX','#'.$this->row->id,$message->message);
+								$message->message = str_replace('"', '&quot;',$message->message);
+								$message->message = str_replace('&quote;', '&quot;',$message->message);
+								$message->message = str_replace('#XXX', '#'.$this->row->id,$message->message);
 								$message->message = str_replace('{ticket#}',$this->row->id,$message->message);
 								$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
 								$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
@@ -394,13 +395,13 @@ $fstring = urlencode(trim($this->filters['_find']));
 							?>
 						</label>
 <?php } // ACL can create comment (admin) ?>
-<?php if ($this->acl->check('create','private_comments')) { ?>
+<?php if ($this->acl->check('create', 'private_comments')) { ?>
 						<label>
 							<input class="option" type="checkbox" name="access" id="make-private" value="1" />
 							<?php echo JText::_('COMMENT_PRIVATE'); ?>
 						</label>
 <?php } // ACL can create private comments ?>
-<?php if ($this->acl->check('create','comments') > 0 || $this->acl->check('create','private_comments')) { ?>
+<?php if ($this->acl->check('create', 'comments') > 0 || $this->acl->check('create', 'private_comments')) { ?>
 					</div>
 					<div class="clear"></div>
 <?php } // ACL can create comments (admin) or private comments ?>
@@ -421,8 +422,8 @@ $fstring = urlencode(trim($this->filters['_find']));
 						</label>
 					</div>
 				</fieldset>
-<?php } //if ($this->acl->check('create','comments') || $this->acl->check('create','private_comments')) { ?>
-<?php if ($this->acl->check('create','comments') > 0) { ?>
+<?php } //if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
+<?php if ($this->acl->check('create', 'comments') > 0) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_EMAIL'); ?>:</legend>
 					<div class="grouping">
@@ -439,7 +440,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 
 					<label>
 						<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php 
-						$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'cc', 'acmembers')) );
+						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers')));
 						if (count($mc) > 0) {
 							echo '<span class="hint">'.JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];
 						} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>

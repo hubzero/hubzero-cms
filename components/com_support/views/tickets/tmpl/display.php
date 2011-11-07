@@ -29,11 +29,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if ($this->filters['_show'] != '') {
+if ($this->filters['_show'] != '') 
+{
 	$fstring = urlencode(trim($this->filters['_show']));
-} else {
+} 
+else 
+{
 	$fstring = urlencode(trim($this->filters['_find']));
 }
 ?>
@@ -42,23 +45,23 @@ if ($this->filters['_show'] != '') {
 </div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
-<?php if ($this->acl->check('read','tickets')) { ?>
-		<li><a class="stats" href="/support/stats"><?php echo JText::_('Stats'); ?></a></li>
+<?php if ($this->acl->check('read', 'tickets')) { ?>
+		<li><a class="stats" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>"><?php echo JText::_('Stats'); ?></a></li>
 <?php } ?>
-		<li class="last"><a class="new-ticket" href="/feedback/report_problems/"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
+		<li class="last"><a class="new-ticket" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets'); ?>" method="post" name="adminForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>" method="post" name="adminForm">
 			<fieldset class="filters">
-<?php if ($this->acl->check('read','tickets')) { ?>
+<?php if ($this->acl->check('read', 'tickets')) { ?>
 				<label>
 					<?php echo JText::_('SUPPORT_FIND'); ?>:
 					<input type="text" name="find" id="find" value="<?php echo ($this->filters['_show'] == '') ? htmlentities($this->filters['_find']) : ''; ?>" />
 				</label>
 				
-				<a title="DOM:guide" class="fixedImgTip" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets&action=help'); ?>"><?php echo JText::_('SUPPORT_HELP'); ?></a>
+				<a title="DOM:guide" class="fixedImgTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&action=help'); ?>"><?php echo JText::_('SUPPORT_HELP'); ?></a>
 				<div style="display:none;" id="guide">
 					<table id="keyword-guide" summary="<?php echo JText::_('SUPPORT_KEYWORD_TBL_SUMMARY'); ?>">
 						<thead>
@@ -114,7 +117,7 @@ if ($this->filters['_show'] != '') {
 						<option value="status:waiting"<?php if ($this->filters['_show'] == 'status:waiting') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_WAITING'); ?></option>
 						<option value="status:closed"<?php if ($this->filters['_show'] == 'status:closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_CLOSED'); ?></option>
 						<option value="status:all"<?php if ($this->filters['_show'] == 'status:all') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_ALL'); ?></option>
-						<?php if ($this->acl->check('read','tickets')) { ?>
+						<?php if ($this->acl->check('read', 'tickets')) { ?>
 						<option value="reportedby:me"<?php if ($this->filters['_show'] == 'reportedby:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_REPORTED_BY_ME'); ?></option>
 						<option value="status:open owner:me"<?php if ($this->filters['_show'] == 'status:open owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_OPEN'); ?></option>
 						<option value="status:closed owner:me"<?php if ($this->filters['_show'] == 'status:closed owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_CLOSED'); ?></option>
@@ -138,22 +141,22 @@ if ($this->filters['_show'] != '') {
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_OWNER'); ?></th>
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_AGE'); ?></th>
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_COMMENTS'); ?></th>
-<?php if ($this->acl->check('delete','tickets')) { ?>
+<?php if ($this->acl->check('delete', 'tickets')) { ?>
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_ACTION'); ?></th>
 <?php } ?>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="<?php echo ($this->acl->check('delete','tickets')) ? '8' : '7'; ?>"><?php 
+						<td colspan="<?php echo ($this->acl->check('delete', 'tickets')) ? '8' : '7'; ?>"><?php 
 						$html = $this->pageNav->getListFooter();
-						$html = str_replace('support/?','support/tickets/?',$html);
-						$html = str_replace('/?/tickets&amp;','/?',$html);
-						if ($this->filters['_show'] && !strstr( $html, 'show=' )) {
-							$html = str_replace('/?','/?show='.$this->filters['_show'].'&amp;',$html);
+						$html = str_replace('support/?', 'support/tickets/?',$html);
+						$html = str_replace('/?/tickets&amp;', '/?',$html);
+						if ($this->filters['_show'] && !strstr($html, 'show=')) {
+							$html = str_replace('/?', '/?show='.$this->filters['_show'].'&amp;',$html);
 						}
-						if ($this->filters['_find'] && !strstr( $html, 'find=' )) {
-							$html = str_replace('/?','/?find='.$this->filters['_find'].'&amp;',$html);
+						if ($this->filters['_find'] && !strstr($html, 'find=')) {
+							$html = str_replace('/?', '/?find='.$this->filters['_find'].'&amp;',$html);
 						}
 						echo $html;
 						?></td>
@@ -162,68 +165,98 @@ if ($this->filters['_show'] != '') {
 				<tbody>
 <?php
 $k = 0;
-$sc = new SupportComment( $this->database );
-$st = new SupportTags( $this->database );
+$sc = new SupportComment($this->database);
+$st = new SupportTags($this->database);
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$comments = $sc->countComments($this->acl->check('read','private_comments'), $row->id);
-	if ($comments > 0) {
-		$lastcomment = $sc->newestComment($this->acl->check('read','private_comments'), $row->id);
+	$comments = $sc->countComments($this->acl->check('read', 'private_comments'), $row->id);
+	if ($comments > 0) 
+	{
+		$lastcomment = $sc->newestComment($this->acl->check('read', 'private_comments'), $row->id);
 	}
 
-	if ($row->status == 2) {
+	if ($row->status == 2) 
+	{
 		$status = 'closed';
-	} elseif ($comments == 0 && $row->status == 0 && $row->owner == '' && $row->resolved == '') {
+	} 
+	elseif ($comments == 0 && $row->status == 0 && $row->owner == '' && $row->resolved == '') 
+	{
 		$status = 'new';
-	} elseif ($row->status == 1) {
+	} 
+	elseif ($row->status == 1) 
+	{
 		$status = 'waiting';
-	} else {
-		if ($row->resolved != '') {
+	}
+	else 
+	{
+		if ($row->resolved != '') 
+		{
 			$status = 'reopened';
-		} else {
+		} 
+		else 
+		{
 			$status = 'open';
 		}
 	}
 
-	$lnk = 'index.php?option=com_whois&amp;query=uid%3D'.$row->login;
+	$lnk = 'index.php?option=com_whois&amp;query=uid%3D' . $row->login;
 	$targetuser = null;
-	if ($row->login) {
+	if ($row->login) 
+	{
 		$targetuser =& JUser::getInstance($row->login);
-		if (is_object($targetuser) && $targetuser->id) {
-			$lnk = JRoute::_('index.php?option=com_members&id='.$targetuser->id);
+		if (is_object($targetuser) && $targetuser->id) 
+		{
+			$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->id);
 		}
 	}
 
 	$when = SupportHtml::timeAgo($row->created);
 
-	if ($row->owner == '') {
-		$row->owner = '&nbsp';
-	}
-
 	//$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
 	$row->report = stripslashes($row->report);
-	//$row->report = str_replace(r,'',$row->report);
-	//$row->report = str_replace(n,'',$row->report);
-	//$row->report = str_replace(t,'',$row->report);
+	//$row->report = str_replace(r, '',$row->report);
+	//$row->report = str_replace(n, '',$row->report);
+	//$row->report = str_replace(t, '',$row->report);
 
-	$tags = $st->get_tag_cloud( 3, 1, $row->id );
+	$tags = $st->get_tag_cloud(3, 1, $row->id);
 ?>
 					<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">
 						<td><?php echo $row->id; ?></td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo $row->report; ?>"><?php echo stripslashes($row->summary); ?></a>
-							<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="'.$lnk.'">'.$row->login.'</a>)' : ''; if ($tags) { ?>, <?php echo JText::_('TAGS'); ?>: <span class="tags"><?php echo $tags; ?></span><?php } ?></span>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo $row->report; ?>">
+								<?php echo stripslashes($row->summary); ?>
+							</a>
+							<span class="reporter">
+								by <?php echo $this->escape($row->name); echo ($row->login) ? ' (<a href="' . $lnk . '">' . $this->escape($row->login) . '</a>)' : ''; if ($tags) { ?>, 
+								<?php echo JText::_('TAGS'); ?>: <span class="tags"><?php echo $tags; ?></span><?php } ?>
+							</span>
 						</td>
-						<td style="white-space: nowrap;"><span class="<?php echo $status; ?> status"><?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' ('.$row->resolved.')' : ''; ?></span></td>
-						<td style="white-space: nowrap;"><?php echo $row->group; ?></td>
-						<td style="white-space: nowrap;"><?php echo $row->owner; ?></td>
-						<td style="white-space: nowrap;"><?php echo $when; ?></td>
-						<td style="white-space: nowrap;"><?php echo $comments; echo ($comments > 0) ? ' ('.SupportHtml::timeAgo($lastcomment).')' : ''; ?></td>
-<?php if ($this->acl->check('delete','tickets')) { ?>
-						<td><a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id='.$row->id); ?>" title="<?php echo JText::_('SUPPORT_DELETE'); ?>"><?php echo JText::_('SUPPORT_DELETE'); ?></a></td>
+						<td style="white-space: nowrap;">
+							<span class="<?php echo $status; ?> status">
+								<?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
+							</span>
+						</td>
+						<td style="white-space: nowrap;">
+							<?php echo $this->escape($row->group); ?>
+						</td>
+						<td style="white-space: nowrap;">
+							<?php echo $this->escape($row->owner); ?>
+						</td>
+						<td style="white-space: nowrap;">
+							<?php echo $when; ?>
+						</td>
+						<td style="white-space: nowrap;">
+							<?php echo $comments; echo ($comments > 0) ? ' (' . SupportHtml::timeAgo($lastcomment) . ')' : ''; ?>
+						</td>
+<?php if ($this->acl->check('delete', 'tickets')) { ?>
+						<td>
+							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&id=' . $row->id); ?>" title="<?php echo JText::_('SUPPORT_DELETE'); ?>">
+								<?php echo JText::_('SUPPORT_DELETE'); ?>
+							</a>
+						</td>
 <?php } ?>
 					</tr>
 <?php
@@ -233,7 +266,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</tbody>
 			</table>
 		
-		<input type="hidden" name="option" value="<?php echo $option ?>" />
-		<input type="hidden" name="task" value="tickets" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="task" value="display" />
 	</form>
 </div><!-- /.main section -->

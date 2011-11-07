@@ -47,7 +47,7 @@ if ($this->report && !$this->getError()) {
 		}
 	}
 ?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('REPORT_ABUSE_EXPLANATION'); ?></p>
 			<p><?php echo JText::_('REPORT_ABUSE_DESCRIPTION_HINT'); ?></p>
@@ -57,8 +57,8 @@ if ($this->report && !$this->getError()) {
 	
 			<div class="abuseitem">
 				<h4><?php 
-	 				echo ($this->report->href) ? '<a href="'.$this->report->href.'">': '';
-	 				echo ucfirst($this->cat).' by ';
+	 				echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
+	 				echo ucfirst($this->cat) . ' by ';
 	 				echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name;
 	 				echo ($this->report->href) ? '</a>': '';
 				?></h4>
@@ -73,7 +73,8 @@ if ($this->report && !$this->getError()) {
 				<label class="option"><input type="radio" class="option" name="subject" id="subject4" value="<?php echo JText::_('OTHER'); ?>" /> <?php echo JText::_('OTHER'); ?></label>
 			</p>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="task" value="savereport" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="category" value="<?php echo $this->report->parent_category; ?>" />
 			<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
 			<input type="hidden" name="link" value="<?php echo $this->report->href; ?>" />

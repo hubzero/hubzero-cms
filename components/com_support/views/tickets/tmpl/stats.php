@@ -38,8 +38,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a class="ticket" href="/support/tickets"><?php echo JText::_('All Tickets'); ?></a></li>
-		<li class="last"><a class="new-ticket" href="/feedback/report_problems/"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
+		<ul id="useroptions">
+			<li><a class="tickets" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>"><?php echo JText::_('Tickets'); ?></a></li>
+			<li class="last"><a class="new-ticket" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
+		</ul>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -51,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="clear"></div>
 </div><!-- / #sub-menu -->
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=stats'); ?>" method="get" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
 <div class="main section" id="ticket-stats">
 	<h3>Overview</h3>
 

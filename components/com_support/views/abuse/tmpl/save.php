@@ -36,9 +36,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header -->
 
 <div class="main section">
-	<p class="warning"><?php echo JText::_('Please login to view support tickets.'); ?></p>
-<?php
-ximport('Hubzero_Module_Helper');
-Hubzero_Module_Helper::displayModules('force_mod');
-?>
+	<p>
+		<?php echo JText::_('REPORT_ABUSE_THANKS'); ?>
+<?php if ($this->returnlink) { ?>
+ 		<a href="<?php echo $this->returnlink; ?>"><?php echo JText::_('REPORT_ABUSE_CONTINUE'); ?></a>
+<?php } ?>
+	</p>
 </div><!-- / .main section -->

@@ -31,16 +31,33 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
+<?php if ($this->no_html) { ?>
+<div id="report-response">
+	<div>
+		<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
+		<p><button onclick="javascript:HUB.ReportProblem.resetForm();" title="<?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?></button></p>
+	</div>
+	<p>
+		<?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?><br /><br />
+		<?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?>
+	</p>
+</div>
+<script type="text/javascript">window.top.window.HUB.ReportProblem.hideTimer();</script>
+<!-- </body>
+</html> -->
+<?php } else { ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
 <div class="main section">
-	<h3><?php echo JText::_('REPORT_ABUSE'); ?>
-	<p>
-		<?php echo JText::_('REPORT_ABUSE_THANKS'); ?>
-<?php if ($this->returnlink) { ?>
- 		<a href="<?php echo $this->returnlink; ?>"><?php echo JText::_('REPORT_ABUSE_CONTINUE'); ?></a>
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	</p>
+	<p><?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?></p>
+	<p class="information"><?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?></p>
+<?php if ($this->ticket) { ?>
+	<p><?php echo JText::sprintf('COM_SUPPORT_TROUBLE_TICKET_REFERENCE', $this->ticket); ?></p>
+<?php } ?>
 </div><!-- / .main section -->
+<?php } ?>

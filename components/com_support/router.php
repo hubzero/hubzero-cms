@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'supportBuildRoute'
@@ -43,12 +43,14 @@ function supportBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['view']) && strncmp($query['view'],'article',7) == 0 ) {
-		unset( $query['view'] );
-		unset( $query['id'] );
+	if (!empty($query['view']) && strncmp($query['view'], 'article', 7) == 0) 
+	{
+		unset($query['view']);
+		unset($query['id']);
 	}
 
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		switch ($query['task'])
 		{
 			case 'delete':
@@ -60,34 +62,30 @@ function supportBuildRoute(&$query)
 				$segments[] = $query['task'];
 				unset($query['task']);
 
-				if (!empty($query['id'])) {
+				if (!empty($query['id'])) 
+				{
 					$segments[] = $query['id'];
 					unset($query['id']);
 				}
-				if (!empty($query['file'])) {
+				if (!empty($query['file'])) 
+				{
 					$segments[] = $query['file'];
 					unset($query['file']);
 				}
-			/*break;
-			
-			case 'ticket':
-				if (!empty($query['id'])) {
-					$segments[] = 'ticket';
-					$segments[] = $query['id'];
-					unset($query['task']);
-					unset($query['id']);
-				}
-			break;
-			
-			case 'delete':
-				if (!empty($query['id'])) {
-					$segments[] = 'delete';
-					$segments[] = $query['id'];
-					unset($query['task']);
-					unset($query['id']);
-				}*/
 			break;
 
+			case 'new':
+				$segments[] = 'ticket';
+				$segments[] = 'new';
+				unset($query['task']);
+			break;
+			
+			case 'update':
+				$segments[] = 'ticket';
+				$segments[] = 'update';
+				unset($query['task']);
+			break;
+			
 			case 'feed':
 				$segments[] = 'tickets';
 				$segments[] = 'feed';
@@ -95,11 +93,20 @@ function supportBuildRoute(&$query)
 			break;
 
 			default:
-				$segments[] = $query['task'];
+				if (!empty($query['controller']) && $query['task'] == 'display') 
+				{
+					$segments[] = $query['controller'];
+				}
+				else 
+				{
+					$segments[] = $query['task'];
+				}
 				unset($query['task']);
 			break;
 		}
 	}
+	
+	unset($query['controller']);
 
 	return $segments;
 }
@@ -118,10 +125,12 @@ function supportParseRoute($segments)
 
 	$count = count($segments);
 
-	if ($count == 0) {
+	if ($count == 0) 
+	{
 		$vars['option'] = 'com_support';
 		$vars['view'] = '';
 		$vars['task'] = '';
+		$vars['controller'] = 'index';
 		return $vars;
 	}
 
@@ -133,27 +142,56 @@ function supportParseRoute($segments)
 		break;
 
 		case 'tickets':
-			if (isset($segments[1])) {
+			if (isset($segments[1])) 
+			{
 				$vars['task'] = 'feed';
 				$vars['no_html'] = 1;
 				$_GET['no_html'] = 1;
-			} else {
+			} 
+			else 
+			{
 				$vars['task'] = 'tickets';
 			}
+			$vars['controller'] = 'tickets';
+		break;
+
+		case 'reportabuse':
+			$vars['task'] = (isset($segments[0])) ? $segments[0] : '';
+			if (!empty($segments[1])) 
+			{
+				if (is_numeric($segments[1]))
+				{
+					$vars['id'] = $segments[1];
+				}
+				else 
+				{
+					$vars['task'] = $segments[1];
+				}
+			}
+			$vars['controller'] = 'abuse';
 		break;
 
 		case 'ticket':
 		case 'delete':
-		case 'reportabuse':
 		default:
 			$vars['task'] = (isset($segments[0])) ? $segments[0] : '';
 
-			if (!empty($segments[1])) {
-				$vars['id'] = $segments[1];
+			if (!empty($segments[1])) 
+			{
+				if (is_numeric($segments[1]))
+				{
+					$vars['id'] = $segments[1];
+				}
+				else 
+				{
+					$vars['task'] = $segments[1];
+				}
 			}
-			if (!empty($segments[2])) {
+			if (!empty($segments[2])) 
+			{
 				$vars['file'] = $segments[2];
 			}
+			$vars['controller'] = 'tickets';
 		break;
 	}
 
