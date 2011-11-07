@@ -414,13 +414,13 @@ class Hubzero_Controller extends JObject
 	 */
 	protected function _buildTitle()
 	{
-		$title = JText::_(strtoupper($this->_option));
+		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task)
 		{
-			$title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
 		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		$document->setTitle($this->_title);
 	}
 
 	/**
