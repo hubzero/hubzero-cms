@@ -1006,6 +1006,8 @@ class ResourcesController extends Hubzero_Controller
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}
+		
+		$this->resource = $resource;
 
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $resource->id, $database );
@@ -2398,8 +2400,7 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		// Check if they're the resource creator
-		$resource = $this->resource;
-		if (is_object($resource) && $resource->created_by == $this->juser->get('id')) {
+		if (is_object($this->resource) && $this->resource->created_by == $this->juser->get('id')) {
 			return true;
 		}
 
