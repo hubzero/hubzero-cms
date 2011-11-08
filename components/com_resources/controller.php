@@ -561,7 +561,7 @@ class ResourcesController extends Hubzero_Controller
 				$helper->getFirstChild();
 
 				$helper->getContributorIDs();
-				$bits['authorized'] = $this->_authorize( $helper->contributorIDs );
+				$bits['authorized'] = $this->_authorize( $helper->contributorIDs, $resource );
 
 				// Get the first child
 				if ($helper->firstChild || $resource->type == 7) {
@@ -1006,15 +1006,13 @@ class ResourcesController extends Hubzero_Controller
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}
-		
-		$this->resource = $resource;
 
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $resource->id, $database );
 
 		// Is the visitor authorized to edit this resource?
 		$helper->getContributorIDs();
-		$authorized = $this->_authorize( $helper->contributorIDs );
+		$authorized = $this->_authorize( $helper->contributorIDs, $resource );
 
 		// Make sure they have access to view this resource
 		if ($resource->access == 4) {
@@ -2387,7 +2385,7 @@ class ResourcesController extends Hubzero_Controller
 	 * @param      array $contributorIDs Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	protected function _authorize($contributorIDs=array())
+	protected function _authorize($contributorIDs=array(), $resource=null)
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
@@ -2400,7 +2398,7 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		// Check if they're the resource creator
-		if (is_object($this->resource) && $this->resource->created_by == $this->juser->get('id')) {
+		if (is_object($resource) && $resource->created_by == $this->juser->get('id')) {
 			return true;
 		}
 
