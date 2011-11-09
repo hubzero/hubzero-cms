@@ -32,19 +32,15 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'ImageMacro'
- * 
- * Long description (if any) ...
+ * A wiki macro for embedding images
  */
 class ImageMacro extends WikiMacro
 {
 
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
 	public function description()
 	{
@@ -128,159 +124,272 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output based on passed arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string HTML image tag on success or error message on failure
 	 */
 	public function render()
 	{
 		$content = $this->args;
-
+		
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) {
+		if (!$content) 
+		{
 			return '';
 		}
+		
+		// Parse arguments
+        // We expect the 1st argument to be a filename
+		$args   = explode(',', $content);
+		$file   = array_shift($args);
 
-		// parse arguments
-        // we expect the 1st argument to be a filename (filespec)
-		$args = split(',', $content);
-		$file = array_shift($args);
+		$size   = '/[0-9+](%|px)?$/';
+		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
+		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
+		
+		// Collected attributes
+		$attr   = array();
+		$attr['href']  = '';
+		$attr['style'] = array();
 
-		// style information
-        $size_re = '/[0-9+](%|px)?$/';
-        $attr_re = '/(align|border|width|height|alt|title|longdesc|class|id|usemap)=(.+)/';
-        $quoted_re = "/(?:[\"'])(.*)(?:[\"'])$/";
-        $attr = array();
-        $style = array();
-		$href = '';
-        $link = '';
-		$rel = 'lightbox';
-
-		foreach ($args as $arg)
+		foreach ($args as $arg) 
 		{
 			$arg = trim($arg);
-			if (preg_match($size_re, $arg, $matches)) {
-				// 'width' keyword
-                $attr['width'] = $arg;
+
+			// Set width if just a pixel size is given 
+			// e.g., [[File(myfile.jpg, 120px)]]
+			if (!strstr($arg, '=') && preg_match($size, $arg, $matches)) 
+			{
+				if ($matches[0])
+				{
+					$attr['width'] = $arg;
+	                continue;
+				}
+			}
+			// Specific call to NOT link an image
+			// Links images by default
+			if ($arg == 'nolink') 
+			{
+                $attr['href'] = 'none';
                 continue;
 			}
-			if ($arg == 'nolink') {
-                $link = 'none';
-                continue;
-			}
-			if (substr($arg, 0, 5) == 'link=') {
+			// Check for a specific link given
+			if (substr($arg, 0, 5) == 'link=') 
+			{
+				$attr['href'] = 'none';
                 $bits = split('=', $arg);
 				$val = trim(end($bits));
-				$elt = $val; //extract_link($val);
-				$href = 'none';
-				if ($elt) {
-					$href = $elt;
-					$rel = 'external';
+				if ($val) 
+				{
+					$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+					if (preg_match("/$urlPtrn/", $val))
+					{
+						$attr['href'] = $val;
+						$attr['rel']  = 'external';
+					}
 				}
                 continue;
 			}
-			if (in_array($arg, array('left','right','top','bottom'))) {
-				$style['float'] = $arg;
+			// Check for alignment, no key given
+			// e.g., [[File(myfile.jpg, left)]]
+			if (in_array($arg, array('left', 'right', 'top', 'bottom'))) 
+			{
+				$attr['style']['float'] = $arg;
 				continue;
 			}
-			preg_match($attr_re, $arg, $matches);
-			if ($matches) {
-				//print_r($matches);
-				//foreach ($matches as $key=>$val) 
-				//{
-					$key = $matches[1];
-					$val = $matches[2];
-					$m = preg_match($quoted_re, $val, $m);
-					if ($m) {
-						$val = trim($m,'"');
-						$val = trim($val,"'");
-					}
-					if ($key == 'align') {
-						$style['float'] = $val;
-					} else if ($key == 'border') {
-						$style['border'] = ' '.intval($val).'px solid';
-					} else {
-						$attr[$key] = $val;
-					}
-				//}
-			}
-		}
 
-		// parse file argument to get realm and id if contained.
-		$parts = explode(':',$file);
-		if (count($parts) == 3) { // realm:id:attachment-filename
-			$realm = $parts[0];
-			$id = $parts[1];
-			$filename = $parts[2];
-			// Realm not fully implemented
-		} else if (count($parts) == 2) {
-			$realm = $parts[0];
-			$filename = $parts[1];
-			// Realm not fully implemented
-		} else if (count($parts) == 1) { // it's an attachment of the current resource
-			$filename = $parts[0];
-		} else {
-			return '(Image('.$content.') failed - No file given)';
-		}
-
-		if (substr($file,0,1) == DS) {
-			//$file = substr($file,1);
-
-			$path = JPATH_ROOT.$file;
-
-			$link = ($link) ? $link : $file;
-			$href = ($href) ? $href : $file;
-		} else {
-			$config = JComponentHelper::getParams( 'com_wiki' );
-			if ($this->filepath != '') {
-				$config->set('filepath', $this->filepath);
-			}
-
-			$path  = JPATH_ROOT.$config->get('filepath');
-			$path .= ($this->pageid) ? DS.$this->pageid : '';
-			$path .= DS.$filename;
-
-			/*
-			$link  = $config->get('filepath');
-			$link .= ($this->pageid) ? DS.$this->pageid : '';
-			$link .= DS.$filename;
-			*/
-			$link  = substr($this->option,4,strlen($this->option)).DS;
-			$link .= ($this->scope) ? $this->scope.DS : '';
-			$link .= $this->pagename.DS.'Image:'.$filename;
-
-			$href = ($href) ? $href : $link;
-		}
-
-		if (!is_file($path)) {
-			return '(Image('.$content.') failed - File not found)<!-- '.$path.' -->';
-		}
-
-		if (count($style) > 0) {
-			$s = array();
-			foreach ($style as $k=>$v)
+			// Look for any other attributes
+			preg_match($attrs, $arg, $matches);
+			
+			if ($matches) 
 			{
-				$s[] = $k.':'.$v;
+				$key = strtolower($matches[1]);
+				$val = $matches[2];
+				$m = preg_match($quoted, $val, $m);
+				if ($m) 
+				{
+					$val = trim($val, '"');
+					$val = trim($val, "'");
+				}
+				if ($key == 'align') 
+				{
+					$attr['style']['float'] = $val;
+				} 
+				else if ($key == 'border') 
+				{
+					$attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
+				} 
+				else 
+				{
+					$attr[$key] = $val;
+				}
+				//$attr[$key] = $val;
 			}
-			$attr['style'] = implode('; ',$s);
 		}
 
-		$attribs = array();
-		foreach ($attr as $k=>$v)
+		// Get wiki config
+		$this->config = JComponentHelper::getParams('com_wiki');
+		if ($this->filepath != '') 
 		{
-			$attribs[] = $k.'="'.$v.'"';
+			$this->config->set('filepath', $this->filepath);
 		}
+		$imgs = explode(',', $this->config->get('img_ext'));
+		array_map('trim', $imgs);
+		array_map('strtolower', $imgs);
+		$this->imgs = $imgs;
 
-		$img = '<img src="'.$link.'" '.implode(' ',$attribs).' alt="'.$filename.'" />';
+		$ret = false;
+		// Is it numeric?
+		if (is_numeric($file)) 
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
-		if (!$href || $href == 'none') {
-			return $img;
-		} else {
-			//return '['.$link.' '.$img.']';
-			return '<a rel="'.$rel.'" href="'.$href.'" alt="">'.$img.'</a>';
+			// Get resource by ID
+			$attach = new WikiPageAttachment($this->_db);
+			$attach->load(intval($file));
+
+			// Check for file existence
+			if ($attach->filename && file_exists($this->_path($attach->filename))) 
+			{
+				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
+				if (!$attr['desc'])
+				{
+					$attr['desc'] = ($attach->description) ? stripslashes($attach->description) : $attach->filename;
+				}
+
+				$ret = true;
+			}
 		}
+		// Check for file existence
+		else if (file_exists($this->_path($file))) 
+		{
+			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
+			
+			$ret = true;
+		} 
+		
+		// Does the file exist?
+		if ($ret)
+		{
+			jimport('joomla.filesystem.file');
+
+			if (!in_array(strtolower(JFile::getExt($file)), $this->imgs)) 
+			{
+				return '(Image(' . $content . ') failed - File provided is not an allowed image type)';
+			}
+
+			// Return HTML
+			return $this->_embed($file, $attr);
+		}	
+		else 
+		{
+			// Return error message
+			return '(Image(' . $content . ') failed - File not found)';
+		}
+	}
+	
+	/**
+	 * Generate an absolute path to a file stored on the system
+	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
+	 * 
+	 * @param      string $file Filename
+	 * @return     string
+	 */
+	private function _path($file)
+	{
+		if (substr($file, 0, 1) == DS) 
+		{
+			$path = JPATH_ROOT . $file;
+		}
+		else 
+		{
+			$path  = JPATH_ROOT . $this->config->get('filepath');
+			$path .= ($this->pageid) ? DS . $this->pageid : '';
+			$path .= DS . $file;
+		}
+		
+		return $path;
+	}
+	
+	/**
+	 * Generate a link to a file
+	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
+	 * 
+	 * @param      string $file Filename
+	 * @return     string
+	 */
+	private function _link($file)
+	{
+		$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+		if (preg_match("/$urlPtrn/", $file))
+		{
+			return $file;
+		}
+		
+		$file = trim($file, DS);
+		
+		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
+		if ($this->scope) 
+		{
+			$scope = trim($this->scope, DS);
+			
+			$link .= $scope . DS;
+		}
+		$link .= $this->pagename . DS . $type . 'Image:' . $file;
+		
+		return JRoute::_($link);
+	}
+	
+	/**
+	 * Generates HTML to embed an <img>
+	 * 
+	 * @param      string $file File to embed
+	 * @param      array  $attr Attributes to apply to the HTML
+	 * @return     string
+	 */
+	private function _embed($file, $attr=array())
+	{
+		$attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
+				
+		if (count($attr['style']) > 0) 
+		{
+			$s = array();
+			foreach ($attr['style'] as $k => $v)
+			{
+				$s[] = strtolower($k) . ':' . $v;
+			}
+			$attr['style'] = implode('; ', $s);
+		}
+		else 
+		{
+			$attr['style'] = '';
+		}
+		
+		$attribs = array();
+		foreach ($attr as $k => $v)
+		{
+			$k = strtolower($k);
+			if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v)
+			{
+				$attribs[] = $k . '="' . $v . '"';
+			}
+		}
+		
+		$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . '" />';
+		
+		if ($attr['href'] == 'none') 
+		{
+			$html = $img;
+		} 
+		else 
+		{
+			$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
+			$attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
+
+			$html = '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';
+		}
+		
+		return $html;
 	}
 }
 
