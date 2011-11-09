@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        templates/hubbasic/html/mod_reportproblems/mod_reportproblems.css
+ * @file        modules/mod_reportproblems/mod_reportproblems.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -76,16 +76,16 @@
 		margin: 0;
 		}
 	#help-container li.help-wish {
-		background: url("../../../../modules/mod_reportproblems/images/wishbone.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/wishbone.png") 0 0.7em no-repeat;
 		}
 	#help-container li.help-tickets {
-		background: url("../../../../modules/mod_reportproblems/images/ticket.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/ticket.png") 0 0.7em no-repeat;
 		}
 	#help-container li.help-kb {
-		background: url("../../../../modules/mod_reportproblems/images/bulb.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/bulb.png") 0 0.7em no-repeat;
 		}
 	#help-container li.help-qa {
-		background: url("../../../../modules/mod_reportproblems/images/qa.png") 0 0.7em no-repeat;
+		background: url("/modules/mod_reportproblems/images/qa.png") 0 0.7em no-repeat;
 		}
 	#help-container li p {
 		margin: 0;
@@ -155,9 +155,6 @@
 	#help-container textarea.long {
 		height: 166px;
 		}
-	#help-container input[type=file] {
-		color:#777;
-		}
 	#trUpload {
 		margin-bottom: 1.5em;
 		}
@@ -216,13 +213,16 @@
 	#trSuccess {
 		display: none;
 		}
+	#help-container label#trBotcheck-label {
+		display: none;
+		}
 	#help-btn-close {
 		position: absolute;
 		width: 30px;
 		height: 30px;
 		right: 40px;
 		top: 15px;
-		background: url("../../../../modules/mod_reportproblems/images/close.png") no-repeat top left;
+		background: url("/modules/mod_reportproblems/images/close.png") no-repeat top left;
 		border: none;
 		text-indent: -55em;
 		overflow: hidden;
@@ -231,6 +231,10 @@
 	#help-btn-close:hover {
 		background-position: 0 -30px;
 		}
+	.filetypes {
+		color:#F00;
+		font-size:0.5em;
+	}
 /* Help Tab */
 	#tab {
 		float: right;
