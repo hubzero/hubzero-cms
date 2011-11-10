@@ -38,7 +38,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</param>
 		<param name="uploadpath" type="text" menu="hide" default="/site/groups" label="Upload path" description="File path for pictures" size="50" />
-		<param name="iconpath" type="text" menu="hide" default="/components/com_groups/images/icons" label="Icons" description="File path for icons" size="50" />
+		<param name="iconpath" type="text" menu="hide" default="/components/com_groups/assest/img/icons" label="Icons" description="File path for icons" size="50" />
 		<param name="join_policy" type="list" default="0" label="Default Join Policy" description="The default default join policy for new groups.">
 			<option value="0">Public</option>
 			<option value="1">Restricted</option>
