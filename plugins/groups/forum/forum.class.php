@@ -195,9 +195,9 @@ class XForum extends JTable
 			if (isset($filters['group']) && $filters['group'] != 0) {
 				$query .= "c.group=".$filters['group']." AND ";
 			}
-			if (!isset($filters['authorized']) || !$filters['authorized']) {
-				$query .= "c.access=0 AND ";
-			}
+			//if (!isset($filters['authorized']) || !$filters['authorized']) {
+			//	$query .= "c.access=0 AND ";
+			//}
 			if (isset($filters['search']) && $filters['search'] != '') {
 				$query .= "(c.topic LIKE '%".$filters['search']."%' OR c.comment LIKE '%".$filters['search']."%') AND ";
 			}

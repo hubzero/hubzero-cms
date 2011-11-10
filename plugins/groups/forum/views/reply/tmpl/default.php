@@ -121,10 +121,12 @@ if ($this->row->parent) {
 					<?php } else { ?>
 						<input type="hidden" name="topic[sticky]" id="forum_sticky" value="<?php echo $this->row->sticky; ?>" />
 					<?php } ?>
+					<!--
 					<label>
 						<input class="option" type="checkbox" name="topic[access]" id="forum_access"<?php if ($this->row->access != 4) { echo ' checked="checked"'; } ?> /> 
 						<?php echo JText::_('PLG_GROUPS_FORUM_FORM_ACCESS'); ?>
 					</label>
+					-->
 					<label>
 						<?php echo JText::_('PLG_GROUPS_FORUM_FORM_TOPIC'); ?>
 						<input type="text" name="topic[topic]" id="forum_topic" value="<?php echo htmlentities(stripslashes($this->row->topic), ENT_QUOTES); ?>" size="38" />

@@ -209,7 +209,7 @@ class plgGroupsForum extends Hubzero_Plugin
 	{
 		// Incoming
 		$filters = array();
-		$filters['authorized'] = $this->authorized;
+		//$filters['authorized'] = $this->authorized;
 		$filters['limit'] = $this->limit;
 		$filters['start'] = $this->limitstart;
 		$filters['group'] = $this->group->get('gidNumber');
@@ -273,7 +273,7 @@ class plgGroupsForum extends Hubzero_Plugin
 	{
 		// Incoming
 		$filters = array();
-		$filters['authorized'] = $this->authorized;
+		//$filters['authorized'] = $this->authorized;
 		$filters['limit']  = $this->limit;
 		$filters['start']  = $this->limitstart;
 		$filters['parent'] = ($id) ? $id : JRequest::getInt( 'topic', 0 );
@@ -289,9 +289,9 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Load the topic
 		$forum->load( $filters['parent'] );
 
-		if ($forum->access == 4 && !$this->authorized) {
-			return $this->topics();
-		}
+		//if ($forum->access == 4 && !$this->authorized) {
+		//	return $this->topics();
+		//}
 
 		// Get reply count
 		$total = $forum->getCount( $filters );
