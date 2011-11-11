@@ -312,8 +312,8 @@ var TextboxList = new Class({
 	
 	makeResizable: function(li) {
 		var el = li.retrieve('input');
-		var minw = (el.offsetWidth > 150) ? el.offsetWidth : 150;
-		el.store('resizable', new ResizableTextbox(el, $extend(this.options.resizable, {min: minw, max: this.element.getStyle('width').toInt()})));
+		var minw = (el.offsetWidth > 150) ? el.offsetWidth : 150; //min: minw, max: this.element.getStyle('width').toInt()
+		el.store('resizable', new ResizableTextbox(el, $extend(this.options.resizable, {})));
 		return this;
 	},
   
