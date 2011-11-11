@@ -90,6 +90,12 @@ class FeedbackController extends Hubzero_Controller
 	 */
 	protected function quotes()
 	{
+		if (JRequest::getMethod() == 'POST')
+		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+		}
+
 		// Instantiate a new view
 		$view = new JView(array('name'=>'quotes'));
 		$view->option = $this->_option;
@@ -192,6 +198,12 @@ class FeedbackController extends Hubzero_Controller
 	 */
 	protected function edit()
 	{
+		if (JRequest::getMethod() == 'POST')
+		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+		}
+
 		// Instantiate a new view
 		$view = new JView(array('name'=>'quote'));
 		$view->option = $this->_option;
