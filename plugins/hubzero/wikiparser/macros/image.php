@@ -335,7 +335,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			
 			$link .= $scope . DS;
 		}
-		$link .= $this->pagename . DS . $type . 'Image:' . $file;
+		$link .= $this->pagename . DS . 'Image:' . $file;
 		
 		return JRoute::_($link);
 	}

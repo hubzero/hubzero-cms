@@ -383,7 +383,7 @@ class FileMacro extends WikiMacro
 				}
 				else
 				{
-					$attr['href'] = (isset($attr['href'])) ? $attr['href'] : $this->_link($file);
+					$attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->_link($file);
 					$attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
 					
 					$html = '<a class="attachment" rel="' . $attr['rel'] . '" href="' . $attr['href'] . '" title="' . $attr['alt'] . '">' . $attr['desc'] . '</a>';
