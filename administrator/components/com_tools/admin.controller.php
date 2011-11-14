@@ -331,7 +331,7 @@ class ToolsController
 			$query = "SELECT * FROM sessionlog ORDER BY sessnum";
 		} else {
 			$query = "SELECT * FROM sessionlog 
-					WHERE username='" . $juser->get('username') . "' 
+					WHERE username='" . $mwdb->Quote($juser->get('username')) . "' 
 					ORDER BY sessnum";
 		}
 		$mwdb->setQuery($query);
@@ -478,7 +478,7 @@ class ToolsController
 		{
 			case 'edit':
 				//$this->print_post();
-				$query = "SELECT * FROM host WHERE hostname='$filter_hostname'";
+				$query = "SELECT * FROM host WHERE hostname=" . $mwdb->Quote($filter_hostname);
 				$mwdb->setQuery($query);
 				$result = $mwdb->query();
 				//$this->check_mysql($mwdb,$result,$query);
@@ -512,12 +512,12 @@ class ToolsController
 
 					if ($filter_hostname != '') {
 						echo "<p>Updating $hostname</p>\n";
-						$query = "UPDATE host SET hostname='$hostname',provisions=$h,status='$status' WHERE hostname='$filter_hostname'";
+						$query = "UPDATE host SET hostname=".$mwdb->Quote($hostname).",provisions=".$mwdb->Quote($h).",status=".$mwdb->Quote($status) . " WHERE hostname=" . $mwdb->Quote($filter_hostname) .";";
 						$mwdb->setQuery($query);
 						$result = $mwdb->query();
 					} else {
 						echo "<p>Inserting $hostname</p>\n";
-						$query = "INSERT INTO host(hostname,provisions,status) VALUES('$hostname', $h, '$status')";
+						$query = "INSERT INTO host(hostname,provisions,status) VALUES(" . $mwdb->Quote($hostname) . ", " . $mwdb->Quote($h) . ", " . $mwdb->Quote($status) .");";
 						$mwdb->setQuery($query);
 						$result = $mwdb->query();
 					}
@@ -527,7 +527,7 @@ class ToolsController
 
 			case 'delete':
 				echo "<p>Deleting $hostname</p>\n";
-				$query = "DELETE FROM host WHERE hostname='$hostname'";
+				$query = "DELETE FROM host WHERE hostname=" . $mwdb->Quote($hostname) . ";";
 				$mwdb->setQuery($query);
 				$result = $mwdb->query();
 				break;
@@ -541,8 +541,8 @@ class ToolsController
 				break;
 
 			case 'toggle_hosttype':
-				$query = "SELECT @value:=value FROM hosttype WHERE name='$item'; 
-						UPDATE host SET provisions = provisions ^ @value WHERE hostname = '${hostname}'";
+				$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) .
+						" UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
 				$mwdb->setQuery($query);
 				if (defined('_JEXEC')) {
 					$result = $mwdb->queryBatch();
@@ -558,8 +558,8 @@ class ToolsController
 			echo "<p>Filtering on hosttype $filter_hosttype</p>\n";
 			$query = "SELECT host.* FROM host JOIN hosttype 
 					ON host.provisions & hosttype.value != 0 
-					WHERE hosttype.name = '$filter_hosttype' 
-					ORDER BY hostname";
+					WHERE hosttype.name = " . $mwdb->Quote($filter_hosttype) . 
+					" ORDER BY hostname";
 		} else {
 			$query = "SELECT * FROM host ORDER BY hostname";
 		}
@@ -606,7 +606,7 @@ class ToolsController
 		switch($op)
 		{
 			case 'edit':
-				$query = "SELECT * FROM $table WHERE name='$item'";
+				$query = "SELECT * FROM " . $mwdb->Quote($table) . " WHERE name=" . $mwdb->Quote($item) . ";";
 				$mwdb->setQuery($query);
 				$result = $mwdb->query();
 				//$this->check_mysql($mwdb,$result,$query);
@@ -619,7 +619,7 @@ class ToolsController
 				break;
 
 			case 'delete':
-				$query = "DELETE FROM $table WHERE name='$item'";
+				$query = "DELETE FROM " . $mwdb->Quote($table) . " WHERE name=" . $mwdb->Quote($item) . ";";
 				$mwdb->setQuery( $query );
 				$result = $mwdb->query();
 				//$this->check_mysql($mwdb,$result,$query);
@@ -631,12 +631,12 @@ class ToolsController
 				} else {
 					if (($table == 'hosttype' && $filter_hosttype != '')
 						) {
-						$query = "UPDATE $table SET name='$name', description='$description' WHERE name='$filter_hosttype'";
+						$query = "UPDATE " . $mwdb->Quote($table) ." SET name=" . $mwdb->Quote($name) . ", description=" . $mwdb->Quote($description) . " WHERE name=" . $mwdb->Quote($filter_hosttype).";";
 						$mwdb->setQuery( $query );
 						$result = $mwdb->query();
 						//$this->check_mysql($mwdb,$result,$query);
 					} else {
-						$query = "SELECT * FROM $table ORDER BY VALUE";
+						$query = "SELECT * FROM " . $mwdb->Quote($table) . " ORDER BY VALUE";
 						$mwdb->setQuery( $query );
 						$result = $mwdb->query();
 						//$this->check_mysql($mwdb,$result,$query);
@@ -659,7 +659,7 @@ class ToolsController
 							}
 						}
 						if ($name != '') {
-							$query = "INSERT INTO $table(name,value,description) VALUES('$name',$value,'$description')";
+							$query = "INSERT INTO " . $mwdb->Quote($table) . "(name,value,description) VALUES(" . $mwdb->Quote($name) . "," . $mwdb->Quote($value) . "," . $mwdb->Quote($description) . ");";
 							$mwdb->setQuery( $query );
 							$mwdb->query();
 						}
@@ -669,7 +669,7 @@ class ToolsController
 		}
 
 		// Form the query and show the table.
-		$query = "SELECT * FROM $table ORDER BY VALUE";
+		$query = "SELECT * FROM " . $mwdb->Quote($table) . " ORDER BY VALUE";
 		$mwdb->setQuery( $query );
 		$result = $mwdb->query();
 		//$this->check_mysql($mwdb,$result,$query);
@@ -699,7 +699,7 @@ class ToolsController
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 
-		$query = "SELECT count(*) AS count FROM host WHERE provisions & $value != 0";
+		$query = "SELECT count(*) AS count FROM host WHERE provisions & " . $mwdb->Quote($value) . " != 0";
 		$mwdb->setQuery( $query );
 		$elts = $mwdb->loadObjectList();
 		$elt  = $elts[0];
