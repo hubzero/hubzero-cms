@@ -122,7 +122,7 @@ class plgYSearchQuestions extends YSearchPlugin
 			end as rcontributor_ids
 			from jos_answers_questions q 
 			left join jos_answers_responses r on r.qid = q.id and r.state != 2
-			where $qweight > 0
+			where $qweight > 0 and q.state != 2
 			union
 			select 
 				q.id as qid, q.created as q_created, q.subject, q.question, r.id as rid, r.answer, r.created as r_created, null as qweight, $rweight as rweight,
@@ -143,7 +143,7 @@ class plgYSearchQuestions extends YSearchPlugin
 				else (select id from jos_users where username = r.created_by)
 			end as rcontributor_ids
 			from jos_answers_responses r2 
-			inner join jos_answers_questions q on q.id = r2.qid
+			inner join jos_answers_questions q on q.id = r2.qid and q.state != 2
 			left join jos_answers_responses r on r.qid = q.id and r.state != 2
 			where $r2weight > 0 and r2.state != 2
 			order by q_created, r_created"
