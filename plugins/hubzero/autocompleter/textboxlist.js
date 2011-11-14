@@ -85,6 +85,7 @@ Element.extend({
 var ResizableTextbox = new Class({
 	
 	options: {
+		len: 100,
 		min: 150,
 		max: 500,
 		step: 7
@@ -100,6 +101,10 @@ var ResizableTextbox = new Class({
 				this.store('rt-value', this.getProperty('value').length);
 			},
 			'keyup': function() {
+				if (this.getProperty('value').length > that.options.len) { 
+					this.value = this.getProperty('value').substr(0, that.options.len);
+					alert("Text too long. Must be 100 characters or less"); 
+				}
 				var newsize = that.options.step * this.getProperty('value').length;
 				if(newsize <= that.options.min) newsize = that.width;
 				if(! (this.getProperty('value').length == this.retrieve('rt-value') || newsize <= that.options.min || newsize >= that.options.max))
