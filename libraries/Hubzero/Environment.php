@@ -40,29 +40,26 @@ class Hubzero_Environment
 {
 
 	/**
-	 * Short description for 'server'
+	 * Checks the $_SERVER super-global for a given index
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $index Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $index Parameter to check for
+	 * @return     boolean True if found
 	 */
 	public function server($index = '')
 	{
-		if (!isset($_SERVER[$index])) {
-			return FALSE;
+		if (!isset($_SERVER[$index])) 
+		{
+			return false;
 		}
 
-		return TRUE;
+		return true;
 	}
 
 	/**
-	 * Short description for 'validIp'
+	 * Checks if an IP address is valid or not
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $ip Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $ip IP address to validate
+	 * @return     boolean True if IP is valid
 	 */
 	public function validIp($ip)
 	{
