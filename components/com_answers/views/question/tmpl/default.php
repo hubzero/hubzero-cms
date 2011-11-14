@@ -107,7 +107,6 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 </div><!-- / .main section -->
 <?php } else { ?>
 	<!-- <h3><?php echo JText::_('COM_ANSWERS_CLOSED_QUESTION'); ?></h3> -->
-<?php } ?>
 
 	<div class="aside">
 <?php if ($this->question->state == 0 && $this->responding != 1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
@@ -848,3 +847,4 @@ if ($this->responses) {
 	<div class="clear"></div>
 </div><!-- / .below section -->
 </div><!-- / .main section -->
+<?php } ?>
