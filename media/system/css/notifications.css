@@ -1,0 +1,169 @@
+/**
+ * @package     hubzero-cms
+ * @file        media/hubzero/css/notifications.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Notifications */
+.archive,
+.help,
+.info,
+.information,
+.alert,
+.warning,
+.failed,
+.error,
+.passed,
+.locked,
+.timed,
+.flagged { 
+	margin: 1em 0;
+	padding: 10px 10px 10px 30px; 
+}
+.help,
+.info,
+.information { 
+	border: 1px solid #C2D6EF; 
+	color: #4379CA; 
+}
+.help { 
+	background: #f6efff url("/media/system/images/help.png") 10px 10px no-repeat;
+	border: 1px solid #d7c2ef; 
+	color: #8a42cd;
+}
+.info,
+.information { 
+	background: #EFF7FF url("/media/system/images/information.png") 10px 10px no-repeat;
+}
+.help a,
+.info a {
+	color: blue;
+	border-bottom: 1px solid blue;
+}
+.help a:hover,
+.info a:hover,
+.information a:hover {
+	color: #000;
+	border-bottom: 1px solid #000;
+}
+.alert,
+.warning { 
+	border: 1px solid #EFEAC2; 
+	color: #CC6633; 
+	background: #FFFDEF url("/media/system/images/warning.png") 10px 10px no-repeat;
+}
+.failed,
+.error { 
+	border: 1px solid #EFCCC2; 
+	color: #CC0000;
+	background: #FFF2EF url("/media/system/images/error.png") 10px 10px no-repeat; 
+}
+.passed { 
+	border: 1px solid #CDDECA; 
+	color: #7AAB69;
+	background: #F3FDF0 url("/media/system/images/accept.png") 10px 10px no-repeat; 
+}
+.archive { 
+	border: 1px solid #ccc; 
+	color: #777;
+	background: #efefef url("/media/system/images/archive.png") 10px 10px no-repeat;
+}
+.locked { 
+	border: 1px solid #EFEAC2; 
+	color: #CC6633; 
+	background: #FFFDEF url("/media/system/images/lock.png") 10px 10px no-repeat;
+}
+.timed { 
+	border: 1px solid #e9dab3; 
+	color: #ad733f; 
+	background: #f5efe2 url("/media/system/images/hourglass.png") 10px 10px no-repeat;
+}
+.flagged { 
+	border: 1px solid #EFCCC2; 
+	color: #CC0000;
+	background: #FFF2EF url("/media/system/images/flag.png") 10px 10px no-repeat;
+}
+.archive h4,
+.passed h4,
+.failed h4,
+.help h4,
+.info h4,
+.information h4,
+.warning h4,
+.error h4,
+.timed h4,
+.flagged h4 { 
+	margin-top: 0;
+	padding-top: 0;
+}
+.failed h4,
+.error h4 {
+	color: #CC0000;
+}
+.help h4 {
+	color: #8a42cd;
+}
+.info h4,
+.information h4 {
+	color: #4379CA;
+}
+.warning h4 {
+	color: #CC6633;
+}
+.passed h4 {
+	color: #360;
+}
+
+/* System Messages */
+#system-message {
+	margin: 0;
+	padding: 1em 0 0 0;
+}
+#system-message dt {
+	margin: 0;
+	padding: 10px 0 0 30px;
+	font-weight: bold;
+	border: 1px solid #C2D6EF; 
+	color: #4379CA; 
+	background: #EFF7FF url("/media/system/images/information.png") 10px 10px no-repeat;
+	border-bottom: none;
+}
+#system-message dd {
+	margin: 0;
+	padding: 0 10px 10px 30px;
+	border: 1px solid #C2D6EF;
+	border-top: none;
+	color: #4379CA;
+	background: #EFF7FF;
+}
+#system-message dd ul,
+#system-message dd ul li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Errors */
+#system-message.errors dt {
+	color: #CC0000;
+	background: #FFF2EF url("/media/system/images/error.png") 10px 10px no-repeat;
+	border-color: #EFCCC2; 
+}
+#system-message.errors dd {
+	color: #CC0000;
+	background: #FFF2EF;
+	border-color: #EFCCC2;
+}
+
+/* Warnings */
+#system-message.warnings dt {
+	border-color: #EFEAC2;
+	color: #CC6633; 
+	background: #FFFDEF url("/media/system/images/warning.png") 10px 10px no-repeat;
+}
+#system-message.warnings dd {
+	border-color: #EFEAC2; 
+	color: #CC6633; 
+	background: #FFFDEF;
+}

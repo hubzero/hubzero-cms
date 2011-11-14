@@ -1,0 +1,127 @@
+/**
+ * @package     hubzero-cms
+ * @file        media/hubzero/css/columns.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+	.columns {
+		margin: 0 5% 0 0;
+		padding: 0;
+		border: none;
+		float: left;
+		text-align: left;
+	}
+/* Two */
+	.two { 
+		width: 47.5%; 
+	}
+/* Three */
+	.three {
+		width: 30%;
+	}
+	.three.first.second,
+	.three.second.third {
+		width: 65%;
+	}
+/* Four */
+	.four {
+		width: 21.25%;
+	}
+	.four.first.second,
+	.four.second.third,
+	.four.third.fourth {
+		width: 47.5%;
+	}
+	.four.first.second.third,
+	.four.second.third.fourth {
+		width: 73.75%;
+	}
+/* Five */
+	.five {
+		width: 16%;
+	}
+	.five.first.second,
+	.five.second.third,
+	.five.third.fourth,
+	.five.fourth.fifth { 
+		width: 37%;
+	}
+	.five.first.second.third,
+	.five.second.third.fourth,
+	.five.third.fourth.fifth {
+		width: 58%;
+	}
+	.five.first.second.third.fourth,
+	.five.second.third.fourth.fifth {
+		width: 79%;
+	}
+/* Six */
+	.six {
+		width: 12.5%;
+	}
+	.six.first.second,
+	.six.second.third,
+	.six.third.fourth,
+	.six.fourth.fifth,
+	.six.fifth.sixth { 
+		width: 30%;
+	}
+	.six.first.second.third,
+	.six.second.third.fourth,
+	.six.third.fourth.fifth,
+	.six.fourth.fifth.sixth {
+		width: 47.5%;
+	}
+	.six.first.second.third.fourth,
+	.six.second.third.fourth.fifth,
+	.six.third.fourth.fifth.sixth {
+		width: 65%;
+	}
+	.six.first.second.third.fourth.fifth,
+	.six.second.third.fourth.fifth.sixth {
+		width: 82.5%;
+	}
+	.two.second,
+	.three.third,
+	.four.fourth,
+	.five.fifth,
+	.six.sixth {
+		margin-right: 0!important;
+	}
+/* Clear */
+	.two.second:before,
+	.two.second:after,
+	.three.third:before,
+	.three.third:after,
+	.four.fourth:before,
+	.four.fourth:after,
+	.five.fifth:before,
+	.five.fifth:after,
+	.six.sixth:before,
+	.six.sixth:after {
+		content: "";
+	    display: table;
+	}
+	.two.second:after,
+	.three.third:after,
+	.four.fourth:after,
+	.five.fifth:after,
+	.six.sixth:after {
+	    clear: both;
+	}
+	/* For IE 6/7 (trigger hasLayout) */
+	.two.second,
+	.three.third,
+	.four.fourth,
+	.five.fifth
+	.six.sixth {
+	    zoom: 1;
+	}
+	.clearfix:after {
+		content: "."; 
+		display: block; 
+		height: 0;
+		line-height: 0em;
+		clear: both; 
+		visibility: hidden;
+	}
