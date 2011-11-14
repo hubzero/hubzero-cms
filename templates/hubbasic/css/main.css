@@ -6,7 +6,9 @@
  */
 
 /* Core stylesheets */
-@import url("reset.css"); /* Mass reset */
+@import url("/media/system/css/reset.css"); /* Mass reset */
+@import url("/media/system/css/columns.css"); /* Flexible columns */
+@import url("/media/system/css/notifications.css"); /* Notifications */
 
 /*---------------------------------------------------------------
 	Body
@@ -272,158 +274,6 @@
 		color: #CC0000;
 		background: #FFF2EF url("../images/icons/error.gif") 10px 10px no-repeat; 
 		}
-	.archive,
-	.help,
-	.info,
-	.information,
-	.alert,
-	.warning,
-	.failed,
-	.error,
-	.passed,
-	.locked,
-	.timed,
-	.flagged { 
-		margin: 1em 0 1em 0;
-		padding: 10px 10px 10px 30px; 
-		}
-	.help { 
-		background: #f6efff url("../images/icons/help.png") 10px 10px no-repeat;
-		border: 1px solid #d7c2ef; 
-		color: #8a42cd;
-		}
-	.info,
-	.information { 
-		background: #EFF7FF url("../images/icons/information.png") 10px 10px no-repeat;
-		border: 1px solid #C2D6EF; 
-		color: #4379CA;
-		}
-	.help a,
-	.info a,
-	.information a {
-		color: blue;
-		border-bottom: 1px solid blue;
-		}
-	.help a:hover,
-	.info a:hover,
-	.information a:hover {
-		color: #000;
-		border-bottom: 1px solid #000;
-		}
-	.alert,
-	.warning { 
-		border: 1px solid #EFEAC2; 
-		color: #CC6633; 
-		background: #FFFDEF url("../images/icons/warning.gif") 10px 10px no-repeat;
-		}
-	.failed,
-	.error { 
-		border: 1px solid #EFCCC2; 
-		color: #CC0000;
-		background: #FFF2EF url("../images/icons/error.gif") 10px 10px no-repeat; 
-		}
-	.passed { 
-		border: 1px solid #CDDECA; 
-		color: #7AAB69;
-		background: #F3FDF0 url("../images/icons/accept.gif") 10px 10px no-repeat; 
-		}
-	.archive { 
-		border: 1px solid #ccc; 
-		color: #777;
-		background: #efefef url("../images/icons/archive.gif") 10px 10px no-repeat;
-		}
-	.locked { 
-		border: 1px solid #EFEAC2; 
-		color: #CC6633; 
-		background: #FFFDEF url("../images/icons/lock.gif") 10px 10px no-repeat;
-		}
-	.timed { 
-		border: 1px solid #e9dab3; 
-		color: #ad733f; 
-		background: #f5efe2 url("../images/icons/hourglass.png") 10px 10px no-repeat;
-		}
-	.flagged { 
-		border: 1px solid #EFCCC2; 
-		color: #CC0000;
-		background: #FFF2EF url("../images/icons/flag_red.png") 10px 10px no-repeat;
-		}
-	.archive h4,
-	.passed h4,
-	.failed h4,
-	.help h4,
-	.information h4,
-	.warning h4,
-	.error h4,
-	.timed h4,
-	.flagged h4 {
-		margin-top: 0;
-		padding-top: 0;
-		}
-	.failed h4,
-	.error h4 {
-		color: #CC0000;
-		}
-	.help h4 {
-		color: #8a42cd;
-		}
-	.info h4,
-	.information h4 {
-		color: #4379CA;
-		}
-	.warning h4 {
-		color: #CC6633;
-		}
-	.passed h4 {
-		color: #360;
-		}
-        #system-message {
-                margin: 0;
-                padding: 15px;
-                background:#fff;
-                }
-        #system-message dt {
-                margin: 0;
-                padding: 10px 0 0 30px;
-                font-weight: bold;
-                border: 1px solid #C2D6EF;
-                color: #4379CA;
-                background: #EFF7FF url("../images/icons/information.gif") 10px 10px no-repeat;
-                border-bottom: none;
-                }
-        #system-message dd {
-                margin: 0;
-                padding: 0 10px 10px 30px;
-                border: 1px solid #C2D6EF;
-                border-top: none;
-                color: #4379CA;
-                background: #EFF7FF;
-                }
-        #system-message dd ul,
-        #system-message dd ul li {
-                margin: 0;
-                padding: 0;
-                list-style: none;
-                }
-        #system-message dt.error {
-                color: #CC0000;
-                background: #FFF2EF url("../images/icons/error.gif") 10px 10px no-repeat;
-                border-color: #EFCCC2;
-                }
-        #system-message dd.error {
-                color: #CC0000;
-                background: #FFF2EF;
-                border-color: #EFCCC2;
-                }
-        #system-message dt.warning {
-                border-color: #EFEAC2;
-                color: #CC6633;
-                background: #FFFDEF url("../images/icons/warning.gif") 10px 10px no-repeat;
-                }
-        #system-message dd.warning {
-                border-color: #EFEAC2;
-                color: #CC6633;
-                background: #FFFDEF;
-                }
 /*---------------------------------------------------------------
 	Header
 ---------------------------------------------------------------*/
@@ -1216,80 +1066,6 @@
 /*---------------------------------------------------------------
 	Flexible Columns
 ---------------------------------------------------------------*/
-	.columns {
-		margin: 0;
-		padding: 0;
-		border: none;
-		float: left;
-		text-align: left;
-		}
-/* Two Columns */
-	.two {
-		width: 48%;
-		}
-	.two.first {
-		padding: 0 2% 0 0;
-		}
-	.two.second {
-		padding: 0 0 0 2%;
-		}
-/* Three Columns */
-	.three {
-		width: 31.5%;
-		}
-	.three.first {
-		padding: 0 1.25% 0 0;
-		}
-	.three.second {
-		padding: 0 1.25% 0 1.25%;
-		}
-	.three.third {
-		padding: 0 0 0 1.25%;
-		}
-	.three.first.second {
-		padding: 0 1.25% 0 0;
-		width: 64.5%;
-		}
-	.three.second.third {
-		padding: 0 0 0 1.25%;
-		width: 64.5%;
-		}
-/* Four Columns */
-	.four {
-		width: 23%;
-		}
-	.four.first {
-		padding: 0 1.25% 0 0;
-		}
-	.four.second {
-		padding: 0 1.25% 0 1.25%;
-		}
-	.four.third {
-		padding: 0 1.25% 0 1.25%;
-		}
-	.four.fourth {
-		padding: 0 0 0 1.25%;
-		}
-	.four.first.second {
-		padding: 0 1.25% 0 0;
-		width: 48.5%;
-		}
-	.four.second.third {
-		padding: 0 1.25% 0 1.25%;
-		width: 48.5%;
-		}
-	.four.third.fourth {
-		padding: 0 0 0 1.25%;
-		width: 48.5%;
-		}
-	.four.first.second.third {
-		padding: 0 1.25% 0 0;
-		width: 74%;
-		}
-	.four.second.third.fourth {
-		padding: 0 0 0 1.25%;
-		width: 74%;
-		}
 	.columns .animation { padding-left: 23px; background: url("../images/icons/fc-animation.gif") 0 0em no-repeat; }
 	.columns .download { padding-left: 23px; background: url("../images/icons/fc-download.gif") 0 0em no-repeat; }
 	.columns .course { padding-left: 23px; background: url("../images/icons/fc-course.gif") 0 0em no-repeat; }
@@ -1322,8 +1098,7 @@
 	#help-pane:after,
 	#wrap:after, 
 	#header:after,
-	#content:after,
-	.columns:after {
+	#content:after {
 		content: "."; 
 		display: block; 
 		height: 0; 
