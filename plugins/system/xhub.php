@@ -22,11 +22,11 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package		HUBzero
- * @package          hubzero-cms
- * @author           Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright        Copyright 2005-2011 Purdue University. All rights reserved.
- * @license          http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package	  HUBzero
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -129,9 +129,9 @@ class XRouter extends JRouter
 
 			if ($registration_incomplete)
 			{
-				if (($vars['option'] == 'com_hub') || ($vars['option'] == 'com_user'))
+				if (($vars['option'] == 'com_user'))
 				{
-					if ( ($vars['task'] == 'logout') )
+					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
 						return $vars;
 				}
 
@@ -162,17 +162,9 @@ class XRouter extends JRouter
 
 			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{
-				if ($vars['option'] == 'com_hub')
+				if ($vars['option'] == 'com_user')
 				{
-					if (!empty($vars['task']))
-					//if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
-					//	return $vars;
-					if ( ($vars['task'] == 'logout') )
-						return $vars;
-				}
-				else if ($vars['option'] == 'com_user')
-				{
-					if ( ($vars['task'] == 'logout') )
+					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
 						return $vars;
 				}
 				else if ($vars['option'] == 'com_register')
