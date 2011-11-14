@@ -1859,6 +1859,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		referrer (optional)
 		cookies  (optional) default: 1 (since it's coming from rappture we assume they're already logged in and thus have cookies enabled)
 		section  (optional)
+		upload   (optional)
 		*/
 
 		// trim and addslashes all posted items
@@ -2029,6 +2030,14 @@ class SupportControllerTickets extends Hubzero_Controller
 							AND report='" . $row->report . "'";
 				$this->database->setQuery($query);
 				$row->id = $this->database->loadResult();
+			}
+			
+			$attachment = $this->uploadTask($row->id);
+			$row->report .= ($attachment) ? "\n\n" . $attachment : '';
+			// Save the data
+			if (!$row->store()) 
+			{
+				$this->setError($row->getError());
 			}
 
 			$ticket = $row->id;
