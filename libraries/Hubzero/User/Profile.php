@@ -642,7 +642,9 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 
-		if (is_numeric($user) && $user >= 0)
+		// zooley: Removed check for >= 0 because profiles without acounts have negative IDs
+		//if (is_numeric($user) && $user >= 0)
+		if (is_numeric($user))
 			$query = "SELECT * FROM #__xprofiles WHERE uidNumber = " . $db->Quote(intval($user)) . ";";
 		else
 			$query = "SELECT * FROM #__xprofiles WHERE username = " . $db->Quote($user) . " AND uidNumber>0;";
