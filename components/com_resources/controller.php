@@ -1617,9 +1617,12 @@ class ResourcesController extends Hubzero_Controller
 
 				$rtt = new ResourcesTags($database);
 				$rtags = $rtt->get_tag_string( $row->id, 0, 0, 0, 0, 0 );
-				$rtags = trim(Hubzero_View_Helper_Html::shortenText($rtags, 250, 0));
-				if (substr($rtags,-1,1) == ',') {
-					$rtags = substr($rtags, 0, -1);
+				if (trim($rtags))
+				{
+					$rtags = trim(Hubzero_View_Helper_Html::shortenText($rtags, 250, 0));
+					if (substr($rtags,-1,1) == ',') {
+						$rtags = substr($rtags, 0, -1);
+					}
 				}
 
 				// Get attributes
