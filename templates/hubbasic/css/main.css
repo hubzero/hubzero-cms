@@ -1773,16 +1773,19 @@
 		width: auto;
 		height: auto;
 		}
+	.tags a,
 	.tags li a { 
 		margin: 0 4px 5px 0;
 		padding: 3px 5px;
-		line-height: 2.2em;
 		background: #FFF6D3;
 		border-right: 1px solid #DFD5AF;
 		border-bottom: 1px solid #DFD5AF;
 		white-space:nowrap;
 		width: auto;
 		height: auto;
+		}
+	.tags li a {
+		line-height: 2.2em;
 		}
 	.tags li.admin a { 
 		background: #FFF2EF;
