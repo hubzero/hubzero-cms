@@ -98,7 +98,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 			//$juseri =& JUser::getInstance($comment->created_by);
 			$submitter->load($this->row->login);
 			if (is_object($submitter) && $submitter->get('name')) {
-				$name = '<a rel="profile" href="'.JRoute::_('index.php?option=com_members&id='.$submitter->get('uidNumber')).'">'.stripslashes($submitter->get('name')).'</a>';
+				$name = '<a rel="profile" href="'.JRoute::_('index.php?option=com_members&id='.$submitter->get('uidNumber')).'">'.stripslashes($submitter->get('name')).' ('.$this->row->login.')</a>';
 				$unknown = 0;
 			} else {
 				$name  = '<a rel="email" href="mailto:'. $this->row->email .'">';
