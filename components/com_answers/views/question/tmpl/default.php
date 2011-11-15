@@ -95,9 +95,7 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if ($this->question->state == 0 && $this->id!=0) { ?>
-	<!-- <h3><?php echo JText::_('Open Question'); ?></h3> -->
-<?php } else if ($this->question->state == 2 or $this->id==0) { ?>
+<?php if ($this->question->state == 2 or $this->id==0) { ?>
 	<h3><?php echo JText::_('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); ?></h3>		
 	<?php if ($this->note['msg']!='') { ?>
 	<p class="help"><?php echo urldecode($this->note['msg']); ?></p>
