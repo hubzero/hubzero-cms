@@ -357,6 +357,10 @@ class ToolsController
 		$status = JRequest::getVar( 'status', '', 'get' );
 		$item = JRequest::getVar( 'item', '', 'get' );
 		
+		// $hostname is eventually used in a string passed to an exec call, we gotta 
+		// clean at least some of it. See RFC 1034 for valid character set info
+		$hostname = preg_replace("[^A-Za-z0-9-.]", "", $hostname);
+		
 		$filter_hostname = JRequest::getVar( 'filter_hostname', '', 'get' );
 		$filter_hosttype = JRequest::getVar( 'filter_hosttype', '', 'get' );
 		
