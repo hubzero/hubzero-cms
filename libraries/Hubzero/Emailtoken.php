@@ -138,8 +138,7 @@ class Hubzero_Email_Token
 		//**** Prepend an unencrypted version byte and action byte (in base16) 
 		$rv = bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted);
 
-		// Put delimiters on here, so nobody else needs to worry
-		return "@hts@" . $rv . "@hte@";
+		return $rv;
  	}
 
 }

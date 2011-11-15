@@ -538,9 +538,6 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Build outgoing email message
 		$originalMessage = $row->comment;
-		$originalMessage .= "\n\n%%tokenplaceholder%%\n";
-		$originalMessage .= "NOTE: The above line is required in any email reply to this discussion. \nOnly text before this section will be added to the discussion.\n";
-		$originalMessage .= "When you reply you might want to remove the previous message text if it is included in the reply\n\n\n";
 
 		// Translate the message wiki formatting to html
 		/*
@@ -563,8 +560,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$params = $params = &JComponentHelper::getParams('com_groups');
 		$allowEmailResponses = $params->get('email_comment_processing');
 
-		// Email the group and insert email tokens to allow them to respond to group posts
-		// via email
+		// Email the group and allow them to respond to group posts
 		if($allowEmailResponses){
 
 			$encryptor = new Hubzero_Email_Token();
@@ -608,16 +604,15 @@ class plgGroupsForum extends Hubzero_Plugin
 				// Note, for original posts, $row->parent will be 0, so we take the id instead
 				$token = $encryptor->buildEmailToken(1, 2, $user->id, $row->id);
 
-				// Put Token into generic message
 				$subject = $group->get('cn') . ' group discussion post (' . $row->id . ')';
-
-				$message = str_replace('%%tokenplaceholder%%', $token, $originalMessage);
+				$message = $originalMessage;
 
 				$jconfig =& JFactory::getConfig();
 				$from = array();
 				$from['name']  = $jconfig->getValue('config.sitename').' ';
 				$from['email'] = $jconfig->getValue('config.mailfrom');
-
+				$from['replytoemail'] = 'hgm-' . $token;
+				
 				if (!$dispatcher->trigger( 'onSendMessage', array( 'group_message', $subject, $message, $from, array($userID), $this->_option, null, '', $this->group->get('gidNumber') ))) {
 					$this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
 				}
