@@ -107,9 +107,9 @@ class SupportControllerMessages extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask($edit=null)
+	public function editTask($row=null)
 	{
-		if (is_object($edit))
+		if (is_object($row))
 		{
 			$this->view->row = $row;
 		}
