@@ -133,7 +133,11 @@ foreach ($letters as $letter)
 					<thead>
 						<tr>
 							<th colspan="4">
-								<?php echo $html; ?>
+								<span class="index-wrap">
+									<span class="index">
+										<?php echo $html; ?>
+									</span>
+								</span>
 							</th>
 						</tr>
 					</thead>
