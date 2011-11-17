@@ -377,7 +377,7 @@ class Hubzero_Controller extends JObject
 
 		if (is_file(JPATH_ROOT . DS . 'components' . DS . $option . DS . $script . '.js'))
 		{
-			$document->addScript('components' . DS . $option . DS . $script . '.js');
+			$document->addScript(DS . 'components' . DS . $option . DS . $script . '.js');
 		}
 	}
 
