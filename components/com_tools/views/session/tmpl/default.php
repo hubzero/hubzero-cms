@@ -118,7 +118,7 @@ if (!$this->app['sess']) {
 			<input type="submit" value="Share" />
 			<?php if (count($this->shares) <= 1) { ?>
 			<span>(Session is currently not shared.)</span>
-			<br /><p>What does it mean to <a href="/kb/tips/share">share a session</a>?</p>
+			<br /><p>What does it mean to <a href="/kb/tips/share_a_simulation_session">share a session</a>?</p>
 			<?php } ?>
 		</fieldset>
 	</form>
