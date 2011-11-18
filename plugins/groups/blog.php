@@ -581,6 +581,7 @@ class plgGroupsBlog extends JPlugin
 				$path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
 			}
 
+			
 			$wikiconfig = array(
 				'option'   => $this->option,
 				'scope'    => $this->group->get('gidNumber') . DS . 'blog',
@@ -589,7 +590,7 @@ class plgGroupsBlog extends JPlugin
 				'filepath' => $path,
 				'domain'   => $this->group->get('cn')
 			);
-
+			
 			//$p = new WikiParser( stripslashes($view->row->title), $this->option, 'blog', $view->row->alias, 0, $path );
 			$view->row->content = $p->parse( "\n".stripslashes($view->row->content), $wikiconfig, true, true);
 		}

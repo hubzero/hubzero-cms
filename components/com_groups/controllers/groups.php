@@ -3524,7 +3524,24 @@ class GroupsController extends Hubzero_Controller
 
 			$wiki_config = JComponentHelper::getParams( 'com_wiki' );
 			$base_path = $wiki_config->get('filepath').DS.$page->get('id');
-		} else {
+		} 
+		elseif($this->active == 'blog')
+		{
+			$access = $group->getPluginAccess('blog');
+
+			if ($authorized != 'admin') {
+				if (($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) ||
+			   	   ($access == 'registered' && $this->juser->get('guest') == 1)) {
+					JError::raiseError( 403, JText::_('COM_GROUPS_NOT_AUTH').' '.$file );
+					return;
+				}
+			}
+			
+			$base_path = $this->config->get('uploadpath');
+			$base_path .= DS.$group->get('gidNumber').DS."blog";
+		}
+		else 
+		{
 			$access = $group->getPluginAccess('overview');
 
 			//if($authorized != 'admin') {

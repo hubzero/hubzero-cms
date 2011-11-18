@@ -511,12 +511,13 @@ class plgMembersBlog extends JPlugin
 
 			$wikiconfig = array(
 				'option'   => $this->option,
-				'scope'    => 'blog',
+				'scope'    => $this->member->get('uidNumber').DS.'blog',
 				'pagename' => $view->row->alias,
 				'pageid'   => 0,
 				'filepath' => $path,
 				'domain'   => ''
 			);
+			
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
 			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig);

@@ -69,6 +69,19 @@ class MembersController extends Hubzero_Controller
 		if ($id && !$this->_task) {
 			$this->_task = 'view';
 		}
+		
+		$file = array_pop(explode("/",$_SERVER["REQUEST_URI"]));$file = array_pop(explode("/",$_SERVER["REQUEST_URI"]));
+
+		if (substr(strtolower($file), 0, 5) == 'image' ||
+			substr(strtolower($file), 0, 4) == 'file') {
+			$this->_task = 'download';
+			//$file = $this->active;
+		}
+
+		if (substr(strtolower($file), 0, 5) == 'image' ||
+			substr(strtolower($file), 0, 4) == 'file') {
+			$this->_task = 'download';
+		}
 
 		// Execute the task
 		switch ($this->_task)
@@ -90,6 +103,8 @@ class MembersController extends Hubzero_Controller
 			case 'whois':      $this->whois();      break;
 			case 'activity':   $this->activity();   break;
 			case 'myaccount':  $this->_myaccount(); break;
+			
+			case 'download':   $this->download( $file );	break;
 
 			default: $this->browse(); break;
 		}
@@ -2043,6 +2058,94 @@ class MembersController extends Hubzero_Controller
 		}
 
 		return false;
+	}
+	
+	
+	//------
+	
+	protected function download( $filename )
+	{
+		//get vars
+		$id = JRequest::getInt( 'id', 0 );
+		$tab = JRequest::getVar( 'active', 'profile' );
+		$authorized = $this->_authorize();
+		
+		//check to make sure we have an id
+		if(!$id || $id == 0) 
+		{
+			return;
+		}
+		
+		//Load member profile
+		$member = new Hubzero_User_Profile();
+		$member->load( $id );
+		
+		//check to make sure we have member profile
+		if(!$member) 
+		{
+			return;
+		}
+		
+		//get the file name
+		if (substr(strtolower($filename), 0, 5) == 'image') 
+		{
+			$file = substr($filename, 6);
+		} 
+		elseif (substr(strtolower($filename), 0, 4) == 'file') 
+		{
+			$file = substr($filename, 5);
+		}
+		
+		//decode file name
+		$file = urldecode($file);
+		
+		//if we are on the blog
+		if($tab == 'blog') 
+		{
+			//authorize checks
+			if($authorized != "admin") 
+			{
+				if($this->juser->get('id') != $member->get("uidNumber")) 
+				{
+					JError::raiseError( 403, JText::_('You are not authorized to download the file: ').' '.$file );
+					return;
+				}
+			}
+			
+			//get the params from the members blog plugin
+			$blog_config = JPluginHelper::getPlugin( 'members', 'blog' );
+			$blog_params = new JParameter( $blog_config->params );
+			
+			//build the base path to file based of upload path param
+			$base_path = str_replace("{{uid}}", $member->get("uidNumber"), $blog_params->get("uploadpath"));
+		}
+		
+		//build file path
+		$file_path = $base_path . DS .$file;
+		
+		// Ensure the file exist
+		if (!file_exists(JPATH_ROOT.DS.$file_path)) {
+			JError::raiseError( 404, JText::_('The requested file could not be found: ').' '.$file );
+			return;
+		}
+		
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+		// Serve up the image
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename(JPATH_ROOT.DS.$file_path);
+		$xserver->disposition('attachment');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+
+		//serve up file
+		if (!$xserver->serve()) {
+			// Should only get here on error
+			JError::raiseError( 404, JText::_('An error occured while trying to output the file') );
+		} else {
+			exit;
+		}
+		return;
 	}
 }
 
