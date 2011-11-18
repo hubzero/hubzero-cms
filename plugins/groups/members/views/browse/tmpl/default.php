@@ -375,12 +375,12 @@ if($this->role_filter) {
 													//force admins to use backend to demote manager if only 1
 													//if ($this->authorized == 'admin' || count($this->managers) > 1) {
 													if (count($this->managers) > 1) {
-														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=demote&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
+														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
 													} else {
 														$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 													}
 												} else {
-													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=promote&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
 												}
 											}
 										break;

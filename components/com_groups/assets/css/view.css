@@ -288,6 +288,8 @@ iframe {
 	padding:2px 8px;
 	font-size:11px;
 	color:#000;
+	border-bottom:none;
+	text-decoration:none;
 }
 
 .group-content-header-extra a:hover {
@@ -315,6 +317,8 @@ iframe {
 	width:12%; 
 	text-align:center; 
 	padding:0 1%;
+	border-bottom:none;
+	text-decoration:none;
 }
 
 #member_browser .member:hover {
@@ -399,6 +403,8 @@ p#closed {
 	background:url('../img/controller_arrow.png') no-repeat 88% 50%; 
 	color:#666; 
 	font-size:90%; 
+	border-bottom:none;
+	text-decoration:none;
 }
 
 #controls #toggle-controls:hover { 

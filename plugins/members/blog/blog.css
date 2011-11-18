@@ -49,7 +49,7 @@
 		}
 	ol.blog-entries .private .entry-title {
 		background: url("images/lock.png") 0 0 no-repeat;
-		padding-left: 20px;
+		padding:2px 0 2px 20px;
 		}
 	ol.blog-entries li li {
 	    margin-left: 20px;

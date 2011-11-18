@@ -211,6 +211,8 @@
 	display:block;
 	text-indent:-9999px;
 	width:20px;
+	border-bottom:none;
+	text-decoration:none;
 	}
 
 .entries .remove-member a:hover,

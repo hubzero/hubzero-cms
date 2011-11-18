@@ -30,11 +30,11 @@
 		font-size: 90%;
 		display: block;
 		}
-	#content-header-extra { 
+	.com_jobs #content-header-extra { 
 		width: 500px !important; 
 		text-align: right; 
 		} 
-	#useroptions li { 
+	.com_jobs #useroptions li { 
 		white-space: nowrap; 
 		font-size: 85%; 
 		}
@@ -1097,7 +1097,7 @@
 		position: relative;
 		}
 	.addResumeForm legend {
-		margin: 0 0 1em 0;
+		/*margin: 0 0 1em 0;*/
 		font-weight: bold;
 		color: #333333;
 		}

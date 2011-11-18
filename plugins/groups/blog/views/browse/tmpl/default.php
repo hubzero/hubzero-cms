@@ -245,7 +245,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						<?php } ?>
 					<?php } else { ?>
 						<tr>
-							<td>Currently there are no blog entries.</td>
+							<td class="no-entries">Currently there are no blog entries.</td>
 						</tr>
 					<?php } ?>
 				</tbody>

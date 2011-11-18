@@ -73,6 +73,8 @@ table tr:first-child td {
 	text-indent:-9999px;
 	width:20px;
 	height:20px;
+	border-bottom:none;
+	text-decoration:none;
 }
 
 .order a:hover,
@@ -107,14 +109,16 @@ table tr:first-child td {
 	width:20px;
 }
 
-.quick-view {
+a.quick-view {
 	display:block;
 	width:20px;
 	text-indent:-9999px;
 	background:url('../img/preview.gif') no-repeat 50% 50%;
+	border-bottom:none;
+	text-decoration:none;
 }
 
-.quick-view:hover {
+a.quick-view:hover {
 	border:none;
 }
 

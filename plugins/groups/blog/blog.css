@@ -165,6 +165,9 @@
 		overflow: hidden;
 		margin-bottom: 0;
 		}
+	.entries .no-entries {
+		padding-left:10px;
+		}
 
 /* Aside */
 	.group_blog .aside {
