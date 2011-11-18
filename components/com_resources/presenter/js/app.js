@@ -741,7 +741,7 @@ HUB.Presenter = {
 			jQ("#volume-icon").css("display","none");	
 			
 			//display the two finger tip
-			jQ("#twofinger").css("display","block"); 
+			//jQ("#twofinger").css("display","block"); 
 			
 			//replace all in-slide videos with images
 			jQ(".slidevideo").css("display","none");
