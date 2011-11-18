@@ -515,6 +515,12 @@ class plgGroupsMembers extends JPlugin
 		if ($admchange) {
 			$this->notifyAdmin( $admchange );
 		}
+		
+		$start = JRequest::getVar("limitstart", 0);
+		$limit = JRequest::getVar("limit", 25);
+		$filter = JRequest::getVar("filter", "members");
+		
+		$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
 	}
 
 	/**
@@ -602,6 +608,12 @@ class plgGroupsMembers extends JPlugin
 		if ($admchange) {
 			$this->notifyAdmin( $admchange );
 		}
+		
+		$start = JRequest::getVar("limitstart", 0);
+		$limit = JRequest::getVar("limit", 25);
+		$filter = JRequest::getVar("filter", "members");
+		
+		$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
 	}
 
 	/**
