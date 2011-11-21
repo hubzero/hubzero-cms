@@ -433,10 +433,13 @@ class CitationFormat
 			$link .= "?doi=" . $citation->doi;
 			$link .= "&isbn=" . $citation->isbn;
 			$link .= "&issn=" . $citation->isbn;
-
-			$link_text = ($icon != "") ? "<img src=\"{$icon}\" />" : $text;
-			$html .= "<span> | </span>";
-			$html .= "<a rel=\"external\" href=\"{$link}\" title=\"{$text}\">{$link_text}</a>";
+			$link .= "&title=" . $citation->title;
+			
+			if( $citation->doi || $citation->isbn ) {
+				$link_text = ($icon != "") ? "<img src=\"{$icon}\" />" : $text;
+				$html .= "<span> | </span>";
+				$html .= "<a rel=\"external\" href=\"{$link}\" title=\"{$text}\">{$link_text}</a>";
+			}
 		}
 
 		// Get the associations
