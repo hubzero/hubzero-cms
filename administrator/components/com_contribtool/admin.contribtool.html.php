@@ -308,7 +308,8 @@ class ContribtoolHtml
                          <input type="hidden" name="toolid" value="<?php echo $data['toolid'] ?>" />
                          <input type="hidden" name="type" value="tool" />
                          <input type="hidden" name="option" value="<?php echo $option; ?>" />
-                         <input type="hidden" name="task" value="save" />
+	                     <input type="hidden" name="task" value="save" />
+						 <?php echo JHTML::_( 'form.token' ); ?>
 
 					<table class="admintable">
 					 <tbody>
@@ -368,6 +369,7 @@ class ContribtoolHtml
                          <input type="hidden" name="type" value="toolversion" />
                          <input type="hidden" name="option" value="<?php echo $option; ?>" />
                          <input type="hidden" name="task" value="save" />
+						 <?php echo JHTML::_( 'form.token' ); ?>
 
 					<table class="admintable">
 					 <tbody>
@@ -419,7 +421,7 @@ class ContribtoolHtml
           </script>
 
     		<form action="index.php" method="post" name="adminForm2">
-
+				
 		<table cellspacing="0" cellpadding="0" border="0" width="100%">
 		<tr>
 			<td valign="top">
@@ -530,6 +532,7 @@ class ContribtoolHtml
                     <input type="hidden" name="toolid" value="<?php echo $data['id']; ?>" />
                     <input type="hidden" name="task" value="view" />
                     <input type="hidden" name="boxchecked" value="0" />
+					<?php echo JHTML::_( 'form.token' ); ?>
           </form>
 <?php
 	}

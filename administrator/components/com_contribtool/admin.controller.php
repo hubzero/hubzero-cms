@@ -404,6 +404,8 @@ class ContribtoolController extends JObject
 	 */
 	protected function save($redirect = true)
 	{
+		JRequest::checkToken() or die( 'Invalid Token' );
+		
           $type = JRequest::getString( 'type', '' );
 
 		if ($type == "toolversion")
