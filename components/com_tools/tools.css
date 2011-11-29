@@ -293,15 +293,15 @@
 		line-height: 1.5em;
 		color: #fff;
 		text-indent: 7px;
-		width: 75px;
+		width: 95px;
 		}
-    #diskusage #du-amount div { 
-        position: relative;
+	#diskusage #du-amount div { 
+		position: relative;
 		background: #ccc; 
-        height: 20px; 
-        width: 75%; 
-        text-align:right; 
-     	}
+		height: 20px; 
+		width: 75%; 
+	text-align:left;
+		}
     #diskusage #du-amount div strong { 
         position: absolute; 
         right: -5px; 
