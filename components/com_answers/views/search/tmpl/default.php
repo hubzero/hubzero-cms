@@ -123,11 +123,11 @@ if (!$this->filters['filterby']) {
 				</ul>
 				
 				<ul class="entries-menu filter-options">
-					<li><a<?php echo ($this->filters['filterby'] == 'all' || $this->filters['filterby'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=all'); ?>">All</a></li>
-					<li><a<?php echo ($this->filters['filterby'] == 'open') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=open'); ?>">Open</a></li>
-					<li><a<?php echo ($this->filters['filterby'] == 'closed') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=closed'); ?>">Closed</a></li>
+					<li><a<?php echo ($this->filters['filterby'] == 'all' || $this->filters['filterby'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=all&sortby='.$this->filters['sortby']); ?>">All</a></li>
+					<li><a<?php echo ($this->filters['filterby'] == 'open') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=open&sortby='.$this->filters['sortby']); ?>">Open</a></li>
+					<li><a<?php echo ($this->filters['filterby'] == 'closed') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=closed&sortby='.$this->filters['sortby']); ?>">Closed</a></li>
 <?php if (!$juser->get('guest')) { ?>
-					<li><a<?php echo ($this->filters['filterby'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=mine'); ?>">Mine</a></li>
+					<li><a<?php echo ($this->filters['filterby'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby=mine&sortby='.$this->filters['sortby']); ?>">Mine</a></li>
 <?php } ?>
 				</ul>
 			
@@ -241,8 +241,9 @@ if (!$this->filters['filterby']) {
 				</table>
 				<?php 
 				$pagenavhtml = $this->pageNav->getListFooter();
-				$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
-				$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
+				$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
+				$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
+				$pagenavhtml = str_replace('?', '?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&', $pagenavhtml);
 				echo $pagenavhtml;
 				?>
 				<div class="clearfix"></div>
