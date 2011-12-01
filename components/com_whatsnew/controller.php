@@ -383,7 +383,7 @@ class WhatsnewController extends Hubzero_Controller
 			foreach ($rows as $row)
 			{
 				// Prepare the title
-				$title = strip_tags($row->title);
+				$title = strip_tags(stripslashes($row->title));
 				$title = html_entity_decode($title);
 
 				// URL link to article
@@ -397,7 +397,9 @@ class WhatsnewController extends Hubzero_Controller
 				$link = JRoute::_($row->href);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)));
+				//$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)));
+				$description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($row->text));
+				$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0, 0);
 				$author = '';
 				@$date = ( $row->publish_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 

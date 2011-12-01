@@ -134,6 +134,7 @@ class plgWhatsnewEvents extends JPlugin
 				foreach ($rows as $key => $row)
 				{
 					$rows[$key]->href = JRoute::_($row->href);
+					$rows[$key]->text = $rows[$key]->itext;
 				}
 			}
 

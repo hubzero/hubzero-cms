@@ -231,6 +231,11 @@ class plgWhatsnewResources extends JPlugin
 					} else {
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id='.$row->id);
 					}
+					if ($row->itext) {
+						$rows[$key]->text = $rows[$key]->itext;
+					} else if ($row->ftext) {
+						$rows[$key]->text = $rows[$key]->ftext;
+					}
 				}
 			}
 
