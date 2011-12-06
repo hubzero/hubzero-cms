@@ -284,7 +284,7 @@ $tagcontent = end($field);
 				<td>
 					<label><?php echo stripslashes($field[1]); ?>: <?php echo ($field[3] == 1) ? '<span class="required">'.JText::_('REQUIRED').'</span>': ''; ?></label><br />
 					<?php if ($field[2] == 'text') { ?>
-						<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" rows="6"><?php echo stripslashes($tagcontent); ?></textarea>
+						<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" value="<?php echo htmlentities(stripslashes($tagcontent), ENT_COMPAT, 'UTF-8'); ?>" />
 					<?php
 					} else {
 						echo $editor->display('nbtag['.$field[0].']', htmlentities(stripslashes($tagcontent), ENT_COMPAT, 'UTF-8'), '100%', '100px', '45', '10', false);
