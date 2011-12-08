@@ -187,7 +187,7 @@ class Hubzero_Controller extends JObject
 	public function execute()
 	{
 		// Incoming task
-		$this->_task = strtolower(JRequest::getWord('task', 'display'));
+		$this->_task = strtolower(JRequest::getWord('task', ''));
 
 		// Check if the task is in the taskMap
 		if (isset($this->_taskMap[$this->_task]))
@@ -207,7 +207,8 @@ class Hubzero_Controller extends JObject
 
 		//$this->_controller = JRequest::getCmd('controller', '');
 		// Attempt to parse the controller name from the class name
-		if (preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
+		if ((ucfirst($this->_name) . 'Controller') != get_class($this)
+		 && preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
 		{
 			$this->_controller = strtolower($r[1]);
 
@@ -266,7 +267,7 @@ class Hubzero_Controller extends JObject
 	{
 		if ($this->_redirect != NULL)
 		{
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
@@ -312,7 +313,7 @@ class Hubzero_Controller extends JObject
 			);
 		}
 
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		$session->set('component.message.queue', $this->componentMessageQueue);
 	}
 
@@ -325,7 +326,7 @@ class Hubzero_Controller extends JObject
 	{
 		if (!count($this->componentMessageQueue))
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$componentMessage = $session->get('component.message.queue');
 			if (count($componentMessage))
 			{
@@ -370,7 +371,7 @@ class Hubzero_Controller extends JObject
 	 */
 	protected function _getScripts($script='', $option='')
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$option = ($option) ? $option : $this->_option;
 		$script = ($script) ? $script : $this->_name;
@@ -388,8 +389,8 @@ class Hubzero_Controller extends JObject
 	 */
 	protected function _buildPathway()
 	{
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$app = JFactory::getApplication();
+		$pathway = $app->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
@@ -419,7 +420,7 @@ class Hubzero_Controller extends JObject
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
