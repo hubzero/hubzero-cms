@@ -31,33 +31,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-
-//----------------------------------------------------------
-// Answers Tagging class
-//----------------------------------------------------------
-
-/**
- * Short description for 'KbTags'
- * 
- * Long description (if any) ...
- */
-class KbTags extends TagsHandler
+if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php'))
 {
-
+	require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
+	
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $db Parameter description (if any) ...
-	 * @param      array $config Parameter description (if any) ...
-	 * @return     void
+	 * Extended class for retrieving and setting tags on a knowledge base article
 	 */
-	public function __construct( $db, $config=array() )
+	class KbTags extends TagsHandler
 	{
-		$this->_db  = $db;
-		$this->_tbl = 'kb';
+
+		/**
+		 * Short description for '__construct'
+		 * 
+		 * Long description (if any) ...
+		 * 
+		 * @param      unknown $db Parameter description (if any) ...
+		 * @param      array $config Parameter description (if any) ...
+		 * @return     void
+		 */
+		public function __construct( $db, $config=array() )
+		{
+			$this->_db  = $db;
+			$this->_tbl = 'kb';
+		}
 	}
 }
 

@@ -279,8 +279,12 @@ class KbController extends Hubzero_Controller
 		$this->view->subcategories = $this->view->category->getCategories(1, 1, $this->view->section->id);
 
 		// Get tags on this article
-		$kt = new KbTags($this->database);
-		$this->view->tags = $kt->get_tags_on_object($this->view->article->id, 0, 0, 0);
+		$this->view->tags = null;
+		if (class_exists('KbTags'))
+		{
+			$kt = new KbTags($this->database);
+			$this->view->tags = $kt->get_tags_on_object($this->view->article->id, 0, 0, 0);
+		}
 
 		// Get comments on this article
 		$bc = new KbComment($this->database);
