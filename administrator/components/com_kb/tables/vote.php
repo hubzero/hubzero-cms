@@ -151,7 +151,7 @@ class KbVote extends JTable
 	 * @param      unknown $user_id Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function deleteVote( $object_id=NULL, $user_id=NULL )
+	public function deleteVote($object_id=NULL, $user_id=NULL, $ip=NULL, $type=NULL)
 	{
 		if ($object_id == NULL) {
 			$object_id = $this->object_id;
@@ -159,9 +159,15 @@ class KbVote extends JTable
 		if ($user_id == NULL) {
 			$user_id = $this->user_id;
 		}
+		if ($ip == NULL) {
+			$ip = $this->ip;
+		}
+		if ($type == NULL) {
+			$type = $this->type;
+		}
 
-		$sql = "DELETE FROM $this->_tbl WHERE object_id='$object_id'";
-		$sql .= ($user_id) ? " AND user_id='$user_id'" : "";
+		$sql = "DELETE FROM $this->_tbl WHERE object_id='$object_id' AND type='$type'";
+		$sql .= ($user_id || $ip) ? " AND (user_id='$user_id' OR ip='$ip')" : "";
 
 		$this->_db->setQuery( $sql );
 		if ($this->_db->query()) {

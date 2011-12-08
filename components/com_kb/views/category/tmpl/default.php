@@ -45,30 +45,33 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 	<div class="aside">
 		<div class="container">
-			<h3>Categories</h3>
+			<h3>Categories<span class="starter-point"></span></h3>
 			<ul class="categories">
 <?php
-		if ($this->catid == 0) {
+		$cls = '';
+		if ($this->catid == 0) 
+		{
 			$cls = ' class="active"';
-		} else {
-			$cls = '';
 		}
 		$html = "\t".'<li><a'.$cls.' href="'.JRoute::_('index.php?option='.$this->option.'&section=all').'">'.JText::_('All Articles').'</a></li>'."\n";
-		if (count($this->categories) > 0) {
+		if (count($this->categories) > 0) 
+		{
 			foreach ($this->categories as $row)
 			{
 				$html .= "\t".'<li><a ';
-				if ($this->catid == $row->id) {
+				if ($this->catid == $row->id) 
+				{
 					$html .= ' class="active"';
 				}
-				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.Hubzero_View_Helper_Html::xhtml($row->title).'</a>'."\n";
-				if (count($this->subcategories) > 0 && $this->catid == $row->id) {
-					//$html .= '<h4>'.JText::_('SUBCATEGORIES').'</h4>'."\n";
+				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.Hubzero_View_Helper_Html::xhtml($row->title).'</a> ('.$row->numitems.')'."\n";
+				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
+				{
 					$html .= "\t".'<ul class="categories">'."\n";
 					foreach ($this->subcategories as $cat)
 					{
 						$html .= "\t\t".'<li><a ';
-						if ($this->filters['category'] == $cat->id) {
+						if ($this->filters['category'] == $cat->id) 
+						{
 							$html .= ' class="active"';
 						}
 						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$row->alias.'&category='. $cat->alias) .'">'. stripslashes($cat->title) .'</a> ('.$cat->numitems.')</li>'."\n";
@@ -106,11 +109,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 $s = $this->filters['start']+1;
 $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-//$e = ($this->filters['limit'] > $this->total) ? $this->filters['start'] + $this->filters['limit'] : $this->filters['start'] + $this->filters['limit'];
 ?>
 					<caption>
 <?php
-if ($this->filters['search'] != '') {
+if ($this->filters['search'] != '') 
+{
 	echo 'Search for "'.$this->filters['search'].'" in ';
 }
 ?>
@@ -119,7 +122,8 @@ if ($this->filters['search'] != '') {
 					</caption>
 					<tbody>
 <?php
-if (count($this->articles) > 0) {
+if (count($this->articles) > 0) 
+{
 	foreach ($this->articles as $row)
 	{
 		$link  = 'index.php?option='.$this->option.'&section='.$row->calias;
@@ -140,14 +144,16 @@ if (count($this->articles) > 0) {
 							</td>
 							<td class="voting">
 <?php
-								$view = new JView( array('name'=>'vote') );
+								$view = new JView(array('name'=>'vote'));
 								$view->option = $this->option;
 								$view->item = $row;
 								$view->type = 'entry';
 								$view->vote = '';
 								$view->id = '';
-								if (!$this->juser->get('guest')) {
-									if ($row->user_id == $this->juser->get('id')) {
+								if (!$this->juser->get('guest')) 
+								{
+									if ($row->user_id == $this->juser->get('id')) 
+									{
 										$view->vote = $row->vote;
 										$view->id = $row->id;
 									}

@@ -29,121 +29,56 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'KbController'
- * 
- * Long description (if any) ...
+ * Knowledge Base controller
  */
 class KbController extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Executes a given task
 	 * 
 	 * @return     void
 	 */
 	public function execute()
 	{
-		$this->_longname = JText::_('COMPONENT_LONG_NAME');
-
-		$this->_task = strtolower(JRequest::getVar( 'task', 'browse' ));
-
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
 		$doc->addScriptDeclaration("\tvar j = jQuery.noConflict();");
-
-		switch ( $this->_task )
-		{
-			case 'login':    $this->login();    break;
-
-			// Feeds
-			//case 'feed.rss': $this->_feed();   break;
-			//case 'feed':     $this->_feed();   break;
-			case 'comments.rss': $this->commentsfeed();   break;
-			case 'comments':     $this->commentsfeed();   break;
-
-			// Comments
-			case 'savecomment':   $this->savecomment();   break;
-			case 'deletecomment': $this->deletecomment(); break;
-			case 'vote':   	$this->vote();    break;
-			//case 'savereply':   $this->savereply();   break;
-			//case 'reply':      	$this->reply();  	  break;
-
-			// Articles
-			case 'category': $this->category(); break;
-			case 'browse':   $this->browse();   break;
-			case 'article':  $this->article();  break;
-
-			default: $this->browse(); break;
-		}
+		
+		parent::execute();
 	}
-
-	//----------------------------------------------------------
-	// Views
-	//----------------------------------------------------------
-
+	
 	/**
-	 * Short description for 'login'
-	 * 
-	 * Long description (if any) ...
+	 * Displays an overview of categories and articles in the knowledge base
 	 * 
 	 * @return     void
 	 */
-	protected function login()
-	{
-		// Set the page title
-		$this->_buildTitle();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Instantiate a view
-		$view = new JView( array('name'=>'login') );
-		$view->title = JText::_(strtoupper($this->_option)).': '.JText::_('COM_KB_LOGIN');
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-	}
-
-	/**
-	 * Short description for 'browse'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	protected function browse()
+	public function displayTask()
 	{
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
-		// Instantiate a new view
-		$view = new JView( array('name'=>'browse') );
-
-		$view->filters = array();
-		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$view->filters['start'] = JRequest::getInt('limitstart', 0);
-		$view->filters['order'] = JRequest::getWord('order', 'recent');
-		$view->filters['section'] = 'all';
-		$view->filters['category'] = 0;
-		$view->filters['search'] = JRequest::getVar('search','');
+		$this->view->filters = array();
+		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
+		$this->view->filters['order']    = JRequest::getWord('order', 'recent');
+		$this->view->filters['section']  = 'all';
+		$this->view->filters['category'] = 0;
+		$this->view->filters['search']   = JRequest::getVar('search','');
 
 		// Get all main categories for menu
-		$c = new KbCategory( $this->database );
-		$view->categories = $c->getCategories( 1, 1 );
+		$c = new KbCategory($this->database);
+		$this->view->categories = $c->getCategories(1, 1);
 
 		// Get the lists of popular and most recent articles
-		$a = new KbArticle( $this->database );
-		$view->articles = array();
-		$view->articles['top'] = $a->getArticles(5, 'a.hits DESC');
-		$view->articles['new'] = $a->getArticles(5, 'a.created DESC');
+		$a = new KbArticle($this->database);
+		$this->view->articles = array();
+		$this->view->articles['top'] = $a->getArticles(5, 'a.hits DESC');
+		$this->view->articles['new'] = $a->getArticles(5, 'a.created DESC');
 
 		// Add the CSS to the template
 		$this->_getStyles();
@@ -158,97 +93,97 @@ class KbController extends Hubzero_Controller
 		$this->_buildTitle(null, null, null);
 
 		// Output HTML
-		$view->database = $this->database;
-		$view->option = $this->_option;
-		$view->title = $this->_longname;
-		$view->catid = 0;
-		$view->config = $this->config;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
+		$this->view->database = $this->database;
+		$this->view->title  = JText::_('COM_KB');
+		$this->view->catid  = 0;
+		$this->view->config = $this->config;
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
-	 * Short description for 'category'
+	 * Displays a list of articles for a given category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
-	protected function category()
+	public function categoryTask()
 	{
-		// Incoming
-		$alias = JRequest::getVar( 'alias', '' );
-
 		// Make sure we have an ID
-		if (!$alias) {
-			$this->browse();
+		if (!($alias = JRequest::getVar('alias', ''))) 
+		{
+			$this->view->_name = 'display';
+			$this->displayTask();
 			return;
 		}
 
-		// Instantiate a new view
-		$view = new JView( array('name'=>'category') );
-
-		//$view->vote = strtolower(JRequest::getVar( 'vote', '' ));
-		//$view->vote_type = JRequest::getVar( 'type', '' );
-		//$view->vote_id = JRequest::getInt( 'id', 0 );
-
 		// Get the category
-		$view->category = new KbCategory( $this->database );
-		$view->section = new KbCategory( $this->database );
-		if ($alias == 'all') {
-			$view->category->alias = 'all';
-			$view->category->title = 'All Articles';
-			$view->category->id = 0;
+		$sect = 0;
+		$cat  = 0;
+		
+		$this->view->category = new KbCategory($this->database);
+		$this->view->section  = new KbCategory($this->database);
+		if ($alias == 'all') 
+		{
+			$this->view->category->alias = 'all';
+			$this->view->category->title = 'All Articles';
+			$this->view->category->id = 0;
+		} 
+		else 
+		{
+			$this->view->category->loadAlias($alias);
+			if ($this->view->category->section) 
+			{
+				$this->view->section->load($this->view->category->section);
 
-			$sect = 0;
-			$cat  = 0;
-		} else {
-			$view->category->loadAlias( $alias );
-			if ($view->category->section) {
-				$view->section->load( $view->category->section );
-
-				$sect = $view->category->section;
-				$cat  = $view->category->id;
-			} else {
-				$sect = $view->category->id;
-				$cat  = 0;
+				$sect = $this->view->category->section;
+				$cat  = $this->view->category->id;
+			} 
+			else 
+			{
+				$sect = $this->view->category->id;
 			}
 		}
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
-		$view->filters = array();
-		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$view->filters['start'] = JRequest::getInt('limitstart', 0);
-		$view->filters['order'] = JRequest::getWord('order', 'recent');
-		$view->filters['section'] = $sect;
-		$view->filters['category'] = $cat;
-		$view->filters['search'] = JRequest::getVar('search','');
-		if (!$this->juser->get('guest')) {
-			$view->filters['user_id'] = $this->juser->get('id');
+		$this->view->filters = array();
+		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
+		$this->view->filters['order']    = JRequest::getWord('order', 'recent');
+		$this->view->filters['section']  = $sect;
+		$this->view->filters['category'] = $cat;
+		$this->view->filters['search']   = JRequest::getVar('search','');
+		if (!$this->juser->get('guest')) 
+		{
+			$this->view->filters['user_id'] = $this->juser->get('id');
 		}
 
 		// Get the list of articles for this category
-		$kba = new KbArticle( $this->database );
+		$kba = new KbArticle($this->database);
 
 		// Get a record count
-		$view->total = $kba->getCount($view->filters);
+		$this->view->total = $kba->getCount($this->view->filters);
 
 		// Get the records
-		$view->articles = $kba->getRecords($view->filters);
+		$this->view->articles = $kba->getRecords($this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
 
 		// Get all main categories for menu
-		$view->categories = $view->category->getCategories( 1, 1 );
+		$this->view->categories = $this->view->category->getCategories(1, 1);
 
 		// Get sub categories
-		$view->subcategories = $view->category->getCategories( 1, 1, $sect );
+		$this->view->subcategories = $this->view->category->getCategories(1, 1, $sect);
 
 		// Add the CSS to the template
 		$this->_getStyles();
@@ -257,116 +192,128 @@ class KbController extends Hubzero_Controller
 		$this->_getScripts();
 
 		// Set the pathway
-		$this->_buildPathway($view->section, $view->category, null);
+		$this->_buildPathway($this->view->section, $this->view->category, null);
 
 		// Set the page title
-		$this->_buildTitle($view->section, $view->category, null);
+		$this->_buildTitle($this->view->section, $this->view->category, null);
 
 		// Output HTML
-		$view->option = $this->_option;
-		$view->title = $this->_longname;
-		$view->catid = $sect;
-		$view->config = $this->config;
-		$view->juser = $this->juser;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
+		$this->view->title  = JText::_('COM_KB');
+		$this->view->catid  = $sect;
+		$this->view->config = $this->config;
+		$this->view->juser  = $this->juser;
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
-	 * Short description for 'article'
+	 * Displays a knowledge base article
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
-	protected function article()
+	public function articleTask()
 	{
+		$this->view->_task = 'article';
+		$this->view->_name = 'article';
+
 		// Incoming
-		$alias = JRequest::getVar( 'alias', '' );
-		$id = JRequest::getVar( 'id', '' );
-
-		//$this->helpful = '';
-
-		// Instantiate a new view
-		$view = new JView( array('name'=>'article') );
+		$alias = JRequest::getVar('alias', '');
+		$id = JRequest::getVar('id', '');
 
 		// Load the article
-		$view->article = new KbArticle( $this->database );
+		$this->view->article = new KbArticle($this->database);
 
-		if (!empty($alias)) {
-			$view->article->loadAlias( $alias );
-		} else if (!empty($id)) {
-			$view->article->load( $id );
+		if ($alias) 
+		{
+			$this->view->article->loadAlias($alias);
+		} 
+		else if ($id) 
+		{
+			$this->view->article->load($id);
 		}
 
-		if (!$view->article->id) {
-			JError::raiseError( 404, JText::_('Article not found.') );
+		if (!$this->view->article->id) 
+		{
+			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
 			return;
 		}
 
-		$view->article->hit( $view->article->id );
+		//$this->view->article->hit($this->view->article->id);
 
 		// Is the user logged in?
-		if (!$this->juser->get('guest')) {
+		if (!$this->juser->get('guest')) 
+		{
+			ximport('Hubzero_Environment');
+			
 			// See if this person has already voted
-			$h = new KbVote( $this->database );
-			$view->vote = $h->getVote( $view->article->id, $this->juser->get('id'), $this->_ipAddress(), 'entry' );
-		} else {
-			$view->vote = strtolower(JRequest::getVar( 'vote', '' ));
+			$h = new KbVote($this->database);
+			$this->view->vote = $h->getVote(
+				$this->view->article->id, 
+				$this->juser->get('id'), 
+				Hubzero_Environment::ipAddress(), 
+				'entry'
+			);
+		} 
+		else 
+		{
+			$this->view->vote = strtolower(JRequest::getVar('vote', ''));
 		}
-		//$view->vote_type = JRequest::getVar( 'type', '' );
-		//$view->vote_id = JRequest::getInt( 'id', 0 );
 
 		// Load the category object
-		$view->section = new KbCategory( $this->database );
-		$view->section->load( $view->article->section );
+		$this->view->section = new KbCategory($this->database);
+		$this->view->section->load($this->view->article->section);
 
 		// Load the category object
-		$view->category = new KbCategory( $this->database );
-		if ($view->article->category) {
-			$view->category->load( $view->article->category );
+		$this->view->category = new KbCategory($this->database);
+		if ($this->view->article->category) 
+		{
+			$this->view->category->load($this->view->article->category);
 		}
 
 		// Get all main categories for menu
-		$view->categories = $view->category->getCategories( 1, 1 );
+		$this->view->categories = $this->view->category->getCategories(1, 1);
 
-		$view->subcategories = $view->category->getCategories( 1, 1, $view->section->id );
+		$this->view->subcategories = $this->view->category->getCategories(1, 1, $this->view->section->id);
 
 		// Get tags on this article
-		$kt = new KbTags( $this->database );
-		$view->tags = $kt->get_tags_on_object($view->article->id, 0, 0, 0);
+		$kt = new KbTags($this->database);
+		$this->view->tags = $kt->get_tags_on_object($this->view->article->id, 0, 0, 0);
 
 		// Get comments on this article
-		$bc = new KbComment( $this->database );
-		$view->comments = $bc->getAllComments($view->article->id);
+		$bc = new KbComment($this->database);
+		$this->view->comments = $bc->getAllComments($this->view->article->id);
 
-		$view->comment_total = 0;
-		if ($view->comments) {
-			foreach ($view->comments as $com)
+		$this->view->comment_total = 0;
+		if ($this->view->comments) 
+		{
+			foreach ($this->view->comments as $com)
 			{
-				$view->comment_total++;
-				if ($com->replies) {
+				$this->view->comment_total++;
+				if ($com->replies) 
+				{
 					foreach ($com->replies as $rep)
 					{
-						$view->comment_total++;
-						if ($rep->replies) {
-							$view->comment_total = $view->comment_total + count($rep->replies);
+						$this->view->comment_total++;
+						if ($rep->replies) 
+						{
+							$this->view->comment_total += count($rep->replies);
 						}
 					}
 				}
 			}
 		}
 
-		$r = JRequest::getInt( 'reply', 0 );
-		$view->replyto = new KbComment($this->database);
-		$view->replyto->load($r);
+		$r = JRequest::getInt('reply', 0);
+		$this->view->replyto = new KbComment($this->database);
+		$this->view->replyto->load($r);
 
 		// Get parameters and merge with the component params
-		$rparams = new JParameter( $view->article->params );
-		$view->config = $this->config;
-		$view->config->merge( $rparams );
+		$rparams = new JParameter($this->view->article->params);
+		$this->view->config = $this->config;
+		$this->view->config->merge($rparams);
 
 		// Add the CSS to the template
 		$this->_getStyles();
@@ -375,71 +322,70 @@ class KbController extends Hubzero_Controller
 		$this->_getScripts();
 
 		// Set the pathway
-		$this->_buildPathway($view->section, $view->category, $view->article);
+		$this->_buildPathway($this->view->section, $this->view->category, $this->view->article);
 
 		// Set the page title
-		$this->_buildTitle($view->section, $view->category, $view->article);
+		$this->_buildTitle($this->view->section, $this->view->category, $this->view->article);
 
 		// Output HTML
-		$view->option = $this->_option;
-		$view->title = $this->_longname;
-		$view->juser = $this->juser;
-		$view->helpful = $this->helpful;
-		$view->catid = $view->section->id;
-		//$view->config = $this->config;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
+		//$this->view->option = $this->_option;
+		$this->view->title   = JText::_('COM_KB');
+		$this->view->juser   = $this->juser;
+		$this->view->helpful = $this->helpful;
+		$this->view->catid   = $this->view->section->id;
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
 		}
-		$view->display();
+		$this->view->display();
 	}
-
-	//----------------------------------------------------------
-	// Private Functions
-	//----------------------------------------------------------
-
+	
 	/**
-	 * Short description for '_buildPathway'
+	 * Pushes items to the global breadcrumbs object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $section Parameter description (if any) ...
-	 * @param      mixed $category Parameter description (if any) ...
-	 * @param      mixed $article Parameter description (if any) ...
+	 * @param      object $section  KbCategory
+	 * @param      object $category KbCategory
+	 * @param      object $article  KbArticle
 	 * @return     void
 	 */
 	protected function _buildPathway($section=null, $category=null, $article=null)
 	{
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$app = JFactory::getApplication();
+		$pathway = $app->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) {
+		if (count($pathway->getPathWay()) <= 0) 
+		{
 			$pathway->addItem(
-				JText::_('COMPONENT_LONG_NAME'),
-				'index.php?option='.$this->_option
+				JText::_(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
 			);
 		}
-		if (is_object($section) && $section->alias) {
+		if (is_object($section) && $section->alias) 
+		{
 			$pathway->addItem(
 				stripslashes($section->title),
-				'index.php?option='.$this->_option.'&section='.$section->alias
+				'index.php?option=' . $this->_option . '&section=' . $section->alias
 			);
 		}
-		if (is_object($category) && $category->alias) {
-			$lnk  = 'index.php?option='.$this->_option;
-			$lnk .= (is_object($section) && $section->alias) ? '&section='.$section->alias : '';
-			$lnk .= '&category='.$category->alias;
+		if (is_object($category) && $category->alias) 
+		{
+			$lnk  = 'index.php?option=' . $this->_option;
+			$lnk .= (is_object($section) && $section->alias) ? '&section=' . $section->alias : '';
+			$lnk .= '&category=' . $category->alias;
 
 			$pathway->addItem(
 				stripslashes($category->title),
 				$lnk
 			);
 		}
-		if (is_object($article) && $article->alias) {
-			$lnk = 'index.php?option='.$this->_option.'&section='.$section->alias;
-			if (is_object($category) && $category->alias) {
-				$lnk .= '&category='.$category->alias;
+		if (is_object($article) && $article->alias) 
+		{
+			$lnk = 'index.php?option=' . $this->_option . '&section=' . $section->alias;
+			if (is_object($category) && $category->alias) 
+			{
+				$lnk .= '&category=' . $category->alias;
 			}
-			$lnk .= '&alias='.$article->alias;
+			$lnk .= '&alias=' . $article->alias;
 
 			$pathway->addItem(
 				stripslashes($article->title),
@@ -449,69 +395,73 @@ class KbController extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for '_buildTitle'
+	 * Builds the document title
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $section Parameter description (if any) ...
-	 * @param      object $category Parameter description (if any) ...
-	 * @param      object $article Parameter description (if any) ...
+	 * @param      object $section  KbCategory
+	 * @param      object $category KbCategory
+	 * @param      object $article  KbArticle
 	 * @return     void
 	 */
 	protected function _buildTitle($section=null, $category=null, $article=null)
 	{
-		$title = JText::_('COMPONENT_LONG_NAME');
-		if (is_object($section) && $section->title != '') {
-			$title .= ': '.stripslashes($section->title);
+		$this->_title = JText::_(strtoupper($this->_option));
+		if (is_object($section) && $section->title != '') 
+		{
+			$this->_title .= ': ' . stripslashes($section->title);
 		}
-		if (is_object($category) && $category->title != '') {
-			$title .= ': '.stripslashes($category->title);
+		if (is_object($category) && $category->title != '') 
+		{
+			$this->_title .= ': ' . stripslashes($category->title);
 		}
-		if (is_object($article)) {
-			$title .= ': '.stripslashes($article->title);
+		if (is_object($article)) 
+		{
+			$this->_title .= ': ' . stripslashes($article->title);
 		}
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		$document = JFactory::getDocument();
+		$document->setTitle($this->_title);
 	}
 
 	/**
-	 * Short description for 'vote'
+	 * Records the vote (like/dislike) of either an article or comment
+	 * AJAX call - Displays updated vote links
+	 * Standard link - falls through to the article view
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
-	protected function vote()
+	public function voteTask()
 	{
-		if ($this->juser->get('guest')) {
-			$this->login();
+		if ($this->juser->get('guest')) 
+		{
+			$return = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+			);
 			return;
 		}
 
 		// Incoming
-		$no_html = JRequest::getInt( 'no_html', 0 );
-		$type = JRequest::getVar( 'type', '' );
-		$id = JRequest::getVar( 'id', '' );
-		$vote = strtolower(JRequest::getVar( 'vote', '' ));
-
-		$ip = $this->_ipAddress();
+		$no_html = JRequest::getInt('no_html', 0);
+		$type = JRequest::getVar('type', '');
+		$id = JRequest::getVar('id', '');
+		$vote = strtolower(JRequest::getVar('vote', ''));
+		
+		ximport('Hubzero_Environment');
+		$ip = Hubzero_Environment::ipAddress();
 
 		// See if this person has already voted
-		$h = new KbVote( $this->database );
-		$result = $h->getVote( $id, $this->juser->get('id'), $ip, $type );
+		$h = new KbVote($this->database);
+		$result = $h->getVote($id, $this->juser->get('id'), $ip, $type);
 
-		if ($result) {
-			$db =& JFactory::getDBO();
-			$sql = "DELETE FROM #__faq_helpful_log
-					WHERE object_id='{$id}' AND (user_id='{$this->juser->get('id')}' OR ip='$ip')";
-			$db->setQuery( $sql );
-			$db->query();
+		if ($result) 
+		{
+			$h->deleteVote($id, $this->juser->get('id'), $ip, $type);
 		}
 
 		// Did they vote?
-		if (!$vote) {
+		if (!$vote) 
+		{
 			// Already voted
-			$this->setError( JText::_('COM_KB_USER_DIDNT_VOTE') );
+			$this->setError(JText::_('COM_KB_USER_DIDNT_VOTE'));
 			$this->article();
 			return;
 		}
@@ -520,13 +470,13 @@ class KbController extends Hubzero_Controller
 		switch ($type)
 		{
 			case 'entry':
-				$row = new KbArticle( $this->database );
+				$row = new KbArticle($this->database);
 			break;
 			case 'comment':
-				$row = new KbComment( $this->database );
+				$row = new KbComment($this->database);
 			break;
 		}
-		$row->load( $id );
+		$row->load($id);
 
 		// Record if it was helpful or not
 		switch ($vote)
@@ -548,14 +498,15 @@ class KbController extends Hubzero_Controller
 		{
 			case 'like':
 				$row->helpful--;
-				break;
+			break;
 			case 'dislike':
 				$row->nothelpful--;
-				break;
+			break;
 		}
 
-		if (!$row->store()) {
-			$this->setError( $row->getError() );
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
 			return;
 		}
 
@@ -568,271 +519,162 @@ class KbController extends Hubzero_Controller
 		$params['user_id'] = $this->juser->get('id');
 		$params['type'] = $type;
 
-		$h->bind( $params );
-		if (!$h->check()) {
-			$this->setError( $h->getError() );
+		$h->bind($params);
+		if (!$h->check()) 
+		{
+			$this->setError($h->getError());
 			return;
 		}
-		if (!$h->store()) {
-			$this->setError( $h->getError() );
+		if (!$h->store()) 
+		{
+			$this->setError($h->getError());
 			return;
 		}
 
-		if ($no_html) {
-			$view = new JView( array('name'=>'vote') );
-			$view->option = $this->_option;
-			$view->item = $row;
-			$view->type = $type;
-			$view->vote = $vote;
-			$view->id = $id;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
+		if ($no_html) 
+		{
+			$this->view->item = $row;
+			$this->view->type = $type;
+			$this->view->vote = $vote;
+			$this->view->id   = $id;
+			if ($this->getError()) 
+			{
+				$this->view->setError($this->getError());
 			}
-			$view->display();
-		} else {
-			if ($type == 'entry') {
+			$this->view->display();
+		} 
+		else 
+		{
+			if ($type == 'entry') 
+			{
 				JRequest::setVar('alias', $row->alias);
 			}
-			$this->article();
+			$this->articleTask();
 		}
 	}
 
 	/**
-	 * Short description for '_server'
+	 * Saves a comment to an article
+	 * Displays article
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $index Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
-	private function _server($index = '')
-	{
-		if (!isset($_SERVER[$index])) {
-			return FALSE;
-		}
-
-		return TRUE;
-	}
-
-	/**
-	 * Short description for '_validIp'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $ip Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _validIp($ip)
-	{
-		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? false : true;
-	}
-
-	/**
-	 * Short description for '_ipAddress'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _ipAddress()
-	{
-		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
-			 $ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
-		} elseif ($this->_server('REMOTE_ADDR')) {
-			 $ip_address = JRequest::getVar('REMOTE_ADDR','','server');
-		} elseif ($this->_server('HTTP_CLIENT_IP')) {
-			 $ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
-		} elseif ($this->_server('HTTP_X_FORWARDED_FOR')) {
-			 $ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR','','server');
-		}
-
-		if ($ip_address === FALSE) {
-			$ip_address = '0.0.0.0';
-			return $ip_address;
-		}
-
-		if (strstr($ip_address, ',')) {
-			$x = explode(',', $ip_address);
-			$ip_address = end($x);
-		}
-
-		if (!$this->_validIp($ip_address)) {
-			$ip_address = '0.0.0.0';
-		}
-
-		return $ip_address;
-	}
-
-	//----------------------------------------------------------
-	// Comments
-	//----------------------------------------------------------
-
-	/**
-	 * Short description for 'savecomment'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
-	 */
-	protected function savecomment()
+	public function savecommentTask()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) {
-			$this->setError( JText::_('COM_KB_LOGIN_NOTICE') );
-			return $this->login();
+		if ($this->juser->get('guest')) 
+		{
+			$this->setError(JText::_('COM_KB_LOGIN_NOTICE'));
+			$this->loginTask();
+			return;
 		}
 
 		// Incoming
-		$comment = JRequest::getVar( 'comment', array(), 'post' );
+		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		$row = new KbComment( $this->database );
-		if (!$row->bind( $comment )) {
-			$this->setError( $row->getError() );
-			return $this->article();
+		$row = new KbComment($this->database);
+		if (!$row->bind($comment)) 
+		{
+			$this->setError($row->getError());
+			$this->articleTask();
+			return;
 		}
 
 		// Set the created time
-		if (!$row->id) {
-			$row->created = date( 'Y-m-d H:i:s', time() );  // use gmdate() ?
+		if (!$row->id) 
+		{
+			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
 		}
 
 		// Check content
-		if (!$row->check()) {
-			$this->setError( $row->getError() );
-			return $this->article();
+		if (!$row->check()) 
+		{
+			$this->setError($row->getError());
+			$this->articleTask();
+			return;
 		}
 
 		// Store new content
-		if (!$row->store()) {
-			$this->setError( $row->getError() );
-			return $this->article();
-		}
-
-		return $this->article();
-	}
-
-	/**
-	 * Short description for 'deletecomment'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
-	 */
-	protected function deletecomment()
-	{
-		// Ensure the user is logged in
-		if ($this->juser->get('guest')) {
-			$this->setError( JText::_('COM_KB_LOGIN_NOTICE') );
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			$this->articleTask();
 			return;
 		}
 
-		// Incoming
-		$id = JRequest::getInt( 'comment', 0 );
-		if (!$id) {
-			return $this->article();
-		}
-
-		// Initiate a blog comment object
-		$comment = new KbComment( $this->database );
-		$comment->load( $id );
-
-		if ($this->juser->get('id') != $comment->created_by && !$this->authorized) {
-			return $this->article();
-		}
-
-		// Delete all comments on an entry
-		if (!$comment->deleteChildren( $id )) {
-			$this->setError( $comment->getError() );
-			return $this->article();
-		}
-
-		// Delete the entry itself
-		if (!$comment->delete( $id )) {
-			$this->setError( $comment->getError() );
-		}
-
-		// Return the topics list
-		return $this->article();
+		$this->articleTask();
 	}
 
 	/**
-	 * Short description for 'commentsfeed'
+	 * Displays an RSS feed of comments for a given article
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
-	protected function commentsfeed()
+	public function commentsTask()
 	{
-		if (!$this->config->get('feeds_enabled')) {
+		if (!$this->config->get('feeds_enabled')) 
+		{
 			$this->_task = 'article';
-			$this->article();
+			$this->articleTask();
 			return;
 		}
 
-		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
-
-		//$mainframe =& $this->mainframe;
-		$database =& JFactory::getDBO();
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-		//$params =& $mainframe->getParams();
-		$app =& JFactory::getApplication();
-		$params =& $app->getParams();
-		$doc->link = JRoute::_('index.php?option='.$this->_option);
+		$app = JFactory::getApplication();
+		$params = $app->getParams();
+		$doc->link = JRoute::_('index.php?option=' . $this->_option);
 
 		// Incoming
-		$alias = JRequest::getVar( 'alias', '' );
+		$alias = JRequest::getVar('alias', '');
 
-		if (!$alias) {
-			return $this->browse();
+		if (!$alias) 
+		{
+			return $this->displayTask();
 		}
 
 		$entry = new KbArticle($this->database);
 		$entry->loadAlias($alias);
 
-		if (!$entry->id) {
-			$this->_task = 'browse';
-			return $this->browse();
+		if (!$entry->id) 
+		{
+			return $this->displayTask();
 		}
 
 		// Load the category object
-		$section = new KbCategory( $this->database );
-		$section->load( $entry->section );
+		$section = new KbCategory($this->database);
+		$section->load($entry->section);
 
 		// Load the category object
-		$category = new KbCategory( $this->database );
-		if ($entry->category) {
-			$category->load( $entry->category );
+		$category = new KbCategory($this->database);
+		if ($entry->category) 
+		{
+			$category->load($entry->category);
 		}
 
 		// Load the comments
 		$bc = new KbComment($this->database);
 		$rows = $bc->getAllComments($entry->id);
 
-		//$year = JRequest::getInt( 'year', date("Y") );
-		//$month = JRequest::getInt( 'month', 0 );
-
 		// Build some basic RSS document information
-		$jconfig =& JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename').' - '.JText::_(strtoupper($this->_option));
-		//$doc->title .= ($year) ? ': '.$year : '';
-		//$doc->title .= ($month) ? ': '.sprintf("%02d",$month) : '';
-		$doc->title .= ($entry->title) ? ': '.stripslashes($entry->title) : '';
-		$doc->title .= ': '.JText::_('Comments');
+		$jconfig = JFactory::getConfig();
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
+		$doc->title .= ($entry->title) ? ': ' . stripslashes($entry->title) : '';
+		$doc->title .= ': ' . JText::_('COM_KB_COMMENTS');
 
-		$doc->description = JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), stripslashes($entry->title));
-		$doc->copyright = JText::sprintf('COM_KB_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		//$doc->category = JText::_('COM_BLOG_RSS_CATEGORY');
+		$doc->description = JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($entry->title));
+		$doc->copyright = JText::sprintf('COM_KB_COMMENTS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 
 		// Start outputing results if any found
-		if (count($rows) > 0) {
+		if (count($rows) > 0) 
+		{
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => '',
@@ -842,34 +684,35 @@ class KbController extends Hubzero_Controller
 				'domain'   => ''
 			);
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 
 			foreach ($rows as $row)
 			{
 				// URL link to article
-				$link = JRoute::_('index.php?option='.$this->_option.'&section='.$section->alias.'&category='.$category->alias.'&alias='.$entry->alias.'#c'.$row->id);
+				$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $row->id);
 
 				$author = JText::_('COM_KB_ANONYMOUS');
-				if (!$row->anonymous) {
-					$cuser =& JUser::getInstance($row->created_by);
+				if (!$row->anonymous) 
+				{
+					$cuser  = JUser::getInstance($row->created_by);
 					$author = $cuser->get('name');
 				}
 
 				// Prepare the title
-				$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date',$row->created, '%I:%M %p', 0).' on '.JHTML::_('date',$row->created, '%d %b, %Y', 0);
+				$title = JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $author) . ' @ ' . JHTML::_('date', $row->created, '%I:%M %p', 0) . ' on ' . JHTML::_('date', $row->created, '%d %b, %Y', 0);
 
 				// Strip html from feed item description text
-				if ($row->reports) {
+				if ($row->reports) 
+				{
 					$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-				} else {
+				} 
+				else 
+				{
 					$description = $p->parse($row->content, $wikiconfig);
 				}
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-				/*if ($this->config->get('feed_entries') == 'partial') {
-					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
-				}*/
 
-				@$date = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
+				@$date = ($row->created ? date('r', strtotime($row->created)) : '');
 
 				// Load individual item creator class
 				$item = new JFeedItem();
@@ -881,36 +724,38 @@ class KbController extends Hubzero_Controller
 				$item->author      = $author;
 
 				// Loads item info into rss array
-				$doc->addItem( $item );
+				$doc->addItem($item);
 
 				// Check for any replies
-				if ($row->replies) {
+				if ($row->replies) 
+				{
 					foreach ($row->replies as $reply)
 					{
 						// URL link to article
-						$link = JRoute::_('index.php?option='.$this->_option.'&section='.$section->alias.'&category='.$category->alias.'&alias='.$entry->alias.'#c'.$reply->id);
+						$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
 
 						$author = JText::_('COM_KB_ANONYMOUS');
-						if (!$reply->anonymous) {
-							$cuser =& JUser::getInstance($reply->created_by);
+						if (!$reply->anonymous) 
+						{
+							$cuser  = JUser::getInstance($reply->created_by);
 							$author = $cuser->get('name');
 						}
 
 						// Prepare the title
-						$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author).' @ '.JHTML::_('date',$reply->created, '%I:%M %p', 0).' on '.JHTML::_('date',$reply->created, '%d %b, %Y', 0);
+						$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, '%I:%M %p', 0) . ' on ' . JHTML::_('date', $reply->created, '%d %b, %Y', 0);
 
 						// Strip html from feed item description text
-						if ($reply->reports) {
+						if ($reply->reports) 
+						{
 							$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-						} else {
-							$description = (is_object($p)) ? $p->parse( stripslashes($reply->content) ) : nl2br(stripslashes($reply->content));
+						} 
+						else 
+						{
+							$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
 						}
 						$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-						/*if ($this->config->get('feed_entries') == 'partial') {
-							$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
-						}*/
 
-						@$date = ( $reply->created ? date( 'r', strtotime($reply->created) ) : '' );
+						@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
 
 						// Load individual item creator class
 						$item = new JFeedItem();
@@ -922,35 +767,37 @@ class KbController extends Hubzero_Controller
 						$item->author      = $author;
 
 						// Loads item info into rss array
-						$doc->addItem( $item );
+						$doc->addItem($item);
 
-						if ($reply->replies) {
+						if ($reply->replies) 
+						{
 							foreach ($reply->replies as $response)
 							{
 								// URL link to article
-								$link = JRoute::_('index.php?option='.$this->_option.'&section='.$section->alias.'&category='.$category->alias.'&alias='.$entry->alias.'#c'.$response->id);
+								$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
 
 								$author = JText::_('COM_KB_ANONYMOUS');
-								if (!$response->anonymous) {
-									$cuser =& JUser::getInstance($response->created_by);
+								if (!$response->anonymous) 
+								{
+									$cuser  = JUser::getInstance($response->created_by);
 									$author = $cuser->get('name');
 								}
 
 								// Prepare the title
-								$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author).' @ '.JHTML::_('date',$response->created, '%I:%M %p', 0).' on '.JHTML::_('date',$response->created, '%d %b, %Y', 0);
+								$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, '%I:%M %p', 0) . ' on ' . JHTML::_('date', $response->created, '%d %b, %Y', 0);
 
 								// Strip html from feed item description text
-								if ($response->reports) {
+								if ($response->reports) 
+								{
 									$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-								} else {
-									$description = (is_object($p)) ? $p->parse( stripslashes($response->content) ) : nl2br(stripslashes($response->content));
+								} 
+								else 
+								{
+									$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
 								}
 								$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-								/*if ($this->config->get('feed_entries') == 'partial') {
-									$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
-								}*/
 
-								@$date = ( $response->created ? date( 'r', strtotime($response->created) ) : '' );
+								@$date = ($response->created ? date('r', strtotime($response->created)) : '');
 
 								// Load individual item creator class
 								$item = new JFeedItem();
@@ -962,7 +809,7 @@ class KbController extends Hubzero_Controller
 								$item->author      = $author;
 
 								// Loads item info into rss array
-								$doc->addItem( $item );
+								$doc->addItem($item);
 							}
 						}
 					}
@@ -973,136 +820,5 @@ class KbController extends Hubzero_Controller
 		// Output the feed
 		echo $doc->render();
 	}
-
-	/*protected function vote($database, $id)
-	{
-		$ip = $this->_ip_address();
-		
-		// Login required
-		if ($this->juser->get('guest')) {
-			$this->setError( JText::_('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE') );
-			$this->login();
-			return;
-		}
-			
-		// See if a person from this IP has already voted
-		$al = new AnswersQuestionsLog( $database );
-		$voted = $al->checkVote( $id, $ip );
-	
-		if ($voted) {	
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=8');
-			return;
-		}
-				
-		// load the resource
-		$row = new AnswersQuestion( $database );
-		$row->load( $id );
-		$this->qid = $id;
-		
-		// check if user is rating his own question
-		if ($row->created_by == $this->juser->get('username')) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=9');
-			return;
-		}
-		
-		// record vote
-		$row->helpful++;
-		
-		if (!$row->store()) {
-			$this->setError( $row->getError() );
-			return;
-		}
-		
-		$expires = time() + (7 * 24 * 60 * 60); // in a week
-		$expires = date( 'Y-m-d H:i:s', $expires );
-		
-		// Record user's vote
-		$al->qid = $id;
-		$al->ip = $ip;
-		$al->voter = $this->juser->get('id');
-		$al->expires = $expires;
-		if (!$al->check()) {
-			$this->setError( $al->getError() );
-			return;
-		}
-		if (!$al->store()) {
-			$this->setError( $al->getError() );
-			return;
-		}
-	}
-	//-----------
-	
-	protected function vote()
-	{
-		// Is the user logged in?
-		if ($this->juser->get('guest')) {
-			$this->login( JText::_('COM_KB_PLEASE_LOGIN_TO_VOTE') );
-			return;
-		}
-		
-		// Incoming
-		$alias = JRequest::getInt( 'alias', 0 );
-		$no_html = JRequest::getInt( 'no_html', 0 );
-		$ip   = $this->_ip_address();
-		
-		if (!$id) {
-			// cannot proceed		
-			return;
-		}
-		
-		// Incoming
-		$vote = strtolower(JRequest::getVar( 'vote', '' ));
-	
-		// Did they vote?
-		if ($vote && ($vote == 'like' || $vote == 'dislike')) {
-			// Load the resource
-			$row = new KbArticle( $this->database );
-			$row->load( $id );
-
-			// Record if it was helpful or not
-			if ($vote == 'like'){
-				$row->helpful++;
-			} elseif ($vote == 'dislike') {
-				$row->nothelpful++;
-			}
-
-			if (!$row->store()) {
-				$this->setError( $row->getError() );
-				return;
-			}
-
-			// Record user's vote
-			$params = array();
-			$params['id'] = NULL;
-			$params['fid'] = $row->id;
-			$params['ip'] = $ip;
-			$params['helpful'] = $vote;
-
-			$h->bind( $params );
-			if (!$h->check()) {
-				$this->setError( $h->getError() );
-				return;
-			}
-			if (!$h->store()) {
-				$this->setError( $h->getError() );
-				return;
-			}
-		}
-						
-		// update display
-		if ($no_html) {
-			//$response = $row->getResponse($id, $ip);
-
-			$view = new JView( array('name'=>'vote') );
-			$view->option = $this->_option;
-			$view->item = $row;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
-			$view->display();
-		} else {				
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&section='.$section->alias.'&category='.$category->alias.'&alias='.$row->alias.'#c'.$cid);
-		}
-	}*/
 }
 
