@@ -73,7 +73,8 @@ class plgGroupsMemberOptions extends JPlugin
 		$area = array(
 			'name' => 'memberoptions',
 			'title' => JText::_('GROUP_MEMBEROPTIONS'),
-			'default_access' => 'registered'
+			'default_access' => 'registered', 
+			'display_menu_tab' => true
 		);
 
 		return $area;
@@ -196,6 +197,8 @@ class plgGroupsMemberOptions extends JPlugin
 	{
 		/* @var $group Hubzero_Group */
 
+		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
+		
 		//instantaite database object
 		$database =& JFactory::getDBO();
 
@@ -225,8 +228,12 @@ class plgGroupsMemberOptions extends JPlugin
 		}
 
 		$app =& JFactory::getApplication();
-		$app->enqueueMessage('You have successfully updated your member options.','Message');
-		$app->redirect( JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=memberoptions&task=edit' ) );
+		$app->enqueueMessage('You have successfully updated your email settings','Message');
+		
+		if(!$postSaveRedirect)
+			$app->redirect( JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=memberoptions&task=edit' ) );
+		else
+			$app->redirect( $postSaveRedirect );
 
 	}
 

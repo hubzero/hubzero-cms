@@ -73,7 +73,9 @@ class plgGroupsForum extends Hubzero_Plugin
 		$area = array(
 			'name' => 'forum',
 			'title' => JText::_('PLG_GROUPS_FORUM'),
-			'default_access' => $this->_params->get('plugin_access','members')
+			'default_access' => $this->_params->get('plugin_access','members'),
+			'display_menu_tab' => true
+
 		);
 
 		return $area;
@@ -189,7 +191,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				//case 'deletereply': $arr['html'] .= $this->deletereply(); break;
 				case 'topic':       $arr['html'] .= $this->topic();       break;
 				case 'topics':      $arr['html'] .= $this->topics();      break;
-
+				
 				default: 			$arr['html'] .= $this->topics(); 	  break;
 			}
 		}
@@ -239,6 +241,26 @@ class plgGroupsForum extends Hubzero_Plugin
 			)
 		);
 
+		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'memberoptions'.DS.'memberoption.class.php');
+		
+		$user =& JFactory::getUser();
+		
+		
+		$database =& JFactory::getDBO();
+		$recvEmailOption = new XGroups_MemberOption($database);
+		$recvEmailOption->loadRecord( $this->group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+
+		if($recvEmailOption->id)
+		{
+			$view->recvEmailOptionID = $recvEmailOption->id;
+			$view->recvEmailOptionValue = $recvEmailOption->optionvalue;
+		}
+		else
+		{
+			$view->recvEmailOptionID = 0;
+			$view->recvEmailOptionValue = 0;
+		}		
+		
 		// Pass the view some info
 		$view->juser = $this->juser;
 		$view->authorized = $this->authorized;
@@ -464,6 +486,11 @@ class plgGroupsForum extends Hubzero_Plugin
 	 */
 	protected function savetopic()
 	{
+		
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+		$xhub  =& Hubzero_Factory::getHub();
+
 		//check to make sure editor is a member
 		if(!in_array($this->juser->get('id'),$this->members) && $this->authorized != 'admin') {
 			// Return the topics list
@@ -595,17 +622,31 @@ class plgGroupsForum extends Hubzero_Plugin
 			JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher =& JDispatcher::getInstance();
 
+			// We only want a link to original topics and parents, don't wnat direct links to the sub topic
+			$topicIDToLinkTo = $row->parent == 0 ? $row->id : $row->parent;
+			
+			$hublongURL = $xhub->getCfg('hubLongURL');
+			$topicURL = JRoute::_($hublongURL . '/index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=topic&topic='. $topicIDToLinkTo);
+			
+			// Append a brief message giving this message a bit more context
+			$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
+			$prependtext .= "Message from " . $xhub->getCfg('hubShortURL') . " / " . $group->get('description')  . "\r\n";
+			$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n" ;
+			$prependtext .= "For more details, visit " . $topicURL;
+			$message = $prependtext . "\r\n\r\n" . $originalMessage;
+			
 			// Email each group member separately, each needs a user specific token
 			foreach($userIDsToEmail as $userID)
 			{
 
 				// Construct User specific Email ThreadToken
 				// Version, type, userid, xforumid
-				// Note, for original posts, $row->parent will be 0, so we take the id instead
+				// We $row->id, the python scripts are smart enough to get the parent from this
+				// to attach any responses to the correct parent weather we are dealing with
+				// an initial post or a reply to a previous post
 				$token = $encryptor->buildEmailToken(1, 2, $user->id, $row->id);
 
-				$subject = $group->get('cn') . ' group discussion post (' . $row->id . ')';
-				$message = $originalMessage;
+				$subject = " - " . $group->get('description') . " group post - " . $row->topic; 
 
 				$jconfig =& JFactory::getConfig();
 				$from = array();
@@ -754,5 +795,5 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Return the output
 		return $view->loadTemplate();
-	}
+	}	
 }

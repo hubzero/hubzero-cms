@@ -59,18 +59,24 @@ if (!$no_html) {
 					<ul id="page_menu">
 						<?php 
 							foreach($this->hub_group_plugins as $plugin) {
-								echo JHTML::_(
-									'view_html.displayMenu',
-									$this->user,
-									$this->authorized,
-									$this->option,
-									$this->group,
-									$this->pages,
-									$this->tab,
-									$this->group_plugin_access[$plugin['name']],
-									$plugin['name'],
-									$plugin['title']
-								);
+								
+								// This allows for hidden plugins
+								if ($plugin['display_menu_tab'])
+								{
+									echo JHTML::_(
+										'view_html.displayMenu',
+										$this->user,
+										$this->authorized,
+										$this->option,
+										$this->group,
+										$this->pages,
+										$this->tab,
+										$this->group_plugin_access[$plugin['name']],
+										$plugin['name'],
+										$plugin['title'],
+										$plugin['display_menu_tab']
+									);
+								}
 							}
 						?>
 					</ul><!-- //end page menu -->

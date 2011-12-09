@@ -124,10 +124,19 @@ class Hubzero_Email_Token
 
 		$binaryString = pack("NNN", $userid, $id, intval(time()));
 
+		// Hash the unencrypted version hex version of the binary string
+		// Include the unencrypted version and action bytes as well
+		$hash = sha1(bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($binaryString));
+
+		// We're only using a portion of the hash as a checksum
+		$hashsub = substr($hash, 0, 4);
+
+		// Append hash to end of binary string, two hex digits stuffed into a single unsigned byte
+		$binaryString .= pack("n", hexdec($hashsub));
+
 		//**** Add PKCS7 style padding before encryption
 		$pad = $this->_blocksize - (strlen($binaryString) % $this->_blocksize);
-
-        $binaryString .= str_repeat(chr($pad), $pad);
+		$binaryString .= str_repeat(chr($pad), $pad);
 
 		//**** Do the encryption
 		$cipher = mcrypt_module_open(MCRYPT_RIJNDAEL_128,'','cbc','');
@@ -140,6 +149,6 @@ class Hubzero_Email_Token
 
 		return $rv;
  	}
-
+	
 }
 

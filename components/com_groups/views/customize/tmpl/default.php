@@ -139,18 +139,20 @@ $levels = array(
 				<ul id="access">
 					<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
 					<?php for($i=0; $i<count($this->hub_group_plugins); $i++) { ?>
-						<li>
-							<input type="hidden" name="group_plugin[<?php echo $i; ?>][name]" value="<?php echo $this->hub_group_plugins[$i]['name']; ?>">
-							<span class="menu_item_title"><?php echo $this->hub_group_plugins[$i]['title']; ?></span>
-							<select name="group_plugin[<?php echo $i; ?>][access]">
-								<?php foreach($levels as $level => $name) { ?>
-									<?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
-									<?php if(($this->hub_group_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_group_plugins[$i]['name'] != 'overview') { ?>
-										<option <?php echo $sel; ?> value="<?php echo $level; ?>"><?php echo $name; ?></option>
+						<?php if ($this->hub_group_plugins[$i]['display_menu_tab']) { ?>
+							<li>
+								<input type="hidden" name="group_plugin[<?php echo $i; ?>][name]" value="<?php echo $this->hub_group_plugins[$i]['name']; ?>">
+								<span class="menu_item_title"><?php echo $this->hub_group_plugins[$i]['title']; ?></span>
+								<select name="group_plugin[<?php echo $i; ?>][access]">
+									<?php foreach($levels as $level => $name) { ?>
+										<?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
+										<?php if(($this->hub_group_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_group_plugins[$i]['name'] != 'overview') { ?>
+											<option <?php echo $sel; ?> value="<?php echo $level; ?>"><?php echo $name; ?></option>
+										<?php } ?>
 									<?php } ?>
-								<?php } ?>
-							</select>
-						</li>
+								</select>
+							</li>
+						<?php } ?>
 					<?php } ?>
 				</ul>
 			</div>

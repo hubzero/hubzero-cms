@@ -66,7 +66,9 @@ class plgGroupsUsage extends JPlugin
 		$area = array(
 			'name' => 'usage',
 			'title' => JText::_('USAGE'),
-			'default_access' => $this->_params->get('plugin_access','members')
+			'default_access' => $this->_params->get('plugin_access','members'),
+			'display_menu_tab' => true
+
 		);
 
 		return $area;

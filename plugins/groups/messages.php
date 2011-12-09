@@ -72,7 +72,9 @@ class plgGroupsMessages extends JPlugin
 		$area = array(
 			'name' => 'messages',
 			'title' => JText::_('PLG_GROUPS_MESSAGES'),
-			'default_access' => $this->_params->get('plugin_access','members')
+			'default_access' => $this->_params->get('plugin_access','members'),
+			'display_menu_tab' => true
+
 		);
 
 		return $area;

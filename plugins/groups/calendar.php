@@ -72,7 +72,9 @@ class plgGroupsCalendar extends JPlugin
 		$area = array(
 			'name' => 'calendar',
 			'title' => JText::_('PLG_GROUPS_CALENDAR'),
-			'default_access' => $this->_params->get('plugin_access','members')
+			'default_access' => $this->_params->get('plugin_access','members'),
+			'display_menu_tab' => true
+
 		);
 
 		return $area;

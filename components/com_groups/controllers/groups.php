@@ -2187,7 +2187,7 @@ class GroupsController extends Hubzero_Controller
 		// Trigger the functions that return the areas we'll be using
 		// then add overview to array
 		$hub_group_plugins = $dispatcher->trigger( 'onGroupAreas', array( ) );
-		array_unshift($hub_group_plugins, array('name'=>'overview','title'=>'Overview','default_access'=>'anyone'));
+		array_unshift($hub_group_plugins, array('name'=>'overview','title'=>'Overview','default_access'=>'anyone', 'display_menu_tab' => true));
 
 		// Get plugin access
 		$group_plugin_access = $group->getPluginAccess();

@@ -72,7 +72,9 @@ class plgGroupsWiki extends JPlugin
 		$area = array(
 			'name' => 'wiki',
 			'title' => JText::_('PLG_GROUPS_WIKI'),
-			'default_access' => $this->_params->get('plugin_access','members')
+			'default_access' => $this->_params->get('plugin_access','members'),
+			'display_menu_tab' => true
+
 		);
 
 		return $area;

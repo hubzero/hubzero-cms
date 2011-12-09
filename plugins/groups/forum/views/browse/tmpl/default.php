@@ -54,6 +54,37 @@ $juser =& JFactory::getUser();
 				?>
 			<?php } ?>
 		</div>
+		
+		<?php
+		$params = $params = &JComponentHelper::getParams('com_groups');
+		$allowEmailResponses = $params->get('email_comment_processing');
+		if ($allowEmailResponses) { 
+		?>
+			<div class="container">
+				<h3>Email Settings</h3>
+				<p class="starter"><span class="starter-point"></span></p>
+				<p class="starter">
+
+				<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post">
+					<input type="hidden" name="task" value="savememberoptions" />
+					<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID;?>" />
+					<input type="hidden" name="postsaveredirect" value="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum') ?>" />
+
+					
+					<div style="padding-top:10px;">
+						<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if($this->recvEmailOptionValue == 1) echo "checked"; else echo "";?> > 
+						<label for="recvpostemail">Email forum posts</label>
+					</div>				
+
+					<div style="padding-top:15px;">
+						<input type="submit" value="Save">
+					</div>
+
+				</form>
+				</p>
+			</div>
+		<?php } ?>
+	
 	</div>
 	
 	<div class="subject">

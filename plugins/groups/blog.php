@@ -72,7 +72,9 @@ class plgGroupsBlog extends JPlugin
 		$area = array(
 			'name' => 'blog',
 			'title' => JText::_('PLG_GROUPS_BLOG'),
-			'default_access' => $this->_params->get('plugin_access','members')
+			'default_access' => $this->_params->get('plugin_access','members'),
+			'display_menu_tab' => true
+
 		);
 
 		return $area;
