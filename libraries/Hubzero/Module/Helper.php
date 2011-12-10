@@ -119,5 +119,24 @@ class Hubzero_Module_Helper
 
 		return $contents;
 	}
+	
+	//----------
+	
+	public function getParams( $id )
+	{
+		//database object
+		$db =& JFactory::getDBO();
+		
+		//select module params based on name passed in
+		$sql = "SELECT params FROM #__modules WHERE id='".$id."' AND published=1";
+		$db->setQuery( $sql );
+		$params = $db->loadResult();
+		
+		//parse params
+		$mparams = new JParameter( $params );
+		
+		//return params
+		return $mparams;
+	}
 }
 
