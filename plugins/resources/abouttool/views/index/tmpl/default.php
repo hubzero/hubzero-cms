@@ -283,4 +283,3 @@ if (!$this->thistool && $this->revision != 'dev') {
 	</table>
 </div><!-- / .subject -->
 <div class="clear"></div>
-<input type="hidden" name="rid" id="rid" value="<?php echo $this->resource->id; ?>" />

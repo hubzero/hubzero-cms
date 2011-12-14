@@ -241,4 +241,3 @@ if ($this->params->get('show_assocs')) {
 	</table>
 </div><!-- / .subject -->
 <div class="clear"></div>
-<input type="hidden" name="rid" id="rid" value="<?php echo $this->resource->id; ?>" />

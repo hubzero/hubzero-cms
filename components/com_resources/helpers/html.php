@@ -977,6 +977,8 @@ class ResourcesHtml
 			$html .= ($thedate) ? JHTML::_('date', $thedate, '%d %b %Y').' ' : '';
 			$html .= JText::_('COM_RESOURCES_IN').' <a href="'.JRoute::_('index.php?option='.$option.'&type='.$typenorm).'">'.$resource->getTypeTitle().'</a></p>'."\n";
 		}
+		
+		$html .= '<input type="hidden" name="rid" id="rid" value="' . $resource->id .'" />'."\n";
 
 		/*$supported = null;
 		if ($resource->type == 7) {
