@@ -159,10 +159,10 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$this->view->group = JRequest::getVar('group', '');
 
-		if (!$this->view->group && trim($this->config->get('group'))) 
+		/*if (!$this->view->group && trim($this->config->get('group'))) 
 		{
             $this->view->group = trim($this->config->get('group'));
-        }
+        }*/
 
 		$this->view->sort = JRequest::getVar('sort', 'name');
 
@@ -2525,12 +2525,12 @@ class SupportControllerTickets extends Hubzero_Controller
 					{
 						$members = $hzg->get('members');
 
-						//$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
 						$users[] = JHTML::_('select.optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
 							$u =& JUser::getInstance($member);
-							if (!is_object($u)) {
+							if (!is_object($u)) 
+							{
 								continue;
 							}
 
@@ -2538,10 +2538,9 @@ class SupportControllerTickets extends Hubzero_Controller
 							$m->value = $u->get('username');
 							$m->text  = $u->get('name');
 							$m->groupname = $g;
-
+							
 							$users[] = $m;
 						}
-						//$users[] = '</optgroup>';
 						$users[] = JHTML::_('select.option', '</OPTGROUP>');
 					}
 				}
@@ -2567,10 +2566,15 @@ class SupportControllerTickets extends Hubzero_Controller
 					$m->value = $u->get('username');
 					$m->text  = $u->get('name');
 					$m->groupname = $group;
-
-					$users[] = $m;
+					
+					$names = explode(' ', $u->get('name'));
+					$last = trim(end($names));
+					
+					$users[$last] = $m;
 				}
 			}
+			
+			ksort($users);
 		}
 
 		$users = JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);

@@ -841,9 +841,14 @@ class SupportControllerTickets extends Hubzero_Controller
 					$m->text  = $u->get('name');
 					$m->groupname = $group;
 
-					$users[] = $m;
+					$names = explode(' ', $u->get('name'));
+					$last = trim(end($names));
+					
+					$users[$last] = $m;
 				}
 			}
+			
+			ksort($users);
 		}
 
 		$users = JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
