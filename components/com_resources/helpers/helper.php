@@ -473,6 +473,7 @@ class ResourcesHelper extends JObject
 
 		$rt = new ResourcesTags( $database );
 		$this->tags = $rt->get_tags_on_object($this->_id, 0, 0, $tagger_id, $strength, $admin);
+		return $this->tags;
 	}
 
 	/**
@@ -495,6 +496,7 @@ class ResourcesHelper extends JObject
 
 		$rt = new ResourcesTags( $database );
 		$this->tagsForEditing = $rt->get_tag_string( $this->_id, 0, 0, $tagger_id, $strength, 0 );
+		return $this->tagsForEditing;
 	}
 
 	/**
@@ -516,6 +518,7 @@ class ResourcesHelper extends JObject
 
 		$rt = new ResourcesTags( $database );
 		$this->tagCloud = $rt->get_tag_cloud(0, $admin, $this->_id);
+		return $this->tagCloud;
 	}
 
 	//----------------------------------------------------------
