@@ -223,8 +223,11 @@ class SelectedQuotes extends JTable
 			$filters['sortby'] = 'date';
 		}
 		$query .= "\n ORDER BY ".$filters['sortby']." DESC";
-		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != '') {
-			$query .= " LIMIT ".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] > 0) {
+			if (!isset($filters['start'])) {
+				$filters['start'] = 0;
+			}
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
 		return $query;
 	}
@@ -239,6 +242,8 @@ class SelectedQuotes extends JTable
 	 */
 	public function getCount( $filters=array() )
 	{
+		$filters['limit'] = 0;
+		
 		$query  = "SELECT COUNT(*) ".$this->buildQuery( $filters );
 
 		$this->_db->setQuery( $query );

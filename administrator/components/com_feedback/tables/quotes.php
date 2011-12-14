@@ -167,9 +167,15 @@ class FeedbackQuotes extends JTable
 		if (isset($filters['id']) && $filters['id'] != 0 ) {
 			$query .= " AND id=".$filters['id'];
 		}
+		if (empty($filters['sortby'])) {
+			$filters['sortby'] = 'date';
+		}
 		$query .= "\n ORDER BY ".$filters['sortby']." DESC";
-		if (isset($filters['limit'])) {
-			$query .= " LIMIT ".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] > 0) {
+			if (!isset($filters['start'])) {
+				$filters['start'] = 0;
+			}
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
 		return $query;
 	}
@@ -184,6 +190,8 @@ class FeedbackQuotes extends JTable
 	 */
 	public function getCount( $filters=array() )
 	{
+		$filters['limit'] = 0;
+		
 		$query = "SELECT COUNT(*) ".$this->buildQuery( $filters );
 
 		$this->_db->setQuery( $query );

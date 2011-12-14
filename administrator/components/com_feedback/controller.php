@@ -56,6 +56,7 @@ class FeedbackController extends Hubzero_Controller
 
 		$this->_task = strtolower(JRequest::getVar('task', '','request'));
 		$this->type = JRequest::getVar('type', '', 'post');
+
 		if (!$this->type)
 		{
 			$this->type = JRequest::getVar('type', 'regular', 'get');

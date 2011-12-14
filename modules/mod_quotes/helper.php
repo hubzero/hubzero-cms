@@ -120,7 +120,7 @@ class modQuotes
 
 		//Get the admin configured settings
 		$filters = array();
-		$filters['limit'] = trim($this->params->get('maxquotes', 15));
+		$filters['limit'] = trim($this->params->get('maxquotes'));
 		$filters['id'] = JRequest::getInt('quoteid', 0);
 		$filters['notable_quotes'] = 1;
 
