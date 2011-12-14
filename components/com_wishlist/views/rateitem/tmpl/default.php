@@ -31,73 +31,117 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser 		=& JFactory::getUser();
-$item 		= $this->item;
-//$this->option 	= $this->option;
-$listid 	= $this->listid;
-$admin 		= $this->admin;
-$page 		= $this->page;
-$plugin 	= $this->plugin;
-$filters 	= $this->filters;
+/*$juser =& JFactory::getUser();
 
-$title = ($juser->get('id') == $item->proposed_by) ? JText::_('You cannot vote for your own wish') : '';
-if($juser->get('guest')) { $title = JText::_('Please login to vote'); }
-if($item->vote) { $title = JText::_('You have already voted for this wish'); }
-if($item->status==1 or $item->status==3 or $item->status==4) { $title = JText::_('Voting is closed for this wish'); }
-
+$title = ($juser->get('id') == $this->item->proposed_by) ? JText::_('You cannot vote for your own wish') : '';
+if ($juser->get('guest')) { 
+	$title = JText::_('Please login to vote'); 
+}
+if ($this->item->vote) { 
+	$title = JText::_('You have already voted for this wish'); 
+}
+if ($this->item->status==1 or $this->item->status==3 or $this->item->status==4) { 
+	$title = JText::_('Voting is closed for this wish'); 
+}*/
+			
 // are we voting yes or no
-$pclass = (isset($item->vote) && $item->vote=="yes" && $item->status!=1) ? 'yes' : 'zero';
-$nclass = (isset($item->vote) && $item->vote=="no" && $item->status!=1) ? 'no' : 'zero';
-$item->positive = ($item->positive > 0) ? '+'.$item->positive: '&nbsp;&nbsp;'.$item->positive;
-$item->negative = ($item->negative > 0) ? '-'.$item->negative: '&nbsp;&nbsp;'.$item->negative;
+//$pclass = (isset($this->item->vote) && $this->item->vote=="yes" && $this->item->status!=1) ? 'yes' : 'zero';
+//$nclass = (isset($this->item->vote) && $this->item->vote=="no" && $this->item->status!=1) ? 'no' : 'zero';
 
+//$this->item->positive = ($this->item->positive > 0) ? '+'.$this->item->positive: '&nbsp;&nbsp;'.$this->item->positive;
+//$this->item->negative = ($this->item->negative > 0) ? '-'.$this->item->negative: '&nbsp;&nbsp;'.$this->item->negative;
+			
 // import filters
-$filterln  = isset($filters['filterby']) ? a.'filterby='.$filters['filterby'] : '';
-$filterln .= isset($filters['sortby']) ? a.'sortby='.$filters['sortby'] : '';
-$filterln .= isset($filters['tag']) ? a.'tags=' . htmlentities($filters['tag']) : '';
-$filterln .= isset($filters['limit']) ? a.'limit='.$filters['limit'] : '';
-$filterln .= isset($filters['start']) ? a.'limitstart='.$filters['start'] : '';
+$filterln  = isset($this->filters['filterby']) ? '&filterby='.$this->filters['filterby'] : '';
+$filterln .= isset($this->filters['sortby'])   ? '&sortby='.$this->filters['sortby']     : '';
+$filterln .= isset($this->filters['tag'])      ? '&tags='.$this->filters['tag']          : '';
+$filterln .= isset($this->filters['limit'])    ? '&limit='.$this->filters['limit']       : '';
+$filterln .= isset($this->filters['start'])    ? '&limitstart='.$this->filters['start']  : '';
 
 // Begin HTML output
-$html  = n.t.t.t.'<span class="thumbsvote" title="'.$title.'">'.n;
-$html .= t.t.t.t.'<span class="'.$pclass.'">'.$item->positive.'</span>'.n;
 
+/*<span class="thumbsvote" title="'.$title.'">
 if ($juser->get('guest')) {
-	$html .= t.t.t.t.'<span class="gooditem r_disabled"><a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;
-	$html .= t.t.t.t.'<span class="'.$nclass.'">'.$item->negative.'</span>'.n;
-	$html .= t.t.t.t.'<span class="baditem r_disabled"><a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;
-}
-else {
+	<span class="'.$pclass.'">'.$this->item->positive.'</span>
+	$html .= t.t.t.t.'<span class="gooditem r_disabled"><a href="index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes&page='.$this->page.$filterln.'" >&nbsp;</a></span>'.n;
+	$html .= t.t.t.t.'<span class="'.$nclass.'">'.$this->item->negative.'</span>'.n;
+	$html .= t.t.t.t.'<span class="baditem r_disabled"><a href="index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=no&page='.$this->page.$filterln.'" >&nbsp;</a></span>'.n;				
+}else {
+	<span class="'.$pclass.'">'.$this->item->positive.'</span>		
 	$html .= t.t.t.t.'<span class="gooditem">'.n;
-	if($item->vote && $item->vote=="no" or  $juser->get('id') == $item->proposed_by or $item->status==1) {
+	if($this->item->vote && $this->item->vote=="no" or  $juser->get('id') == $this->item->proposed_by or $this->item->status==1) {
 		$html .= t.t.t.t.'<span class="dis">&nbsp;</span>'.n;
 	}
-	else if($item->vote) {
+	else if($this->item->vote) {
 		$html .= t.t.t.t.'<span>&nbsp;</span>'.n;
 	}
 	else {
-		$html .= t.t.t.t.t.'<a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;
+		$html .= t.t.t.t.t.'<a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$this->item->id.a.'vote=yes'.a.'page='.$this->page.$filterln.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;			
 	}
 	$html .= t.t.t.t.'</span>'.n;
-	$html .= t.t.t.t.'<span class="'.$nclass.'">'.$item->negative.'</span>'.n;
+	$html .= t.t.t.t.'<span class="'.$nclass.'">'.$this->item->negative.'</span>'.n;
 	$html .= t.t.t.t.'<span class="baditem">'.n;
-	if($item->vote && $item->vote=="yes" or $juser->get('id') == $item->proposed_by or $item->status==1) {
+	if($this->item->vote && $this->item->vote=="yes" or $juser->get('id') == $this->item->proposed_by or $this->item->status==1) {
 		$html .= t.t.t.t.'<span class="dis">&nbsp;</span>'.n;
 	}
-	else if($item->vote) {
+	else if($this->item->vote) {
 		$html .= t.t.t.'<span>&nbsp;</span>'.n;
 	}
 	else {
-		$html .= t.t.t.t.t.'<a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;
+		$html .= t.t.t.t.t.'<a href="index.php?option='.$this->option.a.'task=rateitem'.a.'refid='.$this->item->id.a.'vote=no'.a.'page='.$this->page.$filterln.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;	
 	}
-	$html .= t.t.t.t.'</span>'.n;
+	$html .= t.t.t.t.'</span>'.n;		
 }
-
-	if($plugin) {
+				
+	if($this->plugin) {
 		$html .= t.t.t.t.'<span class="votinghints"><span>&nbsp;</span></span>'.n;
 	}
+				
+</span>*/
 
-	$html .= t.t.t.'</span>'.n;
+$dcls = '';
+$lcls = '';
+$cls = ' tooltips';
 
-	echo $html;
+$juser = JFactory::getUser();
+if (!$juser->get('guest')) {
+	// Logged in
+	$like_title = JText::_('I like this.');
+	$dislike_title = JText::_('I dislike this.');
+	
+	if ($this->item->vote) {
+		$like_title = $dislike_title = JText::_('You have already voted.');
+		if ($this->item->vote == $this->item->positive) {
+			$lcls = ' chosen';
+		}
+		if ($this->item->vote == $this->item->negative) {
+			$dcls = ' chosen';
+		}
+	}
+	if ($juser->get('id') == $this->item->proposed_by) {
+		$like_title = $dislike_title = JText::_('You cannot vote for your own wish.');
+		$this->item->positive = 0;
+	}
+	if ($this->item->status == 1 || $this->item->status == 3 || $this->item->status == 4) { 
+		$like_title = $dislike_title = JText::_('Voting is closed for this wish.');
+	}
+} else {
+	// Not logged in
+	$like_title = $dislike_title = JText::_('Please login to vote.');
+	$this->item->positive = 0;
+}
 ?>
+<span class="vote-like<?php echo $lcls; ?>">
+<?php if ($this->item->vote || $juser->get('guest') || $juser->get('id') == $this->item->proposed_by) { ?>
+	<span class="vote-button <?php echo ($this->item->positive > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote up'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->positive; ?><span> Like</span></span>
+<?php } else { ?>
+	<a class="vote-button <?php echo ($this->item->positive > 0) ? 'like' : 'like'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('Vote up'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->positive; ?><span> Like</span></a>
+<?php } ?>
+</span>
+<span class="vote-dislike<?php echo $dcls; ?>">
+<?php if ($this->item->vote || $juser->get('guest') || $juser->get('id') == $this->item->proposed_by) { ?>
+	<span class="vote-button <?php echo ($this->item->negative > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote down'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->negative; ?><span> Dislike</span></span>
+<?php } else { ?>
+	<a class="vote-button <?php echo ($this->item->negative > 0) ? 'dislike' : 'dislike'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('Vote down'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->negative; ?><span> Dislike</span></a>
+<?php } ?>
+</span>

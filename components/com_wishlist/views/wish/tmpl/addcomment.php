@@ -29,18 +29,127 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 if (!$this->juser->get('guest')) {
 	$category = ($this->level==0) ? 'wish': 'wishcomment';
-
+	
 	$class = ' hide';
 	if (is_object($this->addcomment)) {
 		$class = ($this->addcomment->referenceid == $this->refid && $this->addcomment->category==$category) ? '' : ' hide';
 	}
-?>
+	if ($this->level == 0) { ?>
+		<div class="below section<?php echo $class; ?>">
+			<h3>
+				<a name="commentform"></a>
+				<?php echo JText::_('ACTION_ADD_COMMENT'); ?>
+			</h3>
+			<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform">
+				<div class="aside">
+					<table class="wiki-reference" summary="Wiki Syntax Reference">
+						<caption>Wiki Syntax Reference</caption>
+						<tbody>
+							<tr>
+								<td>'''bold'''</td>
+								<td><b>bold</b></td>
+							</tr>
+							<tr>
+								<td>''italic''</td>
+								<td><i>italic</i></td>
+							</tr>
+							<tr>
+								<td>__underline__</td>
+								<td><span style="text-decoration:underline;">underline</span></td>
+							</tr>
+							<tr>
+								<td>{{{monospace}}}</td>
+								<td><code>monospace</code></td>
+							</tr>
+							<tr>
+								<td>~~strike-through~~</td>
+								<td><del>strike-through</del></td>
+							</tr>
+							<tr>
+								<td>^superscript^</td>
+								<td><sup>superscript</sup></td>
+							</tr>
+							<tr>
+								<td>,,subscript,,</td>
+								<td><sub>subscript</sub></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- / .aside -->
+				<div class="subject">
+					<p class="comment-member-photo">
+						<span class="comment-anchor"><a name="answerform"></a></span>
+					<?php
+						if (!$this->juser->get('guest')) {
+							$jxuser = new Hubzero_User_Profile();
+							$jxuser->load($this->juser->get('id'));
+							$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
+						} else {
+							$config =& JComponentHelper::getParams('com_members');
+							$thumb = $config->get('defaultpic');
+							if (substr($thumb, 0, 1) != DS) {
+								$thumb = DS.$dfthumb;
+							}
+							$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+						}
+					?>
+						<img src="<?php echo $thumb; ?>" alt="" />
+					</p>
+					<fieldset>
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="listid" value="<?php echo $this->listid; ?>" />
+                        <input type="hidden" name="wishid" value="<?php echo $this->wishid; ?>" />
+						<input type="hidden" name="active" value="answers" />
+						<input type="hidden" name="task" value="savereply" />
+						<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
+						<input type="hidden" name="cat" value="<?php echo $category; ?>" />
+
+						<label>
+							<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
+							<textarea name="comment" rows="10" cols="50"></textarea>
+						</label>
+						
+						<fieldset>
+                        	<div class="grouping">
+                        		<label>
+	                           		 <?php echo JText::_('ACTION_ATTACH_FILE'); ?>
+									<input type="file" name="upload"  />								
+								</label>
+	                            <label>
+	                           		 <?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
+									<input type="text" name="description" value="" />								
+								</label>
+                        	</div>
+                        </fieldset>
+
+						<label id="answer-anonymous-label">
+							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" /> 
+							<?php echo JText::_('POST_COMMENT_ANONYMOUSLY'); ?>
+						</label>
+
+						<p class="submit">
+							<input type="submit" value="<?php echo JText::_('POST_COMMENT'); ?>" />
+						</p>
+
+						<div class="sidenote">
+							<p>
+								<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
+							</p>
+							<p>
+								Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+							</p>
+						</div>
+					</fieldset>
+				</div><!-- / .subject -->
+				<div class="clear"></div>
+			</form>
+		</div><!-- / .below section -->
+<?php } else { ?>
 					<div class="addcomment<?php echo $class; ?>" id="comm_<?php echo $this->refid; ?>">
-                    	<h3><?php echo JText::_('ACTION_ADD_COMMENT'); ?></h3>
 						<form action="index.php" method="post" id="commentform_<?php echo $this->refid; ?>" enctype="multipart/form-data">
 							<fieldset>
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -50,30 +159,38 @@ if (!$this->juser->get('guest')) {
 								<input type="hidden" name="task" value="savereply" />
 								<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
 								<input type="hidden" name="cat" value="<?php echo $category; ?>" />
+								
 								<label>
+									<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
+									<textarea name="comment" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?></textarea>
+								</label>
+								
+								<fieldset>
+	                            	<div class="grouping">
+	                            		<label>
+	                               			<?php echo JText::_('ACTION_ATTACH_FILE'); ?>
+											<input type="file" name="upload"  />
+										</label>
+	                                	<label>
+											<?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
+											<input type="text" name="description" value="" />								
+										</label>
+	                            	</div>
+	                            </fieldset>
+								
+								<label class="reply-anonymous-label">
 									<input class="option" type="checkbox" name="anonymous" value="1" /> 
 									<?php echo JText::_('POST_COMMENT_ANONYMOUSLY'); ?>
 								</label>
-								<label>
-									<textarea name="comment" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?></textarea>
-								</label>
+							
+								<p class="submit">
+									<input type="submit" value="<?php echo JText::_('POST_COMMENT'); ?>" /> 
+                            		<a class="closeform cancelreply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&listid='.$this->listid.'&wishid='.$this->wishid.'#c'.$this->refid); ?>" id="close_<?php echo $this->refid; ?>"><?php echo JText::_('CANCEL'); ?></a>
+								</p>
 							</fieldset>
-                            <fieldset>
-                             <div>
-                            	<label>
-                               		 <?php echo JText::_('ACTION_ATTACH_FILE'); ?>
-									<input type="file" name="upload"  />								
-								</label>
-                                <label>
-                               		 <?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
-									<input type="text" name="description" value="" />								
-								</label>
-                             </div>
-                            </fieldset>
-							<p><input type="submit" value="<?php echo JText::_('POST_COMMENT'); ?>" /> 
-                            <a href="javascript:void(0);" class="closeform" id="close_<?php echo $this->refid; ?>"><?php echo JText::_('CANCEL'); ?></a></p>
 						</form>
-					</div>
+					</div><!-- / .addcomment -->
+<?php } ?>
 <?php
 }
 ?>
