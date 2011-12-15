@@ -153,39 +153,41 @@ HUB.Twitter = new Class ({
 		
 		html += "<ul>";
 		for(var i = 0; i < this.options.tweets; i++) {
-			text = feed[i].text;
-			time = feed[i].created_at;
+			if(feed[i]) {
+				text = feed[i].text;
+				time = feed[i].created_at;
 		
-			if(this.options.type == "trend") {
-				img = feed[i].profile_image_url;
-				user = feed[i].from_user
-			} else {
-				img = feed[i].user.profile_image_url;
-				user = feed[i].user.screen_name;
+				if(this.options.type == "trend") {
+					img = feed[i].profile_image_url;
+					user = feed[i].from_user
+				} else {
+					img = feed[i].user.profile_image_url;
+					user = feed[i].user.screen_name;
+				}
+			
+				//load images through https
+				img = img.replace(/http:\/\/\w{2}.twimg.com/, 'https://s3.amazonaws.com/twitter_production');
+			
+				html += "<li>";
+				html += "<span class=\"tweetProfilePicture\">";
+				html += "<img src=\"" + img + "\" />";
+				html += "</span>";
+			
+				html += "<span class=\"tweetProfile\">";
+				html += "<a rel=\"external\" href=\"http://twitter.com/#!/" + user + "\">@" + user + "</a>";
+				html += "</span>";
+			
+				html += "<span class=\"tweetStatus\">";
+				if(this.options.linkify) {
+					html += this.Linkify(text); 
+				} else {
+					html += text;
+				}
+				html += "</span>";
+			
+				html += "<span class=\"tweetTime\">" + this.Time(time) + "</span>";
+				html += "</li>";
 			}
-			
-			//load images through https
-			img = img.replace(/http:\/\/\w{2}.twimg.com/, 'https://s3.amazonaws.com/twitter_production');
-			
-			html += "<li>";
-			html += "<span class=\"tweetProfilePicture\">";
-			html += "<img src=\"" + img + "\" />";
-			html += "</span>";
-			
-			html += "<span class=\"tweetProfile\">";
-			html += "<a rel=\"external\" href=\"http://twitter.com/#!/" + user + "\">@" + user + "</a>";
-			html += "</span>";
-			
-			html += "<span class=\"tweetStatus\">";
-			if(this.options.linkify) {
-				html += this.Linkify(text); 
-			} else {
-				html += text;
-			}
-			html += "</span>";
-			
-			html += "<span class=\"tweetTime\">" + this.Time(time) + "</span>";
-			html += "</li>";
 		}
 		html += "</ul>";
 		
