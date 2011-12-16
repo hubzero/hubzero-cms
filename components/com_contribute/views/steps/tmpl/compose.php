@@ -90,7 +90,7 @@ $view->display();
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="index.php" method="post" id="hubForm" accept-charset="utf-8">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="hubForm" accept-charset="utf-8">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
 

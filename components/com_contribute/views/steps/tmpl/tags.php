@@ -48,7 +48,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_CONTRIBUTE_TAGS_WHAT_ARE_TAGS'); ?></h4>
 			<p><?php echo JText::_('COM_CONTRIBUTE_TAGS_EXPLANATION'); ?></p>

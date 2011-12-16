@@ -888,7 +888,7 @@ class ContributeController extends Hubzero_Controller
 		if ($required) {
 			//echo $tagfa; print_r($fa); die;
 			if (!$tagfa || ($tagfa && !in_array($tagfa, $fa))) {
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&step=4&id='.$id.'&err=1&tags='.$tags);
+				$this->_redirect = 'index.php?option='.$this->_option.'&step=4&id='.$id.'&err=1&tags='.$tags;
 				$this->_message = JText::_('Please select one of the focus areas.');
 				$this->_messageType = 'error';
 				return;
@@ -1501,6 +1501,25 @@ class ContributeController extends Hubzero_Controller
 					}
 				}
 			}
+		}
+		
+		// Scan for viruses
+		$path = $path . DS . $file['name']; //JPATH_ROOT.DS.'virustest';
+		exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+		if ($status == 1)
+		{
+			if (JFile::delete($path)) 
+			{
+				// Delete associations to the resource
+				$row->deleteExistence();
+
+				// Delete resource
+				$row->delete();
+			}
+			
+			$this->setError( JText::_('File rejected due to possible security risk.') );
+			$this->attachments( $pid );
+			return;
 		}
 
 		if (!$row->path) {
@@ -2270,11 +2289,12 @@ class ContributeController extends Hubzero_Controller
 	 */
 	private function _txtClean( &$text )
 	{
+		// Handle special characters copied from MS Word
 		$text = str_replace('“','"', $text);
 		$text = str_replace('”','"', $text);
 		$text = str_replace("’","'", $text);
 		$text = str_replace("‘","'", $text);
-
+		
 		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
 		$text = preg_replace( '/{.+?}/', '', $text );
 		$text = preg_replace( "'<style[^>]*>.*?</style>'si", '', $text );

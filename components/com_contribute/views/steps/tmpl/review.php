@@ -58,7 +58,7 @@ if ($this->progress['submitted'] == 1) {
 		<?php*/
 	} else {
 		?>
-		<form action="index.php" method="post" id="hubForm">
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<h4>What happens after I submit?</h4>
 				<p>The submission will be licensed under Creative Commons</p>
@@ -118,33 +118,12 @@ if ($this->progress['submitted'] == 1) {
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_SUBMIT_CONTRIBUTION'); ?>" />
 		</div>
 	</form>
+	
+	<h1 id="preview-header"><?php echo JText::_('COM_CONTRIBUTE_REVIEW_PREVIEW'); ?></h1>
+	<div id="preview-pane">
+		<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview'); ?>"></iframe>
+	</div>
 	<?php 
 }
-$cats = array();
-$sections = array();
-
-include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
-
-// Get attributes
-$attribs = new JParameter( $this->resource->attribs );
-
-// Get the resource's children
-$helper = new ResourcesHelper( $this->id, $this->database );
-
-$body = ResourcesHtml::about( $this->database, 0, $this->usersgroups, $this->resource, $helper, $this->config, array(), null, null, null, null, $params, $attribs, $this->option, 0 );
-
-$cat = array();
-$cat['about'] = JText::_('ABOUT');
-array_unshift($cats, $cat);
-array_unshift($sections, array('html'=>$body,'metadata'=>''));
-
-$html  = '<h1 id="preview-header">'.JText::_('COM_CONTRIBUTE_REVIEW_PREVIEW').'</h1>'."\n";
-$html .= '<div id="preview-pane">'."\n";
-$html .= ResourcesHtml::title( 'com_resources', $this->resource, $params, false );
-$html .= ResourcesHtml::tabs( 'com_resources', $this->resource->id, $cats, 'about' );
-$html .= ResourcesHtml::sections( $sections, $cats, 'about', 'hide', 'main' );
-$html .= '</div><!-- / #preview-pane -->'."\n";
-
-echo $html;
 ?>
 </div><!-- / .main section -->
