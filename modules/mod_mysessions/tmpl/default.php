@@ -163,7 +163,8 @@ $juser =& JFactory::getUser();
 	</ul>
 		</div><!-- / .allsessions -->
 	</div><!-- / #mySessionsTabs -->
-<?php } ?>
+<?php } 
+}?>
 </div><!-- / .sessionlist -->
 <?php
 	// Get the disk usage
@@ -208,5 +209,4 @@ $juser =& JFactory::getUser();
 <?php
 		}
 	}
-}
 ?>
