@@ -946,16 +946,18 @@ class ResourcesHtml
 	{
 		$mode = JRequest::getWord('mode', '');
 		
+		$txt = '';
+		
 		if ($mode != 'preview')
 		{
 			switch ($resource->published)
 			{
-				case 1: $txt = ''; break;
-				case 2: $txt = '<span>['.JText::_('COM_RESOURCES_DRAFT_EXTERNAL').']</span> '; break;
-				case 3: $txt = '<span>['.JText::_('COM_RESOURCES_PENDING').']</span> '; break;
-				case 4: $txt = '<span>['.JText::_('COM_RESOURCES_DELETED').']</span> '; break;
-				case 5: $txt = '<span>['.JText::_('COM_RESOURCES_DRAFT_INTERNAL').']</span> '; break;
-				case 0; $txt = '<span>['.JText::_('COM_RESOURCES_UNPUBLISHED').']</span> '; break;
+				case 1: $txt .= ''; break;
+				case 2: $txt .= '<span>['.JText::_('COM_RESOURCES_DRAFT_EXTERNAL').']</span> '; break;
+				case 3: $txt .= '<span>['.JText::_('COM_RESOURCES_PENDING').']</span> '; break;
+				case 4: $txt .= '<span>['.JText::_('COM_RESOURCES_DELETED').']</span> '; break;
+				case 5: $txt .= '<span>['.JText::_('COM_RESOURCES_DRAFT_INTERNAL').']</span> '; break;
+				case 0; $txt .= '<span>['.JText::_('COM_RESOURCES_UNPUBLISHED').']</span> '; break;
 			}
 		}
 
