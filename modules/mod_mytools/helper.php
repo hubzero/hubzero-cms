@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //----------------------------------------------------------
 // This class holds information about one application.
@@ -151,7 +151,6 @@ class MwModApp
  */
 class modToolList
 {
-
 	/**
 	 * Description for 'attributes'
 	 * 
@@ -167,7 +166,7 @@ class modToolList
 	 * @param      unknown $params Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params)
 	{
 		$this->params = $params;
 	}
@@ -196,18 +195,14 @@ class modToolList
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
-	//-----------
-	// Get a list of applications that the user might invoke.
-
 	/**
-	 * Short description for '_getToollist'
-	 * 
-	 * Long description (if any) ...
+	 * Get a list of applications that the user might invoke.
 	 * 
 	 * @param      array $lst Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
@@ -220,39 +215,40 @@ class modToolList
 		$toollist = array();
 
 		// Create a Tool object
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
-		if (is_array($lst)) {
+		if (is_array($lst)) 
+		{
 			$tools = array();
 			// Check if the list is empty or not
-			if (!empty($lst)) {
+			if (!empty($lst)) 
+			{
 				ksort($lst);
 				// Get info for tools in the list
 				foreach ($lst as $item)
 				{
-					/*
-					if (strstr($item, '_')) {
-						$bits = explode('_',$item);
+					if (strstr($item, '_r')) 
+					{
+						$bits = explode('_r', $item);
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
-						$item = trim(implode('_',$bits));
+						$item = trim(implode('_r', $bits));
 					}
-					*/
-					if (strstr($item, '_r')) {
-						$bits = explode('_r',$item);
-						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
-						$item = trim(implode('_r',$bits));
-					}
-					$thistool = Hubzero_Tool_Version::getVersionInfo('','current',$item,'');
+					$thistool = Hubzero_Tool_Version::getVersionInfo('', 'current', $item, '');
 
-					if (is_array($thistool) && isset($thistool[0])) {
+					if (is_array($thistool) && isset($thistool[0])) 
+					{
 						$t = $thistool[0];
 						$tools[] = $t;
 					}
 				}
-			} else {
+			} 
+			else 
+			{
 				return array();
 			}
-		} else {
+		} 
+		else 
+		{
 			// Get all available tools
 			$tools = Hubzero_Tool::getMyTools();
 		}
@@ -262,19 +258,23 @@ class modToolList
 		// Turn it into an App array.
 		foreach ($tools as $tool)
 		{
-			if (!in_array(strtolower($tool->toolname), $toolnames)) { // include only one version
-				$toollist[strtolower($tool->instance)] = new MwModApp($tool->instance,
-						 $tool->title,
-						 $tool->description,
-						 $tool->mw,
-						 0, '', 0,
-						 1,
-						 $tool->revision,
-						 $tool->toolname);
+			if (!in_array(strtolower($tool->toolname), $toolnames)) 
+			{
+				// include only one version
+				$toollist[strtolower($tool->instance)] = new MwModApp(
+					$tool->instance,
+					$tool->title,
+					$tool->description,
+					$tool->mw,
+					0, '', 0,
+					1,
+					$tool->revision,
+					$tool->toolname
+				);
 			}
 			$toolnames[] = strtolower($tool->toolname);
 		}
-		//ksort($toollist);
+
 		return $toollist;
 	}
 
@@ -289,7 +289,7 @@ class modToolList
 	private function _prepText($txt)
 	{
 		$txt = stripslashes($txt);
-		$txt = str_replace('"','&quot;',$txt);
+		$txt = str_replace('"', '&quot;', $txt);
 		return $txt;
 	}
 
@@ -302,25 +302,31 @@ class modToolList
 	 * @param      string $type Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function buildList(&$toollist, $type='all')
+	public function buildList($toollist, $type='all')
 	{
-		if ($type == 'favs') {
+		if ($type == 'favs') 
+		{
 			$favs = array();
-		} elseif ($type == 'all') {
-			//$favs = (isset($this->favs)) ? $this->favs : array();
+		} 
+		elseif ($type == 'all') 
+		{
 			$favs = $this->favs;
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$html  = "\t\t".'<ul>'."\n";
-		if (count($toollist) <= 0) {
+		if (count($toollist) <= 0) 
+		{
 			$html .= "\t\t".' <li>'.JText::_('MOD_MYTOOLS_NONE_FOUND').'</li>'."\n";
-		} else {
+		} 
+		else 
+		{
 			foreach ($toollist as $tool)
 			{
 				// Make sure we have some info before attempting to display it
-				if (!empty($tool->caption)) {
+				if (!empty($tool->caption)) 
+				{
 					// Prep the text for XHTML output
 					$tool->caption = $this->_prepText($tool->caption);
 					$tool->desc = $this->_prepText($tool->desc);
@@ -337,14 +343,18 @@ class modToolList
 					// Build the HTML
 					$html .= "\t\t".' <li id="'.$tool->name.'"';
 					// If we're in the 'all tools' pane ...
-					if ($type == 'all') {
+					if ($type == 'all') 
+					{
 						// Highlight tools on the user's favorites list
-						if (in_array($tool->name,$favs)) {
+						if (in_array($tool->name,$favs)) 
+						{
 							$cls = 'favd';
 						}
 					}
-					if ($this->supportedtag) {
-						if (in_array($tool->toolname, $this->supportedtagusage)) {
+					if ($this->supportedtag) 
+					{
+						if (in_array($tool->toolname, $this->supportedtagusage)) 
+						{
 							$cls .= ($cls) ? ' supported' : 'supported';
 						}
 					}
@@ -355,12 +365,14 @@ class modToolList
 					$html .= "\t\t\t".' <a href="/tools/'.$tool->toolname.'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>'."\n";
 
 					// Only add the "favorites" button to the all tools list
-					if ($type == 'all') {
+					if ($type == 'all') 
+					{
 						$html .= "\t\t\t".' <a href="javascript:void(0);" class="fav" title="Add '.$tool->caption.' to your favorites">'.$tool->caption.'</a>'."\n";
 					}
 
 					// Launch tool link
-					if ($this->can_launch) {
+					if ($this->can_launch) 
+					{
 						$html .= "\t\t\t".' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>'."\n";
 					}
 					$html .= "\t\t".' </li>'."\n";
@@ -368,14 +380,16 @@ class modToolList
 				// If we're in the 'favorites' pane ...
 				// Add the tool's name to an array for the 'all tools' 
 				// pane to use in highlighting favorite tools
-				if ($type == 'favs') {
+				if ($type == 'favs') 
+				{
 					$favs[] = $tool->name;
 				}
 			}
 		}
 		$html .= "\t\t".'</ul>'."\n";
 
-		if ($type == 'favs') {
+		if ($type == 'favs') 
+		{
 			$this->favs = $favs;
 		}
 		return $html;
@@ -392,49 +406,54 @@ class modToolList
 	{
 		$params = $this->params;
 
-		$jacl =& JFactory::getACL();
-		$jacl->addACL( 'com_tools', 'manage', 'users', 'super administrator' );
-		$jacl->addACL( 'com_tools', 'manage', 'users', 'administrator' );
-		$jacl->addACL( 'com_tools', 'manage', 'users', 'manager' );
+		$jacl = JFactory::getACL();
+		$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
+		$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
+		$jacl->addACL('com_tools', 'manage', 'users', 'manager');
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
-		$mconfig = JComponentHelper::getParams( 'com_tools' );
+		$mconfig = JComponentHelper::getParams('com_tools');
 
 		// Ensure we have a connection to the middleware
 		$this->can_launch = true;
 		if (!$mconfig->get('mw_on')
-		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) {
+		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) 
+		{
 			$this->can_launch = false;
 		}
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests
-		$this->fav = JRequest::getVar( 'fav', '' );
-		$this->no_html = JRequest::getVar( 'no_html', 0 );
+		$this->fav = JRequest::getVar('fav', '');
+		$this->no_html = JRequest::getVar('no_html', 0);
 
-		$rconfig = JComponentHelper::getParams( 'com_resources' );
+		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->supportedtag = $rconfig->get('supportedtag');
 
 		$database =& JFactory::getDBO();
-		if ($this->supportedtag) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-			$this->rt = new ResourcesTags( $database );
-			$this->supportedtagusage = $this->rt->getTagUsage( $this->supportedtag, 'alias' );
+		if ($this->supportedtag) 
+		{
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php');
+			$this->rt = new ResourcesTags($database);
+			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
 		}
 
-		if ($this->fav || $this->no_html) {
+		if ($this->fav || $this->no_html) 
+		{
 			// We have a string of tools! This means we're updating the
 			// favorite tools pane of the module via AJAX
 			$favs = split(',',$this->fav);
 			$favs = array_map('trim',$favs);
 
 			$this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
-		} else {
-			$juser =& JFactory::getUser();
+		} 
+		else 
+		{
+			$juser = JFactory::getUser();
 
 			// Add the JavaScript that does the AJAX magic to the template
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript('/modules/mod_mytools/mod_mytools.js');
 
 			// Push the module CSS to the template
@@ -442,11 +461,12 @@ class modToolList
 			Hubzero_Document::addModuleStyleSheet('mod_mytools');
 
 			// Get a list of recent tools
-			$rt = new RecentTool( $database );
-			$rows = $rt->getRecords( $juser->get('id') );
+			$rt = new RecentTool($database);
+			$rows = $rt->getRecords($juser->get('id'));
 
 			$recent = array();
-			if (!empty($rows)) {
+			if (!empty($rows)) 
+			{
 				foreach ($rows as $row)
 				{
 					$recent[] = $row->tool;
@@ -455,9 +475,12 @@ class modToolList
 
 			// Get the user's list of favorites
 			$fav = $params->get('myhub_favs');
-			if ($fav) {
-				$favs = split(',',$fav);
-			} else {
+			if ($fav) 
+			{
+				$favs = split(',', $fav);
+			} 
+			else 
+			{
 				$favs = array();
 			}
 			$this->favs = $favs;
