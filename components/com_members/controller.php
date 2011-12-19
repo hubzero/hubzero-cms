@@ -141,7 +141,7 @@ class MembersController extends Hubzero_Controller
 				ORDER BY u.name ASC";*/
 		$query = "SELECT u.id, u.name, u.username 
 				FROM #__users AS u 
-				WHERE LOWER( u.name ) LIKE '%".$filters['search']."% AND u.block=0' 
+				WHERE LOWER( u.name ) LIKE '%".$filters['search']."%' AND u.block=0 
 				ORDER BY u.name ASC";
 
 		$this->database->setQuery( $query );
@@ -155,7 +155,7 @@ class MembersController extends Hubzero_Controller
 				$json[] = '["'.htmlentities(stripslashes($row->name),ENT_COMPAT,'UTF-8').'","'.$row->id.'"]';
 			}
 		}
-
+		
 		echo '['.implode(',',$json).']';
 	}
 
