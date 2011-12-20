@@ -91,7 +91,7 @@ class EventsDate
 	 */
     public function EventsDate( $datetime='' )
 	{
-		if (ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})",$datetime,$regs)) {
+		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/",$datetime,$regs)) {
 			$this->setDate( $regs[1], $regs[2], $regs[3] );
 			$this->hour   = intval( $regs[4] );
 			$this->minute = intval( $regs[5] );

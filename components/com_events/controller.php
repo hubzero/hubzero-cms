@@ -259,10 +259,10 @@ class EventsController extends Hubzero_Controller
 
 		$category = JRequest::getInt( 'category', 0 );
 
-		if ($day<="9"&ereg("(^[1-9]{1})",$day)) {
+		if ($day<="9"&preg_match("/(^[1-9]{1})/",$day)) {
 			$day = "0$day";
 		}
-		if ($month<="9"&ereg("(^[1-9]{1})",$month)) {
+		if ($month<="9"&preg_match("/(^[1-9]{1})/",$month)) {
 			$month = "0$month";
 		}
 
@@ -1823,7 +1823,7 @@ class EventsController extends Hubzero_Controller
 	 */
 	private function _validEmail($email)
 	{
-		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
+		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $email)) {
 			return(1);
 		} else {
 			return(0);

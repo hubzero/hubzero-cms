@@ -226,7 +226,7 @@ if($this->role_filter) {
 								$u->load( $guser );
 								if (!is_object($u)) {
 									continue;
-								} elseif(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $guser)) {
+								} elseif(preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser)) {
 									$inviteemail = true;
 								}
 

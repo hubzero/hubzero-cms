@@ -1948,7 +1948,7 @@ class GroupsController extends Hubzero_Controller
 				}
 			} else {
 				// If not a userid check if proper email
-				if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $l)) {
+				if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $l)) {
 					// Try to find an account that might match this e-mail
 					$this->database->setQuery("SELECT u.id FROM #__users AS u WHERE u.email='". $l ."' OR u.email LIKE '".$l."\'%' LIMIT 1;");
 					$uid = $this->database->loadResult();
@@ -3447,7 +3447,7 @@ class GroupsController extends Hubzero_Controller
 	 */
     private function _validCn($gid)
 	{
-		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid)) {
+		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $gid)) {
 			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
 				return false;
 			} else {

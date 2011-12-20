@@ -2391,7 +2391,7 @@ class ContributeController extends Hubzero_Controller
 	 */
 	private function _buildPathFromDate( $date, $id, $base='' )
 	{
-		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs )) {
 			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 		}
 		if ($date) {

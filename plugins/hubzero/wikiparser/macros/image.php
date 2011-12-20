@@ -177,7 +177,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			if (substr($arg, 0, 5) == 'link=') 
 			{
 				$attr['href'] = 'none';
-                $bits = split('=', $arg);
+                $bits = preg_split('/=/', $arg);
 				$val = trim(end($bits));
 				if ($val) 
 				{

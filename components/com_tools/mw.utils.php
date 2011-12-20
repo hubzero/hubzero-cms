@@ -112,7 +112,7 @@ class MwUtils
 					$msg .= fgets($fp, 1024);
 				}
 				fclose($fp);
-				$tokens = split(',',$msg);
+				$tokens = preg_split('/,/',$msg);
 				foreach ($tokens as $token)
 				{
 					if (!empty($token))

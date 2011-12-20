@@ -1469,7 +1469,7 @@ class FeedbackController extends Hubzero_Controller
 	 */
 	private function _check_validLogin($login)
 	{
-		if (eregi("^[_0-9a-zA-Z]+$", $login)) {
+		if (preg_match("/^[_0-9a-zA-Z]+$/i", $login)) {
 			return(1);
 		} else {
 			return(0);
@@ -1486,7 +1486,7 @@ class FeedbackController extends Hubzero_Controller
 	 */
 	private function _check_validEmail($email)
 	{
-		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
+		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $email)) {
 			return(1);
 		} else {
 			return(0);

@@ -181,7 +181,7 @@ class EventsHtml
 		for ($a=1; $a<13; $a++)
 		{
 			$mnh = $a;
-			if ($mnh<="9"&ereg("(^[0-9]{1})",$mnh)) {
+			if ($mnh<="9"&preg_match("/(^[0-9]{1})/",$mnh)) {
 				$mnh="0".$mnh;
 			}
 			$name_of_month = EventsHtml::getMonthName($mnh);
@@ -208,7 +208,7 @@ class EventsHtml
 		for ($a=1; $a<=$nbdays; $a++)
 		{
 			$dys = $a;
-			if ($dys<="9"&ereg("(^[1-9]{1})",$dys)) {
+			if ($dys<="9"&preg_match("/(^[1-9]{1})/",$dys)) {
 				$dys="0".$dys;
 			}
 			$dayslist[] = JHTML::_('select.option', $dys, $dys, 'value', 'text');

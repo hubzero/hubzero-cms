@@ -905,7 +905,7 @@ class WishlistController extends JObject
 		}
 
 		if ( $this->_task=='reply') {
-			$addcomment = & new Hubzero_Comment( $database );
+			$addcomment = new Hubzero_Comment( $database );
 			$addcomment->referenceid = $this->referenceid;
 			$addcomment->category = $this->cat;
 

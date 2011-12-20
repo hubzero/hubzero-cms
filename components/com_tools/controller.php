@@ -1153,7 +1153,15 @@ class ToolsController extends Hubzero_Controller
 		}
 		$percent = round( $val * 100 );
 		$percent = ($percent > 100) ? 100 : $percent;
-		$total = $du['softspace'] / 1024000000;
+
+		if (isset($du['softspace']))
+		{
+			$total = $du['softspace'] / 1024000000;
+		}
+		else
+		{
+			$total = 0;
+		}
 
 		$this->remaining = (isset($du['remaining'])) ? $du['remaining'] : 0;
 		$this->percent = $percent;
