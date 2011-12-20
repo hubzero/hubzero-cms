@@ -151,7 +151,7 @@ class JLanguage extends JObject
 
 		if (isset ($this->_strings[$key]))
 		{
-			$string = $this->_debug ? "&bull;".$this->_strings[$key]."&bull;" : $this->_strings[$key];
+			$string = $this->_debug ? "&bull;".trim($this->_strings[$key], '"')."&bull;" : trim($this->_strings[$key], '"');
 
 			// Store debug information
 			if ( $this->_debug )
