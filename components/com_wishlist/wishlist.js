@@ -37,17 +37,22 @@ HUB.Wishlist = {
 							new Event(e).stop();
 							
 							var vnum = this.getProperty('id').replace('rep_','');
-							$('comm_' + vnum).removeClass('hide');
-							$('comm_' + vnum).style.display = "block";
-							t = $('comm_' + vnum).getElement('.commentarea');
-							t.value = 'Enter your comments...';
+							if ($('comm_' + vnum).hasClass('hide')) {
+								$('comm_' + vnum).removeClass('hide');
+								t = $('comm_' + vnum).getElement('.commentarea');
+								t.value = 'Enter your comments...';
+								//$('comm_' + vnum).style.display = "block";
+							} else {
+								$('comm_' + vnum).addClass('hide');
+								//$('comm_' + vnum).style.display = "none";
+							}
 						}
 					);
 				});
 			}
 			
 			// show hide comments area
-			if ($('section-comments')) { 
+			if ($('section-comments') && $('part_com')) { 
 				$('part_com').addEvent('click', function() {
 					if ($('part_com').hasClass('collapse')) {
 						$('part_com').removeClass('collapse');
@@ -63,7 +68,7 @@ HUB.Wishlist = {
 			}
 			
 			// show/hide plan area
-			if ($('section-plan')) { 
+			if ($('section-plan') && $('part_plan')) { 
 				$('part_plan').addEvent('click', function() {
 					if ($('part_plan').hasClass('collapse')) {
 						$('part_plan').removeClass('collapse');

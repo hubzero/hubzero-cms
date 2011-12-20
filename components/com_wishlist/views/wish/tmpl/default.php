@@ -368,12 +368,12 @@ if ($this->wishlist && $this->wish) {
 												</td>
 <?php 
 											}
-											else 
+											/*else 
 											{
 ?>
 												<td><?php echo JText::_('NA'); ?></td>
 <?php
-											}
+											}*/
 											
 											if ((isset($this->wish->num_votes) && $this->wish->num_votes==0) 
 											 || !isset($this->wish->num_votes)) 
@@ -396,7 +396,8 @@ if ($this->wishlist && $this->wish) {
 											}
 ?>
 												<td>
-													<?php if($this->wishlist->banking) { ?>
+<?php 										if($this->wishlist->banking) { ?>
+													
 													<div class="assign_bonus">			
 														<?php if(isset($this->wish->bonus) && $this->wish->bonus > 0 && ($this->wish->status==0 or $this->wish->status==6)) { ?>
 														<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>">+ <?php echo $this->wish->bonus; ?></a>
@@ -406,7 +407,7 @@ if ($this->wishlist && $this->wish) {
 														<span class="bonus_inactive" title="<?php echo JText::_('WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
 														<?php } ?>
 													</div>
-													<?php } ?>
+<?php 										} ?>
 												</td>
 											</tr>
 										</tbody>
@@ -831,7 +832,7 @@ if ($this->wishlist && $this->wish) {
 				(not started)
 			<?php } ?>
 		</h3>
-		<form action="index.php" method="post" id="planform">
+		<form action="index.php" method="post" id="planform" enctype="multipart/form-data">
 			<div class="aside">
 <?php if ($this->wish->action != 'editplan') { ?>
 				<p class="add">

@@ -211,8 +211,7 @@ if ($this->admin && !$this->getError()) {
 <?php 				} ?>
 <?php 			} ?>
 				</ul>
-		
-<?php 		if ($this->wishlist->items) { ?>
+
 				<table class="ideas entries" summary="<?php echo JText::_('Ideas submitted by the community'); ?>">
 					<caption>
 						<?php echo JText::_('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?> 
@@ -223,6 +222,7 @@ if ($this->admin && !$this->getError()) {
 					</caption>
 					<tbody>
 <?php
+				if ($this->wishlist->items) {
 					$y = 1;			
 					foreach ($this->wishlist->items as $item) 
 					{	
@@ -357,6 +357,21 @@ if ($this->admin && !$this->getError()) {
 						</tr>
 <?php
 					} // end foreach wish
+				} else {
+?>
+						<tr>
+							<td>
+<?php 				if ($this->filters['filterby'] == 'all' && !$this->filters['tag']) { ?>
+								<p><?php echo JText::_('WISHLIST_NO_WISHES_BE_FIRST'); ?></p>
+<?php 				} else { ?>
+								<p class="noresults"><?php echo JText::_('WISHLIST_NO_WISHES_SELECTION'); ?></p>
+								<p class="nav_wishlist"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wishlist&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>"><?php echo JText::_('WISHLIST_VIEW_ALL_WISHES'); ?></a></p>
+<?php 				} ?>
+							</td>
+						</tr>
+
+<?php
+				} // end if wishlist items
 ?>
 					</tbody>
 				</table>
@@ -370,16 +385,6 @@ if ($this->admin && !$this->getError()) {
 				echo $pagenavhtml;
 ?>
 				<div class="clearfix"></div>
-<?php 
-			} else {
-				if ($this->filters['filterby'] == 'all' && !$this->filters['tag']) { ?>
-				<p><?php echo JText::_('WISHLIST_NO_WISHES_BE_FIRST'); ?></p>
-<?php 			} else { ?>
-				<p class="noresults"><?php echo JText::_('WISHLIST_NO_WISHES_SELECTION'); ?></p>
-				<p class="nav_wishlist"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wishlist&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>"><?php echo JText::_('WISHLIST_VIEW_ALL_WISHES'); ?></a></p>
-<?php 			}
-			} // end if wishlist items
-?>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 	</form>

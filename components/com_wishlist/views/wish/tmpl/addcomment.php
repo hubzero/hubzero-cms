@@ -44,7 +44,7 @@ if (!$this->juser->get('guest')) {
 				<a name="commentform"></a>
 				<?php echo JText::_('ACTION_ADD_COMMENT'); ?>
 			</h3>
-			<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform">
+			<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
 				<div class="aside">
 					<table class="wiki-reference" summary="Wiki Syntax Reference">
 						<caption>Wiki Syntax Reference</caption>
@@ -126,7 +126,7 @@ if (!$this->juser->get('guest')) {
                         	</div>
                         </fieldset>
 
-						<label id="answer-anonymous-label">
+						<label id="comment-anonymous-label">
 							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" /> 
 							<?php echo JText::_('POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
