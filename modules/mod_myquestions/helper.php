@@ -30,32 +30,29 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMyQuestions'
- * 
- * Long description (if any) ...
+ * Module class for displaying a user's questions
+ * Requires com_answers component
  */
 class modMyQuestions
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for class data
 	 * 
 	 * @var array
 	 */
-	private $attributes = array();
+	private $_attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Class constructor
+	 * Sets the params property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params)
 	{
 		$this->params = $params;
 	}
@@ -65,13 +62,13 @@ class modMyQuestions
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_attributes[$property] = $value;
 	}
 
 	/**
@@ -84,8 +81,9 @@ class modMyQuestions
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
+		if (isset($this->_attributes[$property])) 
+		{
+			return $this->_attributes[$property];
 		}
 	}
 
@@ -99,29 +97,33 @@ class modMyQuestions
 	 * @param      integer $max Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	private function formatTags($string='', $num=3, $max=25)
+	private function _formatTags($string='', $num=3, $max=25)
 	{
 		$out = '';
-		$tags = split(',',$string);
+		$tags = split(',', $string);
 
-		if (count($tags) > 0) {
+		if (count($tags) > 0) 
+		{
 			$out .= '<span class="taggi">'."\n";
 			$counter = 0;
 
 			for ($i=0; $i< count($tags); $i++)
 			{
 				$counter = $counter + strlen(stripslashes($tags[$i]));
-				if ($counter > $max) {
+				if ($counter > $max) 
+				{
 					$num = $num - 1;
 				}
-				if ($i < $num) {
+				if ($i < $num) 
+				{
 					// display tag
 					$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $tags[$i]);
 					$normalized = strtolower($normalized);
 					$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags&tag='.$normalized).'">'.stripslashes($tags[$i]).'</a> '."\n";
 				}
 			}
-			if ($i > $num) {
+			if ($i > $num) 
+			{
 				$out .= ' (&#8230;)';
 			}
 			$out .= '</span>'."\n";
@@ -131,25 +133,26 @@ class modMyQuestions
 	}
 
 	/**
-	 * Short description for 'getInterests'
+	 * Looks up a user's interests (tags)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $cloud Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $cloud Output as tagcloud (defaults to no)
+	 * @return     mixed   List of tags as either a tagcloud or comma-delimitated string 
 	 */
-	private function getInterests($cloud=0)
+	private function _getInterests($cloud=0)
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'tags.php' );
+		require_once(JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'tags.php');
 
 		// Get tags of interest
-		$mt = new MembersTags( $database );
-		if ($cloud) {
+		$mt = new MembersTags($database);
+		if ($cloud) 
+		{
 			$tags = $mt->get_tag_cloud(0,0,$juser->get('id'));
-		} else {
+		} 
+		else 
+		{
 			$tags = $mt->get_tag_string($juser->get('id'));
 		}
 
@@ -157,35 +160,34 @@ class modMyQuestions
 	}
 
 	/**
-	 * Short description for 'getQuestions'
+	 * Retrieves a user's questions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $kind Parameter description (if any) ...
-	 * @param      array $interests Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $kind The kind of results to retrieve
+	 * @param      array  $interests Array of tags
+	 * @return     array  Database results
 	 */
-	private function getQuestions($kind='open', $interests=array())
+	private function _getQuestions($kind='open', $interests=array())
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
 		// Get some classes we need
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'economy.php' );
+		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php');
+		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php');
+		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php');
+		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'economy.php');
 
-		$aq = new AnswersQuestion( $database );
-		if ($this->banking) {
-			$AE = new AnswersEconomy( $database );
-			$BT = new Hubzero_Bank_Transaction( $database );
+		$aq = new AnswersQuestion($database);
+		if ($this->banking) 
+		{
+			$AE = new AnswersEconomy($database);
+			$BT = new Hubzero_Bank_Transaction($database);
 		}
 
 		$params =& $this->params;
-		$moduleclass = $params->get( 'moduleclass' );
-		$limit = intval( $params->get( 'limit' ) );
+		$moduleclass = $params->get('moduleclass');
+		$limit = intval($params->get('limit'));
 		$limit = ($limit) ? $limit : 10;
 
 		$filters = array();
@@ -195,7 +197,7 @@ class modMyQuestions
 		$filters['filterby'] = 'open';
 		$filters['sortby']   = 'date';
 
-		switch ( $kind )
+		switch ($kind)
 		{
 			case 'mine':
 				$filters['mine'] = 1;
@@ -204,31 +206,34 @@ class modMyQuestions
 
 			case 'assigned':
 				$filters['mine'] = 0;
-				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.author.php' );
+				require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.author.php');
 
 				$TA = new ToolAuthor($database);
 				$tools = $TA->getToolContributions($juser->get('id'));
-				if ($tools) {
+				if ($tools) 
+				{
 					foreach ($tools as $tool)
 					{
 						$filters['tag'] .= 'tool'.$tool->toolname.',';
 					}
 				}
-				if (!$filters['tag']) {
+				if (!$filters['tag']) 
+				{
 					$filters['filterby'] = 'none';
 				}
 		    break;
 
 			case 'interest':
 				$filters['mine'] = 0;
-				$interests = (count($interests) <= 0) ? $this->getInterests() : $interests;
+				$interests = (count($interests) <= 0) ? $this->_getInterests() : $interests;
 				$filters['filterby'] = (!$interests) ? 'none' : 'open';
 				$filters['tag'] = $interests;
 		    break;
 		}
 
-		$results = $aq->getResults( $filters );
-	 	if ($this->banking && $results) {
+		$results = $aq->getResults($filters);
+		if ($this->banking && $results) 
+		{
 	 		$awards = array();
 
 			foreach ($results as $result)
@@ -236,7 +241,8 @@ class modMyQuestions
 				// Calculate max award
 				$result->marketvalue = round($AE->calculate_marketvalue($result->id, 'maxaward'));
 				$result->maxaward = round(2*(($result->marketvalue)/3));
-				if ($kind != 'mine') {
+				if ($kind != 'mine') 
+				{
 					$result->maxaward = $result->maxaward + $result->reward;
 				}
 				$awards[] = ($result->maxaward) ? $result->maxaward : 0;
@@ -250,18 +256,17 @@ class modMyQuestions
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Queries the database for user's questions and preps any data for display
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
 		//$xhub =& Hubzero_Factory::getHub();
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$upconfig =& JComponentHelper::getParams('com_userpoints');
 		$this->banking = $upconfig->get('bankAccounts');
-		if ($this->banking) {
+		if ($this->banking) 
+		{
 			ximport('Hubzero_Bank');
 		}
 
@@ -271,17 +276,17 @@ class modMyQuestions
 		Hubzero_Document::addModuleStyleSheet('mod_myquestions');
 
 		// show assigned?
-		$show_assigned = intval( $this->params->get( 'show_assigned' ) );
+		$show_assigned = intval($this->params->get('show_assigned'));
 		$show_assigned = $show_assigned ? $show_assigned : 0;
 		$this->show_assigned = $show_assigned;
 
 		// show interests?
-		$show_interests = intval( $this->params->get( 'show_interests' ) );
+		$show_interests = intval($this->params->get('show_interests'));
 		$show_interests = $show_interests ? $show_interests : 0;
 		$this->show_interests = $show_interests;
 
 		// max num of questions
-		$max = intval( $this->params->get( 'max_questions' ) );
+		$max = intval($this->params->get('max_questions'));
 		$max= $max ? $max : 12;
 		$c = 1;
 
@@ -291,37 +296,34 @@ class modMyQuestions
 		$othercount = 0;
 
 		// Get Open Questions User Asked
-		$this->openquestions = $this->getQuestions('mine');
+		$this->openquestions = $this->_getQuestions('mine');
 		$opencount = ($this->openquestions) ? count($this->openquestions) : 0;
 
-		//$onum  = $opencount.' ';
-		//$onum .= ($opencount == 1) ? JText::_('RESULT') : JText::_('RESULTS');
 		// Get Questions related to user contributions
-		if ($this->show_assigned) {
+		if ($this->show_assigned) 
+		{
 			$c++;
-			$this->assigned = $this->getQuestions('assigned');
+			$this->assigned = $this->_getQuestions('assigned');
 			$assignedcount = ($this->assigned) ? count($this->assigned) : 0;
-
-			//$anum  = $assignedcount.' ';
-			//$anum .= ($assignedcount == 1) ? JText::_('RESULT') : JText::_('RESULTS');
 		}
 
 		// Get interest tags
-		if ($this->show_interests) {
+		if ($this->show_interests) 
+		{
 			$c++;
-			$this->interests = $this->getInterests();
-			if (!$this->interests) {
+			$this->interests = $this->_getInterests();
+			if (!$this->interests) 
+			{
 				$this->intext = JText::_('MOD_MYQUESTIONS_NA');
-			} else {
-				$this->intext = $this->formatTags($this->interests);
+			} 
+			else 
+			{
+				$this->intext = $this->_formatTags($this->interests);
 			}
 
 			// Get questions of interest
-			$this->otherquestions = $this->getQuestions("interest", $this->interests);
+			$this->otherquestions = $this->_getQuestions("interest", $this->interests);
 			$othercount = ($this->otherquestions) ? count($this->otherquestions) : 0;
-
-			//$othnum  = $othercount.' ';
-			//$othnum .= ($othercount == 1) ? JText::_('RESULT') : JText::_('RESULTS');
 		}
 
 		// Limit number of shown questions
