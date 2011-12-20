@@ -29,7 +29,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'KNOWLEDGE_BASE' ), 'addedit.png' );
+JToolBarHelper::title( JText::_( 'COM_KB' ), 'addedit.png' );
 JToolBarHelper::cancel();
 
 ?>
@@ -48,18 +48,18 @@ function submitbutton(pressbutton)
 	<table class="adminform">
 		<thead>
  			<tr>
-				<th><?php echo JText::_('CHOOSE_DELETE_OPTION'); ?></th>
+				<th><?php echo JText::_('COM_KB_CHOOSE_DELETE_OPTION'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td><input type="radio" name="action" id="action_delete" value="deletefaqs" checked="checked" /> <label for="action_delete"><?php echo JText::_('DELETE_ALL'); ?></label></td>
+				<td><input type="radio" name="action" id="action_delete" value="deletefaqs" checked="checked" /> <label for="action_delete"><?php echo JText::_('COM_KB_DELETE_ALL'); ?></label></td>
 			</tr>
 			<tr>
-				<td><input type="radio" name="action" id="action_remove" value="removefaqs" /> <label for="action_remove"><?php echo JText::_('DELETE_ONLY_CATEGORY'); ?></label></td>
+				<td><input type="radio" name="action" id="action_remove" value="removefaqs" /> <label for="action_remove"><?php echo JText::_('COM_KB_DELETE_ONLY_CATEGORY'); ?></label></td>
 			</tr>
 			<tr>
-				<td><input type="submit" name="Submit" value="<?php echo JText::_('NEXT'); ?>" /></td>
+				<td><input type="submit" name="Submit" value="<?php echo JText::_('COM_KB_NEXT'); ?>" /></td>
 			</tr>
 		</tbody>
 	</table>

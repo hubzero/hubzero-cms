@@ -29,19 +29,20 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 if (isset($this->filters['orphans'])) {
-	$ttle = JText::_('ARTICLES').' (orphans)';
+	$ttle = JText::_('COM_KB_ARTICLES').' (orphans)';
 } else {
-	$ttle = JText::_('ARTICLES');
+	$ttle = JText::_('COM_KB_ARTICLES');
 }
 
-JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_('KNOWLEDGE_BASE').'</a>: '.$ttle, 'addedit.png' );
+JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_('COM_KB').'</a>: '.$ttle, 'addedit.png' );
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 JToolBarHelper::spacer();
 JToolBarHelper::addNew( 'newfaq' );
 JToolBarHelper::editList();
-JToolBarHelper::deleteList( '', 'deletefaq', JText::_('DELETE') );
+JToolBarHelper::deleteList( '', 'deletefaq', JText::_('COM_KB_DELETE') );
 
 ?>
 <script type="text/javascript">
@@ -62,7 +63,7 @@ function submitbutton(pressbutton)
 	<fieldset id="filter">
 <?php if (!isset($this->filters['orphans'])) { ?>
 		<label>
-			<?php echo JText::_('CATEGORY'); ?>: 
+			<?php echo JText::_('COM_KB_CATEGORY'); ?>: 
 			<?php
 			if ($this->filters['cid']) {
 				echo KbHtml::sectionSelect( $this->sections, $this->filters['cid'], 'id' );
@@ -73,11 +74,11 @@ function submitbutton(pressbutton)
 		</label>
 <?php } ?>
 		<label>
-			<?php echo JText::_('SORT_BY'); ?>: 
+			<?php echo JText::_('COM_KB_SORT_BY'); ?>: 
 			<select name="filterby" onchange="document.adminForm.task='articles';document.adminForm.submit();">
-				<option value="m.modified"<?php if ($this->filters['filterby'] == 'm.modified') { echo ' selected="selected"'; } ?>><?php echo JText::_('MODIFIED'); ?></option>
-				<option value="m.title"<?php if ($this->filters['filterby'] == 'm.title') { echo ' selected="selected"'; } ?>><?php echo JText::_('TITLE'); ?></option>
-				<option value="m.id"<?php if ($this->filters['filterby'] == 'm.id') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID'); ?></option>
+				<option value="m.modified"<?php if ($this->filters['filterby'] == 'm.modified') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_MODIFIED'); ?></option>
+				<option value="m.title"<?php if ($this->filters['filterby'] == 'm.title') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_TITLE'); ?></option>
+				<option value="m.id"<?php if ($this->filters['filterby'] == 'm.id') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ID'); ?></option>
 			</select>
 		</label>
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
@@ -87,11 +88,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
  				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
- 				<th><?php echo JText::_('QUESTION'); ?></th>
- 				<th><?php echo JText::_('PUBLISHED'); ?></th>
- 				<th><?php echo JText::_('CATEGORY'); ?></th>
- 				<th><?php echo JText::_('Votes'); ?></th>
- 				<th><?php echo JText::_('CHECKED_OUT'); ?></th>
+ 				<th><?php echo JText::_('COM_KB_QUESTION'); ?></th>
+ 				<th><?php echo JText::_('COM_KB_PUBLISHED'); ?></th>
+ 				<th><?php echo JText::_('COM_KB_CATEGORY'); ?></th>
+ 				<th><?php echo JText::_('COM_KB_VOTES'); ?></th>
+ 				<th><?php echo JText::_('COM_KB_CHECKED_OUT'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -115,17 +116,17 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 		case '1':
 			$class = 'published';
 			$task = 'unpublish';
-			$alt = JText::_('PUBLISHED');
+			$alt = JText::_('COM_KB_PUBLISHED');
 			break;
 		case '2':
 			$class = 'expired';
 			$task = 'publish';
-			$alt = JText::_('TRASHED');
+			$alt = JText::_('COM_KB_TRASHED');
 			break;
 		case '0':
 			$class = 'unpublished';
 			$task = 'publish';
-			$alt = JText::_('UNPUBLISHED');
+			$alt = JText::_('COM_KB_UNPUBLISHED');
 			break;
 	}
 
@@ -134,13 +135,13 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;task=editfaq&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('EDIT_ARTICLE'); ?>"><?php echo stripslashes($row->title); ?></a><br />
-					<span>Tags: <?php echo $tags; ?></span>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;task=editfaq&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a><br />
+					<span><?php echo JText::_('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
 				</td>
-				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;cid=<?php echo $this->filters['id']; ?>" title="<?php echo JText::sprintf('SET_TASK',$task);?>"><span><?php echo $alt; ?></span></a></td>
+				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;cid=<?php echo $this->filters['id']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK',$task);?>"><span><?php echo $alt; ?></span></a></td>
 				<td><?php echo $row->ctitle; echo ($row->cctitle) ? ' ('.$row->cctitle.')' : ''; ?></td>
 				<td>+<?php echo $row->helpful; ?> -<?php echo $row->nothelpful; ?></td>
-				<td><?php echo $row->editor; ?></td>
+				<td><?php echo $this->escape($row->editor); ?></td>
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -157,4 +158,4 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<p><?php echo JText::_('PUBLISH_KEY'); ?></p>
+<p><?php echo JText::_('COM_KB_PUBLISH_KEY'); ?></p>

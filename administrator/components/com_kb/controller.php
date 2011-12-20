@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
@@ -100,41 +100,41 @@ class KbController extends Hubzero_Controller
 	protected function categories()
 	{
 		// Instantiate a new view
-		$view = new JView( array('name'=>'categories') );
+		$view = new JView(array('name'=>'categories'));
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 
 		// Incoming
 		$view->filters = array();
-		$view->filters['id'] = JRequest::getInt( 'id', 0 );
+		$view->filters['id'] = JRequest::getInt('id', 0);
 		if (!$view->filters['id']) {
-			$view->filters['id'] = JRequest::getInt( 'cid', 0 );
+			$view->filters['id'] = JRequest::getInt('cid', 0);
 		}
-		$view->filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
+		$view->filters['filterby'] = JRequest::getVar('filterby', 'm.id');
 
 		// Get configuration
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Get paging variables
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
-		$c = new KbCategory( $this->database );
+		$c = new KbCategory($this->database);
 
 		// Get record count
-		$view->total = $c->getCategoriesCount( $view->filters );
+		$view->total = $c->getCategoriesCount($view->filters);
 
 		// Get records
-		$view->rows = $c->getCategoriesAll( $view->filters );
+		$view->rows = $c->getCategoriesAll($view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+		$view->pageNav = new JPagination($view->total, $view->filters['start'], $view->filters['limit']);
 
 		// Set any errors
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		// Output the HTML
@@ -151,13 +151,13 @@ class KbController extends Hubzero_Controller
 	protected function articles()
 	{
 		// Instantiate a new view
-		$view = new JView( array('name'=>'articles') );
+		$view = new JView(array('name'=>'articles'));
 		$view->option = $this->_option;
 
 		// Incoming
 		$view->filters = array();
-		$view->filters['cid'] = JRequest::getInt( 'cid', 0 );
-		$view->filters['id'] = JRequest::getInt( 'id', 0 );
+		$view->filters['cid'] = JRequest::getInt('cid', 0);
+		$view->filters['id'] = JRequest::getInt('id', 0);
 
 		// Get configuration
 		$app =& JFactory::getApplication();
@@ -168,27 +168,27 @@ class KbController extends Hubzero_Controller
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
 		// Paging filter
-		$view->filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
+		$view->filters['filterby'] = JRequest::getVar('filterby', 'm.id');
 
-		$a = new KbArticle( $this->database );
+		$a = new KbArticle($this->database);
 
 		// Get record count
-		$view->total = $a->getArticlesCount( $view->filters );
+		$view->total = $a->getArticlesCount($view->filters);
 
 		// Get records
-		$view->rows = $a->getArticlesAll( $view->filters );
+		$view->rows = $a->getArticlesAll($view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+		$view->pageNav = new JPagination($view->total, $view->filters['start'], $view->filters['limit']);
 
 		// Get the sections
-		$row = new KbCategory( $this->database );
+		$row = new KbCategory($this->database);
 		$view->sections = $row->getAllSections();
 
 		// Set any errors
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		// Output the HTML
@@ -205,14 +205,14 @@ class KbController extends Hubzero_Controller
 	protected function orphans()
 	{
 		// Instantiate a new view
-		$view = new JView( array('name'=>'articles') );
+		$view = new JView(array('name'=>'articles'));
 		$view->option = $this->_option;
 
 		// Incoming
 		$view->filters = array();
 		$view->filters['orphans'] = true;
-		$view->filters['cid'] = JRequest::getInt( 'cid', 0 );
-		$view->filters['id'] = JRequest::getInt( 'id', 0 );
+		$view->filters['cid'] = JRequest::getInt('cid', 0);
+		$view->filters['id'] = JRequest::getInt('id', 0);
 
 		// Get configuration
 		$app =& JFactory::getApplication();
@@ -223,27 +223,27 @@ class KbController extends Hubzero_Controller
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
 		// Paging filter
-		$view->filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
+		$view->filters['filterby'] = JRequest::getVar('filterby', 'm.id');
 
-		$a = new KbArticle( $this->database );
+		$a = new KbArticle($this->database);
 
 		// Get record count
-		$view->total = $a->getArticlesCount( $view->filters );
+		$view->total = $a->getArticlesCount($view->filters);
 
 		// Get records
-		$view->rows = $a->getArticlesAll( $view->filters );
+		$view->rows = $a->getArticlesAll($view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+		$view->pageNav = new JPagination($view->total, $view->filters['start'], $view->filters['limit']);
 
 		// Get the sections
-		$row = new KbCategory( $this->database );
+		$row = new KbCategory($this->database);
 		$view->sections = $row->getAllSections();
 
 		// Set any errors
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		// Output the HTML
@@ -262,7 +262,7 @@ class KbController extends Hubzero_Controller
         $created_by_id = 0;
 
 		// Incoming
-		$ids = JRequest::getVar( 'id', array(0) );
+		$ids = JRequest::getVar('id', array(0));
 
 		if (is_array($ids) && !empty($ids)) {
 			$id = $ids[0];
@@ -274,40 +274,40 @@ class KbController extends Hubzero_Controller
 		}
 
 		// Load the article
-		$row = new KbArticle( $this->database );
-		$row->load( $id );
+		$row = new KbArticle($this->database);
+		$row->load($id);
 
 		// Fail if checked out not by 'me'
 		if ($row->checked_out && $row->checked_out <> $this->juser->get('id')) {
 			$this->_redirect = 'index.php?option='.$this->_option;
-			$this->_message = JText::_('KB_CHECKED_OUT');
+			$this->_message = JText::_('COM_KB_CHECKED_OUT');
 			return;
 		}
 
 		// Instantiate a new view
-		$view = new JView( array('name'=>'article') );
+		$view = new JView(array('name'=>'article'));
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 
 		if ($id) {
 			// Editing existing
-			$row->checkout( $this->juser->get('id') );
+			$row->checkout($this->juser->get('id'));
 
 			// Get name of creator
 			$query = "SELECT name from #__users WHERE id=".$row->created_by;
-			$this->database->setQuery( $query );
+			$this->database->setQuery($query);
 			$row->created_by = $this->database->loadResult();
 
 			// Get name of modifier
 			$query = "SELECT name from #__users WHERE id=".$row->modified_by;
-			$this->database->setQuery( $query );
+			$this->database->setQuery($query);
 			$row->modified_by = $this->database->loadResult();
 		} else {
 			// Creating new
 			$row->title       = '';
 			$row->introtext   = '';
 			$row->fulltext    = '';
-			$row->created     = date( 'Y-m-d H:i:s', time() );
+			$row->created     = date('Y-m-d H:i:s', time());
 			$row->created_by  = $this->juser->get('id');
 			$row->modified    = '0000-00-00 00:00:00';
 			$row->modified_by = '';
@@ -323,13 +323,13 @@ class KbController extends Hubzero_Controller
 		}
 		$view->row = $row;
 
-		$view->params = new JParameter( $view->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'config.xml' );
+		$view->params = new JParameter($view->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'config.xml');
 
 		// Get Tags
-		$st = new KbTags( $this->database );
-		$view->tags = $st->get_tag_string( $row->id, 0, 0, NULL, 0, 1 );
+		$st = new KbTags($this->database);
+		$view->tags = $st->get_tag_string($row->id, 0, 0, NULL, 0, 1);
 
-		$c = new KbCategory( $this->database );
+		$c = new KbCategory($this->database);
 
 		// Get the sections
 		$view->sections = $c->getAllSections();
@@ -339,7 +339,7 @@ class KbController extends Hubzero_Controller
 
 		// Set any errors
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		// Output the HTML
@@ -356,28 +356,28 @@ class KbController extends Hubzero_Controller
 	protected function editcategory()
 	{
 		// Instantiate a new view
-		$view = new JView( array('name'=>'category') );
+		$view = new JView(array('name'=>'category'));
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 
 		// Incoming
-		$ids = JRequest::getVar( 'id', array(0) );
-		$view->cid = JRequest::getInt( 'cid', 0 );
+		$ids = JRequest::getVar('id', array(0));
+		$view->cid = JRequest::getInt('cid', 0);
 
 		if (is_array($ids) && !empty($ids)) {
 			$id = $ids[0];
 		}
 
 		// Load category
-		$view->row = new KbCategory( $this->database );
-		$view->row->load( $id );
+		$view->row = new KbCategory($this->database);
+		$view->row->load($id);
 
 		// Get the sections
 		$view->sections = $view->row->getAllSections();
 
 		// Set any errors
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		// Output the HTML
@@ -398,28 +398,28 @@ class KbController extends Hubzero_Controller
 	protected function savefaq()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$cid = JRequest::getInt( 'cid', 0 );
-		$id  = JRequest::getInt( 'id', 0 );
+		$cid = JRequest::getInt('cid', 0);
+		$id  = JRequest::getInt('id', 0);
 
 		// Initiate extended database class
-		$row = new KbArticle( $this->database );
-		if (!$row->bind( $_POST )) {
-			echo KbHtml::alert( $row->getError() );
+		$row = new KbArticle($this->database);
+		if (!$row->bind($_POST)) {
+			echo KbHtml::alert($row->getError());
 			exit();
 		}
 
 		if ($row->id < 1) {
 			// New entry
-			$row->created    = $row->created ? $row->created : date( "Y-m-d H:i:s" );
+			$row->created    = $row->created ? $row->created : date("Y-m-d H:i:s");
 			$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('id');
 		} else {
 			// Updating entry
-			$row->modified    = date( "Y-m-d H:i:s" );
+			$row->modified    = date("Y-m-d H:i:s");
 			$row->modified_by = $this->juser->get('id');
-			$row->created     = $row->created ? $row->created : date( "Y-m-d H:i:s" );
+			$row->created     = $row->created ? $row->created : date("Y-m-d H:i:s");
 			$row->created_by  = $row->created_by ? $row->created_by : $this->juser->get('id');
 		}
 
@@ -431,40 +431,40 @@ class KbController extends Hubzero_Controller
 		}
 
 		// Get parameters
-		$params = JRequest::getVar( 'params', '', 'post' );
-		if (is_array( $params )) {
+		$params = JRequest::getVar('params', '', 'post');
+		if (is_array($params)) {
 			$txt = array();
-			foreach ( $params as $k=>$v)
+			foreach ($params as $k=>$v)
 			{
 				$txt[] = "$k=$v";
 			}
-			$row->params = implode( "\n", $txt );
+			$row->params = implode("\n", $txt);
 		}
 
 		// Check content
 		if (!$row->check()) {
-			echo KbHtml::alert( $row->getError() );
+			echo KbHtml::alert($row->getError());
 			exit();
 		}
 		$row->version++;
 
 		// Store new content
 		if (!$row->store()) {
-			echo KbHtml::alert( $row->getError() );
+			echo KbHtml::alert($row->getError());
 			exit();
 		}
 
 		$row->checkin();
 
 		// Save the tags
-		$tags = JRequest::getVar( 'tags', '', 'post' );
-		$st = new KbTags( $this->database );
-		$st->tag_object( $this->juser->get('id'), $row->id, $tags, 0, true );
+		$tags = JRequest::getVar('tags', '', 'post');
+		$st = new KbTags($this->database);
+		$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
 
 		// Set the redirect
 		$this->_redirect  = 'index.php?option='.$this->_option;
 		$this->_redirect .= ($cid) ? '&task=category&cid='.$cid : '';
-		$this->_message = JText::_('KB_ARTICLE_SAVED');
+		$this->_message = JText::_('COM_KB_ARTICLE_SAVED');
 	}
 
 	/**
@@ -477,16 +477,16 @@ class KbController extends Hubzero_Controller
 	protected function savecategory()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt( 'id', 0 );
-		$cid = JRequest::getInt( 'cid', 0 );
+		$id = JRequest::getInt('id', 0);
+		$cid = JRequest::getInt('cid', 0);
 
 		// Initiate extended database class
-		$row = new KbCategory( $this->database );
-		if (!$row->bind( $_POST )) {
-			echo KbHtml::alert( $row->getError() );
+		$row = new KbCategory($this->database);
+		if (!$row->bind($_POST)) {
+			echo KbHtml::alert($row->getError());
 			exit();
 		}
 
@@ -499,20 +499,20 @@ class KbController extends Hubzero_Controller
 
 		// Check content
 		if (!$row->check()) {
-			echo KbHtml::alert( $row->getError() );
+			echo KbHtml::alert($row->getError());
 			exit();
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo KbHtml::alert( $row->getError() );
+			echo KbHtml::alert($row->getError());
 			exit();
 		}
 
 		// Set the redirect
 		$this->_redirect  = 'index.php?option='.$this->_option;
 		$this->_redirect .= ($cid) ? '&task=categories&id='.$cid : '';
-		$this->_message = JText::_('KB_CATEGORY_SAVED');
+		$this->_message = JText::_('COM_KB_CATEGORY_SAVED');
 	}
 
 	/**
@@ -525,23 +525,23 @@ class KbController extends Hubzero_Controller
 	protected function deletefaq()
 	{
 		// Incoming
-		$cid = JRequest::getInt( 'cid', 0 );
-		$ids = JRequest::getVar( 'id', array(0) );
-		if (!is_array( $ids )) {
+		$cid = JRequest::getInt('cid', 0);
+		$ids = JRequest::getVar('id', array(0));
+		if (!is_array($ids)) {
 			$ids = array(0);
 		}
 
 		if (!empty($ids)) {
 			// Create a category object
-			$article = new KbArticle( $this->database );
+			$article = new KbArticle($this->database);
 
 			foreach ($ids as $id)
 			{
 				// Delete the SEF
-				$article->deleteSef( $id );
+				$article->deleteSef($id);
 
 				// Delete the category
-				$article->delete( $id );
+				$article->delete($id);
 			}
 		}
 
@@ -564,7 +564,7 @@ class KbController extends Hubzero_Controller
 	protected function deletecategory()
 	{
 		// Incoming
-		$step = JRequest::getInt( 'step', 1 );
+		$step = JRequest::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
 		// What step are we on?
@@ -572,20 +572,20 @@ class KbController extends Hubzero_Controller
 		{
 			case 1:
 				// Incoming
-				$ids = JRequest::getVar( 'id', array(0) );
+				$ids = JRequest::getVar('id', array(0));
 				if (is_array($ids) && !empty($ids)) {
 					$id = $ids[0];
 				}
 
 				// Instantiate a new view
-				$view = new JView( array('name'=>'category', 'layout'=>'delete') );
+				$view = new JView(array('name'=>'category', 'layout'=>'delete'));
 				$view->option = $this->_option;
 				$view->task = $this->_task;
 				$view->id = $id;
 
 				// Set any errors
 				if ($this->getError()) {
-					$view->setError( $this->getError() );
+					$view->setError($this->getError());
 				}
 
 				// Output the HTML
@@ -594,36 +594,36 @@ class KbController extends Hubzero_Controller
 
 			case 2:
 				// Check for request forgeries
-				JRequest::checkToken() or jexit( 'Invalid Token' );
+				JRequest::checkToken() or jexit('Invalid Token');
 
 				// Incoming
-				$id = JRequest::getInt( 'id', 0 );
+				$id = JRequest::getInt('id', 0);
 
 				// Make sure we have an ID to work with
 				if (!$id) {
-					echo KbHtml::alert( JText::_('KB_NO_ID') );
+					echo KbHtml::alert(JText::_('COM_KB_NO_ID'));
 					return;
 				}
 
 				// Check if we're deleting collection and all FAQs or just the collection page
-				$action = JRequest::getVar( 'action', 'removefaqs' );
+				$action = JRequest::getVar('action', 'removefaqs');
 
 				// Create an article object
-				$article = new KbArticle( $this->database );
+				$article = new KbArticle($this->database);
 
 				// Get all the articles in this collection
-				$faqs = $article->getCollection( $id );
+				$faqs = $article->getCollection($id);
 
 				if ($faqs) {
 					// Loop through the articles
 					foreach ($faqs as $faq)
 					{
 						if ($action == 'deletefaqs') {
-							$article->delete( $faq->id );
+							$article->delete($faq->id);
 						} else {
 							// Load the article
-							$a = new KbArticle( $this->database );
-							$a->load( $faq->id );
+							$a = new KbArticle($this->database);
+							$a->load($faq->id);
 							// Make some changes
 							if ($faq->category == $id) {
 								$a->category = 0;
@@ -642,13 +642,13 @@ class KbController extends Hubzero_Controller
 				}
 
 				// Create a category object
-				$category = new KbCategory( $this->database );
+				$category = new KbCategory($this->database);
 
 				// Delete the SEF
-				$category->deleteSef( $id );
+				$category->deleteSef($id);
 
 				// Delete the category
-				$category->delete( $id );
+				$category->delete($id);
 
 				// Set the redirect
 				$this->_redirect = 'index.php?option='.$this->_option;
@@ -666,17 +666,17 @@ class KbController extends Hubzero_Controller
 	protected function access()
 	{
 		// Incoming
-		$id = JRequest::getInt( 'id', 0 );
+		$id = JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id) {
-			echo KbHtml::alert( JText::_('KB_NO_ID') );
+			echo KbHtml::alert(JText::_('COM_KB_NO_ID'));
 			return;
 		}
 
 		// Load the article
-		$row = new KbArticle( $this->database );
-		$row->load( $id );
+		$row = new KbArticle($this->database);
+		$row->load($id);
 
 		// Set the access
 		switch ($this->_task)
@@ -688,11 +688,11 @@ class KbController extends Hubzero_Controller
 
 		// Check and store the changes
 		if (!$row->check()) {
-			echo KbHtml::alert( $row->getError() );
+			echo KbHtml::alert($row->getError());
 			return;
 		}
 		if (!$row->store()) {
-			echo KbHtml::alert( $row->getError() );
+			echo KbHtml::alert($row->getError());
 			return;
 		}
 
@@ -711,51 +711,51 @@ class KbController extends Hubzero_Controller
 	protected function publish($w=0)
 	{
 		// Incoming
-		$cid = JRequest::getInt( 'cid', 0 );
-		$ids = JRequest::getVar( 'id', array(0) );
-		if (!is_array( $ids )) {
+		$cid = JRequest::getInt('cid', 0);
+		$ids = JRequest::getVar('id', array(0));
+		if (!is_array($ids)) {
 			$ids = array(0);
 		}
 
 		$publish = ($this->_task == 'publish' || $this->_task == 'publishc') ? 1 : 0;
 
 		// Check for an ID
-		if (count( $ids ) < 1) {
+		if (count($ids) < 1) {
 			if ($publish == 1) {
-				$action = JText::_('KB_SELECT_PUBLISH');
+				$action = JText::_('COM_KB_SELECT_PUBLISH');
 			} else {
-				$action = JText::_('KB_SELECT_UNPUBLISH');
+				$action = JText::_('COM_KB_SELECT_UNPUBLISH');
 			}
-			echo KbHtml::alert( $action );
+			echo KbHtml::alert($action);
 			exit;
 		}
 
 		// Get a total (used for the redirect message)
-		$total = count( $ids );
+		$total = count($ids);
 
 		// Update record(s)
 		foreach ($ids as $id)
 		{
 			if ($w) {
 				// Updating an article
-				$row = new KbArticle( $this->database );
+				$row = new KbArticle($this->database);
 			} else {
 				// Updating a category
-				$row = new KbCategory( $this->database );
+				$row = new KbCategory($this->database);
 			}
 
-			$row->load( $id );
+			$row->load($id);
 			$row->state = $publish;
 			$row->store();
 		}
 
 		// Set message
 		if ($publish == '-1') {
-			$this->_message = JText::sprintf( 'KB_ARCHIVED', $total );
+			$this->_message = JText::sprintf('COM_KB_ARCHIVED', $total);
 		} elseif ($publish == "1") {
-			$this->_message = JText::sprintf( 'KB_PUBLISHED', $total );
+			$this->_message = JText::sprintf('COM_KB_PUBLISHED', $total);
 		} elseif ($publish == "0") {
-			$this->_message = JText::sprintf( 'KB_UNPUBLISHED', $total );
+			$this->_message = JText::sprintf('COM_KB_UNPUBLISHED', $total);
 		}
 
 		// Set the redirect
@@ -773,16 +773,16 @@ class KbController extends Hubzero_Controller
 	protected function cancel()
 	{
 		// Incoming
-		$cid = JRequest::getInt( 'cid', 0 );
-		$id  = JRequest::getInt( 'id', 0 );
-		$sid = JRequest::getInt( 'section', 0 );
-		$cat = JRequest::getInt( 'category', 0 );
+		$cid = JRequest::getInt('cid', 0);
+		$id  = JRequest::getInt('id', 0);
+		$sid = JRequest::getInt('section', 0);
+		$cat = JRequest::getInt('category', 0);
 
 		// Make sure we have an ID to work with
 		if ($id) {
 			// Bind the posted data to the article object and check it in
-			$article = new KbArticle( $this->database );
-			$article->bind( $_POST );
+			$article = new KbArticle($this->database);
+			$article->bind($_POST);
 			$article->checkin();
 		}
 
@@ -807,18 +807,18 @@ class KbController extends Hubzero_Controller
 	protected function resethits()
 	{
 		// Incoming
-		$cid = JRequest::getInt( 'cid', 0 );
-		$id  = JRequest::getInt( 'id', 0 );
+		$cid = JRequest::getInt('cid', 0);
+		$id  = JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id) {
-			echo KbHtml::alert( JText::_('KB_NO_ID') );
+			echo KbHtml::alert(JText::_('COM_KB_NO_ID'));
 			exit;
 		}
 
 		// Load and reset the article's hits
-		$article = new KbArticle( $this->database );
-		$article->load( $id );
+		$article = new KbArticle($this->database);
+		$article->load($id);
 		$article->hits = 0;
 		if (!$article->check()) {
 			return $article->getError();
@@ -843,18 +843,18 @@ class KbController extends Hubzero_Controller
 	protected function resetvotes()
 	{
 		// Incoming
-		$cid = JRequest::getInt( 'cid', 0 );
-		$id  = JRequest::getInt( 'id', 0 );
+		$cid = JRequest::getInt('cid', 0);
+		$id  = JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id) {
-			echo KbHtml::alert( JText::_('KB_NO_ID') );
+			echo KbHtml::alert(JText::_('COM_KB_NO_ID'));
 			exit;
 		}
 
 		// Load and reset the article's ratings
-		$article = new KbArticle( $this->database );
-		$article->load( $id );
+		$article = new KbArticle($this->database);
+		$article->load($id);
 		$article->helpful = 0;
 		$article->nothelpful = 0;
 		if (!$article->check()) {
@@ -866,8 +866,8 @@ class KbController extends Hubzero_Controller
 		$article->checkin();
 
 		// Delete all the entries associated with this article
-		$helpful = new KbVote( $this->database );
-		$helpful->deleteVote( $id );
+		$helpful = new KbVote($this->database);
+		$helpful->deleteVote($id);
 
 		// Set the redirect
 		$this->_redirect  = 'index.php?option='.$this->_option;

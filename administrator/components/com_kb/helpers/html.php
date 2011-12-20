@@ -95,7 +95,7 @@ class KbHtml
 	public function sectionSelect( $categories, $val, $name )
 	{
 		$out  = '<select name="'.$name.'">'."\n";
-		$out .= "\t".'<option value="">'.JText::_('SELECT_CATEGORY') .'</option>'."\n";
+		$out .= "\t".'<option value="">'.JText::_('COM_KB_SELECT_CATEGORY') .'</option>'."\n";
 		foreach ($categories as $category)
 		{
 			$selected = ($category->id == $val)

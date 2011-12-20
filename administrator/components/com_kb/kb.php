@@ -29,31 +29,40 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+// Check Joomla version
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	die('Joomla 1.6+');
+}
+else 
+{
+	// Set access levels
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
 
-// Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize( $option, 'manage' )) {
-	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage')) 
+	{
+		$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	}
 }
 
 // Include scripts
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'comment.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'article.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'category.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'vote.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'comment.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'article.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'vote.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'controller.php');
 
 // Initiate controller
 $controller = new KbController();

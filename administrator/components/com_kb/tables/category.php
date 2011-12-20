@@ -113,7 +113,7 @@ class KbCategory extends JTable
 	public function check()
 	{
 		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('KB_ERROR_EMPTY_TITLE') );
+			$this->setError( JText::_('COM_KB_ERROR_EMPTY_TITLE') );
 			return false;
 		}
 		return true;

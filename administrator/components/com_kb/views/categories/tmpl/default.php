@@ -29,17 +29,18 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'KNOWLEDGE_BASE' ), 'addedit.png' );
+
+JToolBarHelper::title( JText::_( 'COM_KB' ), 'addedit.png' );
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
 JToolBarHelper::publishList( 'publishc' );
 JToolBarHelper::unpublishList( 'unpublishc' );
 JToolBarHelper::spacer();
-JToolBarHelper::custom( 'newfaq', 'new', '', JText::_('NEW_ARTICLE'), false );
+JToolBarHelper::custom( 'newfaq', 'new', '', JText::_('COM_KB_NEW_ARTICLE'), false );
 JToolBarHelper::spacer();
-JToolBarHelper::addNew( 'newcat', JText::_('NEW_CATEGORY'));
+JToolBarHelper::addNew( 'newcat', JText::_('COM_KB_NEW_CATEGORY'));
 JToolBarHelper::editList();
-JToolBarHelper::deleteList( '', 'deletecat', JText::_('DELETE_CATEGORY') );
+JToolBarHelper::deleteList( '', 'deletecat', JText::_('COM_KB_DELETE_CATEGORY') );
 
 ?>
 <script type="text/javascript">
@@ -58,10 +59,10 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter">
 		<label>
-			<?php echo JText::_('SORT_BY'); ?>:
+			<?php echo JText::_('COM_KB_SORT_BY'); ?>:
 			<select name="filterby" onchange="document.adminForm.submit( );">
-				<option value="m.title"<?php if ($this->filters['filterby'] == 'm.title') { echo ' selected="selected"'; } ?>><?php echo JText::_('TITLE'); ?></option>
-				<option value="m.id"<?php if ($this->filters['filterby'] == 'm.id') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID'); ?></option>
+				<option value="m.title"<?php if ($this->filters['filterby'] == 'm.title') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_TITLE'); ?></option>
+				<option value="m.id"<?php if ($this->filters['filterby'] == 'm.id') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ID'); ?></option>
 			</select>
 		</label> 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
@@ -71,11 +72,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('TITLE'); ?></th>
-				<th><?php echo JText::_('PUBLISHED'); ?></th>
-				<th><?php echo JText::_('ACCESS'); ?></th>
-				<th><?php echo JText::_('SUB_CATEGORIES'); ?></th>
-				<th><?php echo JText::_('QUESTIONS'); ?></th>
+				<th><?php echo JText::_('COM_KB_TITLE'); ?></th>
+				<th><?php echo JText::_('COM_KB_PUBLISHED'); ?></th>
+				<th><?php echo JText::_('COM_KB_ACCESS'); ?></th>
+				<th><?php echo JText::_('COM_KB_SUB_CATEGORIES'); ?></th>
+				<th><?php echo JText::_('COM_KB_QUESTIONS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -121,16 +122,16 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editcat&amp;id[]=<?php echo $row->id; echo ($this->filters['id']) ? '&amp;cid='.$this->filters['id'] : ''; ?>" title="<?php echo JText::_('EDIT_CATEGORY'); ?>"><?php echo stripslashes($row->title); ?></a></td>
-				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; echo ($this->filters['id']) ? '&amp;cid='.$this->filters['id'] : ''; ?>" title="<?php echo JText::sprintf('SET_TASK',$task);?>"><span><?php echo $alt; ?></span></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>" <?php echo $color_access; ?> title="<?php echo JText::_('CHANGE_ACCESS'); ?>"><?php echo $row->groupname;?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editcat&amp;id[]=<?php echo $row->id; echo ($this->filters['id']) ? '&amp;cid='.$this->filters['id'] : ''; ?>" title="<?php echo JText::_('COM_KB_EDIT_CATEGORY'); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
+				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; echo ($this->filters['id']) ? '&amp;cid='.$this->filters['id'] : ''; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK',$task);?>"><span><?php echo $alt; ?></span></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>" <?php echo $color_access; ?> title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>"><?php echo $row->groupname;?></a></td>
 <?php if ($row->cats > 0) { ?>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=categories&amp;id=<? echo $row->id; ?>" title="<?php echo JText::_('VIEW_CATEGORIES_FOR_CATEGORY'); ?>"><?php echo $row->cats; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=categories&amp;id=<? echo $row->id; ?>" title="<?php echo JText::_('COM_KB_VIEW_CATEGORIES_FOR_CATEGORY'); ?>"><?php echo $row->cats; ?></a></td>
 <?php } else { ?>
 				<td><?php echo $row->cats; ?></td>
 <?php } ?>
 <?php if ($row->total > 0) { ?>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=category&amp;id=<? echo $row->id; echo ($this->filters['id']) ? '&amp;cid='.$this->filters['id'] : ''; ?>" title="<?php echo JText::_('VIEW_ARTICLES_FOR_CATEGORY'); ?>"><?php echo $row->total.' '.JText::_('articles'); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=category&amp;id=<? echo $row->id; echo ($this->filters['id']) ? '&amp;cid='.$this->filters['id'] : ''; ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>"><?php echo $row->total.' '.JText::_('COM_KB_ARTICLES'); ?></a></td>
 <?php } else { ?>
 				<td><?php echo $row->total; ?></td>
 <?php } ?>
@@ -150,4 +151,4 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<p><?php echo JText::_('PUBLISH_KEY'); ?></p>
+<p><?php echo JText::_('COM_KB_PUBLISH_KEY'); ?></p>
