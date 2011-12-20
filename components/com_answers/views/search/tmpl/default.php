@@ -79,10 +79,7 @@ if (!$this->filters['filterby'] == 'none') {
 					<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); ?>" />
 					<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-<?php if (isset($this->filters['interest'])) { ?>
-					<input type="hidden" name="interest" value="<?php echo $this->filters['interest']; ?>" />
-					<input type="hidden" name="assigned" value="<?php echo $this->filters['assigned']; ?>" />
-<?php } ?>
+					<input type="hidden" name="area" value="<?php echo $this->filters['area']; ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
@@ -260,7 +257,15 @@ if (!$this->filters['filterby'] == 'none') {
 				$pagenavhtml = $this->pageNav->getListFooter();
 				$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
 				$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
-				$pagenavhtml = str_replace('?', '?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&', $pagenavhtml);
+				if (!strstr($pagenavhtml, 'filterby=')) {
+					$pagenavhtml = str_replace('?', '?filterby='.urlencode($this->filters['filterby']).'&amp;', $pagenavhtml);
+				}
+				if (!strstr($pagenavhtml, 'sortby=')) {
+					$pagenavhtml = str_replace('?', '?sortby='.urlencode($this->filters['sortby']).'&amp;', $pagenavhtml);
+				}
+				if (!strstr($pagenavhtml, 'area=')) {
+					$pagenavhtml = str_replace('?', '?area='.urlencode($this->filters['area']).'&amp;', $pagenavhtml);
+				}
 				echo $pagenavhtml;
 				?>
 				<div class="clearfix"></div>
