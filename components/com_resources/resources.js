@@ -153,7 +153,7 @@ HUB.Resources = {
 		
 		//Hubpresenter
 		$$(".hubpresenter, .video").each(function(el) {
-			if (el.href.indexOf('?') == -1) {
+			if (el.href && el.href.indexOf('?') == -1) {
 				el.href = el.href + '?tmpl=component';
 			} else {
 				el.href = el.href + '&tmpl=component';
