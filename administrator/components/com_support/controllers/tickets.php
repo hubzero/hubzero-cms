@@ -436,7 +436,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				$log = '<ul class="changelog">' . "\n" . $log . '</ul>'."\n";
 			}
 
-			$attachment = $this->upload($row->id);
+			$attachment = $this->uploadTask($row->id);
 			$comment .= ($attachment) ? "\n\n".$attachment : '';
 
 			// Create a new support comment object and populate it
