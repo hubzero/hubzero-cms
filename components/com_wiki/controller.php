@@ -2276,9 +2276,9 @@ class WikiController extends Hubzero_Controller
 		// Instantiate an attachment object
 		$attachment = new WikiPageAttachment( $this->database );
 		if (substr(strtolower($this->pagename), 0, 6) == 'image:') {
-			$attachment->filename .= substr($this->pagename, 7);
-		} else if (substr(strtolower($this->pagename), 0, 5) == 'file:') {
 			$attachment->filename .= substr($this->pagename, 6);
+		} else if (substr(strtolower($this->pagename), 0, 5) == 'file:') {
+			$attachment->filename .= substr($this->pagename, 5);
 		}
 		$attachment->filename = urldecode($attachment->filename);
 
