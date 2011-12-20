@@ -114,7 +114,7 @@ if ($categories) {
 		if (substr($normalized, -3) == 'ies') {
 			$cls = $normalized;
 		} else {
-			$cls = substr($normalized, 0, -1);
+			$cls = rtrim($normalized, 's');
 		}
 ?>
 		<div class="three columns <?php echo $clm; ?>">
