@@ -14,89 +14,89 @@
 */
 	.clearfix {
 		border: 1px solid transparent;
-		}
+	}
 	.clearfix:after {
 		content: "."; 
 		display: block; 
 		height: 0; 
 		clear: left; 
 		visibility: hidden;
-		}
+	}
 /* Content blocks */
 	.com_answers .container {
 		margin: 1em 0;
 		padding: 0;
 		border: 10px solid #f4f4f4;
 		background: #f4f4f4;
-		}
+	}
 	.com_answers .data-entry {
 		border-color: #eef0e7;
 		background-color: #eef0e7;
-		}
+	}
 	.container-block {
 		border: 2px solid #e9e9e9;
 		background-color: #fff;
 		margin: 0;
 		padding: 0 15px;
-		}
+	}
 	.container-block h3 {
 		margin: 0 -15px 1em -15px;
 		padding: 0.5em 0.7em;
 		background: #f8f8f8 url("/components/com_answers/images/light-stripes.png");
 		border-bottom: 2px solid #e9e9e9;
 		font-size: 135%;
-		}
+	}
 	.container-block h4 {
 		font-size: 115%;
 		border-bottom: 1px solid #eee;
 		padding: 0.2em 0;
 		font-weight: normal;
-		}
+	}
 	.container-block h4 a {
 		color: #333;
-		}
+	}
 	.container-block h4 .more {
 		float: right;
 		color: #aaa;
-		}
+	}
 	.container-block h4 a:hover,
 	.container-block h4 a:hover .more {
 		border: none;
 		color: #ff6600;
-		}
+	}
 	.container-block .columns {
 		margin-top: 0em;
 		margin-bottom: 1em;
-		}
+	}
 	.container-block .entry-content {
 		margin: 0 0 2em 0;
-		}
+	}
 	.container-block .entry-content h4 {
 		font-weight: bold;
-		}
+	}
 /* Entries search */
 	.entry-search {
 		margin: 0 1em 0 0;
 		border: none;
 		padding: 0;
-		}
+	}
 	.entry-search input {
 		width: 95%;
 		border: 1px solid #A8A8A8;
 		background: #fff url("/components/com_answers/images/search.png") 5px 50% no-repeat;
 		padding: 5px 5px 5px 20px;
-		}
+	}
 	.entry-search-submit {
 		float: right;
 		margin: 3px 0 0 0;
-		}
+	}
 /* Aside */
 	.com_answers .aside .container {
 		margin: 0 0 1em 0;
 		padding: 0;
 		background-color: #F4F4ee;
 		border: 10px solid #F4F4ee;
-		}
+	}
 	/* Headers */
 	.com_answers .aside .container h3,
 	.com_answers .aside .container h4 {
@@ -105,15 +105,15 @@
 		background-color: #999;
 		color: #fff;
 		font-size: 1em;
-		}
+	}
 	/* Paragraphs */
 	.com_answers .aside .container p {
 		margin: 1em 0 0 0;
-		}
+	}
 	.com_answers .aside .container .starter {
 		padding: 0 0 0 0;
 		position: relative;
-		}
+	}
 	.com_answers .aside .container .starter .starter-point {
 		border-color: #999 transparent transparent transparent;
 		border-style: solid dashed dashed dashed;
@@ -125,18 +125,18 @@
 		position: absolute;
 		top: -1em;
 		left: 10px;
-		}
+	}
 	/* Lists */
 	.com_answers .aside .container ul,
 	.com_answers .aside .container li {
 		margin-left: 0;
 		padding-left: 0;
 		list-style: none;
-		}
+	}
 	.com_answers .aside .container ul {
 		margin: 0.5em 0 0.5em 0;
 		padding: 0;
-		}
+	}
 	/* 
 		0px (bullet arrow)
 		-155px (bullet plus)
@@ -150,43 +150,43 @@
 		margin: 0.2em 0;
 		padding: 0 0 0 15px;
 		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -730px; 
-		}
+	}
 	.com_answers .aside .container a.active {
 		color: #777;
 		font-weight: bold;
-		}
+	}
 	.com_answers .aside .questions li {
 		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -425px;
-		}
+	}
 	.com_answers .aside .articles li {
 		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -575px;
-		}
+	}
 	.com_answers .aside .categories li {
 		background: url("/components/com_answers/images/bullets_small.png") no-repeat 0px -730px;
-		}
+	}
 /* Entries (list) */
 	ul.answers,
 	ul.questions {
 		list-style: none;
 		margin: 1em 0;
-		}
+	}
 	.answers li,
 	.questions li {
 		background-image: none;
 		padding: 0px 0.4em;
-		}
+	}
 	ul.answers li,
 	ul.questions li {
 		padding: 0 0 0 17px;
 		margin: 0.3em 0;
 		background: url("/components/com_answers/images/bullets_medium.gif") no-repeat 0px -133px;
-		}
+	}
 	ul.answers li {
 		background: url("/components/com_answers/images/bullets_medium.gif") no-repeat 0px -442px;
-		}
+	}
 	.entries .list-footer li {
 		background-image: none;
-		}
+	}
 /* Entries (table) */
 	.entries {
 		border: 2px solid #e9e9e9;
@@ -194,112 +194,112 @@
 		background-color: #fff;
 		margin: 0;
 		padding: 0;
-		}
+	}
 	.entries caption {
 		font-size: 115%;
 		background: #f8f8f8 url("/components/com_answers/images/light-stripes.png");
 		border: 2px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		margin-right: -2px; /* Fix 2px issue */
-		}
+	}
 	.container-block h4 span,
 	.entries caption span {
 		color: #aaa;
-		}
+	}
 	.entries thead th {
 		text-align: left;
 		background-color: #f9d800;
-		}
+	}
 	.entries tbody td {
 		text-align: left;
 		border-bottom: 1px solid #eee;
 		padding: 10px;
-		}
+	}
 	.entries tbody th {
 		width: 5px;
 		text-align: center;
 		border-bottom: 1px solid #eee;
-		}
+	}
 	.entry-details {
 		font-size: 85%;
 		color: #999;
-		}
+	}
 	.entry-details a {
 		color: #666;
 		border-bottom: 1px dotted #999;
-		}
+	}
 	.entry-details a:hover {
 		color: #ff6600;
 		border-bottom: 1px solid #ff6600;
-		}
+	}
 	.entry-details-divider {
 		/*color: #666;*/
 		margin-left: 0.5em;
 		margin-right: 0.5em;
-		}
+	}
 	.entry-state {
 		text-transform: uppercase;
-		}
+	}
 	.entry-comments {
 		padding-right: 16px;
 		background: url("/components/com_answers/images/bullets_small.png") no-repeat right -428px;
-		}
+	}
 	.entries .reward {
 		text-align: right;
-		}
+	}
 		
 	.entries .entry-id {
 		display: none;
-		}
+	}
 	.questions tbody th {
 		background: url("/components/com_answers/images/question.png") right 15px no-repeat;
-		}
+	}
 	.questions tbody tr.answered th {
 		background: url("/components/com_answers/images/question_answered.png") right 15px no-repeat;
-		}
+	}
 	.questions tbody tr.flagged th {
 		background: url("/components/com_answers/images/question_answered.png") right 15px no-repeat;
-		}
+	}
 	.questions tbody tr.answered {
 		background: #fcf9ff url("/components/com_answers/images/light-stripes.png");
-		}
+	}
 	.questions tbody tr.mine {
 		background: #ffe url("/components/com_answers/images/light-stripes.png");
-		}
+	}
 	.questions tbody tr.flagged {
 		background: #FFF2EF url("/components/com_answers/images/light-stripes.png");
-		}
+	}
 	.entries tbody td.voting,
 	.voting {
 		text-align: right;
 		white-space: nowrap;
-		}
+	}
 	p.voting {
 		float: right;
 		min-width: 10em;
 		margin: 0.7em 0 0.7em 0;
 		padding: 0;
-		}
+	}
 	.container-block .entry-details {
 		padding: 0.7em 0 0.7em 0;
-		}
+	}
 	.entry-popularity {
 		display: none;
-		}
+	}
 /* Submenu styling */
 	.entries-menu {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		font-size: 85%;
-		}
-	.entries-menu li {
+	}
+	.container .entries-menu li {
 		float: right;
 		padding: 0 0.2em 0.5em 0.2em;
 		margin: 0;
-		}
-	.entries-menu li a,
-	.entries-menu span.nolink {
+	}
+	.container .entries-menu li a,
+	.container .entries-menu span.nolink {
 		color: #888;
 		display: block;
 		cursor: pointer;
@@ -309,12 +309,12 @@
 		margin: 0;
 		padding: 0.4em 0.75em;
 		text-shadow: 0px 1px 1px #fff;
-		}
-	.entries-menu span.nolink {
+	}
+	.container .entries-menu span.nolink {
 		color: #999;
-		}
-	.entries-menu a.active,
-	.entries-menu span.nolink.active {
+	}
+	.container .entries-menu a.active,
+	.container .entries-menu span.nolink.active {
 		color: #fff;
 		background-color: #636166;
 		-moz-border-radius: 10px;
@@ -323,8 +323,8 @@
 		border-radius: 10px;
 		text-shadow: 0 1px 1px rgba(0,0,0,.3);
 		text-decoration: none;
-		}
-	.entries-menu a:hover {
+	}
+	.container .entries-menu a:hover {
 		color: #fff;
 		background-color: #fc9022;
 		-moz-border-radius: 10px;
@@ -333,10 +333,44 @@
 		border-radius: 10px;
 		text-shadow: 0 1px 1px rgba(0,0,0,.3);
 		text-decoration: none;
-		}
-	.filter-options li {
+	}
+	.container .filter-options li {
 		float: left;
-		}
+	}
+	.user-options + .container {
+		margin-top: 0;
+	}
+	.user-options li {
+		display: inline;
+		margin: 0 0.5em 0 0;
+	}
+	.user-options li a {
+		display: inline-block;
+		background: #fff;
+		color: #888;
+		cursor: pointer;
+		font-weight: normal;
+		line-height: 1em;
+		border: none;
+		margin: 0;
+		padding: 0.75em 1em;
+		text-shadow: 0px 1px 1px #fff;
+		border: 1px solid #e9e9e9;
+		border-bottom: none;
+	}
+	.user-options li a.active {
+		background: #f4f4f4;
+		border: 1px solid #f4f4f4;
+		border-bottom: none;
+		color: #333;
+	}
+	.user-options li a:hover {
+		color: #fff;
+		background-color: #fc9022;
+		border-color: #fc9022;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+	}
 /* Voting */
 	.vote-button {
 		display: inline-block;
@@ -355,22 +389,22 @@
 		-moz-border-radius: .5em;
 		border-radius: .5em;
 		opacity: 0.8;
-		}
+	}
 	.chosen .vote-button,
 	.vote-button:hover {
 		text-decoration: none;
 		opacity: 1;
-		}
+	}
 	.vote-button:active {
 		position: relative;
 		top: 1px;
 		opacity: 1;
-		}
+	}
 	.vote-like,
 	.vote-dislike {
 		margin: 0;
 		padding: 0;
-		}
+	}
 	.vote-like .vote-button {
 		margin-right: 0;
 		-moz-border-radius-bottomright: 0;
@@ -379,13 +413,13 @@
 		-webkit-border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 		border-top-right-radius: 0;
-		}
+	}
 	.question .vote-like .vote-button, 
 	.entries .vote-like .vote-button {
 		-webkit-border-radius: .5em; 
 		-moz-border-radius: .5em;
 		border-radius: .5em;
-		}
+	}
 	.vote-dislike .vote-button {
 		margin-left: -5px;
 		-moz-border-radius-bottomleft: 0;
@@ -394,7 +428,7 @@
 		-webkit-border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
 		border-top-left-radius: 0;
-		}
+	}
 	/* neutral (gray base colors) */
 	.vote-button,
 	a.vote-button {
@@ -404,7 +438,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
 		background: -moz-linear-gradient(top,  #fff,  #ededed);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
-		}
+	}
 	.vote-button:hover,
 	a.vote-button:hover {
 		color: #606060;
@@ -413,7 +447,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
 		background: -moz-linear-gradient(top,  #fff,  #dcdcdc);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
-		}
+	}
 	.vote-button:active,
 	a.vote-button:active {
 		border: solid 1px #b7b7b7;
@@ -421,7 +455,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
 		background: -moz-linear-gradient(top,  #ededed,  #fff);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
-		}
+	}
 	/* dislike (rose) */
 	.chosen .dislike,
 	.voting:hover a.dislike,
@@ -432,7 +466,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#f16c7c), to(#bf404f));
 		background: -moz-linear-gradient(top,  #f16c7c,  #bf404f);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f16c7c', endColorstr='#bf404f');
-		}
+	}
 	.chosen .dislike:hover,
 	.voting:hover a.dislike:hover,
 	.entries tr:hover a.dislike:hover {
@@ -441,7 +475,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
 		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
-		}
+	}
 	.chosen .dislike:active,
 	.voting:hover a.dislike:active,
 	.entries tr:hover a.dislike:active {
@@ -450,7 +484,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#bf404f), to(#f16c7c));
 		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
-		}
+	}
 	/* like (green) */
 	.chosen .like,
 	.voting:hover a.like,
@@ -461,7 +495,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
 		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
-		}
+	}
 	.chosen .like:hover,
 	.voting:hover a.like:hover,
 	.entries tr:hover a.like:hover {
@@ -470,7 +504,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
 		background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
-		}
+	}
 	.chosen .like:active,
 	.voting:hover a.like:active,
 	.entries tr:hover a.like:active {
@@ -479,7 +513,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
 		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
-		}
+	}
 	/* thumbs up/down image */
 	.vote-button span {
 		display: inline-block;
@@ -489,32 +523,32 @@
 		text-indent: -55em;
 		padding: 0;
 		margin: 0 0 0 3px;
-		}
+	}
 	.vote-like .neutral span,
 	.like span {
 		background: url("/components/com_answers/images/thumbs.png") 0 0 no-repeat;
-		}
+	}
 	.vote-dislike .neutral span,
 	.dislike span {
 		background: url("/components/com_answers/images/thumbs.png") 0 -14px no-repeat;
-		}
+	}
 /* Breadcrumb */
 	.breadcrumbtrail {
 		list-style: none;
 		padding: 0;
 		margin: 0 15px 1em 15px;
-		}
+	}
 	.breadcrumbtrail li {
 		display: inline;
 		margin: 0 1em 0 0;
 		padding: 0;
-		}
+	}
 /* Rewards */
 	.entry-reward {
 		white-space: nowrap;
 		color: #999;
 		font-size: 85%;
-		}
+	}
 	.entry-reward a {
 		background: url("/components/com_answers/images/coin.gif") 0 0 no-repeat;
 		width: 16px;
@@ -522,7 +556,7 @@
 		display: inline-block;
 		overflow: hidden;
 		text-indent: 55em;
-		}
+	}
 /* Answer form */
 	#answerform fieldset {
 		padding: 0 1em 1em 1em;
@@ -532,33 +566,33 @@
 		border: 1px solid #EFEAC2;
 		color: #906C59;
 		width:80%;
-		}
+	}
 	#answerform label {
 		display: block;
 		padding-top: 1.5em;
-		}
+	}
 	#answerform input, 
 	#answerform select, 
 	#answerform textarea {
 		margin-top: 0.25em;
 		width: 100%;
-		}
+	}
 	#answerform .option {
 		display: inline;
 		margin: 0 0.25em 0 0 !important;
 		margin: 0;
 		width: auto;
-		}
+	}
 	#answerform .submit {
 		text-align: right;
 		clear: both;
 		margin-right: 40%;
 		padding-top: 1em;
-		}
+	}
 	#answerform .submit input {
 		width: auto;
 		margin: 0;
-		}
+	}
 /* Introduction columns */
 	.pointvalue a, 
 	.questions .rewardset a {
@@ -571,17 +605,17 @@
 		height: 16px;
 		overflow: hidden;
 		text-indent: -55em;
-		}
+	}
 	.pointvalue a:hover {
 		border: none;	
-		}
+	}
 	.pointvalue  {
 		color: #000;
 		font-weight:bold;
 		text-transform: lowercase;
 		font-size: inherit;	
 		padding: 0;
-		}
+	}
 /* Accept the answer */
 	.accept a {
 		background: url("/components/com_answers/images/checker.gif") 0 0 no-repeat;
@@ -590,12 +624,12 @@
 		height:15px;
 		font-size: inherit;	
 		border: none;	
-		}
+	}
 	.accept a:hover {
 		background-position: 0 -20px;
 		padding: 0.2em 0 0.4em 1.3em;
 		margin:0;
-		}
+	}
 		
 	.open {
 		text-transform: uppercase;
@@ -603,25 +637,25 @@
 		color:#006600;
 		font-size:x-small;
 		font-weight:bold;
-		}
+	}
 	.closed {
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		color: #000;
 		font-size:x-small;
 		font-weight:bold;
-		}
+	}
 	.underreview {
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		color:#990000;
 		font-size:x-small;
 		font-weight:bold;
-		}
+	}
 	.sidenote {
 		margin-top: 4em;
 		padding: 0 0 0 2em;
-		}
+	}
 /* Abuse button */
 	.abuseitem {
 		padding: 10px 10px 10px 30px; 
@@ -629,30 +663,30 @@
 		text-align: left;
 		border: 1px solid #EFCCC2; 
 		background: #FFF2EF;
-		}
+	}
 	.abuseitem h4 {
 		margin: 0;
 		font-style: italic;
-		}
+	}
 	.abuseitem p {
 		margin: 0.5em 0 0.5em 0;
-		}
+	}
 /* Misc. */
 	.supplemental {
 		line-height: 2em;
 		padding: 0;
 		margin: 0;
-		}
+	}
 	.filters {
 		background: #f3f3f3;
 		border-top:1px solid #ccc;
 		border-bottom:1px solid #ccc;
 		padding:0.5em;
 		margin-top:0.5em;
-		}
+	}
 	.questions .tags { 
 		margin-top:-2.5em;
-		}
+	}
 /* Comments */
 	.showreplyform {
 		background: url("/components/com_answers/images/reply.gif") 0 0 no-repeat;
@@ -660,10 +694,10 @@
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.showreplyform:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.replyby {
 		background: url("/components/com_answers/images/reply.gif") 0 0 no-repeat;
 		padding: 0.5em 2em 0 1.5em;
@@ -672,12 +706,12 @@
 		font-size: inherit;	
 		border: none;
 		border-top:1px dotted #ccc;
-		}
+	}
 /* Sections */
 	.com_answers .section .section h3 {
 		display: block;
 		position: relative;
-		}
+	}
 	.com_answers .section .section h3 .feed {
 		display: block;
 		width: 16px;
@@ -689,37 +723,37 @@
 		right: 235px;
 		margin: 0;
 		padding: 0;
-		}
+	}
 	.com_answers .below {
 		display: block;
 		margin: 0;
 		padding: 0;
 		border-top: none;
-		}
+	}
 	.com_answers .below .subject {
 		margin-top: 0;
 		background: #fff;
 		border-top: 1px solid #efefef;
 		border-bottom: 1px solid #fff;
 		padding: 1em 0 0 0;
-		}
+	}
 	.com_answers .below .aside {
 		padding: 1em 0 0 0;
-		}
+	}
 	.com_answers .below h3 {
 		font-weight: normal;
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		margin: 1em 0 0 70px;
 		padding: 0.5em 0;
-		}
+	}
 	.com_answers .below form h3 {
 		padding: 0;
 		margin: 1em 0;
 		letter-spacing: normal;
 		text-transform: none;
 		font-weight: bold;
-		}
+	}
 /* Question */
 	/* Member photo */
 	.question p.question-member-photo {
@@ -733,7 +767,7 @@
 	    font-size: 11px;
 	    text-align: right;
 		position: relative;
-		}
+	}
 	.question .question-anchor {
 		border-color: transparent #F4F4ee transparent transparent;
 		border-style: dashed solid dashed dashed;
@@ -745,78 +779,78 @@
 		position: absolute;
 		top: 20px;
 		right: 0px;
-		}
+	}
 	/* Content */
 	.question .question-content {
 		margin: 0 0 0 70px;
 		background-color: #F7F7F2;
 		border: 10px solid #F4F4ee;
 		padding: 0 1em;
-		}
+	}
 	/* Permalink */
 	.question .permalink {
 		border: none;
 		color: #bfbfbf;
-		}
+	}
 	.question .permalink:hover {
 		color: #000;
 		border: none;
-		}
+	}
 	/* Subject */
 	.question .question-subject {
 		margin: 1em -1em 0 -1em;
 		padding: 1em;
 		font-weight: bold;
 		background-color: #FdFdF8;
-		}
+	}
 	.question .question-long {
 		margin: 0 -1em 1em -1em;
 		padding: 0 1em 1em 1em;
 		background-color: #FdFdF8;
-		}
+	}
 	.question .question-subject>p,
 	.question .question-long>p {
 		margin-top: 0;
-		}
+	}
 	/* Tags */
 	.question .question-tags {
 		margin: 0;
 		padding: 0 0 1em 0;
 		
 		color: #aaa;
-		}
+	}
 	.question .question-tags p {
 		display: none;
-		}
+	}
 	.question .question-tags .tags {
 		margin: 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
 		background: url("/components/com_answers/images/tag_orange.png") 0 0.2em no-repeat;
-		}
+	}
 	.question .question-tags .tags li {
 		margin: 0;
-		}
+	}
 	/* Status */
 	.question .question-status {
 		visibility: hidden;
 		margin: 0 0 1em 70px;
 		padding: 1em 0 1em 0;
-		}
+	}
 	.question:hover .question-status {
 		visibility: visible;
-		}
+	}
 	.question .question-status span {
 		margin-right: 2em;
-		}
+	}
 	/* Voting */
 	.question .question-voting {
 		float:right; 
-		}
+	}
 	.question .question-voting .question_vote {
 		margin: 0 0 0 1em;
 		color: #666;
-		}
+	}
 	.question .question-voting .question_vote a,
 	.question .question-voting .question_vote a.voted {
 		border: none;
@@ -828,68 +862,68 @@
 		color: #bfbfbf;
 		overflow: hidden;
 		text-indent: -55em;
-		}
+	}
 	.question .question-voting .question_vote a.voted {
 		background: url("/components/com_answers/images/thumbup_ok.gif") 0 0 no-repeat;
-		}
+	}
 	.question .question-voting .question_vote a {
 		background: url("/components/com_answers/images/thumbup.gif") 0 0 no-repeat;
 		height: 15px;	
-		}
+	}
 	.question .question-voting .question_vote a:hover {
 		background-position: 0 -32px;
 		color: #000;
-		}
+	}
 /* Comments */
 	ol.comments {
 		list-style-type: none !important;
 		margin: 0;
 		padding: 0;
 		background: transparent;
-		}
+	}
 	ol.comments li {
 		clear: left;
 		margin: 0;
 		padding: 0;
 		border-top: 1px solid #fff;
-		}
+	}
 	ol.comments ol {
 		margin: 0;
 		padding: 0;
-		}
+	}
 	ol.comments li li {
 		padding-left: 70px;
-		}
+	}
 	/* Options */
 	.abuse {
 		background: url("/components/com_answers/images/abuse.gif") 0 0 no-repeat;
 		padding-left: 15px;
-		}
+	}
 	.reply {
 		background: url("/components/com_answers/images/reply.gif") 0 0 no-repeat;
 		padding-left: 15px;
-		}
+	}
 	.abuse:hover,
 	.reply:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.comment-options {
 		color: #fff;
 		font-size: 90%;
 		visibility: hidden;
-		}
+	}
 	ol.comments .comment-content:hover .comment-options {
 		visibility: visible;
-		}
+	}
 	.comment-options a {
 		margin-right: 1em;
-		}		
+	}		
 	.comment-options a span {
 		display: none;
-		}
+	}
 	ol.comments dl.comment-details {
 		display: none;
-		}
+	}
 	/* Member photo */
 	ol.comments p.comment-member-photo {
 	    float: left;
@@ -902,7 +936,7 @@
 	    font-size: 11px;
 	    text-align: right;
 		position: relative;
-		}
+	}
 	ol.comments .comment-anchor {
 		border-color: transparent #f2f2f2 transparent transparent;
 		border-style: dashed solid dashed dashed;
@@ -914,103 +948,103 @@
 		position: absolute;
 		top: 20px;
 		right: 0px;
-		}
+	}
 	/* Content */
 	ol.comments .comment-content {
 		margin: 0 0 1em 70px;
 		background-color: #fafafa;
 		border: 10px solid #f2f2f2;
 		padding: 0 1em;
-		}
+	}
 	ol.comments .comment-voting {
 		margin: 0.5em 0 0 0;
 		padding: 0;
 		float: right;
-		}
+	}
 	ol.comments .comment-voting .thumbsvote {
 		margin-top: 0.5em;
-		}
+	}
 	/* Author comments */
 	ol.comments .author .comment-content,
 	ol.comments .author ol.comments .author .comment-content {
 		background-color: #fdfbf8;
 		border-color: #f9f2ec;
-		}
+	}
 	ol.comments .author .comment-anchor,
 	ol.comments .author ol.comments .author .comment-anchor {
 		border-color: transparent #eeecf9 transparent transparent;
-		}
+	}
 	ol.comments .author ol.comments .comment-content,
 	ol.comments .author ol.comments .author ol.comments .comment-content {
 		background-color: #fafafa;
 		border-color: #f2f2f2;
-		}
+	}
 	ol.comments .author ol.comments .comment-anchor,
 	ol.comments .author ol.comments .author ol.comments .comment-anchor {
 		border-color: transparent #f2f2f2 transparent transparent;
-		}
+	}
 	/* Chosen comments */
 	ol.comments .chosen .comment-content {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
-		}
+	}
 	ol.comments .chosen .comment-anchor {
 		border-color: transparent #eeecf9 transparent transparent;
-		}
+	}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
 		color: #bfbfbf;
-		}
+	}
 	/* Permalink */
 	ol.comments .permalink {
 		border: none;
 		color: #bfbfbf;
-		}
+	}
 	ol.comments .permalink:hover {
 		color: #000;
 		border: none;
-		}
+	}
 	ol.comments .odd,
 	ol.comments .even {
 		background: transparent;
-		}
+	}
 /* Add comment */
 	.addcomment {
 		margin: 0 0 1em 0;
 		padding: 1em;
 		border: 10px solid #ccc;
 		background-color: #eee;
-		}
+	}
 	.addcomment label {
 		display: block;
-		}
+	}
 	.addcomment .cancelreply {
 		margin-left: 2em;
-		}
+	}
 	.addcomment .submit {
 		clear: both;
 		margin: -1.5em 0 0 0;
 		padding: 0;
 		text-align: right;
-		}
+	}
 	.addcomment input, 
 	.addcomment select, 
 	.addcomment textarea {
 		margin-top: 0.25em;
 		width: 100%;
-		}	
+	}	
 	.addcomment .submit input,
 	.addcomment .option {
 		width: auto;
-		}
+	}
 	.addcomment .reply-anonymous-label {
 		width: 50%;
-		}
+	}
 /* Comment form */
 	#commentform {
 		margin: 0 0 4em 0;
 		padding: 0;
-		}
+	}
 	#commentform fieldset {
 		background: #F5F7F2;
 		border: 10px solid #DEE4CD;
@@ -1018,7 +1052,7 @@
 		padding: 0 1em 0em 1em;
 		text-align: left;
 		color: #777;
-		}
+	}
 	#commentform p.comment-member-photo {
 		float: left;
 		margin: 0;
@@ -1030,7 +1064,7 @@
 		font-size: 11px;
 		text-align: right;
 		position: relative;
-		}
+	}
 	#commentform .comment-anchor {
 		border-color: transparent #DEE4CD transparent transparent;
 		border-style: dashed solid dashed dashed;
@@ -1042,30 +1076,30 @@
 		position: absolute;
 		top: 20px;
 		right: 0px;
-		}
+	}
 	#commentform .sidenote {
 		border: 1px solid #edf0e8;
 		padding: 0 1em;
 		margin: 0 -1em 0 -1em;
 		color: #aaa;
 		background-color: #edf0e8;
-		}
+	}
 	#commentform .required,
 	#commentform .optional {
 		text-transform: uppercase;
 		font-size: xx-small;
-		}
+	}
 	#commentform .required {
 		color: red;
-		}
+	}
 	#commentform .optional {
 		color: #999;
-		}
+	}
 	#commentform label {
 		padding-top: 1em;
 		position: relative;
 		display: block;
-		}
+	}
 	#commentform .grouping {
 		position: relative;
 		margin-left: -3em;
@@ -1073,51 +1107,51 @@
 		overflow: hidden;
 		top: 1em;
 		left: 1.5em;
-		}
+	}
 	#commentform .grouping label {
 		padding: 0;
 		float: left;
 		width: 50%;
-		}
+	}
 	#commentform .grouping label:first-child {
 		margin: 0 2em 0 -3.5em;
-		}
+	}
 	#commentform .grouping label span {
 		top: 0;
-		}
+	}
 	#commentform input, 
 	#commentform select, 
 	#commentform textarea {
 		margin-top: 0.25em;
 		width: 100%;
-		}
+	}
 	#commentform .submit {
 		clear: both;
 		margin: -1.5em 0 1em 0;
 		padding: 0;
 		text-align: right;
-		}
+	}
 	#commentform .submit input,
 	#commentform .option {
 		width: auto;
-		}
+	}
 	#commentform #answer-anonymous-label,
 	#commentform #comment-anonymous-label {
 		width: 50%;
-		}
+	}
 /* Wiki Reference */
 	table.wiki-reference {
 		border: none;
 		font-size: 11px;
 		margin: 0;
-		}
+	}
 	table.wiki-reference caption {
 		font-weight: bold;
-		}
+	}
 	table.wiki-reference tbody td {
 		border-top: 1px solid #efefef;
 		border-bottom: 1px solid #efefef;
-		}
+	}
 /* Misc. */
 	.youcanearn {
 		display:block;
@@ -1127,23 +1161,23 @@
 		font-style:italic;
 		font-weight:600;
 		line-height:1.2em;
-		}
+	}
 	#useroptions li {
 		white-space:nowrap; 
 		overflow:visible;
-		}
+	}
 	.subtitle {
 		margin: -1em 1.5em 1.5em 1.3em;
 		font-weight:normal;
-		}
+	}
 	.spacer {
 		padding:0 1em 0 1em;
-		}
+	}
 	.myquestions {
 		background: transparent url("/components/com_answers/images/myquestions.png") 0 0 no-repeat; padding-left: 18px;padding-bottom:0.2em; 
 		margin-left:-1.5em;
 		margin-right:-0.5em;
-		}
+	}
 	.note_total {
 		font-size: x-small;
 		color: #666;
@@ -1151,34 +1185,34 @@
 		text-align: right;
 		margin-top: -8px;
 		margin-bottom: -2em;
-		}
+	}
 	.subject-wrap {
 		margin: 0 0 0 70px;
 		padding: 0;
-		}
+	}
 /* Point breakdown */
 	#pointbreakdown {
 		font-size: 85%;
 		border-bottom: none;
 		margin-bottom: 4em;
-		}
+	}
 	#pointbreakdown caption {
 		font-weight: bold;
-		}
+	}
 	#pointbreakdown tbody td,
 	#pointbreakdown tbody th {
 		border-top: 1px solid #efefef;
 		border-bottom: 1px solid #efefef;
-		}
+	}
 	#pointbreakdown tfoot td {
 		border-top: 2px solid #efefef;
 		color: #aaa;
-		}
+	}
 /* Answer button */
 	.aside .answer-question {
 		margin-top: 0;
 		padding-top: 0;
-		}
+	}
 	.answer-question a {
 		display: block;
 		width: 100%;
@@ -1197,7 +1231,7 @@
 		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 		box-shadow: 0 1px 2px rgba(0,0,0,.2);
 		color: #fff;
-		}
+	}
 	.answer-question a {
 		font-size: 1.1em;
 		padding: 0.4em 0 0.42em 0;
@@ -1206,19 +1240,19 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
 		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
-		}
+	}
 	.answer-question a:hover {
 		background: #538018;
 		background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
 		background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
-		}
+	}
 	.answer-question a:active {
 		color: #a9c08c;
 		background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
 		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
-		}
+	}
 /* Delete button */
 	#deleteForm .submit input,
 	#deleteForm .submit a {
@@ -1240,7 +1274,7 @@
 		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 		box-shadow: 0 1px 2px rgba(0,0,0,.2);
 		color: #fff;
-		}
+	}
 	#deleteForm .submit input {
 		font-size: 1.1em;
 		padding: 0.4em 1.5em 0.42em;
@@ -1249,19 +1283,19 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
 		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
-		}
+	}
 	#deleteForm .submit input:hover {
 		background: #538018;
 		background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
 		background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
-		}
+	}
 	#deleteForm .submit input:active {
 		color: #a9c08c;
 		background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
 		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
-		}
+	}
 	#deleteForm .submit a {
 		font-size: 85%;
 		margin: 0 0 0 2em;
@@ -1270,7 +1304,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#f16c7c), to(#bf404f));
 		background: -moz-linear-gradient(top,  #f16c7c,  #bf404f);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f16c7c', endColorstr='#bf404f');
-		}
+	}
 	#deleteForm .submit a:hover {
 		border: solid 1px #b73948;
 		text-decoration: none;
@@ -1278,7 +1312,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
 		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
-		}
+	}
 	#deleteForm .submit a:active {
 		position: relative;
 		top: 1px;
@@ -1286,4 +1320,4 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#bf404f), to(#f16c7c));
 		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
-		}
+	}
