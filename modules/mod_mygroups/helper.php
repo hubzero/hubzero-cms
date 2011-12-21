@@ -203,6 +203,8 @@ class modMyGroups
 		// Get the user's groups
 		$members  = $this->_getGroups( $juser->get('id'), 'all' );
 
+		$groups = array();
+
 		foreach ($members as $mem)
 		{
 			$groups[] = $mem;
