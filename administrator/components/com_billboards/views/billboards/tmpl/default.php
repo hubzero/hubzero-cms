@@ -30,7 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'grid.php');
 
 // Menu
 JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': <small><small>[ ' . JText::_('BILLBOARDS') . ' ]</small></small>', 'addedit.png');
@@ -52,12 +51,13 @@ $juser =& JFactory::getUser();
 				<th><?php echo JText::_('BILLBOARD_ID'); ?></th>
 				<th><?php echo JText::_('BILLBOARD_NAME'); ?></th>
 				<th><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?></th>
+				<th style="text-align:center;"><?php echo JText::_('BILLBOARD_ORDERING') . JHTML::_('grid.order', $this->rows); ?></th>
 				<th><?php echo JText::_('PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -69,12 +69,14 @@ $juser =& JFactory::getUser();
 		$row =& $this->rows[$i];
 
 		// See if the billboard is being edited by someone else
-		if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') {
+		if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
+		{
 			$checked = JHTMLGrid::_checkedOut($row);
 			$info = ($row->checked_out_time != '0000-00-00 00:00:00')
 					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, '%d %b, %Y').'<br />'
 					 : '';
-			if ($row->editor) {
+			if ($row->editor) 
+			{
 				$info .= JText::_('CHECKED_OUT_BY').': '.$row->editor;
 			}
 		} 
@@ -93,6 +95,9 @@ $juser =& JFactory::getUser();
 				<td><?php echo $row->id; ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;cid[]=<? echo $row->id; ?>" title="Edit this slide"><?php echo $row->name; ?></a></td>
 				<td><?php echo $row->bcollection; ?></td>
+				<td class="order">
+					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
+				</td>
 				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><span><?php echo $alt; ?></span></a></td>
 			</tr>
 

@@ -55,6 +55,7 @@ class BillboardsController extends Hubzero_Controller
 			case 'add':               $this->edit();               break;
 			case 'edit':              $this->edit();               break;
 			case 'save':              $this->save();               break;
+			case 'saveorder':         $this->saveorder();          break;
 			case 'delete':            $this->delete();             break;
 			case 'publish':           $this->publish(1);           break;
 			case 'unpublish':         $this->publish(0);           break;
@@ -255,6 +256,53 @@ class BillboardsController extends Hubzero_Controller
 		// Redirect
 		$this->_redirect = 'index.php?option=' . $this->_option . '&task=billboards';
 		$this->_message = JText::_('BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED');
+	}
+
+	/**
+	 * Save the new order
+	 * 
+	 * @return void
+	 */
+	function saveorder()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Initialize variables
+		$cid   = JRequest::getVar('cid', array(), 'post', 'array');
+		$order = JRequest::getVar('order', array(), 'post', 'array');
+		$total = count($cid);
+		$row   = new BillboardsBillboard($this->database);
+
+		// Make sure we have something to work with
+		if (empty($cid))
+		{
+			JError::raiseWarning(500, JText::_('BILLBOARDS_ORDER_PLEASE_SELECT_ITEMS'));
+			return;
+		}
+
+		// Update ordering values
+		for ($i = 0; $i < $total; $i++)
+		{
+			$row->load($cid[$i]);
+			if ($row->ordering != $order[$i])
+			{
+				$row->ordering = $order[$i];
+				if (!$row->store())
+				{
+					JError::raiseError(500, $row->getError());
+					return;
+				}
+			}
+		}
+
+		// Clear the component's cache
+		$cache =& JFactory::getCache('com_billboards');
+		$cache->clean();
+
+		// Redirect
+		$this->_redirect = 'index.php?option=' . $this->_option . '&task=billboards';
+		$this->_message = JText::_('BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED');
 	}
 
 	/**

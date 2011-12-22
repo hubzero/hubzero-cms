@@ -272,6 +272,13 @@ class BillboardsBillboard extends JTable
 		$query .= ' WHERE collection_id = ' . $collection_id;
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+
+		$order = $this->_db->loadResult();
+		if(!$order)
+		{
+			$order = 1;
+		}
+
+		return $order;
 	}
 }
