@@ -259,8 +259,9 @@
 	#displays_0, .devversion {
 		background: url("images/bgdev.gif") 0 0 repeat-X;
 	}
-	.devversion {
-	 padding: 1em;margin: 0;
+	p.devversion {
+	 	padding: 1em; 
+		margin: 0;
 	}
 	.config { border: none; border-bottom: 2px solid #ccc; padding-bottom:1em; }
 	.config h4, .controls h4 { margin: 0.5em 0 0 0; }

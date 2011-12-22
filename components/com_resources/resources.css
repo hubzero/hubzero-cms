@@ -266,15 +266,15 @@
 		}
 /* Launch area content */
 	p.curversion, 
-	p.devversion {
+	.main p.devversion {
 		font-size: 85%;
 		color: #333333;
 		margin-top: -1em;
 		}
-	p.devversion span {
+	.main p.devversion span {
 		display: block;
 		}
-	.devversion {
+	.main .devversion {
 		background: url("/components/com_resources/images/bgdev.gif") 0 0 repeat-x;
 		border: 1px solid #aac39c;
 		padding: 0.2em;

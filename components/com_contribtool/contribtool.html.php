@@ -511,7 +511,7 @@ class ContribtoolHtml
 	 */
 	public function getDevTeam($members, $obj = 1, $team='') {
 
-		if(count($members)>0) {
+		if($members && count($members) > 0) {
 			foreach($members as $member) {
 				$uid = ($obj) ? $member->uidNumber  : $member ;
 				$juser =& JUser::getInstance ( $uid );
@@ -541,7 +541,7 @@ class ContribtoolHtml
 	 * @return     string Return description (if any) ...
 	 */
 	public function getGroups($groups, $obj = 1, $list='') {
-		if(count($groups)>0) {
+		if($groups && count($groups) > 0) {
 			foreach($groups as $group) {
 				$cn = ($obj) ? $group->cn : $group;
 				$list .= ($group != end($groups)) ? $cn. ', ' : $cn;
@@ -2399,7 +2399,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 
-		$body = ResourcesHtml::about( $database, 0, $usersgroups, $resource, $helper, $config, array(), null, null, null, null, $params, $attribs, $option, 0 );
+		$body = ResourcesHtml::about( $database, 0, $usersgroups, $resource, $helper, $config, array(), null, null, null, null, $params, $attribs, 'com_resources', 0 );
 
 		$cat = array();
 		$cat['about'] = JText::_('ABOUT');

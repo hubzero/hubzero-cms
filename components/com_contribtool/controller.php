@@ -1143,12 +1143,14 @@ class ContribtoolController extends JObject
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
 			}
-
 		}
 
 		// new tool or edit
 		if($task=='register' || $task=='save')
 		{
+			// Create a Tool object
+			$obj = new Tool( $database );
+			
 			if (!Hubzero_Tool::validate($tool,$err,$id))
 			{
 				// display form with errors
@@ -1157,6 +1159,14 @@ class ContribtoolController extends JObject
 				$document->setTitle( $title );
 
 				if($this->_toolid) { $tool['published']=$oldstatus['published']; }
+				
+				if($id)
+				{
+					// get tool status
+					$obj->getToolStatus( $id, $this->_option, $fstatus, $editversion );
+					$tool['developers'] = $fstatus['developers'];
+			        $tool['membergroups'] = $fstatus['membergroups'];
+				}
 
 				echo ContribtoolHtml::writeToolForm($this->_option, $title, $this->_admin, $juser, $tool, $err, $id, $this->config, $this->_task);
 
@@ -1308,6 +1318,7 @@ class ContribtoolController extends JObject
 
 					$status = $hztv->toArray();
 					$status['toolstate'] = $hzt->state;
+					$status['membergroups'] = $tool['membergroups'];
 
 					// update history ticket
 					if($id && $oldstatus!=$status && $editversion !='current')
