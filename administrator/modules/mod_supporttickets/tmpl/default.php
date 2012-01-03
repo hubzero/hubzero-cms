@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -21,61 +24,64 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$app = JFactory::getApplication();
 ?>
-<table class="support-stats-overview open-tickets" summary="<?php echo JText::_('Overview of open support tickets'); ?>">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Open'); ?></th>
-			<th scope="col"><?php echo JText::_('Unassigned'); ?></th>
-			<th scope="col"><?php echo JText::_('New'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="major"><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:open" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->opened['open']; ?></a></td>
-			<td class="critical"><a href="index.php?option=com_support&amp;c=tickets&amp;show=owner:none" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->opened['unassigned']; ?></a></td>
-			<td class="newt"><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:new" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->opened['new']; ?></a></td>
-		</tr>
-	</tbody>
-</table>
+<div id="mod_supporttickets">
+<?php if ($app->getTemplate() == 'khepri' && $this->module->showtitle) : ?>
+	<h3 class="title"><?php echo $this->module->title; ?></h3>
+<?php endif; ?>
+	<table class="support-stats-overview open-tickets" summary="<?php echo JText::_('Overview of open support tickets'); ?>">
+		<thead>
+			<tr>
+				<th scope="col"><?php echo JText::_('Open'); ?></th>
+				<th scope="col"><?php echo JText::_('Unassigned'); ?></th>
+				<th scope="col"><?php echo JText::_('New'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="major"><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:open" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->opened['open']; ?></a></td>
+				<td class="critical"><a href="index.php?option=com_support&amp;c=tickets&amp;show=owner:none" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->opened['unassigned']; ?></a></td>
+				<td class="newt"><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:new" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->opened['new']; ?></a></td>
+			</tr>
+		</tbody>
+	</table>
 
-<table class="support-stats-overview closed-tickets" summary="<?php echo JText::_('Overview of closed support tickets'); ?>">
-	<thead>
-		<tr>
-			<th scope="col" class="block"><?php echo JText::_('Average lifetime'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="block">
-				<?php echo (isset($this->lifetime[0])) ? $this->lifetime[0] : 0; ?> <span><?php echo JText::_('days'); ?></span> 
-				<?php echo (isset($this->lifetime[1])) ? $this->lifetime[1] : 0; ?> <span><?php echo JText::_('hours'); ?></span> 
-				<?php echo (isset($this->lifetime[2])) ? $this->lifetime[2] : 0; ?> <span><?php echo JText::_('minutes'); ?></span>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-<table class="support-stats-overview my-tickets" summary="<?php echo JText::_('Overview of my support tickets'); ?>">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('My Tickets (reported)'); ?></th>
-			<th scope="col"><?php echo JText::_('My Tickets (assigned)'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><a href="index.php?option=com_support&amp;c=tickets&amp;show=reportedby:me" title="<?php echo JText::_('View my reported tickets'); ?>"><?php echo $this->my['open']; ?></a></td>
-			<td><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:open%20owner:me" title="<?php echo JText::_('View my assigned tickets'); ?>"><?php echo $this->my['assigned']; ?></a></td>
-		</tr>
-	</tbody>
-</table>
+	<table class="support-stats-overview closed-tickets" summary="<?php echo JText::_('Overview of closed support tickets'); ?>">
+		<thead>
+			<tr>
+				<th scope="col" class="block"><?php echo JText::_('Average lifetime'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="block">
+					<?php echo (isset($this->lifetime[0])) ? $this->lifetime[0] : 0; ?> <span><?php echo JText::_('days'); ?></span> 
+					<?php echo (isset($this->lifetime[1])) ? $this->lifetime[1] : 0; ?> <span><?php echo JText::_('hours'); ?></span> 
+					<?php echo (isset($this->lifetime[2])) ? $this->lifetime[2] : 0; ?> <span><?php echo JText::_('minutes'); ?></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+<?php if ($this->params->get('showMine', 1)) { ?>
+	<table class="support-stats-overview my-tickets" summary="<?php echo JText::_('Overview of my support tickets'); ?>">
+		<thead>
+			<tr>
+				<th scope="col"><?php echo JText::_('My Tickets (reported)'); ?></th>
+				<th scope="col"><?php echo JText::_('My Tickets (assigned)'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a href="index.php?option=com_support&amp;c=tickets&amp;show=reportedby:me" title="<?php echo JText::_('View my reported tickets'); ?>"><?php echo $this->my['open']; ?></a></td>
+				<td><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:open%20owner:me" title="<?php echo JText::_('View my assigned tickets'); ?>"><?php echo $this->my['assigned']; ?></a></td>
+			</tr>
+		</tbody>
+	</table>
+<?php } ?>
+</div>

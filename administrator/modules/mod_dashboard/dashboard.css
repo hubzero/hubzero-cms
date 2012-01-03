@@ -6,9 +6,19 @@
  */
 
 /* Dashboard //==================================================================== */
-	#dashboard h3 {
-		padding: 0.2em 2em 0.2em 1.7em; margin: 0; color:#666666;
+	table.adminform #dashboard {
+		margin-bottom: 1em;
 	}
+	#dashboard .title {
+		color: #666;
+		border: 1px solid #dfdfdf;
+		background: #dfdfdf;
+		padding: 0.7em;
+		margin: 0;
+	}
+	/*#dashboard h3 {
+		padding: 0.2em 2em 0.2em 1.7em; margin: 0; color:#666666;
+	}*/
 	#dashboard a {
 		color:#666666;
 	}

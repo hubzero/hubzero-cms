@@ -5,6 +5,16 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+	table.adminform #mod_supporttickets {
+		margin-bottom: 1em;
+	}
+	#mod_supporttickets .title {
+		color: #666;
+		border: 1px solid #dfdfdf;
+		background: #dfdfdf;
+		padding: 0.7em;
+		margin: 0;
+	}
 	.support-stats-overview {
 		border-top: none;
 		border-bottom: none;
