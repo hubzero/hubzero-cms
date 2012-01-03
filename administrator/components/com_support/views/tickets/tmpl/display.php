@@ -159,10 +159,6 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 		}
 	}
 
-	if ($row->owner == '') {
-		$row->owner = '&nbsp';
-	}
-
 	$tags = $st->get_tag_cloud( 3, 1, $row->id );
 ?>
 			<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">
