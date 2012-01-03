@@ -75,7 +75,7 @@ HUB.Resources = {
 
 		authorlist.appendChild(newlistitem);
 
-		var myAjax = new Ajax('index.php?option=com_resources&task=getauthor&no_html=1&u='+selectedText,{update:'n_a_' + selectedId}).request();
+		var myAjax = new Ajax('index.php?option=com_resources&controller=items&task=author&no_html=1&u='+selectedText,{update:'n_a_' + selectedId}).request();
 
 		// re-apply the sorting script so the new LIst item becoems sortable
 		authsorts.reinitialize();

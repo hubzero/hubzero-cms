@@ -585,6 +585,17 @@ class ResourcesControllerItems extends Hubzero_Controller
 			JText::sprintf('%s children successfully removed', count($ids))
 		);
 	}
+	
+	/**
+	 * Edit form for a new resource
+	 * 
+	 * @return     void 
+	 */
+	public function addTask()
+	{
+		$this->view->setLayout('edit');
+		return $this->editTask(1);
+	}
 
 	/**
 	 * Edit form for a resource
