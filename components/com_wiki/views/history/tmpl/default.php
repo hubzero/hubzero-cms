@@ -164,7 +164,7 @@ foreach ($this->revisions as $revision)
 			$group_config = JComponentHelper::getParams( $this->option );
 			$html .= "\t\t\t\t".'<img src="'.$group_config->get('iconpath').'/trash.gif" alt="'.JText::_('DELETE').'" />'."\n";
 		} else {
-			$html .= "\t\t\t\t".'<img src="/components/'.$this->option.'/images/icons/trash.gif" alt="'.JText::_('DELETE').'" />'."\n";
+			$html .= "\t\t\t\t".'<img src="/components/com_wiki/images/icons/trash.gif" alt="'.JText::_('DELETE').'" />'."\n";
 		}
 		$html .= "\t\t\t".'</a></td>'."\n";
 	}
