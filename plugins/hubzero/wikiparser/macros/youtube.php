@@ -56,6 +56,8 @@ class YoutubeMacro extends WikiMacro
 						<ul>
 							<li><code>[[Youtube(FgfGOEpZEOw)]]</code></li>
 							<li><code>[[Youtube(http://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
+							<li><code>[[Youtube(FgfGOEpZEOw, 640, 380)]] - width 640px, height 380px</code></li>
+							<li><code>[[Youtube(FgfGOEpZEOw, 100%)]] - width of 100%</code></li>
 						</ul>
 						<p>Displays:</p>
 						<iframe src="http://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0"></iframe>';
@@ -78,16 +80,27 @@ class YoutubeMacro extends WikiMacro
 		//declare the partial youtube embed url
 		$youtube_url = "https://www.youtube.com/embed/";
 
+		//defaults 
+		$default_width = 640;
+		$default_height = 380;
+
 		// args will be null if the macro is called without parenthesis.
 		if (!$content) {
 			return '';
 		}
+		
+		//split up the args
+		$args = array_map("trim", explode(",", $content));
+		$url = $args[0];
+		//$width = (is_numeric($args[1])) ? $args[1] : $default_width;
+		$width = ($args[1] != "") ? $args[1] : $default_width;
+		$height = ($args[2] != "") ? $args[2] : $default_height;
 
 		//check is user entered full youtube url or just Video Id
-		if (strstr($content,'http')) {
+		if (strstr($url,'http')) {
 			//split the string into two parts 
 			//uri and query string
-			$full_url_parts = explode("?",$content);
+			$full_url_parts = explode("?", $url);
 
 			//split apart any key=>value pairs in query string
 			$query_string_parts = explode("%26%2338%3B",urlencode($full_url_parts[1]));
@@ -103,14 +116,14 @@ class YoutubeMacro extends WikiMacro
 				}
 			}
 		} else {
-			$video_id = $content;
+			$video_id = $url;
 		}
 
 		//append to the youtube url
 		$youtube_url .= $video_id;
 
 		//return the emdeded youtube video
-		return "<iframe src=\"{$youtube_url}\" width=\"640\" height=\"380\"></iframe>";
+		return "<iframe src=\"{$youtube_url}\" width=\"{$width}\" height=\"{$height}\"></iframe>";
 	}
 }
 ?>
