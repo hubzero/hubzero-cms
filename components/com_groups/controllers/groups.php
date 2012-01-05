@@ -443,9 +443,9 @@ class GroupsController extends Hubzero_Controller
 		$view->filters['limit']  = 'all';
 		$view->filters['fields'] = array('COUNT(*)');
 		$view->filters['search'] = JRequest::getVar('search', '');
-		$view->filters['sortby'] = JRequest::getVar('sortby', 'title');
+		$view->filters['sortby'] = htmlentities(JRequest::getVar('sortby', 'title'));
 		$view->filters['policy'] = JRequest::getVar('policy', '');
-		$view->filters['index']  = JRequest::getVar('index', '');
+		$view->filters['index']  = htmlentities(JRequest::getVar('index', ''));
 
 		// Get a record count
 		$view->total = Hubzero_Group::find($view->filters);

@@ -99,7 +99,7 @@ class FeedbackController extends Hubzero_Controller
 		if ($this->_task) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-				'index.php?option='.$this->_option.'&task='.$this->_task
+				'index.php?option='.$this->_option.'&task='. htmlentities($this->_task)
 			);
 		}
 	}
