@@ -81,7 +81,7 @@ switch ($this->level)
 			$tg = 'all';
 		}
 		$html .= $lis;
-		$html .= '</ul><input type="hidden" name="atg" id="atg" value="'.$tg.'" /><input type="hidden" name="d" id="d" value="'.$d.'" />';
+		$html .= '</ul><input type="hidden" name="atg" id="atg" value="'. htmlentities($tg) .'" /><input type="hidden" name="d" id="d" value="'.$d.'" />';
 	break;
 	
 	case 2:			

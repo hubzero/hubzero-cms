@@ -58,12 +58,12 @@ $selects = array(
 		
 		<label>
 			<?php echo JText::_('COM_FEEDBACK_USERNAME'); ?>
-			<input type="text" name="suggester[login]" value="<?php echo $this->user['login']; ?>" size="30" id="suggester_login" />
+			<input type="text" name="suggester[login]" value="<?php echo htmlentities($this->user['login']); ?>" size="30" id="suggester_login" />
 		</label>
 		
 		<label<?php echo ($this->getError() && $this->user['name'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 			<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
-			<input type="text" name="suggester[name]" value="<?php echo $this->user['name']; ?>" size="30" id="suggester_name" />
+			<input type="text" name="suggester[name]" value="<?php echo htmlentities($this->user['name']); ?>" size="30" id="suggester_name" />
 		</label>
 <?php if ($this->getError() && $this->user['name'] == '') { ?>
 		<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_NAME'); ?></p>
@@ -71,12 +71,12 @@ $selects = array(
 		
 		<label<?php echo ($this->getError() && $this->user['org'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 			<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>
-			<input type="text" name="suggester[org]" value="<?php echo $this->user['org']; ?>" size="40" id="suggester_org" />
+			<input type="text" name="suggester[org]" value="<?php echo htmlentities($this->user['org']); ?>" size="40" id="suggester_org" />
 		</label>
 
 		<label<?php echo ($this->getError() && $this->user['email'] == '' || $this->getError() == 2) ? ' class="fieldWithErrors"' : ''; ?>>
 			<?php echo JText::_('COM_FEEDBACK_EMAIL'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
-			<input type="text" name="suggester[email]" value="<?php echo $this->user['email']; ?>" size="40" id="suggester_email" />
+			<input type="text" name="suggester[email]" value="<?php echo htmlentities($this->user['email']); ?>" size="40" id="suggester_email" />
 		</label>
 <?php if ($this->getError() && $this->user['email'] == '') { ?>
 		<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_EMAIL'); ?></p>
