@@ -146,7 +146,6 @@ class CASClient
 	/**
 	 * A string corresponding to the language used by phpCAS. Written by 
 	 * CASClient::setLang(), read by CASClient::getLang().
-	 
 	 * @note debugging information is always in english (debug purposes only).
 	 *
 	 * @hideinitializer
@@ -317,7 +316,7 @@ class CASClient
 	 * @param $gateway true to check authentication, false to force it
 	 * @param $renew true to force the authentication with the CAS server
 	 * NOTE : It is recommended that CAS implementations ignore the
-	 "gateway" parameter if "renew" is set
+	 * "gateway" parameter if "renew" is set
 	 * @return a URL.
 	 * @private
 	 */
@@ -1585,7 +1584,7 @@ class CASClient
 		}
 		
 		// create the storage object
-		$this->_pgt_storage = &new PGTStorageFile($this,$format,$path);
+		$this->_pgt_storage = new PGTStorageFile($this,$format,$path);
 		}
 	
 	/**
@@ -1622,7 +1621,7 @@ class CASClient
 		trigger_error('PGT storage into database is an experimental feature, use at your own risk',E_USER_WARNING);
 		
 		// create the storage object
-		$this->_pgt_storage = & new PGTStorageDB($this,$user,$password,$database_type,$hostname,$port,$database,$table);
+		$this->_pgt_storage = new PGTStorageDB($this,$user,$password,$database_type,$hostname,$port,$database,$table);
 		}
 	
 	// ########################################################################

@@ -493,7 +493,7 @@ class Hubzero_Auth_Link
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	private function __get($property = null)
+	public function __get($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
         {
@@ -530,7 +530,7 @@ class Hubzero_Auth_Link
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
 	 */
-    private function __set($property = null, $value = null)
+    public function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
         {
@@ -557,7 +557,7 @@ class Hubzero_Auth_Link
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-    private function __isset($property = null)
+    public function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
         {
@@ -579,7 +579,7 @@ class Hubzero_Auth_Link
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     void
 	 */
-    private function __unset($property = null)
+    public function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property{0} == '_')
         {
