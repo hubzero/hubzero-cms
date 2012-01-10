@@ -644,7 +644,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				// We $row->id, the python scripts are smart enough to get the parent from this
 				// to attach any responses to the correct parent weather we are dealing with
 				// an initial post or a reply to a previous post
-				$token = $encryptor->buildEmailToken(1, 2, $user->id, $row->id);
+				$token = $encryptor->buildEmailToken(1, 2, $userID, $row->id);
 
 				$subject = " - " . $group->get('description') . " group post - " . $row->topic; 
 
