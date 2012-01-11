@@ -176,6 +176,7 @@ class plgYSearchResources extends YSearchPlugin
 				AND ($weight > 0)".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
+
 		$assoc = $sql->to_associative();
 
 		$id_assoc = array();
@@ -222,7 +223,8 @@ class plgYSearchResources extends YSearchPlugin
                 			                r.published = 1 AND r.standalone AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
 						AND r.id in (".implode(',', array_keys($tag_map)).")".($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
 				);
-				foreach ($sql->to_associative() as $row)
+				$rows = $sql->to_associative();
+				foreach ($rows as $row)
 				{
 					if ($tag_map[$row->get('id')] > 1)
 						$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
@@ -231,6 +233,7 @@ class plgYSearchResources extends YSearchPlugin
 			}
 		}
 
+/*	
 		// Nest child resources
 		$section = $request->get_terms()->get_section();
 		foreach ($id_assoc as $id=>$row)
@@ -248,7 +251,7 @@ class plgYSearchResources extends YSearchPlugin
 					}
 				}
 		}
-
+*/
 		$sorter = new ResourceChildSorter($placed);
 		$rows = array();
 		foreach ($id_assoc as $id=>$row)
@@ -257,8 +260,9 @@ class plgYSearchResources extends YSearchPlugin
 				$row->sort_children(array($sorter, 'sort'));
 				$rows[] = $row;
 			}
-
 		usort($rows, create_function('$a, $b', 'return (($res = $a->get_weight() - $b->get_weight()) == 0 ? 0 : $res > 0 ? -1 : 1);'));
+
+
 		foreach ($rows as $row)
 			$results->add($row);
 	}

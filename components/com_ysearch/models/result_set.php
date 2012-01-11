@@ -461,6 +461,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 	 */
 	public function add($res)
 	{
+		$reso = $this->current_plugin == 'resources';
 		if (is_array($res))
 			$res = array_key_exists(0, $res) ? new YSearchResultAssocList($res) : new YSearchResultAssocScalar($res);
 		$res->set_plugin($this->current_plugin);
