@@ -146,7 +146,7 @@ class SupportAttachment extends JTable
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
-		$tokens = split('#',$match);
+		$tokens = explode('#',$match);
 		$id = intval(end($tokens));
 
 		$this->_db->setQuery( "SELECT filename, description FROM $this->_tbl WHERE id=".$id );
@@ -161,7 +161,7 @@ class SupportAttachment extends JTable
 				}
 				$url = $juri->base() . $sef;
 
-				if (eregi("bmp|gif|jpg|jpe|jpeg|tif|tiff|png", $a[0])) {
+				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0])) {
 					$size = getimagesize($this->uppath . DS . $a[0]);
 					if ($size[0] > 400) {
 						$img = '<a href="' . $url . '" title="Click for larger version"><img src="' . $url . '" alt="' . $a[1] . '" width="400" /></a>';
