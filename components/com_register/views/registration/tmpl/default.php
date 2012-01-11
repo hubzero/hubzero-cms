@@ -615,13 +615,13 @@ defined('_JEXEC') or die('Restricted access');
 			if ($countries) {
 				foreach ($countries as $country)
 				{
-					if (strtoupper($country['code']) != 'US') {
+					//if (strtoupper($country['code']) != 'US') {
 						$html .= "\t\t\t\t\t".'<option value="' . $country['code'] . '"';
 						if ($this->registration['countryorigin'] == $country['code']) {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>' . htmlentities($country['name'], ENT_COMPAT, 'UTF-8') . '</option>'."\n";
-					}
+					//}
 				}
 			}
 			$html .= "\t\t\t\t".'</select>'."\n";
@@ -670,13 +670,13 @@ defined('_JEXEC') or die('Restricted access');
 			}
 			if ($countries) {
 				foreach ($countries as $country) {
-					if (strcasecmp($country['code'], 'US') != 0) {
+					//if (strcasecmp($country['code'], 'US') != 0) {
 						$html .= "\t\t\t\t\t".'<option value="' . $country['code'] . '"';
 						if (strcasecmp($this->registration['countryresident'], $country['code']) == 0) {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>' . htmlentities($country['name'], ENT_COMPAT, 'UTF-8') . '</option>'."\n";
-					}
+					//}
 				}
 			}
 			$html .= "\t\t\t\t".'</select>'."\n";
