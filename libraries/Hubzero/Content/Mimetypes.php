@@ -148,6 +148,7 @@ class Hubzero_Content_Mimetypes
 		'dl'		 => 'video/x-dl',
 		'doc'		=> 'application/msword',
 		'dot'		=> 'application/msword',
+		'docx'		=> 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 		'dp'		 => 'application/commonground',
 		'drw'		=> 'application/drafting',
 		'dump'	 => 'application/octet-stream',
@@ -428,6 +429,7 @@ class Hubzero_Content_Mimetypes
 		'ppt'		=> 'application/powerpoint',
 		'ppt'		=> 'application/vnd.ms-powerpoint',
 		'ppt'		=> 'application/x-mspowerpoint',
+		'pptx'		=> 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 		'ppz'		=> 'application/mspowerpoint',
 		'pre'		=> 'application/x-freelance',
 		'prt'		=> 'application/pro_eng',
@@ -662,6 +664,7 @@ class Hubzero_Content_Mimetypes
 		'xls'		=> 'application/vnd.ms-excel',
 		'xls'		=> 'application/x-excel',
 		'xls'		=> 'application/x-msexcel',
+		'xlsx'		=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 		'xlt'		=> 'application/excel',
 		'xlt'		=> 'application/x-excel',
 		'xlv'		=> 'application/excel',
@@ -774,14 +777,14 @@ class Hubzero_Content_Mimetypes
 	public function getMimeType($file = NULL)
 	{
 		if (is_file($file)) {
+			$extension = $this->getExtension($file);
 			/**
 			* Attempts to retrieve file info from FINFO
 			* If FINFO functions are not available then try to retrieve MIME type from pre-defined MIMEs
 			* If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type function
 			* If all else fails, just return application/octet-stream
 			*/
-			if (!function_exists("finfo_open")) {
-				$extension = $this->getExtension($file);
+			if (!function_exists("finfo_open") || in_array($extension, array('docx', 'pptx', 'xlsx'))) {
 				if (array_key_exists($extension, $this->mimeTypes)) {
 					return $this->mimeTypes[$extension];
 				} else {
