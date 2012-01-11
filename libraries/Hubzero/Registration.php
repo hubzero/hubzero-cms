@@ -168,6 +168,9 @@ class Hubzero_Registration
 		$this->_registration['web'] = null;
 		$this->_registration['phone'] = null;
 		$this->_registration['name'] = null;
+		$this->_registration['givenName'] = null;
+		$this->_registration['middleName'] = null;
+		$this->_registration['surname'] = null;
 		$this->_registration['orgtype'] = null;
 		$this->_registration['org'] = null;
 		$this->_registration['orgtext'] = null;
@@ -365,6 +368,9 @@ class Hubzero_Registration
 		$nm .= (isset($name['middle']) && trim($name['middle']) != '') ? ' '.$name['middle'] : '';
 		$nm .= ' '.trim($name['last']);
 		$this->_registration['name'] = $nm;
+		$this->_registration['givenName'] = $name['first'];
+		$this->_registration['middleName'] = $name['middle'];
+		$this->_registration['surname'] = $name['last'];
 
 		$this->_registration['countryresident'] = $cresident;
 		$this->_registration['countryorigin']	= $corigin;
@@ -437,6 +443,9 @@ class Hubzero_Registration
 		$this->set('web', $xprofile->get('url'));
 		$this->set('phone', $xprofile->get('phone'));
 		$this->set('name', $xprofile->get('name'));
+		$this->set('givenName', $xprofile->get('givenName'));
+		$this->set('middleName', $xprofile->get('middleName'));
+		$this->set('surname', $xprofile->get('surname'));
 		$this->set('orgtype', $xprofile->get('orgtype'));
 		$this->set('org', $xprofile->get('organization'));
 		$this->set('orgtext', '');
