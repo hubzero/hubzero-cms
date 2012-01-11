@@ -779,6 +779,7 @@
 		margin: 0;
 		padding: 0;
 	}
+	.wish-status .accepted,
 	.wish-status .rejected,
 	.wish-status .pending,
 	.wish-status .granted {
@@ -791,21 +792,38 @@
 		border: 5px solid #fff; 
 		background: #fff url("/components/com_wishlist/images/light-stripes.png");
 	}
+	.wish-status .accepted {
+		color: #F1C037;
+		border-color: #F1C037;
+		background-color: #ffe;
+	}
+	.wish-status .accepted a {
+		color: #F1C037;
+	}
 	.wish-status .rejected {
 		color: #c00;
 		border-color: #EFCCC2; 
-		background: #FFF2EF url("/components/com_wishlist/images/light-stripes.png");
+		background-color: #FFF2EF;
+	}
+	.wish-status .rejected a {
+		color: #c00;
 	}
 	.wish-status .pending {
 		color: #aaa;
 		border-color: #ccc;
 		background-color: #eee;
 	}
+	.wish-status .pending a {
+		color: #aaa;
+	}
 	.wish-status .granted {
 		color: #7AAB69;
 		border-color: #CDDECA;
 		background-color: #F3FDF0;
-	}	
+	}
+	.wish-status .granted a {
+		color: #7AAB69;
+	}
 	/* Voting */
 	.wish .wish-voting {
 		float:right; 
