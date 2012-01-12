@@ -209,6 +209,38 @@ class Hubzero_Document
 			$jdocument->addStyleSheet($modulecss, $type, $media, $attribs);
 		}
 	}
+	
+	/**
+	 * Adds a linked script to the page
+	 *
+	 * @param   string  $module  	URL to the linked script
+	 * @param	string  $script  	Script name (optional, uses module name if left blank)
+	 * @param   string  $type		Type of script. Defaults to 'text/javascript'
+	 * @param   bool    $defer		Adds the defer attribute.
+	 * @param   bool    $async		Adds the async attribute.
+	 * @return  void
+	 */
+	public static function addModuleScript($module, $script = '', $type = "text/javascript", $defer = false, $async = false)
+	{
+		$mainframe = JFactory::getApplication();
+
+		$jdocument = JFactory::getDocument();
+
+		$template  = $mainframe->getTemplate();
+
+		if (empty($script)) {
+			$script = $module;
+		}
+		
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$script .= '.jquery';
+		}
+		
+		$url = DS . 'modules' . DS . $module . DS . $script . '.js';
+
+		$jdocument->addScript($url, $type, $defer, $async);
+	}
 
 	/**
 	 * Adds a linked stylesheet from a plugin to the page
@@ -241,5 +273,38 @@ class Hubzero_Document
         } else {
 			$jdocument->addStyleSheet($plugincss, $type, $media, $attribs);
 		}
+	}
+	
+	/**
+	 * Adds a linked script to the page
+	 *
+	 * @param	string  $folder		Plugin folder name
+	 * @param	string  $plugin		Plugin name
+	 * @param	string  $script  	Script name (optional, uses module name if left blank)
+	 * @param   string  $type		Type of script. Defaults to 'text/javascript'
+	 * @param   bool    $defer		Adds the defer attribute.
+	 * @param   bool    $async		Adds the async attribute.
+	 * @return  void
+	 */
+	public static function addPluginScript($folder, $plugin, $script = '', $type = "text/javascript", $defer = false, $async = false)
+	{
+		$mainframe = JFactory::getApplication();
+
+		$jdocument = JFactory::getDocument();
+
+		$template  = $mainframe->getTemplate();
+		
+		if (empty($script)) {
+			$script = $plugin;
+		}
+		
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$script .= '.jquery';
+		}
+		
+		$url = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
+
+		$jdocument->addScript($url, $type, $defer, $async);
 	}
 }
