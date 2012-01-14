@@ -1,0 +1,732 @@
+<?php
+/**
+ * @package     hubzero-cms
+ * @author      Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+ximport('Hubzero_Controller');
+
+class ForumControllerThreads extends Hubzero_Controller
+{
+	public function displayTask()
+	{
+		// Get Joomla configuration
+		$config = JFactory::getConfig();
+		$app = JFactory::getApplication();
+
+		// Filters
+		$this->view->filters = array();
+		$this->view->filters['limit']    = $app->getUserStateFromRequest(
+			$this->_option . '.threads.limit', 
+			'limit', 
+			$config->getValue('config.list_limit'), 
+			'int'
+		);
+		$this->view->filters['start']    = $app->getUserStateFromRequest(
+			$this->_option . '.threads.limitstart', 
+			'limitstart', 
+			0, 
+			'int'
+		);
+		$this->view->filters['group']    = $app->getUserStateFromRequest(
+			$this->_option . '.threads.group', 
+			'group', 
+			-1,
+			'int'
+		);
+		$this->view->filters['section_id'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.threads.section_id', 
+			'section_id', 
+			-1,
+			'int'
+		));
+		$this->view->filters['category_id'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.threads.category_id', 
+			'category_id', 
+			-1,
+			'int'
+		));
+		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.threads.sort', 
+			'sort', 
+			'id'
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.threads.sortdir', 
+			'sort_Dir', 
+			'DESC'
+		));
+		$this->view->filters['sticky'] = false;
+		$this->view->filters['parent'] = 0;
+
+		// Get the section
+		$this->view->section = new ForumSection($this->database);
+		$this->view->section->load($this->view->filters['section_id']);
+		if (!$this->view->section->id)
+		{
+			// No section? Load a default blank section
+			$this->view->section->loadDefault();
+		}
+		
+		// Get the category
+		$this->view->category = new ForumCategory($this->database);
+		$this->view->category->load($this->view->filters['category_id']);
+		if (!$this->view->category->id)
+		{
+			// No category? Load a default blank catgory
+			$this->view->category->loadDefault();
+		}
+		
+		$this->view->cateories = array();
+		$categories = $this->view->category->getRecords();
+		if ($categories)
+		{
+			foreach ($categories as $c)
+			{
+				if (!isset($this->view->cateories[$c->section_id]))
+				{
+					$this->view->cateories[$c->section_id] = array();
+				}
+				$this->view->cateories[$c->section_id][] = $c;
+				asort($this->view->cateories[$c->section_id]);
+			}
+		}
+		
+		// Get the sections for this group
+		$this->view->sections = array();
+		$sections = $this->view->section->getRecords();
+		if ($sections)
+		{
+			foreach ($sections as $s)
+			{
+				if (!$s->group_alias)
+				{
+					$s->group_alias = '[ none ]';
+				}
+				if (!isset($this->view->sections[$s->group_alias]))
+				{
+					$this->view->sections[$s->group_alias] = array();
+				}
+				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
+				$this->view->sections[$s->group_alias][] = $s;
+				asort($this->view->sections[$s->group_alias]);
+			}
+		}
+		else 
+		{
+			$default = new ForumSection($this->database);
+			$default->loadDefault($this->view->section->group_id);
+
+			$this->view->sections[] = $default;
+		}
+		asort($this->view->sections);
+		
+		$model = new ForumPost($this->database);
+				
+		// Get a record count
+		$this->view->total = $model->getCount($this->view->filters);
+
+		// Get records
+		$this->view->results = $model->getRecords($this->view->filters);
+		
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+		
+		// Output the HTML
+		$this->view->display();
+	}
+	
+	public function threadTask()
+	{
+		// Get Joomla configuration
+		$config = JFactory::getConfig();
+		$app = JFactory::getApplication();
+
+		// Filters
+		$this->view->filters = array();
+		$this->view->filters['limit']    = $app->getUserStateFromRequest(
+			$this->_option . '.thread.limit', 
+			'limit', 
+			$config->getValue('config.list_limit'), 
+			'int'
+		);
+		$this->view->filters['start']    = $app->getUserStateFromRequest(
+			$this->_option . '.thread.limitstart', 
+			'limitstart', 
+			0, 
+			'int'
+		);
+		$this->view->filters['group']    = $app->getUserStateFromRequest(
+			$this->_option . '.thread.group', 
+			'group', 
+			-1,
+			'int'
+		);
+		$this->view->filters['section_id'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.thread.section_id', 
+			'section_id', 
+			-1,
+			'int'
+		));
+		$this->view->filters['category_id'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.thread.category_id', 
+			'category_id', 
+			-1,
+			'int'
+		));
+		$this->view->filters['parent'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.thread.parent', 
+			'parent', 
+			0,
+			'int'
+		));
+		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.thread.sort', 
+			'sort', 
+			'id'
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.thread.sortdir', 
+			'sort_Dir', 
+			'DESC'
+		));
+		$this->view->filters['sticky'] = false;
+
+		// Get the section
+		$this->view->section = new ForumSection($this->database);
+		$this->view->section->load($this->view->filters['section_id']);
+		if (!$this->view->section->id)
+		{
+			// No section? Load a default blank section
+			$this->view->section->loadDefault();
+		}
+		
+		// Get the category
+		$this->view->category = new ForumCategory($this->database);
+		$this->view->category->load($this->view->filters['category_id']);
+		if (!$this->view->category->id)
+		{
+			// No category? Load a default blank catgory
+			$this->view->category->loadDefault();
+		}
+		
+		$this->view->cateories = array();
+		$categories = $this->view->category->getRecords();
+		if ($categories)
+		{
+			foreach ($categories as $c)
+			{
+				if (!isset($this->view->cateories[$c->section_id]))
+				{
+					$this->view->cateories[$c->section_id] = array();
+				}
+				$this->view->cateories[$c->section_id][] = $c;
+				asort($this->view->cateories[$c->section_id]);
+			}
+		}
+		
+		// Get the sections for this group
+		$this->view->sections = array();
+		$sections = $this->view->section->getRecords();
+		if ($sections)
+		{
+			foreach ($sections as $s)
+			{
+				if (!$s->group_alias)
+				{
+					$s->group_alias = '[ none ]';
+				}
+				if (!isset($this->view->sections[$s->group_alias]))
+				{
+					$this->view->sections[$s->group_alias] = array();
+				}
+				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
+				$this->view->sections[$s->group_alias][] = $s;
+				asort($this->view->sections[$s->group_alias]);
+			}
+		}
+		else 
+		{
+			$default = new ForumSection($this->database);
+			$default->loadDefault($this->view->section->group_id);
+
+			$this->view->sections[] = $default;
+		}
+		asort($this->view->sections);
+		
+		$model = new ForumPost($this->database);
+				
+		// Get a record count
+		$this->view->total = $model->getCount($this->view->filters);
+
+		// Get records
+		$this->view->results = $model->getRecords($this->view->filters);
+		
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+		
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Create a new ticket
+	 *
+	 * @return	void
+	 */
+	public function addTask()
+	{
+		$this->view->setLayout('edit');
+		$this->editTask();
+	}
+
+	/**
+	 * Displays a question response for editing
+	 *
+	 * @return	void
+	 */
+	public function editTask($post=null) 
+	{
+		// Incoming
+		$ids = JRequest::getVar('id', array(0));
+		$parent = JRequest::getInt('parent', 0);
+		if (is_array($ids)) 
+		{
+			$id = intval($ids[0]);
+		}
+		
+		// Incoming
+		if (is_object($post))
+		{
+			$this->view->row = $post;
+		}
+		else 
+		{
+			$this->view->row = new ForumPost($this->database);
+			$this->view->row->load($id);
+		}
+
+		if (!$id) 
+		{
+			$this->view->row->parent = $parent;
+			$this->view->row->created_by = $this->juser->get('id');
+		}
+		
+		// Get the category
+		$this->view->category = new ForumCategory($this->database);
+		$this->view->category->load($this->view->row->category_id);
+		if (!$this->view->category->id)
+		{
+			// No category? Load a default blank catgory
+			$this->view->category->loadDefault();
+		}
+		
+		$this->view->cateories = array();
+		$categories = $this->view->category->getRecords();
+		if ($categories)
+		{
+			foreach ($categories as $c)
+			{
+				if (!isset($this->view->cateories[$c->section_id]))
+				{
+					$this->view->cateories[$c->section_id] = array();
+				}
+				$this->view->cateories[$c->section_id][] = $c;
+				asort($this->view->cateories[$c->section_id]);
+			}
+		}
+		
+		// Get the section
+		$this->view->section = new ForumSection($this->database);
+		$this->view->section->load($this->view->category->section_id);
+		if (!$this->view->section->id)
+		{
+			// No section? Load a default blank section
+			$this->view->section->loadDefault();
+		}
+		
+		// Get the sections for this group
+		$this->view->sections = array();
+		$sections = $this->view->section->getRecords();
+		if ($sections)
+		{
+			foreach ($sections as $s)
+			{
+				if (!$s->group_alias)
+				{
+					$s->group_alias = '[ none ]';
+				}
+				if (!isset($this->view->sections[$s->group_alias]))
+				{
+					$this->view->sections[$s->group_alias] = array();
+				}
+				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
+				$this->view->sections[$s->group_alias][] = $s;
+				asort($this->view->sections[$s->group_alias]);
+			}
+		}
+		else 
+		{
+			$default = new ForumSection($this->database);
+			$default->loadDefault($this->view->section->group_id);
+
+			$this->view->sections[] = $default;
+		}
+		asort($this->view->sections);
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$m = new ForumModelThread();
+			$this->view->form = $m->getForm();
+		}
+
+		// Get tags on this article
+		$this->view->tModel = new ForumTags($this->database);
+		$this->view->tags = $this->view->tModel->get_tag_string($this->view->row->id, 0, 0, $this->view->row->created_by);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+
+		$this->view->display();
+	}
+
+	public function saveTask() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming data
+		$question = JRequest::getVar('question', array(), 'post');
+		$question = array_map('trim', $question);
+		
+		// Ensure we have at least one tag
+		if (!$question['tags']) 
+		{
+			echo AnswersHtml::alert(JText::_('Question must have at least 1 tag'));
+			exit();
+		}
+		
+		// Initiate extended database class
+		$row = new AnswersQuestion($this->database);
+		if (!$row->bind($question)) 
+		{
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+		
+		// Updating entry
+		$row->created = $row->created ? $row->created : date("Y-m-d H:i:s");
+		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');
+
+		// Code cleaner
+		$row->question = nl2br($row->question);
+
+		// Check content
+		if (!$row->check()) 
+		{
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+		
+		// Store content
+		if (!$row->store()) 
+		{
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+
+		// Add the tag(s)
+		$at = new AnswersTags($this->database);
+		$at->tag_object($this->juser->get('id'), $row->id, $question['tags'], 1, 1);
+
+		// Redirect back to the full questions list
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->_message = JText::_('Question Successfully Saved');
+	}
+
+	/**
+	 * Deletes one or more records and redirects to listing
+	 * 
+	 * @return     void
+	 */
+	public function removeTask() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$category = JRequest::getInt('category_id', 0);
+		$ids = JRequest::getVar('id', array());
+		
+		// Do we have any IDs?
+		if (count($ids) > 0) 
+		{
+			$thread = new ForumPost($this->database);
+			
+			// Loop through each ID
+			foreach ($ids as $id) 
+			{
+				$id = intval($id);
+				
+				if (!$thread->delete($id)) 
+				{
+					JError::raiseError(500, $thread->getError());
+					return;
+				}
+			}
+		}
+		
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			JText::_('Entries Successfully Removed')
+		);
+	}
+
+	/**
+	 * Calls stateTask to publish entries
+	 * 
+	 * @return     void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+	
+	/**
+	 * Calls stateTask to unpublish entries
+	 * 
+	 * @return     void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+	
+	/**
+	 * Sets the state of one or more entries
+	 * 
+	 * @param      integer The state to set entries to
+	 * @return     void
+	 */
+	public function stateTask($state=0) 
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$category = JRequest::getInt('category_id', 0);
+		$ids = JRequest::getVar('id', array());
+
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$action = ($state == 1) ? JText::_('unpublish') : JText::_('publish');
+
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+				JText::_('Select an entry to ' . $action),
+				'error'
+			);
+			return;
+		}
+
+		foreach ($ids as $id) 
+		{
+			// Update record(s)
+			$row = new ForumCategory($this->database);
+			$row->load(intval($id));
+			$row->state = $state;
+			if (!$row->store()) 
+			{
+				JError::raiseError(500, $row->getError());
+				return;
+			}
+		}
+
+		// set message
+		if ($state == 1) 
+		{
+			$message = JText::_(count($ids) . ' Item(s) successfully published');
+		} 
+		else
+		{
+			$message = JText::_(count($ids) . ' Item(s) successfully unpublished');
+		}
+
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			$message
+		);
+	}
+	
+	/**
+	 * Sets the state of one or more entries
+	 * 
+	 * @param      integer The state to set entries to
+	 * @return     void
+	 */
+	public function stickyTask() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$category = JRequest::getInt('category_id', 0);
+		$state = JRequest::getInt('sticky', 0);
+		$ids = JRequest::getVar('id', array());
+
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$action = ($state == 1) ? JText::_('unstick') : JText::_('make stichy');
+
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+				JText::_('Select an entry to ' . $action),
+				'error'
+			);
+			return;
+		}
+
+		foreach ($ids as $id) 
+		{
+			// Update record(s)
+			$row = new ForumPost($this->database);
+			$row->load(intval($id));
+			$row->sticky = $state;
+			if (!$row->store()) 
+			{
+				JError::raiseError(500, $row->getError());
+				return;
+			}
+		}
+
+		// set message
+		if ($state == 1) 
+		{
+			$message = JText::_(count($ids) . ' Item(s) successfully made sticky');
+		} 
+		else
+		{
+			$message = JText::_(count($ids) . ' Item(s) successfully unstuck');
+		}
+
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			$message
+		);
+	}
+	
+	/**
+	 * Sets the state of one or more entries
+	 * 
+	 * @param      integer The state to set entries to
+	 * @return     void
+	 */
+	public function accessTask() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$category = JRequest::getInt('category_id', 0);
+		$state = JRequest::getInt('access', 0);
+		$ids = JRequest::getVar('id', array());
+
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+				JText::_('Select an entry to change access'),
+				'error'
+			);
+			return;
+		}
+
+		foreach ($ids as $id) 
+		{
+			// Update record(s)
+			$row = new ForumPost($this->database);
+			$row->load(intval($id));
+			$row->access = $state;
+			if (!$row->store()) 
+			{
+				JError::raiseError(500, $row->getError());
+				return;
+			}
+		}
+
+		// set message
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			JText::_(count($ids) . ' Item(s) successfully changed access')
+		);
+	}
+	
+	/**
+	 * Cancels a task and redirects to listing
+	 * 
+	 * @return     void
+	 */
+	public function cancelTask()
+	{
+		$fields = JRequest::getVar('fields', array());
+		$parent = ($fields['parent']) ? $fields['parent'] : $fields['id'];
+		
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent
+		);
+	}
+}

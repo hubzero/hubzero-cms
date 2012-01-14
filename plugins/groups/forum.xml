@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-@package        hubzero-cms
-@file           plugins/groups/forum.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
-@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
 
-This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
-software: you can redistribute it and/or modify it under the terms of
-the GNU Lesser General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any
-later version.
-
-HUBzero is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-HUBzero is a registered trademark of Purdue University.
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
 <install version="1.5" type="plugin" group="groups">
 	<name>Groups - Forum</name>
 	<author>Shawn Rice</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<description>Display and manage a forum for a specific group</description>
 	<files>
 		<filename plugin="forum">forum.php</filename>
@@ -46,7 +37,6 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="members">Only Group Members</option>
 			<option value="nobody">Disabled/Off</option>
 		</param>
-		<param type="spacer" />
-		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+		<param name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
 	</params>
 </install>

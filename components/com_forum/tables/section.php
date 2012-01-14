@@ -1,0 +1,333 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Table class for a forum category
+ */
+class ForumSection extends JTable
+{
+	/**
+	 * Primary key
+	 * 
+	 * @var integer int(11) 
+	 */
+	var $id = NULL;  // @var 
+
+	/**
+	 * Description for 'title'
+	 * 
+	 * @var string varchar(255)
+	 */
+	var $title = NULL;
+
+	/**
+	 * Description for 'alias'
+	 * 
+	 * @var unknown
+	 */
+	var $alias      = NULL;  // @var varchar(255)
+
+	/**
+	 * Description for 'created'
+	 * 
+	 * @var string datetime (0000-00-00 00:00:00)
+	 */
+	var $created = NULL;
+
+	/**
+	 * Description for 'created_by'
+	 * 
+	 * @var integer int(11)
+	 */
+	var $created_by = NULL;
+
+	/**
+	 * Pushed state (0=unpublished, 1=published, 2=trashed)
+	 * 
+	 * @var integer int(2)
+	 */
+	var $state = NULL;
+
+	/**
+	 * Group the entry belongs to
+	 * 
+	 * @var integer int(11)
+	 */
+	var $group_id = NULL;
+
+	/**
+	 * Access level (0=public, 1=registered, 2=special, 3=protected, 4=private)
+	 * 
+	 * @var integer tinyint(2)
+	 */
+	var $access = NULL;
+
+	/**
+	 * ID for ACL asset (J1.6+)
+	 * 
+	 * @var integer int(11)
+	 */
+	var $asset_id = NULL;
+
+	/**
+	 * Short description for '__construct'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown &$db Parameter description (if any) ...
+	 * @return     void
+	 */
+	public function __construct(&$db)
+	{
+		parent::__construct('#__forum_sections', 'id', $db);
+	}
+	
+	/**
+	 * Short description for 'loadAlias'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function loadByAlias($oid=NULL)
+	{
+		if ($oid === NULL) 
+		{
+			return false;
+		}
+		$oid = trim($oid);
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
+	 * Populate the object with default data
+	 * 
+	 * @param      integer $group ID of group the data belongs to
+	 * @return     boolean True if data is bound to $this object
+	 */
+	public function loadDefault($group=0)
+	{
+		$result = array(
+			'id' => 0,
+			'title' => JText::_('Categories'),
+			'created_by' => 0,
+			'group_id' => $group,
+			'state' => 1,
+			'access' => 1
+		);
+		$result['alias'] = str_replace(' ', '-', $result['title']);
+		$result['alias'] = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($result['alias']));
+		
+		return $this->bind($result);
+	}
+
+	/**
+	 * Short description for 'check'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function check()
+	{
+		if (trim($this->title) == '') 
+		{
+			$this->setError(JText::_('Please provide a title.'));
+			return false;
+		}
+		
+		if (!$this->alias)
+		{
+			$this->alias = str_replace(' ', '-', strtolower($this->title));
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+		
+		if (!$this->id)
+		{
+			$juser = JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+			$this->state = 1;
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	public function buildQuery($filters=array())
+	{
+		$query  = "FROM $this->_tbl AS c";
+		$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.group_id";
+		
+		$where = array();
+		
+		if (isset($filters['state'])) 
+		{
+			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+		}
+		
+		if (isset($filters['group']) && $filters['group'] >= 0) 
+		{
+			$where[] = "c.group_id=" . $this->_db->Quote($filters['group']);
+		}
+		
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$where[] = "LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%'";
+		}
+		
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
+	public function getCount($filters=array())
+	{
+		$filters['limit'] = 0;
+
+		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
+	public function getRecords($filters=array())
+	{
+		$query  = "SELECT c.*, g.cn AS group_alias ";
+		$query .= $this->buildQuery($filters);
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Short description for 'getLastPost'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $parent Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
+	public function getLastPost($parent=null)
+	{
+		if (!$parent) {
+			$parent = $this->parent;
+		}
+		if (!$parent) {
+			return null;
+		}
+
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=$parent ORDER BY created DESC LIMIT 1";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Short description for 'deleteReplies'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $parent Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function deleteReplies($parent=null)
+	{
+		if (!$parent) {
+			$parent = $this->parent;
+		}
+		if (!$parent) {
+			return null;
+		}
+
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=$parent");
+		if (!$this->_db->query()) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		} else {
+			return true;
+		}
+	}
+}

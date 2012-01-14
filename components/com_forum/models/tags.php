@@ -29,6 +29,26 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die( 'Restricted access' );
 
-include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'forum' . DS . 'forum.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+
+/**
+ * Helper class for Forum tags
+ */
+class ForumTags extends TagsHandler
+{
+	/**
+	 * Sets the database and object type (tbl) for tag retrieval
+	 * 
+	 * @param      object $db     JDatabase
+	 * @param      array  $config Optional array of config params
+	 * @return     void
+	 */
+	public function __construct($db, $config=array())
+	{
+		$this->_db  = $db;
+		$this->_tbl = 'forum';
+	}
+}
+
