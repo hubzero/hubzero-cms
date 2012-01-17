@@ -249,7 +249,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$attach->load(intval($file));
 
 			// Check for file existence
-			if ($attach->filename && file_exists($this->_path($attach->filename))) 
+			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true))) 
 			{
 				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 				if (!$attr['desc'])
@@ -261,7 +261,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			}
 		}
 		// Check for file existence
-		else if (file_exists($this->_path($file))) 
+		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) 
 		{
 			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
 			
@@ -295,7 +295,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	 * @param      string $file Filename
 	 * @return     string
 	 */
-	private function _path($file)
+	private function _path($file, $alt=false)
 	{
 		if (substr($file, 0, 1) == DS) 
 		{
@@ -303,6 +303,20 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 		else 
 		{
+			if ($alt)
+			{
+				$bits = explode('/', $this->config->get('filepath'));
+				foreach ($bits as $bit)
+				{
+					if (is_numeric($bit))
+					{
+						$nid = $bit;
+						$id = preg_replace('~^[0]*([1-9][0-9]*)$~', '$1', intval($bit));
+						break;
+					}
+				}
+				$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
+			}
 			$path  = JPATH_ROOT . $this->config->get('filepath');
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;

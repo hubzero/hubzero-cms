@@ -290,7 +290,7 @@ class plgGroupsBlog extends JPlugin
 		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 
 		$path = $this->_params->get('uploadpath');
-		$view->path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
+		$view->path = str_replace('{{gid}}',$this->group->get('gidNumber'),$path);
 
 		$view->firstentry = $be->getDateOfFirstEntry($filters);
 
@@ -387,7 +387,7 @@ class plgGroupsBlog extends JPlugin
 			ximport('wiki.parser');
 			//$p = new WikiParser( JText::_(strtoupper($this->_option)), $this->_option, 'blog', '', 0, $this->config->get('uploadpath') );
 			$path = $this->_params->get('uploadpath');
-			$path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
+			$path = str_replace('{{gid}}',$this->group->get('gidNumber'),$path);
 
 			foreach ($rows as $row)
 			{
@@ -560,7 +560,7 @@ class plgGroupsBlog extends JPlugin
 		$juser =& JFactory::getUser();
 		if (($view->row->state == 2 && $juser->get('guest'))
 		 || ($view->row->state == 0 && $juser->get('id') != $view->row->created_by && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin')) {
-			JError::raiseError( 403, JText::_('PLG_MEMBERS_BLOG_NOT_AUTH') );
+			JError::raiseError( 403, JText::_('PLG_GROUPS_BLOG_NOT_AUTH') );
 			return;
 		}
 
@@ -580,15 +580,14 @@ class plgGroupsBlog extends JPlugin
 				$path = str_replace('{{uid}}',BlogHelperMember::niceidformat($view->row->created_by),$path);
 			} else {
 				$path = $this->_params->get('uploadpath');
-				$path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
+				$path = str_replace('{{gid}}',$this->group->get('gidNumber'),$path);
 			}
-
 			
 			$wikiconfig = array(
 				'option'   => $this->option,
 				'scope'    => $this->group->get('gidNumber') . DS . 'blog',
-				'pagename' => 'group',
-				'pageid'   => '',
+				'pagename' => $view->row->alias,
+				'pageid'   => 0,
 				'filepath' => $path,
 				'domain'   => $this->group->get('cn')
 			);
