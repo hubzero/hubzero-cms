@@ -179,7 +179,7 @@ class StoreController extends Hubzero_Controller
 	 */
 	private function _checkValidEmail($email)
 	{
-		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
+		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) {
 			return(1);
 		} else {
 			return(0);

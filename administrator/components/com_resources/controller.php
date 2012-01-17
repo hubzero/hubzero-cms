@@ -1007,8 +1007,8 @@ class ResourcesController extends Hubzero_Controller
 		//if ($authorsNewstr != $authorsOldstr) {
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'contributor.php');
 
-			$authorsNew = split(',',$authorsNewstr);
-			$authorsOld = split(',',$authorsOldstr);
+			$authorsNew = preg_split('#,#',$authorsNewstr);
+			$authorsOld = preg_split('#,#',$authorsOldstr);
 
 			// We have either a new ordering or new authors or both
 			if ($authorsNewstr) {
@@ -1822,7 +1822,7 @@ class ResourcesController extends Hubzero_Controller
 		$foldername = JRequest::getVar( 'foldername', '', 'post' );
 		if ($foldername != '') {
 			// Make sure the name is valid
-			if (eregi("[^0-9a-zA-Z_]", $foldername)) {
+			if (preg_match("#[^0-9a-zA-Z_]#i", $foldername)) {
 				$this->setError( JText::_('Directory name must only contain alphanumeric characters and no spaces please.') );
 			} else {
 				if (!is_dir( $path.DS.$foldername )) {
@@ -2093,7 +2093,7 @@ class ResourcesController extends Hubzero_Controller
 				$img_file = $entry;
 
 				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|png", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
 						$images[$entry] = $img_file;
 					} else {
 						$docs[$entry] = $img_file;

@@ -68,11 +68,11 @@ class SupportControllerStats extends Hubzero_Controller
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 		$day   = strftime("%d", time()+($this->offset*60*60));
-		if ($day<="9"&ereg("(^[1-9]{1})",$day))
+		if ($day<="9"&preg_match("#(^[1-9]{1})#",$day))
 		{
 			$day = "0$day";
 		}
-		if ($month<="9"&ereg("(^[1-9]{1})",$month))
+		if ($month<="9"&preg_match("#(^[1-9]{1})#",$month))
 		{
 			$month = "0$month";
 		}

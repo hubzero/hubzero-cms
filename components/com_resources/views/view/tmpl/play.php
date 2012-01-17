@@ -140,7 +140,7 @@ if ($this->resource->type == 4) {
 			foreach ($a as $b)
 			{
 				if (strstr($b, ':')) {
-					$b = split(':', $b);
+					$b = preg_split('#:#', $b);
 					$bits[] = trim($b[0]) . '="' . trim($b[1]) . '"';
 				}
 			}

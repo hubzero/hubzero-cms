@@ -68,7 +68,7 @@ class ParentsMacro extends WikiMacro
 
 		if ($this->args)
 		{
-			$args = split(',', $this->args);
+			$args = preg_split('#,#', $this->args);
 			if (is_array($args))
 			{
 				foreach ($args as $arg)
@@ -76,7 +76,7 @@ class ParentsMacro extends WikiMacro
 					$arg = trim($arg);
 					if (substr($arg, 0, 6) == 'depth=')
 					{
-		                $bits = split('=', $arg);
+		                $bits = preg_split('#=#', $arg);
 						$depth = intval(trim(end($bits)));
 		                continue;
 					}
@@ -87,7 +87,7 @@ class ParentsMacro extends WikiMacro
 				$arg = trim($args);
 				if (substr($arg, 0, 6) == 'depth=')
 				{
-	                $bits = split('=', $arg);
+	                $bits = preg_split('#=#', $arg);
 					$depth = intval(trim(end($bits)));
 				}
 				else

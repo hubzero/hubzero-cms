@@ -18,7 +18,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * Joomla! system checks
  */
 
-@set_magic_quotes_runtime( 0 );
 @ini_set('zend.ze1_compatibility_mode', '0');
 
 /*

@@ -166,13 +166,13 @@ class Cart extends JTable
 				$r->sizes    		= $params->get( 'size', '' );
 				$r->sizes 			= str_replace(" ","",$r->sizes);
 				$r->selectedsize    = trim($selections->get( 'size', '' ));
-				$r->sizes    		= split(',',$r->sizes);
+				$r->sizes    		= preg_split('#,#',$r->sizes);
 
 				// get color selection
 				$r->colors    		= $params->get( 'color', '' );
 				$r->colors 			= str_replace(" ","",$r->colors);
 				$r->selectedcolor   = trim($selections->get( 'color', '' ));
-				$r->colors    		= split(',',$r->colors);
+				$r->colors    		= preg_split('#,#',$r->colors);
 			}
 		}
 

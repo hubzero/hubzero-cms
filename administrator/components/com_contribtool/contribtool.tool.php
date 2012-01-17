@@ -686,7 +686,7 @@ class Tool extends JTable
 			  'license' => isset($version[0]->license) ? $version[0]->license : ''
 			);
 
-		list($status['vncGeometryX'], $status['vncGeometryY']) = split('[x]', $status['vncGeometry']);
+		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
 
 		// get latest version information
 		if($ldap) {

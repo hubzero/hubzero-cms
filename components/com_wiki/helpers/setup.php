@@ -131,7 +131,7 @@ class WikiSetup
 			{
 				$file = $entry;
 				if (is_file($path.DS.'default'.DS.$file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "txt", $file )) {
+					if (preg_match("#txt#i", $file )) {
 						$name = substr($file,0,(strlen($file) - 4));
 						$pages[$name] = JFile::read( $path.DS.'default'.DS.$file );
 					}

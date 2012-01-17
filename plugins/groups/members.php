@@ -975,7 +975,7 @@ class plgGroupsMembers extends JPlugin
 		foreach ($mbrs as $mbr)
 		{
 			//if an email address
-			if(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $mbr)) {
+			if(preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $mbr)) {
 				$user_emails[] = $mbr;
 				$this->notifyEmailInvitedUser($mbr);
 			} else {

@@ -173,11 +173,11 @@ class SupportControllerTickets extends Hubzero_Controller
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 		$day   = strftime("%d", time()+($this->offset*60*60));
-		if ($day <= "9"&ereg("(^[1-9]{1})",$day)) 
+		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day)) 
 		{
 			$day = "0$day";
 		}
-		if ($month <= "9"&ereg("(^[1-9]{1})",$month)) 
+		if ($month <= "9"&preg_match("#(^[1-9]{1})#",$month)) 
 		{
 			$month = "0$month";
 		}
@@ -884,7 +884,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	private function _isValidLogin($login)
 	{
-		if (eregi("^[_0-9a-zA-Z]+$", $login)) 
+		if (preg_match("#^[_0-9a-zA-Z]+$#i", $login)) 
 		{
 			return true;
 		}
@@ -899,7 +899,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	private function _isValidEmail($email)
 	{
-		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) 
+		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) 
 		{
 			return true;
 		}

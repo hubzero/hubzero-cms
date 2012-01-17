@@ -144,10 +144,6 @@ $hidden_files = explode(",", XS_HIDDEN_FILES);
 
 
 
-// Respond
-if (get_magic_quotes_runtime() != 0) {
-	set_magic_quotes_runtime(0);
-}
 
 header("Content-Type: text/xml");
 echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>";

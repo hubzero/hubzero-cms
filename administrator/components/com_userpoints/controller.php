@@ -502,7 +502,7 @@ class UserpointsController extends Hubzero_Controller
 			if (!$duplicate) { // run only once
 				// get array of affected users
 				$users = str_replace(" ",",",$users);
-				$users = split(',',$users);
+				$users = preg_split('#,#',$users);
 				$users = array_unique($users); // get rid of duplicates
 
 				foreach ($users as $user)

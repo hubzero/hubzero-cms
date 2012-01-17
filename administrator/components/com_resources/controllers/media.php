@@ -70,7 +70,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		if ($foldername != '')
 		{
 			// Make sure the name is valid
-			if (eregi("[^0-9a-zA-Z_]", $foldername))
+			if (preg_match("#[^0-9a-zA-Z_]#i", $foldername))
 			{
 				$this->setError(JText::_('Directory name must only contain alphanumeric characters and no spaces please.'));
 			}

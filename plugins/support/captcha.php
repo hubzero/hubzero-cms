@@ -798,7 +798,7 @@ class plgSupportCaptcha extends JPlugin
 	 */
 	private function _hexToRgb($hex)
 	{
-		$hex = ereg_replace("#", '', $hex);
+		$hex = preg_match("@#@", '', $hex);
 		$color = array();
 
 		if (strlen($hex) == 3)

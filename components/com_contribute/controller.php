@@ -1930,7 +1930,7 @@ class ContributeController extends Hubzero_Controller
 		// Do we have new authors?
 		if ($authorsNewstr) {
 			// Turn the string into an array of usernames
-			$authorsNew = split(',',$authorsNewstr);
+			$authorsNew = preg_split('#,#',$authorsNewstr);
 
 			jimport('joomla.user.helper');
 

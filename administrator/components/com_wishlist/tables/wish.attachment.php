@@ -142,7 +142,7 @@ class WishAttachment extends JTable
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
-		$tokens = split('#',$match);
+		$tokens = preg_split('/#/',$match);
 		$id = intval(end($tokens));
 
 		$this->_db->setQuery( "SELECT filename, description FROM $this->_tbl WHERE id=".$id );
@@ -150,7 +150,7 @@ class WishAttachment extends JTable
 
 		if ($this->output == 'web') {
 			if (is_file($this->uppath.DS.$a[0])) {
-				if (eregi( "bmp|gif|jpg|jpe|jpeg|tif|tiff|png", $a[0] )) {
+				if (preg_match( "#bmp|gif|jpg|jpe|jpeg|tif|tiff|png#i", $a[0] )) {
 					$size = getimagesize($this->uppath.DS.$a[0]);
 					if ($size[0] > 300) {
 						$img = '<a href="'.$this->webpath.'/'.$a[0].'" rel="lightbox" title="'.$a[1].'"><img src="'.$this->webpath.'/'.$a[0].'" alt="'.$a[1].'" width="300" /></a>';

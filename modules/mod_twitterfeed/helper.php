@@ -89,7 +89,7 @@ class modTwitterFeedHelper
 			{
 				$tweetTitle = $tweet->get_title();
 				$tweetTitle = substr($tweetTitle,$subtract);
-				$tweetTitle = ereg_replace("[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]", "<a rel=\"external\" href=\"\\0\">\\0</a>", $tweetTitle);
+				$tweetTitle = preg_replace("#[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]#", "<a rel=\"external\" href=\"\\0\">\\0</a>", $tweetTitle);
 				$tweets[$i]["tweet"] = $tweetTitle;
 				$tweets[$i]["pubDate"] = $tweet->get_date();
 				$tweets[$i]["link"] = $tweet->get_link();

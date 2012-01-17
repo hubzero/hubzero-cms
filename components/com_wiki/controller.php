@@ -1911,7 +1911,7 @@ class WikiController extends Hubzero_Controller
 			{
 				$img_file = $entry;
 				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|jpeg|jpe|tif|tiff|png", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|jpeg|jpe|tif|tiff|png#i", $img_file )) {
 						$images[$entry] = $img_file;
 					} else {
 						$docs[$entry] = $img_file;
@@ -2195,8 +2195,16 @@ class WikiController extends Hubzero_Controller
 				$RE[$key] = $this->pcre_fix_posix_classes($key);
 		}
 
+		echo "<pre>";
+		print_r($RE);
+		echo "</pre><br/><br/>";
+		
 		foreach ($RE as $regexp)
 		{
+			echo "<pre>";
+			print_r($regexp);
+			echo "</pre><br/><br/>";
+
 			$page = preg_replace($regexp, '\\1 \\2', $page);
 		}
 

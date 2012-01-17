@@ -185,14 +185,14 @@ class StoreControllerOrders extends Hubzero_Controller
 					$r->sizes    		= $params->get('size', '');
 					$r->sizes 			= str_replace(" ","",$r->sizes);
 					$r->selectedsize    = trim($selections->get('size', ''));
-					$r->sizes    		= split(',',$r->sizes);
+					$r->sizes    		= preg_split('#,#',$r->sizes);
 					$r->sizeavail		= in_array($r->selectedsize, $r->sizes) ? 1 : 0;
 
 					// Get color selection
 					$r->colors    		= $params->get('color', '');
 					$r->colors 			= str_replace(" ","",$r->colors);
 					$r->selectedcolor   = trim($selections->get('color', ''));
-					$r->colors    		= split(',',$r->colors);
+					$r->colors    		= preg_split('#,#',$r->colors);
 				}
 			}
 
@@ -302,14 +302,14 @@ class StoreControllerOrders extends Hubzero_Controller
 					// Get size selection
 					$r->sizes = $params->get('size', '');
 					$r->sizes = str_replace(' ', '', $r->sizes);
-					$r->sizes = split(',', $r->sizes);
+					$r->sizes = preg_split('#,#', $r->sizes);
 					$r->selectedsize = trim($selections->get('size', ''));
 					$r->sizeavail = in_array($r->selectedsize, $r->sizes) ? 1 : 0;
 
 					// Get color selection
 					$r->colors = $params->get('color', '');
 					$r->colors = str_replace(' ', '', $r->colors);
-					$r->colors = split(',', $r->colors);
+					$r->colors = preg_split('#,#', $r->colors);
 					$r->selectedcolor = trim($selections->get('color', ''));
 				}
 			}

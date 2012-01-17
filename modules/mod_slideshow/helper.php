@@ -161,7 +161,7 @@ class modSlideshow
 			{
 				$img_file = $entry;
 				if (is_file(JPATH_ROOT.DS.$image_dir.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|png|swf", strtolower($img_file) )) {
+					if (preg_match("#bmp|gif|jpg|png|swf#i", strtolower($img_file) )) {
 						$images[] = $img_file;
 					}
 				}

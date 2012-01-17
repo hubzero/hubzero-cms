@@ -467,7 +467,7 @@ class PHPMailer {
       $to .= $this->AddrFormat($this->to[$i]);
     }
 
-    $toArr = split(',', $to);
+    $toArr = preg_split('#,#', $to);
 
     $params = sprintf("-oi -f %s", $this->Sender);
     if ($this->Sender != '' && strlen(ini_get('safe_mode')) < 1) {
@@ -1214,12 +1214,9 @@ class PHPMailer {
       $this->SetError($this->Lang('file_open') . $path);
       return '';
     }
-    $magic_quotes = get_magic_quotes_runtime();
-    set_magic_quotes_runtime(0);
     $file_buffer = fread($fd, filesize($path));
     $file_buffer = $this->EncodeString($file_buffer, $encoding);
     fclose($fd);
-    set_magic_quotes_runtime($magic_quotes);
 
     return $file_buffer;
   }
@@ -1720,7 +1717,7 @@ class PHPMailer {
           $directory = dirname($url);
           ($directory == '.')?$directory='':'';
           $cid = 'cid:' . md5($filename);
-          $fileParts = split("\.", $filename);
+          $fileParts = preg_split("#\.#", $filename);
           $ext = $fileParts[1];
           $mimeType = $this->_mime_types($ext);
           if ( strlen($basedir) > 1 && substr($basedir,-1) != '/') { $basedir .= '/'; }

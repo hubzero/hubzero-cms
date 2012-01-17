@@ -52,8 +52,8 @@ class ContribtoolHelper
 	 */
 	public function makeArray($string='') {
 
-		$string		= ereg_replace(' ',',',$string);
-		$arr 		= split(',',$string);
+		$string		= preg_replace('# #',',',$string);
+		$arr 		= preg_split('#,#',$string);
 		//$arr 		= $this->cleanArray($arr); 
 		$arr 		= ContribtoolHelper::cleanArray($arr);
 		$arr 		= array_unique($arr);
@@ -89,7 +89,7 @@ class ContribtoolHelper
 	 */
 	public function check_validInput($field)
 	{
-		if(eregi("^[_0-9a-zA-Z.:-]+$", $field) or $field=='') {
+		if(preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='') {
 			return(0);
 		} else {
 			return(1);

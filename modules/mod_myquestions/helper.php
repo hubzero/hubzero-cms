@@ -100,7 +100,7 @@ class modMyQuestions
 	private function _formatTags($string='', $num=3, $max=25)
 	{
 		$out = '';
-		$tags = split(',', $string);
+		$tags = preg_split('#,#', $string);
 
 		if (count($tags) > 0) 
 		{

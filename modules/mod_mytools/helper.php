@@ -443,7 +443,7 @@ class modToolList
 		{
 			// We have a string of tools! This means we're updating the
 			// favorite tools pane of the module via AJAX
-			$favs = split(',',$this->fav);
+			$favs = preg_split('#,#',$this->fav);
 			$favs = array_map('trim',$favs);
 
 			$this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
@@ -477,7 +477,7 @@ class modToolList
 			$fav = $params->get('myhub_favs');
 			if ($fav) 
 			{
-				$favs = split(',', $fav);
+				$favs = preg_split('#,#', $fav);
 			} 
 			else 
 			{

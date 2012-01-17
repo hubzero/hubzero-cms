@@ -1578,17 +1578,17 @@ class MembersController extends Hubzero_Controller
 	{
 		$address = '';
 		// < > delimited email addresses override any others
-		if (ereg("< *(.+)\@(.+) *>", $adrstring, $match) === false)
-			ereg("([^ <\"]+)\@([^ >\"]+)", $adrstring, $match);
+		if (preg_match("#< *(.+)\@(.+) *>#", $adrstring, $match) === false)
+			preg_match("#([^ <\"]+)\@([^ >\"]+)#", $adrstring, $match);
 		$mailbox = $match[1];
 		$host    = $match[2];
 		// remove email portion to get name portion
 		$name = str_replace($match[0], "", $adrstring);
 		// strip any exterior parens from name
-		if ( ereg("^ *\((.*)\) *$", $name, $match) )
+		if ( preg_match("#^ *\((.*)\) *$#", $name, $match) )
 			$name = $match[1];
 		// strip any exterior quotes from name
-		if ( ereg("^ *\"(.*)\" *$", $name, $match) )
+		if ( preg_match("#^ *\"(.*)\" *$#", $name, $match) )
 			$name = $match[1];
 		$personal=trim($name);
 

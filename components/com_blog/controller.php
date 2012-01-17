@@ -290,8 +290,8 @@ class BlogController extends Hubzero_Controller
 				if (($tok == 'class') || ($tok == 'span') || ($tok == 'highlight')) {
 					continue;
 				}
-				$row->content = eregi_replace( $tok, "<span class=\"highlight\">\\0</span>", $row->content);
-				$row->title = eregi_replace( $tok, "<span class=\"highlight\">\\0</span>", $row->title);
+				$row->content = preg_replace( '#'.$tok.'#i', "<span class=\"highlight\">\\0</span>", $row->content);
+				$row->title = preg_replace( '#'.$tok.'#i', "<span class=\"highlight\">\\0</span>", $row->title);
 			}
 
 			$row->content = trim($row->content).' &#8230;';
@@ -1376,7 +1376,7 @@ class BlogController extends Hubzero_Controller
 			{
 				$img_file = $entry;
 				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|jpeg|jpe|tif|tiff|png", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|jpeg|jpe|tif|tiff|png#i", $img_file )) {
 						$images[$entry] = $img_file;
 					} else {
 						$docs[$entry] = $img_file;

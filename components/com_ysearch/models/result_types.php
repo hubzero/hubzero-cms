@@ -726,8 +726,8 @@ class YSearchResultAssocScalar extends YSearchResult
 			$this->adjust_weight($this->tag_count * self::$tag_weight_modifier, 'tag count of '.$this->tag_count);
 		}
 
-		$this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : split("\n", $row['contributors'])) : array();
-		$this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : split("\n", $row['contributor_ids'])) : array();
+		$this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : preg_split("#\n#", $row['contributors'])) : array();
+		$this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : preg_split("#\n#", $row['contributor_ids'])) : array();
 
 		if ($this->date) $this->date = strtotime($row['date']);
 	}

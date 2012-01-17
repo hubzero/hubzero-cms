@@ -498,7 +498,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 	 */
 	private function _hexToRgb($hex)
 	{
-		$hex = ereg_replace("#", '', $hex);
+		$hex = preg_replace("/#/", '', $hex);
 		$color = array();
 
 		if (strlen($hex) == 3)

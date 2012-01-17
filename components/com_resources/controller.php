@@ -1761,7 +1761,7 @@ class ResourcesController extends Hubzero_Controller
 			{
 				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$upath.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|jpg|png", $img_file )) {
+					if (preg_match("#bmp|jpg|png#i", $img_file )) {
 						$images[] = $img_file;
 					}
 				}
@@ -2146,7 +2146,7 @@ class ResourcesController extends Hubzero_Controller
 		$path = JPATH_ROOT.$this->config->get('webpath');
 		$date = $row->created;
 		$dir_resid = Hubzero_View_Helper_Html::niceidformat( $row->id );
-		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
+		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs )) {
 			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 		}
 		$dir_year  = date('Y', $date);

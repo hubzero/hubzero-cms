@@ -3142,7 +3142,7 @@ class WishlistController extends JObject
 	 */
 	public function mkt($stime)
 	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
+		if ($stime && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $stime, $regs )) {
 			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 		}
 		return $stime;
@@ -3315,8 +3315,8 @@ class WishlistController extends JObject
 	 */
 	public function makeArray($string='')
 	{
-		$string		= ereg_replace(' ',',',$string);
-		$arr 		= split(',',$string);
+		$string		= preg_replace('# #',',',$string);
+		$arr 		= preg_split('#,#',$string);
 		$arr 		= $this->cleanArray($arr);
 		$arr 		= array_unique($arr);
 

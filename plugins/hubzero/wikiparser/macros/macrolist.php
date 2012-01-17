@@ -74,7 +74,7 @@ class MacrolistMacro extends WikiMacro
 			{
 				$img_file = $entry;
 				if (is_file($path.DS.$entry) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "php", $entry )) {
+					if (preg_match("#php#i", $entry )) {
 						$macros[] = $entry;
 					}
 				}

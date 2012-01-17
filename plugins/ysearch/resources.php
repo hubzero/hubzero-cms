@@ -240,9 +240,9 @@ class plgYSearchResources extends YSearchPlugin
 		{
 			$parents = $row->get('parents');
 			if ($parents)
-				foreach (split(',', $parents) as $parent)
+				foreach (preg_split('#,#', $parents) as $parent)
 				{
-					list($parent_id, $ordering) = split('\|', $parent);
+					list($parent_id, $ordering) = preg_split('#\|#', $parent);
 					if (array_key_exists((int)$parent_id, $id_assoc) && $id_assoc[(int)$parent_id]->is_in_section($section, 'resources'))
 					{
 						$placed[(int)$id] = $ordering;

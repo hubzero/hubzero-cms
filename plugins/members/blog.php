@@ -442,8 +442,8 @@ class plgMembersBlog extends JPlugin
 				if (($tok == 'class') || ($tok == 'span') || ($tok == 'highlight')) {
 					continue;
 				}
-				$row->content = eregi_replace( $tok, "<span class=\"highlight\">\\0</span>", $row->content);
-				$row->title = eregi_replace( $tok, "<span class=\"highlight\">\\0</span>", $row->title);
+				$row->content = preg_replace( '#'.$tok.'#i', "<span class=\"highlight\">\\0</span>", $row->content);
+				$row->title = preg_replace( '#'.$tok.'#i', "<span class=\"highlight\">\\0</span>", $row->title);
 			}
 
 			$row->content = trim($row->content).' &#8230;';

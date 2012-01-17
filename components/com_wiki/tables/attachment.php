@@ -161,14 +161,14 @@ class WikiPageAttachment extends JTable
 	public function getAttachment($matches)
 	{
 		$match  = $matches[0];
-		$tokens = split('#',$match);
+		$tokens = preg_split('/#/',$match);
 		$id = intval(end($tokens));
 
 		$this->_db->setQuery( "SELECT filename, description FROM $this->_tbl WHERE id=".$id );
 		$a = $this->_db->loadRow();
 
 		if (is_file(JPATH_ROOT.$this->path.DS.$this->pageid.DS.$a[0])) {
-			if (eregi( "bmp|gif|jpg|jpe|jpeg|tif|tiff|png", $a[0] )) {
+			if (preg_match( "#bmp|gif|jpg|jpe|jpeg|tif|tiff|png#i", $a[0] )) {
 				return '<img src="'.$this->path.DS.$this->pageid.DS.$a[0].'" alt="'.$a[1].'" />';
 			} else {
 				$html  = '<a href="'.$this->path.DS.$this->pageid.DS.$a[0].'" title="'.$a[1].'">';

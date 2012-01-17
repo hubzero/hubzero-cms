@@ -1313,8 +1313,8 @@ class GroupsController extends Hubzero_Controller
 			$admin = true;
 		}
 
-		if (($admin && eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $name))
-		 || (!$admin && eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $name))) {
+		if (($admin && preg_match("#^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$#i", $name))
+		 || (!$admin && preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $name))) {
 			if (is_numeric($name) && intval($name) == $name && $name >= 0) {
 				return false;
 			} else {

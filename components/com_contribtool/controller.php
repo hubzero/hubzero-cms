@@ -940,7 +940,7 @@ class ContribtoolController extends JObject
 		$this->authorize_admin();
 
 		// set defaults
-		list($vncGeometryX, $vncGeometryY) = split('[x]', $this->config->parameters['default_vnc']);
+		list($vncGeometryX, $vncGeometryY) = preg_split('#[x]#', $this->config->parameters['default_vnc']);
 
 		$defaults = array('toolname' => 'shortname',
 						  'title' => '',
@@ -2798,7 +2798,7 @@ class ContribtoolController extends JObject
 					}
 				}
 				else {
-					if(ereg('HANDLE ALREADY EXISTS',$err) && !$bingo) {
+					if(preg_match('#HANDLE ALREADY EXISTS#',$err) && !$bingo) {
 						$output['fail'] .= '<br />* '.JText::_('ERR_DOI_ALREADY_EXISTS_COMPLAIN');
 
 						if($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'],$status['toolname'])) {
@@ -4716,7 +4716,7 @@ class ContribtoolController extends JObject
 		$authorsNewstr = trim(JRequest::getVar( 'new_authors', '', 'post' ));
 
 		// Turn the string into an array of usernames
-		$authorsNew = empty($authorsNew)  ? split(',',$authorsNewstr) : $authorsNew;
+		$authorsNew = empty($authorsNew)  ? preg_split('#,#', $authorsNewstr) : $authorsNew;
 
 		// Instantiate a resource/contributor association object
 		$rc = new ResourcesContributor( $database );

@@ -331,11 +331,6 @@ class Hubzero_Content_Server
 
 		//output the content
 
-		//unset magic quotes; otherwise, file contents will be modified
-	    $old_magic_quotes = get_magic_quotes_runtime();
-
-		if ($old_magic_quotes)
-			set_magic_quotes_runtime(0);
 
 		ob_end_clean();
 
@@ -380,9 +375,6 @@ class Hubzero_Content_Server
 			echo "\r\n--$boundary--\r\n";
 
   		fclose($fp);
-
-		if ($old_magic_quotes)
-			set_magic_quotes_runtime(1);
 
 		ob_start(); // restart buffering so we can throw away any extraneous output after this point
 

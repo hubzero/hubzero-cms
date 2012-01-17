@@ -1339,7 +1339,7 @@ class Hubzero_Group
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	private function __get($property = null)
+	public function __get($property = null)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
 
@@ -1405,7 +1405,7 @@ class Hubzero_Group
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
 	 */
-	private function __set($property = null, $value = null)
+	public function __set($property = null, $value = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
 			if (empty($property)) {
@@ -1445,7 +1445,7 @@ class Hubzero_Group
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	private function __isset($property = null)
+	public function __isset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
 			if (empty($property)) {
@@ -1467,7 +1467,7 @@ class Hubzero_Group
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     void
 	 */
-	private function __unset($property = null)
+	public function __unset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
 			if (empty($property)) {

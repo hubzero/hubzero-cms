@@ -715,7 +715,7 @@ class ToolsController extends Hubzero_Controller
 		foreach ($users as $user)
 		{
 			// Check for invalid characters
-			if (!eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $user)) {
+			if (!preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $user)) {
 				$this->setError( JText::_('MW_ERROR_INVALID_USERNAME').': '.$user );
 				continue;
 			}
@@ -1643,7 +1643,7 @@ class ToolsController extends Hubzero_Controller
 				$img_file = $entry;
 
 				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && substr($entry,0,1) != '..' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|png", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
 						$images[$entry] = $img_file;
 					} else {
 						$docs[$entry] = $img_file;

@@ -228,7 +228,7 @@ class StoreControllerItems extends Hubzero_Controller
 		}
 		$sizes = ($_POST['sizes']) ? $_POST['sizes'] : '';
 		$sizes = str_replace(' ', '', $sizes);
-		$sizes = split(',', $sizes);
+		$sizes = preg_split('#,#', $sizes);
 		$sizes_cl = '';
 		foreach ($sizes as $s)
 		{

@@ -817,7 +817,7 @@ class ToolVersion extends  JTable
 		if ($checker or (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id)) {
 			$err['toolname'] = JText::_('ERR_TOOLNAME_EXISTS');
 		}
-		else if (ereg('^[a-zA-Z0-9]{3,15}$',$tool['toolname']) == '' && !$id ) {
+		else if (preg_match('#^[a-zA-Z0-9]{3,15}$#',$tool['toolname']) == '' && !$id ) {
 			$err['toolname'] = JText::_('ERR_TOOLNAME');
 		}
 
@@ -893,7 +893,7 @@ class ToolVersion extends  JTable
 
 		// format some data
 		$vnc     = isset($config->parameters['default_vnc']) ? $config->parameters['default_vnc'] : '780x600';
-		if($tool['vncGeometryX'] && $tool['vncGeometryY']  && !ereg('[^0-9]' , $tool['vncGeometryX']) && !ereg('[^0-9]' , $tool['vncGeometryY']) ) {
+		if($tool['vncGeometryX'] && $tool['vncGeometryY']  && !preg_match('#[^0-9]#' , $tool['vncGeometryX']) && !preg_match('#[^0-9]#' , $tool['vncGeometryY']) ) {
 					$tool['vncGeometry'] =$tool['vncGeometryX'].'x'.$tool['vncGeometryY'] ;
 		}
 		else { $tool['vncGeometry']= $vnc; }

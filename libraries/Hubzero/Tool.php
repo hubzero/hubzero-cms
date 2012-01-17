@@ -2054,7 +2054,7 @@ class Hubzero_Tool
 		{
 			$err['toolname'] = JText::_('ERR_TOOLNAME_EXISTS');
         }
-        else if (ereg('^[a-zA-Z0-9]{3,15}$',$tool['toolname']) == '' && !$id )
+        else if (preg_match('#^[a-zA-Z0-9]{3,15}$#',$tool['toolname']) == '' && !$id )
 		{
 			$err['toolname'] = JText::_('ERR_TOOLNAME');
         }
@@ -2097,7 +2097,7 @@ class Hubzero_Tool
 		{
             $err['version'] = JText::_('ERR_VERSION_BLANK');
         }
-		else if (!eregi("^[_0-9a-zA-Z.:-]+$", $tool['version']))
+		else if (!preg_match("#^[_0-9a-zA-Z.:-]+$#i", $tool['version']))
 		{
             $err['version'] = JText::_('ERR_VERSION_ILLEGAL');
 		}
@@ -2136,7 +2136,7 @@ class Hubzero_Tool
 		{
         }
 
-		if(empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || ereg('[^0-9]' , $tool['vncGeometryX']) || ereg('[^0-9]' , $tool['vncGeometryY']) )
+		if(empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || preg_match('#[^0-9]#' , $tool['vncGeometryX']) || preg_match('#[^0-9]#' , $tool['vncGeometryY']) )
 		{
 			$err['vncGeometry'] = JText::_('ERR_VNCGEOMETRY');
         }
@@ -2170,7 +2170,7 @@ class Hubzero_Tool
         {
             $err = JText::_('ERR_VERSION_BLANK');
         }
-        else if (ereg('^[a-zA-Z0-9]{3,15}$',$newversion) == '' && !$id)
+        else if (preg_match('#^[a-zA-Z0-9]{3,15}$#',$newversion) == '' && !$id)
         {
             $err = JText::_('ERR_VERSION_ILLEGAL');
         }

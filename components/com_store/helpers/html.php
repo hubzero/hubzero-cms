@@ -76,7 +76,7 @@ class StoreHtml
 			{
 				$img_file = $entry;
 				if (is_file($root.$wpath.$item.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|png|swf", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file )) {
 						$images[] = $img_file;
 					}
 				}

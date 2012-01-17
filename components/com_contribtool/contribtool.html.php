@@ -2512,10 +2512,10 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			{
 				$img_file = $entry;
 				if (is_file($upath.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|png|swf", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file )) {
 						$images[] = $img_file;
 					}
-					if (eregi( "-tn", $img_file )) {
+					if (preg_match( "#-tn#i", $img_file )) {
 						$tns[] = $img_file;
 					}
 					$images = array_diff($images, $tns);

@@ -197,14 +197,14 @@ class MyhubController extends Hubzero_Controller
 		$myhub->prefs = $this->getDefaultModules();
 
 		// Splits string into columns
-		$mymods = split(';',$myhub->prefs);
+		$mymods = preg_split('#;#',$myhub->prefs);
 		// Save array of columns for later work
 		$usermods = $mymods;
 
 		// Splits each column into modules, listed by the order they should appear
 		for ( $i = 0; $i < count($mymods); $i++ )
 		{
-			$mymods[$i] = split(',',$mymods[$i]);
+			$mymods[$i] = preg_split('#,#',$mymods[$i]);
 		}
 
 		// Build a list of all modules being used by this user 
@@ -261,10 +261,10 @@ class MyhubController extends Hubzero_Controller
 	{
 		//$id  = $this->save(1);
 		$id = JRequest::getVar( 'ids', '' );
-		$ids = split(';',$id);
+		$ids = preg_split('#;#',$id);
 		for ( $i = 0; $i < count($ids); $i++ )
 		{
-			$ids[$i] = split(',',$ids[$i]);
+			$ids[$i] = preg_split('#,#',$ids[$i]);
 		}
 
 		$allmods = array();

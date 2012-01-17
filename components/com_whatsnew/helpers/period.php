@@ -134,7 +134,7 @@ class WhatsnewPeriod extends JObject
 				break;
 			default:
 				if (substr($period, 0, 2) == 'c_') {
-					$tokens = split('_',$period);
+					$tokens = preg_split('#_#',$period);
 					$period = $tokens[1];
 					$endTime   = strtotime('12/31/'.$period);
 					$startTime = strtotime('01/01/'.$period);

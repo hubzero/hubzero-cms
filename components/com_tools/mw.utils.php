@@ -117,7 +117,7 @@ class MwUtils
 				{
 					if (!empty($token))
 					{
-						$t = split('=',$token);
+						$t = preg_split('#=#',$token);
 						$info[$t[0]] = (isset($t[1])) ? $t[1] : '';
 					}
 				}

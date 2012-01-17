@@ -358,7 +358,7 @@ class modFeaturedresource
 			{
 				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|png", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
 						$images[] = $img_file;
 					}
 				}
@@ -415,7 +415,7 @@ class modFeaturedresource
 			{
 				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (eregi( "bmp|gif|jpg|png", $img_file )) {
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
 						$images[] = $img_file;
 					}
 				}
@@ -470,7 +470,7 @@ class modFeaturedresource
 	 */
 	private function build_path( $date, $id, $base='' )
 	{
-		if ( $date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs ) ) {
+		if ( $date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs ) ) {
 			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 		}
 		if ($date) {

@@ -175,7 +175,7 @@ class modRapidContact
 			if ($_POST['rp']['email'] === '') {
 				$this->error = $this->no_email;
 			}
-			if (!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $_POST['rp']['email'])) {
+			if (!preg_match("#^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$#i", $_POST['rp']['email'])) {
 				$this->error = $this->invalid_email;
 			}
 			if ($this->error == '') {

@@ -77,7 +77,7 @@ class DivMacro extends WikiMacro
 			if (!empty($attribs) && count($attribs) > 0) {
 				foreach ($attribs as $a)
 				{
-					$a = split('=',$a);
+					$a = preg_split('#=#',$a);
 					$key = $a[0];
 					$val = end($a);
 

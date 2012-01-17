@@ -265,7 +265,7 @@ class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
 
         $auth_time = Auth_OpenID::arrayGet($args, 'auth_time');
         if ($auth_time !== null) {
-            if (ereg(PAPE_TIME_VALIDATOR, $auth_time)) {
+            if (preg_match('#'.PAPE_TIME_VALIDATOR.'#', $auth_time)) {
                 $this->auth_time = $auth_time;
             } else if ($strict) {
                 return false;
@@ -290,7 +290,7 @@ class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
         }
 
         if ($this->auth_time !== null) {
-            if (!ereg(PAPE_TIME_VALIDATOR, $this->auth_time)) {
+            if (!preg_match('#'.PAPE_TIME_VALIDATOR.'#', $this->auth_time)) {
                 return false;
             }
 

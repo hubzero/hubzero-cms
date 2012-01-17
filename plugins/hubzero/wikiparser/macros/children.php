@@ -74,18 +74,18 @@ class ChildrenMacro extends WikiMacro
 		$description = 0;
 
 		if ($this->args) {
-			$args = split(',', $this->args);
+			$args = preg_split('#,#', $this->args);
 			if (is_array($args)) {
 				foreach ($args as $arg)
 				{
 					$arg = trim($arg);
 					if (substr($arg, 0, 6) == 'depth=') {
-		                $bits = split('=', $arg);
+		                $bits = preg_split('#=#', $arg);
 						$depth = intval(trim(end($bits)));
 		                continue;
 					}
 					if (substr($arg, 0, 12) == 'description=') {
-		                $bits = split('=', $arg);
+		                $bits = preg_split('#=#', $arg);
 						$description = intval(trim(end($bits)));
 		                continue;
 					}
@@ -93,11 +93,11 @@ class ChildrenMacro extends WikiMacro
 			} else {
 				$arg = trim($args);
 				if (substr($arg, 0, 6) == 'depth=') {
-	                $bits = split('=', $arg);
+	                $bits = preg_split('#=#', $arg);
 					$depth = intval(trim(end($bits)));
 				}
 				if (substr($arg, 0, 12) == 'description=') {
-	                $bits = split('=', $arg);
+	                $bits = preg_split('#=#', $arg);
 					$description = intval(trim(end($bits)));
 				}
 			}

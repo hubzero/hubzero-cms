@@ -1112,7 +1112,7 @@ class EventsController extends Hubzero_Controller
 		$images = array( JHTML::_('select.option', '', JText::_('Select Image'), 'value', 'text') );
 		foreach ($imgFiles as $file)
 		{
-			if (eregi( "bmp|gif|jpg|png", $file )) {
+			if (preg_match("#bmp|gif|jpg|png#i", $file )) {
 				$images[] = JHTML::_('select.option', $file, $file, 'value', 'text' );
 			}
 		}

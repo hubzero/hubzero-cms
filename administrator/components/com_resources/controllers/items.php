@@ -968,8 +968,8 @@ class ResourcesControllerItems extends Hubzero_Controller
 		//{
 			include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
 
-			$authorsNew = split(',', $authorsNewstr);
-			$authorsOld = split(',', $authorsOldstr);
+			$authorsNew = preg_split('#,#', $authorsNewstr);
+			$authorsOld = preg_split('#,#', $authorsOldstr);
 
 			// We have either a new ordering or new authors or both
 			if ($authorsNewstr)

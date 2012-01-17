@@ -69,7 +69,7 @@ class PageMacro extends WikiMacro
 			return '';
 		}
 
-		$p = split(',', $et);
+		$p = preg_split('#,#', $et);
 		$page = array_shift($p);
 
 		$nolink = false;

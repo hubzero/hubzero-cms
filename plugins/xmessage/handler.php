@@ -171,7 +171,7 @@ class plgXMessageHandler extends JPlugin
 				$last_sent = $sent[0];
 
 				$last_time = 0;
-				if ($last_sent->created && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $last_sent->created, $regs )) {
+				if ($last_sent->created && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $last_sent->created, $regs )) {
 					$last_time = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 				}
 				$time_difference = (time() + $time_limit) - $last_time;

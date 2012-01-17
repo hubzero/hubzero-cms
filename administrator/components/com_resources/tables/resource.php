@@ -320,7 +320,7 @@ class ResourcesResource extends JTable
 		if ($this->group_access != '') {
 			$this->group_access = trim($this->group_access);
 			$this->group_access = substr($this->group_access,1,(strlen($this->group_access)-2));
-			$allowedgroups = split(';',$this->group_access);
+			$allowedgroups = preg_split('#;#',$this->group_access);
 		} else {
 			$allowedgroups = array();
 		}

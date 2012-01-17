@@ -196,8 +196,8 @@ class modEventsLatest
 	 */
 	public function cmpByStartTime(&$a, &$b)
 	{
-		list($date, $aStrtTime) = split(' ', $a->publish_up);
-		list($date, $bStrtTime) = split(' ', $b->publish_up);
+		list($date, $aStrtTime) = preg_split('# #', $a->publish_up);
+		list($date, $bStrtTime) = preg_split('# #', $b->publish_up);
 		if ($aStrtTime == $bStrtTime)
 		{
 			return 0;

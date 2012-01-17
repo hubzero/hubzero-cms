@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $names = array();
 foreach ($this->users as $user)
 {
-	if(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $user)) {
+	if(preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $user)) {
 		$names[] = $user;
 	} else {
 		$u =& JUser::getInstance($user);
