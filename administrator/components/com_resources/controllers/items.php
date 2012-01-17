@@ -1125,7 +1125,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			}
 
 			// Build the path
-			$path = ResourceUtilities::buildUploadPath($listdir, '');
+			$path = ResourcesUtilities::buildUploadPath($listdir, '');
 
 			// Check if the folder even exists
 			if (!is_dir($path) or !$path)
