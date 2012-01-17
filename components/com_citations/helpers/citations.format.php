@@ -127,6 +127,8 @@ class CitationFormat
 	{
 		if($template != "") {
 			$this->_template = trim($template);
+		} else {
+			$this->_template = $this->_default_format['apa'];
 		}
 	}
 
