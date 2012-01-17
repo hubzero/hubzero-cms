@@ -97,7 +97,13 @@ HUB.Presenter = {
 		HUB.Presenter.setVolume(0.75);
 		
 		//Nav bar
-		HUB.Presenter.navBar();                                           
+		HUB.Presenter.navBar();    
+		
+		//automatically move video to main section
+		if( jQ("#media").hasClass("move-left") )
+		{
+			HUB.Presenter.switchVideo();
+		}                                       
 	},
 	
 	//-----

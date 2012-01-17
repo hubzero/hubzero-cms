@@ -178,9 +178,9 @@ foreach($author_ids as $ai) {
 				</div>
 			</div><!-- /#control-box -->
 		</div><!-- /#left -->
-		
+		<?php $cls = ($presentation->videoPosition == "left" && strtolower($presentation->type) == 'video') ? "move-left": ""; ?>
 		<div id="presenter-right">
-			<div id="media">
+			<div id="media" class="<?php echo $cls; ?>">
 				<?php if(strtolower($presentation->type) == 'video') : ?>
 					<video id="player" preload="auto" controls="controls">
 						<?php foreach($presentation->media as $source): ?>
