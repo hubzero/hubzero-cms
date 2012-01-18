@@ -75,7 +75,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		$area = array(
 			'name' => 'forum',
 			'title' => JText::_('PLG_GROUPS_FORUM'),
-			'default_access' => $this->params->get('plugin_access','members')
+			'default_access' => $this->params->get('plugin_access','members'),
+			'display_menu_tab' => true
 		);
 
 		return $area;
