@@ -14,17 +14,15 @@
 	background:#efefef url('../img/file_manager.png') no-repeat 97% 3%;
 	padding:2%;
 	width:96%;
-}
-
+	}
 #asset_browser p:first-child {
 	margin-top:0px;
-}
-
+	}
 iframe {
 	border:0px;
 	margin: 0;
 	padding: 0;
-}
+	}
 
 /* Preview look used by many */
 .preview {
@@ -32,7 +30,6 @@ iframe {
 	padding:10px; 
 	border:1px dashed #CCC;
 	}
-
 .preview img { 
 	width:100%;
 	}
@@ -43,14 +40,12 @@ iframe {
 	width:273px; 
 	background:url('../img/group_logo_preview.png') no-repeat 50% 50%; 
 	}
-
 #logo_picked { 
 	margin:15px 0 0 15px; 
 	height:73px; 
 	width:180px; 
 	overflow:hidden; 
 	}
-
 #logo_picked img { 
 	max-height:73px;
 	width:auto;
@@ -66,29 +61,23 @@ p.side-by-side {
 	border:1px solid #ddd;
 	background:#efefef;
 	}
-
 .side-by-side:hover {
 	border:1px solid #CCC;
 	background:#fff;
 	cursor:pointer;
 	}
-
-
 p.checked,
 p.checked:hover {
 	color:#FFFFFF;
 	background-color:#1d4ea9;
 	}
-
 #hubForm .side-by-side label {
 	padding:0px;
 	}
-
 #hubForm .side-by-side input {
 	width:5%;
 	}
-	
-	
+		
 /* Set Group Access */
 #access {
 	list-style:none;
@@ -96,11 +85,9 @@ p.checked:hover {
 	padding:10px;
 	background:#efefef url('../img/group_menu_preview.jpg') repeat-y top right;
 	}	
-	
 .preview #access img {
 	width:auto;
-}
-	
+	}	
 #access li {
 	font-size:14px;
 	color:#444;
@@ -110,13 +97,15 @@ p.checked:hover {
 	padding:7px 0;
 	list-style:none;
 	}
-
 #access li span {
-	
-}
-
+	}
 #hubForm #access li select {
 	float:right;
 	width:auto;
-}
+	}
 
+/* */
+.hide-left {
+	position:absolute;
+	left:-555em;
+	}

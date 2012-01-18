@@ -153,7 +153,7 @@ HUB.Groups = {
 		if(overview_content) {
 			var checked = $('group_overview_type_custom').getProperty('checked');
 			if(!checked) {
-				overview_content.addClass('hide');
+				overview_content.addClass('hide-left');
 			}
 			
 			$$('input[type=radio]').addEvent('click', function() {
@@ -162,9 +162,9 @@ HUB.Groups = {
 				thisp.addClass('checked');
 		
 				if(this.value == 1) {
-					overview_content.removeClass('hide');
+					overview_content.removeClass('hide-left');
 				} else {
-					overview_content.addClass('hide');
+					overview_content.addClass('hide-left');
 				}
 			});
 		}
