@@ -93,8 +93,8 @@ class YoutubeMacro extends WikiMacro
 		$args = array_map("trim", explode(",", $content));
 		$url = $args[0];
 		//$width = (is_numeric($args[1])) ? $args[1] : $default_width;
-		$width = ($args[1] != "") ? $args[1] : $default_width;
-		$height = ($args[2] != "") ? $args[2] : $default_height;
+		$width = (isset($args[1]) && $args[1] != "") ? $args[1] : $default_width;
+		$height = (isset($args[2]) && $args[2] != "") ? $args[2] : $default_height;
 
 		//check is user entered full youtube url or just Video Id
 		if (strstr($url,'http')) {
