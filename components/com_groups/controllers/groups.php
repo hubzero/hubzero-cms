@@ -69,12 +69,17 @@ class GroupsController extends Hubzero_Controller
 			$this->_task = 'intro';
 		}
 
-		$file = array_pop(explode($this->gid.DS,$_SERVER["REQUEST_URI"]));
-
-		if (substr(strtolower($file), 0, 5) == 'image' ||
-			substr(strtolower($file), 0, 4) == 'file') {
+		//are we serving up a file
+		$uri = $_SERVER["REQUEST_URI"];
+		if(strstr($uri, "Image")) 
+		{
+			$file = strstr($uri, "Image");
 			$this->_task = 'download';
-			//$file = $this->active;
+		}
+		elseif(strstr($uri, "File"))
+		{
+			$file = strstr($uri, "File");
+			$this->_task = 'download';
 		}
 
 		// Execute the task
@@ -3516,8 +3521,9 @@ class GroupsController extends Hubzero_Controller
 		} elseif (substr(strtolower($filename), 0, 4) == 'file') {
 			$file = substr($filename, 5);
 		}
+		
 		$file = urldecode($file);
-
+		
 		$authorized = $this->_authorize();
 
 		if ($this->active == 'wiki') {
@@ -3534,7 +3540,7 @@ class GroupsController extends Hubzero_Controller
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 			$page = new WikiPage( $this->database );
 			$page->load(JRequest::getVar('pagename'), $group->get('cn').DS.'wiki');
-
+		
 			if ($page->get('access') == 1 && !in_array($this->juser->get('id'), $group->get('members')) && $authorized != 'admin') {
 				JError::raiseError( 403, JText::_('COM_GROUPS_NOT_AUTH').' '.$file );
 				return;

@@ -250,6 +250,7 @@ class FileMacro extends WikiMacro
 		{
 			if ($alt)
 			{
+				$nid = null;
 				$bits = explode('/', $this->config->get('filepath'));
 				foreach ($bits as $bit)
 				{
@@ -260,7 +261,11 @@ class FileMacro extends WikiMacro
 						break;
 					}
 				}
-				$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
+				
+				if($nid)
+				{
+					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
+				}
 			}
 			$path  = JPATH_ROOT . $this->config->get('filepath');
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
