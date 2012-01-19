@@ -2195,16 +2195,8 @@ class WikiController extends Hubzero_Controller
 				$RE[$key] = $this->pcre_fix_posix_classes($key);
 		}
 
-		echo "<pre>";
-		print_r($RE);
-		echo "</pre><br/><br/>";
-		
 		foreach ($RE as $regexp)
 		{
-			echo "<pre>";
-			print_r($regexp);
-			echo "</pre><br/><br/>";
-
 			$page = preg_replace($regexp, '\\1 \\2', $page);
 		}
 
