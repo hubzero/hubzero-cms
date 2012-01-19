@@ -202,5 +202,5 @@ if ($section->categories) {
 }
 ?>
 	</form>
-	<!--</div> /.subject -->
+	</div><!-- /.subject -->
 </div><!-- /.main -->
