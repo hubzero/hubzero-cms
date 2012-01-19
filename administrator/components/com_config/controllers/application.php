@@ -373,7 +373,7 @@ class ConfigControllerApplication extends ConfigController
 		// SESSION SETTINGS
 		$config_array['lifetime']			= JRequest::getVar('lifetime', 0, 'post', 'int');
 		$config_array['session_handler']	= JRequest::getVar('session_handler', 'none', 'post', 'word');
-		$config_array['cookiesubdomains']   = JRequest::getVar('cookiesubdomain', 0, 'post', 'int');
+		$config_array['cookiesubdomains']   = JRequest::getVar('cookiesubdomains', 0, 'post', 'int');
 
 		//LANGUAGE SETTINGS
 		//$config_array['lang']				= JRequest::getVar('lang', 'none', 'english', 'cmd');

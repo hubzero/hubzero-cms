@@ -32,9 +32,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 					</span>
 				</td>
 				<td>
-					<input type="radio" name="cookiesubdomains" id="cookiesubdomains0" value="0" checked="checked" class="inputbox" /> 
+					<input type="radio" name="cookiesubdomains" id="cookiesubdomains0" value="0" <?php if (!$row->cookiesubdomains) echo 'checked="checked"'?> class="inputbox" />
 					<label for="cookiesubdomains0">Site</label> 
-					<input type="radio" name="cookiesubdomains" id="cookiesubdomains1" value="1" class="inputbox" /> 
+					<input type="radio" name="cookiesubdomains" id="cookiesubdomains1" value="1"  <?php if ($row->cookiesubdomains) echo 'checked="checked"'?> class="inputbox" />
 					<label for="cookiesubdomains1">All Subdomains</label> 
 				</td>
 			</tr>
