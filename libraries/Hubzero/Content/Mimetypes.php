@@ -750,6 +750,7 @@ class Hubzero_Content_Mimetypes
 		'swf'		=> 'application/x-shockwave-flash2-preview',
 		'swf'		=> 'application/futuresplash',
 		'swf'		=> 'image/vnd.rn-realflash',
+		'wmv'		=> 'video/x-ms-wmv',
 		/* MS Office 2007+ */
 		'docx'		=> 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 		'dotx'		=> 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
