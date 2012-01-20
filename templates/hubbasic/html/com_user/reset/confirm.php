@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die; ?>
 
-<div class="componentheading">
+<div id="content-header">
 	<h2><?php echo JText::_('Confirm your Account'); ?></h2>
 </div>
 

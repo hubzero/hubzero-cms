@@ -1,9 +1,9 @@
 <?php defined('_JEXEC') or die; ?>
 
 <?php if($this->params->get('show_page_title',1)) : ?>
-<h2 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')) ?>">
-	<?php echo $this->escape($this->params->get('page_title')) ?>
-</h2>
+<div id="content-header">
+	<h2><?php echo $this->escape($this->params->get('page_title')) ?></h2>
+</div>
 <?php endif; ?>
 
 <form action="<?php echo JRoute::_( 'index.php?option=com_user&task=remindusername' ); ?>" method="post" class="josForm form-validate" name="hubForm" id="hubForm">
