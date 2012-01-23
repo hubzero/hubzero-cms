@@ -213,7 +213,7 @@ class modNotices
 		if (!$stop || $stop == '0000-00-00 00:00:00') {
 			$this->publish = true;
 		} else {
-			if ($stop >= $now) {
+			if ($stop >= $now && $this->publish) {
 				$this->publish = true;
 			} else {
 				$this->publish = false;
