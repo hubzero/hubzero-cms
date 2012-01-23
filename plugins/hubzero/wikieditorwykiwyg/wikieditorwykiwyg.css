@@ -1,0 +1,117 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/hubzero/wikieditortoolbar/wikieditortoolbar.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Toolbar for editing wiki text */
+	.wykiwyg {
+		border: 1px solid #bbb;
+		padding: 0 1px 1px;
+		font: 12px Verdana, Arial;
+		margin: 0;
+	}
+	.wykiwyg iframe {
+		border: none;
+	}
+	.wykiwyg textarea {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		margin: 0;
+		padding: 0;
+	}
+	.wykiwyg-header {
+		padding-top: 1px;
+		height: 31px; 
+		border-bottom: 1px solid #bbb;
+		background: url("images/header-bg.gif") repeat-x;
+		/*background: #e8e8e8;
+		background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#e8e8e8));
+		background: -webkit-linear-gradient(#f8f8f8, #e8e8e8);
+		background: -moz-linear-gradient(center top, #f8f8f8 0%, #e8e8e8 100%);
+		background: -moz-gradient(center top, #f8f8f8 0%, #e8e8e8 100%);
+		background: -o-linear-gradient(#f8f8f8, #e8e8e8);
+		filter: progid: DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f8f8f8,endColorstr=#e8e8e8);
+		-ms-filter: "progid: DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f8f8f8, endColorstr=#e8e8e8)";*/
+	}
+	.wykiwyg-header select {
+		float: left;
+		margin-top: 5px;
+	}
+	.wykiwyg-font {
+		margin-left: 12px;
+	}
+	.wykiwyg-size {
+		margin: 0 3px;
+	}
+	.wykiwyg-style {
+		margin-right: 12px;
+	}
+	.wykiwyg-divider {
+		float: left; 
+		width: 1px; 
+		height: 30px; 
+		background: #ccc;
+	}
+	.wykiwyg-control {
+		float: left; 
+		width: 34px; 
+		height: 30px; 
+		cursor: pointer; 
+		background-image: url("images/icons.png");
+	}
+	.wykiwyg-control:hover {
+		background-color: #fff; 
+		background-position: 30px 0;
+	}
+	.wykiwyg-footer {
+		height: 32px; 
+		border-top: 1px solid #bbb; 
+		background: #f5f5f5;
+	}
+	.wykiwyg-toggle {
+		float: left; 
+		background: url("images/icons.png") -34px 2px no-repeat; 
+		padding: 9px 13px 0 31px; 
+		height: 23px; 
+		border-right: 1px solid #ccc; 
+		cursor: pointer; 
+		color: #666;
+	}
+	.wykiwyg-toggle:hover {
+		background-color:#fff;
+	}
+	.wykiwyg-resize {
+		float: right; 
+		height: 32px; 
+		width: 32px; 
+		background: url("images/resize.gif") 15px 15px no-repeat; 
+		cursor: s-resize;
+	}
+/* Frame */
+	#wykiwyg-editor {
+		cursor: text; 
+		margin: 10px;
+		font: 12px 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
+		text-rendering: optimizeLegibility;
+	}
+	#wykiwyg-editor dl {
+		padding-left: 1em;
+	}
+	#wykiwyg-editor dt {
+		font-weight: bold;
+	}
+	#wykiwyg-editor dd {
+		color: #666;
+	}
+	#wykiwyg-editor table,
+	#wykiwyg-editor td {
+		border: 1px solid #ccc;
+	}
+	#wykiwyg-editor pre {
+		background: #f8f8f8;
+		border: 1px dashed #ccc;
+	}
