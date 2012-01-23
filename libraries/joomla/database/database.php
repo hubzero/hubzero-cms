@@ -867,6 +867,19 @@ class JDatabase extends JObject
 	}
 
 	/**
+	 * Method that provides access to the underlying database connection. Useful for when you need to call a
+	 * proprietary method such as postgresql's lo_* methods.
+	 *
+	 * @return  resource  The underlying database connection resource.
+	 *
+	 * @since   11.1
+	 */
+	public function getConnection()
+	{
+		return $this->_resource;
+	}
+
+	/**
 	 * Get the version of the database connector
 	 *
 	 * @abstract
