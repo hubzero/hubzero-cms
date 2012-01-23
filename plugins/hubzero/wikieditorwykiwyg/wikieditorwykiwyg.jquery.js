@@ -1800,6 +1800,32 @@ WYKIWYG.editor = function() {
 				} catch(e) {}
 			}
 		}
+		var wwe = this;
+		$(this.t).closest('form').bind('submit', function(){
+			var converter = new WYKIWYG.converter();
+			if (wwe.d) {
+				var v = wwe.e.body.innerHTML;
+				if (wwe.xhtml) {
+					v = v.replace(/<span class="apple-style-span">(.*)<\/span>/gi,'$1');
+					v = v.replace(/ class="apple-style-span"/gi,'');
+					v = v.replace(/<span style="">/gi,'');
+					v = v.replace(/<br>/gi,'<br />');
+					v = v.replace(/<br ?\/?>$/gi,'');
+					v = v.replace(/^<br ?\/?>/gi,'');
+					v = v.replace(/(<img [^>]+[^\/])>/gi,'$1 />');
+					v = v.replace(/<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
+					v = v.replace(/<i\b[^>]*>(.*?)<\/i[^>]*>/gi,'<em>$1</em>');
+					//v = v.replace(/<u\b[^>]*>(.*?)<\/u[^>]*>/gi,'<span style="text-decoration:underline">$1</span>');
+					v = v.replace(/<(b|strong|em|i|u) style="font-weight: normal;?">(.*)<\/(b|strong|em|i|u)>/gi,'$2');
+					v = v.replace(/<(b|strong|em|i|u) style="(.*)">(.*)<\/(b|strong|em|i|u)>/gi,'<span style="$2"><$4>$3</$4></span>');
+					v = v.replace(/<span style="font-weight: normal;?">(.*)<\/span>/gi,'$1');
+					v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
+					v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
+					v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
+				}
+				wwe.t.value = converter.makeWiki(v);
+			}
+		});
 	};
 	edit.prototype.print = function() {
 		this.i.contentWindow.print();
@@ -1859,9 +1885,7 @@ WYKIWYG.editor = function() {
 	},
 	edit.prototype.toggle = function(post, div) {
 		var converter = new WYKIWYG.converter();
-		var res = document.getElementById('results');
 		if (!this.d) {
-			res.value = this.t.value;
 			var v = converter.makeHtml(this.t.value);
 			if (div) {
 				div.innerHTML = this.obj.toggletext || 'source';
@@ -1876,7 +1900,6 @@ WYKIWYG.editor = function() {
 			this.d = 1
 		} else {
 			var v = this.e.body.innerHTML;
-			res.value = v;
 			if (this.xhtml) {
 				v = v.replace(/<span class="apple-style-span">(.*)<\/span>/gi,'$1');
 				v = v.replace(/ class="apple-style-span"/gi,'');
