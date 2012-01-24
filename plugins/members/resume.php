@@ -640,7 +640,7 @@ class plgMembersResume extends JPlugin
 		}
 		else if (!$js->active) {
 			$out .= '<p class="no_resume">';
-			$out .= ($emp) ? JText::_('PLG_RESUME_USER_HAS_NO RESUME') : JText::_('PLG_RESUME_YOU_HAVE_NO_RESUME');
+			$out .= ($emp) ? JText::_('PLG_RESUME_USER_HAS_NO_RESUME') : JText::_('PLG_RESUME_YOU_HAVE_NO_RESUME');
 			$out .='</p>'.n;
 		}
 
