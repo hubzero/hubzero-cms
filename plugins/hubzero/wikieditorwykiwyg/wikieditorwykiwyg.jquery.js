@@ -172,7 +172,6 @@ WYKIWYG.converter = function() {
 		// Pre code blocks
 		string = string.replace(/<pre\b[^>]*>([\s\S]*)<\/pre>/gi, function(str, innerHTML) {
 			innerHTML = innerHTML.replace(/^\t+/g, '	'); // convert tabs to spaces (you know it makes sense)
-			//innerHTML = innerHTML.replace(/\n/g, '\n		');
 			return '\n\n{{{\n' + innerHTML + '\n}}}\n';
 		});
 
@@ -193,12 +192,10 @@ WYKIWYG.converter = function() {
 			html = html.replace(/<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1>/gi, function(str, listType, innerHTML) {
 				var lis = innerHTML.split('</li>');
 				lis.splice(lis.length - 1, 1);
-
-				for(i = 0, len = lis.length; i < len; i++) {
+				for (i = 0, len = lis.length; i < len; i++) {
 					if(lis[i]) {
 						var prefix = (listType === 'ol') ? " # " : " * ";
 						lis[i] = lis[i].replace(/\s*<li[^>]*>([\s\S]*)/i, function(str, innerHTML) {
-
 							innerHTML = innerHTML.replace(/^\s+/, '');
 							innerHTML = innerHTML.replace(/\n\n/g, '\n\n		');
 							// indent nested lists
@@ -223,25 +220,15 @@ WYKIWYG.converter = function() {
 		function replaceDefLists(html) {
 			html = html.replace(/<(dl)\b[^>]*>([\s\S]*?)<\/\1>/gi, function(str, listType, innerHTML) {
 				var dts = innerHTML.split('</dt>');
-				//dts.splice(dts.length - 1, 1);
-
-				for(i = 0, len = dts.length; i < len; i++) {
-					if(dts[i]) {
+				for (i = 0, len = dts.length; i < len; i++) {
+					if (dts[i]) {
 						var prefix = " ";
 						dts[i] = dts[i].replace(/\s*<dt[^>]*>([\s\S]*)/i, function(str, innerHTML) {
-
 							innerHTML = innerHTML.replace(/^\s+/, '');
-							//innerHTML = innerHTML.replace(/\n\n/g, '\n\n		');
-							// indent nested lists
-							//innerHTML = innerHTML.replace(/\n([ ]*)+(\*|\d+\.) /g, '\n$1		$2 ');
 							return ' ' + innerHTML + '::';
 						});
 						dts[i] = dts[i].replace(/\s*<dd[^>]*>([\s\S]*)<\/dd>/i, function(str, innerHTML) {
-
 							innerHTML = innerHTML.replace(/^\s+/, '');
-							//innerHTML = innerHTML.replace(/\n\n/g, '\n\n		');
-							// indent nested lists
-							//innerHTML = innerHTML.replace(/\n([ ]*)+(\*|\d+\.) /g, '\n$1		$2 ');
 							return '   ' + innerHTML + '';
 						});
 					}
@@ -366,94 +353,22 @@ WYKIWYG.converter = function() {
 			// match will start at the first `<div>` and stop at the first `</div>`.
 			// 
 			// This regex can be expensive when it fails.
-			/*
-				var text = text.replace(/
-				(						// save in $1
-					^					// start of line  (with /m)
-					<($block_tags_a)	// start tag = $2
-					\b					// word break
-										// attacklab: hack around khtml/pcre bug...
-					[^\r]*?\n			// any number of lines, minimally matching
-					</\2>				// the matching end tag
-					[ \t]*				// trailing spaces/tabs
-					(?=\n+)				// followed by a newline
-				)						// attacklab: there are sentinel newlines at end of document
-				/gm,function(){...}};
-			*/
 			text = text.replace(/^(<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b[^\r]*?\n<\/\2>[ \t]*(?=\n+))/gm,hashElement);
 
 			// Now match more liberally, simply from `\n<tag>` to `</tag>\n`
-			/*
-				var text = text.replace(/
-				(						// save in $1
-					^					// start of line  (with /m)
-					<($block_tags_b)	// start tag = $2
-					\b					// word break
-										// attacklab: hack around khtml/pcre bug...
-					[^\r]*?				// any number of lines, minimally matching
-					.*</\2>				// the matching end tag
-					[ \t]*				// trailing spaces/tabs
-					(?=\n+)				// followed by a newline
-				)						// attacklab: there are sentinel newlines at end of document
-				/gm,function(){...}};
-			*/
 			text = text.replace(/^(<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math)\b[^\r]*?.*<\/\2>[ \t]*(?=\n+)\n)/gm,hashElement);
 
 			// Special case just for <hr />. It was easier to make a special case than
 			// to make the other regex more complicated.  
-			/*
-				text = text.replace(/
-				(						// save in $1
-					\n\n				// Starting after a blank line
-					[ ]{0,3}
-					(<(hr)				// start tag = $2
-					\b					// word break
-					([^<>])*?			// 
-					\/?>)				// the matching end tag
-					[ \t]*
-					(?=\n{2,})			// followed by a blank line
-				)
-				/g,hashElement);
-			*/
 			text = text.replace(/(\n[ ]{0,3}(<(hr)\b([^<>])*?\/?>)[ \t]*(?=\n{2,}))/g,hashElement);
 
 			// Special case for standalone HTML comments:
-			/*
-				text = text.replace(/
-				(						// save in $1
-					\n\n				// Starting after a blank line
-					[ ]{0,3}			// attacklab: g_tab_width - 1
-					<!
-					(--[^\r]*?--\s*)+
-					>
-					[ \t]*
-					(?=\n{2,})			// followed by a blank line
-				)
-				/g,hashElement);
-			*/
 			text = text.replace(/(\n\n[ ]{0,3}<!(--[^\r]*?--\s*)+>[ \t]*(?=\n{2,}))/g,hashElement);
 
 			// PHP and ASP-style processor instructions (<?...?> and <%...%>)
-			/*
-				text = text.replace(/
-				(?:
-					\n\n				// Starting after a blank line
-				)
-				(						// save in $1
-					[ ]{0,3}			// attacklab: g_tab_width - 1
-					(?:
-						<([?%])			// $2
-						[^\r]*?
-						\2>
-					)
-					[ \t]*
-					(?=\n{2,})			// followed by a blank line
-				)
-				/g,hashElement);
-			*/
 			text = text.replace(/(?:\n\n)([ ]{0,3}(?:<([?%])[^\r]*?\2>)[ \t]*(?=\n{2,}))/g,hashElement);
 
-			// attacklab: Undo double lines (see comment at top of this function)
+			//  Undo double lines (see comment at top of this function)
 			text = text.replace(/\n\n/g,"\n");
 			return text;
 		}
@@ -543,35 +458,6 @@ WYKIWYG.converter = function() {
 
 		function _DoAnchors(text) {
 			// Turn Wiki links [url link text] into XHTML <a> tags.
-
-			/*
-				text = text.replace(/
-					(						// wrap whole match in $1
-						\[
-						(
-							(?:
-								\[[^\]]*\]	// allow brackets nested one level
-							|
-							[^\[\]]			// or anything else
-						)
-					)
-					\]
-					\(						// literal paren
-					[ \t]*
-					()						// no id, so leave $3 empty
-					<?(.*?)>?				// href = $4
-					[ \t]*
-					(						// $5
-						(['"])				// quote char = $6
-						(.*?)				// Title = $7
-						\6					// matching quote
-						[ \t]*				// ignore any spaces/tabs between closing quote and )
-					)?						// title is optional
-					\)
-				)
-				/g,writeAnchorTag);
-			*/
-			//text = text.replace(/(\[[ \t]*()()(.*?)[ \t]*()([ ]['"]?(.*?)['"]?[ \t]*)?\])/g,writeAnchorTag);
 			text = text.replace(/(\[[ \t]*()()(.*?)[ \t]*()([ ](.*?)[ \t]*)?\])/g,writeAnchorTag);
 
 			return text;
@@ -618,30 +504,6 @@ WYKIWYG.converter = function() {
 			// Turn Wiki image macros [[(url, alt="optional title")]] into <img> tags.
 
 			// Don't forget: encode * and _
-			/*
-				text = text.replace(/
-				(						// wrap whole match in $1
-					!\[
-					(.*?)				// alt text = $2
-					\]
-					\s?					// One optional whitespace character
-					\(					// literal paren
-					[ \t]*
-					()					// no id, so leave $3 empty
-					<?(\S+?)>?			// src url = $4
-					[ \t]*
-					(					// $5
-						(['"])			// quote char = $6
-						(.*?)			// title = $7
-						\6				// matching quote
-						[ \t]*
-					)?					// title is optional
-				\)
-				)
-				/g,writeImageTag);
-			*/
-			//text = text.replace(/(!\[(.*?)\]\s?\([ \t]*()<?(\S+?)>?[ \t]*((['"])(.*?)\6[ \t]*)?\))/g,writeImageTag);
-			//text = text.replace(/(!()()\[\[\I\m\a\g\e\(<?(\S+?)>?[ \t]*,?\s?(\a\l\t\=(['"])(.*?)\6[ \t]*)?\)\]\])/g,writeImageTag);
 			text = text.replace(/(\[\[\I\m\a\g\e\((.*?)\)\]\])/g,writeImageTag);
 			return text;
 		}
@@ -730,28 +592,6 @@ WYKIWYG.converter = function() {
 			text += "~0";
 
 			// Re-usable pattern to match any entirel ul or ol list:
-
-			/*
-				var whole_list = /
-				(									// $1 = whole list
-					(								// $2
-						[ ]{0,3}					// attacklab: g_tab_width - 1
-						([*+-]|\d+[.])				// $3 = first list item marker
-						[ \t]+
-					)
-					[^\r]+?
-					(								// $4
-						~0							// sentinel for workaround; should be $
-					|
-						\n{2,}
-						(?=\S)
-						(?!							// Negative lookahead for another list item marker
-							[ \t]*
-							(?:[*+-]|\d+[.])[ \t]+
-						)
-					)
-				)/g
-			*/
 			var whole_list = /^(([ ]{0,3}([*\*]|[*\#])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#])[ \t]+)))/gm;
 
 			if (g_list_level) {
@@ -788,7 +628,7 @@ WYKIWYG.converter = function() {
 				});
 			}
 
-			// attacklab: strip sentinel
+			//  strip sentinel
 			text = text.replace(/~0/,"");
 
 			return text;
@@ -824,19 +664,9 @@ WYKIWYG.converter = function() {
 			// trim trailing blank lines:
 			list_str = list_str.replace(/\n{2,}$/,"\n");
 
-			// attacklab: add sentinel to emulate \z
+			//  add sentinel to emulate \z
 			list_str += "~0";
 
-			/*
-				list_str = list_str.replace(/
-					(\n)?							// leading line = $1
-					(^[ \t]*)						// leading whitespace = $2
-					([*+-]|\d+[.]) [ \t]+			// list marker = $3
-					([^\r]+?						// list item text   = $4
-					(\n{1,2}))
-					(?= \n* (~0 | \2 ([*+-]|\d+[.]) [ \t]+))
-				/gm, function(){...});
-			*/
 			list_str = list_str.replace(/(\n)?(^[ \t]*)([*\*]|[*\#])[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*\*]|[*\#])[ \t]+))/gm,
 				function(wholeMatch,m1,m2,m3,m4){
 					var item = m4;
@@ -857,7 +687,7 @@ WYKIWYG.converter = function() {
 				}
 			);
 
-			// attacklab: strip sentinel
+			//  strip sentinel
 			list_str = list_str.replace(/~0/g,"");
 
 			g_list_level--;
@@ -907,7 +737,7 @@ WYKIWYG.converter = function() {
 				});
 			}
 
-			// attacklab: strip sentinel
+			//  strip sentinel
 			text = text.replace(/~0/,"");
 
 			return text;
@@ -991,7 +821,7 @@ WYKIWYG.converter = function() {
 				});
 			}
 
-			// attacklab: strip sentinel
+			//  strip sentinel
 			text = text.replace(/~0/,"");
 
 			return text;
@@ -1037,19 +867,6 @@ WYKIWYG.converter = function() {
 		function _DoCodeBlocks(text) {
 			//  Process Wiki `<pre>` blocks.
 
-			/*
-				text = text.replace(text,
-					/(?:\n\n|^)
-					(								// $1 = the code block -- one or more lines, starting with a space/tab
-						(?:
-							(?:[ ]{4}|\t)			// Lines must start with a tab or a tab-width of spaces - attacklab: g_tab_width
-							.*\n+
-						)+
-					)
-					(\n*[ ]{0,3}[^ \t\n]|(?=~0))	// attacklab: g_tab_width
-				/g,function(){...});
-			*/
-
 			// sentinel workarounds for lack of \A and \Z, safari\khtml bug
 			text += "~0";
 
@@ -1058,9 +875,7 @@ WYKIWYG.converter = function() {
 					var codeblock = m1;
 					var nextChar = m2;
 
-					//codeblock = _EncodeCode( _Outdent(codeblock));
 					codeblock = _EncodeCode(codeblock);
-					//codeblock = _Detab(codeblock);
 					codeblock = codeblock.replace(/^\n+/g,""); // trim leading newlines
 					codeblock = codeblock.replace(/\n+$/g,""); // trim trailing whitespace
 
@@ -1106,19 +921,6 @@ WYKIWYG.converter = function() {
 			//	 
 			//		 ... type <code>`bar`</code> ...
 			//
-
-			/*
-				text = text.replace(/
-					(^|[^\\])					// Character before opening ` can't be a backslash
-					(`+)						// $2 = Opening run of `
-					(							// $3 = The code block
-						[^\r]*?
-						[^`]					// attacklab: work around lack of lookbehind
-					)
-					\2							// Matching closer
-					(?!`)
-				/gm, function(){...});
-			*/
 
 			text = text.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm,
 				function(wholeMatch,m1,m2,m3,m4) {
@@ -1192,19 +994,6 @@ WYKIWYG.converter = function() {
 		}
 
 		function _DoBlockQuotes(text) {
-			/*
-				text = text.replace(/
-				(								// Wrap whole match in $1
-					(
-						^[ ]{2}			        // '  ' at the start of a line
-						.+\n					// rest of the first line
-						(.+\n)*					// subsequent consecutive lines
-						\n*						// blanks
-					)+
-				)
-				/gm, function(){...});
-			*/
-
 			text = text.replace(/((^[ ]{2}.+\n(.+\n)*\n*)+)/gm,
 				function(wholeMatch,m1) {
 					var bq = m1;
@@ -1471,10 +1260,6 @@ WYKIWYG.converter = function() {
 		// _EscapeSpecialCharsWithinTagAttributes(), so that any *'s or _'s in the <a>
 		// and <img> tags get encoded.
 
-		// Replace single quotes because wiki syntax uses single quotes to 
-		// denote bold and italic
-		//text = text.replace(/\'/g,"~Q");
-
 		// Replace ~ with ~T
 		// This lets us use tilde as an escape char to avoid md5 hashes
 		// The choice of character is arbitray; anything that isn't
@@ -1526,8 +1311,6 @@ WYKIWYG.converter = function() {
 
 		// Restore tildes
 		text = text.replace(/~T/g, "~");
-		
-		//text = text.replace(/~Q/g, "'");
 		
 		return text;
 	}
@@ -1681,7 +1464,7 @@ WYKIWYG.editor = function() {
 				var to = obj.toggle, 
 					ts = document.createElement('div');
 				ts.className = to.cssclass || 'wykiwyg-toggle';
-				ts.innerHTML = obj.toggletext || 'source';
+				ts.innerHTML = obj.toggletext || 'switch to source';
 				ts.onclick = new Function(this.n+'.toggle(0,this);return false');
 				f.appendChild(ts);
 			}
@@ -1744,9 +1527,11 @@ WYKIWYG.editor = function() {
 					v = v.replace(/(<img [^>]+[^\/])>/gi,'$1 />');
 					v = v.replace(/<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
 					v = v.replace(/<i\b[^>]*>(.*?)<\/i[^>]*>/gi,'<em>$1</em>');
-					//v = v.replace(/<u\b[^>]*>(.*?)<\/u[^>]*>/gi,'<span style="text-decoration:underline">$1</span>');
+					v = v.replace(/<span style="?text-decoration: underline;?"?>(.*?)<\/span>/gi,'<u>$1</u>');
 					v = v.replace(/<(b|strong|em|i|u) style="font-weight: normal;?">(.*)<\/(b|strong|em|i|u)>/gi,'$2');
 					v = v.replace(/<(b|strong|em|i|u) style="(.*)">(.*)<\/(b|strong|em|i|u)>/gi,'<span style="$2"><$4>$3</$4></span>');
+					v = v.replace(/<span style="?vertical-align: super;?"?>(.*)<\/span>/gi,'<sup>$1</sup>');
+					v = v.replace(/<span style="?vertical-align: sub;?"?>(.*)<\/span>/gi,'<sub>$1</sub>');
 					v = v.replace(/<span style="font-weight: normal;?">(.*)<\/span>/gi,'$1');
 					v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
 					v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
@@ -1819,10 +1604,6 @@ WYKIWYG.editor = function() {
 			if (div) {
 				div.innerHTML = this.obj.toggletext || 'source';
 			}
-			/*if (this.xhtml && !this.ie) {
-				v = v.replace(/<strong>(.*)<\/strong>/gi,'<span style="font-weight: bold;">$1</span>');
-				v = v.replace(/<em>(.*)<\/em>/gi,'<span style="font-weight: italic;">$1</span>');
-			}*/
 			this.e.body.innerHTML = v;
 			this.t.style.display = 'none'; 
 			this.i.style.display = 'block'; 
@@ -1839,21 +1620,18 @@ WYKIWYG.editor = function() {
 				v = v.replace(/(<img [^>]+[^\/])>/gi,'$1 />');
 				v = v.replace(/<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
 				v = v.replace(/<i\b[^>]*>(.*?)<\/i[^>]*>/gi,'<em>$1</em>');
-				//v = v.replace(/<u\b[^>]*>(.*?)<\/u[^>]*>/gi,'<span style="text-decoration:underline">$1</span>');
 				v = v.replace(/<span style="?text-decoration: underline;?"?>(.*?)<\/span>/gi,'<u>$1</u>');
 				v = v.replace(/<(b|strong|em|i|u) style="font-weight: normal;?">(.*)<\/(b|strong|em|i|u)>/gi,'$2');
 				v = v.replace(/<(b|strong|em|i|u) style="(.*)">(.*)<\/(b|strong|em|i|u)>/gi,'<span style="$2"><$4>$3</$4></span>');
-				// chrome
 				v = v.replace(/<span style="?vertical-align: super;?"?>(.*)<\/span>/gi,'<sup>$1</sup>');
 				v = v.replace(/<span style="?vertical-align: sub;?"?>(.*)<\/span>/gi,'<sub>$1</sub>');
-				
 				v = v.replace(/<span style="font-weight: normal;?">(.*)<\/span>/gi,'$1');
 				v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
 				v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
 				v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
 			}
 			if (div) {
-				div.innerHTML = this.obj.toggletext || 'wysiwyg';
+				div.innerHTML = this.obj.toggletext || 'switch to wysiwyg';
 			}
 			this.t.value = converter.makeWiki(v);
 			if (!post) {
