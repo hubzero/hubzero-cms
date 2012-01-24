@@ -865,9 +865,7 @@ WYKIWYG.converter = function() {
 		}
 		
 		function _DoDefinitionLists(text) {
-			//
 			// Form HTML definition lists.
-			//
 
 			// add sentinel to hack around khtml/safari bug:
 			// http://bugs.webkit.org/show_bug.cgi?id=11231
@@ -891,22 +889,20 @@ WYKIWYG.converter = function() {
 					// HTML block parser. This is a hack to work around the terrible
 					// hack that is the HTML block parser.
 					result = result.replace(/\s+$/,"");
-					result = "<"+list_type+">" + result + "</"+list_type+">\n";
+					result = "<" + list_type + ">" + result + "</" + list_type + ">\n";
 					return result;
 				});
 			} else {
-				//whole_list = /(\n\n|^\n?)(([ ](.+?)\:\:[ \n]+)[^\r]+?(~0|(?=\S)(?!(?:[ ]{3,})[ \t]+)))/g;
-				whole_list = /(\n\n|^\n?)(([ ](.+?)\:\:[ \n]+)[^\n]+)/g;
+				whole_list = /(\n)?([ ]{1}(.+?)[:]{2}[^\r]+?(.+\n)*)/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
-					var runup = m1;
-					var list = m2;
-
-					var list_type = "dl";
+					var runup = m1,
+						list = m2,
+						list_type = "dl";
 					// Turn double returns into triple returns, so that we can make a
 					// paragraph for the last item in a list, if necessary:
 					var list = list.replace(/\n{2,}/g,"\n\n\n");;
 					var result = _ProcessDefListItems(list);
-					result = runup + "<"+list_type+">\n" + result + "</"+list_type+">\n";	
+					result = runup + "<" + list_type + ">\n" + result + "</" + list_type + ">\n";	
 					return result;
 				});
 			}
@@ -918,74 +914,34 @@ WYKIWYG.converter = function() {
 		}
 
 		function _ProcessDefListItems(list_str) {
-		//
-		//  Process the contents of a single ordered or unordered list, splitting it
-		//  into individual list items.
-		//
-			// The $g_list_level global keeps track of when we're inside a list.
-			// Each time we enter a list, we increment it; when we leave a list,
-			// we decrement. If it's zero, we're not in a list anymore.
-			//
-			// We do this because when we're not inside a list, we want to treat
-			// something like this:
-			//
-			//    I recommend upgrading to version
-			//    8. Oops, now this line is treated
-			//    as a sub-list.
-			//
-			// As a single paragraph, despite the fact that the second line starts
-			// with a digit-period-space sequence.
-			//
-			// Whereas when we're inside a list (or sub-list), that line will be
-			// treated as the start of a sub-list. What a kludge, huh? This is
-			// an aspect of Markdown's syntax that's hard to parse perfectly
-			// without resorting to mind-reading. Perhaps the solution is to
-			// change the syntax rules such that sub-lists must start with a
-			// starting cardinal number; e.g. "1." or "a.".
-
+			// Process the contents of a single definition, splitting it
+			// into individual term and definition pairs
 			g_list_level++;
 
 			// trim trailing blank lines:
 			list_str = list_str.replace(/\n{2,}$/,"\n");
 
-			// attacklab: add sentinel to emulate \z
+			// add sentinel to emulate \z
 			list_str += "~0";
 
-			/*
-				list_str = list_str.replace(/
-					(\n)?							// leading line = $1
-					(^[ \t]*)						// leading whitespace = $2
-					([*+-]|\d+[.]) [ \t]+			// list marker = $3
-					([^\r]+?						// list item text   = $4
-					(\n{1,2}))
-					(?= \n* (~0 | \2 ([*+-]|\d+[.]) [ \t]+))
-				/gm, function(){...});
-			*/
-
-			//list_str = list_str.replace(/(\n)?(^[ \t]*)([ ]{3,})[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([ ]{3,})[ \t]+))/gm,
-			//list_str = list_str.replace(/(\n)?([ ]{3,})([^\r]+?(\n{1,2}))(?=\n*(~0|([ ]{3,})))/gm,
-			list_str = list_str.replace(/(\n\n|^\n?)([ ](.+?)\:\:[ \n]+([^\n]+))/gm,
+			list_str = list_str.replace(/(\n)?(\s{1})(.+?):{2}[^\r]+?(~0|(\s{3}(.+))+)/gm,
 				function(wholeMatch,m1,m2,m3,m4){
-					var item = m4;
-					var leading_line = m1;
-					var leading_space = m2;
-					var definition = m3;
+					var leading_line = m1,
+						leading_space = m2,
+						term = m3,
+						definition = m4;
 
-					/*if (leading_line || (item.search(/\n{2,}/)>-1)) {
-						item = _RunBlockGamut(_Outdent(item));
-					}
-					else {*/
-						// Recursion for sub-lists:
-						//item = _DoLists(_Outdent(item));
-						item = item.replace(/\n$/,""); // chomp(item)
-						item = _RunSpanGamut(item);
-					//}
+					term = term.replace(/\n$/,"");
+					term = _RunSpanGamut(term);
+						
+					definition = definition.replace(/\n$/,"");
+					definition = _RunSpanGamut(definition);
 
-					return  "<dt>"+definition+"</dt><dd>" + item + "</dd>\n";
+					return  "<dt>" + term + "</dt><dd>" + definition + "</dd>\n";
 				}
 			);
 
-			// attacklab: strip sentinel
+			// strip sentinel
 			list_str = list_str.replace(/~0/g,"");
 
 			g_list_level--;
@@ -993,9 +949,7 @@ WYKIWYG.converter = function() {
 		}
 		
 		function _DoTables(text) {
-			//
 			// Form HTML tables.
-			//
 
 			// add sentinel to hack around khtml/safari bug:
 			// http://bugs.webkit.org/show_bug.cgi?id=11231
@@ -1023,18 +977,16 @@ WYKIWYG.converter = function() {
 					return result;
 				});
 			} else {
-				//(\n\n|^\n?)(([ \t]*([\|]{2,})[ \t]*)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[\|]{2,})[ \t]*)))
 				whole_list = /(\n\n|^\n?)(([ \t]*([\|]{2,})[ \t]*)[^\r]+?(~0|\n{2,}(?![ \t]*(?:[\|]{2,}))))/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
-					var runup = m1;
-					var list = m2;
+					var runup = m1,
+						list = m2;
 
-					var list_type = "table";
 					// Turn double returns into triple returns, so that we can make a
 					// paragraph for the last item in a list, if necessary:
-					var list = list.replace(/\n{2,}/g,"\n\n\n");;
+					var list = list.replace(/\n{2,}/g,"\n\n\n");
 					var result = _ProcessTableItems(list);
-					result = runup + "<"+list_type+">\n" + result + "</"+list_type+">\n";	
+					result = runup + "<table>\n" + result + "</table>\n";	
 					return result;
 				});
 			}
@@ -1046,10 +998,9 @@ WYKIWYG.converter = function() {
 		}
 
 		function _ProcessTableItems(list_str) {
-			//
 			//  Process the contents of a single table, splitting it
 			//  into individual rows.
-			//
+
 			g_table_level++;
 
 			// trim trailing blank lines:
@@ -1058,45 +1009,25 @@ WYKIWYG.converter = function() {
 			// add sentinel to emulate \z
 			list_str += "~0";
 
-			/*
-				list_str = list_str.replace(/
-					(\n)?							// leading line = $1
-					(^[ \t]*)						// leading whitespace = $2
-					([*+-]|\d+[.]) [ \t]+			// list marker = $3
-					([^\r]+?						// list item text   = $4
-					(\n{1,2}))
-					(?= \n* (~0 | \2 ([*+-]|\d+[.]) [ \t]+))
-				/gm, function(){...});
-			*/
-			list_str = list_str.replace(/(\n)?(^[ \t]*)([\|]{2,})[ \t]*([^\r]+?(\n{1,2}))(?=\n*(~0|\2([\|]{2,})[ \t]*))/gm,
+			list_str = list_str.replace(/(\n)?^(\|{2})(.+?)(\|{2})$/gm,
 				function(wholeMatch,m1,m2,m3,m4){
-					var item = m4;
-					var leading_line = m1;
-					var leading_space = m2;
+					var leading_space = m1,
+						row_start = m2,
+						row = m3,
+						row_end = m4,
+						item = '',
+						i = 0;
 
-					if (leading_line || (item.search(/\n{2,}/)>-1)) {
-						item = _RunBlockGamut(_Outdent(item));
+					cells = row.split('||');
+					for (i; i < cells.length; i++) {
+						item += '<td>' + _RunSpanGamut(cells[i]) + '</td>';
 					}
-					else {
-						// Recursion for sub-lists:
-						item = _DoTables(_Outdent(item));
-						item = item.replace(/\n$/,""); // chomp(item)
-						item = _RunSpanGamut(item);
-					}
-					item = item.replace(/^\|\|/, '<td>');
-					//item = item.replace(/(.*?)([\|]{2,})(.*?)/, '$1</td><td>$3');
-					item = item.replace(/\|\|$/, '</td>');
-					//item = item.replace(/(.*)([\|]{2,})(.*)/g, '$1</td><td>$3');
-					//item = item.replace(/(.*)([\|]{2,})(.*)/g, '$1</td><td>$3');
-					item = item.replace(/(?=\S)([^\r]*?\S)(\|\|)/g,
-						"$1</td><td>");
-					//item = item.replace('||', '</td><td>');
-
-					return  "<tr><td>" + item + "</tr>\n";
+					
+					return  "<tr>" + item + "</tr>\n";
 				}
 			);
 
-			// attacklab: strip sentinel
+			// strip sentinel
 			list_str = list_str.replace(/~0/g,"");
 
 			g_table_level--;
@@ -1104,9 +1035,7 @@ WYKIWYG.converter = function() {
 		}
 
 		function _DoCodeBlocks(text) {
-			//
 			//  Process Wiki `<pre>` blocks.
-			//  
 
 			/*
 				text = text.replace(text,
@@ -1650,8 +1579,8 @@ WYKIWYG.editor = function() {
 			this.i = document.createElement('iframe'); 
 		
 		this.i.frameBorder = 0;
-		this.i.width = obj.width || '500'; 
-		this.i.height = obj.height || '250'; 
+		this.i.width = (obj.width || (this.t.offsetWidth || '500') - 8); 
+		this.i.height = (obj.height || (this.t.offsetHeight || '250') - 8);
 		this.ie = T$$$();
 		h.className = obj.rowclass || 'wykiwyg-header';
 		p.className = obj.cssclass || 'wykiwyg';
@@ -1926,6 +1855,7 @@ WYKIWYG.editor = function() {
 				this.t.style.height = this.i.height+'px';
 				this.i.style.display = 'none';
 				this.t.style.display = 'block';
+				this.t.focus();
 				this.d = 0;
 			}
 		}
@@ -1953,8 +1883,8 @@ jQuery(document).ready(function($){
 		
 		new WYKIWYG.editor.edit('editor',{
 			id: id,
-			width: 600,
-			height: 500,
+			//width: 600,
+			//height: 500,
 			controls: [
 						'bold','italic','underline','strikethrough','|',
 						'subscript','superscript','|',
@@ -1965,7 +1895,8 @@ jQuery(document).ready(function($){
 						//'undo','redo','n',
 						//'font','size',
 						'style','|',
-						'image','hr','link','unlink'
+						//'image',
+						'hr','link','unlink'
 						//'|','cut','copy','paste','print'
 					],
 			footer: true,

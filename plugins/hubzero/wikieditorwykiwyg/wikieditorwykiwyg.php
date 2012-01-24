@@ -47,11 +47,11 @@ class plgHubzeroWikiEditorWykiwyg extends JPlugin
 		parent::__construct($subject, $config);
 		
 		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin('hubzero', 'wikieditorwykiwyg');
+		//$this->_plugin = JPluginHelper::getPlugin('hubzero', 'wikieditorwykiwyg');
 		//$this->loadLanguage();
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$this->params = new JParameter($this->_plugin->params);
+			//$this->params = new JParameter($this->_plugin->params);
 		}
 	}
 	
@@ -78,5 +78,26 @@ class plgHubzeroWikiEditorWykiwyg extends JPlugin
 		$editor = '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $content . '</textarea>' . "\n";
 
 		return $editor;
+	}
+	
+	//-----------
+	
+	public function onGetEditorContent( $editor ) 
+	{
+		return "";
+	}
+
+	//-----------
+
+	public function onSetEditorContent( $editor, $html ) 
+	{
+		return "";
+	}
+	
+	//-----------
+
+	public function onSaveEditorContent( $editor ) 
+	{
+		return "";
 	}
 }

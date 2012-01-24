@@ -8,13 +8,18 @@
 /* Toolbar for editing wiki text */
 	.wykiwyg {
 		border: 1px solid #bbb;
-		padding: 0 1px 1px;
+		padding: 0;
 		font: 12px Verdana, Arial;
 		margin: 0;
+		background: #fff;
 	}
 	.wykiwyg iframe {
 		border: none;
+		margin: 0;
+		padding: 0;
 	}
+	#commentform .wykiwyg textarea
+	#hubForm .wykiwyg textarea,
 	.wykiwyg textarea {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
@@ -24,22 +29,23 @@
 		padding: 0;
 	}
 	.wykiwyg-header {
-		padding-top: 1px;
-		height: 31px; 
-		border-bottom: 1px solid #bbb;
-		background: url("images/header-bg.gif") repeat-x;
-		/*background: #e8e8e8;
-		background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#e8e8e8));
-		background: -webkit-linear-gradient(#f8f8f8, #e8e8e8);
-		background: -moz-linear-gradient(center top, #f8f8f8 0%, #e8e8e8 100%);
-		background: -moz-gradient(center top, #f8f8f8 0%, #e8e8e8 100%);
-		background: -o-linear-gradient(#f8f8f8, #e8e8e8);
-		filter: progid: DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f8f8f8,endColorstr=#e8e8e8);
-		-ms-filter: "progid: DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f8f8f8, endColorstr=#e8e8e8)";*/
+		margin: 0px 1px 0 1px;
+		padding: 0;
+		background: url("images/header-bg.png");
 	}
+	.wykiwyg-header:after {
+		content: "."; 
+		display: block; 
+		height: 0; 
+		clear: both; 
+		visibility: hidden;
+	}
+	#commentform .wykiwyg-header select,
+	#hubForm .wykiwyg-header select,
 	.wykiwyg-header select {
 		float: left;
 		margin-top: 5px;
+		width: auto;
 	}
 	.wykiwyg-font {
 		margin-left: 12px;
@@ -49,14 +55,19 @@
 	}
 	.wykiwyg-style {
 		margin-right: 12px;
+		margin-left: 12px;
 	}
 	.wykiwyg-divider {
 		float: left; 
+		margin: 1px 0 2px 0;
+		padding: 0;
 		width: 1px; 
 		height: 30px; 
 		background: #ccc;
 	}
 	.wykiwyg-control {
+		margin: 1px 0 2px 0;
+		padding: 0;
 		float: left; 
 		width: 34px; 
 		height: 30px; 
@@ -97,6 +108,7 @@
 		margin: 10px;
 		font: 12px 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
 		text-rendering: optimizeLegibility;
+		background: #fff;
 	}
 	#wykiwyg-editor dl {
 		padding-left: 1em;
