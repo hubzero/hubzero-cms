@@ -106,7 +106,7 @@ var ResizableTextbox = new Class({
 					alert("Text too long. Must be 100 characters or less"); 
 				}
 				var newsize = that.options.step * this.getProperty('value').length;
-				if(newsize <= that.options.min) newsize = that.width;
+				if(newsize <= that.options.min) newsize = that.options.min;
 				if(! (this.getProperty('value').length == this.retrieve('rt-value') || newsize <= that.options.min || newsize >= that.options.max))
 					this.setStyle('width', newsize);
 			}
@@ -142,7 +142,7 @@ var TextboxList = new Class({
 		this.events = new Hash;
 		this.count = 0;
 		this.current = false;
-		this.maininput = this.createInput({'class': 'maininput','id':'maininput-'+this.options.inputid});
+		this.maininput = this.createInput({'class': 'maininput','id':'maininput-'+this.options.inputid,'readonly':this.element.getProperty('readonly')});
 		this.holder = new Element('ul', {
 			'class': 'textboxlist-holder '+this.options.listcls, 
 			'events': {
@@ -162,6 +162,18 @@ var TextboxList = new Class({
 		if (value) {
 			values = value.split(',');
 			values.each(function(v){
+				v = v.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+				var id = null, name = null;
+				if (v.match(/(.+?) \((.+?)\)/ig)) {
+					id = v.replace(/(.+?) \((.+?)\)/ig, '$2');
+				    name = v.replace(/(.+?) \((.+?)\)/ig, '$1');
+				}
+				id = (id) ? id : v;
+				name = (name) ? name : id;
+				var val = {
+					'id': id,
+					'name': name
+				};
 				if (v) this.add.apply(this, $type(v) == 'array' ? [v[1], v[0], v[2]] : [v]);
 			}, this);
 		}
@@ -351,17 +363,19 @@ AppleboxList = TextboxList.extend({
 			'mouseenter': function() { this.addClass('bit-hover') },
 			'mouseleave': function() { this.removeClass('bit-hover') }
 		});
-		li.adopt(new Element('a', {
-			'href': '#',
-			'class': 'closebutton',
-			'events': {
-				'click': function(e) {
-					new Event(e).stop();
-					if(! this.current) this.focus(this.maininput);
-					this.dispose(li);
-				}.bind(this)
-			}
-		}));
+		if (!this.element.getProperty('readonly')) {
+			li.adopt(new Element('a', {
+				'href': '#',
+				'class': 'closebutton',
+				'events': {
+					'click': function(e) {
+						new Event(e).stop();
+						if(! this.current) this.focus(this.maininput);
+						this.dispose(li);
+					}.bind(this)
+				}
+			}).appendText('&times;'));
+		}
 		return li;
 	}
 });

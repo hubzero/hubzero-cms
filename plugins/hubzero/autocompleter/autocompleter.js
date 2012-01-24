@@ -31,7 +31,7 @@ Autocompleter.Base = new Class({
 		onHide: Class.empty,
 		customTarget: null,
 		className: 'autocompleter-choices',
-		zIndex: 42,
+		zIndex: 99999,
 		observerOptions: {},
 		fxOptions: {},
 		overflown: [],
@@ -58,7 +58,7 @@ Autocompleter.Base = new Class({
 		else {
 			this.choices = new Element('ul', {
 				'class': this.options.className,
-				styles: {zIndex: this.options.zIndex}
+				styles: { zIndex: this.options.zIndex }
 			}).injectInside(document.body);
 			this.fix = new OverlayFix(this.choices);
 		}
@@ -157,7 +157,11 @@ Autocompleter.Base = new Class({
 	showChoices: function() {
 		if (this.visible || !this.choices.getFirst()) return;
 		this.visible = true;
-		var pos = this.element.getCoordinates(this.options.overflown);
+		if (this.options.tagger) {
+			var pos = this.element.getParent().getParent().getCoordinates(this.options.overflown);
+		} else {
+			var pos = this.element.getCoordinates(this.options.overflown);
+		}
 		var left = (pos.left) ? parseInt(pos.left) : 0;
 		if (Browser.detect().name == 'trident' && Browser.detect().version <= 5 && Browser.detect().ieversion < 8) {
 			var pos2 = this.element.getParent().getParent().getParent().getCoordinates(this.options.overflown);
@@ -411,9 +415,9 @@ Autocompleter.MultiSelectable.Base = Autocompleter.Base.extend({
 		if (!choices || !choices.length) return;
 		if (this.options.maxChoices < choices.length) choices.length = this.options.maxChoices;
 		choices.each(this.options.injectChoice || function(choice, i){
-			var el = new Element('li').setHTML(this.markQueryValue(choice));
+			var el = new Element('li').setHTML(this.markQueryValue(choice.name));
 			//wrapping in quotes is requested/needed  
-			el.inputValue = this.options.wrapSelectionsWithSpacesInQuotes ? choice.wrapInQuotes() : choice;
+			el.inputValue = this.options.wrapSelectionsWithSpacesInQuotes ? choice.name.wrapInQuotes() : choice.name;
 			this.addChoiceEvents(el).injectInside(this.choices);
 		}, this);
 		this.showChoices();
@@ -649,15 +653,23 @@ HUB.Autocomplete = {
 	},
 	
 	initialize: function() {
+		
+		var head = document.head;
+		var styles = document.createElement('link');
+		styles.type = 'text/css';
+		styles.rel = 'stylesheet';
+		styles.href = '/plugins/hubzero/autocompleter/autocompleter.css';
+		head.appendChild(styles);
+		
 		$$('.autocomplete').each(function(input) {
 			// Set some defaults
-			var option = 'tags';
-			var type = 'multi';
-			var tagger = null;
-			var actkn = '';
-			var id = null;
-			var wsel = null;
-			var showid = false;
+			var option = 'tags',
+				type = 'multi',
+				tagger = null,
+				actkn = '',
+				id = null,
+				wsel = null,
+				showid = false;
 			
 			id = input.getProperty('id');
 			if (!id) {
@@ -707,11 +719,11 @@ HUB.Autocomplete = {
 						'wrapSelectionsWithSpacesInQuotes': false,
 						'showid': showid,
 						'injectChoice': function(choice) {
-							var t = (this.options.showid) ? choice[0]+' ('+choice[1]+')' : choice[0];
+							var t = (this.options.showid) ? choice.name+' ('+choice.id+')' : choice.name;
 							var el = new Element('li').setHTML(this.markQueryValue(t));
-							el.setProperty('rel',choice[1]);
-							el.inputValue = choice[0];
-							el.realValue = choice[1];
+							el.setProperty('rel',choice.id);
+							el.inputValue = choice.name;
+							el.realValue = choice.id;
 							this.addChoiceEvents(el).injectInside(this.choices);
 						}
 					}
@@ -726,10 +738,10 @@ HUB.Autocomplete = {
 						'wsel': wsel,
 						'showid': showid,
 						'injectChoice': function(choice) {
-							var el = new Element('li').setHTML(this.markQueryValue(choice[0]));
-							el.setProperty('rel',choice[1]);
-							el.inputValue = choice[1]; //(this.options.showid) ? choice[1]+' ('+id+')' : choice[1];
-							el.realValue = choice[1];
+							var el = new Element('li').setHTML(this.markQueryValue(choice.name));
+							el.setProperty('rel',choice.id);
+							el.inputValue = choice.id; //(this.options.showid) ? choice[1]+' ('+id+')' : choice[1];
+							el.realValue = choice.id;
 							this.addChoiceEvents(el).injectInside(this.choices);
 						},
 						'onSelect': function() {

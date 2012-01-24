@@ -101,20 +101,16 @@ class plgHubzeroAutocompleter extends JPlugin
 
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) {
-			//$document = JFactory::getDocument();
+			$document = JFactory::getDocument();
 			if (JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.jquery.js');
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.jquery.js'.'"></script>';
+				$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.jquery.js');
 			}
 			else 
 			{
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'textboxlist.js'.'"></script>';
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'observer.js'.'"></script>';
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.js'.'"></script>';
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'textboxlist.js');
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'observer.js');
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.js');
+				$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'textboxlist.js');
+				$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'observer.js');
+				$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.js');
 			}
 			//$document->addStyleSheet(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.css');
 
@@ -128,7 +124,6 @@ class plgHubzeroAutocompleter extends JPlugin
 		$html .= ($size)  ? ' size="'.$size.'"'   : '';
 		$html .= ($dsabl) ? ' readonly="readonly"'   : '';
 		$html .= ' value="'. htmlentities($value, ENT_QUOTES) .'" autocomplete="off" />';
-		$html .= $scripts;
 		
 		/*$json = '';
 		if ($value)
