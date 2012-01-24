@@ -1840,8 +1840,13 @@ WYKIWYG.editor = function() {
 				v = v.replace(/<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
 				v = v.replace(/<i\b[^>]*>(.*?)<\/i[^>]*>/gi,'<em>$1</em>');
 				//v = v.replace(/<u\b[^>]*>(.*?)<\/u[^>]*>/gi,'<span style="text-decoration:underline">$1</span>');
+				v = v.replace(/<span style="?text-decoration: underline;?"?>(.*?)<\/span>/gi,'<u>$1</u>');
 				v = v.replace(/<(b|strong|em|i|u) style="font-weight: normal;?">(.*)<\/(b|strong|em|i|u)>/gi,'$2');
 				v = v.replace(/<(b|strong|em|i|u) style="(.*)">(.*)<\/(b|strong|em|i|u)>/gi,'<span style="$2"><$4>$3</$4></span>');
+				// chrome
+				v = v.replace(/<span style="?vertical-align: super;?"?>(.*)<\/span>/gi,'<sup>$1</sup>');
+				v = v.replace(/<span style="?vertical-align: sub;?"?>(.*)<\/span>/gi,'<sub>$1</sub>');
+				
 				v = v.replace(/<span style="font-weight: normal;?">(.*)<\/span>/gi,'$1');
 				v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
 				v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
