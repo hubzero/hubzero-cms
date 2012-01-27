@@ -67,7 +67,7 @@ $juser = JFactory::getUser();
 				<?php echo JText::_('Use sections to group related categories.'); ?>
 			</p>
 		</div>
-		
+
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 			<fieldset>
 				<legend><?php echo JText::_('New Section'); ?></legend>
@@ -76,7 +76,8 @@ $juser = JFactory::getUser();
 					<input type="text" name="fields[title]" id="field-title" value="" />
 				</label>
 				<input type="submit" value="<?php echo JText::_('Create'); ?>" />
-				<input type="hidden" name="task" value="savesection" />
+				<input type="hidden" name="controller" value="sections" />
+				<input type="hidden" name="task" value="save" />
 				<input type="hidden" name="group_id" value="0" />
 			</fieldset>
 		</form>
@@ -88,7 +89,7 @@ $juser = JFactory::getUser();
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search categories'); ?></legend>				
+				<legend><?php echo JText::_('Search categories'); ?></legend>
 				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
