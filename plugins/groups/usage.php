@@ -1,25 +1,25 @@
 <?php
 /**
- * @package		HUBzero                                  CMS
- * @author		Christopher                               <csmoak@purdue.edu>
- * @copyright	Copyright                               2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *                                                    
- *                                                    Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
- *                                                    All rights reserved.
- *                                                    
- *                                                    This program is free software; you can redistribute it and/or
- *                                                    modify it under the terms of the GNU General Public License,
- *                                                    version 2 as published by the Free Software Foundation.
- *                                                    
- *                                                    This program is distributed in the hope that it will be useful,
- *                                                    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *                                                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *                                                    GNU General Public License for more details.
- *                                                    
- *                                                    You should have received a copy of the GNU General Public License
- *                                                    along with this program; if not, write to the Free Software
- *                                                    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     HUBzero CMS
+ * @author      Christopher <csmoak@purdue.edu>
+ * @copyright   Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 // No direct access
@@ -317,8 +317,7 @@ class plgGroupsUsage extends JPlugin
 		}
 		$database =& JFactory::getDBO();
 
-		//ximport('xforum');
-		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'forum'.DS.'forum.class.php');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_forum'.DS.'tables'.DS.'post.php');
 
 		$filters = array();
 		$filters['authorized'] = $authorized;
@@ -326,20 +325,19 @@ class plgGroupsUsage extends JPlugin
 		{
 			case 'sticky':
 				$filters['sticky'] = 1;
-				//$filters['state'] = 0;
 			break;
 			case 'closed':
-				$filters['state'] = 1;
+				$filters['state'] = 2;
 			break;
 			case 'open':
 			default:
-				$filters['state'] = 0;
+				$filters['state'] = 1;
 			break;
 		}
 		$filters['start'] = 0;
 		$filters['group'] = $gid;
 
-		$forum = new XForum( $database );
+		$forum = new ForumPost( $database );
 		return $forum->getCount( $filters );
 	}
 
