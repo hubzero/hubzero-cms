@@ -222,6 +222,9 @@ class modNotices
 
 		// Only do something if the module's time frame hasn't expired
 		if ($this->publish) {
+			ximport('Hubzero_Document');
+			Hubzero_Document::addModuleStylesheet('mod_notices');
+			
 			// Get some parameters
 			$this->moduleid   = $params->get( 'moduleid' );
 			$this->alertlevel = $params->get( 'alertlevel' );

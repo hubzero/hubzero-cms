@@ -1,0 +1,40 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_reportproblems/mod_reportproblems.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_notices
+	-- -- -- -- -- -- --
+
+*/
+
+	.low { 
+		border: 1px solid #C2D6EF; 
+		color: #4379CA; 
+		background: #EFF7FF url("/modules/mod_notices/images/icons/information.png") 10px 10px no-repeat;
+	}
+	.medium { 
+		border: 1px solid #EFEAC2; 
+		color: #CC6633; 
+		background: #FFFDEF url("/modules/mod_notices/images/icons/warning.png") 10px 10px no-repeat;
+	}
+	.high { 
+		border: 1px solid #EFCCC2; 
+		color: #CC0000;
+		background: #FFF2EF url("/modules/mod_notices/images/icons/error.png") 10px 10px no-repeat; 
+	}
+	#sitenotice { 
+		margin: 0;
+	}
+	#sitenotice {
+		padding-left: 30px;
+	}
+	#sitenotice p {
+		padding: 0;
+		margin: 10px 0;
+	}
