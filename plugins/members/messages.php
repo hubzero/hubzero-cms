@@ -593,6 +593,8 @@ class plgMembersMessages extends Hubzero_Plugin
 	
 	public function sendtoarchive($database, $option, $member) 
 	{
+		$limit = JRequest::getInt('limit', 20);
+		$start = JRequest::getInt('limitstart', 0);
 		$mids = JRequest::getVar('mid',array(0));
 		
 		if (count($mids) > 0) {
@@ -619,13 +621,15 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 		
 		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your archive.","passed");
-		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=archive') );
+		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=archive&start='.$start.'&limit='.$limit) );
 	}
 
 	//-----------
 	
 	public function sendtoinbox($database, $option, $member) 
 	{
+		$limit = JRequest::getInt('limit', 20);
+		$start = JRequest::getInt('limitstart', 0);
 		$mids = JRequest::getVar('mid',array(0));
 		
 		if (count($mids) > 0) {
@@ -643,13 +647,15 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 		
 		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your inbox.","passed");
-		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=inbox') );
+		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=inbox&start='.$start.'&limit='.$limit) );
 	}
 
 	//-----------
 	
 	public function sendtotrash($database, $option, $member) 
 	{
+		$limit = JRequest::getInt('limit', 20);
+		$start = JRequest::getInt('limitstart', 0);
 		$mids = JRequest::getVar('mid',array(0));
 		
 		if (count($mids) > 0) {
@@ -678,7 +684,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 		
 		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your trash.","passed");
-		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=trash') );
+		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=trash&start='.$start.'&limit='.$limit) );
 	}
 	
 	//-----------
@@ -698,6 +704,8 @@ class plgMembersMessages extends Hubzero_Plugin
 	
 	public function delete($database, $option, $member) 
 	{
+		$limit = JRequest::getInt('limit', 20);
+		$start = JRequest::getInt('limitstart', 0);
 		$mids = JRequest::getVar('mid',array(0));
 		
 		if (count($mids) > 0) {
@@ -714,13 +722,15 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 		
 		$this->addPluginMessage("You have successfully deleted <b><u>" . count($mids) . "</u></b> message(s).","passed");
-		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=trash') );
+		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=trash&start='.$start.'&limit='.$limit) );
 	}
 	
 	//-----------
 	
 	public function markasread($database, $option, $member) 
 	{
+		$limit = JRequest::getInt('limit', 20);
+		$start = JRequest::getInt('limitstart', 0);
 		$ids = JRequest::getVar('mid',array(0));
 		
 		if (count($ids) > 0) {
@@ -738,13 +748,15 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 		
 		$this->addPluginMessage("You have successfully marked <b><u>" . count($ids) . "</u></b> message(s) as read.","passed");
-		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=inbox') );
+		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=inbox&start='.$start.'&limit='.$limit) );
 	}
 	
 	//-----------
 	
 	public function markasunread($database, $option, $member) 
 	{
+		$limit = JRequest::getInt('limit', 20);
+		$start = JRequest::getInt('limitstart', 0);
 		$ids = JRequest::getVar('mid',array(0));
 		
 		if (count($ids) > 0) {
@@ -761,7 +773,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 		
 		$this->addPluginMessage("You have successfully marked <b><u>" . count($ids) . "</u></b> message(s) as unread.","passed");
-		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=inbox') );
+		return $this->redirect( JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber').'&active=messages&task=inbox&start='.$start.'&limit='.$limit) );
 	}
 	
 	//-----------
