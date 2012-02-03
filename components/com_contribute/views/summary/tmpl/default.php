@@ -206,7 +206,6 @@ if ($categories) {
 			<div class="<?php echo $cls; ?>">
 				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
 				<p><?php echo stripslashes($category->description); ?></p>
-				<p><a class="read-more" href="/contribute/<?php echo $normalized; ?>" title="Learn more about <?php echo htmlentities(stripslashes($category->type),ENT_COMPAT,'UTF-8'); ?>">Learn more <span>about <?php echo stripslashes($category->type); ?> </span>&rsaquo;</a></p>
 			</div>
 		</div><!-- / .three columns <?php echo $clm; ?> -->
 <?php
