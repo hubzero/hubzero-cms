@@ -126,8 +126,16 @@ class AnswersQuestionsLog extends JTable
 
 		$now = date( 'Y-m-d H:i:s', time() );
 
-		//$query = "SELECT count(*) FROM $this->_tbl WHERE qid='".$qid."' AND expires > '".$now."' AND (ip='".$ip."' OR voter='".$voter."')";
-		$query = "SELECT count(*) FROM $this->_tbl WHERE qid='".$qid."' AND (ip='".$ip."' OR voter='".$voter."')";
+		if($voter !== null)
+		{
+			$and = " AND voter='".$voter."'";
+		}
+		else
+		{
+			$and = " AND ip='".$ip."'";
+		}
+
+		$query = "SELECT count(*) FROM $this->_tbl WHERE qid='".$qid."'".$and;
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
