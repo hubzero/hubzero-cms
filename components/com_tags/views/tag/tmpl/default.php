@@ -280,13 +280,13 @@ foreach ($this->results as $category)
 		$feed = str_replace('https:://','http://',$feed);
 
 		$ttl = 0;
-		if (is_array($this->totals[$k])) {
+		if (isset($this->totals[$k]) && is_array($this->totals[$k])) {
 			foreach ($this->totals[$k] as $t)
 			{
 				$ttl += $t;
 			}
 		} else {
-			$ttl = $this->totals[$k];
+			$ttl = (isset($this->totals[$k])) ? $this->totals[$k] : $ttl;
 		}
 		$ttl = ($ttl > 5) ? 5 : $ttl;
 
