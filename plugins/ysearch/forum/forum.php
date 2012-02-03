@@ -53,7 +53,7 @@ class plgYSearchForum extends YSearchPlugin
 	 * @param      object &$results YSearchModelResultSet
 	 * @return     void
 	 */
-	public static function onYSearch($request, &$results)
+	public static function onYSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = "match(f.title, f.comment) against ('".join(' ', $terms['stemmed'])."')";
@@ -68,33 +68,40 @@ class plgYSearchForum extends YSearchPlugin
 			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.comment NOT LIKE '%$forb%')";
 		}
 		
-		$user =& JFactory::getUser();
+		$juser =& JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$groups = array_map('mysql_real_escape_string', $authz->get_group_ids());
-			$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
-			
-			if ($groups)
+			$gids = $authz->get_group_ids();
+			if (!$juser->authorise('core.view', 'com_groups'))
 			{
-				$addtl_where[] = '(f.access IN ('.$viewlevels.') OR ((f.access = 4 OR f.access = 5) AND r.group_id IN ('.join(',', $groups).')))';
+				$addtl_where[] = 'f.group_id IN (0'.($gids ? ',' . join(',', $gids) : '').')';
 			}
 			else 
 			{
-				$addtl_where[] = '(f.access IN ('.$viewlevels.'))';
+				$viewlevels	= implode(',', $juser->getAuthorisedViewLevels());
+
+				if ($gids)
+				{
+					$addtl_where[] = '(f.access IN ('.$viewlevels.') OR ((f.access = 4 OR f.access = 5) AND f.group_id IN (0,'.join(',', $gids).')))';
+				}
+				else 
+				{
+					$addtl_where[] = '(f.access IN ('.$viewlevels.'))';
+				}
 			}
 		}
 		else 
 		{
-			if ($user->guest)
+			if ($juser->get('guest'))
 			{
 				$addtl_where[] = '(f.access = 0)';
 			}
-			elseif ($user->usertype != 'Super Administrator')
+			elseif ($juser->get('usertype') != 'Super Administrator')
 			{
 				$groups = array_map('mysql_real_escape_string', $authz->get_group_ids());
 				if ($groups)
 				{
-					$addtl_where[] = '(f.access = 0 OR f.access = 1 OR ((f.access = 3 OR f.access = 4) AND r.group_id IN ('.join(',', $groups).')))';
+					$addtl_where[] = '(f.access = 0 OR f.access = 1 OR ((f.access = 3 OR f.access = 4) AND f.group_id IN (0,'.join(',', $groups).')))';
 				}
 				else
 				{
@@ -107,17 +114,23 @@ class plgYSearchForum extends YSearchPlugin
 			"SELECT 
 				f.title,
 				coalesce(f.comment, '') AS description,
-				concat('/forum/', coalesce(concat(s.alias, '/'), coalesce(concat(c.alias, '/'), ''), f.id) AS link,
+				(CASE WHEN f.group_id > 0 THEN
+					concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END))
+				ELSE
+					concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
+				END) AS link,
 				$weight AS weight,
-				created AS date,
+				f.created AS date,
 				concat(s.alias, ', ', c.alias) AS section
 			FROM jos_forum_posts f
 			LEFT JOIN jos_forum_categories c 
 				ON c.id = f.category_id
 			LEFT JOIN jos_forum_sections s
 				ON s.id = c.section_id
+			LEFT JOIN jos_xgroups g
+				ON g.gidNumber = f.group_id
 			WHERE 
-				state = 1 AND 
+				f.state = 1 AND 
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
