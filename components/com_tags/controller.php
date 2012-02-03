@@ -162,7 +162,7 @@ class TagsController extends Hubzero_Controller
 		$title = JText::_(strtoupper($this->_option));
 
 		// Incoming
-		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
+		$tagstring = urldecode(trim(JRequest::getVar('tag', '', 'request', 'none', 2)));
 
 		$addtag = trim(JRequest::getVar('addtag', ''));
 
@@ -460,7 +460,9 @@ class TagsController extends Hubzero_Controller
 			foreach ($rows as $row)
 			{
 				//$json[] = '"'.$row->raw_tag.'"';
-				$json[] = '["'.htmlentities(stripslashes($row->raw_tag), ENT_COMPAT, 'UTF-8').'","'.$row->tag.'"]';
+				$name = str_replace("\n", '', stripslashes(trim($row->raw_tag)));
+				$name = str_replace("\r", '', $name);
+				$json[] = '{"id":"'.$row->tag.'","name":"'.htmlentities(stripslashes($name), ENT_COMPAT, 'UTF-8').'"}';
 			}
 		}
 
