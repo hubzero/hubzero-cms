@@ -77,7 +77,7 @@ if ($this->reply->comment)
 	<p class="warning"><?php echo JText::_('NOTICE_POSTING_REPORTED'); ?></p>
 <?php } else { ?>
 	<?php if ($this->reply->comment) { ?>
-		<p><?php echo stripslashes($this->reply->comment); ?></p>
+		<?php echo $this->reply->comment; ?>
 	<?php } else { ?>
 		<p><?php echo JText::_('NO_COMMENT'); ?></p>
 	<?php } ?>
