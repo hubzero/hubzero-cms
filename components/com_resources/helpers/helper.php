@@ -277,6 +277,10 @@ class ResourcesHelper extends JObject
 
 			foreach ($contributors as $contributor)
 			{
+				if (strtolower($contributor->role) == 'submitter') {
+					continue;
+				}
+				
 				// Build the user's name and link to their profile
 				if ($contributor->name) {
 					$name = $contributor->name;
