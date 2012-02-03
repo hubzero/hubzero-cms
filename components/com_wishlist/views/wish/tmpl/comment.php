@@ -39,6 +39,27 @@ if ($this->reply->anonymous != 1) {
 	$name = $this->reply->authorname;
 }
 
+ximport('Hubzero_Wiki_Parser');
+
+$wikiconfig = array(
+	'option'   => $this->option,
+	'scope'    => 'wishlist',
+	'pagename' => 'wishlist',
+	'pageid'   => $this->reply->id,
+	'filepath' => '',
+	'domain'   => $this->reply->id
+);
+
+$p =& Hubzero_Wiki_Parser::getInstance();
+
+if ($this->reply->comment)
+{
+	$this->reply->comment = stripslashes($this->reply->comment);
+	$this->reply->comment = preg_replace('/<br(\s+)\/?>/', '', $this->reply->comment);
+	$this->reply->comment = preg_replace('/\[(attachment #[0-9]{1,} not found)\]/', "$1", $this->reply->comment);
+	$this->reply->comment = $p->parse("\n" . $this->reply->comment, $wikiconfig);
+}
+
 //$commenttype = $this->reply->added_by == $this->wishauthor && $this->reply->anonymous != 1 ?  'submittercomment' : 'plaincomment';
 //$commenttype = $this->reply->admin && $this->reply->anonymous != 1 ? 'admincomment' : $commenttype;
 
