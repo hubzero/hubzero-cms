@@ -99,7 +99,7 @@ if ($this->profile->get('public') == 1) {
 	$html .= ' checked="checked"';
 }
 $html .= '/>'."\n";
-$html .= "\t\t\t".JText::_('Public profile (others may view your profile)')."\n";
+$html .= "\t\t\t".JText::_('List me in the Members directory (others may view my profile)')."\n";
 $html .= "\t\t".'</label>'."\n";
 
 if ($this->registration->Fullname != REG_HIDE) {
