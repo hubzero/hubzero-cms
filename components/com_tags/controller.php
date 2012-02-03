@@ -205,6 +205,7 @@ class TagsController extends Hubzero_Controller
 
 		$tags = array();
 		$added = array();
+		$rt = array();
 		foreach ($tgs as $tag)
 		{
 			$tag = $t->normalize_tag( $tag );
@@ -222,6 +223,7 @@ class TagsController extends Hubzero_Controller
 			// Ensure we loaded the tag's info from the database
 			if ($tagobj->id) {
 				$tags[] = $tagobj;
+				$rt[] = $tagobj->raw_tag;
 			}
 		}
 
@@ -287,15 +289,6 @@ class TagsController extends Hubzero_Controller
 			);
 
 		$limit = ($limit == 0) ? 'all' : $limit;
-
-		// Get the search results
-		/*$results = $dispatcher->trigger( 'onTagView', array(
-				$tags,
-				$limit,
-				$limitstart,
-				$sort,
-				$activeareas)
-		);*/
 
 		// Get the search results
 		if (count($activeareas) > 1) {
@@ -427,7 +420,7 @@ class TagsController extends Hubzero_Controller
 		$view->sort = $sort;
 		$view->total = $total;
 		$view->tagstring = $tagstring;
-		$view->search = implode(', ',$tgs);
+		$view->search = implode(', ',$rt);
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
