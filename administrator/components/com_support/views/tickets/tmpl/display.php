@@ -158,6 +158,15 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$status = 'open';
 		}
 	}
+	
+	if (!trim($row->summary)) 
+	{
+		$row->summary = substr($row->report, 0, 70);
+		if (strlen($row->summary) >= 70) 
+		{
+			$row->summary .= '...';
+		}
+	}
 
 	$tags = $st->get_tag_cloud( 3, 1, $row->id );
 ?>

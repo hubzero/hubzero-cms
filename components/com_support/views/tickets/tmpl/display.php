@@ -217,9 +217,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	//$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
 	$row->report = stripslashes($row->report);
-	//$row->report = str_replace(r, '',$row->report);
-	//$row->report = str_replace(n, '',$row->report);
-	//$row->report = str_replace(t, '',$row->report);
+	if (!trim($row->summary)) 
+	{
+		$row->summary = substr($row->report, 0, 70);
+		if (strlen($row->summary) >= 70) 
+		{
+			$row->summary .= '...';
+		}
+	}
 
 	$tags = $st->get_tag_cloud(3, 1, $row->id);
 ?>
