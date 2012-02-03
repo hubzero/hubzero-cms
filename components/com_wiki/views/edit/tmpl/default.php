@@ -175,7 +175,7 @@ if ($templates) {
 ?>			</select>
 			<?php echo implode("\n",$hi); ?>
 		</label>
-		<label>
+		<label for="pagetext">
 			<?php echo JText::_('WIKI_FIELD_PAGETEXT'); ?>: 
 			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
 			<?php
