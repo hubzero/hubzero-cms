@@ -93,10 +93,10 @@ function submitbutton(pressbutton)
 				<td >
 				<?php if ($this->report->state==0) { ?>
 					<?php echo JText::_('TAKE_ACTION'); ?>:<br />
-					<label><input type="radio" name="task" value="releasereport" /> <?php echo JText::_('RELEASE_ITEM'); ?></label><br />
-					<label><input type="radio" name="task" value="deletereport" /> <?php echo JText::_('DELETE_ITEM'); ?> (Append explanation below - optional)</label><br />
+					<label><input type="radio" name="task" value="release" /> <?php echo JText::_('RELEASE_ITEM'); ?></label><br />
+					<label><input type="radio" name="task" value="remove" /> <?php echo JText::_('DELETE_ITEM'); ?> (Append explanation below - optional)</label><br />
                     <label><textarea name="note" id="note" rows="5" cols="25" style="width: 100%;"></textarea></label><br />
-					<label><input type="radio" name="task" value="abusereports" /> <?php echo JText::_('DECIDE_LATER'); ?></label>
+					<label><input type="radio" name="task" value="cancel" /> <?php echo JText::_('DECIDE_LATER'); ?></label>
 				<?php } else { ?>
 					<input type="hidden" name="task" value="view" />
 				<?php } ?>
