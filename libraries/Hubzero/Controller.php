@@ -240,6 +240,30 @@ class Hubzero_Controller extends JObject
 	}
 
 	/**
+	 * Reset the view object
+	 *
+	 * @param	string	The name of the view
+	 * @param	string	The name of the layout (optional)
+	 * @return	void
+	 */
+	public function setView($name, $layout=null)
+	{
+		$config = array(
+			'name' => $name
+		);
+		if ($layout)
+		{
+			$config['layout'] = $layout;
+		}
+		$this->view = new JView($config);
+		
+		// Set some commonly used vars
+		$this->view->option = $this->_option;
+		$this->view->task = $name;
+		$this->view->controller = $this->_controller;
+	}
+
+	/**
 	 * Register (map) a task to a method in the class.
 	 *
 	 * @param	string	The task.
@@ -376,9 +400,22 @@ class Hubzero_Controller extends JObject
 		$option = ($option) ? $option : $this->_option;
 		$script = ($script) ? $script : $this->_name;
 
-		if (is_file(JPATH_ROOT . DS . 'components' . DS . $option . DS . $script . '.js'))
+		$path = DS . 'components' . DS . $option . DS . $script . '.js';
+		$pathAlt = null;
+
+		$document = JFactory::getDocument();
+		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$document->addScript(DS . 'components' . DS . $option . DS . $script . '.js');
+			$pathAlt = DS . 'components' . DS . $option . DS . $script . '.jquery.js';
+		}
+
+		if ($pathAlt && is_file(JPATH_ROOT . $pathAlt))
+		{
+			$document->addScript($pathAlt);
+		}
+		else if (is_file(JPATH_ROOT . $path))
+		{
+			$document->addScript($path);
 		}
 	}
 
