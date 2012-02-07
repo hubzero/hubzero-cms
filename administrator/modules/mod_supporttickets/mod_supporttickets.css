@@ -35,8 +35,8 @@
 	}
 	.support-stats-overview tbody td {
 		padding: 5px 10px 15px 10px;
-		font-size: 3em;
-		font-weight: bold;
+		font-size: 2.5em;
+		font-weight: normal;
 		border-left: 1px solid #dfdfdf;
 		border-right: 1px solid #dfdfdf;
 		color: #777;
