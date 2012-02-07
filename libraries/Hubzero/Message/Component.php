@@ -109,15 +109,76 @@ class Hubzero_Message_Component extends JTable
 	 * 
 	 * @return     object Return description (if any) ...
 	 */
-	public function getRecords()
+	public function getCount($filters = array())
 	{
-		$query  = "SELECT x.*, c.name 
-					FROM $this->_tbl AS x, #__components AS c
-					WHERE x.component=c.option AND c.parent=0
-					ORDER BY x.component, x.action DESC";
-
+		$query  = "SELECT COUNT(*)";
+		$query .= $this->_buildQuery($filters);
+		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     object Return description (if any) ...
+	 */
+	public function getRecords($filters = array())
+	{
+		$query  = "SELECT x.*, c.name";
+		$query .= $this->_buildQuery($filters);
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Builds a query string based on filters passed
+	 * 
+	 * @return     string SQL
+	 */
+	protected function _buildQuery($filters = array())
+	{
+		$query  = " FROM $this->_tbl AS x";
+		
+		$where = array();
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$query .= ", #__extensions AS c";
+			
+			$where[] = "x.component = c.element";
+			$where[] = "c.type = 'component'";
+			if (isset($filters['component']) && $filters['component'])
+			{
+				$where[] = "c.element = '" . $filters['component'] . "'";
+			}
+		}
+		else 
+		{
+			$query .= ", #__components AS c";
+			
+			$where[] = "x.component = c.option";
+			$where[] = "c.parent = 0";
+			if (isset($filters['component']) && $filters['component'])
+			{
+				$where[] = "c.option = '" . $filters['component'] . "'";
+			}
+		}
+		
+		$query .= " WHERE " . implode(" AND ", $where);
+		if (!isset($filters['sort']) || !$filters['sort'])
+		{
+			$filters['sort'] = 'c.name';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'] . ", x.action DESC";
+		
+		return $query;
 	}
 
 	/**
