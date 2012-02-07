@@ -209,7 +209,7 @@ class WishlistOwner extends JTable
 		}
 
 		// get groups		
-		$groups = $objG->get_owner_groups($listid, $admingroup, $wishlist, $native);
+		$groups = $objG->get_owner_groups($listid, (is_object($admingroup) ? $admingroup->get('group') : $admingroup), $wishlist, $native);
 		if ($groups) {
 			foreach ($groups as $g)
 			{
