@@ -263,14 +263,26 @@ class KbCategory extends JTable
 			$sfield = "section";
 		}
 
-		$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.name AS groupname, 
-				(SELECT count(*) FROM #__faq AS fa WHERE fa.".$sfield."=m.id) AS total, 
-				(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
-			. " FROM #__faq_categories AS m"
-			. " LEFT JOIN #__groups AS g ON g.id = m.access"
-			. " WHERE m.section=".$sect
-			. " ORDER BY ".$filters['filterby']
-			. " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.name AS groupname, 
+					(SELECT count(*) FROM #__faq AS fa WHERE fa.".$sfield."=m.id) AS total, 
+					(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
+				. " FROM #__faq_categories AS m"
+				. " LEFT JOIN #__groups AS g ON g.id = m.access";
+		}
+		else 
+		{
+			$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.title AS groupname, 
+					(SELECT count(*) FROM #__faq AS fa WHERE fa.".$sfield."=m.id) AS total, 
+					(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
+				. " FROM #__faq_categories AS m"
+				. " LEFT JOIN #__viewlevels AS g ON g.id = (m.access + 1)";
+		}
+		$query .= " WHERE m.section=".$sect
+				. " ORDER BY ".$filters['filterby']
+				. " LIMIT ".$filters['start'].",".$filters['limit'];
+		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

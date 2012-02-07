@@ -367,16 +367,26 @@ class KbArticle extends JTable
 			$where = "m.section=0";
 		}
 
-		$query = "SELECT m.id, m.title, m.created, m.state, m.access, m.checked_out, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, cc.title AS cctitle, u.name AS editor, g.name AS groupname"
-			. " FROM $this->_tbl AS m"
-			. " LEFT JOIN #__users AS u ON u.id = m.checked_out"
-			. " LEFT JOIN #__groups AS g ON g.id = m.access"
-			. " LEFT JOIN #__faq_categories AS c ON c.id = m.section"
-			. " LEFT JOIN #__faq_categories AS cc ON cc.id = m.category"
-			. " WHERE ".$where
-			. " ORDER BY ".$filters['filterby']
-			. " LIMIT ".$filters['start'].",".$filters['limit'];
-
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query = "SELECT m.id, m.title, m.created, m.state, m.access, m.checked_out, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, cc.title AS cctitle, u.name AS editor, g.name AS groupname"
+				. " FROM $this->_tbl AS m"
+				. " LEFT JOIN #__users AS u ON u.id = m.checked_out"
+				. " LEFT JOIN #__groups AS g ON g.id = m.access";
+		}
+		else 
+		{
+			$query = "SELECT m.id, m.title, m.created, m.state, m.access, m.checked_out, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, cc.title AS cctitle, u.name AS editor, g.title AS groupname"
+				. " FROM $this->_tbl AS m"
+				. " LEFT JOIN #__users AS u ON u.id = m.checked_out"
+				. " LEFT JOIN #__viewlevels AS g ON g.id = (m.access + 1)";
+		}
+		$query .= " LEFT JOIN #__faq_categories AS c ON c.id = m.section"
+				. " LEFT JOIN #__faq_categories AS cc ON cc.id = m.category"
+				. " WHERE ".$where
+				. " ORDER BY ".$filters['filterby']
+				. " LIMIT ".$filters['start'].",".$filters['limit'];
+		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

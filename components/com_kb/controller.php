@@ -39,20 +39,6 @@ ximport('Hubzero_Controller');
 class KbController extends Hubzero_Controller
 {
 	/**
-	 * Executes a given task
-	 * 
-	 * @return     void
-	 */
-	public function execute()
-	{
-		$doc = JFactory::getDocument();
-		$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
-		$doc->addScriptDeclaration("\tvar j = jQuery.noConflict();");
-		
-		parent::execute();
-	}
-	
-	/**
 	 * Displays an overview of categories and articles in the knowledge base
 	 * 
 	 * @return     void
@@ -97,10 +83,16 @@ class KbController extends Hubzero_Controller
 		$this->view->title  = JText::_('COM_KB');
 		$this->view->catid  = 0;
 		$this->view->config = $this->config;
+
+		$this->view->show_answers_tip = JComponentHelper::isEnabled('com_answers');
+		$this->view->show_wishlist_tip = JComponentHelper::isEnabled('com_wishlist');
+		$this->view->show_ticket_tip = JComponentHelper::isEnabled('com_support');
+
 		if ($this->getError()) 
 		{
 			$this->view->setError($this->getError());
 		}
+
 		$this->view->display();
 	}
 
@@ -146,6 +138,12 @@ class KbController extends Hubzero_Controller
 				$sect = $this->view->category->id;
 			}
 		}
+		
+		if (!$this->view->category->state) 
+		{
+			JError::raiseError(404, JText::_('COM_KB_ERROR_CATEGORY_NOT_FOUND'));
+			return;
+		}
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
@@ -157,6 +155,7 @@ class KbController extends Hubzero_Controller
 		$this->view->filters['section']  = $sect;
 		$this->view->filters['category'] = $cat;
 		$this->view->filters['search']   = JRequest::getVar('search','');
+		$this->view->filters['state']    = 1;
 		if (!$this->juser->get('guest')) 
 		{
 			$this->view->filters['user_id'] = $this->juser->get('id');
@@ -216,8 +215,7 @@ class KbController extends Hubzero_Controller
 	 */
 	public function articleTask()
 	{
-		$this->view->_task = 'article';
-		$this->view->_name = 'article';
+		$this->setView('article');
 
 		// Incoming
 		$alias = JRequest::getVar('alias', '');
@@ -236,6 +234,12 @@ class KbController extends Hubzero_Controller
 		}
 
 		if (!$this->view->article->id) 
+		{
+			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
+			return;
+		}
+		
+		if (!$this->view->article->state) 
 		{
 			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
 			return;
@@ -265,12 +269,22 @@ class KbController extends Hubzero_Controller
 		// Load the category object
 		$this->view->section = new KbCategory($this->database);
 		$this->view->section->load($this->view->article->section);
+		if (!$this->view->section->state) 
+		{
+			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
+			return;
+		}
 
 		// Load the category object
 		$this->view->category = new KbCategory($this->database);
 		if ($this->view->article->category) 
 		{
 			$this->view->category->load($this->view->article->category);
+			if (!$this->view->category->state) 
+			{
+				JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
+				return;
+			}
 		}
 
 		// Get all main categories for menu
@@ -315,7 +329,13 @@ class KbController extends Hubzero_Controller
 		$this->view->replyto->load($r);
 
 		// Get parameters and merge with the component params
-		$rparams = new JParameter($this->view->article->params);
+		$paramClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramClass = 'JRegistry';
+		}
+		$rparams = new $paramClass($this->view->article->params);
+		
 		$this->view->config = $this->config;
 		$this->view->config->merge($rparams);
 
@@ -607,8 +627,7 @@ class KbController extends Hubzero_Controller
 			return;
 		}
 
-		//$this->articleTask();
-		$this->_redirect = 'index.php?option=com_kb&task=article&id='.$comment['entry_id'].'#comments';
+		$this->articleTask();
 	}
 
 	/**
