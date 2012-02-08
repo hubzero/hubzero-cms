@@ -106,7 +106,7 @@
 	#wykiwyg-editor {
 		cursor: text; 
 		margin: 10px;
-		font: 12px 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
+		font: 0.8em/1.3em 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
 		text-rendering: optimizeLegibility;
 		background: #fff;
 	}

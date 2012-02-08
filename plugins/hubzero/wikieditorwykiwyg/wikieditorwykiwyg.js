@@ -613,7 +613,7 @@ WYKIWYG.converter = function() {
 					return result;
 				});
 			} else {
-				whole_list = /(\n\n|^\n?)(([ ]{0,3}([*\*]|[*\#])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#])[ \t]+)))/g;
+				whole_list = /(\n|^\n?)(([ ]{0,3}([*\*]|[*\#])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#])[ \t]+)))/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
 					var runup = m1;
 					var list = m2;
@@ -1685,7 +1685,7 @@ window.addEvent('domready', function(){
 			toggle: true,
 			resize: true,
 			xhtml: true,
-			cssfile: 'plugins/hubzero/wykiwyg/wykiwyg.css',
+			cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css',
 		});
 	});
 });
