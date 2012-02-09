@@ -65,6 +65,32 @@ if ($this->progress['submitted'] == 1) {
 			</div>
 			<fieldset>
 				<h3>Licensing</h3>
+				<label for="license">
+					<?php echo JText::_('License'); ?>
+					<select name="license" id="license">
+						<option value=""><?php echo JText::_('Select license...'); ?></option>
+						<option value="custom"><?php echo JText::_('Custom'); ?></option>
+				<?php 
+				$l = array();
+				$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('[ENTER LICENSE HERE]')) . '" />';
+				foreach ($this->licenses as $license) 
+				{
+					if (substr($license, 0, 6) == 'custom' && intval(substr($license, 7)) != $this->id) 
+					{
+						continue;
+					}
+					?>
+						<option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($license->title); ?></option>
+					<?php 
+					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+				} 
+				?>
+					</select>
+					<div id="license-preview" style="display:none;"><?php echo JText::_('License preview.'); ?></div>
+					<?php echo implode("\n", $l); ?>
+				</label>
+				<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $this->escape(JText::_('[ENTER LICENSE HERE]')); ?></textarea>
+				
 				<label><input class="option" type="checkbox" name="license" value="1" /> <span class="optional">optional</span> 
 				License the work under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
 				The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a> support 
@@ -87,7 +113,7 @@ if ($this->progress['submitted'] == 1) {
 	<?php
 } else {
 	?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="index.php?option=<?php echo $this->option; ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<h4>What happens after I submit?</h4>
 			<p>Your submission will be reviewed. If it is accepted, the submission will be given a "live" status and will appear 
@@ -95,18 +121,45 @@ if ($this->progress['submitted'] == 1) {
 		</div>
 		<fieldset>
 			<h3>Authorization</h3>
-			<label><input class="option" type="checkbox" name="authorization" value="1" /> <span class="required">required</span> I certify that I am the owner of all submitted materials 
-			or am authorized by the owner to grant license to its use and that I hereby grant <?php echo $jconfig->getValue('config.sitename'); ?> license to copy, distribute, display, 
-			and perform the materials here submitted and any derived or collected works based upon them in perpetuity. <?php echo$jconfig->getValue('config.sitename'); ?> may make modifications 
-			to the submitted materials or build upon them as necessary or appropriate for their services. <?php echo $jconfig->getValue('config.sitename'); ?> must attribute these materials to 
-			the author(s). This is a human-readable summary of the Legal Code (<a class="popup 760x560" href="/legal/license">the full license</a>).</label>
 			
-			<?php if ($this->config->get('cc_license')) { ?>
-			<label><input class="option" type="checkbox" name="license" value="1" /> <span class="optional">optional</span> 
-			I further agree to license my work under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
-			I have read the <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a>, which support 
-			non-commercial use, require attribution, and require sharing derivative works under the same license.</label>
+			<label for="authorization">
+				<input class="option" type="checkbox" name="authorization" id="authorization" value="1" /> <span class="required">required</span> 
+				I certify that I am the owner of all submitted materials or am authorized by the owner to grant license to its use and that I 
+				hereby grant <?php echo $jconfig->getValue('config.sitename'); ?> license to copy, distribute, display, and perform the materials 
+				here submitted and any derived or collected works based upon them in perpetuity. <?php echo$jconfig->getValue('config.sitename'); ?> may 
+				make modifications to the submitted materials or build upon them as necessary or appropriate for their services. 
+				
+				<?php echo $jconfig->getValue('config.sitename'); ?> must attribute these materials to the author(s). This is a human-readable summary 
+				of the Legal Code (<a class="popup 760x560" href="/legal/license">the full license</a>).
+			</label>
+			
+<?php if ($this->config->get('cc_license')) { ?>
+			<label for="license">
+				<?php echo JText::_('License'); ?>
+				<select name="license" id="license">
+					<option value=""><?php echo JText::_('Select license...'); ?></option>
+			<?php if ($this->config->get('cc_license_custom')) { ?>
+					<option value="custom"><?php echo JText::_('Custom'); ?></option>
 			<?php } ?>
+			<?php 
+			$l = array();
+			$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('[ENTER LICENSE HERE]')) . '" />';
+			foreach ($this->licenses as $license) 
+			{ 
+				?>
+					<option value="<?php echo $this->escape($license->name); ?>"><?php echo $this->escape($license->title); ?></option>
+				<?php 
+				$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+			} 
+			?>
+				</select>
+				<div id="license-preview" style="display:none;"><?php echo JText::_('License preview.'); ?></div>
+				<?php echo implode("\n", $l); ?>
+			</label>
+			<?php if ($this->config->get('cc_license_custom')) { ?>
+				<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $this->escape(JText::_('[ENTER LICENSE HERE]')); ?></textarea>
+			<?php } ?>
+<?php } ?>
 			
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />

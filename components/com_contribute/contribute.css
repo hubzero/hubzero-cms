@@ -249,6 +249,14 @@
 	#authors-form .submit {
 	}
 /* Preview */
+	#license-preview {
+		background-color: #fff;
+		border: 1px solid #ccc;
+		padding: 1em;
+		margin: 0;
+		height: 10em;
+		overflow: scroll;
+	}
 	#preview-header {
 		margin: 0;
 		padding: 0.2em 0.5em;

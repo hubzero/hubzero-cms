@@ -160,6 +160,29 @@ if (!HUB) {
 //-----------------------------------------------------------
 HUB.Contribute = {
 	initialize: function() {
+		if ($('license-preview')) {
+			$('license-preview').setStyles({'display':'block'});
+		}
+		if ($('license')) {
+			$('license').addEvent('change', function() {
+				if ($(this).value != '') {
+					$('license-preview').innerHTML = $('license-' + $(this).value).value;
+					if ($('license-text')) {
+						if ($(this).value == 'custom') {
+							//$('license-preview').innerHTML = '<textarea name="license-text" cols="75" rows="10">' + $('license-' + $(this).value).value + '</textarea>';
+							$('license-text').setStyles({'display':'inline-block'});
+							$('license-preview').setStyles({'display':'none'});
+						} else {
+							$('license-text').setStyles({'display':'none'});
+							$('license-preview').setStyles({'display':'block'});
+						}
+					}
+				} else {
+					$('license-preview').innerHTML = 'License preview.';
+				}
+			});
+		}
+		
 		new eip($$('.ftitle'), 'index.php', {option: 'com_contribute', task: 'rename', no_html: 1});
 	}
 }

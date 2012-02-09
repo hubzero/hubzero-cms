@@ -426,7 +426,7 @@ class ResourcesHtml
 	 */
 	public function build_path($date='', $id, $base)
 	{
-		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs)) {
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		if ($date) {
@@ -803,41 +803,37 @@ class ResourcesHtml
 	 */
 	public function license($license)
 	{
-		switch ($license)
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'license.php' );
+		
+		$license = str_replace(' ', '-', strtolower($license));
+		$license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
+		
+		$database =& JFactory::getDBO();
+		$rl = new ResourcesLicense($database);
+		$rl->load($license);
+		
+		$html = '';
+		if ($rl->id)
 		{
-			case 'cc3nd':
-			case 'cc3.0nd':
-				$cls = 'cc';
-				$lnk = 'http://creativecommons.org/licenses/by-nc-nd/3.0/';
-				$txt = JText::_('Creative Commons');
-			break;
-			case 'cc3':
-			case 'cc3.0':
-				$cls = 'cc';
-				$lnk = 'http://creativecommons.org/licenses/by-nc-sa/3.0/';
-				$txt = JText::_('Creative Commons');
-			break;
-			case 'cc2.5':
-				$cls = 'cc';
-				$lnk = 'http://creativecommons.org/licenses/by-nc-sa/2.5/';
-				$txt = JText::_('Creative Commons');
-			break;
-			case 'cc':
-				$cls = 'cc';
-				$lnk = 'http://creativecommons.org/licenses/by-nc-sa/2.5/';
-				$txt = JText::_('Creative Commons');
-			break;
-			default:
-				$cls = '';
-				$lnk = '';
-				$txt = '';
-			break;
+			if (substr($rl->name, 0, 6) != 'custom')
+			{
+				$html = '<p class="'.$rl->name.' license">Licensed';
+				if ($rl->url)
+				{
+					$html .= ' according to <a rel="license" href="'.$rl->url.'" title="'.$rl->title.'">this deed</a>';
+				}
+				else 
+				{
+					$html .= ' under '.$rl->title;
+				}
+				$html .= '.</p>';
+			}
+			else 
+			{
+				$html = '<p class="'.$rl->name.' license">Licensed according to <a rel="license" href="'.JRoute::_('index.php?option=com_resources&task=license&id=' .substr($rl->name, 7). 'license=' . $rl->name . '&no_html=1').'">this deed</a>.</p>';
+			}
 		}
-		if ($txt) {
-			return '<p class="'.$cls.' license">Licensed under '.$txt.' according to <a rel="license" href="'.$lnk.'">this deed</a>.</p>'."\n";
-		} else {
-			return '';
-		}
+		return $html;
 	}
 
 	//-------------------------------------------------------------

@@ -1053,7 +1053,7 @@
 		color: #999;
 		font-size: 85%;
 		text-align: left;
-		padding: 0 0 10px 40px;
+		padding: 0 0 10px 95px;
 		margin: 2em 0 1em 0;
 		min-height: 37px;
 		}
@@ -1063,9 +1063,39 @@
 	.closedsource { 
 		background: url("/components/com_resources/images/logos/closedsource.gif") 0 0 no-repeat;
 		}	
-	.cc { 
-		background: url("/components/com_resources/images/logos/creativecommons.gif") 0 0 no-repeat;
-		}
+	.cc,
+	.cc3,
+	.cc25,
+	.cc30 { 
+		background: url("/components/com_resources/images/logos/cc.primary.srr.gif") 0 0 no-repeat;
+	}
+	.cc25-by-nc-sa,
+	.cc30-by-nc-sa { 
+		background: url("/components/com_resources/images/logos/by-nc-sa.png") 0 0 no-repeat;
+	}
+	.cc25-by-nc-nd,
+	.cc30-by-nc-nd { 
+		background: url("/components/com_resources/images/logos/by-nc-nd.png") 0 0 no-repeat;
+	}
+	.cc25-by-nc,
+	.cc30-by-nc { 
+		background: url("/components/com_resources/images/logos/by-nc.png") 0 0 no-repeat;
+	}
+	.cc25-by-nd,
+	.cc30-by-nd { 
+		background: url("/components/com_resources/images/logos/by-nd.png") 0 0 no-repeat;
+	}
+	.cc25-by-sa,
+	.cc30-by-sa { 
+		background: url("/components/com_resources/images/logos/by-sa.png") 0 0 no-repeat;
+	}
+	.cc25-by,
+	.cc30-by { 
+		background: url("/components/com_resources/images/logos/by.png") 0 0 no-repeat;
+	}
+	.publicdomain { 
+		background: url("/components/com_resources/images/logos/publicdomain.png") 0 0 no-repeat;
+	}
 /* Misc */
 	.citations {
 		list-style: none;

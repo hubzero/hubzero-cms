@@ -605,6 +605,7 @@ class ContributeController extends Hubzero_Controller
 
 		// Get some needed libraries
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'license.php' );
 
 		// Load resource info
 		$resource = new ResourcesResource( $this->database );
@@ -633,6 +634,10 @@ class ContributeController extends Hubzero_Controller
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'submit';
+		
+		$rl = new ResourcesLicense($this->database);
+		$view->licenses = $rl->getRecords();
+		
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -985,8 +990,8 @@ class ContributeController extends Hubzero_Controller
 
 		// Is this resource licensed under Creative Commons?
 		if ($this->config->get('cc_license')) {
-			$license = JRequest::getInt( 'license', 0 );
-			if ($license == 1) {
+			$license = JRequest::getVar('license', '');
+			if ($license) {
 				$params = explode("\n",$resource->params);
 				$newparams = array();
 				$flag = 0;
@@ -997,7 +1002,7 @@ class ContributeController extends Hubzero_Controller
 					$p = explode('=',$param);
 					if ($p[0] == 'license') {
 						$flag = 1;
-						$p[1] = 'cc3';
+						$p[1] = $license;
 					}
 					$param = implode('=',$p);
 					$newparams[] = $param;
@@ -1005,11 +1010,30 @@ class ContributeController extends Hubzero_Controller
 
 				// No license param so add it
 				if ($flag == 0) {
-					$newparams[] = 'license=cc3';
+					$newparams[] = 'license=' . $license;
 				}
 
 				// Overwrite the resource's params with the new params
 				$resource->params = implode("\n",$newparams);
+				
+				if (($licenseText = JRequest::getVar('license-text', ''))) 
+				{
+					if ($licenseText == '[ENTER LICENSE HERE]') 
+					{
+						$this->setError( JText::_('Please enter a license.') );
+						$this->check_progress($id);
+						$this->step_review();
+						return;
+					}
+					
+					include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'license.php' );
+					
+					$rl = new ResourcesLicense($this->database);
+					$rl->name = 'custom' . $resouce->id;
+					$rl->text = $licenseText;
+					$rl->check();
+					$rl->store();
+				}
 			}
 		}
 

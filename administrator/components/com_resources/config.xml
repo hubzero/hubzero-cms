@@ -34,7 +34,11 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</param>
 		<param name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
-		<param name="cc_license" type="radio" default="1" label="CC License" description="Show an option for marking new contributions as Creative Commons">
+		<param name="cc_license" type="radio" default="1" label="Apply License" description="Show an option for marking new contributions with a specific license.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cc_license_custom" type="radio" default="0" label="Allow Custom License" description="Show an option for allowing new contributions to have a custom license.">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>

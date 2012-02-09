@@ -60,6 +60,36 @@ require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utilities.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 
 $controllerName = JRequest::getCmd('controller', 'items');
+
+JSubMenuHelper::addEntry(
+	JText::_('Resources'),
+	'index.php?option=' . $option,
+	($controllerName == 'items' && $task != 'orphans')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Orphans'),
+	'index.php?option=' . $option . '&controller=items&task=orphans',
+	$task == 'orphans'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Types'),
+	'index.php?option=' . $option . '&controller=types',
+	$controllerName == 'types'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Licenses'),
+	'index.php?option=' . $option . '&controller=licenses',
+	$controllerName == 'licenses'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Plugins'),
+	'index.php?option=com_plugins&view=plugins&filter_folder=resources'
+);
+
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'items';
+}
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ResourcesController' . ucfirst($controllerName);
 

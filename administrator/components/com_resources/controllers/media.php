@@ -378,13 +378,14 @@ class ResourcesControllerMedia extends Hubzero_Controller
 					continue;
 				}
 
-				if ($file->isDir() && substr($file->name, 0, 5) != '.webm')
+				if ($file->isDir())
 				{
+					$name = $file->getFilename();
 					$folders[$path . DS . $name] = $name;
 					continue;
 				}
 
-				if ($file->isFile() || substr($file->name, 0, 5) == '.webm')
+				if ($file->isFile())
 				{
 					$name = $file->getFilename();
 					if (('cvs' == strtolower($name))

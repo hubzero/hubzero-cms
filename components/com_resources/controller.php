@@ -1854,6 +1854,13 @@ class ResourcesController extends Hubzero_Controller
 		// Incoming
 		$id    = JRequest::getInt('id',0);
 		$alias = JRequest::getVar('alias','');
+		$d 	   = JRequest::getVar('d', 'inline');
+		
+		//make sure we have a proper disposition
+		if($d != "inline" && $d != "attachment")
+		{
+			$d = "inline";
+		}
 
 		// Load the resource
 		$resource = new ResourcesResource( $database );
@@ -1965,7 +1972,7 @@ class ResourcesController extends Hubzero_Controller
 		// Initiate a new content server and serve up the file
 		$xserver = new Hubzero_Content_Server();
 		$xserver->filename($filename);
-		$xserver->disposition('inline');
+		$xserver->disposition($d);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
 		if (!$xserver->serve()) {
