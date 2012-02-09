@@ -283,7 +283,10 @@ class WikiParser
 		// We'll put this back after other processes
 		$text = $this->strip( $text );
 
-		$text = $this->includes( $text );
+		if ($fullparse) 
+		{
+			$text = $this->includes( $text );
+		}
 		// We need to temporarily put back and blocks we stripped and then restrip everything
 		// This is because of any blocks the macros may have outputted - otherwise they wouldn't get processed
 		$text = $this->unstrip( $text, false );
@@ -304,23 +307,28 @@ class WikiParser
 		// properly; putting them before other transformations should keep
 		// exciting things like link expansions from showing up in surprising
 		// places.
-		$text = $this->tables( $text );
+		if ($fullparse) 
+		{
+			$text = $this->tables( $text );
 
-		// Do horizontal rules <hr />
-		$text = preg_replace( '/(^|\n)-----*/', '\\1<hr />', $text );
+			// Do horizontal rules <hr />
+			$text = preg_replace( '/(^|\n)-----*/', '\\1<hr />', $text );
 
-		// Do headings <h1>, <h2>, etc.
-		$text = $this->headings( $text );
-
+			// Do headings <h1>, <h2>, etc.
+			$text = $this->headings( $text );
+		}
 		// Do quotes. '''stuff''' => <strong>stuff</strong>
 		$text = $this->doAllQuotes( $text );
 
 		// Do spans
 		$text = $this->span($text);
 
-		// Process macros
-		$text = $this->macros($text);
-
+		if ($fullparse) 
+		{
+			// Process macros
+			$text = $this->macros($text);
+		}
+		
 		// Do glyphs
 		$text = $this->glyphs($text);
 
@@ -337,18 +345,21 @@ class WikiParser
 		);
 		$text = preg_replace( array_keys($fixtags), array_values($fixtags), $text );
 
-		$text = $this->admonitions( $text );
+		if ($fullparse) 
+		{
+			$text = $this->admonitions( $text );
 
-		// Do definition lists
-		$text = $this->doDFLists( $text );
+			// Do definition lists
+			$text = $this->doDFLists( $text );
 		
-		// Unstrip macro blocks BEFORE doing block levels
-		// or <p> tags will get messy
-		$text = preg_replace_callback('/MACRO'.$this->mUniqPrefix.'/i',array(&$this,"restore_macros"),$text);
+			// Unstrip macro blocks BEFORE doing block levels
+			// or <p> tags will get messy
+			$text = preg_replace_callback('/MACRO'.$this->mUniqPrefix.'/i',array(&$this,"restore_macros"),$text);
 		
-		// Only once and last
-		$text = $this->doBlockLevels( $text, $linestart );
-
+			// Only once and last
+			$text = $this->doBlockLevels( $text, $linestart );
+		}
+		
 		// Put back removed <math>
 		$text = $this->aftermath( $text );
 
