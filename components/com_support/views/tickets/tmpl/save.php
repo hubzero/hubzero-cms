@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->no_html) { ?>
 <div id="report-response">
 	<div>
-		<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
+		<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
 		<p><button onclick="javascript:HUB.ReportProblem.resetForm();" title="<?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?></button></p>
 	</div>
 	<p>
