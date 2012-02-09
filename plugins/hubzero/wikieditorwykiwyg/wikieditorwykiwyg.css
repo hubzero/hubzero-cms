@@ -127,3 +127,128 @@
 		background: #f8f8f8;
 		border: 1px dashed #ccc;
 	}
+/* Columns */
+	#wykiwyg-editor .columns {
+		margin: 0 5% 1em 0;
+		padding: 0;
+		border: none;
+		float: left;
+		text-align: left;
+	}
+/* Two */
+	#wykiwyg-editor .two { 
+		width: 47.5%; 
+	}
+/* Three */
+	#wykiwyg-editor .three {
+		width: 30%;
+	}
+	#wykiwyg-editor .three.first.second,
+	#wykiwyg-editor .three.second.third {
+		width: 65%;
+	}
+/* Four */
+	#wykiwyg-editor .four {
+		width: 21.25%;
+	}
+	#wykiwyg-editor .four.first.second,
+	#wykiwyg-editor .four.second.third,
+	#wykiwyg-editor .four.third.fourth {
+		width: 47.5%;
+	}
+	#wykiwyg-editor .four.first.second.third,
+	#wykiwyg-editor .four.second.third.fourth {
+		width: 73.75%;
+	}
+/* Five */
+	#wykiwyg-editor .five {
+		width: 16%;
+	}
+	#wykiwyg-editor .five.first.second,
+	#wykiwyg-editor .five.second.third,
+	#wykiwyg-editor .five.third.fourth,
+	#wykiwyg-editor .five.fourth.fifth { 
+		width: 37%;
+	}
+	#wykiwyg-editor .five.first.second.third,
+	#wykiwyg-editor .five.second.third.fourth,
+	#wykiwyg-editor .five.third.fourth.fifth {
+		width: 58%;
+	}
+	#wykiwyg-editor .five.first.second.third.fourth,
+	#wykiwyg-editor .five.second.third.fourth.fifth {
+		width: 79%;
+	}
+/* Six */
+	#wykiwyg-editor .six {
+		width: 12.5%;
+	}
+	#wykiwyg-editor .six.first.second,
+	#wykiwyg-editor .six.second.third,
+	#wykiwyg-editor .six.third.fourth,
+	#wykiwyg-editor .six.fourth.fifth,
+	#wykiwyg-editor .six.fifth.sixth { 
+		width: 30%;
+	}
+	#wykiwyg-editor .six.first.second.third,
+	#wykiwyg-editor .six.second.third.fourth,
+	#wykiwyg-editor .six.third.fourth.fifth,
+	#wykiwyg-editor .six.fourth.fifth.sixth {
+		width: 47.5%;
+	}
+	#wykiwyg-editor .six.first.second.third.fourth,
+	#wykiwyg-editor .six.second.third.fourth.fifth,
+	#wykiwyg-editor .six.third.fourth.fifth.sixth {
+		width: 65%;
+	}
+	#wykiwyg-editor .six.first.second.third.fourth.fifth,
+	#wykiwyg-editor .six.second.third.fourth.fifth.sixth {
+		width: 82.5%;
+	}
+	#wykiwyg-editor .two.second,
+	#wykiwyg-editor .three.third,
+	#wykiwyg-editor .four.fourth,
+	#wykiwyg-editor .five.fifth,
+	#wykiwyg-editor .six.sixth {
+		margin-right: 0!important;
+	}
+/* Clear */
+	#wykiwyg-editor .two.second:before,
+	#wykiwyg-editor .two.second:after,
+	#wykiwyg-editor .three.third:before,
+	#wykiwyg-editor .three.third:after,
+	#wykiwyg-editor .four.fourth:before,
+	#wykiwyg-editor .four.fourth:after,
+	#wykiwyg-editor .five.fifth:before,
+	#wykiwyg-editor .five.fifth:after,
+	#wykiwyg-editor .six.sixth:before,
+	#wykiwyg-editor .six.sixth:after {
+		content: "";
+	    display: table;
+	}
+	#wykiwyg-editor .two.second:after,
+	#wykiwyg-editor .three.third:after,
+	#wykiwyg-editor .four.fourth:after,
+	#wykiwyg-editor .five.fifth:after,
+	#wykiwyg-editor .six.sixth:after {
+	    clear: both;
+	}
+	/* For IE 6/7 (trigger hasLayout) */
+	#wykiwyg-editor .two.second,
+	#wykiwyg-editor .three.third,
+	#wykiwyg-editor .four.fourth,
+	#wykiwyg-editor .five.fifth
+	#wykiwyg-editor .six.sixth {
+	    zoom: 1;
+	}
+	#wykiwyg-editor .clear {
+		clear: left;
+	}
+	#wykiwyg-editor .clearfix:after {
+		content: "."; 
+		display: block; 
+		height: 0;
+		line-height: 0em;
+		clear: both; 
+		visibility: hidden;
+	}

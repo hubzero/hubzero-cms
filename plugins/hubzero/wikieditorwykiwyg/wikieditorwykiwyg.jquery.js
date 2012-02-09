@@ -16,7 +16,12 @@ function T$$$() {
 
 WYKIWYG.converter = function() {
 	// HTML to Wiki syntax
-	this.makeWiki = function(string) {	
+	this.makeWiki = function(string) {
+		var columns = {
+			count: 0,
+			cursor: 0
+		};
+		
 		var ELEMENTS = [
 			{
 				patterns: 'p',
@@ -35,7 +40,49 @@ WYKIWYG.converter = function() {
 			{
 				patterns: 'div',
 				replacement: function(str, attrs, innerHTML) {
-					return innerHTML ? '\n' + innerHTML + '' : '';
+					var style = attrs.match(attrRegExp('style')),
+						id = attrs.match(attrRegExp('id')),
+						cls = attrs.match(attrRegExp('class')),
+						replace = '';
+					
+					if (innerHTML == '<!-- columns -->') {
+						return replace;
+					}
+					
+					innerHTML = innerHTML.replace(/^\n\n/, '\n');
+					
+					if (cls && cls[1].indexOf('columns') == -1) {
+						replace += innerHTML ? '\n\n' + '[[Div(start' + (style && style[1] ? ', style=' + style[1] : '' ) + (cls && cls[1] ? ', class=' + cls[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' + innerHTML + '[[Div(end)]]' : '';
+					} else if (cls && cls[1]) {
+						columns.cursor++;
+						
+						var num = cls[1].match(/two|three|four|five|six/gi);
+						
+						cls[1] = cls[1].replace(/columns/, '') // remove columns declaration
+										.replace(/first|second|third|fourth|fifth|sixth/, '') // remove column count
+										.replace(/two|three|four|five|six/, '') // remove coulmn number declaration
+										.replace(/^\s+|\s+$/g,""); // trim whitespace
+						switch (num[0])
+						{
+							case 'six':   columns.count = 6; break;
+							case 'five':  columns.count = 5; break;
+							case 'four':  columns.count = 4; break;
+							case 'three': columns.count = 3; break;
+							case 'two':   columns.count = 2; break;
+							case '': 
+							default: break;
+						}
+						
+						if (columns.cursor == 1) {
+							replace += '[[Column('+columns.count+')]]\n';
+						} else if (columns.cursor == columns.count) {
+							columns.cursor = 0;
+							columns.count = 0;
+						}
+						replace += innerHTML ? '\n' + '[[Column(start' + (style && style[1] ? ', style=' + style[1] : '' ) + (cls && cls[1] ? ', class=' + cls[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' + innerHTML + '[[Column(end)]]\n' : '';
+					}
+					
+					return replace;
 				}
 			},
 			{
@@ -305,7 +352,7 @@ WYKIWYG.converter = function() {
 		function _StripMacros(text) {
 			var text = text.replace(/(\[\[(.+)\]\])/gm,
 				function (wholeMatch, m1, m2) {
-					var key = Math.floor(Math.random()*11);
+					var key = Math.floor(Math.random()*10001);
 
 					g_macros[key] = m1;
 
@@ -562,6 +609,128 @@ WYKIWYG.converter = function() {
 			}
 
 			result += '>' + title + '</a>';
+
+			return result;
+		}
+		
+		function _DoDivs(text) {
+			// Turn Wiki div macros [[Div(start, attribute=value)]]content[[Div(end)]] into <div> tags.
+
+			// Don't forget: encode * and _
+			text = text.replace(/(?:\n\n|^)(\[\[Div\(start(.*?)\)\]\]([\s\S]*?)\[\[Div\(end\)\]\])/gi, writeDivTag);
+			return text;
+		}
+
+		function writeDivTag(wholeMatch, m1, m2, m3, m4) {
+			var whole_match = m1,
+				atts        = m2;
+				content     = m3;
+
+			var a = [];
+			atts = atts.split(',');
+			
+			for (var i=0; i < atts.length; i++) {
+				atts[i] = atts[i].replace(/^\s+|\s+$/g,"");
+				if (atts[i] == '') {
+					continue;
+				}
+				item = atts[i].split('=');
+				if (item.length > 1) {
+					item[0] = item[0].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
+					item[1] = item[1].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
+					a.push(item[0] + '="' + escapeCharacters(item[1],"*_") + '"');
+				}
+			}
+			
+			var result = '<div' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + _RunBlockGamut(content) + '</div>';
+
+			return result;
+		}
+		
+		var columns = {
+			count: 0,
+			cls: '',
+			current: 0
+		};
+		
+		function _DoColumns(text) {
+			// Turn Wiki column macros [[Column(start, attribute=value)]]content[[column(end)]] into <div> tags.
+			//text = text.replace(/(\[\[Column\((\d)\)\]\]([\s\S]*?)\]\](?=((\n{2,}[^\[]|\[\[Column\(\d|$))))/gi, function(wholeMatch, m1, m2, m3, m4) {
+			text = text.replace(/(\[\[Column\((\d)\)\]\]([\s\S]*?)(?=(\[\[Column\(\d|$)))/gi, function(wholeMatch, m1, m2, m3, m4) {
+				var whole_match = m1,
+					cols        = parseInt(m2),
+					content     = m3;
+
+				columns.current = 0;
+				columns.count = cols;
+
+				switch (cols)
+				{
+					case 6: columns.cls = 'six'; break;
+					case 5: columns.cls = 'five'; break;
+					case 4: columns.cls = 'four'; break;
+					case 3: columns.cls = 'three'; break;
+					case 2: columns.cls = 'two'; break;
+					case 1: 
+					default: columns.cls = ''; break;
+				}
+
+				result = content.replace(/(?:\n\n|^)(\[\[Column\(start(.*?)\)\]\]([\s\S]*?)\[\[Column\(end\)\]\])/gi, writeColumnTag);
+
+				columns.cls = '';
+				columns.count = 0;
+				columns.current = 0;
+
+				return result;
+			});
+			return text;
+		}
+
+		function writeColumnTag(wholeMatch, m1, m2, m3, m4) {
+			var whole_match = m1,
+				atts        = m2,
+				content     = m3,
+				a = [],
+				cls = [columns.cls, 'columns'];
+
+			columns.current++;
+			
+			atts = atts.split(',');
+			
+			for (var i=0; i < atts.length; i++) {
+				atts[i] = atts[i].replace(/^\s+|\s+$/g,"");
+				if (atts[i] == '') {
+					continue;
+				}
+				item = atts[i].split('=');
+				if (item.length > 1) {
+					item[0] = item[0].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
+					item[1] = item[1].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
+					
+					if (item[0] == 'class') {
+						cls.push(escapeCharacters(item[1],"*_"));
+						continue;
+					}
+					
+					a.push(item[0] + '="' + escapeCharacters(item[1],"*_") + '"');
+				}
+			}
+			
+			switch (columns.current)
+			{
+				case 6: cls.push('sixth'); break;
+				case 5: cls.push('fifth'); break;
+				case 4: cls.push('fourth'); break;
+				case 3: cls.push('third'); break;
+				case 2: cls.push('second'); break;
+				case 1: 
+				default: cls.push('first'); break;
+			}
+			
+			var result = '<div' + (cls.length > 0 ? ' class="' + cls.join(' ') + '"' : '') + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + _RunBlockGamut(content) + '</div>';
+			if (columns.current == columns.count) {
+				result += "\n\n~K" + (g_html_blocks.push('<div class="clear"><!-- columns --></div>')-1) + "K\n\n"; //'<div class="clear">\n<!-- columns -->\n</div>';
+			}
 
 			return result;
 		}
@@ -1293,6 +1462,9 @@ WYKIWYG.converter = function() {
 		// Strip macros. This must be done before running the block gamut
 		// Otherwise, the link processor would transform macro syntax.
 		// Ex: [[Macro()]] -> [<a href="Macro()">Macro()</a>]
+		text = _DoDivs(text);
+		text = _DoColumns(text);
+		
 		text = _StripMacros(text);
 
 		text = _RunBlockGamut(text);
@@ -1311,6 +1483,8 @@ WYKIWYG.converter = function() {
 
 		// Restore tildes
 		text = text.replace(/~T/g, "~");
+		
+		text = text.replace(/\n{3,}/g, '\n\n');
 		
 		return text;
 	}
