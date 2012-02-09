@@ -35,6 +35,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="2">ON (admin only)</option>
 		</param>
 		<param name="mw_redirect" type="text" menu="hide" label="Redirect" default="/home" description="The URL to redirect to when middleware is OFF" />
+		<param name="stopRedirect" type="text" menu="hide" label="Session Stop Redirect" default="index.php?option=com_members&amp;task=myaccount" description="The URL to redirect to after stopping a session" />
 		<param name="mwDBDriver" type="text" menu="hide" label="Middleware DB Driver" default="mysql" description="Middleware DB Driver" />
 		<param name="mwDBHost" type="text" menu="hide" label="Middleware DB Host" default="localhost" description="Middleware DB Host" />
 		<param name="mwDBPort" type="text" menu="hide" label="Middleware DB Port" default="" description="Middleware DB Port" />

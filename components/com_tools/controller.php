@@ -1014,9 +1014,11 @@ class ToolsController extends Hubzero_Controller
 		$sess = JRequest::getVar( 'sess', '' );
 		$rtrn = base64_decode( JRequest::getVar('return', '', 'method', 'base64') );
 
+		$rediect = $this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount');
+
 		// Ensure we have a session
 		if (!$sess) {
-			$this->_redirect = JRoute::_('index.php?option=com_myhub');
+			$this->_redirect = JRoute::_($redirect);
 			return;
 		}
 
@@ -1035,7 +1037,7 @@ class ToolsController extends Hubzero_Controller
 
 		// Did we get a result form the database?
 		if (!$ms->username) {
-			$this->_redirect = JRoute::_('index.php?option=com_myhub');
+			$this->_redirect = JRoute::_($rediect);
 			return;
 		}
 
@@ -1064,7 +1066,7 @@ class ToolsController extends Hubzero_Controller
 		if ($rtrn) {
 			$this->_redirect = $rtrn;
 		} else {
-			$this->_redirect = JRoute::_('index.php?option=com_myhub');
+			$this->_redirect = JRoute::_($rediect);
 		}
 	}
 
