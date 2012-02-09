@@ -402,6 +402,14 @@ Class GroupPages extends JTable
 				$uid = '0'.$uid;
 			}
 
+			if(strlen($uid) == 3) {
+				$uid = '00'.$uid;
+			}
+
+			if(strlen($uid) == 2) {
+				$uid = '000'.$uid;
+			}
+
 			//build the thumb path
 			$thumb = $pic_parts[0]."_thumb.".$pic_parts[1];
 			$path = 'site'.DS.'members'.DS.$uid.DS;
