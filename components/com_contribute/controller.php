@@ -1407,7 +1407,14 @@ class ContributeController extends Hubzero_Controller
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
+		// Ensure file names fit.
+		$ext = JFile::getExt($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
+		if (strlen($file['name']) > 230)
+		{
+			$file['name'] = substr($file['name'], 0, 230);
+			$file['name'] .= '.' . $ext;
+		}
 
 		// Instantiate a new resource object
 		$row = new ResourcesResource( $this->database );
