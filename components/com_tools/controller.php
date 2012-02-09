@@ -508,7 +508,7 @@ class ToolsController extends Hubzero_Controller
 
 		// Make sure we have an app to invoke
 		if (trim($app['name']) == '') {
-			$this->_redirect = JRoute::_( 'index.php?option=com_myhub' );
+			$this->_redirect = JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'));
 			return;
 		}
 
@@ -806,7 +806,7 @@ class ToolsController extends Hubzero_Controller
 
 		if ($user == $this->juser->get('username')) {
 			// Take us back to the main page...
-			$this->_redirect = JRoute::_( 'index.php?option=com_myhub' );
+			$this->_redirect = JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'));
 			return;
 		}
 
@@ -835,7 +835,7 @@ class ToolsController extends Hubzero_Controller
 
 		// Make sure we have an app to invoke
 		if (trim($app['sess']) == '') {
-			$this->_redirect = JRoute::_( 'index.php?option=com_myhub' );
+			$this->_redirect = JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'));
 			return;
 		}
 
@@ -1089,7 +1089,7 @@ class ToolsController extends Hubzero_Controller
 		$shost = $this->config->get('storagehost');
 
 		if (!$shost) {
-			$this->_redirect = JRoute::_('index.php?option=com_myhub' );
+			$this->_redirect = JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'));
 		}
 
 		$degree = JRequest::getVar('degree','default');
@@ -1122,7 +1122,7 @@ class ToolsController extends Hubzero_Controller
 		$this->storage();
 
 		// Take us back to the main page...
-		//$this->_redirect = JRoute::_('index.php?option=com_myhub' );
+		//$this->_redirect = JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'));
 	}
 
 	/**
