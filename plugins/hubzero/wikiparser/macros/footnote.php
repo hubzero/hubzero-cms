@@ -63,9 +63,17 @@ class FootNoteMacro extends WikiMacro
 	 */
 	public function render()
 	{
+		static $wm;
+		
+		if (!is_object($wm)) {
+			$wm = new stdClass();
+			$wm->footnotes = array();
+			$wm->footnotes_notes = array();
+		}
+		
 		$note = $this->args;
 
-		$wm =& WikiMacro::getInstance();
+		//$wm =& WikiMacro::getInstance();
 
 		$fn = $wm->footnotes;
 		$notes = $wm->footnotes_notes;

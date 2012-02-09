@@ -341,18 +341,26 @@ class WikiParser
 
 		// Do definition lists
 		$text = $this->doDFLists( $text );
-
+		
+		// Unstrip macro blocks BEFORE doing block levels
+		// or <p> tags will get messy
+		$text = preg_replace_callback('/MACRO'.$this->mUniqPrefix.'/i',array(&$this,"restore_macros"),$text);
+		
 		// Only once and last
 		$text = $this->doBlockLevels( $text, $linestart );
 
 		// Put back removed <math>
 		$text = $this->aftermath( $text );
 
-		// Strip out blank space
-		$text = str_replace("<p><br />\n</p>",'',$text);
-
 		// Put back removed <pre> and <code>
 		$text = $this->unstrip( $text );
+
+		// Strip out blank space
+		$text = str_replace("<p><br />\n</p>",'',$text);
+		$text = preg_replace('|<p>\s*?</p>|', '', $text);
+		$text = preg_replace('/<p>\p{Z}*<\/p>/u', '', $text);
+		$text = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $text);
+		$text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $text);
 
 		// Do some clean-up for XHTML compliance
 		//$text = str_replace("<p><pre>",'<pre>',$text);
@@ -783,7 +791,7 @@ class WikiParser
 
 		$text = preg_replace_callback('/<pre><\/pre>/i',array(&$this,"handle_restore_pre"),$text);
 		$text = preg_replace_callback('/<code><\/code>/i',array(&$this,"handle_restore_code"),$text);
-		$text = preg_replace_callback('/MACRO'.$this->mUniqPrefix.'/i',array(&$this,"restore_macros"),$text);
+		//$text = preg_replace_callback('/MACRO'.$this->mUniqPrefix.'/i',array(&$this,"restore_macros"),$text);
 
 		$text = str_replace('<code><code>','<code>',$text);
 		$text = str_replace('</code></code>','</code>',$text);
@@ -1339,52 +1347,62 @@ class WikiParser
 	 */
 	private function getMacro($matches)
 	{
+		static $_macros;
+		
 		if (isset($matches[1]) && $matches[1] != '') {
 			if (strtolower($matches[1]) == 'br') {
 				return '<br />';
 			}
 
 			$matches[1] = strtolower($matches[1]);
-
-			$path = dirname(__FILE__);
-			if (is_file($path.DS.'macros'.DS.$matches[1].'.php')) {
-				include_once($path.DS.'macros'.DS.$matches[1].'.php');
-			} else {
-				return '';
-			}
-
-			$matches[1] = ucfirst($matches[1]);
-
-			$macroname = $matches[1].'Macro';
-
+			$macroname = ucfirst($matches[1]) . 'Macro';
+			
 			if (!$this->domain && strtolower(substr($macroname, 0, 5)) == 'group') {
 				return '<strong>Macro "'.$macroname.'" can only be used in a group wiki.</strong>';
 			}
 
-			if (class_exists($macroname)) {
-				$macro = new $macroname();
-
-				if (isset($matches[3]) && $matches[3]) {
-					$macro->args = $matches[3];
-				}
-				$macro->option   = $this->option;
-				$macro->scope    = $this->scope;
-				$macro->pagename = $this->pagename;
-				$macro->domain   = $this->domain;
-				$macro->uniqPrefix = $this->uniqPrefix();
-				if ($this->pageid > 0) {
-					$macro->pageid   = $this->pageid;
+			if (!isset($_macros[$matches[1]])) {
+				$path = dirname(__FILE__);
+				if (is_file($path.DS.'macros'.DS.$matches[1].'.php')) {
+					include_once($path.DS.'macros'.DS.$matches[1].'.php');
 				} else {
-					$macro->pageid   = JRequest::getInt( 'lid', 0, 'post' );
+					return '';
 				}
-				$macro->filepath = $this->filepath;
 
-				//return $macro->render();
-				array_push($this->macros,$macro->render());
-				return 'MACRO'.$this->mUniqPrefix;
+				if (class_exists($macroname)) {
+					//$macro = new $macroname();
+					$macro = new $macroname();
+					$_macros[$matches[1]] =& $macro;
+				} else {
+					$_macros[$matches[1]] = false;
+				}
 			} else {
+				$macro =& $_macros[$matches[1]];
+			}
+			
+			if (!is_object($macro)) {
 				return '';
 			}
+			
+			$macro->args = null;
+			if (isset($matches[3]) && $matches[3]) {
+				$macro->args = $matches[3];
+			}
+			$macro->option   = $this->option;
+			$macro->scope    = $this->scope;
+			$macro->pagename = $this->pagename;
+			$macro->domain   = $this->domain;
+			$macro->uniqPrefix = $this->uniqPrefix();
+			if ($this->pageid > 0) {
+				$macro->pageid   = $this->pageid;
+			} else {
+				$macro->pageid   = JRequest::getInt( 'lid', 0, 'post' );
+			}
+			$macro->filepath = $this->filepath;
+
+			//return $macro->render();
+			array_push($this->macros,$macro->render());
+			return 'MACRO'.$this->mUniqPrefix;
 		}
 	}
 

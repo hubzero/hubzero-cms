@@ -36,8 +36,11 @@ defined('_JEXEC') or die( 'Restricted access' );
  * 
  * Long description (if any) ...
  */
-class DivMacro extends WikiMacro
+class ColumnMacro extends WikiMacro
 {
+	protected static $_columns = 0;
+	
+	protected static $_cursor = 0;
 
 	/**
 	 * Short description for 'description'
@@ -49,8 +52,8 @@ class DivMacro extends WikiMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Allows content to be wrapped in a `div` tag. This macro must be used twice: `Div(start)` to indicate where to create the opening `div` tag and `Div(end)` to indicate where to close the resulting `div` tag. Attributes may be applied by separating name/value pairs with a comma. Example: Div(start, class=myclass)";
-		$txt['html'] = "<p>Allows content to be wrapped in a <code>&lt;div&gt;</code> tag. This macro must be used twice: <code>[[Div(start)]]</code> to indicate where to create the opening <code>&lt;div&gt;</code> tag and <code>[[Div(end)]]</code> to indicate where to close the resulting <code>&lt;div&gt;</code> tag. Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Div(start, class=myclass)]]</code>";
+		$txt['wiki'] = "Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: `Column(3)`. Then you must use the macro twice to indicate where a column starts and ends: `Column(start)` and `Column(end)`. Attributes may be applied by separating name/value pairs with a comma. Example: Column(start, class=myclass)";
+		$txt['html'] = "<p>Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: <code>[[Column(3)]]</code> Then you must use the macro twice to indicate where a column starts and ends:</p><p><code>[[Column(start)]]<br />content<br />[[Column(end)]]</code></p><p>Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Column(start, class=myclass)]]</code>";
 		return $txt['html'];
 	}
 
@@ -65,35 +68,81 @@ class DivMacro extends WikiMacro
 	{
 		$et = $this->args;
 
-		if (!$et) {
+		if (!$et) 
+		{
 			return '';
 		}
 
 		$attribs = explode(',', $et);
-		$text = array_shift($attribs);
+		$text = strtolower(array_shift($attribs));
+		
+		if (is_numeric($text))
+		{
+			$this->_columns = intval($text);
+			return;
+		}
 
-		if (trim($text) == 'start') {
+		if (trim($text) == 'start') 
+		{
+			$this->_cursor++;
+			
+			$cls = array('columns');
+			
+			switch ($this->_columns)
+			{
+				case 6: $cls[] = 'six';   break;
+				case 5: $cls[] = 'five';  break;
+				case 4: $cls[] = 'four';  break;
+				case 3: $cls[] = 'three'; break;
+				case 2: $cls[] = 'two';   break;
+				default: break;
+			}
+			switch ($this->_cursor)
+			{
+				case 6:  $cls[] = 'sixth';  break;
+				case 5:  $cls[] = 'fifth';  break;
+				case 4:  $cls[] = 'fourth'; break;
+				case 3:  $cls[] = 'third';  break;
+				case 2:  $cls[] = 'second'; break;
+				case 1:
+				default: $cls[] = 'first';  break;
+			}
+			
 			$atts = array();
-			if (!empty($attribs) && count($attribs) > 0) {
+			if (!empty($attribs) && count($attribs) > 0) 
+			{
 				foreach ($attribs as $a)
 				{
 					$a = preg_split('/=/',$a);
-					$key = trim($a[0]);
+					$key = strtolower(trim($a[0]));
 					$val = trim(end($a));
 					$val = trim($val, '"');
 					$val = trim($val, "'");
 					
 					$key = htmlentities($key, ENT_COMPAT, 'UTF-8');
 					$val = htmlentities($val, ENT_COMPAT, 'UTF-8');
+					
+					if ($key == 'class')
+					{
+						$cls[] = $val;
+						continue;
+					}
 
 					$atts[] = $key.'="'.$val.'"';
 				}
 			}
 
-			$div  = '<div';
-			$div .= (!empty($atts)) ? ' '.implode(' ',$atts).'>' : '>';
-		} elseif (trim($text) == 'end') {
+			$div  = '<div class="' . implode(' ', $cls) . '"';
+			$div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
+		} 
+		elseif (trim($text) == 'end') 
+		{
 			$div  = '</div>';
+			if ($this->_cursor == $this->_columns)
+			{
+				$div .= '<div class="clear"><!-- columns --></div>';
+				$this->_cursor = 0;
+			}
 		}
 
 		return $div;
