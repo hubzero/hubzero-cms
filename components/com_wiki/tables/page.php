@@ -641,9 +641,11 @@ class WikiPage extends JTable
 				if (isset($filters['authorized']) && $filters['authorized'] === 'admin') {
 					$query .= "";
 				} else {
-					ximport('Hubzero_User_Helper');
+					ximport('Hubzero_User_Profile');
 
-					$ugs = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
+					$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+					$ugs = (is_object($profile)) ? $profile->getGroups('members') : array();
+					
 					$groups = array();
 					if ($ugs && count($ugs) > 0) {
 						foreach ($ugs as $ug)

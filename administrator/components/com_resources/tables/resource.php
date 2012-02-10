@@ -463,8 +463,9 @@ class ResourcesResource extends JTable
 		if (isset($filters['access']) && $filters['access'] == 'public') {
 			$query .= "(C.access=0 OR C.access=3) ";
 		} else if (!$juser->get('guest')) {
-			ximport('Hubzero_User_Helper');
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			ximport('Hubzero_User_Profile');
+			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$xgroups = (is_object($profile)) ? $profile->getGroups('all') : array();
 			if ($xgroups != '') {
 				$usersgroups = $this->getUsersGroups($xgroups);
 				if (count($usersgroups) > 1) {
@@ -724,8 +725,9 @@ class ResourcesResource extends JTable
 		} else {
 			if (!$juser->get('guest')) {
 				if (!isset($filters['usergroups'])) {
-					ximport('Hubzero_User_Helper');
-					$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+					ximport('Hubzero_User_Profile');
+					$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+					$xgroups = $profile->getGroups('all');
 				} else {
 					$xgroups = $filters['usergroups'];
 				}
