@@ -2327,25 +2327,63 @@ class Hubzero_Group
 	 */
 	public function is_member_of($table, $uid)
 	{
-		$db =& JFactory::getDBO();
+		static $groups;
+		
+		if (!in_array($table, array('applicants','members','managers','invitees')))
+		{
+			return false;
+		}
+		
+		if (!isset($groups))
+		{
+			$groups = array(
+				'applicants' => array(),
+				'invitees'   => array(),
+				'members'    => array(),
+				'managers'   => array(),
+				'all'        => array()
+			);
+			
+			$db =& JFactory::getDBO();
+			
+			$query = "(select uidNumber, 'invitee' AS role from #__xgroups_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
+				UNION
+					(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber=" . $db->Quote($this->gidNumber) . ")
+				UNION
+					(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber=" . $db->Quote($this->gidNumber) . ")
+				UNION
+					(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->Quote($this->gidNumber) . ")";
+			$db->setQuery($query);
+			if (($results = $db->loadObjectList()))
+			{
+				foreach ($results as $result)
+				{
+					if (isset($groups[$result->role]))
+					{
+						$groups[$result->role][] = $result->uidNumber;
+					}
+				}
+			}
+		}
 
 		if (!is_numeric($uid))
+		{
 			$uidNumber = JUserHelper::getUserId($uid);
+		}
 		else
+		{
 			$uidNumber = $uid;
+		}
 
-		if (!in_array($table, array('applicants','members','managers','invitees')))
-			return false;
-
-		$table = '#__xgroups_' . $table;
+		/*$table = '#__xgroups_' . $table;
 
 		$query = "SELECT * FROM $table WHERE gidNumber=" . $db->Quote($this->gidNumber) . " AND uidNumber=" . $db->Quote($uidNumber) . ";";
 
 		$db->setQuery($query);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadResultArray();*/
 
-		return !empty($result);
+		return in_array($uidNumber, $groups[$table]);
 	}
 
 	/**
