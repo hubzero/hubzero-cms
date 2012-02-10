@@ -37,9 +37,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 </h3>
 <?php
 if ($this->rows) {
-	$config =& JComponentHelper::getParams( $this->option );
-	$hubDOIpath = $config->get('doi');
-
 	$cls = 'even';
 ?>
 <table class="resource-versions" summary="<?php echo JText::_('PLG_RESOURCES_VERSIONS_TBL_SUMMARY'); ?>">
@@ -55,7 +52,18 @@ if ($this->rows) {
 <?php
 	foreach ($this->rows as $v)
 	{
-		$handle = ($v->doi) ? $hubDOIpath.'r'.$this->resource->id.'.'.$v->doi : '' ;
+		$handle = '';
+		
+		if($v->doi && $this->tconfig->get('doi_shoulder'))
+		{
+			$handle = 'doi:' . $this->tconfig->get('doi_shoulder') . DS . strtoupper($v->doi);
+			$handle = '<a href="'.$this->tconfig->get('doi_resolve', 'http://dx.doi.org/') . $handle . '">'.$handle.'</a>';
+		}
+		else if($v->doi_label)
+		{
+			$handle = 'doi:10254/' . $this->tconfig->get('doi_prefix') . $this->resource->id . '.' . $v->doi_label;
+			$handle = '<a href="http://hdl.handle.net/'.$handle.'">'.$handle.'</a>';
+		}
 
 		$cls = (($cls == 'even') ? 'odd' : 'even');
 ?>
@@ -67,7 +75,7 @@ if ($this->rows) {
 				<?php echo ($v->released && $v->released!='0000-00-00 00:00:00') ? JHTML::_('date',$v->released, '%d %b %Y') : 'N/A'; ?>
 			</td>
 			<td>
-				<?php echo ($handle) ? '<a href="http://hdl.handle.net/'.$handle.'">'.$handle.'</a>' : 'N/A'; ?>
+				<?php echo ($handle) ? $handle : 'N/A'; ?>
 			</td>
 			<td>
 				<span class="<?php echo ($v->state=='1') ? 'toolpublished' : 'toolunpublished'; ?>">

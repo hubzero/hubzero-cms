@@ -1036,8 +1036,23 @@ class ResourcesHtml
 		$html  = '<span ';
 		$html .= ' class="Z3988"';
 		$html .= ' title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
+		
+		// Get contribtool params
+		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
+		$doi = '';
+		
+		/*
+		if(isset($resource->doi) && $resource->doi  && $tconfig->get('doi_shoulder'))
+		{
+			$doi = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($resource->doi);
+		}
+		else if(isset($resource->doi_label) && $resource->doi_label)
+		{
+			$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $resource->id . '.' . $resource->doi_label;
+		}*/
+		
 		$html .= isset($resource->doi)
-			? '&amp;rft_id=info%3Adoi%2F'.urlencode($config->get('doi').'r'.$resource->id.'.'.$resource->doi)
+			? '&amp;rft_id=info%3Adoi%2F'.urlencode($resource->doi)
 			: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
 		//$html.= '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
 		$html .= '&amp;rft.genre=article';
@@ -1514,8 +1529,22 @@ class ResourcesHtml
 					$cite = new stdClass();
 					$cite->title = $resource->title;
 					$cite->year = JHTML::_('date', $thedate, '%Y');
-					if ($alltools && $resource->doi) {
-						$cite->location = ' <a href="'.$config->get('aboutdoi').'" title="'.JText::_('COM_RESOURCES_ABOUT_DOI').'">DOI</a>: '.$config->get('doi').'r'.$resource->id.'.'.$resource->doi;
+					if ($alltools && ($resource->doi || $resource->doi_label)) {
+						
+						// Get contribtool params
+						$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
+						$doi = '';
+						
+						if($resource->doi && $tconfig->get('doi_shoulder'))
+						{
+							$doi = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($resource->doi);
+						}
+						else
+						{
+							$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $resource->id . '.' . $resource->doi_label;
+						}
+						$cite->location = ' <a href="' . $config->get('aboutdoi') 
+						. '" title="' . JText::_('COM_RESOURCES_ABOUT_DOI') . '"></a>: '. $doi;
 						$cite->date = '';
 					} else {
 						$juri =& JURI::getInstance();
@@ -1631,8 +1660,8 @@ class ResourcesHtml
 			$html .= CitationFormat::formatReference($cite);
 			if ($rev!='dev') {
 				$html .= "\t\t".'<p class="details">'."\n";
-				$html .= "\t\t\t".'<a href="index.php?option='.$option.'&task=citation&id='.$id.'&format=bibtex&no_html=1&rev='.$rev.'" title="'.JText::_('DOWNLOAD_BIBTEX_FORMAT').'">BibTex</a> <span>|</span> '."\n";
-				$html .= "\t\t\t".'<a href="index.php?option='.$option.'&task=citation&id='.$id.'&format=endnote&no_html=1&rev='.$rev.'" title="'.JText::_('DOWNLOAD_ENDNOTE_FORMAT').'">EndNote</a>'."\n";
+				$html .= "\t\t\t".'<a href="index.php?option='.$option.'&task=citation&id='.$id.'&format=bibtex&no_html=1&rev='.$rev.'" title="'.JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT').'">BibTex</a> <span>|</span> '."\n";
+				$html .= "\t\t\t".'<a href="index.php?option='.$option.'&task=citation&id='.$id.'&format=endnote&no_html=1&rev='.$rev.'" title="'.JText::_('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT').'">EndNote</a>'."\n";
 				$html .= "\t\t".'</p>'."\n";
 			}
 			$html .= "\t".'</li>'."\n";

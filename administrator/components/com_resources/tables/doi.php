@@ -230,17 +230,62 @@ class ResourcesDoi extends JTable
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $service Parameter description (if any) ...
+	 * @param      unknown $config Parameter description (if any) ...
 	 * @param      array $metadata Parameter description (if any) ...
 	 * @param      string &$doierr Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function registerDOI( $service = NULL, $metadata = array(), &$doierr='' )
+	public function registerDOI( $authors, $config, $metadata = array(), &$doierr='' )
 	{
-		if($service == NULL or empty($metadata)) {
+		if(empty($metadata)) {
 			return false;
 		}
+		
+		// Get configs
+		$jconfig 	=& JFactory::getConfig();
+		$shoulder   = $config->get('doi_shoulder', '10.4231' );
+		$service    = $config->get('doi_newservice', 'https://n2t.net/ezid' );
+		$prefix     = $config->get('doi_newprefix', '' );
+		$handle     = '';
+		$doi 		= '';
+		
+		// Collect metadata
+		$metadata['publisher']  = htmlspecialchars($config->get('doi_publisher', $jconfig->getValue('config.sitename') ));
+		$metadata['pubYear'] 	= isset($metadata['pubYear']) ? $metadata['pubYear'] : date( 'Y' );
+		$metadata['language'] 	= 'en';
 
+		// Clean up paths
+		if (substr($service, -1, 1) == DS) {
+			$service = substr($service, 0, (strlen($service) - 1));
+		}
+		if (substr($shoulder, -1, 1) == DS) {
+			$shoulder = substr($shoulder, 0, (strlen($shoulder) - 1));
+		}
+
+		// Make service path
+		$call  = $service . DS . 'shoulder' . DS . 'doi:' . $shoulder;
+		$call .= $prefix ? DS . $prefix : DS;
+
+		// Get config
+		$livesite = $jconfig->getValue('config.live_site');
+		if(!$livesite || !isset($metadata['targetURL']) || !isset($metadata['title'])) {
+			$doierr .= 'Missing url, title or live site configuration';
+			return false;
+		}
+		
+		// Get first author / creator name
+		if($authors && count($authors) > 0) {
+			$creatorName = $authors[0]->name;
+		}
+		else {
+			$creatorName = '';
+		}
+		
+		// Format name
+		$nameParts    = explode(" ", $creatorName);
+		$metadata['creator']  = end($nameParts);
+		$metadata['creator'] .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';	
+		
 		// Start input
 		$input  = "_target: " . $metadata['targetURL'] ."\n";
 		$input .= "datacite.creator: " . $metadata['creator'] . "\n";
@@ -250,7 +295,7 @@ class ResourcesDoi extends JTable
 		$input .= "_profile: datacite";
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $service);
+		curl_setopt($ch, CURLOPT_URL, $call);
 
 		/* Purdue Hubzero Username/Password */
 		curl_setopt($ch, CURLOPT_USERPWD, '');
@@ -267,16 +312,129 @@ class ResourcesDoi extends JTable
 		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($success === 201) {
 			$out = explode('/', $output);
-			$output = trim(end($out));
+			$handle = trim(end($out));
 		}
 		else {
 			$doierr = $success . $output;
-			$output = 0;
+			$doierr.= ' '.$call;
+			$handle = 0;
+		}
+		
+		$handle = strtoupper($handle);
+		$doi = $shoulder . DS . $handle;
+		curl_close($ch);
+	
+		// Prepare XML data
+		if($handle) {
+			$xdoc = new DomDocument;
+			$xmlfile = $this->getXml($authors, $metadata, $doi);	
+			$xmlschema = 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd';
+
+			//Load the xml document in the DOMDocument object
+			$xdoc->loadXML($xmlfile);
+
+			//Validate the XML file against the schema
+			if ($xdoc->schemaValidate($xmlschema)) {
+
+			    /*EZID parses text received based on new lines. */
+				$input  = "_target: " . $metadata['targetURL'] ."\n";
+				$input .= "datacite.creator: " . $metadata['creator'] . "\n";
+				$input .= "datacite.title: ". $metadata['title'] . "\n";
+				$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
+				$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
+				$input .= "_profile: datacite";
+
+			    /*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
+			    $input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
+
+				// Make service path
+				$call  = $service . DS . 'id' . DS . 'doi:' . $doi;	
+
+			    $ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $call);
+
+			    /* Purdue Hubzero Username/Password */
+			    curl_setopt($ch, CURLOPT_USERPWD, '');
+			    curl_setopt($ch, CURLOPT_POST, true);
+
+			    curl_setopt($ch, CURLOPT_HTTPHEADER,
+			      array('Content-Type: text/plain; charset=UTF-8',
+			            'Content-Length: ' . strlen($input)));
+			    curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
+			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			    $output = curl_exec($ch);
+			    curl_close($ch);
+			} else {
+				$doierr .= "XML is invaild. DOI has been created but unable to upload XML as it is invalid. Please modify the created DOI with a valid XML .\n";
+			}		
 		}
 
-		curl_close($ch);
-
-		return $output;
+		return $handle ? $handle : NULL;
+	}
+	
+	/**
+	 * Short description for 'getXml'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $authors Parameter description (if any) ...
+	 * @param      array $metadata Parameter description (if any) ...
+	 * @param      unknown $doi Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
+	public function getXml( $authors, $metadata, $doi = 0)
+	{
+		$datePublished = isset($metadata['datePublished']) 
+					? $metadata['datePublished'] : date( 'Y-m-d' );
+		$dateAccepted  = date( 'Y-m-d' );
+		
+		$xmlfile = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns="http://datacite.org/schema/kernel-2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-2.1 http://schema.datacite.org/meta/kernel-2.1/metadata.xsd">
+	     <identifier identifierType="DOI">'.$doi.'</identifier>';
+	 	$xmlfile.='<creators>';
+		if($authors && count($authors) > 0) {
+			foreach($authors as $author) {
+				$nameParts    = explode(" ", $author->name);
+				$name  = end($nameParts);
+				$name .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
+				$xmlfile.='<creator>';
+				$xmlfile.='	<creatorName>'.$name.'</creatorName>';
+				$xmlfile.='</creator>';
+			}
+		}
+		else {
+			$xmlfile.='<creator>';
+			$xmlfile.='	<creatorName>'.$metadata['creator'].'</creatorName>';
+			$xmlfile.='</creator>';
+		}
+	    $xmlfile.='</creators>';
+	    $xmlfile.='<titles>
+	        <title>'.$metadata['title'].'</title>
+	    </titles>
+	    <publisher>'.$metadata['publisher'].'</publisher>
+	    <publicationYear>'.$metadata['pubYear'].'</publicationYear>
+	    <dates>
+	        <date dateType="Valid">'.$datePublished.'</date>
+	        <date dateType="Accepted">'.$dateAccepted.'</date>
+	    </dates>
+	    <language>'.$metadata['language'].'</language>';
+		
+		if(isset($metadata['typetitle']) && $metadata['typetitle'] != '') {
+			$xmlfile.= '<resourceType resourceTypeGeneral="Image">'.$metadata['typetitle'].'</resourceType>';
+		}
+	    if(isset($metadata['version']) && $metadata['version'] != '') {
+			$xmlfile.= '<version>'.$metadata['version'].'</version>';
+		}
+		if(isset($metadata['abstract']) && $metadata['abstract'] != '') {
+			$xmlfile.= '<descriptions>
+		        <description descriptionType="Other">';
+			$xmlfile.= $metadata['abstract'];
+			$xmlfile.= '</description>
+			    </descriptions>';
+		}
+		
+		$xmlfile.='</resource>';
+		return $xmlfile;
+	
 	}
 
 	/**

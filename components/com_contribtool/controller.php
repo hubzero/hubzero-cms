@@ -2729,31 +2729,20 @@ class ContribtoolController extends JObject
 
 					// Get config
 					$config =& JComponentHelper::getParams( $this->_option );
-					$shoulder = $config->get('doi_shoulder', '10.9999' );
-
-					// Make up service URL
-					$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;
 
 					// Collect metadata
-					$metadata = array();
-					$metadata['targetURL'] = $url;
-					$metadata['title'] = htmlspecialchars($status['title']);
-					$metadata['publisher'] = htmlspecialchars($config->get('doi_publisher', $hubShortName ));
-					$metadata['pubYear'] = date( 'Y' );
+					$metadata 					= array();
+					$metadata['targetURL'] 		= $url;
+					$metadata['title'] 			= htmlspecialchars(stripslashes($status['title']));
+					$metadata['version'] 		= $status['version'];
+					$metadata['abstract'] 		= htmlspecialchars(stripslashes($status['description']));
 
-					// Get first author
+					// Get authors
 					$objA = new ToolAuthor( $database);
-					$firstAuthor = $objA->getFirstAuthor($status['resourceid']);
-					$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
-
-					// Format name
-					$nameParts   = explode(" ", $firstAuthor);
-					$authorName  = end($nameParts);
-					$authorName .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
-					$metadata['creator'] = $authorName;
+					$authors = $objA->getAuthorsDOI($status['resourceid']);
 
 					// Register DOI
-					$doiSuccess = $objDOI->registerDOI( $service, $metadata, $doierr);
+					$doiSuccess = $objDOI->registerDOI( $authors, $config, $metadata, $doierr);
 
 					// Also create a handle using the old service
 					if($doiSuccess && $old_doi) {

@@ -883,13 +883,9 @@ class ContribtoolController extends JObject
 		$xhub =& Hubzero_Factory::getHub();
 		$livesite 		= $xhub->getCfg('hubLongURL');
 		$hubShortName 	= $xhub->getCfg('hubShortName');
-
-		// Get service config
-		$shoulder = $this->config->get('doi_shoulder', '10.9999' );
-		$publisher = $this->config->get('doi_publisher', $hubShortName );
-
-		// Make up service URL
-		$service = 'https://n2t.net/ezid/shoulder/doi:' . $shoulder.DS;
+		
+		// Get config
+		$config =& JComponentHelper::getParams( $this->_option );
 
 		// Get all tool publications without new DOI
 		$query = "SELECT * FROM #__doi_mapping WHERE doi='' OR doi IS NULL ";
@@ -934,32 +930,14 @@ class ContribtoolController extends JObject
 				$metadata = array();
 				$metadata['targetURL'] = $livesite . '/resources/' . $row->rid . '/?rev='.$row->local_revision;
 				$metadata['title'] = htmlspecialchars($title);
-				$metadata['publisher'] = htmlspecialchars($publisher);
 				$metadata['pubYear'] = $pubyear;
-
-				// Get first author
-				$query = "SELECT x.name FROM #__xprofiles x ";
-				$query.= " JOIN #__tool_authors AS a ON x.uidNumber=a.uid ";
-				$query.= " AND a.toolname='".$row->alias."' AND a.revision='".$row->local_revision."'";
-				$query.= " ORDER BY a.ordering ASC LIMIT 1";
-				$database->setQuery( $query );
-				$firstAuthor = $database->loadResult();
-				$firstAuthor = $firstAuthor ? htmlspecialchars($firstAuthor) : '';
-
-				// Format name
-				if($firstAuthor) {
-					$nameParts   = explode(" ", $firstAuthor);
-					$authorName  = end($nameParts);
-					$authorName .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
-				}
-				else {
-					$authorName = '';
-				}
-
-				$metadata['creator'] = $authorName;
+				
+				// Get authors
+				$objA = new ToolAuthor( $database);
+				$authors = $objA->getAuthorsDOI($row->rid);
 
 				// Register DOI			
-				$doiSuccess = $objDOI->registerDOI( $service, $metadata, $doierr);
+				$doiSuccess = $objDOI->registerDOI( $authors, $config, $metadata, $doierr);
 				if($doiSuccess) {
 					$query = "UPDATE #__doi_mapping SET doi='$doiSuccess' ";
 					$query.= "WHERE rid=$row->rid AND local_revision=$row->local_revision";
@@ -976,7 +954,6 @@ class ContribtoolController extends JObject
 					echo '<br />';
 					print_r($metadata);
 					echo '<br />';
-					echo $service;
 				}
 
 				$i++;

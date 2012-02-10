@@ -206,24 +206,35 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 			$cite = new stdClass();
 			$cite->title = $this->resource->title;
 			$cite->year = JHTML::_('date', $thedate, '%Y');
-			if ($this->alltools && $this->resource->doi) {
-				$cite->location = ' <a href="'.$this->config->get('aboutdoi').'" title="'.JText::_('PLG_RESOURCES_ABOUT_ABOUT_DOI').'">DOI</a>: '.$this->config->get('doi').'r'.$this->resource->id.'.'.$this->resource->doi;
-				$cite->date = '';
-			} else {
-				$juri =& JURI::getInstance();
-				if (substr($sef,0,1) == '/') {
-					$sef = substr($sef,1,strlen($sef));
-				}
-				$cite->location = $juri->base() . $sef;
-				$cite->date = date("Y-m-d H:i:s");
+			$juri =& JURI::getInstance();
+			if (substr($sef,0,1) == '/') {
+				$sef = substr($sef,1,strlen($sef));
 			}
+			$cite->location = $juri->base() . $sef;
+			$cite->date = date("Y-m-d H:i:s");
+
 			$cite->url = '';
 			$cite->type = '';
 			$cite->author = $this->helper->ul_contributors;
-			if (isset($this->resource->doi)) {
-				$cite->doi = $this->config->get('doi').'r'.$this->resource->id.'.'.$this->resource->doi;
+			
+			// Get contribtool params
+			$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
+			$doi = '';
+
+			if(isset($this->resource->doi) && $this->resource->doi && $tconfig->get('doi_shoulder'))
+			{
+				$doi = $tconfig->get('doi_shoulder') . DS . strtoupper($this->resource->doi);
+			}
+			else if(isset($this->resource->doi_label) && $this->resource->doi_label)
+			{
+				$doi = '10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $this->resource->doi_label;
 			}
 
+			if($doi)
+			{
+				$cite->doi = $doi;
+			}
+			
 			if ($this->params->get('show_citation') == 2) {
 				$citations = '';
 			}
@@ -232,8 +243,9 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 		}
 
 		$this->helper->getUnlinkedContributors();
-
-		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->resource->id, $citations, $this->resource->type);
+		
+		$revision = isset($this->resource->revision) ? $this->resource->revision : '';
+		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->resource->id, $citations, $this->resource->type, $revision);
 		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $this->config, $this->helper);
 ?>
 			<tr>

@@ -685,8 +685,8 @@ class ContribtoolHtml
 
 		//  created
         case 2:
-			$par  = '		<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').'  '.JText::_('WHATSNEXT_AREA_CREATED').' <a href="'.$developer_url.'">'.$developer_site.'</a> '.JText::_('SITE').': <br />';
-			$par .= '		<a href="'.$developer_url.$project_path.$status['toolname'].'">'.$developer_url.$project_path.$status['toolname'].'</a></p>'.n;
+			$par  = '		<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').'  '.JText::_('WHATSNEXT_AREA_CREATED').' <a href="'.$developer_url.'">'.$developer_site.'</a>:<br />';
+			$par .= '		<a href="'.$developer_url.$project_path.$status['toolname'].'/wiki">'.$developer_url.$project_path.$status['toolname'].'/wiki</a></p>'.n;
 			$par .= '		<p>'.JText::_('WHATSNEXT_FOLLOW_STEPS').':</p>'.n;
 			$par .= '		<ul>'.n;
 			if (!empty($learn_url)) {

@@ -1076,14 +1076,15 @@ class ResourcesController extends Hubzero_Controller
 		$alltools = array();
 		$thistool = '';
 		$curtool  = '';
+		
+		// Get contribtool params
+		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
 
 		if ($resource->type == 7 && $resource->alias) {
 			$tables = $database->getTableList();
 			$table = $database->_table_prefix.'tool_version';
 
-			// Get contribtool params
-			$tparams =& JComponentHelper::getParams( 'com_contribtool' );
-			$ldap = $tparams->get('ldap_read');
+			$ldap = $tconfig->get('ldap_read');
 
 			if (in_array($table,$tables)) {
 				$tv = new ToolVersion( $database );
@@ -1099,6 +1100,7 @@ class ResourcesController extends Hubzero_Controller
 						// Current version
 						if ($tool->state == 1 && count($alltools) > 1 &&  $alltools[1]->version == $tool->version) {
 							$curtool = $tool;
+							$revision = $revision ? $revision : $tool->revision;
 						}
 						// Dev version
 						if (!$revision && count($alltools)==1 && $tool->state==3) {
@@ -1120,7 +1122,7 @@ class ResourcesController extends Hubzero_Controller
 				}
 
 				// Replace resource info with requested version
-				$tv->compileResource($thistool, $curtool, &$resource, $revision, $tparams);
+				$tv->compileResource($thistool, $curtool, &$resource, $revision, $tconfig);
 			}
 		}
 
@@ -1156,6 +1158,7 @@ class ResourcesController extends Hubzero_Controller
 			$resource->thistool = $thistool;
 			$resource->alltools = $alltools;
 			$resource->curtool  = $curtool;
+			$resource->revision = $revision;
 
 			// Trigger the functions that return the areas we'll be using
 			$cats = $dispatcher->trigger('onResourcesAreas', array(
@@ -1212,16 +1215,17 @@ class ResourcesController extends Hubzero_Controller
 				$activechild = $this->activechild;
 			}
 
-			$view = new JView( array('name'=>'view','layout'=>'play') );
-			$view->option = $this->_option;
-			$view->config = $this->config;
-			$view->database = $database;
-			$view->resource = $resource;
-			$view->helper = $helper;
-			$view->resid = $this->resid;
-			$view->activechild = $activechild;
-			$view->no_html = 0;
-			$view->fsize = 0;
+			$view 				= new JView( array('name'=>'view','layout'=>'play') );
+			$view->option 		= $this->_option;
+			$view->config 		= $this->config;
+			$view->tconfig 		= $tconfig;
+			$view->database 	= $database;
+			$view->resource 	= $resource;
+			$view->helper 		= $helper;
+			$view->resid 		= $this->resid;
+			$view->activechild 	= $activechild;
+			$view->no_html 		= 0;
+			$view->fsize 		= 0;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
@@ -1250,15 +1254,16 @@ class ResourcesController extends Hubzero_Controller
 				$body = PresenterHelper::errorMessage($errors);
 			} else {
 				// Instantiate a new view
-				$view = new JView( array('name'=>'view','layout'=>'watch') );
-				$view->option = $this->_option;
-				$view->config = $this->config;
-				$view->database = $database;
-				$view->manifest = $manifest;
-				$view->content_folder = $content_folder;
-				$view->pid = $id;
-				$view->resid = JRequest::getVar("resid", "");
-				$view->doc =& JFactory::getDocument();
+				$view 					= new JView( array('name'=>'view','layout'=>'watch') );
+				$view->option 			= $this->_option;
+				$view->config 			= $this->config;
+				$view->tconfig 			= $tconfig;
+				$view->database 		= $database;
+				$view->manifest 		= $manifest;
+				$view->content_folder 	= $content_folder;
+				$view->pid 				= $id;
+				$view->resid 			= JRequest::getVar("resid", "");
+				$view->doc 				=& JFactory::getDocument();
 
 				// Output HTML
 				if ($this->getError()) {
@@ -1318,19 +1323,20 @@ class ResourcesController extends Hubzero_Controller
 			$view->alltools = $alltools;
 			$view->revision = $revision;
 		}
-		$view->config = $this->config;
-		$view->option = $this->_option;
-		$view->resource = $resource;
-		$view->params = $params;
-		$view->authorized = $authorized;
-		$view->attribs = $attribs;
-		$view->fsize = $fsize;
-		$view->cats = $cats;
-		$view->tab = $tab;
-		$view->sections = $sections;
-		$view->database = $database;
-		$view->usersgroups = $usersgroups;
-		$view->helper = $helper;
+		$view->config 		= $this->config;
+		$view->tconfig 		= $tconfig;
+		$view->option 		= $this->_option;
+		$view->resource 	= $resource;
+		$view->params 		= $params;
+		$view->authorized 	= $authorized;
+		$view->attribs 		= $attribs;
+		$view->fsize 		= $fsize;
+		$view->cats 		= $cats;
+		$view->tab 			= $tab;
+		$view->sections 	= $sections;
+		$view->database 	= $database;
+		$view->usersgroups 	= $usersgroups;
+		$view->helper 		= $helper;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -2117,9 +2123,10 @@ class ResourcesController extends Hubzero_Controller
 	protected function citation()
 	{
 		$database =& JFactory::getDBO();
-
 		$xhub =& Hubzero_Factory::getHub();
-		$hubDOIpath = $this->config->get('doi');
+		
+		// Get contribtool params
+		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
 
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -2127,13 +2134,18 @@ class ResourcesController extends Hubzero_Controller
 
 		// Append DOI handle
 		$revision = JRequest::getVar( 'rev', 0 );
-		$handle ='';
+		$handle = '';
 		if ($revision) {
 			$rdoi = new ResourcesDoi( $database );
-			$doi = $rdoi->getDoi( $id, $revision );
+			$rdoi->loadDoi( $id, $revision );
 
-			if ($doi) {
-				$handle = $hubDOIpath.'r'.$id.'.'.$doi;
+			if(isset($rdoi->doi) && $rdoi->doi && $tconfig->get('doi_shoulder'))
+			{
+				$handle = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($rdoi->doi);
+			}
+			else if($rdoi->doi_label)
+			{
+				$handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $id . '.' . $rdoi->doi_label;
 			}
 		}
 

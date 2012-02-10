@@ -179,10 +179,7 @@ if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 			$cite->url = '';
 			$cite->type = '';
 			$cite->author = $this->helper->ul_contributors;
-			if (isset($this->resource->doi)) {
-				$cite->doi = $this->config->get('doi').'r'.$this->resource->id.'.'.$this->resource->doi;
-			}
-
+			
 			if ($this->params->get('show_citation') == 2) {
 				$citations = '';
 			}
@@ -190,7 +187,7 @@ if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 			$cite = null;
 		}
 
-		$citeinstruct  = ResourcesHtml::citation( $this->option, $cite, $this->resource->id, $citations, $this->resource->type );
+		$citeinstruct  = ResourcesHtml::citation( $this->option, $cite, $this->resource->id, $citations, $this->resource->type, $revision );
 		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $this->config, $this->helper);
 ?>
 			<tr>

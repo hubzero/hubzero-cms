@@ -75,9 +75,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="doi_newservice" type="text" menu="hide" default="" label="New DOI service path" description="URL for new Purdue Libraries DOI service" />
 		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for new Purdue Libraries DOI service" />
+		<param name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
 		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for new Purdue Libraries DOI service" />
 		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
+		<param name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="exec_pu" type="radio" default="1" label="Include PU" description="Include Purdue campus as a tool access restriction">
 			<option value="0">No</option>

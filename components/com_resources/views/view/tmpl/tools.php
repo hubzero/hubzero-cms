@@ -34,6 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	$option 		= $this->option;
 	$config 		= $this->config;
+	$tconfig 		= $this->tconfig;
 	$resource 		= $this->resource;
 	$params 		= $this->params;
 	$authorized 	= $this->authorized;
@@ -189,8 +190,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 
 		// doi message
-		if ($revision != 'dev' && $resource->doi) {
-			$html .= "\t\t".'<p class="doi">'.JText::_('DOI').': '.$config->get('doi').'r'.$resource->id.'.'.$resource->doi.' <span><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=about').'#citethis">'.JText::_('cite this').'</a></span></p>'."\n";
+		if ($revision != 'dev' && ($resource->doi || $resource->doi_label)) {
+			if($resource->doi && $tconfig->get('doi_shoulder'))
+			{
+				$doi = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($resource->doi);
+			}
+			else
+			{
+				$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $resource->id . '.' . $resource->doi_label;
+			}
+			
+			$html .= "\t\t".'<p class="doi">'.$doi.' <span><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=about').'#citethis">'.JText::_('cite this').'</a></span></p>'."\n";
 		}
 
 		// Open/closed source

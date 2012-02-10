@@ -546,7 +546,7 @@ class CitationFormat
 			$html = "<ul class=\"tags\">";
 			$html .= "<li>Tags: </li>";
 			foreach($tags as $tag) {
-				$html .= "<li><a href=\"/tags/{$tag['raw_tag']}\">" . $tag['raw_tag'] . "</a></li>";
+				$html .= "<li><a href=\"/tags/{$tag['tag']}\">" . $tag['raw_tag'] . "</a></li>";
 			}
 			$html .= "</ul>";
 		}
@@ -763,7 +763,7 @@ class CitationFormat
 		}
 		if (CitationFormat::keyExistsOrIsNotEmpty('doi',$row)) {
 			$html  = CitationFormat::grammarCheck( $html, '.' );
-			$html .= ' ('.JText::_('DOI').': '.$row->doi.')';
+			$html .= ' (doi:'.$row->doi.')';
 		}
 		$html  = CitationFormat::grammarCheck( $html, '.' );
 		$html .= '</p>'."\n";

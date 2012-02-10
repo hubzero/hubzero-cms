@@ -178,6 +178,23 @@ class ToolAuthor extends  JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
+	
+	/**
+	 * Short description for 'getAuthorsDOI'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      mixed $rid Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
+	public function getAuthorsDOI( $rid = 0 )
+	{
+		$query = "SELECT x.name FROM #__xprofiles x ";
+		$query.= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= ".$rid." AND aa.subtable='resources' ";
+		$query.= " ORDER BY aa.ordering ASC";
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+	}
 
 	/**
 	 * Short description for 'getToolAuthors'

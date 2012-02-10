@@ -311,7 +311,7 @@ class ToolVersion extends  JTable
 
 		$rd = new ResourcesDoi( $this->_db );
 
-		$query  = "SELECT v.*, d.doi_label as doi ";
+		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM $this->_tbl as v ";
 		$query .= "LEFT JOIN $rd->_tbl as d ON d.alias=v.toolname  AND d.local_revision=v.revision ";
 		$query .= "WHERE v.toolname = '".$alias."' AND v.state!=3 ORDER BY v.revision DESC";
@@ -579,7 +579,7 @@ class ToolVersion extends  JTable
 			$ldap = false;
 		}
 
-		$query  = "SELECT v.*, d.doi_label as doi ";
+		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if($toolid) {
 			$query .= "WHERE v.toolid = '".$toolid."' ";
@@ -634,7 +634,7 @@ class ToolVersion extends  JTable
 
 		// data comes from mysql
 		$juser  =& JFactory::getUser();
-		$query  = "SELECT v.*, d.doi_label as doi ";
+		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if($id) {
 			$query .= "WHERE v.id = '".$id."' ";
@@ -689,9 +689,9 @@ class ToolVersion extends  JTable
 				$resource->introtext     = stripslashes($curtool->description);
 				$resource->fulltext      = $curtool->fulltext;
 				$resource->toolsource    = ($curtool->codeaccess=='@OPEN') ? 1: 0;
-				$resource->doi 			 = $curtool->doi;
+				$resource->doi 			 = isset($curtool->doi) ? $curtool->doi : '';
+				$resource->doi_label 	 = $curtool->doi_label;
 			}
-
 		}
 
 		if($thistool) {
@@ -707,7 +707,8 @@ class ToolVersion extends  JTable
 			$resource->introtext     = ($revision && $thistool && isset($thistool->description)) ? stripslashes($thistool->description) : $resource->introtext;
 			$resource->fulltext      = ($revision && $thistool && isset($thistool->fulltext)) ? $thistool->fulltext : $resource->fulltext;
 			$resource->toolsource    = ($thistool && isset($thistool->codeaccess) && $thistool->codeaccess=='@OPEN') ? 1: 0;
-			$resource->doi 			 = ($thistool && isset($thistool->doi)) ? $thistool->doi: 0;
+			$resource->doi 			 = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
+			$resource->doi_label 	 = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
 		}
 		else if(!$curtool) {
 			$resource->revision      = 1;
@@ -721,7 +722,8 @@ class ToolVersion extends  JTable
 			$resource->introtext     = $resource->introtext;
 			$resource->fulltext      = $resource->fulltext;
 			$resource->toolsource    = 0;
-			$resource->doi 			 = 0;
+			$resource->doi 			 = '';
+			$resource->doi_label 	 = 0;
 		}
 			$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
 
