@@ -1776,21 +1776,33 @@ class Hubzero_Group
 				$db = &JFactory::getDBO();
 
 				if (is_object($db)) {
-					if (in_array($property, array('members', 'applicants', 'managers', 'invitees'))) {
-						$aux_table = "#__xgroups_" . $property;
-						$query = "SELECT uidNumber FROM $aux_table AS aux" . " WHERE " .
-							 " aux.gidNumber=" . $db->Quote($this->gidNumber) . " ORDER BY uidNumber ASC;";
-					}
-					else {
-						$query = null;
-					}
-
+					$groups = array(
+						'applicants' => array(),
+						'invitees'   => array(),
+						'members'    => array(),
+						'managers'   => array()
+					);
+					$query = "(select uidNumber, 'invitee' AS role from #__xgroups_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
+						UNION
+							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber=" . $db->Quote($this->gidNumber) . ")
+						UNION
+							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber=" . $db->Quote($this->gidNumber) . ")
+						UNION
+							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->Quote($this->gidNumber) . ")";
 					$db->setQuery($query);
-
-					$result = $db->loadResultArray();
-
-					if ($result !== false) {
-						$this->__set($property, $result);
+					if (($results = $db->loadObjectList()))
+					{
+						foreach ($results as $result)
+						{
+							if (isset($groups[$result->role]))
+							{
+								$groups[$result->role][] = $result->uidNumber;
+							}
+						}
+						foreach ($groups as $key => $data)
+						{
+							$this->__set($key, $data);
+						}
 					}
 				}
 			}
@@ -2327,43 +2339,9 @@ class Hubzero_Group
 	 */
 	public function is_member_of($table, $uid)
 	{
-		static $groups;
-		
 		if (!in_array($table, array('applicants','members','managers','invitees')))
 		{
 			return false;
-		}
-		
-		if (!isset($groups))
-		{
-			$groups = array(
-				'applicants' => array(),
-				'invitees'   => array(),
-				'members'    => array(),
-				'managers'   => array(),
-				'all'        => array()
-			);
-			
-			$db =& JFactory::getDBO();
-			
-			$query = "(select uidNumber, 'invitee' AS role from #__xgroups_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
-				UNION
-					(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber=" . $db->Quote($this->gidNumber) . ")
-				UNION
-					(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber=" . $db->Quote($this->gidNumber) . ")
-				UNION
-					(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->Quote($this->gidNumber) . ")";
-			$db->setQuery($query);
-			if (($results = $db->loadObjectList()))
-			{
-				foreach ($results as $result)
-				{
-					if (isset($groups[$result->role]))
-					{
-						$groups[$result->role][] = $result->uidNumber;
-					}
-				}
-			}
 		}
 
 		if (!is_numeric($uid))
@@ -2375,15 +2353,7 @@ class Hubzero_Group
 			$uidNumber = $uid;
 		}
 
-		/*$table = '#__xgroups_' . $table;
-
-		$query = "SELECT * FROM $table WHERE gidNumber=" . $db->Quote($this->gidNumber) . " AND uidNumber=" . $db->Quote($uidNumber) . ";";
-
-		$db->setQuery($query);
-
-		$result = $db->loadResultArray();*/
-
-		return in_array($uidNumber, $groups[$table]);
+		return in_array($uidNumber, $this->get($table));
 	}
 
 	/**
