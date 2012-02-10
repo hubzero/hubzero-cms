@@ -366,7 +366,7 @@ class Hubzero_User_Helper
 		$uprofile = Hubzero_User_Profile::getInstance($uid);
 		
 		// Get the groups the visiting user
-		$xgroups = $uprofile->getGroups('all');
+		$xgroups = (is_object($uprofile)) ? $uprofile->getGroups('all') : array();
 		$usersgroups = array();
 		if (!empty($xgroups)) {
 			foreach ($xgroups as $group)
@@ -379,7 +379,7 @@ class Hubzero_User_Helper
 
 		// Get the groups of the profile
 		$pprofile = Hubzero_User_Profile::getInstance($pid);
-		$pgroups = $pprofile->getGroups('all');
+		$pgroups = (is_object($pprofile)) ? $pprofile->getGroups('all') : array();
 		// Get the groups the user has access to
 		$profilesgroups = array();
 		if (!empty($pgroups)) {
