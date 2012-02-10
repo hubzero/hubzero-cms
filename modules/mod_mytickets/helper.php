@@ -30,14 +30,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'modMyTickets'
  * 
  * Long description (if any) ...
  */
-class modMyTickets
+class modMyTickets extends JObject
 {
 
 	/**
@@ -55,7 +55,7 @@ class modMyTickets
 	 * @param      unknown $params Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params)
 	{
 		$this->params = $params;
 	}
@@ -100,8 +100,8 @@ class modMyTickets
 	private function _convertTime($stime)
 	{
 		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) {
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
@@ -191,79 +191,96 @@ class modMyTickets
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
-		$this->moduleclass = $params->get( 'moduleclass' );
-		$limit = intval( $params->get( 'limit' ) );
-		$limit = ($limit) ? $limit : 10;
-
-		// Check for the existence of required tables that should be
-		// installed with the com_support component
-		$database->setQuery("SHOW TABLES");
-		$tables = $database->loadResultArray();
-
-		if ($tables && array_search($database->_table_prefix.'support_tickets', $tables)===false) {
-			// Support tickets table not found!
-			echo 'Required database table not found.';
-			return false;
-	    }
+		$this->moduleclass = $this->params->get('moduleclass');
+		$limit = intval($this->params->get('limit', 10));
 
 		// Find the user's most recent support tickets
-		$database->setQuery( "SELECT id, summary, category, status, severity, owner, created, login, name, "
-			. " (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments"
-			. " FROM #__support_tickets as st WHERE st.login='".$juser->get('username')."' AND (st.status=0 OR st.status=1) AND type=0"
-			. " ORDER BY created DESC"
-			. " LIMIT ".$limit
-			);
-		$this->rows1 = $database->loadObjectList();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
+		$database->setQuery(
+			"(
+				SELECT id, summary, category, status, severity, owner, created, login, name, 
+					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments 
+				FROM #__support_tickets as st 
+				WHERE st.login='".$juser->get('username')."' AND (st.status=0 OR st.status=1) AND type=0 
+				ORDER BY created DESC
+				LIMIT $limit
+			)
+			UNION
+			(
+				SELECT id, summary, category, status, severity, owner, created, login, name, 
+					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments 
+				FROM #__support_tickets as st 
+				WHERE st.owner='".$juser->get('username')."' AND (st.status=0 OR st.status=1) AND type=0 
+				ORDER BY created DESC
+				LIMIT $limit
+			)"
+		);
+		$this->rows = $database->loadObjectList();
+		if ($database->getErrorNum()) 
+		{
+			$this->setError($database->stderr());
+			$this->rows = array();
 		}
 
-		// Find the user's most recent support tickets
-		$database->setQuery( "SELECT id, summary, category, status, severity, owner, created, login, name, "
-			. " (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments"
-			. " FROM #__support_tickets as st WHERE st.owner='".$juser->get('username')."' AND (st.status=0 OR st.status=1) AND type=0"
-			. " ORDER BY created DESC"
-			. " LIMIT ".$limit
-			);
-		$this->rows2 = $database->loadObjectList();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
+		$rows1 = array();
+		$rows2 = array();
+		
+		if ($this->rows)
+		{
+			foreach ($this->rows as $row)
+			{
+				if ($row->owner == $juser->get('username'))
+				{
+					$rows2[] = $row;
+				}
+				else 
+				{
+					$rows1[] = $row;
+				}
+			}
 		}
+		
+		$this->rows1 = $rows1;
+		$this->rows2 = $rows2;
 
-		ximport('Hubzero_User_Helper');
-		$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
+		ximport('Hubzero_User_Profile');
+		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+		$xgroups = $profile->getGroups('members');
+		
 		$groups = '';
-		if ($xgroups) {
+		if ($xgroups) 
+		{
 			$g = array();
 			foreach ($xgroups as $xgroup)
 			{
 				$g[] = $xgroup->cn;
 			}
-			$groups = implode("','",$g);
+			$groups = implode("','", $g);
 		}
 
-		if ($groups) {
+		$this->rows3 = null;
+		if ($groups) 
+		{
 			// Find support tickets on the user's contributions
-			$database->setQuery( "SELECT id, summary, category, status, severity, owner, created, login, name, 
-				 (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-				 FROM #__support_tickets as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group IN ('$groups')
+			$database->setQuery(
+				"SELECT id, summary, category, status, severity, owner, created, login, name, 
+				 	(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
+				 FROM #__support_tickets as st 
+				 WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group IN ('$groups')
 				 ORDER BY created DESC
 				 LIMIT $limit"
-				);
+			);
 			$this->rows3 = $database->loadObjectList();
-			if ($database->getErrorNum()) {
-				echo $database->stderr();
-				return false;
+			if ($database->getErrorNum()) 
+			{
+				$this->setError($database->stderr());
+				$this->rows3 = null;
 			}
-		} else {
-			$this->rows3 = null;
 		}
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_mytickets');
+		
+		require(JModuleHelper::getLayoutPath('mod_mytickets'));
 	}
 }

@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * 
  * Long description (if any) ...
  */
-class modMyMessages
+class modMyMessages extends JObject
 {
 
 	/**
@@ -98,34 +98,28 @@ class modMyMessages
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
+		$this->juser = JFactory::getUser();
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
-		$this->moduleclass = $params->get( 'moduleclass' );
-		$limit = intval( $params->get( 'limit' ) );
-		$limit = ($limit) ? $limit : 10;
+		$this->moduleclass = $this->params->get('moduleclass');
+		$limit = intval($this->params->get('limit', 10));
 
-		$this->error = false;
-
-		// Check for the existence of required tables that should be
-		// installed with the com_support component
-		$database->setQuery("SHOW TABLES");
-		$tables = $database->loadResultArray();
-
-		if ($tables && array_search($database->_table_prefix.'xmessage', $tables)===false) {
-			// MEssages table not found!
-			$this->error = true;
-		} else {
-			// Find the user's most recent support tickets
-			ximport('Hubzero_Message');
-			$recipient = new Hubzero_Message_Recipient( $database );
-			$this->rows = $recipient->getUnreadMessages( $juser->get('id'), $limit );
-
-			// Push the module CSS to the template
-			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStyleSheet('mod_mymessages');
+		// Find the user's most recent support tickets
+		ximport('Hubzero_Message');
+		
+		$recipient = new Hubzero_Message_Recipient($database);
+		$this->rows = $recipient->getUnreadMessages($this->juser->get('id'), $limit);
+		
+		if ($recipient->getError())
+		{
+			$this->setError($recipient->getError());
 		}
+
+		// Push the module CSS to the template
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_mymessages');
+		
+		require(JModuleHelper::getLayoutPath('mod_mymessages'));
 	}
 }
 

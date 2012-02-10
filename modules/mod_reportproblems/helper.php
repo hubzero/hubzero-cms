@@ -126,8 +126,7 @@ class modReportProblems
 		$this->verified = 0;
 		if (!$this->juser->get('guest')) {
 			ximport('Hubzero_User_Profile');
-			$profile = new Hubzero_User_Profile();
-			$profile->load($this->juser->get('id'));
+			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 			if ($profile->get('emailConfirmed') == 1) {
 				$this->verified = 1;
 			}

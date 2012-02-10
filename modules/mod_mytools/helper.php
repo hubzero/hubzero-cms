@@ -224,6 +224,7 @@ class modToolList
 			if (!empty($lst)) 
 			{
 				ksort($lst);
+				$items = array();
 				// Get info for tools in the list
 				foreach ($lst as $item)
 				{
@@ -233,14 +234,16 @@ class modToolList
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
 						$item = trim(implode('_r', $bits));
 					}
-					$thistool = Hubzero_Tool_Version::getVersionInfo('', 'current', $item, '');
+					/*$thistool = Hubzero_Tool_Version::getVersionInfo('', 'current', $item, '');
 
 					if (is_array($thistool) && isset($thistool[0])) 
 					{
 						$t = $thistool[0];
 						$tools[] = $t;
-					}
+					}*/
+					$items[] = $item;
 				}
+				$tools = Hubzero_Tool_Version::getVersionInfo('', 'current', $items, '');
 			} 
 			else 
 			{

@@ -286,8 +286,7 @@ class modFeaturedmember
 				}
 
 				// Load their bio
-				$profile = new Hubzero_User_Profile();
-				$profile->load( $row->uidNumber );
+				$profile = Hubzero_User_Profile::getInstance($row->uidNumber);
 
 				if (trim(strip_tags($profile->get('bio'))) == '') {
 					return $this->display();
@@ -308,8 +307,7 @@ class modFeaturedmember
 				$this->id = $row->created_by_alias;
 				$this->txt = $row->introtext;
 
-				$profile = new Hubzero_User_Profile();
-				$profile->load( $id );
+				$profile = Hubzero_User_Profile::getInstance($id);
 				$row->picture = $profile->get('picture');
 
 				// Check if the article has been saved in the feature history
@@ -322,8 +320,7 @@ class modFeaturedmember
 				}
 			} else {
 				if (!isset($profile) && !is_object($profile)) {
-					$profile = new Hubzero_User_Profile();
-					$profile->load( $row->uidNumber );
+					$profile = Hubzero_User_Profile::getInstance($row->uidNumber);
 				}
 
 				$rparams = new JParameter( $profile->get('params') );

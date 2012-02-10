@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * 
  * Long description (if any) ...
  */
-class modMyWishes
+class modMyWishes extends JObject
 {
 
 	/**
@@ -250,70 +250,51 @@ class modMyWishes
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 10;
 
-		// Check for the existence of required tables that should be
-		// installed with the com_wishlist component
-		$database->setQuery("SHOW TABLES");
-		$tables = $database->loadResultArray();
-
-		if ($tables && array_search($database->_table_prefix.'wishlist', $tables)===false) {
-			// Wishlist table not found!
-			echo 'Required database table not found.';
-			return false;
-	    }
-
 		// Find the user's most recent wishes
-		$database->setQuery( "SELECT id, wishlist, subject, about, proposed, status, accepted "
-			. " ,(SELECT wl.title FROM #__wishlist as wl WHERE wl.id=w.wishlist) as listtitle"
-			. " FROM #__wishlist_item as w WHERE w.proposed_by='".$juser->get('id')."' AND (w.status=0 or w.status=3)"
-			. " ORDER BY proposed DESC"
-			. " LIMIT ".$limit
-			);
-		$rows1 = $database->loadObjectList();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
+		$database->setQuery(
+			"(
+				SELECT id, wishlist, subject, about, proposed, status, accepted, assigned,
+					(SELECT wl.title FROM #__wishlist as wl WHERE wl.id=w.wishlist) as listtitle
+				FROM #__wishlist_item as w WHERE w.proposed_by='".$juser->get('id')."' AND (w.status=0 or w.status=3)
+				ORDER BY proposed DESC
+				LIMIT $limit
+			)
+			UNION
+			(
+				SELECT id, wishlist, subject, about, proposed, status, accepted, assigned,
+					(SELECT wl.title FROM #__wishlist as wl WHERE wl.id=w.wishlist) as listtitle
+				FROM #__wishlist_item as w WHERE w.assigned='".$juser->get('id')."' AND (w.status=0 or w.status=3)
+				ORDER BY proposed DESC
+				LIMIT $limit
+			)"
+		);
+		$this->rows = $database->loadObjectList();
+		if ($database->getErrorNum()) 
+		{
+			$this->setError($database->stderr());
+			$this->rows = array();
 		}
-
-		// Find assigned wishes
-		$database->setQuery( "SELECT id, wishlist, subject, about, proposed, status, accepted "
-			. " ,(SELECT wl.title FROM #__wishlist as wl WHERE wl.id=w.wishlist) as listtitle"
-			. " FROM #__wishlist_item as w WHERE w.assigned='".$juser->get('id')."' AND (w.status=0 or w.status=3)"
-			. " ORDER BY proposed DESC"
-			. " LIMIT ".$limit
-			);
-		$rows2 = $database->loadObjectList();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
-		}
-		/*
 		
-		ximport('Hubzero_User_Helper');
-		$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
-		$groups = '';
-		if ($xgroups) {
-			$g = array();
-			foreach ($xgroups as $xgroup) 
+		$rows1 = array();
+		$rows2 = array();
+		
+		if ($this->rows)
+		{
+			foreach ($this->rows as $row)
 			{
-				$g[] = $xgroup->cn;
+				if ($row->assigned == $juser->get('id'))
+				{
+					$rows2[] = $row;
+				}
+				else 
+				{
+					$rows1[] = $row;
+				}
 			}
-			$groups = implode("','",$g);
 		}
 		
-		// Find support tickets on the user's contributions
-		$database->setQuery( "SELECT id, summary, category, status, severity, owner, created, login, name, 
-			 (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-			 FROM #__support_tickets as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group IN ('$groups')
-			 ORDER BY created DESC
-			 LIMIT $limit"
-			);
-		$rows3 = $database->loadObjectList();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
-		}
-		
-		*/
+		$this->rows1 = $rows1;
+		$this->rows2 = $rows2;
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');

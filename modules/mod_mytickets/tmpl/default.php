@@ -31,11 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div<?php echo ($modmytickets->moduleclass) ? ' class="'.$modmytickets->moduleclass.'"' : ''; ?>>
+<div<?php echo ($this->moduleclass) ? ' class="'.$this->moduleclass.'"' : ''; ?>>
 	<h4><?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?></h4>
 <?php
 ximport('Hubzero_View_Helper_Html');
-$rows1 = $modmytickets->rows1;
+$rows1 = $this->rows1;
 if (count($rows1) <= 0) {
 ?>
 	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
@@ -44,7 +44,7 @@ if (count($rows1) <= 0) {
 <?php
 	foreach ($rows1 as $row)
 	{
-		$when = $modmytickets->timeAgo($row->created);
+		$when = $this->timeAgo($row->created);
 ?>
 		<li class="support-ticket <?php echo $row->severity; ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id='.$row->id); ?>" class="tooltips" title="#<?php echo $row->id.' :: '.htmlentities(stripslashes($row->summary), ENT_QUOTES); ?>">#<?php echo $row->id.': '.Hubzero_View_Helper_Html::shortenText(stripslashes($row->summary), 35, 0); ?></a>
@@ -57,7 +57,7 @@ if (count($rows1) <= 0) {
 <?php } ?>
 	<h4><?php echo JText::_('MOD_MYTICKETS_ASSIGNED'); ?></h4>
 <?php
-$rows2 = $modmytickets->rows2;
+$rows2 = $this->rows2;
 if (count($rows2) <= 0) {
 ?>
 	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
@@ -66,7 +66,7 @@ if (count($rows2) <= 0) {
 <?php
 	foreach ($rows2 as $row)
 	{
-		$when = $modmytickets->timeAgo($row->created);
+		$when = $this->timeAgo($row->created);
 ?>
 		<li class="support-ticket <?php echo $row->severity; ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id='.$row->id); ?>" class="tooltips" title="#<?php echo $row->id.' :: '.htmlentities(stripslashes($row->summary), ENT_QUOTES); ?>">#<?php echo $row->id.': '.Hubzero_View_Helper_Html::shortenText(stripslashes($row->summary), 35, 0); ?></a>
@@ -79,7 +79,7 @@ if (count($rows2) <= 0) {
 <?php } ?>
 <h4><?php echo JText::_('MOD_MYTICKETS_CONTRIBUTIONS'); ?></h4>
 <?php
-$rows3 = $modmytickets->rows3;
+$rows3 = $this->rows3;
 if (count($rows3) <= 0) {
 ?>
 	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
@@ -88,7 +88,7 @@ if (count($rows3) <= 0) {
 <?php
 	foreach ($rows3 as $row)
 	{
-		$when = $modmytickets->timeAgo($row->created);
+		$when = $this->timeAgo($row->created);
 ?>
 		<li class="support-ticket <?php echo $row->severity; ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id='.$row->id); ?>" class="tooltips" title="#<?php echo $row->id.' :: '.htmlentities(stripslashes($row->summary), ENT_QUOTES); ?>">#<?php echo $row->id.': '.Hubzero_View_Helper_Html::shortenText(stripslashes($row->summary), 35, 0); ?></a>

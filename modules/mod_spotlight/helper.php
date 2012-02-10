@@ -440,8 +440,7 @@ class modSpotlight
 				}
 
 				// Load their bio
-				$profile = new Hubzero_User_Profile();
-				$profile->load($row->uidNumber);
+				$profile = Hubzero_User_Profile::getInstance($row->uidNumber);
 
 				$mconfig =& JComponentHelper::getParams('com_members');
 
@@ -503,8 +502,7 @@ class modSpotlight
 			case 'blog':
 				$thumb = trim($this->params->get('default_blogpic', '/modules/mod_spotlight/default.gif'));
 
-				$profile = new Hubzero_User_Profile();
-				$profile->load($row->created_by);
+				$profile = Hubzero_User_Profile::getInstance($row->created_by);
 
 				if ($getid)
 				{

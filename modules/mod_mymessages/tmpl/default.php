@@ -31,20 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($modmymessages->error) {
-	echo '<p class="error">'.JText::_('MOD_MYMESSAGES_MISSING_TABLE').'</p>'."\n";
+if ($this->getError()) {
+	echo '<p class="error">'.JText::_('MOD_MYMESSAGES_ERROR').'</p>'."\n";
 } else {
-	$juser =& JFactory::getUser();
-
-	$rows = $modmymessages->rows;
 ?>
-<div<?php echo ($modmymessages->moduleclass) ? ' class="'.$modmymessages->moduleclass.'"' : ''; ?>>
-<?php if (count($rows) <= 0) { ?>
+<div<?php echo ($this->moduleclass) ? ' class="'.$this->moduleclass.'"' : ''; ?>>
+<?php if (count($this->rows) <= 0) { ?>
 	<p><?php echo JText::_('MOD_MYMESSAGES_NO_MESSAGES'); ?></p>
 <?php } else { ?>
 	<ul class="expandedlist">
 <?php
-	foreach ($rows as $row)
+	foreach ($this->rows as $row)
 	{
 		if ($row->actionid) {
 			$cls = 'actionitem';
@@ -58,7 +55,7 @@ if ($modmymessages->error) {
 		}
 ?>
 		<li class="<?php echo $cls; ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&msg='.$row->id); ?>"><?php echo stripslashes($row->subject); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->juser->get('id').'&active=messages&msg='.$row->id); ?>"><?php echo stripslashes($row->subject); ?></a>
 			<span><span><?php echo JHTML::_('date', $row->created, '%d %b, %Y %I:%M %p'); ?></span></span>
 		</li>
 <?php
@@ -67,8 +64,8 @@ if ($modmymessages->error) {
 	</ul>
 <?php } ?>
 	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='. $juser->get('id') .'&active=messages'); ?>"><?php echo JText::_('MOD_MYMESSAGES_ALL_MESSAGES'); ?></a></li>
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='. $juser->get('id') .'&active=messages&task=settings'); ?>"><?php echo JText::_('MOD_MYMESSAGES_MESSAGE_SETTINGS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='. $this->juser->get('id') .'&active=messages'); ?>"><?php echo JText::_('MOD_MYMESSAGES_ALL_MESSAGES'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='. $this->juser->get('id') .'&active=messages&task=settings'); ?>"><?php echo JText::_('MOD_MYMESSAGES_MESSAGE_SETTINGS'); ?></a></li>
 	</ul>
 </div>
 <?php } ?>

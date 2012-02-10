@@ -106,19 +106,6 @@ class modMyFavorites
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 5;
 
-		$this->error = false;
-
-		// Check for the existence of required tables that should be
-		// installed with the com_support component
-		$database->setQuery("SHOW TABLES");
-		$tables = $database->loadResultArray();
-
-		if ($tables && array_search($database->_table_prefix.'xfavorites', $tables)===false) {
-			// Support tickets table not found!
-			$this->error = true;
-			return false;
-	    }
-
 		$authorized = true;
 
 		JPluginHelper::importPlugin( 'members' );
@@ -140,8 +127,7 @@ class modMyFavorites
 		$option = 'com_members';
 
 		ximport('Hubzero_User_Profile');
-		$member = new Hubzero_User_Profile();
-		$member->load( $juser->get('id') );
+		$member = Hubzero_User_Profile::getInstance($juser->get('id'));
 
 		// Get the search result totals
 		$totals = $dispatcher->trigger( 'onMembersFavorites', array(

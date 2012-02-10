@@ -39,10 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-------------------------------------------------------------
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-$modmymessages = new modMyMessages( $params );
+$modmymessages = new modMyMessages($params);
 $modmymessages->display();
-
-require( JModuleHelper::getLayoutPath('mod_mymessages') );
-?>

@@ -105,8 +105,7 @@ class modMyProfile
 
 		$this->id = JFactory::getUser()->get('id');
 
-		$profile = new Hubzero_User_Profile();
-		$profile->load($this->id);
+		$profile = Hubzero_User_Profile::getInstance($this->id);
 
 		if (!$profile->get('name')) {
 			$name  = $profile->get('givenName').' ';
