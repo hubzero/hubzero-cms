@@ -155,7 +155,7 @@ class plgMembersProfile extends JPlugin
 		}
 
 		$hconfig =& JComponentHelper::getParams('com_hub');
-		$default = str_pad($default, '-', 4);
+		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
 		if (empty($configured)) {
 			$configured = $default;
