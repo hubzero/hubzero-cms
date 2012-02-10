@@ -119,15 +119,15 @@ class plgMembersGroups extends JPlugin
 		);
 
 		ximport('Hubzero_User_Helper');
-		$applicants = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'applicants', 1);
-		$invitees = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'invitees', 1);
-		$members = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'members', 1);
-		$managers = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'managers', 1);
+		$applicants = $member->getGroups('applicants'); //Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'applicants', 1);
+		$invitees   = $member->getGroups('invitees'); //Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'invitees', 1);
+		$members    = $member->getGroups('members'); //Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'members', 1);
+		$managers   = $member->getGroups('managers'); //Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'managers', 1);
 
 		$applicants = (is_array($applicants)) ? $applicants : array();
-		$invitees = (is_array($invitees)) ? $invitees : array();
-		$members = (is_array($members)) ? $members : array();
-		$managers = (is_array($managers)) ? $managers : array();
+		$invitees   = (is_array($invitees))   ? $invitees   : array();
+		$members    = (is_array($members))    ? $members    : array();
+		$managers   = (is_array($managers))   ? $managers   : array();
 
 		$groups = array_merge($applicants, $invitees);
 		$managerids = array();

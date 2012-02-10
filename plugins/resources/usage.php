@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -21,36 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+//-----------
+
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_resources_usage' );
+	
+//-----------
 
-/**
- * Short description for 'plgResourcesUsage'
- * 
- * Long description (if any) ...
- */
 class plgResourcesUsage extends JPlugin
 {
-
-	/**
-	 * Short description for 'plgResourcesUsage'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @return     void
-	 */
 	public function plgResourcesUsage(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -59,16 +46,10 @@ class plgResourcesUsage extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'usage' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-
-	/**
-	 * Short description for 'onResourcesAreas'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $resource Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function &onResourcesAreas( $resource )
+	
+	//-----------
+	
+	public function &onResourcesAreas( $resource ) 
 	{
 		if ($resource->_type->_params->get('plg_usage')) {
 			$areas = array(
@@ -80,32 +61,23 @@ class plgResourcesUsage extends JPlugin
 		return $areas;
 	}
 
-	/**
-	 * Short description for 'onResources'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $resource Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      unknown $areas Parameter description (if any) ...
-	 * @param      string $rtrn Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
+	//-----------
+
 	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-
+			
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) )
+			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
 			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
 				$rtrn = 'metadata';
 			}
 		}
-
+		
 		// Display only for tools
 		if ($resource->type != 7) {
 			//return $arr;
@@ -114,7 +86,7 @@ class plgResourcesUsage extends JPlugin
 
 		// Check if we have a needed database table
 		$database =& JFactory::getDBO();
-
+		
 		$tables = $database->getTableList();
 		$table = $database->_table_prefix.'resource_stats_tools';
 
@@ -129,10 +101,9 @@ class plgResourcesUsage extends JPlugin
 			$arr['metadata'] = '<p class="usage"><a href="'.$url.'">'.JText::_('PLG_RESOURCES_USAGE_DETAILED').'</a></p>';
 			return $arr;
 		}
-
+		
 		// Get/set some variables
-		// Default to last month as there won't be data for this month yet
-		$dthis = JRequest::getVar('dthis',date('Y').'-'.date("m", mktime(0, 0, 0, date("m")-1, date("d"),   date("Y"))));
+		$dthis = JRequest::getVar('dthis',date('Y').'-'.date('m'));
 		$period = JRequest::getInt('period', $this->_params->get('period',14));
 
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'stats.php' );
@@ -150,7 +121,7 @@ class plgResourcesUsage extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			ximport('Hubzero_Document');
 			Hubzero_Document::addComponentStylesheet('com_usage');
-
+			
 			// Instantiate a view
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
@@ -182,26 +153,20 @@ class plgResourcesUsage extends JPlugin
 				$arr['metadata'] = '<p class="usage"><a href="'.$url.'">'.JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS',$stats->users).'</a></p>';
 			} else {
 				if ($stats->users) {
-					$arr['metadata'] = '<p class="usage">'.JText::sprintf('%s user(s)',$stats->users).'</p>';
+					$arr['metadata'] = '<p class="usage">'.JText::sprintf('%s users',$stats->users).'</p>';
 				}
 			}
 			if ($clusters->users && $clusters->classes) {
-				$arr['metadata'] .= '<p class="usage">'.JText::sprintf('%s user(s)',$clusters->users).' in '.JText::sprintf('%s class(es)',$clusters->classes).'</p>';
+				$arr['metadata'] .= '<p class="usage">'.JText::sprintf('%s users',$clusters->users).' in '.JText::sprintf('%s classes',$clusters->classes).'</p>';
 			}
 		}
 
 		return $arr;
 	}
+	
+	//-----------
 
-	/**
-	 * Short description for 'timeUnits'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      number $time Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function timeUnits($time)
+	public function timeUnits($time) 
 	{
 		if ($time < 60) {
 			$data = round($time,2).' '.JText::_('PLG_RESOURCES_USAGE_SECONDS');
@@ -215,19 +180,10 @@ class plgResourcesUsage extends JPlugin
 
 		return $data;
 	}
-
-	/**
-	 * Short description for 'dropDownDates'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @param      unknown $period Parameter description (if any) ...
-	 * @param      unknown $s_top Parameter description (if any) ...
-	 * @param      unknown $dthis Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function dropDownDates(&$db, $period, $s_top, $dthis)
+	
+	//-----------
+	
+	public function dropDownDates(&$db, $period, $s_top, $dthis) 
 	{
 		$months = array( "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec");
 		$monthsReverse = array_reverse($months, TRUE);
@@ -236,11 +192,11 @@ class plgResourcesUsage extends JPlugin
 		$year_data_start = 2000;
 
 		$html = '<select name="dthis">'."\n";
-		switch ($period)
+		switch ($period) 
 		{
 			case '3':
 				$qtd_found = 0;
-				foreach ($monthsReverse as $key => $month)
+				foreach ($monthsReverse as $key => $month) 
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$qtd_found && plgResourcesUsage::checkForData($value, 3)) {
@@ -266,9 +222,9 @@ class plgResourcesUsage extends JPlugin
 						$qtd_found = 1;
 					}
 				}
-				for ($j = $cur_year; $j >= $year_data_start; $j--)
+				for ($j = $cur_year; $j >= $year_data_start; $j--) 
 				{
-					for ($i = 12; $i > 0; $i = $i - 3)
+					for ($i = 12; $i > 0; $i = $i - 3) 
 					{
 						$value = $j . '-' . sprintf("%02d", $i);
 						if (plgResourcesUsage::checkForData($value, 3)) {
@@ -277,7 +233,7 @@ class plgResourcesUsage extends JPlugin
 								$html .= ' selected="selected"';
 							}
 							$html .= '>';
-							switch ($i)
+							switch ($i) 
 							{
 								case 3:  $html .= 'Jan'; break;
 								case 6:  $html .= 'Apr'; break;
@@ -285,7 +241,7 @@ class plgResourcesUsage extends JPlugin
 								default: $html .= 'Oct'; break;
 							}
 							$html .= ' ' . $j . ' - ';
-							switch ($i)
+							switch ($i) 
 							{
 								case 3:  $html .= 'Mar'; break;
 								case 6:  $html .= 'Jun'; break;
@@ -297,12 +253,12 @@ class plgResourcesUsage extends JPlugin
 					}
 				}
 			break;
-
+			
 			case '12':
 				$arrayMonths = array_values($months);
-				for ($i = $cur_year; $i >= $year_data_start; $i--)
+				for ($i = $cur_year; $i >= $year_data_start; $i--) 
 				{
-					foreach ($monthsReverse as $key => $month)
+					foreach ($monthsReverse as $key => $month) 
 					{
 						if ($key == '12') {
 							$nextmonth = 'Jan';
@@ -326,12 +282,12 @@ class plgResourcesUsage extends JPlugin
 					}
 				}
 			break;
-
+			
 			case '1':
 			case '14':
-				for ($i = $cur_year; $i >= $year_data_start; $i--)
+				for ($i = $cur_year; $i >= $year_data_start; $i--) 
 				{
-					foreach ($monthsReverse as $key => $month)
+					foreach ($monthsReverse as $key => $month) 
 					{
 						$value = $i . '-' . $key;
 						if (plgResourcesUsage::checkForData($value, 1)) {
@@ -344,10 +300,10 @@ class plgResourcesUsage extends JPlugin
 					}
 				}
 			break;
-
+			
 			case '0':
 				$ytd_found = 0;
-				foreach ($monthsReverse as $key => $month)
+				foreach ($monthsReverse as $key => $month) 
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$ytd_found && plgResourcesUsage::checkForData($value, 0)) {
@@ -359,7 +315,7 @@ class plgResourcesUsage extends JPlugin
 						$ytd_found = 1;
 					}
 				}
-				for ($i = $cur_year - 1; $i >= $year_data_start; $i--)
+				for ($i = $cur_year - 1; $i >= $year_data_start; $i--) 
 				{
 					$value = $i . '-12';
 					if (plgResourcesUsage::checkForData($value, 0)) {
@@ -371,10 +327,10 @@ class plgResourcesUsage extends JPlugin
 					}
 				}
 			break;
-
+			
 			case '13':
 				$ytd_found = 0;
-				foreach ($monthsReverse as $key => $month)
+				foreach ($monthsReverse as $key => $month) 
 				{
 					$value = $cur_year . '-' . $key;
 					if (!$ytd_found && plgResourcesUsage::checkForData($value, 0)) {
@@ -394,7 +350,7 @@ class plgResourcesUsage extends JPlugin
 						$ytd_found = 1;
 					}
 				}
-				for ($i = $full_year; $i >= $year_data_start; $i--)
+				for ($i = $full_year; $i >= $year_data_start; $i--) 
 				{
 					$value = $i . '-09';
 					if (plgResourcesUsage::checkForData($value, 0)) {
@@ -410,31 +366,24 @@ class plgResourcesUsage extends JPlugin
 			break;
 		}
 		$html .= '</select>'."\n";
-
+		
 		return $html;
 	}
-
-	/**
-	 * Short description for 'checkForData'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $yearmonth Parameter description (if any) ...
-	 * @param      unknown $period Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-	public function checkForData($yearmonth, $period)
+	
+	//-----------
+	
+	public function checkForData($yearmonth, $period) 
 	{
 		$database =& JFactory::getDBO();
-
+		
 	    $sql = "SELECT COUNT(datetime) AS cnt FROM #__resource_stats_tools WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
 		$database->setQuery( $sql );
 		$result = $database->loadResult();
-
+		
 		if ($result && $result > 0) {
 			return(true);
 		}
-
+	
 		return(false);
 	}
 }

@@ -132,7 +132,7 @@ class plgMembersBlog extends JPlugin
 				default: $arr['html'] = $this->_browse(); break;
 			}
 		}
-			
+
 		$arr['metadata'] = $this->_metadata();
 
 		return $arr;

@@ -236,8 +236,7 @@ class plgXMessageHandler extends JPlugin
 				$methods = $notify->getRecords( $uid, $type );
 
 				//$user =& JUser::getInstance($uid);
-				$user = new Hubzero_User_Profile();
-				$user->load( $uid );
+				$user = Hubzero_User_Profile::getInstance($uid);
 				if (!$user->get('username')) {
 					continue;
 				}

@@ -120,9 +120,11 @@ class plgMembersResume extends JPlugin
 
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) {
-			ximport('Hubzero_User_Helper');
+			ximport('Hubzero_User_Profile');
 
-			$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
+			//$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
+			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0) {
 				foreach ($ugs as $ug)
 				{
@@ -159,9 +161,11 @@ class plgMembersResume extends JPlugin
 
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) {
-			ximport('Hubzero_User_Helper');
+			ximport('Hubzero_User_Profile');
 
-			$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
+			//$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
+			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0) {
 				foreach ($ugs as $ug) {
 					if ($ug->cn == $this->config->get('admingroup')) {

@@ -174,9 +174,12 @@ class plgTagsResources extends JPlugin
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
 
-		ximport('Hubzero_User_Helper');
+		//ximport('Hubzero_User_Helper');
+		ximport('Hubzero_User_Profile');
 		$juser =& JFactory::getUser();
-		$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+		//$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+		$filters['usergroups'] = $profile->getGroups('all');
 
 		// Get categories
 		$categories = $this->_cats;

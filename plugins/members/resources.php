@@ -194,9 +194,10 @@ class plgMembersResources extends JPlugin
 		$filters['sortby'] = $sort;
 		//$filters['authorized'] = $authorized;
 
-		ximport('Hubzero_User_Helper');
-		$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
-
+		//ximport('Hubzero_User_Helper');
+		//$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
+		$filters['usergroups'] = $member->getGroups('all');
+		
 		// Get categories
 		$categories = $this->_cats;
 		if (!is_array($categories)) {
@@ -505,9 +506,10 @@ class plgMembersResources extends JPlugin
 		$filters['favorite'] = $uidNumber;
 		$filters['sortby'] = 'date';
 
-		ximport('Hubzero_User_Helper');
-		$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
-
+		//ximport('Hubzero_User_Helper');
+		//$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
+		$filters['usergroups'] = $member->getGroups('all');
+		
 		// Get categories
 		$categories = $this->_cats;
 		if (!is_array($categories)) {

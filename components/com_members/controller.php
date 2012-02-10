@@ -372,8 +372,7 @@ class MembersController extends Hubzero_Controller
 		$authorized = $this->_authorize( $id );
 
 		// Get the member's info
-		$profile = new Hubzero_User_Profile();
-		$profile->load( $id );
+		$profile = Hubzero_User_Profile::getInstance($id);
 
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) 
@@ -531,8 +530,7 @@ class MembersController extends Hubzero_Controller
 		}
 
 		// Initiate profile class
-		$profile = new Hubzero_User_Profile();
-		$profile->load( $id );
+		$profile = Hubzero_User_Profile::getInstance($id);
 
 		// Ensure we have a member
 		if (!$profile->get('name')) 
@@ -684,8 +682,7 @@ class MembersController extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Initiate profile class
-		$profile = new Hubzero_User_Profile();
-		$profile->load( $id );
+		$profile = Hubzero_User_Profile::getInstance($id);
 
 		// Ensure we have a member
 		if (!$profile->get('name'))
@@ -937,8 +934,7 @@ class MembersController extends Hubzero_Controller
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($profile)) 
 		{
-			$profile = new Hubzero_User_Profile();
-			$profile->load( $id );
+			$profile = Hubzero_User_Profile::getInstance($id);
 		}
 
 		// Ensure we have a member
@@ -1099,8 +1095,8 @@ class MembersController extends Hubzero_Controller
 		$n = JRequest::getVar( 'name', array(), 'post' );
 
 		// Load the profile
-		$profile = new Hubzero_User_Profile();
-		$profile->load( $id );
+		$profile = Hubzero_User_Profile::getInstance($id);
+
 		$oldemail = $profile->get('email');
 
 		$profile->set('givenName', trim($n['first']));
@@ -1331,8 +1327,7 @@ class MembersController extends Hubzero_Controller
 		if (is_array( $p )) 
 		{
 			// Load the profile
-			$profile = new Hubzero_User_Profile();
-			$profile->load( $id );
+			$profile = Hubzero_User_Profile::getInstance($id);
 
 			foreach ($p as $k=>$v)
 			{
@@ -1413,8 +1408,7 @@ class MembersController extends Hubzero_Controller
 				{
 					if ($user) 
 					{
-						$xprofile = new Hubzero_User_Profile();
-						$xprofile->load($prevuser);
+						$xprofile = Hubzero_User_Profile::getInstance($prevuser);
 
 						$users[$prevuser] = $user;
 						$users[$prevuser]['name'] = $xprofile->get('name');
@@ -1429,8 +1423,7 @@ class MembersController extends Hubzero_Controller
 			}
 			if ($user) 
 			{
-				$xprofile = new Hubzero_User_Profile();
-				$xprofile->load($prevuser);
+				$xprofile = Hubzero_User_Profile::getInstance($prevuser);
 
 				$users[$prevuser] = $user;
 				$users[$prevuser]['name'] = $xprofile->get('name');
@@ -1994,8 +1987,7 @@ class MembersController extends Hubzero_Controller
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = new Hubzero_User_Profile();
-			$profile->load( $id );
+			$profile = Hubzero_User_Profile::getInstance($id);
 			$profile->set('picture', $file['name']);
 			if (!$profile->update()) 
 			{
@@ -2102,8 +2094,7 @@ class MembersController extends Hubzero_Controller
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = new Hubzero_User_Profile();
-			$profile->load( $id );
+			$profile = Hubzero_User_Profile::getInstance($id);
 			$profile->set('picture', '');
 			if (!$profile->update()) 
 			{
@@ -2224,8 +2215,7 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		//Load member profile
-		$member = new Hubzero_User_Profile();
-		$member->load( $id );
+		$member = Hubzero_User_Profile::getInstance($id);
 		
 		//check to make sure we have member profile
 		if(!$member) 

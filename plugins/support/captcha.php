@@ -212,8 +212,7 @@ class plgSupportCaptcha extends JPlugin
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			ximport('Hubzero_User_Profile');
-			$profile = new Hubzero_User_Profile();
-			$profile->load($juser->get('id'));
+			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			if ($profile->get('emailConfirmed') == 1) {
 				$this->_verified = true;
 			}
