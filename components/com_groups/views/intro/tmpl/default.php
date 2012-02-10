@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="subject">
 		<div class="two columns first">
 			<h3>What are groups?</h3>
-			<p>Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exist for a specific interest or topic. If you can't find one you like, feel free to start your own.</p>
+			<p>Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exists for a specific interest or topic. If you can't find one you like, feel free to start your own.</p>
 		</div>
 		<div class="two columns second">
 			<h3>How do groups work?</h3>
