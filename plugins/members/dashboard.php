@@ -43,15 +43,20 @@ class plgMembersDashboard extends JPlugin
 		$this->_params = new JParameter($this->_plugin->params);
 	}
 	
-	//-----------
-	
+	/**
+	 * Event call to determine if this plugin should return data
+	 * 
+	 * @param      object  $user   JUser
+	 * @param      object  $member MembersProfile
+	 * @return     array   Plugin name
+	 */
 	public function onMembersAreas( $user, $member )
 	{	
 		//default areas returned to nothing
 		$areas = array();
 		
 		//if this is the logged in user show them
-		if($user->get("id") == $member->get("uidNumber"))
+		if ($user->get("id") == $member->get("uidNumber"))
 		{
 			$areas['dashboard'] = JText::_('PLG_MEMBERS_DASHBOARD');
 		}
@@ -59,8 +64,15 @@ class plgMembersDashboard extends JPlugin
 		return $areas;
 	}
 
-	//-----------
-
+	/**
+	 * Event call to return data for a specific member
+	 * 
+	 * @param      object  $user   JUser
+	 * @param      object  $member MembersProfile
+	 * @param      string  $option Component name
+	 * @param      string  $areas  Plugins to return data
+	 * @return     array   Return array of html
+	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
 		$returnhtml = true;
@@ -75,14 +87,6 @@ class plgMembersDashboard extends JPlugin
 				$returnhtml = false;
 			}
 		}
-		
-		/*
-		if (!$authorized) 
-		{
-			$returnhtml = false;
-			$returnmeta = false;
-		}
-		*/
 		
 		$arr = array(
 			'html' => '',
@@ -108,9 +112,7 @@ class plgMembersDashboard extends JPlugin
 					'name'    => 'display'
 				)
 			);
-			//$this->view->authorized = $authorized;
 			$this->view->member = $this->member = $member;
-			//$this->view->option = $option;
 			$this->view->act = $this->_act;
 			$this->view->config = $this->_params;
 			
@@ -148,6 +150,11 @@ class plgMembersDashboard extends JPlugin
 		return $arr;
 	}
 	
+	/**
+	 * Displays a dashboard (columns of selected modules)
+	 * 
+	 * @return     void
+	 */
 	public function dashboard()
 	{
 		if ($this->_params->get('allow_customization', 0) != 1) 
@@ -159,16 +166,20 @@ class plgMembersDashboard extends JPlugin
 			//$doc->addScriptDeclaration("\tvar j = jQuery.noConflict();");
 		}
 		
-		$this->num_default = 6;
+		$this->num_default = $this->_params->get('defaultNumber', 6);
 		
 		$myhub = new MyhubPrefs($this->database);
 		$myhub->load($this->juser->get('id'));
-
+		
+		// Get all modules
+		$mp = new MyhubParams($this->database);
+		$this->modules = $mp->loadPosition($this->member->get('uidNumber'), $this->_params->get('position', 'myhub'));
+		
 		// No preferences found
 		if (trim($myhub->prefs) == '') 
 		{
 			// Create a default set of preferences
-			$myhub->uid = $this->juser->get('id');
+			$myhub->uid = $this->member->get('uidNumber');
 			$myhub->prefs = $this->_getDefaultModules();
 			if ($this->_params->get('allow_customization', 0) != 1) 
 			{
@@ -200,9 +211,13 @@ class plgMembersDashboard extends JPlugin
 		// Build a list of all modules being used by this user 
 		// so we know what to exclude from the list of modules they can still add
 		$allmods = array();
+		
 		for ($i = 0; $i < count($mymods); $i++)
 		{
-			$allmods = array_merge($allmods, $mymods[$i]);
+			if (is_array($mymods[$i]))
+			{
+				$allmods = array_merge($allmods, $mymods[$i]);
+			}
 		}
 
 		// The number of columns
@@ -210,7 +225,6 @@ class plgMembersDashboard extends JPlugin
 
 		// Instantiate a view
 		$this->view->usermods = $usermods;
-		//$this->view->juser = $this->juser;
 
 		if ($this->_params->get('allow_customization', 0) != 1) 
 		{
@@ -222,7 +236,7 @@ class plgMembersDashboard extends JPlugin
 		$this->view->columns = array();
 		for ($c = 0; $c < $cols; $c++)
 		{
-			$this->view->columns[$c] = $this->output_modules($mymods[$c], $this->juser->get('id'), $this->_act);
+			$this->view->columns[$c] = $this->output_modules($mymods[$c], $this->member->get('uidNumber'), $this->_act);
 		}
 	}
 	
@@ -236,19 +250,21 @@ class plgMembersDashboard extends JPlugin
 	 */
 	protected function output_modules($mods, $uid, $act='')
 	{
-		// Get the modules
-		$modules = array();
-		for ($i=0, $n=count($mods); $i < $n; $i++)
+		$html = '';
+		
+		if (!$this->modules || !is_array($this->modules))
 		{
-			$myparams = new MyhubParams($this->database);
-			$modules[] = $myparams->loadModule($uid, $mods[$i]);
+			return $html;
 		}
 
-		$html = '';
-
 		// Loop through the modules and output
-		foreach ($modules as $module)
+		foreach ($this->modules as $module)
 		{
+			if (!in_array($module->id, $mods))
+			{
+				continue;
+			}
+			
 			if (isset($module->published)) 
 			{
 				if ($module->published != 1) 
@@ -324,7 +340,6 @@ class plgMembersDashboard extends JPlugin
 		}
 
 		// Instantiate a view
-		//$this->view->_name = 'list';
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -350,10 +365,9 @@ class plgMembersDashboard extends JPlugin
 				'name'    => 'data'
 			)
 		);
-		//$this->view->_name = 'data';
 
 		// Incoming
-		$uid = $this->member->get('uidNumber'); //JRequest::getInt('id', 0);
+		$uid = $this->member->get('uidNumber');
 		$ids = JRequest::getVar('mids', '');
 
 		// Ensure we have a user ID ($uid)
@@ -393,7 +407,7 @@ class plgMembersDashboard extends JPlugin
 	protected function saveparams()
 	{
 		// Incoming
-		$uid = $this->member->get('uidNumber'); //JRequest::getInt('id', 0);
+		$uid = $this->member->get('uidNumber');
 		$mid = JRequest::getVar('mid', '');
 		$update = JRequest::getInt('update', 0);
 		$params = JRequest::getVar('params', array());
@@ -435,18 +449,15 @@ class plgMembersDashboard extends JPlugin
 	}
 	
 	/**
-	 * Short description for 'getmodule'
+	 * Displays a specific module
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $extras Parameter description (if any) ...
-	 * @param      string $act Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      boolean $extras Flag to display module params
+	 * @param      string  $act    Parameter description (if any) ...
+	 * @return     void
 	 */
 	protected function getmodule($extras=false, $act='')
 	{
 		// Instantiate a view
-		//$this->view->_name = 'module';
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -457,7 +468,7 @@ class plgMembersDashboard extends JPlugin
 		
 		// Incoming
 		$mid = JRequest::getInt('mid', 0);
-		$uid = $this->member->get('uidNumber'); //JRequest::getInt('id', 0);
+		$uid = $this->member->get('uidNumber');
 
 		// Make sure we have a module ID to load
 		if (!$mid) 
@@ -535,27 +546,25 @@ class plgMembersDashboard extends JPlugin
 	 */
 	private function _getUnusedModules($mods)
 	{
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'module.php');
-		$jmodule = new JTableModule($this->database);
-
-		$position = ($this->_params->get('position')) ? $this->_params->get('position') : 'myhub';
-
-		//$querym = '';
-		$query = "SELECT id, title, module"
-				. " FROM ".$jmodule->getTableName()." AS m"
-				. " WHERE m.position='".$position."' AND m.published='1' AND m.client_id='0' ";
-		$ids = implode(',', $mods);
-		$ids = trim($ids, ',');
-		if ($ids)
+		// Get all modules
+		if (!isset($this->modules) || !$this->modules)
 		{
-			$query .= " AND id NOT IN(" . $ids .")";
+			$mp = new MyhubParams($this->database);
+			$this->modules = $mp->loadPosition($this->juser->get('id'), $this->_params->get('position', 'myhub'));
 		}
-		//$querym = substr($querym, 0, strlen($querym)-4);
-		//$query .= $querym;
-		$query .= " ORDER BY ordering";
-
-		$this->database->setQuery($query);
-		$modules = $this->database->loadObjectList();
+		
+		$modules = array();
+		
+		if ($this->modules)
+		{
+			foreach ($this->modules as $module)
+			{
+				if (!in_array($module->id, $mods))
+				{
+					$modules[] = $module;
+				}
+			}
+		}
 
 		return $modules;
 	}
@@ -577,35 +586,35 @@ class plgMembersDashboard extends JPlugin
 		} 
 		else 
 		{
-			$position = ($this->_params->get('position')) ? $this->_params->get('position') : 'myhub';
+			$position = $this->_params->get('position', 'myhub');
 
-			include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'module.php');
-			$jmodule = new JTableModule($this->database);
-
-			$query = "SELECT m.id 
-						FROM ".$jmodule->getTableName()." AS m 
-						WHERE m.position='".$position."' AND m.published='1' AND m.client_id='0' 
-						ORDER BY m.ordering LIMIT ".$this->num_default;
-			$this->database->setQuery($query);
-			$modules = $this->database->loadObjectList();
-
-			if ($modules) {
+			if ($this->modules)
+			{
 				$i = 0;
-				foreach ($modules as $module)
+				$k = 0;
+				$j = 0;
+				$mods = array();
+				$num = $this->_params->get('defaultNumber', 6);
+				foreach ($this->modules as $module)
 				{
 					$i++;
-					$string .= $module->id;
-					if ($i == 2) 
+					$j++;
+					if ($j <= $num)
 					{
-						$i = 0;
-						$string .= ';';
-					} 
-					else 
-					{
-						$string .= ',';
+						if (!isset($mods[$k]) || !is_array($mods[$k]))
+						{
+							$mods[$k] = array();
+						}
+						$mods[$k][] = $module->id;
+						if ($i == 2) 
+						{
+							$i = 0;
+							$mods[$k] = implode(',', $mods[$k]);
+							$k++;
+						}
 					}
 				}
-				$string = substr($string, 0, strlen($string)-1);
+				$string = (!empty($mods)) ? implode(';', $mods) : $string;
 			}
 		}
 

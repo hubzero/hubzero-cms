@@ -175,7 +175,7 @@ class MyhubParams extends JTable
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
+		include_once( JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'module.php' );
 		$jmodule = new JTableModule( $this->_db );
 
 		$query = "SELECT m.*, p.params AS myparams"
@@ -189,6 +189,63 @@ class MyhubParams extends JTable
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Short description for 'loadModule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $mid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
+	public function loadModules($uid=NULL, $mids=NULL)
+	{
+		if ($uid === NULL || $mids === NULL || !is_array($mids)) 
+		{
+			return false;
+		}
+		$mids = array_map('intval', $mids);
+
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'module.php');
+		$jmodule = new JTableModule($this->_db);
+
+		$query = "SELECT m.*, p.params AS myparams 
+					FROM ".$jmodule->getTableName()." AS m
+					LEFT JOIN $this->_tbl AS p ON m.id=p.mid AND p.uid=".$uid."
+					WHERE m.id IN (".implode(',', $mids).")";
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Short description for 'loadModule'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $mid Parameter description (if any) ...
+	 * @return     mixed Return description (if any) ...
+	 */
+	public function loadPosition($uid=NULL, $position=NULL)
+	{
+		if (!$uid || !$position) 
+		{
+			return false;
+		}
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'module.php');
+		$jmodule = new JTableModule($this->_db);
+
+		$query = "SELECT m.*, p.params AS myparams 
+					FROM ".$jmodule->getTableName()." AS m
+					LEFT JOIN $this->_tbl AS p ON m.id=p.mid AND p.uid=".$uid."
+					WHERE m.position='".$position."' AND m.published=1 AND m.client_id=0 
+					ORDER BY m.ordering";
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 }
 
