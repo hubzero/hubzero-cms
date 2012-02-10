@@ -168,11 +168,9 @@ class plgWhatsnewResources extends JPlugin
 			$filters['tags'] = $tagids;
 		}
 
-		//ximport('Hubzero_User_Helper');
 		ximport('Hubzero_User_Profile');
 		$juser =& JFactory::getUser();
 		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
-		//$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 		$filters['usergroups'] = (is_object($profile)) ? $profile->getGroups('all') : array();
 
 		// Get categories
