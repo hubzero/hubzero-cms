@@ -362,8 +362,11 @@ class Hubzero_User_Helper
 	 */
 	public static function getCommonGroups( $uid, $pid )
 	{
+		ximport('Hubzero_User_Profile');
+		$uprofile = Hubzero_User_Profile::getInstance($uid);
+		
 		// Get the groups the visiting user
-		$xgroups = Hubzero_User_Helper::getGroups($uid, 'all');
+		$xgroups = $uprofile->getGroups('all');
 		$usersgroups = array();
 		if (!empty($xgroups)) {
 			foreach ($xgroups as $group)
@@ -375,7 +378,8 @@ class Hubzero_User_Helper
 		}
 
 		// Get the groups of the profile
-		$pgroups = Hubzero_User_Helper::getGroups($pid, 'all');
+		$pprofile = Hubzero_User_Profile::getInstance($pid);
+		$pgroups = $pprofile->getGroups('all');
 		// Get the groups the user has access to
 		$profilesgroups = array();
 		if (!empty($pgroups)) {

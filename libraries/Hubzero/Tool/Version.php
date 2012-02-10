@@ -2249,7 +2249,7 @@ class Hubzero_Tool_Version
 	 * @param      string $instance Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getVersionInfo($id, $version='', $toolname='', $instance='')
+	public function getVersionInfo($id, $version=null, $toolname=null, $instance=null)
     {
 		$db = &JFactory::getDBO();
         // data comes from mysql
@@ -2259,15 +2259,31 @@ class Hubzero_Tool_Version
             $query .= "WHERE v.id = '".$id."' ";
         }
         else if($version && $toolname) {
-            $query.= "WHERE v.toolname='".$toolname."' ";
-            if($version=='current') {
-                $query .= "AND v.state=1 ORDER BY v.revision DESC LIMIT 1 ";
-            }
-            else if($version=='dev') {
-                $query .= "AND v.state=3 LIMIT 1";
-            }
-            else {
-                $query .= "AND v.version = '".$version."' ";
+            if (is_array($toolname)) {
+				$query .= "LEFT JOIN #__tool_version AS v2 ON v2.revision < v.revision AND v2.toolname=v.toolname ";
+				$query .= "WHERE v.toolname IN ('".implode("','", $toolname)."') ";
+			} else {
+				$query.= "WHERE v.toolname='".$toolname."' ";
+			}
+            switch ($version) 
+			{
+                case 'current': 
+					$query .= "AND v.state=1 ORDER BY v.revision DESC";
+					if (!is_array($toolname))
+					{
+						$query .= " LIMIT 1";
+					}
+				break;
+            	case 'dev':
+                	$query .= "AND v.state=3";
+					if (!is_array($toolname))
+					{
+						$query .= " LIMIT 1";
+					}
+				break;
+				default:
+                	$query .= "AND v.version = '".$version."' ";
+				break;
             }
         }
         else if($instance) {

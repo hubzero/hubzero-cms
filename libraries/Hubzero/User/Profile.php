@@ -1401,21 +1401,57 @@ class Hubzero_User_Profile extends JObject
 	}
 
 	/**
-	 * Short description for 'getInstance'
+	 * Returns a reference to the global User object, only creating it if it
+	 * doesn't already exist.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $user Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      mixed $user The user to load - Can be an integer or string
+	 * @return     mixed Returns object if valid record found, false if not
 	 */
-	static function getInstance($user = null)
+	public function getInstance($id = null)
 	{
-		$instance = new Hubzero_User_Profile($user);
+		static $instances;
+		static $usernames;
 
-		if ($instance->get('uidNumber') == '')
+		if (!isset($instances)) 
+		{
+			$instances = array();
+		}
+		if (!isset($usernames)) 
+		{
+			$usernames = array();
+		}
+		
+		// Is this a username?
+		if (!is_numeric($id))
+		{
+			// Normalize and check if we have data for this username
+			$id = strtolower(trim($id));
+			if (!isset($usernames[$id]))
+			{
+				$user = new Hubzero_User_Profile($id);
+
+				// Save
+				$usernames[$id] = $user->get('uidNumber');
+				$instances[$usernames[$id]] = $user;
+			}
+			// Change the $id from username to numeric ID
+			$id = $usernames[$id];
+		}
+		
+		// Check for existing record
+		if (empty($instances[$id])) 
+		{
+			$user = new Hubzero_User_Profile($id);
+			$instances[$id] = $user;
+		}
+		
+		// Ensure record has data
+		if (!$instances[$id]->get('uidNumber'))
+		{
 			return false;
+		}
 
-		return $instance;
+		return $instances[$id];
 	}
 
 	/**
@@ -1979,5 +2015,64 @@ class Hubzero_User_Profile extends JObject
 		}
 	}
 
+	/**
+	 * Get the groups for a user
+	 * 
+	 * @param      string $role The group set to return. Returns all groups if not set
+	 * @return     array  Array of groups
+	 */
+	public function getGroups($role='all')
+	{
+		static $groups;
+		
+		if (!isset($groups))
+		{
+			$groups = array(
+				'applicants' => array(),
+				'invitees'   => array(),
+				'members'    => array(),
+				'managers'   => array(),
+				'all'        => array()
+			);
+			
+			ximport('Hubzero_User_Helper');
+			$groups['all'] = Hubzero_User_Helper::getGroups($this->get('uidNumber'), 'all', 1);
+			if ($groups['all'])
+			{
+				foreach ($groups['all'] as $item)
+				{
+					if ($item->registered)
+					{
+						if (!$item->regconfirmed)
+						{
+							$groups['applicants'][] = $item;
+						}
+						else 
+						{
+							if ($item->manager)
+							{
+								$groups['managers'][] = $item;
+							}
+							else 
+							{
+								$groups['members'][] = $item;
+							}
+						}
+					}
+					else 
+					{
+						$groups['invitees'][] = $item;
+					}
+				}
+			}
+		}
+		
+		if ($role)
+		{
+			return (isset($groups[$role])) ? $groups[$role] : false;
+		}
+		
+		return $groups;
+	}
 }
 
