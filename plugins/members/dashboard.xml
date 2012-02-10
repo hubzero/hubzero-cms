@@ -46,6 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="position" type="text" menu="hide" label="Module position" default="myhub" description="The module position to use to gather draggable modules" />
 		<param name="defaults" type="text" menu="hide" label="Defaults" default="" description="The default list of modules to show" />
+		<param name="defaultNumber" type="text" menu="hide" label="Default Number" default="6" description="The number of default modules to show" />
 		<param name="static" type="text" menu="hide" label="Static" default="" description="Modules that cannot be removed by the user." />
 	</params>
 </install>
