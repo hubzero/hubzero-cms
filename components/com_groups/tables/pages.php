@@ -278,15 +278,16 @@ Class GroupPages extends JTable
 		if ($public_desc == '') {
 			$public_desc = $this->group->get('description');
 		}
+		
+		//parse the content with the wiki parser
+		$public_desc = $this->parser->parse( stripslashes($public_desc), $this->config );
 
 		//if there is no private desc use the public desc
 		if($private_desc == '') {
 			$private_desc = $public_desc;
+		} else {
+			$private_desc = $this->parser->parse( stripslashes($private_desc), $this->config );
 		}
-
-		//parse the content with the wiki parser
-		$public_desc = $this->parser->parse( stripslashes($public_desc), $this->config );
-		$private_desc = $this->parser->parse( stripslashes($private_desc), $this->config );
 
 		//load the member profile lib
 		ximport('Hubzero_User_Profile');
