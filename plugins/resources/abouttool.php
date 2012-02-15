@@ -141,6 +141,7 @@ class plgResourcesAbouttool extends JPlugin
 			$params->merge($rparams);
 
 			$view->params   = $params;
+			$view->plugin   = $this->_params;
 			$view->helper   = new ResourcesHelper($resource->id, $view->database);
 			$view->thistool = $resource->thistool;
 			$view->curtool  = $resource->curtool;

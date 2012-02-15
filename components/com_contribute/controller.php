@@ -91,6 +91,7 @@ class ContributeController extends Hubzero_Controller
 
 			case 'saveauthor':   $this->author_save();    break;
 			case 'removeauthor': $this->author_remove();  break;
+			case 'updateauthor': $this->author_update();  break;
 			case 'authors':      $this->authors();        break;
 			case 'orderupc':     $this->reorder_author(); break;
 			case 'orderdownc':   $this->reorder_author(); break;
@@ -2042,6 +2043,40 @@ class ContributeController extends Hubzero_Controller
 
 		// Push through to the authors view
 		$this->authors( $pid );
+	}
+	
+	/**
+	 * Update information for a resource author
+	 * 
+	 * @return     unknown Return description (if any) ...
+	 */
+	protected function author_update()
+	{
+		// Incoming
+		$ids = JRequest::getVar( 'authors', array(), 'post');
+		$pid = JRequest::getInt( 'pid', 0 );
+
+		// Ensure we have a resource ID ($pid) to work with
+		if (!$pid) {
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
+			$this->authors();
+			return;
+		}
+
+		// Ensure we have the contributor's ID ($id)
+		if ($ids) 
+		{
+			foreach ($ids as $id => $role)
+			{
+				$rc = new ResourcesContributor($this->database);
+				$rc->loadAssociation($id, $pid, 'resources');
+				$rc->role = $role;
+				$rc->updateAssociation();
+			}
+		}
+
+		// Push through to the authors view
+		$this->authors($pid);
 	}
 
 	/**

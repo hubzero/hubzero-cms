@@ -58,9 +58,10 @@ $app =& JFactory::getApplication();
 <?php } ?>
 		<form action="index.php" id="authors-form" method="post" enctype="multipart/form-data">
 			<fieldset>
-				<label>
-					<select name="authid" id="authid">
-						<option value=""><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_SELECT'); ?></option>
+				<div id="non-js-interface">
+					<label>
+						<select name="authid" id="authid">
+							<option value=""><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_SELECT'); ?></option>
 					<?php
 				if ($this->rows)
 				{
@@ -80,13 +81,24 @@ $app =& JFactory::getApplication();
 					}
 				}
 					?> 
-					</select>
-					<?php echo JText::_('COM_CONTRIBUTE_OR'); ?>
-				</label>
+						</select>
+						<?php echo JText::_('COM_CONTRIBUTE_OR'); ?>
+					</label>
+				
+					<label>
+						<input type="text" name="new_authors" value="" />
+						<?php echo JText::_('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
+					</label>
+				</div>
 				
 				<label>
-					<input type="text" name="new_authors" value="" />
-					<?php echo JText::_('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
+					<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
+					<select name="role" id="new-authors-role">
+						<option value=""><?php echo JText::_('Author'); ?></option>
+						<option value="submitter"><?php echo JText::_('Submitter'); ?></option>
+						<option value="editor"><?php echo JText::_('Editor'); ?></option>
+						<option value="organizer"><?php echo JText::_('Organizer'); ?></option>
+					</select>
 				</label>
 				
 				<p class="submit">
@@ -106,7 +118,22 @@ if ($this->contributors) {
 	$n = count( $this->contributors );
 
 ?>
+	<form action="index.php" id="authors-form" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="no_html" value="1" />
+		<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
+		<input type="hidden" name="task" value="updateauthor" />
+
 		<table class="list">
+			<tfoot>
+				<td></td>
+				<td>
+					<input type="submit" value="<?php echo JText::_('Save Changes'); ?>"/>
+				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tfoot>
 			<tbody>
 <?php
 	foreach ($this->contributors as $contributor)
@@ -125,6 +152,14 @@ if ($this->contributors) {
 					<td width="100%">
 						<?php echo $name; ?>
 						<?php echo ($contributor->org) ? ' <span class="caption">('.$contributor->org.')</span>' : ''; ?>
+					</td>
+					<td>
+						<select name="authors[<?php echo $contributor->id; ?>]" id="role-<?php echo $contributor->id; ?>">
+							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
+							<option value="submitter"<?php if ($contributor->role == 'submitter') { echo ' selected="selected"'; }?>><?php echo JText::_('Submitter'); ?></option>
+							<option value="editor"<?php if ($contributor->role == 'editor') { echo ' selected="selected"'; }?>><?php echo JText::_('Editor'); ?></option>
+							<option value="organizer"<?php if ($contributor->role == 'organizer') { echo ' selected="selected"'; }?>><?php echo JText::_('Organizer'); ?></option>
+						</select>
 					</td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
