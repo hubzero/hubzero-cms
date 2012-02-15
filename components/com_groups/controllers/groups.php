@@ -69,7 +69,7 @@ class GroupsController extends Hubzero_Controller
 			$this->_task = 'intro';
 		}
 
-		$file = array_pop(explode("/",$_SERVER["REQUEST_URI"]));
+		$file = array_pop(explode($this->gid.DS,$_SERVER["REQUEST_URI"]));
 
 		if (substr(strtolower($file), 0, 5) == 'image' ||
 			substr(strtolower($file), 0, 4) == 'file') {
