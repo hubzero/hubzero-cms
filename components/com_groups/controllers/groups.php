@@ -3247,9 +3247,12 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Get the user's groups
-		$invitees = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'invitees' );
-		$members = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members' );
-		$managers = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'managers' );
+		ximport('Hubzero_User_Profile');
+		$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		
+		$invitees = $profile->getGroups('invitees');
+		$members = $profile->getGroups('members');
+		$managers = $profile->getGroups('managers');
 
 		$groups = array();
 		$managerids = array();
@@ -3310,7 +3313,10 @@ class GroupsController extends Hubzero_Controller
 	private function getGroups( $groups )
 	{
 		if (!$this->juser->get('guest')) {
-			$ugs = Hubzero_User_Helper::getGroups( $this->juser->get('id') );
+			ximport('Hubzero_User_Profile');
+			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+			
+			$ugs = $profile->getGroups('all');
 
 			for ($i = 0; $i < count($groups); $i++)
 			{
