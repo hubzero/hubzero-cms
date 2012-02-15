@@ -85,18 +85,17 @@ class plgMembersResume extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onMembersAreas($authorized)
+	public function &onMembersAreas( $user, $member )
 	{
-		$emp = $this->isEmployer();
-
-		if ($authorized or $emp) {
-			$areas = array(
-				'resume' => ucfirst(JText::_('Resume'))
-			);
-		} else {
-			$areas = array();
+		//default areas returned to nothing
+		$areas = array();
+		
+		//if this is the logged in user show them
+		if($user->get("id") == $member->get("uidNumber") || $this->isEmployer())
+		{
+			$areas['resume'] = ucfirst(JText::_('Resume'));
 		}
-
+		
 		return $areas;
 	}
 
@@ -109,7 +108,7 @@ class plgMembersResume extends JPlugin
 	 * @param      string $authorized Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function isEmployer( $member='', $authorized = '')
+	public function isEmployer( $user='', $member='')
 	{
 		$juser 	  =& JFactory::getUser();
 		$database =& JFactory::getDBO();
@@ -134,9 +133,9 @@ class plgMembersResume extends JPlugin
 			}
 		}
 
-		if ($authorized) {
-			$emp = 1;
-		}
+		//if ($authorized) {
+		//	$emp = 1;
+		//}
 
 		if ($member) {
 			$my =  $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
@@ -186,7 +185,7 @@ class plgMembersResume extends JPlugin
 	 * @param      array $areas Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $user, $member, $option, $areas )
 	{
 		$return = 'html';
 		$active = 'resume';
@@ -196,8 +195,8 @@ class plgMembersResume extends JPlugin
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized) )
-			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized) ) )) {
+			if (!array_intersect( $areas, $this->onMembersAreas($user, $member) )
+			&& !array_intersect( $areas, array_keys( $this->onMembersAreas($user, $member) ) )) {
 				// do nothing						
 			}
 		}
@@ -226,7 +225,7 @@ class plgMembersResume extends JPlugin
 		}
 
 		// Get authorization
-		$emp = $this->isEmployer($member, $authorized);
+		$emp = $this->isEmployer($user, $member);
 
 		// Are we returning HTML?
 		if ($return == 'html'  && $areas[0] == 'resume') {
@@ -245,8 +244,9 @@ class plgMembersResume extends JPlugin
 				case 'view':
 				default: $arr['html'] = $this->view($database, $option, $member, $emp, $edittitle = 0 ); break;
 			}
-		} else if ($authorized or $emp) {
-			$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>'.n;
+		} else if ($emp) {
+			//$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>'.n;
+			$arr['metadata'] = "";
 		}
 
 		return $arr;

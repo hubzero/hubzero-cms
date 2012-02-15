@@ -92,7 +92,7 @@ class plgMembersResources extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembersContributionsAreas( $authorized )
+	public function onMembersContributionsAreas()
 	{
 		$areas = $this->_areas;
 		if (is_array($areas)) {
@@ -137,7 +137,7 @@ class plgMembersResources extends JPlugin
 	 * @param      string $username Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' )
+	public function onMembersContributionsCount( $user_id='m.uidNumber', $username='m.username' )
 	{
 		$query = "SELECT COUNT(R.id) FROM #__resources AS R, #__author_assoc AS AA WHERE AA.authorid=".$user_id." AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
 		return $query;
@@ -157,12 +157,12 @@ class plgMembersResources extends JPlugin
 	 * @param      array $areas Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembersContributions( $member, $option, $authorized, $limit=0, $limitstart=0, $sort, $areas=null )
+	public function onMembersContributions( $member, $option, $limit=0, $limitstart=0, $sort, $areas=null )
 	{
 		$database =& JFactory::getDBO();
 
 		if (is_array( $areas ) && $limit) {
-			$ars = $this->onMembersContributionsAreas( $authorized );
+			$ars = $this->onMembersContributionsAreas();
 			if (!array_intersect( $areas, $ars )
 			&& !array_intersect( $areas, array_keys( $ars ) )
 			&& !array_intersect( $areas, array_keys( $ars['resources'] ) )) {
@@ -192,7 +192,7 @@ class plgMembersResources extends JPlugin
 		$filters = array();
 		$filters['author'] = $uidNumber;
 		$filters['sortby'] = $sort;
-		$filters['authorized'] = $authorized;
+		//$filters['authorized'] = $authorized;
 
 		ximport('Hubzero_User_Helper');
 		$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
@@ -267,7 +267,7 @@ class plgMembersResources extends JPlugin
 
 			// Get a count
 			$counts = array();
-			$ares = $this->onMembersContributionsAreas( $authorized );
+			$ares = $this->onMembersContributionsAreas();
 			foreach ($ares as $area=>$val)
 			{
 				if (is_array($val)) {
@@ -308,7 +308,7 @@ class plgMembersResources extends JPlugin
 	 * @param      boolean $authorized Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function out( $row, $authorized=false )
+	public function out( $row )
 	{
 		$database =& JFactory::getDBO();
 
@@ -343,7 +343,7 @@ class plgMembersResources extends JPlugin
 		}
 		$html .= ' resource">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a>';
-		if ($authorized) {
+		/*if ($authorized) {
 			switch ($row->state)
 			{
 				case 5: $html .= ' <span class="resource-status internal">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL').'</span>'; break;
@@ -354,7 +354,7 @@ class plgMembersResources extends JPlugin
 				case 0:
 				default: $html .= ' <span class="resource-status unpublished">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_UNPUBLISHED').'</span>'; break;
 			}
-		}
+		}*/
 		$html .= '</p>'."\n";
 		if ($params->get('show_ranking')) {
 			$helper->getCitationsCount();
@@ -451,9 +451,9 @@ class plgMembersResources extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function onMembersFavoritesAreas( $authorized )
+	public function onMembersFavoritesAreas()
 	{
-		return $this->onMembersContributionsAreas( $authorized );
+		return $this->onMembersContributionsAreas();
 	}
 
 	/**
@@ -469,12 +469,12 @@ class plgMembersResources extends JPlugin
 	 * @param      array $areas Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembersFavorites( $member, $option, $authorized, $limit=0, $limitstart=0, $areas=null )
+	public function onMembersFavorites( $member, $option, $limit=0, $limitstart=0, $areas=null )
 	{
 		$database =& JFactory::getDBO();
 
 		if (is_array( $areas ) && $limit) {
-			$ars = $this->onMembersFavoritesAreas( $authorized );
+			$ars = $this->onMembersFavoritesAreas();
 			if (!array_intersect( $areas, $ars )
 			&& !array_intersect( $areas, array_keys( $ars ) )
 			&& !array_intersect( $areas, array_keys( $ars['resources'] ) )) {
@@ -573,7 +573,7 @@ class plgMembersResources extends JPlugin
 
 			// Get a count
 			$counts = array();
-			$ares = $this->onMembersFavoritesAreas( $authorized );
+			$ares = $this->onMembersFavoritesAreas();
 			foreach ($ares as $area=>$val)
 			{
 				if (is_array($val)) {

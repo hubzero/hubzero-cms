@@ -68,16 +68,17 @@ class plgMembersPoints extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onMembersAreas( $authorized )
+	public function &onMembersAreas( $user, $member )
 	{
-		if (!$authorized) {
-			$areas = array();
-		} else {
-			$areas = array(
-				'points' => JText::_('PLG_MEMBERS_POINTS')
-			);
+		//default areas returned to nothing
+		$areas = array();
+		
+		//if this is the logged in user show them
+		if($user->get("id") == $member->get("uidNumber"))
+		{
+			$areas['points'] = JText::_('PLG_MEMBERS_POINTS');
 		}
-
+		
 		return $areas;
 	}
 
@@ -92,23 +93,23 @@ class plgMembersPoints extends JPlugin
 	 * @param      unknown $areas Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $user, $member, $option, $areas )
 	{
 		$returnhtml = true;
 		$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
-			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
+			if (!array_intersect( $areas, $this->onMembersAreas( $user, $member ) )
+			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $user, $member ) ) )) {
 				$returnhtml = false;
 			}
 		}
 
-		if (!$authorized) {
-			$returnhtml = false;
-			$returnmeta = false;
-		}
+		//if (!$authorized) {
+		//	$returnhtml = false;
+		//	$returnmeta = false;
+		//}
 
 		$arr = array(
 			'html'=>'',
@@ -159,7 +160,18 @@ class plgMembersPoints extends JPlugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($returnmeta) {
-			$arr['metadata'] = '<p class="points"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=points').'">'.JText::sprintf('PLG_MEMBERS_POINTS_NUMBER_POINTS',$BTL->summary()).'</a></p>'."\n";
+			$arr['metadata'] = "";
+			
+			$points = $BTL->summary();
+		
+			$prefix = ($user->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
+			
+			$text = $points;
+			$title = $prefix . " " . $points . " points.";
+			
+			if($points > 0) {
+				$arr['metadata'] = "<span title=\"{$title}\" class=\"meta\">{$points}</span>";
+			}
 		}
 
 		return $arr;

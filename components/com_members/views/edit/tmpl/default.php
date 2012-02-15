@@ -354,7 +354,7 @@ if ($this->registration->Interests != REG_HIDE) {
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
 
-$html .= "\t\t".'<label>'."\n";
+$html .= "\t\t".'<label for="profilebio">'."\n";
 $html .= "\t\t\t".JText::_('BIO').':'."\n";
 $html .= "\t\t\t".$editor->display('profile[bio]', 'profilebio', stripslashes($this->profile->get('bio')), '', '40', '10');
 $html .= "\t\t\t".'<span class="hint"><a class="popup" href="'.JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting').'">Wiki formatting</a> is allowed for Bios.</span>'."\n";

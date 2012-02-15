@@ -1,0 +1,238 @@
+/* Misc */
+	.clearfix {
+		border: 1px solid #f4f4f4;
+	}
+	.clearfix:after {
+		content: "."; 
+		display: block; 
+		height: 0; 
+		clear: left; 
+		visibility: hidden;
+	}
+/* Content blocks */
+	.container {
+		margin: 1em 0 1em 0;
+		padding: 0;
+		border: 10px solid #f4f4f4;
+		background: #f4f4f4;
+	}
+	.container-block {
+		border: 2px solid #e9e9e9;
+		background-color: #fff;
+		margin: 0;
+		padding: 0 15px;
+	}
+	.container-block h3 {
+		margin: 0 -15px 1em -15px;
+		padding: 0.5em 0.7em;
+		background: #f8f8f8 url("images/light-stripes.png");
+		border-bottom: 2px solid #e9e9e9;
+		font-size: 135%;
+	}
+	.container-block h4 {
+		font-size: 115%;
+		border-bottom: 1px solid #eee;
+		padding: 0.2em 0;
+		font-weight: normal;
+	}
+	.container-block h4 span {
+		color: #aaa;
+	}
+	.container-block h4 a {
+		color: #333;
+		border: none;
+	}
+	.container-block h4 .more {
+		/*float: right;*/
+		color: #aaa;
+	}
+	.container-block h4 a:hover,
+	.container-block h4 a:hover .more {
+		border: none;
+		color: #ff6600;
+	}
+	.container-block .columns {
+		margin-top: 0em;
+		margin-bottom: 1em;
+	}
+	.container-block .entry-content {
+		margin: 0 0 2em 0;
+	}
+	.container-block .entry-content h4 {
+		font-weight: bold;
+	}
+/* Submenu styling */
+	.entries-menu {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-size: 85%;
+	}
+	.list-footer,
+	.entries-menu {
+		min-height: 1px;
+	}
+	.entries-menu:after {
+		content: "."; 
+		display: block; 
+		height: 2.5em; 
+		clear: left; 
+		visibility: hidden;
+	}
+	.entries-menu li {
+		float: right;
+		padding: 0 0.2em 0.5em 0.2em;
+		margin: 0;
+	}
+	.entries-menu li a,
+	.entries-menu span.nolink {
+		color: #888;
+		display: block;
+		cursor: pointer;
+		font-weight: normal;
+		line-height: 1em;
+		border: none;
+		margin: 0;
+		padding: 0.4em 0.75em;
+		text-shadow: 0px 1px 1px #fff;
+	}
+	.entries-menu span.nolink {
+		color: #999;
+	}
+	.entries-menu a.active,
+	.entries-menu span.nolink.active {
+		color: #fff;
+		background-color: #636166;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+	}
+	.entries-menu a:hover {
+		color: #fff;
+		background-color: #fc9022;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+	}
+/* Item listing */
+	.container .container-block {
+		margin: 0;
+		padding: 0;
+		border: 2px solid #e9e9e9;
+		background: #fff;
+	}
+	.container .category-wrap {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	.container h4 {
+		margin: 0;
+		padding: 0.5em 0.7em;
+		font-size: 1.2em;
+		background: #f8f8f8 url("images/light-stripes.png");
+		font-weight: normal;
+		color: #555;
+	}
+	.category-header small {
+		position: absolute;
+		right: 0.5em;
+		font-size: 1em;
+	}
+	.container h4 span {
+		color: #aaa;
+		font-size: 85%;
+		margin-left: 0.2em;
+	}
+	.container .results {
+		border: none;
+		background: #fff;
+		margin: 0;
+		padding: 0 0 2em 0;
+		clear: left;
+	}
+	.container .results li {
+		padding: 0.5em 1em;
+		border-top: 1px solid #efefef;
+		border-bottom: none;
+	}
+	.container .results p {
+		margin-left: 1em;
+	}
+	.container .results p.title {
+		margin-left: 0;
+	}
+	.container .results .event p.title {
+		margin-left: 4em;
+	}
+	.container .results .member p.title {
+		margin-left: 60px;
+	}
+	.aside .sub-nav {
+		margin-top: 0;
+		list-style-type: none;
+		background-color: #F4F4ee;
+		border: none;
+	}
+	.results .resource .title {
+		margin-right: 220px;
+	}
+	.results .stats { 
+		margin: -1.5em 0 0 0;
+		float: right;
+		width: 190px;
+		background: none;
+	}
+	.results .resource .stats p,
+	.stats p { 
+		color: #999; 
+		font-size: 90%;
+		margin: 0 0 0.5em 0;
+		padding: 0;
+	}
+	.results .href {
+		font-size: 85%;
+		color: green;
+	}
+	.aside > p {
+		margin-top: 0;
+		float: left;
+	}
+	.moreresults {
+		display: none;
+	}
+	.results .private {
+		background: #fff;
+	}
+	.results .resource .title .resource-status {
+		color: #aaa;
+		font-size: 85%;
+		text-transform: uppercase;
+		font-weight: bold;
+		margin-left: 1em;
+	}
+	.results .resource .title .internal {
+		color: blue;
+	}
+	.results .resource .title .deleted {
+		color: #000;
+	}
+	.results .resource .title .pending {
+		color: blue;
+	}
+	.results .resource .title .draft {
+		color: orange;
+	}
+	.results .resource .title .published {
+		color: green;
+	}
+	.results .resource .title .unpublished {
+		color: red;
+	}
+/* IE 7 hacks */
+
+/* IE 6 hacks */

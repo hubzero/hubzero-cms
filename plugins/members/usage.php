@@ -68,11 +68,9 @@ class plgMembersUsage extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onMembersAreas( $authorized )
+	public function &onMembersAreas( $user, $member )
 	{
-		$areas = array(
-			'usage' => JText::_('PLG_MEMBERS_USAGE')
-		);
+		$areas['usage'] = JText::_('PLG_MEMBERS_USAGE');
 		return $areas;
 	}
 
@@ -87,7 +85,7 @@ class plgMembersUsage extends JPlugin
 	 * @param      unknown $areas Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $user, $member, $option, $areas )
 	{
 		$returnhtml = true;
 
@@ -98,8 +96,8 @@ class plgMembersUsage extends JPlugin
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
-			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
+			if (!array_intersect( $areas, $this->onMembersAreas( $user, $member ) )
+			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $user, $member ) ) )) {
 				$returnhtml = false;
 			}
 		}
@@ -165,10 +163,12 @@ class plgMembersUsage extends JPlugin
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		$arr['metadata'] = '<p class="usage"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=usage').'">'.JText::_('PLG_MEMBERS_USAGE_DETAILED_USAGE').'</a></p>'."\n";
-		if (is_file(JPATH_ROOT.DS.'site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'_th.gif')) {
-			$arr['metadata'] .= '<p><a rel="lightbox" href="/site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'.gif"><img src="/site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'_th.gif" alt="'.JText::_('PLG_MEMBERS_USAGE_IMPACT_PLOT').'" /></a></p>'."\n";
-		}
+		//$arr['metadata'] = '<p class="usage"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=usage').'">'.JText::_('PLG_MEMBERS_USAGE_DETAILED_USAGE').'</a></p>'."\n";
+		//if (is_file(JPATH_ROOT.DS.'site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'_th.gif')) {
+		//	$arr['metadata'] .= '<p><a rel="lightbox" href="/site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'.gif"><img src="/site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'_th.gif" alt="'.JText::_('PLG_MEMBERS_USAGE_IMPACT_PLOT').'" /></a></p>'."\n";
+		//}
+		
+		$arr['metadata'] = "";
 
 		return $arr;
 	}

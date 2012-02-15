@@ -23,6 +23,16 @@ HUB.Members = {
 				SqueezeBoxHub.initialize({ size: {x: 300, y: 375} });
 			}
 			
+			//hide no javscript messages
+			$$(".no-js").hide();
+			
+			//move the modules button to top
+			if( $("personalize") )
+			{
+				$("personalize").injectInside( $("page_options") );
+				$("personalize").removeClass("hide");
+			}
+			
 			// Modal boxes for presentations
 			$$('a.message').each(function(el) {
 				if (el.href.indexOf('?') == -1) {
@@ -35,8 +45,9 @@ HUB.Members = {
 
 					SqueezeBoxHub.fromElement(el,{
 						handler: 'url', 
-						size: {x: 300, y: 375}, 
+						size: {x: 700, y: 418}, 
 						ajaxOptions: {
+							evalScripts: true,
 							method: 'get',
 							onComplete: function() {
 								frm = $('hubForm-ajax');

@@ -13,36 +13,42 @@
 
 */
 
-	#point-balance {
-		margin-top: 0;
-		background: #F7F4F2;
-		border-top: 1px solid #E7DFD8;
-		border-bottom: 1px solid #E7DFD8;
-		text-align: center;
-		color: #333;
-		font-weight: bold;
-		font-size: 1.5em;
-		padding: 0.5em;
-		}
-	#point-balance span {
-		display: none;
-		}
-	#point-balance small {
-		color: #888;
-		}
+/* Point Balance Box */
+.point-balance {
+	font-weight: bold;
+	text-align:center;
+	font-size:18px;
+	margin-top:20px;
+	}
+.point-balance span {
+	color:#888;
+	}
+.point-balance .spend {
+	display:block;
+	font-weight:normal;
+	font-size:12px;
+	color:#888;
+	margin:10px 0 15px 0;
+	}
+
 /* Point transactions table */
-	.transactions .withdraw {
-		color: red;
-		}
-	.transactions .deposit {
-		color: green;
-		}
-	.transactions .textual-data {
-		text-align: left;
-		}
-	.transactions .numerical-data {
-		text-align: right;
-		}
+.com_members .transactions .withdraw {	
+	color: red;
+	}
+.com_members .transactions .deposit {
+	color: green;
+	}
+.com_members .transactions .textual-data {
+	text-align: left;		
+	}
+.com_members .transactions .numerical-data {
+	text-align: right;
+	}
+.com_members .transactions tbody tr:nth-child(even) td {
+	background:#efefef;
+	}
+
+	
 	.transactions .odd .highlight {
 		background-color: #eee;
 		}
@@ -52,18 +58,3 @@
 	.transactions .odd {
 		background-color: #f6f6f1;
 		}
-	.transactions .even {
-		}
-	.data .small {
-		font-size: 95%;
-		display: block;
-		color: #888;
-		}
-/*---------------------------------------------------------------
-	IE 7 hacks
----------------------------------------------------------------*/
-
-/*---------------------------------------------------------------
-	IE 6 hacks
----------------------------------------------------------------*/
-

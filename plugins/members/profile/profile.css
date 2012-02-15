@@ -1,0 +1,86 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_myhub/myhub.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+	-- -- -- -- -- -- --
+	Member Profile CSS
+	-- -- -- -- -- -- --
+*/
+
+.member_profile {
+	margin:0;
+	padding:0;
+	}
+.member_profile table#profile_info {
+	border-collapse:separate;
+	border:none;
+	margin-bottom:20px;
+	}
+#profile_info td {
+	padding:0;
+	}
+#profile_info tbody tr td {
+	padding:12px 0 20px 20px;
+	border-bottom:1px solid #efefef;
+	}
+#profile_info tbody td.key {
+	padding:10px 0 20px 0;
+	width:170px;
+	text-align:right;
+	font-weight:bold;
+	color:#888;
+	}
+#profile_info tbody td.privacy {
+	width:200px;
+	text-align:right;
+	padding-right:10px;
+	}
+#profile_info tbody td.key:after {
+	content: ":";
+	}
+#profile_info tbody tr:nth-child(even) td {
+	/*background:#F5f5f5;*/
+	}
+#profile_info tfoot td {
+	padding:12px 0 20px 20px;
+	text-align:right;
+	}
+#profile_info tr.bio td p:nth-child(1) {
+	margin-top:0;
+	}
+#profile_info .email {
+	background:url("/components/com_members/images/email.png") no-repeat 0 2px;
+	}
+#profile_info .url {
+	padding-left:20px;
+	background:url("/components/com_members/images/world.png") no-repeat 0px 0;
+	}
+#profile_info .phone {
+	padding-left:20px;
+	background:url("/components/com_members/images/phone.png") no-repeat 3px 0px;
+	}
+
+/* Private Info */
+#profile_info tr.private {
+	background:none;
+	}	
+#profile_info tr.private td {
+	background:#efefef url("/components/com_members/images/light-stripes.png") repeat ;
+	}
+/*
+#profile_info tr.private .privacy select {
+	text-indent:12px;
+	color:#555;
+	border:1px solid #999;
+	background:url("images/private.png") no-repeat 6% 48%;
+	}
+*/
+#profile_info tr.private .privacy:before {
+	vertical-align:middle;
+	content: url("/components/com_members/images/private.png");
+	}
+	

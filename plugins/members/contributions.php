@@ -68,11 +68,9 @@ class plgMembersContributions extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onMembersAreas( $authorized )
+	public function &onMembersAreas()
 	{
-		$areas = array(
-			'contributions' => JText::_('PLG_MEMBERS_CONTRIBUTIONS')
-		);
+		$areas['contributions'] = JText::_('PLG_MEMBERS_CONTRIBUTIONS');
 		return $areas;
 	}
 
@@ -87,14 +85,14 @@ class plgMembersContributions extends JPlugin
 	 * @param      array $areas Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $user, $member, $option, $areas )
 	{
 		$returnhtml = true;
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
-			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
+			if (!array_intersect( $areas, $this->onMembersAreas() )
+			&& !array_intersect( $areas, array_keys( $this->onMembersAreas() ) )) {
 				$returnhtml = false;
 			}
 		}
@@ -114,7 +112,7 @@ class plgMembersContributions extends JPlugin
 
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();
-		$searchareas = $dispatcher->trigger( 'onMembersContributionsAreas', array($authorized) );
+		$searchareas = $dispatcher->trigger( 'onMembersContributionsAreas', array() );
 		foreach ($searchareas as $area)
 		{
 			$areas = array_merge( $areas, $area );
@@ -139,7 +137,6 @@ class plgMembersContributions extends JPlugin
 		$totals = $dispatcher->trigger( 'onMembersContributions', array(
 				$member,
 				$option,
-				$authorized,
 				0,
 				$limitstart,
 				$sort,
@@ -202,7 +199,6 @@ class plgMembersContributions extends JPlugin
 			$results = $dispatcher->trigger( 'onMembersContributions', array(
 				$member,
 				$option,
-				$authorized,
 				$limit,
 				$limitstart,
 				$sort,
@@ -211,7 +207,7 @@ class plgMembersContributions extends JPlugin
 
 			// Do we have an active area?
 			if (count($activeareas) == 1 && !is_array(current($activeareas))) {
-				$active = $activeareas[0];
+				$active = current($activeareas);
 			} else {
 				$active = '';
 			}
@@ -224,7 +220,7 @@ class plgMembersContributions extends JPlugin
 					'name'=>'display'
 				)
 			);
-			$view->authorized = $authorized;
+			//$view->authorized = $authorized;
 			$view->totals = $totals;
 			$view->results = $results;
 			$view->cats = $cats;
@@ -240,14 +236,23 @@ class plgMembersContributions extends JPlugin
 			}
 
 			$arr['html'] = $view->loadTemplate();
-		} else {
-			// Build the metadata
-			foreach ($cats as $cat)
-			{
-				if ($cat['total'] > 0) {
-					$arr['metadata'] .= '<p class="'.strtolower($cat['title']).'"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=contributions').'">'.$cat['total'].' '.strtolower($cat['title']).'</a></p>'."\n";
-				}
-			}
+		}	
+		
+		// Build the metadata
+		$arr['metadata'] = "";
+		$prefix = "";
+		$total = 0;
+
+		$juser =& JFactory::getUser();
+		$prefix = ($juser->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
+
+		foreach ($cats as $cat) {
+			$total += $cat['total'];
+		}
+
+		if($total > 0) {
+			$title = $prefix . " {$total} resources.";
+			$arr['metadata'] = "<span title=\"{$title}\" class=\"meta\">{$total}</span>";	
 		}
 
 		return $arr;

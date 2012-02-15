@@ -68,11 +68,11 @@ class plgMembersTopics extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onMembersContributionsAreas( $authorized )
+	public function &onMembersContributionsAreas()
 	{
 		$areas = array(
 			'topics' => JText::_('PLG_MEMBERS_TOPICS')
-		);
+			);
 		return $areas;
 	}
 
@@ -86,15 +86,15 @@ class plgMembersTopics extends JPlugin
 	 * @param      string $username Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' )
+	public function onMembersContributionsCount( $user_id='m.uidNumber', $username='m.username' )
 	{
 		//$query  = "SELECT COUNT(*) FROM #__wiki_page AS w WHERE (w.created_by='".$user_id."' OR w.authors LIKE '%".$username."%')";
 		$username = ($username == 'm.username') ? $username : "'".$username."'";
 		$query = "SELECT COUNT(*) FROM #__wiki_page AS w
 					WHERE ((".$user_id." > 0 AND (w.created_by = ".$user_id." OR ".$user_id." IN (SELECT wpa.user_id FROM #__wiki_page_author AS wpa WHERE wpa.page_id=w.id))) OR (".$user_id." <= 0 AND w.created_by = ".$user_id."))";
-		if (!$authorized) {
-			$query .= " AND w.access!=1";
-		}
+		//if (!$authorized) {
+		//	$query .= " AND w.access!=1";
+		//}
 		/*$query = "SELECT COUNT(*) FROM (
 			SELECT COUNT(DISTINCT v.pageid) FROM #__wiki_page AS w, #__wiki_version AS v 
 			WHERE w.id=v.pageid 
@@ -122,12 +122,13 @@ class plgMembersTopics extends JPlugin
 	 * @param      unknown $areas Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function onMembersContributions( $member, $option, $authorized, $limit=0, $limitstart=0, $sort, $areas=null )
+	public function onMembersContributions( $member, $option, $limit=0, $limitstart=0, $sort, $areas=null )
 	{
 		$database =& JFactory::getDBO();
 
 		if (is_array( $areas ) && $limit) {
-			if (!array_intersect( $areas, $this->onMembersContributionsAreas( $authorized ) ) && !array_intersect( $areas, array_keys( $this->onMembersContributionsAreas( $authorized ) ) )) {
+			if (!array_intersect( $areas, $this->onMembersContributionsAreas() ) 
+			&& !array_intersect( $areas, array_keys( $this->onMembersContributionsAreas() ) )) {
 				return array();
 			}
 		}
@@ -159,9 +160,9 @@ class plgMembersTopics extends JPlugin
 		$filters['author'] = $uidNumber;
 		$filters['username'] = $username;
 		$filters['sortby'] = $sort;
-		if ($authorized) {
-			$filters['authorized'] = 'admin';
-		}
+		//if ($authorized) {
+		//	$filters['authorized'] = 'admin';
+		//}
 
 		if (!$limit) {
 			$filters['select'] = 'count';
@@ -203,25 +204,25 @@ class plgMembersTopics extends JPlugin
 	 * @param      boolean $authorized Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function out( $row, $authorized=false )
+	public function out( $row )
 	{
 		$database =& JFactory::getDBO();
 
 		$html  = "\t".'<li class="resource">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		$html .= "\t\t".'<p class="details">';
-		if ($row->area != '' && $row->category != '') {
+		if (isset($row->area) && isset($row->category)) {
 			$html .= JText::_('PLG_MEMBERS_TOPICS_GROUP_WIKI').': '.$row->area;
 		} else {
 			$html .= JText::_('PLG_MEMBERS_TOPICS');
 		}
 		$html .= '</p>'."\n";
 		if ($row->text) {
-			if ($row->access == 1 && !$authorized) {
-				$html .= "\t\t".Hubzero_View_Helper_Html::warning(JText::_('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED'))."\n";
-			} else {
+			//if ($row->access == 1) {
+			//	$html .= "\t\t".Hubzero_View_Helper_Html::warning(JText::_('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED'))."\n";
+			//} else {
 				$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(stripslashes($row->text))."\n";
-			}
+			//}
 		}
 		$html .= "\t".'</li>'."\n";
 		return $html;
@@ -235,9 +236,9 @@ class plgMembersTopics extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function &onMembersFavoritesAreas( $authorized )
+	public function &onMembersFavoritesAreas()
 	{
-		return $this->onMembersContributionsAreas( $authorized );
+		return $this->onMembersContributionsAreas();
 	}
 
 	/**
@@ -247,18 +248,18 @@ class plgMembersTopics extends JPlugin
 	 * 
 	 * @param      object $member Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @param      integer $limit Parameter description (if any) ...
 	 * @param      integer $limitstart Parameter description (if any) ...
 	 * @param      unknown $areas Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function onMembersFavorites( $member, $option, $authorized, $limit=0, $limitstart=0, $areas=null )
+	public function onMembersFavorites( $member, $option, $limit=0, $limitstart=0, $areas=null )
 	{
 		$database =& JFactory::getDBO();
 
 		if (is_array( $areas ) && $limit) {
-			if (!array_intersect( $areas, $this->onMembersFavoritesAreas( $authorized ) ) && !array_intersect( $areas, array_keys( $this->onMembersContributionsAreas( $authorized ) ) )) {
+			if (!array_intersect( $areas, $this->onMembersFavoritesAreas() ) 
+			&& !array_intersect( $areas, array_keys( $this->onMembersContributionsAreas() ) )) {
 				return array();
 			}
 		}
@@ -281,9 +282,9 @@ class plgMembersTopics extends JPlugin
 		}
 
 		$access = " AND w.access!=1";
-		if ($authorized) {
-			$access = "";
-		}
+		//if ($authorized) {
+		//	$access = "";
+		//}
 
 		$f_count = "SELECT COUNT(*) ";
 		$f_fields = "SELECT f.id, f.pagetext AS text, 'topics' AS section, 'index.php?option=' AS href, d.scope, d.group, d.access, d.title, d.pagename, d.created ";

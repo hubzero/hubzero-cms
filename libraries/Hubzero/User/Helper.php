@@ -349,5 +349,50 @@ class Hubzero_User_Helper
 
 		return $result;
 	}
+	
+	
+	/**
+	 * Short description for 'getCommonGroups'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $pid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public static function getCommonGroups( $uid, $pid )
+	{
+		// Get the groups the visiting user
+		$xgroups = Hubzero_User_Helper::getGroups($uid, 'all');
+		$usersgroups = array();
+		if (!empty($xgroups)) {
+			foreach ($xgroups as $group)
+			{
+				if ($group->regconfirmed) {
+					$usersgroups[] = $group->cn;
+				}
+			}
+		}
+
+		// Get the groups of the profile
+		$pgroups = Hubzero_User_Helper::getGroups($pid, 'all');
+		// Get the groups the user has access to
+		$profilesgroups = array();
+		if (!empty($pgroups)) {
+			foreach ($pgroups as $group)
+			{
+				if ($group->regconfirmed) {
+					$profilesgroups[] = $group->cn;
+				}
+			}
+		}
+		
+		// Find the common groups
+		$common = array_intersect($usersgroups, $profilesgroups);
+		
+		//return common groups
+		return $common;
+	}
+	
 }
 

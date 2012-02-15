@@ -228,9 +228,9 @@ foreach ($this->results as $category)
 			$obj = 'plgMembers'.ucfirst($this->cats[$k]['category']);
 
 			if (function_exists($func)) {
-				$html .= $func( $row, $this->authorized );
+				$html .= $func( $row );
 			} elseif (method_exists($obj, 'out')) {
-				$html .= call_user_func( array($obj,'out'), $row, $this->authorized );
+				$html .= call_user_func( array($obj,'out'), $row );
 			} else {
 				$html .= "\t".'<li>'."\n";
 				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
@@ -289,7 +289,10 @@ if ($dopaging) {
 
 	$nm = str_replace('com_','',$this->option);
 
-	$pf = str_replace($nm.'/?',$nm.'/'.$this->member->get('uidNumber').'/contributions/?',$pf);
+	$pf = str_replace($nm.'/?/'.$nm, $nm, $pf);
+	$pf = str_replace($nm.'/?', $nm.'/'.$this->member->get('uidNumber').'/contributions/?',$pf);
+	$pf = str_replace('contributions&amp;', 'contributions/?', $pf);
+	$pf = str_replace('?', '?area='. urlencode(stripslashes($this->active)).'&amp;sort='.$this->sort.'&amp;',$pf);
 	echo $pf.'<div class="clearfix"></div>';
 }
 ?>

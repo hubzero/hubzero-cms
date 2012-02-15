@@ -1,191 +1,267 @@
-/**
- * @package     hubzero-cms
- * @file        plugins/members/messages/messages.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
-
 /*
-
-	-- -- -- -- -- -- --
-	Members Messages plugin CSS
-	-- -- -- -- -- -- --
-
+	Member Messages CSS
 */
 
-/* Settings */
-	.settings {
-		border-bottom: none;
-		}
-	.settings .odd {
-		background-color: #F5F7F2;
-		}
-	.settings caption {
-		text-align: right;
-		margin: 0;
-		padding-top: 0;
-		}
-	.settings caption input {
-		margin: 0 0 1em 0;
-		}
-	.settings tfoot th,
-	.settings tfoot td {
-		border-bottom: none;
-		border-top: 2px solid #DEE4CD;
-		padding-top: 1.5em;
-		text-align: right;
-		}
-	.settings tbody tr.section-header th,
-	.settings tbody tr.section-header td {
-		padding-top: 1.5em;
-		font-weight: bold;
-		}
-	.settings .iconed {
-		display: block;
-		width: 16px;
-		height: 16px;
-		overflow: hidden;
-		text-indent: -55em;
-		margin: 0;
-		padding: 0;
-		}
-	.settings td.email {
-		background-position: 0 50%;
-		}
-	.trash {
-		background: url("images/trash.gif") 0 0 no-repeat;
-		padding-left: 20px;
-		}
-/* Inboxes */
-	#messages-section .subject {
-		padding-top: 1em;
-		}
-	#messages-section .subject table.data {
-		margin-top: 1em;
-		border-bottom: none;
-		}
-	#messages-section .subject table.data td {
-		border: none;
-		}
-	#messages-section .subject table.data td .trash {
-		display: block;
-		width: 16px;
-		height: 16px;
-		overflow: hidden;
-		text-indent: -55em;
-		margin: 0;
-		padding: 0;
-		border: none;
-		}
-	#messages-section .subject table.data tfoot td {
-		border-top: 2px solid #dfdfdf;
-		border-bottom: none;
-		}
-	#messages-section .subject #hubForm {
-		border: none;
-		}
-/* Side menu
-	NOTE: We have to be fairly explicit in some of the following delcarations 
-	to over-ride some styles in the master template 
-*/
-	#messages-section .aside li {
-		border: none;
-		margin: 0;
-		padding: 0;
-		}
-	#messages-section .aside li a {
-		margin: 0;
-		font-size: 100%;
-		text-transform: none;
-		letter-spacing: 0px;
-		border-top: 1px solid #fff;
-		border-right: 1px solid #ccc;
-		border-bottom: 1px solid #fff;
-		}
-	#messages-section .aside li a.box {
-		background: #F5F5F5 url("images/box.png") 5px 50% no-repeat; padding-left: 25px;
-		}
-	#messages-section .aside li a.archive,
-	#messages-section .withleft .aside li a.archive {
-		border: none;
-		margin: 0;
-		padding: 0.7em 1.2em;
-		background: #F5F5F5 url("images/archive.gif") 5px 50% no-repeat; padding-left: 25px;
-		border-top: 1px solid #fff;
-		border-right: 1px solid #ccc;
-		border-bottom: 1px solid #fff;
-		color: #6699cc;
-		}
-	#messages-section .aside li a.trash {
-		background: #F5F5F5 url("images/trash.gif") 5px 50% no-repeat; padding-left: 25px;
-		}
-	#messages-section .aside li a.config {
-		background: #F5F5F5 url("images/cog.png") 5px 50% no-repeat; padding-left: 25px;
-		}
-	#messages-section .aside li a.sent {
-		background: #F5F5F5 url("images/email_go.png") 5px 50% no-repeat; padding-left: 25px;
-		}
-	#messages-section .aside li.active a,
-	#messages-section .aside li.active a.archive {
-		background-color: #fff;
-		border-top: 1px solid #ccc;
-		border-right: 1px solid #fff;
-		border-bottom: 1px solid #ccc;
-		font-weight: bold;
-		}
-	#messages-section .withleft .aside li a.archive:hover,
-	#messages-section .aside li a:hover {
-		background-color: #333;
-		}
-	#messages-section table,
-	#messages-section table thead td,
-	#messages-section table thead th {
-		border-color: #ccc;
-		}
-	#messages-section table tbody td,
-	#messages-section table tbody th {
-		border-color: #ddd;
-		}
-	#messages-section table tbody tr.odd {
-		background-color: #f4f7fb; 
-		}
-/* Message status */
-	.check, 
-	.sttus {
-		width: 1em;
-		}
-	.priority,
-	.status {
-		display: block;
-		width: 16px;
-		height: 16px;
-		text-indent: -55em;
-		overflow: hidden;
-		}
-	.high {
-		background: url("images/flag_red.png") 0 0 no-repeat;
-		}
-	span.unread {
-		background: url("images/bullet_blue.png") 0 0 no-repeat;
-		}
-	a.unread {
-		font-weight: bold;
-		}
-	.actionitem span.unread {
-		background: url("images/error.gif") 0 0 no-repeat;
-		}
-	.actionitem a.unread {
-		color: #c00;
-		}
-	.message { 
-		background: url("images/email_go.png") 0 0 no-repeat; 
-		padding-left: 20px;
-		}
-/*---------------------------------------------------------------
-	IE 7 hacks
----------------------------------------------------------------*/
 
-/*---------------------------------------------------------------
-	IE 6 hacks
----------------------------------------------------------------*/
-
+.member_messages { 
+	}
+.member_messages .section {
+	padding:0;
+	border:10px solid #F4F4F4;
+	background:#f4f4f4;
+	}	
+	
+/* Messages Toolbar */
+#message-toolbar {
+	float:left;
+	}
+#message-options {
+	float:right;
+	}
+#message-toolbar,
+#message-options {
+	overflow:hidden;
+	list-style:none;
+	margin:0;
+	}
+#message-toolbar li,
+#message-options li {
+	float:left;
+	margin:0;
+	}
+#message-toolbar li a,
+#message-options li a {
+	display:block;
+	padding:3px 10px 3px 30px;
+	margin:0;
+	background-color:#efefef;
+	color:#777;
+	border-top:2px solid #E9E9E9;
+	border-left:2px solid #E9E9E9;
+	border-bottom:2px solid #E9E9E9;
+	border-right:none;
+	}
+#message-toolbar li a:hover,
+#message-options li a:hover {
+	border-bottom:none;
+	background-color:#ddd;
+	color:#333;
+	}
+#message-toolbar li:last-child a,
+#message-options li:last-child a {
+	border-right:2px solid #E9E9E9;
+	}	 
+#message-toolbar li a.active,
+#message-options li a.active {
+	background-color:#FFF;
+	color:#000;
+	font-weight:bold;
+	border-bottom:2px solid #FFF;
+	text-shadow:none;
+	}	
+#message-toolbar li .inbox {
+	background-image:url("/plugins/members/messages/images/inbox.png");
+	background-repeat:no-repeat;
+	background-position:8px 50%;
+	}
+#message-toolbar li .sent {
+	background-image:url("/plugins/members/messages/images/sent.png");
+	background-repeat:no-repeat;
+	background-position:8px 48%;
+	}
+#message-toolbar li .archive {
+	background-image:url("/plugins/members/messages/images/archive.png");
+	background-repeat:no-repeat;
+	background-position:8px 45%;
+	}
+#message-toolbar li .trash {
+	background-image:url("/plugins/members/messages/images/trash.png");
+	background-repeat:no-repeat;
+	background-position:8px 50%;
+	}
+#message-toolbar li .new {
+	background-image:url("/plugins/members/messages/images/compose.png");
+	background-repeat:no-repeat;
+	background-position:8px 50%;
+	}
+#message-options li .settings {
+	background-image:url("/plugins/members/messages/images/settings.png");
+	background-repeat:no-repeat;
+	background-position:8px 45%;
+	}	
+#messages-container {
+	margin-top:-2px;
+	border:2px solid #E9E9E9;
+	padding:15px;
+	background:#FFF;
+	}
+	
+	
+/* message filter */
+#filters {
+	float:right;
+	}
+#actions {
+	float:left;
+	}
+#new {
+	float:left;
+	border:2px solid #E9E9E9;
+	background:#efefef;
+	padding:2px 10px;
+	margin-right:10px;
+	color:#555;
+	}
+	
+	
+/* Message List */
+table.data {
+	border-collapse:separate;
+	border-top:2px solid #DEE4CD;
+	border-bottom:none;
+	margin:10px 0 0 0;
+	}
+table.data tr td,
+table.data tr th {
+	border-bottom:1px solid #DEE4CD;
+	}
+table.data tbody tr:nth-child(odd) td {
+	background-color:#efefef;
+	}	
+table.data tbody .check {
+	width:12px;
+	}
+table.data tbody .status {
+	width:11px;
+	}
+table.data tbody .status span {
+	text-indent:-555em;
+	display:block;
+	}	
+table.data tbody .status .unread {
+	background: url("/plugins/members/messages/images/new-mail.png") 50% 50% no-repeat;
+	}		
+table.data tbody a.unread {
+	font-weight:bold;
+	}	
+table.data tbody a.trash {
+	display:block;
+	text-indent:-555em;
+	background:url("/plugins/members/messages/images/trash.png") no-repeat 50% 50%;
+	width:20px;
+	border-bottom:1px solid transparent;
+	}
+table.data tfoot td {
+	padding:0;
+	border:none;
+	}
+table.data .list-footer {
+	overflow:hidden;
+	margin-bottom:0;
+	}
+.com_members #page_content {
+	overflow:visible;
+	}
+table.data .message-link {
+	position:relative;
+	}	
+table.data .message-link .preview {
+	position:absolute;
+	left:-9999px;	
+	z-index:999;
+	}
+table.data .message-link .preview span {
+	background:#ffffff;
+	padding:10px;
+	color:#555;
+	border:10px solid #ccc;
+	display:block;
+	font-weight:normal;
+	word-wrap:break-word;
+	font-family:'courier';
+	width:350px;
+	height:200px;
+	overflow-y:scroll;
+	-webkit-box-shadow:0 0 5px #444;
+	}
+table.data .message-link .preview span h3 {
+	display:block;
+	margin-top:0;
+	padding-bottom:10px;
+	font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+	}
+table.data .message-link .preview span:before {
+	content: ".";
+	position:absolute;
+	top:100px;
+	left:-20px;
+	color:transparent;
+	background:url("/plugins/members/messages/images/preview-arrow.png") no-repeat 0 0;
+	width:20px;
+	height:20px;
+	}
+table.data .message-link:hover .preview {
+	left:100%;
+	top:-100px;
+	margin-left:15px;
+	}	
+	
+	
+/* Settings Panel */
+.settings caption {
+	text-align:right;
+	padding:0 0 10px 0;
+	}
+.settings tfoot td {
+	text-align:right;
+	padding:10px 0;
+	}
+.settings
+tr.section-header,
+tr.section-header th {
+	font-weight:bold;
+	padding-top:20px;
+	}	
+.settings .email {
+	background: url("/plugins/members/messages/images/compose.png") no-repeat 0 0;
+	}
+.settings .internal {
+	background: url("/plugins/members/messages/images/inbox.png") no-repeat 0 0;
+	}
+	
+	
+/* Compose */
+#messages-container .hub-mail {
+	width:80%;
+	float:none;
+	}
+#messages-container .hub-mail h3 {
+	display:block;
+	}
+#messages-container .hub-message thead th {
+	background:transparent;
+	}
+	
+/* View */
+.hub-message {
+	border-collapse:separate;
+	border:none;
+	background:#fff;
+	min-height:380px;
+	display:block;
+	}
+.hub-message thead th {
+	background:#efefef;
+	}
+.hub-message tbody th {
+	width:100px;
+	color:#999;
+	font-weight:bold;
+	text-align:right;	
+	padding-right:10px;
+	border-bottom:1px solid #efefef;
+	}
+.hub-message td {
+	border-bottom:1px solid #efefef;
+	width:590px
+	}

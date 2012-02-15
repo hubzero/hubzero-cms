@@ -419,7 +419,7 @@ class MembersProfile extends JTable
 		}
 
 		$query  = $select."FROM $this->_tbl AS m ".($filters['show'] == 'contributors' ? 'INNER' : 'LEFT').' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
-		//$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
+		$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 			$query .= " LEFT JOIN #__xprofiles_bio AS b ON b.uidNumber=m.uidNumber";
 		}
@@ -492,7 +492,7 @@ class MembersProfile extends JTable
 			$filters['sortby'] = 'lname ASC, fname ASC';
 		}
 
-		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, m.emailConfirmed, NULL AS lastvisitDate, ";
+		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, m.emailConfirmed, u.lastvisitDate, ";
 		/*$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
 		   CONCAT(m.surname, ', ', m.givenName, COALESCE(CONCAT(' ', m.middleName), ''))
 		ELSE

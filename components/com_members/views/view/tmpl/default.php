@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -21,135 +24,139 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+ximport('Hubzero_User_Helper');
+ximport("Hubzero_User_Profile_Helper");
+
 $juser =& JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
+$user_messaging = $this->config->get('user_messaging', 0);
 
+$edit = false;
+$password = false;
 $messaging = false;
 
-if ($this->config->get('user_messaging') > 0
- && !$juser->get('guest')
- && $this->profile->get('uidNumber') != $juser->get('id')) {
-	ximport('Hubzero_User_Helper');
 
-	switch ($this->config->get('user_messaging'))
-	{
-		case 1:
-			// Get the groups the visiting user
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
-			$usersgroups = array();
-			if (!empty($xgroups)) {
-				foreach ($xgroups as $group)
-				{
-					if ($group->regconfirmed) {
-						$usersgroups[] = $group->cn;
-					}
-				}
-			}
-
-			// Get the groups of the profile
-			$pgroups = Hubzero_User_Helper::getGroups($this->profile->get('uidNumber'), 'all');
-			// Get the groups the user has access to
-			$profilesgroups = array();
-			if (!empty($pgroups)) {
-				foreach ($pgroups as $group)
-				{
-					if ($group->regconfirmed) {
-						$profilesgroups[] = $group->cn;
-					}
-				}
-			}
-
-			// Find the common groups
-			$common = array_intersect($usersgroups, $profilesgroups);
-
-			if (count($common) > 0) {
-				$messaging = true;
-			}
+//are we allowed to messagin user
+switch( $user_messaging )
+{
+	case 0:
+		$mssaging = false;
 		break;
-
-		case 2:
+	case 1:
+		$common = Hubzero_User_Helper::getCommonGroups( $juser->get("id"), $this->profile->get("uidNumber") );
+		if(count($common) > 0) {
 			$messaging = true;
-		break;
-
-		case 0:
-		default:
-			$messaging = false;
-		break;
-	}
-}
-?>
-<?php if (!$no_html) { ?>
-<div class="vcard">
-	<div id="content-header">
-		<h2><span class="fn"><?php echo stripslashes($this->profile->get('name')); ?></span></h2>
-	</div>
-	<div id="content-header-extra">
-		<ul id="useroptions">
-<?php if ($this->authorized) { ?>
-			<li<?php if ($juser->get('guest') || ($this->profile->get('uidNumber') == $juser->get('id'))) { echo ' class="last"'; } ?>><a class="edit-member" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='. $this->profile->get('uidNumber')); ?>"><?php echo JText::_('Edit profile'); ?></a></li>
-<?php 
-	}
-	if ($messaging) {
-?>
-			<li class="last"><a class="message" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='. $juser->get('id').'&active=messages&task=new&to='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('Send Message'); ?></a></li>
-<?php } ?>
-		</ul>
-	</div><!-- / #content-header-extra -->
-
-	<div id="sub-menu">
-		<ul>
-<?php
-	$i = 1;
-	foreach ($this->cats as $cat)
-	{
-		$name = key($cat);
-		if ($name != '') {
-			if (strtolower($name) == $this->tab) {
-				$app =& JFactory::getApplication();
-				$pathway =& $app->getPathway();
-				$pathway->addItem($cat[$name],'index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&active='.$name);
-			}
-?>
-			<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->tab) ? ' class="active"' : ''; ?>><a class="tab" rel="<?php echo $name; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&active='.$name); ?>"><span><?php echo $cat[$name]; ?></span></a></li>
-<?php
-			$i++;
 		}
-	}
-?>
-		</ul>
-		<div class="clear"></div>
-	</div><!-- / #sub-menu -->
-<?php } ?>
-<?php
-if ($this->sections) {
-	$k = 0;
-	foreach ($this->sections as $section)
-	{
-		if ($section['html'] != '') {
-			$cls = ('main') ? 'main ' : '';
-			if (key($this->cats[$k]) != $this->tab) {
-				$cls .= ('hide') ? 'hide ' : '';
-			}
-?>
-	<div class="<?php echo $cls; ?>section" id="<?php echo key($this->cats[$k]); ?>-section">
-		<?php echo $section['html']; ?>
-	</div><!-- / #<?php echo key($this->cats[$k]); ?>-section.<?php echo $cls; ?>section -->
-<?php
-		}
-		$k++;
-	}
+		break;
+	case 2:
+		$messaging = true;
+		break;
 }
+
+//if user is this member turn on editing and password change, turn off messaging
+if($this->profile->get("uidNumber") == $juser->get("id")) {
+	$edit = true;
+	$password = true;
+	$messaging = false;
+}
+
+//no messaging if guest
+if($juser->get("guest"))
+{
+	$messaging = false;
+}
+
+if (!$no_html) {
 ?>
-<?php if (!$no_html) { ?>
-</div><!-- / .vcard -->
+<div class="innerwrap">
+	<div id="page_container">
+		<div id="page_container_inner">
+
+			<div id="page_sidebar">
+				<div id="page_sidebar_inner">
+					<?php
+						$default_picture = '/components/com_members/images/profile.gif';
+						$picture = array_pop(explode("/", $this->profile->get('picture')));
+						$id = Hubzero_User_Profile_Helper::niceidformat( $this->profile->get("uidNumber") );
+						
+						$picture_path = $this->config->get("webpath") . DS . $id . DS . $picture; 
+						$src = ($picture != $default_picture && is_file(JPATH_ROOT . $picture_path)) ? $picture_path : $default_picture;
+						
+						$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber'));
+					?>
+					<a id="page_identity" href="<?php echo $link; ?>">
+						<img src="<?php echo $src; ?>" />
+					</a>
+
+					<ul id="page_menu">
+						<?php foreach($this->cats as $k => $c) : ?>
+							<?php 
+								$key = key($c); 
+								if(!$key) { continue; }
+								$name = $c[$key];
+								$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
+								$meta = ($this->sections[$k]['metadata'] != "") ? $this->sections[$k]['metadata'] : "";
+								$cls = ($this->tab == $key) ? "active" : "";
+							?>
+							<li><a class="<?php echo $cls; ?>" href="<?php echo $url; ?>"><?php echo $name; ?><?php echo $meta; ?></a></li>
+						<?php endforeach; ?>
+					</ul><!-- //end page menu -->
+				</div><!-- //end page sidebar inner -->
+			</div><!-- //end page sidebar -->
+
+			<div id="page_main">
+				<div id="page_header">
+					<h2>
+						<?php echo stripslashes($this->profile->get('name')); ?>
+					</h2>
+					
+					<?php if($edit || $password || $messaging) : ?>
+						<ul id="page_options">
+							<?php if($edit) : ?>
+								<?php $edit_url = JRoute::_('index.php?option=com_members&task=edit&id=' . $this->profile->get("uidNumber")); ?>
+								<li><a class="edit tooltips" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
+							<?php endif?>
+							
+							<?php if($password) : ?>
+								<?php $pass_url = JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get("uidNumber")); ?>
+								<li><a class="password tooltips" title="Change Password :: Change your password" href="<?php echo $pass_url; ?>"><?php echo JText::_('Change Password'); ?></a></li>
+							<?php endif; ?>
+							
+							<?php if($messaging): ?>
+								<?php $msg_url = JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>
+								<li><a class="message tooltips" title="Message :: Send a message to <?php echo stripslashes($this->profile->get('name')); ?>" href="<?php echo $msg_url; ?>"><?php echo JText::_('Message'); ?></a></li>
+							<?php endif; ?>
+						</ul>
+					<?php endif; ?>
+				</div><!-- // end page header -->
+				<div id="page_notifications">
+					<?php
+						if($this->getError()) {
+							echo "<p class=\"error\">" . $this->getError() . "</p>";
+						}
+					?>
+				</div>
+				<div id="page_content" class="member_<?php echo $this->tab; ?>">
+					<?php
+			 			} 
+			
+						foreach($this->sections as $s) {
+							if($s['html'] != "") {
+								echo $s['html'];
+							}
+						}
+						
+						if (!$no_html) { 
+					?>
+				</div>
+			</div> <!-- //close page main -->
+
+		</div> <!-- //close page container inner -->
+	</div> <!-- //close page container -->
+</div>
 <?php } ?>

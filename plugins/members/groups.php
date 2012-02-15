@@ -68,16 +68,17 @@ class plgMembersGroups extends JPlugin
 	 * @param      unknown $authorized Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onMembersAreas( $authorized )
+	public function &onMembersAreas( $user, $member )
 	{
-		if (!$authorized) {
-			$areas = array();
-		} else {
-			$areas = array(
-				'groups' => JText::_('PLG_MEMBERS_GROUPS')
-			);
+		//default areas returned to nothing
+		$areas = array();
+		
+		//if this is the logged in user show them
+		if($user->get("id") == $member->get("uidNumber"))
+		{
+			$areas['groups'] = JText::_('PLG_MEMBERS_GROUPS');
 		}
-
+		
 		return $areas;
 	}
 
@@ -92,23 +93,25 @@ class plgMembersGroups extends JPlugin
 	 * @param      unknown $areas Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $user, $member, $option, $areas )
 	{
 		$returnhtml = true;
 		$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
-			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
+			if (!array_intersect( $areas, $this->onMembersAreas( $user, $member ) )
+			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $user, $member ) ) )) {
 				$returnhtml = false;
 			}
 		}
 
+		/*
 		if (!$authorized) {
 			$returnhtml = false;
 			$returnmeta = false;
 		}
+		*/
 
 		$arr = array(
 			'html'=>'',
@@ -153,7 +156,7 @@ class plgMembersGroups extends JPlugin
 					'name'=>'summary'
 				)
 			);
-			$view->authorized = $authorized;
+			//$view->authorized = $authorized;
 			$view->groups = $groups;
 			$view->option = 'com_groups';
 			if ($this->getError()) {
@@ -165,7 +168,21 @@ class plgMembersGroups extends JPlugin
 
 		// Build the HTML meant for the "profile" tab's metadata overview
 		if ($returnmeta) {
-			$arr['metadata'] = '<p class="groups"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=groups').'">'.JText::sprintf('PLG_MEMBERS_GROUPS_NUMBER_GROUPS',count($groups)).'</a></p>'."\n";
+			
+			//display a different message if its me
+			if($member->get('uidNumber') == $user->get("id")) {
+				$title = "I belong to " . count($groups) . " groups.";
+			} else {
+				$title = $member->get('name') . " belongs to " . count($groups) . " groups.";
+			} 
+			
+			//text thats in the meta
+			$text  = count($groups);
+			
+			//build the metadata
+			if(count($groups) > 0) {
+				$arr['metadata'] = "<span class=\"meta\" title=\"{$title}\">{$text}</span>";
+			}
 		}
 
 		return $arr;

@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -21,36 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+//-----------
+
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_members_favorites' );
 
-/**
- * Short description for 'plgMembersFavorites'
- * 
- * Long description (if any) ...
- */
+//-----------
+
 class plgMembersFavorites extends JPlugin
 {
-
-	/**
-	 * Short description for 'plgMembersFavorites'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @return     void
-	 */
 	public function plgMembersFavorites(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -59,46 +46,29 @@ class plgMembersFavorites extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'favorites' );
 		$this->_params = new JParameter( $this->_plugin->params );
 	}
-
-	/**
-	 * Short description for 'onMembersAreas'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function &onMembersAreas( $authorized )
+	
+	//-----------
+	
+	public function &onMembersAreas( $user, $member )
 	{
-		$areas = array(
-			'favorites' => JText::_('PLG_MEMBERS_FAVORITES')
-		);
+		$areas['favorites'] = JText::_('PLG_MEMBERS_FAVORITES');
 		return $areas;
 	}
 
-	/**
-	 * Short description for 'onMembers'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $member Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @param      array $areas Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function onMembers( $member, $option, $authorized, $areas )
+	//-----------
+
+	public function onMembers( $user, $member, $option, $areas )
 	{
 		$returnhtml = true;
-
+		
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, $this->onMembersAreas( $authorized ) )
-			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $authorized ) ) )) {
+			if (!array_intersect( $areas, $this->onMembersAreas( $user, $member ) ) 
+			&& !array_intersect( $areas, array_keys( $this->onMembersAreas( $user, $member ) ) )) {
 				$returnhtml = false;
 			}
 		}
-
+		
 		$database =& JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
 
@@ -108,8 +78,8 @@ class plgMembersFavorites extends JPlugin
 
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();
-		$searchareas = $dispatcher->trigger( 'onMembersFavoritesAreas', array($authorized) );
-		foreach ($searchareas as $area)
+		$searchareas = $dispatcher->trigger( 'onMembersFavoritesAreas', array() );
+		foreach ($searchareas as $area) 
 		{
 			$areas = array_merge( $areas, $area );
 		}
@@ -133,7 +103,6 @@ class plgMembersFavorites extends JPlugin
 		$totals = $dispatcher->trigger( 'onMembersFavorites', array(
 				$member,
 				$option,
-				$authorized,
 				0,
 				$limitstart,
 				$activeareas)
@@ -143,7 +112,7 @@ class plgMembersFavorites extends JPlugin
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($areas as $c=>$t)
+		foreach ($areas as $c=>$t) 
 		{
 			$cats[$i]['category'] = $c;
 
@@ -155,7 +124,7 @@ class plgMembersFavorites extends JPlugin
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st)
+				foreach ($t as $s=>$st) 
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
@@ -187,24 +156,27 @@ class plgMembersFavorites extends JPlugin
 		// Build the HTML
 		if ($returnhtml) {
 			$limit = ($limit == 0) ? 'all' : $limit;
-
+			
 			// Get the search results
 			$results = $dispatcher->trigger( 'onMembersFavorites', array(
 				$member,
 				$option,
-				$authorized,
 				$limit,
 				$limitstart,
 				$activeareas)
 			);
-
+			
 			// Do we have an active area?
 			if (count($activeareas) == 1 && !is_array(current($activeareas))) {
-				$active = $activeareas[0];
+				$active = current($activeareas);
+				//$active = $activeareas[0];
 			} else {
 				$active = '';
 			}
-
+			
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('members', 'favorites');
+			
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -213,7 +185,7 @@ class plgMembersFavorites extends JPlugin
 					'name'=>'display'
 				)
 			);
-			$view->authorized = $authorized;
+			//$view->authorized = $authorized;
 			$view->totals = $totals;
 			$view->results = $results;
 			$view->cats = $cats;
@@ -226,21 +198,24 @@ class plgMembersFavorites extends JPlugin
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
-
+			
 			$arr['html'] = $view->loadTemplate();
-		} else {
-			// Build the metadata
-			$html = '';
-
-			// Loop through each category
-			foreach ($cats as $cat)
-			{
-				if ($cat['total'] > 0) {
-					$html .= '<p class="'.strtolower($cat['title']).'"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=favorites').'">'.$cat['total'].' '.JText::_('PLG_MEMBERS_FAVORITE').' '.strtolower($cat['title']).'</a></p>'.n;
-				}
-			}
-
-			$arr['metadata'] = $html;
+		}
+		
+		$arr['metadata'] = "";
+		$total = 0;
+		
+		$prefix = ($user->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
+		
+		// Loop through each category
+		foreach ($cats as $cat) 
+		{
+			$total += $cat['total'];
+		}
+		
+		if($total > 0) {
+			$title = $prefix . " {$total} favorites.";
+			$arr['metadata'] = "<span title=\"{$title}\" class=\"meta\">{$total}</span>";	
 		}
 
 		return $arr;
