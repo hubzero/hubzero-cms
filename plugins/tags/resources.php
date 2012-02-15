@@ -175,11 +175,14 @@ class plgTagsResources extends JPlugin
 		$filters['authorized'] = false;
 
 		//ximport('Hubzero_User_Helper');
-		ximport('Hubzero_User_Profile');
 		$juser =& JFactory::getUser();
-		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
-		//$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
-		$filters['usergroups'] = $profile->getGroups('all');
+		if (!$juser->get('guest'))
+		{
+			ximport('Hubzero_User_Profile');
+			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			//$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			$filters['usergroups'] = $profile->getGroups('all');
+		}
 
 		// Get categories
 		$categories = $this->_cats;
