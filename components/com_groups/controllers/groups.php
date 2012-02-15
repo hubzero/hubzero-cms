@@ -607,7 +607,7 @@ class GroupsController extends Hubzero_Controller
 		// Trigger the functions that return the areas we'll be using
 		// then add overview to array
 		$hub_group_plugins = $dispatcher->trigger( 'onGroupAreas', array( ) );
-		array_unshift($hub_group_plugins, array('name'=>'overview','title'=>'Overview','default_access'=>'anyone', 'display_menu_tab' => true));
+		array_unshift($hub_group_plugins, array('name'=>'overview','title'=>'Overview','default_access'=>'anyone','display_menu_tab'=>true));
 
 		// Get plugin access
 		$group_plugin_access = $group->getPluginAccess();
@@ -1073,11 +1073,12 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 
+		//do we have permission to join group
 		if ($group->get('type') == 2) {
 			JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
 			return;
 		}
-
+	
 		// Get the group params
 		$gparams = new JParameter($group->get('params'));
 
@@ -1087,44 +1088,61 @@ class GroupsController extends Hubzero_Controller
 			$this->_redirect = JRoute::_('index.php?option=com_groups&gid='.$group->get('cn'));
 			return;
 		}
-
+		
+		//get invite token
 		$token = JRequest::getVar('token','','get');
-		if ($token) {
-			//echo $token;
-			$db =& JFactory::getDBO();
-			$sql = "SELECT * FROM #__xgroups_inviteemails WHERE token=".$db->quote($token);
-			$db->setQuery($sql);
-			$invite = $db->loadAssoc();
-
+		
+		//get current members and invitees
+		$invitees = $group->get('invitees');
+		$members = $group->get("members");
+		
+		//are we already a member
+		if(in_array($this->juser->get('id'),$members)) {
+			global $mainframe;
+			$mainframe->redirect( JRoute::_('index.php?option=com_groups&gid=' . $group->get("cn")) );
+			exit();
+		}
+		
+		// Get invite emails
+		$group_inviteemails = new Hubzero_Group_Invite_Email($this->database);
+		$inviteemails = $group_inviteemails->getInviteEmails($group->get('gidNumber'), true);
+		$inviteemails_with_token = $group_inviteemails->getInviteEmails($group->get('gidNumber'), false);
+		
+		//check to make sure weve been invited
+		if($token)
+		{
+			$sql = "SELECT * FROM #__xgroups_inviteemails WHERE token=".$this->database->quote($token);
+			$this->database->setQuery($sql);
+			$invite = $this->database->loadAssoc();
+			
 			if ($invite) {
 				$group->add('members',array($this->juser->get('id')));
 				$group->update();
-				$sql = "DELETE FROM #__xgroups_inviteemails WHERE id=".$db->quote($invite['id']);
-				$db->setQuery($sql);
-				$db->query();
-			}
-		} else {
-			$invitees = $group->get('invitees');
-			$members = $group->get("members");
-
-			if(in_array($this->juser->get('id'),$members)) {
-				global $mainframe;
-				$mainframe->redirect( JRoute::_('index.php?option=com_groups&gid=' . $group->get("cn")) );
-				exit();
-			}
-
-			if (!in_array($this->juser->get('id'), $invitees)) {
-				JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
-				return;
-			}
-
-			// Move the member from the invitee list to the members list
-			$group->add('members',array($this->juser->get('id')));
-			$group->remove('invitees',array($this->juser->get('id')));
-			if ($group->update() === false) {
-				$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
+				$sql = "DELETE FROM #__xgroups_inviteemails WHERE id=".$this->database->quote($invite['id']);
+				$this->database->setQuery($sql);
+				$this->database->query();
 			}
 		}
+		elseif(in_array($this->juser->get('email'), $inviteemails))
+		{
+			$group->add('members',array($this->juser->get('id')));
+			$group->update();
+			$sql = "DELETE FROM #__xgroups_inviteemails WHERE email='".$this->juser->get('email')."' AND gidNumber='".$group->get("gidNumber")."'";
+			$this->database->setQuery($sql);
+			$this->database->query();
+		}
+		elseif(in_array($this->juser->get('id'), $invitees))
+		{
+			$group->add('members',array($this->juser->get('id')));
+			$group->remove('invitees',array($this->juser->get('id')));
+			$group->update();
+		}
+		else
+		{
+			JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
+			return;
+		}
+		
 		// Log the invite acceptance
 		$log = new XGroupLog( $this->database );
 		$log->gid = $group->get('gidNumber');
@@ -3537,8 +3555,17 @@ class GroupsController extends Hubzero_Controller
 				}
 			}
 			
-			$base_path = $this->config->get('uploadpath');
-			$base_path .= DS.$group->get('gidNumber').DS."blog";
+			$groupID = $group->get("gidNumber");
+			if (strlen($groupID) < 5)
+			{
+				$groupID = 0 . $groupID;
+			}
+			
+			$base_path = $this->config->get('uploadpath') . DS . $groupID . DS . 'blog';
+			if (!file_exists(JPATH_ROOT . DS . $base_path . DS . $file)) 
+			{
+				$base_path = $this->config->get('uploadpath') . DS . $group->get('gidNumber') . DS . 'blog';
+			}
 		}
 		else 
 		{

@@ -48,26 +48,44 @@ if ($this->msg) {
 }
 
 $message .= "If you already have a registered account on ".$this->hubShortName.", click or copy and paste the link below into a browser window. \r\n";
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept&token='.$this->token);
+//$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept&token='.$this->token);
+$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 $message .= $juri->base().$sef."\n\n";
 $message .= "--------------------------------------------\n\n";
 
-$message .= "If you do not have an account on ".$this->hubShortName.", you must first click or copy and paste the first link, where you will register for an account. Then you must come back to click or copy and paste link two. \n\n";
+//$message .= "If you do not have an account on ".$this->hubShortName.", you must first click or copy and paste the first link, where you will register for an account. Then you must come back to click or copy and paste link two. \n\n";
+
+//$sef = JRoute::_('index.php?option=com_register');
+//if (substr($sef,0,1) == '/') {
+//	$sef = substr($sef,1,strlen($sef));
+//}
+//$message .= "1. ".$juri->base().$sef."\n\n";
+
+//$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept&token='.$this->token);
+//if (substr($sef,0,1) == '/') {
+//	$sef = substr($sef,1,strlen($sef));
+//}
+//$message .= "2. ".$juri->base().$sef."\n\n";
+
+$message .= "If you DO NOT have an account on " . $this->hubShortName . ", please follow this link! \n\n";
+
+//$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept?token=" . $this->token;
+$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept";
 
 $sef = JRoute::_('index.php?option=com_register');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
-$message .= "1. ".$juri->base().$sef."\n\n";
 
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept&token='.$this->token);
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
+if(substr($sef,-1,1) == DS) 
+{
+	$sef = rtrim($sef, DS);
 }
-$message .= "2. ".$juri->base().$sef."\n\n";
+
+$message .= $juri->base().$sef."?return=".base64_encode($return)."\n\n\n"; 
 
 $message .= "--------------------------------------------\n\n";
 $message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";

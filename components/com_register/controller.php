@@ -674,7 +674,6 @@ class RegisterController extends Hubzero_Controller
 			$xregistration->loadPost();
 
 			// Perform field validation
-
 			if ($xregistration->check('create')) {
 
 				// Get required system objects
@@ -1351,7 +1350,7 @@ class RegisterController extends Hubzero_Controller
 			$profile = new Hubzero_User_Profile();
 			$profile->load($xprofile->get('username'));
 
-			$myreturn = $profile->getParam('return');
+			$myreturn = base64_decode($profile->getParam('return'));
 			if ($myreturn) {
 				$profile->setParam('return','');
 			}

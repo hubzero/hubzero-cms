@@ -82,12 +82,21 @@ defined('_JEXEC') or die('Restricted access');
 		default:
 		break;
 	}
-
-	if ($this->task == 'create') {
-		$html .= '<form action="'. JRoute::_('index.php?option='.$this->option) .'" method="post" id="hubForm">'."\n";
-	} else {
-		$html .= '<form action="'. JRoute::_('index.php?option='.$this->option.'&task='.$this->task) .'" method="post" id="hubForm">'."\n";
+	
+	//get return url
+	$form_redirect = "";
+	if(JRequest::getVar('return', null, 'get'))
+	{
+		$form_redirect = JRequest::getVar('return', null, 'get');
 	}
+	
+	if ($this->task == 'create') {
+		$form_action = JRoute::_('index.php?option='.$this->option."&return=".$form_redirect);
+	} else {
+		$form_action = JRoute::_('index.php?option='.$this->option.'&task='.$this->task);
+	}
+	$html .= '<form action="'. $form_action .'" method="post" id="hubForm">'."\n";
+
 
 	$emailusers = Hubzero_User_Profile_Helper::find_by_email($this->registration['email']);
 
@@ -1002,11 +1011,10 @@ defined('_JEXEC') or die('Restricted access');
 	$html .= "\t".'<input type="hidden" name="act" value="submit" />'."\n";
 	$html .= "\t".JHTML::_( 'form.token' );
 
-	$return_g = JRequest::getVar('return', null, 'get');
-
-	if ($return_g) {
-		$html .= "\t".'<input type="hidden" name="return" value="' . $return_g . '" />'."\n";
-	}
+	
+	
+	
+	$html .= "\t".'<input type="hidden" name="return" value="' . $form_redirect . '" />'."\n";
 
 	$html .= '</form>'."\n";
 	$html .= '</div><!-- / .main section -->'."\n";
