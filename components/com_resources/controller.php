@@ -932,7 +932,12 @@ class ResourcesController extends Hubzero_Controller
 		//remove trailing slash on base
 		if (substr($base, -1) == DS) {
 			$base = substr($base, 0, -1);
-		}
+		} 
+		
+		//get the hieght and width
+		$attribs = new JParameter($activechild->attribs);
+		$width  = intval($attribs->get('width', 0));
+		$height = intval($attribs->get('height', 0));
 
 		//build the rest of the resource path and combine with base
 		$path = ResourcesHtml::build_path( $activechild->created, $activechild->id, '' );
@@ -952,6 +957,9 @@ class ResourcesController extends Hubzero_Controller
 		$view->path = $path;
 		$view->videos = $videos;
 		$view->subs = $subs;
+		
+	   	$view->width = $width;
+		$view->height = $height;
 
 		// Output HTML
 		if ($this->getError()) {

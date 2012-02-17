@@ -33,31 +33,31 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-
-<?php if(count($this->videos) > 0) : ?>
-	<video controls="controls" id="video-player">
-		<?php foreach($this->videos as $v) : ?>
-			<?php
-				$info = pathinfo($v);
-				$type = "";
-				switch( $info['extension'] )
-				{
-					case 'mp4': 	$type = "video/mp4";	break;
-					case 'ogv':		$type = "video/ogg";	break;
-					case 'webm':	$type = "video/webm";	break;
-				}
-			?>
-			<source src="<?php echo $this->path . DS . $v; ?>" type="<?php echo $type; ?>" />
-		<?php endforeach; ?>
-		
-		<a href="<?php echo $this->path . DS . $this->video_mp4; ?>" id="video-flowplayer"></a>
-		
-		<?php if(count($this->subs) > 0) : ?>
-			<?php foreach($this->subs as $s) : ?>
-				<?php $info2 = pathinfo($s); ?>
-				<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $this->path . DS . $s; ?>"></div>
+<div id="video-container">
+	<?php if(count($this->videos) > 0) : ?>
+		<video controls="controls" id="video-player">
+			<?php foreach($this->videos as $v) : ?>
+				<?php
+					$info = pathinfo($v);
+					$type = "";
+					switch( $info['extension'] )
+					{
+						case 'mp4': 	$type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';	break;
+						case 'ogv':		$type = 'video/ogg; codecs="theora, vorbis"';			break;
+						case 'webm':	$type = 'video/webm; codecs="vp8, vorbis"';				break;
+					}
+				?>
+				<source src="<?php echo $this->path . DS . $v; ?>" type="<?php echo $type; ?>" />
 			<?php endforeach; ?>
-		<?php endif; ?>
-	</video>
-<?php endif; ?>
-
+		
+			<a href="<?php echo $this->path . DS . $this->video_mp4; ?>" id="video-flowplayer" style="<?php echo "width:{$this->width}px;height:{$this->height}px;"; ?>"></a>
+		
+			<?php if(count($this->subs) > 0) : ?>
+				<?php foreach($this->subs as $s) : ?>
+					<?php $info2 = pathinfo($s); ?>
+					<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $this->path . DS . $s; ?>"></div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</video>
+	<?php endif; ?>   
+</div><!-- /#video-container -->

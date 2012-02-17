@@ -27,7 +27,7 @@ HUB.Video = {
 		$jQ('<div id="overlayer"></div>').appendTo(document.body);
 		
 		//wrap video with container div
-		$jQ("#video-player").wrap('<div id="video-container" />');
+		//$jQ("#video-player").wrap('<div id="video-container" />');
 		
 		//add the control bar
 		$jQ("#video-container").append( HUB.Video.controls() );
@@ -42,23 +42,31 @@ HUB.Video = {
 	//-----
 	
 	doneLoading: function()
-	{	
+	{
 		//get height & width of player
 		resize_width = $jQ("#video-player").outerWidth(true);
 		resize_height = $jQ("#video-player").outerHeight(true);
-		
-		//get the height of the toolbar
-		//get window padding if any
-		toolbar = window.outerHeight - window.innerHeight;
-		padding = window.outerWidth - window.innerWidth;
-		
-		//if we are not using firefox lets attempt to resize popup
-		if( !browser.match(/Firefox/g) || flash ) {
-			window.resizeTo(resize_width + padding, resize_height + toolbar);
+			
+		if(flash) 
+		{
+			toolbar = 90;
+			
+			flash_width = $jQ("#video-flowplayer").outerWidth(true);
+			flash_height = $jQ("#video-flowplayer").outerHeight(true);
+			window.resizeTo(flash_width, flash_height + toolbar);
 		}
+		else
+		{
+			//get the height of the toolbar
+			//get window padding if any
+			toolbar = window.outerHeight - window.innerHeight;
+			padding = window.outerWidth - window.innerWidth;
 		
-		//make container window height for opening in a new tab
-		//$jQ("#video-container").height( resize_height );
+			//if we are not using firefox lets attempt to resize popup
+			if( !browser.match(/Firefox/g) ) {
+				window.resizeTo(resize_width + padding, resize_height + toolbar);
+			}
+		}
 		
 		//remove the overlay
 		$jQ('#overlayer').remove();
@@ -69,7 +77,7 @@ HUB.Video = {
 		}
 		
 		//set video Volume
-		HUB.Video.setVolume(0.75);
+		HUB.Video.setVolume(0);
 		
 		//control bar
 		HUB.Video.controlBar();
