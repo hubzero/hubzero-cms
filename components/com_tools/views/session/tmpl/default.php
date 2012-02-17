@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+JPluginHelper::importPlugin('hubzero');
+$dispatcher =& JDispatcher::getInstance();
+
 $juser =& JFactory::getUser();
 ?>
 <div id="content-header">
@@ -108,8 +111,13 @@ if (!$this->app['sess']) {
 			<input type="hidden" name="app" value="<?php echo $this->toolname; ?>" />
 			<input type="hidden" name="return" value="<?php echo $this->rtrn; ?>" />
 			<label>
-				Share session with (enter usernames separated by spaces or commas):
-				<input type="text" name="username" value="" />
+				<?php
+					$ms = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'username', 'username')));
+					if (count($ms) > 0) {
+						echo 'Share session with (begin typing and select name):'.$ms[0];
+					} else { echo 'Share session with (enter usernames separated by spaces or commas):'; ?> 
+					<input type="text" name="username" id="username" value="" size="35" />
+				<?php } ?>
 			</label>
 			<label>
 				<input type="checkbox" name="readonly" value="Yes" /> 
