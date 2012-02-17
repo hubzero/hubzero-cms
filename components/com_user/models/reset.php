@@ -60,7 +60,7 @@ class UserModelReset extends JModel
 		$result = $db->loadAssoc();
 
 		// Check the results
-		if ($result === false)
+		if (empty($result))
 		{
 			$this->setError(JText::_('COULD_NOT_FIND_USER'));
 			return false;
