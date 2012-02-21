@@ -54,6 +54,38 @@ function submitbutton(pressbutton)
 		submitform( pressbutton );
 	}
 }
+
+function addCustomField(id)
+{
+   	new Event(event).stop();
+
+	var tbody = document.getElementById(id).tBodies[0];
+	var counter = tbody.rows.length;
+	var newNode = tbody.rows[0].cloneNode(true);
+	
+	var newField = newNode.childNodes;
+	for (var i=0;i<newField.length;i++) 
+    {
+        var inputs = newField[i].childNodes;
+        for (var k=0;k<inputs.length;k++) 
+        {
+            var theName = inputs[k].name;
+            if (theName) {
+                tokens = theName.split('[');
+                n = tokens[2];
+                inputs[k].name = id + '[' + counter + ']['+ n;
+            }
+            var n = id + '[' + counter + '][type]';
+            var z = id + '[' + counter + '][status]';
+            if (inputs[k].value && inputs[k].name != n && inputs[k].name != z) {
+                inputs[k].value = '';
+            }
+        }
+    }
+	
+	tbody.appendChild(newNode); 
+	console.log(newNode);
+}
 </script>
 
 <form action="index.php" method="post" id="adminForm" name="adminForm">
@@ -114,7 +146,7 @@ function submitbutton(pressbutton)
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('RESOURCES_TYPES_CUSTOM_FIELDS'); ?></legend>
 		
-		<table class="admintable">
+		<table class="admintable" id="custom">
 			<thead>
 				<tr>
 					<th><?php echo JText::_('RESOURCES_TYPES_FIELD'); ?></th>
@@ -163,6 +195,11 @@ function submitbutton(pressbutton)
 			}
 			?>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3"><a id="add-custom-field" onclick="addCustomField('custom');" href="#">+ Add new row</a></td>
+				</tr>                                                               
+			</tfoot>
 		</table>
 	</fieldset>
 	<fieldset class="adminform">
