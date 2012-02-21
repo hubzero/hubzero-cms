@@ -101,6 +101,7 @@ HUB.TagBrowser = {
 			update: $('level-'+level), 
 			onSuccess: function(){
 				if ($('rid')) {
+					HUB.Resources.initialize();
 					var r = $('rid').value;
 					if ($('col2_'+r)) {
 						$('col2_'+r).addClass('open');
