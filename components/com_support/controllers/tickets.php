@@ -652,7 +652,12 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		$tool = $this->_getTool($problem['referer']);
-		if ($tool) 
+		$groupID = JRequest::getVar("group", "");
+		if($groupID) 
+		{
+			$group = $groupID;
+		}
+		elseif ($tool) 
 		{
 			$group = $this->_getTicketGroup(trim($tool));
 		} 
@@ -1045,14 +1050,6 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function ticketTask()
 	{
-		// Check authorization
-		if ($this->juser->get('guest')) 
-		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task));
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
-			return;
-		}
-
 		// Get the ticket ID
 		$id = JRequest::getInt('id', 0);
 		if (!$id) 
@@ -1062,6 +1059,14 @@ class SupportControllerTickets extends Hubzero_Controller
 				JText::_('SUPPORT_NO_TICKET_ID'),
 				'error'
 			);
+			return;
+		}
+		
+		// Check authorization
+		if ($this->juser->get('guest')) 
+		{
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&id=' . $id));
+			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
 			return;
 		}
 
