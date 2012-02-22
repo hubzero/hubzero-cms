@@ -75,7 +75,7 @@ class plgYSearchTopics extends YSearchPlugin
 				wp.title,
 				wv.pagetext AS description,
 				CASE 
-					WHEN wp.group THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
+					WHEN wp.group<>'' THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
 					ELSE concat('index.php?option=com_topics&scope=', wp.scope, '&pagename=', wp.pagename)
 				END AS link,
 				$weight AS weight,
@@ -92,6 +92,7 @@ class plgYSearchTopics extends YSearchPlugin
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		);
+		
 		foreach ($rows->to_associative() as $row)
 		{
 			if (!$row) continue;
