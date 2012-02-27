@@ -28,10 +28,7 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<fieldset name="component">
-		<field name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
-	</fieldset>
-	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_forum" section="component" />
-	</fieldset>
+	<params>
+		<param name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
+	</params>
 </config>
