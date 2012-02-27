@@ -19,16 +19,19 @@ HUB.Kb = {
 	initialize: function() {
 		
 		// Voting
-		j('.vote-link').live('click', function(e) {
-			if (this.href) {
-				new Ajax(this.href+'?no_html=1',{
-					'method' : 'get',
-					'update' : $(this.parentNode.parentNode)
-				}).request();
-			}
-			return false;
+		$$('.vote-link').each(function(el) {
+			$(el).addEvent('click', function(e) {
+				if (this.href) {
+					new Event(e).stop();
+				
+					new Ajax(this.href+'?no_html=1',{
+						'method' : 'get',
+						'update' : $(this.parentNode.parentNode)
+					}).request();
+				}
+				return false;
+			});
 		});
-		
 	}
 }
 
