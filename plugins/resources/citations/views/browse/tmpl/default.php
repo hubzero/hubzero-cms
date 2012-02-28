@@ -37,14 +37,14 @@ $numnon = 0;
 // Did we get any results back?
 if ($this->citations) {
 	// Get a needed library
-	include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'citations.format.php');
+	include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'helpers'.DS.'citations.format.php');
 
 	// Set some vars
 	$affiliated = '';
 	$nonaffiliated = '';
 
-	$formatter = new CitationsFormat;
-	$formatter->setFormat($this->format);
+	$formatter = new CitationFormat;
+	//$formatter->setFormat($this->format);
 
 	// Loop through the citations and build the HTML
 	foreach ($this->citations as $cite)
