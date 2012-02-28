@@ -245,6 +245,12 @@ class WikiController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
+		
+		if ($this->page->group && !$this->_group)
+		{
+			$this->_redirect = JRoute::_('index.php?option=com_groups&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename);
+			return;
+		}
 
 		if ($this->page->scope && !$this->page->group) {
 			$bits = explode('/',$this->page->scope);
