@@ -130,10 +130,10 @@ class FileMacro extends WikiMacro
 				$val = trim(end($bits));
 				if ($val) 
 				{
+					$attr['href'] = $val;
 					$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 					if (preg_match("/$urlPtrn/", $val))
 					{
-						$attr['href'] = $val;
 						$attr['rel']  = 'external';
 					}
 				}
@@ -162,7 +162,16 @@ class FileMacro extends WikiMacro
 				}
 				if ($key == 'align') 
 				{
-					$attr['style']['float'] = $val;
+					if ($val == 'center')
+					{
+						$attr['style']['display'] = 'block';
+						$attr['style']['margin-right'] = 'auto';
+						$attr['style']['margin-left'] = 'auto';
+					}
+					else 
+					{
+						$attr['style']['float'] = $val;
+					}
 				} 
 				else if ($key == 'border') 
 				{
