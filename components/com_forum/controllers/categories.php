@@ -317,7 +317,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		else 
 		{
 			$this->view->model = new ForumCategory($this->database);
-			$this->view->model->loadByAlias($category, $this->view->section, 0);
+			$this->view->model->loadByAlias($category, $this->view->section->id, 0);
 		}
 		
 		$this->_authorize('category', $this->view->model->id);
