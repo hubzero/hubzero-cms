@@ -172,6 +172,7 @@ if (count($this->articles) > 0)
 				$pagenavhtml = $this->pageNav->getListFooter();
 				$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
 				$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
+				$pagenavhtml = str_replace('/kb/?','/kb/'.$this->category->alias.'/?',$pagenavhtml);
 				echo $pagenavhtml;
 				?>
 				<div class="clearfix"></div>

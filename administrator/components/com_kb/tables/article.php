@@ -493,6 +493,7 @@ class KbArticle extends JTable
 	 */
 	public function getCount( $filters=array() )
 	{
+		$filters['limit'] = '';
 		$query = "SELECT count(*) ".$this->buildQuery( $filters );
 
 		$this->_db->setQuery( $query );
