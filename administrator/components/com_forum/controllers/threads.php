@@ -605,7 +605,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumCategory($this->database);
+			$row = new ForumPost($this->database);
 			$row->load(intval($id));
 			$row->state = $state;
 			if (!$row->store()) 

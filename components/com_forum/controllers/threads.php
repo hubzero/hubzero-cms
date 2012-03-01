@@ -462,7 +462,13 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		// Incoming
 		$id = JRequest::getInt('thread', 0);
-		if (!$id) 
+		
+		// Load the post
+		$model = new ForumPost($this->database);
+		$model->load($id);
+		
+		// Make the sure the category exist
+		if (!$model->id) 
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -471,7 +477,8 @@ class ForumControllerThreads extends Hubzero_Controller
 			);
 			return;
 		}
-
+		
+		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
 		if (!$this->config->get('access-delete-thread'))
 		{
@@ -482,23 +489,29 @@ class ForumControllerThreads extends Hubzero_Controller
 			);
 			return;
 		}
-		
-		// Initiate a forum object
-		$model = new ForumPost($this->database);
-		$model->load($id);
-		$model->state = 2; // 0 = unpublished, 1 = published, 2 = removed
+
+		// Update replies if this is a parent (thread starter)
+		if (!$model->parent)
+		{
+			if (!$model->updateReplies(array('state' => 2), $model->id))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			{
+				$this->setError($model->getError());
+			}
+		}
 
 		// Delete the topic itself
+		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
-				$forum->getError(),
+				$model->getError(),
 				'error'
 			);
 			return;
 		}
 
+		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
 			JText::_('COM_FORUM_THREAD_DELETED'),

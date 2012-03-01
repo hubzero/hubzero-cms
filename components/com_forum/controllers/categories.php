@@ -452,15 +452,27 @@ class ForumControllerCategories extends Hubzero_Controller
 			return;
 		}
 		
+		// Load the section
 		$section = JRequest::getVar('section', '');
 		$sModel = new ForumSection($this->database);
 		$sModel->loadByAlias($section, 0);
 
-		// Initiate a forum object
+		// Load the category
 		$model = new ForumCategory($this->database);
 		$model->loadByAlias($category, $sModel->id, 0);
-		$model->state = 2; // 0 = unpublished, 1 = published, 2 = removed
 		
+		// Make the sure the category exist
+		if (!$model->id) 
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_FORUM_MISSING_ID'),
+				'error'
+			);
+			return;
+		}
+		
+		// Check if user is authorized to delete entries
 		$this->_authorize('category', $model->id);
 		if (!$this->config->get('access-delete-category')) 
 		{
@@ -472,7 +484,15 @@ class ForumControllerCategories extends Hubzero_Controller
 			return;
 		}
 		
-		// Delete the topic itself
+		// Set all the threads/posts in all the categories to "deleted"
+		$tModel = new ForumPost($this->database);
+		if (!$tModel->setStateByCategory($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+		{
+			$this->setError($tModel->getError());
+		}
+		
+		// Set the category to "deleted"
+		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
@@ -483,6 +503,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			return;
 		}
 
+		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option),
 			JText::_('COM_FORUM_CATEGORY_DELETED'),

@@ -492,4 +492,37 @@ class ForumCategory extends JTable
 		
 		return parent::delete();
 	}
+	
+	public function setStateBySection($section=null, $state=null)
+	{
+		if ($section=== null) 
+		{
+			$section = $this->section_id;
+		}
+		if ($state === null || $section === null) 
+		{
+			return false;
+		}
+		
+		if (is_array($section))
+		{
+			$section = array_map('intval', $section);
+			$section = implode(',', $section);
+		}
+		else 
+		{
+			$section = intval($section);
+		}
+		
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE section_id IN ($section)");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		} 
+		else 
+		{
+			return true;
+		}
+	}
 }

@@ -242,9 +242,11 @@ class ForumControllerSections extends Hubzero_Controller
 		// Incoming
 		$alias = JRequest::getVar('section', '');
 		
+		// Load the section
 		$model = new ForumSection($this->database);
 		$model->loadByAlias($alias, 0);
 		
+		// Make the sure the section exist
 		if (!$model->id) 
 		{
 			$this->setRedirect(
@@ -267,25 +269,37 @@ class ForumControllerSections extends Hubzero_Controller
 			return;
 		}
 
-		// Initiate a forum object
-		/*$category = new ForumCategory($this->database);
-		$categories = $category->getRecords(array(
+		// Get all the categories in this section
+		$cModel = new ForumCategory($this->database);
+		$categories = $cModel->getRecords(array(
 			'section_id' => $model->id,
 			'group'      => 0
 		));
 		if ($categories)
 		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_FORUM_SECTION_MUST_BE_EMPTY'),
-				'warning'
-			);
-			return;
-		}*/
+			// Build an array of category IDs
+			$cats = array();
+			foreach ($categories as $category)
+			{
+				$cats[] = $category->id;
+			}
+			
+			// Set all the threads/posts in all the categories to "deleted"
+			$tModel = new ForumPost($this->database);
+			if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			{
+				$this->setError($tModel->getError());
+			}
+			
+			// Set all the categories to "deleted"
+			if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			{
+				$this->setError($cModel->getError());
+			}
+		}
 
-		// Delete the topic itself
-		//if (!$model->delete($model->id)) 
-		$model->state = 2;
+		// Set the section to "deleted"
+		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store())
 		{
 			$this->setRedirect(
@@ -296,6 +310,7 @@ class ForumControllerSections extends Hubzero_Controller
 			return;
 		}
 
+		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option),
 			JText::_('COM_FORUM_SECTION_DELETED'),

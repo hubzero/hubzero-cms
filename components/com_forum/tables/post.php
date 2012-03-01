@@ -657,4 +657,37 @@ class ForumPost extends JTable
 		
 		return parent::delete($oid);
 	}
+	
+	public function setStateByCategory($cat=null, $state=null)
+	{
+		if ($cat === null) 
+		{
+			$cat = $this->category_id;
+		}
+		if ($state === null || $cat === null) 
+		{
+			return false;
+		}
+		
+		if (is_array($cat))
+		{
+			$cat = array_map('intval', $cat);
+			$cat = implode(',', $cat);
+		}
+		else 
+		{
+			$cat = intval($cat);
+		}
+		
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE category_id IN ($cat)");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		} 
+		else 
+		{
+			return true;
+		}
+	}
 }

@@ -628,9 +628,11 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Incoming
 		$alias = JRequest::getVar('section', '');
 		
+		// Load the section
 		$model = new ForumSection($this->database);
 		$model->loadByAlias($alias, $this->group->get('gidNumber'));
 		
+		// Make the sure the section exist
 		if (!$model->id) 
 		{
 			$this->setRedirect(
@@ -653,25 +655,37 @@ class plgGroupsForum extends Hubzero_Plugin
 			return;
 		}
 
-		// Initiate a forum object
-		/*$category = new ForumCategory($this->database);
-		$categories = $category->getRecords(array(
+		// Get all the categories in this section
+		$cModel = new ForumCategory($this->database);
+		$categories = $cModel->getRecords(array(
 			'section_id' => $model->id,
 			'group'      => $this->group->get('gidNumber')
 		));
-		if ($categories && count($categories) > 0)
+		if ($categories)
 		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
-				JText::_('PLG_GROUPS_FORUM_SECTION_MUST_BE_EMPTY'),
-				'warning'
-			);
-			return;
-		}*/
+			// Build an array of category IDs
+			$cats = array();
+			foreach ($categories as $category)
+			{
+				$cats[] = $category->id;
+			}
+			
+			// Set all the threads/posts in all the categories to "deleted"
+			$tModel = new ForumPost($this->database);
+			if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			{
+				$this->setError($tModel->getError());
+			}
+			
+			// Set all the categories to "deleted"
+			if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			{
+				$this->setError($cModel->getError());
+			}
+		}
 
-		// Delete the topic itself
-		//if (!$model->delete($model->id)) 
-		$model->state = 2;
+		// Set the section to "deleted"
+		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
@@ -682,6 +696,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			return;
 		}
 
+		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
 			JText::_('PLG_GROUPS_FORUM_SECTION_DELETED'),
@@ -1041,8 +1056,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Initiate a forum object
 		$model = new ForumCategory($this->database);
 		$model->loadByAlias($category, $sModel->id, $this->group->get('gidNumber'));
-		$model->state = 2; // 0 = unpublished, 1 = published, 2 = removed
-		
+
+		// Check if user is authorized to delete entries
 		$this->_authorize('category', $model->id);
 		if (!$this->params->get('access-delete-category')) 
 		{
@@ -1053,8 +1068,16 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
+
+		// Set all the threads/posts in all the categories to "deleted"
+		$tModel = new ForumPost($this->database);
+		if (!$tModel->setStateByCategory($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+		{
+			$this->setError($tModel->getError());
+		}
 		
-		// Delete the topic itself
+		// Set the category to "deleted"
+		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
@@ -1065,6 +1088,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			return;
 		}
 
+		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
 			JText::_('PLG_GROUPS_FORUM_CATEGORY_DELETED'),
@@ -1508,7 +1532,13 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Incoming
 		$id = JRequest::getInt('thread', 0);
-		if (!$id) 
+		
+		// Initiate a forum object
+		$model = new ForumPost($this->database);
+		$model->load($id);
+		
+		// Make the sure the category exist
+		if (!$model->id) 
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
@@ -1517,7 +1547,8 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
-
+		
+		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
 		if (!$this->params->get('access-delete-thread'))
 		{
@@ -1529,12 +1560,17 @@ class plgGroupsForum extends Hubzero_Plugin
 			return;
 		}
 		
-		// Initiate a forum object
-		$model = new ForumPost($this->database);
-		$model->load($id);
-		$model->state = 2; // 0 = unpublished, 1 = published, 2 = removed
-
+		// Update replies if this is a parent (thread starter)
+		if (!$model->parent)
+		{
+			if (!$model->updateReplies(array('state' => 2), $model->id))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			{
+				$this->setError($model->getError());
+			}
+		}
+		
 		// Delete the topic itself
+		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
@@ -1545,6 +1581,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			return;
 		}
 
+		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
 			JText::_('PLG_GROUPS_FORUM_THREAD_DELETED'),
