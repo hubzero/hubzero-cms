@@ -99,7 +99,7 @@ if (count($this->comments) > 0) {
 		if ($comment->ctext) {
 			//$html .= "\t\t\t".$parser->parse( "\n".trim(stripslashes($comment->ctext)))."\n";
 			//$html .= (is_object($parser)) ? $parser->parse( "\n".trim(stripslashes($comment->ctext)) ) : nl2br( trim(stripslashes($comment->ctext)) );
-			$html .= $parser->parse($comment->ctext, $wikiconfig);
+			$html .= $parser->parse(stripslashes($comment->ctext), $wikiconfig);
 		} else {
 			$html .= "\t\t\t".'<p class="comment-none">'.JText::_('No comment.').'</p>'."\n";
 		}
