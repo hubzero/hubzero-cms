@@ -206,9 +206,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$targetuser = null;
 	if ($row->login) 
 	{
-		$targetuser =& JUser::getInstance($row->login);
-		if (is_object($targetuser) && $targetuser->id) 
+		jimport('joomla.user.helper');
+		if (($id = JUserHelper::getUserId($row->login)))
 		{
+			$targetuser =& JUser::getInstance($row->login);
 			$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->id);
 		}
 	}
