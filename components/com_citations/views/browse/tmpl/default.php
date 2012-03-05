@@ -71,20 +71,15 @@ if($label == "none") {
 	
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="post">
 		<div class="aside">
-			<?php if($batch_download) : ?>
-				<fieldset>
-					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
-					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
-					
-					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
-					| 
-					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
-				</fieldset>
-			<?php endif; ?>
 			<fieldset>
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
-					<?php echo CitationsHtml::select('sort',$this->sorts,$this->filters['sort']); ?>
+					<select name="sort" id="sort" class="">
+						<?php foreach($this->sorts as $k => $v) : ?>
+							<?php $sel = ($k == $this->filters['sort']) ? "selected" : ""; ?>
+							<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option>
+						<?php endforeach; ?>
+					</select>
 				</label>
 				
 				<label>
@@ -102,7 +97,12 @@ if($label == "none") {
 				
 				<label>
 					<?php echo JText::_('Affiliation'); ?>
-					<?php echo CitationsHtml::select('filter',$this->filter,$this->filters['filter']); ?>
+					<select name="filter" id="filter" class="">
+						<?php foreach($this->filter as $k => $v) : ?>
+							<?php $sel = ($k == $this->filters['filter']) ? "selected" : ""; ?>
+							<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option>
+						<?php endforeach; ?>
+					</select>
 				</label>
 				
 				<label>
@@ -187,6 +187,18 @@ if($label == "none") {
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="browse" />
 			</fieldset>
+			
+			<?php if($batch_download) : ?>
+				<fieldset id="download-batch">
+					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
+					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
+					
+					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
+					| 
+					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
+					<input type="hidden" name="task" value="downloadbatch" id="download-batch-input" />
+				</fieldset>
+			<?php endif; ?>
 		</div><!-- / .aside -->
 		<div class="subject">
 			<?php if(count($this->citations) > 0) : ?>

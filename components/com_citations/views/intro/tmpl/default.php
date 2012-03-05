@@ -45,8 +45,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<h3>Help</h3>
 		<ul>
-			<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">Submit a citation</a></li>
-			<?php if($this->allow_import == 1 || $this->allow_import == 2) : ?>
+			<?php if($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
+				<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">Submit a citation</a></li>
+			<?php endif; ?>
+			<?php if($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
 				<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=import'); ?>">Import citations</a></li>
 			<?php endif; ?>	
 		</ul>

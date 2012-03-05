@@ -73,6 +73,13 @@ class CitationsType extends JTable
 	 * @var unknown
 	 */
 	var $type_export  	= NULL;
+	
+	/**
+	 * Description for 'fields'
+	 * 
+	 * @var unknown
+	 */
+	var $fields  	= NULL;
 
 	/**
 	 * Short description for '__construct'

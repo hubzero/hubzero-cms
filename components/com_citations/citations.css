@@ -214,6 +214,17 @@
 		margin: 0 0.5em;
 		}*/
 		
+	#citeform .aside {
+		position:relative;
+		margin-top:2em;
+		padding-top:140px;
+		}	
+		
+	#download-batch {
+		position:absolute;
+		top:0;
+		left:0;
+		}	
 		
 	.citations {
 		border-collapse:separate;
@@ -527,3 +538,13 @@
 		padding:0;
 		text-decoration:line-through;
 		}
+		
+	#hubForm.add-citation .group {
+		padding:0 0 0 5em;
+		}
+	#hubForm.add-citation .threeup {
+		padding-left:0;
+		}
+	#hubForm.add-citation .group label {
+		padding-bottom:1.5em;
+		} 

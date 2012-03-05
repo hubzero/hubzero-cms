@@ -31,9 +31,15 @@
 			<option value="yes">Yes</option>
 		</param>
 		
-		<param type="spacer" />
+		<param type="spacer" /> 
 		
 		<param name="citation_import" type="list" default="1" label="Allow Import" description="Allow importing of citations">
+			<option value="0">Not Allowed</option>
+			<option value="1">All Users</option>
+			<option value="2">Only Site Admins</option>
+		</param> 
+		
+		<param name="citation_bulk_import" type="list" default="1" label="Allow Bulk Import" description="Allow Bulk importing of citations">
 			<option value="0">Not Allowed</option>
 			<option value="1">All Users</option>
 			<option value="2">Only Site Admins</option>
@@ -71,6 +77,15 @@
 		</param>
 		
 		<param name="citation_custom_url" type="text" default="" label="Custom Citation URL" description="If custom URL is selected above, insert custom URL here." size="80" />
+		
+		<param type="spacer" />
+		
+		<param name="citation_cited" type="list" default="0" label="Internally Cited Image" description="Show Interally Cited Image.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="citation_cited_single" type="text" default="" label="Cited Single Image" description="Image path for internally cited resource - Single." size="80" />
+		<param name="citation_cited_multiple" type="text" default="" label="Cited Multiple Image" description="Image path for internally cited resource - Multiple." size="80" />
 		
 		<param type="spacer" />
 		

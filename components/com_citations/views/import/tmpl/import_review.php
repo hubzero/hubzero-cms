@@ -75,6 +75,11 @@ $no_show = array("errors","duplicate");
 							//load the duplicate citation
 							$cc = new CitationsCitation( $database );
 							$cc->load($c['duplicate']);
+							
+							//get the type
+							$ct = new CitationsType( $database );
+							$type = $ct->getType( $cc->type );
+							$type_title = $type[0]['type_title'];
 
 							//get citations tags
 							$th = new TagsHandler( $database );
@@ -139,7 +144,8 @@ $no_show = array("errors","duplicate");
 																	<span class="old delete">
 																		<?php 
 																			switch($k)
-																			{
+																			{   
+																				case 'type':	echo $type_title;		break;
 																				case 'tags':	echo $tags;				break;
 																				case 'badges':	echo $badges;			break;
 																				default:		echo html_entity_decode(nl2br($cc->$k));
@@ -182,7 +188,18 @@ $no_show = array("errors","duplicate");
 						<tr>
 							<td><input type="checkbox" class="check-single" name="citation_action_no_attention[<?php echo $counter++; ?>]" checked="checked" value="1" /></td>
 							<td>
-								<span class="citation-title"><?php echo html_entity_decode($c['title']); ?></span>
+								<span class="citation-title">
+									<?php 
+										if(array_key_exists("title", $c))
+										{
+											echo html_entity_decode($c['title']);
+										} 
+										else 
+										{
+											echo "NO TITLE FOUND";
+										}
+									?>
+								</span>
 								<span class="click-more"><?php echo JText::_('&larr; Click to show citation details'); ?></span>
 								<table class="citation-details hide">
 									<thead>

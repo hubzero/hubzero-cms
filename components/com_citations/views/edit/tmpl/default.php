@@ -61,7 +61,7 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 	<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="index.php" method="post" id="hubForm" class="add-citation">
 		<div class="explaination">
 			<p><?php echo JText::_('Please enter the information for the work that references content on this site. <strong>Not all fields may apply to the citation</strong> - fill in only those that do.'); ?></p>
 		</div>
@@ -70,8 +70,9 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 
 			<div class="group twoup">
 				<label for="type">
-					<?php echo JText::_('TYPE'); ?>:
+					<?php echo JText::_('TYPE'); ?>: <span class="required">Required</span>
 					<select name="type" id="type">
+						<option value=""> - Select a Citation Type &mdash;</option>
 						<?php
 							foreach($this->types as $t) {
 								$sel = ($this->row->type == $t['id']) ? "selected=\"selected\"" : "";
@@ -258,24 +259,24 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 				<span class="hint"><?php echo JText::_('EPRINT_EXPLANATION'); ?></span>
 			</label>
 
-			<label>
+			<label for="abstract">
 				<?php echo JText::_('Abstract'); ?>:
-				<textarea name="abstract" rows="8" cols="10"><?php echo stripslashes($this->row->abstract); ?></textarea>
+				<textarea name="abstract" id="abstract" rows="8" cols="10"><?php echo stripslashes($this->row->abstract); ?></textarea>
 			</label>
 			
-			<label>
+			<label for="note">
 				<?php echo JText::_('Notes'); ?>:
-				<textarea name="note" rows="8" cols="10"><?php echo stripslashes($this->row->note); ?></textarea>
+				<textarea name="note" id="note" rows="8" cols="10"><?php echo stripslashes($this->row->note); ?></textarea>
 			</label>
 			
-			<label>
+			<label for="keywords">
 				<?php echo JText::_('Keywords'); ?>:
-				<textarea name="keywords" rows="8" cols="10"><?php echo stripslashes($this->row->keywords); ?></textarea>
+				<textarea name="keywords" id="keywords" rows="8" cols="10"><?php echo stripslashes($this->row->keywords); ?></textarea>
 			</label>
 				
-			<label>
+			<label for="research_notes">
 				<?php echo JText::_('Research Notes'); ?>:
-				<textarea name="research_notes" rows="8" cols="10"><?php echo stripslashes($this->row->research_notes); ?></textarea>
+				<textarea name="research_notes" id="research_notes" rows="8" cols="10"><?php echo stripslashes($this->row->research_notes); ?></textarea>
 			</label>
 			
 			<div class="group twoup">

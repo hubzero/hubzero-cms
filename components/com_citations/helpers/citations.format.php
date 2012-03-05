@@ -417,6 +417,10 @@ class CitationFormat
 	{
 		$downloading = $config->get("citation_download", 1);
 		$openurls = $config->get("citation_openurl", 1);
+        
+		$internally_cited_image = $config->get("citation_cited", 0);
+		$internally_cited_image_single = $config->get("citation_cited_single", "");    
+		$internally_cited_image_multiple = $config->get("citation_cited_multiple", "");
 
 		$html  = "";
 
@@ -450,7 +454,7 @@ class CitationFormat
 
 		if (count($assocs) > 0) {
 			if (count($assocs) > 1) {
-				$html .= '<span>|</span> '.JText::_('RESOURCES_CITED').': ';
+				$html .= '<span>|</span> <span style="line-height:1.6em;color:#444">'.JText::_('RESOURCES_CITED').':</span> ';
 				$k = 0;
 				$rrs = array();
 				foreach ($assocs as $rid)
@@ -460,7 +464,14 @@ class CitationFormat
 						$state = $database->loadResult();
 						if ($state == 1) {
 							$k++;
-							$rrs[] = '<a href="'.JRoute::_('index.php?option=com_resources&id='.$rid->oid).'">['.$k.']</a>';
+							if($internally_cited_image) 
+							{
+								$rrs[] = '<a class="internally-cited" href="'.JRoute::_('index.php?option=com_resources&id='.$rid->oid).'">[<img src="'.$internally_cited_image_multiple.'" alt="Resource Cited" />]</a>'; 
+							}
+							else
+							{
+								$rrs[] = '<a class="internally-cited" href="'.JRoute::_('index.php?option=com_resources&id='.$rid->oid).'">['.$k.']</a>'; 
+							}
 						}
 					}
 				}
@@ -471,7 +482,14 @@ class CitationFormat
 					$database->setQuery( "SELECT published FROM #__resources WHERE id=".$assocs[0]->oid );
 					$state = $database->loadResult();
 					if ($state == 1) {
-						$html .= ' <span>|</span> <a href="'.JRoute::_('index.php?option=com_resources&id='.$assocs[0]->oid).'">'.JText::_('RESOURCE_CITED').'</a>';
+						if($internally_cited_image)
+						{
+							$html .= ' <span>|</span> <a href="'.JRoute::_('index.php?option=com_resources&id='.$assocs[0]->oid).'"><img src="'.$internally_cited_image_single.'" alt="Resource Cited" /></a>';  
+						}   
+						else
+						{
+							$html .= ' <span>|</span> <a href="'.JRoute::_('index.php?option=com_resources&id='.$assocs[0]->oid).'">'.JText::_('RESOURCE_CITED').'</a>';  
+						}
 					}
 				}
 			}
@@ -763,7 +781,7 @@ class CitationFormat
 		}
 		if (CitationFormat::keyExistsOrIsNotEmpty('doi',$row)) {
 			$html  = CitationFormat::grammarCheck( $html, '.' );
-			$html .= ' (doi:'.$row->doi.')';
+			$html .= ' ('.JText::_('DOI').': '.$row->doi.')';
 		}
 		$html  = CitationFormat::grammarCheck( $html, '.' );
 		$html .= '</p>'."\n";

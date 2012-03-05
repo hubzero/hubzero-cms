@@ -126,6 +126,8 @@ class CitationsController extends Hubzero_Controller
 
 		//are we allowing importing
 		$view->allow_import = $this->config->get("citation_import", 1);
+		$view->allow_bulk_import = $this->config->get("citation_bulk_import", 1);
+		$view->isAdmin = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
 
 		// Output HTML
 		$view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
@@ -282,7 +284,39 @@ class CitationsController extends Hubzero_Controller
 	 * @return     unknown Return description (if any) ...
 	 */
 	protected function edit()
-	{
+	{   
+		//get the citation types
+		$ct = new CitationsType( $this->database );
+		$types = $ct->getType();
+         
+        //
+		$fields = array();
+		foreach($types as $type)
+		{   
+			if(isset($type['fields']))
+			{
+				$f = $type['fields'];
+				if(strpos($f,",") !== false) 
+				{
+					$f = str_replace(",", "\n",$f);
+				}
+			
+				$f = array_map("trim",explode("\n", $f));
+				$f = array_values(array_filter($f));
+			
+				$fields[strtolower(str_replace(" ", "", $type['type_title']))] = $f;
+			}
+		} 
+		
+		//add an empty value for the first type
+		array_unshift($types, array("type"=>"","type_title"=>" - Select a Type &mdash;"));
+		
+		
+        //push jquery to doc
+		$document =& JFactory::getDocument();
+		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
+		$document->addScriptDeclaration("var fields = ".json_encode($fields).";");
+		
 		// Push some styles to the template
 		$this->_getStyles();
 
@@ -299,6 +333,14 @@ class CitationsController extends Hubzero_Controller
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$this->login();
+			return;
+		}
+		
+		//are we allowing user to add citation
+		$allow_import = $this->config->get("citation_import", 1);
+		if($allow_import == 0 || ($allow_import == 2 && $juser->get("usertype") != "Super Administrator"))
+		{
+			$this->intro();
 			return;
 		}
 
@@ -552,7 +594,7 @@ class CitationsController extends Hubzero_Controller
         $juser =& JFactory::getUser();
 
 		//are we allowing importing
-		$import_param = $this->config->get("citation_import", 1);
+		$import_param = $this->config->get("citation_bulk_import", 1);
 
 		//if importing is turned off go to intro page
 		if($import_param == 0) {
@@ -771,6 +813,7 @@ class CitationsController extends Hubzero_Controller
 		//vars
 		$citations_saved = array();
 		$citations_not_saved = array();
+		$citations_error = array();
 		$now = date("Y-m-d H:i:s");
 		$user = $this->juser->get("id");
 		$allow_tags = $this->config->get("citation_allow_tags","no");
@@ -781,13 +824,16 @@ class CitationsController extends Hubzero_Controller
 		{
 			foreach($cites_require_attention as $k => $cra)
 			{
-
 				//new citation object
 				$cc = new CitationsCitation( $this->database );
 
 				//add a couple of needed keys
 				$cra['uid'] = $user;
 				$cra['created'] = $now;
+				
+				//reset tags and badges
+				$tags = "";
+				$badges = "";
 
 				//remove errors
 				unset( $cra['errors'] );
@@ -834,17 +880,16 @@ class CitationsController extends Hubzero_Controller
 
 				//save the citation
 				if(!$cc->save( $cra )) {
-					echo "houston we have a problem.";
-					$citations_not_saved[] = $cra;
-					return;
+					//echo "houston we have a problem.";
+					$citations_error[] = $cra;
 				} else{
 					//tags
-					if($allow_tags == "yes") {
+					if($allow_tags == "yes" && isset($tags)) {
 						$this->tag_citation( $user, $cc->id, $tags, "" );
 					}
 
 					//badges
-					if($allow_badges == "yes") {
+					if($allow_badges == "yes" && isset($badges)) {
 						$this->tag_citation( $user, $cc->id, $badges, "badge" );
 					}
 
@@ -857,15 +902,16 @@ class CitationsController extends Hubzero_Controller
 		//
 		foreach($cites_require_no_attention as $k => $crna)
 		{
-			$tags = "";
-			$badges = "";
-
 			//new citation object
 			$cc = new CitationsCitation( $this->database );
 
 			//add a couple of needed keys
 			$crna['uid'] = $user;
 			$crna['created'] = $now;
+			
+			//reset tags and badges
+			$tags = "";
+			$badges = "";
 
 			//remove errors
 			unset( $crna['errors'] );
@@ -905,17 +951,16 @@ class CitationsController extends Hubzero_Controller
 
 			//save the citation
 			if(!$cc->save( $crna )) {
-				echo "houston we have a problem.";
-				$citations_not_saved[] = $crna;
-				return;
+				//echo "houston we have a problem.";
+				$citations_error[] = $crna;
 			} else{
 				//tags
-				if($allow_tags == "yes") {
+				if($allow_tags == "yes" && isset($tags)) {
 					$this->tag_citation( $user, $cc->id, $tags, "" );
 				}
 
 				//badges
-				if($allow_badges == "yes") {
+				if($allow_badges == "yes" && isset($badges)) {
 					$this->tag_citation( $user, $cc->id, $badges, "badge" );
 				}
 
@@ -931,6 +976,10 @@ class CitationsController extends Hubzero_Controller
 		if(count($citations_not_saved) > 0) {
 			$this->addComponentMessage( "<strong>" . count($citations_not_saved) . "</strong> citation(s) NOT uploaded.", "warning" );
 		}
+		
+		if(count($citations_error) > 0) {
+			$this->addComponentMessage( "An error occurred while trying to save <strong>" . count($citations_error) . "</strong> citation(s).", "error" );
+		}
 
 		//get the session object
 		$session =& JFactory::getSession();
@@ -938,6 +987,7 @@ class CitationsController extends Hubzero_Controller
 		//ids of sessions saved and not saved
 		$session->set("citations_saved", $citations_saved);
 		$session->set("citations_not_saved", $citations_not_saved);
+		$session->set("citations_error", $citations_error);
 
 		//delete the temp files that hold citation data
 		JFile::delete($p1);
@@ -963,6 +1013,7 @@ class CitationsController extends Hubzero_Controller
 		//get the citations
 		$citations_saved = $session->get("citations_saved");
 		$citations_not_saved = $session->get("citations_not_saved");
+		$citations_error = $session->get("citations_error"); 
 
 		//check to make sure we have citations
 		if(!$citations_saved && !$citations_not_saved) {

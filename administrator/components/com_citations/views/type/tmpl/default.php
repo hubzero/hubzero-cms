@@ -38,14 +38,53 @@ JToolBarHelper::cancel('types');
 $id = NULL;
 $type = NULL;
 $title = NULL;
-$desc = NULL;
+$desc = NULL; 
+$fields = NULL;
 if($this->type) {
 	$id = $this->type->id;
 	$type = $this->type->type;
 	$title = $this->type->type_title;
 	$desc = $this->type->type_desc;
+	$fields = $this->type->fields; 
 }
-
+ 
+$f = array(
+	"cite" => "Cite Key",
+	"ref_type" => "Ref Type",
+	"date_submit" => "Date Submitted",
+	"date_accept" => "Date Accepted",
+	"date_publish" => "Date Published",
+	"year" => "Year",	
+ 	"author" => "Authors",
+	"author_address" => "Author Address",
+	"editor" => "Editors",
+	"booktitle" => "Book Title",
+	"shorttitle" => "Short Title",
+	"journal" => "Journal",
+	"volume" => "Volume",
+	"issue" => "Issue/Number",
+	"pages" => "Pages",
+	"isbn" => "ISBN/ISSN",
+	"doi" => "DOI",
+	"callnumber" => "Call Number",
+	"accessionnumber" => "Accession Number",
+	"series" => "Series",
+	"edition" => "Edition",
+	"school" => "School",
+	"publisher" => "Publisher",
+	"institution" => "Institution",
+	"address" => "Address",
+	"location" => "Location",
+	"howpublished" => "How Published",
+	"uri" => "URL",
+	"eprint" => "E-print",
+	"abstract" => "Abstract",
+	"note" => "Text Snippet/ Notes",
+	"keywords" => "Keywords",
+	"research_notes" => "Research Notes",
+	"language" => "Language",
+	"label" => "Label"
+);
 ?>
 
 <script type="text/javascript">
@@ -79,8 +118,36 @@ function submitbutton(pressbutton)
 						<td class="key">Type Description</td>
 						<td><textarea name="type[type_desc]" rows="5" cols="58"><?php echo $desc; ?></textarea></td>
 					</tr>
+					<tr>
+						<td class="key">Fields</td>
+						<td>
+							**Type and Title are automatically included<br />
+							<textarea name="type[fields]" rows="20" cols="58"><?php echo $fields; ?></textarea>
+							
+						</td>
+					</tr>
 				</tbody>
 			</table>
+		</fieldset>
+	</div>
+	<div class="col width-30">
+		<fieldset class="adminform">
+		<table class="admintable">
+			<thead>
+				<tr>
+					<th><strong>Field Placeholder</strong></th>
+					<th><strong>Field Name</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($f as $k => $v) : ?>
+					<tr>
+						<td><?php echo $k; ?></td>
+						<td><?php echo $v; ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table> 
 		</fieldset>
 	</div>
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -215,4 +215,42 @@ $jQ(document).ready(function() {
 				break;
 		}
 	});
+	
+	function hideCitationFields( display )
+	{    	
+		$jQ(".add-citation fieldset:first label").each(function(i, el){
+			var forinput = $jQ(this).attr("for");
+			if(forinput != "type" && forinput != "title")
+			{
+				$jQ(this).css("display", display);
+			}
+		});
+	}
+	
+	//hide all fields initially
+	hideCitationFields("none");
+	
+	//on change of citation show fields we want
+	$jQ(".add-citation #type").bind("change", function(e) {
+		hideCitationFields("none");
+    	var type = this.options[this.selectedIndex].text;
+		type = type.replace(/\s+/g, "").toLowerCase();
+	    
+		if(fields[type])
+		{
+			$jQ.each(fields[type], function(index,val) {
+				if( $jQ("#"+val).length )
+				{
+					$jQ("#"+val).parents("label").css("display","block");
+				}
+			});
+		}
+		else
+		{       
+			if(this.value != "")
+			{
+				hideCitationFields("block");
+			}
+		}
+	});
 });

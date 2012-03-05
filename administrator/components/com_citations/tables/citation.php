@@ -439,9 +439,16 @@ class CitationsCitation extends JTable
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
+		if (trim( $this->title ) == '') 
+		{
 			$this->setError( JText::_('CITATION_MUST_HAVE_TITLE') );
 			return false;
+		}
+		
+		if( $this->type == "" || !is_numeric($this->type))
+		{
+		   	$this->setError( JText::_('CITATION_MUST_HAVE_TYPE') );
+			return false; 
 		}
 		return true;
 	}
@@ -532,11 +539,14 @@ class CitationsCitation extends JTable
 				$query .= " AND r.year='".$filter['year']."'";
 			}
 			if (isset($filter['search']) && $filter['search']!='') {
+				$query .= " AND (match(r.title, r.isbn, r.doi, r.abstract) AGAINST ('".$filter['search']."') > 0)"; 
+				/*
 				$query .= ($filter['search'])
 						? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' 
 							OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%' 
 							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')"
 						: "";
+				*/
 			}
 			if (isset($filter['reftype'])) {
 				if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
@@ -694,7 +704,18 @@ class CitationsCitation extends JTable
 			}
 		}
 		if (isset($filter['sort']) && $filter['sort'] != '') {
-			$query .= " ORDER BY ".$filter['sort'];
+			if (isset($filter['search']) && $filter['search']!='') {
+				$query .= " ORDER BY match(r.title, r.isbn, r.doi, r.abstract) AGAINST ('".$filter['search']."') DESC, " . $filter['sort'];
+				/*$query .= ($filter['search'])
+						? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' 
+							OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%' 
+							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')"
+						: "";*/
+			} else {
+				$query .= " ORDER BY ".$filter['sort'];
+			}
+		} elseif (isset($filter['search']) && $filter['search']!='') {
+			$query .= " ORDER BY match(r.title, r.isbn, r.doi, r.abstract) AGAINST ('".$filter['search']."') DESC";
 		}
 		if (isset($filter['limit']) && $filter['limit'] > 0) {
 			$query .= " LIMIT ".$filter['start'].",".$filter['limit'];
