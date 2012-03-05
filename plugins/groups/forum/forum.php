@@ -1351,7 +1351,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Email the group and insert email tokens to allow them to respond to group posts via email
 		if ($params->get('email_comment_processing'))
 		{
-			ximport('Hubzero_Emailtoken.php');
+			ximport('Hubzero_Emailtoken');
 			
 			$encryptor = new Hubzero_Email_Token();
 
