@@ -1389,6 +1389,11 @@ class AnswersController extends Hubzero_Controller
 		$question = new AnswersQuestion($this->database);
 		$question->load($response['qid']);
 
+		// Is user allowed to answer this question, i.e. are they the asker of the question? Only a user hack
+		// will allow this code to be reached, so the error is a bit harsh
+		if($question->created_by == $this->juser->get('username'))
+			JError::raiseError(500, 'You cannot answer your own qustion');
+
 		$jconfig =& JFactory::getConfig();
 
 		// Build the "from" info
