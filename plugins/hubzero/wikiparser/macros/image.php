@@ -325,7 +325,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 						break;
 					}
 				}
-				if($nid)
+				if ($nid)
 				{
 					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
 				}

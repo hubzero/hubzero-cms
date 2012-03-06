@@ -100,7 +100,7 @@ class GroupEventMacro extends WikiMacro
 		$html  = "<div class=\"upcoming_events\">";
 
 		//display the title
-		$html .= "<h3>{$arg['title']}</h3>";
+		$html .= isset($arg['title']) ? "<h3>{$arg['title']}</h3>" : '';
 
 		//render the events
 		$html .= $this->renderGroupEvents( $group, $num_events );
