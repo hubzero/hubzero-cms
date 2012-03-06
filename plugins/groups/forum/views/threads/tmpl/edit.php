@@ -121,7 +121,7 @@ if ($this->post->id) {
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', stripslashes($this->post->comment), '', '35', '15');
+					echo $editor->display('fields[comment]', 'field_comment', stripslashes($this->post->comment), 'no-file-macro no-image-macro', '35', '15');
 					?>
 				</label>
 <?php //if (!$this->post->parent) { ?>

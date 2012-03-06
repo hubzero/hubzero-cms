@@ -127,10 +127,10 @@ class ForumControllerThreads extends Hubzero_Controller
 		}*/
 		
 		$this->view->section = new ForumSection($this->database);
-		$this->view->section->loadByAlias($this->view->filters['section']);
+		$this->view->section->loadByAlias($this->view->filters['section'], 0);
 
 		$this->view->category = new ForumCategory($this->database);
-		$this->view->category->loadByAlias($this->view->filters['category']);
+		$this->view->category->loadByAlias($this->view->filters['category'], $this->view->section->id, 0);
 		$this->view->filters['category_id'] = $this->view->category->id;
 
 		// Initiate a forum object
@@ -170,6 +170,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Get authorization
 		$this->_authorize('category', $this->view->category->id);
 		$this->_authorize('thread', $this->view->post->id);
+		$this->_authorize('post');
 
 		$this->view->config = $this->config;
 		$this->view->notifications = $this->getComponentMessage();
@@ -239,9 +240,12 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->setRedirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($return)));
 			return;
 		}
+		
+		$this->view->section = new ForumSection($this->database);
+		$this->view->section->loadByAlias($section, 0);
 
 		$this->view->category = new ForumCategory($this->database);
-		$this->view->category->loadByAlias($category);
+		$this->view->category->loadByAlias($category, $this->view->section->id, 0);
 
 		// Incoming
 		if (is_object($post))
@@ -265,9 +269,6 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category));
 			return;
 		}
-		
-		$this->view->section = new ForumSection($this->database);
-		$this->view->section->loadByAlias($section);
 		
 		$this->view->sections = $this->view->section->getRecords(array(
 			'state' => 1,
@@ -343,9 +344,15 @@ class ForumControllerThreads extends Hubzero_Controller
 		
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+		
+		$assetType = 'thread';
+		if ($fields['parent'])
+		{
+			$assetType = 'post';
+		}
 
-		$this->_authorize('thread', intval($fields['id']));
-		if (!$this->config->get('access-edit-thread') || !$this->config->get('access-create-thread'))
+		$this->_authorize($assetType, intval($fields['id']));
+		if (!$this->config->get('access-edit-' . $assetType) && !$this->config->get('access-create-' . $assetType))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option)))
@@ -394,7 +401,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			if ($old->category_id != $fields['category_id'])
 			{
-				$model->updateReplies(array('category_id' => $fields['category_id']));
+				$model->updateReplies(array('category_id' => $fields['category_id']), $model->id);
 			}
 		}
 		
@@ -408,7 +415,14 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Determine message
 		if (!$fields['id'])
 		{
-			$message = JText::_('COM_FORUM_THREAD_STARTED');
+			if (!$fields['parent']) 
+			{
+				$message = JText::_('COM_FORUM_THREAD_STARTED');
+			}
+			else 
+			{
+				$message = JText::_('COM_FORUM_POST_ADDED');
+			}
 		}
 		else 
 		{
@@ -744,27 +758,35 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
-				$asset  = $this->_option . '.' . $assetType;
-				$asset .= ($assetId) ? '.' . $assetId : '';
+				$asset  = $this->_option;
+				if ($assetId)
+				{
+					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+					$asset .= ($assetId) ? '.' . $assetId : '';
+				}
 				
-				// Check general edit permission first.
-				if ($this->juser->authorise('core.create' . $assetType, $asset)) 
+				$at = '';
+				if ($assetType != 'component')
 				{
-					$this->config->set('access-create-' . $assetType, true);
+					$at .= '.' . $assetType;
 				}
-				if ($this->juser->authorise('core.delete', $asset)) 
-				{
-					$this->config->set('access-delete-' . $assetType, true);
-				}
-				if ($this->juser->authorise('core.edit', $asset)) 
-				{
-					$this->config->set('access-edit-' . $assetType, true);
-				}
+				
+				// Admin
+				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+				// Permissions
+				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
+				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
+				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
 			else 
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{
+					$this->config->set('access-manage-' . $assetType, true);
+					$this->config->set('access-admin-' . $assetType, true);
 					$this->config->set('access-create-' . $assetType, true);
 					$this->config->set('access-delete-' . $assetType, true);
 					$this->config->set('access-edit-' . $assetType, true);

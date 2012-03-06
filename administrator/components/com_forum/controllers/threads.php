@@ -74,7 +74,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.threads.sort', 
 			'sort', 
-			'id'
+			'c.id'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.threads.sortdir', 
@@ -86,20 +86,26 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		// Get the section
 		$this->view->section = new ForumSection($this->database);
-		$this->view->section->load($this->view->filters['section_id']);
-		if (!$this->view->section->id)
+		if (!$this->view->section->id || $this->view->filters['section_id'] <= 0)
 		{
 			// No section? Load a default blank section
 			$this->view->section->loadDefault();
 		}
+		else 
+		{
+			$this->view->section->load($this->view->filters['section_id']);
+		}
 		
 		// Get the category
 		$this->view->category = new ForumCategory($this->database);
-		$this->view->category->load($this->view->filters['category_id']);
-		if (!$this->view->category->id)
+		if (!$this->view->category->id || $this->view->filters['category_id'] <= 0)
 		{
 			// No category? Load a default blank catgory
 			$this->view->category->loadDefault();
+		}
+		else 
+		{
+			$this->view->category->load($this->view->filters['category_id']);
 		}
 		
 		$this->view->cateories = array();
@@ -126,7 +132,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			{
 				if (!$s->group_alias)
 				{
-					$s->group_alias = '[ none ]';
+					$s->group_alias = '[ no group ]';
 				}
 				if (!isset($this->view->sections[$s->group_alias]))
 				{
@@ -219,12 +225,12 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.thread.sort', 
 			'sort', 
-			'id'
+			'c.id'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.thread.sortdir', 
 			'sort_Dir', 
-			'DESC'
+			'ASC'
 		));
 		$this->view->filters['sticky'] = false;
 
@@ -298,6 +304,9 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Get records
 		$this->view->results = $model->getRecords($this->view->filters);
 		
+		$model->load($this->view->filters['parent']);
+		$this->view->thread = $model;
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -445,53 +454,65 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		// Incoming data
-		$question = JRequest::getVar('question', array(), 'post');
-		$question = array_map('trim', $question);
-		
-		// Ensure we have at least one tag
-		if (!$question['tags']) 
+		// Incoming
+		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = array_map('trim', $fields);
+
+		if ($fields['id'])
 		{
-			echo AnswersHtml::alert(JText::_('Question must have at least 1 tag'));
-			exit();
+			$old = new ForumPost($this->database);
+			$old->load(intval($fields['id']));
 		}
-		
+
 		// Initiate extended database class
-		$row = new AnswersQuestion($this->database);
-		if (!$row->bind($question)) 
+		$model = new ForumPost($this->database);
+		if (!$model->bind($fields))
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($model->getError(), 'error');
+			$this->view->setLayout('edit');
+			$this->editTask($model);
 			return;
 		}
 		
-		// Updating entry
-		$row->created = $row->created ? $row->created : date("Y-m-d H:i:s");
-		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');
-
-		// Code cleaner
-		$row->question = nl2br($row->question);
-
 		// Check content
-		if (!$row->check()) 
+		if (!$model->check()) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($model->getError(), 'error');
+			$this->view->setLayout('edit');
+			$this->editTask($model);
 			return;
 		}
 		
-		// Store content
-		if (!$row->store()) 
+		// Store new content
+		if (!$model->store()) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($model->getError(), 'error');
+			$this->view->setLayout('edit');
+			$this->editTask($model);
 			return;
 		}
+		
+		if ($fields['id'])
+		{
+			if ($old->category_id != $fields['category_id'])
+			{
+				$model->updateReplies(array('category_id' => $fields['category_id']), $model->id);
+			}
+		}
 
-		// Add the tag(s)
-		$at = new AnswersTags($this->database);
-		$at->tag_object($this->juser->get('id'), $row->id, $question['tags'], 1, 1);
-
-		// Redirect back to the full questions list
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('Question Successfully Saved');
+		$msg = JText::_('Thread Successfully Saved');
+		if ($model->parent)
+		{
+			$msg = JText::_('Post Successfully Saved');
+			$p = '&task=thread&parent=' . $model->parent;
+		}
+		
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p,
+			$msg,
+			'message'
+		);
 	}
 
 	/**

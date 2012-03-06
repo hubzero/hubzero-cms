@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ForumHelper::getActions('category');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'generic.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'forum.png');
 if ($canDo->get('core.admin')) {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
@@ -121,17 +121,20 @@ if ($this->results)
 				$task = 'publish';
 				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
+				$cls = 'trash';
 			break;
 			case '1':
 				$task = 'unpublish';
 				$img = 'publish_g.png';
 				$alt = JText::_('Published');
+				$cls = 'publish';
 			break;
 			case '0':
 			default:
 				$task = 'publish';
 				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
+				$cls = 'unpublish';
 			break;
 		}
 		
@@ -184,41 +187,45 @@ if ($this->results)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</a>
 <?php } else { ?>
-					<span>
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+					<span class="state <?php echo $cls; ?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</span>
 <?php } ?>
 				</td>
 				<td>
-					<a class="access" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access">
-						<span><?php echo $row->groupname; ?></span>
-					</a>
+					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
+						<span><?php echo $row->access_level; ?></span>
+					<!-- </a> -->
 				</td>
 				<td>
-					<?php echo $this->escape($row->group_alias); ?>
+<?php if ($this->escape($row->group_alias)) { ?>
+					<span class="group">
+						<span><?php echo $this->escape($row->group_alias); ?></span>
+					</span>
+<?php } ?>
 				</td>
 				<td>
 <?php if ($row->threads > 0) { ?>
-					<a class="category" href="index.php?option=<?php echo $option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('View the threads for this category'); ?>">
+					<a class="glyph thread" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('View the threads for this category'); ?>">
 						<span><?php echo $row->threads; ?></span>
 					</a>
 <?php } else { ?>
-					<span class="category">
+					<span class="glyph thread">
 						<span><?php echo $row->threads; ?></span>
 					</span>
 <?php } ?>
 				</td>
 				<td>
 <?php if ($row->posts > 0) { ?>
-					<a class="category" href="index.php?option=<?php echo $option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('View the posts for this category'); ?>">
+					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('View the posts for this category'); ?>">
 						<span><?php echo $row->posts; ?></span>
 					</a>
 <?php } else { ?>
-					<span class="category">
+					<span class="glyph comment">
 						<span><?php echo $row->posts; ?></span>
 					</span>
 <?php } ?>

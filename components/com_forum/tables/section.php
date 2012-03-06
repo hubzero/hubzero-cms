@@ -113,6 +113,71 @@ class ForumSection extends JTable
 	}
 	
 	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form table_name.id
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		return 'com_forum.section.'.(int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->title;
+	}
+	
+	/**
+	 * Get the parent asset id for the record
+	 *
+	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   integer  $id     The id for the asset
+	 *
+	 * @return  integer  The id of the asset's parent
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		// Initialise variables.
+		$assetId = null;
+		$db		= $this->getDbo();
+
+		if ($assetId === null) {
+			// Build the query to get the asset id for the parent category.
+			$query	= $db->getQuery(true);
+			$query->select('id');
+			$query->from('#__assets');
+			$query->where('name = '.$db->quote('com_forum'));
+
+			// Get the asset id from the database.
+			$db->setQuery($query);
+			if ($result = $db->loadResult()) {
+				$assetId = (int) $result;
+			}
+		}
+
+		// Return the asset id.
+		if ($assetId) {
+			return $assetId;
+		} else {
+			return parent::_getAssetParentId($table, $id);
+		}
+	}
+	
+	/**
 	 * Short description for 'loadAlias'
 	 * 
 	 * Long description (if any) ...
@@ -120,14 +185,21 @@ class ForumSection extends JTable
 	 * @param      unknown $oid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function loadByAlias($oid=NULL)
+	public function loadByAlias($oid=NULL, $group_id=null)
 	{
 		if ($oid === NULL) 
 		{
 			return false;
 		}
 		$oid = trim($oid);
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
+		
+		$query = "SELECT * FROM $this->_tbl WHERE alias='$oid'";
+		if ($group_id !== null)
+		{
+			$query .= " AND group_id=" . $group_id;
+		}
+		
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -205,6 +277,14 @@ class ForumSection extends JTable
 	{
 		$query  = "FROM $this->_tbl AS c";
 		$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.group_id";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
+		}
+		else 
+		{
+			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
+		}
 		
 		$where = array();
 		
@@ -260,8 +340,16 @@ class ForumSection extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT c.*, g.cn AS group_alias ";
-		$query .= $this->buildQuery($filters);
+		$query  = "SELECT c.*, g.cn AS group_alias";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= ", a.name AS access_level";
+		}
+		else 
+		{
+			$query .= ", a.title AS access_level";
+		}
+		$query .= " " . $this->buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{

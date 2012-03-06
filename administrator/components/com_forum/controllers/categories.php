@@ -79,11 +79,14 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		// Load the current section
 		$this->view->section = new ForumSection($this->database);
-		$this->view->section->load($this->view->filters['section_id']);
-		if (!$this->view->section->id)
+		if (!$this->view->filters['section_id'] || $this->view->filters['section_id'] <= 0)
 		{
 			// No section? Load a default blank section
 			$this->view->section->loadDefault();
+		}
+		else 
+		{
+			$this->view->section->load($this->view->filters['section_id']);
 		}
 		
 		// Set the group ID from the secton, if a section is selected
@@ -102,7 +105,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			{
 				if (!$s->group_alias)
 				{
-					$s->group_alias = '[ none ]';
+					$s->group_alias = '[ no group ]';
 				}
 				if (!isset($this->view->sections[$s->group_alias]))
 				{
@@ -219,7 +222,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			{
 				if (!$s->group_alias)
 				{
-					$s->group_alias = '[ none ]';
+					$s->group_alias = '[ no group ]';
 				}
 				if (!isset($this->view->sections[$s->group_alias]))
 				{

@@ -144,7 +144,7 @@
 		border-bottom: 1px dotted #999;
 	}
 	.entries .entry-options {
-		white-space: nowrap;
+		/*white-space: nowrap;*/
 		text-align: right;
 	}
 	/* Lists */
@@ -292,6 +292,7 @@
 	}
 	.com_forum .aside .container table th {
 		padding-left: 0;
+		text-align: left;
 	}
 	.com_forum .aside .container table td {
 		text-align: right;
@@ -304,6 +305,11 @@
 	.com_forum .aside .container .entry-author a {
 		color: #666;
 		border-bottom: 1px dotted #999;
+	}
+	.group_forum .aside .container fieldset {
+		border: 1px solid #e7e7e7;
+		background-color: #F8F8f3;
+		margin: 1em 0 0 0;
 	}
 /* Comment form */
 	#commentform {
@@ -592,4 +598,10 @@
 	ol.comments .attachment {
 		background: url("/components/com_forum/images/attach.png") 0 0 no-repeat;
 		padding-left: 20px;
+	}
+/* IE 7 */
+	html>body .entries .entry-options .edit,
+	html>body .entries .entry-options .delete {
+		*display: block;
+		*float: right;
 	}

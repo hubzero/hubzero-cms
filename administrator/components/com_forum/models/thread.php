@@ -72,7 +72,7 @@ class ForumModelThread extends JModelAdmin
 		 * @return	JTable	A database object
 		 * @since	1.7
 		 */
-	public function getTable($type = 'Thread', $prefix = 'Forum', $config = array()) 
+	public function getTable($type = 'Post', $prefix = 'Forum', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -91,7 +91,6 @@ class ForumModelThread extends JModelAdmin
 		{
 			$data = $this->getItem();
 		}
-		print_R($data);
 		return $data;
 	}
 }

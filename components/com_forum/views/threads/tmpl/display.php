@@ -2,6 +2,16 @@
 defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$timeFormat = 'h:i a';
+	$tz = true;
+}
+
 ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header">
@@ -120,24 +130,39 @@ ximport('Hubzero_User_Profile_Helper');
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
 							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>">@
-								<span class="time"><?php echo JHTML::_('date', $row->created, '%I:%M %p', 0); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-								<span class="date"><?php echo JHTML::_('date', $row->created, '%d %b, %Y', 0); ?></span>
+								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+								<span class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
 									&mdash; <?php echo JText::_('COM_FORUM_EDITED'); ?>
-									<span class="time"><?php echo JHTML::_('date', $row->modified, '%I:%M %p', 0); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-									<span class="date"><?php echo JHTML::_('date', $row->modified, '%d %b, %Y', 0); ?></span>
+									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+									<span class="date"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></span>
 								<?php } ?>
 							</a>
 						</p>
 						<?php echo $comment; ?>
-						<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->created_by) { ?>
+						<?php if (
+									($row->parent && 
+										(
+											$this->config->get('access-delete-thread') ||
+											$this->config->get('access-edit-thread')
+										) 
+									)
+									|| 
+									(!$row->parent && 
+										(
+											$this->config->get('access-delete-post') ||
+											$this->config->get('access-edit-post')
+										)
+									)
+								) { ?>
+						<?php //if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->created_by) { ?>
 						<p class="comment-options">
-							<?php if ($this->config->get('access-delete-thread')) { ?>
+							<?php if (($row->parent && $this->config->get('access-delete-thread')) || (!$row->parent && $this->config->get('access-delete-post'))) { ?>
 							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $row->id . '&task=delete'); ?>">
 								<?php echo JText::_('COM_FORUM_DELETE'); ?>
 							</a>
 							<?php } ?>
-							<?php if ($this->config->get('access-edit-thread')) { ?>
+							<?php if (($row->parent && $this->config->get('access-edit-thread')) || (!$row->parent && $this->config->get('access-edit-post'))) { ?>
 							<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $row->id . '&task=edit'); ?>">
 								<?php echo JText::_('COM_FORUM_EDIT'); ?>
 							</a>
@@ -172,7 +197,7 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
-
+<?php if ($this->config->get('access-create-post')) { ?>
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
@@ -246,8 +271,8 @@ ximport('Hubzero_User_Profile_Helper');
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
 					<span class="permalink">@
-						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), '%I:%M %p', 0); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), '%d %b, %Y', 0); ?></span>
+						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $dateFormat, $tz); ?></span>
 					</span>
 				</p>
 				
@@ -322,4 +347,5 @@ ximport('Hubzero_User_Profile_Helper');
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
+<?php } ?>
 </div><!-- / .below section -->

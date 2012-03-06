@@ -91,7 +91,6 @@ class ForumModelSection extends JModelAdmin
 		{
 			$data = $this->getItem();
 		}
-		print_R($data);
 		return $data;
 	}
 }

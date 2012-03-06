@@ -28,6 +28,33 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 <div class="main section">
 	<div class="aside">
+		<div class="container">
+			<h3><?php echo JText::_('Last Post'); ?><span class="starter-point"></span></h3>
+			<p>
+<?php
+	if (is_object($this->lastpost)) 
+	{
+		$lname = JText::_('Anonymous');
+		$lastposter = JUser::getInstance($this->lastpost->created_by);
+		if (is_object($lastposter)) 
+		{
+			$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
+		}
+?>
+				<span class="entry-date">
+					@
+					<span class="time"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+					<span class="date"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></span>
+				</span>
+				<span class="entry-author">
+					<?php echo JText::_('by'); ?>
+					<?php echo $lname; ?>
+				</span>
+<?php } else { ?>
+				<?php echo JText::_('none'); ?>
+<?php } ?>
+			</p>
+		</div><!-- / .container -->
 <?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
 			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
@@ -43,7 +70,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
 			</p>
 <?php } ?>
-		</div>
+		</div><!-- / .container -->
 <?php } ?>
 	</div><!-- / .aside -->
 
@@ -147,7 +174,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							</td>
 						<?php if ($this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 							<td class="entry-options">
-								<?php if ($this->config->get('access-edit') || $row->created_by == $juser->get('id') ) { ?>
+								<?php if ($this->config->get('access-edit-thread') || $row->created_by == $juser->get('id') ) { ?>
 									<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . $row->id . '&task=edit'); ?>">
 										<?php echo JText::_('COM_FORUM_EDIT'); ?>
 									</a>

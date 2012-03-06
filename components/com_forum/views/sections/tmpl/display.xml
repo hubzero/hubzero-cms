@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_forum/config.xml
+@file           components/com_groups/views/browse/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,11 +27,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<config>
-	<fieldset name="component">
-		<field name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
-	</fieldset>
-	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_forum" section="component" />
-	</fieldset>
-</config>
+<metadata>
+	<layout title="Sections and Categories (start page)">
+		<message>
+			<![CDATA[Sections and Categories (start page)]]>
+		</message>
+	</layout>
+	<state>
+		<name>Sections and Categories (start page)</name>
+		<description>Sections and Categories (start page)</description>
+		<params>
+		</params>
+	</state>
+</metadata>

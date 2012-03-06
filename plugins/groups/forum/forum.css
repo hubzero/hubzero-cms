@@ -248,7 +248,13 @@
 		background-color: #F4F4ee;
 		border: 10px solid #F4F4ee;
 	}
+	.group_forum .thread-data .col {
+		background-color: #F4F4ee;
+		border: 0;
+	}
 /* Headers */
+	.group_forum .thread-data .container h3,
+	.group_forum .thread-data .container h4,
 	.group_forum .aside .container h3,
 	.group_forum .aside .container h4 {
 		margin: -10px -10px 1em -10px;
@@ -261,6 +267,8 @@
 	.group_forum .aside .container p {
 		margin: 1em 0 0 0;
 	}
+	.group_forum .thread-data .container h3,
+	.group_forum .thread-data .container h4,
 	.group_forum .aside .container h3,
 	.group_forum .aside .container h4 {
 		position: relative;
@@ -268,10 +276,12 @@
 		letter-spacing: inherit;
 		font-weight: bold;
 	}
+	.group_forum .thread-data .container .starter,
 	.group_forum .aside .container .starter {
 		padding: 0 0 0 0;
 		position: relative;
 	}
+	.group_forum .thread-data .container .starter .starter-point,
 	.group_forum .aside .container .starter .starter-point {
 		border-color: #999 transparent transparent transparent;
 		border-style: solid dashed dashed dashed;
@@ -284,6 +294,8 @@
 		top: -1em;
 		left: 10px;
 	}
+	.group_forum .thread-data .container h3 .starter-point,
+	.group_forum .thread-data .container h4 .starter-point,
 	.group_forum .aside .container h3 .starter-point,
 	.group_forum .aside .container h4 .starter-point {
 		border-color: #999 transparent transparent transparent;
@@ -303,6 +315,7 @@
 	}
 	.group_forum .aside .container table th {
 		padding-left: 0;
+		text-align: left;
 	}
 	.group_forum .aside .container table td {
 		text-align: right;
@@ -315,6 +328,11 @@
 	.group_forum .aside .container .entry-author a {
 		color: #666;
 		border-bottom: 1px dotted #999;
+	}
+	.group_forum .aside .container fieldset {
+		border: 1px solid #e7e7e7;
+		background-color: #F8F8f3;
+		margin: 1em 0 0 0;
 	}
 /* Comment form */
 	#commentform {

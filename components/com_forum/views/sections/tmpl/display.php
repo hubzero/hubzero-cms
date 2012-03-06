@@ -1,5 +1,16 @@
 <?php 
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$timeFormat = 'h:i a';
+	$tz = true;
+}
+
 $juser = JFactory::getUser();
 ?>
 <div id="content-header" class="full">
@@ -30,7 +41,7 @@ $juser = JFactory::getUser();
 					</tr>
 				</tbody>
 			</table>
-		</div>
+		</div><!-- / .container -->
 		<div class="container">
 			<h3><?php echo JText::_('Last Post'); ?><span class="starter-point"></span></h3>
 			<p>
@@ -46,8 +57,8 @@ $juser = JFactory::getUser();
 ?>
 				<span class="entry-date">
 					@
-					<span class="time"><?php echo JHTML::_('date', $this->lastpost->created, '%I:%M %p', 0); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-					<span class="date"><?php echo JHTML::_('date', $this->lastpost->created, '%d %b, %Y', 0); ?></span>
+					<span class="time"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+					<span class="date"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></span>
 				</span>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
@@ -57,30 +68,29 @@ $juser = JFactory::getUser();
 				<?php echo JText::_('none'); ?>
 <?php } ?>
 			</p>
-		</div>
+		</div><!-- / .container -->
 		
 <?php if ($this->config->get('access-create-section')) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('Sections'); ?></h3>
-			<p class="starter">
-				<span class="starter-point"></span>
+			<h3><?php echo JText::_('Sections'); ?><span class="starter-point"></span></h3>
+			<p>
 				<?php echo JText::_('Use sections to group related categories.'); ?>
 			</p>
+			
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+				<fieldset>
+					<legend><?php echo JText::_('New Section'); ?></legend>
+					<label for="field-title">
+						<?php echo JText::_('Section Title'); ?>
+						<input type="text" name="fields[title]" id="field-title" value="" />
+					</label>
+					<input type="submit" value="<?php echo JText::_('Create'); ?>" />
+					<input type="hidden" name="task" value="save" />
+					<input type="hidden" name="controller" value="sections" />
+					<input type="hidden" name="fields[group_id]" value="0" />
+				</fieldset>
+			</form>
 		</div>
-
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
-			<fieldset>
-				<legend><?php echo JText::_('New Section'); ?></legend>
-				<label for="field-title">
-					<?php echo JText::_('Section Title'); ?>
-					<input type="text" name="fields[title]" id="field-title" value="" />
-				</label>
-				<input type="submit" value="<?php echo JText::_('Create'); ?>" />
-				<input type="hidden" name="controller" value="sections" />
-				<input type="hidden" name="task" value="save" />
-				<input type="hidden" name="group_id" value="0" />
-			</fieldset>
-		</form>
 <?php } ?>
 	</div><!-- / .aside -->
 
@@ -89,7 +99,7 @@ $juser = JFactory::getUser();
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search categories'); ?></legend>
+				<legend><?php echo JText::_('Search categories'); ?></legend>				
 				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -97,6 +107,7 @@ $juser = JFactory::getUser();
 				<input type="hidden" name="task" value="search" />
 			</fieldset>
 		</div><!-- / .container -->
+	</form>
 <?php
 foreach ($this->sections as $section)
 {
@@ -110,12 +121,14 @@ foreach ($this->sections as $section)
 				<caption>
 <?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
 					<a name="s<?php echo $section->id; ?>"></a>
+					<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 					<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
 					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
 					<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
 					<input type="hidden" name="fields[group_id]" value="0" />
 					<input type="hidden" name="controller" value="sections" />
 					<input type="hidden" name="task" value="save" />
+					</form>
 <?php } else { ?>
 					<?php echo $this->escape(stripslashes($section->title)); ?>
 <?php } ?>
@@ -204,6 +217,5 @@ if ($section->categories) {
 <?php
 }
 ?>
-	</form>
 	</div><!-- /.subject -->
 </div><!-- /.main -->

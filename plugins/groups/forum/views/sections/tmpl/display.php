@@ -1,6 +1,28 @@
 <?php 
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+        $dateFormat = 'd M, Y';
+        $timeFormat = 'h:i a';
+        $tz = true;
+}
+
 $juser = JFactory::getUser();
+
+$wikiconfig = array(
+	'option'   => $this->option,
+	'scope'    => 'forum',
+	'pagename' => 'forum',
+	'pageid'   => 0,
+	'filepath' => '',
+	'domain'   => 0
+);
+ximport('Hubzero_Wiki_Parser');
+$p =& Hubzero_Wiki_Parser::getInstance();
 ?>
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
@@ -41,8 +63,8 @@ $juser = JFactory::getUser();
 ?>
 				<span class="entry-date">
 					@
-					<span class="time"><?php echo JHTML::_('date', $this->lastpost->created, '%I:%M %p', 0); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
-					<span class="date"><?php echo JHTML::_('date', $this->lastpost->created, '%d %b, %Y', 0); ?></span>
+					<span class="time"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
+					<span class="date"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></span>
 				</span>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
@@ -53,33 +75,50 @@ $juser = JFactory::getUser();
 <?php } ?>
 			</p>
 		</div>
-		
+
+	<div class="container">
+		<h3><?php echo JText::_('Email Settings'); ?><span class="starter-point"></span></h3>
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
+			<input type="hidden" name="task" value="savememberoptions" />
+			<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
+			<input type="hidden" name="postsaveredirect" value="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum') ?>" />
+
+			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) { echo ' checked="checked"'; } ?> />
+			<label for="recvpostemail"><?php echo JText::_('Email forum posts'); ?></label>
+
+			<p class="submit">
+				<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+			</p>
+		</form>
+	</div>
+
 <?php if ($this->config->get('access-create-section')) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('Sections'); ?></h3>
-			<p class="starter">
-				<span class="starter-point"></span>
+			<h3><?php echo JText::_('Sections'); ?><span class="starter-point"></span></h3>
+			<p>
 				<?php echo JText::_('Use sections to group related categories.'); ?>
 			</p>
-		</div>
 		
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
-			<fieldset>
-				<legend><?php echo JText::_('New Section'); ?></legend>
-				<label for="field-title">
-					<?php echo JText::_('Section Title'); ?>
-					<input type="text" name="fields[title]" id="field-title" value="" />
-				</label>
-				<input type="submit" value="<?php echo JText::_('Create'); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-				<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
-				<input type="hidden" name="active" value="forum" />
-				<input type="hidden" name="task" value="savesection" />
-			</fieldset>
-		</form>
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
+				<fieldset>
+					<legend><?php echo JText::_('New Section'); ?></legend>
+					<label for="field-title">
+						<?php echo JText::_('Section Title'); ?>
+						<input type="text" name="fields[title]" id="field-title" value="" />
+					</label>
+					<input type="submit" value="<?php echo JText::_('Create'); ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+					<input type="hidden" name="active" value="forum" />
+					<input type="hidden" name="task" value="savesection" />
+				</fieldset>
+			</form>
+		</div>
 <?php } ?>
 	</div><!-- / .aside -->
+
+
 
 	<div class="subject">
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
@@ -95,24 +134,31 @@ $juser = JFactory::getUser();
 				<input type="hidden" name="action" value="search" />
 			</fieldset>
 		</div><!-- / .container -->
+	</form>
 <?php
-foreach ($this->sections as $section)
-{
-	if ($section->id == 0 && !$section->categories) 
+if (count($this->sections) > 0) {
+	foreach ($this->sections as $section)
 	{
-		continue;
-	}
+		if ($section->id == 0 && !$section->categories[0]->posts) 
+		{
+			continue;
+		}
 ?>
 		<div class="container">
 			<table class="entries categories">
 				<caption>
 <?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
 					<a name="s<?php echo $section->id; ?>"></a>
+					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
 					<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
 					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
 					<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
 					<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
-					<input type="hidden" name="task" value="savesection" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="action" value="savesection" />
+					<input type="hidden" name="active" value="forum" />
+					</form>
 <?php } else { ?>
 					<?php echo $this->escape(stripslashes($section->title)); ?>
 <?php } ?>
@@ -156,7 +202,7 @@ if ($section->categories) {
 							</a>
 							<span class="entry-details">
 								<span class="entry-description">
-									<?php echo $this->escape(stripslashes($row->description)); ?>
+									<?php echo $p->parse(stripslashes($row->description), $wikiconfig, false); ?>
 								</span>
 							</span>
 						</td>
@@ -199,8 +245,13 @@ if ($section->categories) {
 			</table>
 		</div>
 <?php
+	}
+} else {
+?>
+	<p><?php echo JText::_('This forum is currently empty.'); ?></p>
+<?php
 }
 ?>
-	</form>
+
 	</div><!-- /.subject -->
 </div><!-- /.main -->

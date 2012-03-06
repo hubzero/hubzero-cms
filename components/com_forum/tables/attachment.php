@@ -149,7 +149,7 @@ class ForumAttachment extends JTable
 			
 			$this->description = htmlentities(stripslashes($this->description), ENT_COMPAT, 'UTF-8');
 			
-			if (eregi("bmp|gif|jpg|jpe|jpeg|png", $this->filename)) 
+			if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $this->filename)) 
 			{
 				$size = getimagesize($path);
 				if ($size[0] > 400) 

@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ForumHelper::getActions('category');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'generic.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'forum.png');
 if ($canDo->get('core.admin')) {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
@@ -95,6 +95,9 @@ function submitbutton(pressbutton) {
 	<div class="clr"></div>
 
 	<table class="adminlist">
+<?php if (is_object($this->thread)) { ?>
+		<caption><?php echo JText::_('Thread') . ': ' . $this->escape(stripslashes($this->thread->title)); ?></caption>
+<?php } ?>
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
@@ -125,17 +128,20 @@ if ($this->results)
 				$task = 'publish';
 				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
+				$cls = 'trash';
 			break;
 			case '1':
 				$task = 'unpublish';
 				$img = 'publish_g.png';
 				$alt = JText::_('Published');
+				$cls = 'publish';
 			break;
 			case '0':
 			default:
 				$task = 'publish';
 				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
+				$cls = 'unpublish';
 			break;
 		}
 ?>
@@ -153,12 +159,12 @@ if ($this->results)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</a>
 <?php } else { ?>
-					<span>
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+					<span class="state <?php echo $cls; ?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</span>
 <?php } ?>
 				</td>

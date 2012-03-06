@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ForumHelper::getActions('category');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'generic.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'forum.png');
 if ($canDo->get('core.admin')) {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
@@ -121,23 +121,26 @@ if ($this->results)
 	for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
 	{
 		$row =& $this->results[$i];
-		switch ($row->state) 
+		switch (intval($row->state)) 
 		{
-			case '2':
+			case 2:
 				$task = 'publish';
 				$img = 'disabled.png';
 				$alt = JText::_('Trashed');
+				$cls = 'trash';
 			break;
-			case '1':
+			case 1:
 				$task = 'unpublish';
 				$img = 'publish_g.png';
 				$alt = JText::_('Published');
+				$cls = 'publish';
 			break;
-			case '0':
+			case 0:
 			default:
 				$task = 'publish';
 				$img = 'publish_x.png';
 				$alt = JText::_('Unpublished');
+				$cls = 'unpublish';
 			break;
 		}
 		
@@ -147,12 +150,14 @@ if ($this->results)
 				$stickyTask = '1';
 				$stickyImg = 'publish_g.png';
 				$stickyAlt = JText::_('Sticky');
+				$scls = 'publish';
 			break;
 			case '0':
 			default:
 				$stickyTask = '0';
 				$stickyImg = 'publish_x.png';
 				$stickyAlt = JText::_('Not sticky');
+				$scls = 'unpublish';
 			break;
 		}
 		
@@ -199,30 +204,32 @@ if ($this->results)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
 					</a>
 <?php } else { ?>
-					<span>
+					<span class="state <?php echo $cls; ?>">
 						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
 					</span>
 <?php } ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $stickyAlt;?>">
-						<img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" />
+					<a class="state <?php echo $scls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $stickyAlt;?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $alt; } ?></span>
 					</a>
 <?php } else { ?>
-					<span>
-						<img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" />
+					<span class="state <?php echo $scls; ?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $alt; } ?></span>
 					</span>
 <?php } ?>
 				</td>
 				<td>
-					<a class="access" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access">
+					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=access&amp;access=<?php echo $task_access; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access"> -->
+					<span>
 						<span><?php echo $row->groupname; ?></span>
-					</a>
+					</span>
+					<!-- </a> -->
 				</td>
 				<td>
 					<span class="group">

@@ -2,6 +2,16 @@
 defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$timeFormat = 'h:i a';
+	$tz = true;
+}
+
 ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header-extra">
@@ -26,9 +36,9 @@ ximport('Hubzero_User_Profile_Helper');
 			<p><?php echo JText::_('PLG_GROUPS_FORUM_NONE'); ?></p>
 <?php } ?>
 		</div><!-- / .container -->
-<?php if ($this->participants) { ?>
 		<div class="container">
 			<h4><?php echo JText::_('PLG_GROUPS_FORUM_PARTICIPANTS'); ?><span class="starter-point"></span></h4>
+<?php if ($this->participants) { ?>
 			<ul>
 <?php 
 	$anon = false;
@@ -47,11 +57,11 @@ ximport('Hubzero_User_Profile_Helper');
 	}
 ?>
 			</ul>
-		</div><!-- / .container -->
 <?php } ?>
-<?php if ($this->attachments) { ?>
+		</div><!-- / .container -->
 		<div class="container">
 			<h4><?php echo JText::_('PLG_GROUPS_FORUM_ATTACHMENTS'); ?><span class="starter-point"></span></h4>
+<?php if ($this->attachments) { ?>
 			<ul class="attachments">
 <?php 
 			foreach ($this->attachments as $attachment) 
@@ -61,10 +71,10 @@ ximport('Hubzero_User_Profile_Helper');
 				<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $attachment->parent . '/' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
 <?php 		} ?>
 			</ul>
-		</div><!-- / .container -->
 <?php } ?>
-	</div><!-- / .aside -->
-	
+		</div><!-- / .container -->
+	</div><!-- / .aside  -->
+
 	<div class="subject">
 		<h4 class="comments-title">
 			<?php echo JText::_('PLG_GROUPS_FORUM_COMMENTS'); ?>
@@ -119,12 +129,12 @@ ximport('Hubzero_User_Profile_Helper');
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
 							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>">@
-								<span class="time"><?php echo JHTML::_('date', $row->created, '%I:%M %p', 0); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
-								<span class="date"><?php echo JHTML::_('date', $row->created, '%d %b, %Y', 0); ?></span>
+								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
+								<span class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
 									&mdash; <?php echo JText::_('PLG_GROUPS_FORUM_EDITED'); ?>
-									<span class="time"><?php echo JHTML::_('date', $row->modified, '%I:%M %p', 0); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
-									<span class="date"><?php echo JHTML::_('date', $row->modified, '%d %b, %Y', 0); ?></span>
+									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
+									<span class="date"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></span>
 								<?php } ?>
 							</a>
 						</p>
@@ -168,7 +178,7 @@ ximport('Hubzero_User_Profile_Helper');
             // @FIXME: End Nick's Fix
         ?>
 		</form>
-	</div><!-- / .subject -->
+ 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
 
@@ -245,8 +255,8 @@ ximport('Hubzero_User_Profile_Helper');
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
 					<span class="permalink">@
-						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), '%I:%M %p', 0); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
-						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), '%d %b, %Y', 0); ?></span>
+						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
+						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $dateFormat, $tz); ?></span>
 					</span>
 				</p>
 				

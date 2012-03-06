@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $canDo = ForumHelper::getActions('section');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Category') : JText::_('New Category'));
-JToolBarHelper::title(JText::_('Forums') . ': <small><small>[ ' . $text . ' ]</small></small>', 'generic.png');
+JToolBarHelper::title(JText::_('Forums') . ': <small><small>[ ' . $text . ' ]</small></small>', 'forum.png');
 JToolBarHelper::spacer();	
 if ($canDo->get('core.edit')) {
 	JToolBarHelper::save();
@@ -66,10 +66,10 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('Details'); ?></legend>
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
@@ -122,22 +122,53 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
+			<table class="meta" summary="<?php echo JText::_('Metadata for this forum category'); ?>">
+				<tbody>
+					<tr>
+						<th class="key"><?php echo JText::_('Created By'); ?>:</th>
+						<td>
+							<?php 
+							$editor = JUser::getInstance($this->row->created_by);
+							echo $this->escape($editor->get('name')); 
+							?>
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
+						<td>
+							<?php echo $this->row->created; ?>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+						</td>
+					</tr>
+<?php if ($this->row->modified_by) { ?>
+					<tr>
+						<th class="key"><?php echo JText::_('Modified By'); ?>:</th>
+						<td>
+							<?php 
+							$modifier = JUser::getInstance($this->row->modified_by);
+							echo $this->escape($modifier->get('name')); 
+							?>
+							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->modified_by; ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('Modified Date'); ?>:</th>
+						<td>
+							<?php echo $this->row->modified; ?>
+							<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->modified; ?>" />
+						</td>
+					</tr>
+<?php } ?>
+				</tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset class="adminform">
 			<legend><?php echo JText::_('Parameters'); ?></legend>
 
 			<table class="admintable">
 				<tbody>
-					<tr>
-						<td class="key"><label for="field-created_by"><?php echo JText::_('Created By'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[created_by]" id="field-created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-created"><?php echo JText::_('Created Date'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[created]" id="field-created" size="25" maxlength="19" value="<?php echo $this->row->created; ?>" />
-						</td>
-					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('State'); ?>:</td>
 						<td>
@@ -165,7 +196,20 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
+<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+	<?php if ($canDo->get('core.admin')): ?>
+		<div class="col width-100 fltlft">
+			<fieldset class="panelform">
+				<legend><span><?php echo JText::_('COM_FORUM_FIELDSET_RULES'); ?></span></legend>
+				<?php echo $this->form->getLabel('rules'); ?>
+				<?php echo $this->form->getInput('rules'); ?>
+			</fieldset>
+		</div>
+		<div class="clr"></div>
+	<?php endif; ?>
+<?php } ?>
+
 	<input type="hidden" name="fields[group_id]" value="<?php echo $this->row->group_id; ?>" />
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -99,7 +99,7 @@ ximport('Hubzero_User_Profile_Helper');
 		
 				<div class="sidenote">
 					<p>
-						<?php echo JText::_('PLG_GROUPS_FORUM_WIKI_HINT'); ?>
+						<?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY_WIKI_HINT'); ?>
 					</p>
 				</div>
 			</fieldset>

@@ -175,6 +175,72 @@ class ForumPost extends JTable
 	}
 
 	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form table_name.id
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		$type = ($this->parent) ? 'post' : 'thread';
+		return 'com_forum.' . $type . '.' . (int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->title;
+	}
+	
+	/**
+	 * Get the parent asset id for the record
+	 *
+	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   integer  $id     The id for the asset
+	 *
+	 * @return  integer  The id of the asset's parent
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		// Initialise variables.
+		$assetId = null;
+		$db		= $this->getDbo();
+
+		if ($assetId === null) {
+			// Build the query to get the asset id for the parent category.
+			$query	= $db->getQuery(true);
+			$query->select('id');
+			$query->from('#__assets');
+			$query->where('name = '.$db->quote('com_forum'));
+
+			// Get the asset id from the database.
+			$db->setQuery($query);
+			if ($result = $db->loadResult()) {
+				$assetId = (int) $result;
+			}
+		}
+
+		// Return the asset id.
+		if ($assetId) {
+			return $assetId;
+		} else {
+			return parent::_getAssetParentId($table, $id);
+		}
+	}
+
+	/**
 	 * Short description for 'check'
 	 * 
 	 * Long description (if any) ...
@@ -227,6 +293,14 @@ class ForumPost extends JTable
 	{
 		$query  = " FROM $this->_tbl AS c";
 		$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.group_id";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
+		}
+		else 
+		{
+			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
+		}
 		if (isset($filters['parent']) && $filters['parent'] != 0) 
 		{
 			$query .= " WHERE c.parent=" . $this->_db->Quote($filters['parent']) . " OR c.id=" . $this->_db->Quote($filters['parent']);
@@ -337,6 +411,14 @@ class ForumPost extends JTable
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= ", a.name AS access_level";
+		}
+		else 
+		{
+			$query .= ", a.title AS access_level";
+		}
 		$query .= $this->buildQuery($filters);
 
 		if ($filters['limit'] != 0) 
@@ -419,14 +501,23 @@ class ForumPost extends JTable
 	 * @param      unknown $parent Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getLastActivity($group_id=null)
+	public function getLastActivity($group_id=null, $category_id=null)
 	{
-		$query = "SELECT r.* FROM $this->_tbl AS r ";
-		if ($group_id)
+		$query = "SELECT r.* FROM $this->_tbl AS r";
+		$where = array();
+		if ($group_id !== null)
 		{
-			$query .= "WHERE r.group_id=$group_id ";
+			$where[] = "r.group_id=$group_id";
 		}
-		$query .= "ORDER BY created DESC LIMIT 1";
+		if ($category_id !== null)
+		{
+			$where[] = "r.category_id=$category_id";
+		}
+		if (count($where) > 0) 
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+		$query .= " ORDER BY created DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$obj = $this->_db->loadObject();
@@ -501,6 +592,48 @@ class ForumPost extends JTable
 		{
 			return true;
 		}
+	}
+	
+	public function updateCategory($old=null, $nw=null, $group_id=0)
+	{
+		if ($old === null) 
+		{
+			$old = $this->category_id;
+		}
+		if ($nw === null || $old === null) 
+		{
+			return false;
+		}
+
+		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=$nw WHERE category_id=$old AND group_id=$group_id");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		} 
+		else 
+		{
+			return true;
+		}
+	}
+	
+	public function deleteByCategory($oid=null)
+	{
+		$oid = intval($oid);
+		if ($oid === null) 
+		{
+			return false;
+		}
+		
+		$query = 'DELETE FROM '.$this->_db->nameQuote($this->_tbl) .' WHERE category_id = '. $this->_db->Quote($oid);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public function delete($oid=null)
