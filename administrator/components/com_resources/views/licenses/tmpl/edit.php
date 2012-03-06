@@ -39,7 +39,7 @@ JToolBarHelper::cancel();
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	var form = document.getElementById('adminForm');
+	/*var form = document.getElementById('adminForm');
 	
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
@@ -51,8 +51,10 @@ function submitbutton(pressbutton)
 	if (field.value == '') {
 		alert( 'Type must have a title' );
 	} else {
+		alert('vff');*/
 		submitform( pressbutton );
-	}
+		return;
+	//}
 }
 </script>
 

@@ -83,7 +83,8 @@ JSubMenuHelper::addEntry(
 );
 JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
-	'index.php?option=com_plugins&view=plugins&filter_folder=resources'
+	'index.php?option=' . $option . '&controller=plugins', //'index.php?option=com_plugins&view=plugins&filter_folder=resources'
+	$controllerName == 'plugins'
 );
 
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
