@@ -235,6 +235,13 @@ class Hubzero_Bank_Teller extends JObject
 			return;
 		}
 
+		// Current order processing workflow (which requires manual order fulfillment on the backend) prevents race
+		// condition with the check and update below from corrupting user point balance, but if 
+		// but if workflow is ever changed, a table/row level lock would need to be added to this function
+		// and error code added to deal with multiple orders with insufficient balances.
+		//
+		// See https://hubzero.org/support/ticket/234 for details
+
 		if ($this->_creditCheck($amount)) {
 			$this->credit += $amount;
 
