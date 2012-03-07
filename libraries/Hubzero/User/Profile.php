@@ -1289,6 +1289,8 @@ class Hubzero_User_Profile extends JObject
 	 */
 	public function update($storage = null)
 	{
+		$this->logDebug("Hubzero_User_Profile::update($storage):start ");
+
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
 		{
 			$this->setError('Invalid storage option requested [' . $storage . ']');
@@ -1439,7 +1441,7 @@ class Hubzero_User_Profile extends JObject
 		}
 		
 		// Check for existing record
-		if (empty($instances[$id])) 
+		if (empty($instances[$id]) || $instances[$id]->get('uidNumber') != $id) 
 		{
 			$user = new Hubzero_User_Profile($id);
 			$instances[$id] = $user;
@@ -1448,11 +1450,22 @@ class Hubzero_User_Profile extends JObject
 		// Ensure record has data
 		if (!$instances[$id]->get('uidNumber'))
 		{
+			print "<br><br>instances[id]->get('uidNumber')" . "(" . $instances[$id]->get('uidNumber') .")<br>";
+
+			print "<br><br>";
+
+			print "id=" . $id;
+
+			print("<br><br>");
+			var_dump($instances);
+
 			return false;
 		}
 
 		return $instances[$id];
 	}
+
+
 
 	/**
 	 * Short description for '_get_auxilliary_property'
