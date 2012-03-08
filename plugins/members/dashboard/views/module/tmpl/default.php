@@ -86,7 +86,12 @@ if ($this->getError()) {
 			}
 		}
 	}
-
+if ($this->admin)
+{
+	$html .= '<p>[ module content ]</p>';
+}
+else 
+{
 	// Is it a custom module (i.e., HTML)?
 	if ($this->module->module == 'mod_custom') 
 	{
@@ -127,7 +132,7 @@ if ($this->getError()) {
 			}
 		}
 	}
-
+}
 	if ($this->extras) 
 	{
 		$html .= "\t\t".'</div><!-- / .body -->'."\n";

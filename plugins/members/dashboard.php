@@ -30,7 +30,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
-JPlugin::loadLanguage('plg_members_dashboard');
 
 class plgMembersDashboard extends JPlugin
 {
@@ -40,7 +39,11 @@ class plgMembersDashboard extends JPlugin
 		
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin('members', 'dashboard');
-		$this->_params = new JParameter($this->_plugin->params);
+		$this->loadLanguage('', JPATH_ROOT);
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->_params = new JParameter($this->_plugin->params);
+		}
 	}
 	
 	/**
@@ -308,6 +311,9 @@ class plgMembersDashboard extends JPlugin
 				$view->rendered = $rendered;
 				$view->juser = $this->juser;
 				
+				$app =& JFactory::getApplication();
+				$view->admin = $app->isAdmin();
+				
 				$html .= $view->loadTemplate();
 			}
 		}
@@ -358,6 +364,15 @@ class plgMembersDashboard extends JPlugin
 	 */
 	protected function save($rtrn=0)
 	{
+		$app =& JFactory::getApplication();
+		if ($app->isAdmin())
+		{
+			return $this->saveTask($rtrn);
+		}
+		
+		// Incoming
+		$ids = JRequest::getVar('mids', '');
+		
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
@@ -365,11 +380,9 @@ class plgMembersDashboard extends JPlugin
 				'name'    => 'data'
 			)
 		);
-
-		// Incoming
+		
 		$uid = $this->member->get('uidNumber');
-		$ids = JRequest::getVar('mids', '');
-
+	
 		// Ensure we have a user ID ($uid)
 		if (!$uid) 
 		{
@@ -378,7 +391,7 @@ class plgMembersDashboard extends JPlugin
 				return $ids;
 			}
 		}
-
+		
 		// Instantiate object, bind data, and save
 		$myhub = new MyhubPrefs($this->database);
 		$myhub->load($uid);
@@ -393,6 +406,7 @@ class plgMembersDashboard extends JPlugin
 			$this->setError($myhub->getError());
 		}
 		$this->view->data = $ids;
+
 		if ($rtrn) 
 		{
 			return $ids;
@@ -466,9 +480,11 @@ class plgMembersDashboard extends JPlugin
 			)
 		);
 		
+		$app =& JFactory::getApplication();
+		
 		// Incoming
 		$mid = JRequest::getInt('mid', 0);
-		$uid = $this->member->get('uidNumber');
+		$uid = ($app->isAdmin()) ? $this->juser->get('id') : $this->member->get('uidNumber');
 
 		// Make sure we have a module ID to load
 		if (!$mid) 
@@ -509,7 +525,12 @@ class plgMembersDashboard extends JPlugin
 		$this->view->option = $this->option;
 		$this->view->juser = $this->juser;
 		$this->view->database = $this->database;
-		$this->view->member = $this->member;
+		if (!$app->isAdmin())
+		{
+			$this->view->member = $this->member;
+		}
+		
+		$this->view->admin = $app->isAdmin();
 	}
 	
 	/**
@@ -619,5 +640,168 @@ class plgMembersDashboard extends JPlugin
 		}
 
 		return $string;
+	}
+	
+	public function onManage($option, $controller='plugins', $task='default')
+	{
+		$task = ($task) ?  $task : 'default';
+		
+		ximport('Hubzero_Plugin_View');
+		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'tables' . DS . 'params.php');
+		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'tables' . DS . 'prefs.php');
+		
+		$this->option = $option;
+		$this->controller = $controller;
+		$this->task = $task;
+		$this->database = JFactory::getDBO();
+		$this->juser = JFactory::getUser();
+		$this->_act = JRequest::getVar('act', 'customize');
+
+		$method = strtolower($task) . 'Task';
+		
+		return $this->$method();
+	}
+	
+	public function defaultTask()
+	{
+		// Instantiate a view
+		$this->view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => 'dashboard',
+				'name'    => 'admin',
+				'layout'  => 'default'
+			)
+		);
+		$this->view->option = $this->option;
+		$this->view->controller = $this->controller;
+		$this->view->task = $this->task;
+		$this->view->juser = $this->juser;
+		
+		$document =& JFactory::getDocument();
+		$document->addStylesheet(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.css');
+		$document->addScript(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'xsortables.js');
+		$document->addScript(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.admin.js');
+		
+		// Select user's list of modules from database
+		$myhub = new MyhubPrefs( $this->database );
+		$myhub->load( $this->juser->get('id') );
+		
+		// Get all modules
+		$mp = new MyhubParams($this->database);
+		$this->modules = $mp->loadPosition($this->juser->get('id'), $this->_params->get('position', 'myhub'));
+		
+		// Create a default set of preferences
+		$myhub->uid = $this->juser->get('id');
+		$myhub->prefs = $this->_getDefaultModules();
+	
+		$this->num_default = $this->_params->get('defaultNumber', 6);
+
+		// Splits string into columns
+		$mymods = explode(';', $myhub->prefs);
+		// Save array of columns for later work
+		$usermods = $mymods;
+
+		// Splits each column into modules, listed by the order they should appear
+		for ($i = 0; $i < count($mymods); $i++)
+		{
+			if (!trim($mymods[$i])) {
+				continue;
+			}
+			$mymods[$i] = explode(',', $mymods[$i]);
+		}
+
+		// Build a list of all modules being used by this user 
+		// so we know what to exclude from the list of modules they can still add
+		$allmods = array();
+		
+		for ($i = 0; $i < count($mymods); $i++)
+		{
+			if (is_array($mymods[$i]))
+			{
+				$allmods = array_merge($allmods, $mymods[$i]);
+			}
+		}
+
+		// The number of columns
+		$cols = 3;
+
+		// Instantiate a view
+		$this->view->usermods = $usermods;
+
+		if ($this->_params->get('allow_customization', 0) != 1) 
+		{
+			$this->view->availmods = $this->_getUnusedModules($allmods);
+		} else {
+			$this->view->availmods = null;
+		}
+
+		$this->view->columns = array();
+		for ($c = 0; $c < $cols; $c++)
+		{
+			$this->view->columns[$c] = $this->output_modules($mymods[$c], $this->juser->get('id'), 'customize');
+		}
+		
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+
+		return $this->view->loadTemplate();
+	}
+	
+	// Save preferences (i.e., the list of modules 
+	// to be displayed and their locations)
+	public function saveTask($rtrn=0)
+	{
+		// Incoming
+		$ids = JRequest::getVar('mids', '');
+
+		$this->_params->set('defaults', $ids);
+		
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$query = "UPDATE #__extensions SET params='".$this->_params->toString()."' WHERE `folder`='members' AND `element`='dashboard'";
+		}
+		else 
+		{
+			$query = "UPDATE #__plugins SET params='".$this->_params->toString()."' WHERE `folder`='members' AND `element`='dashboard'";
+		}
+		$this->database->setQuery($query);
+		if ($this->database->query()) 
+		{
+			$this->setError($this->database->getErrorMsg());
+		}
+
+		if ($rtrn) 
+		{
+			return $ids;
+		}
+	}
+	
+	/**
+	 * Rebuild the "available modules" list
+	 * 
+	 * @return     void
+	 */
+	protected function rebuildTask()
+	{
+		$this->rebuild();
+		return $this->view->loadTemplate();
+	}
+	
+	/**
+	 * Builds the HTML for a module
+	 * 
+	 * NOTE: this is different from the method above in that
+	 * it also builds the title, parameters form, and container
+	 * for the module
+	 * 
+	 * @return     void
+	 */
+	protected function addmoduleTask()
+	{
+		$this->addmodule();
+		return $this->view->loadTemplate();
 	}
 }

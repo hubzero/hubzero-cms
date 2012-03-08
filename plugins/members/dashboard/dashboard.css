@@ -338,7 +338,49 @@
 		right: 10px;
 		font-size: 90%;
 	}
-	
+/* Admin */
+	#adminForm table.adminlist tbody tr {
+		background-color: #F7F5F5;
+	}
+	#adminForm #droppables tbody tr td#sortcol_0,
+	#adminForm #droppables tbody tr td#sortcol_1,
+	#adminForm #droppables tbody tr td#sortcol_2 {
+		padding-top: 1em;
+	}
+	#adminForm #droppables tbody tr td#sortcol_0 {
+		padding-left: 10px;
+	}
+	#adminForm #droppables tbody tr td#sortcol_2 {
+		padding-right: 10px;
+	}
+/* Module dock */
+	#modules-dock {
+		background-color: #fff;
+	}
+	#modules-dock h3 {
+		margin: 0;
+		padding: 0;
+		display: none;
+	}
+	#modules-dock ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	#modules-dock li {
+		margin: 0.2em 0;
+		padding: 0.5em 0 0.5em 0;
+		clear: both;
+		background-image: none;
+	}
+	#modules-dock li input {
+		float: right;
+		margin-top: 0;
+	}
+	#modules-dock li label {
+		float: left;
+	}
+
 /* IE 7 */
 	html>body .member_dashboard #useroptions li {
 		*width: 8.5em;
