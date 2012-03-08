@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access');
 		list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
 ?>
 	  <tr>
-	   <td rowspan="6"><img src="<?php echo '../' . $this->config->get('uploadpath') . DS . $this->dir . DS . $this->file; ?>" alt="<?php echo JText::_('MEMBER_PICTURE'); ?>" id="conimage" /></td>
+	   <td rowspan="6"><img src="<?php echo '../' . $this->config->get('webpath') . DS . $this->dir . DS . $this->file; ?>" alt="<?php echo JText::_('MEMBER_PICTURE'); ?>" id="conimage" /></td>
 	   <td><?php echo JText::_('FILE'); ?>:</td>
 	   <td><?php echo $this->file; ?></td>
 	  </tr>
@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 	  </tr>
 <?php } else { ?>
 	  <tr>
-	   <td colspan="4"><img src="<?php echo '..' . $this->config->get('defaultpic'); ?>" alt="<?php echo JText::_('NO_MEMBER_PICTURE'); ?>" />
+	   <td colspan="4"><img src="<?php echo '../' . $this->config->get('defaultpic'); ?>" alt="<?php echo JText::_('NO_MEMBER_PICTURE'); ?>" />
 		<input type="hidden" name="currentfile" value="" /></td>
 	  </tr>
 <?php } ?>

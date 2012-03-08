@@ -419,7 +419,7 @@ class MembersProfile extends JTable
 		}
 
 		$query  = $select."FROM $this->_tbl AS m ".($filters['show'] == 'contributors' ? 'INNER' : 'LEFT').' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
-		$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
+		//$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 			$query .= " LEFT JOIN #__xprofiles_bio AS b ON b.uidNumber=m.uidNumber";
 		}
@@ -492,7 +492,7 @@ class MembersProfile extends JTable
 			$filters['sortby'] = 'lname ASC, fname ASC';
 		}
 
-		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, m.emailConfirmed, u.lastvisitDate, ";
+		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, m.emailConfirmed, NULL AS lastvisitDate, ";
 		/*$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
 		   CONCAT(m.surname, ', ', m.givenName, COALESCE(CONCAT(' ', m.middleName), ''))
 		ELSE
@@ -514,11 +514,20 @@ class MembersProfile extends JTable
 					$query .= "rcount DESC";
 				break;
 				case 'name':
-				default:
 					$query .= "lname ASC, fname ASC";
 				break;
 				case 'RAND()':
 					$query .= "RAND()";
+				break;
+				default:
+					if (!$filters['sortby'])
+					{
+						$query .= "lname ASC, fname ASC";
+					}
+					else 
+					{
+						$query .= $filters['sortby'] . ", fname ASC";
+					}
 				break;
 			}
 		}
@@ -544,6 +553,124 @@ class MembersProfile extends JTable
 		$query = "SELECT $select FROM $this->_tbl WHERE $where";
 
 		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Short description for 'buildQuery'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      unknown $admin Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	private function _buildQuery($filters=array())
+	{
+		$where = array();
+
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$words = explode(' ', $filters['search']);
+
+			$search = array();
+			foreach ($words as $word)
+			{
+				$word = strtolower($word);
+				
+				$search[] = "(m.uidNumber='$word')";
+				$search[] = "(LOWER(m.email) LIKE '%$word%')";
+				$search[] = "(LOWER(m.username) LIKE '%$word%')";
+				$search[] = "(LOWER(m.givenName) LIKE '%$word%')";
+				$search[] = "(LOWER(m.surname) LIKE '%$word%')";
+				$search[] = "(MATCH (m.name) AGAINST ('".$word."' IN BOOLEAN MODE))";
+			}
+			
+			$where[] = "(" . implode(" OR ", $search) . ")";
+		}
+
+		$query  = "FROM $this->_tbl AS m 
+					LEFT JOIN #__users AS u ON u.id=m.uidNumber ";
+		if (count($where) > 0) 
+		{
+			$query .= "WHERE " . implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Short description for 'getCount'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
+	public function getRecordCount($filters=array())
+	{
+		$query  = "SELECT count(DISTINCT m.uidNumber) " . $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @param      boolean $admin Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
+	public function getRecordEntries($filters=array())
+	{
+		if ($filters['sortby'] == 'fullname ASC') 
+		{
+			$filters['sortby'] = 'lname ASC, fname ASC';
+		}
+
+		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, 
+						m.organization, m.email, m.emailConfirmed, u.lastvisitDate, 
+					CASE WHEN m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&nbsp;' THEN 
+						m.givenName 
+					ELSE 
+						SUBSTRING_INDEX(m.name, ' ', 1) 
+					END AS fname,
+					CASE WHEN m.middleName IS NOT NULL AND m.middleName != '' AND m.middleName != '&nbsp;' THEN 
+						m.middleName 
+					ELSE 
+						SUBSTRING_INDEX(SUBSTRING_INDEX(m.name,' ', 2), ' ',-1) 
+					END AS mname,
+					CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' THEN 
+						m.surname 
+					ELSE 
+						SUBSTRING_INDEX(m.name, ' ', -1) 
+					END AS lname ";
+		$query .= $this->_buildQuery($filters);
+		//$query .= " GROUP BY m.uidNumber";
+		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		{
+			$query .= " ORDER BY ";
+			switch ($filters['sortby'])
+			{
+				case 'organization':
+					$query .= "organization ASC";
+				break;
+				case 'name':
+				default:
+					$query .= "lname ASC, fname ASC";
+				break;
+			}
+		}
+		if (isset($filters['limit']) && $filters['limit'] && $filters['limit'] != 'all') 
+		{
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

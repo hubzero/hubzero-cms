@@ -52,23 +52,23 @@ class MembersControllerMembers extends Hubzero_Controller
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.search', 
+			$this->_option . '.' . $this->_controller . '.search', 
 			'search', 
 			''
 		));
 		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.search_field', 
+			$this->_option . '.' . $this->_controller . '.search_field', 
 			'search_field', 
 			'name'
 		));
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.sort', 
-			'sort', 
-			'surname'
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
+			'lname'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.sortdir', 
-			'sort_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
 			'ASC'
 		));
 		$this->view->filters['show']         = '';
@@ -79,13 +79,13 @@ class MembersControllerMembers extends Hubzero_Controller
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.limit', 
+			$this->_option . '.' . $this->_controller . '.limit', 
 			'limit', 
 			$config->getValue('config.list_limit'), 
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.limitstart', 
+			$this->_option . '.' . $this->_controller . '.limitstart', 
 			'limitstart', 
 			0, 
 			'int'
@@ -94,10 +94,10 @@ class MembersControllerMembers extends Hubzero_Controller
 		$obj = new MembersProfile($this->database);
 
 		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters, true);
+		$this->view->total = $obj->getRecordCount($this->view->filters, true);
 
 		// Get records
-		$this->view->rows = $obj->getRecords($this->view->filters, true);
+		$this->view->rows = $obj->getRecordEntries($this->view->filters, true);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');

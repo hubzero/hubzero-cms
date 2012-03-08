@@ -64,18 +64,19 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filter">
-			<?php echo JText::_('SEARCH'); ?>
-			<select name="search_field">
-				<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID'); ?></option>
-				<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo JText::_('EMAIL'); ?></option>
-				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('USERNAME'); ?></option>
-				<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_NAME'); ?></option>
-				<option value="givenName"<?php if ($this->filters['search_field'] == 'giveName') { echo ' selected="selected"'; } ?>><?php echo JText::_('FIRST_NAME'); ?></option>
-				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('FULL_NAME'); ?></option>
-			</select>
-			for 
-			<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
+	<fieldset id="filter-bar">
+		<label for="filter_search_field"><?php echo JText::_('SEARCH'); ?></label>
+		<select name="search_field" id="filter_search_field">
+			<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID'); ?></option>
+			<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo JText::_('EMAIL'); ?></option>
+			<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('USERNAME'); ?></option>
+			<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_NAME'); ?></option>
+			<option value="givenName"<?php if ($this->filters['search_field'] == 'giveName') { echo ' selected="selected"'; } ?>><?php echo JText::_('FIRST_NAME'); ?></option>
+			<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('FULL_NAME'); ?></option>
+		</select>
+		
+		<label for="filter_search"><?php echo JText::_('for'); ?></label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
 		
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
@@ -85,7 +86,7 @@ function submitbutton(pressbutton)
 		 	<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th><?php echo JHTML::_('grid.sort', 'ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Name', 'surname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Name', 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Username', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Organization', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'E-Mail', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -121,6 +122,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$row->middleName = implode(' ', $bits);
 		}
 	}
+	$row->surname = (trim($row->surname)) ? trim($row->surname) : JText::_('[undefined]');
+	$row->givenName = (trim($row->givenName)) ? trim($row->givenName) : JText::_('[undefined]');
 
 	switch ($row->emailConfirmed) 
 	{
@@ -128,13 +131,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$task = 'unconfirm';
 			$img = 'publish_g.png';
 			$alt = JText::_('Yes');
-			$state = 'yes';
+			$state = 'publish';
 			break;
 		default:
 			$task = 'confirm';
 			$img = 'publish_x.png';
 			$alt = JText::_('No');
-			$state = 'no';
+			$state = 'unpublish';
 			break;
 	}
 
@@ -166,11 +169,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '&nbsp;';?>
 				</td>
 				<td>
+<?php if (trim($row->email)) { ?>
 					<a href="mailto:<?php echo $row->email; ?>"><?php echo $this->escape($row->email); ?></a>
+<?php } ?>
 				</td>
 				<td>
 					<a class="state <?php echo $state; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 						<img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+<?php } else { ?>
+						<span class="text"><?php echo $alt; ?></span>
+<?php } ?>
 					</a>
 					<?php //echo $row->rcount; ?>
 				</td>
@@ -190,8 +199,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
-	<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="sort_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<?php echo JHTML::_('form.token'); ?>
 </form>
 

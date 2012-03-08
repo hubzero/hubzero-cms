@@ -52,6 +52,9 @@ if (!$surname) {
 		$middleName = implode(' ',$bits);
 	}
 }
+
+jimport('joomla.html.pane');
+$tabs =& JPane::getInstance('sliders');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -68,31 +71,48 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-	<div class="col width-60">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('MEMBERS_PROFILE'); ?></legend>
+			<legend><span><?php echo JText::_('MEMBERS_PROFILE'); ?></span></legend>
 			
 			<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 			
+			<!-- <div class="col width-50 fltlft">
+				<input type="checkbox" name="profile[public]" id="public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> />
+				<label for="public"><?php echo JText::_('PUBLIC_PROFILE'); ?></label>
+			</div>
+			<div class="col width-50 fltrt">
+				<input type="checkbox" name="profile[vip]" id="vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> />
+				<label for="vip"><?php echo JText::_('VIP'); ?>
+			</div>
+			<div class="clr"></div>
+			
+			<div class="col width-50 fltlft">
+				<label for="currentpassword"><?php echo JText::_('CURRENT_PASSWORD'); ?></label>
+				<input type="text" name="profile[currentpassword]" id="currentpassword" disabled="disabled" value="<?php echo $this->profile->get('userPassword'); ?>" />
+			</div>
+			<div class="col width-50 fltrt">
+				<label for="newpass"><?php echo JText::_('NEW_PASSWORD'); ?>:</label>
+				<input type="password" name="newpass" id="newpass" value="" />
+				<span class="hint"><strong>NOTE:</strong> Entering anything here will reset the user's password.</span>
+			</div>
+			<div class="clr"></div> -->
+			
 			<table class="admintable">
 			 <tbody>
 			  <tr>
 			   <td class="key"><label for="public"><?php echo JText::_('PUBLIC_PROFILE'); ?>:</label></td>
 			   <td><input type="checkbox" name="profile[public]" id="public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> /></td>
-			  </tr>  
-			  <tr>
-			   <td class="key"><?php echo JText::_('USERNAME'); ?></td>
-			   <td><?php echo $this->profile->get('username');?> (<?php echo $this->profile->get('uidNumber'); ?>)</td>
 			  </tr>
 			  <tr>
 			   <td class="key"><?php echo JText::_('CURRENT_PASSWORD'); ?></td>
-			   <td><?php echo $this->profile->get('userPassword'); ?></td>
+			   <td><input type="text" name="profile[currentpassword]" disabled="disabled" value="<?php echo $this->profile->get('userPassword'); ?>" /></td>
 			  </tr>
 			  <tr>
-			   <td class="key"><label for="vip"><?php echo JText::_('NEW_PASSWORD'); ?>:</label></td>
+			   <td class="key"><label for="newpass"><?php echo JText::_('NEW_PASSWORD'); ?>:</label></td>
 			   <td>
 				<input type="password" name="newpass" id="newpass" value="" /><br />
 				<strong>NOTE:</strong> Entering anything here will reset the user's password.
@@ -213,7 +233,7 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('MEMBERS_DEMOGRAPHICS'); ?></legend>
+			<legend><span><?php echo JText::_('MEMBERS_DEMOGRAPHICS'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 			<tr>
@@ -299,41 +319,75 @@ function submitbutton(pressbutton)
 			 </tbody>
 			</table>
 		</fieldset>
+	</div>
+	<div class="col width-40 fltrt">
+		<table class="meta" summary="Metadata">
+			<tbody>
+				<tr>
+					<th><?php echo JText::_('ID'); ?></th>
+					<td><?php echo $this->profile->get('uidNumber'); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('USERNAME'); ?></th>
+					<td><?php echo $this->profile->get('username'); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COL_CITIZENSHIP'); ?></th>
+					<th><?php echo $this->profile->get('countryorigin'); ?></th>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COL_RESIDENCE'); ?></th>
+					<th><?php echo $this->profile->get('countryresident'); ?></th>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COL_HOMEDIRECTORY'); ?></th>
+					<td><?php echo $this->profile->get('homeDirectory'); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COL_REGHOST'); ?></th>
+					<td><?php 
+						echo ($this->profile->get('regHost')) ? $this->profile->get('regHost').'<br />' : '';
+						echo ($this->profile->get('regIP')) ? $this->profile->get('regIP') : '';
+					?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COL_MODIFIED'); ?></th>
+					<th><?php echo $this->profile->get('modifiedDate'); ?></th>
+				</tr>
+				<?php
+				$database =& JFactory::getDBO();
+				$database->setQuery("SELECT du.*, d.domain FROM #__xdomain_users AS du, #__xdomains AS d WHERE du.domain_id=d.domain_id AND du.uidNumber=".$this->profile->get('uidNumber'));
+				$domains = $database->loadObjectList();
+				if ($domains) {
+					foreach ($domains as $d)
+					{
+						?>
+						<tr>
+							<th><?php echo $d->domain; ?></th>
+							<td><?php echo $d->domain_username; ?></td>
+						</tr>
+						<?php
+					}
+				} else {
+					?>
+					<tr>
+						<th><?php echo JText::_('Domains'); ?></th>
+						<td><?php echo JText::_('(none)'); ?></td>
+					</tr>
+					<?php
+				}
+				?>
+			</tbody>
+		</table>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('DETAILS'); ?></legend>
+			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
 			
-			<?php
-			$html  = "\t".'<table class="admintable" summary="'.JText::_('ADMIN_PROFILE_TBL_SUMMARY').'">'."\n";
-			$html .= "\t\t".'<tbody>'."\n";
-			$html .= "\t\t\t".'<tr class="even">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_EXPIRE').'</td>'."\n";
-			if ( $this->profile->get('shadowExpire') > 0 )
-				$html .= "\t\t\t\t".'<td> <label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1" checked="checked"/></label></td>';
-			else
-			     $html .= "\t\t\t\t".'<td> <label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1"/></label></td>';
-			$html .= "\t\t\t".'</tr>'."\n";
-			//$html .= "\t\t\t".'<tr class="even">'."\n";
-			//$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_PASSWORD').'</td>'."\n";
-			//$html .= "\t\t\t\t".'<td><a href="/password/lost">'.JText::_('RESET_PASSWORD').'</a></td>'."\n";
-			//$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t\t".'<tr class="odd">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_JOBS_ALLOWED').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td><input type="text" name="profile[jobsAllowed]" id="jobsAllowed" value="'.$this->profile->get('jobsAllowed').'" size="10" /></td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t\t".'<tr class="odd">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_CITIZENSHIP').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>'.$this->profile->get('countryorigin').'</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t\t".'<tr class="even">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_RESIDENCE').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>'.$this->profile->get('countryresident').'</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			/*$html .= "\t\t\t".'<tr class="odd">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_EMPLOYMENT_STATUS').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>';
-			$html .= ($this->profile->get('orgtype')) ? JText::_(strtoupper($this->profile->get('orgtype'))) : '';
-			$html .= '</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";*/
+			<table class="admintable" summary="<?php echo JText::_('ADMIN_PROFILE_TBL_SUMMARY'); ?>">
+				<tbody>
+					<tr class="odd">
+						<td class="key"><?php echo JText::_('COL_EMAIL'); ?></td>
+						<td>
+			<?php 
 			if ($this->profile->get('emailConfirmed') == 1) {
 				$confirmed = '<label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" checked="checked" /> '.JText::_('EMAIL_CONFIRMED').'</label>';
 			} elseif ($this->profile->get('emailConfirmed') == 2) {
@@ -349,74 +403,39 @@ function submitbutton(pressbutton)
 				}
 			} else {
 				$confirmed  = '['.JText::_('EMAIL_UNKNOWN_STATUS').'] <label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> '.JText::_('EMAIL_CONFIRM').'</label>';
-			}
-			$html .= "\t\t\t".'<tr class="even">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_EMAIL').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>';
-			if ($this->profile->get('email')) {
-				//$html .= '<a href="mailto:'.stripslashes($this->profile->get('email')).'">'.stripslashes($this->profile->get('email')).'</a> ('.$confirmed.')'."\n";
-				$html .= '<input type="text" name="profile[email]" id="email" value="'.htmlentities(stripslashes($this->profile->get('email')),ENT_COMPAT,'UTF-8').'" size="20" /> ('.$confirmed.')'."\n";
-			} else {
-				$html .= '<span style="color:#c00;">'.JText::_('EMAIL_NONE_ON_FILE').'</span>';
-				$html .= '<br /><input type="text" name="profile[email]" id="email" value="" size="20" /> <label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> '.JText::_('EMAIL_CONFIRM').'</label>';
-			}
-			$html .= '</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t\t".'<tr class="odd">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_ADMINISTRATOR').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>'.implode(', ',$this->profile->get('admin')).'</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t\t".'<tr class="odd">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_HOMEDIRECTORY').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>'.$this->profile->get('homeDirectory').'</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t\t".'<tr class="even">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_REGHOST').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>';
-			$html .= ($this->profile->get('regHost')) ? $this->profile->get('regHost') : '-' ;
-			$html .= ($this->profile->get('regIP')) ?' ('.$this->profile->get('regIP').')' : '';
-			$html .= '</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t\t".'<tr class="even">'."\n";
-			$html .= "\t\t\t\t".'<td class="key">'.JText::_('COL_MODIFIED').'</td>'."\n";
-			$html .= "\t\t\t\t".'<td>'.$this->profile->get('modifiedDate').'</td>'."\n";
-			$html .= "\t\t\t".'</tr>'."\n";
-			$html .= "\t\t".'</tbody>'."\n";
-			$html .= "\t".'</table>'."\n";
-			echo $html;
+			} 
 			?>
-		</fieldset>
-	</div>
-	<div class="col width-40">
-		<table width="100%" style="border: 1px dashed silver; padding: 5px; margin-bottom: 10px;">
-			<tbody>
-				<?php
-				$database =& JFactory::getDBO();
-				$database->setQuery("SELECT du.*, d.domain FROM #__xdomain_users AS du, #__xdomains AS d WHERE du.domain_id=d.domain_id AND du.uidNumber=".$this->profile->get('uidNumber'));
-				$domains = $database->loadObjectList();
-				if ($domains) {
-					foreach ($domains as $d)
-					{
-						?>
-						<tr>
-							<td><?php echo $d->domain; ?></td>
-							<td><?php echo $d->domain_username; ?></td>
-						</tr>
-						<?php
-					}
-				} else {
-					?>
-					<tr>
-						<td><?php echo JText::_('No domains found'); ?></td>
+			<?php if ($this->profile->get('email')) { ?>
+							<input type="text" name="profile[email]" id="email" value="<?php echo $this->escape(stripslashes($this->profile->get('email'))); ?>" size="20" /> (<?php echo $confirmed; ?>)
+			<?php } else { ?>
+							<span style="color:#c00;"><?php echo JText::_('EMAIL_NONE_ON_FILE'); ?></span><br />
+							<input type="text" name="profile[email]" id="email" value="" size="20" /> <label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> <?php echo JText::_('EMAIL_CONFIRM'); ?></label>
+			<?php } ?>
+						</td>
 					</tr>
-					<?php
-				}
-				?>
-			</tbody>
-		</table>
-		
+					<tr class="even">
+						<td class="key"><?php echo JText::_('COL_EXPIRE'); ?></td>
+			<?php if ($this->profile->get('shadowExpire') > 0) { ?>
+						<td><label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1" checked="checked"/></label></td>
+			<?php } else { ?>
+						<td><label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1" /></label></td>
+			<?php } ?>
+					</tr>
+					<tr class="odd">
+						<td class="key"><?php echo JText::_('COL_JOBS_ALLOWED'); ?></td>
+						<td><input type="text" name="profile[jobsAllowed]" id="jobsAllowed" value="<?php echo $this->profile->get('jobsAllowed'); ?>" size="10" /></td>
+					</tr>
+					<tr class="even">
+						<td class="key"><?php echo JText::_('COL_ADMINISTRATOR'); ?></td>
+						<td><?php echo implode(', ', $this->profile->get('admin')); ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+<?php //echo $tabs->startPane("member-pane"); ?>
+<?php //echo $tabs->startPanel(JText::_('IMAGE'),'image-page'); ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('IMAGE'); ?></legend>
+			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
 			
 			<?php
 			if ($this->profile->get('uidNumber') != '') {
@@ -431,24 +450,29 @@ function submitbutton(pressbutton)
 			}
 			?>
 		</fieldset>
-		
+<?php //echo $tabs->endPanel(); ?>
+<?php //echo $tabs->startPanel(JText::_('GROUPS'),'groups-page'); ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('GROUPS'); ?></legend>
+			<legend><span><?php echo JText::_('GROUPS'); ?></span></legend>
 			
 			<iframe width="100%" height="200" name="grouper" id="grouper" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=groups&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 		</fieldset>
-		
+<?php //echo $tabs->endPanel(); ?>
+<?php //echo $tabs->startPanel(JText::_('HOSTS'),'hosts-page'); ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('HOSTS'); ?></legend>
+			<legend><span><?php echo JText::_('HOSTS'); ?></span></legend>
 
 			<iframe width="100%" height="200" name="hosts" id="hosts" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 		</fieldset>
-		
+<?php //echo $tabs->endPanel(); ?>
+<?php //echo $tabs->startPanel(JText::_('Managers'),'managers-page'); ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('Managers'); ?></legend>
+			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
 
 			<iframe width="100%" height="200" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=managers&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 		</fieldset>
+<?php //echo $tabs->endPanel(); ?>
+<?php //echo $tabs->endPane(); ?>
 	</div>
 	<div class="clr"></div>
 	<?php echo JHTML::_( 'form.token' ); ?>
