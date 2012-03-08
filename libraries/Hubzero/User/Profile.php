@@ -1289,8 +1289,6 @@ class Hubzero_User_Profile extends JObject
 	 */
 	public function update($storage = null)
 	{
-		$this->logDebug("Hubzero_User_Profile::update($storage):start ");
-
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
 		{
 			$this->setError('Invalid storage option requested [' . $storage . ']');
@@ -1450,15 +1448,6 @@ class Hubzero_User_Profile extends JObject
 		// Ensure record has data
 		if (!$instances[$id]->get('uidNumber'))
 		{
-			print "<br><br>instances[id]->get('uidNumber')" . "(" . $instances[$id]->get('uidNumber') .")<br>";
-
-			print "<br><br>";
-
-			print "id=" . $id;
-
-			print("<br><br>");
-			var_dump($instances);
-
 			return false;
 		}
 
