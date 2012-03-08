@@ -31,17 +31,36 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-error_reporting(E_ALL);
-@ini_set('display_errors','1');
+ximport('Hubzero_Controller');
 
-// Include scripts
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.tools.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.utils.php' );
+/**
+ * Short description for 'ToolsController'
+ * 
+ * Long description (if any) ...
+ */
+class ToolsControllerTables extends Hubzero_Controller
+{
+	/**
+	 * Short description for 'browse'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     void
+	 */
+	public function displayTask()
+	{
+		$this->view->display();
+	}
 
-// Initiate controller
-$controller = new ToolsController();
-$controller->execute();
-$controller->redirect();
-?>
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return     void
+	 */
+	public function cancelTask()
+	{
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
+	}
+}
