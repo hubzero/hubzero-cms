@@ -35,7 +35,8 @@ $links = array(
 	'/answers' => 'Questions &amp; Answers',
 	'/citations' => 'Citations'
 );
-
+$no_html = JRequest::getVar("no_html", 0);
+if(!$no_html) {
 ?>
 <div id="special-group-pane">
 	<div id="special-group-container">
@@ -76,7 +77,7 @@ $links = array(
 		<br class="clear" />
 	</div>
 </div><!-- / #special-group-pane -->
-
+<?php } ?> 
 <?php
 	//define the default group template
 	$default_path = 'components' . DS . 'com_groups' . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS .'default.php';
@@ -135,7 +136,7 @@ $links = array(
 	$return = base64_encode($return);
 ?>
 
-<?php if($tmpl) { ?>	
+<?php if($tmpl && !$no_html) { ?>	
 	<div id="special_management">
 		<?php if(!$this->user->get('guest')) { ?>
 			<ul>
