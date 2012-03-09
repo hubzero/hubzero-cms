@@ -82,21 +82,26 @@ class Hubzero_Email_Token
      */
     public function __construct()
 	{
+		$xhub =& Hubzero_Factory::getHub();
 		$config = JFactory::getConfig();
+
 		if(empty($config))
 			throw new Exception("Class Hubzero_Email_Token: failed JFactory::getConfig() call");
 
+		if(empty($xhub))
+			throw new Exception("Class Hubzero_Email_Token: failed Hubzero::getHub() call");
+
 		//**** Get current token version
-		$this->_currentVersion = $config->getValue('config.email_token_current_version', '');
+		$this->_currentVersion = $xhub->getCfg('config.email_token_current_version', '');
 
 		if(empty($this->_currentVersion))
 			throw new Exception("Class Hubzero_Email_Token: config.email_token_current_version not found in config file");
 
 		//**** Grab the encryption info for that version
-		$encryption_info = $config->getValue('config.email_token_encryption_info_v' . $this->_currentVersion, '');
+		$encryption_info = $xhub->getCfg('config.email_token_encryption_info_v' . $this->_currentVersion, '');
 
 		if(empty($encryption_info))
-			throw new Exception("Class Hubzero_Email_Token: config.email_token_encryption_info_vX not found for version: " . $tokenVersion);
+		throw new Exception("Class Hubzero_Email_Token: config.email_token_encryption_info_vX not found for version: " . $tokenVersion);
 
 		//**** Encryption info is comma delimited (key, iv) in this configuraiton value
 		$keyArray = explode(",", $encryption_info);
