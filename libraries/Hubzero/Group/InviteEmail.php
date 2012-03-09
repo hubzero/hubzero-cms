@@ -112,8 +112,53 @@ Class Hubzero_Group_Invite_Email extends JTable
 
 		return $final;
 	}
+     
 
-	//-----------
+	/**
+	 * Short description for 'addInvites'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      int $gid Parameter description (if any) ...
+	 * @param      array $emails Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
+	public function addInvites( $gid, $emails )
+	{   
+		$exists = array();
+		$added = array(); 
+		
+		$current = $this->getInviteEmails( $gid, true );
+		
+		foreach($emails as $e)
+		{
+			if(in_array($e, $current))
+			{
+				$exists[] = $e;
+			}
+			else
+			{
+				$added[] = $e;
+			}
+		}
+		
+		if(count($added) > 0)
+		{
+	   		$sql = "INSERT INTO {$this->_tbl}(`email`,`gidNumber`,`token`) VALUES ";                                                                    
+			foreach($added as $a)
+			{
+				$sql_values[] = "('".$a."',".$gid.",'".md5($a)."')";
+			}
+			$sql = $sql . implode(",", $sql_values);
+			$db =& JFactory::getDBO();
+			$db->setQuery($sql);
+			$db->query();
+		}
+		
+		$return['exists'] = $exists;
+		$return['added'] = $added;
+	    return $return; 
+	}
 }
 
 ?>
