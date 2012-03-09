@@ -83,4 +83,9 @@
 	vertical-align:middle;
 	content: url("/components/com_members/images/private.png");
 	}
+#member-stats-graph {
+	position:absolute;
+	top:63px;
+	right:20px;
+}
 	

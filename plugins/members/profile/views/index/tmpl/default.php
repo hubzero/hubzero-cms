@@ -69,7 +69,7 @@ $org_types = array(
 ?>
 
 
-<h3><?php echo JText::_('PROFILE'); ?></h3>
+<h3 class="section-header"><?php echo JText::_('PROFILE'); ?></h3>
 
 <?php if($isUser) : ?>
 	<form action="/members/<?php echo $this->profile->get('uidNumber'); ?>/profile" method="POST" id="member-profile">
@@ -445,4 +445,14 @@ $org_types = array(
 		<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" /> 
 		<input type="hidden" name="task" value="saveaccess" /> 
 	</form>
+<?php endif; ?>
+
+<?php
+	$thumb = "/site/stats/contributor_impact/impact_".$this->profile->get("uidNumber")."_th.gif";
+	$full = "/site/stats/contributor_impact/impact_".$this->profile->get("uidNumber").".gif"
+?>
+<?php if(file_exists(JPATH_ROOT . $thumb)) : ?>
+	<a id="member-stats-graph" title="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" href="<?php echo $full; ?>" rel="lightbox">
+		<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" />
+	</a>
 <?php endif; ?>
