@@ -107,6 +107,7 @@ if (count($links) > 0) {
 $html .= "\t".'<input type="hidden" name="category" value="'.$this->active.'" />'."\n";
 echo $html;
 ?>
+		<input type="hidden" name="area" value="<?php echo htmlentities($this->active); ?>" />
 </div><!-- / .aside -->
 <div class="subject">
 <?php

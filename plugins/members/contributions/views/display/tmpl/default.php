@@ -106,7 +106,7 @@ if (count($links) > 0) {
 <?php
 }
 ?>
-		<input type="hidden" name="area" value="<?php echo $this->active; ?>" />
+		<input type="hidden" name="area" value="<?php echo htmlentities($this->active) ?>" />
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="container">
