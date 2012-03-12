@@ -173,8 +173,9 @@ if ($this->admin && !$this->getError()) {
 <?php 
 				} 
 ?>
-					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
-					<input type="hidden" name="filterby" value="<?php echo $this->filters['filterby']; ?>" />
+					<input type="hidden" name="sortby" value="<?php echo htmlentities($this->filters['sortby']); ?>" />
+					<input type="hidden" name="filterby" value="<?php echo htmlentities($this->filters['filterby']); ?>" />
+
 					<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 					<input type="hidden" name="newsearch" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
