@@ -123,6 +123,8 @@ class plgXMessageEmail extends JPlugin
 		$headers .= "X-MSMail-Priority: High\n";
 		$headers .= "X-Mailer: " . $from['name'] . "\n";
 
+		$fullEmailAddress = $user->get('name') . " <" . $user->get('email') . ">";
+
 		// Want to add some extra headers? We put them into the from array 
 		// If none are there, this breaks nothing
         if(array_key_exists('xheaders', $from))
@@ -136,7 +138,7 @@ class plgXMessageEmail extends JPlugin
 			}
 		}
 
-		if (mail($email, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args))
+		if (mail($fullEmailAddress, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args))
 		{
 			return true;
 		}

@@ -802,7 +802,9 @@ class RegisterController extends Hubzero_Controller
 						$message = $eview->loadTemplate();
 						$message = str_replace("\n", "\r\n", $message);
 
-						if (!Hubzero_Toolbox::send_email($xprofile->get('email'), $subject, $message)) {
+						$fullEmailAddress = $xprofile->get('name') . " <" . $xprofile->get('email') . ">";
+
+						if (!Hubzero_Toolbox::send_email($fullEmailAddress, $subject, $message)) {
 							$this->setError( JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail) );
 						}
 					}
