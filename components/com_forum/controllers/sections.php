@@ -64,7 +64,7 @@ class ForumControllerSections extends Hubzero_Controller
 			$dSection->title = JText::_('Default Section');
 			$dSection->alias = str_replace(' ', '-', $dSection->title);
 			$dSection->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dSection->title));
-			$dSection->group_id = $this->group->get('gidNumber');
+			$dSection->group_id = 0;
 			if ($dSection->check())
 			{
 				$dSection->store();
@@ -77,7 +77,7 @@ class ForumControllerSections extends Hubzero_Controller
 			$dCategory->alias = str_replace(' ', '-', $dCategory->title);
 			$dCategory->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dCategory->title));
 			$dCategory->section_id = $dSection->id;
-			$dCategory->group_id = $this->group->get('gidNumber');
+			$dCategory->group_id = 0;
 			if ($dCategory->check())
 			{
 				$dCategory->store();
@@ -87,7 +87,7 @@ class ForumControllerSections extends Hubzero_Controller
 			{
 				// Update all the uncategorized posts to the new default
 				$tModel = new ForumPost($this->database);
-				$tModel->updateCategory(0, $dCategory->id, $this->group->get('gidNumber'));
+				$tModel->updateCategory(0, $dCategory->id, 0);
 			}
 			
 			$this->view->sections = $sModel->getRecords(array(
