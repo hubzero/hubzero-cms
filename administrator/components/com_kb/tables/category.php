@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'KbCategory'
@@ -98,9 +98,9 @@ class KbCategory extends JTable
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__faq_categories', 'id', $db );
+		parent::__construct('#__faq_categories', 'id', $db);
 	}
 
 	/**
@@ -112,10 +112,20 @@ class KbCategory extends JTable
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('COM_KB_ERROR_EMPTY_TITLE') );
+		$this->id = intval($this->id);
+		
+		if (trim($this->title) == '') 
+		{
+			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
 			return false;
 		}
+		
+		if (!$this->alias)
+		{
+			$this->alias = str_replace(' ', '-', strtolower($this->title));
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+		
 		return true;
 	}
 
@@ -127,16 +137,16 @@ class KbCategory extends JTable
 	 * @param      unknown $oid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function loadAlias( $oid=NULL )
+	public function loadAlias($oid=NULL)
 	{
 		if (empty($oid)) {
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='$oid'" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
 		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
+			return $this->bind($result);
 		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -151,14 +161,14 @@ class KbCategory extends JTable
 	 * @param      mixed $catid Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCategories( $noauth, $empty_cat=0, $catid=0 )
+	public function getCategories($noauth, $empty_cat=0, $catid=0)
 	{
         $juser =& JFactory::getUser();
 
 		if ($empty_cat) {
 			$empty = '';
 		} else {
-			$empty = "\n HAVING COUNT( b.id ) > 0";
+			$empty = "\n HAVING COUNT(b.id) > 0";
 		}
 
 		if ($catid) {
@@ -167,15 +177,15 @@ class KbCategory extends JTable
 			$sect = "b.section";
 		}
 
-		$query = "SELECT a.*, COUNT( b.id ) AS numitems"
+		$query = "SELECT a.*, COUNT(b.id) AS numitems"
 				. " FROM $this->_tbl AS a"
 				. " LEFT JOIN #__faq AS b ON ".$sect." = a.id AND b.state=1 AND b.access=0"
 				. " WHERE a.state=1 AND a.section=".$catid
-				. ( $noauth ? " AND a.access <= '". $juser->get('aid') ."'" : '' )
+				. ($noauth ? " AND a.access <= '". $juser->get('aid') ."'" : '')
 				. " GROUP BY a.id"
 				. $empty
 				. " ORDER BY a.title";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
@@ -188,16 +198,16 @@ class KbCategory extends JTable
 	 * @param      string $id Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function deleteSef( $option, $id=NULL )
+	public function deleteSef($option, $id=NULL)
 	{
 		if ($id == NULL) {
 			$id = $this->id;
 		}
-		$this->_db->setQuery( "DELETE FROM #__redirection WHERE newurl='index.php?option=".$option."&task=category&id=".$id."'" );
+		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=".$option."&task=category&id=".$id."'");
 		if ($this->_db->query()) {
 			return true;
 		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -211,7 +221,7 @@ class KbCategory extends JTable
 	 */
 	public function getAllSections()
 	{
-		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section=0 ORDER BY m.title" );
+		$this->_db->setQuery("SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section=0 ORDER BY m.title");
 		return $this->_db->loadObjectList();
 	}
 
@@ -224,7 +234,7 @@ class KbCategory extends JTable
 	 */
 	public function getAllCategories()
 	{
-		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section!=0 ORDER BY m.title" );
+		$this->_db->setQuery("SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section!=0 ORDER BY m.title");
 		return $this->_db->loadObjectList();
 	}
 
@@ -236,12 +246,12 @@ class KbCategory extends JTable
 	 * @param      array $filters Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCategoriesCount( $filters=array() )
+	public function getCategoriesCount($filters=array())
 	{
 		$query  = "SELECT count(*) FROM $this->_tbl WHERE section=";
 		$query .= (isset($filters['id'])) ? $filters['id'] : "0";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
@@ -253,7 +263,7 @@ class KbCategory extends JTable
 	 * @param      array $filters Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCategoriesAll( $filters=array() )
+	public function getCategoriesAll($filters=array())
 	{
 		if (isset($filters['id']) && $filters['id']) {
 			$sect = $filters['id'];
@@ -283,7 +293,7 @@ class KbCategory extends JTable
 				. " ORDER BY ".$filters['filterby']
 				. " LIMIT ".$filters['start'].",".$filters['limit'];
 		
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

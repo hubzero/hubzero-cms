@@ -196,10 +196,32 @@ class KbArticle extends JTable
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('COM_KB_ERROR_EMPTY_TITLE') );
+		$this->id = intval($this->id);
+		
+		if (trim($this->title) == '') 
+		{
+			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
 			return false;
 		}
+		
+		if (!$this->alias)
+		{
+			$this->alias = str_replace(' ', '-', strtolower($this->title));
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+		
+		$juser = JFactory::getUser();
+		if (!$this->id)
+		{
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+		}
+		else 
+		{
+			$this->modified = date('Y-m-d H:i:s', time());
+			$this->modified_by = $juser->get('id');
+		}
+		
 		return true;
 	}
 
@@ -215,6 +237,7 @@ class KbArticle extends JTable
 		if (empty($this->modified)) {
 			$this->modified = $this->created;
 		}
+		$row->version++;
 
 		return parent::store();
 	}
@@ -363,7 +386,7 @@ class KbArticle extends JTable
 				$where = "m.section!=0";
 			}
 		}
-		if (isset($filters['orphans'])) {
+		if (isset($filters['orphans']) && $filters['orphans']) {
 			$where = "m.section=0";
 		}
 

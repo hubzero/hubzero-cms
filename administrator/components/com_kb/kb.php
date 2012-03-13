@@ -34,27 +34,28 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Check Joomla version
-if (version_compare(JVERSION, '1.6', 'ge'))
+if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	die('Joomla 1.6+');
-}
-else 
-{
-	// Set access levels
 	$jacl = JFactory::getACL();
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-
+	
 	// Authorization check
 	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage')) 
+	if (!$user->authorize($option, 'manage'))
 	{
-		$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 	}
 }
-
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
+}
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'comment.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'article.php');
@@ -62,10 +63,29 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'vote.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'controller.php');
 
-// Initiate controller
-$controller = new KbController();
+$controllerName = JRequest::getCmd('controller', 'categories');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'categories';
+}
+
+JSubMenuHelper::addEntry(
+	JText::_('Categories'),
+	'index.php?option=com_kb&id=0',
+	$controllerName == 'categories'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Articles'),
+	'index.php?option=com_kb&controller=articles&id=0',
+	$controllerName == 'articles'
+);
+
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'KbController' . ucfirst($controllerName);
+
+// Instantiate controller
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 
