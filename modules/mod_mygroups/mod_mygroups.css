@@ -14,9 +14,9 @@
 */
 	div.draggable .compactlist li.group {
 		background-position: 0.7em 0.7em;
+		padding-right:5em;
 		}
-	div.draggable .compactlist li.group a { 
-		margin-right: 5em;
+	div.draggable .compactlist li.group a {
 		}
 	div.draggable .compactlist li span span.status {
 		}
@@ -33,9 +33,10 @@
 		color: #aaaaaa;
 		}
 	div.draggable .compactlist li.group .actions {
-		text-align: right;
+		text-align: left;
 		display: block;
 		padding-right: 1em;
+		margin:0;
 		}
 	div.draggable .compactlist li.group .actions a {
 		font-size: 90%;
