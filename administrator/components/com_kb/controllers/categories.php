@@ -140,6 +140,8 @@ class KbControllerCategories extends Hubzero_Controller
 	 */
 	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
 		if (is_object($row))
 		{
 			$this->view->row = $row;
