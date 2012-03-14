@@ -34,29 +34,75 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
+}
+
 jimport('joomla.application.component.helper');
-
-// Include scripts
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'admin.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'application.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'category.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'employer.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'job.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'prefs.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'resume.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'seeker.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'shortlist.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'stats.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'type.php' );
-
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
-
 ximport('Hubzero_User');
 ximport('Hubzero_Bank');
 
+// Include scripts
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'admin.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'application.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'employer.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'job.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'prefs.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'resume.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'seeker.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'shortlist.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'stats.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php');
+
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+
+$controllerName = JRequest::getCmd('controller', 'jobs');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'jobs';
+}
+
+JSubMenuHelper::addEntry(
+	JText::_('Jobs'),
+	'index.php?option=com_jobs&controller=jobs',
+	$controllerName == 'jobs'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Categories'),
+	'index.php?option=com_jobs&controller=categories',
+	$controllerName == 'categories'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Types'),
+	'index.php?option=com_jobs&controller=types',
+	$controllerName == 'types'
+);
+
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'JobsController' . ucfirst($controllerName);
+
 // Initiate controller
-$controller = new JobsController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

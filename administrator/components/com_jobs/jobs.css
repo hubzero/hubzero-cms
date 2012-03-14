@@ -115,20 +115,20 @@
 	.hasassoc:hover,
 	.noassoc:hover { border: none; }
 
-	.key {
+	ul.key {
 		margin: 0;
 		padding: 0;
 		list-style: none;
 		}
-	.key li.draft,
-	.key li.draftinternal,
-	.key li.draftexternal,
-	.key li.new,
-	.key li.published,
-	.key li.pending,
-	.key li.expired,
-	.key li.deleted,
-	.key li.unpublished { 
+	ul.key li.draft,
+	ul.key li.draftinternal,
+	ul.key li.draftexternal,
+	ul.key li.new,
+	ul.key li.published,
+	ul.key li.pending,
+	ul.key li.expired,
+	ul.key li.deleted,
+	ul.key li.unpublished { 
 		margin: 0;
 		padding-left: 18px;
 		width: auto;

@@ -31,18 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ( $this->task == 'editcat' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( '<a href="index.php?option=com_jobs&task=categories">'.JText::_( 'Job Categories' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-JToolBarHelper::save('savecat');
-JToolBarHelper::cancel('cancelcat');
+$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
+JToolBarHelper::title( '<a href="index.php?option=com_jobs&controller=categories">'.JText::_( 'Job Categories' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
+JToolBarHelper::save();
+JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	var form = document.getElementById('adminForm');
+	var form = document.getElementById('item-form');
 	
-	if (pressbutton == 'cancelcat') {
+	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
@@ -55,18 +55,23 @@ function submitbutton(pressbutton)
 	}
 }
 </script>
-<p style="color:#FF0000;"><?php echo JText::_('Warning: changing the category title will affect all currently available job postings in this category.'); ?></p>
-<form action="index.php" method="post" id="adminForm" name="adminForm">			
+<?php if ($this->task == 'edit') { ?>
+<p class="warning">
+	<?php echo JText::_('Warning: changing the category title will affect all currently available job postings in this category.'); ?>
+</p>
+<?php } ?>
+<form action="index.php" method="post" id="item-form" name="adminForm">			
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('Edit category title'); ?></legend>
+		<legend><span><?php echo JText::_('Edit category title'); ?></span></legend>
+		
 		<table class="admintable">
 			<tbody>
 				<tr>
-					<td class="key"><label for="type"><?php echo JText::_('Category Title'); ?>: <span class="required">*</span></label></td>
+					<th class="key"><label for="type"><?php echo JText::_('Category Title'); ?>: <span class="required">*</span></label></th>
 					<td><input type="text" name="category" id="category" size="30" maxlength="100" value="<?php echo $this->row->category; ?>" /></td>
 				</tr>
                 <tr>
-					<td class="key"><label for="description"><?php echo JText::_('Description'); ?>: </label></td>
+					<th class="key"><label for="description"><?php echo JText::_('Description'); ?>: </label></th>
 					<td><input type="text" name="description" id="description"  maxlength="255" value="<?php echo $this->row->description; ?>" /></td>
 				</tr>
 			</tbody>
@@ -74,7 +79,8 @@ function submitbutton(pressbutton)
 	
 		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="task" value="savecat" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="save" />
 	</fieldset>
 
 	<?php echo JHTML::_( 'form.token' ); ?>

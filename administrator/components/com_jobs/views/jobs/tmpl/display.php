@@ -31,9 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( '<a href="index.php?option=com_jobs">'.JText::_( 'Jobs Manager' ).'</a>', 'addedit.png' );
+JToolBarHelper::title('<a href="index.php?option=com_jobs">'.JText::_( 'Jobs Manager' ).'</a>', 'addedit.png');
 JToolBarHelper::preferences('com_jobs', '550');
-JToolBarHelper::spacer();
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
@@ -56,22 +55,19 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<h3><?php echo JText::_('Job Postings'); ?></h3>
-
-<form action="index.php" method="post" name="adminForm">
-	<fieldset id="filter">
-		<label for="search">
-			<?php echo JText::_('Search'); ?>: 
-			<input type="text" name="search" id="search" value="<?php echo $this->filters['search']; ?>" />
-		</label>
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
 	
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist" summary="<?php echo JText::_('A list of jobs and their relevant data'); ?>">
 		<thead>
 			<tr>
-				<th width="2%" nowrap="nowrap"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
 				<th><?php echo JText::_('Code'); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
 				<th><?php echo JText::_('Company & Location'); ?></th>
@@ -89,8 +85,6 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$filterstring  = ($this->filters['sortby'])   ? '&amp;sort='.$this->filters['sortby']     : '';
-$filterstring .= '&amp;category='.$this->filters['category'];
 
 $now = date( "Y-m-d H:i:s" );
 
@@ -152,16 +146,37 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>
-				<td><?php echo $row->code; ?></td>
 				<td>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $info; ?>"><?php echo stripslashes($row->title); ?></a>
+					<?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?>
 				</td>
-                <td><?php echo $row->companyName,', '.$row->companyLocation; ?></td>
-                <td><span class="<?php echo $class;?>"><?php echo $alt; ?></span></td>	
-                <td><span <?php echo $adminclass; ?>>&nbsp;</span></td>
-                <td><?php echo JHTML::_('date',$row->added, '%d&nbsp;%b&nbsp;%y'); ?></td>											
-				<td><?php echo $row->applications; ?></td>
+				<td>
+					<?php echo $row->code; ?>
+				</td>
+				<td>
+					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $info; ?>">
+						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+					</a>
+				</td>
+                <td>
+					<span class="glyph company"><?php echo $this->escape($row->companyName); ?></span>,<br />
+					<span class="glyph location"><?php echo $this->escape($row->companyLocation); ?></span>
+				</td>
+                <td>
+					<span class="<?php echo $class; ?>">
+						<span><?php echo $alt; ?></span>
+					</span>
+				</td>	
+                <td>
+					<span <?php echo $adminclass; ?>>
+						<span>&nbsp;</span>
+					</span>
+				</td>
+                <td>
+					<?php echo JHTML::_('date', $row->added, '%d&nbsp;%b&nbsp;%y'); ?>
+				</td>											
+				<td>
+					<?php echo $row->applications; ?>
+				</td>
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -171,10 +186,12 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
