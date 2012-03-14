@@ -71,6 +71,9 @@
 	line-height:1em;
 	letter-spacing:1px;
 	}
+.entry img {
+	max-width:100%;
+	}
 .entry h2.private {
 	padding:0 0 0 20px;
 	}
