@@ -106,7 +106,9 @@ foreach($author_ids as $ai) {
 				<select name="presentation" id="presentation">
 					<optgroup label="<?php echo $parent->title; ?>">
 						<?php foreach($children as $c) : ?>
-							<option <?php if($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $c->title; ?></option>
+							<?php if(date("Y-m-d H:i:s") > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
+								<option <?php if($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $c->title; ?></option>
+							<?php endif; ?>
 						<?php endforeach; ?>
 					</optgroup>
 				</select>
@@ -184,7 +186,15 @@ foreach($author_ids as $ai) {
 				<?php if(strtolower($presentation->type) == 'video') : ?>
 					<video id="player" preload="auto" controls="controls">
 						<?php foreach($presentation->media as $source): ?>
-						   	<source src="<?php echo $content_folder.DS.$source->source; ?>" >
+						   	<?php
+								switch( $source->type )
+								{
+									case 'mp4': 	$type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';	break;
+									case 'ogv':		$type = 'video/ogg; codecs="theora, vorbis"';			break;
+									case 'webm':	$type = 'video/webm; codecs="vp8, vorbis"';				break;
+								}
+							?>
+						   	<source src="<?php echo $content_folder.DS.$source->source; ?>" type='<?php echo $type; ?>'>
 						<?php endforeach; ?>
 						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer"></a>
 					</video>
@@ -235,5 +245,5 @@ foreach($author_ids as $ai) {
 <div id="twofinger">Use two Fingers to Scroll</div>
 
 <?php
-$this->doc->setTitle($rr->title);
+$this->doc->setTitle(stripslashes($rr->title));
 ?>

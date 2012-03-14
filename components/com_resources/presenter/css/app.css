@@ -69,7 +69,8 @@ a:focus {
 	outline:none;
 	}
 #presenter-nav-bar #presentation-picker select {
-	max-width:300px;
+	min-width:150px;
+	max-width:500px;
 	}
 	
 /*---------------------------------------------------------------
@@ -153,6 +154,7 @@ a:focus {
 #presenter-right #slides {
 	width:320px;
 	border-top:1px solid #444;
+	border-bottom:1px solid #444;
 	}
 #slides ul {
 	margin:0;
@@ -181,6 +183,9 @@ a:focus {
 	border-top:1px solid #444;
 	border-bottom:1px solid #444;
 	background:transparent url("../img/speaker.png") no-repeat 50% 50%;
+	}
+#presenter-left #media {
+	border:none;
 	}
 audio {
 	position:absolute;
