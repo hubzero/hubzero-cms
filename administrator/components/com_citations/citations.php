@@ -34,28 +34,63 @@ defined('_JEXEC') or die( 'Restricted access' );
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Ensure user has access to this function
-$jacl =& JFactory::getacl();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize( $option, 'manage' )) {
-	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'citation.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'author.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'secondary.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'tags.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'type.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'citation.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'association.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'author.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'secondary.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php' );
+
+$controllerName = JRequest::getCmd('controller', 'citations');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'citaitons';
+}
+
+JSubMenuHelper::addEntry(
+	JText::_('Citations'),
+	'index.php?option=com_citations&controller=citations',
+	($controllerName == 'citations' && JRequest::getVar('task', '') != 'stats')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Stats'),
+	'index.php?option=com_citations&controller=citations&task=stats',
+	($controllerName == 'citations' && JRequest::getVar('task', '') == 'stats')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Types'),
+	'index.php?option=com_citations&controller=types',
+	$controllerName == 'types'
+);
+
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'CitationsController' . ucfirst($controllerName);
 
 // Initiate controller
-$controller = new CitationsController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

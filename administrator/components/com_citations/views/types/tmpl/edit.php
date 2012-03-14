@@ -31,16 +31,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'edittype' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
 
-JToolBarHelper::title( JText::_( 'Citation Type' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-JToolBarHelper::save('savetype');
-JToolBarHelper::cancel('types');
+JToolBarHelper::title( JText::_( 'Citation Type' ).': <small><small>[ '. $text.' ]</small></small>', 'citation.png' );
+JToolBarHelper::save();
+JToolBarHelper::cancel();
 
 $id = NULL;
 $type = NULL;
 $title = NULL;
 $desc = NULL; 
 $fields = NULL;
-if($this->type) {
+if ($this->type) {
 	$id = $this->type->id;
 	$type = $this->type->type;
 	$title = $this->type->type_title;
@@ -94,10 +94,10 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-	<div class="col width-70">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('Citation Type'); ?></legend>
+			<legend><span><?php echo JText::_('Citation Type'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<?php if($id) : ?>
@@ -130,13 +130,12 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-30">
-		<fieldset class="adminform">
+	<div class="col width-30 fltrt">
 		<table class="admintable">
 			<thead>
 				<tr>
-					<th><strong>Field Placeholder</strong></th>
-					<th><strong>Field Name</strong></th>
+					<th><?php echo JText::_('Placeholder'); ?></th>
+					<th><?php echo JText::_('Field'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -147,10 +146,10 @@ function submitbutton(pressbutton)
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
-		</table> 
-		</fieldset>
+		</table>
 	</div>
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="savetype" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

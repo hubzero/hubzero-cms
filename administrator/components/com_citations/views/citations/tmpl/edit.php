@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'edit' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
 
-JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
+JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '. $text.' ]</small></small>', 'citation.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -60,10 +60,10 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-	<div class="col width-70">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('DETAILS'); ?></legend>
+			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
@@ -240,9 +240,9 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-30">
+	<div class="col width-30 fltrt">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('CITATION_FOR'); ?></legend>
+			<legend><span><?php echo JText::_('CITATION_FOR'); ?></span></legend>
 			
 			<table class="admintable" id="assocs">
 				<thead>
@@ -302,7 +302,7 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('AFFILIATION'); ?></legend>
+			<legend><span><?php echo JText::_('AFFILIATION'); ?></span></legend>
 			
 			<table class="adminform">
 				<tbody>
@@ -328,7 +328,7 @@ function submitbutton(pressbutton)
 		
 		<?php if($this->config->get("citation_allow_tags", "no") == "yes") : ?>
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('Tags'); ?></legend>
+				<legend><span><?php echo JText::_('Tags'); ?></span></legend>
 				<table class="adminform">
 					<tbody>
 						<tr>
@@ -349,7 +349,7 @@ function submitbutton(pressbutton)
 		
 		<?php if($this->config->get("citation_allow_badges", "no") == "yes") : ?>
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('Badges'); ?></legend>
+				<legend><span><?php echo JText::_('Badges'); ?></span></legend>
 				<table class="adminform">
 					<tbody>
 						<tr>
@@ -374,6 +374,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="citation[created]" value="<?php echo $this->row->created; ?>" />
 	<input type="hidden" name="citation[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

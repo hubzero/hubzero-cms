@@ -29,8 +29,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'Citation Types' ), 'addedit.png' );
-JToolBarHelper::addNew( 'addtype', JText::_('NEW') );
+JToolBarHelper::title( JText::_( 'Citation Types' ), 'citation.png' );
+JToolBarHelper::addNew();
+JToolBarHelper::editList();
+JToolBarHelper::deleteList();
 
 ?>
 <script type="text/javascript">
@@ -50,21 +52,24 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('Type ID'); ?></th>
-				<th><?php echo JText::_('Type Alias'); ?></th>
-				<th><?php echo JText::_('Type Title'); ?></th>
-				<th><?php echo JText::_('Manage'); ?></th>
+				<th><?php echo JText::_('ID'); ?></th>
+				<th><?php echo JText::_('Alias'); ?></th>
+				<th><?php echo JText::_('Title'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach($this->types as $t) : ?>
+			<?php foreach ($this->types as $t) : ?>
 				<tr>
 					<td><?php echo $t['id']; ?></td>
-					<td><?php echo $t['type']; ?></td>
-					<td><?php echo $t['type_title']; ?></td>
 					<td>
-						<a href="<?php echo JRoute::_("index.php?option=com_citations&task=edittype&id={$t['id']}"); ?>">Edit</a> | 
-						<a href="<?php echo JRoute::_("index.php?option=com_citations&task=deletetype&id={$t['id']}"); ?>">Delete</a>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $t['id']; ?>">
+							<span><?php echo $this->escape($t['type']); ?></span>
+						</a>
+					</td>
+					<td>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $t['id']; ?>">
+							<span><?php echo $this->escape($t['type_title']); ?></span>
+						</a>
 					</td>
 				</tr>
 			<?php endforeach; ?>
@@ -72,8 +77,8 @@ function submitbutton(pressbutton)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="viewtask" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
 	<?php echo JHTML::_( 'form.token' ); ?>

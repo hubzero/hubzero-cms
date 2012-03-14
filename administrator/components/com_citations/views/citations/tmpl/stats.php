@@ -29,9 +29,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '.JText::_( 'STATS' ).' ]</small></small>', 'addedit.png' );
+JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '.JText::_( 'STATS' ).' ]</small></small>', 'citation.png' );
 ?>
-<table class="admintable">
+<table class="adminlist">
 	<thead>
 		<tr>
 			<th><?php echo JText::_('YEAR'); ?></th>
