@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: remember.php 14401 2010-01-26 14:10:00Z louis $
+* @version		$Id: remember.php 22244 2011-10-16 15:50:00Z dextercowley $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -59,16 +59,30 @@ class plgSystemRemember extends JPlugin
 			{
 				jimport('joomla.utilities.simplecrypt');
 
-				//Create the encryption key, apply extra hardening using the user agent string
+				// Create the encryption key, apply extra hardening using the user agent string
+                // Since we're decoding, no UA validity check is required.
 				$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
-				//$crypt	= new JSimpleCrypt($key);
-				$crypt	= new JSimpleCrypt();
-				$str	= $crypt->decrypt($str);
+				//$crypt = new JSimpleCrypt($key);
+				$crypt = new JSimpleCrypt();
+				$str = $crypt->decrypt($str);
+                $cookieData = @unserialize($str);
+                // Deserialized cookie could be any object structure, so make sure the 
+                // credentials are well structured and only have user and password.
+                $credentials = array();
+                if (!is_array($credentials)) {
+                    return;
+                }
+                if (!isset($cookieData['username']) || !is_string($cookieData['username'])) {
+                    return;
+                }
+                $credentials['username'] = JFilterInput::clean($cookieData['username'], 'username');
+                if (!isset($cookieData['password']) || !is_string($cookieData['password'])) {
+                    return;
+                }
+                $credentials['password'] = JFilterInput::clean($cookieData['password'], 'string');
 
-				$options = array();
-				$options['silent'] = true;
-				if (!$mainframe->login(@unserialize($str), $options)) {
+				if (!$mainframe->login($credentials, array('silent' => true))) {
 					// Clear the remember me cookie
 					setcookie( JUtility::getHash('JLOGIN_REMEMBER'), false, time() - 86400, '/' );
 				}

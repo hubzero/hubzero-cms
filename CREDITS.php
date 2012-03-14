@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: CREDITS.php 19327 2010-11-02 13:49:13Z infograf768 $
+ * @version		$Id: CREDITS.php 22182 2011-09-30 05:59:51Z infograf768 $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -86,6 +86,7 @@ Esperanto (eo-XX) - Esperanto Translation Team - Cindy McKee, Fabien Tschudy
 Estonian (et-EE) - Estonian Translation Team - Rivo Zängov
 Finnish (fi-FI) - Finnish Translation Team - Markku Suominen
 French (fr-FR) - French Translation Team - Nicolas Ogier
+Georgian (ka-GE) - Jaba Chutlashvili
 German (de-DE)/(de-CH)/(de-AT) - J!German - Jan Erik Zassenhaus, Karin Nikolaj, David Jakob, Antonio Cambule\
 Greek (el-GR) - Greek Joomla Community - Aris Ntatsis
 Gujarati (gu-IN) - Gujarati Translation Team

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: framework.php 19340 2010-11-03 15:00:55Z ian $
+* @version		$Id: framework.php 22244 2011-10-16 15:50:00Z dextercowley $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
