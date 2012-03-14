@@ -74,6 +74,12 @@ $topics = array(
 	'Tools' => 'Tools',
 	'other' => 'other'
 );
+
+//are we remotely loading ticket form
+$tmpl = (JRequest::getVar("tmpl", "")) ? "&tmpl=component" : "";
+
+//are we trying to assign a group
+$group = JRequest::getVar("group", "");
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -84,7 +90,7 @@ $topics = array(
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_FIELDS'); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>" id="hubForm" method="post" enctype="multipart/form-data">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'.$tmpl); ?>" id="hubForm" method="post" enctype="multipart/form-data">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_SUPPORT_TROUBLE_OTHER_OPTIONS'); ?></p>
 		</div>
@@ -101,7 +107,9 @@ $topics = array(
 			<input type="hidden" name="problem[osver]" value="<?php echo htmlspecialchars($this->problem['osver']); ?>" />
 			<input type="hidden" name="problem[browserver]" value="<?php echo htmlspecialchars($this->problem['browserver']); ?>" />
 			<input type="hidden" name="problem[short]" value="<?php echo htmlspecialchars($this->problem['short']); ?>" />
-			
+			<?php if($group) : ?>
+				<input type="hidden" name="group" value="<?php echo $group; ?>" />
+			<?php endif; ?>
 			<input type="hidden" name="no_html" value="0" />
 <?php if ($this->verified) { ?>
 			<input type="hidden" name="botcheck" value="" />
