@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title( '<a href="index.php?option=com_services">'.JText::_( 'Services &amp; Subscriptions Manager' ).'</a>', 'addedit.png' );
-JToolBarHelper::save('savesubscription', 'Save Changes' );
+JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 $added = (intval( $this->subscription->added ) <> 0) ? JHTML::_('date', $this->subscription->added, '%d %b, %Y') : NULL ;
@@ -77,12 +77,12 @@ switch ($this->subscription->status)
 	}
 	</script>
 
-	<form action="index.php" method="post" name="adminForm">
-		<div class="col width-60">
+	<form action="index.php" method="post" name="adminForm" id="item-form">
+		<div class="col width-60 fltlft">
 			<fieldset class="adminform">
 	
         <?php  if (isset($this->subscription->id)) { ?>
-		<legend><?php echo JText::_('Subscription').' #'.$this->subscription->id.' ('.$this->subscription->code.') '; ?></legend>
+		<legend><span><?php echo JText::_('Subscription').' #'.$this->subscription->id.' ('.$this->subscription->code.') '; ?></span></legend>
 			<table class="admintable">
 			 <tbody>
 			  <tr>
@@ -115,48 +115,49 @@ switch ($this->subscription->status)
 		</fieldset>
 		
 		</div>
-		<div class="col width-40">
+		<div class="col width-40 fltrt">
+			<table class="meta" summary="<?php echo JText::_('Metadata for this item'); ?>">
+				<tbody>
+					<tr>
+					   <th><?php echo JText::_('Status'); ?>:</th>
+					   <td><?php echo $status ?></td>
+					  </tr>
+		              <tr>
+					   <th><?php echo JText::_('Added'); ?>:</th>
+					   <td><?php echo $added ?></td>
+					  </tr>
+		              <tr>
+					   <th><?php echo JText::_('Expires'); ?>:</th>
+					   <td><?php echo $expires ?></td>
+					  </tr>
+		              <tr>
+					   <th><?php echo JText::_('Last Updated'); ?>:</th>
+					   <td><?php echo $updated ?></td>
+					  </tr>
+
+		               <tr>
+					   <th><?php echo JText::_('Total paid'); ?>:</th>
+					   <td><?php echo $this->subscription->totalpaid; ?> <?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?></td>
+					  </tr>
+		              <tr>
+					   <th><?php echo JText::_('Pending payment'); ?>:</th>
+					   <td><?php echo $this->subscription->pendingpayment; ?> <?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?></td>
+					  </tr>
+		               <tr>
+					   <th><?php echo JText::_('Active units'); ?>:</th>
+					   <td><?php echo $this->subscription->units; ?></td>
+					  </tr>
+		               <tr>
+					   <th><?php echo JText::_('Pending units'); ?>:</th>
+					   <td><?php echo $this->subscription->pendingunits; ?></td>
+					  </tr>
+				</tbody>
+			</table>
+			
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('Process Subscription'); ?></legend>
+				<legend><span><?php echo JText::_('Manage Subscription'); ?></span></legend>
 			<table class="admintable">
-			 <tbody>
-			 <tr>
-			   <td class="key"><label><?php echo JText::_('Status'); ?>:</label></td>
-			   <td><?php echo $status ?></td>
-			  </tr>
-              <tr>
-			   <td class="key"><label><?php echo JText::_('Added'); ?>:</label></td>
-			   <td><?php echo $added ?></td>
-			  </tr>
-              <tr>
-			   <td class="key"><label><?php echo JText::_('Expires'); ?>:</label></td>
-			   <td><?php echo $expires ?></td>
-			  </tr>
-              <tr>
-			   <td class="key"><label><?php echo JText::_('Last Updated'); ?>:</label></td>
-			   <td><?php echo $updated ?></td>
-			  </tr>
-              
-               <tr>
-			   <td class="key"><label><?php echo JText::_('Total paid'); ?>:</label></td>
-			   <td><?php echo $this->subscription->totalpaid; ?><?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?></td>
-			  </tr>
-              <tr>
-			   <td class="key"><label><?php echo JText::_('Pending payment'); ?>:</label></td>
-			   <td><?php echo $this->subscription->pendingpayment; ?><?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?></td>
-			  </tr>
-               <tr>
-			   <td class="key"><label><?php echo JText::_('Active units'); ?>:</label></td>
-			   <td><?php echo $this->subscription->units; ?></td>
-			  </tr>
-               <tr>
-			   <td class="key"><label><?php echo JText::_('Pending units'); ?>:</label></td>
-			   <td><?php echo $this->subscription->pendingunits; ?></td>
-			  </tr>
-              
-               <tr>
-			   	<td colspan="2"><h3><?php echo JText::_('Manage Subscription'); ?>:</h3></td>
-			   </tr>                   
+			 <tbody>                
                 <tr>
 			   	<td colspan="2"><input type="radio" name="action" value="message"  /> <?php echo $onhold_msg; ?></td>
 			  </tr>
@@ -219,7 +220,8 @@ switch ($this->subscription->status)
         <input type="hidden" name="usepoints" value="<?php echo $this->subscription->usepoints; ?>" />				 
 		<input type="hidden" name="id" value="<?php echo $this->subscription->id; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="task" value="saveorder" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="save" />
         <?php  } // end if id exists ?>
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

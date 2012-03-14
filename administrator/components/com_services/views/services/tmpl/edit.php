@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title( '<a href="index.php?option=com_services">'.JText::_( 'Services &amp; Subscriptions Manager' ).'</a>', 'addedit.png' );
-JToolBarHelper::save('saveservice', 'Save Changes');
+JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 ?>
@@ -47,7 +47,7 @@ function submitbutton(pressbutton)
 //-->
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<?php
 	if ($this->getError()) {
 		echo '<p>'.JText::_('Error:').' '.$this->getError().'</p>';
@@ -58,6 +58,7 @@ function submitbutton(pressbutton)
 	</fieldset>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 
 	<?php echo JHTML::_( 'form.token' ); ?>

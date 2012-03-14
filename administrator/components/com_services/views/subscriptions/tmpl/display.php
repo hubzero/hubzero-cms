@@ -31,7 +31,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title( '<a href="index.php?option=com_services">'.JText::_( 'Services &amp; Subscriptions Manager' ).'</a>: <small><small>[ Subscriptions ]</small></small>', 'addedit.png' );
 JToolBarHelper::preferences('com_services', '550');
-JToolBarHelper::spacer();
 
 $now = date( 'Y-m-d H:i:s', time() );
 ?>
@@ -48,9 +47,8 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<h3><?php echo JText::_('Subscriptions'); ?></h3>
-<form action="index.php" method="post" name="adminForm">
-	<fieldset id="filter">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
 		<?php echo $this->total; ?> <?php echo JText::_('total subscriptions'); ?>.
 		<label>
 			<?php echo JText::_('Filter by'); ?>:
@@ -73,6 +71,7 @@ function submitbutton(pressbutton)
 			</select>
 		</label> 
 	</fieldset>
+	<div class="clr"></div>
 	
 	<table class="adminlist">
 		<thead>
@@ -85,9 +84,15 @@ function submitbutton(pressbutton)
 				<th><?php echo JText::_('Added'); ?></th>
 				<th><?php echo JText::_('Last Updated'); ?></th>
 				<th><?php echo JText::_('Expires'); ?></th>
-				<th></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="8">
+					<?php echo $this->pageNav->getListFooter(); ?>
+				</td>
+			</tr>
+		</tfoot>
 		<tbody>
 <?php
 $k = 0;
@@ -123,15 +128,18 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=subscription&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('View Subscription Details'); ?>"><?php echo $row->id,' -- '.$row->code; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('View Subscription Details'); ?>"><?php echo $row->id,' -- '.$row->code; ?></a></td>
 				<td><?php echo $status;  ?></td>
-				<td><?php echo $row->category.' -- '.$row->title; ?></td>
+				<td>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('View Subscription Details'); ?>">
+						<span><?php echo $this->escape($row->category) . ' -- ' . $this->escape($row->title); ?></span>
+					</a>
+				</td>
 				<td><?php echo $row->pendingpayment &&  ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span style="color:#ff0000;">'.$pending.'</span>' : $pending;  ?></td>
 				<td><?php echo $name.' ('.$login.')';  ?></td>
 				<td><?php echo JHTML::_('date', $row->added, '%d %b, %Y'); ?></td>	   
 				<td><?php echo $row->updated ? JHTML::_('date', $row->updated, '%d %b, %Y') : 'never'; ?></td>
 				<td><?php echo $expires; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=subscription&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('View Subscription Details'); ?>"><?php echo JText::_('DETAILS'); ?></a></td>
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -140,10 +148,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<?php echo $this->pageNav->getListFooter(); ?>
-
-	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

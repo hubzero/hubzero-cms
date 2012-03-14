@@ -46,14 +46,13 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<h3><?php echo JText::_('Services'); ?></h3>
-	<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 		
 		<table class="adminlist" summary="<?php echo JText::_('A list of paid/subscription-based HUB services'); ?>">
 			<thead>
 				<tr>
-					<th width="2%" nowrap="nowrap"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-					<th width="5%" nowrap="nowrap"><?php echo JText::_('ID'); ?></th>
+					<th width="2%"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+					<th width="5%"><?php echo JText::_('ID'); ?></th>
 					<th><?php echo JHTML::_('grid.sort', JText::_('Title'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
                     <th><?php echo JHTML::_('grid.sort', JText::_('Category'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
                     <th><?php echo JHTML::_('grid.sort', JText::_('Status'), 'status', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -74,9 +73,13 @@ function submitbutton(pressbutton)
 				<tr class="<?php echo "row$k"; ?>">
 					<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 					<td><?php echo $row->id; ?></td>
-                    <td><?php echo $row->title; ?></td>
-					<td><?php echo $row->category; ?></td>
-                    <td class="<?php echo $row->status==1 ? JText::_('active') : JText::_('inactive') ; ?>"><?php echo $row->status==1 ? JText::_('active') : JText::_('inactive') ; ?></td>
+                    <td><?php echo $this->escape($row->title); ?></td>
+					<td><?php echo $this->escape($row->category); ?></td>
+                    <td>
+						<span class="state <?php echo $row->status==1 ? 'publish' : 'unpublish'; ?>">
+							<span><?php echo $row->status==1 ? JText::_('active') : JText::_('inactive') ; ?></span>
+						</span>
+					</td>
 				</tr>
 <?php
 		$k = 1 - $k;
@@ -87,6 +90,7 @@ function submitbutton(pressbutton)
 		</table>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="services" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
