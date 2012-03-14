@@ -1288,7 +1288,8 @@ class Hubzero_User_Profile extends JObject
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function update($storage = null)
-	{
+	{   
+		$this->logDebug("Hubzero_User_Profile::update($storage):start ");
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
 		{
 			$this->setError('Invalid storage option requested [' . $storage . ']');
@@ -1309,11 +1310,17 @@ class Hubzero_User_Profile extends JObject
 
 		if ($storage == 'mysql' || $storage == 'all')
 			if ($this->_mysql_update() === false)
-				return false;
+			{  
+				$this->logDebug("Hubzero_User_Profile::update($storage) call to _mysql_update failed.");
+				return false;                                                                            
+			}
 
 		if (($storage == 'ldap' || $storage == 'all'))
 			if ($this->_ldap_update() === false)
+			{
+				$this->logDebug("Hubzero_User_Profile::update($storage) call to _ldap_update failed.");
 				return false;
+			}
 
 		return true;
 	}
