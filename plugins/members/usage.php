@@ -137,7 +137,11 @@ class plgMembersUsage extends JPlugin
 			$view->total_tool_users = $this->get_total_stats($member->get('uidNumber'), 'tool_users',14);
 			$view->total_andmore_users = $this->get_total_stats($member->get('uidNumber'), 'andmore_users',14);
 			$view->citation_count = $this->get_citationcount(null, $member->get('uidNumber'));
-
+			$cluster = $this->get_classroom_usage($member->get('uidNumber'));
+			$view->cluster_classes = $cluster['classes'];
+			$view->cluster_users = $cluster['users'];
+			$view->cluster_schools = $cluster['schools'];
+			
 			$sql = "SELECT res.id, res.title, DATE_FORMAT(res.publish_up, '%d %b %Y') AS publish_up, restypes.type 
 					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
 					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type = 7 AND res.access != 4 AND aa.subtable = 'resources' AND aa.role = '' AND res.standalone = 1 ORDER BY res.publish_up DESC";
@@ -281,6 +285,36 @@ class plgMembersUsage extends JPlugin
 		}
 
 		return $data;
+	}
+	
+	public function get_classroom_usage($authorid) 
+	{
+		$database =& JFactory::getDBO();
+	
+		$cluster['classes'] = 0;	
+		$cluster['users'] = 0;	
+		$cluster['schools'] = 0;	
+
+		$sql = 'SELECT classes FROM metrics_author_cluster WHERE authorid = "'.$authorid.'"';
+		$database->setQuery( $sql );
+		$result = $database->loadResult();
+		if ($result) {
+			$cluster['classes'] = $result;
+		}
+		$sql = 'SELECT users FROM metrics_author_cluster WHERE authorid = "'.$authorid.'"';
+		$database->setQuery( $sql );
+		$result = $database->loadResult();
+		if ($result) {
+			$cluster['users'] = $result;
+		}
+		$sql = 'SELECT schools FROM metrics_author_cluster WHERE authorid = "'.$authorid.'"';
+		$database->setQuery( $sql );
+		$result = $database->loadResult();
+		if ($result) {
+			$cluster['schools'] = $result;
+		}
+		return $cluster;
+
 	}
 
 	/**

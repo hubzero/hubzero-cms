@@ -1,6 +1,9 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -21,11 +24,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -85,6 +83,12 @@ $cls = 'even';
 				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_CITATIONS'); ?>:</th>
 				<td><?php echo $this->citation_count; ?></td>
 			</tr>
+			<?php if ($this->cluster_users) { ?>
+			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+				<th scope="row"><?php echo JText::_('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
+				<td><?php echo number_format($this->cluster_users).' users served in '.number_format($this->cluster_classes).' courses from '.number_format($this->cluster_schools).' institutions'; ?></td>
+			</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 	
@@ -104,12 +108,12 @@ $cls = 'even';
 		</thead>
 		<tbody>
 <?php
-	if ($this->tool_stats) {
+	if ($this->tool_stats) {	
 		$count = 1;
 		$cls = 'even';
 		$sum_simcount_12 = 0;
 		$sum_simcount_14 = 0;
-		foreach ($this->tool_stats as $row)
+		foreach ($this->tool_stats as $row) 
 		{
 			$sim_count_12 = plgMembersUsage::get_simcount($row->id, 12);
 			$sim_count_14 = plgMembersUsage::get_simcount($row->id, 14);
@@ -171,7 +175,7 @@ $cls = 'even';
 	if ($this->andmore_stats) {
 		$cls = 'even';
 		$count = 1;
-		foreach ($this->andmore_stats as $row)
+		foreach ($this->andmore_stats as $row) 
 		{
 ?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
