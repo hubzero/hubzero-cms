@@ -31,29 +31,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $app =& JFactory::getApplication();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-	<title><?php echo JText::_('FEEDBACK_PICTURE'); ?></title>
+<script type="text/javascript">
+<!--
+function passparam()
+{
+	parent.document.getElementById('adminForm').picture.value = this.document.forms[0].conimg.value;
+}
 
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-
-	<style type="text/css" media="screen">@import url(/templates/<?php echo $app->getTemplate(); ?>/css/main.css);</style>
-	<style type="text/css" media="screen">
-	body { min-width: 20px; background: #fff; margin: 0; padding: 0; }
-	</style>
-	<script type="text/javascript">
-	<!--
-	function passparam()
-	{
-		parent.document.getElementById('adminForm').picture.value = this.document.forms[0].conimg.value;
-	}
-	
-	window.onload = passparam;
-	//-->
-	</script>
- </head>
- <body>
+window.onload = passparam;
+//-->
+</script>
    <form action="index.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 	<table class="formed">
 	 <thead>
@@ -65,7 +52,7 @@ $app =& JFactory::getApplication();
 	  <tr>
 	   <td>
 	    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="no_html" value="1" />
+		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="qid" value="<?php echo $this->qid; ?>" />
 		<input type="hidden" name="task" value="upload" />
@@ -117,7 +104,7 @@ $app =& JFactory::getApplication();
 	  </tr>
 	  <tr>
 	   <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-	   <td><a href="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=deleteimg&amp;qid=<?php echo $this->qid; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+	   <td><a href="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;task=deleteimg&amp;qid=<?php echo $this->qid; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 	  </tr>
 <?php } else { ?>
 	  <tr>
@@ -129,5 +116,3 @@ $app =& JFactory::getApplication();
 	</table>
 	<?php echo JHTML::_( 'form.token' ); ?>
    </form>
- </body>
-</html>

@@ -29,6 +29,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 JToolBarHelper::title( JText::_( 'Success Story Manager' ), 'addedit.png' );
 JToolBarHelper::preferences('com_feedback', '550');
 JToolBarHelper::addNew();
@@ -49,42 +50,23 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
-
-	<fieldset id="filter">
-		<label>
-			<?php echo JText::_('FEEDBACK_SEARCH'); ?>: 
-			<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
-		</label>
-	
-		<label>
-			<?php echo JText::_('Filter'); ?>: 
-			<select name="type" id="type">
-				<option value="regular"<?php if (!$this->type || $this->type == 'regular') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEEDBACK_SUBMITTED_QUOTES'); ?></option>
-				<option value="selected"<?php if ($this->type == 'selected') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEEDBACK_SELECTED_QUOTES'); ?></option>
-			</select>
-		</label>
-		
-		<label>
-			<?php echo JText::_('FEEDBACK_SORT'); ?>: 
-			<select name="sortby" id="sortby">
-				<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEEDBACK_SORT_DATE'); ?></option>
-				<option value="fullname"<?php if ($this->filters['sortby'] == 'fullname') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEEDBACK_SORT_NAME'); ?></option>
-				<option value="org"<?php if ($this->filters['sortby'] == 'org') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEEDBACK_SORT_ORGANIZATION'); ?></option>
-			</select>
-		</label>
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('FEEDBACK_SEARCH'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th>#</th>
 				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('FEEDBACK_COL_SUBMITTED'); ?></th>
-				<th><?php echo JText::_('FEEDBACK_COL_AUTHOR'); ?></th>
-				<th><?php echo JText::_('FEEDBACK_COL_ORGANIZATION'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_SUBMITTED'), 'date', @$this->filters['sort_Dir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_AUTHOR'), 'fullname', @$this->filters['sort_Dir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_ORGANIZATION'), 'org', @$this->filters['sort_Dir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JText::_('FEEDBACK_COL_QUOTE'); ?></th>
 				<th><?php echo JText::_('FEEDBACK_COL_PICTURE'); ?></th>
 <?php 
@@ -122,16 +104,16 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;type=<?php echo $this->type ?>&amp;id=<?php echo $row->id; ?>"><?php echo stripslashes($row->fullname); ?></a></td>
 				<td><?php echo ($row->org) ? stripslashes($row->org) : '&nbsp;';?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;type=<?php echo $this->type ?>&amp;id=<?php echo $row->id; ?>"><?php echo $quotepreview;?></a></td>
-				<td><?php echo ($row->picture != NULL) ? '<span class="check">'.JText::_('FEEDBACK_YES').'</span>' : '&nbsp;'; ?></td>
+				<td><?php echo ($row->picture != NULL) ? '<span class="state yes"><span>'.JText::_('FEEDBACK_YES').'<span></span>' : ''; ?></td>
 				<td><?php if ($this->type == 'regular') {
-						echo ($row->publish_ok == 1 ) ? '<span class="check">'.JText::_('FEEDBACK_YES').'</span>' : '<span class="unpublished"></span>';
+						echo ($row->publish_ok == 1 ) ? '<span class="state yes"><span>'.JText::_('FEEDBACK_YES').'</span></span>' : '';
 					} else {
-						echo ($row->notable_quotes == 1 ) ? '<span class="check">'.JText::_('FEEDBACK_YES').'</span>' : '<span class="unpublished"></span>';
+						echo ($row->notable_quotes == 1 ) ? '<span class="state yes"><span>'.JText::_('FEEDBACK_YES').'</span></span>' : '';
 					} ?></td>
 				<td><?php if ($this->type == 'regular') {
 						echo $row->userid;
 					} else {
-						echo ($row->flash_rotation == 1 ) ? '<span class="check">'.JText::_('FEEDBACK_YES').'</span>' : '<span class="unpublished"></span>';
+						echo ($row->flash_rotation == 1 ) ? '<span class="state yes"><span>'.JText::_('FEEDBACK_YES').'</span></span>' : '';
 					} ?></td>
 		  </tr>
 <?php
@@ -144,5 +126,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

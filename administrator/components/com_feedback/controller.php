@@ -78,10 +78,6 @@ class FeedbackController extends Hubzero_Controller
 		}
 	}
 
-	//----------------------------------------------------------
-	// Views
-	//----------------------------------------------------------
-
 	/**
 	 * Short description for 'quotes'
 	 * 
@@ -98,34 +94,43 @@ class FeedbackController extends Hubzero_Controller
 		}
 
 		// Instantiate a new view
-		$view = new JView(array('name'=>'quotes'));
-		$view->option = $this->_option;
-		$view->task = $this->_task;
-		$view->type = $this->type;
+		$this->view = new JView(array('name'=>'quotes'));
+		$this->view->option = $this->_option;
+		$this->view->task = $this->_task;
+		$this->view->type = $this->type;
 
 		// Get site configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$view->filters = array();
-		$view->filters['search'] = urldecode($app->getUserStateFromRequest(
+		$this->view->filters = array();
+		$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
 			$this->_option . '.search',
 			'search',
 			''
 		));
-		$view->filters['sortby'] = $app->getUserStateFromRequest(
-			$this->_option . '.sortby',
-			'sortby',
+
+		// Get sorting variables
+		$this->view->filters['sortby']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.sort', 
+			'filter_order', 
 			'date'
-		);
-		$view->filters['start']  = $app->getUserStateFromRequest(
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.sortdir', 
+			'filter_order_Dir', 
+			'DESC'
+		));
+		
+		// Get paging variables
+		$this->view->filters['start']  = $app->getUserStateFromRequest(
 			$this->_option . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$view->filters['limit']  = $app->getUserStateFromRequest(
+		$this->view->filters['limit']  = $app->getUserStateFromRequest(
 			$this->_option . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
@@ -134,35 +139,37 @@ class FeedbackController extends Hubzero_Controller
 
 		if ($this->type == 'regular')
 		{
-			$obj = new FeedbackQuotes($this->database);
+			$className = 'FeedbackQuotes';
 		}
 		else
 		{
-			$obj = new SelectedQuotes($this->database);
+			$className = 'SelectedQuotes';
 		}
+		
+		$obj = new $className($this->database);
 
 		// Get a record count
-		$view->total = $obj->getCount($view->filters);
+		$this->view->total = $obj->getCount($this->view->filters);
 
 		// Get records
-		$view->rows = $obj->getResults($view->filters);
+		$this->view->rows = $obj->getResults($this->view->filters);
 
 		// Initiate paging class
 		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
+		$this->view->pageNav = new JPagination(
+			$this->view->total,
+			$this->view->filters['start'],
+			$this->view->filters['limit']
 		);
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$view->setError($this->getError());
+			$this->view->setError($this->getError());
 		}
 
 		// Output the HTML
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -175,19 +182,19 @@ class FeedbackController extends Hubzero_Controller
 	protected function create()
 	{
 		// Instantiate a new view
-		$view = new JView(array('name'=>'create'));
-		$view->option = $this->_option;
-		$view->task = $this->_task;
-		$view->type = $this->type;
+		$this->view = new JView(array('name'=>'create'));
+		$this->view->option = $this->_option;
+		$this->view->task = $this->_task;
+		$this->view->type = $this->type;
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$view->setError($this->getError());
+			$this->view->setError($this->getError());
 		}
 
 		// Output the HTML
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
@@ -206,10 +213,10 @@ class FeedbackController extends Hubzero_Controller
 		}
 
 		// Instantiate a new view
-		$view = new JView(array('name'=>'quote'));
-		$view->option = $this->_option;
-		$view->task = $this->_task;
-		$view->type = $this->type;
+		$this->view = new JView(array('name'=>'quote'));
+		$this->view->option = $this->_option;
+		$this->view->task = $this->_task;
+		$this->view->type = $this->type;
 
 		// Incoming ID
 		$id = JRequest::getInt('id', 0);
@@ -217,13 +224,13 @@ class FeedbackController extends Hubzero_Controller
 		// Initiate database class and load info
 		if ($this->type == 'regular')
 		{
-			$view->row = new FeedbackQuotes($this->database);
+			$this->view->row = new FeedbackQuotes($this->database);
 		}
 		else
 		{
-			$view->row = new SelectedQuotes($this->database);
+			$this->view->row = new SelectedQuotes($this->database);
 		}
-		$view->row->load($id);
+		$this->view->row->load($id);
 
 		$username = trim(JRequest::getVar('username', ''));
 		if ($username)
@@ -233,35 +240,31 @@ class FeedbackController extends Hubzero_Controller
 			$profile = new Hubzero_User_Profile();
 			$profile->load($username);
 
-			$view->row->fullname = $profile->get('name');
-			$view->row->org      = $profile->get('organization');
-			$view->row->userid   = $profile->get('uidNumber');
+			$this->view->row->fullname = $profile->get('name');
+			$this->view->row->org      = $profile->get('organization');
+			$this->view->row->userid   = $profile->get('uidNumber');
 		}
 
 		if (!$id)
 		{
-			$view->row->date = date('Y-m-d H:i:s');
+			$this->view->row->date = date('Y-m-d H:i:s');
 		}
 
 		if ($this->type == 'regular')
 		{
-			$view->row->notable_quotes = 0;
-			$view->row->flash_rotation = 0;
+			$this->view->row->notable_quotes = 0;
+			$this->view->row->flash_rotation = 0;
 		}
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$view->setError($this->getError());
+			$this->view->setError($this->getError());
 		}
 
 		// Output the HTML
-		$view->display();
+		$this->view->display();
 	}
-
-	//----------------------------------------------------------
-	// Processors
-	//----------------------------------------------------------
 
 	/**
 	 * Short description for 'save'
@@ -429,10 +432,6 @@ class FeedbackController extends Hubzero_Controller
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&type=' . $this->type;
 	}
-
-	//----------------------------------------------------------
-	//  Image handling
-	//----------------------------------------------------------
 
 	/**
 	 * Short description for 'upload'
@@ -630,57 +629,57 @@ class FeedbackController extends Hubzero_Controller
 	protected function img($file='', $id=0, $qid=0)
 	{
 		// Instantiate a new view
-		$view = new JView(array('name'=>'quote', 'layout'=>'image'));
-		$view->option = $this->_option;
-		$view->task = $this->_task;
-		$view->type = $this->type;
+		$this->view = new JView(array('name'=>'quote', 'layout'=>'image'));
+		$this->view->option = $this->_option;
+		$this->view->task = $this->_task;
+		$this->view->type = $this->type;
 
 		// Load the component config
-		$view->config = $this->config;
+		$this->view->config = $this->config;
 
 		// Do have an ID or do we need to get one?
 		if (!$id)
 		{
-			$view->id = JRequest::getInt('id', 0);
+			$this->view->id = JRequest::getInt('id', 0);
 		}
 		else
 		{
-			$view->id = $id;
+			$this->view->id = $id;
 		}
 
 		ximport('Hubzero_View_Helper_Html');
-		$view->dir = Hubzero_View_Helper_Html::niceidformat($id);
+		$this->view->dir = Hubzero_View_Helper_Html::niceidformat($id);
 
 		// Do we have a file or do we need to get one?
 		if (!$file)
 		{
-			$view->file = JRequest::getVar('file', '');
+			$this->view->file = JRequest::getVar('file', '');
 		}
 		else
 		{
-			$view->file = $file;
+			$this->view->file = $file;
 		}
 
 		// Build the directory path
-		$view->path = $this->config->get('uploadpath') . DS . $view->dir;
+		$this->view->path = $this->config->get('uploadpath') . DS . $this->view->dir;
 
 		if (!$qid)
 		{
-			$view->qid = JRequest::getInt('qid', 0);
+			$this->view->qid = JRequest::getInt('qid', 0);
 		}
 		else
 		{
-			$view->qid = $qid;
+			$this->view->qid = $qid;
 		}
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$view->setError($this->getError());
+			$this->view->setError($this->getError());
 		}
 
 		// Output the HTML
-		$view->display();
+		$this->view->display();
 	}
 }
 
