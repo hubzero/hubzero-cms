@@ -1,6 +1,14 @@
 <?php
+/**
+ * @version		$Id: modules.php 21475 2011-06-07 22:49:07Z chdemko $
+ * @package		Joomla.Administrator
+ * @subpackage	Templates.bluestork
+ * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 /**
  * This is a file to add template specific chrome to module rendering.  To use it you would
@@ -19,20 +27,22 @@ defined('_JEXEC') or die('Restricted access');
 /*
  * Module chrome for rendering the module in a submenu
  */
-function modChrome_box($module, &$params, &$attribs)
+function modChrome_cpanel($module, &$params, &$attribs)
 {
-	if ($module->content)
+	if ($module->content) 
 	{
-?>
-		<div class="box"<?php if (isset($attribs['id']) && $attribs['id']) { echo ' id="' . $attribs['id'] . '"'; } ?>>
+		?>
+		<div class="mod"<?php if (isset($attribs['id']) && $attribs['id']) { echo ' id="' . $attribs['id'] . '"'; } ?>>
 <?php if ($module->showtitle != 0) : ?>
-			<h3><?php echo $module->title; ?></h3>
+			<h3 class="mod-title">
+				<?php echo $module->title; ?>
+			</h3>
 <?php endif; ?>
-			<div class="box-content">
+			<div class="mod-content">
 				<?php echo $module->content; ?>
 				<div class="clr"></div>
-			</div><!-- / .box-content -->
-		</div><!-- / .box -->
-<?php
+			</div>
+		</div>
+		<?php
 	}
 }

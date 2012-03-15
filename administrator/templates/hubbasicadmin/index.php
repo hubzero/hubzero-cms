@@ -28,73 +28,143 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// No direct access.
+defined('_JEXEC') or die;
+
+jimport('joomla.filesystem.file');
+
+$app = JFactory::getApplication();
+$doc = JFactory::getDocument();
+
+// Load CSS
+//$doc->addStyleSheet('templates/system/css/system.css');
+//$doc->addStyleSheet('templates/'.$this->template.'/css/fonts.css');
+//$doc->addStyleSheet('templates/'.$this->template.'/css/columns.css');
+$doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
+$doc->addStyleSheet('templates/'.$this->template.'/css/common/icons.css');
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray') {
+	$doc->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+}
+
+// Load language direction CSS
+if ($this->direction == 'rtl') {
+	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+}
+
+if (JPluginHelper::isEnabled('system', 'debug')) {
+	$doc->addStyleSheet('templates/' . $this->template . '/css/common/debug.css');
+}
+
+$doc->addScript('templates/' . $this->template . '/js/index.js');
+// Load debug CSS if enabled
+/*if (JPluginHelper::isEnabled('system', 'jquery')) {
+	$doc->addScript('templates/' . $this->template . '/js/jquery.uniform.min.js');
+	$doc->addScriptDeclaration('
+		jQuery(document).ready(function($){
+			$("select, input[type=file]").uniform();
+		});'
+	);
+}*/
+
+$juser =& JFactory::getUser();
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>">
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
-
-		<link rel="stylesheet" type="text/css" href="templates/system/css/system.css" />
-		<link rel="stylesheet" type="text/css" href="templates/<?php echo  $this->template ?>/css/template.css" />
-		
-		<script type="text/javascript" src="templates/<?php echo  $this->template ?>/js/index.js"></script>
-		
 		<!--[if IE 7]>
-			<link rel="stylesheet" type="text/css" href="templates/<?php echo  $this->template ?>/css/ie7.css" />
-			<script type="text/javascript" src="templates/<?php echo  $this->template ?>/js/stripe.js"></script>
+			<link href="templates/<?php echo $this->template; ?>/css/ie7.css" rel="stylesheet" type="text/css" />
+			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
-		<!--[if lte IE 6]>
-			<link rel="stylesheet" type="text/css" href="templates/<?php echo  $this->template ?>/css/ie6.css" />
+		<!--[if IE 8]>
+			<link href="templates/<?php echo $this->template; ?>/css/ie8.css" rel="stylesheet" type="text/css" />
+			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 	</head>
-	<body>
-		<div id="masthead">
-			<h1><?php echo $mainframe->getCfg('sitename'); ?></h1>
-			<p class="version"><?php echo  JText::_('Version') ?> <?php echo JVERSION; ?></p>
-			<div id="module-status">
-				<jdoc:include type="modules" name="status"  />
-			</div><!-- / #module-status -->
+	<body id="minwidth-body"<?php if (version_compare(JVERSION, '1.6', 'lt')) { echo ' class="j15"'; } ?>>
+		<header id="header" role="banner">
+			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
+			
+			<ul class="user-options">
+					<?php
+						//Display an harcoded logout
+						$task = JRequest::getCmd('task');
+						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu')) {
+							$logoutLink = '';
+						} else {
+							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
+						}
+						$hideLinks	= JRequest::getBool('hidemainmenu');
+						$output = array();
+						// Print the Preview link to Main site.
+						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
+						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
+						// Print the logout link.
+						$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="'.$logoutLink.'">').JText::_('Log out').($hideLinks ? '</span></li>' : '</a></li>');
+						// Reverse rendering order for rtl display.
+						if ($this->direction == "rtl") :
+							$output = array_reverse($output);
+						endif;
+						// Output the items.
+						foreach ($output as $item) :
+						echo $item;
+						endforeach;
+					?>
+  			</ul>
+			
 			<div class="clr"></div>
-		</div><!-- / #masthead -->
-		<div id="navigation">
-			<div id="module-menu">
-				<jdoc:include type="modules" name="menu" />
-			</div>
-			<div class="clr"></div>
-		</div><!-- / #navigation -->
-<?php if (!JRequest::getInt('hidemainmenu')): ?>
-		<jdoc:include type="modules" name="submenu" style="rounded" id="submenu-box" />
-		<div class="clr"></div>
-<?php endif; ?>
+		</header><!-- / header -->
+		
 		<div id="wrap">
-			<div id="content-wrap">
-			<div id="toolbar-box">
-				<jdoc:include type="modules" name="toolbar" />
-				<jdoc:include type="modules" name="title" />
-				<div class="clr"></div>
-  			</div><!-- / #toolbar-box -->
-			<div class="clr"></div>
-			<div id="content-box">
-				<jdoc:include type="message" />
-				<div id="element-box">
+			<nav role="navigation" class="main-navigation">
+				<div class="inner-wrap">
+					<jdoc:include type="modules" name="menu" />
+					<div class="clr"><!-- We need this for the drop downs --></div>
+				</div>
+			</nav><!-- / .navigation -->
+			
+			<section id="content">
+				<div id="toolbar-box" class="toolbar-box">
+					<jdoc:include type="modules" name="title" />
+					<jdoc:include type="modules" name="toolbar" />
+				</div><!-- / #toolbar-box -->
+				
+				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">
+					<?php if (!JRequest::getInt('hidemainmenu') && $this->countModules('submenu')): ?>
+					<nav role="navigation" class="sub-navigation">
+						<jdoc:include type="modules" name="submenu" />
+					</nav><!-- / .sub-navigation -->
+					<?php endif; ?>
+					<!-- Notifications begins -->
+					<jdoc:include type="message" />
+					<!-- Notifications ends -->
+					<!-- Content begins -->
 					<jdoc:include type="component" />
+					<!-- Content ends -->
+					<noscript>
+						<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
+					</noscript>
 					<div class="clr"></div>
-				</div><!-- / #element-box -->
-				<noscript>
-					<?php echo JText::_('WARNJAVASCRIPT') ?>
-				</noscript>
+				</section><!-- / #main -->
 				<div class="clr"></div>
-			</div><!-- / #content-box -->
+			</section><!-- / #content -->
 			<div class="clr"></div>
-			</div><!-- / #content-wrap -->
 		</div><!-- / #wrap -->
-		<div class="clr"></div>
-		<div id="footer">
-			<p class="copyright">
-				<a href="http://hubzero.org" rel="external">HUBzero&reg;</a>
-			</p>
-		</div><!-- / #footer -->
+		
+		<footer id="footer">
+			<section class="basement">
+				<p class="copyright">
+					<?php echo $app->getCfg('sitename'); ?></a> &copy; <?php echo date("Y"); ?>. All Rights Reserved.
+				</p>
+				<p class="promotion">
+					<a rel="external" href="http://hubzero.org">Powered by <a href="http://hubzero.org">HUBzero&reg; CMS</a>.</a>
+				</p>
+			</section><!-- / .basement -->
+		</footer><!-- / #footer -->
 	</body>
 </html>

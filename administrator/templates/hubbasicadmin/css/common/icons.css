@@ -1,0 +1,215 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasicadmin/css/icons.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Small (16x16) */
+	/* Preview */
+	.state.icon-16-preview:before {
+		content: "E";
+		top: -20%;
+	}
+	.state.icon-16-nopreview:before {
+		content: "E";
+		color: #aaa;
+		top: -20%;
+	}
+	/* Unset*/
+	.icon-16-unset {
+		color: #c55500;
+	}
+	.icon-16-unset:before {
+		content: "d"; /*"⊝";*/
+		font-size: 16px;
+		font-family: icons;
+		margin-right: 0.2em;
+	}
+	.icon-16-unset:hover:before {
+		color: #c55500;
+	}
+	.icon-16-allowed {
+		color: #7F913C;
+	}
+	.icon-16-allowed:before {
+		font-family: icons;
+		font-size: 14px;
+		line-height: 14px;
+		/*content: "✔";*/
+		content: "3";
+		font-size: 16px;
+		margin-right: 0.2em;
+	}
+	.icon-16-allowed:hover:before {
+		color: #7F913C;
+	}
+
+/* Toolbar Icons */
+	.toolbar-box .icon-32-send:before         { content: "M"; }
+	.toolbar-box .icon-32-send:after          { content: "]"; right: 0; bottom: 4px; }
+	.toolbar-box .icon-32-delete:before       { content: "#"; }
+	.toolbar-box .icon-32-help:before         { content: "?"; }
+	.toolbar-box .icon-32-cancel:before       { content: "D"; }
+	.toolbar-box .icon-32-checkin:before      { }
+	.toolbar-box .icon-32-options:before      { content: "x"; }
+	.toolbar-box .icon-32-apply:before        { content: "2"; }
+	.toolbar-box .icon-32-back:before         { content: "["; }
+	.toolbar-box .icon-32-export:before	      { content: "R"; }
+	.toolbar-box .icon-32-forward:before      { content: "]"; }
+	.toolbar-box .icon-32-save:before         { content: "S"; }
+	.toolbar-box .icon-32-edit:before         { content: "p"; }
+	.toolbar-box .icon-32-copy:before         { content: "|"; }
+	.toolbar-box .icon-32-move:before         { content: "`"; }
+	.toolbar-box .icon-32-new:before          { content: "&"; }
+	.toolbar-box .icon-32-upload:before	      { content: "c"; }
+	.toolbar-box .icon-32-assign:before       { }
+	.toolbar-box .icon-32-html:before         { content: "F"; }
+	.toolbar-box .icon-32-html:after { 
+		font-size: 6px; 
+		line-height: 6px;
+		content: "HTML"; 
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		background: #fff;
+		border: 1px solid #666;
+		right: 0;
+		bottom: 4px;
+		height: 8px;
+		padding: 0 1px;
+	}
+	.toolbar-box .icon-32-css:before          { content: "F"; }
+	.toolbar-box .icon-32-css:after { 
+		font-size: 6px; 
+		line-height: 6px;
+		content: "CSS"; 
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		background: #fff;
+		border: 1px solid #666;
+		right: 0;
+		bottom: 4px;
+		height: 8px;
+		padding: 0 1px;
+	}
+	.toolbar-box .icon-32-menus:before        { content: "l"; }
+	.toolbar-box .icon-32-publish:before      { content: "3"; }
+	.toolbar-box .icon-32-unblock:before      { content: "U"; }
+	.toolbar-box .icon-32-unblock:after       { content: "3"; }
+	.toolbar-box .icon-32-unpublish:before    { content: "d"; }
+	.toolbar-box .icon-32-restore:before      { content: "r"; }
+	.toolbar-box .icon-32-trash:before        { content: "#"; }
+	.toolbar-box .icon-32-archive:before      { content: "F"; }
+	.toolbar-box .icon-32-archive:after       { content: "["; }
+	.toolbar-box .icon-32-unarchive:before    { content: "F"; }
+	.toolbar-box .icon-32-unarchive:after     { content: "]"; }
+	.toolbar-box .icon-32-preview:before      { content: "E"; }
+	.toolbar-box .icon-32-default:before      { content: "S"; }
+	.toolbar-box .icon-32-refresh:before      { content: "0"; }
+	.toolbar-box .icon-32-save-new:before     { }
+	.toolbar-box .icon-32-save-copy:before    { }
+	.toolbar-box .icon-32-error:before        { content: "!"; }
+	.toolbar-box .icon-32-new-style:before    { }
+	.toolbar-box .icon-32-delete-style:before { }
+	.toolbar-box .icon-32-purge:before        { content: "1"; }
+	.toolbar-box .icon-32-remove:before	      { content: "-"; }
+	.toolbar-box .icon-32-featured:before     { }
+	.toolbar-box .icon-32-stats:before        { content: "Z"; }
+	.toolbar-box .icon-32-config:before       { content: "y"; }
+	.toolbar-box .toolbar-inactive:before     { }
+
+/* Header */
+	.toolbar-box .icon-48-generic                        { }
+	/* Banners */
+	.toolbar-box .icon-48-banners:before                 { content: "^"; }
+	.toolbar-box .icon-48-banners-categories:before      { content: "^"; }
+	.toolbar-box .icon-48-banners-category-edit:before   { content: "^"; }
+	.toolbar-box .icon-48-banners-category-add:before    { content: "^"; }
+	.toolbar-box .icon-48-banners-clients:before         { content: "^"; }
+	.toolbar-box .icon-48-banners-tracks:before          { content: "^"; }
+	/* contact */
+	.toolbar-box .icon-48-contact:before                 { content: "M"; }
+	.toolbar-box .icon-48-contact-categories:before      { content: "M"; }
+	.toolbar-box .icon-48-contact-category-edit:before   { content: "M"; }
+	.toolbar-box .icon-48-contact-category-add:before    { content: "M"; }
+	/* Groups */
+	.toolbar-box .icon-48-groups:before                  { content: "g"; }
+	.toolbar-box .icon-48-groups-add:before	             { content: "g"; }
+	/* Levels */
+	.toolbar-box .icon-48-levels:before                  { content: "|"; }
+	.toolbar-box .icon-48-levels-add:before              { content: "|"; }
+	/* Menus */
+	.toolbar-box .icon-48-menu:before                    { content: "l"; }
+	.toolbar-box .icon-48-menu-add:before                { content: "l"; }
+	.toolbar-box .icon-48-menumgr:before                 { content: "l"; }
+	.toolbar-box .icon-48-trash:before                   { content: "#"; }
+	/* User */
+	.toolbar-box .icon-48-user:before                    { content: "U"; }
+	.toolbar-box .icon-48-user-add:before                { content: "U"; }
+	.toolbar-box .icon-48-user-edit:before               { content: "U"; }
+	.toolbar-box .icon-48-user-profile:before            { content: "U"; }
+	/* Messaging */
+	.toolbar-box .icon-48-inbox:before                   { content: "I"; }
+	.toolbar-box .icon-48-new-privatemessage:before      { content: "I"; }
+	.toolbar-box .icon-48-msgconfig:before               { content: "I"; }
+	.toolbar-box .icon-48-writemess:before               { content: "W"; }
+	.toolbar-box .icon-48-massemail:before,
+	.toolbar-box .icon-48-massmail:before                { content: "M"; }
+	/* Managers */
+	.toolbar-box .icon-48-thememanager:before            { content: "E"; }
+	.toolbar-box .icon-48-langmanager:before             { content: "w"; }
+	.toolbar-box .icon-48-mediamanager:before            { content: "P"; }
+	/* Extensions */
+	.toolbar-box .icon-48-plugin:before                  { content: "J"; }
+	.toolbar-box .icon-48-module:before	                 { content: ""; }
+	.toolbar-box .icon-48-install:before                 { content: "e"; }
+	/* Misc. */
+	.toolbar-box .icon-48-help_header:before             { content: "?"; }
+	.toolbar-box .icon-48-impressions:before             { content: "Y"; }
+	.toolbar-box .icon-48-browser:before                 { content: "G"; }
+	.toolbar-box .icon-48-featured:before                { content: "S"; }
+	.toolbar-box .icon-48-addedit:before                 { content: "W"; }
+	.toolbar-box .icon-48-purge:before                   { }
+	.toolbar-box .icon-48-cpanel:before                  { content: ","; }
+	.toolbar-box .icon-48-config:before                  { content: "x"; }
+	.toolbar-box .icon-48-checkin:before                 { content: "2"; }
+	.toolbar-box .icon-48-clear:before                   { }
+	/* Sections */
+	.toolbar-box .icon-48-sections:before                { content: "o"; }
+	/* Articles */
+	.toolbar-box .icon-48-article-add:before             { content: "F"; }
+	.toolbar-box .icon-48-article-edit:before            { content: "F"; }
+	.toolbar-box .icon-48-article:before                 { content: "F"; }
+	/* Categories */
+	.toolbar-box .icon-48-categories:before,
+	.toolbar-box .icon-48-content-categories:before      { content: "o"; }
+	.toolbar-box .icon-48-category-edit:before,
+	.toolbar-box .icon-48-content-category-edit:before   { content: "o"; }
+	.toolbar-box .icon-48-category-add:before,
+	.toolbar-box .icon-48-content-category-add:before    { content: "o"; }
+	/* Database */
+	.toolbar-box .icon-48-dbbackup:before                { }
+	.toolbar-box .icon-48-dbrestore:before               { }
+	.toolbar-box .icon-48-dbquery:before                 { }
+	.toolbar-box .icon-48-systeminfo:before              { content: "i"; }
+	.toolbar-box .icon-48-redirect:before                { content: "r"; }
+	/* Search */
+	.toolbar-box .icon-48-search:before                  { content: "s"; }
+	.toolbar-box .icon-48-searchtext:before              { content: "s"; }
+	/* Newsfeeds */
+	.toolbar-box .icon-48-newsfeeds:before               { content: "f"; }
+	.toolbar-box .icon-48-newsfeeds-cat:before, 
+	.toolbar-box .icon-48-newsfeeds-categories:before    { content: "f"; }
+	.toolbar-box .icon-48-newsfeeds-category-edit:before { content: "f"; }
+	.toolbar-box .icon-48-newsfeeds-category-add:before  { content: "f"; }
+	/* Weblinks */
+	.toolbar-box .icon-48-weblinks:before                { content: "A"; }
+	.toolbar-box .icon-48-weblinks-categories:before     { content: "A"; }
+	.toolbar-box .icon-48-weblinks-category-edit:before  { content: "A"; }
+	.toolbar-box .icon-48-weblinks-category-add:before	 { content: "A"; }
+	/* 3rd-party Components */
+	.toolbar-box .icon-48-support:before                 { content: "h"; }
+	.toolbar-box .icon-48-event:before                   { content: "\\"; }
+	.toolbar-box .icon-48-tags:before                    { content: "z"; }
+	.toolbar-box .icon-48-alert:before                   { content: "!"; }
+	.toolbar-box .icon-48-forum:before                   { content: "q"; }
+	.toolbar-box .icon-48-citation:before                { content: '"'; }
+	.toolbar-box .icon-48-store:before                   { content: '$'; }

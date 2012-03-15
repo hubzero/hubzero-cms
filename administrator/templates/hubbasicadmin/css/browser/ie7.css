@@ -1,0 +1,224 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasicadmin/css/ie7.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Structure */
+	#header {
+		margin: 2.23606798em 0 0.61803399em 0;
+		padding: 0 2.5em;
+	}
+	#header .user-options .logout {
+		padding-right: 0;
+	}
+	#wrap {
+		margin: 0 1.61803399em;
+		padding: 0.61803399em;
+	}
+/* Login */
+	#login-body #wrap {
+		margin: 0 auto 100px auto;
+		padding-top: 0.18em;
+	}
+	#login-page .pagetitle h2 {
+		margin: 0;
+		padding: 0;
+	}
+/* Support */
+	.ticket-details,
+	ol.comments .comment-changelog {
+		background: #ededed;
+	}
+	ol.comments .comment-changelog:before {
+		border-color: #ededed #ededed transparent transparent;
+	}
+/* Main Navigation */
+	.main-navigation {
+		z-index: 888;
+	}
+	.main-navigation ul#menu {
+		z-index: 777;
+	}
+	.main-navigation ul#menu ul {
+		z-index: 666;
+	}
+	.main-navigation ul#menu li.separator {
+		margin: 0 10px;
+		padding: 3px 0;
+		height: 1px;
+		background: transparent url("../images/nav/bg-nav-sub-seperator.png") 0 0 repeat-x;
+		width: 140px;
+		overflow: hidden;
+		display: block;
+	}
+	.main-navigation ul#menu li.separator span {
+		display: none;
+	}
+/* Toolbar */
+	#toolbar-box ul li {
+		width: 1%;
+	}
+	/*#toolbar-box li a span {
+		filter:alpha(opacity=70);
+	}
+	#toolbar-box li:hover a span,
+	#toolbar-box a:hover span,
+	#toolbar-box a span:hover {
+		filter:alpha(opacity=100);
+	}*/
+/* State Links */
+	a.state,
+	a.state:link,
+	a.state:active,
+	a.state:visited,
+	.state {
+		position: relative;
+	    z-index: 1;
+	    overflow: hidden;
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+		display: inline;
+		height: auto;
+		width: auto;
+		color: #777;
+		text-decoration: none;
+		border: none;
+	}
+	.state img,
+	.state span {
+		display: inline;
+	}
+/* Tables */
+	table thead tr th,
+	table thead tr td {
+		background-color: #e8e8e8;
+		border-color: #e8e8e8;
+	}
+	table tbody tr.even td,
+	table tbody tr.row0 td,
+	table tbody tr.even th,
+	table tbody tr.row0 th {
+		background-color: #fafafa;
+	}
+/* Form elements */
+	fieldset legend {
+		background: url("../../images/layout/bg-legend.png") center repeat-x;
+		text-indent: 0;
+	}
+	.input-text,
+	input[type=text],
+	input[type=password],
+	input[type=email],
+	textarea {
+		width: 93%;
+	}
+	select {
+		width: 98%;
+	}
+/* Panels */
+	.panel h3 {
+		border-bottom: 1px solid #ccc;
+	}
+	.pane-hide {
+		visibility: hidden;
+	}
+/* CPanel */
+	.icon a {
+		border: 1px solid #ccc;
+	}
+	.icon a:hover {
+		border: 1px solid #aaa;
+	}
+	.icon a span {
+		background: #222;
+		filter:alpha(opacity=0);
+	}
+	.icon a:hover span {
+		filter:alpha(opacity=50);
+	}
+/* Sub-menu */
+	.sub-navigation ul {
+		height: 3.5em;
+	}
+	.sub-navigation li {
+		display: block;
+		float: left;
+	}
+/* Misc. */
+	input {
+		border-width: expression(this.type == "radio" ? '0px' : this.type == "checkbox" ? '0px' : '1px');
+	}
+
+/* Accessibility: css in template.css for slider keyboard
+ * has to be reversed here or the mouse does not work for ie */
+	.pane-toggler + div {
+		display: block;
+	}
+	div#subheader {
+		height: 2em;
+	}
+	*:first-child+html .clearfix {
+		min-height: 1px;
+	}
+	.menu-links li,
+	.menu-links li label {
+		height: 2em;
+	}
+	div.article-edit,
+	div.category-edit {
+		zoom: 1;
+	}
+	div.pane-sliders,
+	div.panel,
+	div.pane-slider,
+	div.rules-section,
+	div.mypanel,
+	div.containerpg,
+	div.pagination,
+	div.upload-queue {
+		zoom: 1;
+	}
+
+	div.width-20 fieldset.adminform, 
+	div.width-30 fieldset.adminform, 
+	div.width-35 fieldset.adminform, 
+	div.width-40 fieldset.adminform,
+	div.width-45 fieldset.adminform, 
+	div.width-50 fieldset.adminform, 
+	div.width-55 fieldset.adminform, 
+	div.width-60 fieldset.adminform,
+	div.width-65 fieldset.adminform, 
+	div.width-70 fieldset.adminform, 
+	div.width-80 fieldset.adminform, 
+	div.width-100 fieldset.adminform {
+		zoom: 1;
+		margin-bottom:10px;
+	}
+	div.toggle-editor {
+		margin-top: -5px;
+		margin-bottom: 5px;
+	}
+	div.current dd {
+		width: 100%;
+		position: relative;
+	}
+	div.current ul.menu-links {
+		zoom: 1;
+		width: 25%;
+		margin: 0;
+		padding:0;
+		list-style-position: inside;
+	}
+	input.readonly {
+		border: 0 !important;
+	}
+	div#position-icon.pane-sliders div.pane-down div.icon-wrapper {
+		margin: 0;
+	}
+	fieldset.panelform fieldset.checkboxes.impunlimited {
+		float:none;
+		width: 170px;
+	}

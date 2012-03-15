@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/template-install.dtd">
 <install type="template" version="1.5.0" client="administrator">
-	<name>HUBbasic Admin</name>
+	<name>HUB Admin</name>
 	<creationDate>05/24/06</creationDate>
 	<author>HUBzero</author>
 	<authorEmail>support@hubzero.org</authorEmail>
@@ -26,9 +26,15 @@
 		<position>debug</position>
 	</positions>
 	<params>
-		<param name="showSiteName" type="radio" default="0" label="Show Site Name" description="Show the site name in the template header">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<param name="theme" type="list" default="gray" label="TPL_HUBBASICADMIN_FIELD_THEME_LABEL" description="TPL_HUBBASICADMIN_FIELD_THEME_DESC">
+			<option value="gray">TPL_HUBBASICADMIN_FIELD_THEME_GRAY</option>
+			<option value="steelblue">TPL_HUBBASICADMIN_FIELD_THEME_STEEL_BLUE</option>
+			<option value="blue">TPL_HUBBASICADMIN_FIELD_THEME_BLUE</option>
+			<option value="aqua">TPL_HUBBASICADMIN_FIELD_THEME_AQUA</option>
+			<option value="green">TPL_HUBBASICADMIN_FIELD_THEME_GREEN</option>
+			<option value="orange">TPL_HUBBASICADMIN_FIELD_THEME_ORANGE</option>
+			<option value="red">TPL_HUBBASICADMIN_FIELD_THEME_RED</option>
+			<option value="purple">TPL_HUBBASICADMIN_FIELD_THEME_PURPLE</option>
 		</param>
 	</params>
 </install>
