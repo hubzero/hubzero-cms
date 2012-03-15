@@ -258,7 +258,7 @@
 		-webkit-font-smoothing: antialiased;
 		overflow-x: hidden;
 		padding: 0;
-		background: #f2f2f2 url("../images/layout/noise.png"); /* layout/bg */
+		background: #f2f2f2 url("../images/layout/noise.png");
 	}
 	body {
 		text-align: left;
@@ -333,13 +333,7 @@
 		background: none;
 		font-weight: 700;
 	}
-
-	
 	label {
-		/*display: block;
-		position: relative;
-		padding-bottom: 1em;
-		cursor: default;*/
 	}
 
 	.input-text,
@@ -404,15 +398,11 @@
 		background-image: url("../images/padlock.png");
 		background-position: 95% 50%;
 		background-repeat: no-repeat;
-		/*position: relative;
-		z-index: 1;
-	    overflow: hidden;*/
 	}
 /* Tables */
 	table {
 		width: 100%;
 		max-width: 100%;
-		/*margin: 0.27em 0 1.61803399em 0;*/
 		margin: 0;
 		border-collapse: separate;
 		border-top: 1px solid #fff;
@@ -432,7 +422,6 @@
 	}
 	table tfoot th,
 	table tfoot td {
-		/*border-top: 1px solid #e8e8e8;*/
 	}
 	table tbody th,
 	table tbody td {
@@ -466,7 +455,7 @@
 		margin-left: 0.2em;
 	}
 	table tbody tr {
-		background-color: #fff; /*#fdfdfd;*/
+		background-color: #fff;
 	}
 	table thead tr th:first-child,
 	table thead tr td:first-child,
@@ -480,17 +469,6 @@
 	table tbody tr td:last-child {
 		padding-right: 1.61803399em;
 	}
-	/*table tbody tr:nth-child(even),
-	table tbody tr.even {
-		background-color: #fafafa;
-	}
-	table tbody tr:hover,
-	table tbody tr:hover th {
-		background-color: #f4f4f4;
-	}*/
-	/*fieldset {
-		border-top: 1px solid #D6D6D6;
-	}*/
 	fieldset legend {
 		float: left;
 		width: 100%;
@@ -761,25 +739,6 @@
 	span.level {
 		visibility: hidden;
 	}
-	/*#rules .panel {
-		margin: 0;
-		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
-		border: none;
-	}
-	#rules .panel h3 {
-		-webkit-border-radius: 0;
-		-moz-border-radius: 0;
-		border-radius: 0;
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-		border-bottom: none;
-		background: #fefefe url("../images/layout/noise.png");
-	}
-	#rules .panel .content {
-		padding: 0;
-	}*/
 	#rules .panel table {
 		border-top: 1px solid rgba(0, 0, 0, 0.1);
 		margin: 0;
@@ -801,7 +760,7 @@
 		color: #c55500;
 	}
 	.icon-16-unset:before {
-		content: "d"; /*"⊝";*/
+		content: "d";
 		font-size: 16px;
 		font-family: icons;
 		margin-right: 0.2em;
@@ -951,17 +910,14 @@
 	}
 	p.message:before,
 	#system-message dd.message:before {
-		/*content: "✔";*/
 		content: "2";
 	}
 	p.error:before,
 	#system-message dd.error:before {
-		/*content: "!"; /*"⊗";*/
 		content: "D";
 	}
 	p.warning:before,
 	#system-message dd.warning:before {
-		/*content: "⚠";*/
 		content: "!";
 	}
 	p.info:before,
