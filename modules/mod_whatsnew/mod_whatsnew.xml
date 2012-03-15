@@ -52,7 +52,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Display link</option>
 			<option value="0">Hide link</option>
 		</param>
-		<param name="period" type="text" default="resources:month" label="Period:category" description="Time period and category to pull results for." />
+		<param name="period" type="text" default="resources:month" label="category:period" description="Time period and category to pull results for." />
 		<param name="tagged" type="radio" default="0" label="Show My Interests" description="Display whats new by the tags the user has listed as their interests.">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
