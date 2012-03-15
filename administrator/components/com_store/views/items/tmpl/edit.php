@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title(JText::_('Store Manager') . $text, 'addedit.png');
+JToolBarHelper::title(JText::_('Store Manager') . $text, 'store.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -57,11 +57,11 @@ public function submitbutton(pressbutton)
 
 }
 </script>
-<form action="index.php" method="post" name="adminForm">
-	<div class="col width-60">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 <?php if (isset($this->row->id)) { ?>
-			<legend><?php echo JText::_('STORE').' '. JText::_('ITEM').' #'.$this->row->id.' '.JText::_('DETAILS'); ?></legend>
+			<legend><span><?php echo JText::_('STORE').' '. JText::_('ITEM').' #'.$this->row->id.' '.JText::_('DETAILS'); ?></span></legend>
 			<table class="admintable">
 			 <tbody>
 	         <tr>
@@ -91,9 +91,9 @@ public function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-40">
+	<div class="col width-40 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('OPTIONS'); ?></legend>
+			<legend><span><?php echo JText::_('OPTIONS'); ?></span></legend>
 			<table class="admintable">
 			 <tbody>
 			 <tr>

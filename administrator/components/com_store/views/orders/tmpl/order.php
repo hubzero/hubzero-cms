@@ -67,12 +67,12 @@ public function submitbutton(pressbutton)
 
 }
 </script>
-<form action="index.php" method="post" name="adminForm">
-	<div class="col width-60">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 
 <?php if (isset($this->row->id)) { ?>
-			<legend><?php echo JText::_('ORDER').' #'.$this->row->id.' '.JText::_('DETAILS'); ?></legend>
+			<legend><span><?php echo JText::_('ORDER').' #'.$this->row->id.' '.JText::_('DETAILS'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
@@ -116,9 +116,9 @@ public function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-40">
+	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('PROCESS_ORDER'); ?></legend>
+			<legend><span><?php echo JText::_('PROCESS_ORDER'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>

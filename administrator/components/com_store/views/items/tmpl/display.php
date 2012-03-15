@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'addedit.png');
+JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'store.png');
 JToolBarHelper::preferences('com_store', '550');
 
 ?>
@@ -47,29 +47,26 @@ public function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-<form action="index.php" method="post" name="adminForm">
-	<fieldset id="filter">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
 		<?php echo count($this->rows); ?> <?php echo JText::_('ITEMS_DISPLAYED'); ?>.
 
-		<label>
-			<?php echo JText::_('FILTERBY'); ?>:
-			<select name="filterby" onchange="document.adminForm.submit( );">
-				<option value="available"<?php if ($this->filters['filterby'] == 'available') { echo ' selected="selected"'; } ?>><?php echo JText::_('INSTORE_ITEMS'); ?></option>
-	    		<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('PUBLISHED'); ?></option>
-				<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL_ITEMS'); ?></option>
-			</select>
-		</label> 
+		<label><?php echo JText::_('FILTERBY'); ?>:</label> 
+		<select name="filterby" onchange="document.adminForm.submit( );">
+			<option value="available"<?php if ($this->filters['filterby'] == 'available') { echo ' selected="selected"'; } ?>><?php echo JText::_('INSTORE_ITEMS'); ?></option>
+	    	<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('PUBLISHED'); ?></option>
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL_ITEMS'); ?></option>
+		</select>
 
-		<label>
-			<?php echo JText::_('SORTBY'); ?>:
-			<select name="sortby" onchange="document.adminForm.submit( );">
-	    		<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('Lowest price'); ?></option>
-	    		<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('Highlest price'); ?></option>
-				<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Date added')); ?></option>
-	    		<option value="category"<?php if ($this->filters['sortby'] == 'category') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Category')); ?></option>			
-			</select>
-		</label> 
+		<label><?php echo JText::_('SORTBY'); ?>:</label> 
+		<select name="sortby" onchange="document.adminForm.submit( );">
+	    	<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('Lowest price'); ?></option>
+	    	<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('Highlest price'); ?></option>
+			<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Date added')); ?></option>
+	    	<option value="category"<?php if ($this->filters['sortby'] == 'category') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Category')); ?></option>			
+		</select>
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -101,13 +98,13 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	switch ($row->available)
 	{
 		case '1':
-			$a_class = 'published';
+			$a_class = 'publish';
 			$a_task = 'unavailable';
 			$a_alt = JText::_('TIP_MARK_UNAVAIL');
 			$a_img = 'publish_g.png';
 			break;
 		case '0':
-			$a_class = 'unpublished';
+			$a_class = 'unpublish';
 			$a_task = 'available';
 			$a_alt = JText::_('TIP_MARK_AVAIL');
 			$a_img = 'publish_x.png';
@@ -116,13 +113,13 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	switch ($row->published)
 	{
 		case '1':
-			$p_class = 'published';
+			$p_class = 'publish';
 			$p_task = 'unpublish';
 			$p_alt = JText::_('TIP_REMOVE_ITEM');
 			$p_img = 'publish_g.png';
 			break;
 		case '0':
-			$p_class = 'unpublished';
+			$p_class = 'unpublish';
 			$p_task = 'publish';
 			$p_alt = JText::_('TIP_ADD_ITEM');
 			$p_img = 'publish_x.png';
@@ -137,13 +134,13 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><?php echo $row->price ?></td>
 				<td><?php echo ($row->allorders) ? $row->allorders : '0';  ?></td>
 				<td>
-					<a class="<?php echo $a_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>">
-						<img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" />
+					<a class="state <?php echo $a_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>">
+						<span><img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" /></span>
 					</a>
 				</td>
 				<td>
-					<a class="<?php echo $p_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>">
-						<img src="images/<?php echo $p_img; ?>" width="16" height="16" border="0" alt="<?php echo $p_alt; ?>" />
+					<a class="state <?php echo $p_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>">
+						<span><img src="images/<?php echo $p_img; ?>" width="16" height="16" border="0" alt="<?php echo $p_alt; ?>" /></span>
 					</a>
 				</td>
 			</tr>

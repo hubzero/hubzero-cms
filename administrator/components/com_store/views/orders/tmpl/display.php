@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'addedit.png');
+JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'store.png');
 JToolBarHelper::preferences('com_store', '550');
 
 ?>
@@ -47,28 +47,26 @@ public function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-<form action="index.php" method="post" name="adminForm">
-	<fieldset id="filter">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
 	    <?php echo count($this->rows); ?> <?php echo JText::_('ORDERS_DISPLAYED'); ?>.
-		<label>
-			<?php echo JText::_('FILTERBY'); ?>:
-			<select name="filterby" onchange="document.adminForm.submit( );">
-				<option value="new"<?php if ($this->filters['filterby'] == 'new') { echo ' selected="selected"'; } ?>><?php echo JText::_('NEW'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
-				<option value="processed"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMPLETED'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
-	    		<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('CANCELLED'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
-				<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
-			</select>
-		</label> 
+	
+		<label><?php echo JText::_('FILTERBY'); ?>:</label> 
+		<select name="filterby" onchange="document.adminForm.submit( );">
+			<option value="new"<?php if ($this->filters['filterby'] == 'new') { echo ' selected="selected"'; } ?>><?php echo JText::_('NEW'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
+			<option value="processed"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMPLETED'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
+	    	<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('CANCELLED'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
+		</select>
 
-		<label>
-			<?php echo JText::_('SORTBY'); ?>:
-			<select name="sortby" onchange="document.adminForm.submit( );">
-	    		<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo JText::_('ORDER_DATE'); ?></option>
-				<option value="m.status_changed"<?php if ($this->filters['sortby'] == 'm.status_changed') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_STATUS_CHANGE'); ?></option>
-				<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('ORDER')).' '.strtoupper(JText::_('ID')); ?></option>			
-			</select>
-		</label> 
+		<label><?php echo JText::_('SORTBY'); ?>:</label> 
+		<select name="sortby" onchange="document.adminForm.submit( );">
+	    	<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo JText::_('ORDER_DATE'); ?></option>
+			<option value="m.status_changed"<?php if ($this->filters['sortby'] == 'm.status_changed') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_STATUS_CHANGE'); ?></option>
+			<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('ORDER')).' '.strtoupper(JText::_('ID')); ?></option>			
+		</select>
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
