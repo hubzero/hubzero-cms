@@ -234,6 +234,8 @@ class GroupsControllerManage extends Hubzero_Controller
 	 */
 	public function editTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 

@@ -33,22 +33,22 @@ $database =& JFactory::getDBO();
 $hidecheckbox = 0;
 
 $html  = '<fieldset>'."\n";
+$html .= "\t".'<table class="adminlist">'."\n";
 switch ($this->table)
 {
 	case 'invitees':
-		$html .= "\t\t".'<legend>'.JText::_('GROUPS_TBL_CAPTION_INVITEES').'</legend>'."\n";
+		$html .= "\t\t".'<caption>'.JText::_('INVITEES').'</caption>'."\n";
 		break;
 	case 'pending':
-		$html .= "\t\t".'<legend>'.JText::_('GROUPS_TBL_CAPTION_PENDING').'</legend>'."\n";
+		$html .= "\t\t".'<caption>'.JText::_('PENDING').'</caption>'."\n";
 		break;
 	case 'managers':
-		$html .= "\t\t".'<legend>'.JText::_('GROUPS_TBL_CAPTION_MANAGERS').'</legend>'."\n";
+		$html .= "\t\t".'<caption>'.JText::_('MANAGERS').'</caption>'."\n";
 		break;
 	case 'members':
-		$html .= "\t\t".'<legend>'.JText::_('GROUPS_TBL_CAPTION_MEMBERS').'</legend>'."\n";
+		$html .= "\t\t".'<caption>'.JText::_('MEMBERS').'</caption>'."\n";
 		break;
 }
-$html .= "\t".'<table class="adminlist">'."\n";
 $html .= "\t\t".'<thead>'."\n";
 $html .= "\t\t\t".'<tr>'."\n";
 $html .= "\t\t\t\t".'<th>'.JText::_('NAME').'</th>'."\n";
@@ -167,6 +167,6 @@ if ($this->groupusers) {
 }
 $html .= "\t\t".'</tbody>'."\n";
 $html .= "\t".'</table>'."\n";
-$html .= '</fieldset><br /><br />'."\n";
+$html .= '</fieldset>'."\n";
 
 echo $html;

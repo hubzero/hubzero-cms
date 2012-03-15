@@ -30,25 +30,35 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('GROUPS') . ': <small><small>[ ' . JText::_('System') . ' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('COM_GROUPS') . ': <small><small>[ ' . JText::_('System') . ' ]</small></small>', 'groups.png');
 //JToolBarHelper::cancel();
 ?>
-
-<dl> 
-	<dt>LDAP Connection:</dt>
-	<dd><?php echo $this->status['ldap']; ?></dd>
-	
-	<dt>LDAP organizationalUnit "ou=groups" exists:</dt>
-	<dd><?php echo $this->status['ldap_groupou']; ?></dd>
-	
-	<dt>LDAP objectClass "hubGroup" exists:</dt>
-	<dd><?php echo $this->status['ldap_hubgroup']; ?></dd>
-	
-	<dt>LDAP objectClass "posixGroup" exists:</dt>
-	<dd><?php echo $this->status['ldap_posixgroup']; ?></dd>
-</dl>
-
-<ul>
-	<li><a href="index.php?option=com_groups&amp;controller=<?php echo $this->controller; ?>&amp;task=exporttoldap">Export to LDAP</a></li>
-	<li><a href="index.php?option=com_groups&amp;controller=<?php echo $this->controller; ?>&amp;task=importldap">Import from LDAP</a></li>
-</ul>
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+	<div class="col width-70 fltlft">
+		<table class="adminlist">
+			<tbody>
+				<tr>
+					<th>LDAP Connection:</th>
+					<td><span class="state <?php echo $this->status['ldap']; ?>"><span><?php echo $this->status['ldap']; ?></span></span></td>
+				</tr>
+				<tr>
+					<th>LDAP organizationalUnit "ou=groups" exists:</th>
+					<td><span class="state <?php echo $this->status['ldap_groupou']; ?>"><span><?php echo $this->status['ldap_groupou']; ?></span></span></td>
+				</tr>
+				<tr>
+					<th>LDAP objectClass "hubGroup" exists:</th>
+					<td><span class="state <?php echo $this->status['ldap_hubgroup']; ?>"><span><?php echo $this->status['ldap_hubgroup']; ?></span></span></td>
+				</tr>
+				<tr>
+					<th>LDAP objectClass "posixGroup" exists:</th>
+					<td><span class="state <?php echo $this->status['ldap_posixgroup']; ?>"><span><?php echo $this->status['ldap_posixgroup']; ?></span></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col width-30 fltlft">
+		<p><a class="modal-button" href="index.php?option=com_groups&amp;controller=<?php echo $this->controller; ?>&amp;task=exporttoldap">Export to LDAP</a></p>
+		<p><a class="modal-button" href="index.php?option=com_groups&amp;controller=<?php echo $this->controller; ?>&amp;task=importldap">Import from LDAP</a></p>
+	</div>
+	<div class="clr"></div>
+</form>

@@ -46,24 +46,23 @@ if ($this->getError()) {
 	echo '<p style="color: #c00;"><strong>'.$this->getError().'</p>';
 }
 ?>
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" method="post">
-	<fieldset>
-		<label>
-			<?php echo JText::_('ADD_USERNAME'); ?>
-			<input type="text" name="usernames" value="" />
-		</label> 
-		<label>
-			<?php echo JText::_('TO'); ?> 
-			<select name="tbl">
-				<option value="invitees"><?php echo JText::_('INVITEES'); ?></option>
-				<option value="applicants"><?php echo JText::_('APPLICANTS'); ?></option>
-				<option value="members" selected="selected"><?php echo JText::_('MEMBERS'); ?></option>
-				<option value="managers"><?php echo JText::_('MANAGERS'); ?></option>
-			</select>
-		</label>
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" id="adminForm" method="post">
+	<fieldset id="filter-bar">
+		<label for="filter-usernames"><?php echo JText::_('ADD_USERNAME'); ?></label> 
+		<input type="text" name="usernames" class="input-username" id="filter-usernames" value="" />
+		
+		<label for="filter-tbl"><?php echo JText::_('TO'); ?></label> 
+		<select name="tbl" id="filter-tbl">
+			<option value="invitees"><?php echo JText::_('INVITEES'); ?></option>
+			<option value="applicants"><?php echo JText::_('APPLICANTS'); ?></option>
+			<option value="members" selected="selected"><?php echo JText::_('MEMBERS'); ?></option>
+			<option value="managers"><?php echo JText::_('MANAGERS'); ?></option>
+		</select>
+		
 		<input type="submit" name="action" value="<?php echo JText::_('GROUP_MEMBER_ADD'); ?>" />
 	</fieldset>
-	<br />
+	<div class="clr"></div>
+
 <?php
 	$view = new JView( array('name'=>'manage', 'layout'=>'table') );
 	$view->option = $this->option;
