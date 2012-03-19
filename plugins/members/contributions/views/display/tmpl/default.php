@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3>
+<h3 class="section-header">
 	<a name="contributions"></a>
 	<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS'); ?>
 </h3>
@@ -62,7 +62,7 @@ foreach ($this->cats as $cat)
 			$blob = $cat['category'];
 		}
 		// Build the HTML
-		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=contributions&area='. urlencode(stripslashes($blob)).'&sort='.$this->sort) .'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
+		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=contributions&area='. urlencode(stripslashes($blob)).'&sort='.$this->sort) .'">' . stripslashes($cat['title']) . ' ('.$cat['total'].')</a>';
 		// Are there sub-categories?
 		if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 			// An array for storing the HTML we make
@@ -83,7 +83,7 @@ foreach ($this->cats as $cat)
 						$blob = $subcat['category'];
 					}
 					// Build the HTML
-					$k[] = "\t\t\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=contributions&area='. urlencode(stripslashes($blob)).'&sort='.$this->sort) .'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
+					$k[] = "\t\t\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=contributions&area='. urlencode(stripslashes($blob)).'&sort='.$this->sort) .'">' . stripslashes($subcat['title']) . ' ('.$subcat['total'].')</a></li>';
 				}
 			}
 			// Do we actually have any links?
