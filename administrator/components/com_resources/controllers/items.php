@@ -605,6 +605,8 @@ class ResourcesControllerItems extends Hubzero_Controller
 	 */
 	public function editTask($isnew=0)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
 		$this->view->isnew = $isnew;
 
 		// Get the resource component config
@@ -756,7 +758,16 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$authnames = $this->database->loadObjectList();
 
 			// Build <select> of contributors
-			$this->view->lists['authors'] = ResourcesHtml::selectAuthors($members, $authnames, $this->view->attribs, $this->_option);
+			$authorslist = new JView(array(
+				'name' => $this->_controller, 
+				'layout' => 'authors'
+			));
+			$authorslist->authnames = $authnames;
+			$authorslist->attribs = $this->view->attribs;
+			$authorslist->option = $this->_option;
+			$authorslist->roles = $rt->getRolesForType($this->view->row->type);
+			
+			$this->view->lists['authors'] = $authorslist->loadTemplate(); //ResourcesHtml::selectAuthors($members, $authnames, $this->view->attribs, $this->_option);
 
 			// Get the tags on this item
 			$rt = new ResourcesTags($this->database);
@@ -1693,25 +1704,35 @@ class ResourcesControllerItems extends Hubzero_Controller
 	 */
 	public function authorTask()
 	{
-		$u = JRequest::getInt('u', 0);
+		$this->view->id = JRequest::getInt('u', 0);
+		$this->view->role = JRequest::getVar('role', '');
+		$rid = JRequest::getInt('rid', 0);
 
 		// Get the member's info
 		ximport('Hubzero_User_Profile');
 		$profile = new Hubzero_User_Profile();
-		$profile->load($u);
+		$profile->load($this->view->id);
 
 		if (!$profile->get('name'))
 		{
-			$name  = $profile->get('givenName') . ' ';
-			$name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
-			$name .= $profile->get('surname');
+			$this->view->name  = $profile->get('givenName') . ' ';
+			$this->view->name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
+			$this->view->name .= $profile->get('surname');
 		}
 		else
 		{
-			$name  = $profile->get('name');
+			$this->view->name  = $profile->get('name');
 		}
-
-		echo $name . ' (' . $profile->get('uidNumber') . ')';
+		$this->view->org = $profile->get('organization');
+		
+		$row = new ResourcesResource($this->database);
+		$row->load($rid);
+		
+		$rt = new ResourcesType($this->database);
+		
+		$this->view->roles = $rt->getRolesForType($row->type);
+		
+		$this->view->display();
 	}
 }
 

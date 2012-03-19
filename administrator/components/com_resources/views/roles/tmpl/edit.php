@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 		</fieldset>
-		<fieldset>
+		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Types'); ?></span></legend>
 
 			<table class="admintable">
@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<input type="checkbox" name="types[]" id="type-<?php echo $type->id; ?>"<?php if (in_array($type->id, $this->row->types)) { echo ' checked="checked"'; } ?> value="<?php echo $type->id; ?>" /> 
-							<label for="type-<?php echo $type->id; ?>"><?php echo $this->escape($type->type); ?></label>
+							<label for="type-<?php echo $type->id; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></label>
 						</td>
 					</tr>
 <?php

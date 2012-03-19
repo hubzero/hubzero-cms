@@ -59,33 +59,29 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
-	<fieldset id="filter">
-		<label for="search">
-			<?php echo JText::_('Search'); ?>: 
-			<input type="text" name="search" id="search" value="<?php echo $this->filters['search']; ?>" />
-		</label>
+<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('Search'); ?>: </label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
 	
-		<label for="status">
-			<?php echo JText::_('Status'); ?>:
-			<select name="status" id="status">
-				<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('[ all ]'); ?></option>
-				<option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Draft (user created)'); ?></option>
-				<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Draft (internal)'); ?></option>
-				<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Pending'); ?></option>
-				<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
-				<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
-				<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Deleted'); ?></option>
-			</select>
-		</label>
+		<label for="status"><?php echo JText::_('Status'); ?>:</label>
+		<select name="status" id="status">
+			<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('[ all ]'); ?></option>
+			<option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Draft (user created)'); ?></option>
+			<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Draft (internal)'); ?></option>
+			<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Pending'); ?></option>
+			<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
+			<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
+			<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Deleted'); ?></option>
+		</select>
+		
 	
-		<label for="type">
-			<?php echo JText::_('Type'); ?>:
-			<?php echo ResourcesHtml::selectType($this->types, 'type', $this->filters['type'], '[ all types ]', '', '', ''); ?>
-		</label>
+		<label for="type"><?php echo JText::_('Type'); ?>:</label>
+		<?php echo ResourcesHtml::selectType($this->types, 'type', $this->filters['type'], '[ all types ]', '', '', ''); ?>
 	
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist" summary="<?php echo JText::_('A list of resources and their types, published status, access levels, and other relevant data'); ?>">
 		<thead>
@@ -159,7 +155,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			break;
 		case 3:
 			$alt   = 'New';
-			$class = 'new';
+			$class = 'submitted';
 			$task  = 'publish';
 			break;
 		case 4:
@@ -241,7 +237,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td>
-					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
@@ -280,7 +276,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<?php ResourcesHtml::statusKey(); ?>
+	<p><?php echo JText::_('Published status: (click icon above to toggle state)'); ?></p>
+	<ul class="key">
+		<li class="draftinternal"><span>draft (internal)</span> = <?php echo JText::_('Draft (internal production)'); ?></li>
+		<li class="draftexternal"><span>draft (external)</span> = <?php echo JText::_('Draft (user created)'); ?></li>
+		<li class="submitted"><span>new</span> = <?php echo JText::_('New, awaiting approval'); ?></li>
+		<li class="pending"><span>pending</span> = <?php echo JText::_('Published, but is Coming'); ?></li>
+		<li class="published"><span>current</span> = <?php echo JText::_('Published and is Current'); ?></li>
+		<li class="expired"><span>finished</span> = <?php echo JText::_('Published, but has Finished'); ?></li>
+		<li class="unpublished"><span>unpublished</span> = <?php echo JText::_('Unpublished'); ?></li>
+		<li class="deleted"><span>deleted</span> = <?php echo JText::_('Delete/Removed'); ?></li>
+	</ul>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

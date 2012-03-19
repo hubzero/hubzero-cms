@@ -42,40 +42,24 @@ HUB.Resources = {
 			return;
 		}
 
-		/*var selected = authid.selectedIndex;
-		var selectedId = authid.options[selected].value;
-		var selectedText = authid.options[selected].text;*/
 		if (!authid.value) {
 			return;
 		}
 		
 		var selectedr = $('authrole').selectedIndex;
 		var selectedRole = $('authrole').options[selectedr].value;
-		
-		var selected = authid.value;
 		var selectedId = authid.value;
-		var selectedText = 'Author: '+selectedId;
-
-		var role = '<select name="'+ selectedId +'_role"><option value="">Role...</option><option value="submitter"';
-		if (selectedRole == 'submitter') {
-			role += ' selected="selected"';
-		}
-		role += '>submitter</option><option value="editor"';
-		if (selectedRole == 'editor') {
-			role += ' selected="selected"';
-		}
-		role += '>editor</option></select>';
-		role += '<input type="hidden" name="'+ selectedId +'_name" value="" />';
 
 		// create the LI element and attach it to the UL
-		var newlistitem = new Element('li',{'id': 'author_' + selectedId}).setHTML(
-				'<span class="handle">DRAG HERE</span><span id="n_a_' + selectedId + '">' + selectedText + '</span> [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;" title="Remove this contributor">remove</a> ]<br />Affiliation: <input type="text" name="'+ selectedId +'_organization" value="" />'+
-				role
-			);
+		var newlistitem = new Element('li',{
+			'id': 'author_' + selectedId
+		});
 
 		authorlist.appendChild(newlistitem);
 
-		var myAjax = new Ajax('index.php?option=com_resources&controller=items&task=author&no_html=1&u='+selectedText,{update:'n_a_' + selectedId}).request();
+		var myAjax = new Ajax('index.php?option=com_resources&controller=items&task=author&no_html=1&u='+selectedId+'&role='+selectedRole+'&rid='+$('id').value,{
+			update:'author_' + selectedId
+		}).request();
 
 		// re-apply the sorting script so the new LIst item becoems sortable
 		authsorts.reinitialize();

@@ -43,7 +43,7 @@
 	.draft,
 	.draftinternal,
 	.draftexternal,
-	.new,
+	.submitted,
 	.check,
 	.published,
 	.pending,
@@ -60,7 +60,7 @@
 	.draft span,
 	.draftinternal span,
 	.draftexternal span,
-	.new span,
+	.submitted span,
 	.hasassoc span,
 	.noassoc span,
 	.published span,
@@ -78,7 +78,7 @@
 	.expired { background: url("images/check_star.gif") 0 0 no-repeat; }
 	.unpublished { background: url("images/minus.gif") 0 0 no-repeat; }
 	.upload { background: url("images/upload.gif") 0 0 no-repeat; }
-	.new { background: url("images/pending.gif") 0 0 no-repeat; }
+	.submitted { background: url("images/pending.gif") 0 0 no-repeat; }
 	.draftexternal, .draft { background: url("images/draft_external.gif") 0 0 no-repeat; }
 	.draftinternal { background: url("images/draft_internal.gif") 0 0 no-repeat; }
 	.deleted { background: url("images/deleted.gif") 0 0 no-repeat; }
@@ -97,20 +97,20 @@
 	.hasassoc:hover,
 	.noassoc:hover { border: none; }
 
-	.key {
+	ul.key {
 		margin: 0;
 		padding: 0;
 		list-style: none;
 		}
-	.key li.draft,
-	.key li.draftinternal,
-	.key li.draftexternal,
-	.key li.new,
-	.key li.published,
-	.key li.pending,
-	.key li.expired,
-	.key li.deleted,
-	.key li.unpublished { 
+	ul.key li.draft,
+	ul.key li.draftinternal,
+	ul.key li.draftexternal,
+	ul.key li.submitted,
+	ul.key li.published,
+	ul.key li.pending,
+	ul.key li.expired,
+	ul.key li.deleted,
+	ul.key li.unpublished { 
 		margin: 0;
 		padding-left: 18px;
 		width: auto;

@@ -199,66 +199,60 @@ function popratings()
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="resourceForm" class="editform">
-	<table cellspacing="0" cellpadding="0" border="0" width="100%">
-		<tr>
-			<td valign="top">
-
-		<table class="adminform">
+	<div class="col width-60 fltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+		<table class="admintable">
 			<tbody>
 				<tr>
-					<td class="key"><label for="title">Title:</label></td>
+					<th class="key"><label for="title">Title:</label></th>
 					<td colspan="3"><input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo htmlentities(stripslashes($this->row->title), ENT_COMPAT, 'UTF-8', ENT_QUOTES); ?>" /></td>
 				</tr>
 				<tr>
-					<td class="key"><label>Type:</label></td>
+					<th class="key"><label>Type:</label></th>
 					<td><?php echo $this->lists['type']; ?></td>
 <?php if ($this->row->standalone == 1) { ?>
-					<td class="key"><label for="alias">Alias:</label></td>
+					<th class="key"><label for="alias">Alias:</label></th>
 					<td><input type="text" name="alias" id="alias" size="25" maxlength="250" value="<?php echo stripslashes($this->row->alias); ?>" /></td>
 				</tr>
 				<tr>
-					<td class="key"><label for="attrib[location]">Location:</label></td>
+					<th class="key"><label for="attrib[location]">Location:</label></th>
 					<td><input type="text" name="attrib[location]" id="attrib[location]" size="25" maxlength="250" value="<?php echo $this->attribs->get( 'location', '' ); ?>" /></td>
-					<td class="key"><label for="attrib[timeof]">Time:</label></td>
+					<th class="key"><label for="attrib[timeof]">Time:</label></th>
 					<td><input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo $this->attribs->get( 'timeof', '' ); ?>" /></td>
 				</tr>
 <?php } else { ?>
-					<td class="key"><label>Logical Type:</label></td>
+					<th class="key"><label>Logical Type:</label></th>
 					<td><?php echo $this->lists['logical_type']; ?><input type="hidden" name="alias" value="" /></td>
 				</tr>
 				<tr>
-					<td class="key"><label for="path">File/URL:</label></td>
+					<th class="key"><label for="path">File/URL:</label></th>
 					<td colspan="3"><input type="text" name="path" id="path" size="60" maxlength="250" value="<?php echo $this->row->path; ?>" /></td>
 				</tr>
 				<!-- <tr>
-					<td class="key"><label for="attrib[exclude]">Exclude from menu:</label></td>
+					<th class="key"><label for="attrib[exclude]">Exclude from menu:</label></th>
 					<td><input type="checkbox" name="attrib[exclude]" id="attrib[exclude]" value="1"<?php if($this->attribs->get( 'exclude', '' ) == 1) { echo ' checked="checked"'; } ?> /></td>
 				</tr> -->
 				<tr>
-					<td class="key"><label for="attrib[duration]">Duration:</label></td>
+					<th class="key"><label for="attrib[duration]">Duration:</label></th>
 					<td colspan="3"><input type="text" name="attrib[duration]" id="attrib[duration]" size="60" maxlength="100" value="<?php echo $this->attribs->get( 'duration', '' ); ?>" /></td>
 				</tr>
 				<tr>
-					<td class="key"><label for="attrib[width]">Width:</label></td>
+					<th class="key"><label for="attrib[width]">Width:</label></th>
 					<td><input type="text" name="attrib[width]" id="attrib[width]" size="5" maxlength="250" value="<?php echo $this->attribs->get( 'width', '' ); ?>" /></td>
-					<td class="key"><label for="attrib[height]">Height:</label></td>
+					<th class="key"><label for="attrib[height]">Height:</label></th>
 					<td><input type="text" name="attrib[height]" id="attrib[height]" size="5" maxlength="250" value="<?php echo $this->attribs->get( 'height', '' ); ?>" /></td>
 				</tr>
 				<tr>
-					<td class="key"><label for="attrib[attributes]">Attributes:</label></td>
+					<th class="key"><label for="attrib[attributes]">Attributes:</label></th>
 					<td colspan="3">
 						<input type="text" name="attrib[attributes]" id="attrib[attributes]" size="60" maxlength="100" value="<?php echo $this->attribs->get( 'attributes', '' ); ?>" /><br />
 						<span class="hint">code:silicon, class:one two three, one:more</span>
 					</td>
 				</tr>
 <?php } ?>
-			</tbody>
-		</table>
-		
-		<table class="adminform">
-			<tbody>
 				<tr>
-					<td>
+					<td colspan="4">
 						<label>Intro Text:</label><br />
 						<?php
 						$editor =& JFactory::getEditor();
@@ -267,7 +261,7 @@ function popratings()
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td colspan="4">
 						<label>Main Text: (optional)</label><br />
 						<?php
 						echo $editor->display('fulltext', htmlentities(stripslashes($this->row->fulltext), ENT_COMPAT, 'UTF-8'), '100%', '300px', '45', '10', false);
@@ -276,77 +270,112 @@ function popratings()
 				</tr>
 			</tbody>
 		</table>
-		<!-- </fieldset> -->
+		</fieldset>
 <?php if ($this->row->standalone == 1) { ?>
-		<!-- <fieldset>
-			<legend><?php echo JText::_('Custom fields'); ?></legend> -->
-		<table class="adminform">
-			<caption style="text-align: left; font-weight: bold;"><?php echo JText::_('Custom fields'); ?></caption>
-			<tbody>
-				<tr>
-					<td id="resource-custom-fields">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Custom fields'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td id="resource-custom-fields">
 <?php
-$i = 3;
-
-/*foreach ($fields as $field)
-{
-$i++;
-$tagcontent = end($field);
+			$elements = new ResourcesElements($data, $type->customFields);
+			echo $elements->render();
 ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+<?php } ?>
+	</div>
+	<div class="col width-40 fltrt">
+<?php if ($this->row->id) { ?>
+		<table class="meta" summary="<?php echo JText::_('Metadata for this entry'); ?>">
 			<tr>
+				<th><?php echo JText::_('ID:'); ?></th>
+				<td><?php echo $this->row->id; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo JText::_('Created:'); ?></th>
 				<td>
-					<label><?php echo stripslashes($field[1]); ?>: <?php echo ($field[3] == 1) ? '<span class="required">'.JText::_('REQUIRED').'</span>': ''; ?></label><br />
-					<?php if ($field[2] == 'text') { ?>
-						<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" value="<?php echo htmlentities(stripslashes($tagcontent), ENT_COMPAT, 'UTF-8'); ?>" />
-					<?php
-					} else {
-						echo $editor->display('nbtag['.$field[0].']', htmlentities(stripslashes($tagcontent), ENT_COMPAT, 'UTF-8'), '100%', '100px', '45', '10', false);
-					}
-					?>
+					<?php echo $this->row->created; ?>
 				</td>
 			</tr>
-			
-<?php 
-}*/
-$elements = new ResourcesElements($data, $type->customFields);
-echo $elements->render();
-?>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<!-- </fieldset> -->
+			<tr>
+				<th><?php echo JText::_('Created By:'); ?></th>
+				<td>
+					<?php echo $this->escape($this->row->created_by_name); ?>
+					<input type="hidden" name="created_by_id" value="<?php echo $this->row->created_by; ?>" />
+				</td>
+			</tr>
+<?php if ($this->row->modified != '0000-00-00 00:00:00') { ?>
+			<tr>
+				<th><?php echo JText::_('Modified:'); ?></th>
+				<td>
+					<?php echo $this->row->modified; ?>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo JText::_('Modified By:'); ?></th>
+				<td>
+					<?php echo $this->escape($this->row->modified_by_name); ?>
+					<input type="hidden" name="modified_by_id" value="<?php echo $this->row->modified_by; ?>" />
+				</td>
+			</tr>
 <?php } ?>
-	</td>
-	<td valign="top" width="320" style="padding: 7px 0 0 5px">
-
-		<!-- <table width="100%" style="border: 1px dashed silver; padding: 5px; margin-bottom: 10px;">
-			<tbody>
-				<tr>
-					<td><strong>Resource ID:</strong></td>
-					<td><?php echo $this->row->id; ?></td>
-				</tr>
-
-			</tbody>
-		</table> -->
 <?php if ($this->row->standalone == 1) { ?>
-		<fieldset>
-			<legend>Contributors</legend>
-			<?php echo $this->lists['authors']; ?>
+			<tr>
+				<th>Ranking:</th>
+				<td>
+					<?php echo $this->row->ranking; ?>/10
+					<?php if ($this->row->ranking != '0') { ?>
+						<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" /> 
+					<?php } ?>
+				</td>
+			</tr>
+			<tr>
+				<th>Rating:</th>
+				<td>
+					<?php echo $this->row->rating.'/5.0 ('.$this->row->times_rated.' reviews)'; ?>
+					<?php if ( $this->row->rating != '0.0' ) { ?>
+						<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" /> 
+						<a onclick="popratings();" href="#">View ratings</a>
+					<?php } ?>
+				</td>
+			</tr>
+<?php } ?>
+		</table>
+<?php } ?>
+
+<?php if ($this->row->standalone == 1) { ?>
+		<fieldset class="adminform">
+			<legend><span>Contributors</span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td id="resource-authors">
+							<?php echo $this->lists['authors']; ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</fieldset>
 <?php }
 
 		echo $tabs->startPane("content-pane");
 		echo $tabs->startPanel('Publishing','publish-page');
 ?>
-		<table width="100%" class="paramlist admintable" cellspacing="1">
+		<table class="paramlist admintable">
 			<tbody>
 				<tr>
-					<td class="paramlist_key"><label>Standalone:</label></td>
+					<td class="paramlist_key"><label>Standalone:</label></th>
 					<td><input type="checkbox" name="standalone" value="1" <?php echo ($this->row->standalone ==1) ? 'checked="checked"' : ''; ?> /> appears in searches, lists</td>
 				</tr>
 				<tr>
-					<td class="paramlist_key"><label>Status:</label></td>
+					<td class="paramlist_key"><label>Status:</label></th>
 					<td>
 						<select name="published">
 							<option value="2"<?php echo ($this->row->published == 2) ? ' selected="selected"' : ''; ?>>Draft (user created)</option>
@@ -360,34 +389,27 @@ echo $elements->render();
 				</tr>
 <?php if ($this->row->standalone == 1) { ?>
 				<tr>
-					<td class="paramlist_key"><label>Group:</label></td>
+					<td class="paramlist_key"><label>Group:</label></th>
 					<td><?php echo $this->lists['groups']; ?></td>
 				</tr>
 <?php } ?>
 				<tr>
-					<td class="paramlist_key"><label>Access Level:</label></td>
+					<td class="paramlist_key"><label>Access Level:</label></th>
 					<td><?php echo $this->lists['access']; ?></td>
 				</tr>
 				<tr>
-					<td class="paramlist_key"><label>Change Creator:</label></td>
+					<td class="paramlist_key"><label>Change Creator:</label></th>
 					<td><?php echo $this->lists['created_by']; ?></td>
 				</tr>
-				<!-- <tr>
-					<td class="paramlist_key"><label for="created">Created Date:</label></td>
-					<td>
-						<input type="text" name="created" id="created" size="19" maxlength="19" value="<?php echo $this->row->created; ?>" />
-						<input type="reset" name="reset" id="reset" onclick="return showCalendar('created', 'y-mm-dd');" value="..." />
-					</td>
-				</tr> -->
 <?php if ($this->row->standalone == 1) { ?>
 				<tr>
-					<td class="paramlist_key"><label for="publish_up">Start Publishing:</label></td>
+					<td class="paramlist_key"><label for="publish_up">Start Publishing:</label></th>
 					<td>
 						<?php echo JHTML::_('calendar', $this->row->publish_up, 'publish_up', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 					</td>
 				</tr>
 				<tr>
-					<td class="paramlist_key"><label for="publish_down">Finish Publishing:</label></td>
+					<td class="paramlist_key"><label for="publish_down">Finish Publishing:</label></th>
 					<td>
 						<?php echo JHTML::_('calendar', $this->row->publish_down, 'publish_down', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 					</td>
@@ -402,35 +424,6 @@ echo $elements->render();
 						<?php } ?>
 					</td>
 				</tr>
-				<tr>
-					<td class="paramlist_key"><strong>Created:</strong></td>
-					<td><input type="hidden" name="created_by_id" value="<?php echo $this->row->created_by; ?>" /><?php echo ($this->row->created != '0000-00-00 00:00:00') ? $this->row->created.'</td></tr><tr><td class="paramlist_key"><strong>Created By:</strong></td><td>'.$this->row->created_by_name : 'New resource'; ?></td>
-				</tr>
-				<tr>
-					<td class="paramlist_key"><strong>Modified:</strong></td>
-					<td><input type="hidden" name="modified_by_id" value="<?php echo $this->row->modified_by; ?>" /><?php echo ($this->row->modified != '0000-00-00 00:00:00') ? $this->row->modified.'</td></tr><tr><td class="paramlist_key"><strong>Modified By:</strong></td><td>'.$this->row->modified_by_name : 'Not modified';?></td>
-				</tr>
-<?php if ($this->row->standalone == 1) { ?>
-				<tr>
-					<td class="paramlist_key"><strong>Ranking:</strong></td>
-					<td>
-						<?php echo $this->row->ranking; ?>/10
-						<?php if ($this->row->ranking != '0') { ?>
-							<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" /> 
-						<?php } ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="paramlist_key"><strong>Rating:</strong></td>
-					<td>
-						<?php echo $this->row->rating.'/5.0 ('.$this->row->times_rated.' reviews)'; ?>
-						<?php if ( $this->row->rating != '0.0' ) { ?>
-							<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" /> 
-							<a onclick="popratings();" href="#">View ratings</a>
-						<?php } ?>
-					</td>
-				</tr>
-<?php } ?>
 			</tbody>
 		</table>
 <?php
@@ -490,17 +483,15 @@ echo $elements->render();
 		echo $tabs->endPane();
 ?>
 
-			</td>
-		</tr>
-	</table>
+	</div>
+	<div class="clr"></div>
 	
-	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="id" id="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 	<input type="hidden" name="isnew" value="<?php echo $this->isnew; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	
-	<div class="clr"></div>
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
