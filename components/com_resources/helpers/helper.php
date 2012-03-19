@@ -585,7 +585,7 @@ class ResourcesHelper extends JObject
 		}
 
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-
+        $database =& JFactory::getDBO();
 		$rt = new ResourcesTags( $database );
 		$this->tags = $rt->get_tags_on_object($this->_id, 0, 0, $tagger_id, $strength, $admin);
 		return $this->tags;

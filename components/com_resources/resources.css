@@ -705,6 +705,14 @@
 		margin-left: 1.5em;
 		list-style: disc;
 		}
+	.resource td #authorslist,
+	.resource td #authorslist p,
+	.resource td ul:first-child,
+	.resource td ul:first-child li:first-child {
+		margin-top: 0;
+		padding-right: 0;
+		line-height: 1.6em;
+	}
 	.resource .citations {
 		border: 2px solid #e5e5e5;
 		padding: 0 1em;
