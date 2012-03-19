@@ -247,29 +247,29 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<a class="access" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access">
-						<span><?php echo $row->groupname; ?></span>
+						<span><?php echo $this->escape($row->groupname); ?></span>
 					</a>
 				</td>
 				<td>
 					<?php echo $this->escape($license); ?>
 				</td>
-				<td>
-					<?php echo $this->escape($row->typetitle); ?>
+				<td style="white-space: nowrap">
+					<?php echo $this->escape(stripslashes($row->typetitle)); ?>
 				</td>
-				<td>
+				<td style="white-space: nowrap">
 					<?php echo $row->children; ?>
 					<?php if ($row->children > 0) { ?> 
 						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=children&amp;pid=<?php echo $row->id; ?>" title="View this item's children">View</a>
 					<?php } else { ?> 
-						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=addchild&amp;pid=<?php echo $row->id; ?>" title="Add a child">[ + ]</a>
+						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=addchild&amp;pid=<?php echo $row->id; ?>" title="Add a child">[+]</a>
 					<?php } ?>
 				</td>
-				<td>
+				<td style="white-space: nowrap">
 					<?php echo $tags; ?>
 					<?php if ($tags > 0) { ?> 
 						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="View this item's tags">View</a>
 					<?php } else { ?> 
-						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="Add a tag">[ + ]</a>
+						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="Add a tag">[+]</a>
 					<?php } ?>
 				</td>
 			</tr>

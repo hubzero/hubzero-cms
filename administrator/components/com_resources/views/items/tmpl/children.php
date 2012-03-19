@@ -239,11 +239,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->logicaltitle)
 	{
 		$typec  = $this->escape($row->logicaltitle);
-		$typec .= ' (' . $this->escape($row->typetitle) . ')';
+		$typec .= ' (' . $this->escape(stripslashes($row->typetitle)) . ')';
 	}
 	else
 	{
-		$typec = $this->escape($row->typetitle);
+		$typec = $this->escape(stripslashes($row->typetitle));
 	}
 
 	// See if it's checked out or not

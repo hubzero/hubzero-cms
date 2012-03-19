@@ -286,7 +286,7 @@ class ResourcesHtml
 				if ($value == $group->cn) {
 					$html .= ' selected="selected"';
 				}
-				$html .= '>'.$group->description .'</option>'."\n";
+				$html .= '>'.stripslashes($group->description) .'</option>'."\n";
 			}
 		}
 		$html .= '</select>'."\n";
@@ -357,7 +357,7 @@ class ResourcesHtml
 				$selected = ($value && ($anode->id == $value || $anode->type == $value))
 					  ? ' selected="selected"'
 					  : '';
-				$html .= "\t".'<option value="'.$anode->id.'"'.$selected.'>'.$anode->type.'</option>'."\n";
+				$html .= "\t".'<option value="'.$anode->id.'"'.$selected.'>'.stripslashes($anode->type).'</option>'."\n";
 			}
 		}
 		$html .= '</select>'."\n";
