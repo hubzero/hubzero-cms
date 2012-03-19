@@ -30,12 +30,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Members') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'user.png');
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
+JToolBarHelper::spacer();
+JToolBarHelper::addNew();
 JToolBarHelper::editListX();
-JToolBarHelper::help( 'screen.plugins' );
-
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter">
@@ -48,38 +48,35 @@ JToolBarHelper::help( 'screen.plugins' );
 		<thead>
 			<tr>
 				<th scope="col">
-					<?php echo JText::_( 'Num' ); ?>
-				</th>
-				<th scope="col">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
 				</th>
+				<th scope="col">
+					<?php echo JHTML::_('grid.sort', 'ID', 'p.id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+				</th>
 				<th scope="col" class="title">
-					<?php echo JHTML::_('grid.sort',   'Plugin Name', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'Plugin Name', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort',   'Published', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'Published', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort',   'Order', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'Order', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 					<?php echo JHTML::_('grid.order',  $this->rows); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort',   'Access', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'Access', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
 					<?php echo JText::_('Manage'); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort',   'File', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
-				</th>
-				<th scope="col">
-					<?php echo JHTML::_('grid.sort',   'ID', 'p.id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'File', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4"><?php echo $this->pagination->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -89,7 +86,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$link = JRoute::_( 'index.php?option=com_plugins&view=plugin&client='. $this->client .'&task=edit&cid[]='. $row->id );
+	$link = JRoute::_( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
 
 	$access 	= JHTML::_('grid.access', $row, $i);
 	$checked 	= JHTML::_('grid.checkedout', $row, $i);
@@ -121,45 +118,60 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td align="right">
-					<?php echo $this->pagination->getRowOffset($i); ?>
+				<td>
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<?php echo $checked; ?>
+					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<?php
-					if (  JTable::isCheckedOut($this->user->get('id'), $row->checked_out ) ) {
-						echo $row->name;
+<?php
+					if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
+						echo $this->escape($row->name);
 					} else {
-					?>
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
-						<a href="<?php echo $link; ?>">
-							<?php echo $row->name; ?></a></span>
-					<?php } ?>
+?>
+					<a class="editlinktip hasTip" href="<?php echo $link; ?>" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
+						<span><?php echo $this->escape($row->name); ?></span>
+					</a>
+<?php } ?>
 				</td>
-				<td align="center">
-					<?php echo $published; ?>
+				<td>
+<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
+					<span class="state <?php echo $cls; ?>">
+<?php 		if (version_compare(JVERSION, '1.6', 'lt')) { ?>
+						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
+<?php 		} else { ?>
+						<span class="text"><?php echo $alt; ?></span>
+<?php 		} ?>
+					</span>
+<?php } else { ?>
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('Set this to %s',$task);?>">
+<?php 		if (version_compare(JVERSION, '1.6', 'lt')) { ?>
+						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
+<?php 		} else { ?>
+						<span class="text"><?php echo $alt; ?></span>
+<?php 		} ?>
+					</a>
+<?php } ?>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->folder == @$rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'Move Up', $ordering ); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, ($row->folder == @$rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'Move Down', $ordering ); ?></span>
+					<?php echo $this->pagination->orderUpIcon( $i, ($row->folder == @$rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'Move Up', $ordering ); ?>
+					<?php echo $this->pagination->orderDownIcon( $i, $n, ($row->folder == @$rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'Move Down', $ordering ); ?>
 					<?php $disabled = $ordering ?  '' : 'disabled="disabled"'; ?>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>"  <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
 				<td align="center">
-					<?php echo $access;?>
+					<?php echo $access; ?>
 				</td>
 				<td nowrap="nowrap">
+<?php if (in_array($row->element, $this->manage)) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
 						<span><?php echo JText::_('Manage'); ?></span>
 					</a>
+<?php } ?>
 				</td>
-				<td nowrap="nowrap">
-					<?php echo $row->element; ?>
-				</td>
-				<td align="center">
-					<?php echo $row->id; ?>
+				<td>
+					<?php echo $this->escape($row->element); ?>
 				</td>
 			</tr>
 <?php
