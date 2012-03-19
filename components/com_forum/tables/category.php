@@ -463,8 +463,8 @@ class ForumCategory extends JTable
 			$this->$k = intval($oid);
 		}
 		
-		$query = "SELECT COUNT(*) FROM #__forum_posts WHERE parent IN (SELECT r.id FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
-
+		//$query = "SELECT COUNT(*) FROM #__forum_posts WHERE parent IN (SELECT r.id FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
+		$query = "SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
