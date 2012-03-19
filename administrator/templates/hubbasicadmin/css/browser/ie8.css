@@ -24,7 +24,7 @@
 /* Login */
 	#login-body #wrap {
 		margin: 0 auto 100px auto;
-		padding-top: 0.18em;
+		padding: 0.18em 0.618em 0.618em 0.618em;
 	}
 /* Main Menu */
 	#header .user-options li:hover a,
@@ -56,6 +56,16 @@
 		border-color: #ededed #ededed transparent transparent;
 	}
 /* Misc */
+	p.info,
+	p.warning,
+	p.error,
+	p.message,
+	#system-message dd {
+		background-image: url("../../images/layout/light-stripes-5.png");
+	}
+	#system-message dd:before {
+		margin-top: -0.45em;
+	}
 	input {
 		border-width: expression(this.type=="radio"?'0px':this.type=="checkbox"?'0px':'1px');
 	}

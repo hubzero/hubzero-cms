@@ -254,15 +254,22 @@
 		text-rendering: optimizeLegibility;
 		-webkit-font-smoothing: antialiased;
 		overflow-x: hidden;
-		padding: 0;
-		background: #5b5b5b url("../images/layout/noise-100.png");
+		height: 100%;
+		background: #6e6e6e;
+		background: -webkit-gradient(linear, left top, left bottom, from(#2d2d2d), to(#6e6e6e));
+		background: -webkit-linear-gradient(#2d2d2d, #6e6e6e);
+		background: -moz-linear-gradient(top, #2d2d2d, #6e6e6e);
+		background: -moz-gradient(center top, #2d2d2d 0%, #6e6e6e 100%);
+		background: -o-linear-gradient(#2d2d2d, #6e6e6e);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#2d2d2d,endColorstr=#6e6e6e);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#2d2d2d, endColorstr=#6e6e6e)";
 	}
 	body {
+		height: 100%;
 		text-align: left;
 		font-size: 1.3em;
 		line-height: 1.61803399em;
-		padding: 0 0 100px;
-		background: transparent url("../images/layout/bg-gradient.png") 0 -5px repeat-x;
+		background: url("../images/layout/noise-100.png");
 	}
 	h1,h2,h3,h4,h5,h6{
 		font-weight: 700;

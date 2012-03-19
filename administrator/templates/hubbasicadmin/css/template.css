@@ -597,6 +597,7 @@
 	}
 	table tfoot th,
 	table tfoot td {
+		border-right: 1px solid #eee;
 	}
 	table tbody th,
 	table tbody td {
@@ -643,6 +644,7 @@
 	}
 	table thead tr th:last-child,
 	table thead tr td:last-child,
+	table tbody tr th:last-child,
 	table tbody tr td:last-child {
 		padding-right: 1.61803399em;
 	}
@@ -650,12 +652,13 @@
 	table.adminlist tbody tr:last-child td {
 		border-bottom: 1px solid #dddddd;
 	}
-	table tbody tr:hover,
+	/*table tbody tr:hover,
 	table tbody tr:hover th {
+		background-color: #ffc;
 	}
 	table.adminlist tfoot td {
 		padding: 0;
-	}
+	}*/
 	table.adminlist input {
 		width: auto;
 	}
@@ -1263,12 +1266,12 @@
 	.trash:hover:before {
 		color: #7F913C;
 	}
-	.add:before,
-	.new:before {
+	.state.add:before,
+	.state.new:before {
 		content: "&";
 	}
-	.add:hover:before,
-	.new:hover:before {
+	.state.add:hover:before,
+	.state.new:hover:before {
 		color: #7F913C;
 	}
 	.view:before {
@@ -1386,7 +1389,7 @@
 		margin-top: -15px;
 		padding-top: 15px;
 		padding-bottom: 5px;
-		background: url(../images/selector-arrow.png) no-repeat;
+		background: url("../images/selector-arrow.png") no-repeat;
 	}
 	.tip-text {
 		font-size: 1em;
@@ -1531,7 +1534,7 @@
 		font-family: icons;	
 		font-size: 24px;
 		position: absolute;
-		top: -6px;
+		top: -7px;
 		left: 2px;
 		content: "6";
 		color: #666;
@@ -1569,7 +1572,7 @@
 	}
 /* Pagination */
 	.pagination {
-		margin: 0;
+		margin: -0.61803399em;
 		padding: 0;
 	}
 	.pagination .list-footer {

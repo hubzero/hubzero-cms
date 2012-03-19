@@ -78,11 +78,11 @@ $juser =& JFactory::getUser();
 	<head>
 		<jdoc:include type="head" />
 		<!--[if IE 7]>
-			<link href="templates/<?php echo $this->template; ?>/css/ie7.css" rel="stylesheet" type="text/css" />
+			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
 			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="templates/<?php echo $this->template; ?>/css/ie8.css" rel="stylesheet" type="text/css" />
+			<link href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
 			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 	</head>
