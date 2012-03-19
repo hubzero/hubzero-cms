@@ -95,9 +95,17 @@ $app =& JFactory::getApplication();
 					<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
 					<select name="role" id="new-authors-role">
 						<option value=""><?php echo JText::_('Author'); ?></option>
-						<option value="submitter"><?php echo JText::_('Submitter'); ?></option>
-						<option value="editor"><?php echo JText::_('Editor'); ?></option>
-						<option value="organizer"><?php echo JText::_('Organizer'); ?></option>
+<?php 
+		if ($this->roles)
+		{
+			foreach ($this->roles as $role)
+			{
+?>
+						<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape($role->title); ?></option>
+<?php
+			}
+		}
+?>
 					</select>
 				</label>
 				
@@ -156,9 +164,17 @@ if ($this->contributors) {
 					<td>
 						<select name="authors[<?php echo $contributor->id; ?>]" id="role-<?php echo $contributor->id; ?>">
 							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
-							<option value="submitter"<?php if ($contributor->role == 'submitter') { echo ' selected="selected"'; }?>><?php echo JText::_('Submitter'); ?></option>
-							<option value="editor"<?php if ($contributor->role == 'editor') { echo ' selected="selected"'; }?>><?php echo JText::_('Editor'); ?></option>
-							<option value="organizer"<?php if ($contributor->role == 'organizer') { echo ' selected="selected"'; }?>><?php echo JText::_('Organizer'); ?></option>
+<?php 
+					if ($this->roles)
+					{
+						foreach ($this->roles as $role)
+						{
+?>
+							<option value="<?php echo $this->escape($role->alias); ?>"<?php if ($contributor->role == $role->alias) { echo ' selected="selected"'; }?>><?php echo $this->escape($role->title); ?></option>
+<?php
+						}
+					}
+?>
 						</select>
 					</td>
 					<td class="u"><?php

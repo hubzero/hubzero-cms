@@ -857,7 +857,17 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$type = new ResourcesType($this->database);
 			$type->load($row->type);
 
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			$elements = new ResourcesElements(array(), $type->customFields);
+			$schema = $elements->getSchema();
+
 			$fields = array();
+			foreach ($schema->fields as $field)
+			{
+				$fields[$field->name] = $field;
+			}
+
+			/*$fields = array();
 			if (trim($type->customFields) != '')
 			{
 				$fs = explode("\n", trim($type->customFields));
@@ -901,6 +911,47 @@ class ResourcesControllerItems extends Hubzero_Controller
 							exit();
 						}
 					}
+				}
+			}*/
+			$nbtag = $_POST['nbtag'];
+			$found = array();
+			//$nbtag = array_map('trim',$nbtag);
+			foreach ($nbtag as $tagname => $tagcontent)
+			{
+				$content = null;
+				if (is_array($tagcontent))
+				{
+					$content = $tagcontent;
+					$tagcontent = trim(array_shift($content));
+				}
+				$row->fulltext .= "\n".'<nb:'.$tagname.'>';
+				$row->fulltext .= trim($tagcontent);
+				if (is_array($content))
+				{
+					foreach ($content as $key => $val)
+					{
+						//if ($key != 'value') {
+							$row->fulltext .= '<'.$key.'>' . trim($val) . '</'.$key.'>';
+						//}
+					}
+				}
+				$row->fulltext .= '</nb:'.$tagname.'>'."\n";
+
+				if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required) 
+				{
+					echo ResourcesHtml::alert(JText::sprintf('RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
+					exit();
+				}
+				
+				$found[] = $tagname;
+			}
+			
+			foreach ($fields as $field)
+			{
+				if (!in_array($field->name, $found) && $field->required)
+				{
+					$found[] = $field->name;
+					$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
 				}
 			}
 		}
@@ -1064,15 +1115,21 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$subject = JText::_('EMAIL_SUBJECT');
 
 			$juri =& JURI::getInstance();
-			$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id);
-			if (substr($sef, 0, 1) == '/')
+			
+			$base = $juri->base();
+			$base = trim($base, '/');
+			if (substr($base, -13) == 'administrator')
 			{
-				$sef = substr($sef, 1, strlen($sef));
+				$base = substr($base, 0, strlen($base)-13);
 			}
+			$base = trim($base, '/');
+			
+			//$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id);
+			//$sef = trim($sef, '/')
 
 			// Build message
 			$message  = JText::sprintf('EMAIL_MESSAGE', $jconfig->getValue('config.sitename')) . "\r\n";
-			$message .= $jconfig->getValue('config.sitename') . DS . 'resources' . DS . $row->id;
+			$message .= $base . DS . 'resources' . DS . $row->id;
 
 			// Send message
 			JPluginHelper::importPlugin('xmessage');

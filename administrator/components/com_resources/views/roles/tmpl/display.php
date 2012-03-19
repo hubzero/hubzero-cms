@@ -30,35 +30,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Types') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Roles') . ']</small></small>', 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
-	<fieldset id="filter">
-		<label for="Category">
-			<?php echo JText::_('Category'); ?>:
-			<?php echo ResourcesHtml::selectType($this->cats, 'category', $this->filters['category'], 'Select...', '', '', ''); ?>
-		</label>
+<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
 	
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
+	<div class="clr"></div>
 	
-	<table class="adminlist" summary="<?php echo JText::_('A list of resource types and their grouping'); ?>">
+	<table class="adminlist" summary="<?php echo JText::_('A list of resource roles'); ?>">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('Title'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('Alias'), 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('Category'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('Title'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JText::_('Types'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -67,16 +66,6 @@ $k = 0;
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-
-	$cat_title = '';
-
-	foreach ($this->cats as $cat)
-	{
-		if ($row->category == $cat->id)
-		{
-			$cat_title = $cat->type;
-		}
-	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -87,14 +76,27 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->type)); ?>
+						<span><?php echo $this->escape($row->alias); ?></span>
 					</a>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($row->alias)); ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+						<span><?php echo $this->escape($row->title); ?></span>
+					</a>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($cat_title)); ?>
+<?php
+					if ($row->types)
+					{
+						$types = array();
+						foreach ($row->types as $type)
+						{
+							$types[] = '<span>' . $this->escape($type->type) . '</span>';
+						}
+						//echo implode(', ', $types);
+						echo count($row->types);
+					}
+?>
 				</td>
 			</tr>
 <?php

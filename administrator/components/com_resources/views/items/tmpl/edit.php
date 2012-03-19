@@ -43,7 +43,7 @@ if ($this->row->standalone == 1) {
 	$type = new ResourcesType( $database );
 	$type->load( $this->row->type );
 
-	$fields = array();
+	/*$fields = array();
 	if (trim($type->customFields) != '') {
 		$fs = explode("\n", trim($type->customFields));
 		foreach ($fs as $f)
@@ -73,7 +73,21 @@ if ($this->row->standalone == 1) {
 			$this->row->fulltext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$this->row->fulltext);
 		}
 		$this->row->fulltext = trim($this->row->fulltext);
+	}*/
+	$data = array();
+	preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltext, $matches, PREG_SET_ORDER);
+	if (count($matches) > 0) 
+	{
+		foreach ($matches as $match)
+		{
+			$data[$match[1]] = stripslashes($match[2]);
+		}
 	}
+	$this->row->fulltext = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltext);
+	$this->row->fulltext = trim($this->row->fulltext);
+	$this->row->fulltext = ($this->row->fulltext) ? trim(stripslashes($this->row->fulltext)): trim(stripslashes($this->row->introtext));
+
+	include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 }
 
 // Build the path for uploading files
@@ -269,15 +283,14 @@ function popratings()
 		<table class="adminform">
 			<caption style="text-align: left; font-weight: bold;"><?php echo JText::_('Custom fields'); ?></caption>
 			<tbody>
+				<tr>
+					<td id="resource-custom-fields">
 <?php
 $i = 3;
 
-foreach ($fields as $field)
+/*foreach ($fields as $field)
 {
 $i++;
-/*
-$tagcontent = preg_replace('/<br\\s*?\/??>/i', "", end($field));
-*/
 $tagcontent = end($field);
 ?>
 			<tr>
@@ -294,8 +307,12 @@ $tagcontent = end($field);
 			</tr>
 			
 <?php 
-}
+}*/
+$elements = new ResourcesElements($data, $type->customFields);
+echo $elements->render();
 ?>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<!-- </fieldset> -->

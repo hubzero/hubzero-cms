@@ -82,6 +82,11 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'licenses'
 );
 JSubMenuHelper::addEntry(
+	JText::_('Roles'),
+	'index.php?option=' . $option . '&controller=roles',
+	$controllerName == 'roles'
+);
+JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
 	'index.php?option=' . $option . '&controller=plugins', //'index.php?option=com_plugins&view=plugins&filter_folder=resources'
 	$controllerName == 'plugins'

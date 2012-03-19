@@ -42,52 +42,39 @@ switch ($this->params->get('show_date'))
 	case 3: $thedate = $this->resource->publish_up; break;
 }
 
-// Prepare/parse text
-$introtext = stripslashes($this->resource->introtext);
-$maintext  = ($this->resource->fulltext)
-		   ? stripslashes($this->resource->fulltext)
-		   : stripslashes($this->resource->introtext);
+$this->resource->introtext = stripslashes($this->resource->introtext);
+$this->resource->fulltext = stripslashes($this->resource->fulltext);
 
-//$maintext = stripslashes($maintext);
-
-if ($introtext) {
-	$document =& JFactory::getDocument();
-	$document->setDescription(ResourcesHtml::encode_html(strip_tags($introtext)));
-}
-
-// Parse for <nb: > tags
+// Parse for <nb:field> tags
 $type = new ResourcesType($this->database);
 $type->load($this->resource->type);
 
-$fields = array();
-if (trim($type->customFields) != '') {
-	$fs = explode("\n", trim($type->customFields));
-	foreach ($fs as $f)
+$data = array();
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltext, $matches, PREG_SET_ORDER);
+if (count($matches) > 0) 
+{
+	foreach ($matches as $match)
 	{
-		$fields[] = explode('=', $f);
-	}
-} else {
-	$flds = $this->config->get('tagstool');
-	$flds = explode(',', $flds);
-	foreach ($flds as $fld)
-	{
-		$fields[] = array($fld, $fld, 'textarea', 0);
+		$data[$match[1]] = $match[2];
 	}
 }
+$this->resource->fulltext = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->resource->fulltext);
+$this->resource->fulltext = trim($this->resource->fulltext);
 
-if (!empty($fields)) {
-	for ($i=0, $n=count($fields); $i < $n; $i++)
-	{
-		// Explore the text and pull out all matches
-		array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+$elements = new ResourcesElements($data, $type->customFields);
+$schema = $elements->getSchema();
 
-		// Clean the original text of any matches
-		$maintext = str_replace('<nb:' . $fields[$i][0] . '>' . end($fields[$i]) . '</nb:' . $fields[$i][0] . '>', '', $maintext);
-	}
-	$maintext = trim($maintext);
+// Set the document description
+if ($this->resource->introtext) 
+{
+	$document =& JFactory::getDocument();
+	$document->setDescription(ResourcesHtml::encode_html(strip_tags($this->resource->introtext)));
 }
 
-$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($this->resource->introtext));
+// Check if there's anything left in the fulltext after removing custom fields
+// If not, set it to the introtext
+$maintext = ($this->resource->fulltext) ? $this->resource->fulltext : trim($this->resource->introtext);
 $maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);
@@ -97,7 +84,7 @@ $maintext = str_replace('</blink>', '', $maintext);
 		<tbody>
 			<tr>
 				<th><?php echo JText::_('Category'); ?></th>
-				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo $this->resource->_type->type; ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo stripslashes($this->resource->_type->type); ?></a></td>
 			</tr>
 <?php
 // Check how much we can display
@@ -145,16 +132,16 @@ if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 <?php
 }
 	$citations = '';
-	foreach ($fields as $field)
+	foreach ($schema->fields as $field)
 	{
-		if (end($field) != NULL) {
-			if ($field[0] == 'citations') {
-				$citations = end($field);
-			} else {
+		if (isset($data[$field->name])) {
+			if ($field->name == 'citations') {
+				$citations = $data[$field->name];
+			} else if ($value = $elements->display($field->type, $data[$field->name])) {
 ?>
 			<tr>
-				<th><?php echo $field[1]; ?></th>
-				<td><?php echo end($field); ?></td>
+				<th><?php echo $field->label; ?></th>
+				<td><?php echo $value; ?></td>
 			</tr>
 <?php
 			}
@@ -187,7 +174,7 @@ if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 			$cite = null;
 		}
 
-		$citeinstruct  = ResourcesHtml::citation( $this->option, $cite, $this->resource->id, $citations, $this->resource->type, $revision );
+		$citeinstruct  = ResourcesHtml::citation( $this->option, $cite, $this->resource->id, $citations, $this->resource->type, 0 );
 		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $this->config, $this->helper);
 ?>
 			<tr>

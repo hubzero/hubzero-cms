@@ -148,4 +148,25 @@
 		font-weight: bold;
 		color: #999;
 		}
-
+	#resource-custom-fields label {
+		display: block;
+	}
+	#resource-custom-fields input,
+	#resource-custom-fields select,
+	#resource-custom-fields textarea {
+		width: 100%;
+		margin-bottom: 1em;
+		max-width: 100%;
+	}
+	#resource-custom-fields fieldset {
+		border: 1px solid #ccc;
+		padding: 0 1em;
+	}
+	#resource-custom-fields fieldset label {
+		margin-bottom: 1em;
+	}
+	#resource-custom-fields fieldset input.option {
+		width: auto;
+		max-width: 10em;
+		margin-bottom: 0em;
+	}

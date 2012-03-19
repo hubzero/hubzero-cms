@@ -40,7 +40,7 @@ $params = new JParameter($this->row->params);
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	var form = document.getElementById('adminForm');
+	var form = document.getElementById('item-form');
 	
 	if (pressbutton == 'canceltype') {
 		submitform( pressbutton );
@@ -55,55 +55,165 @@ function submitbutton(pressbutton)
 	}
 }
 
-function addCustomField(id)
-{
-   	new Event(event).stop();
+var Fields = {
+	isIE8: function() {
+	    var rv = -1,
+			ua = navigator.userAgent,
+			re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");
+	    if (re.exec(ua) != null) {
+	        rv = parseFloat(RegExp.$1);
+	    }
+	    return (rv == 4);
+	},
+	
+	addRow: function(id) {
+		var tbody = document.getElementById(id).tBodies[0];
+		var counter = tbody.rows.length;
+		var newNode = tbody.rows[0].cloneNode(true);
 
-	var tbody = document.getElementById(id).tBodies[0];
-	var counter = tbody.rows.length;
-	var newNode = tbody.rows[0].cloneNode(true);
+		var replaceme = null;
+
+		var newField = newNode.childNodes;
+		for (var i=0;i<newField.length;i++) 
+	    {
+	        var inputs = newField[i].childNodes;
+	        for (var k=0;k<inputs.length;k++) 
+	        {
+	            var theName = inputs[k].name;
+	            if (theName) {
+	                tokens = theName.split('[');
+	                n = tokens[2];
+	                inputs[k].name = id + '[' + counter + ']['+ n;
+					inputs[k].id = id + '-' + counter + '-' + n.replace(']', '');
+					
+					if (Fields.isIE8() && inputs[k].type == 'select-one') {
+						inputs[k].id = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
+						replaceme = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
+					}
+	            }
+	            var n = id + '[' + counter + '][type]';
+	            var z = id + '[' + counter + '][required]';
+	            if (inputs[k].value && inputs[k].name != z) {
+	                inputs[k].value = '';
+					inputs[k].selectedIndex = 0;
+					inputs[k].selected = false;
+	            }
+				if (inputs[k].checked) {
+					inputs[k].checked = false;
+				}
+	        }
+			if (newField[i].id) {
+				newField[i].id = 'fields-'+counter+'-options';
+			}
+	    }
+
+		tbody.appendChild(newNode);
+		
+		// Make a clone of the clone. Why? Because IE 8 is dumb.
+		// IE still retains a reference to the original object for change events
+		// So, when calling onChange, the event gets fired for the clone AND the 
+		// original. Cloning the clone seems to fix this.
+		if (replaceme) {
+			var replace = $(replaceme);
+			var select = Element.clone(replace).injectAfter(replace);
+			Element.remove(replace);
+		}
+		
+		Fields.initSelect();
+		return false;
+	},
 	
-	var newField = newNode.childNodes;
-	for (var i=0;i<newField.length;i++) 
-    {
-        var inputs = newField[i].childNodes;
-        for (var k=0;k<inputs.length;k++) 
-        {
-            var theName = inputs[k].name;
-            if (theName) {
-                tokens = theName.split('[');
-                n = tokens[2];
-                inputs[k].name = id + '[' + counter + ']['+ n;
-            }
-            var n = id + '[' + counter + '][type]';
-            var z = id + '[' + counter + '][status]';
-            if (inputs[k].value && inputs[k].name != n && inputs[k].name != z) {
-                inputs[k].value = '';
-            }
-        }
-    }
+	addOption: function(id) {
+		var tbody = document.getElementById(id).tBodies[0];
+		var counter = tbody.rows.length;
+		var newNode = tbody.rows[0].cloneNode(true);
+
+		var newField = newNode.childNodes;
+		for (var i=0;i<newField.length;i++) 
+	    {
+	        var inputs = newField[i].childNodes;
+	        for (var k=0;k<inputs.length;k++) 
+	        {
+	            var theName = inputs[k].name;
+	            if (theName) {
+	                tokens = theName.split('[');
+	                n = tokens[2];
+	                inputs[k].name = 'fields['+id+'][' +n+ '[' + counter + '][label]';
+	            }
+	            if (inputs[k].value) {
+	                inputs[k].value = '';
+	            }
+	        }
+	    }
+
+		tbody.appendChild(newNode);
+		
+		return false;
+	},
 	
-	tbody.appendChild(newNode); 
-	console.log(newNode);
+	initOptions: function() {
+		$$('.add-custom-option').each(function(el){
+			$(el).removeEvents('click');
+			$(el).addEvent('click', function(e){
+				new Event(e).stop();
+				Fields.addOption(el.getProperty('rel'));
+			});
+		});
+	},
+	
+	tiner: 0,
+	
+	clear: function() {
+		Fields.timer = 0;
+	},
+	
+	initSelect: function() {
+		$$('#fields select').each(function(el){
+			$(el).removeEvents('change');
+			$(el).addEvent('change', function(){
+				var i = this.name.replace(/^fields\[(\d+)\]\[type\]/g,"$1");
+				var myAjax1 = new Ajax('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type='+this.value+'&name='+i,{
+					update: $('fields-'+i+'-options')
+				}).request();
+				myAjax1.addEvent('onComplete', function(){
+					Fields.initOptions();
+				});
+			})
+		});
+	},
+
+	initialise: function() {
+		$('add-custom-field').addEvent('click', function(e){
+			new Event(e).stop();
+			
+			Fields.addRow('fields');
+		});
+		
+		Fields.initSelect();
+		
+		Fields.initOptions();
+	}
 }
+
+
+window.addEvent('domready', Fields.initialise);
 </script>
 
-<form action="index.php" method="post" id="adminForm" name="adminForm">
-	<p><?php echo JText::_('RESOURCES_REQUIRED_EXPLANATION'); ?></p>
-	
+<form action="index.php" method="post" id="item-form" name="adminForm">
+	<div class="col width-50 fltlft">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('RESOURCES_TYPES_DETAILS'); ?></legend>
+		<legend><span><?php echo JText::_('RESOURCES_TYPES_DETAILS'); ?></span></legend>
 		
 		<table class="admintable">
 			<tbody>
 				<tr>
-					<td class="key"><label for="type"><?php echo JText::_('RESOURCES_TYPES_TITLE'); ?>: <span class="required">*</span></label></td>
-					<td><input type="text" name="type" id="type" size="30" maxlength="100" value="<?php echo $this->escape($this->row->type); ?>" /></td>
+					<td class="key"><label for="type"><?php echo JText::_('RESOURCES_TYPES_TITLE'); ?>:</label></td>
+					<td><input type="text" name="type" id="type" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" /></td>
 				</tr>
 				<tr>
 					<td class="key"><label for="alias"><?php echo JText::_('Alias'); ?>:</label></td>
 					<td>
-						<input type="text" name="alias" id="alias" size="30" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" /><br />
+						<input type="text" name="alias" id="alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
 						<span class="hint"><?php echo JText::_('If no alias provided, one will be generated from the title.'); ?></span>
 					</td>
 				</tr>
@@ -143,95 +253,129 @@ function addCustomField(id)
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="save" />
 	</fieldset>
+	</div>
+	<div class="col width-50 fltrt">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Plugins'); ?></span></legend>
+
+			<table class="admintable">
+				<thead>
+					<tr>
+						<th><?php echo JText::_('Plugin'); ?></th>
+						<th colspan="2"><?php echo JText::_('Active'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php 
+				$database =& JFactory::getDBO();
+				$database->setQuery( "SELECT * FROM #__plugins WHERE folder='resources'" );
+				$plugins = $database->loadObjectList();
+
+				foreach ($plugins as $plugin)
+				{
+					?>
+					<tr>
+						<td><?php echo stripslashes($plugin->name); ?></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+					</tr>
+					<?php
+				}
+				?>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="clr"></div>
+	
+	<div class="col width-100">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('RESOURCES_TYPES_CUSTOM_FIELDS'); ?></legend>
+		<legend><span><?php echo JText::_('RESOURCES_TYPES_CUSTOM_FIELDS'); ?></span></legend>
 		
-		<table class="admintable" id="custom">
+		<table class="admintable" id="fields">
 			<thead>
 				<tr>
 					<th><?php echo JText::_('RESOURCES_TYPES_FIELD'); ?></th>
 					<th><?php echo JText::_('RESOURCES_TYPES_TYPE'); ?></th>
 					<th><?php echo JText::_('RESOURCES_TYPES_REQUIRED'); ?></th>
+					<th><?php echo JText::_('RESOURCES_TYPES_OPTIONS'); ?></th>
 				</tr>
 			</thead>
-			<tbody>
-			<?php 
-			//$fields = $row->customFields;
-			$fields = array();
-			if (trim($this->row->customFields) != '') {
-				$fs = explode("\n", trim($this->row->customFields));
-				foreach ($fs as $f)
-				{
-					$fields[] = explode('=', $f);
-				}
-			}
-
-			$r = count($fields);
-			if ($r > 10) {
-				$n = $r;
-			} else {
-				$n = 10;
-			}
-			for ($i=0; $i < $n; $i++)
-			{
-				if ($r == 0 || !isset($fields[$i])) {
-					$fields[$i] = array();
-					$fields[$i][0] = NULL;
-					$fields[$i][1] = NULL;
-					$fields[$i][2] = NULL;
-					$fields[$i][3] = NULL;
-					$fields[$i][4] = NULL;
-				}
-				?>
-				<tr>
-					<td><input type="text" name="fields[<?php echo $i; ?>][title]" value="<?php echo $fields[$i][1]; ?>" maxlength="255" /></td>
-					<td><select name="fields[<?php echo $i; ?>][type]">
-						<option value="text"<?php echo ($fields[$i][2]=='text') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXT'); ?></option>
-						<option value="textarea"<?php echo ($fields[$i][2]=='textarea') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXTAREA'); ?></option>
-					</select></td>
-					<td><input type="checkbox" name="fields[<?php echo $i; ?>][required]" value="1"<?php echo ($fields[$i][3]) ? ' checked="checked"':''; ?> /></td>
-				</tr>
-				<?php
-			}
-			?>
-			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="3"><a id="add-custom-field" onclick="addCustomField('custom');" href="#">+ Add new row</a></td>
+					<td colspan="4">
+						<button id="add-custom-field" href="#addRow">
+							<span><?php echo JText::_('+ Add new row'); ?></span>
+						</button>
+					</td>
 				</tr>                                                               
 			</tfoot>
-		</table>
-	</fieldset>
-	<fieldset class="adminform">
-		<legend><?php echo JText::_('Plugins'); ?></legend>
-		
-		<table class="admintable">
-			<thead>
-				<tr>
-					<th><?php echo JText::_('Plugin'); ?></th>
-					<th colspan="2"><?php echo JText::_('Active'); ?></th>
-				</tr>
-			</thead>
 			<tbody>
 			<?php 
-			$database =& JFactory::getDBO();
-			$database->setQuery( "SELECT * FROM #__plugins WHERE folder='resources'" );
-			$plugins = $database->loadObjectList();
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			$elements = new ResourcesElements('', $this->row->customFields);
+			$schema = $elements->getSchema();
+			
+			if (!is_object($schema))
+			{
+				$schema = new stdClass();
+				$schema->fields = array();
+			}
 
-			foreach ($plugins as $plugin)
+			if (count($schema->fields) <= 0)
+			{
+				$element = new stdClass();
+				$element->name = '';
+				$element->label = '';
+				$element->type = '';
+				$element->required = '';
+				$element->value = '';
+				$element->default = '';
+				$element->description = '';
+				
+				$schema->fields[] = $element;
+			}	
+			
+			$i = 0;
+			foreach ($schema->fields as $field)
 			{
 				?>
 				<tr>
-					<td><?php echo stripslashes($plugin->name); ?></td>
-					<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
-					<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+					<td>
+						<input type="text" name="fields[<?php echo $i; ?>][title]" value="<?php echo $field->label; ?>" maxlength="255" />
+					</td>
+					<td>
+						<select name="fields[<?php echo $i; ?>][type]" id="fields-<?php echo $i; ?>-type">
+							<optgroup label="<?php echo JText::_('Common'); ?>">
+								<option value="text"<?php echo ($field->type == 'text') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXT'); ?></option>
+								<option value="textarea"<?php echo ($field->type == 'textarea') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXTAREA'); ?></option>
+								<option value="list"<?php echo ($field->type == 'list') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_LIST'); ?></option>
+								<option value="radio"<?php echo ($field->type == 'radio') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_RADIO'); ?></option>
+								<option value="checkbox"<?php echo ($field->type == 'checkbox') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_CHECKBOX'); ?></option>
+								<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_HIDDEN'); ?></option>
+							</optgroup>
+							<optgroup label="<?php echo JText::_('Pre-defined'); ?>">
+								<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo JText::_('Geo Location'); ?></option>
+								<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo JText::_('Language List'); ?></option>
+							</optgroup>
+						</select>
+					</td>
+					<td>
+						<input type="checkbox" name="fields[<?php echo $i; ?>][required]" value="1"<?php echo ($field->required) ? ' checked="checked"':''; ?> />
+					</td>
+					<td id="fields-<?php echo $i; ?>-options">
+						<?php echo $elements->getElementOptions($i, $field, 'fields'); ?>
+					</td>
 				</tr>
 				<?php
+				$i++;
 			}
 			?>
 			</tbody>
 		</table>
 	</fieldset>
+	</div>
+	<div class="clr"></div>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

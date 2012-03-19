@@ -328,15 +328,18 @@ class ContributeController extends Hubzero_Controller
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
-		// Instantiate a new resource object
-		$row = new ResourcesResource( $this->database );
-		if ($id) {
-			// Load the resource
-			$row->load( $id );
-		} else {
-			// Load the type and set the state
-			$row->type = JRequest::getVar( 'type', '' );
-			$row->published = 2;
+		if (!is_object($row))
+		{
+			// Instantiate a new resource object
+			$row = new ResourcesResource( $this->database );
+			if ($id) {
+				// Load the resource
+				$row->load( $id );
+			} else {
+				// Load the type and set the state
+				$row->type = JRequest::getVar( 'type', '' );
+				$row->published = 2;
+			}
 		}
 
 		// Output HTML
@@ -353,7 +356,10 @@ class ContributeController extends Hubzero_Controller
 		$view->progress = $this->progress;
 		$view->task = 'start';
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
 		}
 		$view->display();
 	}
@@ -397,7 +403,10 @@ class ContributeController extends Hubzero_Controller
 		$view->progress = $this->progress;
 		$view->task = 'start';
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
 		}
 		$view->display();
 	}
@@ -446,7 +455,10 @@ class ContributeController extends Hubzero_Controller
 		$view->progress = $this->progress;
 		$view->task = 'start';
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
 		}
 		$view->display();
 	}
@@ -574,7 +586,10 @@ class ContributeController extends Hubzero_Controller
 		$view->progress = $this->progress;
 		$view->task = 'start';
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
 		}
 		$view->display();
 	}
@@ -639,7 +654,10 @@ class ContributeController extends Hubzero_Controller
 		$view->licenses = $rl->getRecords();
 		
 		if ($this->getError()) {
-			$view->setError( $this->getError() );
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
 		}
 		$view->display();
 	}
@@ -715,44 +733,57 @@ class ContributeController extends Hubzero_Controller
 
 		// Get custom areas, add wrapper tags, and compile into fulltext
 		$type = new ResourcesType( $this->database );
-		$type->load( $row->type );
+		$type->load($row->type);
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+		$elements = new ResourcesElements(array(), $type->customFields);
+		$schema = $elements->getSchema();
 
 		$fields = array();
-		if (trim($type->customFields) != '') {
-			$fs = explode("\n", trim($type->customFields));
-			foreach ($fs as $f)
-			{
-				$fields[] = explode('=', $f);
-			}
-		} else {
-			if ($row->type == 7) {
-				$flds = $this->config->get('tagstool');
-			} else {
-				$flds = $this->config->get('tagsothr');
-			}
-			$flds = explode(',',$flds);
-			foreach ($flds as $fld)
-			{
-				$fields[] = array($fld, $fld, 'textarea', 0);
-			}
+		foreach ($schema->fields as $field)
+		{
+			$fields[$field->name] = $field;
 		}
 
 		$nbtag = $_POST['nbtag'];
-		$nbtag = array_map('trim',$nbtag);
-		foreach ($nbtag as $tagname=>$tagcontent)
+		$found = array();
+		//$nbtag = array_map('trim',$nbtag);
+		foreach ($nbtag as $tagname => $tagcontent)
 		{
-			if ($tagcontent != '') {
-				$row->fulltext .= "\n".'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'."\n";
-			} else {
-				foreach ($fields as $f)
+			$content = null;
+			if (is_array($tagcontent))
+			{
+				$content = $tagcontent;
+				$tagcontent = trim(array_shift($content));
+			}
+			$row->fulltext .= "\n".'<nb:'.$tagname.'>';
+			//$row->fulltext .= (isset($fields[$tagname])) ? '<nbtype>'.$fields[$tagname]->type.'</nbtype>' : '';
+			$row->fulltext .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
+			if (is_array($content))
+			{
+				foreach ($content as $key => $val)
 				{
-					if ($f[0] == $tagname && end($f) == 1) {
-						$this->setError( JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $f[1]) );
-						$this->step--;
-						$this->step_compose($row);
-						return;
-					}
+					//if ($key != 'value') {
+						$row->fulltext .= '<'.$key.'>' . trim($val) . '</'.$key.'>';
+					//}
 				}
+			}
+			$row->fulltext .= '</nb:'.$tagname.'>'."\n";
+			
+			if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required) 
+			{
+				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
+			}
+			
+			$found[] = $tagname;
+		}
+
+		foreach ($fields as $field)
+		{
+			if (!in_array($field->name, $found) && $field->required)
+			{
+				$found[] = $field->name;
+				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
 			}
 		}
 
@@ -762,20 +793,28 @@ class ContributeController extends Hubzero_Controller
 		// Strip any scripting there may be
 		if (trim($row->fulltext)) {
 			$row->fulltext   = $this->_txtClean($row->fulltext);
-			$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
+			//$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
 			$row->footertext = $this->_txtClean($row->footertext);
 			$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
 		}
 
 		// Check content
 		if (!$row->check()) {
-			JError::raiseError( 500, $row->getError() );
+			$this->setError($row->getError());
+		}
+		
+		if ($this->getError())
+		{
+			$this->step--;
+			$this->step_compose($row);
 			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			JError::raiseError( 500, $row->getError() );
+			$this->setError($row->getError());
+			$this->step--;
+			$this->step_compose($row);
 			return;
 		}
 
@@ -1923,6 +1962,7 @@ class ContributeController extends Hubzero_Controller
 		// Incoming authors
 		$authid = JRequest::getInt( 'authid', 0, 'post' );
 		$authorsNewstr = JRequest::getVar( 'new_authors', '', 'post' );
+		$role = JRequest::getVar( 'role', '', 'post' );
 
 		// Instantiate a resource/contributor association object
 		$rc = new ResourcesContributor( $this->database );
@@ -1951,6 +1991,7 @@ class ContributeController extends Hubzero_Controller
 					$rc->authorid = $authid;
 					$rc->ordering = $order;
 					$rc->name = $xprofile->get('name');
+					$rc->role = $role;
 					$rc->organization = $xprofile->get('organization');
 					$rc->createAssociation();
 
@@ -2008,6 +2049,7 @@ class ContributeController extends Hubzero_Controller
 				$rcc->authorid = $uid;
 				$rcc->ordering = $order;
 				$rcc->name = $xprofile->get('name');
+				$rcc->role = $role;
 				$rcc->organization = $xprofile->get('organization');
 				$rcc->createAssociation();
 
@@ -2204,6 +2246,13 @@ class ContributeController extends Hubzero_Controller
 		// Get a list of all existing contributors
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
+		
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
+		
+		$resource = new ResourcesResource($this->database);
+		$resource->load($id);
+		
+		$rt = new ResourcesContributorRoleType($this->database);
 
 		// Initiate a members object
 		$mp = new MembersProfile( $this->database );
@@ -2226,6 +2275,9 @@ class ContributeController extends Hubzero_Controller
 		$view->contributors = $helper->_contributors;
 		$view->rows = $rows;
 		$view->id = $id;
+		
+		$view->roles = $rt->getRolesForType($resource->type);
+		
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}

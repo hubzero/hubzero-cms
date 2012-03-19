@@ -187,20 +187,42 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		$fields = JRequest::getVar('fields', array(), 'post');
 		if (is_array($fields))
 		{
-			$txta = array();
+			$elements = new stdClass();
+			$elements->fields = array();
+			
 			foreach ($fields as $val)
 			{
 				if ($val['title'])
 				{
-					$k = $this->_normalize(trim($val['title']));
-					$t = str_replace('=', '-', $val['title']);
-					$j = (isset($val['type']))     ? $val['type']     : 'text';
-					$x = (isset($val['required'])) ? $val['required'] : '0';
-					$txta[] = $k . '=' . $t . '=' . $j . '=' . $x;
+					$element = new stdClass();
+					$element->default = (isset($val['default'])) ? $val['default'] : '';
+					$element->name = $this->_normalize(trim($val['title']));
+					$element->label = $val['title'];
+					$element->type = (isset($val['type']))     ? $val['type']     : 'text';
+					$element->required = (isset($val['required'])) ? $val['required'] : '0';
+					if (isset($val['options']))
+					{
+						$element->options = array();
+						foreach ($val['options'] as $option)
+						{
+							if (trim($option['label']))
+							{
+								$opt = new stdClass();
+								$opt->label = $option['label'];
+								$opt->value = $option['label'];
+								$element->options[] = $opt;
+							}
+						}
+					}
+					$elements->fields[] = $element;
 				}
 			}
-			$field = implode("\n", $txta);
-			$row->customFields = $field;
+			//$field = implode("\n", $txta);
+			//$row->customFields = $field;
+			//print_R($_POST); die();
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			$re = new ResourcesElements($elements);
+			$row->customFields = $re->toString();
 		}
 
 		// Get parameters
@@ -319,5 +341,36 @@ class ResourcesControllerTypes extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+	}
+	
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return	void
+	 */
+	public function elementTask()
+	{
+		$ctrl = JRequest::getVar('ctrl', 'fields');
+
+		$option = new stdClass;
+		$option->label = '';
+		$option->value = '';
+
+		$field = new stdClass;
+		$field->label = JRequest::getVar('name', 0);
+		$field->element = '';
+		$field->description = '';
+		$field->text = $field->label;
+		$field->name = $field->label;
+		$field->default = '';
+		$field->type = JRequest::getVar('type', '');
+		$field->options = array(
+			$option,
+			$option
+		);
+		
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+		$elements = new ResourcesElements();
+		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}
 }

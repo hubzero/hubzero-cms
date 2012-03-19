@@ -216,5 +216,64 @@ class ResourcesType extends JTable
 		$this->_db->setQuery( "SELECT count(*) FROM $r->_tbl WHERE type=".$id." OR logical_type=".$id );
 		return $this->_db->loadResult();
 	}
+	
+	/**
+	 * Short description for 'getNeighbor'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $move Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function getRolesForType($type_id=null)
+	{
+		if ($type_id === null)
+		{
+			$type_id = $this->id;
+		}
+		
+		if ($type_id === null) 
+		{
+			$this->setError(JText::_('Missing argument'));
+			return false;
+		}
+		
+		$type_id = intval($type_id);
+		
+		$query = "SELECT r.id, r.title, r.alias 
+					FROM #__author_roles AS r
+					LEFT JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=$type_id
+					ORDER BY r.title ASC";
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Short description for 'getNeighbor'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $move Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function delete($oid=null)
+	{
+		if ($oid === null)
+		{
+			$oid = $this->id;
+		}
+		
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
+		
+		$rt = new ResourcesContributorRoleType($this->_db);
+		if (!$rt->deleteForType($oid))
+		{
+			$this->setError($rt->getError());
+			return false;
+		}
+		
+		return parent::delete($oid);
+	}
 }
 
