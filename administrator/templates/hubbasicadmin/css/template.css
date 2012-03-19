@@ -1726,7 +1726,7 @@
 	.tags a:hover:before {
 		border-color:transparent #000 transparent transparent; 
 	}
-/* Access */
+/* Access 
 	.access,
 	.access span {
 		position: relative;
@@ -1756,7 +1756,7 @@
 	.access:after {
 	    margin: -8px 0 0;
 	    background: transparent;
-	}
+	}*/
 /* Votes */
 	.vote.plus {
 		color: green;
@@ -1845,7 +1845,6 @@
 		-webkit-border-radius: 0.27em 0.27em 0 0;
 		-moz-border-radius: 0.27em 0.27em 0 0;
 		border-radius: 0.27em 0.27em 0 0;
-		margin: 0;
 		padding: 0.61803399em 0 0.61803399em 0;
 		color: #999;
 		text-transform: uppercase;
@@ -1853,8 +1852,8 @@
 	}
 	fieldset.adminform legend span {
 		background: transparent;
-		margin: 0;
 		padding: 0;
+		margin: 0;
 	}
 	fieldset.adminform table tbody tr:last-child th,
 	fieldset.adminform table tbody tr:last-child td {
@@ -1862,6 +1861,21 @@
 	}
 	fieldset fieldset legend {
 		display: inherit;
+	}
+	fieldset.adminform fieldset legend {
+		float: none;
+		border: none;
+		background: transparent;
+		text-transform: none;
+		font-weight: bold;
+		width: auto;
+		margin: 0;
+		padding: 0.61803399em 0.2em;
+		text-indent: 0;
+	}
+	fieldset.adminform fieldset legend span {
+		padding: 0;
+		margin: 0;
 	}
 	fieldset fieldset fieldset {
 		background: transparent;
