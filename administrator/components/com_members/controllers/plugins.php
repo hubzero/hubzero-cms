@@ -46,7 +46,8 @@ class MembersControllerPlugins extends Hubzero_Controller
 	public function execute()
 	{
 		$task = JRequest::getVar('task', '');
-		if ($task && !isset($this->_taskMap[$task]))
+		$plugin = JRequest::getVar('plugin', '');
+		if ($plugin && $task && $task != 'manage') //!isset($this->_taskMap[$task]))
 		{
 			JRequest::setVar('action', $task);
 			JRequest::setVar('task', 'manage');
