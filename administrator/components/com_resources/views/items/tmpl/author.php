@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 		<span class="handle"><?php echo JText::_('DRAG HERE'); ?></span> 
-		<?php echo $this->escape(stripslashes($this->name)); ?> (<?php echo $this->id; ?>) [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;"><?php echo JText::_('remove'); ?></a> ]
+		<?php echo $this->escape(stripslashes($this->name)); ?> (<?php echo $this->id; ?>) [ <a href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $this->id; ?>');return false;"><?php echo JText::_('remove'); ?></a> ]
 		<br /><?php echo JText::_('Affiliation'); ?>: <input type="text" name="<?php echo $this->id; ?>_organization" value="<?php echo $this->escape(stripslashes($this->org)); ?>" />
 		
 		<select name="<?php echo $this->id; ?>_role">

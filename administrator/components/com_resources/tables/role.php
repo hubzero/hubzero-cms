@@ -279,7 +279,7 @@ class ResourcesContributorRole extends JTable
 		
 		$query = "SELECT r.id, r.title, r.alias 
 					FROM $this->_tbl AS r
-					LEFT JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=$type_id
+					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=$type_id
 					ORDER BY r.title ASC";
 		
 		$this->_db->setQuery($query);

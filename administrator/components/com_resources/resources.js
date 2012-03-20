@@ -18,7 +18,7 @@ if (!HUB) {
 
 HUB.Resources = {
 	removeAuthor: function(el) {
-		el.parentNode.parentNode.removeChild(el.parentNode);
+		$(el).parentNode.removeChild($(el));
 		
 		// get the new serials
 		$('new_authors').value = authsorts.serialize('', function(element, index){
@@ -29,7 +29,6 @@ HUB.Resources = {
 	},
 	
 	addAuthor: function() {
-
 		var authid = $('authid');
 		if (!authid) {
 			alert('Author select not found');
@@ -60,13 +59,14 @@ HUB.Resources = {
 		var myAjax = new Ajax('index.php?option=com_resources&controller=items&task=author&no_html=1&u='+selectedId+'&role='+selectedRole+'&rid='+$('id').value,{
 			update:'author_' + selectedId
 		}).request();
+		myAjax.addEvent('onComplete', function(){
+			// re-apply the sorting script so the new LIst item becoems sortable
+			authsorts.reinitialize();
 
-		// re-apply the sorting script so the new LIst item becoems sortable
-		authsorts.reinitialize();
-		
-		// get the new serials
-		$('new_authors').value = authsorts.serialize('', function(element, index){
-			return element.getProperty('id').replace('author_','');
+			// get the new serials
+			$('new_authors').value = authsorts.serialize('', function(element, index){
+				return element.getProperty('id').replace('author_','');
+			});
 		});
 	}
 };
