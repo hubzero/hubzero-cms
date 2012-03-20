@@ -1126,46 +1126,40 @@ class ContribtoolController extends JObject
 		$comment 		= JRequest::getVar( 'comment', '');
 		$editversion 	= JRequest::getVar( 'editversion', 'dev','post');
 		$toolname 		= ($task=='save' or $task=='register') ? strtolower($tool['toolname']) : strtolower(JRequest::getVar( 'toolname', ''));
+		$oldstatus		= array();
 
-		// Create a Tool object
+		// Create a Tool Version object
 		$objV = new ToolVersion( $database );
-
+		
+		// Create a Tool object
+		$obj = new Tool( $database );
+	
 		if($id) {
-			$hzt = Hubzero_Tool::getInstance($id);
-			$hztv = $hzt->getRevision($editversion);
-			// get tool status before changes
-			$oldstatus = ($hztv) ? $hztv->toArray() : array();
-			if (!empty($oldstatus))
-				$oldstatus['toolstate'] = $hzt->state;
-
 			// make sure user is authorized to go further
 			if(!$this->check_access($id, $juser, $this->_admin) ) {
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
 			}
 		}
-
+		
 		// new tool or edit
 		if($task=='register' || $task=='save')
-		{
-			// Create a Tool object
-			$obj = new Tool( $database );
-			
+		{			
 			if (!Hubzero_Tool::validate($tool,$err,$id))
 			{
 				// display form with errors
 				$title = JText::_(strtoupper($this->_name)).': '.JText::_('EDIT_TOOL');
 				$document =& JFactory::getDocument();
 				$document->setTitle( $title );
-
-				if($this->_toolid) { $tool['published']=$oldstatus['published']; }
 				
 				if($id)
 				{
 					// get tool status
-					$obj->getToolStatus( $id, $this->_option, $fstatus, $editversion );
+					$obj->getToolStatus( $id, $this->_option, $fstatus, $editversion );		
+					
 					$tool['developers'] = $fstatus['developers'];
 			        $tool['membergroups'] = $fstatus['membergroups'];
+					$tool['published'] = $fstatus['published'];
 				}
 
 				echo ContribtoolHtml::writeToolForm($this->_option, $title, $this->_admin, $juser, $tool, $err, $id, $this->config, $this->_task);
@@ -1206,6 +1200,11 @@ class ContribtoolController extends JObject
 				{
 					$oldstatus = $hztv->toArray();
 					$oldstatus['toolstate'] = $hzt->state;
+					$oldstatus['membergroups'] = $tool['membergroups'];
+					
+					if($id) {
+						$oldstatus['developers'] = $obj->getToolDevelopers($id);
+					}
 				}
 
 				if ($editversion=='dev')
@@ -1217,6 +1216,11 @@ class ContribtoolController extends JObject
 					}
 					$oldstatus = $hztv->toArray();
 					$oldstatus['toolstate'] = $hzt->state;
+					$oldstatus['membergroups'] = $tool['membergroups'];
+					
+					if($id) {
+						$oldstatus['developers'] = $obj->getToolDevelopers($id);
+					}
 					$hztv->toolid = $this->_toolid;
 					$hztv->toolname = $toolname;
 					$hztv->title = $tool['title'];
@@ -1315,24 +1319,33 @@ class ContribtoolController extends JObject
 							$this->author_save( 0, $rid, $tool['developers'] );
 						}
 					}
-
-					$status = $hztv->toArray();
-					$status['toolstate'] = $hzt->state;
-					$status['membergroups'] = $tool['membergroups'];
-
-					// update history ticket
-					if($id && $oldstatus!=$status && $editversion !='current')
-					{
-						$this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0 , 1);
-					}
-
+								
 					// display status page
-					$this->_task = 'status';
-					$this->_msg = $id ? JText::_('NOTICE_TOOL_INFO_CHANGED'): JText::_('NOTICE_TOOL_INFO_REGISTERED');
+				//	$this->_task = 'status';
+				//	$this->_msg = $id ? JText::_('NOTICE_TOOL_INFO_CHANGED'): JText::_('NOTICE_TOOL_INFO_REGISTERED');
 					$hzg->update();
 					$hzt->update();
 					$hztv->update(); // @FIXME: look
-					$this->status();
+				
+					$status 				= $hztv->toArray();
+					$status['toolstate'] 	= $hzt->state;
+					$status['membergroups'] = $tool['membergroups'];
+					$status['toolname'] 	= $tool['toolname'];
+					if($id)
+					{
+						$status['developers'] = $obj->getToolDevelopers($id);
+					}
+											
+					// update history ticket
+					if($id && $oldstatus != $status && $editversion !='current')
+					{
+						$this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0 , 1);
+					}
+					
+					// $this->status();
+					$this->_message = $id ? JText::_('NOTICE_TOOL_INFO_CHANGED'): JText::_('NOTICE_TOOL_INFO_REGISTERED');
+					$this->_redirect = JRoute::_('index.php?option='.$this->_option . a . 'task=status' . a . 'toolid=' . $hzt->id );
+					return;
 				}
 			} //--------end if valid
 
@@ -1813,7 +1826,7 @@ class ContribtoolController extends JObject
 			}
 			if (isset($oldstuff['developers']) && isset($newstuff['developers']) && $oldstuff['developers'] != $newstuff['developers']) {
 				$changelog[] = '<li><strong>'.JText::_('DEVELOPMENT_TEAM').'</strong> '.JText::_('TICKET_CHANGED_FROM')
-				.' <em>'.implode(',',$oldstuff['developers']) .'</em> '.JText::_('TO').' <em>'.implode(',',$newstuff['developers']).'</em></li>';
+				.' <em>'.ContribtoolHtml::getDevTeam($oldstuff['developers']).'</em> '.JText::_('TO').' <em>'.ContribtoolHtml::getDevTeam($newstuff['developers']).'</em></li>';
 				$summary .= $summary=='' ? '' : ', ';
 				$summary .= strtolower(JText::_('DEVELOPMENT_TEAM'));
 			}
@@ -1838,6 +1851,15 @@ class ContribtoolController extends JObject
 				$action = 2;
 			}
 		}
+		
+		// Make sure ticket is tied to the tool group
+		$row = new SupportTicket( $database );
+		if($row->load($ticketid) && isset($newstuff['toolname']))
+		{
+			$config 	=& JComponentHelper::getParams( $this->_option );
+			$row->group = $config->get('group_prefix', 'app-').$newstuff['toolname'];
+			$row->store();	
+		}		
 
 		// Were there any changes?
 		$log = implode(n,$changelog);
@@ -1854,19 +1876,23 @@ class ContribtoolController extends JObject
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
 		}
-		$rowc->created    = date( 'Y-m-d H:i:s', time() );
-		$rowc->created_by = $juser->get('username');
-		$rowc->changelog  = $log;
-		$rowc->access     = $access;
-		$xlog->logDebug(__FUNCTION__ . "() storing ticket");
-		if (!$rowc->store()) {
-			$this->_error = $rowc->getError();
-			return false;
-		}
-		else if($email) {
-			$xlog->logDebug(__FUNCTION__ . "() emailing notifications");
-			// send notification emails
-			$this->email($toolid, $summary, $comment, $access, $action);
+		
+		if($log || $comment)
+		{
+			$rowc->created    = date( 'Y-m-d H:i:s', time() );
+			$rowc->created_by = $juser->get('username');
+			$rowc->changelog  = $log;
+			$rowc->access     = $access;
+			$xlog->logDebug(__FUNCTION__ . "() storing ticket");
+			if (!$rowc->store()) {
+				$this->_error = $rowc->getError();
+				return false;
+			}
+			else if($email) {
+				$xlog->logDebug(__FUNCTION__ . "() emailing notifications");
+				// send notification emails
+				$this->email($toolid, $summary, $comment, $access, $action);
+			}
 		}
 
 		return true;
@@ -2046,6 +2072,11 @@ class ContribtoolController extends JObject
 		$row->report = $tool['toolname'];
 		$row->section = 2;
 		$row->type = 3;
+		
+		// Attach tool group to a ticket for access
+		$config 	=& JComponentHelper::getParams( $this->_option );
+		$row->group = $config->get('group_prefix', 'app-').$tool['toolname'];
+		
 		$row->email = $juser->get('email');
 		$row->name = $juser->get('name');
 
