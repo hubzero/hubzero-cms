@@ -1415,11 +1415,27 @@ class ToolsController extends Hubzero_Controller
 		$xlog =& Hubzero_Factory::getLogger();
 	    $exportcontrol = strtolower($exportcontrol);
 
+		$country = Hubzero_Geo::ipcountry($_SERVER['REMOTE_ADDR']);
+
+		if (empty($country) && in_array($exportControl, array('us','d1','pu')))
+		{
+			$this->setError('This tool may not be accessed from your unknown current location due to export/license restrictions.');
+			$xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
+			return false;
+		}
+
+
+		if (Hubzero_Geo::is_e1nation(Hubzero_Geo::ipcountry($_SERVER['REMOTE_ADDR']))) {
+			$this->setError('This tool may not be accessed from your current location due to E1 export/license restrictions.');
+			$xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
+			return false;
+		}
+
         switch ($exportcontrol)
         {
             case 'us':
                 if (Hubzero_Geo::ipcountry($_SERVER['REMOTE_ADDR']) != 'us') {
-                    $this->setError('This tool may only be accessed from within the U.S. Your current location could not be confirmed.');
+                    $this->setError('This tool may only be accessed from within the U.S. due to export/licensing restrictions.');
                     $xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
                     return false;
                 }
@@ -1427,7 +1443,7 @@ class ToolsController extends Hubzero_Controller
 
             case 'd1':
                 if (Hubzero_Geo::is_d1nation(Hubzero_Geo::ipcountry($_SERVER['REMOTE_ADDR']))) {
-                    $this->setError('This tool may not be accessed from your current location due to export restrictions.');
+                    $this->setError('This tool may not be accessed from your current location due to export/license restrictions.');
                     $xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
                     return false;
                 }

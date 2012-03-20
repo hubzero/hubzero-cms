@@ -183,6 +183,9 @@ class Hubzero_Geo
 		if ($country) {
 			$gdb =& Hubzero_Geo::getGODBO();
 
+			if (empty($gdb))
+				return false;
+
 			$sql = "SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER('" . $country . "') AND countrygroup = 'D1'";
 			$gdb->setQuery( $sql );
 			$c = $gdb->loadResult();
@@ -191,6 +194,33 @@ class Hubzero_Geo
 			}
 		}
 		return $d1nation;
+	}
+
+	/**
+	 * Short description for 'is_e1nation'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $country Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function is_e1nation($country)
+	{
+		$e1nation = false;
+		if ($country) {
+			$gdb =& Hubzero_Geo::getGODBO();
+
+			if (empty($gdb))
+				return false;
+
+			$sql = "SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER('" . $country . "') AND countrygroup = 'E1'";
+			$gdb->setQuery( $sql );
+			$c = $gdb->loadResult();
+			if ($c > 0) {
+				$e1nation = true;
+			}
+		}
+		return $e1nation;
 	}
 
 	/**
