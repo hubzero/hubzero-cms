@@ -48,7 +48,7 @@ class ResourcesElementRadio extends ResourcesElement
 	 * @param   string  $name          Name of the field
 	 * @return  string  HTML
 	 */
-	public function fetchTooltip($label, $node, $controlName)
+	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
 		return '';
 	}

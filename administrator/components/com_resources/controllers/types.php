@@ -200,6 +200,13 @@ class ResourcesControllerTypes extends Hubzero_Controller
 					$element->label = $val['title'];
 					$element->type = (isset($val['type']))     ? $val['type']     : 'text';
 					$element->required = (isset($val['required'])) ? $val['required'] : '0';
+					foreach ($val as $key => $v)
+					{
+						if (!in_array($key, array('default', 'type', 'title', 'required', 'options')))
+						{
+							$element->$key = $v;
+						}
+					}
 					if (isset($val['options']))
 					{
 						$element->options = array();

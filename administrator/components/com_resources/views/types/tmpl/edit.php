@@ -355,6 +355,7 @@ window.addEvent('domready', Fields.initialise);
 								<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_HIDDEN'); ?></option>
 							</optgroup>
 							<optgroup label="<?php echo JText::_('Pre-defined'); ?>">
+								<option value="date"<?php echo ($field->type == 'date') ? ' selected="selected"':''; ?>><?php echo JText::_('Date'); ?></option>
 								<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo JText::_('Geo Location'); ?></option>
 								<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo JText::_('Language List'); ?></option>
 							</optgroup>

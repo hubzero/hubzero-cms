@@ -45,9 +45,9 @@ if (count($matches) > 0)
 		$data[$match[1]] = ContributeController::_txtUnpee($match[2]);
 	}
 }
+
 $this->row->fulltext = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltext);
 $this->row->fulltext = trim($this->row->fulltext);
-$this->row->fulltext = ($this->row->fulltext) ? trim(stripslashes($this->row->fulltext)): trim(stripslashes($this->row->introtext));
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 ?>

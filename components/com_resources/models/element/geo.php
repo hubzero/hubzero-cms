@@ -93,6 +93,7 @@ class ResourcesElementGeo extends ResourcesElement
 		$size = ( isset($element->size) ? 'size="'.$element->size.'"' : '' );
 		$class = ( isset($element->class) ? 'class="geolocation '.$element->class.'"' : 'class="geolocation"' );
 		
+		$address = $this->_getValue('value', $value);
 		$lat = $this->_getValue('lat', $value);
 		$lng = $this->_getValue('lng', $value);
 		
@@ -106,7 +107,7 @@ class ResourcesElementGeo extends ResourcesElement
          */
         $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		$html  = '<input type="text" name="'.$control_name.'['.$name.'][value]" id="'.$control_name.'-'.$name.'" value="'.$value.'" '.$class.' '.$size.' />';
+		$html  = '<input type="text" name="'.$control_name.'['.$name.'][value]" id="'.$control_name.'-'.$name.'" value="'.$address.'" '.$class.' '.$size.' />';
 		$html .= '<input type="hidden" name="'.$control_name.'['.$name.'][lat]" id="'.$control_name.'-'.$name.'-lat" value="'.$lat.'" />';
 		$html .= '<input type="hidden" name="'.$control_name.'['.$name.'][lng]" id="'.$control_name.'-'.$name.'-lng" value="'.$lng.'" />';
 
@@ -135,8 +136,8 @@ class ResourcesElementGeo extends ResourcesElement
 	 */
 	public function display($value)
 	{
-		$value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
-		$value = preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
-		return trim($value);
+		//$value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
+		//$value = preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
+		return trim($this->_getValue('value', $value));
 	}
 }

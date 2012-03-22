@@ -747,26 +747,19 @@ class ContributeController extends Hubzero_Controller
 
 		$nbtag = $_POST['nbtag'];
 		$found = array();
-		//$nbtag = array_map('trim',$nbtag);
 		foreach ($nbtag as $tagname => $tagcontent)
 		{
-			$content = null;
+			$row->fulltext .= "\n".'<nb:'.$tagname.'>';
 			if (is_array($tagcontent))
 			{
-				$content = $tagcontent;
-				$tagcontent = trim(array_shift($content));
-			}
-			$row->fulltext .= "\n".'<nb:'.$tagname.'>';
-			//$row->fulltext .= (isset($fields[$tagname])) ? '<nbtype>'.$fields[$tagname]->type.'</nbtype>' : '';
-			$row->fulltext .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
-			if (is_array($content))
-			{
-				foreach ($content as $key => $val)
+				foreach ($tagcontent as $key => $val)
 				{
-					//if ($key != 'value') {
-						$row->fulltext .= '<'.$key.'>' . trim($val) . '</'.$key.'>';
-					//}
+					$row->fulltext .= '<'.$key.'>' . trim($val) . '</'.$key.'>';
 				}
+			}
+			else 
+			{
+				$row->fulltext .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
 			}
 			$row->fulltext .= '</nb:'.$tagname.'>'."\n";
 			
