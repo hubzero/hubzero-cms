@@ -248,5 +248,53 @@ class ResourcesLicense extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+	
+	/**
+	 * Short description for 'getRecords'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      array $filters Parameter description (if any) ...
+	 * @return     object Return description (if any) ...
+	 */
+	public function getLicenses($id=null)
+	{
+		$query  = "SELECT c.* FROM $this->_tbl AS c";
+
+		$where = array();
+		
+		if (!is_null($id)) 
+		{
+			$where[] = "name NOT LIKE 'custom%' OR name = 'custom$id'";
+		}
+		else 
+		{
+			$where[] = "name != 'custom'";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
 }
 
