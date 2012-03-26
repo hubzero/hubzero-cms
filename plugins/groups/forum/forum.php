@@ -1329,10 +1329,13 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			//$asset = 'post';
 		}
-		if (!$this->params->get('access-edit-' . $asset) && !$this->params->get('access-create-' . $asset))
+		if (($fields['id'] && !$this->params->get('access-edit-thread')) 
+		 || (!$fields['id'] && !$this->params->get('access-create-thread')))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')))
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JText::_('You are not authorized to perform this action.'),
+				'warning'
 			);
 			return;
 		}
