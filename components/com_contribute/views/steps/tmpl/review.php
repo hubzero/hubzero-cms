@@ -69,27 +69,52 @@ if ($this->progress['submitted'] == 1) {
 					<?php echo JText::_('License'); ?>
 					<select name="license" id="license">
 						<option value=""><?php echo JText::_('Select license...'); ?></option>
-						<option value="custom"><?php echo JText::_('Custom'); ?></option>
-				<?php 
+<?php 
 				$l = array();
-				$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('[ENTER LICENSE HERE]')) . '" />';
+				$c = false;
 				foreach ($this->licenses as $license) 
 				{
-					if (substr($license, 0, 6) == 'custom' && intval(substr($license, 7)) != $this->id) 
+					if (substr($license->name, 0, 6) == 'custom') 
+					{
+					?>
+						<option value="custom"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo JText::_('Custom'); ?></option>
+					<?php 
+						$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
+						$c = $this->escape(nl2br($license->text));
+					} 
+				}
+				if (!$c && $this->config->get('cc_license_custom'))
+				{
+					?>
+						<option value="custom"><?php echo JText::_('Custom'); ?></option>
+					<?php
+					$c = $this->escape(JText::_('[ENTER LICENSE HERE]'));
+					$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('[ENTER LICENSE HERE]')) . '" />';
+				}
+				foreach ($this->licenses as $license) 
+				{
+					//if (substr($license, 0, 6) == 'custom' && intval(substr($license, 7)) != $this->id) 
+					//if ($license->name == 'custom' && intval($license->info) != $this->id) 
+					if (substr($license->name, 0, 6) == 'custom') 
 					{
 						continue;
 					}
+					else 
+					{
 					?>
 						<option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($license->title); ?></option>
-					<?php 
+					<?php
+					} 
 					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
 				} 
-				?>
+?>
 					</select>
 					<div id="license-preview" style="display:none;"><?php echo JText::_('License preview.'); ?></div>
 					<?php echo implode("\n", $l); ?>
 				</label>
-				<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $this->escape(JText::_('[ENTER LICENSE HERE]')); ?></textarea>
+				<?php if ($this->config->get('cc_license_custom')) { ?>
+				<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $c; ?></textarea>
+				<?php } ?>
 				
 				<label><input class="option" type="checkbox" name="license" value="1" /> <span class="optional">optional</span> 
 				License the work under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
@@ -132,32 +157,57 @@ if ($this->progress['submitted'] == 1) {
 				<?php echo $jconfig->getValue('config.sitename'); ?> must attribute these materials to the author(s). This is a human-readable summary 
 				of the Legal Code (<a class="popup 760x560" href="/legal/license">the full license</a>).
 			</label>
-			
 <?php if ($this->config->get('cc_license')) { ?>
 			<label for="license">
 				<?php echo JText::_('License'); ?>
 				<select name="license" id="license">
 					<option value=""><?php echo JText::_('Select license...'); ?></option>
-			<?php if ($this->config->get('cc_license_custom')) { ?>
-					<option value="custom"><?php echo JText::_('Custom'); ?></option>
-			<?php } ?>
 			<?php 
 			$l = array();
-			$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('[ENTER LICENSE HERE]')) . '" />';
-			foreach ($this->licenses as $license) 
-			{ 
-				?>
-					<option value="<?php echo $this->escape($license->name); ?>"><?php echo $this->escape($license->title); ?></option>
-				<?php 
-				$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
-			} 
+				$c = false;
+				
+				foreach ($this->licenses as $license) 
+				{
+					if (substr($license->name, 0, 6) == 'custom') 
+					{
+					?>
+						<option value="custom"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo JText::_('Custom'); ?></option>
+					<?php 
+						$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
+						$c = $this->escape(nl2br($license->text));
+					} 
+				}
+				if (!$c && $this->config->get('cc_license_custom'))
+				{
+					?>
+						<option value="custom"><?php echo JText::_('Custom'); ?></option>
+					<?php
+					$c = $this->escape(JText::_('[ENTER LICENSE HERE]'));
+					$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('[ENTER LICENSE HERE]')) . '" />';
+				}
+				foreach ($this->licenses as $license) 
+				{
+					//if (substr($license, 0, 6) == 'custom' && intval(substr($license, 7)) != $this->id) 
+					//if ($license->name == 'custom' && intval($license->info) != $this->id) 
+					if (substr($license->name, 0, 6) == 'custom') 
+					{
+						continue;
+					}
+					else 
+					{
+					?>
+						<option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($license->title); ?></option>
+					<?php
+					} 
+					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+				}
 			?>
 				</select>
 				<div id="license-preview" style="display:none;"><?php echo JText::_('License preview.'); ?></div>
 				<?php echo implode("\n", $l); ?>
 			</label>
 			<?php if ($this->config->get('cc_license_custom')) { ?>
-				<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $this->escape(JText::_('[ENTER LICENSE HERE]')); ?></textarea>
+				<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $c; ?></textarea>
 			<?php } ?>
 <?php } ?>
 			

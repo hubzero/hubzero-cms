@@ -164,6 +164,10 @@ HUB.Contribute = {
 			$('license-preview').setStyles({'display':'block'});
 		}
 		if ($('license')) {
+			if ($('license').value == 'custom') {
+				$('license-text').setStyles({'display':'inline-block'});
+				$('license-preview').setStyles({'display':'none'});
+			}
 			$('license').addEvent('change', function() {
 				if ($(this).value != '') {
 					$('license-preview').innerHTML = $('license-' + $(this).value).value;

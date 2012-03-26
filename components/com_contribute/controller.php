@@ -651,7 +651,7 @@ class ContributeController extends Hubzero_Controller
 		$view->task = 'submit';
 		
 		$rl = new ResourcesLicense($this->database);
-		$view->licenses = $rl->getRecords();
+		$view->licenses = $rl->getLicenses($id);
 		
 		if ($this->getError()) {
 			foreach ($this->getErrors() as $error)
@@ -749,21 +749,28 @@ class ContributeController extends Hubzero_Controller
 		$found = array();
 		foreach ($nbtag as $tagname => $tagcontent)
 		{
+			$f = '';
+			
 			$row->fulltext .= "\n".'<nb:'.$tagname.'>';
 			if (is_array($tagcontent))
 			{
 				foreach ($tagcontent as $key => $val)
 				{
+					$f .= trim($val);
 					$row->fulltext .= '<'.$key.'>' . trim($val) . '</'.$key.'>';
 				}
 			}
 			else 
 			{
-				$row->fulltext .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
+				$f = trim($tagcontent);
+				if ($f)
+				{
+					$row->fulltext .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
+				}
 			}
 			$row->fulltext .= '</nb:'.$tagname.'>'."\n";
 			
-			if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required) 
+			if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required) 
 			{
 				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 			}
@@ -1021,10 +1028,35 @@ class ContributeController extends Hubzero_Controller
 		}
 
 		// Is this resource licensed under Creative Commons?
-		if ($this->config->get('cc_license')) {
-			$license = JRequest::getVar('license', '');
-			if ($license) {
-				$params = explode("\n",$resource->params);
+		if ($this->config->get('cc_license')) 
+		{
+			if (($license = JRequest::getVar('license', ''))) 
+			{
+				if ($license == 'custom')
+				{
+					$license .= $resource->id;
+					
+					$licenseText = JRequest::getVar('license-text', '');
+					if ($licenseText == '[ENTER LICENSE HERE]') 
+					{
+						$this->setError( JText::_('Please enter a license.') );
+						$this->check_progress($id);
+						$this->step_review();
+						return;
+					}
+
+					include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'license.php' );
+
+					$rl = new ResourcesLicense($this->database);
+					$rl->load($license);
+					$rl->name = $license;
+					$rl->text = $licenseText;
+					$rl->info = $resource->id;
+					$rl->check();
+					$rl->store();
+				}
+				
+				$params = explode("\n", $resource->params);
 				$newparams = array();
 				$flag = 0;
 
@@ -1041,31 +1073,13 @@ class ContributeController extends Hubzero_Controller
 				}
 
 				// No license param so add it
-				if ($flag == 0) {
+				if ($flag == 0) 
+				{
 					$newparams[] = 'license=' . $license;
 				}
 
 				// Overwrite the resource's params with the new params
-				$resource->params = implode("\n",$newparams);
-				
-				if (($licenseText = JRequest::getVar('license-text', ''))) 
-				{
-					if ($licenseText == '[ENTER LICENSE HERE]') 
-					{
-						$this->setError( JText::_('Please enter a license.') );
-						$this->check_progress($id);
-						$this->step_review();
-						return;
-					}
-					
-					include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'license.php' );
-					
-					$rl = new ResourcesLicense($this->database);
-					$rl->name = 'custom' . $resouce->id;
-					$rl->text = $licenseText;
-					$rl->check();
-					$rl->store();
-				}
+				$resource->params = implode("\n", $newparams);
 			}
 		}
 

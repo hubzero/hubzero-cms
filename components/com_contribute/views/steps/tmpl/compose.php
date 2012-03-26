@@ -50,6 +50,9 @@ $this->row->fulltext = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->
 $this->row->fulltext = trim($this->row->fulltext);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+
+$elements = new ResourcesElements($data, $type->customFields);
+$fields = $elements->render();
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -86,29 +89,29 @@ $view->display();
 				<textarea name="fulltext" cols="50" rows="20"><?php echo ContributeController::_txtUnpee(stripslashes($this->row->fulltext)); ?></textarea>
 			</label>
 		</fieldset><div class="clear"></div>
-
+<?php if ($fields) { ?>
 		<div class="explaination">
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_CUSTOM_FIELDS_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_DETAILS'); ?></h3>
-<?php 
-$elements = new ResourcesElements($data, $type->customFields);
-echo $elements->render();
-?>
-			<input type="hidden" name="published" value="<?php echo $this->row->published; ?>" />
-			<input type="hidden" name="standalone" value="1" />
-			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="type" value="<?php echo $this->row->type; ?>" />
-			<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
-			<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
-			<input type="hidden" name="publish_up" value="<?php echo $this->row->publish_up; ?>" />
-			<input type="hidden" name="publish_down" value="<?php echo $this->row->publish_down; ?>" />
-	 
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
+			<?php 
+			echo $fields;
+			?>			
 		</fieldset><div class="clear"></div>
+<?php } ?>
+		<input type="hidden" name="published" value="<?php echo $this->row->published; ?>" />
+		<input type="hidden" name="standalone" value="1" />
+		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+		<input type="hidden" name="type" value="<?php echo $this->row->type; ?>" />
+		<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
+		<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
+		<input type="hidden" name="publish_up" value="<?php echo $this->row->publish_up; ?>" />
+		<input type="hidden" name="publish_down" value="<?php echo $this->row->publish_down; ?>" />
+
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+		<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" />
 		</p>
