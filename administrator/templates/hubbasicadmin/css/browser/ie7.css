@@ -6,33 +6,57 @@
  */
 
 /* Structure */
-	#header {
-		margin: 2.23606798em 0 0.61803399em 0;
-		padding: 0 2.5em;
+	.toolbar-box {
+		border-bottom: 1px solid #ccc;
 	}
-	#header .user-options .logout {
-		padding-right: 0;
+	.toolbar-box table a span:before {
+		top: -8px;
 	}
-	#wrap {
-		margin: 0 1.61803399em;
-		padding: 0.61803399em;
+	.toolbar-box .header:before {
+		font-size: 26px;
+	}
+	.mod {
+		border-top: 1px solid #666;
+		border-right: 1px solid #d0d0d0;
+		border-bottom: 1px solid #fff;
+		border-left: 1px solid #d0d0d0;
 	}
 /* Login */
 	#login-body #wrap {
 		margin: 0 auto 100px auto;
-		padding-top: 0.18em;
+		padding: 0.18em 0.618em 0.618em 0.618em;
 	}
-	#login-page .pagetitle h2 {
-		margin: 0;
-		padding: 0;
+/* Main Menu */
+	#header .user-options {
+		z-index: 900;
 	}
-/* Support */
-	.ticket-details,
-	ol.comments .comment-changelog {
-		background: #ededed;
+	#header .user-options li {
+		height: 1%;
+		z-index: 901;
 	}
-	ol.comments .comment-changelog:before {
-		border-color: #ededed #ededed transparent transparent;
+	#header .user-options .logout {
+		padding-right: 20px;
+		cursor: pointer;
+	}
+	#header .user-options li:hover a,
+	#header .user-options li:focus a,
+	#header .user-options li a:hover,
+	#header .user-options li a:focus,
+	.main-navigation ul#menu>li:hover,
+	.main-navigation ul#menu>li:focus {
+		background: url("../../images/layout/black-20.png");
+	}
+	.main-navigation ul#menu li.separator {
+		margin: 0 10px;
+		padding: 3px 0;
+		height: 1px;
+		background: transparent url("../../images/nav/bg-nav-sub-seperator.png") 0 0 repeat-x;
+		width: 140px;
+		overflow: hidden;
+		display: block;
+	}
+	.main-navigation ul#menu li.separator span {
+		display: none;
 	}
 /* Main Navigation */
 	.main-navigation {
@@ -57,17 +81,37 @@
 		display: none;
 	}
 /* Toolbar */
-	#toolbar-box ul li {
+	#toolbar-box .header {
+		padding-left: .618em;
+	}
+	#toolbar-box table {
 		width: 1%;
 	}
-	/*#toolbar-box li a span {
-		filter:alpha(opacity=70);
+	#toolbar-box table a {
+		display: block;
+		color: #888;
+		cursor: pointer;
+		font-size: 1.3em;
+		margin-left: 0.5em;
+		border: 1px solid #ccc;
+		padding: 0.309em 0.618em;
 	}
-	#toolbar-box li:hover a span,
-	#toolbar-box a:hover span,
-	#toolbar-box a span:hover {
-		filter:alpha(opacity=100);
-	}*/
+	.toolbar-box table td.spacer {
+		width: 24px;
+	}
+	#toolbar-box table a span {
+		display: inline;
+		height: auto;
+		width: auto;
+	}
+	#toolbar-box table a:hover,
+	#toolbar-box table a:hover span,
+	#toolbar-box table a span:hover {
+		color: #222;
+	}
+	#toolbar-box table a:hover {
+		border: 1px solid #222;
+	}
 /* State Links */
 	a.state,
 	a.state:link,
@@ -91,22 +135,19 @@
 	.state span {
 		display: inline;
 	}
-/* Tables */
-	table thead tr th,
-	table thead tr td {
-		background-color: #e8e8e8;
-		border-color: #e8e8e8;
-	}
-	table tbody tr.even td,
-	table tbody tr.row0 td,
-	table tbody tr.even th,
-	table tbody tr.row0 th {
-		background-color: #fafafa;
-	}
 /* Form elements */
 	fieldset legend {
 		background: url("../../images/layout/bg-legend.png") center repeat-x;
 		text-indent: 0;
+	}
+	table.admintable select,
+	table.admintable .input-text,
+	table.admintable input[type=text],
+	table.admintable input[type=password],
+	table.admintable input[type=email],
+	table.admintable textarea {
+		width: 93%;
+		max-width: 93%;
 	}
 	.input-text,
 	input[type=text],
@@ -151,7 +192,12 @@
 	input {
 		border-width: expression(this.type == "radio" ? '0px' : this.type == "checkbox" ? '0px' : '1px');
 	}
-
+	fieldset.adminform legend {
+		border: 1px solid #D6D6D6;
+		margin-left: -2.236em;
+		margin-top: -0.61803399em;
+		text-indent: 1.61803399em;
+	}
 /* Accessibility: css in template.css for slider keyboard
  * has to be reversed here or the mouse does not work for ie */
 	.pane-toggler + div {
