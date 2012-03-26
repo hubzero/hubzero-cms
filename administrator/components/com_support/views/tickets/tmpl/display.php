@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'Tickets' ).' ]</small></small>', 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'Tickets' ).' ]</small></small>', 'support.png' );
 JToolBarHelper::preferences('com_support', '550');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
@@ -39,12 +39,10 @@ JToolBarHelper::deleteList();
 JHTML::_('behavior.tooltip');
 ?>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
-	<fieldset id="filter">
-		<label>
-			<?php echo JText::_('SUPPORT_FIND'); ?>:
-			<input type="text" name="find" id="find" value="<?php echo ($this->filters['_show'] == '') ? $this->escape($this->filters['_find']) : ''; ?>" />
-		</label>
+<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('SUPPORT_FIND'); ?>:</label> 
+		<input type="text" name="find" id="filter_search" value="<?php echo ($this->filters['_show'] == '') ? $this->escape($this->filters['_find']) : ''; ?>" />
 		
 		<a title="<?php echo JText::_('SUPPORT_KEYWORD_GUIDE'); ?>::<table id='keyword-guide' summary='<?php echo JText::_('SUPPORT_KEYWORD_TBL_SUMMARY'); ?>'>
 			<tbody>
@@ -83,30 +81,27 @@ JHTML::_('behavior.tooltip');
 			</tbody>
 		</table>" class="editlinktip hasTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&c=' . $this->controller . '#help'); ?>"><?php echo JText::_('SUPPORT_HELP'); ?></a>
 		
-		<span><?php echo JText::_('OR'); ?></span>
-		
-		<label>
-			<?php echo JText::_('SHOW'); ?>:
-			<select name="show">
-				<option value=""<?php if ($this->filters['_show'] == '') { echo ' selected="selected"'; } ?>>--</option>
-				<option value="status:new"<?php if ($this->filters['_show'] == 'status:new') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_NEW'); ?></option>
-				<option value="status:open"<?php if ($this->filters['_show'] == 'status:open') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_OPEN'); ?></option>
-				<option value="owner:none"<?php if ($this->filters['_show'] == 'owner:none') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_UNASSIGNED'); ?></option>
-				<option value="status:waiting"<?php if ($this->filters['_show'] == 'status:waiting') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_WAITING'); ?></option>
-				<option value="status:closed"<?php if ($this->filters['_show'] == 'status:closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_CLOSED'); ?></option>
-				<option value="status:all"<?php if ($this->filters['_show'] == 'status:all') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_ALL'); ?></option>
-				<option value="reportedby:me"<?php if ($this->filters['_show'] == 'reportedby:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_REPORTED_BY_ME'); ?></option>
-				<option value="status:open owner:me"<?php if ($this->filters['_show'] == 'status:open owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_OPEN'); ?></option>
-				<option value="status:closed owner:me"<?php if ($this->filters['_show'] == 'status:closed owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_CLOSED'); ?></option>
-				<option value="status:all owner:me"<?php if ($this->filters['_show'] == 'status:all owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_ALL'); ?></option>
-			</select>
-		</label>
+		<label><span><?php echo JText::_('OR'); ?></span> <?php echo JText::_('SHOW'); ?>:</label> 
+		<select name="show">
+			<option value=""<?php if ($this->filters['_show'] == '') { echo ' selected="selected"'; } ?>>--</option>
+			<option value="status:new"<?php if ($this->filters['_show'] == 'status:new') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_NEW'); ?></option>
+			<option value="status:open"<?php if ($this->filters['_show'] == 'status:open') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_OPEN'); ?></option>
+			<option value="owner:none"<?php if ($this->filters['_show'] == 'owner:none') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_UNASSIGNED'); ?></option>
+			<option value="status:waiting"<?php if ($this->filters['_show'] == 'status:waiting') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_WAITING'); ?></option>
+			<option value="status:closed"<?php if ($this->filters['_show'] == 'status:closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_CLOSED'); ?></option>
+			<option value="status:all"<?php if ($this->filters['_show'] == 'status:all') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_ALL'); ?></option>
+			<option value="reportedby:me"<?php if ($this->filters['_show'] == 'reportedby:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_REPORTED_BY_ME'); ?></option>
+			<option value="status:open owner:me"<?php if ($this->filters['_show'] == 'status:open owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_OPEN'); ?></option>
+			<option value="status:closed owner:me"<?php if ($this->filters['_show'] == 'status:closed owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_CLOSED'); ?></option>
+			<option value="status:all owner:me"<?php if ($this->filters['_show'] == 'status:all owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_ALL'); ?></option>
+		</select>
 		
 		<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" />
 		
 		<button onclick="this.form.submit();"><?php echo JText::_( 'GO' ); ?></button>
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist" id="tktlist">
 		<thead>

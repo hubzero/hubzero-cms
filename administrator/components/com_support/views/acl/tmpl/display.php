@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Support ACL' ), 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Support' ).' <small><small>[ '.JText::_('ACL').' ]</small></small>', 'support.png' );
 JToolBarHelper::deleteList();
 
 ?>
@@ -47,7 +47,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -55,23 +55,23 @@ function submitbutton(pressbutton)
 				<th> </th>
 				<th> </th>
 				<th> </th>
-				<th colspan="3">Tickets</th>
-				<th colspan="2">Comments</th>
-				<th colspan="2">Private Comments</th>
+				<th colspan="3"><?php echo JText::_('Tickets'); ?></th>
+				<th colspan="2"><?php echo JText::_('Comments'); ?></th>
+				<th colspan="2"><?php echo JText::_('Private Comments'); ?></th>
 				<th> </th>
 			</tr>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
 				<th><?php echo JText::_('SUPPORT_COL_ID'); ?></th>
-				<th>Object</th>
-				<th>Model</th>
-				<th>Read</th>
-				<th>Update</th>
-				<th>Delete</th>
-				<th>Create</th>
-				<th>Read</th>
-				<th>Create</th>
-				<th>Read</th>
+				<th><?php echo JText::_('Object'); ?></th>
+				<th><?php echo JText::_('Model'); ?></th>
+				<th><?php echo JText::_('Read'); ?></th>
+				<th><?php echo JText::_('Update'); ?></th>
+				<th><?php echo JText::_('Delete'); ?></th>
+				<th><?php echo JText::_('Create'); ?></th>
+				<th><?php echo JText::_('Read'); ?></th>
+				<th><?php echo JText::_('Create'); ?></th>
+				<th><?php echo JText::_('Read'); ?></th>
 				<th> </th>
 			</tr>
 		</thead>
@@ -82,16 +82,13 @@ function submitbutton(pressbutton)
 					<input type="hidden" name="aro[id]" id="aro_id" value="" />
 				</td>
 				<td>
-					<label for="aro_alias">Alias:</label>
-					<input type="text" name="aro[alias]" id="aro_alias" size="25" value="" /> or 
-					
-					<label for="aro_foreign_key">ID:</label>
-					<input type="text" name="aro[foreign_key]" id="aro_foreign_key" size="11" value="" />
+					<label for="aro_foreign_key">Alias or ID:</label>
+					<input type="text" name="aro[foreign_key]" id="aro_foreign_key" size="20" value="" />
 				</td>
 				<td>
 					<select name="aro[model]" id="aro_model">
-						<option value="user">user</option>
-						<option value="group">group</option>
+						<option value="user"><?php echo JText::_('user'); ?></option>
+						<option value="group"><?php echo JText::_('group'); ?></option>
 					</select>
 				</td>
 				<td>
@@ -185,39 +182,45 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php 
 					$cimg = 'publish_x.png';
 					$calt = JText::_( 'no' );
+					$cls = 'unpublish';
 					if ($data['tickets']['read']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_( 'yes' );
+						$cls = 'publish';
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=read&amp;value=<?php echo $data['tickets']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=read&amp;value=<?php echo $data['tickets']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
 					$calt = JText::_( 'no' );
+					$cls = 'unpublish';
 					if ($data['tickets']['update']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_( 'yes' );
+						$cls = 'publish';
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=update&amp;value=<?php echo $data['tickets']['update'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=update&amp;value=<?php echo $data['tickets']['update'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
 					$calt = JText::_( 'no' );
+					$cls = 'unpublish';
 					if ($data['tickets']['delete']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_( 'yes' );
+						$cls = 'publish';
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=delete&amp;value=<?php echo $data['tickets']['delete'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=delete&amp;value=<?php echo $data['tickets']['delete'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
 					</a>
 				</td>
 
@@ -225,13 +228,15 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php 
 					$cimg = 'publish_x.png';
 					$calt = JText::_( 'no' );
+					$cls = 'unpublish';
 					if ($data['comments']['create']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_( 'yes' );
+						$cls = 'publish';
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
@@ -241,10 +246,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					if ($data['comments']['read']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_( 'yes' );
+						$cls = 'publish';
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
 					</a>
 				</td>
 
@@ -252,26 +258,30 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php 
 					$cimg = 'publish_x.png';
 					$calt = JText::_( 'no' );
+					$cls = 'unpublish';
 					if ($data['private_comments']['create']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_( 'yes' );
+						$cls = 'publish';
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['private_comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['private_comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
 					</a>
 				</td>
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
 					$calt = JText::_( 'no' );
+					$cls = 'unpublish';
 					if ($data['private_comments']['read']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_( 'yes' );
+						$cls = 'publish';
 					}
 					?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['private_comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
-						<img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['private_comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+						<span><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /></span>
 					</a>
 				</td>
 				<td> </td>

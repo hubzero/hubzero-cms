@@ -52,7 +52,7 @@ class SupportUtilities
 	 * @param      array $from Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function sendEmail($email, $subject, $message, $from, $replyto = array())
+	public function sendEmail($email, $subject, $message, $from, $replyto = '', $additionalHeaders = null)
 	{
 		if ($from) {
 			$args = "-f '" . $from['email'] . "'";
@@ -61,7 +61,7 @@ class SupportUtilities
 			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
 
 			if ($replyto)
-			  $headers .= 'Reply-To: ' . $from['name'] .' <'. $reply['email'] . ">\n";
+			  $headers .= 'Reply-To: ' . $replyto['name'] .' <'. $replyto['email'] . ">\n";
 			else
 			  $headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
 
@@ -75,7 +75,6 @@ class SupportUtilities
 				{
 					$headers .= $header['name'] . ": " . $header['value'] . "\n";
 				}
-
 			}
 
 			if (mail($email, $subject, $message, $headers, $args)) {

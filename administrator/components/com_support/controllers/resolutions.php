@@ -99,7 +99,6 @@ class SupportControllerResolutions extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -110,6 +109,10 @@ class SupportControllerResolutions extends Hubzero_Controller
 	 */
 	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
+		$this->view->setLayout('edit');
+		
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -152,22 +155,15 @@ class SupportControllerResolutions extends Hubzero_Controller
 		$row = new SupportResolution($this->database);
 		if (!$row->bind($res))
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
-
-		// Code cleaner for xhtml transitional compliance
-		$row->title = trim($row->title);
-		if (!$row->alias)
-		{
-			$row->alias = preg_replace("/[^a-zA-Z0-9]/", '', $row->title);
-			$row->alias = strtolower($row->alias);
-		}
-
+		
 		// Check content
 		if (!$row->check())
 		{
-			$this->setError($row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -175,14 +171,16 @@ class SupportControllerResolutions extends Hubzero_Controller
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setError($row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('RESOLUTION_SUCCESSFULLY_SAVED');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('RESOLUTION_SUCCESSFULLY_SAVED')
+		);
 	}
 
 	/**
@@ -201,8 +199,11 @@ class SupportControllerResolutions extends Hubzero_Controller
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-			$this->_message = JText::_('SUPPORT_ERROR_SELECT_RESOLUTION_TO_DELETE');
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('SUPPORT_ERROR_SELECT_RESOLUTION_TO_DELETE'),
+				'error'
+			);
 			return;
 		}
 
@@ -214,8 +215,10 @@ class SupportControllerResolutions extends Hubzero_Controller
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::sprintf('RESOLUTION_SUCCESSFULLY_DELETED', count($ids));
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::sprintf('RESOLUTION_SUCCESSFULLY_DELETED', count($ids))
+		);
 	}
 
 	/**
@@ -225,6 +228,8 @@ class SupportControllerResolutions extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

@@ -98,7 +98,6 @@ class SupportControllerMessages extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -109,6 +108,10 @@ class SupportControllerMessages extends Hubzero_Controller
 	 */
 	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
+		$this->view->setLayout('edit');
+		
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -151,7 +154,8 @@ class SupportControllerMessages extends Hubzero_Controller
 		$row = new SupportMessage($this->database);
 		if (!$row->bind($msg))
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
@@ -162,7 +166,7 @@ class SupportControllerMessages extends Hubzero_Controller
 		// Check content
 		if (!$row->check())
 		{
-			$this->setError($row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -170,14 +174,16 @@ class SupportControllerMessages extends Hubzero_Controller
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setError($row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('MESSAGE_SUCCESSFULLY_SAVED');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('MESSAGE_SUCCESSFULLY_SAVED')
+		);
 	}
 
 	/**
@@ -196,8 +202,11 @@ class SupportControllerMessages extends Hubzero_Controller
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-			$this->_message = JText::_('SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE');
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE'),
+				'error'
+			);
 			return;
 		}
 
@@ -209,8 +218,10 @@ class SupportControllerMessages extends Hubzero_Controller
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::sprintf('MESSAGE_SUCCESSFULLY_DELETED', count($ids));
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::sprintf('MESSAGE_SUCCESSFULLY_DELETED', count($ids))
+		);
 	}
 
 	/**
@@ -220,6 +231,8 @@ class SupportControllerMessages extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

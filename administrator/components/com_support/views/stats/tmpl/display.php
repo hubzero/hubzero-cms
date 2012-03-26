@@ -32,37 +32,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'Ticket Stats' ).' ]</small></small>', 'support.png' );
 ?>
-
-<div id="submenu-box">
-	<div class="t">
-		<div class="t">
-			<div class="t"></div>
-	 	</div>
- 	</div>
-	<div class="m">
-		<ul id="submenu">
-			<li><a<?php if ($this->type == 0) { echo ' class="active"'; } ?> rel="submitted" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>"><span>Submitted Tickets</span></a></li>
-			<li><a<?php if ($this->type == 1) { echo ' class="active"'; } ?> rel="automatic" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;type=automatic"><span>Automatic Tickets</span></a></li>
-		</ul>
-		<div class="clr"></div>
-	</div>
-	<div class="b">
-		<div class="b">
-			<div class="b"></div>
-		</div>
-	</div>
-</div>
-
 <form action="index.php" method="get" name="adminForm" id="adminForm" enctype="multipart/form-data">
-<div class="main section" id="ticket-stats">
-	<h3>Overview</h3>
+<div id="ticket-stats">
 	
-	<fieldset id="stats-filter">
-		<label>
-			<?php echo JText::_('Year'); ?>: 
-			<select name="year">
+	<fieldset id="filter-bar">
+		<label for="type"><?php echo JText::_('Type'); ?></label>
+		<select name="type" id="type">
+			<option value="0"<?php if ($this->type == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Submitted Tickets'); ?></option>
+<?php if (JComponentHelper::isEnabled('com_tools')) { ?>
+			<option value="1"<?php if ($this->type == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Automatic Tickets'); ?></option>
+<?php } ?>
+		</select>
+		
+		<label for="year"><?php echo JText::_('Year'); ?>:</label> 
+		<select name="year" id="year">
 <?php
 			$y = date("Y");
 			$y++;
@@ -73,12 +58,10 @@ JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
 <?php
 			}
 ?>
-			</select>
-		</label>
+		</select>
 		
-		<label>
-			<?php echo JText::_('Group'); ?>: 
-			<?php 
+		<label for="acgroup"><?php echo JText::_('Group'); ?>:</label> 
+		<?php 
 			JPluginHelper::importPlugin( 'hubzero' );
 			$dispatcher =& JDispatcher::getInstance();
 		$gc = $dispatcher->trigger( 'onGetSingleEntry', array(array('groups', 'group', 'acgroup','',$this->group)) );
@@ -87,10 +70,12 @@ JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
 		} else { ?>
 			<input type="text" name="group" value="<?php echo $this->group; ?>" id="acgroup" size="35" autocomplete="off" />
 		<?php } ?>
-		</label>
+		
 		<input type="submit" name="submit" value="View" />
 	</fieldset>
+	<div class="clr"></div>
 	
+	<fieldset class="adminform">
 	<table class="support-stats-overview open-tickets" summary="Overview of open support tickets">
 		<thead>
 			<tr>
@@ -130,16 +115,53 @@ JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
 			</tr>
 		</tbody>
 	</table>
+	</fieldset>
 	
-	<div class="aside">
-		<h3>Tickets Submitted (red) vs. Closed (green)</h3>
-		<canvas id="line1" width="475" height="250">[Please wait...]</canvas>
+	<div class="col width-50 fltlft">
+		<fieldset class="adminform">
+			<legend><span>People</span></legend>
+			
+			<table class="admintable support-stats-people" summary="Breakdown of people and the number of tickets closed">
+				<thead>
+					<tr>
+						<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=name&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by name">&darr; Person</a></th>
+						<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=year&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by year count">&darr; Closed this year</a></th>
+						<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=month&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by month count">&darr; Closed this month</a></th>
+						<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=week&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by week count">&darr; Closed this week</a></th>
+					</tr>
+				</thead>
+				<tbody>
+<?php
+if ($this->users) {
+	$cls = 'even';
+	foreach ($this->users as $user)
+	{
+		$cls = ($cls == 'even') ? 'odd' : 'even';
+?>
+					<tr class="<?php echo $cls; ?>">
+						<th scope="row"><?php echo $this->escape(stripslashes($user->name)); ?></th>
+						<td><?php echo $user->closed['year']; ?></td>
+						<td><?php echo $user->closed['month']; ?></td>
+						<td><?php echo $user->closed['week']; ?></td>
+					</tr>
+<?php
+	}
+}
+?>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="col width-50 fltrt">
+		<fieldset class="adminform">
+			<legend><span>Tickets Submitted (red) vs. Closed (green)</span></legend>
+			<canvas id="line1" width="475" height="250">[Please wait...]</canvas>
 		
-		<!-- <h3>Ticket Total</h3>
-		<canvas id="line2" width="475" height="250">[Please wait...]</canvas> -->
-		<script type="text/javascript" src="../components/com_support/scripts/rgraph/RGraph.common.js" ></script>
-		<script type="text/javascript" src="../components/com_support/scripts/rgraph/RGraph.line.js" ></script>
-		<!--[if IE]><script src="../components/com_support/scripts/excanvas/excanvas.compressed.js"></script><![endif]-->
+			<!-- <h3>Ticket Total</h3>
+			<canvas id="line2" width="475" height="250">[Please wait...]</canvas> -->
+			<script type="text/javascript" src="../components/com_support/scripts/rgraph/RGraph.common.js" ></script>
+			<script type="text/javascript" src="../components/com_support/scripts/rgraph/RGraph.line.js" ></script>
+			<!--[if IE]><script src="../components/com_support/scripts/excanvas/excanvas.compressed.js"></script><![endif]-->
 <?php
 $closeddata = '';
 if ($this->closedmonths) {
@@ -202,41 +224,9 @@ $max = ceil($number/10)*10;
 			line2.Draw();*/
 		}
 		</script>
+		</fieldset>
 	</div>
-	
-	<div class="subject">
-		<h3>People</h3>
-		<table class="support-stats-people" summary="Breakdown of people and the number of tickets closed">
-			<thead>
-				<tr>
-					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=name&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by name">&darr; Person</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=year&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by year count">&darr; Closed this year</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=month&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by month count">&darr; Closed this month</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;controller=<?php echo $this->controller; ?>&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=week&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by week count">&darr; Closed this week</a></th>
-				</tr>
-			</thead>
-			<tbody>
-<?php
-if ($this->users) {
-	$cls = 'even';
-	foreach ($this->users as $user)
-	{
-		$cls = ($cls == 'even') ? 'odd' : 'even';
-?>
-				<tr class="<?php echo $cls; ?>">
-					<th scope="row"><?php echo stripslashes($user->name); ?></th>
-					<td class="group"><?php echo $user->closed['year']; ?></td>
-					<td><?php echo $user->closed['month']; ?></td>
-					<td class="group"><?php echo $user->closed['week']; ?></td>
-				</tr>
-<?php
-	}
-}
-?>
-			</tbody>
-		</table>
-	</div>
-	<div class="clear"></div>
+	<div class="clr"></div>
 </div><!-- / .section -->
 <input type="hidden" name="task" value="display" />
 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

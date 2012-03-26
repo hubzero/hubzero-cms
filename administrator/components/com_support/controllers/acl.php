@@ -103,8 +103,10 @@ class SupportControllerAcl extends Hubzero_Controller
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('ACL successfully updated');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('ACL successfully updated')
+		);
 	}
 
 	/**
@@ -142,8 +144,10 @@ class SupportControllerAcl extends Hubzero_Controller
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('ACL successfully removed');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('ACL successfully removed')
+		);
 	}
 
 	/**
@@ -168,55 +172,32 @@ class SupportControllerAcl extends Hubzero_Controller
 			return;
 		}
 
-		if (!$row->foreign_key || !$row->alias)
+		if ($row->foreign_key)
 		{
 			switch ($row->model)
 			{
 				case 'user':
-					if (!$row->foreign_key)
+					$user = JUser::getInstance($row->foreign_key);
+					if (!is_object($user))
 					{
-						$user = JUser::getInstance($row->alias);
-						if (!is_object($user))
-						{
-							JError::raiseError(500, 'Cannot find user');
-							return;
-						}
-						$row->foreign_key = $user->get('id');
+						JError::raiseError(500, JText::_('Cannot find user'));
+						return;
 					}
-					else
-					{
-						$user = JUser::getInstance($row->foreign_key);
-						if (!is_object($user))
-						{
-							JError::raiseError(500, 'Cannot find user');
-							return;
-						}
-						$row->alias = $user->get('username');
-					}
+					$row->foreign_key = intval($user->get('id'));
+					$row->alias = $user->get('username');
 				break;
 
 				case 'group':
 					ximport('Hubzero_Group');
-					if (!$row->foreign_key)
+					
+					$group = Hubzero_Group::getInstance($row->foreign_key);
+					if (!is_object($group))
 					{
-						$group = Hubzero_Group::getInstance($row->alias);
-						if (!is_object($group))
-						{
-							JError::raiseError(500, 'Cannot find group');
-							return;
-						}
-						$row->foreign_key = $group->gidNumber;
+						JError::raiseError(500, JText::_('Cannot find group'));
+						return;
 					}
-					else
-					{
-						$group = Hubzero_Group::getInstance($row->foreign_key);
-						if (!is_object($group))
-						{
-							JError::raiseError(500, 'Cannot find group');
-							return;
-						}
-						$row->alias = $group->cn;
-					}
+					$row->foreign_key = intval($group->gidNumber);
+					$row->alias = $group->cn;
 				break;
 			}
 		}
@@ -270,8 +251,10 @@ class SupportControllerAcl extends Hubzero_Controller
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('ACL successfully created');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('ACL successfully created')
+		);
 	}
 
 	/**
@@ -281,6 +264,8 @@ class SupportControllerAcl extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

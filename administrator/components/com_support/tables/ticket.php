@@ -228,9 +228,58 @@ class SupportTicket extends JTable
 	 */
 	public function check()
 	{
-		if (!$this->id && trim( $this->report ) == '') {
-			$this->setError( JText::_('SUPPORt_ERROR_BLANK_REPORT') );
-			return false;
+		if (!$this->id) 
+		{
+			if (!trim($this->report))
+			{
+				$this->setError(JText::_('SUPPORT_ERROR_BLANK_REPORT'));
+				return false;
+			}
+			
+			if (!trim($this->summary))
+			{
+				$this->summary = substr($this->report, 0, 70);
+				if (strlen($this->summary) >=70)
+				{
+					$this->summary .= '...';
+				}
+			}
+		}
+		
+		if (!$this->created || $this->created == '0000-00-00 00:00:00')
+		{
+			$this->created = date("Y-m-d H:i:s");
+		}
+		
+		// Set the status of the ticket
+		if ($this->resolved)
+		{
+			if ($this->resolved == 1)
+			{
+				// "waiting user response"
+				$this->status = 1;
+			}
+			else
+			{
+				// If there's a resolution, close the ticket
+				$this->status = 2;
+			}
+		}
+		else
+		{
+			$this->status = 0;
+		}
+
+		// Set the status to just "open" if no owner and no resolution
+		if (!$this->owner && !$this->resolved)
+		{
+			$this->status = 0;
+		}
+
+		// If status is "open" or "waiting", ensure the resolution is empty
+		if ($this->status == 0 || $this->status == 1)
+		{
+			$this->resolved = '';
 		}
 
 		return true;

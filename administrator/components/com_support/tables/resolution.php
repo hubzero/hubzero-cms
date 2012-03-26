@@ -88,10 +88,19 @@ class SupportResolution extends JTable
 	 */
 	public function check()
 	{
-		if (trim( $this->alias ) == '' || trim( $this->title ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
+		$this->title = trim($this->title);
+		
+		if (!$this->title) 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
+		
+		if (!$this->alias)
+		{
+			$this->alias = $this->title;
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->alias));
 
 		return true;
 	}

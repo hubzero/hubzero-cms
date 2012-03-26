@@ -99,7 +99,6 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -110,6 +109,10 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 */
 	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
+		$this->view->setLayout('edit');
+		
 		ximport('Hubzero_Group');
 
 		if (is_object($row))
@@ -159,7 +162,8 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$row = new TagsGroup($this->database);
 		if (!$row->bind($taggroup))
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
@@ -191,7 +195,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		// Check content
 		if (!$row->check())
 		{
-			$this->setError($row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -199,14 +203,16 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setError($row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('ENTRY_SUCCESSFULLY_SAVED');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('ENTRY_SUCCESSFULLY_SAVED')
+		);
 	}
 
 	/**
@@ -225,8 +231,11 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-			$this->_message = JText::_('SUPPORT_ERROR_SELECT_ENTRY_TO_DELETE');
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('SUPPORT_ERROR_SELECT_ENTRY_TO_DELETE'),
+				'error'
+			);
 			return;
 		}
 
@@ -238,8 +247,10 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::sprintf('ENTRY_SUCCESSFULLY_DELETED', count($ids));
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::sprintf('ENTRY_SUCCESSFULLY_DELETED', count($ids))
+		);
 	}
 
 	/**
@@ -249,7 +260,9 @@ class SupportControllerTaggroups extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**
@@ -269,8 +282,11 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->_message = JText::_('No entry ID found.');
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('No entry ID found.'),
+				'error'
+			);
 			return;
 		}
 
@@ -308,6 +324,8 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$tg2->store();
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

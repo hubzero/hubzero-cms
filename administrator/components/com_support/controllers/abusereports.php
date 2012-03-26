@@ -103,6 +103,8 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 */
 	public function viewTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 		$cat = JRequest::getVar('cat', '');
@@ -110,7 +112,9 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			);
 			return;
 		}
 
@@ -186,7 +190,8 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$this->view->title = $title;
 
 		// Set any errors
-		if ($this->getError()) {
+		if ($this->getError()) 
+		{
 			$this->view->setError($this->getError());
 		}
 
@@ -210,7 +215,9 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			);
 			return;
 		}
 
@@ -225,8 +232,10 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('ITEM_RELEASED_SUCCESSFULLY');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('ITEM_RELEASED_SUCCESSFULLY')
+		);
 	}
 
 	/**
@@ -246,7 +255,9 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			);
 			return;
 		}
 
@@ -369,8 +380,10 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_message = JTexT::_('ITEM_TAKEN_DOWN');
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JTexT::_('ITEM_TAKEN_DOWN')
+		);
 	}
 
 	/**
@@ -380,6 +393,8 @@ class SupportControllerAbusereports extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

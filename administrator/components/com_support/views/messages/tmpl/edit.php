@@ -31,9 +31,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( JText::_( 'Ticket Message' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '. $text.' ]</small></small>', 'support.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+
+$jconfig =& JFactory::getConfig();
 
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
@@ -57,10 +59,10 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-	<div class="col width-60">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('MESSAGE_LEGEND'); ?></legend>
+			<legend><span><?php echo JText::_('MESSAGE_LEGEND'); ?></span></legend>
 			
 			<table class="admintable">
 				<tbody>
@@ -70,15 +72,24 @@ function submitbutton(pressbutton)
 					</tr>
 		 			<tr>
 						<td class="key" style="vertical-align: top;"><label for="message"><?php echo JText::_('MESSAGE_TEXT'); ?>: <span class="required">*</span></label></th>
-						<td><?php echo $editor->display('msg[message]', $this->escape(stripslashes($this->row->message)), '360px', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('msg[message]', $this->escape(stripslashes($this->row->message)), '', '', '50', '10'); ?></td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-40">
+	<div class="col width-40 fltrt">
 		<p><?php echo JText::_('MESSAGE_TEXT_EXPLANATION'); ?></p>
-		<p><?php echo JText::_('MESSAGE_TICKET_NUM_EXPLANATION'); ?></p>
+		<dl>
+			<dt>{ticket#}</dt>
+			<dd><?php echo JText::_('MESSAGE_TICKET_NUM_EXPLANATION'); ?></dd>
+			
+			<dt>{sitename}</dt>
+			<dd><?php echo $jconfig->getValue('config.sitename'); ?></dd>
+			
+			<dt>{siteemail}</dt>
+			<dd><?php echo $jconfig->getValue('config.mailfrom'); ?></dd>
+		</dl>
 	</div>
 	<div class="clr"></div>
 
@@ -87,5 +98,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
