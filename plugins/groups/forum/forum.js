@@ -22,9 +22,11 @@ HUB.Plugins.GroupsForum = {
 	initialize: function() {
 		$$('a.delete').each(function(el) {
 			el.addEvent('click', function(e) {
-				//new Event(e).stop();
-
-				return confirm('Are you sure you wish to delete this item?');
+				var val = confirm('Are you sure you wish to delete this item?');
+				if (!val) {
+					new Event(e).stop();
+				}
+				return val;
 			});
 		});
 	} // end initialize
