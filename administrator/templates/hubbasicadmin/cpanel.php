@@ -118,7 +118,7 @@ $juser =& JFactory::getUser();
 				</div>
 			</nav><!-- / .navigation -->
 			
-			<section id="content">
+			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<jdoc:include type="modules" name="title" />
 					<jdoc:include type="modules" name="toolbar" />

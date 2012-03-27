@@ -38,9 +38,6 @@ $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
 // Load CSS
-//$doc->addStyleSheet('templates/system/css/system.css');
-//$doc->addStyleSheet('templates/'.$this->template.'/css/fonts.css');
-//$doc->addStyleSheet('templates/'.$this->template.'/css/columns.css');
 $doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
 $doc->addStyleSheet('templates/'.$this->template.'/css/common/icons.css');
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray') {
@@ -128,7 +125,7 @@ $juser =& JFactory::getUser();
 				</div>
 			</nav><!-- / .navigation -->
 			
-			<section id="content">
+			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<jdoc:include type="modules" name="title" />
 					<jdoc:include type="modules" name="toolbar" />

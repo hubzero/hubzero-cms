@@ -107,7 +107,7 @@ $juser =& JFactory::getUser();
 				<div class="clr"><!-- We need this for the drop downs --></div>
 			</nav><!-- / .navigation -->
 						
-			<section id="content">
+			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<div class="header icon-48-alert">
 						<?php echo JText::_('An error has occurred'); ?>

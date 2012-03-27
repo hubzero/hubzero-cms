@@ -796,7 +796,7 @@
 		box-shadow: 0 0 0 0.618em rgba(0, 0, 0, 0.08);
 	}
 /* Content */
-	#content {
+	#component-content {
 		padding: 0;
 		margin: 0;
 		background: #f2f2f2 url("../images/layout/noise.png");

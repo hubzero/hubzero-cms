@@ -5,7 +5,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-	#content h3 {
+	#component-content h3 {
 		font-size: 10em;
 		text-align: center;
 		color: #dadada;
@@ -14,7 +14,7 @@
 		padding: 0;
 		line-height: 1em;
 	}
-	#content {
+	#component-content {
 		padding-bottom: 0.61803399em;
 	}
 	#errorbox {

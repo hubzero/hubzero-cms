@@ -83,7 +83,7 @@ if (JPluginHelper::isEnabled('system', 'debug')) {
 		</header><!-- / header -->
 		
 		<div id="wrap">
-			<section id="content">
+			<section id="component-content">
 				<div id="toolbar-box">
 					<h2><?php echo JText::_('Administration Login') ?></h2>
 				</div>

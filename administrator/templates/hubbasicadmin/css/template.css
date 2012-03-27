@@ -768,7 +768,7 @@
 		padding: 0;
 	}
 /* Content */
-	#content {
+	#component-content {
 		padding: 0;
 		margin: 0;
 		background: #f2f2f2 url("../images/layout/noise.png");
