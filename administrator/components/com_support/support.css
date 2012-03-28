@@ -759,18 +759,15 @@
 	/*ol.comments .private .comment-member-photo,*/
 	ol.comments .private .comment-content {
 		border-color: #ecada2;
-		/*border-color: #000;
-		background-color: #666;
-		background: #504545 url("../images/bg.gif");
-		color: #bbb;*/
+		background-color: #fdf7f6;
 	}
 	ol.comments .private .comment-content:before {
 		border-color: #ecada2 #ecada2 transparent transparent;
 		/*border-color: #000 #000 transparent transparent;*/
 	}
-	/*ol.comments .private .comment-content:after {
-		border-color: #5d5e63 #5d5e63 transparent transparent;
-	}*/
+	ol.comments .private .comment-content:after {
+		border-color: #fdf7f6 #fdf7f6 transparent transparent;
+	}
 	ol.comments .private:before,
 	ol.comments .private:after,
 	ol.comments .private .comment-head:before,
