@@ -44,6 +44,7 @@ switch ($this->params->get('show_date'))
 
 $this->resource->introtext = stripslashes($this->resource->introtext);
 $this->resource->fulltext = stripslashes($this->resource->fulltext);
+$this->resource->fulltext = ($this->resource->fulltext) ? trim($this->resource->fulltext) : trim($this->resource->introtext);
 
 // Parse for <nb:field> tags
 $type = new ResourcesType($this->database);
@@ -74,7 +75,7 @@ if ($this->resource->introtext)
 
 // Check if there's anything left in the fulltext after removing custom fields
 // If not, set it to the introtext
-$maintext = ($this->resource->fulltext) ? $this->resource->fulltext : trim($this->resource->introtext);
+$maintext = $this->resource->fulltext;
 $maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);

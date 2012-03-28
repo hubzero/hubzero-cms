@@ -49,9 +49,21 @@ class ResourcesElementDate extends ResourcesElement
 	 */
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
-		if (($element->year && !$element->month && !$element->day)
-		 || (!$element->year && !$element->month && $element->day)
-		 || (!$element->year && $element->month && !$element->day))
+		$c = 0;
+		if (isset($element->year) && $element->year)
+		{
+			$c++;
+		}
+		if (isset($element->month) && $element->month)
+		{
+			$c++;
+		}
+		if (isset($element->day) && $element->day)
+		{
+			$c++;
+		}
+
+		if ($c <= 1)
 		{
 			return parent::fetchTooltip($label, $description, $element, $control_name, $name);
 		}
@@ -210,7 +222,7 @@ class ResourcesElementDate extends ResourcesElement
 			case 11: $monthname = JText::_('November');  break;
 			case 12: $monthname = JText::_('December');  break;
 			default: $monthname = $month; break;
-        }
+		}
 		return $monthname;
 	}
 	
@@ -236,11 +248,24 @@ class ResourcesElementDate extends ResourcesElement
 	 */
 	public function display($value)
 	{
-		$html = array();
-		$html[] = $this->_getValue('year', $value);
-		$html[] = $this->_getValue('month', $value);
-		$html[] = $this->_getValue('day', $value);
-		return implode('-', $html);
+		$year = intval($this->_getValue('year', $value));
+		$month = intval($this->_getValue('month', $value));
+		$day = intval($this->_getValue('day', $value));
+		
+		$html = '';
+		if ($day && $day != 0)
+		{
+			$html .= $day . ' ';
+		}
+		if ($month && $month != 0)
+		{
+			$html .= $this->_getMonth($month) . ' ';
+		}
+		if ($year && $year != 0)
+		{
+			$html .= $year;
+		}
+		return $html;
 	}
 	
 	/**

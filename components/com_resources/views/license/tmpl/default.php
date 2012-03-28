@@ -41,11 +41,11 @@ if ($this->no_html) {
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title><?php echo $this->title; ?></title>
 		<link rel="stylesheet" type="text/css" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-<?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'members.css')) { ?>
+		<?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'members.css')) { ?>
 		<link rel="stylesheet" href="/templates/<?php echo $app->getTemplate(); ?>/html/<?php echo $this->option; ?>/resources.css" type="text/css" />
-<?php } else { ?>
+		<?php } else { ?>
 		<link rel="stylesheet" href="/components/<?php echo $this->option; ?>'/resources.css" type="text/css" />
-<?php } ?>
+		<?php } ?>
 	</head>
 	<body id="resource-license">
 		<div id="wrap">
@@ -54,19 +54,23 @@ if ($this->no_html) {
 <?php } else { ?>
 	<div id="content-header" class="full">
 		<h2><?php echo $this->title; ?></h2>
-<?php if ($this->row->codeaccess=='@OPEN') { ?>
+	<?php if ($this->tool) { ?>
+		<?php if ($this->row->codeaccess=='@OPEN') { ?>
 		<p><?php echo JText::sprintf('COM_RESOURCES_OPEN_SOURCE', $this->row->version); ?></p>
-<?php } else { ?>
+		<?php } else { ?>
 		<p><?php echo JText::sprintf('COM_RESOURCES_CLOSED_SOURCE', $this->row->version); ?></p>
-<?php } ?>
+		<?php } ?>
+	<?php } ?>
 	</div><!-- / #content-header.full -->
 	<div class="main section">
 <?php } ?>
+
 <?php if ($this->row->license) { ?>
 		<pre><?php echo $this->row->license; ?></pre>
 <?php } else { ?>
 		<p class="warning"><?php echo JText::_('COM_RESOURCES_NO_LICENSE_TEXT'); ?></p>
 <?php } ?>
+
 <?php if ($this->no_html) { ?>
 			</div><!-- / #main -->
 		</div><!-- / #wrap -->

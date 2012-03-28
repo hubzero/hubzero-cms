@@ -187,7 +187,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 				$values[] = '<li>' . $match . '</li>';
 			}
 		}
-		$values[] = '<li>' . $value . '</li>';
+		$values[] = (trim($value)) ? '<li>' . $value . '</li>' : '';
 		$values[] = '</ul>';
 		
 		return implode("\n", $values);

@@ -2074,45 +2074,64 @@ class ResourcesController extends Hubzero_Controller
 	protected function license()
 	{
 		// Get tool instance
+		$resource = JRequest::getInt('resource', 0);
 		$tool = JRequest::getVar( 'tool', '' );
-		$no_html = JRequest::getVar( 'no_html', 0 );
 
 		// Ensure we have a tool to work with
-		if (!$tool) {
+		if (!$tool && !$resource) 
+		{
 			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
-		$database =& JFactory::getDBO();
+		if ($tool)
+		{
+			// Load the tool version
+			$row = new ToolVersion($this->database);
+			$row->loadFromInstance($tool);
+		}
+		else 
+		{
+			$row = new ResourcesResource($this->database);
+			$row->load($resource);
+			
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'license.php' );
 
-		// Load the tool version
-		$row = new ToolVersion( $database );
-		$row->loadFromInstance( $tool );
+			$rt = new ResourcesLicense($this->database);
+			$rt->load('custom' . $resource);
+			
+			$row->license = stripslashes($rt->text);
+		}
 
 		// Output HTML
-		if ($row) {
+		if ($row) 
+		{
 			// Set the page title
-			$title = stripslashes($row->title).': '.JText::_('COM_RESOURCES_LICENSE');
+			$title = stripslashes($row->title) . ': ' . JText::_('COM_RESOURCES_LICENSE');
 
 			// Write title
 			$document =& JFactory::getDocument();
-			$document->setTitle( $title );
-		} else {
+			$document->setTitle($title);
+		} 
+		else 
+		{
 			// Set the page title
 			$title = JText::_('COM_RESOURCES_PAGE_UNAVAILABLE');
 		}
 
 		// Instantiate a new view
-		$view = new JView( array('name'=>'license') );
+		$view = new JView(array('name'=>'license'));
 		$view->option = $this->_option;
 		$view->config = $this->config;
 		$view->row = $row;
 		$view->title = $title;
-		$view->no_html = $no_html;
+		$view->tool = $tool;
+		$view->no_html = JRequest::getVar( 'no_html', 0 );
 
 		// Output HTML
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
+		if ($this->getError()) 
+		{
+			$view->setError($this->getError());
 		}
 		$view->display();
 	}
