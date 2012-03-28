@@ -183,34 +183,35 @@ class Hubzero_User_Profile_Helper
 	 * @param      integer $anonymous Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getMemberPhoto( $member, $anonymous=0 )
+	public function getMemberPhoto($member, $anonymous=0, $thumbit=true)
 	{
-		$config =& JComponentHelper::getParams( 'com_members' );
+		$config =& JComponentHelper::getParams('com_members');
 
-		if (!$anonymous && $member->get('picture')) {
-			$thumb  = $config->get('webpath');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$thumb;
-			}
-			if (substr($thumb, -1, 1) == DS) {
-				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-			}
-			$thumb .= DS.Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
+		$thumb = '';
+		if (!$anonymous && $member->get('picture')) 
+		{
+			$thumb .= DS . trim($config->get('webpath'), DS);
+			$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber'));
+			$thumb .= DS . ltrim($member->get('picture'), DS);
 
-			$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
-		} else {
-			$thumb = '';
+			if ($thumbit)
+			{
+				$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+			}
 		}
 
-		$dfthumb = $config->get('defaultpic');
-		if (substr($dfthumb, 0, 1) != DS) {
-			$dfthumb = DS.$dfthumb;
+		$dfthumb = DS . trim($config->get('defaultpic'), DS);
+		if ($thumbit)
+		{
+			$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
 		}
-		$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
 
-		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
+		if ($thumb && is_file(JPATH_ROOT . $thumb)) 
+		{
 			return $thumb;
-		} else if (is_file(JPATH_ROOT.$dfthumb)) {
+		} 
+		else if (is_file(JPATH_ROOT . $dfthumb)) 
+		{
 			return $dfthumb;
 		}
 	}
@@ -245,11 +246,17 @@ class Hubzero_User_Profile_Helper
 	 */
 	public function niceidformat($someid)
 	{
+		$prfx = '';
+		if (substr($someid, 0, 1) == '-')
+		{
+			$prfx = 'n';
+			$someid = substr($someid, 1);
+		}
 		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
-		return $someid;
+		return $prfx . $someid;
 	}
 }
 
