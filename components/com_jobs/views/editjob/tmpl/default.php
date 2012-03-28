@@ -80,8 +80,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$usonly = (isset($this->config->parameters['usonly'])) ? $this->config->parameters['usonly'] : 0;
 
 		$html .= '<div class="main section">'.n;
-		$html .= $this->getError() ? '<p class="error">'.$this->getError().'</p>' : '';
-
 		$html .= t.t.t.' <form id="hubForm" method="post" action="index.php?option='.$this->option.'">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('EDITJOB_OVERVIEW_INFO').'</p>'.n;
@@ -89,6 +87,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= t.t.t.'	 <fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_OVERVIEW').'</h3>'.n;
 		$html .= t.t.t.'	  <input type="hidden"  name="task" value="savejob" />'.n;
+		$html .= t.t.t.'	  <input type="hidden"  name="code" value="'.$job->code.'" />'.n;
 		$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$id.'" />'.n;
 		$html .= t.t.t.'	  <input type="hidden" name="status" value="'.$status.'" />'.n;
 		$html .= t.t.t.'	  <input type="hidden" name="employerid" value="'.$this->uid.'" />'.n;
@@ -102,8 +101,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= "\t\t\t\t".' <option value="">'.JText::_('OPTION_SELECT_FROM_LIST').'</option>'."\n";
 			$countries = Hubzero_Geo::getcountries();
 				foreach($countries as $country) {
+						$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States'; 
 						$html .= "\t\t\t\t".' <option value="' . htmlentities($country['name']) . '"';
-						if($country['name'] == $job->companyLocationCountry) {
+						if($country['name'] == strtoupper($selected) || $country['name'] == $selected) {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>' . htmlentities($country['name']) . '</option>'."\n";
@@ -123,11 +123,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		$html .= t.t.t.'	 <fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_DESCRIPTION').' <br/> <span class="required">'.JText::_('REQUIRED').'</span></h3>'.n;
-		$html .= t.t.t.'	  <label><span class="hint"> ('.JText::_('EDITJOB_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('WIKI_FORMATTING').'</a> '.JText::_('EDITJOB_TO_COMPOSE').')</span> '.n;
-		$html .= t.t.t.'		<textarea name="description" id="description" rows="40" cols="35">';
-		$html .= 					$job->description;
-		$html .= '				</textarea>'.n;
-		$html .= '</label>'.n;
+		ximport('Hubzero_Wiki_Editor');
+		$editor =& Hubzero_Wiki_Editor::getInstance();
+		$html .= $editor->display('description', 'description', $job->description, 'no-image-macro no-file-macro', '10', '25');
 		$html .= t.t.t.'	 </fieldset>'.n;
 
 		$html .= t.'<div class="explaination">'.n;
@@ -145,8 +143,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= t.t.t.'<label>'.JText::_('EDITJOB_START_DATE').':'.n;
 		$html .= t.t.t.t.'<input type="text" class="option level" name="startdate" id="startdate" size="10" maxlength="10" value="'.$startdate.'" /> <span class="hint">'.JText::_('EDITJOB_HINT_DATE_FORMAT'). '</span>'.n;
 		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.t.'<label>'.JText::_('EDITJOB_APPLICATIONS_DUE').':'.n;
-		$html .= t.t.t.t.'<input  type="text" class="option level" name="closedate" id="closedate" size="10" maxlength="10" value="'.$closedate.'" /> <span class="hint">'.JText::_('EDITJOB_HINT_DATE_FORMAT'). '&nbsp;&nbsp;&nbsp;&nbsp;'.JText::_('EDITJOB_HINT_DATE').'</span>'.n;
+		$html .= t.t.t.'<label>'.JText::_('EDITJOB_CLOSE_DATE').':'.n;
+		$html .= t.t.t.t.'<input  type="text" class="option level" name="closedate" id="closedate" size="10" maxlength="10" value="'.$closedate.'" /> <span class="hint">'.JText::_('EDITJOB_HINT_DATE_FORMAT') . '</span>'.n;
 		$html .= t.t.t.'</label>'.n;
 		$html .= t.t.t.'<label>'.JText::_('EDITJOB_EXTERNAL_URL').':'.n;
 		$html .= t.t.t.t.'<input  type="text" name="applyExternalUrl" size="100" maxlength="250" value="'.$job->applyExternalUrl.'" />'.n;

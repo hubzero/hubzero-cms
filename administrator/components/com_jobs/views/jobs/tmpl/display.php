@@ -119,10 +119,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$class = 'post_pending';
 			break;
 		case 1:
-			$alt 	=  $row->inactive
-					? JText::_('Invalid Subscription')
+			$alt 	=  $row->inactive && $row->inactive < $now
+					? JText::_('Expired/Invalid Subscription')
 					: JText::_('Active');
-			$class  = $row->inactive
+			$class  = $row->inactive && $row->inactive < $now
 					? 'post_invalidsub'
 					: 'post_active';
 			break;

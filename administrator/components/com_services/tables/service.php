@@ -262,7 +262,7 @@ class Service extends JTable
 			$query .= "AND s.status = 1 ";
 		}
 		if (!$admin) {
-			$query .= $specialgroup ? "AND s.restricted = 0 or (s.restricted = 1 AND m.gidNumber IS NOT NULL ) " : " AND s.restricted = 0 ";
+			$query .= $specialgroup ? "AND (s.restricted = 0 or (s.restricted = 1 AND m.gidNumber IS NOT NULL )) " : " AND s.restricted = 0 ";
 		}
 		$query .= " ORDER BY $sortby $sortdir ";
 		$this->_db->setQuery( $query );

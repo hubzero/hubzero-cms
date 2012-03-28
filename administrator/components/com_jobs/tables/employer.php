@@ -172,7 +172,7 @@ class Employer extends JTable
 		if ($uid === NULL or $subscriptioncode === NULL) {
 			return false;
 		}
-		$query  = "SELECT * ";
+		$query  = "SELECT e.* ";
 		$query .= "FROM #__jobs_employers AS e  ";
 		if ($subscriptioncode == 'admin') {
 			$query .= "WHERE e.uid = 1";

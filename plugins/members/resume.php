@@ -110,19 +110,23 @@ class plgMembersResume extends JPlugin
 	 */
 	public function isEmployer( $user='', $member='')
 	{
-		$juser 	  =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 		$employer = new Employer( $database );
-
+		$juser =& JFactory::getUser();
+		
+		// Check if they're a site admin (from Joomla)
+		if ($juser->authorize('com_members', 'manage')) {
+			return 1;
+		}
+		
 		// determine who is veiwing the page
 		$emp = 0;
 		$emp = $employer->isEmployer($juser->get('id'));
-
+		
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) {
 			ximport('Hubzero_User_Profile');
 
-			//$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0) {
@@ -134,10 +138,6 @@ class plgMembersResume extends JPlugin
 				}
 			}
 		}
-
-		//if ($authorized) {
-		//	$emp = 1;
-		//}
 
 		if ($member) {
 			$my =  $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
@@ -405,6 +405,7 @@ class plgMembersResume extends JPlugin
 	{
 		$out = '';
 		$juser =& JFactory::getUser();
+		$self = $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
 
 		// get job seeker info on the user
 		$js = new JobSeeker ( $database );
@@ -453,7 +454,7 @@ class plgMembersResume extends JPlugin
 		$stats = $jobstats->getStats ($member->get('uidNumber'), 'seeker');
 
 		$out = '<div class="aside">'.n;
-		if (!$emp) {
+		if ($self) {
 			$out .= t.t.'<p>'.JText::_('PLG_RESUME_HUB_OFFERS').'</p>'.n;
 		}
 		else {
@@ -462,7 +463,7 @@ class plgMembersResume extends JPlugin
 		$hd = JText::_('View Jobs');
 		$hd .= $this->config->get('industry') ? ' '.JText::_('IN').' '.$this->config->get('industry') : '';
 		$out .= t.t.'<a href="'.JRoute::_('index.php?option=com_jobs').'" class="minimenu">'.$hd.'</a>'.n;
-		if (!$emp && $js->active) {
+		if ($self && $js->active) {
 			$out .= '<ul class="jobstats">'.n;
 			$out .= '<li class="statstitle">'.JText::_('PLG_RESUME_YOUR_STATS').'</li>'.n;
 			$out .= '<li>';
@@ -489,7 +490,7 @@ class plgMembersResume extends JPlugin
 		}
 		$out .= '</div>'.n;
 		$out .= '<div class="subject">'.n;
-		if (!$emp && $file) {
+		if ($self && $file) {
 			$out .= '<div id="prefs" class="'.$class1.'">'.n;
 			$out .= ' <p>'.n;
 			if ($js->active && $file )  {
@@ -599,13 +600,13 @@ class plgMembersResume extends JPlugin
 		}
 
 		//if (($resume->id  && $file) && (!$emp or ($emp && $js->active)) ) {	
-		if ($resume->id  && $file && !$emp) {
+		if ($resume->id  && $file && $self) {
 			$out .= t.'<table class="list">'.n;
 			$out .= t.t.'<thead>'.n;
 			$out .= t.t.t.'<tr>'.n;
 			$out .= t.t.t.t.'<th class="col halfwidth">'.ucfirst(JText::_('PLG_RESUME_RESUME')).'</th>'.n;
 			$out .= t.t.t.t.'<th class="col">'.JText::_('PLG_RESUME_LAST_UPDATED').'</th>'.n;
-			$out .= !$emp ? t.t.t.t.'<th scope="col">'.JText::_('PLG_RESUME_OPTIONS').'</th>'.n : '';
+			$out .= $self ? t.t.t.t.'<th scope="col">'.JText::_('PLG_RESUME_OPTIONS').'</th>'.n : '';
 			$out .= t.t.t.'</tr>'.n;
 			$out .= t.t.'</thead>'.n;
 			$out .= t.t.'<tbody>'.n;
@@ -613,7 +614,7 @@ class plgMembersResume extends JPlugin
 			$out .= t.t.t.t.'<td>';
 			$title = $resume->title ?  stripslashes($resume->title) : $resume->filename;
 			$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('Resume')) : $member->get('name').' '.ucfirst(JText::_('Resume'));
-			if ($edittitle && !$emp) {
+			if ($edittitle && $self) {
 				$out .= t.'<form id="editTitleForm" method="post" action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume'.a.'action=savetitle').'" >'.n;
 				$out .= t.t.'<fieldset>'.n;
 				$out .= t.t.t.t.'<label class="resume">'.n;
@@ -644,11 +645,11 @@ class plgMembersResume extends JPlugin
 		}
 		else if (!$js->active) {
 			$out .= '<p class="no_resume">';
-			$out .= ($emp) ? JText::_('PLG_RESUME_USER_HAS_NO_RESUME') : JText::_('PLG_RESUME_YOU_HAVE_NO_RESUME');
+			$out .= (!$self) ? JText::_('PLG_RESUME_USER_HAS_NO_RESUME') : JText::_('PLG_RESUME_YOU_HAVE_NO_RESUME');
 			$out .='</p>'.n;
 		}
 
-		if (!$emp) {
+		if ($self) {
 			$out .= ' <form class="addResumeForm" method="post" action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume').'" enctype="multipart/form-data">'.n;
 			$out .= t.t.'<fieldset>'.n;
 			$out .= t.t.t.'<legend>'.n;

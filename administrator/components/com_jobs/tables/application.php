@@ -154,7 +154,7 @@ class JobApplication extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl as A ";
+		$query  = "SELECT A.* FROM $this->_tbl as A ";
 		$query .= $jid ? "" : " JOIN #__jobs_openings as J ON J.id=A.jid ";
 		$query .= " WHERE A.uid='$uid' ";
 		$query .=  $jid ? "AND A.jid='$jid' " : "AND J.code='$jobcode' ";

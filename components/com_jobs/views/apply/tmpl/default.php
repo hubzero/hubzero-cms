@@ -74,7 +74,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html = '';
 
 		$job->title = trim(stripslashes($job->title));
-		$appid = $application->status!=2 ? $application->id : 0;
+		$appid = $application->status !=2 ? $application->id : 0;
 		$html .= '<div class="main section">'.n;
 
 		if((!$this->admin && $juser->get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) {

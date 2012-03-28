@@ -321,26 +321,28 @@ class Job extends JTable
 	 * @param      string $subscription Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	 public function get_openings($filters, $uid = 0, $admin = 0, $subscription = '')
+	 public function get_openings($filters, $uid = 0, $admin = 0, $subscription = '', $count = 0)
 	 {
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
 		$category = isset($filters['category']) ? $filters['category'] : 'all';
 		$now = date( 'Y-m-d H:i:s', time() );
 		$juser =& JFactory::getUser();
 		$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
+		$active = isset($filters['active']) && $filters['active'] == 1 ? 1 : 0;
 
-		$sort = $filters['search'] ? 'keywords DESC, ' : '';
-		$sortdir = isset($filters['sort_Dir']) ? $filters['sort_Dir'] : 'DESC';
+		$sort = $filters['search'] != '' ? 'keywords DESC, ' : '';
+	//	$sort = '';
+		$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'DESC';
 
 		// list  sorting
 		switch ($filters['sortby'])
 		{
-			case 'opendate':    $sort .= 'j.status ASC, j.opendate DESC, ';
+			case 'opendate':    $sort .= 'j.status ASC, j.opendate '.$sortdir.', ';
 								$sort .= $defaultsort=='type' ? 'j.type ASC' : 'c.ordernum ASC ';
 								break;
-			case 'category':    $sort .= 'isnull ASC, c.ordernum ASC, j.status ASC, j.opendate DESC ';
+			case 'category':    $sort .= 'isnull '.$sortdir.', c.ordernum '.$sortdir.', j.status ASC, j.opendate DESC ';
 								break;
-			case 'type':    	$sort .= 'typenull ASC, j.type ASC, j.opendate DESC ';
+			case 'type':    	$sort .= 'typenull '.$sortdir.', j.type '.$sortdir.', j.opendate DESC ';
 								break;
 			// admin sorting
 			case 'added':    	$sort .= 'j.added '.$sortdir.' ';
@@ -351,59 +353,68 @@ class Job extends JTable
 								break;
 			case 'adminposting':$sort .= 'j.employerid '.$sortdir.' ';
 								break;
-			default: 			$sort .= $defaultsort=='type' ? 'j.type ASC, j.status ASC, j.opendate DESC' : 'c.ordernum ASC, j.status ASC, j.opendate DESC ';
+			default: 			$sort .= $defaultsort=='type' 
+								? 'j.type ASC, j.status ASC, j.opendate DESC' 
+								: 'c.ordernum ASC, j.status ASC, j.opendate DESC ';
 								break;
 		}
-
-		$sql = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS NULL AS isnull, j.type=0 as typenull, ";
-//		$sql.= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
-		$sql.= $admin ? "s.expires  AS inactive,  " : ' NULL AS inactive, ';
-
-		if ($uid) {
-			$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=".$uid.") AS manager,";
-		} else {
-			$sql.= "\n NULL AS manager,";
+		
+		if($count)
+		{
+			$sql = "SELECT COUNT(*) ";
 		}
-		$sql.= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
-		if (!$juser->get('guest')) {
-			$myid = $juser->get('id');
-			$sql.= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";
-			$sql.= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=2) AS withdrawn,";
-		} else {
-			$sql.= "\n NULL AS applied,";
-			$sql.= "\n NULL AS withdrawn,";
-		}
-		$sql.= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
+		else 
+		{
+			$sql = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS NULL AS isnull, j.type=0 as typenull, ";
 
-		if ($filters['search']) {
-			$words   = explode(',', $filters['search']);
-			$s = array();
-			foreach ($words as $word)
-			{
-				if (trim($word) != "") {
-					$s[] = trim($word);
-				}
-			}
-
-			if (count($s) > 0 ) {
-				$kw = 0;
-				for ($i=0, $n=count( $s ); $i < $n; $i++)
-				{
-					$sql .= "\n , (SELECT count(*) FROM #__jobs_openings AS o WHERE o.id=j.id ";
-					$sql .= "AND  LOWER(o.title) LIKE '%$s[$i]%') AS keyword$i ";
-					$sql .= "\n , (SELECT count(*) FROM #__jobs_openings AS o WHERE o.id=j.id ";
-					$sql .= "AND  LOWER(o.description) LIKE '%$s[$i]%') AS bodykeyword$i ";
-					$kw .= '+ keyword'.$i.' * 2 ';
-					$kw .= '+ bodykeyword'.$i;
-				}
-
-				$sql .= "\n , (SELECT ".$kw." ) AS keywords ";
+			$sql.= $admin ? "s.expires  AS inactive,  " : ' NULL AS inactive, ';
+			if ($uid) {
+				$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=".$uid.") AS manager,";
 			} else {
-				$sql .= "\n , (SELECT 0 ) AS keywords ";
+				$sql.= "\n NULL AS manager,";
 			}
-		} else {
-			$sql.= "\n , (SELECT 0 ) AS keywords ";
+			$sql.= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
+			if (!$juser->get('guest')) {
+				$myid = $juser->get('id');
+				$sql.= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";
+				$sql.= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=2) AS withdrawn,";
+			} else {
+				$sql.= "\n NULL AS applied,";
+				$sql.= "\n NULL AS withdrawn,";
+			}
+			$sql.= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
+
+			if (trim($filters['search'])) {
+				$words   = explode(',', $filters['search']);
+				$s = array();
+				foreach ($words as $word)
+				{
+					if (trim($word) != "") {
+						$s[] = trim($word);
+					}
+				}
+
+				if (count($s) > 0 ) {
+					$kw = 0;
+					for ($i=0, $n=count( $s ); $i < $n; $i++)
+					{
+						$sql .= "\n , (SELECT count(*) FROM #__jobs_openings AS o WHERE o.id=j.id ";
+						$sql .= "AND  LOWER(o.title) LIKE '%$s[$i]%') AS keyword$i ";
+						$sql .= "\n , (SELECT count(*) FROM #__jobs_openings AS o WHERE o.id=j.id ";
+						$sql .= "AND  LOWER(o.description) LIKE '%$s[$i]%') AS bodykeyword$i ";
+						$kw .= '+ keyword'.$i.' * 2 ';
+						$kw .= '+ bodykeyword'.$i;
+					}
+
+					$sql .= "\n , (SELECT ".$kw." ) AS keywords ";
+				} else {
+					$sql .= "\n , (SELECT 0 ) AS keywords ";
+				}
+			} else {
+				$sql.= "\n , (SELECT 0 ) AS keywords ";
+			}
 		}
+
 		$sql.= "\n FROM #__jobs_openings AS j";
 		$sql.= "\n LEFT JOIN #__jobs_categories AS c ON c.id=j.cid ";
 
@@ -420,15 +431,21 @@ class Job extends JTable
 		if ($subscription) {
 			$sql.= "\n AND s.code='".$subscription."'";
 		}
+		if($active) {
+			$sql.= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS NULL OR j.closedate > '".$now."') ";
+		}
+		
+		if(!$count)
+		{
+			$sql.= " ORDER BY ". $sort;
+		}
 
-		$sql.= " ORDER BY ". $sort;
-
-		if (isset ($filters['limit']) && $filters['limit']!=0) {
+		if (!$count && isset ($filters['limit']) && $filters['limit']!=0) {
 			$sql.= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
 
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();
+		return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
 	}
 
 	/**
@@ -502,12 +519,6 @@ class Job extends JTable
 
 		$sql  = "SELECT j.*, ";
 		$sql .= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
-		//if($uid) {
-		//$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=".$uid.") AS manager,";
-		//}
-		//else {
-		//$sql.= "\n NULL AS manager,";
-		//} 
 		$sql .= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
 		if (!$juser->get('guest')) {
 			$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";

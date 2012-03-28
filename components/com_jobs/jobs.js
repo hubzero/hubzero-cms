@@ -28,6 +28,14 @@ HUB.Jobs = {
 				$$('.confirmwrap')[0].style.display = 'block';					   
 			});		   
 		}
+		
+		// Calendar
+		if($('startdate')) {
+			myCal1 = new Calendar({ startdate: 'Y-m-d' }, { direction: 0, tweak: {x: 6, y: 0} });
+		}
+		if($('closedate')) {
+			myCal1 = new Calendar({ closedate: 'Y-m-d' }, { direction: 0, tweak: {x: 6, y: 0} });
+		}
 				
 		// subscription form
 		if($('subForm')) {	

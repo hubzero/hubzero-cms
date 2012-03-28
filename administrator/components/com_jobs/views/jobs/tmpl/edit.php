@@ -37,6 +37,8 @@ JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
+$now = date( "Y-m-d H:i:s" );
+
 $usonly = $this->config->get('usonly');
 $this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : htmlentities(JText::_('United States'));
 $this->row->code = !$this->isnew ? $this->row->code : JText::_('N/A (new job)');
@@ -52,6 +54,8 @@ $this->row->description = preg_replace('/<br\\s*?\/??>/i', "", $this->row->descr
 $this->row->description = JobsHtml::txt_unpee($this->row->description);
 $employerid = $this->isnew ? 1 : $this->job->employerid;
 
+$expired = $this->subscription->expires && $this->subscription->expires < $now ? 1 : 0;
+
 // Get the published status			
 	switch ($this->row->status)
 	{
@@ -60,10 +64,10 @@ $employerid = $this->isnew ? 1 : $this->job->employerid;
 			$class = 'post_pending';
 			break;
 		case 1:
-			$alt 	= $this->job->inactive
-					? JText::_('Invalid Subscription')
+			$alt 	= $expired
+					? JText::_('Expired/Invalid Subscription')
 					: JText::_('Active');
-			$class  = $this->job->inactive
+			$class  = $expired
 					? 'post_invalidsub'
 					: 'post_active';
 			break;

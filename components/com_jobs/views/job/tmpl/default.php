@@ -43,7 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$job->type = $job->type ? $job->type : 'unspecified';
 
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%d %b %Y',0) : 'N/A';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%d %b %Y',0) : 'ASAP';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%d %b %Y',0) : 'N/A';
 
 	// Transform the wikitext to HTML
 	$wikiconfig = array(
@@ -74,9 +74,11 @@ defined('_JEXEC') or die( 'Restricted access' );
     <?php } else if($this->emp && $this->allowsubscriptions) {  ?>
     	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
         <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
+		<li><a class="add" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addjob'); ?>"><?php echo JText::_('ADD_ANOTHER_JOB'); ?></a></li>
     <?php } else if($this->admin) { ?>
     	<li><?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?>
         	<a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a></li>
+		<li><a class="add" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addjob'); ?>"><?php echo JText::_('ADD_ANOTHER_JOB'); ?></a></li>
 	<?php } else { ?>  
     	<li><a class="myresume" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addresume'); ?>"><?php echo JText::_('JOBS_MY_RESUME'); ?></a></li>
     <?php } ?>  		
@@ -138,7 +140,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		else {
 			if($job->applyExternalUrl) {
-				$html .= t.t.'<a class="extlink" href="'.$job->applyExternalUrl.'">'.JText::_('ACTION_APPLY_EXTERNALLY').'</a>'.n;
+				
+				if(strpos($job->applyExternalUrl, "http://") !== false || strpos($job->applyExternalUrl, "https://") !== false)
+				{
+					$url = $job->applyExternalUrl;
+				}
+				else {
+					$url = "http://" .  $job->applyExternalUrl;
+				}
+				$html .= t.t.'<a class="extlink" href="'.$url.'" rel="external">'.JText::_('ACTION_APPLY_EXTERNALLY').'</a>'.n;
 				$html .= $job->applyInternal ? '<span class="or">'.strtolower(JText::_('OR')).'</span>'.n : ''.n;
 			}
 			if($job->applyInternal) {
@@ -155,7 +165,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= t.t.'<p>'.$job->type.'</p>'.n;
 		$html .= t.t.'<span class="sub-heading">'.JText::_('JOBS_TABLE_START_DATE').'</span>'.n;
 		$html .= t.t.'<p>'.$startdate.'</p>'.n;
-		$html .= t.t.'<span class="sub-heading">'.JText::_('JOBS_TABLE_APPLY_BY').'</span>'.n;
+		$html .= t.t.'<span class="sub-heading">'.JText::_('JOBS_TABLE_EXPIRES').'</span>'.n;
 		$html .= t.t.'<p>'.$closedate.'</p>'.n;
 		$html .= t.t.'<div class="reg details">'.$maintext.'</div>'.n;
 		if($job->contactName) {

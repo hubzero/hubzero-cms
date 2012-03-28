@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jobs = $this->jobs;
 	$filters = $this->filters;
 	$allowsubscriptions = $this->allowsubscriptions;
-	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : 'kb/jobs';
+
 	if($this->subscriptioncode && $this->thisemployer) {
 		$this->title .= ' '.JText::_('FROM').' '.$this->thisemployer->companyName;
 	}
@@ -82,7 +82,11 @@ if(!$this->mini) {
 			$html .= t.t.'<ul>'.n;
 			$html .= t.t.t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=addresume').'">'.JText::_('POST_RESUME').'</a></li>'.n;
 			$html .= t.t.'</ul>'.n;
-			$html .= '<p><a href="'.$infolink.'">'.JText::_('LEARN_MORE').'</a> '.JText::_('ABOUT_THE_PROCESS').'.</p>'.n;
+			if($this->config->get('infolink'))
+			{
+				$html .= '<p><a href="'.$this->config->get('infolink').'">'.JText::_('LEARN_MORE').'</a> '.JText::_('ABOUT_THE_PROCESS').'.</p>'.n;
+			}
+		
 			$html .= t.'</div><!-- / .aside -->'.n;
 			$html .= t.'<div class="subject">'.n;
 		}
@@ -108,18 +112,6 @@ if(!$this->mini) {
 		$html .= t.t.t.'<label> '.JText::_('ACTION_SEARCH_BY_KEYWORDS').':<span class="questionmark tooltips" title="'.JText::_('TIP_SEARCH_JOBS_BY_KEYWORDS').'"></span> '.n;
 		$html .= t.t.t.'<input type="text" name="q" value="'.$filters['search'].'" />'.n;
 		$html .= t.t.t.'</label> '.n;
-		$html .= t.t.t.'&nbsp;&nbsp;<label>'.JText::_('SORTBY').':'.n;
-		$html .= '<select name="sortby" id="sortby">'.n;
-		$add = ($filters['search'] != '') ? 'Relevance and ' : '';
-		foreach ($sortbys as $avalue => $alabel)
-		{
-			$selected = ($avalue == $filters['sortby'] || $alabel == $filters['sortby'])
-					  ? ' selected="selected"'
-					  : '';
-			$html .= ' <option value="'.$avalue.'"'.$selected.'>'.$add.$alabel.'</option>'.n;
-		}
-		$html .= '</select>'.n;
-		$html .= t.t.t.'</label>'.n;
 		$html .= t.t.t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
 		$html .= t.t.t.'<input type="hidden" name="limitstart" value="0" />'.n;
 		$html .= t.t.t.'<input type="hidden" name="performsearch" value="1" />'.n;
@@ -138,22 +130,49 @@ if(!$this->mini) {
 			$jc = new JobCategory ( $this->database );
 	//		$curtype = $jobs[0]->type > 0 ? $jt->getType($jobs[0]->type) : '';
 	//		$curcat = $jobs[0]->cid > 0 ? $jc->getCat($jobs[0]->cid) : '';
+			$sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
 			$html .= t.t.'<table class="postings">'.n;
 			$html .= t.t.t.'<thead>'.n;
 			$html .= t.t.t.'<tr class="headings">'.n;
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_JOB_TITLE').'</td>'.n;
+			
+			$html .= t.t.t.t.'<th';
+			if($this->filters['sortby'] == 'title') { 
+				$html .= ' class="activesort"'; 
+			} 
+			$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=' . $this->task).'/?sortby=title'.a.'sortdir='.$sortbyDir. a . 'q=' . $this->filters['search'] .'" class="re_sort">';
+			$html .= JText::_('JOBS_TABLE_JOB_TITLE').'</a></th>'.n;
+			
 			if($this->admin && !$this->emp && !$this->mini) {
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_STATUS').'</td>'.n;
+			$html .= t.t.t.t.'<th>'.JText::_('JOBS_TABLE_STATUS').'</th>'.n;
 			}
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_COMPANY').'</td>'.n;
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_LOCATION').'</td>'.n;
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_CATEGORY').'</td>'.n;
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_TYPE').'</td>'.n;
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_POSTED').'</td>'.n;
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_APPLY_BY').'</td>'.n;
+			$html .= t.t.t.t.'<th>'.JText::_('JOBS_TABLE_COMPANY').'</th>'.n;
+			
+			$html .= t.t.t.t.'<th>'.JText::_('JOBS_TABLE_LOCATION').'</th>'.n;
+			$html .= t.t.t.t.'<th';
+			if($this->filters['sortby'] == 'category') { 
+				$html .= ' class="activesort"'; 
+			} 
+			$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=' . $this->task).'/?sortby=category'.a.'sortdir='.$sortbyDir. a . 'q=' . $this->filters['search'] . '" class="re_sort">';
+			$html .= JText::_('JOBS_TABLE_CATEGORY').'</a></th>'.n;
+
+			$html .= t.t.t.t.'<th';
+			if($this->filters['sortby'] == 'type') { 
+				$html .= ' class="activesort"'; 
+			} 
+			$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=' . $this->task).'/?sortby=type'.a.'sortdir='.$sortbyDir. a . 'q=' . $this->filters['search'] . '" class="re_sort">';
+			$html .= JText::_('JOBS_TABLE_TYPE').'</a></th>'.n;
+
+			$html .= t.t.t.t.'<th';
+			if($this->filters['sortby'] == 'opendate') { 
+				$html .= ' class="activesort"'; 
+			} 
+			$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=' . $this->task).'/?sortby=opendate'.a.'sortdir='.$sortbyDir. a . 'q=' . $this->filters['search'] . '" class="re_sort">';
+			$html .= JText::_('JOBS_TABLE_POSTED').'</a></th>'.n;
+
+			$html .= t.t.t.t.'<th>'.JText::_('JOBS_TABLE_APPLY_BY').'</th>'.n;
 			if ($filters['search']) {
-				$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_RELEVANCE').'</td>'.n;
+				$html .= t.t.t.t.'<th>'.JText::_('JOBS_TABLE_RELEVANCE').'</th>'.n;
 			}
 			$html .= t.t.t.'</tr>'.n;
 			$html .= t.t.t.'</thead>'.n;
@@ -177,6 +196,10 @@ if(!$this->mini) {
 				//$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
 				$txt = $p->parse(stripslashes($jobs[$i]->description), $wikiconfig);
 				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, '%d&nbsp;%b&nbsp;%y',0) : 'ASAP';
+				if($jobs[$i]->closedate !='0000-00-00 00:00:00' && $jobs[$i]->closedate < $now)
+				{
+					$closedate = 'closed';
+				}
 				$curtype = $jt->getType($jobs[$i]->type);
 				$curcat = $jc->getCat($jobs[$i]->cid);
 

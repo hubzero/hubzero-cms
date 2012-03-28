@@ -38,6 +38,9 @@
 		white-space: nowrap; 
 		font-size: 85%; 
 		}
+	.com_jobs #useroptions li a {
+		padding-bottom: 0.2em;
+	}
 	#content-header-extra p { 
 		font-size: 85%; 
 		}
@@ -900,36 +903,37 @@
 	#prefsForm label  {
 		display: block;
 		margin: 0 0 2em 0;
-		}
-	#prefsForm label.spacious {
-		margin-bottom: 4em;
+		position: relative;
 		}
 	.submitblock {
 		height: 20px;
 		margin-top: 3em;
+		position: relative;
 		}
 	#prefsForm .counter {
 		position: relative;
-		float: right;
-		top: -40px;
-		right: -75px;
+		float: left;
 		color: #999;
 		font-size: x-small;
 		display: none;
 		}
 	.selectgroup {
-		position: absolute;
-		left: 200px;
+		position: relative;
 		margin: 0;
 		color: #777;
-		width: 40%;
+		width: 90%;
+		display: block;
 		}
 	#prefsForm label.cats {
 		margin: 0;
 		}
 	.catssel {
-		margin-top:-1em;
+		position: relative;
 		}
+	#prefsForm .catssel label {
+		display: inline;
+		position: relative;
+	}
 	.inputtxt {
 		width: 100%;
 		}
@@ -963,6 +967,9 @@
 	#prefsForm .selectgroup label {
 		display: inline;
 		}
+	textarea {
+		font-size: 100%;
+	}
 	#prefsForm textarea {
 		width: 100%;
 		height: 45px;
@@ -1171,3 +1178,25 @@
 	.leftclear {
 		clear: left !important;
 		}
+		
+/*---------------------------------------------------------------
+	Table sort
+---------------------------------------------------------------*/
+	.re_sort {
+		padding-right: 1em;
+		background: url("images/j_arrow_down.gif") right center no-repeat;
+	}
+	table.postings th, table.postings th a {
+		color: #999;
+	}
+	table.postings th a {
+		border: none;
+	}
+	table.postings th.activesort {
+		font-weight: bold !important;
+	}
+	table.postings th.activesort a {
+		color: #000;
+		border-bottom: 1px dotted #000;
+	}
+
