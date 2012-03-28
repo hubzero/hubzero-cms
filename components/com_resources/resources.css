@@ -1061,9 +1061,10 @@
 		color: #999;
 		font-size: 85%;
 		text-align: left;
-		padding: 0 0 10px 95px;
+		padding: 0 0 10px 35px;
 		margin: 2em 0 1em 0;
 		min-height: 37px;
+		background: url("/components/com_resources/images/logos/copyright.png") 0 0 no-repeat;
 		}
 	.opensource { 
 		background: url("/components/com_resources/images/logos/opensource.gif") 0 0 no-repeat;
@@ -1075,33 +1076,41 @@
 	.cc3,
 	.cc25,
 	.cc30 { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/cc.primary.srr.gif") 0 0 no-repeat;
 	}
 	.cc25-by-nc-sa,
 	.cc30-by-nc-sa { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/by-nc-sa.png") 0 0 no-repeat;
 	}
 	.cc25-by-nc-nd,
 	.cc30-by-nc-nd { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/by-nc-nd.png") 0 0 no-repeat;
 	}
 	.cc25-by-nc,
 	.cc30-by-nc { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/by-nc.png") 0 0 no-repeat;
 	}
 	.cc25-by-nd,
 	.cc30-by-nd { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/by-nd.png") 0 0 no-repeat;
 	}
 	.cc25-by-sa,
 	.cc30-by-sa { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/by-sa.png") 0 0 no-repeat;
 	}
 	.cc25-by,
 	.cc30-by { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/by.png") 0 0 no-repeat;
 	}
 	.publicdomain { 
+		padding-left: 95px;
 		background: url("/components/com_resources/images/logos/publicdomain.png") 0 0 no-repeat;
 	}
 /* Misc */

@@ -830,7 +830,7 @@ class ResourcesHtml
 			}
 			else 
 			{
-				$html = '<p class="'.$rl->name.' license">Licensed according to <a rel="license" href="'.JRoute::_('index.php?option=com_resources&task=license&id=' .substr($rl->name, 7). 'license=' . $rl->name . '&no_html=1').'">this deed</a>.</p>';
+				$html = '<p class="'.$rl->name.' license">Licensed according to <a rel="license" class="popup" href="'.JRoute::_('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1').'">this deed</a>.</p>';
 			}
 		}
 		return $html;
