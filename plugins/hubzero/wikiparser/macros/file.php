@@ -115,6 +115,11 @@ class FileMacro extends WikiMacro
 	                continue;
 				}
 			}
+			
+			if (is_numeric($arg))
+			{
+				$attr['width'] = $arg;
+			}
 			// Specific call to NOT link an image
 			// Links images by default
 			if ($arg == 'nolink') 
@@ -294,7 +299,7 @@ class FileMacro extends WikiMacro
 	private function _link($file)
 	{
 		$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-		if (preg_match("/$urlPtrn/", $file))
+		if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS)
 		{
 			return $file;
 		}
