@@ -354,7 +354,7 @@ HUB.Mw = {
 			if (w < 100) { w = 100; }
 			if (h < 100) { h = 100; }
 			
-			$('app-wrap').setStyles({
+			$('app-content').setStyles({
 				'width': (w.toString()) + 'px',
 				'height': (h.toString()) + 'px'
 			});
@@ -385,52 +385,15 @@ HUB.Mw = {
 	
 	initialize: function() {
 		// Initiate app resizing
-		var appwrap = $('app-wrap');
+		var appwrap = $('app-content');
 		if (appwrap) {
-			var resizehandle = $('app-btn-resizehandle');
-			if (!resizehandle) {
-				var app = document.getElementById('theapp');
-				var w = app.getAttribute('width');
-				var h = app.getAttribute('height');
-				//var app = $('theapp');
-				//var w = app.getProperty('width');
-				//var h = app.getProperty('height');
-
-				if (w < 100) { w = 100; }
-				if (h < 100) { h = 100; }
-				
-				appwrap.setStyle('height', h.toString() + 'px');
-				appwrap.setStyle('width', w.toString() + 'px');
-				
-				var p = new Element('p', {
-					id: 'app-size',
-					alt: w.toString() + ' x ' + h.toString()
-				}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(appwrap);
-				
-				var res = new Element('div', {
-					id: 'app-btn-resizehandle',
-					alt: 'Resize',
-					title: 'Resize'
-				}).injectInside(appwrap);
-			}
-			
-			var refresh = $('app-btn-refresh');
-			if (!refresh) {
-				var res = new Element('div', {
-					id: 'app-btn-refresh',
-					alt: 'Refresh Window',
-					title: 'Refresh Window',
-					events: {
-						'click': function(event) {
-							document.theapp.refresh();
-						}
-					}
-				}).injectInside(appwrap);
-			}
+			var appfooter = $('app-footer');
+			var footermenu = new Element('ul', {}).injectInside(appfooter);
 			
 			var newwindow = $('app-btn-newwindow');
 			if (!newwindow) {
-				var res = new Element('div', {
+				var li = new Element('li', {});
+				var res = new Element('a', {
 					id: 'app-btn-newwindow',
 					alt: 'Popout',
 					title: 'Popout',
@@ -439,36 +402,92 @@ HUB.Mw = {
 							document.theapp.popout();
 						}
 					}
-				}).injectInside(appwrap);
+				}).addClass('popout');
+				var sp = new Element('span', {}).setHTML('New Window').injectInside(res);
+				res.injectInside(li);
+				li.injectInside(footermenu);
 			}
 			
-			// Init the resizing capabilities
-			appwrap.makeResizable({
-				handle:$('app-btn-resizehandle'),
-				onDrag: function(el) {
-					var size = el.getCoordinates();
-					$('app-size').setStyle('visibility','visible').setHTML((size.width - 20)+' x '+(size.height - 20));
-				},
-				onComplete: function(el) {
-					$('app-size').setStyle('visibility','hidden');
-					var app = document.getElementById('theapp');
-					if (app) {
-						var size = el.getCoordinates();
-						
-						var w = parseFloat(size.width);
-						var h = parseFloat(size.height);
-
-						if (w < 100) { w = 100; }
-						if (h < 100) { h = 100; }
-						
-						app.style.width = (w - 20) + 'px';
-						app.style.height = (h - 20) + 'px';
-						app.width = (w - 20);
-						app.height = (h - 20);
-						app.requestResize((w - 20),(h - 20));
+			var refresh = $('app-btn-refresh');
+			if (!refresh) {
+				var li = new Element('li', {});
+				var res = new Element('a', {
+					id: 'app-btn-refresh',
+					alt: 'Refresh Window',
+					title: 'Refresh Window',
+					events: {
+						'click': function(event) {
+							document.theapp.refresh();
+						}
 					}
-				}
-			});
+				}).addClass('refresh');
+				var sp = new Element('span', {}).setHTML('Refresh').injectInside(res);
+				res.injectInside(li);
+				li.injectInside(footermenu);
+			}
+			
+			var resizehandle = $('app-btn-resizehandle');
+			if (!resizehandle) {
+				var app = document.getElementById('theapp');
+				var w = app.getAttribute('width');
+				var h = app.getAttribute('height');
+
+				if (w < 100) { w = 100; }
+				if (h < 100) { h = 100; }
+				
+				appwrap.setStyle('height', h.toString() + 'px');
+				appwrap.setStyle('width', w.toString() + 'px');
+				
+				var li = new Element('li', {});
+				
+				/*var p = new Element('p', {
+					id: 'app-size',
+					alt: w.toString() + ' x ' + h.toString()
+				}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(appwrap);*/
+				
+				var res = new Element('a', {
+					id: 'app-btn-resizehandle',
+					alt: 'Resize',
+					title: 'Resize'
+				}).addClass('resize');
+				var sp = new Element('span', {id: 'app-size'}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(res);
+				res.injectInside(li);
+				li.injectInside(footermenu);
+			
+				// Init the resizing capabilities
+				appwrap.makeResizable({
+					handle:$('app-btn-resizehandle'),
+					onDrag: function(el) {
+						var size = el.getCoordinates();
+						//$('app-size').setStyle('visibility','visible').setHTML((size.width - 20)+' x '+(size.height - 20));
+						$('app-size').setHTML(size.width+' x '+size.height);
+					},
+					onComplete: function(el) {
+						//$('app-size').setStyle('visibility','hidden');
+						var app = document.getElementById('theapp');
+						if (app) {
+							var size = el.getCoordinates();
+
+							var w = parseFloat(size.width);
+							var h = parseFloat(size.height);
+
+							if (w < 100) { w = 100; }
+							if (h < 100) { h = 100; }
+
+							/*app.style.width = (w - 20) + 'px';
+							app.style.height = (h - 20) + 'px';
+							app.width = (w - 20);
+							app.height = (h - 20);
+							app.requestResize((w - 20),(h - 20));*/
+							app.style.width = w + 'px';
+							app.style.height = h + 'px';
+							app.width = w;
+							app.height = h;
+							app.requestResize(w, h);
+						}
+					}
+				});
+			}
 		}
 		
 		// Inititate session title editing

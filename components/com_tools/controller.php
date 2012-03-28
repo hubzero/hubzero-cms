@@ -715,7 +715,7 @@ class ToolsController extends Hubzero_Controller
 		foreach ($users as $user)
 		{
 			// Check for invalid characters
-			if (!preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $user)) {
+			if (!is_numeric($user) && !preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $user)) {
 				$this->setError( JText::_('MW_ERROR_INVALID_USERNAME').': '.$user );
 				continue;
 			}
@@ -726,6 +726,8 @@ class ToolsController extends Hubzero_Controller
 				$this->setError( JText::_('MW_ERROR_INVALID_USERNAME').': '.$user );
 				continue;
 			}
+			
+			$user = $zuser->get('username');
 
 			$mv = new MwViewperm( $mwdb );
 			$checkrows = $mv->loadViewperm( $sess, $user );
@@ -758,6 +760,12 @@ class ToolsController extends Hubzero_Controller
 				JError::raiseError( 500, $mv->getError() );
 				return;
 			}
+		}
+
+		if (($rtrn = JRequest::getVar('return', '')))
+		{
+			$this->_redirect = base64_decode($rtrn);
+			return;
 		}
 
 		// Drop through and re-view the session...
@@ -807,6 +815,12 @@ class ToolsController extends Hubzero_Controller
 		if ($user == $this->juser->get('username')) {
 			// Take us back to the main page...
 			$this->_redirect = JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'));
+			return;
+		}
+
+		if (($rtrn = JRequest::getVar('return', '')))
+		{
+			$this->_redirect = base64_decode($rtrn);
 			return;
 		}
 
