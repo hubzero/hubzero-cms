@@ -127,17 +127,17 @@
 	}
 /* IE 7 */
 	html>body .two { 
-		width: 47%; 
+		*width: 47%; 
 	}
 	html>body .three {
-		width: 29.5%;
+		*width: 29.5%;
 	}
 	html>body .four {
-		width: 21%;
+		*width: 21%;
 	}
 	html>body .five {
-		width: 15.75%;
+		*width: 15.75%;
 	}
 	html>body .six {
-		width: 12.25%;
+		*width: 12.25%;
 	}
