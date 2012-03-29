@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3>
+<h3 class="section-header">
 	<a name="favorites"></a>
 	<?php echo JText::_('PLG_MEMBERS_FAVORITES'); ?>
 </h3>
@@ -188,7 +188,7 @@ foreach ($this->results as $category)
 		// Build the category HTML
 		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">';
 		if (!$dopaging) {
-			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=contributions&area='. urlencode(stripslashes($this->cats[$k]['category']))).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
+			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=favorites&area='. urlencode(stripslashes($this->cats[$k]['category']))).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
 		}
 		$html .= $name.' <span>('.$num.$total.')</span>';
 		if (!$dopaging) {
