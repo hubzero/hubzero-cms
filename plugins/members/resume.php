@@ -91,7 +91,7 @@ class plgMembersResume extends JPlugin
 		$areas = array();
 		
 		//if this is the logged in user show them
-		if($user->get("id") == $member->get("uidNumber") || $this->isEmployer())
+		if($user->get("id") == $member->get("uidNumber") || $this->isEmployer($user, $member))
 		{
 			$areas['resume'] = ucfirst(JText::_('Resume'));
 		}
