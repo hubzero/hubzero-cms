@@ -68,7 +68,7 @@ class plgAuthenticationPUCAS
 
 		if ( !is_object($PHPCAS_CLIENT) )
 		{
-			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.0.1'.DS.'CAS.php');
+			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.3.0'.DS.'CAS.php');
 			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0,'www.purdue.edu',443,'/apps/account/cas',false);
 		}
@@ -92,7 +92,7 @@ class plgAuthenticationPUCAS
 
 		if (phpCAS::isAuthenticated() || phpCAS::checkAuthentication())
 		{
-			phpCAS::logoutWithUrl($service . '/index.php?option=com_user&view=login&authenticator=pucas' . $return);
+			phpCAS::logoutWithRedirectService($service . '/index.php?option=com_user&view=login&authenticator=pucas' . $return);
 		}
 	}
 
@@ -161,7 +161,7 @@ class plgAuthenticationPUCAS
 
 		if ( !is_object($PHPCAS_CLIENT) )
 		{
-			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.0.1'.DS.'CAS.php');
+			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.3.0'.DS.'CAS.php');
 			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0,'www.purdue.edu',443,'/apps/account/cas',false);
 		}
@@ -203,14 +203,15 @@ class plgAuthenticationPUCAS
 
 		if ( !is_object($PHPCAS_CLIENT) )
 		{
-			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.0.1'.DS.'CAS.php');
-			phpCAS::setDebug();
+			require_once(JPATH_SITE.DS.'libraries'.DS.'CAS-1.3.0'.DS.'CAS.php');
+			phpCAS::setDebug();			
 			phpCAS::client(CAS_VERSION_2_0,'www.purdue.edu',443,'/apps/account/cas',false);
 		}
 
 		phpCAS::setNoCasServerValidation();
+		phpCAS::setServerServiceValidateURL('https://www.purdue.edu/apps/account/cas/serviceValidate');
 
-		if (phpCAS::isAuthenticated())
+		if (phpCAS::forceAuthentication())
 		{
 			$username = phpCAS::getUser();
 
@@ -221,34 +222,31 @@ class plgAuthenticationPUCAS
 			$response->type = 'pucas';
 			$response->status = JAUTHENTICATE_STATUS_SUCCESS;
 
-			// Grab some details from LDAP and return them
+			$email = phpCAS::getAttribute('email');
+			$name  = phpCAS::getAttribute('fullname');
 
-			if( $_ldc_ped = @ldap_connect("ldap://ped.purdue.edu") )
+			if (!empty($email))
 			{
-				if (@ldap_bind($_ldc_ped))
-				{
-					$search_result = @ldap_search($_ldc_ped, "uid=" . phpCAS::getUser() .
-						',ou=ped,dc=purdue,dc=edu', '(objectClass=*)' , array('mail','cn'));
-                    			$userdetails = @ldap_get_entries($_ldc_ped, $search_result);
-					if (!empty($userdetails[0]['mail'][0]))
-						$hzal->email = $userdetails[0]['mail'][0];
-					if (!empty($userdetails[0]['cn'][0]))
-						$response->fullname = ucwords(strtolower($userdetails[0]['cn'][0]));
-               			}
-
-				@ldap_close($_ldc_ped);
+				$hzal->email = $email;
 			}
 
-			if (!empty($hzal->user_id)) {
+			if (!empty($name))
+			{
+				$response->fullname = ucwords(strtolower($name));
+			}
+
+			if (!empty($hzal->user_id))
+			{
 				$user = JUser::getInstance($hzal->user_id); // Bring this in line with the rest of the system
 
 				$response->username = $user->username;
-				$response->email = $user->email;
+				$response->email    = $user->email;
 				$response->fullname = $user->name;
 			}
-			else {
+			else
+			{
 				$response->username = '-' . $hzal->id; // The Open Group Base Specifications Issue 6, Section 3.426
-				$response->email = $response->username . '@invalid'; // RFC2606, section 2
+				$response->email    = $response->username . '@invalid'; // RFC2606, section 2
 			}
 
 			$hzal->update();
