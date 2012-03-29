@@ -58,8 +58,14 @@ HUB.Plugins.WikiEditorToolbar = {
 		
 		HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-link","Internal link","[","]","Link title","mw-editbutton-link-"+id);
 		HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-headline","Level 2 headline","\n== "," ==\n","Headline text","mw-editbutton-headline-"+id);
-		HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-image","Embedded image","[[Image(",")]]","Example.jpg","mw-editbutton-image-"+id);
-		HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-file","Embedded file","[[File(",")]]","File.doc","mw-editbutton-file-"+id);
+		if(textbox.className.indexOf("no-image-macro") == -1)
+		{
+			HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-image","Embedded image","[[Image(",")]]","Example.jpg","mw-editbutton-image-"+id);
+		}
+		if(textbox.className.indexOf("no-file-macro") == -1) 
+		{
+			HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-file","Embedded file","[[File(",")]]","File.doc","mw-editbutton-file-"+id);
+		}
 		HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-resource","Embedded resource","[[Resource(",")]]","123","mw-editbutton-resource-"+id);
 		HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-math","Mathematical formula (LaTeX)","\x3cmath\x3e","\x3c/math\x3e","Insert formula here","mw-editbutton-math-"+id);
 		HUB.Plugins.WikiEditorToolbar.addButton("wiki-button-nowiki","Ignore wiki formatting","{{{","}}}","Insert non-formatted text here","mw-editbutton-nowiki-"+id);
