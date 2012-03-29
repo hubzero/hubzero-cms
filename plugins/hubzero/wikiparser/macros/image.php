@@ -182,12 +182,13 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			if (substr($arg, 0, 5) == 'link=') 
 			{
 				$attr['href'] = 'none';
-                $bits = preg_split('/=/', $arg);
+                $bits = explode('=', $arg);
 				$val = trim(end($bits));
 				if ($val) 
 				{
 					$attr['href'] = $val;
-					$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+					//$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+					$urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 					if (preg_match("/$urlPtrn/", $val))
 					{
 						$attr['rel']  = 'external';
