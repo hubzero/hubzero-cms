@@ -802,7 +802,7 @@
 		padding: 0 45px 2em;
 		color: #777;
 		text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
-		background: url("../images/layout/footer_nav_bg.gif") 0 -193px repeat-x;
+		/*background: url("../images/layout/footer_nav_bg.gif") 0 -193px repeat-x;*/
 		}
 	#footer-info ul {
 		margin: 0;
