@@ -426,7 +426,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function getformat()
+	public function getformatTask()
 	{
 		//get the format being sent via json
 		$format = JRequest::getVar("format", "apa");
@@ -451,7 +451,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function gettemplatekeys()
+	public function gettemplatekeysTask()
 	{
 		//include citations format class
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');

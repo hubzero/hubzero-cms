@@ -55,7 +55,8 @@
 		<param name="citation_batch_download" type="list" default="1" label="Allow Batch Download" description="Allow batch downloading of citations">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
-		</param>
+		</param> 
+		<param name="citation_download_exclude" type="textarea" rows="5" cols="50" default="" label="Exclude from Download" description="Fields to exclude from export." />
 		
 		<param type="spacer" />
 		
@@ -147,12 +148,12 @@
 				<script>
 					$jQ(document).ready(function(e) { 
 						$jQ.get("index.php?option=com_citations&task=gettemplatekeys&no_html=1", function(data) {
-							$jQ(".adminlist tbody").append( data );
+							$jQ(".adminlist-list tbody").append( data );
 						});
 					});
 				</script>
 				
-				<table class="adminlist">
+				<table class="adminlist-list">
 					<thead>
 						<th>Placeholder</th>
 						<th>Value</th>

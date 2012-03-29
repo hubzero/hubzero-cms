@@ -67,7 +67,7 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php' );
 $controllerName = JRequest::getCmd('controller', 'citations');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'citaitons';
+	$controllerName = 'citations';
 }
 
 JSubMenuHelper::addEntry(

@@ -49,6 +49,8 @@
 		padding: 0 0 0 15px;
 		background: transparent url("images/arrow.gif") 0 50% no-repeat;
 		}
+		
+		
 /* Four Columns */
 	.com_citations .four {
 		border-top: 1px solid #e0e0d7;
@@ -216,10 +218,11 @@
 		
 	#citeform .aside {
 		position:relative;
-		margin-top:2em;
-		padding-top:140px;
 		}	
-		
+	#citeform .aside.withBatchDownload {
+		margin-top:2em;
+		padding-top:150px;
+		}	
 	#download-batch {
 		position:absolute;
 		top:0;

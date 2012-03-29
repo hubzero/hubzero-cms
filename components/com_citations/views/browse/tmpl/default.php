@@ -70,7 +70,7 @@ if($label == "none") {
 	?>
 	
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="post">
-		<div class="aside">
+		<div class="aside <?php if($batch_download) { echo " withBatchDownload"; } ?>">
 			<fieldset>
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>

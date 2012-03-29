@@ -710,7 +710,8 @@ class CitationsCitation extends JTable
 						? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' 
 							OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%' 
 							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')"
-						: "";*/
+						: "";
+				 */
 			} else {
 				$query .= " ORDER BY ".$filter['sort'];
 			}
