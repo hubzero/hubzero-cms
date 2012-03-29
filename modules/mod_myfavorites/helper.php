@@ -133,7 +133,6 @@ class modMyFavorites
 		$totals = $dispatcher->trigger( 'onMembersFavorites', array(
 				$member,
 				$option,
-				$authorized,
 				0,
 				0,
 				$activeareas)
@@ -143,7 +142,6 @@ class modMyFavorites
 		$this->results = $dispatcher->trigger( 'onMembersFavorites', array(
 				$member,
 				$option,
-				$authorized,
 				$limit,
 				$limitstart,
 				$activeareas)
