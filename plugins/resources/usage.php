@@ -152,12 +152,12 @@ class plgResourcesUsage extends JPlugin
 			if ($resource->type == 7) {
 				$arr['metadata'] = '<p class="usage"><a href="'.$url.'">'.JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS',$stats->users).'</a></p>';
 			} else {
-				if ($stats->users) {
-					$arr['metadata'] = '<p class="usage">'.JText::sprintf('%s users',$stats->users).'</p>';
-				}
+				if (!$stats->users)
+					$stats->users = 0;
+				$arr['metadata'] = '<p class="usage">'.JText::sprintf('%s users',$stats->users).'</p>';
 			}
 			if ($clusters->users && $clusters->classes) {
-				$arr['metadata'] .= '<p class="usage">'.JText::sprintf('%s users',$clusters->users).' in '.JText::sprintf('%s classes',$clusters->classes).'</p>';
+				$arr['metadata'] .= '<p class="usage">'.JText::sprintf('%s users',$clusters->users).' in '.JText::sprintf('%s class(es)',$clusters->classes).'</p>';
 			}
 		}
 
