@@ -1135,11 +1135,20 @@ class ContribtoolController extends JObject
 		$obj = new Tool( $database );
 	
 		if($id) {
+			
+			$hzt = Hubzero_Tool::getInstance($id);
+			$hztv = $hzt->getRevision($editversion);
+			
 			// make sure user is authorized to go further
 			if(!$this->check_access($id, $juser, $this->_admin) ) {
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
 			}
+		}
+		else if($task != 'register')
+		{
+			JError::raiseError( 404, JText::_('ERR_STATUS_CANNOT_FIND') );
+			return;
 		}
 		
 		// new tool or edit
@@ -1359,6 +1368,8 @@ class ContribtoolController extends JObject
 			if($newstate && !intval($newstate)) { $newstate = ContribtoolHtml::getStatusNum($newstate); }
 
 			$this->_toolid = $hzt->id;
+			$oldstatus = ($hztv) ? $hztv->toArray() : array();
+			$oldstatus['toolstate'] = $hzt->state;
 
 			switch($task)
 			{
@@ -1598,7 +1609,7 @@ class ContribtoolController extends JObject
 				case 'message':
 					if($comment)
 					{
-						$this->newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1);
+						$this->newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1, 3);
 						$this->_msg = JText::_('NOTICE_MSG_SENT');
 					}
 					$this->_task = 'status';
@@ -1871,8 +1882,9 @@ class ContribtoolController extends JObject
 		$rowc->ticket     = $ticketid;
 
 		if($comment) {
-			//$action = $action==2 ? $action : 3;
+			//$action = $action == 2 ? $action : 3;
 			$email = 1;
+			$summary = $summary ? $summary : JText::_('new message');
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
 		}
