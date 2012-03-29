@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<h2>
 					<?php echo JText::_('Submit a Support Ticket'); ?>
 				</h2>
-				<form method="post" action="index.php" id="troublereport" enctype="multipart/form-data">
+				<form method="post" action="index.php?option=com_support&controller=tickets&task=save" id="troublereport" enctype="multipart/form-data">
 					<fieldset class="reporter">
 						<label for="trLogin">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
