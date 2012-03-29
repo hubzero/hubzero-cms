@@ -50,7 +50,7 @@ HUB.Members.Profile = {
 							Growl.Bezel({
 								image: '/components/com_members/images/save.png',
 								title: 'Profile Saved',
-								text: 'You have successfully saved you profile privacy settings.',
+								text: 'You have successfully saved your profile privacy settings.',
 								duration: 2
 							});
 						} else {
