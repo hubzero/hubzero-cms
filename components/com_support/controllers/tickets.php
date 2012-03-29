@@ -1394,37 +1394,6 @@ class SupportControllerTickets extends Hubzero_Controller
 			exit();
 		}
 
-		// Set the status of the ticket
-		if ($row->resolved) 
-		{
-			if ($row->resolved == 1) 
-			{
-				// "waiting user response"
-				$row->status = 1;
-			} 
-			else 
-			{
-				// If there's a resolution, close the ticket
-				$row->status = 2;
-			}
-		} 
-		else 
-		{
-			$row->status = 0;
-		}
-
-		// Set the status to just "open" if no owner and no resolution
-		if (!$row->resolved) 
-		{
-			$row->status = 0;
-		}
-
-		// If status is "open" or "waiting", ensure the resolution is empty
-		if ($row->status == 0 || $row->status == 1) 
-		{
-			$row->resolved = '';
-		}
-
 		// Check content
 		if (!$row->check()) 
 		{
