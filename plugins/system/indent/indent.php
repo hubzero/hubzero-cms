@@ -108,16 +108,20 @@ class  plgSystemIndent extends JPlugin
 
 		//Uses previous function to seperate tags
 		$fixed_uncleanhtml = $this->_fixNewlines($uncleanhtml);
+		$fixed_uncleanhtml = preg_replace("/(\S)(<\/div>)/", "$1\n$2", $fixed_uncleanhtml);
+		//$fixed_uncleanhtml = preg_replace("/(\S)(<\/div>)/", "$1$2<!-- $1\n$2 -->", $fixed_uncleanhtml);
 		$uncleanhtml_array = explode("\n", $fixed_uncleanhtml);
 		//Sets no indentation
 		$indentlevel = 0;
+		$chr = '';
 		foreach ($uncleanhtml_array as $uncleanhtml_key => $currentuncleanhtml)
 		{
 			//Removes all indentation
 			$currentuncleanhtml = preg_replace("/\t+/", '', $currentuncleanhtml);
 			$currentuncleanhtml = preg_replace("/^\s+/", '', $currentuncleanhtml);
+			$char = preg_replace("/^\s+/", '', $currentuncleanhtml);
 
-			$replaceindent = "";
+			$replaceindent = '';
 
 			//Sets the indentation from current indentlevel
 			for ($o = 0; $o < $indentlevel; $o++)
@@ -127,45 +131,54 @@ class  plgSystemIndent extends JPlugin
 
 			//If self-closing tag, simply apply indent
 			if (preg_match("/<(.+)\/>/", $currentuncleanhtml))
-			{ 
+			{
 				$cleanhtml_array[$uncleanhtml_key] = $replaceindent . $currentuncleanhtml;
 			}
 			//If doctype declaration, simply apply indent
 			else if (preg_match("/<!(.*)>/", $currentuncleanhtml))
-			{ 
+			{
 				$cleanhtml_array[$uncleanhtml_key] = $replaceindent . $currentuncleanhtml;
 			}
 			//If opening AND closing tag on same line, simply apply indent
-			else if (preg_match("/<[^\/](.*)>/", $currentuncleanhtml) && preg_match("/<\/(.*)>/", $currentuncleanhtml))
+			//else if (preg_match("/<[^\/](.*)>/", $currentuncleanhtml) && preg_match("/<\/(.*)>/", $currentuncleanhtml))
+			//else if (preg_match("/<[^\/](.*)>(.*)<\/(.*)>/", $currentuncleanhtml) || preg_match("/<[^\/>]*>([\s]?)*<\/[^>]*>/", $currentuncleanhtml))
+			else if (preg_match("/<[^\/](.*)>(.*)<\/(.*)>/", $currentuncleanhtml))
 			{ 
 				$cleanhtml_array[$uncleanhtml_key] = $replaceindent . $currentuncleanhtml;
 			}
 			//If closing HTML tag or closing JavaScript clams, decrease indentation and then apply the new level
-			else if (preg_match("/<\/(.*)>/", $currentuncleanhtml) || preg_match("/^(\s|\t)*\}{1}(\s|\t)*$/", $currentuncleanhtml))
+			//else if (preg_match("/<\/(.*)>/", $currentuncleanhtml) || preg_match("/^(\s|\t)*\}{1}(\s|\t)*$/", $currentuncleanhtml))
+			else if (preg_match("/<\/(.*)>/", $currentuncleanhtml))
 			{
-			    $indentlevel--;
-			    $replaceindent = "";
-			    for ($o = 0; $o < $indentlevel; $o++)
-			    {
-			        $replaceindent .= $indent;
-			    }
+				/*$thischar = preg_replace("/<\/?(\w+)((\s+(\w|\w[\w-]*\w)(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?)+\s*|\s*)\/?>/i", "$1", $currentuncleanhtml);*/
+				$indentlevel--;
+				/*if ($chr != $thischar)
+				{
+					$indentlevel--;
+				}*/
+				$replaceindent = '';
+				for ($o = 0; $o < $indentlevel; $o++)
+				{
+					$replaceindent .= $indent;
+				}
 
-			    // fix for textarea whitespace and in my opinion nicer looking script tags	
-			    if ($currentuncleanhtml == '</textarea>' || $currentuncleanhtml == '</script>' || $currentuncleanhtml == '</pre>')
-			    {
-			        $cleanhtml_array[$uncleanhtml_key] = $cleanhtml_array[($uncleanhtml_key - 1)] . $currentuncleanhtml;
-			        unset($cleanhtml_array[($uncleanhtml_key - 1)]);
-			    }
-			    else
-			    {
-			        $cleanhtml_array[$uncleanhtml_key] = $replaceindent . $currentuncleanhtml;
-			    }
+				// fix for textarea whitespace and in my opinion nicer looking script tags	
+				if ($currentuncleanhtml == '</textarea>' || $currentuncleanhtml == '</script>' || $currentuncleanhtml == '</pre>')
+				{
+					$cleanhtml_array[$uncleanhtml_key] = $cleanhtml_array[($uncleanhtml_key - 1)] . $currentuncleanhtml;
+					unset($cleanhtml_array[($uncleanhtml_key - 1)]);
+				}
+				else
+				{
+					$cleanhtml_array[$uncleanhtml_key] = $replaceindent . $currentuncleanhtml;
+				}
 			}
 			//If opening HTML tag AND not a stand-alone tag, or opening JavaScript clams, increase indentation and then apply new level
-			else if ((preg_match("/<[^\/](.*)>/", $currentuncleanhtml) && !preg_match("/<(link|meta|base|br|img|hr)(.*)>/", $currentuncleanhtml)) || preg_match("/^(\s|\t)*\{{1}(\s|\t)*$/", $currentuncleanhtml))
+			else if ((preg_match("/<[^\/](.*)>/", $currentuncleanhtml) && !preg_match("/<(link|meta|base|br|img|hr|param)(.*)>/", $currentuncleanhtml)) || preg_match("/^(\s|\t)*\{{1}(\s|\t)*$/", $currentuncleanhtml))
+			//else if ((preg_match("/<[^\/](.*)>/", $currentuncleanhtml) && !preg_match("/<(link|meta|base|br|img|hr|param)(.*)>/", $currentuncleanhtml)))
 			{
+				/*$chr = preg_replace("/<\/?(\w+)((\s+(\w|\w[\w-]*\w)(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?)+\s*|\s*)\/?>/i", "$1", $currentuncleanhtml);*/
 				$cleanhtml_array[$uncleanhtml_key] = $replaceindent . $currentuncleanhtml;
-
 				$indentlevel++;
 				$replaceindent = '';
 				for ($o = 0; $o < $indentlevel; $o++)
@@ -176,7 +189,8 @@ class  plgSystemIndent extends JPlugin
 			else
 			//Else, only apply indentation
 			{
-				$cleanhtml_array[$uncleanhtml_key] = $replaceindent.$currentuncleanhtml;
+				/*$chr = preg_replace("/<(.*)>/", "$1", $currentuncleanhtml);*/
+				$cleanhtml_array[$uncleanhtml_key] = $replaceindent . $currentuncleanhtml;
 			}
 		}
 		//Return single string seperated by newline
