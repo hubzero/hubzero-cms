@@ -359,6 +359,15 @@ HUB.Mw = {
 				'height': (h.toString()) + 'px'
 			});
 			
+			if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
+				if ($('app-header')) {
+					$('app-header').setStyle('width', w.toString() + 'px');
+				}
+				if ($('app-footer')) {
+					$('app-footer').setStyle('width', w.toString() + 'px');
+				}
+			}
+			
 			$('app-size').setHTML(w.toString()+' x '+h.toString());
 
 			app.style.width = w.toString() + 'px';
@@ -463,7 +472,6 @@ HUB.Mw = {
 						$('app-size').setHTML(size.width+' x '+size.height);
 					},
 					onComplete: function(el) {
-						//$('app-size').setStyle('visibility','hidden');
 						var app = document.getElementById('theapp');
 						if (app) {
 							var size = el.getCoordinates();
@@ -473,6 +481,15 @@ HUB.Mw = {
 
 							if (w < 100) { w = 100; }
 							if (h < 100) { h = 100; }
+							
+							if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
+								if ($('app-header')) {
+									$('app-header').setStyle('width', w + 'px');
+								}
+								if ($('app-footer')) {
+									$('app-footer').setStyle('width', w + 'px');
+								}
+							}
 
 							/*app.style.width = (w - 20) + 'px';
 							app.style.height = (h - 20) + 'px';
