@@ -29,22 +29,28 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
 }
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'quotes.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'selectedquotes.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'quotes.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'selectedquotes.php');
 ximport('Hubzero_View_Helper_Html');
 
+$controllerName = JRequest::getCmd('controller', 'feedback');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'feedback';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'FeedbackController' . ucfirst($controllerName);
+
 // Instantiate controller
-$controller = new FeedbackController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

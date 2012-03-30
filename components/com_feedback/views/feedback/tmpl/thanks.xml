@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Report Problems Thanks Layout">
+	<layout title="Standard Success Story Thanks Layout">
 		<message>
-			<![CDATA[STANDARD REPORT PROBLEMS THANKS LAYOUT DESC]]>
+			<![CDATA[STANDARD SUCCESS STORY THANKS LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Report Problems Thanks Layout</name>
-		<description>STANDARD REPORT PROBLEMS THANKS LAYOUT DESC</description>
+		<name>Standard Success Story Thanks Layout</name>
+		<description>STANDARD SUCCESS STORY THANKS LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

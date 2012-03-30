@@ -41,14 +41,15 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 function FeedbackBuildRoute(&$query)
 {
-    $segments = array();
+	$segments = array();
 
-    if (!empty($query['task'])) {
-        $segments[] = $query['task'];
-        unset($query['task']);
-    }
+	if (!empty($query['task'])) 
+	{
+		$segments[] = $query['task'];
+		unset($query['task']);
+	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
@@ -61,14 +62,23 @@ function FeedbackBuildRoute(&$query)
  */
 function FeedbackParseRoute($segments)
 {
-    $vars = array();
+	$vars = array();
 
-    if (empty($segments))
-    	return $vars;
+	if (empty($segments)) 
+	{
+		return $vars;
+	}
 
-    $vars['task'] = $segments[0];
+	if (isset($segments[0]) && $segments[0] == 'report_problems')
+	{
+		$vars['option'] = 'com_support';
+		$vars['controller'] = 'tickets';
+		$vars['task'] = 'new';
+	}
+	else 
+	{
+		$vars['task'] = $segments[0];
+	}
 
-    return $vars;
+	return $vars;
 }
-
-?>

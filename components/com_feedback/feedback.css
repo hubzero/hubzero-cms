@@ -16,16 +16,16 @@
 	iframe {
 		border: none;
 	}
-	#member-picture {
+	#component-body {
 		background-color: #f3f1ed;
 	}
-	#member-picture fieldset {
+	#component-body fieldset {
 		margin: 1.5em 0 2em 0;
 		padding: 0.5em 0;
 	}
-	#member-picture table,
-	#member-picture td,
-	#member-picture th {
+	#component-body table,
+	#component-body td,
+	#component-body th {
 		border: none;
 	}
 	#hubForm label#fbBotcheck-label {
