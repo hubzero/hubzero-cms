@@ -137,8 +137,9 @@ function supportParseRoute($segments)
 	switch ($segments[0])
 	{
 		case 'report_problems':
-	    	$vars['option'] = 'com_feedback';
-	    	$vars['task'] = 'report';
+			$vars['option'] = 'com_support';
+			$vars['controller'] = 'tickets';
+			$vars['task'] = 'new';
 		break;
 
 		case 'tickets':
