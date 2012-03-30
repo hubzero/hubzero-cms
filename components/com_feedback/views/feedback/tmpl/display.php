@@ -32,58 +32,68 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig =& JFactory::getConfig();
-
-if ($this->xpoll && $this->wishlist) {
-	$numcol = 'four';
-} else if (($this->xpoll && !$this->wishlist) || ($this->wishlist && !$this->xpoll)) {
-	$numcol = 'three';
-} else {
-	$numcol = 'two';
-}
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
-<div class="main section">
-	<p><?php echo JText::sprintf('COM_FEEDBACK_INTRO', $jconfig->getValue('config.sitename')); ?></p>
-	
-	<div class="<?php echo $numcol; ?> columns first">
-		<div class="mainsection" id="story">
-			<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=success_story'); ?>"><?php echo JText::_('COM_FEEDBACK_STORY_HEADER'); ?></a></h3>
-			<p><?php echo JText::_('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
-		</div>
-	</div>
-<?php if ($this->wishlist) { ?>
-	<div class="<?php echo $numcol; ?> columns second">
-		<div class="mainsection" id="wish">
-			<h3><a href="/wishlist/general/1/add"><?php echo JText::_('COM_FEEDBACK_WISHLIST_HEADER'); ?></a></h3>
-			<p><?php echo JText::_('COM_FEEDBACK_WISHLIST_DESCRIPTION'); ?></p>
-		</div>	
-	</div>
-<?php } ?>
-<?php if ($this->xpoll) { ?>
-	<div class="<?php echo $numcol; ?> columns <?php echo ($this->wishlist) ? 'third' : 'second'; ?>">
-		<div class="mainsection" id="poll">
-			<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=poll'); ?>"><?php echo JText::_('COM_FEEDBACK_POLL_HEADER'); ?></a></h3>
-			<p><?php echo JText::_('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
-		</div>
-	</div>
-<?php } ?>
-	<div class="<?php echo $numcol; ?> columns <?php 
-	if ($this->xpoll && $this->wishlist) {
-		echo 'forth';
-	} else if (($this->xpoll && !$this->wishlist) || ($this->wishlist && !$this->xpoll)) {
-		echo 'third';
-	} else {
-		echo 'second';
-	}
-	?>">
-		<div class="mainsection" id="problem">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_FEEDBACK_TROUBLE_HEADER'); ?></a></h3>
-			<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_INTRO'); ?></p>
-		</div>
-	</div>
-	<br class="clear" />
-</div><!-- / .main section -->
+<div id="introduction" class="section">
+	<div class="aside">
+		<h3><?php echo JText::_('Participate in the Community'); ?></h3>
+		<ul>
+			<li><a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>"><?php echo JText::_('Questions &amp; Answers'); ?></a></li>
+			<li><a href="<?php echo JRoute::_('index.php?option=com_forum'); ?>"><?php echo JText::_('Forum'); ?></a></li>
+			<li><a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>"><?php echo JText::_('Groups'); ?></a></li>
+		</ul>
+	</div><!-- / .aside -->
+	<div class="subject">
+		<h3><?php echo JText::_('Have something to say?'); ?></h3>
+		<p><?php echo JText::sprintf('COM_FEEDBACK_INTRO', $jconfig->getValue('config.sitename')); ?></p>
+	</div><!-- / .subject -->
+	<div class="clear"></div>
+</div><!-- / #introduction.section -->
 
+<div class="section">
+	<div class="four columns first">
+		<h2><?php echo JText::_('Ways to submit feedback'); ?></h2>
+	</div><!-- / .four columns first -->
+	<div class="four columns second third fourth">
+		<div class="two columns first">
+			<div class="story">
+				<h3><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=success_story'); ?>"><?php echo JText::_('COM_FEEDBACK_STORY_HEADER'); ?></a></h3>
+				<p><?php echo JText::_('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=success_story'); ?>"><?php echo JText::_('Start writing a story'); ?> &rarr;</a></p>
+			</div>
+		</div><!-- / .two columns first -->
+		<div class="two columns second">
+			<div class="report">
+				<h3><a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_FEEDBACK_TROUBLE_HEADER'); ?></a></h3>
+				<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_INTRO'); ?></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('Start writing a report'); ?> &rarr;</a></p>
+			</div>
+		</div><!-- / .two columns second -->
+		<div class="clear"></div>
+<?php if ($this->wishlist || $this->xpoll) { ?>
+		<div class="two columns first">
+<?php if ($this->wishlist) { ?>
+			<div class="wish">
+				<h3><a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_FEEDBACK_WISHLIST_HEADER'); ?></a></h3>
+				<p><?php echo JText::_('COM_FEEDBACK_WISHLIST_DESCRIPTION'); ?></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('View wish list'); ?> &rarr;</a></p>
+			</div>
+<?php } ?>
+		</div><!-- / .two columns first -->
+		<div class="two columns second">
+<?php if ($this->xpoll) { ?>
+			<div class="poll">
+				<h3><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo JText::_('COM_FEEDBACK_POLL_HEADER'); ?></a></h3>
+				<p><?php echo JText::_('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo JText::_('View latest poll'); ?> &rarr;</a></p>
+			</div>
+<?php } ?>
+		</div><!-- / .two columns second -->
+		<div class="clear"></div>
+<?php } ?>
+	</div><!-- / .four columns second third fourth -->
+	<div class="clear"></div>
+</div><!-- / .section -->
