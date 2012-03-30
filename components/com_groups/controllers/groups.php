@@ -448,8 +448,16 @@ class GroupsController extends Hubzero_Controller
 		$view->filters['limit']  = 'all';
 		$view->filters['fields'] = array('COUNT(*)');
 		$view->filters['search'] = JRequest::getVar('search', '');
-		$view->filters['sortby'] = htmlentities(JRequest::getVar('sortby', 'title'));
-		$view->filters['policy'] = JRequest::getVar('policy', '');
+		$view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'title'));
+		if (!in_array($view->filters['sortby'], array('alias', 'title')))
+		{
+			$view->filters['sortby'] = 'title';
+		}
+		$view->filters['policy'] = strtolower(JRequest::getWord('policy', ''));
+		if (!in_array($view->filters['policy'], array('open', 'restricted', 'invite', 'closed')))
+		{
+			$view->filters['policy'] = '';
+		}
 		$view->filters['index']  = htmlentities(JRequest::getVar('index', ''));
 
 		// Get a record count
@@ -2198,6 +2206,7 @@ class GroupsController extends Hubzero_Controller
 		$logo_fullpaths = array();
 
 		// If path is a directory then load images
+		$logos = array();
 		if (is_dir($asset_path)) {
 			// Get all images that are in group asset folder and could be a possible group logo
 			$logos = JFolder::files($asset_path,'.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF',false, true);
@@ -3394,7 +3403,10 @@ class GroupsController extends Hubzero_Controller
 		if (count($rows) > 0) {
 			foreach ($rows as $row)
 			{
-				$json[] = '["'.htmlentities(stripslashes($row->description),ENT_COMPAT,'UTF-8').'","'.$row->cn.'"]';
+				$name = str_replace("\n", '', stripslashes(trim($row->description)));
+				$name = str_replace("\r", '', $name);
+				$json[] = '{"id":"'.$row->cn.'","name":"'.htmlentities($name,ENT_COMPAT,'UTF-8').'"}';
+				//$json[] = '["'.htmlentities(stripslashes($row->description),ENT_COMPAT,'UTF-8').'","'.$row->cn.'"]';
 			}
 		}
 
