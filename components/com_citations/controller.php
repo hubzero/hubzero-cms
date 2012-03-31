@@ -940,6 +940,7 @@ class CitationsController extends Hubzero_Controller
 
 			$type = "";
 			foreach($types as $t) {
+				// TODO: undefined index type? I just suppressed the error b/c I'm not sure what the logic is supposed to be /SS
 				if( strtolower($t['type_title']) == strtolower($crna['type']) ) {
 					$type = $t['id'];
 				}
