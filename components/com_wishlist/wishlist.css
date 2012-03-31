@@ -1248,10 +1248,10 @@
 	#commentform .option {
 		width: auto;
 	}
-	#commentform #comment-anonymous-label {
+	#commentform label#comment-anonymous-label {
 		width: 50%;
 	}
-		
+
 	#planform fieldset {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
