@@ -16,9 +16,11 @@
 		display: none;
 		}
 /* 'See Also' side area */
+	.aside .container,
 	#recommendations {
 		margin-bottom: 2em;
 		}
+	.aside .container .plg-content,
 	#recommendations ul {
 		margin: 0;
 		padding: 0.5em 0.5em 0.5em 0.5em;
@@ -70,6 +72,7 @@
 		color: #999;
 		font-size: 90%;
 		}
+	.aside .container h3,
 	#recommendations h3,
 	#whatsrelated h3, 
 	#whatspop h3 {

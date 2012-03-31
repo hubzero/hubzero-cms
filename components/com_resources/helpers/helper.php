@@ -460,6 +460,117 @@ class ResourcesHelper extends JObject
 		}
 		$this->contributors = $html;
 	}
+	
+	/**
+	 * Short description for 'getSubmitters'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      boolean $showorgs Parameter description (if any) ...
+	 * @param      integer $newstyle Parameter description (if any) ...
+	 * @return     void
+	 */
+	public function getSubmitters($showorgs=false, $newstyle=0, $badges=0)
+	{
+		if (!isset($this->_contributors) && !$this->_contributors) {
+			$this->getCons();
+		}
+		$contributors = $this->_contributors;
+
+		if ($contributors != '') {
+			$html = '';
+			$names = array();
+			$orgs = array();
+			$i = 1;
+			$k = 0;
+			$orgsln = '';
+			$names_s = array();
+			$orgsln_s = '';
+
+			foreach ($contributors as $contributor)
+			{
+				if (strtolower($contributor->role) != 'submitter') {
+					continue;
+				}
+				
+				// Build the user's name and link to their profile
+				if ($contributor->name) {
+					$name = $contributor->name;
+				} else if ($contributor->lastname || $contributor->firstname) {
+					$name = stripslashes($contributor->firstname) .' ';
+					if ($contributor->middlename != NULL) {
+						$name .= stripslashes($contributor->middlename) .' ';
+					}
+					$name .= stripslashes($contributor->lastname);
+				} else {
+					$name = $contributor->xname;
+				}
+				if (!$contributor->org) {
+					$contributor->org = $contributor->xorg;
+				}
+
+				$name = str_replace( '"', '&quot;', $name );
+				$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+				//$link .= ($contributor->role) ? ' <span class="user-badges"><span>'.$contributor->role.'</span></span>' : '';
+
+				if ($newstyle) {
+					if ($badges) {
+						$xuser =& JUser::getInstance($contributor->id);
+						if (is_object($xuser) && $xuser->get('name')) {
+							$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
+							if (isset($types[$xuser->gid])) {
+								$link .= ' <ul class="badges"><li>' . str_replace(' ', '-', $types[$xuser->gid]) . '</li></ul>';
+							}
+						}
+					}
+					
+					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) {
+						$orgs[$i-1] = trim($contributor->org);
+						$orgsln 	.= $i. '. ' .trim($contributor->org).' ';
+						$orgsln_s 	.= trim($contributor->org).' ';
+						$k = $i;
+						$i++;
+					} else {
+						$k = array_search(trim($contributor->org), $orgs) + 1;
+					}
+					$link_s = $link;
+					$link .= '<sup>'. $k .'</sup>';
+					$names_s[] = $link_s;
+
+				} else {
+					$orgs[trim($contributor->org)][] = $link;
+				}
+
+				$names[] = $link;
+			}
+
+			if ($showorgs && !$newstyle) {
+				foreach ($orgs as $org=>$links)
+				{
+					$orgs[$org] = implode( ', ', $links ).'<br />'.$org;
+				}
+				$html .= implode( '<br /><br />', $orgs );
+			} else if ($newstyle) {
+				if (count($names) > 0) {
+					$html  = '<p>';
+					$html .= count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
+					$html .= '</p>';
+				}
+				if ($showorgs && count($orgs) > 0) {
+					$html .= '<p class="orgs">';
+					$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
+					$html .= '</p>';
+				}
+			} else {
+				if (count($names) > 0) {
+					$html = implode( ', ', $names );
+				}
+			}
+		} else {
+			$html = '';
+		}
+		$this->contributors = $html;
+	}
 
 	/**
 	 * Short description for 'getContributorIDs'
