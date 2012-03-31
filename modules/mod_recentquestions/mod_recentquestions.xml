@@ -49,6 +49,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="closed">Closed</option>
 			<option value="both">Open and Closed</option>
 		</param>
+		<param name="feedlink" type="list" default="yes" label="Feed Link" description="Include Feed Link">
+			<option value="no">no</option>
+			<option value="yes">Yes</option>
+		</param>
 	</params>
 	<params group="advanced">
 		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">

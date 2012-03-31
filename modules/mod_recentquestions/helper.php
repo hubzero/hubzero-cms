@@ -202,8 +202,13 @@ class modRecentQuestions
 	{
 		$this->database = JFactory::getDBO();
 
+		$this->id = $this->module->id;
+		
+		$params =& $this->params;
 		$this->cssId = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
+		
+		$this->feedlink = $params->get("feedlink", "yes");
 
 		$state = $this->params->get('state', 'open');
 		$limit = intval($this->params->get('limit', 5));
