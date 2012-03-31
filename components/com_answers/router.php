@@ -84,6 +84,9 @@ function AnswersParseRoute($segments)
 
     switch ($segments[0])
 	{
+		case 'latest.rss':
+			$vars['task'] = $segments[0];
+			break;
 		case 'question':
 			if (empty($segments[1])) {
 				return $vars;

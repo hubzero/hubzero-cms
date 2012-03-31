@@ -153,11 +153,28 @@ if ($reports == 0) {
 ?>
 					<p class="voting">
 						<span class="vote-like">
-	<?php if (!$this->voted) { ?>
-							<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'&vote=1'); ?>" title="Vote this up :: <?php echo $votes; ?> people liked this"><?php echo $votes; ?><span> Like</span></a>
-	<?php } else { ?>
-							<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: Please login to vote."><?php echo $votes; ?><span> Like</span></span>
-	<?php } ?>
+							<?php if($this->juser->get("guest")) : ?>
+								<span 
+									class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" 
+									title="Vote this up :: Please login to vote.">
+										<?php echo $votes; ?><span> Like</span>
+								</span>
+							<?php else : ?>
+								<?php if($this->voted) : ?>
+									<span 
+										class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" 
+										title="Voted Up :: You already voted this up.">
+											<?php echo $votes; ?><span> Like</span>
+									</span>
+								<?php else: ?>
+									<a 
+										class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips"
+										href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'&vote=1'); ?>" 
+										title="Vote this up :: <?php echo $votes; ?> people liked this">
+											<?php echo $votes; ?><span> Like</span>
+									</a>
+								<?php endif; ?>
+							<?php endif; ?>
 						</span>
 					</p><!-- / .question-voting -->
 <?php } ?>

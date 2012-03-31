@@ -72,6 +72,9 @@ class AnswersController extends Hubzero_Controller
 
 		switch ($this->_task)
 		{
+			//module latest questions feed
+			case 'latest.rss':		$this->latestQuestions();		break;
+			
 			case 'new':         $this->create();      break;
 			case 'savea':       $this->savea();       break;
 			case 'saveq':       $this->saveq();       break;
@@ -1857,6 +1860,96 @@ class AnswersController extends Hubzero_Controller
 			break;
 		}
 		return $note;
+	}
+	
+	
+	//----------------------------------------------------------
+	// 	Latest Questions Feed
+	//----------------------------------------------------------
+
+	private function latestQuestions()
+	{
+		//get the joomla document
+		$jdoc =& JFactory::getDocument();
+		
+		//load joomla config
+		$jconfig =& JFactory::getConfig();
+		
+		//instantiate database object
+		$database =& JFactory::getDBO();
+		
+		//import Hubzero Libs
+		ximport('Hubzero_View_Helper_Html');
+		ximport('Hubzero_Module_Helper');
+		
+		//get the id of module so we get the right params
+		$mid = JRequest::getInt("m", 0);
+		
+		//get module params
+		$params = Hubzero_Module_Helper::getParams( $mid );
+		
+		//include feed lib
+		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
+		
+		//force mime type of document to be rss
+		$jdoc->setMimeEncoding('application/rss+xml');
+		
+		// Start a new feed object
+		$doc = new JDocumentFeed;
+		
+		//set rss feed attribs
+		$doc->link 			= JRoute::_('index.php?option=com_answers');
+		$doc->title  		= JText::sprintf('COM_ANSWERS_LATEST_QUESTIONS_RSS_TITLE', $jconfig->getValue('config.sitename'));
+		$doc->description 	= JText::sprintf('COM_ANSWERS_LATEST_QUESTIONS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->copyright 	= JText::sprintf('COM_ANSWERS_LATEST_QUESTIONS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category 		= JText::_('COM_ANSWERS_LATEST_QUESTIONS_RSS_CATEGORY');
+		
+		//number of questions to get
+		$limit = intval( $params->get('limit', 5) );
+		
+		//open, closed, or both
+		$state = $params->get('state', 'both');
+		switch ($state) 
+		{
+			case 'open': 	$st = "a.state=0"; 		break;
+			case 'closed': 	$st = "a.state=1"; 		break;
+			case 'both': 	$st = "a.state<2";		break;
+		}
+		
+		//get questions based on params
+		$sql = "SELECT 
+					a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, 
+					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount
+				FROM #__answers_questions AS a
+				WHERE {$st} 
+				ORDER BY a.created DESC
+				LIMIT {$limit}";
+		$database->setQuery( $sql );	
+		$questions = $database->loadAssocList();
+	
+		//add each question to the feed
+		foreach($questions as $question)
+		{
+			//get the authors name
+			$a =& JFactory::getUser($question['created_by']);
+			$author = ($a) ? $a->get("name") : "";
+			$author = ($question['anonymous']) ? "Anonymous" : $author;
+			
+			$link = JRoute::_('index.php?option=com_answers&task=question&id='.$question['id']);
+			
+			//set feed item attibs and add item to feed
+			$item 				= new JFeedItem();
+			$item->title 		= html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($question['subject'])));
+			$item->link 		= $link;
+			$item->description 	= html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($question['question'])));
+			$item->date        	= date("r", strtotime($question['created']));
+			$item->category   	= 'Recent Question';
+			$item->author     	= $author;
+			$doc->addItem( $item );
+		}
+		
+		//render feed
+		echo $doc->render();
 	}
 }
 
