@@ -199,6 +199,7 @@ if ($this->contributors) {
 ?>
 			</tbody>
 		</table>
+	</form>
 <?php } else { ?>
 		<p><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NONE_FOUND'); ?></p>
 <?php } ?>
