@@ -42,6 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	</files>
 	<params>
 		<param name="numtags" type="text" default="25" label="Number of tags" description="The number of tags to display." />
+		<param name="exclude" type="textarea" rows="3" cols="40" default="" label="Excluded Tags" description="List of tags to exclude from popular tags list." />
 		<param name="message" type="textarea" rows="3" cols="40" default="" label="Message" description="The message to be displayed if no tags are found" />
 		<param name="sortby" type="list" default="alphabeta" label="Sort by" description="The sort order for tags found">
 			<option value="alphabeta">Alphabetically</option>

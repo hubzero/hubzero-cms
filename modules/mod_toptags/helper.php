@@ -108,6 +108,7 @@ class modTopTags
 		$this->message = $params->get( 'message' );
 		$this->sortby  = $params->get( 'sortby' );
 		$this->morelnk = $params->get( 'morelnk' );
+		$this->exclude = $params->get( 'exclude' );
 
 		$obj = new TagsTag( $database );
 

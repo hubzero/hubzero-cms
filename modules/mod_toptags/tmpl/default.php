@@ -32,13 +32,17 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $tags = $modtoptags->tags;
+$exclude = explode(",",$modtoptags->exclude);
+$exclude = array_map("trim", $exclude);
 
 $tl = array();
 if (count($tags) > 0) {
 	$html  = '<ol class="tags">'."\n";
 	foreach ($tags as $tag)
 	{
-		$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.$tag->raw_tag.'</a></li>'."\n";
+		if(!in_array($tag->raw_tag, $exclude)) {
+			$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.$tag->raw_tag.'</a></li>'."\n";
+		}
 	}
 	if ($modtoptags->sortby == 'alphabeta') {
 		ksort($tl);
