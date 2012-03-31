@@ -107,8 +107,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 			<fieldset>
 				<legend><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TIME'); ?></legend>
-				<label>
-				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_STARTDATE').' &amp; '.JText::_('EVENTS_CAL_LANG_EVENT_STARTTIME'); ?>
+				<label for="publish_up">
+				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_STARTDATE').' &amp; '.JText::_('EVENTS_CAL_LANG_EVENT_STARTTIME'); ?></label>
 				<p>
 					<?php //echo JHTML::_('calendar', $start_publish, 'publish_up', 'publish_up', '%Y-%m-%d', array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
                     <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $this->times['start_publish']; ?>" />
@@ -118,9 +118,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?php if ($this->times['start_pm']) echo 'checked="checked"'; ?> /><small>PM</small>
 					<?php } ?>
 				</p>
-				</label>
-				<label>
-				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_ENDDATE').' &amp; '.JText::_('EVENTS_CAL_LANG_EVENT_ENDTIME'); ?>
+				
+				<label for="publish_down">
+				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_ENDDATE').' &amp; '.JText::_('EVENTS_CAL_LANG_EVENT_ENDTIME'); ?></label>
 				<p>
 					<?php //echo JHTML::_('calendar', $stop_publish, 'publish_down', 'publish_down', '%Y-%m-%d', array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
 					<input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10" value="<?php echo $this->times['stop_publish']; ?>" />
@@ -130,7 +130,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?php if ($this->times['end_pm']) echo 'checked="checked"'; ?> /><small>PM</small>
 					<?php } ?>
 				</p>
-				</label>
+				
 				<label>
 					<?php echo JText::_('EVENTS_CAL_TIME_ZONE'); ?>
 					<?php echo EventsHtml::buildTimeZoneSelect($this->times['time_zone'], ''); ?>
