@@ -44,10 +44,8 @@ if($this->vote == 'like' || $this->vote == 'yes' || $this->vote == 'positive') {
 	$this->vote = 'dislike';
 }
 
-if($this->type != 'comment') {
-	$num_likes = $this->item->helpful;
-	$num_dislikes = $this->item->nothelpful;
-}
+$num_likes = $this->item->helpful;
+$num_dislikes = $this->item->nothelpful;
 ?>
 
 <span class="voting-links">

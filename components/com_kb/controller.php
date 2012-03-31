@@ -626,8 +626,9 @@ class KbController extends Hubzero_Controller
 			$this->articleTask();
 			return;
 		}
-
-		$this->articleTask();
+		
+		//$this->articleTask();
+		$this->_redirect = 'index.php?option=com_kb&task=article&id='.$comment['entry_id'].'#comments';
 	}
 
 	/**
