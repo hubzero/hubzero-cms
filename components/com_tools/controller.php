@@ -995,7 +995,9 @@ class ToolsController extends Hubzero_Controller
 		$view->toolname = $toolname;
 		$view->rtrn = $rtrn;
 		$view->total = $this->total;
-		if ($app['sess']) {
+		$view->shareable = $this->config->get('shareable','0');
+
+		if ($view->shareable && $app['sess']) {
 			// Get the middleware database
 			$mwdb =& MwUtils::getMWDBO();
 

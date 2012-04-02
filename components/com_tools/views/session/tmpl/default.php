@@ -146,6 +146,7 @@ if (!$this->app['sess']) {
 	</div><!-- #app-wrap -->
 	
 	<div class="clear"></div>
+	<?php if ($this->shareable): ?>
 
 	<form name="share" id="app-share" method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 		<div class="three columns first second">
@@ -282,6 +283,7 @@ if (!$this->app['sess']) {
 		</div>
 		<div class="clear"></div>
 	</form>
+        <?php endif;?>
 <?php } ?>
 
 <?php /*if ($this->authorized === 'admin') {
