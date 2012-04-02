@@ -150,12 +150,14 @@ class modSlidingPanes
 	{
 		$jdocument =& JFactory::getDocument();
 
+		$type = $this->params->get('animation', 'slide');
+		
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
 		if (!$this->multiple_instances) {
 			// Push some CSS to the template
 			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStylesheet('mod_sliding_panes');
+			Hubzero_Document::addModuleStylesheet('mod_sliding_panes', $type.'.css');
 
 			// Push some javascript to the template
 			if (is_file(JPATH_ROOT.'/modules/mod_sliding_panes/mod_sliding_panes.js')) {
@@ -171,7 +173,7 @@ class modSlidingPanes
 
 		$js = "window.addEvent('domready', function(){
 			if ($('".$this->container."')) {
-				myTabs".$id." = new ModSlidingPanes('".$this->container."', ".$this->params->get('rotate', 1).");
+				myTabs".$id." = new ModSlidingPanes('".$this->container."', ".$this->params->get('rotate', 1).', {\'animate\': \''.$type."'});
 
 				// this sets it up to work even if it's width isn't a set amount of pixels
 				window.addEvent('resize', myTabs".$id.".recalcWidths.bind(myTabs".$id."));

@@ -54,6 +54,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="animation" type="list" default="slide" label="Animation Type" description="Choose the method to use to animate between slides.">
+			<option value="slide">Slid across</option>
+			<option value="fade">Cross-fade</option>
+		</param>
 		<param name="random" type="radio" default="0" label="Random order" description="Select whether to display slides in random order or by article ordering">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

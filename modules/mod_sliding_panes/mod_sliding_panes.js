@@ -21,7 +21,8 @@ var ModSlidingPanes = new Class({
 			duration: 400 // 0.4 of a second
 		},
 		animateHeight: true, // animate height of container
-		rightOversized: 0 // how much of the next pane to show to the right of the current pane
+		rightOversized: 0, // how much of the next pane to show to the right of the current pane
+		animate: 'slide'
 	},
 	current: null, // zero based current pane number, read only
 	buttons: false,
@@ -33,6 +34,11 @@ var ModSlidingPanes = new Class({
 	periodical: null, // container for the periodical scrolling
 	
 	initialize: function(container, rotate, options) {
+//		document.write(JSON.stringify({
+//			'container': container,
+//			'rotate': rotate,
+//			'options': options
+//		}));
 		this.setOptions(options);
 
 		// Create a button container
@@ -70,7 +76,6 @@ var ModSlidingPanes = new Class({
 		this.nextBtn.addEvent('click', this.next.bind(this));
 		
 		// Initiate the scroll FX
-		this.fx = new Fx.Scroll(this.outerSlidesBox, this.options.slideEffect);
 		this.heightFx = this.outerSlidesBox.effect('height', this.options.slideEffect);
 		
 		// set up button highlight
@@ -78,13 +83,22 @@ var ModSlidingPanes = new Class({
 		if (this.buttons) { this.buttons[this.current].addClass(this.options.activeButtonClass); }
 		
 		// add needed stylings
-		this.outerSlidesBox.setStyle('overflow', 'hidden');
-		this.panes.each(function(pane, index) {
-			pane.setStyles({
-				'float': 'left',
-				'overflow': 'hidden'
-			});
-		}.bind(this));
+		if (this.options.animate === 'slide')
+		{
+			this.fx = new Fx.Scroll(this.outerSlidesBox, this.options.slideEffect);
+			this.outerSlidesBox.setStyle('overflow', 'hidden');
+			this.panes.each(function(pane, index) {
+				pane.setStyles({
+					'float': 'left',
+					'overflow': 'hidden'
+				});
+			}.bind(this));
+		}
+		else if (this.options.animate === 'fade')
+		{
+			this.last = this.panes[0];
+			this.panes.each(function(pane, idx) { if (idx > 0) pane.setStyle('opacity', 0); });
+		}
 		
 		// stupidness to make IE work - it boggles the mind why this has any effect
 		// maybe it's something to do with giving it layout?
@@ -140,11 +154,20 @@ var ModSlidingPanes = new Class({
 		this.current = this.panes.indexOf($(event.target));
 		if (this.buttons) { this.buttons[this.current].addClass(this.options.activeButtonClass); };
 		
-		this.fx.stop();
-		if (event.animateChange) {
-			this.fx.toElement(event.target);
-		} else {
-			this.outerSlidesBox.scrollTo(this.current * this.outerSlidesBox.offsetWidth.toInt(), 0);
+		if (this.options.animate === 'slide')
+		{
+			this.fx.stop();
+			if (event.animateChange) {
+				this.fx.toElement(event.target);
+			} else {
+				this.outerSlidesBox.scrollTo(this.current * this.outerSlidesBox.offsetWidth.toInt(), 0);
+			}
+		}
+		else if (this.options.animate === 'fade')
+		{
+			new Fx.Style(this.last, 'opacity').start(1, 0);
+			new Fx.Style(element, 'opacity').start(0, 1); 
+			this.last = element;
 		}
 		
 		if (this.options.animateHeight)
@@ -191,7 +214,8 @@ var ModSlidingPanes = new Class({
 		
 		// fix positioning
 		if (this.current > 0) {
-			this.fx.stop();
+			if (this.fx)
+				this.fx.stop();
 			this.outerSlidesBox.scrollTo(this.current * this.outerSlidesBox.offsetWidth.toInt(), 0);
 		}
 	}
