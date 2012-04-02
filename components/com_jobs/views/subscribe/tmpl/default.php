@@ -150,7 +150,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					$html .= '<div class="subdetails" id="plan_'.$this->services[$i]->id.'">'.n;
 					$html .= $thissub ? $expires : '';
-					$html .= JobsHtml::confirmscreen(JRoute::_('index.php?option='.$option.a.'task=dashboard'.a.'uid='.$this->uid), JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid));
+					if($thissub or ($this->subscription->serviceid==0 && $i==0))
+					{
+						$html .= JobsHtml::confirmscreen(JRoute::_('index.php?option='.$option.a.'task=dashboard'.a.'uid='.$this->uid), JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid));
+					}
+				
 					$html .= t.t.t.'<label> ';
 					$html .= $thissub ? JText::_( 'SUBSCRIPTION_EXTEND_OR_RENEW' ) : JText::_( 'ACTION_SIGN_UP' );
 					$html .= ' '.JText::_( 'for' ).' '.n;

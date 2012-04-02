@@ -44,7 +44,6 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="type">type</option>
 		</param>
 		<param name="jobslimit" type="text" menu="hide" label="Limit jobs per page" default="25" description="Specify how many jobs to show on one page by default" />
-		<param name="maxads" type="text" default="3" label="Maximum Ads per Employer" description="Specify how many ads (maximum) each employer can post - Premium service" />
 		<param name="allowsubscriptions" type="radio" default="1" label="Allow user subscriptions?" description="Allow users to subscribe to employer services and post jobs and browse resumes.">
 			<option value="1">yes</option>
 			<option value="0">no</option>

@@ -174,8 +174,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         <span class="sub-heading"><?php echo JText::_('SUBSCRIPTION_EXPIRE_DATE'); ?></span>
         <p><?php echo $expiredate; ?></p>
         <p>
-			<?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=subscribe').'" class="cancelit">[ '.JText::_( 'SUBSCRIPTION_EXTEND_OR_RENEW' ).' ]</a> 
-			| <a href="'.JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid).'" class="cancelit" id="showconfirm">[ '.JText::_( 'SUBSCRIPTION_CANCEL_THIS' ).' ]</a>'; ?>
+			<?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=subscribe').'" class="cancelit">[ '.JText::_( 'SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL' ).' ]</a>'; ?>
         </p>
        <?php echo JobsHtml::confirmscreen(JRoute::_('index.php?option='.$option.a.'task=dashboard'.a.'uid='.$this->uid), JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid)); ?>    	
         <div class="spacer"></div>

@@ -91,7 +91,7 @@ class plgMembersResume extends JPlugin
 		$areas = array();
 		
 		//if this is the logged in user show them
-		if($user->get("id") == $member->get("uidNumber") || $this->isEmployer($user, $member))
+		if($user->get("id") == $member->get("uidNumber") || $this->isEmployer())
 		{
 			$areas['resume'] = ucfirst(JText::_('Resume'));
 		}
@@ -879,7 +879,6 @@ class plgMembersResume extends JPlugin
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('ERROR_UPLOADING') );
-			return '';
 		} else {
 			// File was uploaded, create database entry			
 			$title = htmlspecialchars($title);
@@ -893,9 +892,8 @@ class plgMembersResume extends JPlugin
 			if (!$row->store()) {
 				$this->setError( $row->getError() );
 			}
-
-			return $this->view($database, $option, $member, $emp);
 		}
+		return $this->view($database, $option, $member, $emp);
 	}
 
 	/**
@@ -924,32 +922,32 @@ class plgMembersResume extends JPlugin
 
 		if (!file_exists(JPATH_ROOT.$path.DS.$file) or !$file) {
 			$this->setError( JText::_('FILE_NOT_FOUND') );
-			return '';
 		} else {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete(JPATH_ROOT.$path.DS.$file)) {
 				$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
-				return '';
 			}
+			else 
+			{
+				$row->delete();
 
-			$row->delete();
+				// Remove stats for prev resume
+				$jobstats = new JobStats($database);
+				$jobstats->deleteStats ($member->get('uidNumber'), 'seeker');
 
-			// Remove stats for prev resume
-			$jobstats = new JobStats($database);
-			$jobstats->deleteStats ($member->get('uidNumber'), 'seeker');
-
-			// Do not include profile in search without a resume
-			$js = new JobSeeker ( $database );
-			$js->load( $member->get('uidNumber') );
-			$js->bind( array('active'=>0) );
-			if (!$js->store()) {
-				$this->setError( $js->getError() );
-			} else {
-				// Push through to the main view
-				return $this->view($database, $option, $member, $emp);
+				// Do not include profile in search without a resume
+				$js = new JobSeeker ( $database );
+				$js->load( $member->get('uidNumber') );
+				$js->bind( array('active' => 0) );
+				if (!$js->store()) {
+					$this->setError( $js->getError() );
+				}	
 			}
 		}
+		
+		// Push through to the main view
+		return $this->view($database, $option, $member, $emp);
 	}
 
 	/**
@@ -1154,6 +1152,9 @@ class plgMembersResume extends JPlugin
 
 		if (!$result) {
 			JError::raiseError( 500, JText::_('SERVER_ERROR') );
+		}
+		else {
+			exit;
 		}
 	}
 }
