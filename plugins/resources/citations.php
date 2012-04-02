@@ -149,13 +149,25 @@ class plgResourcesCitations extends JPlugin
 
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'citations',
+					'name'=>'metadata'
+				)
+			);
+			
 			if ($resource->alias) {
 				$url = JRoute::_('index.php?option='.$option.'&alias='.$resource->alias.'&active=citations');
 			} else {
 				$url = JRoute::_('index.php?option='.$option.'&id='.$resource->id.'&active=citations');
 			}
 
-			$arr['metadata']  = '<p class="citation"><a href="'.$url.'">'.JText::sprintf('PLG_RESOURCES_CITATIONS_COUNT',count($citations)).'</a></p>';
+			
+			$view->url = $url;
+			$view->citations = $citations;
+			$arr['metadata'] = $view->loadTemplate();
 		}
 
 		// Return results

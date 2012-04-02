@@ -182,13 +182,17 @@ class plgResourcesQuestions extends JPlugin
 
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
-			$arr['metadata']  = '<p class="answer"><a href="'.JRoute::_('index.php?option='.$option.'&alias='.$resource->alias.'&active=questions').'">';
-			if ($count == 1) {
-				$arr['metadata'] .= JText::sprintf('PLG_RESOURCES_QUESTIONS_NUM_QUESTION',$count);
-			} else {
-				$arr['metadata'] .= JText::sprintf('PLG_RESOURCES_QUESTIONS_NUM_QUESTIONS',$count);
-			}
-			$arr['metadata'] .= '</a> (<a href="/answers/question/new/?tag=tool:'.$resource->alias.'">'.JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION').'</a>)</p>';
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'questions',
+					'name'=>'metadata'
+				)
+			);
+			$view->resource = $resource;
+			$view->count = $count;
+			$arr['metadata'] = $view->loadTemplate();
 		}
 
 		// Return output

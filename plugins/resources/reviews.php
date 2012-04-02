@@ -223,6 +223,16 @@ class plgResourcesReviews extends JPlugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
+			
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'reviews',
+					'name'=>'metadata'
+				)
+			);
+			
 			if ($resource->alias) {
 				$url = JRoute::_('index.php?option='.$option.'&alias='.$resource->alias.'&active=reviews');
 				$url2 = JRoute::_('index.php?option='.$option.'&alias='.$resource->alias.'&active=reviews&action=addreview#reviewform');
@@ -231,7 +241,11 @@ class plgResourcesReviews extends JPlugin
 				$url2 = JRoute::_('index.php?option='.$option.'&id='.$resource->id.'&active=reviews&action=addreview#reviewform');
 			}
 
-			$arr['metadata']  = '<p class="review"><a href="'.$url.'">'.JText::sprintf('PLG_RESOURCES_REVIEWS_NUM_REVIEWS',count($reviews)).'</a> (<a href="'.$url2.'">'.JText::_('PLG_RESOURCES_REVIEWS_REVIEW_THIS').'</a>)</p>';
+			
+			$view->reviews = $reviews;
+			$view->url = $url;
+			$view->url2 = $url2;
+			$arr['metadata'] = $view->loadTemplate();
 		}
 
 		return $arr;

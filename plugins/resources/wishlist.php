@@ -231,15 +231,25 @@ class plgResourcesWishlist extends JPlugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		$metadata = '';
-			if ($rtrn == 'all' || $rtrn == 'metadata') {
-				$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
-				$metadata .= '</a> (<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$id.a.'task=add').'">'.JText::_('ADD_NEW_WISH').'</a>)</p>'.n;
+		if ($rtrn == 'all' || $rtrn == 'metadata') {
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'wishlist',
+					'name'=>'metadata'
+				)
+			);
+			$view->resource = $resource;
+			$view->items = $items;
+			$view->wishlistid = $id;
+			$metadata = $view->loadTemplate();
 		}
 
 		$arr = array(
-				'html'=>$html,
-				'metadata'=>$metadata
-			);
+			'html'=>$html,
+			'metadata'=>$metadata
+		);
 
 		return $arr;
 	}
