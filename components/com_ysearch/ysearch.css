@@ -82,6 +82,7 @@
 		}
 /* Results */
 	.container h3 {
+		display: inline-block;
 		margin: 0;
 		padding: 0.5em 0.7em;
 		font-size: 115%;
