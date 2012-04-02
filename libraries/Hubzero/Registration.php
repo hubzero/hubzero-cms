@@ -893,16 +893,16 @@ class Hubzero_Registration
 			if (empty($registration['org']) && empty($registration['orgtext']))
 			{
 				$this->_missing['org'] = 'Organization';
-				$this->_invalid['org'] = 'Invalid school/organization';
+				$this->_invalid['org'] = 'Invalid affiliation';
 			}
 		}
 
 		if ($registrationOrganization != REG_HIDE)
 		{
 			if (!empty($registration['org']) && !Hubzero_Registration_Helper::validtext($registration['org'])) {
-				$this->_invalid['org'] = 'Invalid school/organization. You may be using characters that are not allowed.';
+				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
 			} elseif (!empty($registration['orgtext']) && !Hubzero_Registration_Helper::validtext($registration['orgtext'])) {
-				$this->_invalid['org'] = 'Invalid school/organization. You may be using characters that are not allowed.';
+				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
 			}
 		}
 
