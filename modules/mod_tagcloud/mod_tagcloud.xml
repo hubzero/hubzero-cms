@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.0.0">
+	<name>Tag Cloud</name>
+	<description>This module will display a tag cloud</description>
+	<files>
+		<filename module="mod_tagcloud">mod_tagcloud.php</filename>
+	</files>
+	<params>
+	</params>
+</install>
