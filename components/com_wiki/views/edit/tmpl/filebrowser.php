@@ -49,7 +49,7 @@ $app =& JFactory::getApplication();
 		<form action="/index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe style="border:1px solid #eee;margin-top: 0;" src="/index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="/index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
 	
