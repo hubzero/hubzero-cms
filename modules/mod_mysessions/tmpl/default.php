@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
+
 $juser =& JFactory::getUser();
 ?>
 <div class="<?php echo $modmysessions->moduleclass_sfx; ?>sessionlist">
@@ -73,9 +75,23 @@ $juser =& JFactory::getUser();
 			} else {
 				$cls .= 'session';
 			}
+
+			$href = JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname);
+			if ($isiPad && $modmysessions->params->get('hubvnc', ''))
+			{
+				$hubvnc = rtrim($modmysessions->params->get('hubvnc', ''), DS);
+				$href = str_replace('{sessnum}', $app->sessnum, $hubvnc);
+				$href = str_replace('{viewtoken}', $app->viewtoken, $href);
+				$href = str_replace('{viewuser}', $app->viewuser, $href);
+				$href = str_replace('{geometry}', $app->geometry, $href);
+				$href = str_replace('{fwhost}', $app->fwhost, $href);
+				$href = str_replace('{fwport}', $app->fwport, $href);
+				$href = str_replace('{vncpass}', $app->vncpass, $href);
+				$href = str_replace('{readonly}', $app->readonly, $href);
+			}
 ?>
 		<li class="<?php echo $cls; ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
+			<a href="<?php echo $href; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 				<?php
 				echo $app->sessname;
 				if ($modmysessions->authorized === 'admin') {
