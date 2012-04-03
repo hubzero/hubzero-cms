@@ -744,7 +744,8 @@ class Hubzero_User_Profile extends JObject
 			'gender' => 'sex', 'url' => 'web', 'reason' => 'reason', 'mailPreferenceOption' => 'mailPreferenceOption',
 			'usageAgreement' => 'usageAgreement', 'nativeTribe' => 'nativeTribe', 'phone' => 'phone',
 			'disability' => 'disability', 'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin',
-			'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role');
+			'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role', 'givenName' => 'givenName', 
+			'middleName' => 'middleName', 'surname' => 'surname' );		
 
 		if (!is_object($registration))
 		{
@@ -1954,7 +1955,7 @@ class Hubzero_User_Profile extends JObject
                         'countryresident', 'countryorigin',
                         'disability', 'hispanic', 'race',
                         'phone', 'reason', 'edulevel',
-                        'role');
+			'role', 'surname', 'givenName', 'middleName');
 
 		foreach ($keys as $key)
 		{
