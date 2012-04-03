@@ -88,7 +88,7 @@ foreach ($this->cats as $cat)
 			$blob = $cat['category'];
 		}
 		// Build the HTML
-		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
+		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . stripslashes($cat['title']) . ' ('.$cat['total'].')</a>';
 		// Are there sub-categories?
 		if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 			// An array for storing the HTML we make
@@ -109,7 +109,7 @@ foreach ($this->cats as $cat)
 						$blob = $subcat['category'];
 					}
 					// Build the HTML
-					$k[] = "\t\t\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
+					$k[] = "\t\t\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . stripslashes($subcat['title']) . ' ('.$subcat['total'].')</a></li>';
 				}
 			}
 			// Do we actually have any links?

@@ -73,7 +73,7 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 				foreach ($this->types as $item)
 				{
 ?>
-						<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $item->type; ?></option>
+						<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo stripslashes($item->type); ?></option>
 <?php
 				}
 			}
