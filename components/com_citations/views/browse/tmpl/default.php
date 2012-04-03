@@ -180,7 +180,7 @@ if($label == "none") {
 				
 				<label>
 					<?php echo JText::_('SEARCH_TITLE'); ?>
-					<input type="text" name="search" value="<?php echo htmlspecialchars($this->filters['search']); ?>" />
+					<input type="text" name="search" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" />
 				</label>
 				
 				<input type="submit" name="go" value="<?php echo JText::_('GO'); ?>" />

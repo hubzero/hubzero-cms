@@ -225,7 +225,7 @@ class CitationsController extends Hubzero_Controller
 
 		//push jquery to doc
 		$document =& JFactory::getDocument();
-		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
+		//$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js');
 
 		//push scripts
 		$this->_getScripts();
