@@ -52,7 +52,10 @@ class ResourcesElementList extends ResourcesElement
 		$class = (isset($element->class)) ? 'class="'.$element->class.'"' : 'class="inputbox"';
 
 		$options = array();
-		$options[] = JHTML::_('select.option', '', JText::_('Select...'));
+		if (!$element->required)
+		{
+			$options[] = JHTML::_('select.option', '', JText::_('Select...'));
+		}
 		foreach ($element->options as $option)
 		{
 			$val	= $option->value;
