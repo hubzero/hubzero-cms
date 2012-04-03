@@ -18,6 +18,38 @@
 		background-color: #fff;
 		border-color: #333;
 	}
+	.m #commentform fieldset {
+		border-right: none;
+		border-bottom: none;
+		border-left: none;
+	}
+	.m #commentform fieldset fieldset {
+		border: none;
+	}
+	.m #commentform .width-70 {
+		width: 69%;
+		margin-right: 1%;
+	}
+	.m #commentform .width-50 {
+		width: 48%;
+		margin-right: 2%;
+	}
+	.m #commentform .width-30 {
+		width: 27%;
+		margin-left: 3%;
+	}
+	.m #commentform .ticket input,
+	.m #commentform .ticket textarea,
+	.m #commentform .ticket select {
+		width: 100%;
+	}
+	.m #commentform .ticket input.option {
+		width: auto;
+	}
+	.m #commentform .ticket label {
+		display: block;
+		margin: 0 0 1em 0;
+	}
 	
 	#stats-filter {
 		background-color: #FFFDEF;

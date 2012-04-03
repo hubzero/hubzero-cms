@@ -457,13 +457,13 @@ if ($this->row->id) {
 							<textarea name="comment" id="comment-field-comment" cols="75" rows="15"></textarea>
 						</label>
 					
-						<div class="col width-48 fltlft">
+						<div class="col width-50 fltlft">
 							<label for="comment-field-upload">
 								<?php echo JText::_('COMMENT_FILE'); ?>
 								<input type="file" name="upload" id="comment-field-upload" />
 							</label>
 						</div>
-						<div class="col width-48 fltrt">
+						<div class="col width-50 fltrt">
 							<label for="comment-field-description">
 								<?php echo JText::_('COMMENT_FILE_DESCRIPTION'); ?>
 								<input type="text" name="description" id="comment-field-description" value="" />
@@ -520,7 +520,7 @@ if ($this->row->id) {
 						
 					</label>
 					
-					<div class="col width-48 fltlft">
+					<div class="col width-50 fltlft">
 						<label for="ticket-field-group">
 							<?php echo JText::_('COMMENT_GROUP'); ?>:<br />
 							<?php 
@@ -532,7 +532,7 @@ if ($this->row->id) {
 							<?php } ?>
 						</label>
 					</div>
-					<div class="col width-48 fltrt">
+					<div class="col width-50 fltrt">
 						<label>
 							<?php echo JText::_('COMMENT_OWNER'); ?>
 							<?php echo $this->lists['owner']; ?>
@@ -540,7 +540,7 @@ if ($this->row->id) {
 					</div>
 					<div class="clr"></div>
 					
-					<div class="col width-48 fltlft">
+					<div class="col width-50 fltlft">
 						<label for="ticket-field-severity">
 							<?php echo JText::_('COMMENT_SEVERITY'); ?>
 							<select name="severity" id="ticket-field-severity">
@@ -552,7 +552,7 @@ if ($this->row->id) {
 							</select>
 						</label>
 					</div>
-					<div class="col width-48 fltrt">
+					<div class="col width-50 fltrt">
 						<label for="ticket-field-status">
 							<?php echo JText::_('COMMENT_STATUS'); ?>
 							<select name="resolved" id="ticket-field-status">
