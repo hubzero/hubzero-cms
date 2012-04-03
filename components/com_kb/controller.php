@@ -122,6 +122,7 @@ class KbController extends Hubzero_Controller
 			$this->view->category->alias = 'all';
 			$this->view->category->title = 'All Articles';
 			$this->view->category->id = 0;
+			$this->view->category->state = 1;
 		} 
 		else 
 		{
