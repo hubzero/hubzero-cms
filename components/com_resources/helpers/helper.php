@@ -659,7 +659,7 @@ class ResourcesHelper extends JObject
 		}
 		$sql = "SELECT r.id, r.title, r.introtext, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
 				r.published, r.publish_up, r.path, r.access, r.standalone, r.rating, r.times_rated, r.attribs, r.params, 
-				t.type AS logicaltitle, rt.type AS typetitle, a.grouping"
+				t.type AS logicaltitle, rt.type AS typetitle, a.grouping, a.ordering "
 			 . "\n FROM #__resource_types AS rt, #__resources AS r"
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.child_id"
 			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"

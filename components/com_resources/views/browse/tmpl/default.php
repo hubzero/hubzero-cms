@@ -49,7 +49,21 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="post">
 		<div class="aside">
-			<fieldset>
+
+    	<fieldset>
+        <?php
+          JPluginHelper::importPlugin( 'tageditor' );
+          $dispatcher =& JDispatcher::getInstance();
+          $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','',$this->filters['tag'],'')) );
+        ?>
+    		<label>
+      		<?php echo JText::_('COM_RESOURCES_SEARCH_WITH_TAGS'); ?>:
+          <?php if (count($tf) > 0) {
+      			echo $tf[0];
+          } else { ?>
+      			<input type="text" name="tag" value="<?php echo $this->filters['tag']; ?>" />
+          <?php } ?>
+    		</label>
 				<label>
 					<?php echo JText::_('COM_RESOURCES_TYPE'); ?>: 
 					<select name="type" id="type">

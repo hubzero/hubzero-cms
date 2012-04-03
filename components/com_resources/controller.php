@@ -236,11 +236,14 @@ class ResourcesController extends Hubzero_Controller
 
 		// Incoming
 		$view->filters = array();
-		$view->filters['tag']    = JRequest::getVar( 'tag', '' );
+
 		$view->filters['type']   = JRequest::getInt( 'type', '' );
 		$view->filters['sortby'] = JRequest::getVar( 'sortby', $default_sort );
 		$view->filters['limit']  = JRequest::getInt( 'limit', $jconfig->getValue('config.list_limit') );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
+
+		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
+		$view->filters['tag']    = $tagstring;
 
 		// Determine if user can edit
 		$view->authorized = $this->_authorize();
