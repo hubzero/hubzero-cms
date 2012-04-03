@@ -67,20 +67,16 @@ class MembersControllerMedia extends Hubzero_Controller
 			$this->displayTask('', $id);
 			return;
 		}
+		$curfile = JRequest::getVar('curfile', '');
 
 		// Build upload path
 		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
-		$path = JPATH_ROOT;
-		if (substr($this->config->get('webpath'), 0, 1) != DS) 
-		{
-			$path .= DS;
-		}
-		$path .= $this->config->get('webpath') . DS . $dir;
+		$path = JPATH_ROOT . DS . trim($this->config->get('webpath'), DS) . DS . $dir;
 
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
+			if (!JFolder::create($path, 0750)) 
 			{
 				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -91,10 +87,10 @@ class MembersControllerMedia extends Hubzero_Controller
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
-		$file['name'] = str_replace(' ','_',$file['name']);
+		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
 			$file = $curfile;
@@ -142,8 +138,8 @@ class MembersControllerMedia extends Hubzero_Controller
 			}
 
 			// Resize the image if necessary
-			$ih->set('image',$file['name']);
-			$ih->set('path',$path.DS);
+			$ih->set('image', $file['name']);
+			$ih->set('path', $path . DS);
 			$ih->set('maxWidth', 186);
 			$ih->set('maxHeight', 186);
 			if (!$ih->process()) 
@@ -200,12 +196,7 @@ class MembersControllerMedia extends Hubzero_Controller
 
 		// Build the file path
 		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
-		$path = JPATH_ROOT;
-		if (substr($this->config->get('webpath'), 0, 1) != DS) 
-		{
-			$path .= DS;
-		}
-		$path .= $this->config->get('webpath').DS.$dir;
+		$path = JPATH_ROOT . DS . trim($this->config->get('webpath'), DS) . DS . $dir;
 
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
