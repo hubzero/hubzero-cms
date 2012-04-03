@@ -301,6 +301,7 @@
 		text-shadow: 0 -1px 1px #111111;
 		border-bottom: 1px solid #2d2e2e;
 	}
+	.ui-resizable-handle,
 	#app-footer a {
 		color: #999a9b;
 		text-shadow: 0 -1px 1px #111111;
@@ -348,6 +349,14 @@
 		-webkit-border-radius: 0 0.27em 0 0;
 		-moz-border-radius: 0 0.27em 0 0;
 		border-radius: 0 0.27em 0 0;
+	}
+	.ui-resizable-handle {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		display: block;
+		height: 2.75em;
+		width: 7.5em;
 	}
 /* Disk usage */
 	#diskusage { 
@@ -570,12 +579,12 @@
 		position: relative;
 		display: block;
 	}
-	#app-share label span {
+	/*#app-share label span {
 		position: absolute;
 		top: 1.5em;
 		right: 0;
 		display: none;
-	}
+	}*/
 	#app-share input, 
 	#app-share select, 
 	#app-share textarea {
