@@ -485,7 +485,7 @@ class ResourcesHtml
 			{
 				$img_file = $entry;
 				if (is_file(JPATH_ROOT.$upath.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) {
+					if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file)) {
 						$images[] = $img_file;
 					}
 					if (preg_match("#-tn#i", $img_file)) {
@@ -542,7 +542,7 @@ class ResourcesHtml
 			$els .=  ($slidebar && $i==0) ? '<div class="showcase-pane">'."\n" : '';
 
 			if (is_file(JPATH_ROOT.$upath.$path.DS.$tn)) {
-				if (strtolower(end($images[$i]['type'])) == 'swf') {
+				if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov') {
 					$g++;
 					$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO').' #'.$g;
 					$els .= $slidebar ? '' : '<li>';
