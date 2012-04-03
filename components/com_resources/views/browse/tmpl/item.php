@@ -49,7 +49,7 @@ switch ($this->line->access)
 	default: $html .= ' class="public"'; break;
 }
 $html .= '>'."\n";
-$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml($this->line->title) . '</a>'."\n";
+$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml(stripslashes($this->line->title)) . '</a>'."\n";
 if ($this->show_edit != 0) {
 	if ($this->line->published >= 0) {
 		if ($this->line->type == 7) {
@@ -120,7 +120,7 @@ if ($this->thedate) {
 	$info[] = $this->thedate;
 }
 if (($this->line->type && $this->params->get('show_type')) || $this->line->standalone == 1) {
-	$info[] = $this->line->typetitle;
+	$info[] = stripslashes($this->line->typetitle);
 }
 if ($this->helper->contributors && $this->params->get('show_authors')) {
 	$info[] = JText::_('COM_RESOURCES_CONTRIBUTORS').': '. $this->helper->contributors;
