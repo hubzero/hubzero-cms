@@ -1539,7 +1539,8 @@ WYKIWYG.editor = function() {
 		
 		this.i.frameBorder = 0;
 		this.i.style.width = '100%'; //(obj.width || (this.t.offsetWidth || '500') - 8); 
-		this.i.height = (obj.height || (this.t.offsetHeight || '250') - 8); 
+		/*this.i.height = (obj.height || (this.t.offsetHeight || '250') - 8);*/
+		this.i.height = (obj.height || ((this.t.rows * parseInt(this.t.getStyle("font-size"))) || '250') - 8);
 		this.ie = T$$$();
 		h.className = obj.rowclass || 'wykiwyg-header';
 		p.className = obj.cssclass || 'wykiwyg';
@@ -1656,6 +1657,7 @@ WYKIWYG.editor = function() {
 			}
 			p.appendChild(f);
 		}
+		
 		this.e = this.i.contentWindow.document;
 		this.e.open();
 		// Create the iframe document
@@ -1691,10 +1693,10 @@ WYKIWYG.editor = function() {
 		var wwe = this;
 		$$('form').each(function(frm) {
 			if ($(frm).getElementById(obj.id)) {
-				$(frm).addEvent('submit', function(){
+				$(frm).addEvent('submit', function() {
 					var converter = new WYKIWYG.converter();
 					if (wwe.d) {
-						var v = wwe.e.body.innerHTML;
+						/*var v = wwe.e.body.innerHTML;
 						if (wwe.xhtml) {
 							v = v.replace(/<span class="apple-style-span">(.*)<\/span>/gi,'$1');
 							v = v.replace(/ class="apple-style-span"/gi,'');
@@ -1715,7 +1717,8 @@ WYKIWYG.editor = function() {
 							v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
 							v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
 						}
-						wwe.t.value = converter.makeWiki(v);
+						wwe.t.value = converter.makeWiki(v);*/
+						wwe.t.value = wwe.makeWiki();
 					}
 				});
 			}
@@ -1777,6 +1780,31 @@ WYKIWYG.editor = function() {
 			document.removeEventListener('mouseup', this.sr, 1);
 		}
 	},
+	edit.prototype.makeWiki = function() {
+		var converter = new WYKIWYG.converter(),
+			v = this.e.body.innerHTML;
+		if (this.xhtml) {
+			v = v.replace(/<span class="apple-style-span">(.*)<\/span>/gi,'$1');
+			v = v.replace(/ class="apple-style-span"/gi,'');
+			v = v.replace(/<span style="">/gi,'');
+			v = v.replace(/<br>/gi,'<br />');
+			v = v.replace(/<br ?\/?>$/gi,'');
+			v = v.replace(/^<br ?\/?>/gi,'');
+			v = v.replace(/(<img [^>]+[^\/])>/gi,'$1 />');
+			v = v.replace(/<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
+			v = v.replace(/<i\b[^>]*>(.*?)<\/i[^>]*>/gi,'<em>$1</em>');
+			v = v.replace(/<span style="?text-decoration: underline;?"?>(.*?)<\/span>/gi,'<u>$1</u>');
+			v = v.replace(/<(b|strong|em|i|u) style="font-weight: normal;?">(.*)<\/(b|strong|em|i|u)>/gi,'$2');
+			v = v.replace(/<(b|strong|em|i|u) style="(.*)">(.*)<\/(b|strong|em|i|u)>/gi,'<span style="$2"><$4>$3</$4></span>');
+			v = v.replace(/<span style="?vertical-align: super;?"?>(.*)<\/span>/gi,'<sup>$1</sup>');
+			v = v.replace(/<span style="?vertical-align: sub;?"?>(.*)<\/span>/gi,'<sub>$1</sub>');
+			v = v.replace(/<span style="font-weight: normal;?">(.*)<\/span>/gi,'$1');
+			v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
+			v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
+			v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
+		}
+		return converter.makeWiki(v);
+	},
 	edit.prototype.toggle = function(post, div) {
 		var converter = new WYKIWYG.converter();
 		if (!this.d) {
@@ -1789,7 +1817,7 @@ WYKIWYG.editor = function() {
 			this.i.style.display = 'block'; 
 			this.d = 1
 		} else {
-			var v = this.e.body.innerHTML;
+			/*var v = this.e.body.innerHTML;
 			if (this.xhtml) {
 				v = v.replace(/<span class="apple-style-span">(.*)<\/span>/gi,'$1');
 				v = v.replace(/ class="apple-style-span"/gi,'');
@@ -1809,11 +1837,11 @@ WYKIWYG.editor = function() {
 				v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
 				v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
 				v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
-			}
+			}*/
 			if (div) {
 				div.innerHTML = this.obj.toggletext || 'switch to wysiwyg';
 			}
-			this.t.value = converter.makeWiki(v);
+			this.t.value = this.makeWiki();
 			if (!post) {
 				this.t.style.height = this.i.height+'px';
 				this.i.style.display = 'none';
@@ -1839,12 +1867,14 @@ WYKIWYG.cursor = function() {
 	}
 }();
 
+wykiwygs = [];
+
 // Init editor
 window.addEvent('domready', function(){
 	$$('.wiki-toolbar-content').each(function(textarea) {
 		var id = $(textarea).getProperty('id');
 		
-		new WYKIWYG.editor.edit('editor',{
+		var edtr = new WYKIWYG.editor.edit('editor',{
 			id: id,
 			controls: [
 						'bold','italic','underline','strikethrough','|',
@@ -1861,6 +1891,8 @@ window.addEvent('domready', function(){
 			xhtml: true,
 			cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css',
 		});
+		
+		wykiwygs.push(edtr);
 	});
 });
 
