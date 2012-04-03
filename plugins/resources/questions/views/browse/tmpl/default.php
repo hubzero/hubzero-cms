@@ -33,6 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <h3 class="plugin-header">
 	<a name="questions"></a>
+	<?php
+	  $tag = ($this->resource->type == 7) ? 'tool:'.$this->resource->alias : 'resource:'.$this->resource->id;
+	?>
+	<span><a href="/answers/question/new/?tag=<?php echo $tag; ?>" class="add"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION_ABOUT_TOOL'); ?></a></span>
 	<?php echo JText::_('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?> 
 </h3>
 <div class="container">
@@ -40,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<caption>
 			<?php echo JText::_('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?> 
 			<span>(<?php echo ($this->rows) ? count($this->rows) : '0'; ?>)</span>
-			<a class="add" href="/answers/question/new/?tag=tool:<?php echo $this->resource->alias; ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION_ABOUT_TOOL'); ?></a>
+			<a class="add" href="/answers/question/new/?tag=<?php echo $tag; ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION_ABOUT_TOOL'); ?></a>
 		</caption>
 		<tbody>
 <?php

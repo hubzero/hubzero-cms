@@ -107,11 +107,6 @@ class plgResourcesWishlist extends JPlugin
 			}
 		}
 
-		// Display only for tools		
-		if ($resource->type != 7) {
-			return array('html'=>'','metadata'=>'');
-		}
-
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
 

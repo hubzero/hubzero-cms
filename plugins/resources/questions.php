@@ -106,11 +106,6 @@ class plgResourcesQuestions extends JPlugin
 			}
 		}
 
-		// Display only for tools
-		if ($resource->type != 7) {
-			return $arr;
-		}
-
 		$database =& JFactory::getDBO();
 
 		// Get a needed library
@@ -125,7 +120,7 @@ class plgResourcesQuestions extends JPlugin
 		$filters = array();
 		$filters['limit']    = JRequest::getInt( 'limit', 0 );
 		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
-		$filters['tag']      = $resource->type== 7 ?  'tool'.$resource->alias : 'resource'.$resource->id;
+		$filters['tag']      = $resource->type== 7 ? 'tool:'.$resource->alias : 'resource:'.$resource->id;
 		$filters['q']        = JRequest::getVar( 'q', '' );
 		$filters['filterby'] = JRequest::getVar( 'filterby', '' );
 		$filters['sortby']   = JRequest::getVar( 'sortby', 'withinplugin' );
