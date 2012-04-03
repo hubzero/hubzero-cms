@@ -246,9 +246,12 @@ class SupportTicket extends JTable
 			}
 		}
 		
-		if (!$this->created || $this->created == '0000-00-00 00:00:00')
+		if (!$this->id)
 		{
-			$this->created = date("Y-m-d H:i:s");
+			if (!$this->created || $this->created == '0000-00-00 00:00:00')
+			{
+				$this->created = date("Y-m-d H:i:s");
+			}
 		}
 		
 		// Set the status of the ticket
