@@ -463,15 +463,60 @@ class ContributeController extends Hubzero_Controller
 		$view->display();
 	}
 
-	/**
-	 * Short description for 'step_tags'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
-	 */
-	protected function step_tags()
-	{
+	private static function load_focus_areas($type, $labels = null, $parent_id = NULL, $parent_label = NULL) {
+		static $dbh;
+		if (!$dbh) {
+			$dbh = JFactory::getDBO();
+		}
+
+		if (is_null($labels)) {
+			$dbh->setQuery(
+				'SELECT DISTINCT tag 
+				FROM #__focus_area_resource_type_rel fr 
+				INNER JOIN #__focus_areas f ON f.id = fr.focus_area_id
+				INNER JOIN #__tags t ON t.id = f.tag_id
+				WHERE fr.resource_type_id = '.$type
+			);
+			if (!($labels = $dbh->loadResultArray())) {
+				return array();
+			}
+			$labels = '\''.implode('\', \'', array_map('mysql_real_escape_string', $labels)).'\'';
+		}
+
+		$dbh->setQuery(
+			$parent_id 
+				// get tags labeled focus area and parented by the tag identified by $parent_id
+				? 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag 
+					FROM jos_tags t
+					INNER JOIN jos_tags_object to1 ON to1.tbl = \'tags\' AND to1.tagid = t.id AND to1.label = \'label\'
+					INNER JOIN jos_tags_object to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = to1.objectid 
+						AND to2.tagid = '.$parent_id.' 
+					INNER JOIN jos_tags t2 ON t2.id = to1.objectid
+					WHERE t.raw_tag = '.$dbh->quote($parent_label).'
+					ORDER BY CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
+				// get tags that are labeled focus areas that are not also a parent of another tag labeled as a focus area
+				: 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag 
+					FROM #__tags t
+					LEFT JOIN #__tags_object to1 ON to1.tagid = t.id AND to1.label = \'label\' AND to1.tbl = \'tags\'
+					INNER JOIN #__tags t2 ON t2.id = to1.objectid
+					WHERE t.tag IN ('.$labels.') AND (
+						SELECT COUNT(*) 
+						FROM #__tags_object to2
+						INNER JOIN #__tags_object to3 ON to3.tbl = \'tags\' AND to3.label = \'label\' AND to3.objectid = to2.tagid
+						INNER JOIN #__tags t3 ON t3.id = to3.tagid AND t3.tag IN ('.$labels.')
+						WHERE to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = t2.id 
+						LIMIT 1
+					) = 0
+					ORDER BY t.tag, CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
+		);
+		$fas = $dbh->loadAssocList('raw_tag');
+		foreach ($fas as &$fa) {
+			$fa['children'] = self::load_focus_areas($type, $labels, $fa['id'], $fa['label']);
+		}
+		return $fas;
+	}
+
+	protected function step_tags($existing = array()) {
 		$step = $this->step;
 		$next_step = $step+1;
 
@@ -484,81 +529,26 @@ class ContributeController extends Hubzero_Controller
 			return;
 		}
 
-		// Get any HUB focus areas
-		// These are used where any resource is required to have one of these tags
-		$tconfig =& JComponentHelper::getParams( 'com_tags' );
-		$fa1 = $tconfig->get('focus_area_01');
-		$fa2 = $tconfig->get('focus_area_02');
-		$fa3 = $tconfig->get('focus_area_03');
-		$fa4 = $tconfig->get('focus_area_04');
-		$fa5 = $tconfig->get('focus_area_05');
-		$fa6 = $tconfig->get('focus_area_06');
-		$fa7 = $tconfig->get('focus_area_07');
-		$fa8 = $tconfig->get('focus_area_08');
-		$fa9 = $tconfig->get('focus_area_09');
-		$fa10 = $tconfig->get('focus_area_10');
+		$view = new JView( array('name'=>'steps','layout'=>'tags') );
 
-		// Instantiate our tag object
-		$tagcloud = new ResourcesTags($this->database);
+		$this->database->setQuery('SELECT type FROM #__resources WHERE id = '.$id);
+		$fas = self::load_focus_areas($this->database->loadResult());
+		$view->fas = array();
+		foreach ($fas as $tag=>$fa) {
+			if (!isset($view->fas[$fa['label']])) {
+				$view->fas[$fa['label']] = array();
+			}
+			$view->fas[$fa['label']][$tag] = $fa;
+		}
 
-		// Normalize the focus areas
-		$tagfa1 = $tagcloud->normalize_tag($fa1);
-		$tagfa2 = $tagcloud->normalize_tag($fa2);
-		$tagfa3 = $tagcloud->normalize_tag($fa3);
-		$tagfa4 = $tagcloud->normalize_tag($fa4);
-		$tagfa5 = $tagcloud->normalize_tag($fa5);
-		$tagfa6 = $tagcloud->normalize_tag($fa6);
-		$tagfa7 = $tagcloud->normalize_tag($fa7);
-		$tagfa8 = $tagcloud->normalize_tag($fa8);
-		$tagfa9 = $tagcloud->normalize_tag($fa9);
-		$tagfa10 = $tagcloud->normalize_tag($fa10);
 
 		// Get all the tags on this resource
+		$tagcloud = new ResourcesTags($this->database);
 		$tags_men = $tagcloud->get_tags_on_object($id, 0, 0, 0, 0);
 		$mytagarray = array();
-		$tagfa = '';
-
-		$fas = array($tagfa1,$tagfa2,$tagfa3,$tagfa4,$tagfa5,$tagfa6,$tagfa7,$tagfa8,$tagfa9,$tagfa10);
-		$fats = array();
-		if ($fa1) {
-			$fats[$fa1] = $tagfa1;
-		}
-		if ($fa2) {
-			$fats[$fa2] = $tagfa2;
-		}
-		if ($fa3) {
-			$fats[$fa3] = $tagfa3;
-		}
-		if ($fa4) {
-			$fats[$fa4] = $tagfa4;
-		}
-		if ($fa5) {
-			$fats[$fa5] = $tagfa5;
-		}
-		if ($fa6) {
-			$fats[$fa6] = $tagfa6;
-		}
-		if ($fa7) {
-			$fats[$fa7] = $tagfa7;
-		}
-		if ($fa8) {
-			$fats[$fa8] = $tagfa8;
-		}
-		if ($fa9) {
-			$fats[$fa9] = $tagfa9;
-		}
-		if ($fa10) {
-			$fats[$fa10] = $tagfa10;
-		}
-
-		// Loop through all the tags and pull out the focus areas - those will be displayed differently
-		foreach ($tags_men as $tag_men)
-		{
-			if (in_array($tag_men['tag'],$fas)) {
-				$tagfa = $tag_men['tag'];
-			} else {
-				$mytagarray[] = $tag_men['raw_tag'];
-			}
+		
+		foreach ($tags_men as $tag_men) {
+			$mytagarray[] = $tag_men['raw_tag'];
 		}
 		$tags = implode( ', ', $mytagarray );
 
@@ -572,19 +562,17 @@ class ContributeController extends Hubzero_Controller
 		}
 
 		// Output HTML
-		$view = new JView( array('name'=>'steps','layout'=>'tags') );
 		$view->option = $this->_option;
 		$view->title = $this->_title;
 		$view->step = $step;
 		$view->steps = $this->steps;
 		$view->tags = $tags;
-		$view->tagfa = $tagfa;
-		$view->fats = $fats;
 		$view->next_step = $next_step;
 		$view->database = $this->database;
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'start';
+		$view->existing = $existing;
 		if ($this->getError()) {
 			foreach ($this->getErrors() as $error)
 			{
@@ -754,10 +742,19 @@ class ContributeController extends Hubzero_Controller
 			$row->fulltext .= "\n".'<nb:'.$tagname.'>';
 			if (is_array($tagcontent))
 			{
+				$c = count($tagcontent);
+				$num = 0;
 				foreach ($tagcontent as $key => $val)
 				{
-					$f .= trim($val);
+					if (trim($val))
+					{
+						$num++;
+					}
 					$row->fulltext .= '<'.$key.'>' . trim($val) . '</'.$key.'>';
+				}
+				if ($c == $num)
+				{
+					$f = 'found';
 				}
 			}
 			else 
@@ -894,61 +891,149 @@ class ContributeController extends Hubzero_Controller
 		}
 	}
 
-	/**
-	 * Short description for 'step_tags_process'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
-	 */
-	protected function step_tags_process()
-	{
-		// Incoming
-		$id    = JRequest::getInt( 'id', 0, 'post' );
-		$tags  = JRequest::getVar( 'tags', '', 'post' );
-		$tagfa = JRequest::getVar( 'tagfa', '', 'post' );
+	//-----------
 
-		$tagcloud = new ResourcesTags($this->database);
-
-		$tconfig =& JComponentHelper::getParams( 'com_tags' );
-		$fa = array();
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_01'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_02'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_03'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_04'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_05'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_06'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_07'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_08'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_09'));
-		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_10'));
-		$required = false;
-		foreach ($fa as $r)
-		{
-			if ($r != '') {
-				$required = true;
+	protected function step_tags_process() {
+		$dbh =& JFactory::getDBO();
+		$user =& JFactory::getUser();
+		$dbh->setQuery(
+			'SELECT 1 FROM #__author_assoc WHERE authorid = '.$user->id.' AND subtable = \'resources\' AND subid = '.(int)$_POST['id'].'
+			UNION 
+			SELECT 1 FROM #__resources WHERE id = '.(int)$_POST['id'].' AND (created_by = '.$user->id.' OR modified_by = '.$user->id.')
+			UNION
+			SELECT 1 FROM jos_users u 
+			INNER JOIN jos_core_acl_aro caa ON caa.section_value = \'users\' AND caa.value = u.id 
+			INNER JOIN jos_core_acl_groups_aro_map cagam ON cagam.aro_id = caa.id 
+			INNER JOIN jos_core_acl_aro_groups caag ON caag.id = cagam.group_id AND caag.name = \'Super Administrator\'
+			WHERE u.id = '.$user->id
+		);
+		if (!$dbh->loadResult()) {
+			JError::raiseError(403, 'Forbidden');
+		}
+		
+		$tags = preg_split('/,\s+/', $_POST['tags']);
+		$push = array();
+		$map = array();
+		
+		$dbh->setQuery(
+			'SELECT fa.tag_id, t.raw_tag, fa.mandatory_depth AS minimum_depth, 0 AS actual_depth
+			FROM #__focus_areas fa
+			INNER JOIN #__tags t ON t.id = fa.tag_id
+			INNER JOIN #__focus_area_resource_type_rel rtr ON rtr.focus_area_id = fa.id
+			INNER JOIN #__resource_types rt ON rt.id = rtr.resource_type_id
+			INNER JOIN #__resources r ON r.type = rt.id AND r.id = '.(int)$_POST['id'].'
+			WHERE fa.mandatory_depth IS NOT NULL AND fa.mandatory_depth > 0'
+		);
+		$fas = $dbh->loadAssocList('raw_tag');
+		foreach ($_POST as $k=>$vs) {
+			if (!preg_match('/^tagfa/', $k)) {
+				continue;
+			}
+			if (!is_array($vs)) {
+				$vs = array($vs);
+			}
+			foreach ($vs as $v) {
+				$norm_tag = preg_replace('/[^-_a-z0-9]/', '', strtolower($v));
+				if (isset($map[$norm_tag])) {
+					continue;
+				}
+				$dbh->setQuery(
+					'SELECT t2.raw_tag AS fa, t2.id AS label_id, t.id FROM #__tags t
+					INNER JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
+					INNER JOIN #__tags t2 ON t2.id = to1.tagid
+					INNER JOIN #__focus_areas fa ON fa.tag_id = to1.tagid
+					WHERE t.tag = '.$dbh->quote($v)
+				);
+				if (($row = $dbh->loadAssoc())) {
+					$push[] = array($v, $norm_tag, $row['fa'], $row['id'], $row['label_id']);
+					$map[$norm_tag] = true;
+				}
 			}
 		}
-		//print_r($required);
-		if ($required) {
-			//echo $tagfa; print_r($fa); die;
-			if (!$tagfa || ($tagfa && !in_array($tagfa, $fa))) {
-				$this->_redirect = 'index.php?option='.$this->_option.'&step=4&id='.$id.'&err=1&tags='.$tags;
-				$this->_message = JText::_('Please select one of the focus areas.');
-				$this->_messageType = 'error';
-				return;
+		
+		$filtered = array();
+		// only accept focus areas with parents if their parent is also checked
+		foreach ($push as $idx=>$tag) {
+			$dbh->setQuery(
+				'SELECT t.tag, t.id
+				FROM #__tags_object to1
+				INNER JOIN #__tags t ON t.id = to1.tagid
+				INNER JOIN #__tags_object to2 ON to2.tagid = '.$tag[4].' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+				WHERE to1.objectid = '.$tag[3].' AND to1.tbl = \'tags\' AND to1.label = \'parent\''
+			);
+			$any_match = false;
+			$parent = array();
+			$possible_parents = $dbh->loadAssocList();
+			foreach ($possible_parents as $par) {
+				if (isset($map[$par['tag']])) {
+					$parent[] = $par;
+					$any_match = true;
+				}
+			}
+			if (!$possible_parents || $any_match) {
+				$filtered[] = $tag;
+				$parent_id = array();
+				foreach ($parents as $par) {
+					$parent_id[] = $par['id'];
+				}
+				if (isset($fas[$tag[2]]) && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth']) {
+					// count depth if necessary to determine whether focus area constraints are satisified
+					for ($depth = $parent ? 2 : 1; $parent_id && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth'] && $depth < $fas[$tag[2]]['minimum_depth']; ++$depth) {
+						$dbh->setQuery(
+							'SELECT t.id
+							FROM #__tags_object to1
+							INNER JOIN #__tags t ON t.id = to1.tagid
+							INNER JOIN #__tags_object to2 ON to2.tagid = '.$tag[4].' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+							WHERE to1.objectid IN ('.implode(',', $parent_id).') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
+						);
+						$parent_id = $dbh->loadResultArray();
+					}
+					$fas[$tag[2]]['actual_depth'] = max($depth, $fas[$tag[2]]['actual_depth']);
+				}
+			}
+			else {
+				unset($map[$tag[1]]);
+			}
+		}
+		$push = $filtered;
+
+		foreach ($tags as $tag) {
+			$norm_tag = preg_replace('/[^-_a-z0-9]/', '', strtolower($tag));
+
+			if (!$norm_tag || isset($map[$norm_tag])) {
+				continue;
+			}
+			$push[] = array($tag, $norm_tag, null);
+			$map[$norm_tag] = true;
+		}
+		foreach ($push as $idx=>$tag) {
+			$dbh->setQuery('SELECT raw_tag FROM #__tags WHERE tag = \''.$tag[1].'\'');
+			if (($raw_tag = $dbh->loadResult())) {
+				$push[$idx][0] = $raw_tag;
 			}
 		}
 
-		if ($tags) {
-			$tags = $tagfa.', '.$tags;
-		} else {
-			$tags = $tagfa;
+		foreach ($fas as $lbl=>$fa) {
+			if ($fa['actual_depth'] < $fa['minimum_depth']) {
+				$this->setError(
+					$fa['minimum_depth'] == 1 
+						? 'Please ensure you have made a '.$lbl.' selection'
+						: 'Please make selections for "'.$lbl.'" to a depth of at least '.$fa['minimum_depth']
+				);
+				--$this->step;
+				return $this->step_tags($push);
+			}
 		}
 
-		// Tag the resource
-		$rt = new ResourcesTags($this->database);
-		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
+		$dbh->execute('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = '.(int)$_POST['id']);
+		foreach ($push as $tag) {
+			$dbh->setQuery('SELECT id FROM #__tags WHERE tag = '.$dbh->quote($tag[1]));
+			if (!($id = $dbh->loadResult())) {
+				$dbh->execute('INSERT INTO #__tags(tag, raw_tag) VALUES ('.$dbh->quote($tag[1]).', '.$dbh->quote($tag[0]).')');
+				$id = $dbh->insertid();
+			}
+			$dbh->execute('INSERT INTO #__tags_object(tbl, objectid, tagid, label) VALUES (\'resources\', '.(int)$_POST['id'].', '.$id.', '.($tag[2] ? $dbh->quote($tag[2]) : 'NULL').')');
+		}
 	}
 
 	//----------------------------------------------------------
@@ -1508,7 +1593,6 @@ class ContributeController extends Hubzero_Controller
 				return;
 			}
 		}
-
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('COM_CONTRIBUTE_ERROR_UPLOADING') );
@@ -1580,7 +1664,8 @@ class ContributeController extends Hubzero_Controller
 				}
 			}
 		}
-		
+
+		/*
 		// Scan for viruses
 		$path = $path . DS . $file['name']; //JPATH_ROOT.DS.'virustest';
 		exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
@@ -1599,6 +1684,7 @@ class ContributeController extends Hubzero_Controller
 			$this->attachments( $pid );
 			return;
 		}
+		*/
 
 		if (!$row->path) {
 			$row->path = $listdir.DS.$file['name'];
@@ -1634,6 +1720,21 @@ class ContributeController extends Hubzero_Controller
 		}
 		if (!$assoc->store(true)) {
 			$this->setError( $assoc->getError() );
+		}
+		else
+		{
+			$dbh =& JFactory::getDBO();
+
+			$hash = sha1_file($path.DS.$file['name']);
+			$dbh->setQuery('SELECT id FROM #__document_text_data WHERE hash = \''.$hash.'\'');
+			if (!($doc_id = $dbh->loadResult()))
+			{
+				$dbh->execute('INSERT INTO #__document_text_data(hash) VALUES (\''.$hash.'\')');
+				$doc_id = $dbh->insertId();
+			}
+
+			$dbh->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES ('.(int)$doc_id.', '.(int)$row->id.')');
+			system('/usr/local/bin/textifier '.escapeshellarg($path.DS.$file['name']).' >/dev/null');
 		}
 
 		// Push through to the attachments view
@@ -1980,6 +2081,12 @@ class ContributeController extends Hubzero_Controller
 		$order = $rc->getLastOrder( $id, 'resources' );
 		$order = $order + 1; // new items are always last
 
+		if (!$authid && isset($_POST['author'])) {
+			$dbh =& JFactory::getDBO();
+			$dbh->setQuery('SELECT id FROM #__users WHERE username = '.$dbh->quote($_POST['author']));
+			$authid = $dbh->loadResult();
+		}		
+	
 		// Was there an ID? (this will come from the author <select>)
 		if ($authid) {
 			// Check if they're already linked to this resource
