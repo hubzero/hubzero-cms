@@ -5,6 +5,11 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+$.getDocHeight = function(){
+     var D = document;
+     return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
+};
+
 //-----------------------------------------------------------
 //  Create our namespace
 //-----------------------------------------------------------
@@ -20,6 +25,50 @@ HUB.Base = {
 	jQuery: $,
 	
 	templatepath: '',
+
+	//  Overlay for "loading", lightbox, etc.
+	overlayer: function() {
+		// The following code creates and inserts HTML into the document:
+		// <div id="initializing" style="display:none;">
+		//   <img id="loading" src="templates/zepar/images/circle_animation.gif" alt="" />
+		// </div>
+		var imgpath = '';
+		$('script').each(function(i, s) {
+			if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
+				HUB.Base.templatepath = s.src.replace(/js\/hub\.jquery\.js(\?.*)?$/,'');
+				imgpath = HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif';
+			}
+		});
+		
+		$('<div id="sbox-overlay" style="position:absolute;top:0;left:0;z-index:997;display:none;"><div id="initializing" style="position:absolute;top:0;left:50%;z-index:998;display:none;"><img id="loading" src="'+imgpath+'" alt="" /></div></div>')
+			.on('click', function(){
+				$(this).css({ display:'none', visibility: 'hidden', opacity: '0' })
+			})
+			.appendTo(document.body);
+		
+		// Note: the rest of the code is in a separate function because it's needs to be
+		// able to be called by itself (usually after loading some HTML via AJAX).
+		HUB.Base.launchTool();
+	},
+
+	launchTool: function() {
+		$('.launchtool').each(function(i, trigger) {
+			$(trigger).on('click', function(e) {
+				$('#sbox-overlay').css({
+					width: $(window).width(), 
+					height: $.getDocHeight(), 
+					display: 'block',
+					visibility: 'visible',
+					opacity: '0.7'
+				});
+				$('#initializing').css({
+					top: ($(window).scrollTop() + ($(window).height() / 2) - 90), 
+					display: 'block',
+					zIndex: 65557
+				});
+			});
+		});
+	},
 
 	// set focus on username field for login form
 	setLoginFocus: function() {
@@ -79,6 +128,7 @@ HUB.Base = {
 		HUB.Base.setLoginFocus();
 		HUB.Base.searchbox();
 		HUB.Base.popups();
+		HUB.Base.overlayer();
 		
 		$('a[rel=lightbox]').fancybox({
 		});
