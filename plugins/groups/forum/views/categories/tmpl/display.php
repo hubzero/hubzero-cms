@@ -111,7 +111,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								</span>
 							</td>
 							<td>
-								<span><?php echo $row->replies; ?></span>
+								<span><?php echo ($row->replies + 1); ?></span>
 								<span class="entry-details">
 									<?php echo JText::_('Comments'); ?>
 								</span>
