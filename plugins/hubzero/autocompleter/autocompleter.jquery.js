@@ -1012,13 +1012,18 @@ HUB.Plugins.Autocomplete = {
 					};
 				});
 			}
-			
 			$('#'+id).tokenInput('/index.php?option=com_'+option+'&no_html=1&task=autocomplete'+actkn, {
                 theme: cls,
 				hintText: hint,
 				prePopulate: data,
 				tokenLimit: limit,
 				preventDuplicates: true,
+				resultsFormatter: function(item){ 
+					if (option != 'tags') {
+						return "<li>" + item[this.propertyToSearch]+ " ("+item['id']+")</li>";
+					}
+					return "<li>" + item[this.propertyToSearch]+ "</li>";
+				},
 				/*onReady: function() {
 					console.log();
 				},*/
