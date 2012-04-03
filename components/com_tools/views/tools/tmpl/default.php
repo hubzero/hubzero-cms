@@ -66,9 +66,8 @@ if ($juser->get('guest')) {
 		        development area of <a href="<?php echo $this->hubLongURL;?>"><?php echo $this->hubShortURL;?></a>.
 		        The following pages are maintained by the various owners of each
 		        tool.  Many of these tools are available as Open Source, and
-		        you can download the code via Subversion from this site.  Some
-		        tools are closed source at the request of the authors, and only
-		        a restricted development team has access to the code.  See each
+		        you can download the code via Subversion from this site.  Some authors choose to keep
+				source code private, allowing access only to specific members on a development team.  See each
 		        tool page for details.
 			</p>
 	</div><!-- / .subject -->
