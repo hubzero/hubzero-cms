@@ -1676,7 +1676,7 @@ class AnswersController extends Hubzero_Controller
 
 		// See if a person from this IP has already voted
 		$al = new AnswersQuestionsLog($database);
-		$voted = $al->checkVote($id, $ip);
+		$voted = $al->checkVote($id, $ip, $this->juser->get('id'));
 
 		if ($voted) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=8');
