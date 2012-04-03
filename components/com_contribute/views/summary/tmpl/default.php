@@ -115,7 +115,7 @@ if (!$juser->get('guest')) {
 				$tags = $rt->getTags( $submission->id );
 ?>
 				<tr class="<?php echo $cls; ?>">
-					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo $submission->typetitle; ?></span></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo stripslashes($submission->typetitle); ?></span></td>
 					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=2&id='.$submission->id); ?>"><?php } ?><?php echo count($attachments); ?> attachment(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
 					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=3&id='.$submission->id); ?>"><?php } ?><?php echo count($authors); ?> author(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
 					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=4&id='.$submission->id); ?>"><?php } ?><?php echo count($tags); ?> tag(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
