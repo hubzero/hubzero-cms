@@ -108,6 +108,11 @@
 	    border: 1px solid #3b5998;
 		color: #fff;
 	}
+	li.token-input-selected-token-act span ,
+	li.token-input-selected-token-acg span ,
+	li.token-input-selected-token-acm span {
+		color: #fff;
+	}
 	li.token-input-input-token-act,
 	li.token-input-input-token-acg,
 	li.token-input-input-token-acm {
@@ -129,7 +134,8 @@
 	    cursor: default;
 	    font-size: 11px;
 	    font-family: Verdana;
-	    z-index: 1;
+	    /*z-index: 1;*/
+		z-index: 99999;
 	}
 	div.token-input-dropdown-act p,
 	div.token-input-dropdown-acg p,
@@ -174,6 +180,11 @@
 	div.token-input-dropdown-acm ul li.token-input-selected-dropdown-item-acm {
 	    background-color: #3b5998;
 	    color: #fff;
+	}  
+	div.token-input-dropdown-act ul li b,
+	div.token-input-dropdown-acg ul li b,
+	div.token-input-dropdown-acm ul li b {
+	    font-weight: bold;      
 	}
 
 /* Holder Stylings */
@@ -265,11 +276,9 @@
 		height: 7px;
 		font-size: 1px;
 		background: url('close.gif');
-		color: #DFD5AF;
 		}
 	ul.textboxlist-holder li.bit-box a.closebutton:hover {
 		background-position: 7px;
-		color: #000;
 		}
 	ul.holder li.bit-box-focus a.closebutton, 
 	ul.holder li.bit-box-focus a.closebutton:hover {
@@ -294,9 +303,7 @@
 		border-right-color: #ddd;
 		border-bottom-color: #ddd;
 		text-align:	left;
-		/*z-index: 50;*/
-		z-index:99999;
-		
+		z-index: 50;
 		list-style: none;
 		background-image: none;
 		}

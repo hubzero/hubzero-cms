@@ -649,6 +649,7 @@ HUB.Autocomplete = {
 		for (var i=0; i<members.length; i++) 
 		{
 			sel.options[i] = new Option(members[i].name,members[i].username);
+			sel.options[i].innerHTML = members[i].name;
 		}
 	},
 	

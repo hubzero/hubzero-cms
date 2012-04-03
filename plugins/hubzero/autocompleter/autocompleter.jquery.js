@@ -132,6 +132,7 @@ $.TokenList = function (input, url_or_data, settings) {
     //
     // Initialization
     //
+    isReadOnly = ($(input).attr("readonly")) ? true : false;
 
     // Configure the data source
     if($.type(url_or_data) === "string" || $.type(url_or_data) === "function") {
@@ -181,21 +182,34 @@ $.TokenList = function (input, url_or_data, settings) {
     // Keep track of the timeout, old vals
     var timeout;
     var input_val;
-
+               
     // Create a new text input an attach keyup events
     var input_box = $("<input type=\"text\"  autocomplete=\"off\">")
-        .css({
+        .css({                   
             outline: "none"
         })
-        .attr("id", settings.idPrefix + input.id)
+        .attr("id", settings.idPrefix + input.id)   
         .focus(function () {
-            if (settings.tokenLimit === null || settings.tokenLimit !== token_count) {
-                show_dropdown_hint();
+            if (settings.tokenLimit === null || settings.tokenLimit !== token_count) {           
+				if(!isReadOnly) {
+                	show_dropdown_hint();       
+				}
             }
         })
         .blur(function () {
             hide_dropdown();
-            $(this).val("");
+	
+            var val = $(this).val().replace(/^,|,$/g,'');
+			if (val) {
+				var item = {
+					'id': val, 
+					'name': val
+				};
+				add_token(item);
+				hidden_input.change();
+			}
+			
+			$(this).val("");
         })
         .bind("keyup keydown blur update", resize_input)
         .keydown(function (event) {
@@ -297,6 +311,10 @@ $.TokenList = function (input, url_or_data, settings) {
             }
         });
 
+	if(isReadOnly) {
+		input_box.attr("disabled", "disabled");
+	}
+
     // Keep a reference to the original input box
     var hidden_input = $(input)
                            .hide()
@@ -349,11 +367,11 @@ $.TokenList = function (input, url_or_data, settings) {
         .addClass(settings.classes.inputToken)
         .appendTo(token_list)
         .append(input_box);
-
+	
     // The list to store the dropdown items in
     var dropdown = $("<div>")
         .addClass(settings.classes.dropdown)
-		.css('width', token_list.width())
+		.css('width', (token_list.outerWidth(true)-2))
         .appendTo("body")
         .hide();
 
@@ -463,15 +481,18 @@ $.TokenList = function (input, url_or_data, settings) {
           .addClass(settings.classes.token)
           .insertBefore(input_token);
 
-        // The 'delete token' button
-        $("<span>" + settings.deleteText + "</span>")
-            .addClass(settings.classes.tokenDelete)
-            .appendTo(this_token)
-            .click(function () {
-                delete_token($(this).parent());
-                hidden_input.change();
-                return false;
-            });
+        // The 'delete token' button   
+		if(!isReadOnly) 
+		{    
+        	$("<span>" + settings.deleteText + "</span>")
+            	.addClass(settings.classes.tokenDelete)
+	            .appendTo(this_token)
+	            .click(function () {
+	                delete_token($(this).parent());
+	                hidden_input.change();
+	                return false;
+            });  
+		}
 
         // Store data on the token
         var token_data = {"id": item.id};
@@ -638,7 +659,7 @@ $.TokenList = function (input, url_or_data, settings) {
         selected_dropdown_item = null;
     }
 
-    function show_dropdown() {
+    function show_dropdown() {   
         dropdown
             .css({
                 position: "absolute",
@@ -903,6 +924,14 @@ HUB.Plugins.Autocomplete = {
 	initialize: function() {
 		var plg = this;
 		
+		//var head = document.head;
+		var head = document.getElementsByTagName('head')[0];
+		var styles = document.createElement('link');
+		styles.type = 'text/css';
+		styles.rel = 'stylesheet';
+		styles.href = '/plugins/hubzero/autocompleter/autocompleter.css';
+		head.appendChild(styles);
+		
 		$('.autocomplete').each(function(i, input) {
 			// Set some defaults
 			var option = 'tags',
@@ -958,12 +987,38 @@ HUB.Plugins.Autocomplete = {
 				limit = 1;
 			}
 			
-			var data = $('#pre-'+id).val().replace(/\'/g,'\"');
+			value = $('#'+id).val();
+			var data = [];
+			if (value) {
+				if (value.indexOf(',') == -1) {
+					var values = [value];
+				} else {
+					var values = value.split(',');
+				}
+				$(values).each(function(i, v){
+					v = v.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+					var id = null, 
+						name = null;
+					if (v.match(/(.+?) \((.+?)\)/ig)) {
+						id = v.replace(/(.+?) \((.+?)\)/ig, '$2');
+					    name = v.replace(/(.+?) \((.+?)\)/ig, '$1');
+					}
+					id = (id) ? id : v;
+					name = (name) ? name : id;
+					
+					data[i] = {
+						'id': id,
+						'name': name
+					};
+				});
+			}
+			
 			$('#'+id).tokenInput('/index.php?option=com_'+option+'&no_html=1&task=autocomplete'+actkn, {
                 theme: cls,
 				hintText: hint,
-				prePopulate: jQuery.parseJSON(data),
+				prePopulate: data,
 				tokenLimit: limit,
+				preventDuplicates: true,
 				/*onReady: function() {
 					console.log();
 				},*/

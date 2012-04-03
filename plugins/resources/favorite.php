@@ -32,7 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-JPlugin::loadLanguage( 'plg_resources_favorite' );
 
 /**
  * Short description for 'plgResourcesFavorite'
@@ -51,13 +50,17 @@ class plgResourcesFavorite extends JPlugin
 	 * @param      unknown $config Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function plgResourcesFavorite(&$subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'favorite' );
-		$this->_params = new JParameter( $this->_plugin->params );
+		$this->loadLanguage();
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->params = new JParameter($this->_plugin->params);
+		}
 	}
 
 	/**
@@ -68,10 +71,9 @@ class plgResourcesFavorite extends JPlugin
 	 * @param      unknown $resource Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onResourcesAreas( $resource )
+	public function onResourcesAreas( $resource )
 	{
-		$areas = array();
-		return $areas;
+		return array();
 	}
 
 	/**
@@ -112,10 +114,8 @@ class plgResourcesFavorite extends JPlugin
 		if (!$juser->get('guest')) {
 			if ($rtrn == 'all' || $rtrn == 'metadata') {
 				// Push some scripts to the template
-				if (is_file(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'favorite'.DS.'favorite.js')) {
-					$document =& JFactory::getDocument();
-					$document->addScript('plugins'.DS.'resources'.DS.'favorite'.DS.'favorite.js');
-				}
+				ximport('Hubzero_Document');
+				Hubzero_Document::addPluginScript('resources', 'favorite');
 
 				ximport('Hubzero_Favorite');
 				if (!class_exists('Hubzero_Favorite')) {
@@ -152,10 +152,12 @@ class plgResourcesFavorite extends JPlugin
 	public function onResourcesFavorite( $option )
 	{
 		$rid = JRequest::getInt( 'rid', 0 );
-
+		
+		$arr = array('html'=>'');
 		if ($rid) {
-			$this->fav( $rid );
+			$arr['html'] = $this->fav( $rid );
 		}
+		return $arr;
 	}
 
 	/**
@@ -185,11 +187,11 @@ class plgResourcesFavorite extends JPlugin
 				$fav->check();
 				$fav->store();
 
-				echo JText::_('PLG_RESOURCES_FAVORITES_UNFAVORITE_THIS');
+				return JText::_('PLG_RESOURCES_FAVORITES_UNFAVORITE_THIS');
 			} else {
 				$fav->delete();
 
-				echo JText::_('PLG_RESOURCES_FAVORITES_FAVORITE_THIS');
+				return JText::_('PLG_RESOURCES_FAVORITES_FAVORITE_THIS');
 			}
 		}
 	}

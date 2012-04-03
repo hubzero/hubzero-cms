@@ -110,12 +110,7 @@ class plgResourcesShare extends JPlugin
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('resources', 'share');
-
-		// Push some scripts to the template
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'share'.DS.'share.js')) {
-			$document =& JFactory::getDocument();
-			$document->addScript('plugins'.DS.'resources'.DS.'share'.DS.'share.js');
-		}
+		Hubzero_Document::addPluginScript('resources', 'share');
 
 		// Email form
 		if ($sharewith == 'email') {
