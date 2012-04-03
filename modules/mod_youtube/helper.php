@@ -127,27 +127,52 @@ class modYoutubeHelper
 
 		//if we are lazy loading
 		if ($lazy_loading) {
-			$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.js');
-			$jdocument->addScriptDeclaration("
-				window.addEvent('domready', function() {
-					var youtubefeed = new HUB.Youtube('youtube_feed_".$id."',{
-						type: '".$type."',
-						search: '".$content."',
-						count: ".$num_videos.",
-						random: ".$random.",
-						details: {
-							showLogo: ".$show_image.",
-							altLogo: '".$alt_image."',
-							showTitle: ".$show_title.",
-							altTitle: '".$alt_title."',
-							showDesc: ".$show_desc.",
-							altDesc: '".$alt_desc."',
-							showLink: ".$show_link.",
-							altLink: '".$alt_link."'
-						}
+			if (JPluginHelper::isEnabled('system', 'jquery'))
+			{
+				$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.jquery.js');
+				$jdocument->addScriptDeclaration("
+					jQuery(document).ready(function($){
+						var youtubefeed = new HUB.Youtube('youtube_feed_".$id."',{
+							type: '".$type."',
+							search: '".$content."',
+							count: ".$num_videos.",
+							random: ".$random.",
+							details: {
+								showLogo: ".$show_image.",
+								altLogo: '".$alt_image."',
+								showTitle: ".$show_title.",
+								altTitle: '".$alt_title."',
+								showDesc: ".$show_desc.",
+								altDesc: '".$alt_desc."',
+								showLink: ".$show_link.",
+								altLink: '".$alt_link."'
+							}
+						});
 					});
-				});
-			");
+				");
+			} else {
+				$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.js');
+				$jdocument->addScriptDeclaration("
+					window.addEvent('domready', function() {
+						var youtubefeed = new HUB.Youtube('youtube_feed_".$id."',{
+							type: '".$type."',
+							search: '".$content."',
+							count: ".$num_videos.",
+							random: ".$random.",
+							details: {
+								showLogo: ".$show_image.",
+								altLogo: '".$alt_image."',
+								showTitle: ".$show_title.",
+								altTitle: '".$alt_title."',
+								showDesc: ".$show_desc.",
+								altDesc: '".$alt_desc."',
+								showLink: ".$show_link.",
+								altLink: '".$alt_link."'
+							}
+						});
+					});
+				");
+			}
 		} else {
 			//append the the return type and the callback function
 			$youtube_url .= "&alt=json";

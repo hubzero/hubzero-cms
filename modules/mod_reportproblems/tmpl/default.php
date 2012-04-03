@@ -114,7 +114,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<label for="trUpload">
 							<?php echo JText::_('Attach a screenshot'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 							<input type="file" name="upload" id="trUpload" />
-							<span class="filetypes">(.<?php echo str_replace(',', ', .', $modreportproblems->feedback_params->get('file_ext')); ?>)</span>
+							<span class="filetypes">(.<?php echo str_replace(',', ', .', $modreportproblems->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>)</span>
 						</label>
 						
 						<input type="hidden" name="problem[topic]" value="???" />

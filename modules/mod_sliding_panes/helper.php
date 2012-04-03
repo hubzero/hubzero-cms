@@ -117,22 +117,37 @@ class modSlidingPanes
 
 		$nullDate = $db->getNullDate();
 
-		// query to determine article count
-		$query = 'SELECT a.*,' .
-			' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.
-			' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug'.
-			' FROM #__content AS a' .
-			' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
-			' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
-			' WHERE a.state = 1 ' .
-			//($noauth ? ' AND a.access <= ' .(int) $aid. ' AND cc.access <= ' .(int) $aid. ' AND s.access <= ' .(int) $aid : '').
-			' AND (a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' ) ' .
-			' AND (a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )' .
-			' AND cc.id = '. (int) $catid .
-			' AND cc.section = s.id' .
-			' AND cc.published = 1' .
-			' AND s.published = 1' .
-			' ORDER BY '.$orderby.' '.$limitby;
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			// query to determine article count
+			$query = 'SELECT a.*,' .
+				' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.
+				' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug'.
+				' FROM #__content AS a' .
+				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
+				' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
+				' WHERE a.state = 1 ' .
+				//($noauth ? ' AND a.access <= ' .(int) $aid. ' AND cc.access <= ' .(int) $aid. ' AND s.access <= ' .(int) $aid : '').
+				' AND (a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' ) ' .
+				' AND (a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )' .
+				' AND cc.id = '. (int) $catid .
+				' AND cc.section = s.id' .
+				' AND cc.published = 1' .
+				' AND s.published = 1' .
+				' ORDER BY '.$orderby.' '.$limitby;
+		}
+		else 
+		{
+			// query to determine article count
+			$query = 'SELECT a.* FROM #__content AS a' .
+				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
+				' WHERE a.state = 1 ' .
+				' AND (a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' ) ' .
+				' AND (a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )' .
+				' AND cc.id = '. (int) $catid .
+				' AND cc.published = 1' .
+				' ORDER BY '.$orderby.' '.$limitby;
+		}
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
@@ -158,11 +173,12 @@ class modSlidingPanes
 			// Push some CSS to the template
 			ximport('Hubzero_Document');
 			Hubzero_Document::addModuleStylesheet('mod_sliding_panes', $type.'.css');
+			Hubzero_Document::addModuleScript('mod_sliding_panes');
 
 			// Push some javascript to the template
-			if (is_file(JPATH_ROOT.'/modules/mod_sliding_panes/mod_sliding_panes.js')) {
+			/*if (is_file(JPATH_ROOT.'/modules/mod_sliding_panes/mod_sliding_panes.js')) {
 				$jdocument->addScript('/modules/mod_sliding_panes/mod_sliding_panes.js');
-			}
+			}*/
 		}
 
 		$id = rand();
@@ -171,14 +187,21 @@ class modSlidingPanes
 
 		$this->container = $this->params->get('container', 'pane-sliders');
 
-		$js = "window.addEvent('domready', function(){
-			if ($('".$this->container."')) {
-				myTabs".$id." = new ModSlidingPanes('".$this->container."', ".$this->params->get('rotate', 1).', {\'animate\': \''.$type."'});
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$js = "$(document).ready(function(){ $('#".$this->container."').jSlidingPanes(); });";
+		}
+		else 
+		{
+			$js = "window.addEvent('domready', function(){
+				if ($('".$this->container."')) {
+					myTabs".$id." = new ModSlidingPanes('".$this->container."', ".$this->params->get('rotate', 1).");
 
-				// this sets it up to work even if it's width isn't a set amount of pixels
-				window.addEvent('resize', myTabs".$id.".recalcWidths.bind(myTabs".$id."));
-			}
-		});";
+					// this sets it up to work even if it's width isn't a set amount of pixels
+					window.addEvent('resize', myTabs".$id.".recalcWidths.bind(myTabs".$id."));
+				}
+			});";
+		}
 
 		$jdocument->addScriptDeclaration($js);
 	}

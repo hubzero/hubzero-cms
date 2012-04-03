@@ -16,23 +16,22 @@
 /* Help Pane */
 	#help-pane {
 		background: #000;
-		height: 0px; 
 		overflow: hidden; 
 		clear: both; 
 		position: relative;
 		text-align: center;
 		width: 100%;
-	}
-	#help-pane .threecolumn {
-		border: none;
+		display: none;
+		margin: 0;
+		padding: 0;
 	}
 	#help-container {
+		margin: 0;
 		padding: 0 30px;
 		border: 8px solid #000;
 		text-align: left;
 		color: #aaa;
 		background: #151515;
-		visibility: hidden;
 	}
 	#help-container h1 {
 		display: none;
@@ -207,7 +206,8 @@
 		font-size: 1.5em;
 		width: 10em;
 		margin: 0 auto;
-		padding: 3em 0 0 0;
+		padding: 3em 0 0 0.5em;
+		background: url("/modules/mod_reportproblems/images/circling-ball-black.gif") 0 3.2em no-repeat;
 	}
 	#trSending,
 	#trSuccess {

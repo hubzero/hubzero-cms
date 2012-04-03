@@ -457,11 +457,11 @@ class modToolList
 
 			// Add the JavaScript that does the AJAX magic to the template
 			$document = JFactory::getDocument();
-			$document->addScript('/modules/mod_mytools/mod_mytools.js');
 
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
 			Hubzero_Document::addModuleStyleSheet('mod_mytools');
+			Hubzero_Document::addModuleScript('mod_mytools');
 
 			// Get a list of recent tools
 			$rt = new RecentTool($database);

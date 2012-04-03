@@ -103,10 +103,7 @@ class modMyResources
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
 			Hubzero_Document::addModuleStyleSheet('mod_myresources');
-
-			// Add the JavaScript that does the AJAX magic to the template
-			$document =& JFactory::getDocument();
-			$document->addScript('/modules/mod_myresources/mod_myresources.js');
+			Hubzero_Document::addModuleScript('mod_myresources');
 		}
 
 		$database =& JFactory::getDBO();
