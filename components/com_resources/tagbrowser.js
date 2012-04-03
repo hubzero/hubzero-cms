@@ -177,12 +177,12 @@ HUB.TagBrowser = {
 						evalScripts: false,
 						onSuccess: function() {
 							HUB.TagBrowser.sc = setTimeout("HUB.TagBrowser.setScroll()", 500);
+							var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {method: 'get',update: $('level-2')}).request();
 						}
 					}).request();
 				//} else {
 				//	var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&id='+id, {method: 'get',update: $('level-1'),evalScripts:true}).request();
 				//}
-				var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {method: 'get',update: $('level-2')}).request();
 			}
 		}
 	}
