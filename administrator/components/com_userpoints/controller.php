@@ -566,7 +566,7 @@ class UserpointsController extends Hubzero_Controller
 	 */
 	public function royalty()
 	{
-		$auto = JRequest::getInt('auto', 1);
+		$auto = JRequest::getInt('auto', 0);
 		$action = 'royalty';
 
 		if (!$auto) {
@@ -714,11 +714,14 @@ class UserpointsController extends Hubzero_Controller
 		} else {
 			$this->_message .= 'Royalties on Resources for '.$curyear.' were previously distributed. ';
 		}
-
+		
 		if (!$auto) {
 			// show output if run manually						
-			$this->_redirect = 'index.php?option='.$this->_option;
-			$this->_message = JText::_($this->_message);
+			//$this->_redirect = 'index.php?option='.$this->_option;
+			$this->setRedirect(
+				'index.php?option='.$this->_option,
+				$this->_message
+			);
 		}
 	}
 }

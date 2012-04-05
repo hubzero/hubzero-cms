@@ -182,7 +182,11 @@ class WishlistEconomy extends JObject
 			// give the remaining 20%
 			if ($owners && $commonshare) {
 				foreach ($owners as $owner)
-				{
+				{					
+					$o =& JUser::getInstance( $owner );
+					if (!is_object($o) || !$o->get('id')) {
+						continue;
+					}
 					$BTLO = new Hubzero_Bank_Teller( $this->_db , $owner );
 					if ($wish->assigned && $wish->assigned == $owner) {
 						//$BTLO->deposit($mainshare, JText::_('Bonus for fulfilling assigned wish').' #'.$wishid.' '.JText::_('on list').' #'.$wish->wishlist, 'wish', $wishid);
@@ -197,8 +201,11 @@ class WishlistEconomy extends JObject
 
 			// give main share
 			if ($wish->assigned && $mainshare) {
-				$BTLM = new Hubzero_Bank_Teller( $this->_db , $wish->assigned );
-				$BTLM->deposit($mainshare, JText::_('Bonus for fulfilling assigned wish').' #'.$wishid.' '.JText::_('on list').' #'.$wish->wishlist, 'wish', $wishid);
+				$o =& JUser::getInstance( $wish->assigned );
+				if (is_object($o) && $o->get('id')) {
+					$BTLM = new Hubzero_Bank_Teller( $this->_db , $wish->assigned );
+					$BTLM->deposit($mainshare, JText::_('Bonus for fulfilling assigned wish').' #'.$wishid.' '.JText::_('on list').' #'.$wish->wishlist, 'wish', $wishid);
+				}
 			}
 
 			// Adjust credits
@@ -206,6 +213,11 @@ class WishlistEconomy extends JObject
 			if ($payees) {
 				foreach ($payees as $p)
 				{
+					$o =& JUser::getInstance( $p->uid );
+					if (!is_object($o) || !$o->get('id')) {
+						continue;
+					}
+					
 					$BTL = new Hubzero_Bank_Teller( $this->_db , $p->uid );
 					$hold = $this->getTotalPayment($wishid, $p->uid);
 					if ($hold) {
@@ -228,9 +240,13 @@ class WishlistEconomy extends JObject
 
 		// Points for wish author (needs to be granted by another person)
 		$juser =& JFactory::getUser();
-		if ($wish->ranking > 0 && $wish->proposed_by != $juser->get('id')) {
-			$BTLA = new Hubzero_Bank_Teller( $this->_db , $wish->proposed_by );
-			$BTLA->deposit($wish->ranking, JText::_('Your wish').' #'.$wishid.' '.JText::_('on list').' #'.$wish->wishlist.' '.JText::_('was granted'), 'wish', $wishid);
+		if ($wish->ranking > 0 && $wish->proposed_by != $juser->get('id') && $wish->proposed_by) {
+			
+			$o =& JUser::getInstance( $wish->proposed_by );
+			if (is_object($o) && $o->get('id')) {
+				$BTLA = new Hubzero_Bank_Teller( $this->_db , $wish->proposed_by );
+				$BTLA->deposit($wish->ranking, JText::_('Your wish').' #'.$wishid.' '.JText::_('on list').' #'.$wish->wishlist.' '.JText::_('was granted'), 'wish', $wishid);
+			}
 		}
 	}
 }

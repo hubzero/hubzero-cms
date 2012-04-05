@@ -191,10 +191,6 @@ class AnswersEconomy extends JObject
 		$BA_owner_share = $share + $reward;
 		$A_owner_share  = 0;
 
-		// Get qualifying users
-		$juser =& JUser::getInstance( $Q_owner );
-		$ba_user =& JUser::getInstance( $BA_owner );
-
 		// Calculate commissions for other answers
 		$ar = new AnswersResponse( $this->_db );
 		$result = $ar->getActions( $qid );
@@ -226,8 +222,9 @@ class AnswersEconomy extends JObject
 		}
 
 		// Reward asker
-		if (is_object($juser)) {
-			$BTL_Q = new Hubzero_Bank_Teller( $this->_db , $juser->get('id') );
+		$q_user =& JUser::getInstance( $Q_owner );
+		if (is_object($q_user) && $q_user->get('id')) {
+			$BTL_Q = new Hubzero_Bank_Teller( $this->_db , $q_user->get('id') );
 			//$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
 			// Separate comission and reward payment
 			// Remove credit
@@ -245,27 +242,32 @@ class AnswersEconomy extends JObject
 			}
 		}
 
-		// Reward other responders
-		if (count($eligible) > 0) {
-			foreach ($eligible as $e)
-			{
-				$auser =& JUser::getInstance( $e );
-				if (is_object($auser) && is_object($ba_user) && $ba_user->get('id') != $auser->get('id')) {
-					$BTL_A = new Hubzero_Bank_Teller( $this->_db , $auser->get('id') );
-					if (intval($A_owner_share) > 0) {
-						$A_owner_share_msg = ($type=='royalty') ? 'Royalty payment for answering question #'.$qid : 'Answered question #'.$qid.' that was recently closed';
-						$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
+		// Reward others
+		//$ba_user =& JUser::getInstance( $BA_owner );
+		ximport('Hubzero_User_Profile');
+		$ba_user = Hubzero_User_Profile::getInstance($BA_owner );
+		if (is_object($ba_user) && $ba_user->get('id')) 
+		{
+			// Reward other responders
+			if (count($eligible) > 0) {
+				foreach ($eligible as $e)
+				{
+					$auser = Hubzero_User_Profile::getInstance( $e );
+					if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id')) {
+						$BTL_A = new Hubzero_Bank_Teller( $this->_db , $auser->get('id') );
+						if (intval($A_owner_share) > 0) {
+							$A_owner_share_msg = ($type=='royalty') ? 'Royalty payment for answering question #'.$qid : 'Answered question #'.$qid.' that was recently closed';
+							$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
+						}
+					}
+					// is best answer eligible for extra points?
+					if (is_object($auser) && $auser->get('id') &&  is_object($ba_user) && $ba_user->get('id') && ($ba_user->get('id') == $auser->get('id'))) {
+						$ba_extra = 1;
 					}
 				}
-				// is best answer eligible for extra points?
-				if (is_object($auser) && is_object($ba_user) && ($ba_user->get('id') == $auser->get('id'))) {
-					$ba_extra = 1;
-				}
 			}
-		}
-
-		// Reward best answer
-		if (is_object($ba_user)) {
+			
+			// Reward best answer
 			$BTL_BA = new Hubzero_Bank_Teller( $this->_db , $ba_user->get('id') );
 
 			if (isset($ba_extra)) {
