@@ -87,9 +87,12 @@ defined('_JEXEC') or die('Restricted access');
 	$form_redirect = "";
 	if(JRequest::getVar('return', null, 'get'))
 	{
-		$form_redirect = JRequest::getVar('return', null, 'get');
+		// urldecode is due to round trip XSS protection added to this field, see ticket 1411
+		$form_redirect = urldecode(JRequest::getVar('return', null, 'get'));
 	}
 	
+	echo 'drb' . $form_redirect;
+
 	if ($this->task == 'create') {
 		$form_action = JRoute::_('index.php?option='.$this->option."&return=".$form_redirect);
 	} else {
@@ -1011,10 +1014,8 @@ defined('_JEXEC') or die('Restricted access');
 	$html .= "\t".'<input type="hidden" name="act" value="submit" />'."\n";
 	$html .= "\t".JHTML::_( 'form.token' );
 
-	
-	
-	
-	$html .= "\t".'<input type="hidden" name="return" value="' . $form_redirect . '" />'."\n";
+	// urlencode is XSS protection added to this field, see ticket 1411
+	$html .= "\t".'<input type="hidden" name="return" value="' . urlencode($form_redirect) . '" />'."\n";
 
 	$html .= '</form>'."\n";
 	$html .= '</div><!-- / .main section -->'."\n";
