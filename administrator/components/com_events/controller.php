@@ -1321,7 +1321,8 @@ class EventsController extends Hubzero_Controller
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Incoming
-		$id = JRequest::getInt( 'id', 0 );
+		$id = JRequest::getVar('id', array(0));
+		$id = intval($id[0]);
 
 		// Load the category, reorder, save
 		$row = new EventsCategory( $this->database );
@@ -1345,7 +1346,8 @@ class EventsController extends Hubzero_Controller
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Incoming
-		$id = JRequest::getInt( 'id', 0 );
+		$id = JRequest::getVar('id', array(0));
+		$id = intval($id[0]);
 
 		// Load the category, reorder, save
 		$row = new EventsCategory( $this->database );
