@@ -124,7 +124,7 @@ $topics = array(
 
 			<label<?php echo ($this->getError() && $this->reporter['email'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_FEEDBACK_EMAIL'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
-				<input type="text" name="reporter[email]" value="<?php echo (isset($this->reporter['email'])) ? $this->reporter['email'] : ''; ?>" id="reporter_email" />
+				<input type="text" name="reporter[email]" value="<?php echo (isset($this->reporter['email'])) ? htmlentities($this->reporter['email']) : ''; /*htmlentities is a xss fix, see ticket 1408*/ ?>" id="reporter_email" />
 			</label>
 <?php if ($this->getError() && $this->reporter['email'] == '') { ?>
 			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_EMAIL'); ?></p>

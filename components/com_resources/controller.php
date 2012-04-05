@@ -630,7 +630,10 @@ class ResourcesController extends Hubzero_Controller
 		$id       = JRequest::getInt( 'id', 0 );            // Rsource ID (primary method of identifying a resource)
 		$alias    = JRequest::getVar( 'alias', '' );        // Alternate method of identifying a resource
 		$fsize    = JRequest::getVar( 'fsize', '' );        // A parameter to see file size without formatting
-		$revision = JRequest::getVar( 'rev', '' );          // Get svk revision of a tool
+
+		// XSS fix. Revision gets pumped all over and dumped in URLs via plugins, easier to fix at the input instead of risking missing an output. See ticket 1416
+		$revision = htmlentities(JRequest::getVar( 'rev', '' ));          // Get svk revision of a tool
+
 		$tab      = JRequest::getVar( 'active', 'about' );  // The active tab (section)
 		
 		// Ensure we have an ID or alias to work with

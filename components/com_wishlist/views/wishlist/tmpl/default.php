@@ -211,10 +211,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .= $pageNav->total > count($wishlist->items) ? ' '.JText::_('NOTICE_TOP').' '.count($wishlist->items).' '.JText::_('NOTICE_OUT_OF').' '.$pageNav->total : strtolower(JText::_('ALL')).' '.count($wishlist->items) ;
 				}
 				else {
-					$html .= ($filters['start'] + 1);
-					$html .= ' - ';
+					<input type="hidden" name="sortby" value="<?php echo htmlentities($this->filters['sortby']); /* xss fix for ticket 1413/1417 */ ?>" />
+					<input type="hidden" name="filterby" value="<?php echo htmlentities($this->filters['filterby']); /* xss fix for ticket 1412/1419 */?>" />
 					$html .=$filters['start'] + count($wishlist->items);
-					$html .=' out of '.$pageNav->total;
+					<input type="hidden" name="task" value="<?php echo htmlentities($this->task); /* XSS fix, see ticket 1420*/ ?>" />
 				}
 				$html .= ' '.strtolower(JText::_('WISHES'));
 				$html .= $filters['tag'] != '' ? ' '.JText::_('WISHES_TAGGED_WITH').' <span class="tagname">'.$filters['tag'].'</span>.' : '.';

@@ -285,9 +285,10 @@ class WishlistController extends JObject
 				break;
 
 				default:
+					// XSS fix, passing raw user supplied/maniuplatable data to function that creates link. See ticket 1420
 					$pathway->addItem(
 						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-						'index.php?option='.$this->_option.'&task='.$this->_task
+						'index.php?option='.$this->_option.'&task='. htmlentities($this->_task)
 					);
 				break;
 			}

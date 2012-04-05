@@ -72,7 +72,7 @@ $juser =& JFactory::getUser();
 					<label for="entry-search-field">Enter keyword or phrase</label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
-					<input type="hidden" name="policy" value="<?php echo $this->filters['policy']; ?>" />
+					<input type="hidden" name="policy" value="<?php echo htmlentities($this->filters['policy']); ?>" />
 					<!-- <input type="hidden" name="option" value="<?php echo $this->option; ?>" /> -->
 					<input type="hidden" name="index" value="<?php echo $this->filters['index']; ?>" />
 				</fieldset>

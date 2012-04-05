@@ -127,6 +127,10 @@ if (!defined("n")) {
 		break;
 	}
 	//$html .= '<form action="'. Hubzero_Toolbox::thisurl() .'" method="post" id="hubForm">'.n;
+		// urldecode is due to round trip XSS protection added to this field, see ticket 1411
+		$form_redirect = urldecode(JRequest::getVar('return', null, 'get'));
+	echo 'drb' . $form_redirect;
+
 	if ($this->task == 'create') {
 		$html .= '<form action="'. JRoute::_('index.php?option='.$this->option) .'" method="post" id="hubForm">'.n;
 	} else {
@@ -1037,12 +1041,11 @@ if (!defined("n")) {
 	$html .= t.'<input type="hidden" name="act" value="submit" />'.n;
 	$html .= t.JHTML::_( 'form.token' );
 
-	$return_g = JRequest::getVar('return', null, 'get');
+	// urlencode is XSS protection added to this field, see ticket 1411
+	$html .= "\t".'<input type="hidden" name="return" value="' . urlencode($form_redirect) . '" />'."\n";
 
-	if ($return_g) {
 		$html .= t.'<input type="hidden" name="return" value="' . $return_g . '" />'.n;
 	}
-	
 	$html .= '</form>'.n;
 	$html .= '</div><!-- / .main section -->'.n;
 
