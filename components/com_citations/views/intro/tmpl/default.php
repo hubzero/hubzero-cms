@@ -42,6 +42,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <div id="introduction" class="section">
+	<div class="aside">
+		<h3>Help</h3>
+		<ul>
+			<?php if($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
+				<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">Submit a citation</a></li>
+			<?php endif; ?>
+			<?php if($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
+				<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=import'); ?>">Import citations</a></li>
+			<?php endif; ?>	
+		</ul>
+	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="two columns first">
 			<h3>What are citations?</h3>
@@ -49,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div>
 		<div class="two columns second">
 			<h3>Can I submit a citation?</h3>
-			<p>We are working on a new system where you can submit your own citations. Until then, please submit a citation to the support team using <a href="<?php echo JRoute::_('about/contact'); ?>">this</a> form.</p>
+			<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
 		</div>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
