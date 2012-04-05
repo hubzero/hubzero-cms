@@ -64,7 +64,28 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function format($row)
-	{
+	{   
+		//get fields to not include for all citations
+		$config = JComponentHelper::getParams("com_citations");
+		$exclude = $config->get("citation_download_exclude","");
+		if(strpos($exclude,",") !== false)
+		{
+			$exclude = str_replace(',',"\n",$exclude);
+		}
+		$exclude = array_values(array_filter(array_map("trim", explode("\n", $exclude))));
+		
+		//get fields to not include for specific citation
+		$cparams = new JParameter( $row->params );
+		$citation_exclude = $cparams->get("exclude","");
+		if(strpos($citation_exclude,",") !== false)
+		{
+			$citation_exclude = str_replace(',',"\n",$citation_exclude);
+		}
+		$citation_exclude = array_values(array_filter(array_map("trim", explode("\n", $citation_exclude))));
+		
+		//merge overall exclude and specific exclude
+		$exclude = array_values(array_unique(array_merge($exclude, $citation_exclude)));
+		
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'BibTex.php');
 		$bibtex = new Structures_BibTex();
 
@@ -139,6 +160,14 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		$addarray['call_number'] 	      = $row->call_number;
 		$addarray['label'] 			      = $row->label;
 		$addarray['research_notes'] 	  = $row->research_notes;
+        
+		foreach($addarray as $k => $v)
+		{
+			if(in_array($k, $exclude))
+			{
+				unset($addarray[$k]);
+			}
+		}
 
 		$bibtex->addEntry($addarray);
 

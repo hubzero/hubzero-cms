@@ -1150,7 +1150,7 @@ class CitationsController extends Hubzero_Controller
 		}
 
 		// Instantiate the download helper
-		include_once( JPATH_COMPONENT.DS.'citations.download.php' );
+		include_once( JPATH_COMPONENT.DS.'helpers'.DS.'citations.download.php' );
 
 		$formatter = new CitationsDownload;
 		$formatter->setFormat($format);

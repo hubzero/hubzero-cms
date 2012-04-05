@@ -190,7 +190,9 @@ class CitationsControllerCitations extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-
+		
+		$this->view->params = new JParameter($this->view->row->params);
+		
 		// Output the HTML
 		$this->view->display();
 	}
@@ -228,6 +230,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 		$citation = JRequest::getVar('citation', array(), 'post');
 		$citation = array_map('trim', $citation);
+		$exclude = JRequest::getVar('exclude', '', 'post');
 
 		// Bind incoming data to object
 		$row = new CitationsCitation($this->database);
@@ -238,7 +241,12 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
-
+		
+		//set params
+		$cparams = new JParameter( $this->getParams($row->id) );
+		$cparams->set('exclude', $exclude);
+		$row->params = $cparams->toString();
+		
 		// New entry so set the created date
 		if (!$row->id) 
 		{
@@ -312,6 +320,8 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 		//get the badges
 		$badges = trim(JRequest::getVar("badges", ""));
+		
+		$juser =& JFactory::getUser();
 
 		//add tags
 		$ct->tag_object($juser->get("id"), $row->id, $tags, 1, false, "");
@@ -485,6 +495,14 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
+	}
+	
+	private function getParams( $citation )
+	{
+		$database =& JFactory::getDBO();
+		$sql = "SELECT c.params from #__citations c WHERE id=".$citation;
+		$database->setQuery($sql);
+		return $database->loadResult();
 	}
 }
 

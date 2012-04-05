@@ -39,8 +39,10 @@ jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
 
 ?>
+<!--
 <script type="text/javascript" src="../includes/js/mootools.js"></script>
 <script type="text/javascript" src="components/com_citations/citations.js"></script>
+-->
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
@@ -52,11 +54,11 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if (form.title.value == '') {
-		alert( '<?php echo JText::_('CITATION_MUST_HAVE_TITLE'); ?>' );
-	} else {
+	//if (form.title.value == '') {
+	//	alert( '<?php echo JText::_('CITATION_MUST_HAVE_TITLE'); ?>' );
+	//} else {
 		submitform( pressbutton );
-	}
+	//}
 }
 </script>
 
@@ -367,6 +369,19 @@ function submitbutton(pressbutton)
 				</table>
 			</fieldset>
 		<?php endif; ?>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Exclude from Download'); ?></span></legend>
+			<table class="adminform">
+				<tbody>
+					<tr>
+						<td>
+							<textarea name="exclude" rows="10" style="width:98%;"><?php echo $this->params->get("exclude"); ?></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 	

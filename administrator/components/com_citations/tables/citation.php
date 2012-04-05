@@ -416,6 +416,13 @@ class CitationsCitation extends JTable
 	 * @var unknown
 	 */
 	var $tags				= NULL;
+	
+	/**
+	 * Description for 'params'
+	 * 
+	 * @var unknown
+	 */
+	var $params				= NULL;
 
 	/**
 	 * Short description for '__construct'
