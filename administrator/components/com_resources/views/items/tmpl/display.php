@@ -42,6 +42,16 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 
+$dateFormat = 'd M, Y';
+$timeFormat = 'H:m a';
+$tz = true;
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$dateFormat = '%d %b, %Y';
+	$timeFormat = '%I:%M %p';
+	$tz = 0;
+}
+
 JHTML::_('behavior.tooltip');
 //jimport('joomla.html.html.grid');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
@@ -87,13 +97,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo ($this->rows) ? count( $this->rows ) : 0;?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JText::_('Status'); ?></th>
-				<th><?php echo JText::_('Access'); ?></th>
-				<th><?php echo JText::_('License'); ?></th>
-				<th><?php echo JText::_('Type'); ?></th>
-				<th><?php echo JText::_('Children'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('Title'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('Status'), 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('Access'), 'access', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('Modified'), 'modified', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('Type'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('Children'), 'children', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JText::_('Tags'); ?></th>
 			</tr>
 		</thead>
@@ -246,8 +256,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $this->escape($row->groupname); ?></span>
 					</a>
 				</td>
-				<td>
-					<?php echo $this->escape($license); ?>
+				<td style="white-space: nowrap">
+					<time datetime="<?php echo $row->modified; ?>">
+						<?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); //$this->escape($license); ?>
+					</time>
 				</td>
 				<td style="white-space: nowrap">
 					<?php echo $this->escape(stripslashes($row->typetitle)); ?>
@@ -292,8 +304,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="sort_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
 	<?php echo JHTML::_('form.token'); ?>
 </form>

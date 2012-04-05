@@ -877,7 +877,7 @@ class ResourcesResource extends JTable
 	 */
 	public function getItems($filters=array())
 	{
-		$sql = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, 
+		$sql = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.modified, r.access, 
 				r.published, r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.params, u.name AS editor, 
 				g.name AS groupname, t.type AS typetitle, 
 				(SELECT count(*) FROM #__resource_assoc AS ra WHERE ra.parent_id=r.id) AS children 
