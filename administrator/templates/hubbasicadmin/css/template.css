@@ -1242,21 +1242,25 @@
 	}
 	/* Publish */
 	.yes:before,
-	.publish:before {
+	.publish:before,
+	.published:before {
 		content: "3";
 		font-size: 16px;
 	}
 	.yes:hover:before,
-	.publish:hover:before {
+	.publish:hover:before,
+	.published:hover:before {
 		color: #7F913C;
 	}
 	/* Unpublish */
 	.no:before,
-	.unpublish:before {
+	.unpublish:before,
+	.unpublished:before {
 		content: "d";
 	}
 	.no:hover:before,
-	.unpublish:hover:before {
+	.unpublish:hover:before,
+	.unpublished:hover:before {
 		color: #c55500;
 	}
 	/* Trash */
