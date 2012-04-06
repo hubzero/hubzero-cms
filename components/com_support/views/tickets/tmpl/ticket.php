@@ -124,7 +124,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 						<span class="date"><?php echo JHTML::_('date',$this->row->created, '%d %b, %Y', 0); ?></span>
 					</a>
 				</p><!-- / .ticket-title -->
-				<p><?php echo preg_replace('/  /', ' &nbsp;',htmlentities($this->row->report)); ?></p>
+				<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
 <?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 				<table id="ticket-details" summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
 					<caption id="toggle-details"><?php echo JText::_('TICKET_DETAILS'); ?></caption>
