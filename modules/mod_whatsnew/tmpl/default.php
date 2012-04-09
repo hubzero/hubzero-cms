@@ -60,7 +60,7 @@ if (!$this->tagged)
 			$html .= "\t\t" . '<li class="new">';
 			$html .= '<a href="' . JRoute::_($row->href) . '">' . stripslashes($row->title) . '</a><br />';
 			$html .= '<span>' . JText::_('in') . ' ';
-			$html .= ($row->area) ? JText::_($row->area) : JText::_(strtoupper($row->section));
+			$html .= ($row->area) ? JText::_(stripslashes($row->area)) : JText::_(strtoupper(stripslashes($row->section)));
 			if ($row->publish_up)
 			{
 				$html .= ', ' . JHTML::_('date', $row->publish_up, ' %b %d, %Y');
@@ -130,7 +130,7 @@ else
 		$html .= "\t" . '<p>' . JText::_('MOD_WHATSNEW_NO_RESULTS') . '</p>' . "\n";
 	}
 }
-$html .= "\t" . '<p class="more"><a href="'.JRoute::_('index.php?option=com_whatsnew&period=' . $this->area . ':' . $this->period) . '">' . JText::_('MOD_WHATSNEW_VIEW_MORE') . '</a></p>' . "\n";
+$html .= "\t" . '<p class="more"><a href="'.JRoute::_('index.php?option=com_whatsnew&period=' . $this->area . ':' . $this->period) . '">' . ($this->area ? JText::sprintf('MOD_WHATSNEW_VIEW_MORE_OF', $this->area) : JText::_('MOD_WHATSNEW_VIEW_MORE')) . '</a></p>' . "\n";
 $html .= '</div>' . "\n";
 
 echo $html;
