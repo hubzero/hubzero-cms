@@ -710,7 +710,7 @@ class WikiPage extends JTable
 	 */
 	public function getMetrics($filters=array())
 	{
-		$this->_db->setQuery("SELECT visitors, visits FROM jos_wiki_page_metrics WHERE pageid = ".$this->id);
+		$this->_db->setQuery("SELECT visitors, visits FROM #__wiki_page_metrics WHERE pageid = ".$this->id);
 		$vals = $this->_db->loadObjectList();
 		$stats = array(
 			'visitors' => 0,
