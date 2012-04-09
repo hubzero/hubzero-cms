@@ -131,8 +131,8 @@ class modYoutubeHelper
 			{
 				$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.jquery.js');
 				$jdocument->addScriptDeclaration("
-					jQuery(document).ready(function($){
-						var youtubefeed = new HUB.Youtube('youtube_feed_".$id."',{
+					$(document).ready(function($){
+						var youtubefeed = $('#youtube_feed_".$id."').youtube({
 							type: '".$type."',
 							search: '".$content."',
 							count: ".$num_videos.",
@@ -266,7 +266,7 @@ class modYoutubeHelper
 			//show the view more link based on params
 			if ($show_link) {
 				if ($alt_link != '') {
-					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$alt_link}\">More Videos</a></p><br class=\"clear\" />";
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$alt_link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
 				} else {
 					switch ($type)
 					{
@@ -280,7 +280,7 @@ class modYoutubeHelper
 							$link = "http://www.youtube.com/results?search_query=" . $content;
 							break;
 					}
-					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$link}\">More Videos</a></p><br class=\"clear\" />";
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
 				}
 			}
 
