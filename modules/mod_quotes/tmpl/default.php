@@ -57,10 +57,14 @@ if (count($this->quotes) > 0)
 		}
 		else
 		{
-			$html .= "\t" . '<p>' . stripslashes($quote->short_quote) . "\n";
 			if ($quote->short_quote != $quote->quote)
 			{
+				$html .= "\t" . '<p>' . rtrim(stripslashes($quote->short_quote), '.') . "\n";
 				$html .= "\t" . ' &#8230; <a href="/about/quotes/?quoteid=' . $quote->id . '" title="' . JText::sprintf('VIEW_QUOTE_BY', stripslashes($quote->fullname)) . '">' . JText::_('MORE') . '</a>';
+			}
+			else 
+			{
+				$html .= "\t" . '<p>' . stripslashes($quote->short_quote) . "\n";
 			}
 			$html .= '</p>' . "\n";
 		}
