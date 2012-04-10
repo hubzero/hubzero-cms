@@ -76,6 +76,8 @@ class CitationsControllerTypes extends Hubzero_Controller
 	 */
 	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
 		$this->view->config = $this->config;
 
 		if (is_object($row))
