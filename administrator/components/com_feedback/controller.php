@@ -206,6 +206,8 @@ class FeedbackController extends Hubzero_Controller
 	 */
 	protected function edit()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
 		if (JRequest::getMethod() == 'POST')
 		{
 			// Check for request forgeries
