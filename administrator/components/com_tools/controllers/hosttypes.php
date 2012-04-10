@@ -97,6 +97,8 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 	 */
 	public function editTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
 		// Incoming
 		$item = JRequest::getVar('item', '', 'get');
 		

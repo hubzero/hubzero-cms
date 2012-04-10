@@ -56,16 +56,16 @@ else
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.class.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.utils.php' );
 
-$controllerName = JRequest::getCmd('controller', 'tables');
+$controllerName = JRequest::getCmd('controller', 'pipeline');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'tables';
+	$controllerName = 'pipeline';
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Tables'),
-	'index.php?option=com_tools&controller=tables',
-	$controllerName == 'tables'
+	JText::_('Pipeline'),
+	'index.php?option=com_tools&controller=pipeline',
+	$controllerName == 'pipeline'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Hosts'),

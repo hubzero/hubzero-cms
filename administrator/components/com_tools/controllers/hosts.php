@@ -181,6 +181,8 @@ class ToolsControllerHosts extends Hubzero_Controller
 	 */
 	public function editTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+		
 		// Incoming
 		$hostname = JRequest::getVar( 'hostname', '', 'get' );
 		
