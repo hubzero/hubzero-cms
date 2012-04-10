@@ -192,8 +192,8 @@ class plgSystemJquery extends JPlugin
 				{
 					$nds[$key] = 'function keepAlive() { $.get("index.php"); } jQuery(document).ready(function($){ var periodic = setInterval(keepAlive, 840000); });';
 				}
-			}*/
-			$data['script'] = $nds;
+			}
+			$data['script'] = $nds;*/
 
 			$document->setHeadData($data);
 		}
