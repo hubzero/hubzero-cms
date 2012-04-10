@@ -34,24 +34,18 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'AnswersControllerAnswers'
- * 
- * Long description (if any) ...
+ * Controller class for question responses
  */
 class AnswersControllerAnswers extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
 	public function execute()
 	{
-		$upconfig =& JComponentHelper::getParams('com_userpoints');
-		$this->banking = $upconfig->get('bankAccounts');
+		$this->banking = JComponentHelper::getParams('com_userpoints')->get('bankAccounts');
 
 		if ($this->banking)
 		{
@@ -62,9 +56,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'displayTask'
-	 * 
-	 * Long description (if any) ...
+	 * Display all responses for a given question
 	 * 
 	 * @return     void
 	 */
@@ -145,13 +137,12 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a new ticket
+	 * Create a new response
 	 *
 	 * @return	void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -160,8 +151,12 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
 		// Incoming
 		$qid = JRequest::getInt('qid', 0);
 		$ids = JRequest::getVar('id', array());
@@ -175,9 +170,16 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			$id = 0;
 		}
 
-		// load infor from database
-		$this->view->row = new AnswersResponse($this->database);
-		$this->view->row->load($id);
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else 
+		{
+			// load infor from database
+			$this->view->row = new AnswersResponse($this->database);
+			$this->view->row->load($id);
+		}
 
 		if ($this->_task == 'add')
 		{
@@ -208,11 +210,9 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'saveTask'
+	 * Save a response
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function saveTask()
 	{
@@ -227,7 +227,8 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$row = new AnswersResponse($this->database);
 		if (!$row->bind($answer))
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
@@ -240,14 +241,16 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// Check content
 		if (!$row->check())
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
 		// Store content
 		if (!$row->store())
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
@@ -259,22 +262,23 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			$aq->state = 1;
 			if (!$aq->store())
 			{
-				JError::raiseError(500, $aq->getError());
+				$this->addComponentMessage($aq->getError(), 'error');
+				$this->editTask($row);
 				return;
 			}
 		}
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('Answer Successfully Saved');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Answer Successfully Saved')
+		);
 	}
 
 	/**
-	 * Short description for 'removeTask'
+	 * Removes one or more entries and associated data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function removeTask()
 	{
@@ -310,15 +314,15 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**
-	 * Short description for 'acceptTask'
+	 * Mark an entry as "accepted" and unmark any previously accepted entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function acceptTask()
 	{
@@ -340,13 +344,22 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		if (count($id) < 1)
 		{
 			$action = ($publish == 1) ? 'accept' : 'unaccept';
-			echo AnswersHtml::alert(JText::_('Select an answer to ' . $action));
-			exit;
+			
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Select an answer to ' . $action),
+				'error'
+			);
+			return;
 		}
 		else if (count($id) > 1)
 		{
-			echo AnswersHtml::alert(JText::_('A question can only have one accepted answer'));
-			exit;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('A question can only have one accepted answer'),
+				'error'
+			);
+			return;
 		}
 
 		$ar = new AnswersResponse($this->database);
@@ -354,7 +367,11 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$ar->state = $publish;
 		if (!$ar->store())
 		{
-			JError::raiseError(500, $ar->getError());
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				$ar->getError(),
+				'error'
+			);
 			return;
 		}
 
@@ -405,34 +422,35 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// Set message
 		if ($publish == '1')
 		{
-			$this->_message = JText::_('Item successfully Accepted');
+			$message = JText::_('Item successfully Accepted');
 		}
 		else if ($publish == '0')
 		{
-			$this->_message = JText::_('Item successfully Unaccepted');
+			$message = JText::_('Item successfully Unaccepted');
 		}
 
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			$message
+		);
 	}
 
 	/**
-	 * Short description for 'cancelTask'
-	 * 
-	 * Long description (if any) ...
+	 * Cancel a task and redirect to default view
 	 * 
 	 * @return     void
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**
-	 * Short description for 'resetTask'
+	 * Reset the vote count for an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function resetTask()
 	{
@@ -462,7 +480,10 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Vote log has been reset.')
+		);
 	}
 }
 

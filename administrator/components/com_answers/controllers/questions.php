@@ -34,24 +34,18 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'AnswersControllerQuestions'
- * 
- * Long description (if any) ...
+ * Controller class for questions
  */
 class AnswersControllerQuestions extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
 	public function execute()
 	{
-		$upconfig =& JComponentHelper::getParams('com_userpoints');
-		$this->banking = $upconfig->get('bankAccounts');
+		$this->banking = JComponentHelper::getParams('com_userpoints')->get('bankAccounts');
 
 		if ($this->banking)
 		{
@@ -177,23 +171,26 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a new ticket
+	 * Create a new question
 	 *
 	 * @return	void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
-	 * Displays a question response for editing
+	 * Displays a question for editing
 	 *
 	 * @return	void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
 		if (is_array($ids))
@@ -202,8 +199,15 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Load object
-		$this->view->row = new AnswersQuestion($this->database);
-		$this->view->row->load($id);
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else 
+		{
+			$this->view->row = new AnswersQuestion($this->database);
+			$this->view->row->load($id);
+		}
 
 		if ($id)
 		{
@@ -243,11 +247,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'saveTask'
+	 * Save a question
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function saveTask()
 	{
@@ -261,15 +263,17 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Ensure we have at least one tag
 		if (!$question['tags'])
 		{
-			echo AnswersHtml::alert(JText::_('Question must have at least 1 tag'));
-			exit();
+			$this->addComponentMessage(JText::_('Question must have at least 1 tag'), 'error');
+			$this->editTask();
+			return;
 		}
 
 		// Initiate extended database class
 		$row = new AnswersQuestion($this->database);
 		if (!$row->bind($question))
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
@@ -283,14 +287,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Check content
 		if (!$row->check())
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
 		// Store content
 		if (!$row->store())
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
@@ -299,16 +305,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$at->tag_object($this->juser->get('id'), $row->id, $question['tags'], 1, 1);
 
 		// Redirect back to the full questions list
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('Question Successfully Saved');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Question Successfully Saved')
+		);
 	}
 
 	/**
-	 * Short description for 'removeTask'
+	 * Delete one or more questions and associated data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function removeTask()
 	{
@@ -320,7 +326,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		if (count($ids) <= 0)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			);
 			return;
 		}
 
@@ -390,14 +398,14 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_message = JText::_('Question deleted');
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Question deleted')
+		);
 	}
 
 	/**
-	 * Short description for 'openTask'
-	 * 
-	 * Long description (if any) ...
+	 * Set one or more questions to open
 	 * 
 	 * @return     void
 	 */
@@ -407,9 +415,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'closeTask'
-	 * 
-	 * Long description (if any) ...
+	 * Set one or more questions to closed
 	 * 
 	 * @return     void
 	 */
@@ -419,11 +425,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'stateTask'
+	 * Set the state of one or more questions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function stateTask()
 	{
@@ -440,9 +444,11 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		{
 			$action = ($publish == 1) ? JText::_('close') : JText::_('open');
 
-			$this->_message = JText::_('Select a question to ' . $action);
-			$this->_messageType = 'error';
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Select a question to ' . $action),
+				'error'
+			);
 			return;
 		}
 
@@ -498,34 +504,35 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// set message
 		if ($publish == 1)
 		{
-			$this->_message = JText::_(count($ids) . ' Item(s) successfully Closed');
+			$message = JText::_(count($ids) . ' Item(s) successfully Closed');
 		}
 		else if ($publish == 0)
 		{
-			$this->_message = JText::_(count($ids) . ' Item(s) successfully Opened');
+			$message = JText::_(count($ids) . ' Item(s) successfully Opened');
 		}
 
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			$message
+		);
 	}
 
 	/**
-	 * Short description for 'cancel'
-	 * 
-	 * Long description (if any) ...
+	 * Cancel a task and redirect to default view
 	 * 
 	 * @return     void
 	 */
 	public function cancel()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**
-	 * Short description for '_getPointReward'
+	 * Get the amount of point rewards for a question
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
+	 * @param      integer $id ID of question
 	 * @return     mixed Return description (if any) ...
 	 */
 	private function _getPointReward($id)
@@ -536,9 +543,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for '_getAbuseReports'
-	 * 
-	 * Long description (if any) ...
+	 * Get the count of abuse reports on a question
 	 * 
 	 * @param      unknown $id Parameter description (if any) ...
 	 * @param      unknown $cat Parameter description (if any) ...
@@ -559,9 +564,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for '_getTags'
-	 * 
-	 * Long description (if any) ...
+	 * Get the tags on a question
 	 * 
 	 * @param      string $id Parameter description (if any) ...
 	 * @param      mixed $tagger_id Parameter description (if any) ...
