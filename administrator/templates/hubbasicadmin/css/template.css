@@ -380,6 +380,11 @@
 	select {
 		margin-bottom: 1em;
 	}
+	input.combobox {
+		background-color: #F6F6F6;
+		line-height: 1em;
+		margin-top: 2px;
+	}
 	table select,
 	table .input-text,
 	table input[type=text],

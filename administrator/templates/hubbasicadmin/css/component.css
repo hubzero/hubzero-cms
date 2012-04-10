@@ -818,7 +818,32 @@
 		padding-bottom: 0;
 		margin-bottom: 0;
 	}
-
+/* Tooltip */
+	.tool-tip,
+	.tip {
+		float: left;
+		background: #ffc;
+		border: 1px solid #D4D5AA;
+		padding: 5px;
+		max-width: 400px;
+		z-index: 50;
+	}
+	.tool-tip .tool-title,
+	.tip-title {
+		padding: 0;
+		margin: 0;
+		font-size: 1em;
+		font-weight: bold;
+		margin-top: -15px;
+		padding-top: 15px;
+		padding-bottom: 5px;
+		background: url("../images/layout/selector-arrow.png") no-repeat;
+	}
+	.tool-tip .tool-text,
+	.tip-text {
+		font-size: 1em;
+		margin: 0;
+	}
 /* Notifications */
 	#system-message {
 		margin-bottom: 1.61803399em;
