@@ -45,8 +45,8 @@ $juser =& JFactory::getUser();
 JHTML::_('behavior.tooltip');
 ?>
 
-<form action="index.php?option=<?php echo $this->option; ?>" method="post" name="adminForm">
-	<fieldset id="filter">
+<form action="index.php?option=<?php echo $this->option; ?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
 		<label>
 			<?php echo JText::_('EVENTS_SEARCH'); ?>:
 			<input type="text" name="search" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
@@ -56,6 +56,7 @@ JHTML::_('behavior.tooltip');
 		
 		<input type="submit" name="submitsearch" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -178,11 +179,10 @@ $row = &$this->rows[$i];
 	$pages = $p->getCount(array('event_id'=>$row->id));
 
 	if ($times) {
-        ?><span class="editlinktip hasTip" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $times; ?>">
-			<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')">
+        ?>
+			<a class="state <?php echo $row->state ? 'unpublish' : 'publish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $times; ?>">
 				<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
-			</a>
-		</span><?php
+			</a><?php
 	}
 ?></td>
 				<td><?php 
@@ -195,8 +195,8 @@ $row = &$this->rows[$i];
 					$tsk = 'event';
 					$alt = 'announcement';
 					}
-				?><a class="<?php echo $class;?>" href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','make_<?php echo $tsk;?>')" title="Click to make into an <?php echo $tsk;?>"><span><?php echo $alt; ?></span></a></td>
-				<td><?php echo $times; ?></td>
+				?><a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','make_<?php echo $tsk;?>')" title="Click to make into an <?php echo $tsk;?>"><span><?php echo $alt; ?></span></a></td>
+				<td style="white-space: nowrap;"><?php echo $times; ?></td>
 				<td><?php
 				if ($row->checked_out) {
 					echo $row->editor;

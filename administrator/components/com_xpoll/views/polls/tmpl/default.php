@@ -38,17 +38,16 @@ JToolBarHelper::deleteList();
 
 $juser =& JFactory::getUser();
 ?>
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="admiForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-				<th><?php echo JText::_('POLL_TITLE'); ?></th>
-				<th><?php echo JText::_('OPTIONS'); ?></th>
-				<th><?php echo JText::_('PUBLISHED'); ?></th>
-				<th><?php echo JText::_('OPEN'); ?></th>
-				<th colspan="2"><?php echo JText::_('VOTES'); ?></th>
-				<th><?php echo JText::_('CHECKED_OUT'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('POLL_TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('OPTIONS'); ?></th>
+				<th scope="col"><?php echo JText::_('PUBLISHED'); ?></th>
+				<th scope="col"><?php echo JText::_('OPEN'); ?></th>
+				<th scope="col" colspan="2"><?php echo JText::_('VOTES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -79,11 +78,18 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<?php } ?>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;cid[]=<? echo $row->id; ?>" title="Edit this poll"><?php echo $row->title; ?></a></td>
 				<td><?php echo $row->numoptions; ?></td>
-				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>"><span><?php echo $alt; ?></span></a></td>
-				<td><a class="<?php echo $class2;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task2; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task2;?>"><span><?php echo $alt2; ?></span></a></td>
+				<td>
+					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+						<span><?php echo $alt; ?></span>
+					</a>
+				</td>
+				<td>
+					<a class="state <?php echo $class2;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task2; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task2;?>">
+						<span><?php echo $alt2; ?></span>
+					</a>
+				</td>
 				<td><?php echo $row->voters; ?></td>
 				<td><?php if ($row->voters > 0) { ?><a class="reset" href="index.php?option=<?php echo $this->option ?>&amp;task=reset&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Reset the stats on this poll"><span>reset</span></a><?php } ?></td>
-				<td><?php echo $row->editor; ?></td>
 			</tr>
 <?php	
 	$k = 1 - $k;

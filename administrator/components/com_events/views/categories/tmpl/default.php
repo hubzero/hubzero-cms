@@ -39,7 +39,7 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 	 <thead>
 	  <tr>
@@ -88,7 +88,7 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	   <td width="35%"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=editcat&amp;id=<?php echo $row->id;?>"><?php echo "$row->name ($row->title)"; ?></a></td>
  	   <td><?php echo $row->num; ?></td>
 	   <td><?php echo $row->checked_out; ?></td>
-	   <td><a class="<?php echo $class;?>" href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')"><span><?php echo $alt; ?></span></a></td>
+	   <td><a class="state <?php echo $class;?>" href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')"><span><?php echo $alt; ?></span></a></td>
 	   <td><?php echo $row->editor; ?></td>
 	   <td><span <?php echo $color_access;?>><?php echo $row->groupname;?></span></td>
 	   <td><?php	
