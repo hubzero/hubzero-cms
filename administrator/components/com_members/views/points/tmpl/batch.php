@@ -46,10 +46,10 @@ JToolBarHelper::cancel();
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
-		<fieldset>
+		<fieldset class="adminform">
 			<legend><span>Process batch transaction</span></legend>
 
-			<table class="adminform">
+			<table class="admintable">
 				<tbody>
 					<tr>
 						<td><label for="type">Transaction Type:</label></td>
@@ -66,12 +66,12 @@ JToolBarHelper::cancel();
 					</tr>
 					<tr>
 						<td><label for="description">Description:</label></td>
-						<td><input type="text" name="transaction[description]" id="description"  maxlength="250"  value="" /></td>
+						<td><input type="text" name="transaction[description]" id="description"  maxlength="250"  size="30" value="" /></td>
 					</tr>
 					<tr>
 						<td><label for="users">User list</label></td>
 						<td>
-							<textarea name="transaction[users]" id="users" rows="10"></textarea>
+							<textarea name="transaction[users]" id="users" rows="10" cols="50"></textarea>
 							<br /> Enter a comma-separated list of userids.
 						</td>
 					</tr>
@@ -80,10 +80,10 @@ JToolBarHelper::cancel();
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<fieldset>
+		<fieldset class="adminform">
 			<legend><span>Transaction log details</span></legend>
 			
-			<table class="adminform">
+			<table class="admintable">
 				<tbody>
 					<tr>
 						<td><label for="com">Category / Component</label></td>

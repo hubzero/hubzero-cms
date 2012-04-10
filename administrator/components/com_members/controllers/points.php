@@ -526,7 +526,7 @@ class MembersControllerPoints extends Hubzero_Controller
 	 */
 	public function royaltyTask()
 	{
-		$auto = JRequest::getInt('auto', 1);
+		$auto = JRequest::getInt('auto', 0);
 		$action = 'royalty';
 
 		if (!$auto) 

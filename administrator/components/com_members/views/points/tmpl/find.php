@@ -44,10 +44,10 @@ JToolBarHelper::title( JText::_( 'MEMBERS' ).': <small><small>[ Manage Points ]<
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-50 fltlft">
-		<fieldset>
+		<fieldset class="adminform">
 			<legend><span>Find User Details</span></legend>
 			
-			<table class="adminform">
+			<table class="admintable">
 				<tbody>
 					<tr>
 						<td><label for="uid">UID:</label></td>
@@ -58,7 +58,7 @@ JToolBarHelper::title( JText::_( 'MEMBERS' ).': <small><small>[ Manage Points ]<
 		</fieldset>
 	</div>
 	<div class="col width-50 fltrt">
-		<p>Enter a user ID to view their point history and balance.</p>
+		<p class="info">Enter a user ID to view their point history and balance.</p>
 	</div>
 	<div class="clr"></div>
 	
