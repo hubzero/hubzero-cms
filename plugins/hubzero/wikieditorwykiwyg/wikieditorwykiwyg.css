@@ -33,6 +33,10 @@
 		padding: 0;
 		background: url("images/header-bg.png");
 	}
+	html>body .wykiwyg-header {
+		*min-height: 30px;
+		*zoom: 1;
+	}
 	.wykiwyg-header:after {
 		content: "."; 
 		display: block; 

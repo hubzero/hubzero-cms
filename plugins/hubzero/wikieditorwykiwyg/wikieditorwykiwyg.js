@@ -623,7 +623,7 @@ WYKIWYG.converter = function() {
 
 		function writeDivTag(wholeMatch, m1, m2, m3, m4) {
 			var whole_match = m1,
-				atts        = m2;
+				atts        = m2,
 				content     = m3;
 
 			var a = [];
@@ -634,7 +634,7 @@ WYKIWYG.converter = function() {
 				if (atts[i] == '') {
 					continue;
 				}
-				item = atts[i].split('=');
+				var item = atts[i].split('=');
 				if (item.length > 1) {
 					item[0] = item[0].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
 					item[1] = item[1].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
@@ -702,7 +702,7 @@ WYKIWYG.converter = function() {
 				if (atts[i] == '') {
 					continue;
 				}
-				item = atts[i].split('=');
+				var item = atts[i].split('=');
 				if (item.length > 1) {
 					item[0] = item[0].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
 					item[1] = item[1].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
@@ -1539,7 +1539,7 @@ WYKIWYG.editor = function() {
 		
 		this.i.frameBorder = 0;
 		this.i.style.width = '100%'; //(obj.width || (this.t.offsetWidth || '500') - 8); 
-		/*this.i.height = (obj.height || (this.t.offsetHeight || '250') - 8);*/
+		//this.i.height = (obj.height || (this.t.offsetHeight || '250') - 8);
 		this.i.height = (obj.height || ((this.t.rows * parseInt(this.t.getStyle("font-size"))) || '250') - 8);
 		this.ie = T$$$();
 		h.className = obj.rowclass || 'wykiwyg-header';
@@ -1696,28 +1696,6 @@ WYKIWYG.editor = function() {
 				$(frm).addEvent('submit', function() {
 					var converter = new WYKIWYG.converter();
 					if (wwe.d) {
-						/*var v = wwe.e.body.innerHTML;
-						if (wwe.xhtml) {
-							v = v.replace(/<span class="apple-style-span">(.*)<\/span>/gi,'$1');
-							v = v.replace(/ class="apple-style-span"/gi,'');
-							v = v.replace(/<span style="">/gi,'');
-							v = v.replace(/<br>/gi,'<br />');
-							v = v.replace(/<br ?\/?>$/gi,'');
-							v = v.replace(/^<br ?\/?>/gi,'');
-							v = v.replace(/(<img [^>]+[^\/])>/gi,'$1 />');
-							v = v.replace(/<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
-							v = v.replace(/<i\b[^>]*>(.*?)<\/i[^>]*>/gi,'<em>$1</em>');
-							v = v.replace(/<span style="?text-decoration: underline;?"?>(.*?)<\/span>/gi,'<u>$1</u>');
-							v = v.replace(/<(b|strong|em|i|u) style="font-weight: normal;?">(.*)<\/(b|strong|em|i|u)>/gi,'$2');
-							v = v.replace(/<(b|strong|em|i|u) style="(.*)">(.*)<\/(b|strong|em|i|u)>/gi,'<span style="$2"><$4>$3</$4></span>');
-							v = v.replace(/<span style="?vertical-align: super;?"?>(.*)<\/span>/gi,'<sup>$1</sup>');
-							v = v.replace(/<span style="?vertical-align: sub;?"?>(.*)<\/span>/gi,'<sub>$1</sub>');
-							v = v.replace(/<span style="font-weight: normal;?">(.*)<\/span>/gi,'$1');
-							v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
-							v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
-							v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
-						}
-						wwe.t.value = converter.makeWiki(v);*/
 						wwe.t.value = wwe.makeWiki();
 					}
 				});
@@ -1817,27 +1795,6 @@ WYKIWYG.editor = function() {
 			this.i.style.display = 'block'; 
 			this.d = 1
 		} else {
-			/*var v = this.e.body.innerHTML;
-			if (this.xhtml) {
-				v = v.replace(/<span class="apple-style-span">(.*)<\/span>/gi,'$1');
-				v = v.replace(/ class="apple-style-span"/gi,'');
-				v = v.replace(/<span style="">/gi,'');
-				v = v.replace(/<br>/gi,'<br />');
-				v = v.replace(/<br ?\/?>$/gi,'');
-				v = v.replace(/^<br ?\/?>/gi,'');
-				v = v.replace(/(<img [^>]+[^\/])>/gi,'$1 />');
-				v = v.replace(/<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
-				v = v.replace(/<i\b[^>]*>(.*?)<\/i[^>]*>/gi,'<em>$1</em>');
-				v = v.replace(/<span style="?text-decoration: underline;?"?>(.*?)<\/span>/gi,'<u>$1</u>');
-				v = v.replace(/<(b|strong|em|i|u) style="font-weight: normal;?">(.*)<\/(b|strong|em|i|u)>/gi,'$2');
-				v = v.replace(/<(b|strong|em|i|u) style="(.*)">(.*)<\/(b|strong|em|i|u)>/gi,'<span style="$2"><$4>$3</$4></span>');
-				v = v.replace(/<span style="?vertical-align: super;?"?>(.*)<\/span>/gi,'<sup>$1</sup>');
-				v = v.replace(/<span style="?vertical-align: sub;?"?>(.*)<\/span>/gi,'<sub>$1</sub>');
-				v = v.replace(/<span style="font-weight: normal;?">(.*)<\/span>/gi,'$1');
-				v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
-				v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
-				v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
-			}*/
 			if (div) {
 				div.innerHTML = this.obj.toggletext || 'switch to wysiwyg';
 			}
@@ -1889,7 +1846,7 @@ window.addEvent('domready', function(){
 			toggle: true,
 			resize: true,
 			xhtml: true,
-			cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css',
+			cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
 		});
 		
 		wykiwygs.push(edtr);
