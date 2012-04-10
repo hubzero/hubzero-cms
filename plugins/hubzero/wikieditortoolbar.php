@@ -77,9 +77,9 @@ class plgHubzeroWikiEditorToolbar extends JPlugin
 	public function onInitEditor()
 	{
 		if ($this->_pushscripts) {
-			$document =& JFactory::getDocument();
-			$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'wikieditortoolbar'.DS.'wikieditortoolbar.js');
-			$document->addStyleSheet(DS.'plugins'.DS.'hubzero'.DS.'wikieditortoolbar'.DS.'wikieditortoolbar.css');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('hubzero', 'wikieditortoolbar');
+			Hubzero_Document::addPluginScript('hubzero', 'wikieditortoolbar');
 
 			$this->_pushscripts = false;
 		}
