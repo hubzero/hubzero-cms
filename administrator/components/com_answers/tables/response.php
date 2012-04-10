@@ -337,6 +337,11 @@ class AnswersResponse extends JTable
 
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
 			$query .= " ORDER BY " . $filters['sortby'];
+		} else {
+			if (isset($filters['sort'])) 
+			{
+				$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
+			}
 		}
 
 		if (isset($filters['limit']) && $filters['limit'] > 0) {

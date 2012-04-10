@@ -76,38 +76,48 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Filters
 		$this->view->filters = array();
+		$this->view->filters['tag']      = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.tag',
+			'tag',
+			''
+		);
+		$this->view->filters['q']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.q',
+			'q',
+			''
+		);
+		$this->view->filters['filterby'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.filterby',
+			'filterby',
+			'all'
+		);
+
+		// Paging
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.questions.limit',
+			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.questions.limitstart',
+			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['tag']      = $app->getUserStateFromRequest(
-			$this->_option . '.questions.tag',
-			'tag',
-			''
-		);
-		$this->view->filters['q']        = $app->getUserStateFromRequest(
-			$this->_option . '.questions.q',
-			'q',
-			''
-		);
-		$this->view->filters['filterby'] = $app->getUserStateFromRequest(
-			$this->_option . '.questions.filterby',
-			'filterby',
-			'all'
-		);
-		$this->view->filters['sortby']   = $app->getUserStateFromRequest(
-			$this->_option . '.questions.sortby',
-			'sortby',
-			'date'
-		);
+
+		// Sorting
+		$this->view->filters['sortby']   = '';
+		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
+			'created'
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
+			'DESC'
+		));
 
 		$aq = new AnswersQuestion($this->database);
 

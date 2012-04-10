@@ -69,44 +69,62 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-	<div class="col width-50">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend>Details</legend>
+			<legend><span>Details</span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label>Anonymous:</label></td>
-						<td><input type="checkbox" name="question[anonymous]" value="1" <?php echo ($this->row->anonymous) ? 'checked="checked"' : ''; ?> /> Hide your name</td>
+						<td class="key"><label for="anonymous">Anonymous:</label></td>
+						<td><input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->anonymous) ? 'checked="checked"' : ''; ?> /> Hide your name</td>
 					</tr>
 					<tr>
-						<td class="key"><label>Notify:</label></td>
-						<td><input type="checkbox" name="question[email]" value="1" <?php echo ($this->row->email) ? 'checked="checked"' : ''; ?> /> Send e-mail when someone posts a response</td>
+						<td class="key"><label for="email">Notify:</label></td>
+						<td><input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->email) ? 'checked="checked"' : ''; ?> /> Send e-mail when someone posts a response</td>
 					</tr>
 					<tr>
-						<td class="key"><label>Subject: <span class="required">*</span></label></td>
+						<td class="key"><label for="q_subject">Subject: <span class="required">*</span></label></td>
 						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo stripslashes($this->row->subject); ?>" /></td>
 					</tr>
 					<tr>
-						<td class="key" style="vertical-align:top;"><label>Question:</label></td>
+						<td class="key" style="vertical-align:top;"><label for="question[question]">Question:</label></td>
 						<td><?php echo $editor->display('question[question]', stripslashes($this->row->question), '360px', '200px', '50', '10'); ?></td>
 					</tr>
 					<tr>
-						<td class="key"><label>Tags: <span class="required">*</span></label></td>
+						<td class="key"><label for="q_tags">Tags: <span class="required">*</span></label></td>
 						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->tags; ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-50">
+	<div class="col width-50 fltrt">
+		<table class="meta" summary="Metadata for this entry">
+			<tbody>
+				<tr>
+					<th>ID:</th>
+					<td><?php echo $this->row->id; ?></td>
+				</tr>
+<?php if ($this->row->id) { ?>
+				<tr>
+					<th>Created:</th>
+					<td><?php echo $this->row->created; ?></td>
+				</tr>
+				<tr>
+					<th>Created by:</th>
+					<td><?php echo $this->row->created_by; ?></td>
+				</tr>
+<?php } ?>
+			</tbody>
+		</table>
 		<fieldset class="adminform">
-			<legend>Parameters</legend>
+			<legend><span>Parameters</span></legend>
 
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="question[created_by]">Change Creator:</label></td>
+						<td class="key"><label for="created_by">Change Creator:</label></td>
 						<td colspan="2"><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" /></td>
 					</tr>
 					<tr>
@@ -115,17 +133,13 @@ function submitbutton(pressbutton)
 						<td></td>
 					</tr>
 					<tr>
-						<td class="key">State:</td>
+						<td class="key"><label for="state">State:</label></td>
 						<td colspan="2">
-							<select name="question[state]">
+							<select name="question[state]" id="state">
 								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>>Open</option>
 								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>>Closed</option>
 							</select>
 						</td>
-					</tr>
-					<tr>
-						<td class="key">Created:</td>
-						<td colspan="2"><?php echo ($this->row->created != '0000-00-00 00:00:00') ? $create_date.'</td></tr><tr><td class="key">By:</td><td colspan="2">'.$this->row->created_by : 'New question'; ?></td>
 					</tr>
 				</tbody>
 			</table>

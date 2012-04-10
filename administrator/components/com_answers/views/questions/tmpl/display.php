@@ -50,37 +50,27 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
-	<fieldset id="filter">
-		<label>
-			<?php echo JText::_('Filter by:'); ?>
-			<select name="filterby" onchange="document.adminForm.submit( );">
-				<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>>Open Questions</option>
-				<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>>Closed Questions</option>
-				<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>>All Questions</option>
-			</select>
-		</label> 
-
-		<label>
-			<?php echo JText::_('Sort by:'); ?>
-			<select name="sortby" onchange="document.adminForm.submit( );">
-				<option value="rewards"<?php if ($this->filters['sortby'] == 'rewards') { echo ' selected="selected"'; } ?>>Rewards</option>
-				<option value="votes"<?php if ($this->filters['sortby'] == 'votes') { echo ' selected="selected"'; } ?>>Recommendations</option>
-                <option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>>Date</option>
-			</select>
-		</label> 
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label for="filterby"><?php echo JText::_('Filter by:'); ?></label> 
+		<select name="filterby" id="filterby" onchange="document.adminForm.submit( );">
+			<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>>Open Questions</option>
+			<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>>Closed Questions</option>
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>>All Questions</option>
+		</select>
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th><?php echo JText::_('ID'); ?></th>
-                <th><?php echo JText::_('Subject'); ?></th>
-				<th><?php echo JText::_('State'); ?></th>
-				<th><?php echo JText::_('Created'); ?></th>
-				<th><?php echo JText::_('Created by'); ?></th>
-				<th><?php echo JText::_('Answers'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Subject', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created by', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Answers', 'answers', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -100,29 +90,56 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 			$task = 'open';
 			$img = 'publish_x.png';
 			$alt = JText::_( 'Closed' );
+			$cls = 'unpublished';
 			break;
 		case '0':
 			$task = 'close';
 			$img = 'publish_g.png';
 			$alt = JText::_( 'Open' );
+			$cls = 'published';
 			break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-            	<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><?php echo $row->id ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="Edit this question"><?php echo stripslashes($row->subject); ?></a></td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+				</td>
+				<td>
+					<?php echo $row->id; ?>
+				</td>
+				<td>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="Edit this question">
+						<span><?php echo stripslashes($row->subject); ?></span>
 					</a>
 				</td>
-				<td><?php echo JHTML::_('date', $row->created, '%d %b, %Y') ?></td>
-				<td><?php echo $row->created_by; if ($row->anonymous) { echo ' (anon)'; } ?></td>
+				<td>
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+						<span><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
+					</a>
+				</td>
+				<td style="white-space: nowrap;">
+					<time><?php echo JHTML::_('date', $row->created, '%d %b, %Y') ?></time>
+				</td>
+				<td>
+					<a class="user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->created_by; ?>">
+						<?php echo $this->escape(stripslashes($row->created_by)); ?>
+					</a>
+<?php if ($row->anonymous) { ?>
+					<br /><span>(anonymous)</span>
+<?php } ?>
+				</td>
 <?php if ($row->answers > 0) { ?>
-				<td><a href="index.php?option=<?php echo $option ?>&amp;controller=answers&amp;qid=<? echo $row->id; ?>" title="View the answers for this Question"><?php echo $row->answers; ?> response<?php if ($row->answers != 1) { echo 's'; } ?></a></td>
+				<td style="white-space: nowrap;">
+					<a class="glyph comment" href="index.php?option=<?php echo $option ?>&amp;controller=answers&amp;qid=<? echo $row->id; ?>" title="View the answers for this Question">
+						<span><?php echo $row->answers; ?> response(s)</span>
+					</a>
+				</td>
 <?php } else { ?>
-				<td><?php echo $row->answers; ?></td>
+				<td>
+					<span class="glyph comment">
+						<span><?php echo $row->answers; ?></span>
+					</span>
+				</td>
 <?php } ?>
 			</tr>
 <?php
@@ -136,12 +153,8 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
-
-<p>State: (click icon above to toggle state)</p>
-<ul class="key">
-	<li class="published"><img src="images/publish_g.png" width="16" height="16" border="0" alt="Open" /> = Open Question</li>
-	<li class="unpublished"><img src="images/publish_x.png" width="16" height="16" border="0" alt="Closed" /> = Closed Question</li>
-</ul>

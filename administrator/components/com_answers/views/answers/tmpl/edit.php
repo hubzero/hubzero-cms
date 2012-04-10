@@ -75,18 +75,18 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" class="editform">
-	<div class="col width-50">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend>Details</legend>
+			<legend><span>Details</span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label>Anonymous:</label></td>
-						<td><input type="checkbox" name="answer[anonymous]" value="1" <?php echo ($this->row->anonymous) ? 'checked="checked"' : ''; ?> /></td>
+						<td class="key"><label for="anonymous">Anonymous:</label></td>
+						<td><input type="checkbox" name="answer[anonymous]" id="anonymous" value="1" <?php echo ($this->row->anonymous) ? 'checked="checked"' : ''; ?> /></td>
 					</tr>
 					<tr>
-						<td class="key"><label>Question:</label></td>
+						<td class="key">Question:</td>
 						<td><?php echo stripslashes($this->question->subject); ?></td>
 					</tr>
 					<tr>
@@ -97,9 +97,27 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-50">
+	<div class="col width-50 fltrt">
+		<table class="meta" summary="Metadata for this entry">
+			<tbody>
+				<tr>
+					<th>ID:</th>
+					<td><?php echo $this->row->id; ?></td>
+				</tr>
+<?php if ($this->row->id) { ?>
+				<tr>
+					<th>Created:</th>
+					<td><?php echo $this->row->created; ?></td>
+				</tr>
+				<tr>
+					<th>Created by:</th>
+					<td><?php echo $this->row->created_by; ?></td>
+				</tr>
+<?php } ?>
+			</tbody>
+		</table>
 		<fieldset class="adminform">
-			<legend>Parameters</legend>
+			<legend><span>Parameters</span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
@@ -123,10 +141,6 @@ function submitbutton(pressbutton)
 								<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('resethelpful');" />
 							<?php } ?>
 						</td>
-					</tr>
-					<tr>
-						<td class="key">Created:</td>
-						<td colspan="2"><?php echo ($this->row->created != '0000-00-00 00:00:00') ? $create_date.'</td></tr><tr><td class="key">By:</td><td colspan="2">'.$this->row->created_by : 'New question'; ?></td>
 					</tr>
 				</tbody>
 			</table>

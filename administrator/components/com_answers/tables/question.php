@@ -225,7 +225,16 @@ class AnswersQuestion extends JTable
 			case 'responses': $query .= " ORDER BY rcount DESC, C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
 			case 'status':    $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
 			case 'withinplugin':   $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
-			default:       	  $query .= " "; break;
+			default:
+				if (isset($filters['sort'])) 
+				{
+					$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
+				}
+				else 
+				{
+					$query .= " ";
+				}
+			break;
 		}
 
 		return $query;

@@ -76,34 +76,42 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		// Filters
 		$this->view->filters = array();
+		$this->view->filters['filterby'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.filterby',
+			'filterby',
+			'all'
+		);
+		$this->view->filters['qid']      = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.qid',
+			'qid',
+			0,
+			'int'
+		);
+		// Paging
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.answers.limit',
+			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.answers.limitstart',
+			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['filterby'] = $app->getUserStateFromRequest(
-			$this->_option . '.answers.filterby',
-			'filterby',
-			'all'
-		);
-		$this->view->filters['sortby']   = $app->getUserStateFromRequest(
-			$this->_option . '.answers.sortby',
-			'sortby',
-			'm.id DESC'
-		);
-		$this->view->filters['qid']      = $app->getUserStateFromRequest(
-			$this->_option . '.answers.qid',
-			'qid',
-			0,
-			'int'
-		);
+		// Sorting
+		$this->view->filters['sortby']   = '';
+		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
+			'created'
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
+			'DESC'
+		));
 
 		$this->view->question = new AnswersQuestion($this->database);
 		$this->view->question->load($this->view->filters['qid']);
