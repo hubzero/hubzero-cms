@@ -217,9 +217,29 @@ class plgXMessageHandler extends JPlugin
 		// Do we have any recipients?
 		if (count($to) > 0) {
 			// Load plugins
-			//JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher =& JDispatcher::getInstance();
 			ximport('Hubzero_User_Profile');
+			
+			$mconfig = JComponentHelper::getParams('com_members');
+			
+			// Get all the sender's groups
+			if ($mconfig->get('user_messaging', 1) == 1)
+			{
+				$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+				$xgroups = $profile->getGroups('all');
+				$usersgroups = array();
+				if (!empty($xgroups)) 
+				{
+					foreach ($xgroups as $group)
+					{
+						if ($group->regconfirmed) 
+						{
+							$usersgroups[] = $group->cn;
+						}
+					}
+				}
+			}
+			
 			// Loop through each recipient
 			foreach ($to as $uid)
 			{
@@ -237,8 +257,31 @@ class plgXMessageHandler extends JPlugin
 
 				//$user =& JUser::getInstance($uid);
 				$user = Hubzero_User_Profile::getInstance($uid);
-				if (!$user->get('username')) {
+				if (!$user->get('username')) 
+				{
 					continue;
+				}
+				
+				if ($mconfig->get('user_messaging', 1) == 1)
+				{
+					$pgroups = $user->getGroups('all');
+					$profilesgroups = array();
+					if (!empty($pgroups)) 
+					{
+						foreach ($pgroups as $group)
+						{
+							if ($group->regconfirmed) 
+							{
+								$profilesgroups[] = $group->cn;
+							}
+						}
+					}
+					// Find the common groups
+					$common = array_intersect($usersgroups, $profilesgroups);
+					if (count($common) <= 0) 
+					{
+						continue;
+					}
 				}
 
 				// Do we have any methods?
