@@ -1121,6 +1121,9 @@ class GroupsController extends Hubzero_Controller
 		$inviteemails = $group_inviteemails->getInviteEmails($group->get('gidNumber'), true);
 		$inviteemails_with_token = $group_inviteemails->getInviteEmails($group->get('gidNumber'), false);
 		
+		//group log comment
+		$log_comments = "";
+		
 		//check to make sure weve been invited
 		if($token)
 		{
@@ -1130,7 +1133,13 @@ class GroupsController extends Hubzero_Controller
 			
 			if ($invite) {
 				$group->add('members',array($this->juser->get('id')));
-				$group->update();
+				$group->update(); 
+				
+				$log_comments = $invite['email'];
+				$update = "UPDATE `jos_course_enrollments` SET `uid`=".$this->juser->get('id')." WHERE MD5(`enrollment_id`)='".$token."'";
+				$this->database->setQuery($update);
+				$this->database->query();
+				
 				$sql = "DELETE FROM #__xgroups_inviteemails WHERE id=".$this->database->quote($invite['id']);
 				$this->database->setQuery($sql);
 				$this->database->query();
@@ -1161,6 +1170,7 @@ class GroupsController extends Hubzero_Controller
 		$log->gid = $group->get('gidNumber');
 		$log->uid = $this->juser->get('id');
 		$log->timestamp = date( 'Y-m-d H:i:s', time() );
+		$log->comments = $log_comments;
 		$log->action = 'membership_invite_accepted';
 		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) {
