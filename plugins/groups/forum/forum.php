@@ -1347,6 +1347,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		// Bind data
+		/* @var $model ForumPost */
 		$model = new ForumPost($this->database);
 		if (!$model->bind($fields)) 
 		{
@@ -1387,16 +1388,23 @@ class plgGroupsForum extends Hubzero_Plugin
 		$tagger = new ForumTags($this->database);
 		$tagger->tag_object($this->juser->get('id'), $model->id, $tags, 1);
 		
-		// Determine message
+		// Determine post save message 
+		// Also, get subject of post for outgoing email, either the title of parent post (for replies), or title of current post (for new threads)
 		if (!$fields['id'])
 		{
 			if (!$fields['parent'])
 			{
 				$message = JText::_('PLG_GROUPS_FORUM_THREAD_STARTED');
+				$posttitle = $model->title;
 			}
 			else 
 			{
 				$message = JText::_('PLG_GROUPS_FORUM_POST_ADDED');
+				
+				/* @var $parentForumPost ForumPost */
+				$parentForumPost = new ForumPost($this->database);
+				$parentForumPost->load(intval($fields['parent']));
+				$posttitle = $parentForumPost->title;
 			}
 		}
 		else 
@@ -1484,12 +1492,14 @@ class plgGroupsForum extends Hubzero_Plugin
 			{
 				ximport('Hubzero_Emailtoken');
 				$encryptor = new Hubzero_Email_Token();
+				$jconfig =& JFactory::getConfig();
 
 				// Construct User specific Email ThreadToken
 				// Version, type, userid, xforumid
 				$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
-				$subject = $this->group->get('cn') . ' group discussion post (' . $parent . ')';
-				$jconfig =& JFactory::getConfig();
+
+				$subject = ' - ' . $this->group->get('cn') . ' - ' . $posttitle;
+				
 				$from = array();
 				$from['name']  = $jconfig->getValue('config.sitename') . ' ';
 				$from['email'] = $jconfig->getValue('config.mailfrom');
@@ -1591,7 +1601,6 @@ class plgGroupsForum extends Hubzero_Plugin
 			'passed'
 		);
 	}
-
 	/**
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
