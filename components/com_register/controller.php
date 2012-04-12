@@ -58,6 +58,15 @@ class RegisterController extends Hubzero_Controller
 			$this->baseURL = substr($this->baseURL,0, -1);
 		}
 
+		// Make sure we're using a secure connection        
+		$xhub = &Hubzero_Factory::getHub();
+
+		if ( !isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off' )
+		{
+			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+			die('insecure connection and redirection failed');
+		}
+
 		$this->_task = strtolower(JRequest::getVar( 'task', '' ));
 		$act = strtolower(JRequest::getVar( 'act', '', 'post' ));
 
