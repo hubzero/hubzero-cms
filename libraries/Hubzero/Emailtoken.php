@@ -115,6 +115,7 @@ class Hubzero_Email_Token
 
 	}
 
+
     /**
      *
      * @param  int    $version
