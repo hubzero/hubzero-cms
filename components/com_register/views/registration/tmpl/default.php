@@ -91,8 +91,6 @@ defined('_JEXEC') or die('Restricted access');
 		$form_redirect = urldecode(JRequest::getVar('return', null, 'get'));
 	}
 	
-	echo 'drb' . $form_redirect;
-
 	if ($this->task == 'create') {
 		$form_action = JRoute::_('index.php?option='.$this->option."&return=".$form_redirect);
 	} else {
