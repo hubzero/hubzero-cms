@@ -53,7 +53,7 @@ class Hubzero_Factory
 		{
 			ximport('Hubzero_User_Profile');
 			$juser =& JFactory::getUser();
-			$instances[0] =& Hubzero_User_Profile::getInstance($juser->get('username'));
+			$instances[0] =& Hubzero_User_Profile::getInstance($juser->get('id'));
 
 			if (is_object($instances[0]))
 				return $instances[0];
