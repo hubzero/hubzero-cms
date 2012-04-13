@@ -185,8 +185,9 @@ class CitationFormat
 		$ct = new CitationsType( $db );
 		$types = $ct->getType();
 
+		$type = '';
 		foreach($types as $t) {
-			if($t['id'] == $citation->type) {
+			if ($t['id'] == $citation->type) {
 				$type = $t['type'];
 			}
 		}
@@ -205,6 +206,8 @@ class CitationFormat
 			case 'journal article';
 				$c_type = "journal";
 				break;
+			default:
+			break;
 		}
 
 		//var to hold COinS data
