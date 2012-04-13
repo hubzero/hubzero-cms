@@ -130,7 +130,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('EDITJOB_DESC_INFO').'</p>'.n;
-		$html .= JobsHtml::wikiHelp();
+		//$html .= JobsHtml::wikiHelp();
 		$html .= t.'</div>'.n;
 		$html .= t.t.t.'	 <fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_SPECIFICS').'</h3>'.n;
