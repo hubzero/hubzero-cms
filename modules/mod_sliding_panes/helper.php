@@ -189,7 +189,7 @@ class modSlidingPanes
 
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$js = "$(document).ready(function(){ $('#".$this->container."').jSlidingPanes(); });";
+			$js = "$(document).ready(function(){ $('#".$this->container." .panes-content').jSlidingPanes(); });";
 		}
 		else 
 		{

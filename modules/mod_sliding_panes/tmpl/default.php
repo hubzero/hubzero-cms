@@ -32,8 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="<?php echo $modslidingpanes->container; ?>">
-	<!-- <div class="panes">
-		<div class="panes-content"> -->
+	<div class="panes">
+		<div class="panes-content">
 <?php
 if ($modslidingpanes->content) {
 	$i = 1;
@@ -51,6 +51,6 @@ if ($modslidingpanes->content) {
 	}
 }
 ?>
-		<!--</div> / .panes-content -->
-	<!--</div> / .panes -->
+		</div><!-- / .panes-content -->
+	</div><!-- / .panes -->
 </div><!-- / #pane-sliders -->
