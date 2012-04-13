@@ -196,9 +196,9 @@ class modNotices
 		// Get some initial parameters
 		$params = $this->params;
 		$start = $params->get( 'start_publishing' );
-		$start = JHTML::_('date',$start,'%Y-%m-%d %H:%M:%S');
+		$start = JHTML::_('date',$start,'%Y-%m-%d %H:%M:%S', 0);
 		$stop  = $params->get( 'stop_publishing' );
-		$stop  = JHTML::_('date',$stop,'%Y-%m-%d %H:%M:%S');
+		$stop  = JHTML::_('date',$stop,'%Y-%m-%d %H:%M:%S', 0);
 
 		$this->publish = false;
 		if (!$start || $start == '0000-00-00 00:00:00') {
