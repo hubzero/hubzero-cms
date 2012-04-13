@@ -181,8 +181,20 @@ class WikiController extends Hubzero_Controller
 		if (!$path) {
 			$path = DS.'components'.DS.$this->_option.DS;
 		}
-		if (is_file(JPATH_ROOT.$path.$name.'.js')) {
-			$document->addScript($path.$name.'.js');
+		$pathAlt = null;
+		
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$pathAlt = $path . $name . '.jquery.js';
+		}
+
+		if ($pathAlt && is_file(JPATH_ROOT . $pathAlt))
+		{
+			$document->addScript($pathAlt);
+		}
+		else if (is_file(JPATH_ROOT . $path . $name.'.js'))
+		{
+			$document->addScript($path . $name.'.js');
 		}
 	}
 
