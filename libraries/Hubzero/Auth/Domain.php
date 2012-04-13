@@ -174,6 +174,19 @@ class Hubzero_Auth_Domain
 	 * @param      unknown $domain Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
+	public function find_by_id($id)
+	{
+		$hzad = new Hubzero_Auth_Domain();
+		$hzad->id = $id;
+
+		$hzad->read();
+
+		if (empty($hzad->authenticator))
+			return false;
+
+		return $hzad;
+	}
+
 	public function createInstance($type,$authenticator,$domain = null)
 	{
 		if (empty($type) || empty($authenticator))
