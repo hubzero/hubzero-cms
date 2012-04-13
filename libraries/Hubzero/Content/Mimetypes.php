@@ -807,7 +807,7 @@ class Hubzero_Content_Mimetypes
 				return $MIMEType;
 			}
 		} else {
-			$extension = $this->_getExtension($file);
+			$extension = $this->getExtension($file);
 			if (array_key_exists($extension, $this->mimeTypes)) {
 				return $this->mimeTypes[$extension];
 			}
