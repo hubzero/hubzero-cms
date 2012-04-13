@@ -56,17 +56,17 @@ class ResourcesElementGeo extends ResourcesElement
 	 */
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
-		$output = '<label id="'.$control_name.'-'.$name.'-lbl" for="'.$control_name.'-'.$name.'"';
+		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description) 
 		{
-			$output .= ' class="hasTip" title="'.JText::_($label).'::'.JText::_($description).'">';
+			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
 		} 
 		else 
 		{
 			$output .= '>';
 		}
 		$output .= JText::_($label) . ' <span class="hint">' . JText::_('(street, city, state/province postal-code, country)') . '</span>';
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . JText::_('Required') . '</span>' : '';
 		$output .= '</label>';
 
 		return $output;
@@ -85,17 +85,25 @@ class ResourcesElementGeo extends ResourcesElement
 	{
 		if (!$this->_script)
 		{
+			$script = 'geo';
+			if (JPluginHelper::isEnabled('system', 'jquery'))
+			{
+				$script .= '.jquery';
+			}
 			$document =& JFactory::getDocument();
-			$document->addScript('/components/com_resources/models/element/geo.js');
+			$document->addScript('//maps.google.com/maps/api/js?sensor=false');
+			$document->addScript('/components/com_resources/models/element/' . $script . '.js');
 			$this->_script = true;
 		}
 		
-		$size = ( isset($element->size) ? 'size="'.$element->size.'"' : '' );
-		$class = ( isset($element->class) ? 'class="geolocation '.$element->class.'"' : 'class="geolocation"' );
+		$size  = (isset($element->size)  ? 'size="' . $element->size . '"'               : '');
+		$class = (isset($element->class) ? 'class="geolocation ' . $element->class . '"' : 'class="geolocation"');
 		
 		$address = $this->_getValue('value', $value);
 		$lat = $this->_getValue('lat', $value);
+		$lat = (trim($lat)) ? $lat : '0.0';
 		$lng = $this->_getValue('lng', $value);
+		$lng = (trim($lng)) ? $lng : '0.0';
 		
 		$value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
 		$value = preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
@@ -107,9 +115,9 @@ class ResourcesElementGeo extends ResourcesElement
          */
         $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		$html  = '<input type="text" name="'.$control_name.'['.$name.'][value]" id="'.$control_name.'-'.$name.'" value="'.$address.'" '.$class.' '.$size.' />';
-		$html .= '<input type="hidden" name="'.$control_name.'['.$name.'][lat]" id="'.$control_name.'-'.$name.'-lat" value="'.$lat.'" />';
-		$html .= '<input type="hidden" name="'.$control_name.'['.$name.'][lng]" id="'.$control_name.'-'.$name.'-lng" value="'.$lng.'" />';
+		$html  = '<input type="text" name="' . $control_name . '[' . $name . '][value]" id="' . $control_name . '-' . $name . '" value="' . $address . '" ' . $class . ' ' . $size . ' />';
+		$html .= '<input type="hidden" name="' . $control_name . '[' . $name . '][lat]" id="' . $control_name . '-' . $name . '-lat" value="' . $lat . '" />';
+		$html .= '<input type="hidden" name="' . $control_name . '[' . $name . '][lng]" id="' . $control_name . '-' . $name . '-lng" value="' . $lng . '" />';
 
 		return $html;
 	}

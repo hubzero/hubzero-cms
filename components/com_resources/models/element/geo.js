@@ -23,15 +23,20 @@ HUB.Resources.Geo = {
 
 	initialize: function() {
 		$$('.geolocation').each(function(el){
-			el.addEvent('blur', function() {
+			$(el).addEvent('blur', function() {
 				var field = $(this);
-				var val = $(this).value.split(' ').join('+'); // strangely enough, this is faster than replace()
-				var jSonRequest = new Json.Remote("https://maps.googleapis.com/maps/api/geocode/json?sensor=true_or_false&address=" + val, {onComplete: function(response){
-					if (response.status == 'OK') {
-						$($(field).id+'-lat').value = response.results.geometry.location.lat;
-					    $($(field).id+'-lng').value = response.results.geometry.location.lng;
-					}
-				}}).send();
+				//var val = $(this).value.split(' ').join('+'); // strangely enough, this is faster than replace()
+
+				var geocoder = new google.maps.Geocoder();
+
+				if (geocoder) {
+					geocoder.geocode({ 'address': $(this).value }, function (results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							$($(field).id + '-lat').val(results[0].geometry.location.Ya);
+						    $($(field).id + '-lng').val(results[0].geometry.location.Za);
+						}
+					});
+				}
 			});
 		});
 	} // end initialize
