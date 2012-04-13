@@ -31,8 +31,16 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+/**
+ * Controller class for forum sections
+ */
 class ForumControllerSections extends Hubzero_Controller
 {
+	/**
+	 * Display all sections
+	 *
+	 * @return	void
+	 */
 	public function displayTask()
 	{
 		// Get Joomla configuration
@@ -42,31 +50,31 @@ class ForumControllerSections extends Hubzero_Controller
 		// Filters
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.sections.limit', 
+			$this->_option . '.' . $this->_controller . '.limit', 
 			'limit', 
 			$config->getValue('config.list_limit'), 
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.sections.limitstart', 
+			$this->_option . '.' . $this->_controller . '.limitstart', 
 			'limitstart', 
 			0, 
 			'int'
 		);
 		$this->view->filters['group']    = $app->getUserStateFromRequest(
-			$this->_option . '.sections.group', 
+			$this->_option . '.' . $this->_controller . '.group', 
 			'group', 
 			-1,
 			'int'
 		);
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.sections.sort', 
-			'sort', 
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
 			'id'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.sections.sortdir', 
-			'sort_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
 			'DESC'
 		));
 
@@ -85,16 +93,6 @@ class ForumControllerSections extends Hubzero_Controller
 				$this->view->filters['section_id'] = $section->id;
 
 				$this->view->results[$key]->categories = $category->getCount($this->view->filters);
-				
-				/*$this->view->stats->categories += count($this->view->sections[$key]->categories);
-				if ($this->view->sections[$key]->categories)
-				{
-					foreach ($this->view->sections[$key]->categories as $c)
-					{
-						$this->view->stats->threads += $c->threads;
-						$this->view->stats->posts += $c->posts;
-					}
-				}*/
 			}
 		}
 
@@ -123,7 +121,6 @@ class ForumControllerSections extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -132,18 +129,29 @@ class ForumControllerSections extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (is_array($ids) && !empty($ids)) 
 		{
 			$id = intval($ids[0]);
 		}
-	
-		// load infor from database
-		$this->view->row = new ForumSection($this->database);
-		$this->view->row->load($id);
+
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else 
+		{
+			// load infor from database
+			$this->view->row = new ForumSection($this->database);
+			$this->view->row->load($id);
+		}
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
@@ -179,21 +187,24 @@ class ForumControllerSections extends Hubzero_Controller
 		$row = new ForumSection($this->database);
 		if (!$row->bind($fields)) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 		
 		// Check content
 		if (!$row->check()) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
 		// Store content
 		if (!$row->store()) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
@@ -214,11 +225,11 @@ class ForumControllerSections extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$section = JRequest::getInt('section_id', 0);
 		$ids = JRequest::getVar('id', array());
-		
+
 		// Do we have any IDs?
 		if (count($ids) > 0) 
 		{
@@ -226,14 +237,14 @@ class ForumControllerSections extends Hubzero_Controller
 			foreach ($ids as $id) 
 			{
 				$id = intval($id);
-				
+
 				$section = new ForumSection($this->database);
 				$section->load($id);
-				
+
 				// Get the categories in this section
 				$cModel = new ForumCategory($this->database);
 				$categories = $cModel->getRecords(array('section_id' => $section->id));
-				
+
 				// Loop through each category
 				foreach ($categories as $category)
 				{
@@ -251,7 +262,7 @@ class ForumControllerSections extends Hubzero_Controller
 						return;
 					}
 				}
-				
+
 				// Remove this section
 				if (!$section->delete()) 
 				{
@@ -260,7 +271,7 @@ class ForumControllerSections extends Hubzero_Controller
 				}
 			}
 		}
-		
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section,
@@ -277,7 +288,7 @@ class ForumControllerSections extends Hubzero_Controller
 	{
 		$this->stateTask(1);
 	}
-	
+
 	/**
 	 * Calls stateTask to unpublish entries
 	 * 
@@ -287,7 +298,7 @@ class ForumControllerSections extends Hubzero_Controller
 	{
 		$this->stateTask(0);
 	}
-	
+
 	/**
 	 * Sets the state of one or more entries
 	 * 
@@ -343,7 +354,7 @@ class ForumControllerSections extends Hubzero_Controller
 			$message
 		);
 	}
-	
+
 	/**
 	 * Sets the state of one or more entries
 	 * 
@@ -389,7 +400,7 @@ class ForumControllerSections extends Hubzero_Controller
 			JText::_(count($ids) . ' Item(s) successfully changed access')
 		);
 	}
-	
+
 	/**
 	 * Cancels a task and redirects to listing
 	 * 
@@ -398,7 +409,7 @@ class ForumControllerSections extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$section = JRequest::getInt('section_id', 0);
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
