@@ -367,7 +367,7 @@ $.TokenList = function (input, url_or_data, settings) {
         .addClass(settings.classes.inputToken)
         .appendTo(token_list)
         .append(input_box);
-	
+
     // The list to store the dropdown items in
     var dropdown = $("<div>")
         .addClass(settings.classes.dropdown)
@@ -665,7 +665,8 @@ $.TokenList = function (input, url_or_data, settings) {
                 position: "absolute",
                 top: $(token_list).offset().top + $(token_list).outerHeight(),
                 left: $(token_list).offset().left,
-                zindex: 999
+                zindex: 999,
+				width: (token_list.outerWidth(true)-2)
             })
             .show();
     }
@@ -1020,7 +1021,19 @@ HUB.Plugins.Autocomplete = {
 				preventDuplicates: true,
 				resultsFormatter: function(item){ 
 					if (option != 'tags') {
-						return "<li>" + item[this.propertyToSearch]+ " ("+item['id']+")</li>";
+						var html = "<li>";
+						if (item['picture']) {
+							html += '<img src="'+item['picture']+'" width="30" height="30" alt="picture" />';
+						}
+						html += item[this.propertyToSearch]+ " ("+item['id']+")";
+						if (item['org']) {
+							html += '<span>' + item['org'] + '</span>';
+						}
+						if (item['picture']) {
+							html += '<div style="display:inline;clear:left;"></div>';
+						}
+						html += "</li>";
+						return html;
 					}
 					return "<li>" + item[this.propertyToSearch]+ "</li>";
 				},

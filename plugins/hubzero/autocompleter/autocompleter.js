@@ -720,7 +720,15 @@ HUB.Autocomplete = {
 						'wrapSelectionsWithSpacesInQuotes': false,
 						'showid': showid,
 						'injectChoice': function(choice) {
-							var t = (this.options.showid) ? choice.name+' ('+choice.id+')' : choice.name;
+							var t = '';
+							if (choice.picture) {
+								t += '<img src="'+choice.picture+'" width="30" height="30" alt="picture" />';
+							}
+							t += (this.options.showid) ? choice.name+' ('+choice.id+')' : choice.name;
+							if (choice.org) {
+								t += '<span>' + choice.org + '</span>';
+							}
+							//var t = (this.options.showid) ? choice.name+' ('+choice.id+')' : choice.name;
 							var el = new Element('li').setHTML(this.markQueryValue(t));
 							el.setProperty('rel',choice.id);
 							el.inputValue = choice.name;

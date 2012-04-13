@@ -158,6 +158,11 @@
 	    padding: 3px;
 	    margin: 0;
 	    list-style-type: none;
+		border-top: 1px solid #eee;
+	}
+	div.token-input-dropdown-acm ul li {
+		clear: left;
+		min-height: 30px;
 	}
 	div.token-input-dropdown-act ul li.token-input-dropdown-item-act,
 	div.token-input-dropdown-acg ul li.token-input-dropdown-item-acg,
@@ -186,7 +191,18 @@
 	div.token-input-dropdown-acm ul li b {
 	    font-weight: bold;      
 	}
-
+	div.token-input-dropdown-act ul li img,
+	div.token-input-dropdown-acg ul li img,
+	div.token-input-dropdown-acm ul li img {
+	    float: left;
+		margin: 0 1em 0 0;
+	}
+	div.token-input-dropdown-act ul li span,
+	div.token-input-dropdown-acg ul li span,
+	div.token-input-dropdown-acm ul li span {
+		display: block;
+		color: #ccc;
+	}
 /* Holder Stylings */
 	ul.textboxlist-holder {
 		margin: 0;
@@ -317,6 +333,8 @@
 		list-style: none;
 		background-image: none;
 		border-top: 1px solid #ddd;
+		clear: left;
+		min-height: 30px;
 		}
 	ul.autocompleter-choices li.autocompleter-selected {
 		background-color: #444;
@@ -327,6 +345,14 @@
 		}
 	ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried {
 		color: #9FCFFF;
+	}
+	ul.autocompleter-choices li img {
+	    float: left;
+		margin: 0 1em 0 0;
+	}
+	ul.autocompleter-choices li span {
+		display: block;
+		color: #ccc;
 	}
 
 /* IE 7 hacks */
