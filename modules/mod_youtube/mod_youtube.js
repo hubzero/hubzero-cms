@@ -210,7 +210,7 @@ HUB.Youtube = new Class ({
 		
 		//do we want to show the link
 		if(details.showLink) {
-			bottomHTML += "<p class=\"more\"><a href=\"" + link + "\" rel=\"external\">View More &rsaquo;</a></p>";
+			bottomHTML += "<p class=\"more\"><a href=\"" + link + "\" rel=\"external\">More Videos &rsaquo;</a></p>";
 		}
 		
 		//return the html for the bottom link
