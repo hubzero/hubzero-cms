@@ -50,7 +50,7 @@ $juser = JFactory::getUser();
 			{
 				$lname = JText::_('Anonymous');
 				$lastposter = JUser::getInstance($this->lastpost->created_by);
-				if (is_object($lastposter)) 
+				if (is_object($lastposter) && !$this->lastpost->anonymous) 
 				{
 					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
 				}
