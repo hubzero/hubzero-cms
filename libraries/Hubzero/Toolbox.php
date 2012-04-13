@@ -98,5 +98,61 @@ class Hubzero_Toolbox
 
 		return($thisurl);
 	}
+
+	/**
+	 * Replace discouraged characters introduced by Microsoft Word
+	 * 
+	 * @param      string  $text       Text to clean
+	 * @param      boolean $quotesOnly Only clean quotes (single and double)
+	 * @return     string
+	 */
+	public function cleanMsChar($text, $quotesOnly=false)
+	{
+		$y = array(
+			"\x7f"=>'', 
+			"\x80"=>'&#8364;', 
+			"\x81"=>'', 
+			"\x83"=>'&#402;', 
+			"\x85"=>'&#8230;', 
+			"\x86"=>'&#8224;', 
+			"\x87"=>'&#8225;', 
+			"\x88"=>'&#710;', 
+			"\x89"=>'&#8240;', 
+			"\x8a"=>'&#352;', 
+			"\x8b"=>'&#8249;', 
+			"\x8c"=>'&#338;', 
+			"\x8d"=>'', 
+			"\x8e"=>'&#381;', 
+			"\x8f"=>'', 
+			"\x90"=>'', 
+			"\x95"=>'&#8226;', 
+			"\x96"=>'&#8211;', 
+			"\x97"=>'&#8212;', 
+			"\x98"=>'&#732;', 
+			"\x99"=>'&#8482;', 
+			"\x9a"=>'&#353;', 
+			"\x9b"=>'&#8250;', 
+			"\x9c"=>'&#339;', 
+			"\x9d"=>'', 
+			"\x9e"=>'&#382;', 
+			"\x9f"=>'&#376;',
+		);
+		$x = array(
+			"\x82"=>'\'', 
+			"\x84"=>'"', 
+			"\x91"=>'\'', 
+			"\x92"=>'\'', 
+			"\x93"=>'"', 
+			"\x94"=>'"'
+		);
+		if (!$quotesOnly)
+		{
+			$x = $y + $x;
+		}
+		
+		$text = strtr($text, $x);
+		
+		return $text;
+	}
 }
 
