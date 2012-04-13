@@ -1,34 +1,18 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @version		$Id: pagination.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @package		Joomla
+ * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @license		GNU/GPL, see LICENSE.php
+ * Joomla! is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// no direct access
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * This is a file to add template specific chrome to pagination rendering.
@@ -83,11 +67,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 function pagination_list_footer($list)
 {
 	$html  = '<ul class="list-footer">'."\n";
-	//$html .= "\t".'<li class="counter">'.$list['pagescounter'].', '.$list['total'].'</li>'."\n";
 	$html .= "\t".'<li class="counter">'.JText::_('Results').' '.($list['limitstart'] + 1).' - ';
-	$html .= ($list['total'] > $list['limit']) ? ($list['limitstart'] + $list['limit']) : $list['total'];
+	$html .= ($list['total'] > ($list['limitstart'] + $list['limit'])) ? ($list['limitstart'] + $list['limit']) : $list['total'];
 	$html .= ' '.JText::_('of').' '.$list['total'].'</li>'."\n";
-	$html .= "\t".'<li class="limit">'.JText::_('Display Num').' '.$list['limitfield'].'</li>'."\n";
+	$html .= "\t".'<li class="limit"><label for="limit">'.JText::_('Display Num').'</label> '.$list['limitfield'].'</li>'."\n";
 	//$html .= $list['pageslinks'];
 	$html .= pagination_list_render2($list, $list['pageslinks']);
 	$html .= '</ul>'."\n";
@@ -96,188 +79,165 @@ function pagination_list_footer($list)
 	return $html;
 }
 
-/**
- * Short description for 'pagination_list_render2'
- * 
- * Long description (if any) ...
- * 
- * @param  array  $list  Parameter description (if any) ...
- * @param  array  $pages Parameter description (if any) ...
- * @return string Return description (if any) ...
- */
-function pagination_list_render2($list, $pages)
+function pagination_list_render2($list, $pages) 
 {
-	$pages = explode("\n",$pages);
-
-	$link = '';
-	if (count($pages) > 1) {
-		$html  = $pages[0]."\n";
-		$html .= $pages[1]."\n";
-
-		if (strstr( $pages[2], 'href' )) {
-			$link = $pages[2];
-		} else {
-			$link = $pages[3];
+	$html = '';
+	if (isset($pages['start']))
+	{
+		$html .= "\t" . '<li class="start">';
+		if ($pages['start']->link) 
+		{
+			$html .= '<a href="' . $pages['start']->link .'">' . $pages['start']->text .'</a>';
 		}
-		$link = str_replace('<li class="page"><strong><a href="', '', $link);
-		$link = str_replace('</a></strong></li>', '', $link);
-		$bits = explode('"', $link);
-		$link = trim($bits[0]);
+		else 
+		{
+			$html .= '<span>' . $pages['start']->text .'</span>';
+		}
+		$html .= '</li>' . "\n";
+	}
+	if (isset($pages['previous']))
+	{
+		$html .= "\t" . '<li class="prev">';
+		if ($pages['previous']->link) 
+		{
+			$html .= '<a href="' . $pages['previous']->link .'">' . $pages['previous']->text .'</a>';
+		}
+		else 
+		{
+			$html .= '<span>' . $pages['previous']->text .'</span>';
+		}
+		$html .= '</li>' . "\n";
+	}
+	
+	$link = '';
+	/*foreach ($pages['pages'] as $key => $page)
+	{
+		$keyd = $key + 1;
+		if ($pages['pages'][$key]->base && $pages['pages'][$keyd]->base)
+		{
+			$link = $pages['pages'][$key]->link;
+			$list['limit'] = intval($pages['pages'][$keyd]->base) - intval($pages['pages'][$key]->base);
+			break;
+		}
+	}*/
+	
+	if (!empty($pages['pages']) && count($pages['pages']) > 1) 
+	{
+		if ($pages['pages'][0]->link) 
+		{ 
+			$link = $pages['pages'][0]->link;
+		} 
+		else 
+		{
+			$link = $pages['pages'][1]->link;
+		}
 
 		$link = preg_replace('/limitstart=[0-9]+/i',"",$link);
 		$link = preg_replace('/start=[0-9]+/i',"",$link);
 		$link = preg_replace('/limit=[0-9]+/i',"",$link);
 		$link = str_replace('?&amp;','?',$link);
-	} else {
-		$html  = "\t".'<li class="start">'.JText::_('Start').'</li>'."\n";
-		$html .= "\t".'<li class="prev">'.JText::_('Prev').'</li>'."\n";
+		$link = str_replace('?','',$link);
 	}
-
+	
 	$displayed_pages = 10;
 	$total_pages = ($list['limit'] > 0) ? ceil( $list['total'] / $list['limit'] ) : 1;
 	$this_page = ($list['limit'] > 0) ? ceil( ($list['limitstart']+1) / $list['limit'] ) : $list['limitstart']+1;
-
+	
 	$pager_middle = ceil($displayed_pages / 2);
 	$start_loop = $this_page - $pager_middle + 1;
 	$stop_loop = $this_page + $displayed_pages - $pager_middle;
 	$i = $start_loop;
-	if ($stop_loop > $total_pages) {
+	if ($stop_loop > $total_pages) 
+	{
 		$i = $i + ($total_pages - $stop_loop);
 		$stop_loop = $total_pages;
 	}
-	if ($i <= 0) {
+	if ($i <= 0) 
+	{
 		$stop_loop = $stop_loop + (1 - $i);
 		$i = 1;
 	}
 
-	if ($i > 1) {
+	if ($i > 1) 
+	{
 		$html .= "\t".'<li class="page">...</li>'."\n";
 	}
-
-	for (; $i <= $stop_loop && $i <= $total_pages; $i++)
+	
+	for (; $i <= $stop_loop && $i <= $total_pages; $i++) 
 	{
 		$page = ($i - 1) * $list['limit'];
-		if ($i == $this_page) {
+		if ($i == $this_page) 
+		{
 			$html .= "\t".'<li class="page"><strong>'. $i .'</strong></li>'."\n";
-		} else {
-			$html .= "\t".'<li class="page"><a href="'.$link.'limit='.$list['limit'].'&amp;limitstart='. $page  .'">'. $i .'</a></li>'."\n";
+		} 
+		else 
+		{
+			$html .= "\t".'<li class="page"><a href="'.$link.'?limit='.$list['limit'].'&amp;limitstart='. $page  .'">'. $i .'</a></li>'."\n";
 		}
 	}
-
-	if (($i - 1) < $total_pages) {
+	
+	if (($i - 1) < $total_pages) 
+	{
 		$html .= "\t".'<li class="page">...</li>'."\n";
 	}
-	if (count($pages) > 1) {
-		$b = array_pop($pages);
-		$c = array_pop($pages);
-		$html .= end($pages)."\n";
-		$html .= $c."\n";
-	} else {
-		$html .= "\t".'<li class="next">'.JText::_('Next').'</li>'."\n";
-		$html .= "\t".'<li class="end">'.JText::_('End').'</li>'."\n";
-	}
 
+	if (isset($pages['next']))
+	{
+		$html .= "\t" . '<li class="next">';
+		if ($pages['next']->link) 
+		{
+			$html .= '<a href="' . $pages['next']->link .'">' . $pages['next']->text .'</a>';
+		}
+		else 
+		{
+			$html .= '<span>' . $pages['next']->text .'</span>';
+		}
+		$html .= '</li>' . "\n";
+	}
+	if (isset($pages['end']))
+	{
+		$html .= "\t" . '<li class="end">';
+		if ($pages['end']->link) 
+		{
+			$html .= '<a href="' . $pages['end']->link .'">' . $pages['end']->text .'</a>';
+		}
+		else 
+		{
+			$html .= '<span>' . $pages['end']->text .'</span>';
+		}
+		$html .= '</li>' . "\n";
+	}
+	
 	return $html;
 }
 
-/**
- * Short description for 'pagination_list_render'
- * 
- * Long description (if any) ...
- * 
- * @param  array  $list Parameter description (if any) ...
- * @return string Return description (if any) ...
- */
 function pagination_list_render($list)
 {
-	// Initialize variables
-	$html  = "\t".'<li class="start">'.$list['start']['data'].'</li>'."\n";
-	$html .= "\t".'<li class="prev">'.$list['previous']['data'].'</li>'."\n";
-
-	foreach ( $list['pages'] as $page )
+	// All we're really doing here is gathering Joomla's pagination data
+	// so we can use it in pagination_list_render2
+	
+	// Who do all the work elsewhere? Because we don't have the limit number
+	// in this data. Joomla only passes that when we get to pagination_list_footer()
+	$pages = array();
+	$pages['start'] = $list['start']['data'];
+	$pages['previous'] = $list['previous']['data'];
+	$pages['pages'] = array();
+	foreach ($list['pages'] as $page)
 	{
-		$html .= "\t".'<li class="page">';
-		if ($page['data']['active']) {
-			$html .= '<strong>';
-		}
-
-		$html .= $page['data'];
-
-		if ($page['data']['active']) {
-			$html .= '</strong>';
-		}
-		$html .= '</li>'."\n";
+		$pages['pages'][] = $page['data'];
 	}
-
-	$html .= "\t".'<li class="next">'.$list['next']['data'].'</li>'."\n";
-	$html .= "\t".'<li class="end">'.$list['end']['data'].'</li>'."\n";
-
-	return $html;
+	$pages['next'] = $list['next']['data'];
+	$pages['end'] = $list['end']['data'];
+	
+	return $pages;
 }
 
-/**
- * Short description for 'pagination_item_active'
- * 
- * Long description (if any) ...
- * 
- * @param  mixed &$item Parameter description (if any) ...
- * @return mixed Return description (if any) ...
- */
-function pagination_item_active(&$item)
+function pagination_item_active(&$item) 
 {
-	global $mainframe;
-
-	$option = JRequest::getVar('option','');
-	$task = JRequest::getVar('task','');
-	$limit = JRequest::getInt('limit',25);
-	$uri = 'index.php?option='.$option;
-	//if ($task) {
-	//	$uri .= '&task='.$task;
-	//}
-	$url = JRoute::_($uri);
-
-	if ($mainframe->isAdmin())
-	{
-		if($item->base>0)
-			return "<a title=\"".$item->text."\" onclick=\"javascript: document.adminForm.limitstart.value=".$item->base."; submitform();return false;\">".$item->text."</a>";
-		else
-			return "<a title=\"".$item->text."\" onclick=\"javascript: document.adminForm.limitstart.value=0; submitform();return false;\">".$item->text."</a>";
-	} else {
-		if ($item->link) {
-			$bits = explode('?',$item->link);
-			if (!strstr( $url, 'index.php' )) {
-				/*if (substr($url, (strlen($url) - 1), strlen($url)) != '/') {
-					$url .= '/';
-				}*/
-				if ($url != trim(end($bits))) {
-					$item->link = $url.'?'.end($bits);
-				}
-			} else {
-				$item->link = $url.'&amp;'.end($bits);
-			}
-			if (!strstr( $item->link, 'limit' )) {
-				if (strstr( $item->link, '?' )) {
-					$item->link .= '&amp;';
-				} else {
-					$item->link .= '?';
-				}
-				$item->link .= 'limit='.$limit;
-			}
-		}
-		return '<a href="'.$item->link.'" title="'.$item->text.'">'.$item->text.'</a>';
-	}
+	return $item;
 }
 
-/**
- * Short description for 'pagination_item_inactive'
- * 
- * Long description (if any) ...
- * 
- * @param  mixed &$item Parameter description (if any) ...
- * @return mixed Return description (if any) ...
- */
-function pagination_item_inactive(&$item)
+function pagination_item_inactive(&$item) 
 {
-	return '<span>'.$item->text.'</span>';
+	return $item;
 }
-?>

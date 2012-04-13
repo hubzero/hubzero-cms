@@ -1,62 +1,47 @@
 <?php
-/**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
+defined( '_JEXEC' ) or die( 'Restricted access' );
+ 
 ximport('Hubzero_Module_Helper');
+ 
 $config =& JFactory::getConfig();
 $juser =& JFactory::getUser();
+ 
+$this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
- <head>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>"> <!--<![endif]-->
+<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	
+
 	<link rel="stylesheet" href="/templates/hubbasic/css/main.css" type="text/css" />
 	<link rel="stylesheet" href="/templates/hubbasic/css/error.css" type="text/css" />
 	<link rel="stylesheet" href="/templates/hubbasic/html/mod_reportproblems/mod_reportproblems.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/hubbasic/css/print.css" />
+	<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
+	<script type="text/javascript" src="/media/system/js/jquery.js"></script>
+	<script type="text/javascript" src="/media/system/js/jquery.ui.js"></script>
+	<script type="text/javascript" src="/media/system/js/jquery.fancybox.js"></script>
+	<script type="text/javascript" src="/media/system/js/jquery.tools.js"></script>
+	<script type="text/javascript" src="/templates/hubbasic/js/hub.jquery.js"></script>
+	<script type="text/javascript" src="/modules/mod_reportproblems/mod_reportproblems.jquery.js"></script>
+	<?php } else { ?>
 	<script type="text/javascript" src="/media/system/js/mootools.js"></script>
 	<script type="text/javascript" src="/templates/hubbasic/js/hub.js"></script>
 	<script type="text/javascript" src="/modules/mod_reportproblems/mod_reportproblems.js"></script>
+	<?php } ?>
 
-	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/print.css" />
 	<!--[if IE 8]>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie8.css" />
+	        <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/hubbasic/css/ie8win.css" />
 	<![endif]-->
-	<!--[if lte IE 7]>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie7.css" />
+	<!--[if IE 7]>
+	        <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/hubbasic/css/ie7win.css" />
 	<![endif]-->
- </head>
- <body>
+</head>
+<body>
 <?php Hubzero_Module_Helper::displayModules('notices'); ?>
 	<div id="top">
 		<a name="top"></a>
