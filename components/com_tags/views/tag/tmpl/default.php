@@ -302,7 +302,7 @@ foreach ($this->results as $category)
 		if (!$dopaging) {
 			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$cats[$k]['category']).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
 		}
-		$html .= $name.' <span>('.$num.$total.')</span> ';
+		$html .= stripslashes($name).' <span>('.$num.$total.')</span> ';
 		if (!$dopaging) {
 			$html .= '<span class="more">&raquo;</span></a> ';
 		}
