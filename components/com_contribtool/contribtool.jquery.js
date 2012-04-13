@@ -5,6 +5,10 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+if (!HUB) {
+	var HUB = {};
+}
+
 //----------------------------------------------------------
 // Contribtool admin actions form
 //----------------------------------------------------------
@@ -72,26 +76,26 @@ HUB.ContribTool = {
 		if (config) {
 			// version page controls
 			$('.showcontrols').each(function(i, item) {				
-				$(item.getElements('a')[0]).on('click', function() {				
-					var vnum = $(item.getElements('a')[0]).attr('id').replace('exp_','');
+				$($(item).find('a')[0]).on('click', function() {				
+					var vnum = $(this).attr('id').replace('exp_',''); //$(item.getElements('a')[0]).attr('id').replace('exp_','');
 					var vtr = '#configure_' + vnum;
 					
-					var aexp = item.getElements('a')[0];
+					//var aexp = item.getElements('a')[0];
 					
-					if ($(aexp).hasClass('collapse')) {
+					if ($(this).hasClass('collapse')) {
 						$('#displays_' + vnum).removeClass('highlighted_upper');
 						$('#conftdone_' + vnum).removeClass('highlighted_lower');
 						$('#conftdtwo_' + vnum).removeClass('highlighted_lower');
-						$(aexp).removeClass('collapse');
+						$(this).removeClass('collapse');
 						$(vtr).addClass('hide');
-						$(aexp).addClass('expand');
+						$(this).addClass('expand');
 					} else {
 						$('#displays_' + vnum).addClass('highlighted_upper');
 						$('#conftdone_' + vnum).addClass('highlighted_lower');
 						$('#conftdtwo_' + vnum).addClass('highlighted_lower');
-						$(aexp).removeClass('expand');
+						$(this).removeClass('expand');
 						$(vtr).removeClass('hide');
-						$(aexp).addClass('collapse');
+						$(this).addClass('collapse');
 					}
 					return false;
 				});
@@ -116,7 +120,7 @@ HUB.ContribTool = {
 			$('#ss-pop-form').on('submit', function(e) {	
 				e.preventDefault();
 				
-				$.post($('index.php', {}, function(data) {
+				$.post($('#ss-pop-form').attr('action'), {}, function(data) {
 					window.close();
 					if (window.opener && !window.opener.closed) {
 						parentssform = window.opener.document.getElementById("screenshots-form");
@@ -131,8 +135,8 @@ HUB.ContribTool = {
 		var flip = $('.flip');
 		if (flip) {
 			flip.each(function(i, item) {
-				item.on('click', function(){
-					var newi = $(item.parentNode).attr('id').replace('_', '');
+				$(item).on('click', function(){
+					var newi = $(this.parentNode).attr('id').replace('_', '');
 					var frm2 = document.getElementById(HUB.ContribTool.statusform);
 					frm2.newstate.value = newi;
 					frm2.submit( );
