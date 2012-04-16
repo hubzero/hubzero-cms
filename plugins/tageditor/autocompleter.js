@@ -187,15 +187,21 @@ Autocompleter.Base = new Class({
 	},
 
 	choiceOver: function(el) {
-		if (this.selected) this.selected.removeClass('autocompleter-selected');
-		this.selected = el.addClass('autocompleter-selected');
-	},
+        if (el instanceof Array) {
+            el = el[0];
+        }
+        if (this.selected) this.selected.removeClass('autocompleter-selected');
+        this.selected = el.addClass('autocompleter-selected');
+    },
 
 	choiceSelect: function(el) {
-		this.observer.value = this.element.value = el.inputValue;
-		this.hideChoices();
-		this.fireEvent('onSelect', [this.element], 20);
-	},
+        if (el instanceof Array) {
+            el = el[0];
+        }
+        this.observer.value = this.element.value = el.inputValue;
+        this.hideChoices();
+        this.fireEvent('onSelect', [this.element], 20);
+    },
 
 	// Marks the queried word in the given string with <span class="autocompleter-queried">*</span>
 	// Call this i.e. from your custom parseChoices, same for addChoiceEvents
@@ -333,6 +339,9 @@ Autocompleter.MultiSelectable.Base = Autocompleter.Base.extend({
   },
  
   choiceSelect: function(el) {
+		if (el instanceof Array) {
+			el = el[0];
+		}
     //when multiSelect is enabled, append to field value instead of overwriting it. 
     //this.observer.value = this.element.value = this.options.multiSelect? this.element.value.trimLastElement() + el.inputValue + ", ":el.inputValue;
 	this.observer.value = this.element.value = this.options.multiSelect ? this.element.value.trimLastElement() + el.inputValue : el.inputValue;
