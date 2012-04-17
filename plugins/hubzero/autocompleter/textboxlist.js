@@ -219,6 +219,7 @@ var TextboxList = new Class({
 	},
 	
 	add: function(text, html, rid) {
+		if (text === '') return;
 		var id = (rid) ? 'ac'+rid : this.options.className + '-' + this.count++;
 		var el = this.createBox($pick(html, text), {'id': id}).inject(this.current || this.maininput, 'before');
 		el.addEvent('click', function(e) {
