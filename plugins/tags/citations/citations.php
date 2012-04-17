@@ -216,20 +216,20 @@ class plgTagsCitations extends JPlugin
 	 */
 	public function out($row)
 	{
-		$row->author = $row->alias;
-		$row->booktitle = $row->itext;
-		$row->doi = $row->ftext;
-		$row->published = $row->state;
-		$row->year = $row->created_by;
-		$row->month = $row->modified;
-		$row->isbn = $row->publish_up;
-		$row->journal = $row->publish_down;
-		$row->url = $row->href;
-		$row->volume = $row->params;
-		$row->number = $row->rcount;
-		$row->type = $row->data1;
-		$row->pages = $row->data2;
-		$row->publisher = $row->data3;
+		$row->author = isset($row->alias) ? $row->alias : '';
+		$row->booktitle = isset($row->itext) ? $row->itext : '';
+		$row->doi = isset($row->ftext) ? $row->ftext : '';
+		$row->published = isset($row->state) ? $row->state : '';
+		$row->year = isset($row->created_by) ? $row->created_by : '';
+		$row->month = isset($row->modified) ? $row->modified : '';
+		$row->isbn = isset($row->publish_up) ? $row->publish_up : '';
+		$row->journal = isset($row->publish_down) ? $row->publish_down : '';
+		$row->url = isset($row->href) ? $row->href : '';
+		$row->volume = isset($row->params) ? $row->params : '';
+		$row->number = isset($row->rcount) ? $row->rcount : '';
+		$row->type = isset($row->data1) ? $row->data1 : '';
+		$row->pages = isset($row->data2) ? $row->data2 : '';
+		$row->publisher = isset($row->data3) ? $row->data3 : '';
 		
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
