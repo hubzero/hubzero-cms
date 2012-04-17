@@ -569,11 +569,11 @@ class WikiPage extends JTable
 				}
 			}
 		}
-		$query .= "FROM $this->_tbl AS w, #__wiki_version AS v ";
+		$query .= "FROM $this->_tbl AS w, #__wiki_version AS v, #__xgroups AS g ";
 		if (isset($filters['tags'])) {
 			$query .= ", #__tags_object AS t ";
 		}
-		$query .= "WHERE w.id=v.pageid AND v.approved=1 ";
+		$query .= "WHERE w.id=v.pageid AND v.approved=1 AND (w.group='' OR (g.cn=w.group AND g.access<>4)) ";
 		if (isset($filters['author'])) {
 			$query .= "AND (w.created_by='".$filters['author']."'";
 			//if (isset($filters['username']) && trim($filters['username']) != '') {
