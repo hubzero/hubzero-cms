@@ -1786,7 +1786,7 @@ class Hubzero_Group
 					{
 						$this->__set($key, $data);
 					}
-					$query = "(select uidNumber, 'invitee' AS role from #__xgroups_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
+					$query = "(select uidNumber, 'invitees' AS role from #__xgroups_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
 						UNION
 							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber=" . $db->Quote($this->gidNumber) . ")
 						UNION
