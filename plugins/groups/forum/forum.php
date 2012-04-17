@@ -2030,34 +2030,41 @@ class plgGroupsForum extends Hubzero_Plugin
 				// Get the categories in this section
 				$cModel = new ForumCategory($this->database);
 				$categories = $cModel->getRecords(array(
-					'section_id' => $section->id
+					'section_id' => $section->id,
+					'group'      => $group->get('gidNumber')
 				));
 				
-				// Loop through each category
-				foreach ($categories as $category)
+				if ($categories)
 				{
-					// Remove the posts in this category
+					// Build an array of category IDs
+					$cats = array();
+					foreach ($categories as $category)
+					{
+						$cats[] = $category->id;
+					}
+
+					// Set all the threads/posts in all the categories to "deleted"
 					$tModel = new ForumPost($this->database);
-					if (!$tModel->deleteByCategory($category->id)) 
+					if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 					{
 						$this->setError($tModel->getError());
-						return '';
 					}
 					$log .= 'forum.section.' . $section->id . '.category.' . $category->id . '.post' . "\n";
-					
-					// Remove this category
-					if (!$cModel->delete($category->id)) 
+
+					// Set all the categories to "deleted"
+					if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 					{
-						$this->setError(500, $category->getError());
-						return '';
+						$this->setError($cModel->getError());
 					}
 					$log .= 'forum.section.' . $section->id . '.category.' . $category->id . "\n";
 				}
-				
-				// Remove this section
-				if (!$sModel->delete($section->id)) 
+
+				// Set the section to "deleted"
+				$sModel->load($section->id);
+				$sModel->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
+				if (!$sModel->store()) 
 				{
-					$this->setError(500, $sModel->getError());
+					$this->setError($sModel->getError());
 					return '';
 				}
 				$log .= 'forum.section.' . $section->id . ' ' . "\n";
