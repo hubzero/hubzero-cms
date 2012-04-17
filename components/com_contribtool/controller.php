@@ -2513,6 +2513,7 @@ class ContribtoolController extends JObject
 				if (!is_dir( $file_path )) {
 					jimport('joomla.filesystem.folder');
 					if (!JFolder::create( $file_path, 0777 )) {
+						$xlog->logDebug("findalizeTool(): failed to create tarball path $file_path");
 						$out .= JText::_('ERR_UNABLE_TO_CREATE_TAR_PATH');
 						return false;
 					}
@@ -2520,8 +2521,10 @@ class ContribtoolController extends JObject
 				$xlog->logDebug("finalizeTool(): checkpoint 4: " . DS.'tmp'.DS.$tar . " to " .  $file_path.'/'.$tar);
 				if (!@copy(DS.'tmp'.DS.$tar, $file_path.'/'.$tar)) {
     				$out.= " failed to copy $tar to $file_path";
+					$xlog->logDebug("findalizeTool(): failed tarball copy");
 					return false;
 				} else {
+					$xlog->logDebug("findalizeTool(): deleting tmp files");
 					exec ('sudo -u apps rm -f /tmp/'.$tar, $out, $result);
 				}
 
