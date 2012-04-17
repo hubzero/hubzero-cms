@@ -90,6 +90,13 @@ class Hubzero_Controller extends JObject
 	protected $_controller = null;
 
 	/**
+	 * The name of this controller
+	 *
+	 * @param string
+	 */
+	protected $_basePath = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @access	public
@@ -118,6 +125,15 @@ class Hubzero_Controller extends JObject
 				}
 				$this->_name = strtolower($r[1]);
 			}
+		}
+
+		if (array_key_exists('base_path', $config)) 
+		{
+			$this->_basePath = $config['base_path'];
+		} 
+		else 
+		{
+			$this->_basePath = JPATH_COMPONENT;
 		}
 
 		// Set the component name
@@ -207,13 +223,16 @@ class Hubzero_Controller extends JObject
 
 		//$this->_controller = JRequest::getCmd('controller', '');
 		// Attempt to parse the controller name from the class name
+		//if ((ucfirst($this->_name) . 'Controller') != get_class($this)
+		// && preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
 		if ((ucfirst($this->_name) . 'Controller') != get_class($this)
-		 && preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
+		 && preg_match('/(\w)Controller(.*)/i', get_class($this), $r))
 		{
-			$this->_controller = strtolower($r[1]);
+			$this->_controller = strtolower($r[2]);
 
 			// Instantiate a view with layout the same name as the task
 			$this->view = new JView(array(
+				'base_path' => $this->_basePath,
 				'name' => $this->_controller,
 				'layout' => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
 			));
@@ -222,6 +241,7 @@ class Hubzero_Controller extends JObject
 		else
 		{
 			$this->view = new JView(array(
+				'base_path' => $this->_basePath,
 				'name' => $doTask
 			));
 		}
