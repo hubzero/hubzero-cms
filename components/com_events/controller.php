@@ -1841,7 +1841,7 @@ class EventsController extends Hubzero_Controller
 	 */
 	private function _getCategories()
 	{
-		$sql = "SELECT * FROM #__categories WHERE section='".$this->_option."' AND published = '1' ORDER BY title DESC";
+		$sql = "SELECT * FROM #__categories WHERE section='".$this->_option."' AND published = '1' ORDER BY ordering ASC";
 
 		$this->database->setQuery($sql);
 		$cats = $this->database->loadObjectList();
