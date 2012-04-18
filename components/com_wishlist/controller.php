@@ -297,19 +297,29 @@ class WishlistController extends JObject
 	 * @param      string $name Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function _getScripts($option='',$name='')
+	public function _getScripts($option='',$script='')
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
-		if ($option) {
-			$name = ($name) ? $name : $option;
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.$option.DS.$name.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
+		//$option = ($option) ? $option : $this->_option;
+		//$script = ($script) ? $script : $this->_name;
+
+		$path = DS . 'components' . DS . $option . DS . $script . '.js';
+		$pathAlt = null;
+
+		$document = JFactory::getDocument();
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$pathAlt = DS . 'components' . DS . $option . DS . $script . '.jquery.js';
+		}
+
+		if ($pathAlt && is_file(JPATH_ROOT . $pathAlt))
+		{
+			$document->addScript($pathAlt);
+		}
+		else if (is_file(JPATH_ROOT . $path))
+		{
+			$document->addScript($path);
 		}
 	}
 
