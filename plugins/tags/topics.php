@@ -160,7 +160,7 @@ class plgTagsTopics extends JPlugin
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					if ($row->data1 != '' && $row->category != '') {
+					if ($row->data1 != '' && $row->section != '') {
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope='.$row->data1.'&pagename='.$row->alias);
 					} else {
 						$rows[$key]->href = JRoute::_('index.php?option=com_topics&scope='.$row->data1.'&pagename='.$row->alias);
@@ -201,7 +201,7 @@ class plgTagsTopics extends JPlugin
 			}
 		} else {
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by, v.created AS modified, v.created AS publish_up, NULL AS publish_down,  
-					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS section ";
+					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, w.`group` AS section ";
 			if (isset($filters['tags'])) {
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
