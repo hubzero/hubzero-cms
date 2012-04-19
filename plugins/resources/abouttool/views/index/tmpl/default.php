@@ -169,18 +169,21 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 <?php
 	}
 	$citations = '';
-	foreach ($schema->fields as $field)
+	if($schema)
 	{
-		if (isset($data[$field->name])) {
-			if ($field->name == 'citations') {
-				$citations = $data[$field->name];
-			} else if ($value = $elements->display($field->type, $data[$field->name])) {
-?>
-			<tr>
-				<th><?php echo $field->label; ?></th>
-				<td><?php echo $value; ?></td>
-			</tr>
-<?php
+		foreach ($schema->fields as $field)
+		{
+			if (isset($data[$field->name])) {
+				if ($field->name == 'citations') {
+					$citations = $data[$field->name];
+				} else if ($value = $elements->display($field->type, $data[$field->name])) {
+	?>
+				<tr>
+					<th><?php echo $field->label; ?></th>
+					<td><?php echo $value; ?></td>
+				</tr>
+	<?php
+				}
 			}
 		}
 	}
