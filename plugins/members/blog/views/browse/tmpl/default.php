@@ -252,5 +252,5 @@ $juser =& JFactory::getUser();
 			</tbody>
 		</table>
 		<?php echo $this->pagenavhtml; ?>
-	<div>
+	</div>
 </div><!-- / .subject -->
