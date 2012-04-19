@@ -78,7 +78,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php 
 	}
 ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>" class="showmore"><?php echo JText::_('All Categores &rsaquo;'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>" class="showmore"><?php echo JText::_('All Categories &rsaquo;'); ?></a>
 	</p>
 <?php
 }
