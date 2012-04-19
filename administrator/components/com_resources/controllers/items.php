@@ -158,12 +158,18 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components'. DS . $this->_option . DS . 'resources.css');
 
-		// Resource's parent ID
-		$this->view->pid = JRequest::getInt('pid', 0);
-
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
+
+		// Resource's parent ID
+		//$this->view->pid = JRequest::getInt('pid', 0);
+		$this->view->pid = $app->getUserStateFromRequest(
+			$this->_option . '.children.pid',
+			'pid',
+			0,
+			'int'
+		);
 
 		// Incoming
 		$this->view->filters = array();

@@ -94,7 +94,7 @@ class ResourcesHtml
 			<ul class="key">
 				<li class="draftinternal"><span>draft (internal)</span> = <?php echo JText::_('Draft (internal production)'); ?></li>
 				<li class="draftexternal"><span>draft (external)</span> = <?php echo JText::_('Draft (user created)'); ?></li>
-				<li class="new"><span>new</span> = <?php echo JText::_('New, awaiting approval'); ?></li>
+				<li class="submitted"><span>new</span> = <?php echo JText::_('New, awaiting approval'); ?></li>
 				<li class="pending"><span>pending</span> = <?php echo JText::_('Published, but is Coming'); ?></li>
 				<li class="published"><span>current</span> = <?php echo JText::_('Published and is Current'); ?></li>
 				<li class="expired"><span>finished</span> = <?php echo JText::_('Published, but has Finished'); ?></li>

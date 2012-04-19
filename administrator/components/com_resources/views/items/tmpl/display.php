@@ -169,7 +169,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$task  = 'publish';
 			break;
 		case 4:
-			$alt   = 'Delete';
+			$alt   = 'Deleted';
 			$class = 'deleted';
 			$task  = 'publish';
 			break;
@@ -247,7 +247,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td>
-					<a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="<?php echo $class;?> hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $alt; ?> :: Set this to <?php echo $task;?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
@@ -265,19 +265,25 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->typetitle)); ?>
 				</td>
 				<td style="white-space: nowrap">
-					<?php echo $row->children; ?>
 					<?php if ($row->children > 0) { ?> 
-						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=children&amp;pid=<?php echo $row->id; ?>" title="View this item's children">View</a>
+						<a class="glyph menulist" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=children&amp;pid=<?php echo $row->id; ?>" title="View this item's children">
+							<span><?php echo $row->children; ?></span>
+						</a>
 					<?php } else { ?> 
-						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=addchild&amp;pid=<?php echo $row->id; ?>" title="Add a child">[+]</a>
+						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=addchild&amp;pid=<?php echo $row->id; ?>" title="Add a child">
+							<span>+ Add</span>
+						</a>
 					<?php } ?>
 				</td>
 				<td style="white-space: nowrap">
-					<?php echo $tags; ?>
 					<?php if ($tags > 0) { ?> 
-						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="View this item's tags">View</a>
+						<a class="glyph tag" href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="View this item's tags">
+							<span><?php echo $tags; ?></span>
+						</a>
 					<?php } else { ?> 
-						&nbsp; <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="Add a tag">[+]</a>
+						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="Add a tag">
+							<span>+ Add</span>
+						</a>
 					<?php } ?>
 				</td>
 			</tr>
