@@ -45,7 +45,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			$link_on = JRoute::_($link);
 		} else {
-			$link_on = JRoute::_('index.php?option=com_hub&task=register');
+			$link_on = JRoute::_('index.php?option=com_register&task=register');
 		}
 ?>
 		<li><a href="<?php echo $link_on; ?>"><?php echo stripslashes($row->title); ?></a></li>

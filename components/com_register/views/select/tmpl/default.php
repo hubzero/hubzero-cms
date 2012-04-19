@@ -72,7 +72,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</fieldset>
 		</fieldset>
 		<div class="clear"></div>
-		<input type="hidden" name="option" value="com_hub" />
+		<input type="hidden" name="option" value="com_register" />
 		<input type="hidden" name="view" value="registration" />
 		<input type="hidden" name="task" value="select" />
 		<input type="hidden" name="act" value="submit" />

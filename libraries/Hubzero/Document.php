@@ -154,30 +154,6 @@ class Hubzero_Document
 	}
 
 	/**
-	 * Gets the path to an image
-	 * checks template first, then com_hub
-	 *
-	 * @param	string  $image	Image to look for
-	 * @return  string	Path to an image file
-	 */
-	public static function getHubImage($image)
-	{
-		$mainframe =& JFactory::getApplication();
-
-		$template  = $mainframe->getTemplate();
-
-		$templateimage = DS . 'templates' . DS . $template . DS . 'images' . DS . $image;
-
-		$hubimage =  DS . 'components' . DS . 'com_hub'  . DS . 'images' . DS . $image;
-
-		if (file_exists(JPATH_SITE . $templateimage)) {
-			return $templateimage;
-		} else {
-			return $hubimage;
-		}
-	}
-
-	/**
 	 * Adds a linked stylesheet from a module to the page
 	 *
 	 * @param	string  $module		Module name

@@ -136,7 +136,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Javascript - HUB Framework
  *
  * @package		HUBzero
- * @file		components/com_hub/js/hub.js
  * @file		templates/hubbasic/js/hub.js
  * @author		Shawn Rice
  * @author		Thomas Fuchs
@@ -146,7 +145,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Javascript - Balloons
  *
  * @package		Javascript - Balloons
- * @file		components/com_hub/js/balloons.js
  * @file		/templates/hubbasic/js/balloons.js
  * @license		MIT
  * @version		1.11
@@ -155,7 +153,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Javascript - Slimbox
  *
  * @package		Javascript - Slimbox
- * @file 		components/com_hub/js/slimbox.js
  * @file		templates/hubbasic/js/slimbox.js
  * @auhtor		Christopher Beyls
  * @version		v1.41
@@ -164,7 +161,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Javascript - Insertflash
  *
  * @package		Javascript - Insert Flash
- * @file		components/com_hub/js/insertflash.js
  * @file		templates/hubbasic/js/insertflash.js
  * @copyright	Copyright(c) 2005-2006 Adobe Macromedia Software, LLC. All rights reserved.
  * @license

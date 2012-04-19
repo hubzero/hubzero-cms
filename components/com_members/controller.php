@@ -1027,7 +1027,7 @@ class MembersController extends Hubzero_Controller
 			default:       $index = 0; break;
 		}
 
-		$hconfig =& JComponentHelper::getParams('com_hub');
+		$hconfig =& JComponentHelper::getParams('com_register');
 
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);

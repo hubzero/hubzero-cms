@@ -243,11 +243,9 @@ function plgContentXHubTagsImage($options)
 		preg_match($regex, $options, $module);
 	}
 
-        ximport('Hubzero_Document');
-	$template = $mainframe->getTemplate();
-	if (empty($component) && empty($module))
-		return substr(Hubzero_Document::getHubImage($file[2]),1);
-	else if (!empty($component))
+	ximport('Hubzero_Document');
+
+	if (!empty($component))
 		return substr(Hubzero_Document::getComponentImage($component[2], $file[2]),1);
 	else if (!empty($module))
 		return substr(Hubzero_Dcoument::getModuleImage($module[2],$file[2]),1);

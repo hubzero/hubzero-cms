@@ -1374,7 +1374,7 @@ class RegisterController extends Hubzero_Controller
 				$this->setError( JText::_('COM_REGISTER_ERROR_CONFIRMING') );
 			}
 
-			$hconfig = &JComponentHelper::getParams('com_hub');
+			$hconfig = &JComponentHelper::getParams('com_register');
 
 			// Override any other return settings if $return is explicitly set
 			$return = $hconfig->get('ConfirmationReturn');
