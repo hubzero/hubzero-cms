@@ -31,23 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->sub) {
-	$hid = 'sub-content-header';
-	$uid = 'section-useroptions';
-	$sid = 'sub-section-menu';
-} else {
-	$hid = 'content-header';
-	$uid = 'useroptions';
-	$sid = 'sub-menu';
-}
 ?>
-<div id="<?php echo $hid; ?>" class="full">
-	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+	<div id="attachments">
+		<form action="/index.php" id="adminForm" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div id="themanager" class="manager">
+					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+				</div>
+			</fieldset>
+	
+			<fieldset>
+				<table>
+					<tbody>
+						<tr>
+							<td><input type="file" name="upload" id="upload" /></td>
+						</tr>
+						<tr>
+							<td><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></td>
+						</tr>
+					</tbody>
+				</table>
 
-<div class="main section">
-<?php
-ximport('Hubzero_Module_Helper');
-Hubzero_Module_Helper::displayModules('force_mod');
-?>
-</div><!-- / .main section -->
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->listdir; ?>" />
+				<input type="hidden" name="task" value="upload" />
+				<input type="hidden" name="tmpl" value="component" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			</fieldset>
+		</form>
+<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>

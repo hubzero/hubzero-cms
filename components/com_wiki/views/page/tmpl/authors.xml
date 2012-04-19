@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_wiki/views/page/tmpl/default.xml
+@file           components/com_wiki/views/edit/tmpl/rename.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Wiki Page Layout">
+	<layout title="Wiki Page Author List">
 		<message>
-			<![CDATA[STANDARD WIKI PAGE LAYOUT DESC]]>
+			<![CDATA[Wiki Page Author List]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Wiki Page Layout</name>
-		<description>STANDARD WIKI PAGE LAYOUT DESC</description>
+		<name>Wiki Page Author List</name>
+		<description>Wiki Page Author List</description>
 		<params>
 		</params>
 	</state>

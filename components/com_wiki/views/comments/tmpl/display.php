@@ -31,25 +31,54 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$params = new JParameter( $this->page->params );
-
-if ($this->sub) {
-	$hid = 'sub-content-header';
-	$uid = 'section-useroptions';
-	$sid = 'sub-section-menu';
-} else {
-	$hid = 'content-header';
-	$uid = 'useroptions';
-	$sid = 'sub-menu';
+$mode = $this->page->params->get('mode', 'wiki');
+?>
+	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+		<h2><?php echo $this->escape($this->title); ?></h2>
+<?php
+if (!$mode || ($mode && $mode != 'static')) 
+{
+	$view = new JView(array(
+		'base_path' => $this->base_path, 
+		'name'      => 'page',
+		'layout'    => 'authors'
+	));
+	$view->option   = $this->option;
+	$view->page     = $this->page;
+	$view->task     = $this->task;
+	$view->config   = $this->config;
+	//$view->revision = $first;
+	$view->display();
 }
 ?>
-<div id="<?php echo $hid; ?>">
-	<h2><?php echo $this->title; ?></h2>
-	<?php echo WikiHtml::authors( $this->page, $params ); ?>
-</div><!-- /#content-header -->
+	</div><!-- /#content-header -->
 
-<?php echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->editauthorized ); ?>
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
 
+<?php if ($this->message) { ?>
+	<p class="passed"><?php echo $this->message; ?></p>
+<?php } ?>
+
+<?php /*if ($this->warning) { ?>
+	<p class="warning"><?php echo $this->warning; ?></p>
+<?php }*/ ?>
+
+<?php
+	$view = new JView(array(
+		'base_path' => $this->base_path, 
+		'name'      => 'page',
+		'layout'    => 'submenu'
+	));
+	$view->option = $this->option;
+	$view->controller = $this->controller;
+	$view->page   = $this->page;
+	$view->task   = $this->task;
+	$view->config = $this->config;
+	$view->sub    = $this->sub;
+	$view->display();
+?>
 <div class="section">
 	<div class="aside">
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
@@ -93,7 +122,11 @@ if (count($this->versions) > 1) {
 	<div class="subject">
 <?php
 if ($this->comments) {
-	$view = new JView( array('name'=>'comments','layout'=>'list','base_path'=>JPATH_ROOT.DS.'components'.DS.'com_wiki') );
+	$view = new JView(array(
+		'base_path' => $this->base_path, 
+		'name'      => 'comments',
+		'layout'    => 'list'
+	));
 	$view->option = $this->option;
 	$view->page = $this->page;
 	$view->comments = $this->comments;
@@ -178,11 +211,11 @@ if ($this->comments) {
 <?php if (!$this->mycomment->parent) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('WIKI_FIELD_RATING'); ?>:</legend>
-					<label><input class="option" id="review_rating_1" name="rating" type="radio" value="1"<?php if ($this->mycomment->rating == 1) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/1.gif" alt="1 star" /> <?php echo JText::_('WIKI_FIELD_RATING_ONE'); ?></label>
-					<label><input class="option" id="review_rating_2" name="rating" type="radio" value="2"<?php if ($this->mycomment->rating == 2) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/2.gif" alt="2 stars" /></label>
-					<label><input class="option" id="review_rating_3" name="rating" type="radio" value="3"<?php if ($this->mycomment->rating == 3) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/3.gif" alt="3 stars" /></label>
-					<label><input class="option" id="review_rating_4" name="rating" type="radio" value="4"<?php if ($this->mycomment->rating == 4) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/4.gif" alt="4 stars" /></label>
-					<label><input class="option" id="review_rating_5" name="rating" type="radio" value="5"<?php if ($this->mycomment->rating == 5) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/5.gif" alt="5 stars" /> <?php echo JText::_('WIKI_FIELD_RATING_FIVE'); ?></label>
+					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->rating == 1) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/1.gif" alt="1 star" /> <?php echo JText::_('WIKI_FIELD_RATING_ONE'); ?></label>
+					<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->rating == 2) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/2.gif" alt="2 stars" /></label>
+					<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->rating == 3) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/3.gif" alt="3 stars" /></label>
+					<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->rating == 4) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/4.gif" alt="4 stars" /></label>
+					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->rating == 5) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/5.gif" alt="5 stars" /> <?php echo JText::_('WIKI_FIELD_RATING_FIVE'); ?></label>
 				</fieldset>
 <?php } ?>
 				<label>
@@ -190,19 +223,21 @@ if ($this->comments) {
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('ctext', 'ctext', $this->mycomment->ctext, '', '35', '10');
+					echo $editor->display('comment[ctext]', 'ctext', $this->mycomment->ctext, '', '35', '15');
 					?>
 				</label>
 
-				<input type="hidden" name="created" value="<?php echo $this->mycomment->created; ?>" />
-				<input type="hidden" name="id" value="<?php echo $this->mycomment->id; ?>" />
-				<input type="hidden" name="created_by" value="<?php echo $this->mycomment->created_by; ?>" />
-				<input type="hidden" name="status" value="<?php echo $this->mycomment->status; ?>" />
-				<input type="hidden" name="version" value="<?php echo $this->mycomment->version; ?>" />
-				<input type="hidden" name="parent" value="<?php echo $this->mycomment->parent; ?>" />
-				<input type="hidden" name="pageid" value="<?php echo $this->mycomment->pageid; ?>" />
+				<input type="hidden" name="comment[created]" value="<?php echo $this->mycomment->created; ?>" />
+				<input type="hidden" name="comment[id]" value="<?php echo $this->mycomment->id; ?>" />
+				<input type="hidden" name="comment[created_by]" value="<?php echo $this->mycomment->created_by; ?>" />
+				<input type="hidden" name="comment[status]" value="<?php echo $this->mycomment->status; ?>" />
+				<input type="hidden" name="comment[version]" value="<?php echo $this->mycomment->version; ?>" />
+				<input type="hidden" name="comment[parent]" value="<?php echo $this->mycomment->parent; ?>" />
+				<input type="hidden" name="comment[pageid]" value="<?php echo $this->mycomment->pageid; ?>" />
+				
 				<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
 				<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
+				
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="savecomment" />
 

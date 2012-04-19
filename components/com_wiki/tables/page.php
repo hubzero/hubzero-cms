@@ -54,12 +54,6 @@ class WikiPage extends JTable
 	public $pagename = NULL;
 
 	/**
-	 * Description for 'hits'
-	 * 
-	 * @var unknown
-	 */
-
-	/**
 	 * Page hits
 	 *
 	 * @var	integer
@@ -172,7 +166,12 @@ class WikiPage extends JTable
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$oid' $s");
 		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind($result);
+			$res = $this->bind($result);
+			if ($res)
+			{
+				$this->title = ($this->title) ? $this->title : $this->_splitPagename($this->pagename);
+			}
+			return $res;
 		} else {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -256,8 +255,12 @@ class WikiPage extends JTable
 	 */
 	public function getRevision($version)
 	{
+		if (!intval($version))
+		{
+			return $this->getCurrentRevision();
+		}
 		$obj = new WikiPageRevision($this->_db);
-		$obj->loadByVersion($this->id, $version);
+		$obj->loadByVersion($this->id, intval($version));
 		return $obj;
 	}
 
@@ -297,55 +300,57 @@ class WikiPage extends JTable
 	}
 
 	/**
-	 * Checks if a pagename is valid
-	 *
-	 * @param 	string 	$pagename
-	 * @return 	string 	$pagename
-	 */
-	private function _check($pagename)
-	{
-		// Compress internal white-space to single space character.
-		$pagename = preg_replace('/[\s\xa0]+/', ' ', $orig = $pagename);
-
-		// Strip leading and trailing white-space.
-		$pagename = trim($pagename);
-
-		$orig = $pagename;
-		while ($pagename and $pagename[0] == WIKI_SUBPAGE_SEPARATOR)
-		{
-			$pagename = substr($pagename, 1);
-		}
-
-		if ($pagename != $orig) {
-			$this->setError(JText::sprintf("Pagename: Leading %s not allowed", WIKI_SUBPAGE_SEPARATOR));
-		}
-
-		// not only for SQL, also to restrict url length
-		if (strlen($pagename) > WIKI_MAX_PAGENAME_LENGTH) {
-			$pagename = substr($pagename, 0, WIKI_MAX_PAGENAME_LENGTH);
-			$this->setError(JText::_('Pagename too long'));
-		}
-
-		return $pagename;
-	}
-
-	/**
 	 * Method for checking that fields are valid before sending to the database
 	 * 
 	 * @return		boolean      	True if all fields are valid
 	 */
 	public function check()
 	{
-		if (is_string($this->pagename) && trim($this->pagename) == '') {
-			$this->setError(JText::_('Your page must have a name.'));
+		if (!trim($this->pagename)) 
+		{
+			$this->pagename = $this->normalize($this->title);
+		}
+		else 
+		{
+			$this->pagename = $this->normalize($this->pagename);
+		}
+		
+		if (!$this->pagename) 
+		{
+			$this->setError(JText::_('WIKI_ERROR_NO_PAGE_TITLE'));
+			return false;
+		}
+		
+		if (substr(strtolower($this->pagename), 0, strlen('image:')) == 'image:'
+		 || substr(strtolower($this->pagename), 0, strlen('file:')) == 'file:') 
+		{
+			$this->setError(JText::_('WIKI_ERROR_INVALID_TITLE'));
+			return false;
+		}
+		
+		if (strlen($this->pagename) > WIKI_MAX_PAGENAME_LENGTH) 
+		{
+			//$this->pagename = substr($this->pagename, 0, WIKI_MAX_PAGENAME_LENGTH);
+			$this->setError(JText::_('Pagename too long'));
 			return false;
 		}
 
-		$this->pagename = $this->_check($this->pagename);
+		if (!$this->id)
+		{
+			$g = new WikiPage($this->_db);
+			$g->load($this->pagename, $this->scope);
+			if ($g->exist()) 
+			{
+				$this->setError(JText::_('WIKI_ERROR_PAGE_EXIST'));
+				return false;
+			}
+		}
 
-		if (trim($this->getError()) != '') {
+		if ($this->getError()) 
+		{
 			return false;
 		}
+
 		return true;
 	}
 
@@ -570,133 +575,147 @@ class WikiPage extends JTable
 			}
 		}
 		$query .= "FROM $this->_tbl AS w, #__wiki_version AS v, #__xgroups AS g ";
-		if (isset($filters['tags'])) {
+		if (isset($filters['tags'])) 
+		{
 			$query .= ", #__tags_object AS t ";
 		}
-		$query .= "WHERE w.id=v.pageid AND v.approved=1 AND (w.group='' OR (g.cn=w.group AND g.access<>4)) ";
-		if (isset($filters['author'])) {
-			$query .= "AND (w.created_by='".$filters['author']."'";
-			//if (isset($filters['username']) && trim($filters['username']) != '') {
-				//$query .= " OR w.authors LIKE '%".$filters['username']."%'";
-				$query .= " OR ".$filters['author']." IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id)";
-			//}
-			$query .= ") ";
-		}
-		if (isset($filters['tags'])) {
-			$ids = implode(',',$filters['tags']);
-			$query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
-		}
-		if (isset($filters['search']) && $filters['search'] != '') {
-			if (!empty($phrases)) {
-				$exactphrase = addslashes('"'.$phrases[0].'"');
-				$query .= "AND ( (MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR"
-						 . " (MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) ) ";
+		
+		$where = array();
+		$where[] = "w.id=v.pageid";
+		$where[] = "v.approved=1";
+		$where[] = "(w.group='' OR (g.cn=w.group AND g.access<>4))";
+		$where[] = "w.state<2";
 
-			} else {
-				/*$words = array();
-				if (count($searchquery->searchWords) > 0) {
-					$ws = $searchquery->searchWords;
-					foreach ($ws as $w) 
-					{
-						if (strlen($w) > 2) {
-							$words[] = $w;
-						}
-					}
-				}
-				$text = implode(' +',$words);*/
-				$text = implode(' +',$searchquery->searchWords);
+		if (isset($filters['author'])) 
+		{
+			$where[] = "(w.created_by='" . $filters['author'] . "' OR " . $filters['author'] . " IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id))";
+		}
+
+		if (isset($filters['tags'])) 
+		{
+			$where[] = "w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN (" . implode(',', $filters['tags']) . ")";
+		}
+
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			if (!empty($phrases)) 
+			{
+				$exactphrase = addslashes('"' . $phrases[0] . '"');
+				$where[] = "( (MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR (MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) )";
+			} 
+			else 
+			{
+				$text = implode(' +', $searchquery->searchWords);
 				$text = addslashes($text);
-				//$text2 = str_replace('+','',$text);
+
 				$text2 = preg_replace("/[^a-zA-Z0-9\s]/", "", strtolower($searchquery->searchText));
 				$text3 = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($searchquery->searchText));
 
-				$query .= "AND ( ( MATCH(w.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
-						 . " ( MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') > 0) ) ";
-
+				$where[] = "( ( MATCH(w.title) AGAINST ('+$text -\"$text2\"') > 0) OR ( MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') > 0) )";
 			}
 		}
-		if (isset($filters['group']) && $filters['group'] != '') {
-			$query .= "AND (r.group_owner='".$filters['group']."') ";
-			if (!$filters['authorized']) {
+
+		if (isset($filters['group']) && $filters['group'] != '') 
+		{
+			$where[] = "r.group_owner='" . $filters['group'] . "'";
+			if (!$filters['authorized']) 
+			{
 				switch ($filters['access'])
 				{
-					case 'public':    $query .= "AND r.access = 0 ";  break;
-					case 'protected': $query .= "AND r.access = 3 ";  break;
+					case 'public':    $where[] = "r.access = 0";  break;
+					case 'protected': $where[] = "r.access = 3";  break;
 					case 'private':
 					case 'all':
-					default:          $query .= "AND r.access != 4 "; break;
+					default:          $where[] = "r.access != 4"; break;
 				}
-			} else {
+			} 
+			else 
+			{
 				switch ($filters['access'])
 				{
-					case 'public':    $query .= "AND r.access = 0 ";  break;
-					case 'protected': $query .= "AND r.access = 3 ";  break;
-					case 'private':   $query .= "AND r.access = 4 ";  break;
+					case 'public':    $where[] = "r.access = 0";  break;
+					case 'protected': $where[] = "r.access = 3";  break;
+					case 'private':   $where[] = "r.access = 4";  break;
 					case 'all':
-					default:          $query .= ""; break;
+					default:
+					break;
 				}
 			}
-		} else {
-			if (!$juser->get('guest')) {
-				if (isset($filters['authorized']) && $filters['authorized'] === 'admin') {
-					$query .= "";
-				} else {
+		} 
+		else 
+		{
+			if (!$juser->get('guest')) 
+			{
+				if (!isset($filters['authorized']) || (isset($filters['authorized']) && $filters['authorized'] !== 'admin')) 
+				{
 					ximport('Hubzero_User_Profile');
 
 					$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 					$ugs = (is_object($profile)) ? $profile->getGroups('members') : array();
 					
 					$groups = array();
-					if ($ugs && count($ugs) > 0) {
+					if ($ugs && count($ugs) > 0) 
+					{
 						foreach ($ugs as $ug)
 						{
 							$groups[] = $ug->cn;
 						}
 					}
-					$g = "'".implode("','",$groups)."'";
 
-					$query .= "AND (w.access!=1 OR (w.access=1 AND (w.group IN ($g) OR w.created_by='".$juser->get('id')."'))) ";
+					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group IN ('" . implode("','", $groups) . "') OR w.created_by='" . $juser->get('id') . "')))";
 				}
-			} else {
-				$query .= "AND w.access!=1 ";
+			} 
+			else 
+			{
+				$where[] = "w.access!=1";
 			}
 		}
-		if (isset($filters['startdate'])) {
-			$query .= "AND v.created > '".$filters['startdate']."' ";
+		if (isset($filters['startdate'])) 
+		{
+			$where[] = "v.created > '" . $filters['startdate'] . "'";
 		}
-		if (isset($filters['enddate'])) {
-			$query .= "AND v.created < '".$filters['enddate']."' ";
+		if (isset($filters['enddate'])) 
+		{
+			$where[] = "v.created < '" . $filters['enddate'] . "'";
+		}
+
+		if (!empty($where))
+		{
+			$query .= "WHERE " . implode(" AND ", $where) . " ";
 		}
 		$query .= "GROUP BY pageid ";
-		if (isset($filters['tags'])) {
+		if (isset($filters['tags'])) 
+		{
 			$query .= "HAVING uniques=".count($filters['tags'])." ";
 		}
-		if (isset($filters['select']) && $filters['select'] != 'count') {
-			if (isset($filters['sortby'])) {
+		if (isset($filters['select']) && $filters['select'] != 'count') 
+		{
+			if (isset($filters['sortby'])) 
+			{
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
 				{
-					case 'title':   $query .= 'title ASC';         break;
-					case 'id':  $query .= "id DESC"; break;
-					case 'rating': $query .= "rating DESC";                  break;
-					case 'ranking': $query .= "ranking DESC";                  break;
-					case 'relevance': $query .= "relevance DESC";              break;
+					case 'title':     $query .= 'title ASC';      break;
+					case 'id':        $query .= "id DESC";        break;
+					case 'rating':    $query .= "rating DESC";    break;
+					case 'ranking':   $query .= "ranking DESC";   break;
+					case 'relevance': $query .= "relevance DESC"; break;
 					case 'usage':
-					case 'hits':    $query .= 'hits DESC';               break;
+					case 'hits':      $query .= 'hits DESC';      break;
 					case 'date':
-					default: $query .= 'created DESC';               break;
+					default:          $query .= 'created DESC';   break;
 				}
 			}
-			if (isset($filters['limit']) && $filters['limit'] != 'all') {
-				$query .= " LIMIT ".$filters['limitstart'].",".$filters['limit'];
+			if (isset($filters['limit']) && $filters['limit'] != 'all') 
+			{
+				$query .= " LIMIT " . $filters['limitstart'] . "," . $filters['limit'];
 			}
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') {
-			//if (isset($filters['tags'])) {
-				$query .= ") AS f";
-			//}
+		if (isset($filters['select']) && $filters['select'] == 'count') 
+		{
+			$query .= ") AS f";
 		}
-		//echo '<!-- '.$query.' -->';
+
 		return $query;
 	}
 
@@ -724,11 +743,176 @@ class WikiPage extends JTable
 				$stats['visits'] = $val->visits;
 			}
 		}
-		else
+		return $stats;
+	}
+
+	/**
+	 * Short description for 'normalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $txt Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	public function normalize($txt)
+	{
+		return preg_replace("/[^\:a-zA-Z0-9]/", "", $txt);
+	}
+
+	/**
+	 * Short description for 'normalize'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $txt Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	public function getTitle()
+	{
+		$this->title = ($this->title) ? stripslashes($this->title) : $this->_splitPagename(stripslashes($this->pagename));
+		return $this->title;
+	}
+
+	/**
+	 * Splits camel-case page names
+	 * e.g., MyPageName => My Page Name
+	 * 
+	 * @param      string $page Wiki page name
+	 * @return     string
+	 */
+	private function _splitPagename($page)
+	{
+		if (preg_match("/\s/", $page) || !$page)
 		{
-			return;
+			// Already split --- don't split any more.
+			return $page;
 		}
 
-		return $stats;
+		// This algorithm is specialized for several languages.
+		// (Thanks to Pierrick MEIGNEN)
+		// Improvements for other languages welcome.
+		static $RE;
+
+		if (!isset($RE)) 
+		{
+			$language = strtolower(JFactory::getLanguage()->getBackwardLang());
+
+			// This mess splits between a lower-case letter followed by
+			// either an upper-case or a numeral; except that it wont
+			// split the prefixes 'Mc', 'De', or 'Di' off of their tails.
+			switch ($language)
+			{
+				case 'fr':
+				case 'french':
+					$RE[] = '/([[:lower:]])((?<!Mc|Di)[[:upper:]]|\d)/';
+				break;
+
+				case 'en':
+				case 'english':
+
+				case 'it':
+				case 'italian':
+
+				case 'es':
+				case 'spanish':
+
+				case 'de':
+				case 'german':
+					$RE[] = '/([[:lower:]])((?<!Mc|De|Di)[[:upper:]]|\d)/';
+				break;
+			}
+
+			if (!defined('WIKI_SUBPAGE_SEPARATOR'))
+			{
+				define('WIKI_SUBPAGE_SEPARATOR', '/');
+			}
+			$sep = preg_quote(WIKI_SUBPAGE_SEPARATOR, '/');
+
+			// This the single-letter words 'I' and 'A' from any following
+			// capitalized words.
+			switch ($language)
+			{
+				case 'fr':
+				case 'french':
+					$RE[] = "/(?<= |${sep}|^)([�])([[:upper:]][[:lower:]])/";
+				break;
+
+				case 'en':
+				case 'english':
+				default:
+					$RE[] = "/(?<= |${sep}|^)([AI])([[:upper:]][[:lower:]])/";
+				break;
+			}
+
+			// Split numerals from following letters.
+			$RE[] = '/(\d)([[:alpha:]])/';
+
+			// Split at subpage seperators.
+			$RE[] = "/([^${sep}]+)(${sep})/";
+			$RE[] = "/(${sep})([^${sep}]+)/";
+
+			foreach ($RE as $key) 
+			{
+				$RE[$key] = $this->_pcreFixPosixClasses($key);
+			}
+		}
+
+		foreach ($RE as $regexp)
+		{
+			$page = preg_replace($regexp, '\\1 \\2', $page);
+		}
+
+		$r = '/(.+?)\:(.+?)/';
+		$page = preg_replace($r, '\\1: \\2', $page);
+		$page = str_replace('_', ' ', $page);
+
+		return $page;
+	}
+
+	/**
+	 * This is a helper function which can be used to convert a regexp
+	 * which contains POSIX named character classes to one that doesn't.
+	 * 
+	 * Older version (pre 3.x?) of the PCRE library do not support
+	 * POSIX named character classes (e.g. [[:alnum:]]).
+	 * 
+	 * All instances of strings like '[:<class>:]' are replaced by the equivalent
+	 * enumerated character class.
+	 * 
+	 * Implementation Notes:
+	 * 
+	 * Currently we use hard-coded values which are valid only for
+	 * ISO-8859-1.  Also, currently on the classes [:alpha:], [:alnum:],
+	 * [:upper:] and [:lower:] are implemented.  (The missing classes:
+	 * [:blank:], [:cntrl:], [:digit:], [:graph:], [:print:], [:punct:],
+	 * [:space:], and [:xdigit:] could easily be added if needed.)
+	 * 
+	 * This is a hack.  I tried to generate these classes automatically
+	 * using ereg(), but discovered that in my PHP, at least, ereg() is
+	 * slightly broken w.r.t. POSIX character classes.  (It includes
+	 * "\xaa" and "\xba" in [:alpha:].)
+	 * 
+	 * @param      string $regexp Regular expression
+	 * @return     string Return description (if any) ...
+	 */
+	private function _pcreFixPosixClasses($regexp)
+	{
+		// First check to see if our PCRE lib supports POSIX character
+		// classes.  If it does, there's nothing to do.
+		if (preg_match('/[[:upper:]]/', ''))
+		{
+			return $regexp;
+		}
+
+		static $classes = array(
+			'alnum' => "0-9A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
+			'alpha' => "A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
+			'upper' => "A-Z\xc0-\xd6\xd8-\xde",
+			'lower' => "a-z\xdf-\xf6\xf8-\xff"
+		);
+
+		$keys = join('|', array_keys($classes));
+
+		return preg_replace("/\[:($keys):]/e", '$classes["\1"]', $regexp);
 	}
 }

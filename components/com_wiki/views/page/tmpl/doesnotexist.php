@@ -30,43 +30,51 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$templates = $this->page->getTemplates();
-
-if ($this->sub) {
-	$hid = 'sub-content-header';
-	$sid = 'sub-section-menu';
-} else {
-	$hid = 'content-header';
-	$sid = 'sub-menu';
-}
 ?>
-<div id="<?php echo $hid; ?>" class="full">
-	<h2><?php echo $this->title; ?></h2>
+<div id="<?php echo ($this->page->group) ? 'sub-content-header' : 'content-header'; ?>" class="full">
+	<h2><?php echo $this->escape($this->title); ?></h2>
 </div><!-- /#content-header -->
 
-<div id="<?php echo $sid; ?>">
-	<ul>
-		<li class="active"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->scope.'&pagename='.$this->page->pagename); ?>"><span>Article</span></a></li>
-	</ul>
-	<div class="clear"></div>
-</div><!-- / #sub-menu -->
+<?php
+	$view = new JView(array(
+		'base_path' => $this->base_path, 
+		'name'      => 'page',
+		'layout'    => 'submenu'
+	));
+	$view->option = $this->option;
+	$view->controller = $this->controller;
+	$view->page   = $this->page;
+	$view->task   = $this->task;
+	$view->config = $this->config;
+	$view->sub    = $this->sub;
+	$view->display();
+?>
 
 <div class="main section">
-	<p class="warning">This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->scope.'&pagename='.$this->page->pagename.'&task=new'); ?>">create it?</a></p>
-	<p>Or choose a page template to create an already-formatted page:</p>
+	<p class="warning">
+		This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=new'); ?>">create it?</a>
+	</p>
+	<p>
+		<?php echo JText::_('Or choose a page template to create an already-formatted page:'); ?>
+	</p>
 	<ul>
 <?php 
-if ($templates) {
+if ($templates = $this->page->getTemplates()) {
 	foreach ($templates as $template)
 	{
 ?>
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=new&tplate='.stripslashes($template->pagename)); ?>"><?php echo stripslashes($template->pagename); ?></a></li>
+		<li>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=new&tplate='.stripslashes($template->pagename)); ?>">
+				<?php echo stripslashes($template->pagename); ?>
+			</a>
+		</li>
 <?php
 	}
 } else {
 ?>
-		<li>No templates available.</li>
+		<li>
+			<?php echo JText::_('No templates available.'); ?>
+		</li>
 <?php
 }
 ?>

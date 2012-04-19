@@ -32,38 +32,34 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $mode = $this->page->params->get('mode', 'wiki');
-
-$orauthor = JText::_('Unknown');
-$oruser =& JUser::getInstance($this->or->created_by);
-if (is_object($oruser)) {
-	$orauthor = $oruser->get('name');
-}
-
-$drauthor = JText::_('Unknown');
-$druser =& JUser::getInstance($this->dr->created_by);
-if (is_object($druser)) {
-	$drauthor = $druser->get('name');
-}
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-		<h2><?php echo $this->escape($this->title); ?></h2>
+		<h2><?php echo $this->title; ?></h2>
 <?php
-if (!$mode || ($mode && $mode != 'static')) 
-{
+if (!$mode || ($mode && $mode != 'static')) {
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
 		'name'      => 'page',
 		'layout'    => 'authors'
 	));
-	$view->option   = $this->option;
-	$view->page     = $this->page;
-	$view->task     = $this->task;
-	$view->config   = $this->config;
-	$view->revision = $this->revision;
+	$view->option = $this->option;
+	$view->page   = $this->page;
+	$view->task   = $this->task;
+	$view->config = $this->config;
+	//$view->revision = $this->revision;
 	$view->display();
 }
 ?>
 	</div><!-- /#content-header -->
+
+<?php if ($mode == 'static' && $this->config->get('access-admin')) { ?>
+	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
+		<ul id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>">
+			<li><a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">Edit</a></li>
+			<li class="last"><a class="history" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=history'); ?>">History</a></li>
+		</ul>
+	</div><!-- /#content-header-extra -->
+<?php } ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -78,6 +74,7 @@ if (!$mode || ($mode && $mode != 'static'))
 <?php }*/ ?>
 
 <?php
+if (!$mode || ($mode && $mode != 'static')) {
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
 		'name'      => 'page',
@@ -90,28 +87,26 @@ if (!$mode || ($mode && $mode != 'static'))
 	$view->config = $this->config;
 	$view->sub    = $this->sub;
 	$view->display();
+	
+	$first = $this->page->getRevision(1);
 ?>
-
-<div class="section">
-	<div class="aside">
-		<dl class="diff-versions">
-			<dt><?php echo JText::_('WIKI_VERSION') . ' ' . $this->or->version; ?><dt>
-			<dd><?php echo $this->or->created; ?><dd>
-			<dd><?php echo $orauthor; ?><dd>
-			
-			<dt><?php echo JText::_('WIKI_VERSION') . ' ' . $this->dr->version; ?><dt>
-			<dd><?php echo $this->dr->created; ?><dd>
-			<dd><?php echo $drauthor; ?><dd>
-		</dl>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<p class="diff-deletedline"><del class="diffchange">Deletions</del> or items before changed</p>
-		<p class="diff-addedline"><ins class="diffchange">Additions</ins> or items after changed</p>
-	</div><!-- / .subject -->
-</div><!-- / .section -->
-<div class="clear"></div>
-
 <div class="main section">
-	<?php echo $this->content; ?>
+		<?php echo $this->revision->pagehtml; ?>
+		<p class="timestamp">
+			<?php echo JText::_('WIKI_PAGE_CREATED').' '.JHTML::_('date',$first->created, '%d %b %Y').', '.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$this->revision->created, '%d %b %Y'); ?>
+			<?php if ($stats = $this->page->getMetrics()) { ?>
+			<span class="article-usage">
+				<?php echo $stats['visitors']; ?> Visitors, <?php echo $stats['visits']; ?> Visits
+			</span>
+			<?php } ?>
+		</p>
+		<div class="article-tags">
+			<h3><?php echo JText::_('WIKI_PAGE_TAGS'); ?></h3>
+			<?php echo WikiHtml::tagcloud( $this->tags ); ?>
+		</div>
 </div><!-- / .main section -->
-<div class="clear"></div>
+<?php
+} else {
+	echo $this->revision->pagehtml;
+}
+?>

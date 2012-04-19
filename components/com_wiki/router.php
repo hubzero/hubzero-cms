@@ -42,14 +42,18 @@ function WikiBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['scope'])) {
+	if (!empty($query['scope'])) 
+	{
 		$segments[] = $query['scope'];
 	}
 	unset($query['scope']);
-	if (!empty($query['pagename'])) {
+	if (!empty($query['pagename'])) 
+	{
 		$segments[] = $query['pagename'];
 	}
 	unset($query['pagename']);
+
+	unset($query['controller']);
 
 	return $segments;
 }
@@ -67,17 +71,64 @@ function WikiParseRoute($segments)
 	$vars = array();
 
 	if (empty($segments))
+	{
 		return $vars;
+	}
 
 	//$vars['task'] = 'view';
 	$e = array_pop($segments);
-	$s = implode(DS,$segments);
-	if ($s) {
+	$s = implode(DS, $segments);
+	if ($s) 
+	{
 		$vars['scope'] = $s;
 	}
 	$vars['pagename'] = $e;
 
+	if (!$vars['task'])
+	{
+		$vars['task'] = JRequest::getWord('task', '');
+	}
+
+	switch ($vars['task'])
+	{
+		case 'upload':
+		case 'download':
+		case 'deletefolder':
+		case 'deletefile':
+		case 'media':
+			$vars['controller'] = 'media';
+		break;
+		
+		case 'history':
+		case 'compare':
+		case 'approve':
+			$vars['controller'] = 'history';
+		break;
+		
+		case 'addcomment':
+		case 'savecomment':
+		case 'reportcomment':
+		case 'removecomment':
+		case 'comments':
+			$vars['controller'] = 'comments';
+		break;
+		
+		case 'delete':
+		case 'edit':
+		case 'save':
+		case 'rename':
+		case 'saverename':
+		default:
+			$vars['controller'] = 'page';
+		break;
+	}
+
+	if (substr(strtolower($vars['pagename']), 0, strlen('image:')) == 'image:'
+	 || substr(strtolower($vars['pagename']), 0, strlen('file:')) == 'file:') 
+	{
+		$vars['controller'] = 'media';
+		$vars['task'] = 'download';
+	}
+
 	return $vars;
 }
-
-?>

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_wiki/views/error/tmpl/default.xml
+@file           components/com_wiki/views/edit/tmpl/rename.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Groups Error Layout">
+	<layout title="Standard Wiki Page Rename Layout">
 		<message>
-			<![CDATA[STANDARD GROUPS ERROR LAYOUT DESC]]>
+			<![CDATA[STANDARD WIKI PAGE RENAME LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Groups Error Layout</name>
-		<description>STANDARD GROUPS ERROR LAYOUT DESC</description>
+		<name>Standard Wiki Page Rename Layout</name>
+		<description>STANDARD WIKI PAGE RENAME LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

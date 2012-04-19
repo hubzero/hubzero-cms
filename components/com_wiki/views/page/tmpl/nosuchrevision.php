@@ -31,21 +31,42 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$params = new JParameter( $this->page->params );
-$mode = $params->get( 'mode', 'wiki' );
-
-if ($this->sub) {
-	$hid = 'sub-content-header';
-} else {
-	$hid = 'content-header';
-}
+$mode = $this->page->params->get('mode', 'wiki');
 ?>
-<div id="<?php echo $hid; ?>" class="full">
-	<h2><?php echo $this->title; ?></h2>
+<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
+	<h2><?php echo $this->escape($this->title); ?></h2>
+	<?php
+	if (!$mode || ($mode && $mode != 'static')) {
+		$view = new JView(array(
+			'base_path' => $this->base_path, 
+			'name'      => 'page',
+			'layout'    => 'authors'
+		));
+		$view->option = $this->option;
+		$view->page   = $this->page;
+		$view->task   = $this->task;
+		$view->config = $this->config;
+		//$view->revision = $this->revision;
+		$view->display();
+	}
+	?>
 </div><!-- /#content-header -->
 
 <?php
-echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->editauthorized );
+if ($this->page->id) 
+{
+	$view = new JView(array(
+		'base_path' => $this->base_path, 
+		'name'      => 'page',
+		'layout'    => 'submenu'
+	));
+	$view->option = $this->option;
+	$view->page   = $this->page;
+	$view->task   = $this->task;
+	$view->config = $this->config;
+	$view->sub    = $this->sub;
+	$view->display();
+}
 ?>
 
 <div class="main section">

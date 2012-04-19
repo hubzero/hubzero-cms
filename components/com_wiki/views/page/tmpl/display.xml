@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_wiki/views/login/tmpl/default.xml
+@file           components/com_wiki/views/page/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Login Layout">
+	<layout title="Wiki Sub-menu">
 		<message>
-			<![CDATA[STANDARD LOGIN LAYOUT DESC]]>
+			<![CDATA[Wiki Sub-menu]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Login Layout</name>
-		<description>STANDARD LOGIN LAYOUT DESC</description>
+		<name>Wiki Sub-menu</name>
+		<description>Wiki Sub-menu</description>
 		<params>
 		</params>
 	</state>
