@@ -1246,21 +1246,21 @@
 		display: none;
 	}
 	/* Publish */
-	.yes:before,
-	.publish:before,
-	.published:before {
+	.state.yes:before,
+	.state.publish:before,
+	.state.published:before {
 		content: "3";
 		font-size: 16px;
 	}
-	.yes:hover:before,
-	.publish:hover:before,
-	.published:hover:before {
+	.state.yes:hover:before,
+	.state.publish:hover:before,
+	.state.published:hover:before {
 		color: #7F913C;
 	}
 	/* Unpublish */
-	.no:before,
-	.unpublish:before,
-	.unpublished:before {
+	.state.no:before,
+	.state.unpublish:before,
+	.state.unpublished:before {
 		content: "d";
 	}
 	.no:hover:before,
@@ -1320,6 +1320,9 @@
 	.menulist:before {
 		content: "l";
 	}
+	a.menulist:hover:before {
+		color: #000;
+	}
 	.uparrow:before {
 		content: "{";
 	}
@@ -1361,6 +1364,9 @@
 	}
 	.glyph.category:before {
 		content: "o";
+	}
+	.glyph.tag:before {
+		content: "z";
 	}
 	
 	.level,

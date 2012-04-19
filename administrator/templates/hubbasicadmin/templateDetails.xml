@@ -28,13 +28,21 @@
 	<params>
 		<param name="theme" type="list" default="gray" label="TPL_HUBBASICADMIN_FIELD_THEME_LABEL" description="TPL_HUBBASICADMIN_FIELD_THEME_DESC">
 			<option value="gray">TPL_HUBBASICADMIN_FIELD_THEME_GRAY</option>
-			<option value="steelblue">TPL_HUBBASICADMIN_FIELD_THEME_STEEL_BLUE</option>
+			<option value="steelblue">TPL_HUBBASICADMIN_FIELD_THEME_BLUE_STEEL</option>
 			<option value="blue">TPL_HUBBASICADMIN_FIELD_THEME_BLUE</option>
+			<option value="bluepowder">TPL_HUBBASICADMIN_FIELD_THEME_BLUE_POWDER</option>
 			<option value="aqua">TPL_HUBBASICADMIN_FIELD_THEME_AQUA</option>
+			<option value="aquapowder">TPL_HUBBASICADMIN_FIELD_THEME_AQUA_POWDER</option>
 			<option value="green">TPL_HUBBASICADMIN_FIELD_THEME_GREEN</option>
+			<option value="greensteel">TPL_HUBBASICADMIN_FIELD_THEME_GREEN_STEEL</option>
+			<option value="greenpowder">TPL_HUBBASICADMIN_FIELD_THEME_GREEN_POWDER</option>
 			<option value="orange">TPL_HUBBASICADMIN_FIELD_THEME_ORANGE</option>
 			<option value="red">TPL_HUBBASICADMIN_FIELD_THEME_RED</option>
+			<option value="redsteel">TPL_HUBBASICADMIN_FIELD_THEME_RED_STEEL</option>
+			<option value="redpowder">TPL_HUBBASICADMIN_FIELD_THEME_RED_POWDER</option>
 			<option value="purple">TPL_HUBBASICADMIN_FIELD_THEME_PURPLE</option>
+			<option value="purplesteel">TPL_HUBBASICADMIN_FIELD_THEME_PURPLE_STEEL</option>
+			<option value="purplepowder">TPL_HUBBASICADMIN_FIELD_THEME_PURPLE_POWDER</option>
 		</param>
 	</params>
 </install>
