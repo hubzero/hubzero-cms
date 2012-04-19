@@ -98,7 +98,7 @@ class plgYSearchSiteMap extends YSearchPlugin
 		$html[] = '<p>The site search is aimed at accessing content, not structure. So, queries look for certain parts of the site may not work as well as one might hope, instead turning up tangentially related pieces of content. By encoding the site structure as content here the search has a better chance of doing the right thing.</p>';
 		$html[] = '<form action="" method="post">';
 		$html[] = '<input type="hidden" name="ysearch-task" value="SiteMap'.($edit ? 'SaveEdit' : 'Edit').'" />';
-		$html[] = '<table>';
+		$html[] = '<table class="adminlist">';
 		$html[] = '<thead>';
 		$html[] = '	<tr><th>Title</th><th>Link</th><th>Description</th><th></th></tr>';
 		$html[] = '</thead>';

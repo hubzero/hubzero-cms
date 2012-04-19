@@ -46,10 +46,12 @@ if (array_key_exists('ysearch-task', $_POST))
 			$context[$name] = $ctx;
 	}
 
+JToolBarHelper::title(JText::_('Search'), 'search.png');
+
 foreach (JApplication::triggerEvent('onYSearchAdministrate', array($context)) as $plugin)
 {
 	list($name, $html) = $plugin;
-	echo '<h2>'.$name.'</h2>';
+	echo '<h3>'.$name.'</h3>';
 	echo $html;
 }
 
