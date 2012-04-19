@@ -447,7 +447,7 @@ class TagsTag extends JTable
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon
 				FROM $this->_tbl AS t, ".$tj->getTableName()." AS tj
-				WHERE t.admin=0 AND tj.tagid = t.id AND t.raw_tag NOT LIKE 'tool:%'
+				WHERE t.admin=0 AND tj.tagid = t.id AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%'
 				GROUP BY raw_tag
 				ORDER BY $order LIMIT ".$limit;
 
