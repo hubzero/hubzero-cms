@@ -245,7 +245,18 @@ class MyhubParams extends JTable
 					ORDER BY m.ordering";
 		
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$results = $this->_db->loadObjectList();
+		if ($results)
+		{
+			$res = array();
+			foreach ($results as $result)
+			{
+				$res[$result->id] = $result;
+			}
+			$results = $res;
+		}
+		
+		return $results;
 	}
 }
 
