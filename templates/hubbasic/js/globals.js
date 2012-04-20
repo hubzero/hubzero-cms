@@ -179,7 +179,9 @@ HUB.Base = {
 		HUB.Base.popups();
 		
 		// Init SqueezeBox
-		SqueezeBoxHub.initialize({ size: {x: 760, y: 520} });
+		if (!$('sbox-window')) {
+			SqueezeBoxHub.initialize({ size: {x: 760, y: 520} });
+		}
 		
 		HUB.Base.overlayer();
 		

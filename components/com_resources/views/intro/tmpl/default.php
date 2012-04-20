@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="introduction" class="section">
 	<div class="aside">
-		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option=contribut&task=start'); ?>">Submit a resource &rsaquo;</a></p>
+		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option=com_contribute&task=start'); ?>">Submit a resource &rsaquo;</a></p>
 		<ul>
 			<li><a href="/kb/resources/faq">Resources FAQ</a></li>
 		</ul>
