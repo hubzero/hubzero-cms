@@ -175,11 +175,12 @@ class ResourcesElementCheckbox extends ResourcesElement
 		$values = array(
 			'<ul>'
 		);
-		
+
 		$pattern = "/<\d>(.*?)<\/\d>/i";
 		preg_match_all($pattern, $value, $matches);
 		if ($matches)
 		{
+			//print_r($matches[1]);
 			foreach ($matches[1] as $match)
 			{
 				$pattern = "/<\d>$match<\/\d>/i";
@@ -187,7 +188,8 @@ class ResourcesElementCheckbox extends ResourcesElement
 				$values[] = '<li>' . $match . '</li>';
 			}
 		}
-		$values[] = (trim($value)) ? '<li>' . $value . '</li>' : '';
+
+		//$values[] = (trim($value)) ? '<li>' . $value . '</li>' : '';
 		$values[] = '</ul>';
 		
 		return implode("\n", $values);
