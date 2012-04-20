@@ -84,6 +84,7 @@ $juser =& JFactory::getUser();
 		<![endif]-->
 	</head>
 	<body id="minwidth-body"<?php if (version_compare(JVERSION, '1.6', 'lt')) { echo ' class="j15"'; } ?>>
+		<jdoc:include type="modules" name="notices" />
 		<header id="header" role="banner">
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
 			
