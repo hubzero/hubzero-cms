@@ -132,6 +132,37 @@ class MembersController extends Hubzero_Controller
 			return;
 		}
 
+		//$restrict = '';
+		//if ($this->config->get('user_messaging', 1) == 1)
+		//{
+			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+			$xgroups = $profile->getGroups('all');
+			$usersgroups = array();
+			if (!empty($xgroups)) 
+			{
+				foreach ($xgroups as $group)
+				{
+					if ($group->regconfirmed) 
+					{
+						$usersgroups[] = $group->gidNumber;
+					}
+				}
+			}
+			
+			$query = "SELECT DISTINCT uidNumber 
+					FROM #__xgroups_members
+					WHERE gidNumber IN (".implode(',', $usersgroups).")";
+
+			$this->database->setQuery( $query );
+			$members = $this->database->loadResultArray();
+			
+			if (!$members)
+			{
+				$members = array();
+			}
+			$restrict = "OR xp.uidNumber IN (".implode(',', $members).")";
+		//}
+
 		$filters = array();
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
@@ -144,10 +175,11 @@ class MembersController extends Hubzero_Controller
 				OR LOWER( u.username ) LIKE '%".$filters['search']."%'
 				OR LOWER( u.email ) LIKE '%".$filters['search']."%'
 				ORDER BY u.name ASC";*/
-		$query = "SELECT u.id, u.name, u.username 
-				FROM #__users AS u 
-				WHERE LOWER( u.name ) LIKE '%".$filters['search']."%' AND u.block=0 
-				ORDER BY u.name ASC";
+		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture 
+				FROM #__xprofiles AS xp 
+				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
+				WHERE LOWER( xp.name ) LIKE '%".$filters['search']."%' AND xp.emailConfirmed=1 ANd (xp.public=1 $restrict) 
+				ORDER BY xp.name ASC";
 
 		$this->database->setQuery( $query );
 		$rows = $this->database->loadObjectList();
@@ -156,15 +188,41 @@ class MembersController extends Hubzero_Controller
 		$json = array();
 		if (count($rows) > 0) 
 		{
+			ximport('Hubzero_User_Profile_Helper');
+			
+			$picture = DS . trim($this->config->get('defaultpic'), DS);
+			$picture = Hubzero_User_Profile_Helper::thumbit($picture);
 			foreach ($rows as $row)
 			{
 				$name = str_replace("\n", '', stripslashes(trim($row->name)));
 				$name = str_replace("\r", '', $name);
-				$json[] = '{"id":"'.$row->id.'","name":"'.htmlentities($name,ENT_COMPAT,'UTF-8').'"}';
+				$name = str_replace('\\', '', $name);
+				
+				if ($row->picture)
+				{
+					$thumb  = DS . trim($this->config->get('webpath'), DS);
+					$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($row->uidNumber);
+					$thumb .= DS . ltrim($row->picture, DS);
+					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+					
+					if (file_exists(JPATH_ROOT . $thumb))
+					{
+						$picture = $thumb;
+					}
+				}
+				
+				$obj = array();
+				$obj['id'] = $row->uidNumber;
+				$obj['name'] = $name;
+				$obj['org'] = $row->organization;
+				$obj['picture'] = $picture;
+				
+				$json[] = $obj;
+				//$json[] = '{"id":"'.$row->id.'","name":"'.htmlentities($name,ENT_COMPAT,'UTF-8').'"}';
 			}
 		}
 		
-		echo '['.implode(',',$json).']';
+		echo json_encode($json);//'['.implode(',',$json).']';
 	}
 
 	/**
