@@ -24,24 +24,48 @@
 
 /* ----------------------- */
 
-#modules .metadata { 
-	border:1px solid #cfcfcf; 
-	margin-bottom:20px; 
-}
+.group-info-mod {
+	border:1px dashed #ccc;
+	padding:10px;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	opacity:0.7;
 
-#modules .metadata table { 
-	border:none; 
-}
-
-#modules .metadata table tr th { 
-	font-weight:500;
-	padding:3px 5px;
-}
-
-#modules .metadata table tr td { 
-	color:#999; 
-	padding:3px 5px;
-}
+	-webkit-transition:all .25s ease-in-out;
+	-moz-transition:all .25s ease-in-out;
+	-o-transition:all .25s ease-in-out;
+	-ms-transition:all .25s ease-in-out;
+	transition:all .25s ease-in-out;
+	}
+.group-info-mod:hover {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity:1.0;
+	}
+.group-info-mod ul {
+	margin:0;
+	list-style:none;
+	}
+.group-info-mod ul li {
+	margin:0 0 10px 0;
+	overflow:hidden; 
+	word-break:break-all;
+	}
+.group-info-mod ul li:last-child {
+	margin:0;
+	}
+.group-info-mod ul li .label {
+    font-weight:bold;
+	font-size:11px;
+	color:#444;    
+	display:block;
+	}
+.group-info-mod ul li .label:after {
+	content:":";
+	}                      
+.group-info-mod ul li .value .tags li a {
+	white-space:normal;
+	}
 
 /* ----------------------- */
 

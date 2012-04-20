@@ -128,37 +128,37 @@ Class InformationModule
 		// Get the group creation date
 		$gl = new XGroupLog( $database );
 		$gl->getLog( $group->get('gidNumber'), 'first' );
+        
+		$dateFormat = '%d %b, %Y';
+		$timeFormat = '%I:%M %p';
+		$tz = 0;
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'd M, Y';
+			$timeFormat = 'h:m a';
+			$tz = true;
+		}
 
-		$information  = '<div class="metadata">'."\n";
-		$information .= '<table summary="Meatadata about this group">'."\n";
-		$information .= '<tbody>'."\n";
-			$information .= '<tr>'."\n";
-			$information .= '<th>Managers:</th>'."\n";
-			$information .= '<td>'.$m.'</td>'."\n";
-			$information .= '</tr>'."\n";
-			$information .= '<tr>'."\n";
-			$information .= '<th>Members:</th>'."\n";
-			$information .= '<td>'.count($group->get('members')).'</td>'."\n";
-			$information .= '</tr>'."\n";
-			$information .= '<tr>'."\n";
-			$information .= '<th>Discoverability:</th>'."\n";
-			$information .= '<td>'.$privacy.'</td>'."\n";
-			$information .= '</tr>'."\n";
-			$information .= '<tr>'."\n";
-			$information .= '<th>Policy:</th>'."\n";
-			$information .= '<td>'.$policy.'</td>'."\n";
-			$information .= '</tr>'."\n";
-			$information .= '<tr>'."\n";
-			$information .= '<th>Created:</th>'."\n";
-			$information .= '<td>'.JHTML::_('date', $gl->timestamp, '%d %b. %Y').'</td>'."\n";
-			$information .= '</tr>'."\n";
-			$information .= '<tr>'."\n";
-			$information .= '<th>Tags:</th>'."\n";
-			$information .= '<td>'.$tags.'</td>'."\n";
-			$information .= '</tr>'."\n";
-		$information .= '</tbody>'."\n";
-		$information .= '</table>'."\n";
-		$information .= '</div>'."\n";
+		$items = array(
+			"Managers" => $m,
+			"Members" => count($group->get('members')),
+			"Discoverability" => $privacy,
+			"Policy" => $policy,
+			"Created" => JHTML::_('date', $gl->timestamp, $dateFormat, $tz),
+			"Tags" => $tags
+		);
+		
+		$information  = '<div class="group-info-mod">';
+			$information .= '<ul>'; 
+			foreach($items as $k => $v)
+			{
+				$information .= '<li>';
+					$information .= '<span class="label">'.$k.'</span>';
+					$information .= '<span class="value">'.$v.'</span>';
+				$information .= '</li>';
+			}
+			$information .= '</ul>';
+		$information .= '</div>';
 
 		$content = $information;
 
