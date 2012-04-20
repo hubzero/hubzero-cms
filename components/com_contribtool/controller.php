@@ -1885,8 +1885,19 @@ class ContribtoolController extends JObject
 			//$action = $action == 2 ? $action : 3;
 			$email = 1;
 			$summary = $summary ? $summary : JText::_('new message');
-			$rowc->comment    = nl2br($comment);
-			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
+			
+			$comment = html_entity_decode(stripslashes($comment), ENT_COMPAT, 'UTF-8');
+			$comment = str_replace('&quote;', '&quot;', $comment);
+			if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+			{
+				$comment = str_replace("<br />", "", $comment);
+				$comment = htmlentities($comment, ENT_COMPAT, 'UTF-8');
+				$comment = nl2br($comment);
+				$comment = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$comment);
+				$comment = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$comment);
+			}
+			
+			$rowc->comment = $comment;
 		}
 		
 		if($log || $comment)
