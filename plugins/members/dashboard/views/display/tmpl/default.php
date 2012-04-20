@@ -68,7 +68,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / .section-header-extra -->
 <?php } ?>
 <div class="main section">
-	<p class="warning no-js"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
+	<noscript>
+		<p class="warning"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
+	</noscript>
 	<table id="droppables" summary="<?php echo JText::_('PLG_MEMBERS_DASHBOARD_MY_MODULES'); ?>">
 		<tbody>
 			<tr>
