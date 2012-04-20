@@ -76,6 +76,8 @@ class ToolsController extends Hubzero_Controller
 
 		// Push some scripts to the template
 		$this->_getScripts();
+		
+		$this->_getScripts('detect-zoom');
 
 		switch ($this->_task)
 		{
@@ -546,6 +548,7 @@ class ToolsController extends Hubzero_Controller
 			$app['version'] = $tv->getCurrentVersionProperty( $toolname, 'revision' );
 			$app['name'] = $toolname.'_r'.$app['version'];
 		}
+		//$app['geometry'] = $tv->getCurrentVersionProperty( $toolname, 'vnc_geometry' );
 
 		// Get the caption/session title
 		$tv->loadFromInstance( $app['name'] );
@@ -887,6 +890,13 @@ class ToolsController extends Hubzero_Controller
 		// Get the tool's name
 		$tv->loadFromInstance( $row->appname );
 		$app['title'] = stripslashes($tv->title);
+
+		$paramClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramClass = 'JRegistry';
+		}
+		$app['params'] = new $paramClass($tv->params);
 
 		// Ensure we found an active session
 		if (!$row->sesstoken) {
@@ -1346,31 +1356,73 @@ class ToolsController extends Hubzero_Controller
 	 * @param      array &$fnoutput Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	protected function middleware( $comm, &$fnoutput )
+	protected function middleware($comm, &$output)
 	{
-		$retval = 1; // Assume success.
-		$fnoutput = array();
-		$cmd = "/bin/sh components/".$this->_option."/mw $comm 2>&1 </dev/null";
-		exec($cmd,$output,$status);
+		$retval = true; // Assume success.
+		$output = new stdClass();
+		$cmd = "/bin/sh components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null";
 
-		$outln = 0;
-		if ($status != 0) {
-			$retval = 0;
-		}
+		exec($cmd, $results, $status);
 
-		// Print out the applet tags or the error message, as the case may be.
-		foreach ($output as $line)
+		// Check exec status
+		if ($status != 0) 
 		{
-			// If it's a new session, catch the session number...
-			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/",$line,$sess)) {
-				$retval = $sess[1];
-			} else {
-				if ($status != 0) {
-					$fnoutput[$outln] = $line;
-				} else {
-					$fnoutput[$outln] = $line;
+			// Uh-oh. Something went wrong...
+			$retval = false;
+		}
+		
+		if (is_array($results))
+		{
+			// HTML
+			// Print out the applet tags or the error message, as the case may be.
+			foreach ($results as $line)
+			{
+				$line = trim($line);
+
+				// If it's a new session, catch the session number...
+				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess)) 
+				{
+					$retval = $sess[1];
+					$output->session = $sess[1];
+				} 
+				else 
+				{
+					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
+					{
+						$output->width = trim($param[1], '"');
+					}
+					if (preg_match("/height=\"(\d+)\"/i", $line, $param))
+					{
+						$output->height = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"PORT\" value=\"?(\d+)\"?>/i", $line, $param))
+					{
+						$output->port = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"ENCPASSWORD\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->password = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"CONNECT\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->connect = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->encoding = trim($param[1], '"');
+					}
+					//$fnoutput[$outln] = $line;
+					//$outln++;
 				}
-				$outln++;
+			}
+		}
+		else 
+		{
+			// JSON
+			$output = json_decode($results);
+			if ($output == null)
+			{
+				$retval = false;
 			}
 		}
 

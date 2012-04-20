@@ -38,8 +38,8 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-require_once( JPATH_COMPONENT.DS.'mw.class.php' );
-require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
+require_once( JPATH_COMPONENT.DS.'models'.DS.'mw.class.php' );
+require_once( JPATH_COMPONENT.DS.'models'.DS.'mw.utils.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 $jacl =& JFactory::getACL();

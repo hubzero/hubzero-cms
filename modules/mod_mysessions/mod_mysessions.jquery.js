@@ -25,14 +25,6 @@ HUB.Modules.MySessions = {
 
 	settings: { 
 		mouseOverClass:	'over',
-		ajax: {
-			enabled: false,
-			url: '/index.php?option=com_myhub&no_html=1&task=',
-			options: {
-				method:'get'
-			},
-			loadingText: 'Loading...',
-		},
 		titles: '#myToolsTabs ul.session_tab_titles li',
 		container: '#mySessionsTabs',
 		panels: '#mySessionsTabs .session_tab_panel'

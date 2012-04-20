@@ -172,6 +172,67 @@ HUB.Mw = {
 			loadUnsignedApplet();
 		}
 	},
+	
+	addParam: function(obj,name,value) {
+		var p = document.createElement("param");
+		p.name = name;
+		p.value = value;
+		obj.appendChild(p);
+	},
+	
+	loadApplet: function(jar, w, h, port, pass, connect_value, ro, msie) {
+		var app = document.getElementById("theapp");
+		var par = app.parentNode;
+		par.removeChild(app);
+		
+		if (msie) {
+			var newapp = document.createElement("applet");
+			newapp.id = "theapp";
+			newapp.code = "VncViewer.class";
+			newapp.archive = jar;
+			newapp.width = w;
+			newapp.height = h;
+			newapp.mayscript = "mayscript";
+
+			HUB.Mw.addParam(newapp, "PORT", port);
+			HUB.Mw.addParam(newapp, "ENCPASSWORD", pass);
+			HUB.Mw.addParam(newapp, "CONNECT", connect_value);
+			HUB.Mw.addParam(newapp, "ENCODING", "ZRLE");
+			HUB.Mw.addParam(newapp, "View Only", ro);
+			HUB.Mw.addParam(newapp, "trustAllVncCerts", "Yes");
+			HUB.Mw.addParam(newapp, "Offer relogin", "Yes");
+			HUB.Mw.addParam(newapp, "DisableSSL", "No");
+			HUB.Mw.addParam(newapp, "Show controls", "No");
+
+			if (jar.indexOf('Signed') >= 0) {
+				HUB.Mw.addParam(newapp, "signed", "yes");
+				HUB.Mw.addParam(newapp, "forceProxy", "yes");
+			}
+		} else {
+			var appletDiv = document.createElement("div");
+			var signed;
+			if (jar.indexOf('Signed') >= 0) {
+				signed = 'Yes';
+			} else {
+				signed = 'No';
+			}
+			appletDiv.innerHTML = '<applet id="theapp" code="VncViewer.class" archive="'+jar+'" width="'+w+'" height="'+h+'" MAYSCRIPT>' +
+				'<param name="PORT" value="'+port+'"> ' +
+				'<param name="ENCPASSWORD" value="'+pass+'"> ' +
+				'<param name="CONNECT" value="'+connect_value+'"> ' +
+				'<param name="View Only" value="'+ro+'"> ' +
+				'<param name="trustAllVncCerts" value="Yes"> ' +
+				'<param name="Offer relogin" value="Yes"> ' +
+				'<param name="DisableSSL" value="No"> ' +
+				'<param name="Show controls" value="No"> ' +
+				'<param name="ENCODING" value="<?php echo $this->output->encoding; ?>"> ' +
+				'<param name="signed" value="'+signed+'"> ' +
+				'<param name="forceProxy" value="'+signed+'"> ' +
+			'</applet>';
+		}
+		
+		par.appendChild(newapp);
+	},
 
 	// Inform Mambo whether session needs signed applet.
 	sessionUsesSignedApplet: function(value) {
@@ -398,112 +459,119 @@ HUB.Mw = {
 		if (appwrap) {
 			var appfooter = $('app-footer');
 			var footermenu = new Element('ul', {}).injectInside(appfooter);
+			var app = $('theapp');
 			
-			var newwindow = $('app-btn-newwindow');
-			if (!newwindow) {
-				var li = new Element('li', {});
-				var res = new Element('a', {
-					id: 'app-btn-newwindow',
-					alt: 'Popout',
-					title: 'Popout',
-					events: {
-						'click': function(event) {
-							document.theapp.popout();
-						}
-					}
-				}).addClass('popout');
-				var sp = new Element('span', {}).setHTML('New Window').injectInside(res);
-				res.injectInside(li);
-				li.injectInside(footermenu);
-			}
-			
-			var refresh = $('app-btn-refresh');
-			if (!refresh) {
-				var li = new Element('li', {});
-				var res = new Element('a', {
-					id: 'app-btn-refresh',
-					alt: 'Refresh Window',
-					title: 'Refresh Window',
-					events: {
-						'click': function(event) {
-							document.theapp.refresh();
-						}
-					}
-				}).addClass('refresh');
-				var sp = new Element('span', {}).setHTML('Refresh').injectInside(res);
-				res.injectInside(li);
-				li.injectInside(footermenu);
-			}
-			
-			var resizehandle = $('app-btn-resizehandle');
-			if (!resizehandle) {
-				var app = document.getElementById('theapp');
-				var w = app.getAttribute('width');
-				var h = app.getAttribute('height');
-
-				if (w < 100) { w = 100; }
-				if (h < 100) { h = 100; }
-				
-				appwrap.setStyle('height', h.toString() + 'px');
-				appwrap.setStyle('width', w.toString() + 'px');
-				
-				var li = new Element('li', {});
-				
-				/*var p = new Element('p', {
-					id: 'app-size',
-					alt: w.toString() + ' x ' + h.toString()
-				}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(appwrap);*/
-				
-				var res = new Element('a', {
-					id: 'app-btn-resizehandle',
-					alt: 'Resize',
-					title: 'Resize'
-				}).addClass('resize');
-				var sp = new Element('span', {id: 'app-size'}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(res);
-				res.injectInside(li);
-				li.injectInside(footermenu);
-			
-				// Init the resizing capabilities
-				appwrap.makeResizable({
-					handle:$('app-btn-resizehandle'),
-					onDrag: function(el) {
-						var size = el.getCoordinates();
-						//$('app-size').setStyle('visibility','visible').setHTML((size.width - 20)+' x '+(size.height - 20));
-						$('app-size').setHTML(size.width+' x '+size.height);
-					},
-					onComplete: function(el) {
-						var app = document.getElementById('theapp');
-						if (app) {
-							var size = el.getCoordinates();
-
-							var w = parseFloat(size.width);
-							var h = parseFloat(size.height);
-
-							if (w < 100) { w = 100; }
-							if (h < 100) { h = 100; }
-							
-							if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
-								if ($('app-header')) {
-									$('app-header').setStyle('width', w + 'px');
-								}
-								if ($('app-footer')) {
-									$('app-footer').setStyle('width', w + 'px');
-								}
+			if (!app.hasClass('no-popout')) {
+				var newwindow = $('app-btn-newwindow');
+				if (!newwindow) {
+					var li = new Element('li', {});
+					var res = new Element('a', {
+						id: 'app-btn-newwindow',
+						alt: 'Popout',
+						title: 'Popout',
+						events: {
+							'click': function(event) {
+								document.theapp.popout();
 							}
-
-							/*app.style.width = (w - 20) + 'px';
-							app.style.height = (h - 20) + 'px';
-							app.width = (w - 20);
-							app.height = (h - 20);
-							app.requestResize((w - 20),(h - 20));*/
-							app.style.width = w + 'px';
-							app.style.height = h + 'px';
-							app.width = w;
-							app.height = h;
-							app.requestResize(w, h);
 						}
-					}
-				});
+					}).addClass('popout');
+					var sp = new Element('span', {}).setHTML('New Window').injectInside(res);
+					res.injectInside(li);
+					li.injectInside(footermenu);
+				}
+			}
+			
+			if (!app.hasClass('no-refresh')) {
+				var refresh = $('app-btn-refresh');
+				if (!refresh) {
+					var li = new Element('li', {});
+					var res = new Element('a', {
+						id: 'app-btn-refresh',
+						alt: 'Refresh Window',
+						title: 'Refresh Window',
+						events: {
+							'click': function(event) {
+								document.theapp.refresh();
+							}
+						}
+					}).addClass('refresh');
+					var sp = new Element('span', {}).setHTML('Refresh').injectInside(res);
+					res.injectInside(li);
+					li.injectInside(footermenu);
+				}
+			}
+			
+			if (!app.hasClass('no-resize')) {
+				var resizehandle = $('app-btn-resizehandle');
+				if (!resizehandle) {
+					var app = document.getElementById('theapp');
+					var w = app.getAttribute('width');
+					var h = app.getAttribute('height');
+
+					if (w < 100) { w = 100; }
+					if (h < 100) { h = 100; }
+
+					appwrap.setStyle('height', h.toString() + 'px');
+					appwrap.setStyle('width', w.toString() + 'px');
+
+					var li = new Element('li', {});
+
+					/*var p = new Element('p', {
+						id: 'app-size',
+						alt: w.toString() + ' x ' + h.toString()
+					}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(appwrap);*/
+
+					var res = new Element('a', {
+						id: 'app-btn-resizehandle',
+						alt: 'Resize',
+						title: 'Resize'
+					}).addClass('resize');
+					var sp = new Element('span', {id: 'app-size'}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(res);
+					res.injectInside(li);
+					li.injectInside(footermenu);
+
+					// Init the resizing capabilities
+					appwrap.makeResizable({
+						handle:$('app-btn-resizehandle'),
+						onDrag: function(el) {
+							var size = el.getCoordinates();
+							//$('app-size').setStyle('visibility','visible').setHTML((size.width - 20)+' x '+(size.height - 20));
+							$('app-size').setHTML(size.width+' x '+size.height);
+						},
+						onComplete: function(el) {
+							var app = document.getElementById('theapp');
+							if (app) {
+								var size = el.getCoordinates();
+
+								var w = parseFloat(size.width);
+								var h = parseFloat(size.height);
+
+								if (w < 100) { w = 100; }
+								if (h < 100) { h = 100; }
+
+								if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
+									if ($('app-header')) {
+										$('app-header').setStyle('width', w + 'px');
+									}
+									if ($('app-footer')) {
+										$('app-footer').setStyle('width', w + 'px');
+									}
+								}
+
+								/*app.style.width = (w - 20) + 'px';
+								app.style.height = (h - 20) + 'px';
+								app.width = (w - 20);
+								app.height = (h - 20);
+								app.requestResize((w - 20),(h - 20));*/
+								app.style.width = w + 'px';
+								app.style.height = h + 'px';
+								app.width = w;
+								app.height = h;
+								app.requestResize(w, h);
+							}
+						}
+					});
+				}
 			}
 		}
 		

@@ -27,7 +27,7 @@ HUB.Modules.MyTools	 = {
 		mouseOverClass:	'over',
 		ajax: {
 			enabled: false,
-			url: '/index.php?option=com_myhub&no_html=1&task=',
+			url: '/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=',
 			options: {
 				method:'get'
 			},

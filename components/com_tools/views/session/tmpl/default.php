@@ -32,6 +32,23 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
+
+$cls = array();
+if ($this->app['params']->get('noResize', 0)) { 
+	$cls[] = 'no-resize';
+}
+if ($this->app['params']->get('noPopout', 0)) { 
+	$cls[] = 'no-popout';
+}
+if ($this->app['params']->get('noPopoutClose', 0)) { 
+	$cls[] = 'no-popout-close';
+}
+if ($this->app['params']->get('noPopoutMaximize', 0)) { 
+	$cls[] = 'no-popout-maximize';
+}
+if ($this->app['params']->get('noRefresh', 0)) { 
+	$cls[] = 'no-refresh';
+}
 ?>
 <div id="session">
 <?php
@@ -41,7 +58,7 @@ if (!$this->app['sess']) {
 ?>
 	<div id="app-wrap">
 		<div id="app-header">
-			<h2 class="session-title item:name id:<?php echo $this->app['sess']; ?>">
+			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app['sess']; ?>">
 				<?php echo $this->app['caption']; ?>
 			</h2>
 			<!-- <ul class="app-toolbar" id="app-options">
@@ -100,8 +117,64 @@ if (!$this->app['sess']) {
 		</noscript>
 		<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a href="/kb/tools/troubleshoot/">troubleshoot this problem.</a></p>
 
+		<div id="app-content">
+			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->output->width; ?>" />
+			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->output->height; ?>" />
+			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="/components/com_tools/scripts/VncViewer-20110822-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
+				<param name="PORT" value="<?php echo $this->output->port; ?>" />
+				<param name="ENCPASSWORD" value="<?php echo $this->output->password; ?>">
+				<param name="CONNECT" value="<?php echo $this->output->connect; ?>">
+				<param name="View Only" value="No">
+				<param name="trustAllVncCerts" value="Yes">
+				<param name="Offer relogin" value="Yes">
+				<param name="DisableSSL" value="No">
+				<param name="Show controls" value="No">
+				<param name="ENCODING" value="<?php echo $this->output->encoding; ?>">
+				<p class="error">
+					In order to view an application, you must have Java installed and enabled. (<a href="/kb/misc/java">How do I do this?</a>)
+				</p>
+			</applet>
+			<script type="text/javascript">
+			function loadUnsignedApplet()
+			{
+				var jar = "/components/com_tools/scripts/VncViewer-20110822-01.jar",
+					w = <?php echo $this->output->width; ?>,
+					h = <?php echo $this->output->height; ?>,
+					port = <?php echo $this->output->port; ?>;
+					pass = "<?php echo $this->output->password; ?>",
+					connect_value = "<?php echo $this->output->connect; ?>",
+					ro = "No",
+					ua = navigator.userAgent;
+				
+				if ((ua.indexOf('MSIE') >= 0) || (ua.indexOf('xxOther') >= 0)) {
+					loadApplet(jar, w, h, port, pass, connect_value, ro, true);
+				} else {
+					loadApplet(jar, w, h, port, pass, connect_value, ro, false);
+				}
+			}
+			function loadSignedApplet()
+			{
+				var jar = "/components/com_tools/scripts/SignedVncViewer-20110822-01.jar",
+					w = <?php echo $this->output->width; ?>,
+					h = <?php echo $this->output->height; ?>,
+					port = <?php echo $this->output->port; ?>,
+					pass = "<?php echo $this->output->password; ?>",
+					connect_value = "<?php echo $this->output->connect; ?>",
+					ro = "No",
+					ua = navigator.userAgent;
+					
+				if ((ua.indexOf('MSIE') >= 0) || (ua.indexOf('xxOther') >= 0)) {
+					loadApplet(jar, w, h, port, pass, connect_value, ro, true);
+				} else {
+					loadApplet(jar, w, h, port, pass, connect_value, ro, false);
+				}
+			}
+			HUB.Mw.startAppletTimeout();
+			HUB.Mw.connectingTool();
+			</script>
+		</div><!-- / #app-content -->
 <?php
-	$k = 0;
+	/*$k = 0;
 	$html = '<div id="app-content">'."\n";
 	foreach ($this->output as $line)
 	{
@@ -116,7 +189,7 @@ if (!$this->app['sess']) {
 		}
 	}
 	$html .= '</div><!-- / #app-content -->'."\n";
-	echo $html;
+	echo $html;*/
 ?>
 		<div id="app-footer">
 <?php 

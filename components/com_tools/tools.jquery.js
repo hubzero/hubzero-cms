@@ -36,6 +36,67 @@ HUB.Mw = {
 			loadUnsignedApplet();
 		}
 	},
+	
+	addParam: function(obj,name,value) {
+		var p = document.createElement("param");
+		p.name = name;
+		p.value = value;
+		obj.appendChild(p);
+	},
+	
+	loadApplet: function(jar, w, h, port, pass, connect_value, ro, msie) {
+		var app = document.getElementById("theapp");
+		var par = app.parentNode;
+		par.removeChild(app);
+		
+		if (msie) {
+			var newapp = document.createElement("applet");
+			newapp.id = "theapp";
+			newapp.code = "VncViewer.class";
+			newapp.archive = jar;
+			newapp.width = w;
+			newapp.height = h;
+			newapp.mayscript = "mayscript";
+
+			HUB.Mw.addParam(newapp, "PORT", port);
+			HUB.Mw.addParam(newapp, "ENCPASSWORD", pass);
+			HUB.Mw.addParam(newapp, "CONNECT", connect_value);
+			HUB.Mw.addParam(newapp, "ENCODING", "ZRLE");
+			HUB.Mw.addParam(newapp, "View Only", ro);
+			HUB.Mw.addParam(newapp, "trustAllVncCerts", "Yes");
+			HUB.Mw.addParam(newapp, "Offer relogin", "Yes");
+			HUB.Mw.addParam(newapp, "DisableSSL", "No");
+			HUB.Mw.addParam(newapp, "Show controls", "No");
+
+			if (jar.indexOf('Signed') >= 0) {
+				HUB.Mw.addParam(newapp, "signed", "yes");
+				HUB.Mw.addParam(newapp, "forceProxy", "yes");
+			}
+		} else {
+			var appletDiv = document.createElement("div");
+			var signed;
+			if (jar.indexOf('Signed') >= 0) {
+				signed = 'Yes';
+			} else {
+				signed = 'No';
+			}
+			appletDiv.innerHTML = '<applet id="theapp" code="VncViewer.class" archive="'+jar+'" width="'+w+'" height="'+h+'" MAYSCRIPT>' +
+				'<param name="PORT" value="'+port+'"> ' +
+				'<param name="ENCPASSWORD" value="'+pass+'"> ' +
+				'<param name="CONNECT" value="'+connect_value+'"> ' +
+				'<param name="View Only" value="'+ro+'"> ' +
+				'<param name="trustAllVncCerts" value="Yes"> ' +
+				'<param name="Offer relogin" value="Yes"> ' +
+				'<param name="DisableSSL" value="No"> ' +
+				'<param name="Show controls" value="No"> ' +
+				'<param name="ENCODING" value="<?php echo $this->output->encoding; ?>"> ' +
+				'<param name="signed" value="'+signed+'"> ' +
+				'<param name="forceProxy" value="'+signed+'"> ' +
+			'</applet>';
+		}
+		
+		par.appendChild(newapp);
+	},
 
 	// Inform Mambo whether session needs signed applet.
 	sessionUsesSignedApplet: function(value) {
@@ -206,8 +267,11 @@ HUB.Mw = {
 		HUB.Mw.cancelConnecting();
 		
 		if ($('#theapp')) {
-			if (w < 100) { w = 100; }
-			if (h < 100) { h = 100; }
+			if (w < 200) { w = 200; }
+			if (h < 200) { h = 200; }
+			
+			if (w > 3900) { w = 3900; }
+			if (h > 3900) { h = 3900; }
 			
 			$('#app-content').css({
 				'width': w.toString() + 'px',
@@ -257,74 +321,85 @@ HUB.Mw = {
 		var w = app.attr('width');
 		var h = app.attr('height');
 
-		if (w < 100) { w = 100; }
-		if (h < 100) { h = 100; }
+		if (w < 200) { w = 200; }
+		if (h < 200) { h = 200; }
+
+		if (w > 3900) { w = 3900; }
+		if (h > 3900) { h = 3900; }
 
 		//appwrap.css('width', w.toString() + 'px');
 		
 		var footermenu = $('<ul></ul>');
 		
-		var li = $('<li></li>');
-		$('<a class="popout" id="app-btn-newwindow" alt="New Window" title="New Window"><span>New Window</span></a>')
-			.click(function(event) {
-				document.theapp.popout();
-			})
-			.appendTo(li);
-		li.appendTo(footermenu);
+		if (!app.hasClass('no-popout')) {
+			var li = $('<li></li>');
+			$('<a class="popout" id="app-btn-newwindow" alt="New Window" title="New Window"><span>New Window</span></a>')
+				.click(function(event) {
+					document.theapp.popout();
+				})
+				.appendTo(li);
+			li.appendTo(footermenu);
+		}
 
-		var li = $('<li></li>');
-		$('<a class="refresh" id="app-btn-refresh" alt="Refresh Window" title="Refresh Window"><span>Refresh Window</span></a>')
-			.click(function(event) {
-				document.theapp.refresh();
-			})
-			.appendTo(li);
-		li.appendTo(footermenu);
+		if (!app.hasClass('no-refresh')) {
+			var li = $('<li></li>');
+			$('<a class="refresh" id="app-btn-refresh" alt="Refresh Window" title="Refresh Window"><span>Refresh Window</span></a>')
+				.click(function(event) {
+					document.theapp.refresh();
+				})
+				.appendTo(li);
+			li.appendTo(footermenu);
+		}
 		
-		var li = $('<li></li>');
-		$('<a class="resize" id="app-btn-resizehandle" alt="Popout" title="Popout"><span id="app-size">'+w.toString() + ' x ' + h.toString()+'</span></a>')
-			.appendTo(li);
-		li.appendTo(footermenu);
+		if (!app.hasClass('no-resize')) {
+			var li = $('<li></li>');
+			$('<a class="resize" id="app-btn-resizehandle" alt="Popout" title="Popout"><span id="app-size">'+w.toString() + ' x ' + h.toString()+'</span></a>')
+				.appendTo(li);
+			li.appendTo(footermenu);
+			
+			// Init the resizing capabilities
+			var wh = $('#app-content').height(),
+				ah = $('#theapp').height(),
+				os = wh - ah;
+
+			$('#app-content').resizable({
+				minHeight: 200,
+				maxHeight: 3900,
+				minWidth: 200,
+				maxWidth: 3900,
+				handles: 'se',
+				resize: function(event, ui) {
+					$('#app-size').html($('#app-content').width()+' x '+$('#app-content').height());
+				},
+				stop: function(event, ui) {
+					if ($('#theapp')) {
+						var w = parseFloat($('#app-content').width()),
+							h = parseFloat($('#app-content').height());
+
+						if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
+							if ($('#app-header')) {
+								$('#app-header').css('width', w + 'px');
+							}
+							if ($('#app-footer')) {
+								$('#app-footer').css('width', w + 'px');
+							}
+						}
+
+						$('#app-size').html(w.toString()+' x '+h.toString());
+
+						$('#theapp')
+							.css('width', (w) + 'px')
+							.css('height', (h - os) + 'px')
+							.attr('width', (w))
+							.attr('height', (h - os));
+						document.getElementById('theapp').requestResize(w, h);
+					}
+				}
+			});
+		}
 		
 		footermenu.appendTo(appfooter);
 		
-		// Init the resizing capabilities
-		var wh = $('#app-content').height(),
-			ah = $('#theapp').height(),
-			os = wh - ah;
-			
-		$('#app-content').resizable({
-			minHeight: 150,
-			minWidth: 200,
-			handles: 'se',
-			resize: function(event, ui) {
-				$('#app-size').html($('#app-content').width()+' x '+$('#app-content').height());
-			},
-			stop: function(event, ui) {
-				if ($('#theapp')) {
-					var w = parseFloat($('#app-content').width()),
-						h = parseFloat($('#app-content').height());
-					
-					if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
-						if ($('#app-header')) {
-							$('#app-header').css('width', w + 'px');
-						}
-						if ($('#app-footer')) {
-							$('#app-footer').css('width', w + 'px');
-						}
-					}
-
-					$('#app-size').html(w.toString()+' x '+h.toString());
-					
-					$('#theapp')
-						.css('width', (w) + 'px')
-						.css('height', (h - os) + 'px')
-						.attr('width', (w))
-						.attr('height', (h - os));
-					document.getElementById('theapp').requestResize(w, h);
-				}
-			}
-		});
-
 		// Inititate session title editing
 		//HUB.Mw.editSessionTitle();
 		
@@ -357,7 +432,6 @@ function forceSize(w,h)
 {
 	HUB.Mw.forceSize(w,h);
 }
-
 
 jQuery(document).ready(function($){
 	HUB.Mw.initialize();
