@@ -125,7 +125,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= '/> <span class="subtext">'.JText::_('YOU_HAVE').' <strong>'.$funds.'</strong> '.JText::_('POINTS_TO_SPEND').'.</span></label>'.n;
 				$html .= t.t.t.'	  <input type="hidden"  name="funds" value="'.$funds.'" />'.n;
 			}
-			$html .= t.t.t.'      <p class="submit"><input type="submit" value="'.JText::_('FORM_SUBMIT').'" /></p>'.n;
+			$html .= t.t.t.'      <p class="submit"><input type="submit" id="send-wish" value="'.JText::_('FORM_SUBMIT').'" /></p>'.n;
 			$html .= t.t.t.'	 </fieldset>'.n;
 			$html .= t.t.t.' </form>'.n;
 			$html .= '</div><div class="clear"></div></div>'.n;
