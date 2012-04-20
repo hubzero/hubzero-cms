@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5.0">
+	<name>Application Environment</name>
+	<author>Shawn Rice</author>
+	<creationDate>April 2012</creationDate>
+	<copyright>(C) 2012 Network for Computational Nanotechnology</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>zooley@purdue.edu</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>1.5.0</version>
+	<description>This module displays the current application environment (production, stage, testing, development)</description>
+	<files>
+		<filename module="mod_application_env">mod_application_env.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>index.html</filename>
+		<filename>mod_application_env.css</filename>
+	</files>
+	<params>
+		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+		<param name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
+	</params>
+	<languages>
+		<language tag="en-GB">en-GB.mod_application_env.ini</language>
+	</languages>
+</install>

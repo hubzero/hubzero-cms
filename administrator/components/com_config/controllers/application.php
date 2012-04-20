@@ -85,6 +85,13 @@ class ConfigControllerApplication extends ConfigController
 		if (!$row->editor) {
 			$row->editor = '';
 		}
+		$environments = array (
+			JHTML::_('select.option', 'production', JText::_('Production')),
+			JHTML::_('select.option', 'stage', JText::_('Stage')),
+			JHTML::_('select.option', 'testing', JText::_('Testing')),
+			JHTML::_('select.option', 'development', JText::_('Development'))
+		);
+		$lists['environment'] = JHTML::_('select.genericlist',  $environments, 'application_env', 'class="inputbox" size="1"', 'value', 'text', (isset($row->application_env) ? $row->application_env : 'production'));
 		// build the html select list
 		$lists['editor'] 		= JHTML::_('select.genericlist',  $edits, 'editor', 'class="inputbox" size="1"', 'value', 'text', $row->editor);
 		$listLimit 				= array (JHTML::_('select.option', 5, 5), JHTML::_('select.option', 10, 10), JHTML::_('select.option', 15, 15), JHTML::_('select.option', 20, 20), JHTML::_('select.option', 25, 25), JHTML::_('select.option', 30, 30), JHTML::_('select.option', 50, 50), JHTML::_('select.option', 100, 100),);
@@ -299,6 +306,7 @@ class ConfigControllerApplication extends ConfigController
 		$config_array = array();
 
 		// SITE SETTINGS
+		$config_array['application_env'] = JRequest::getVar('application_env', 'production', 'post', 'string'); /* @NOTE: added by zooley */
 		$config_array['offline']	= JRequest::getVar('offline', 0, 'post', 'int');
 		$config_array['editor']		= JRequest::getVar('editor', 'tinymce', 'post', 'cmd');
 		$config_array['list_limit']	= JRequest::getVar('list_limit', 20, 'post', 'int');

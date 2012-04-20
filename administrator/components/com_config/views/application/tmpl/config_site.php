@@ -28,6 +28,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		</tr>
 		<tr>
 			<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Environment' ); ?>::<?php echo JText::_( 'Application environment' ); ?>">
+			<?php echo JText::_( 'Environment' ); ?>
+			</span>
+			</td>
+			<td>
+				<?php echo $lists['environment']; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Site Name' ); ?>::<?php echo JText::_( 'TIPSITENAME' ); ?>">
 				<?php echo JText::_( 'Site Name' ); ?>
 				</span>
