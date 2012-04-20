@@ -796,6 +796,12 @@ class ForumControllerThreads extends Hubzero_Controller
 			}
 			else 
 			{
+				if ($assetType == 'post' || $assetType == 'thread')
+				{
+					$this->config->set('access-create-' . $assetType, true);
+					$this->config->set('access-delete-' . $assetType, true);
+					$this->config->set('access-edit-' . $assetType, true);
+				}
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{
 					$this->config->set('access-manage-' . $assetType, true);
