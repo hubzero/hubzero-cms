@@ -34,38 +34,40 @@ defined('_JEXEC') or die( 'Restricted access' );
 $config =& JFactory::getConfig();
 $juser =& JFactory::getUser();
 
+$this->template = 'hubbasic';
+
 $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>"> <!--<![endif]-->
+<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"> <!--<![endif]-->
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	
-		<link rel="stylesheet" href="/templates/hubbasic/css/main.css" type="text/css" />
-		<link rel="stylesheet" href="/templates/hubbasic/css/error.css" type="text/css" />
-		<link rel="stylesheet" href="/templates/hubbasic/html/mod_reportproblems/mod_reportproblems.css" type="text/css" />
-		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/print.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" type="text/css" />
+		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
 <?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
-		<script type="text/javascript" src="/media/system/js/jquery.js"></script>
-		<script type="text/javascript" src="/media/system/js/jquery.ui.js"></script>
-		<script type="text/javascript" src="/media/system/js/jquery.fancybox.js"></script>
-		<script type="text/javascript" src="/media/system/js/jquery.tools.js"></script>
-		<script type="text/javascript" src="/templates/hubbasic/js/hub.jquery.js"></script>
-		<script type="text/javascript" src="/modules/mod_reportproblems/mod_reportproblems.jquery.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.ui.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.fancybox.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.tools.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/hub.jquery.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/modules/mod_reportproblems/mod_reportproblems.jquery.js"></script>
 <?php } else { ?>
-		<script type="text/javascript" src="/media/system/js/mootools.js"></script>
-		<script type="text/javascript" src="/templates/hubbasic/js/hub.js"></script>
-		<script type="text/javascript" src="/modules/mod_reportproblems/mod_reportproblems.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/mootools.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/hub.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/modules/mod_reportproblems/mod_reportproblems.js"></script>
 <?php } ?>
 		<!--[if IE 8]>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie8.css" />
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/ie8.css" />
 		<![endif]-->
 		<!--[if lte IE 7]>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie7.css" />
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/ie7.css" />
 		<![endif]-->
 	</head>
 	<body>
@@ -95,22 +97,21 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		
 				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 <?php
-if (!$juser->get('guest')) {
-	// Find the user's most recent support tickets
-	ximport('Hubzero_Message');
-	$database =& JFactory::getDBO();
-	$recipient = new Hubzero_Message_Recipient( $database );
-	$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
-
-	echo "\t\t\t\t".'<li id="logout"><a href="/logout"><span>Logout</span></a></li>'."\n";
-	echo "\t\t\t\t".'<li id="myaccount"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>My Account</span></a></li>'."\n";
-	echo "\t\t\t\t".'<li id="username"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>'.$juser->get('name').' ('.$juser->get('username').')</span></a></li>'."\n";
-	echo "\t\t\t\t".'<li id="usermessages"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox').'">'.count($rows).' New Message(s)</a></li>'."\n";
-} else {
-	echo "\t\t\t\t".'<li id="login"><a href="/login" title="Login">Login</a></li>'."\n";
-	echo "\t\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
-}
+	if (!$juser->get('guest')) {
+		// Find the user's most recent support tickets
+		ximport('Hubzero_Message');
+		$database =& JFactory::getDBO();
+		$recipient = new Hubzero_Message_Recipient( $database );
+		$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
 ?>
+					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
+					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id')); ?>"><span><?php echo JText::_('My Account'); ?></span></a></li>
+					<li id="usersname"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id')); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
+					<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
+<?php } else { ?>
+					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Login'); ?></a></li>
+					<li id="register"><a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('Sign up for a free account'); ?>"><?php echo JText::_('Sign Up (Free)'); ?></a></li>
+<?php } ?>
 				</ul>
 		
 				<?php Hubzero_Module_Helper::displayModules('search'); ?>
@@ -125,31 +126,11 @@ if (!$juser->get('guest')) {
 		</div><!-- / #nav -->
 
 		<div id="trail">
-			You are here: <?php
-	$app =& JFactory::getApplication();
-	$pathway =& $app->getPathway();
-
-	$items = $pathway->getPathWay();
-	$l = array();
-	foreach ($items as $item)
-	{
-		$text = trim(stripslashes($item->name));
-		if (strlen($text) > 50) {
-			$text = $text.' ';
-			$text = substr($text,0,50);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' &#8230;';
-		}
-		$url = JRoute::_($item->link);
-		$url = str_replace('%20','+',$url);
-		$l[] = '<a href="'.$url.'">'.$text.'</a>';
-	}
-	echo implode(' &rsaquo; ',$l);
-?>
+			<?php Hubzero_Module_Helper::displayModules('breadcrumbs'); ?>
 		</div><!-- / #trail -->
 
 		<div id="wrap">
-			<div id="content" class="<?php echo $option; ?>">
+			<div id="content" class="<?php echo JRequest::getCmd('option', ''); ?>">
 				<div id="content-wrap">
 					<a name="content"></a>
 
@@ -205,5 +186,6 @@ if (!$juser->get('guest')) {
 			<?php Hubzero_Module_Helper::displayModules('footer'); ?>
 			<!-- End footer modules output -->
 		</div><!-- / #footer -->
+		<jdoc:include type="modules" name="endpage" />
 	</body>
 </html>

@@ -65,7 +65,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/ie7win.css" />
 		<![endif]-->
 	</head>
-	<body <?php if ($this->countModules( 'banner or welcome' )) { echo "class=\"frontpage\""; } ?>>
+	<body <?php if ($this->countModules( 'banner or welcome' )) { echo 'class="frontpage"'; } ?>>
 		<jdoc:include type="modules" name="notices" />
 		<div id="top">
 			<a name="top"></a>
@@ -94,22 +94,21 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		
 				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 <?php
-if (!$juser->get('guest')) {
-	// Find the user's most recent support tickets
-	ximport('Hubzero_Message');
-	$database =& JFactory::getDBO();
-	$recipient = new Hubzero_Message_Recipient( $database );
-	$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
-
-	echo "\t\t\t\t".'<li id="logout"><a href="/logout"><span>Logout</span></a></li>'."\n";
-	echo "\t\t\t\t".'<li id="myaccount"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>My Account</span></a></li>'."\n";
-	echo "\t\t\t\t".'<li id="username"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>'.$juser->get('name').' ('.$juser->get('username').')</span></a></li>'."\n";
-	echo "\t\t\t\t".'<li id="usermessages"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox').'">'.count($rows).' New Message(s)</a></li>'."\n";
-} else {
-	echo "\t\t\t\t".'<li id="login"><a href="/login" title="Login">Login</a></li>'."\n";
-	echo "\t\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
-}
+	if (!$juser->get('guest')) {
+		// Find the user's most recent support tickets
+		ximport('Hubzero_Message');
+		$database =& JFactory::getDBO();
+		$recipient = new Hubzero_Message_Recipient( $database );
+		$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
 ?>
+					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
+					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id')); ?>"><span><?php echo JText::_('My Account'); ?></span></a></li>
+					<li id="usersname"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id')); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
+					<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
+<?php } else { ?>
+					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Login'); ?></a></li>
+					<li id="register"><a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('Sign up for a free account'); ?>"><?php echo JText::_('Sign Up (Free)'); ?></a></li>
+<?php } ?>
 				</ul>
 		
 				<jdoc:include type="modules" name="search" />
@@ -141,27 +140,7 @@ if (!$juser->get('guest')) {
 
 <?php if (!$this->countModules( 'banner or welcome' )) : ?>
 		<div id="trail">
-			You are here: <?php
-	$app =& JFactory::getApplication();
-	$pathway =& $app->getPathway();
-
-	$items = $pathway->getPathWay();
-	$l = array();
-	foreach ($items as $item)
-	{
-		$text = trim(stripslashes($item->name));
-		if (strlen($text) > 50) {
-			$text = $text.' ';
-			$text = substr($text,0,50);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' &#8230;';
-		}
-		$url = JRoute::_($item->link);
-		$url = str_replace('%20','+',$url);
-		$l[] = '<a href="'.$url.'">'.$text.'</a>';
-	}
-	echo implode(' &rsaquo; ',$l);
-?>
+			<jdoc:include type="modules" name="breadcrumbs" />
 		</div><!-- / #trail -->
 <?php endif; ?>
 
@@ -204,5 +183,6 @@ if (!$juser->get('guest')) {
 			<jdoc:include type="modules" name="footer" />
 			<!-- End footer modules output -->
 		</div><!-- / #footer -->
+		<jdoc:include type="modules" name="endpage" />
 	</body>
 </html>
