@@ -20,7 +20,7 @@ HUB.Resources = {
 
 	initialize: function() {
 		if (typeof(SqueezeBoxHub) != "undefined") {
-			if (!SqueezeBoxHub) {
+			if (!SqueezeBoxHub || !$('sbox-window')) {
 				SqueezeBoxHub.initialize({ size: {x: 750, y: 500} });
 			}
 			
