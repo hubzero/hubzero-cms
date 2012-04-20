@@ -18,7 +18,7 @@ if (!HUB) {
 
 HUB.Modules.MyResources = {
 	
-	baseURL: '/index.php?option=com_myhub&no_html=1',
+	baseURL: '/index.php?option=com_members&active=dashboard&no_html=1&init=1',
 	
 	initialize: function() {
 		var com = this;
@@ -36,7 +36,7 @@ HUB.Modules.MyResources = {
 		$(this.sort).change(function() {
 			allNodes = $(com.form).serialize();
 			
-			$.get(HUB.Modules.MyResources.baseURL+'&task=saveparams&update=1&id='+com.id+'&uid='+com.uid+'&'+allNodes, {}, function(data) {
+			$.get(HUB.Modules.MyResources.baseURL+'&action=saveparams&update=1&id='+com.id+'&uid='+com.uid+'&'+allNodes, {}, function(data) {
 	            $('#myresources-content').html(data);
 			});
 		});
@@ -44,7 +44,7 @@ HUB.Modules.MyResources = {
 		$(this.limit).change(function() {
 			allNodes = $(com.form).serialize();
 
-			$.get(HUB.Modules.MyResources.baseURL+'&task=saveparams&update=1&id='+com.id+'&uid='+com.uid+'&'+allNodes, {}, function(data) {
+			$.get(HUB.Modules.MyResources.baseURL+'&action=saveparams&update=1&id='+com.id+'&uid='+com.uid+'&'+allNodes, {}, function(data) {
 	            $('#myresources-content').html(data);
 			});
 		});

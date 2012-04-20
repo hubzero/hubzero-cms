@@ -35,7 +35,7 @@ $juser =& JFactory::getUser();
 
 $html = '';
 if (!$no_html) {
-	$slf = ($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : JRoute::_('index.php?option=' . JRequest::get('option', 'com_myhub'));
+	$slf = ($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : JRoute::_('index.php?option=com_members&task=myaccount&active=dashboard');
 	$html .= '<form method="get" action="'. $slf .'" id="myresources-form" enctype="multipart/form-data">';
 	$html .= '<h4>'.JText::_('Sort by');
 	$html .= ' <select name="params[sort]" id="myresources-sort">'."\n";

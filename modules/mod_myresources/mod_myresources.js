@@ -16,7 +16,7 @@ if (!HUB.Modules) {
 }
 
 HUB.Modules.MyResources = {
-	baseURL: 'index.php?option=com_myhub&no_html=1',
+	baseURL: '/index.php?option=com_members&active=dashboard&no_html=1&init=1',
 	
 	initialize: function() {
 		this.form = $('myresources-form');
@@ -35,7 +35,7 @@ HUB.Modules.MyResources = {
 			allNodes = this.form.toQueryString();
 			//var myAjax1 = new Ajax(HUB.Modules.MyResources.baseURL+'&task=saveparams&update=1&id='+id+'&uid='+uid+'&'+allNodes,{update:'myresources-content'}).request();
 			var myAjax1 = new Ajax(
-				HUB.Modules.MyResources.baseURL+'&task=saveparams&update=1&id='+this.id+'&uid='+this.uid+'&'+allNodes,
+				HUB.Modules.MyResources.baseURL+'&action=saveparams&update=1&id='+this.id+'&uid='+this.uid+'&'+allNodes,
 				{update:'myresources-content'}
 			).request();
 		}.bind(this));
@@ -45,7 +45,7 @@ HUB.Modules.MyResources = {
 			//HUB.Myhub.saveModule(this.form, this.id);
 			allNodes = this.form.toQueryString();
 			var myAjax1 = new Ajax(
-				HUB.Modules.MyResources.baseURL+'&task=saveparams&update=1&id='+this.id+'&uid='+this.uid+'&'+allNodes,
+				HUB.Modules.MyResources.baseURL+'&action=saveparams&update=1&id='+this.id+'&uid='+this.uid+'&'+allNodes,
 				{update:'myresources-content'}
 			).request();
 		}.bind(this));
