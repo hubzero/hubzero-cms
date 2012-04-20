@@ -437,6 +437,13 @@ class Hubzero_Tool_Version
     private $toolid = null;             //					    jos_tool_version
 
 	/**
+	 * Description for 'toolid'
+	 * 
+	 * @var unknown
+	 */
+    private $params = null;             //					    jos_tool_version
+
+	/**
 	 * Description for 'alias'
 	 * 
 	 * @var array
