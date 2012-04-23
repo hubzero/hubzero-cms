@@ -92,7 +92,7 @@ class  plgSystemDebug extends JPlugin
 
 			$db	=& JFactory::getDBO();
 
-			echo '<h4>'.JText::sprintf( 'Queries logged',  $db->getTicker() ).'</h4>';
+			echo '<h4>'.JText::sprintf( 'Queries logged',  $db->getTicker() ).": ".$db->timer.' seconds</h4>';
 
 			if ($log = $db->getLog())
 			{
