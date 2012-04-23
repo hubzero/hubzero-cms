@@ -2253,7 +2253,10 @@ class GroupsController extends Hubzero_Controller
 		$view->title = $this->_title;
 		$view->group = $group;
 
-		$view->logos = $logos;
+		if(is_dir($asset_path)) {		
+			$view->logos = $logos;
+		}
+		
 		$view->hub_group_plugins = $hub_group_plugins;
 		$view->group_plugin_access = $group_plugin_access;
 
