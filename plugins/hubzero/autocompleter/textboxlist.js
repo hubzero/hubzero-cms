@@ -321,7 +321,9 @@ var TextboxList = new Class({
 
 	callEvent: function(el, type) {
 		this.events.set(type, el);
-		el[type]();
+		if (el[type]) {
+			el[type]();
+		}
 	},
   
 	isSelfEvent: function(type) {
