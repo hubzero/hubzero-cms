@@ -860,7 +860,7 @@ class RegisterController extends Hubzero_Controller
 
 		if (JRequest::getMethod() == 'GET') {
 			if ($this->juser->get('tmp_user')) {
-				$xregistration->loadAccount($juser);
+				$xregistration->loadAccount($this->juser);
 
 				$username = $xregistration->get('login');
 				$email = $xregistration->get('email');
