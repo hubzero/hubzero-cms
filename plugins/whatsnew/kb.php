@@ -127,10 +127,11 @@ class plgWhatsnewKb extends JPlugin
 			$database->setQuery( $f_fields.$f_from ." WHERE ". $f_where . $order_by );
 			$rows = $database->loadObjectList();
 
+			if (is_array($rows)) 
 			foreach ($rows as $key => $row)
-			{
-				$rows[$key]->href = JRoute::_($row->href);
-			}
+				{
+					$rows[$key]->href = JRoute::_($row->href);
+				}
 
 			return $rows;
 		}
