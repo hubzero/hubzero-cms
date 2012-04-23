@@ -72,9 +72,9 @@ class Hubzero_Document
 		$componentcss = DS . 'components' . DS . $component . DS . $stylesheet;
 
 		if (file_exists(JPATH_SITE . $templatecss)) {
-			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
+			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
         } else if (file_exists(JPATH_SITE . $componentcss)) {
-		    $jdocument->addStyleSheet($componentcss, $type, $media, $attribs);
+		    $jdocument->addStyleSheet($componentcss . '?v=' . filemtime(JPATH_SITE . $componentcss), $type, $media, $attribs);
 		}
 	}
 
@@ -180,9 +180,9 @@ class Hubzero_Document
 		$modulecss = DS . 'modules' . DS . $module . DS . $stylesheet;
 
 		if (file_exists(JPATH_SITE . $templatecss)) {
-			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
+			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
         } else {
-			$jdocument->addStyleSheet($modulecss, $type, $media, $attribs);
+			$jdocument->addStyleSheet($modulecss . '?v=' . filemtime(JPATH_SITE . $modulecss), $type, $media, $attribs);
 		}
 	}
 	
@@ -215,7 +215,9 @@ class Hubzero_Document
 		
 		$url = DS . 'modules' . DS . $module . DS . $script . '.js';
 
-		$jdocument->addScript($url, $type, $defer, $async);
+		if (file_exists(JPATH_SITE . $url)) {
+			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+		}
 	}
 
 	/**
@@ -245,9 +247,9 @@ class Hubzero_Document
 		$plugincss = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
 
 		if (file_exists(JPATH_SITE . $templatecss)) {
-			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
+			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
         } else {
-			$jdocument->addStyleSheet($plugincss, $type, $media, $attribs);
+			$jdocument->addStyleSheet($plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
 		}
 	}
 	
@@ -280,7 +282,9 @@ class Hubzero_Document
 		}
 		
 		$url = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
-
-		$jdocument->addScript($url, $type, $defer, $async);
+		
+		if (file_exists(JPATH_SITE . $url)) {
+			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+		}
 	}
 }
