@@ -77,6 +77,7 @@ if (JPluginHelper::isEnabled('system', 'debug')) {
 		</script>
 	</head>
 	<body id="login-body">
+		<jdoc:include type="modules" name="notices" />
 		<header id="header" role="banner">
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
 			<div class="clr"></div>
