@@ -82,7 +82,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 
 				// Build the HTML
-				$l = "\t".'<li'.$a.'><a href="'.$sef.'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
+				$l = "\t".'<li'.$a.'><a href="'.$sef.'">' . stripslashes($cat['title']) . ' ('.$cat['total'].')</a>';
 				// Are there sub-categories?
 				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 					// An array for storing the HTML we make
