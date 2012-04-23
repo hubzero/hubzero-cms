@@ -269,6 +269,37 @@ Class GroupPages extends JTable
 		//get the group members
 		$members = $this->group->get('members');
 		shuffle($members);
+		
+		$oparams = JComponentHelper::getParams( "com_groups" ); 
+		$o_system_users = $oparams->get('display_system_users', 'no');
+		
+		$gparams = new JParameter( $this->group->get('params') );
+		$g_system_users = $gparams->get('display_system_users', "global");
+		
+		
+		switch( $g_system_users )
+		{
+			case 'yes':
+				$display_system_users = 'yes';
+				break;
+			case 'no':
+				$display_system_users = 'no';
+				break;
+			case 'global':
+				$display_system_users = $o_system_users;
+				break;
+		}
+		
+		//callback to check if user is system user
+		function isSystemUser2($user) {
+			return ($user < 1000) ? false : true;
+		}
+		
+		//if we dont want to display system users
+		//filter values through callback above and then reset array keys
+		if($display_system_users == 'no') {
+			$members = array_values(array_filter($members, "isSystemUser2"));
+		}
 
 		//get the public and private desc from group object
 		$public_desc = $this->group->get('public_desc');

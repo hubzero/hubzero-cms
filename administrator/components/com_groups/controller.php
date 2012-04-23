@@ -582,6 +582,10 @@ class GroupsController extends Hubzero_Controller
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
 		$gparams->set('membership_control', $membership_control);
 
+		//display system members
+		$display_system_users = (isset($g['params']['display_system_users'])) ? $g['params']['display_system_users'] : "global";
+		$gparams->set('display_system_users', $display_system_users);
+		
 		//make array of params
 		$gparams = $gparams->toArray();
 

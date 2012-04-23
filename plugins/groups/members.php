@@ -168,6 +168,22 @@ class plgGroupsMembers extends JPlugin
 
 			$gparams = new JParameter( $group->get('params') );
 			$this->membership_control = $gparams->get('membership_control', 1);
+			
+			$oparams = JComponentHelper::getParams( $this->_option ); 
+			$this->display_system_users = $oparams->get('display_system_users', 'no');
+
+			switch( $gparams->get('display_system_users', "global") )
+			{
+				case 'yes':
+					$this->display_system_users = 'yes';
+					break;
+				case 'no':
+					$this->display_system_users = 'no';
+					break;
+				case 'global':
+					$this->display_system_users = $this->display_system_users;
+					break;
+			}
 
 			// Do we need to perform any actions?
 			if ($action) {
@@ -247,10 +263,22 @@ class plgGroupsMembers extends JPlugin
 					break;
 				}
 
-				$view->limit = JRequest::getInt('limit', 25);
+				//callback to check if user is system user
+				function isSystemUser($user) {
+					return ($user < 1000) ? false : true;
+				}
+				
+				//if we dont want to display system users
+				//filter values through callback above and then reset array keys
+				if($this->display_system_users == 'no') {
+					$view->groupusers = array_values(array_filter($view->groupusers, "isSystemUser"));
+				}
+				
+				$view->limit = JRequest::getInt('limit', $this->_params->get('display_limit'));
 				$view->start = JRequest::getInt('limitstart', 0);
 				$view->start = ($view->limit == 0) ? 0 : $view->start;
 				$view->no_html = JRequest::getInt( 'no_html', 0 );
+				$view->params = $this->_params;
 
 				// Initiate paging
 				jimport('joomla.html.pagination');

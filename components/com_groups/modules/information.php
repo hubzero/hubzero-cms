@@ -86,6 +86,31 @@ Class InformationModule
 
 		//get the group object
 		$group = Hubzero_Group::getInstance( $this->group->get('gidNumber') );
+		
+		//display system members 
+		$oparams = JComponentHelper::getParams( "com_groups" ); 
+		$o_system_users = $oparams->get('display_system_users', 'no');
+		
+		$gparams = new JParameter( $this->group->get('params') );
+		$g_system_users = $gparams->get('display_system_users', "global");
+		
+		switch( $g_system_users )
+		{
+			case 'yes':
+				$display_system_users = 'yes';
+				break;
+			case 'no':
+				$display_system_users = 'no';
+				break;
+			case 'global':
+				$display_system_users = $o_system_users;
+				break;
+		}
+		
+		//callback to check if user is system user
+		function isSystemUser3($user) {
+			return ($user < 1000) ? false : true;
+		}
 
 		// Get the group tags
 		$database =& JFactory::getDBO();
@@ -97,6 +122,10 @@ Class InformationModule
 
 		// Get the managers
 		$managers = $group->get('managers');
+		if($display_system_users == 'no') {
+			$managers = array_values(array_filter($managers, "isSystemUser3"));
+		}
+		
 		$m = array();
 		if ($managers) {
 			foreach ($managers as $manager)
@@ -106,6 +135,16 @@ Class InformationModule
 			}
 		}
 		$m = implode(', ', $m);
+
+		//get the members
+		$members = $group->get('members');
+		
+		//if we dont want to display system users
+		//filter values through callback above and then reset array keys
+		if($display_system_users == 'no') {
+			$members = array_values(array_filter($members, "isSystemUser3"));
+		}
+
 
 		// Determine the join policy
 		switch ($group->get('join_policy'))

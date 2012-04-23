@@ -42,6 +42,8 @@ $editor =& JEditor::getInstance();
 $gparams = new JParameter( $this->group->params );
 
 $membership_control = $gparams->get('membership_control', 1);
+
+$display_system_users = $gparams->get('display_system_users', 'global');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -218,6 +220,19 @@ if ($this->getError()) {
 						<td class="key" valign="top"><label for="plugin_params"><?php echo JText::_('Plugin Access'); ?>:</label></td>
 						<td>
 							<textarea name="group[plugins]" rows="10" cols="50"><?php echo $this->escape($this->group->plugins); ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+					<tr>
+						<td class="key" valign="top"><label for="plugin_params"><?php echo JText::_('Show System Users'); ?>:</label></td>
+						<td>
+							<select name="group[params][display_system_users]" id="display_system_users">
+								<option <?php if($display_system_users == "global") { echo "selected"; } ?> value="global">Global</option>
+								<option <?php if($display_system_users == "no") { echo "selected"; } ?> value="no">No</option>
+								<option <?php if($display_system_users == "yes") { echo "selected"; } ?> value="yes">Yes</option>
+							</select>
 						</td>
 					</tr>
 				</tbody>
