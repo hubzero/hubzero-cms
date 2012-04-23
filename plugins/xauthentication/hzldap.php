@@ -270,11 +270,11 @@ class plgXAuthenticationHzldap extends JPlugin
 		{
 			$dn = str_replace('[username]', $credentials['username'], $users_dn);
 
-			$success = ldap_bind($_ldc, $dn, $credentials['password']);
+			$success = @ldap_bind($_ldc, $dn, $credentials['password']);
 
-			$search_result = ldap_search($_ldc, $dn, '(objectClass=hubAccount)', array('mail','cn','uid'));
+			$search_result = @ldap_search($_ldc, $dn, '(objectClass=hubAccount)', array('mail','cn','uid'));
 
-			$userdetails = ldap_get_entries($_ldc, $search_result);
+			$userdetails = @ldap_get_entries($_ldc, $search_result);
 		}
 
 		if(!$success)
