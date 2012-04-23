@@ -31,7 +31,7 @@ HUB.Modules.MyTools	 = {
 			options: {
 				method:'get'
 			},
-			loadingText: 'Loading...',
+			loadingText: 'Loading...'
 		},
 		titles: '#myToolsTabs ul.tab_titles li',
 		container: '#myToolsTabs',
