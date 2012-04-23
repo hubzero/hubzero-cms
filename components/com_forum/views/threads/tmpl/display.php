@@ -141,28 +141,29 @@ ximport('Hubzero_User_Profile_Helper');
 						</p>
 						<?php echo $comment; ?>
 						<?php if (
-									($row->parent && 
+									$this->config->get('access-manage-thread')
+									||
+									(!$row->parent && $row->created_by == $juser->get('id') && 
 										(
 											$this->config->get('access-delete-thread') ||
 											$this->config->get('access-edit-thread')
 										) 
 									)
 									|| 
-									(!$row->parent && 
+									($row->parent && $row->created_by == $juser->get('id') && 
 										(
 											$this->config->get('access-delete-post') ||
 											$this->config->get('access-edit-post')
 										)
 									)
 								) { ?>
-						<?php //if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->created_by) { ?>
 						<p class="comment-options">
-							<?php if (($row->parent && $this->config->get('access-delete-thread')) || (!$row->parent && $this->config->get('access-delete-post'))) { ?>
+							<?php if ((!$row->parent && $this->config->get('access-delete-thread')) || ($row->parent && $this->config->get('access-delete-post'))) { ?>
 							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $row->id . '&task=delete'); ?>">
 								<?php echo JText::_('COM_FORUM_DELETE'); ?>
 							</a>
 							<?php } ?>
-							<?php if (($row->parent && $this->config->get('access-edit-thread')) || (!$row->parent && $this->config->get('access-edit-post'))) { ?>
+							<?php if ((!$row->parent && $this->config->get('access-edit-thread')) || ($row->parent && $this->config->get('access-edit-post'))) { ?>
 							<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $row->id . '&task=edit'); ?>">
 								<?php echo JText::_('COM_FORUM_EDIT'); ?>
 							</a>

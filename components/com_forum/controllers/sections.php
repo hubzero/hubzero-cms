@@ -360,8 +360,8 @@ class ForumControllerSections extends Hubzero_Controller
 				if ($assetType == 'post' || $assetType == 'thread')
 				{
 					$this->config->set('access-create-' . $assetType, true);
-					$this->config->set('access-delete-' . $assetType, true);
 					$this->config->set('access-edit-' . $assetType, true);
+					$this->config->set('access-delete-' . $assetType, true);
 				}
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

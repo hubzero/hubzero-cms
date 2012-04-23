@@ -172,14 +172,14 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							<?php } ?>
 								</span>
 							</td>
-						<?php if ($this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
+						<?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 							<td class="entry-options">
-								<?php if ($this->config->get('access-edit-thread') || $row->created_by == $juser->get('id') ) { ?>
+								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->created_by == $juser->get('id'))) { ?>
 									<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . $row->id . '&task=edit'); ?>">
 										<?php echo JText::_('COM_FORUM_EDIT'); ?>
 									</a>
 								<?php } ?>
-								<?php if ($this->config->get('access-delete-thread')) { ?>
+								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->created_by == $juser->get('id'))) { ?>
 									<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . $row->id . '&task=delete'); ?>">
 										<?php echo JText::_('COM_FORUM_DELETE'); ?>
 									</a>
