@@ -149,7 +149,7 @@ class Hubzero_Auth_Link
 	 */
     private function logDebug($msg)
     {
-        $xlog = &XFactory::getLogger();
+        $xlog = &Hubzero_Factory::getLogger();
         $xlog->logDebug($msg);
     }
 
