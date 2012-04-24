@@ -173,6 +173,10 @@ class XRouter extends JRouter
 					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
 						return $vars;
 				}
+				else if ($uri->getPath() == 'legal/terms')
+				{
+					return $vars;
+				}
 				else if ($vars['option'] == 'com_register')
 				{
 					if (!empty($vars['task']))
