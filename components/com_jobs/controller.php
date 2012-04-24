@@ -252,13 +252,17 @@ class JobsController extends Hubzero_Controller
 	 */
 	public function login()
 	{
-		$view = new JView( array('name'=>'login') );
+		/*$view = new JView( array('name'=>'login') );
 		$view->title = $this->_title;
 		$view->msg   = $this->_msg;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		$view->display();
+		$view->display();*/
+		$rtrn = jRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$this->setRedirect(
+			JRout::_('index.php?option=com_login&return=' . base64_encode($rtrn))
+		);
 	}
 
 	//-----------

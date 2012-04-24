@@ -120,10 +120,11 @@
 		float: right;
 		padding: 2em;
 		text-align: center;
+		margin: 0;
 		margin-right: 2em;
 		margin-top: -1.2em;
-		position: relevant;
 		overflow: visible;
+		width: 300px;
 		}
 	#jobinfo div.apply span {
 		display: block;
@@ -622,12 +623,15 @@
 	#activities .sub-heading, 
 	#jobinfo .sub-heading {
 	    float: left;
-	    margin: 1px 0 0 -80px;
+	    margin: 1px 2em 0 0;
 	    padding: 0;
 	    width: 160px;
 	    color: #777;
 	    text-align: right;
 		}
+	#jobinfo .sub-heading {
+		width: 100px;
+	}
 	#subinfo p, 
 	#activities p, 
 	#jobinfo p {
@@ -739,6 +743,7 @@
 	#jobinfo .spacer {
 		padding: 0.3em;
 		}
+
 /* Form */
 	.joblist {
 		margin: 0;
@@ -968,7 +973,7 @@
 		display: inline;
 		}
 	textarea {
-		font-size: 1.4em;
+		font-size: 1.2em;
 	}
 	#prefsForm textarea {
 		width: 100%;
