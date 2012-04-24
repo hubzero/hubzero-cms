@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="whatsrelated">
+<div class="container" id="whatsrelated">
 	<h3><?php echo JText::_('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
 <?php if ($this->related) { ?>
 	<ul>

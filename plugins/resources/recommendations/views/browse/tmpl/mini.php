@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="recommendations">
+<div class="container" id="recommendations">
 	<h3><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_HEADER'); ?></h3>
 <?php if ($this->results) { ?>
 	<ul>
