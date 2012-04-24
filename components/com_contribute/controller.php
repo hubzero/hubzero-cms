@@ -2104,9 +2104,9 @@ class ContributeController extends Hubzero_Controller
 					// New record
 					$rc->authorid = $authid;
 					$rc->ordering = $order;
-					$rc->name = $xprofile->get('name');
-					$rc->role = $role;
-					$rc->organization = $xprofile->get('organization');
+					$rc->name = addslashes($xprofile->get('name'));
+					$rc->role = addslashes($role);
+					$rc->organization = addslashes($xprofile->get('organization'));
 					$rc->createAssociation();
 
 					$order++;
