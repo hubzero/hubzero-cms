@@ -290,8 +290,11 @@ class KbCategory extends JTable
 				. " LEFT JOIN #__viewlevels AS g ON g.id = (m.access + 1)";
 		}
 		$query .= " WHERE m.section=".$sect
-				. " ORDER BY ".$filters['filterby']
-				. " LIMIT ".$filters['start'].",".$filters['limit'];
+				. " ORDER BY ".$filters['filterby'];
+		if (isset($filters['limit']) && $filters['limit'])
+		{
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		}
 		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

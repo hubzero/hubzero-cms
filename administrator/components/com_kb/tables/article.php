@@ -357,7 +357,7 @@ class KbArticle extends JTable
 				$where = "m.section!=0";
 			}
 		}
-		if (isset($filters['orphans'])) {
+		if (isset($filters['orphans']) && $filters['orphans']) {
 			$where = "m.section=0";
 		}
 
@@ -407,8 +407,11 @@ class KbArticle extends JTable
 		$query .= " LEFT JOIN #__faq_categories AS c ON c.id = m.section"
 				. " LEFT JOIN #__faq_categories AS cc ON cc.id = m.category"
 				. " WHERE ".$where
-				. " ORDER BY ".$filters['filterby']
-				. " LIMIT ".$filters['start'].",".$filters['limit'];
+				. " ORDER BY ".$filters['filterby'];
+		if (isset($filters['limit']) && $filters['limit'])
+		{
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		}
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
