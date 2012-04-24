@@ -71,7 +71,7 @@ $database =& JFactory::getDBO();
 	<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_OVERVIEW'); ?>">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all"= onclick="HUB.MembersMsg.checkAll(this, 'chkbox');" /></th>
+				<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all" onclick="HUB.MembersMsg.checkAll(this, 'chkbox');" /></th>
 				<th scope="col"> </th>
 				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
 				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
