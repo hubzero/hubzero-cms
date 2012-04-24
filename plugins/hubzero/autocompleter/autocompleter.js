@@ -634,6 +634,7 @@ if (!HUB) {
 // Tag Autocompleter
 //----------------------------------------------------------
 HUB.Autocomplete = {
+	tagger: null,
 	writeSelectList: function( members, id ) {
 		var sel = $(id);
 		if (!sel) {
@@ -703,7 +704,7 @@ HUB.Autocomplete = {
 			
 			// Are multiple entries allowable?
 			if (type == 'multi') {
-				tagger = new AppleboxList(input, {
+				tagger = HUB.Autocomplete.tagger = new AppleboxList(input, {
 						'hideempty': false, 
 						'resizable': {'step': 8}, 
 						'listcls': cls,
