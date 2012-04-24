@@ -149,16 +149,20 @@ class MembersController extends Hubzero_Controller
 				}
 			}
 			
-			$query = "SELECT DISTINCT uidNumber 
-					FROM #__xgroups_members
-					WHERE gidNumber IN (".implode(',', $usersgroups).")";
-
-			$this->database->setQuery( $query );
-			$members = $this->database->loadResultArray();
-			
-			if (!$members)
+			$members = null;
+			if (!empty($usersgroups))
 			{
-				$members = array();
+				$query = "SELECT DISTINCT uidNumber 
+						FROM #__xgroups_members
+						WHERE gidNumber IN (".implode(',', $usersgroups).")";
+
+				$this->database->setQuery( $query );
+				$members = $this->database->loadResultArray();
+			}
+
+			if (!$members || empty($members))
+			{
+				$members = array($this->juser->get('id'));
 			}
 			$restrict = "OR xp.uidNumber IN (".implode(',', $members).")";
 		//}
@@ -190,10 +194,12 @@ class MembersController extends Hubzero_Controller
 		{
 			ximport('Hubzero_User_Profile_Helper');
 			
-			$picture = DS . trim($this->config->get('defaultpic'), DS);
-			$picture = Hubzero_User_Profile_Helper::thumbit($picture);
+			$default = DS . trim($this->config->get('defaultpic'), DS);
+			$default = Hubzero_User_Profile_Helper::thumbit($default);
 			foreach ($rows as $row)
 			{
+				$picture = $default;
+				
 				$name = str_replace("\n", '', stripslashes(trim($row->name)));
 				$name = str_replace("\r", '', $name);
 				$name = str_replace('\\', '', $name);
