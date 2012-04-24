@@ -105,7 +105,7 @@ class Hubzero_Wiki_Parser extends JObservable
 	public function initialise($config=array(), $getnew=false)
 	{
 		// Check if parser is already loaded
-		if (is_null(($this->_parser))) {
+		if (is_null($this->_parser)) {
 			return;
 		}
 
@@ -114,7 +114,7 @@ class Hubzero_Wiki_Parser extends JObservable
 		$args['event'] = 'onGetWikiParser';
 
 		$return = '';
-		$results[] = $this->_parser->update($args);
+		$results[] = $this->_parser->update($args); //$this->_parser->onGetWikiParser($config, $getnew);
 		foreach ($results as $result)
 		{
 			if (is_object($result)) {
@@ -141,7 +141,7 @@ class Hubzero_Wiki_Parser extends JObservable
 		$this->_loadParser($params, $config, $getnew);
 
 		// Check if parser is already loaded
-		if (is_null(($this->_parser))) {
+		if (is_null($this->_parser)) {
 			return nl2br($text);
 		}
 
@@ -177,7 +177,7 @@ class Hubzero_Wiki_Parser extends JObservable
 	private function _loadParser($config=array(), $pconfig=array(), $getnew=false)
 	{
 		// Check if editor is already loaded
-		if (!is_null(($this->_parser))) {
+		if (!$getnew && !is_null($this->_parser)) {
 			return;
 		}
 
@@ -197,9 +197,11 @@ class Hubzero_Wiki_Parser extends JObservable
 
 		// Get the plugin
 		$plugin =& JPluginHelper::getPlugin('hubzero', $this->_name);
-		$params = new JParameter($plugin->params);
-		$params->loadArray($config);
-		$plugin->params = $params;
+		if (is_string($plugin->params))
+		{
+			$plugin->params = new JParameter($plugin->params);
+		}
+		$plugin->params->loadArray($config);
 
 		// Build parser plugin classname
 		$name = 'plgHubzero'.$this->_name;

@@ -116,6 +116,8 @@ class FootNoteMacro extends WikiMacro
 			$html  = '<ol class="footnotes">';
 			$html .= implode("\n",$wm->footnotes);
 			$html .= '</ol>';
+			
+			$wm = null;
 
 			return $html;
 		}
