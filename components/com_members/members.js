@@ -24,7 +24,7 @@ HUB.Members = {
 			}
 			
 			//hide no javscript messages
-			$$(".no-js").hide();
+			$$(".no-js").setStyle("display","none");
 			
 			//move the modules button to top
 			if( $("personalize") )
