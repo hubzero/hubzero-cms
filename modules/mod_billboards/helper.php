@@ -147,12 +147,15 @@ class modBillboards
 		// Add the CSS to the template for each billboard
 		foreach($this->slides as $slide)
 		{
+			$background = (!empty($slide->background_img)) ? "background: url('$image_location$slide->background_img') no-repeat 0 0;" : '';
+			$padding    = (!empty($slide->padding)) ? "padding: $slide->padding;" : '';
+
 			$css = 
 				"#$slide->alias {
-					background: url('$image_location$slide->background_img') no-repeat 0 0;
+					$background
 					}
 				#$slide->alias p {
-					padding: $slide->padding;
+					$padding
 					}";
 			$jdocument->addStyleDeclaration($css);
 			$jdocument->addStyleDeclaration($slide->css);

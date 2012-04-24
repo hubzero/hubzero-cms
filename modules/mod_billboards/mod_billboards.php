@@ -30,7 +30,7 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$modBillboardsMultiple = ($modBillboardsMultiple) ? $modBillboardsMultiple : 0;
+$modBillboardsMultiple = (!empty($modBillboardsMultiple)) ? $modBillboardsMultiple : 0;
 
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
