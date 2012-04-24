@@ -88,11 +88,11 @@ else
 	$html .= "\t" . '<p class="category-header-details">' . "\n";
 	if (count($this->tags) > 0)
 	{
-		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&task=edit&id=' . $juser->get('id')) . '">' . JText::_('MOD_WHATSNEW_EDIT').'</a>]</span>' . "\n";
+		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile#profile-interests') . '">' . JText::_('MOD_WHATSNEW_EDIT').'</a>]</span>' . "\n";
 	}
 	else
 	{
-		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&task=edit&id=' . $juser->get('id')) . '">' . JText::_('MOD_WHATSNEW_ADD_INTERESTS').'</a>]</span>' . "\n";
+		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile#profile-interests') . '">' . JText::_('MOD_WHATSNEW_ADD_INTERESTS').'</a>]</span>' . "\n";
 	}
 	$html .= "\t\t" . '<span class="q">'.JText::_('MOD_WHATSNEW_MY_INTERESTS') . ': ' . $this->formatTags($this->tags) . '</span>' . "\n";
 	$html .= "\t" . '</p>' . "\n";
