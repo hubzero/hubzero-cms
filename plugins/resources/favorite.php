@@ -133,8 +133,20 @@ class plgResourcesFavorite extends JPlugin
 					$txt = JText::_('PLG_RESOURCES_FAVORITES_UNFAVORITE_THIS');
 					$cls = 'faved';
 				}
-
-				$arr['metadata'] = '<p class="favorite"><a id="fav-this" class="'.$cls.'" href="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id.'&action=favorite').'">'.$txt.'</a></p>';
+				
+				ximport('Hubzero_Plugin_View');
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'=>'resources',
+						'element'=>'favorite',
+						'name'=>'metadata'
+					)
+				);
+				$view->cls = $cls;
+				$view->txt = $txt;
+				$view->option = $option;
+				$view->resource = $resource;
+				$arr['metadata'] = $view->loadTemplate();
 			}
 		}
 
