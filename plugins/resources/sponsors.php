@@ -202,6 +202,11 @@ class plgResourcesSponsors extends Hubzero_Plugin
 		return $arr;
 	}
 	
+	public function onCanManage()
+	{
+		return $this->_plugin->name;
+	}
+	
 	public function onManage($option, $controller='plugins', $task='default')
 	{
 		$task = ($task) ?  $task : 'default';
