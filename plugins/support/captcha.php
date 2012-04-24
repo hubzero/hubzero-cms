@@ -356,7 +356,7 @@ class plgSupportCaptcha extends JPlugin
 			break;
 		}
 
-		//$html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
+		$html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
 		//$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 		$html .= '</label>' . "\n";
 
@@ -439,9 +439,9 @@ class plgSupportCaptcha extends JPlugin
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
 		if ($word == $securiy_code) {
-		   return true;
+			return true;
 		} else {
-		   return false;
+			return false;
 		}
 	}
 
@@ -459,9 +459,12 @@ class plgSupportCaptcha extends JPlugin
 
 		$GLOBALS['totalCaptchas']++;
 
-		$document =& JFactory::getDocument();
-		$document->addScript(DS . 'plugins' . DS . 'support' . DS . 'captcha' . DS . 'captcha.js');
-		$document->addStyleSheet(DS . 'plugins' . DS . 'support' . DS . 'captcha' . DS . 'captcha.css');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStyleSheet('support', 'captcha');
+		//Hubzero_Document::addPluginScript('support', 'captcha');
+		//$document =& JFactory::getDocument();
+		//$document->addScript(DS . 'plugins' . DS . 'support' . DS . 'captcha' . DS . 'captcha.js');
+		//$document->addStyleSheet(DS . 'plugins' . DS . 'support' . DS . 'captcha' . DS . 'captcha.css');
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -735,7 +738,7 @@ class plgSupportCaptcha extends JPlugin
 
 		//Set the session to store the security code
 		$currentSession =& JFactory::getSession();
-		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
+		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']) + 0), $security_code);
 		$width = 120;
 		$height = 40;
 	}
