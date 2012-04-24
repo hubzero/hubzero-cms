@@ -31,39 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app =& JFactory::getApplication();
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-	<title><?php echo JText::_('COM_CONTRIBUTE'); ?></title>
-
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-	<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-	<?php
-		if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'contribute.css')) {
-			echo '<link rel="stylesheet" type="text/css" media="screen" href="'.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'contribute.css" />'."\n";
-		} else {
-			echo '<link rel="stylesheet" type="text/css" media="screen" href="'.DS.'components'.DS.$this->option.DS.'contribute.css" />'."\n";
-		}
-	?>
-	
-    <script type="text/javascript" src="/media/system/js/mootools.js"></script>
-	<script type="text/javascript" src="/components/<?php echo $this->option; ?>/contribute.js"></script>
- </head>
- <body id="small-page">
+<div id="small-page">
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 		<form action="index.php" id="authors-form" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="non-js-interface">
-					<label>
+					<!-- <label>
 						<select name="authid" id="authid">
 							<option value=""><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_SELECT'); ?></option>
 					<?php
-				if ($this->rows)
+				/*if ($this->rows)
 				{
 					foreach ($this->rows as $row)
 					{
@@ -79,15 +58,23 @@ $app =& JFactory::getApplication();
 
 						echo '<option value="'.$row->uidNumber.'">'.$name.'</option>'."\n";
 					}
-				}
+				}*/
 					?> 
 						</select>
 						<?php echo JText::_('COM_CONTRIBUTE_OR'); ?>
-					</label>
+					</label> -->
 				
 					<label>
-						<input type="text" name="new_authors" value="" />
 						<?php echo JText::_('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
+						<?php 
+						JPluginHelper::importPlugin('hubzero');
+						$dispatcher =& JDispatcher::getInstance();
+						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
+						if (count($mc) > 0) {
+							echo $mc[0];
+						} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+						<input type="text" name="new_authors" id="acmembers" value="" />
+						<?php } ?>
 					</label>
 				</div>
 				
@@ -114,7 +101,7 @@ $app =& JFactory::getApplication();
 				</p>
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="no_html" value="1" />
+				<input type="hidden" name="tmpl" value="component" />
 				<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="task" value="saveauthor" />
 			</fieldset>
@@ -128,7 +115,7 @@ if ($this->contributors) {
 ?>
 	<form action="index.php" id="authors-form" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="no_html" value="1" />
+		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="task" value="updateauthor" />
 
@@ -191,7 +178,7 @@ if ($this->contributors) {
 			  		    echo '&nbsp;';
 					}
 					?></td>
-					<td class="t"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=removeauthor&amp;no_html=1&amp;id=<?php echo $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></a></td>
+					<td class="t"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=removeauthor&amp;tmpl=component&amp;id=<?php echo $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></a></td>
 				</tr>
 <?php
 		$i++;
@@ -203,5 +190,4 @@ if ($this->contributors) {
 <?php } else { ?>
 		<p><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NONE_FOUND'); ?></p>
 <?php } ?>
- </body>
-</html>
+ </div>

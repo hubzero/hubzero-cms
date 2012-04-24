@@ -2124,13 +2124,21 @@ class ContributeController extends Hubzero_Controller
 			// loop through each one
 			for ($i=0, $n=count( $authorsNew ); $i < $n; $i++)
 			{
-				$cid = strtolower(trim($authorsNew[$i]));
+				$cid = trim($authorsNew[$i]);
 
-				// Find the user's account info
-				$uid = JUserHelper::getUserId($cid);
-				if (!$uid) {
-					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
-					continue;
+				if (is_numeric($cid))
+				{
+					$uid = intval($cid);
+				}
+				else 
+				{
+					$cid = strtolower($cid);
+					// Find the user's account info
+					$uid = JUserHelper::getUserId($cid);
+					if (!$uid) {
+						$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
+						continue;
+					}
 				}
 
 				$juser =& JUser::getInstance( $uid );
@@ -2380,14 +2388,14 @@ class ContributeController extends Hubzero_Controller
 		$filters['authorized'] = false;
 
 		// Get all members
-		$rows = $mp->getRecords( $filters, false );
+		//$rows = $mp->getRecords( $filters, false );
 
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'authorslist') );
 		$view->option = $this->_option;
 		$view->config = $this->config;
 		$view->contributors = $helper->_contributors;
-		$view->rows = $rows;
+		//$view->rows = $rows;
 		$view->id = $id;
 		
 		$view->roles = $rt->getRolesForType($resource->type);

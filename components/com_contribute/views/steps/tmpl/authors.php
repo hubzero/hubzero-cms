@@ -106,7 +106,7 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?></h3>
-			<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;task=authors&amp;id=<?php echo $this->id; ?>&amp;no_html=1"></iframe>
+			<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;task=authors&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
