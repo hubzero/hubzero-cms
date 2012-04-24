@@ -102,6 +102,7 @@ function submitbutton(pressbutton)
 				<th><?php echo JHTML::_('grid.sort', JText::_('Status'), 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('Access'), 'access', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('Modified'), 'modified', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JText::_('License'); ?></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('Type'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('Children'), 'children', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JText::_('Tags'); ?></th>
@@ -260,6 +261,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<time datetime="<?php echo $row->modified; ?>">
 						<?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); //$this->escape($license); ?>
 					</time>
+				</td>
+				<td>
+					<?php echo $this->escape(stripslashes($license)); ?>
 				</td>
 				<td style="white-space: nowrap">
 					<?php echo $this->escape(stripslashes($row->typetitle)); ?>
