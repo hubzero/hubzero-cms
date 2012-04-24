@@ -1385,7 +1385,7 @@ class RegisterController extends Hubzero_Controller
 			// Redirect
             if (empty($myreturn)) {
                 $r = $hconfig->get('LoginReturn');
-                $myreturn = ($r) ? $r : JRoute::_('index.php?option=com_myhub');
+                $myreturn = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
             }
 
 	        $xhub->redirect($myreturn);
