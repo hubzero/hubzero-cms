@@ -285,8 +285,8 @@ if ($this->authorized) {
 		</fieldset>
 
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
-		<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-		<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
+		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
+		<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->scope); ?>" />
 		<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />
 		<input type="hidden" name="version" value="<?php echo $this->revision->version; ?>" />
 		<input type="hidden" name="created_by" value="<?php echo $this->revision->created_by; ?>" />
