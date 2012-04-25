@@ -2568,7 +2568,7 @@ class WishlistController extends JObject
 		$ajax 	 = JRequest::getInt( 'ajax', 0 );
 		$page 	 = JRequest::getVar( 'page', 'wishlist' );
 		$cat 	 = 'wish';
-		$vote 	 = JRequest::getVar( 'vote', '' );
+		$vote 	 = JRequest::getWord( 'vote', '' ); // assuming text only vote. Fix for sql injection ticket 1182
 		$ip 	 = $this->ip_address();
 						
 		if(!$id) {
