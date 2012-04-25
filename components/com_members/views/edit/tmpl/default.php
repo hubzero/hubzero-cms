@@ -34,77 +34,73 @@ defined('_JEXEC') or die( 'Restricted access' );
 $isIncrementalEnabled = JModuleHelper::isEnabled("Incremental Registration");
 
 $uid = (int)$this->profile->get('uidNumber');
-$user_is_current = $uid == JFactory::getUser()->get('id');
+$userIsCurrent = $uid == JFactory::getUser()->get('id');
 $prior = NULL;
-$already_complete = 0;
+$alreadyComplete = 0;
 $awards = NULL;
-$bonus_per = 15; # TODO
 $eligible = array();
 
-if ($user_is_current && $isIncrementalEnabled)
-{
+if ($userIsCurrent && $isIncrementalEnabled) {
 	$dbh =& JFactory::getDBO();
-	do
-	{
-		$dbh->setQuery('SELECT opted_out, name, email, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture FROM #__profile_completion_awards WHERE user_id = '.$uid);
-		if (!($awards = $dbh->loadAssoc()))
+	do {
+		$dbh->setQuery('SELECT opted_out, name, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture FROM #__profile_completion_awards WHERE user_id = '.$uid);
+		if (!($awards = $dbh->loadAssoc())) {
 			$dbh->execute('INSERT INTO #__profile_completion_awards(user_id) VALUES ('.$uid.')');
+		}
 	} while (!$awards);
 
-	$complete_sql = 'UPDATE #__profile_completion_awards SET ';
+	$dbh->setQuery('SELECT award_per FROM #__incremental_registration_options ORDER BY added DESC limit 1');
+	$awardPer = $dbh->loadResult();
 
-	$field_map = array(
-		'name' => 'Fullname',
-		'email' => 'Email',
-		'orgtype' => 'Employment',
-		'organization' => 'Organization',
-		'countryorigin' => 'Citizenship',
+	$completeSql = 'UPDATE #__profile_completion_awards SET ';
+
+	$fieldMap = array(
+		'name'            => 'Fullname',
+		'orgtype'         => 'Employment',
+		'organization'    => 'Organization',
+		'countryorigin'   => 'Citizenship',
 		'countryresident' => 'Residency',
-		'gender' => 'Sex',
-		'url' => 'URL',
-		'reason' => 'Reason',
-		'race' => 'Race',
-		'phone' => 'Phone'
+		'gender'          => 'Sex',
+		'url'             => 'URL',
+		'reason'          => 'Reason',
+		'race'            => 'Race',
+		'phone'           => 'Phone'
 	);
-	foreach ($awards as $k=>$complete)
-	{
-		if ($k === 'opted_out')
+	foreach ($awards as $k=>$complete) {
+		if ($k === 'opted_out' || $complete) {
 			continue;
-		if ($k === 'picture')
-		{
+		}
+		if ($k === 'picture') {
 			$dbh->setQuery('SELECT picture FROM #__xprofiles WHERE uidNumber = '.$uid);
-			if ($dbh->loadResult())
-			{
-				$complete_sql .= ($already_complete ? ', ' : '').$k.' = 1'; 
-				$already_complete += $bonus_per;
+			if ($dbh->loadResult()) {
+				$completeSql .= ($already_complete ? ', ' : '').$k.' = 1'; 
+				$alreadyComplete += $awardPer;
 			}
-			else
+			else {
 				$eligible['picture'] = 1;
+			}
 			continue;
 		}
-		$reg_field = $field_map[$k];
-		if ($complete )
-			continue;
-		if (!!$this->profile->get($k))
-		{
-			$complete_sql .= ($already_complete ? ', ' : '').$k.' = 1'; 
-			$already_complete += $bonus_per;
+		$regField = $fieldMap[$k];
+		if (!!$this->profile->get($k)) {
+			$completeSql .= ($alreadyComplete ? ', ' : '').$k.' = 1'; 
+			$alreadyComplete += $awardPer;
 		}
-		else
+		else {
 			$eligible[$k == 'url' ? 'web' : $k] = 1;
+		}
 	}
 
 	$dbh->setQuery('SELECT SUM(amount) AS amount FROM #__users_transactions WHERE type = \'deposit\' AND category = \'registration\' AND uid = '.$uid);
 	$prior = $dbh->loadResult();
-	if ($already_complete)
-	{
-		$dbh->execute($complete_sql.' WHERE user_id = '.$uid);
+	if ($alreadyComplete) {
+		$dbh->execute($completeSql.' WHERE user_id = '.$uid);
 
 		$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$uid.')), 0)');
-		$new_amount = $dbh->loadResult() + $already_complete;
+		$newAmount = $dbh->loadResult() + $alreadyComplete;
 
 		$dbh->execute('INSERT INTO #__users_transactions(uid, type, description, category, amount, balance) VALUES 
-			('.$uid.', \'deposit\', \'Profile completion award\', \'registration\', '.$already_complete.', '.$new_amount.')');
+			('.$uid.', \'deposit\', \'Profile completion award\', \'registration\', '.$alreadyComplete.', '.$newAmount.')');
 	}
 }
 
@@ -140,28 +136,29 @@ $html .= '<div class="main section">'."\n";
 //
 //$html = "";
 
-if ($user_is_current && $isIncrementalEnabled)
-{
+if ($userIsCurrent && $isIncrementalEnabled) {
 	$html .= '<div id="award-info">';
 	$html .= '	<p>It is important to us to know about the community we serve. To that end, we are offering <strong>nanos</strong> (our virtual currency, see <a href="/store">the store</a>) for filling out your profile.</p>';
-	if ($prior)
+	if ($prior) {
 		$html .= '<p>Previously, we awarded you <strong>'.$prior.'</strong> for adding to your profile.</p>';
-	if ($already_complete)
-		$html .= '<p>Since you\'ve already filled in some of your profile we have just awarded you <strong>'.$already_complete.'</strong>.</p>';
-	$html .= '<p>Fill in any remaining profile fields and get <strong>'.$bonus_per.'</strong> for each. You can exchange these points for <a href="store">nanoHUB products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
-	if ($awards['opted_out'])
+	}
+	if ($alreadyComplete) {
+		$html .= '<p>Since you\'ve already filled in some of your profile we have just awarded you <strong>'.$alreadyComplete.'</strong>.</p>';
+	}
+	$html .= '<p>Fill in any remaining profile fields and get <strong>'.$awardPer.'</strong> for each. You can exchange these points for <a href="store">nanoHUB products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
+	if ($awards['opted_out']) {
 		$html .= '<em class="opt-out">You have opted out of notifications about this promotion.</em>';
-	else
-	{
+	}
+	else {
 		$html .= '<form action="/members/'.$uid.'/promo-opt-out" method="post">';
 		$html .= '<button type="submit" class="opt-out">Don\'t remind me about this promotion</button>';
 		$html .= '</form>';
 	}
 	$html .= '</div>';
-	$html .= '<div id="wallet"><span>'.($prior + $already_complete).'</span></div>';
+	$html .= '<div id="wallet"><span>'.($prior + $alreadyComplete).'</span></div>';
 	$html .= '<script type="text/javascript">
 		window.bonus_eligible_fields = '.json_encode($eligible).';
-		window.bonus_amount = '.$bonus_per.';
+		window.bonus_amount = '.$awardPer.';
 	</script>';
 	JFactory::getDocument()->addScript('/components/com_members/incremental.js');
 }
