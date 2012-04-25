@@ -313,8 +313,8 @@ if ($this->config->get('access-edit')) {
 
 		<input type="hidden" name="page[id]" value="<?php echo $this->page->id; ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
-		<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-		<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
+		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
+		<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->scope); ?>" />
 		
 		<input type="hidden" name="revision[id]" value="<?php echo $this->revision->id; ?>" />
 		<input type="hidden" name="revision[pageid]" value="<?php echo $this->page->id; ?>" />
