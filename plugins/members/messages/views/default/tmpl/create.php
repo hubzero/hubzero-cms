@@ -80,7 +80,7 @@ $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', '
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 </form>
 
-<?php if($this->no_html) : ?>
+<?php if($this->no_html && !JPluginHelper::isEnabled('system', 'jquery')) : ?>
 	<script>
 		var dochead = document.head,
 			scripts = [

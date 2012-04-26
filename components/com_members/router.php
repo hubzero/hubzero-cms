@@ -97,7 +97,8 @@ function membersParseRoute($segments)
 		}
 	}
 	if (isset($segments[1])) {
-		if ($segments[1] == 'edit' || $segments[1] == 'changepassword' || $segments[1] == 'raiselimit' || $segments[1] == 'cancel' || $segments[1] == 'deleteimg') {
+		$user_tasks = array("edit", "changepassword", "raiselimit", "cancel", "deleteimg", "upload", "ajaxupload", "doajaxupload", "ajaxuploadsave", "getfileatts");
+		if (in_array($segments[1], $user_tasks)) {
 			$vars['task'] = $segments[1];
 		} else {
 			$vars['active'] = $segments[1];

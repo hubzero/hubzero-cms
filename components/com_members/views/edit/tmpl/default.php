@@ -31,6 +31,84 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$isIncrementalEnabled = JModuleHelper::isEnabled("Incremental Registration");
+
+$uid = (int)$this->profile->get('uidNumber');
+$user_is_current = $uid == JFactory::getUser()->get('id');
+$prior = NULL;
+$already_complete = 0;
+$awards = NULL;
+$bonus_per = 15; # TODO
+$eligible = array();
+
+if ($user_is_current && $isIncrementalEnabled)
+{
+	$dbh =& JFactory::getDBO();
+	do
+	{
+		$dbh->setQuery('SELECT opted_out, name, email, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture FROM #__profile_completion_awards WHERE user_id = '.$uid);
+		if (!($awards = $dbh->loadAssoc()))
+			$dbh->execute('INSERT INTO #__profile_completion_awards(user_id) VALUES ('.$uid.')');
+	} while (!$awards);
+
+	$complete_sql = 'UPDATE #__profile_completion_awards SET ';
+
+	$field_map = array(
+		'name' => 'Fullname',
+		'email' => 'Email',
+		'orgtype' => 'Employment',
+		'organization' => 'Organization',
+		'countryorigin' => 'Citizenship',
+		'countryresident' => 'Residency',
+		'gender' => 'Sex',
+		'url' => 'URL',
+		'reason' => 'Reason',
+		'race' => 'Race',
+		'phone' => 'Phone'
+	);
+	foreach ($awards as $k=>$complete)
+	{
+		if ($k === 'opted_out')
+			continue;
+		if ($k === 'picture')
+		{
+			$dbh->setQuery('SELECT picture FROM #__xprofiles WHERE uidNumber = '.$uid);
+			if ($dbh->loadResult())
+			{
+				$complete_sql .= ($already_complete ? ', ' : '').$k.' = 1'; 
+				$already_complete += $bonus_per;
+			}
+			else
+				$eligible['picture'] = 1;
+			continue;
+		}
+		$reg_field = $field_map[$k];
+		if ($complete )
+			continue;
+		if (!!$this->profile->get($k))
+		{
+			$complete_sql .= ($already_complete ? ', ' : '').$k.' = 1'; 
+			$already_complete += $bonus_per;
+		}
+		else
+			$eligible[$k == 'url' ? 'web' : $k] = 1;
+	}
+
+	$dbh->setQuery('SELECT SUM(amount) AS amount FROM #__users_transactions WHERE type = \'deposit\' AND category = \'registration\' AND uid = '.$uid);
+	$prior = $dbh->loadResult();
+	if ($already_complete)
+	{
+		$dbh->execute($complete_sql.' WHERE user_id = '.$uid);
+
+		$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$uid.')), 0)');
+		$new_amount = $dbh->loadResult() + $already_complete;
+
+		$dbh->execute('INSERT INTO #__users_transactions(uid, type, description, category, amount, balance) VALUES 
+			('.$uid.', \'deposit\', \'Profile completion award\', \'registration\', '.$already_complete.', '.$new_amount.')');
+	}
+}
+
+
 $name = stripslashes($this->profile->get('name'));
 $surname = stripslashes($this->profile->get('surname'));
 $givenName = stripslashes($this->profile->get('givenName'));
@@ -50,13 +128,45 @@ if (!$surname) {
 $html  = '<div id="content-header">'."\n";
 $html .= "\t".'<h2>'.$this->title.'</h2>'."\n";
 $html .= '</div><!-- / #content-header-extra -->'."\n";
+
+
 $html .= '<div id="content-header-extra">'."\n";
 $html .= "\t".'<ul id="useroptions">'."\n";
 $html .= "\t\t".'<li class="last"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=cancel&id='. $this->profile->get('uidNumber')) .'">'.JText::_('CANCEL').'</a></li>'."\n";
 $html .= "\t".'</ul>'."\n";
 $html .= '</div><!-- / #content-header-extra -->'."\n";
-$html .= '<div class="main section">'."\n";
-$html .= "\t".'<form id="hubForm" method="post" action="index.php" enctype="multipart/form-data">'."\n";
+$html .= '<div class="main section">'."\n"; 
+
+//
+//$html = "";
+
+if ($user_is_current && $isIncrementalEnabled)
+{
+	$html .= '<div id="award-info">';
+	$html .= '	<p>It is important to us to know about the community we serve. To that end, we are offering <strong>nanos</strong> (our virtual currency, see <a href="/store">the store</a>) for filling out your profile.</p>';
+	if ($prior)
+		$html .= '<p>Previously, we awarded you <strong>'.$prior.'</strong> for adding to your profile.</p>';
+	if ($already_complete)
+		$html .= '<p>Since you\'ve already filled in some of your profile we have just awarded you <strong>'.$already_complete.'</strong>.</p>';
+	$html .= '<p>Fill in any remaining profile fields and get <strong>'.$bonus_per.'</strong> for each. You can exchange these points for <a href="store">nanoHUB products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
+	if ($awards['opted_out'])
+		$html .= '<em class="opt-out">You have opted out of notifications about this promotion.</em>';
+	else
+	{
+		$html .= '<form action="/members/'.$uid.'/promo-opt-out" method="post">';
+		$html .= '<button type="submit" class="opt-out">Don\'t remind me about this promotion</button>';
+		$html .= '</form>';
+	}
+	$html .= '</div>';
+	$html .= '<div id="wallet"><span>'.($prior + $already_complete).'</span></div>';
+	$html .= '<script type="text/javascript">
+		window.bonus_eligible_fields = '.json_encode($eligible).';
+		window.bonus_amount = '.$bonus_per.';
+	</script>';
+	JFactory::getDocument()->addScript('/components/com_members/incremental.js');
+}
+
+$html .= "\t".'<form id="hubForm" class="edit-profile" method="post" action="index.php" enctype="multipart/form-data">'."\n";
 
 if ($this->authorized === 'admin') {
 	$html .= "\t".'<div class="explaination">'."\n";
@@ -72,21 +182,22 @@ if ($this->authorized === 'admin') {
 	$html .= '/>'."\n";
 	$html .= "\t\t\t".JText::_('VIP')."\n";
 	$html .= "\t\t".'</label>'."\n";
+	$html .= "<span class=\"hint\">".JText::_('**The following options are available to administrators only.')."</span>";
 	$html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 } else {
 	$html .= "\t\t".'<input type="hidden" name="profile[vip]" value="'. $this->profile->get('vip') .'" />'."\n";
 }
 
-$html .= "\t".'<div class="explaination">'."\n";
+//$html .= "\t".'<div class="explaination">'."\n";
 //$html .= "\t\t".'<p class="help">'.JText::_('E-mail may be changed with <a href="/hub/registration/edit">this form</a>.')."\n";
-$html .= "\t\t".'<p class="help">'.JText::_('Passwords can be changed with <a href="'.JRoute::_('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=changepassword').'">this form</a>.').'</p>'."\n";
+//$html .= "\t\t".'<p class="help">'.JText::_('Passwords can be changed with <a href="'.JRoute::_('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=changepassword').'">this form</a>.').'</p>'."\n";
 
-$mwconfig =& JComponentHelper::getParams( 'com_mw' );
-$enabled = $mwconfig->get('mw_on');
-if ($enabled) {
-	$html .= "\t\t".'<p class="help">'.JText::_('Request for more storage or sessions may be made with <a href="'.JRoute::_('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=raiselimit').'">this form</a>.').'</p>'."\n";
-}
-$html .= "\t".'</div>'."\n";
+//$mwconfig =& JComponentHelper::getParams( 'com_mw' );
+//$enabled = $mwconfig->get('mw_on');
+//if ($enabled) {
+//	$html .= "\t\t".'<p class="help">'.JText::_('Request for more storage or sessions may be made with <a href="'.JRoute::_('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=raiselimit').'">this form</a>.').'</p>'."\n";
+//}
+//$html .= "\t".'</div>'."\n";
 $html .= "\t".'<fieldset>'."\n";
 $html .= "\t\t".'<legend>'.JText::_('Contact Information').'</legend>'."\n";
 $html .= "\t\t".'<input type="hidden" name="id" value="'. $this->profile->get('uidNumber') .'" />'."\n";
@@ -281,6 +392,7 @@ if ($this->registration->Organization != REG_HIDE) {
 	$org_known = 0;
 
 	//$orgs = array();
+	//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_hub'.DS.'xorganization.php' );
 	include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organization.php' );
 	$database =& JFactory::getDBO();
 	//$xo = new XOrganization( $database );
@@ -699,6 +811,7 @@ if ($this->registration->OptIn != REG_HIDE) // newsletter Opt-In
 }
 
 $html .= "\t".'<fieldset>'."\n";
+$html .= "<a name=\"memberpicture\"></a>";
 $html .= "\t\t".'<legend>'.JText::_('MEMBER_PICTURE').'</legend>'."\n";
 $html .= "\t\t".'<iframe width="100%" height="350" border="0" name="filer" id="filer" src="index.php?option='.$this->option.'&amp;no_html=1&amp;task=img&amp;file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('uidNumber').'"></iframe>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";

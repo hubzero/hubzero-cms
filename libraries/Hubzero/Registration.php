@@ -199,7 +199,7 @@ class Hubzero_Registration
 		// we use this to detect when to delete data when
 		// merging registrations with profile data
 		//
-		// TODO: more cleanup
+		// TODO: more cleanup 
 
 		$coriginus_p = JRequest::getVar('corigin_us', null, 'post');
 		$corigin_p = JRequest::getVar('corigin', null, 'post');
@@ -308,8 +308,8 @@ class Hubzero_Registration
 			$race = array();
 			$racenativetribe = null;
 
-			if (strcasecmp($corigin, 'US') == 0)
-			{
+			//if (strcasecmp($corigin, 'US') == 0)
+			//{
 				if ($racenativeamerican_p)
 				{
 					$race[] = 'nativeamerican';
@@ -325,7 +325,7 @@ class Hubzero_Registration
 					$race = 'white';
 				if ($racerefused_p)
 					$race = 'refused';
-			}
+			//}
 		}
 
 		if ($interests_p === null) // field not on form
@@ -364,13 +364,16 @@ class Hubzero_Registration
 		if (!is_array($name)) {
 			$name = array();
 		}
-		$nm  = trim($name['first']);
-		$nm .= (isset($name['middle']) && trim($name['middle']) != '') ? ' '.$name['middle'] : '';
-		$nm .= ' '.trim($name['last']);
-		$this->_registration['name'] = $nm;
-		$this->_registration['givenName'] = $name['first'];
-		$this->_registration['middleName'] = $name['middle'];
-		$this->_registration['surname'] = $name['last'];
+		if($name)
+		{
+			$nm  = trim($name['first']);
+			$nm .= (isset($name['middle']) && trim($name['middle']) != '') ? ' '.$name['middle'] : '';
+			$nm .= ' '.trim($name['last']);
+			$this->_registration['name'] = $nm;
+			$this->_registration['givenName'] = $name['first'];
+			$this->_registration['middleName'] = $name['middle'];
+			$this->_registration['surname'] = $name['last']; 
+		}
 
 		$this->_registration['countryresident'] = $cresident;
 		$this->_registration['countryorigin']	= $corigin;
@@ -396,7 +399,7 @@ class Hubzero_Registration
 		$this->_registration['usageAgreement'] = JRequest::getVar('usageAgreement', null, 'post');
 		$this->_registration['mailPreferenceOption'] = JRequest::getVar('mailPreferenceOption', null, 'post');
 		$this->_registration['sex'] = JRequest::getVar('sex', null, 'post');
-
+        
 		if ($this->_registration['sex'] !== null)
 			if ($this->_registration['sex'] == 'unspecified')
 				$this->_registration['sex'] = '';
@@ -597,7 +600,7 @@ class Hubzero_Registration
 	 * @param      integer $id Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function check($task = 'create', $id = 0)
+	public function check($task = 'create', $id = 0, $field_to_check = array())
 	{
 		ximport('Hubzero_User_Helper');
 		ximport('Hubzero_Registration_Helper');
@@ -613,7 +616,7 @@ class Hubzero_Registration
 		$xhub =& Hubzero_Factory::getHub();
 
 		if ($task == 'proxy')
-			$task = 'proxycreate';
+			$task = 'proxycreate'; 
 
 		$this->_missing = array();
 		$_invalid = array();
@@ -803,9 +806,15 @@ class Hubzero_Registration
 		}
 
 		if ($registrationEmail != REG_HIDE)
-		{
-			if (!empty($email) && !Hubzero_Registration_Helper::validemail($email))
+		{   
+			if (empty($email))
+			{   
+				$this->_missing['email'] = 'Valid Email';
+			}
+			elseif(!Hubzero_Registration_Helper::validemail($email))
+			{
 				$this->_invalid['email'] = 'Invalid email address. Please correct and try again.';
+			}
 			else
 			{
 				$eid = $this->getEmailId($email);
@@ -817,7 +826,7 @@ class Hubzero_Registration
 
 				if (!$allow_duplicate_email && ($eid && $eid != $id)) // TODO: RESOLVE NANOHUB MULTIPLE EMAIL ACCOUNT USAGE
 				{
-					$this->_missing['email'] = 'Valid Email';
+					//$this->_missing['email'] = 'Valid Email';
 					$this->_invalid['email'] = 'An existing account is already using this e-mail address.';
 				}
 			}
@@ -854,9 +863,13 @@ class Hubzero_Registration
 		}
 
 		if ($registrationURL != REG_HIDE)
+		{   
 			if (!empty($registration['web']) && !Hubzero_Registration_Helper::validurl($registration['web']))
+			{
 				$this->_invalid['web'] = 'Invalid web site URL. You may be using characters that are not allowed.';
-
+			}
+		}
+		
 		if ($registrationPhone == REG_REQUIRED)
 		{
 			if (empty($registration['phone']))
@@ -916,21 +929,29 @@ class Hubzero_Registration
 		}
 
 		if ($registrationCitizenship != REG_HIDE)
+		{
 			if (!empty($registration['countryorigin']) && !Hubzero_Registration_Helper::validtext($registration['countryorigin']))
+			{
 				$this->_invalid['countryorigin'] = 'Invalid country of origin. You may be using characters that are not allowed.';
+			}
+		}
 
 		if ($registrationResidency == REG_REQUIRED)
 		{
 			if (empty($registration['countryresident']))
 			{
-			$this->_missing['countryresident'] = 'Country of Current Residence';
+				$this->_missing['countryresident'] = 'Country of Current Residence';
 				$this->_invalid['countryresident'] = 'Invalid country of residency';
 			}
 		}
 
-		if ($registrationResidency != REG_HIDE)
+		if ($registrationResidency != REG_HIDE) 
+		{
 			if (!empty($registration['countryresident']) && !Hubzero_Registration_Helper::validtext($registration['countryresident']))
+			{
 				$this->_invalid['countryresident'] = 'Invalid country of residency. You may be using characters that are not allowed.';
+			}
+		}
 
 		if ($registrationSex == REG_REQUIRED)
 		{
@@ -967,11 +988,13 @@ class Hubzero_Registration
 			}
 		}
 
-		/*
 		if ($registrationHispanic != REG_HIDE)
-			if (!empty($registration['hispanic']))
+		{
+			if (empty($registration['hispanic']))
+			{
 				$this->_invalid['hispanic'] = 'Invalid hispanic heritage selection.';
-		*/
+			}
+		}
 
 		if ($registrationRace == REG_REQUIRED)
 		{
@@ -984,8 +1007,12 @@ class Hubzero_Registration
 
 		/*
 		if ($registrationRace != REG_HIDE)
-			if (!empty($registration['race']) && !Hubzero_Registration_Helper::validtext($registration['race']))
+		{
+			if (!empty($registration['race']) || !Hubzero_Registration_Helper::validtext($registration['race']))
+			{
 				$this->_invalid['race'] = 'Invalid racial selection.';
+			}
+		}
 		*/
 
 		if ($registrationInterests == REG_REQUIRED)
@@ -1073,7 +1100,30 @@ class Hubzero_Registration
 			if (!empty($registration['usageAgreement']))
 				$this->_invalid['usageAgreement'] = 'Usage Agreement has not been Read and Accepted';
 		*/
-
+		
+		
+		if(!empty($field_to_check))
+		{   
+			foreach($field_to_check as $f)
+			{
+				foreach($this->_missing as $k => $v)
+				{
+					if($k != $f)
+					{
+						unset($this->_missing[$k]);
+					}
+				}
+				
+				foreach($this->_invalid as $k => $v)
+				{
+					if($k != $f)
+					{
+						unset($this->_invalid[$k]);
+					}
+				}             
+			}
+		}
+		
 		if (empty($this->_missing) && empty($this->_invalid))
 			return true;
 

@@ -91,7 +91,7 @@ class plgMembersResume extends JPlugin
 		$areas = array();
 		
 		//if this is the logged in user show them
-		if($user->get("id") == $member->get("uidNumber") || $this->isEmployer())
+		if($user->get("id") == $member->get("uidNumber") || $this->isEmployer($user, $member))
 		{
 			$areas['resume'] = ucfirst(JText::_('Resume'));
 		}
@@ -207,7 +207,7 @@ class plgMembersResume extends JPlugin
 
 		$document =& JFactory::getDocument();
 		if (is_file('components'.DS.'com_jobs'.DS.'jobs.js')) {
-			$document->addScript('components'.DS.'com_jobs'.DS.'jobs.js');
+			//$document->addScript('components'.DS.'com_jobs'.DS.'jobs.js');
 		}
 
 		// The output array we're returning

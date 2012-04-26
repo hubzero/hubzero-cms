@@ -239,20 +239,25 @@ class plgMembersContributions extends JPlugin
 		}	
 		
 		// Build the metadata
-		$arr['metadata'] = "";
+		$arr['metadata'] = array();
 		$prefix = "";
 		$total = 0;
-
+		
+		//user object
 		$juser =& JFactory::getUser();
-		$prefix = ($juser->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
-
-		foreach ($cats as $cat) {
+		
+		//count all members contributions
+		foreach ($cats as $cat) 
+		{
 			$total += $cat['total'];
 		}
-
-		if($total > 0) {
+        
+		//do we have a total?
+		if($total > 0) 
+		{   
+			$prefix = ($juser->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
 			$title = $prefix . " {$total} resources.";
-			$arr['metadata'] = "<span title=\"{$title}\" class=\"meta\">{$total}</span>";	
+			$arr['metadata']['count'] = $total;  
 		}
 
 		return $arr;

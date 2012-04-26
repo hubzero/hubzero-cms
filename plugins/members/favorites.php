@@ -202,10 +202,22 @@ class plgMembersFavorites extends JPlugin
 			$arr['html'] = $view->loadTemplate();
 		}
 		
-		$arr['metadata'] = "";
+		//return meta data
+		$arr['metadata'] = array();
 		$total = 0;
 		
+		foreach ($cats as $cat) 
+		{
+			$total += $cat['total'];
+		}
+			
 		$prefix = ($user->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
+		$title = $prefix . " {$total} favorites.";
+			
+		$arr['metadata']['count'] = $total;
+		
+		/*
+		
 		
 		// Loop through each category
 		foreach ($cats as $cat) 
@@ -215,8 +227,10 @@ class plgMembersFavorites extends JPlugin
 		
 		if($total > 0) {
 			$title = $prefix . " {$total} favorites.";
-			$arr['metadata'] = "<span title=\"{$title}\" class=\"meta\">{$total}</span>";	
+			$text = "<span title=\"{$title}\">{$total}</span>";
+			$arr['metadata'] = "<span class=\"meta\">{$text}</span>";	
 		}
+		*/
 
 		return $arr;
 	}

@@ -143,7 +143,7 @@ class XRouter extends JRouter
 				if ($uri->getPath() != 'legal/terms')
 				{
 					$vars = array();
-					
+					/*
 					$vars['option'] = 'com_register';
 
 					if ($juser->get('tmp_user'))
@@ -152,12 +152,12 @@ class XRouter extends JRouter
 						$vars['task'] = 'update';
 
 					$vars['act'] = '';
-                    
-                    /*
+                    */
+
 					$vars['option'] = 'com_members';
 					$vars['id'] = $juser->get("id");
 					$vars['active'] = 'profile';
-					*/
+					
 					$this->setVars($vars);
 					JRequest::set($vars, 'get', true );  // overwrite existing
 					return $vars;

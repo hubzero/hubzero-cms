@@ -244,6 +244,7 @@ HUB.Myhub = {
 	            settings = this.settings;
 	
 		order = myhub.serialize();
+		
 		$('#serials').val(order.join(';'));
 
 		$.get(myhub.baseURL+'&action='+task+'&id='+$('#uid').val()+'&mids='+order.join(';'), {}, function(data) {

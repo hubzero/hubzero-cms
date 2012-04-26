@@ -36,10 +36,13 @@ $juser =& JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
 $user_messaging = $this->config->get('user_messaging', 0);
 
+$prefix = $this->profile->get("name")."'s";
 $edit = false;
 $password = false;
 $messaging = false;
 
+$tab = $this->tab;
+$tab_name = "Dashboard";
 
 //are we allowed to messagin user
 switch( $user_messaging )
@@ -60,9 +63,13 @@ switch( $user_messaging )
 
 //if user is this member turn on editing and password change, turn off messaging
 if($this->profile->get("uidNumber") == $juser->get("id")) {
-	$edit = true;
-	$password = true;
+	if($this->tab == "profile") 
+	{
+		$edit = true;
+		$password = true;
+	}
 	$messaging = false;
+	$prefix = "My";
 }
 
 //no messaging if guest
@@ -75,88 +82,138 @@ if (!$no_html) {
 ?>
 <div class="innerwrap">
 	<div id="page_container">
-		<div id="page_container_inner">
-
-			<div id="page_sidebar">
-				<div id="page_sidebar_inner">
-					<?php
-						$default_picture = '/components/com_members/images/profile.gif';
-						$picture = array_pop(explode("/", $this->profile->get('picture')));
-						$id = Hubzero_User_Profile_Helper::niceidformat( $this->profile->get("uidNumber") );
+		<div id="page_sidebar">
+			<?php
+				$src = Hubzero_User_Profile_Helper::getMemberPhoto($this->profile, 0, false);
+				$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber'));
+			?>
+			<div id="page_identity">
+				<a href="<?php echo $link; ?>" id="page_identity_link" title="Go to <?php echo $this->profile->get('name'); ?>'s Profile">
+					<img src="<?php echo $src; ?>" />
+				</a>
+			</div><!-- /#page_identity --> 
+			
+			<?php if($this->profile->get("uidNumber") == $juser->get("id") && $tab == "profile") : ?>
+				<?php
+					$cls = "";
+					$text = "Public Profile. Set Private?";
+					$title = "Public Profile :: Click here to set your profile private.";
+					if($this->profile->get("public") != 1)
+					{
+						$cls = "private";
+						$text = "Private Profile. Set Public?";
+						$title = "Private Profile :: Click here to set your profile public.";
+					}
+				?>
+				<a href="/members/<?php echo $this->profile->get("uidNumber"); ?>/edit" data-uidnumber="<?php echo $this->profile->get("uidNumber"); ?>" id="profile-privacy" class="tooltip <?php echo $cls; ?>" title="<?php echo $title; ?>">
+					<?php echo $text; ?>
+				</a>
+			<?php endif; ?>
+			
+			<ul id="page_menu">
+				<?php foreach($this->cats as $k => $c) : ?>
+					<?php 
+						$key = key($c); 
+						if(!$key) { continue; }
+						$name = $c[$key];
+						$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
+						$cls = ($this->tab == $key) ? "active" : "";
+						$tab_name = ($this->tab == $key) ? $name : $tab_name;
 						
-						$picture_path = $this->config->get("webpath") . DS . $id . DS . $picture; 
-						$src = ($picture != $default_picture && is_file(JPATH_ROOT . $picture_path)) ? $picture_path : $default_picture;
-						
-						$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber'));
-					?>
-					<a id="page_identity" href="<?php echo $link; ?>">
-						<img src="<?php echo $src; ?>" />
-					</a>
-
-					<ul id="page_menu">
-						<?php foreach($this->cats as $k => $c) : ?>
-							<?php 
-								$key = key($c); 
-								if(!$key) { continue; }
-								$name = $c[$key];
-								$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
-								$meta = ($this->sections[$k]['metadata'] != "") ? $this->sections[$k]['metadata'] : "";
-								$cls = ($this->tab == $key) ? "active" : "";
-							?>
-							<li><a class="<?php echo $cls; ?>" href="<?php echo $url; ?>"><?php echo $name; ?><?php echo $meta; ?></a></li>
-						<?php endforeach; ?>
-					</ul><!-- //end page menu -->
-				</div><!-- //end page sidebar inner -->
-			</div><!-- //end page sidebar -->
-
-			<div id="page_main">
-				<div id="page_header">
-					<h2>
-						<?php echo stripslashes($this->profile->get('name')); ?>
-					</h2>
-					
-					<?php if($edit || $password || $messaging) : ?>
-						<ul id="page_options">
-							<?php if($edit) : ?>
-								<?php $edit_url = JRoute::_('index.php?option=com_members&task=edit&id=' . $this->profile->get("uidNumber")); ?>
-								<li><a class="edit tooltips" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
-							<?php endif?>
-							
-							<?php if($password) : ?>
-								<?php $pass_url = JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get("uidNumber")); ?>
-								<li><a class="password tooltips" title="Change Password :: Change your password" href="<?php echo $pass_url; ?>"><?php echo JText::_('Change Password'); ?></a></li>
-							<?php endif; ?>
-							
-							<?php if($messaging): ?>
-								<?php $msg_url = JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>
-								<li><a class="message tooltips" title="Message :: Send a message to <?php echo stripslashes($this->profile->get('name')); ?>" href="<?php echo $msg_url; ?>"><?php echo JText::_('Message'); ?></a></li>
-							<?php endif; ?>
-						</ul>
-					<?php endif; ?>
-				</div><!-- // end page header -->
-				<div id="page_notifications">
-					<?php
-						if($this->getError()) {
-							echo "<p class=\"error\">" . $this->getError() . "</p>";
+						$metadata = $this->sections[$k]['metadata'];
+						$meta_count = (isset($metadata['count']) && $metadata['count'] != "") ? $metadata['count'] : "";
+						if(isset($metadata['alert']) && $metadata['alert'] != "") 
+						{
+							$meta_alert = $metadata['alert'];
+							$cls .= " with-alert";
+						}
+						else
+						{
+							$meta_alert = "";
 						}
 					?>
-				</div>
-				<div id="page_content" class="member_<?php echo $this->tab; ?>">
-					<?php
-			 			} 
+					<li class="<?php echo $cls; ?>">
+						<a class="<?php echo $key; ?>" title="<?php echo $prefix." ".$name; ?>" href="<?php echo $url; ?>">
+							<?php echo $name; ?>
+						</a>
+						<span class="meta">
+							<?php if($meta_count) : ?>
+								<span class="count"><?php echo $meta_count; ?></span>
+							<?php endif; ?>
+						</span>
+						<?php echo $meta_alert; ?> 
+					</li>
+				<?php endforeach; ?>
+			</ul><!-- /#page_menu -->
 			
+			<?php
+				$thumb = "/site/stats/contributor_impact/impact_".$this->profile->get("uidNumber")."_th.gif";
+				$full = "/site/stats/contributor_impact/impact_".$this->profile->get("uidNumber").".gif"
+			?>
+			<?php if(file_exists(JPATH_ROOT . $thumb)) : ?>
+				<a id="member-stats-graph" title="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
+					<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" />
+				</a>
+			<?php endif; ?>
+			
+		</div><!-- /#page_sidebar -->
+		<div id="page_main">
+			<ul id="page_options">
+				<?php if($edit) : ?>
+					<?php $edit_url = JRoute::_('index.php?option=com_members&id='.$this->profile->get("uidNumber").'&task=edit'); ?>
+					<noscript>
+						<li><a class="edit" id="edit-profile" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
+					</noscript>
+				<?php endif?>
+				
+				<?php if($password) : ?>
+					<?php $pass_url = JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get("uidNumber")); ?>
+					<noscript>
+						<li><a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo $pass_url; ?>"><?php echo JText::_('Change Password'); ?></a></li>
+					</noscript>
+				<?php endif; ?>
+				
+				<?php if($messaging): ?>
+					<?php $msg_url = JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>
+					<li><a class="message tooltips" title="Message :: Send a message to <?php echo stripslashes($this->profile->get('name')); ?>" href="<?php echo $msg_url; ?>"><?php echo JText::_('Message'); ?></a></li>
+				<?php endif; ?>
+			</ul> 
+			<div id="page_header">
+				<h2 <?php if($this->profile->get("public") != 1) : ?> class="private" <?php endif; ?>>
+					<a href="/members/<?php echo $this->profile->get("uidNumber"); ?>">
+						<?php echo stripslashes($this->profile->get('name')); ?>
+					</a>
+				</h2>
+				<span>►</span>
+				<h3><?php echo $tab_name; ?></h3>
+			</div>
+			<div id="page_notifications">
+				<?php
+					if($this->getError()) {
+						echo "<p class=\"error\">" . $this->getError() . "</p>";
+					}
+				?>
+			</div>
+			<div id="page_content" class="member_<?php echo $this->tab; ?>">
+				<?php
+		 			} 
+		            if($this->overwrite_content)
+					{
+						echo $this->overwrite_content;
+					}
+					else
+					{
 						foreach($this->sections as $s) {
 							if($s['html'] != "") {
 								echo $s['html'];
 							}
 						}
-						
-						if (!$no_html) { 
-					?>
-				</div>
-			</div> <!-- //close page main -->
-
-		</div> <!-- //close page container inner -->
-	</div> <!-- //close page container -->
-</div>
+					}
+					
+					if (!$no_html) { 
+				?>
+			</div><!-- /#page_content -->
+		</div><!-- /#page_main -->
+	</div> <!-- //#page_container -->
+</div><!-- /.innerwrap -->
 <?php } ?>

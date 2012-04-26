@@ -117,6 +117,8 @@ class plgMembersGroups extends JPlugin
 			'html'=>'',
 			'metadata'=>''
 		);
+		
+		$filter = JRequest::getVar("filter","","get");
 
 		ximport('Hubzero_User_Helper');
 		$applicants = $member->getGroups('applicants'); //Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'applicants', 1);
@@ -156,8 +158,13 @@ class plgMembersGroups extends JPlugin
 					'name'=>'summary'
 				)
 			);
-			//$view->authorized = $authorized;
+			
 			$view->groups = $groups;
+			if( in_array($filter, array("invitees","applicants","members","managers")) )
+			{
+				$view->groups = $member->getGroups($filter);
+			}
+			
 			$view->option = 'com_groups';
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
@@ -170,18 +177,16 @@ class plgMembersGroups extends JPlugin
 		if ($returnmeta) {
 			
 			//display a different message if its me
-			if($member->get('uidNumber') == $user->get("id")) {
-				$title = "I belong to " . count($groups) . " groups.";
-			} else {
-				$title = $member->get('name') . " belongs to " . count($groups) . " groups.";
-			} 
-			
-			//text thats in the meta
-			$text  = count($groups);
-			
-			//build the metadata
-			if(count($groups) > 0) {
-				$arr['metadata'] = "<span class=\"meta\" title=\"{$title}\">{$text}</span>";
+			if($member->get('uidNumber') == $user->get("id")) 
+			{  
+				$arr['metadata']['count'] = count($groups);
+				
+				if(count($invitees))
+				{
+					$title = count($invitees) . " new group invitation(s)";
+					$link = JRoute::_("index.php?option=com_members&id=".$member->get('uidNumber')."&active=groups&filter=invitees");
+					$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Groups Alert</h5>{$title}</span></a>";
+				}
 			}
 		}
 

@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<h3>
+<h3 class="section-header">
 	<a name="favorites"></a>
 	<?php echo JText::_('PLG_MEMBERS_POINTS'); ?>
 </h3>

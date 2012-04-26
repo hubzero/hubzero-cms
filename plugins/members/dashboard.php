@@ -162,11 +162,12 @@ class plgMembersDashboard extends JPlugin
 	{
 		if ($this->_params->get('allow_customization', 0) != 1) 
 		{
-			$document =& JFactory::getDocument();
-			$document->addScript(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'xsortables.js');
-			$document->addScript(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.js');
-			//$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
-			//$doc->addScriptDeclaration("\tvar j = jQuery.noConflict();");
+			ximport('Hubzero_Document');
+			if (!JPluginHelper::isEnabled('system', 'jquery'))
+			{
+				Hubzero_Document::addPluginScript('members', 'xsortables');
+			}
+			Hubzero_Document::addPluginScript('members', 'dashboard');
 		}
 		
 		$this->num_default = $this->_params->get('defaultNumber', 6);
@@ -261,15 +262,11 @@ class plgMembersDashboard extends JPlugin
 		}
 
 		// Loop through the modules and output
-		foreach ($this->modules as $module)
+		foreach ($mods as $mod)
 		{
-			if (!in_array($module->id, $mods))
+			if (isset($this->modules[$mod]) && isset($this->modules[$mod]->published)) 
 			{
-				continue;
-			}
-			
-			if (isset($module->published)) 
-			{
+				$module = $this->modules[$mod];
 				if ($module->published != 1) 
 				{
 					continue;
@@ -310,10 +307,10 @@ class plgMembersDashboard extends JPlugin
 				$view->config = $this->_params;
 				$view->rendered = $rendered;
 				$view->juser = $this->juser;
-				
+
 				$app =& JFactory::getApplication();
 				$view->admin = $app->isAdmin();
-				
+
 				$html .= $view->loadTemplate();
 			}
 		}
@@ -489,7 +486,7 @@ class plgMembersDashboard extends JPlugin
 		// Make sure we have a module ID to load
 		if (!$mid) 
 		{
-			$this->setError(JText::_('COM_MYHUB_ERROR_NO_MOD_ID'));
+			$this->setError(JText::_('PLG_MEMBERS_DASHBOARD_ERROR_NO_MOD_ID'));
 			return;
 		}
 
@@ -640,6 +637,11 @@ class plgMembersDashboard extends JPlugin
 		}
 
 		return $string;
+	}
+	
+	public function onCanManage()
+	{
+		return $this->_plugin->name;
 	}
 	
 	public function onManage($option, $controller='plugins', $task='default')

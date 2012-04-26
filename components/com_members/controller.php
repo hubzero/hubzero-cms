@@ -92,9 +92,16 @@ class MembersController extends Hubzero_Controller
 		{
 			case 'autocomplete': 	$this->autocomplete(); 		break;
 
+			
+			case 'ajaxupload':		$this->ajaxUpload();		break;
+			case 'doajaxupload':	$this->doAjaxUpload();		break;
+			case 'ajaxuploadsave':	$this->ajaxUploadSave();	break;
+			case 'getfileatts':		$this->getFileAtts();		break;
+			
 			case 'upload':     		$this->upload();     		break;
 			case 'deleteimg':  		$this->deleteimg();  		break;
 			case 'img':        		$this->img();        		break;
+			
 			case 'cancel':     		$this->cancel();     		break;
 			case 'save':       		$this->save();       		break;
 			case 'edit':       		$this->edit();       		break;
@@ -117,6 +124,7 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
+    
 
 	/**
 	 * Short description for 'autocomplete'
@@ -380,7 +388,7 @@ class MembersController extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=myaccount'))),
-				JText::_('COM_FORUM_LOGIN_NOTICE'),
+				JText::_('You must be a logged in to access this area.'),
 				'warning'
 			);
 			return;
@@ -400,12 +408,13 @@ class MembersController extends Hubzero_Controller
 	 */
 	protected function view()
 	{
-		// Build the page title
+		// ??
 		if ($this->_task == 'saveaccess') 
 		{
 			$this->_task = 'view';
 		}
 		
+		// Build the page title 
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
 
@@ -419,10 +428,17 @@ class MembersController extends Hubzero_Controller
 		// Include some needed styles and scripts
 		$this->_getStyles();
 		$this->_getScripts();
+		
+		//get document
+		$document = JFactory::getDocument();
 
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
-		$tab = JRequest::getVar( 'active', 'profile' );  // The active tab (section)
+		$tab = JRequest::getVar( 'active', 'dashboard' );  // The active tab (section)
+		
+		// Get plugins
+		JPluginHelper::importPlugin( 'members' );
+		$dispatcher =& JDispatcher::getInstance();
 
 		// Ensure we have an ID
 		if (!$id) 
@@ -445,6 +461,17 @@ class MembersController extends Hubzero_Controller
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
+		
+		// Check subscription to Employer Services
+		//   NOTE: This must occur after the initial plugins import and 
+		//   do not specifically call JPluginHelper::importPlugin( 'members', 'resume' );
+		//   Doing so will can have negative affects.
+		if ($this->config->get('employeraccess') && $tab == 'resume') 
+		{
+			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
+			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;
+			$authorized = $emp ? 1 : $authorized;
+		}
 
 		// Check if the profile is public/private and the user has access
 		if ($profile->get('public') != 1 && !$authorized) 
@@ -460,24 +487,6 @@ class MembersController extends Hubzero_Controller
 			$name .= ($profile->get('middleName')) ? $profile->get('middleName').' ' : '';
 			$name .= $profile->get('surname');
 			$profile->set('name', $name);
-		}
-
-		// Get plugins
-		JPluginHelper::importPlugin( 'members' );
-		$dispatcher =& JDispatcher::getInstance();
-
-		// Get the active tab (section)
-		$tab = JRequest::getVar( 'active', 'dashboard' );
-
-		// Check subscription to Employer Services
-		//   NOTE: This must occur after the initial plugins import and 
-		//   do not specifically call JPluginHelper::importPlugin( 'members', 'resume' );
-		//   Doing so will can have negative affects.
-		if ($this->config->get('employeraccess') && $tab == 'resume') 
-		{
-			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
-			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;
-			$authorized = $emp ? 1 : $authorized;
 		}
 
 		// Trigger the functions that return the areas we'll be using
@@ -508,8 +517,7 @@ class MembersController extends Hubzero_Controller
 		$params->merge( $rparams );
 		
 		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.': '.stripslashes($profile->get('name')) );
+	    $document->setTitle( $title.': '.stripslashes($profile->get('name')) );
 
 		// Set the pathway
 		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
@@ -525,6 +533,7 @@ class MembersController extends Hubzero_Controller
 		$view->sections = $sections;
 		$view->tab = $tab;
 		$view->profile = $profile;
+		$view->overwrite_content = "";
 		if ($this->getError()) 
 		{
 			$view->setError( $this->getError() );
@@ -635,7 +644,7 @@ class MembersController extends Hubzero_Controller
 		$view->oldpass = $oldpass;
 		$view->newpass = $newpass;
 		$view->newpass2 = $newpass2;
-
+        
 		// Blank form request (no data submitted)
 		if (empty($change))  
 		{
@@ -661,10 +670,21 @@ class MembersController extends Hubzero_Controller
 		}
 
 		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-			$view->display();
-			return;
+		{   
+			$change = array();
+			$change['_missing']['password'] = $this->getError();
+			
+			if(JRequest::getInt("no_html", 0))
+			{
+				echo json_encode($change);
+				exit();
+			}
+			else
+			{
+				$view->setError( $this->getError() );
+				$view->display();
+				return;
+			}
 		}
 
 		// Encrypt the password and update the profile
@@ -680,7 +700,15 @@ class MembersController extends Hubzero_Controller
 		}
 
 		// Redirect user back to main account page
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$id);
+		if(JRequest::getInt("no_html", 0))
+		{
+			echo json_encode( array("success" => true) );
+			exit();
+		}
+		else
+		{
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$id);
+		}
 	}
 
 	/**
@@ -1066,6 +1094,7 @@ class MembersController extends Hubzero_Controller
 		{
 			$view->setError( $this->getError() );
 		}
+		
 		$view->display();
 	}
 
@@ -1132,17 +1161,19 @@ class MembersController extends Hubzero_Controller
 	 * @return     boolean Return description (if any) ...
 	 */
 	protected function save()
-	{
+	{   
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			return false;
-		}
-
+		} 
+		
 		ximport('Hubzero_Toolbox');
 		ximport('Hubzero_Registration');
 		ximport('Hubzero_Registration_Helper');
+		
+		$no_html = JRequest::getVar("no_html", 0);
 
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
@@ -1157,62 +1188,72 @@ class MembersController extends Hubzero_Controller
 		// Incoming profile edits
 		$p = JRequest::getVar( 'profile', array(), 'post' );
 		$n = JRequest::getVar( 'name', array(), 'post' );
-
+		$a = JRequest::getVar( 'access', array(), 'post' );
+		
 		// Load the profile
 		$profile = Hubzero_User_Profile::getInstance($id);
 
 		$oldemail = $profile->get('email');
-
-		$profile->set('givenName', trim($n['first']));
-		$profile->set('middleName', trim($n['middle']));
-		$profile->set('surname', trim($n['last']));
-		$name  = trim($n['first']).' ';
-		$name .= (trim($n['middle']) != '') ? trim($n['middle']).' ' : '';
-		$name .= trim($n['last']);
-		$profile->set('name', $name);
-
-		$profile->set('bio', trim($p['bio']));
-
-		if (isset($p['vip'])) 
+		
+		if($n)
 		{
-			$profile->set('vip',$p['vip']);
-		} 
-		else 
+			$profile->set('givenName', trim($n['first']));
+			$profile->set('middleName', trim($n['middle']));
+			$profile->set('surname', trim($n['last']));
+			$name  = trim($n['first']).' ';
+			$name .= (trim($n['middle']) != '') ? trim($n['middle']).' ' : '';
+			$name .= trim($n['last']);
+			$profile->set('name', $name);
+		}
+        
+		if(isset($p['bio']))
 		{
-			$profile->set('vip',0);
+			$profile->set('bio', trim($p['bio']));
+        } 
+        
+		if(is_array($a) && count($a) > 0)
+		{
+			foreach ($a as $k=>$v)
+			{
+				$profile->setParam('access_'.$k, $v);
+			}
 		}
 
 		if (isset($p['public'])) 
 		{
 			$profile->set('public',$p['public']);
 		}
-		else 
-		{
-			$profile->set('public',0);
-		}
-
-		// Get the user's interests (tags)
-		$tags = trim(JRequest::getVar( 'tags', '' ));
-
+        
 		// Set some post data for the xregistration class
-		JRequest::setVar('interests',$tags,'post');
-		JRequest::setVar('usageAgreement',1,'post');
-
+		if(JRequest::getVar('tags'))
+		{   
+			$tags = trim(JRequest::getVar('tags', ''));
+			JRequest::setVar('interests',$tags,'post');
+		}
+		
+		if(!JRequest::getVar("usageAgreement"))
+		{
+			JRequest::setVar('usageAgreement', $profile->get("usageAgreement"),'post');
+		}
+		
 		// Instantiate a new Hubzero_Registration
 		$xregistration = new Hubzero_Registration();
 		$xregistration->loadPOST();
 
 		// Push the posted data to the profile
 		// Note: this is done before the required fields check so, if we need to display the edit form, it'll show all the new changes
-		$profile->set('email',$xregistration->_registration['email']);
-
-		// Unconfirm if the email address changed
-		if ($oldemail != $xregistration->_registration['email']) 
+		if(!is_null($xregistration->_registration['email']))
 		{
-			// Get a new confirmation code
-			$confirm = Hubzero_Registration_Helper::genemailconfirm();
+			$profile->set('email',$xregistration->_registration['email']);
+		
+			// Unconfirm if the email address changed
+			if ($oldemail != $xregistration->_registration['email']) 
+			{
+				// Get a new confirmation code
+				$confirm = Hubzero_Registration_Helper::genemailconfirm();
 
-			$profile->set('emailConfirmed',$confirm);
+				$profile->set('emailConfirmed',$confirm);
+			}
 		}
 
 		if (!is_null($xregistration->_registration['countryresident']))
@@ -1256,15 +1297,28 @@ class MembersController extends Hubzero_Controller
 
 		if (!is_null($xregistration->_registration['mailPreferenceOption']))
 			$profile->set('mailPreferenceOption',$xregistration->_registration['mailPreferenceOption']);
-
+		
+		if (!is_null($xregistration->_registration['usageAgreement']))
+			$profile->set('usageAgreement',$xregistration->_registration['usageAgreement']);
+        
+		$field_to_check = JRequest::getVar("field_to_check", array());
+		
 		// Check that required fields were filled in properly
-		if (!$xregistration->check('edit', $profile->get('uidNumber'))) 
-		{
-			$this->_task = 'edit';
-			$this->edit( $xregistration, $profile );
-			return;
+		if (!$xregistration->check('edit', $profile->get('uidNumber'), $field_to_check)) 
+		{   
+			if(!$no_html)
+			{
+				$this->_task = 'edit';
+				$this->edit( $xregistration, $profile );
+				return;
+			}
+			else
+			{
+				echo json_encode($xregistration);
+				exit();
+			}
 		}
-
+		
 		// Set the last modified datetime
 		$profile->set('modifiedDate', date( 'Y-m-d H:i:s', time() ));
 
@@ -1276,11 +1330,15 @@ class MembersController extends Hubzero_Controller
 		}
 
 		// Process tags
-		$database =& JFactory::getDBO();
-		$mt = new MembersTags( $database );
-		$mt->tag_object($id, $id, $tags, 1, 1);
+		if(isset($tags))
+		{
+			$database =& JFactory::getDBO();
+			$mt = new MembersTags( $database );
+			$mt->tag_object($id, $id, $tags, 1, 1);
+		}
 
 		$email = $profile->get('email');
+		$name = $profile->get('name');
 
 		// Make sure certain changes make it back to the Joomla user table
 		if ($id > 0) 
@@ -1314,9 +1372,16 @@ class MembersController extends Hubzero_Controller
 
 		// Redirect
 		$url  = 'index.php?option='.$this->_option;
-		$url .= ($id) ? '&id='.$id : '';
-
-		$this->_redirect = JRoute::_( $url );
+		$url .= ($id) ? '&id='.$id.'&active=profile' : '';
+        
+		if(!$no_html)
+		{
+			$this->_redirect = JRoute::_( $url );
+		}
+		else
+		{
+			echo json_encode( array("success" => true) );
+		}
 	}
 
 	/**
@@ -1943,20 +2008,208 @@ class MembersController extends Hubzero_Controller
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Redirect
-		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&id='.$id );
+		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&id='.$id .'&active=profile' );
 	}
 
 	//----------------------------------------------------------
 	//  Image handling
 	//----------------------------------------------------------
 
-	/**
-	 * Short description for 'upload'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
-	 */
+	public function ajaxUpload()
+	{
+		//get the id
+		$id = JRequest::getInt("id", 0);
+		if(!$id)
+			return;
+		
+		//load profile from id
+		$profile = Hubzero_User_Profile::getInstance($id);
+		
+		//instantiate view and pass needed vars
+		$view = new JView( array('name'=>'upload') );
+		$view->config = $this->config;
+		$view->profile = $profile;
+		if ($this->getError()) 
+			$view->setError( $this->getError() );
+		$view->display();
+	}
+	
+	//-----
+	
+	public function doAjaxUpload()
+	{   
+		//allowed extensions for uplaod
+		$allowedExtensions = array("png","jpeg","jpg","gif");
+		
+		//max upload size
+		$sizeLimit = $this->config->get('maxAllowed');
+		
+		//get the file
+		if(isset($_GET['qqfile']))
+		{
+			$stream = true;
+			$file = $_GET['qqfile'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
+		}
+		elseif(isset($_FILES['qqfile']))
+		{
+			$stream = false;
+			$file = $_FILES['qqfile']['name'];
+			$size = (int) $_FILES['qqfile']['size'];
+		}
+		else
+		{
+			return;
+		}
+		
+		//get the id and load profile
+		$id = JRequest::getVar("id", 0);
+		$profile = Hubzero_User_Profile::getInstance($id);
+		if(!$profile)
+		{
+			return;
+		}
+		
+		//define upload directory and make sure its writable
+		$uploadDirectory = JPATH_ROOT . DS . ltrim(rtrim($this->config->get("webpath"), "/"), "/") . DS . $id . DS;
+		if (!is_writable($uploadDirectory))
+		{
+			echo json_encode(array('error' => "Server error. Upload directory isn't writable."));
+			return;
+		}
+		
+		//check to make sure we have a file and its not too big
+		
+		if ($size == 0) 
+		{
+			echo json_encode(array('error' => 'File is empty'));
+			return;
+		}
+		if ($size > $sizeLimit) 
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
+			return;
+		}
+		
+		//check to make sure we have an allowable extension
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+		$ext = $pathinfo['extension'];
+		if($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
+		{
+			$these = implode(', ', $allowedExtensions);
+			echo json_encode(array('error' => 'File has an invalid extension, it should be one of '. $these . '.'));
+			return;
+		}
+		
+		// don't overwrite previous files that were uploaded
+		while (file_exists($uploadDirectory . $filename . '.' . $ext)) {
+			$filename .= rand(10, 99);
+		}
+		
+		//
+		$file = $uploadDirectory.$filename.'.'.$ext;
+		$final_file = $uploadDirectory.'profile.png';
+		$final_thumb = $uploadDirectory.'thumb.png'; 
+		
+		if($stream)
+		{
+			//read the php input stream to upload file
+			$input = fopen("php://input", "r");
+			$temp = tmpfile();
+			$realSize = stream_copy_to_stream($input, $temp);
+			fclose($input);
+		
+			//move from temp location to target location which is user folder
+			$target = fopen( $file , "w");
+			fseek($temp, 0, SEEK_SET);
+			stream_copy_to_stream($temp, $target);
+			fclose($target);
+		}
+		else
+		{
+			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+		}
+		
+		//resize image to max 400px and rotate in case user didnt before uploading
+		ximport('Hubzero_Image');
+		$hi = new Hubzero_Image($file);
+		$hi->autoRotate();
+		$hi->resize(400);
+		$hi->setImageType(IMAGETYPE_PNG);
+		$hi->save($final_file);
+		
+		//create thumb
+		$hi = new Hubzero_Image($final_file);
+		$hi->resize(50, false, true, true);
+		$hi->save($final_thumb);
+		
+		//remove orig
+		unlink($file);
+		
+		//echo result
+		echo json_encode(array('success'=>true, 'file'=>str_replace($uploadDirectory, "", $final_file), 'directory'=>str_replace(JPATH_ROOT, "", $uploadDirectory)));
+	}
+	
+	//-----
+	
+	public function ajaxUploadSave()
+	{
+		//get the user id 
+		$id = JRequest::getInt("id", 0);
+		if(!$id)
+		{
+			echo json_encode(array("error"=>"Missing required user ID."));
+		}
+		
+		//load the user profile
+		$profile = Hubzero_User_Profile::getInstance($id);
+		if(!$profile)
+		{
+			echo json_encode(array("error"=>"Unable to locate user profile."));
+		}
+		
+		//update the user pic
+		$p = JRequest::getVar("profile", array());
+		$profile->set("picture", $p['picture']);
+		
+		//save
+		if($profile->update())
+		{
+			echo json_encode(array("success"=>true));
+		}
+		else
+		{
+			echo json_encode(array("error"=>"An error occurred while trying to save you profile picture."));
+		}
+	}
+	
+	//-----
+	
+	public function getFileAtts()
+	{
+		$file = JRequest::getVar("file","");
+		$dir = JRequest::getVar("dir","");
+		
+		if(!$file || !$dir)
+		{
+			return;
+		}
+		
+		$size = filesize(JPATH_ROOT.$dir.$file);
+		list($width, $height) = getimagesize(JPATH_ROOT.$dir.$file); 
+		
+		$result = array();
+		$result['src'] = $dir . $file;
+		$result['name'] = $file;
+		$result['size'] = Hubzero_View_Helper_Html::formatsize($size);
+		$result['width'] = $width . " <abbr title=\"pixels\">px</abbr>";
+		$result['height'] = $height . " <abbr title=\"pixels\">px</abbr>";
+		
+		echo json_encode($result);
+	}
+	
 	protected function upload()
 	{
 		// Check if they are logged in

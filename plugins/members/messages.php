@@ -157,22 +157,22 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 		
 		//get meta
-		$arr['metadata'] = "";
+		$arr['metadata'] = array();               
 		
 		//get the number of unread messages
 		$recipient = new Hubzero_Message_Recipient( $database );
-		$rows = $recipient->getUnreadMessages( $member->get('uidNumber'), 0 );
-			
-		//build prefix
-		$prefix = ($user->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
+		$messages = $recipient->getMessages( $member->get('uidNumber') ); 
+		$umessages = $recipient->getUnreadMessages( $member->get('uidNumber'), 0 ); 
 		
-		//title and text of span
-		$text = count($rows);
-		$title = $prefix . " " . $text . " unread message(s).";
+		//return total message count
+		$arr['metadata']['count'] = count($messages);
 		
-		//return metadata if we have unread messages
-		if(count($rows) > 0) {
-			$arr['metadata'] = "<span class=\"meta\" title=\"{$title}\">{$text}</span>";
+		//if we have unread messages show alert
+		if(count($umessages) > 0) 
+		{
+			$title = "I have " . count($umessages) . " unread message(s).";
+			$link = JRoute::_('index.php?option=com_members&id='.$member->get("uidNumber").'&active=messages');
+			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Messages Alert</h5>{$title}</span></a>";
 		}
 		
 		// Return data
@@ -187,10 +187,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	public function inbox($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
-			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
-		}
+		Hubzero_Document::addPluginScript("members","messages");
 		
 		// Filters for returning results
 		$filters = array();
@@ -760,16 +757,10 @@ class plgMembersMessages extends Hubzero_Plugin
 		$ids = JRequest::getVar('mid',array(0));
 		
 		if (count($ids) > 0) {
-			foreach ($ids as $mid) 
-			{
-				$xseen = new Hubzero_Message_Seen( $database );
-				$xseen->mid = $mid;
-				$xseen->uid = $member->get('uidNumber');
-				$xseen->loadRecord();
-				if ($xseen->whenseen != '' && $xseen->whenseen != '0000-00-00 00:00:00' && $xseen->whenseen != NULL) {
-					$xseen->deleteRecord();
-				}
-			}
+			$sql = "DELETE FROM #__xmessage_seen WHERE `uid`=".$member->get('uidNumber')." AND `mid` IN(".implode(",",$ids).")";
+			$database =& JFactory::getDBO();
+			$database->setQuery($sql);
+			$database->query();
 		}
 		
 		$this->addPluginMessage("You have successfully marked <b><u>" . count($ids) . "</u></b> message(s) as unread.","passed");

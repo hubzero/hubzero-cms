@@ -410,7 +410,7 @@ class plgMembersResources extends JPlugin
 			$html .= "\t\t\t".'<p class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_MEMBERS_RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'."\n";
 			$html .= "\t\t".'</div>'."\n";
 		}
-		$html .= "\t\t".'<p class="details">'.$thedate.' <span>|</span> '.$row->area;
+		$html .= "\t\t".'<p class="details">'.$thedate.' <span>|</span> '.stripslashes($row->area);
 		if ($helper->contributors) {
 			$html .= ' <span>|</span> '.JText::_('PLG_MEMBERS_RESOURCES_CONTRIBUTORS').': '.$helper->contributors;
 		}

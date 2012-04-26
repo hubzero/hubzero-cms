@@ -1,91 +1,479 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_myhub/myhub.css
+ * @file        /plugins/members/profile/profile.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-/*
-	-- -- -- -- -- -- --
-	Member Profile CSS
-	-- -- -- -- -- -- --
-*/
 
 .member_profile {
 	margin:0;
 	padding:0;
 	}
-.member_profile table#profile_info {
-	border-collapse:separate;
-	border:none;
-	margin-bottom:20px;
-	}
-#profile_info td {
+#profile {
+	margin:0;
 	padding:0;
-	}
-#profile_info tbody tr td {
-	padding:12px 0 20px 20px;
+	list-style:none;
 	border-bottom:1px solid #efefef;
 	}
-#profile_info tbody td.key {
-	padding:10px 0 20px 0;
-	width:170px;
-	text-align:right;
+#profile li.section {
+	overflow:hidden;
+	margin:0;
+	padding:10px;
+	border-top:1px solid #efefef;
+	/*border-bottom:1px solid transparent;*/
+	position:relative;
+	}
+#profile li .section-hover {
+	background:#FF0;
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:777;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+	filter: alpha(opacity=10);
+	opacity:0.1;
+	cursor:pointer;
+	}	
+#profile li .section-content {
+	width:95%;
+	float:left;
+	}
+#profile li .section-content .key {
+	float:left;
+	position:relative;
+	width:20%;
+	margin:0 2% 0 3%;
+	padding:0;
 	font-weight:bold;
-	color:#888;
+	color:#777;
 	}
-#profile_info tbody td.privacy {
-	width:200px;
-	text-align:right;
-	padding-right:10px;
-	}
-#profile_info tbody td.key:after {
-	content: ":";
-	}
-#profile_info tbody tr:nth-child(even) td {
-	/*background:#F5f5f5;*/
-	}
-#profile_info tfoot td {
-	padding:12px 0 20px 20px;
+#profile li .section-content .value {
+	float:left;
+	width:75%;
+	color:#222;
+	}		
+#profile li .section-edit {
+	float:left;
+	width:5%; 
 	text-align:right;
 	}
-#profile_info tr.bio td p:nth-child(1) {
+#profile li .section-edit a {
+	font-size:11px;
+	color:#ccc;
+	text-transform:uppercase;
+	position:relative;
+	z-index:888;
+	display:none;
+	}
+#profile li:hover .section-edit a {
+	color:#000;
+	}
+#profile li .section-edit a.open {
+	font-size:18px;
+	font-weight:bold;
+	}
+#profile li .section-edit a.open:hover {
+	border:none;
+	} 	
+#profile .section-edit-container {
+	display:none;
+	}	                             
+#profile .section-edit-content {
+	padding:10px;
+	margin:20px 0 10px 25%;
+	background:#FFF;
+	border:1px solid #CCC;
+	overflow:hidden;
+	}
+#profile .section-edit-content label {
+	font-weight:bold;
+	display:block;
+	border-bottom:1px solid #efefef;
+	padding-bottom:10px;
+	margin-bottom:10px;
+	}
+#profile .section-edit-content label.side-by-side {
+	float:left;
+	width:49%;
+	padding-right:2%;
+	}
+#profile .section-edit-content label.three {
+	width:32%;
+	padding-right:2%;
+	}
+#profile .section-edit-content label.no-padding-right {
+	padding-right:0;
+	}	  
+#profile .section-edit-content label input.input-text,
+#profile .section-edit-content label select.input-select {
+	display:block;
+	width:100%;
+	padding:5px;
+	border:1px solid #aaa;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	box-sizing:border-box;
+	}
+#profile .section-edit-content label input.input-text:focus {
+	outline:none;
+	border:1px solid #065eff;
+	}
+.section-edit-submit,
+.section-edit-cancel {
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	background:#065eff;
+	color:#FFF;
+	border:1px solid #0441b0; 
+	padding:5px 20px;
+	font-size:13px;
+	}	
+.section-edit-cancel {
+	font-size:11px;
+	background:#efefef;
+	border:1px solid #ccc; 
+	color:#444;
+	}
+.section-edit-submit:hover,
+.section-edit-cancel:hover {
+	cursor:pointer;
+	}	
+.section-edit-submit:disabled {
+	background:#81adfc;
+	border:1px solid #6389d0;
+	color:#ccc;
+	}
+#profile .section-edit-content .no-margin-top {
 	margin-top:0;
 	}
-#profile_info .email {
-	background:url("/components/com_members/images/email.png") no-repeat 0 2px;
+#profile .section-edit-content .sub {
 	}
-#profile_info .url {
-	padding-left:20px;
-	background:url("/components/com_members/images/world.png") no-repeat 0px 0;
+#profile .section-edit-content .sub label {
+	margin:0 0 5px 0;
+	padding:0;
+	font-weight:normal;
+	border:none;
 	}
-#profile_info .phone {
-	padding-left:20px;
-	background:url("/components/com_members/images/phone.png") no-repeat 3px 0px;
+#profile .section-edit-content .sub-sub,
+#profile .section-edit-content label.indent { 
+	margin:0 0 10px 20px;
+	} 
+#profile .section-edit-content .hint {
+	color: #999;
+	font-size: 90%;
+	font-weight:normal;
+	}   
+#profile .section-edit-content .token-input-list-act li p {
+	font-weight:normal;
+	}
+/* Overlay */
+.edit-profile-overlay.update {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#FFF;
+	z-index:88888;
+	position:absolute; 
+	background:#FFF url("/plugins/members/profile/images/updating.gif") no-repeat 50% 50%;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	opacity:0.7;
+	}
+/* Active Section */
+#profile li.section.active {
+	background:#efefef;
+	}	
+/* Hidden Section */	
+#profile li.section.hidden {
+	}
+#profile li.section.hidden .key {
+	color:rgba(0,0,0,0.3);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	filter: alpha(opacity=40);
+	}
+#profile li.section.hidden .value {
+	color:rgba(0,0,0,0.3);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	filter: alpha(opacity=40);
+	}		
+#profile li.section.hidden .key:before {
+	content: "\f070";
+	position: absolute;
+	left: -20px;
+	top: 0px;
+	width: 18px;
+	height: 18px;
+	font-size: 14px;
+	font-family: 'Fontcons';
+	color: #b2b2b2;
+	}
+/* Private Section */	
+#profile li.section.private {
+	background:none;
+	background:#efefef url("/components/com_members/images/light-stripes.png") repeat 0 0; 
+	}
+#profile li.section.private .key {
+	}	
+#profile li.section.private .key:before {
+	content: "\f023";
+	position: absolute;
+	left: -20px;
+	top: 0px;
+	width: 18px;
+	height: 18px;
+	font-size: 14px;
+	font-family: 'Fontcons';
+	color: #999999;
+	} 
+/* Profile Bio Section */  
+#profile li.profile-bio p:first-child {
+	margin-top:0;
 	}
 
-/* Private Info */
-#profile_info tr.private {
-	background:none;
-	}	
-#profile_info tr.private td {
-	background:#efefef url("/components/com_members/images/light-stripes.png") repeat ;
-	}
-/*
-#profile_info tr.private .privacy select {
-	text-indent:12px;
-	color:#555;
-	border:1px solid #999;
-	background:url("images/private.png") no-repeat 6% 48%;
-	}
-*/
-#profile_info tr.private .privacy:before {
-	vertical-align:middle;
-	content: url("/components/com_members/images/private.png");
-	}
-#member-stats-graph {
-	position:absolute;
-	top:63px;
-	right:20px;
-}
 	
+/*----------------------------------------------------------
+	Member Profile Completeness
+----------------------------------------------------------*/    
+#page_options #member-profile-completeness {
+	position:relative;
+	width:200px;
+	border:none;
+	font-size:9px;
+	line-height:8px;
+	font-weight:bold;
+	text-transform:uppercase;
+	color:#777;
+	}
+#member-profile-completeness #meter {
+	margin:3px 0 0 0;
+	background:#bbb;
+	background-image: -webkit-linear-gradient(top, #bbb, #eee);
+	background-image: -moz-linear-gradient(top, #bbb, #eee);
+	background-image: -o-linear-gradient(top, #bbb, #eee);
+	background-image: -ms-linear-gradient(top, #bbb, #eee);
+	background-image: linear-gradient(top, #bbb, #eee);
+	border-radius:3px;
+	}
+#member-profile-completeness #meter-percent {
+	display:block;
+	height:8px;
+	border-top:1px solid #70b2f4;
+	background:#439bf4;
+	background-image: -webkit-linear-gradient(top, #439bf4, #2074cb);
+	background-image: -moz-linear-gradient(top, #439bf4, #2074cb);
+	background-image: -o-linear-gradient(top, #439bf4, #2074cb);
+	background-image: -ms-linear-gradient(top, #439bf4, #2074cb);
+	background-image: linear-gradient(top, #439bf4, #2074cb);
+	-webkit-transition: all 1s linear;
+	-moz-transition: all 1s linear;
+	-o-transition: all 1s linear;
+	-ms-transition: all 1s linear;
+	transition: all 1s linear;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	opacity:0.7;
+	border-radius:3px;
+	} 		
+#member-profile-completeness #meter-percent:after {
+	content:attr(data-percent) '%';
+	position:absolute;
+	top:0;
+	right:0;
+	color:#444;
+	} 
+
+	
+/*----------------------------------------------------------
+	Member Picture Upload
+----------------------------------------------------------*/
+#ajax-upload-container {
+	background:#fff;
+	padding:20px;
+	}
+#ajax-upload-container h2 {
+	margin:0 0 30px 0;
+	line-height:1em;
+	}
+#ajax-upload-left {
+	float:left;
+	width:45%;
+	text-align:center;
+	position:relative;
+	}
+#ajax-upload-right {
+	float:left;
+	width:50%;
+	margin-left:5%;
+	}	
+#ajax-upload-actions {
+	text-align:right;
+	margin:20px 0 0 0;
+	} 
+#ajax-upload-left img {
+	border-radius: 3px;
+	box-shadow: 0 0 2px black;
+	max-width:100%;
+	max-height:300px;
+	}
+#ajax-upload-left #remove-picture {
+	display:inline-block;
+	font-size:11px;
+	color:#444;
+	}
+#ajax-upload-right .qq-upload-button {
+	background:#222;
+	background-image: -webkit-linear-gradient(top, #444, #222);
+	background-image: -moz-linear-gradient(top, #444, #222);
+	background-image: -o-linear-gradient(top, #444, #222);
+	background-image: -ms-linear-gradient(top, #444, #222);
+	background-image: linear-gradient(top, #444, #222);
+	padding:10px;
+	position:relative;
+	color:#FFF;
+	text-align:center;
+	text-indent:20px;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #000;
+	border-top:1px solid #666;
+	margin:0 0 10px 0;
+	}
+#ajax-upload-right .qq-upload-button:active {
+	background-image: -webkit-linear-gradient(top, #222, #444);
+	background-image: -moz-linear-gradient(top, #222, #444);
+	background-image: -o-linear-gradient(top, #222, #444);
+	background-image: -ms-linear-gradient(top, #222, #444);
+	background-image: linear-gradient(top, #222, #444);
+	}	
+#ajax-upload-right .qq-upload-button:before {
+	content: "\f01b";
+	position: absolute;
+	left: 30px;
+	top: 10px;
+	width: 24px;
+	height: 24px;
+	font-size: 20px;
+	font-family: 'Fontcons';
+	color: #FFF;
+	}
+#ajax-upload-right .qq-upload-list {
+	display:none;
+	}
+#ajax-upload-right table {
+	border:none;
+	}
+#ajax-upload-right table tr td {
+	border-bottom:1px solid #ccc;
+	}
+#ajax-upload-right table tr:last-child td {
+	border:none;
+	}	
+#ajax-upload-right table tr td.key {
+	font-weight:bold;
+	color:#333;
+	text-align:right;
+	width:20%;
+	}
+
+/* */
+#ajax-upload-uploading {
+	background:#000;
+	background:rgba(0,0,0,0.7);
+	position:absolute;
+	top:0px; 
+	left:0px;
+	height:100%;
+	width:100%;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	}
+#ajax-upload-uploading:before {
+	position:absolute;
+	top:50px;
+	left:0;
+	width:100%;
+	height:24px;
+	text-align:center;
+	font-size: 20px;
+	color:#FFF;
+	content: "Uploading...";
+	}	
+/* */
+#page_identity a#page_identity_change {
+	position:absolute;
+	top:0px; 
+	left:0px;
+	height:100%;
+	background:#000;
+	background:rgba(0,0,0,0.7);
+	color:#FFF;
+	border-radius:3px;
+	z-index:555;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	display:none;
+	}
+#page_identity_change:before {
+	content: "\f03e";
+	position: absolute;
+	left:0;
+	top:35%;
+	width:100%;
+	text-align:center;
+	font-size: 60px;
+	font-family: 'Fontcons';
+	}
+#page_identity_change span {
+	position:absolute;
+	top:65%;
+	left:0%;
+	width:100%;
+	font-size:14px;
+	font-weight:600; 
+	text-align:center;
+	color:#ccc;
+	}
+
+
+/*----------------------------------------------------------
+	Member Public Profile
+----------------------------------------------------------*/
+#profile-privacy {
+	display:inline-block;
+	background:#eee;
+	margin:-5px 0 0 24px;
+	padding:10px 5px 5px 5px;
+	width:155px;
+	text-align:center;
+	border:1px solid #DDD;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	font-size:11px;
+	color:#444;
+	text-shadow:0 1px 0 #fff;
+	}
+#profile-privacy.private {
+	color:#FFF;
+	text-shadow:none;
+	background:#555;
+	border:1px solid #333;
+	-webkit-box-shadow:inset 0 0 2px #222;
+	-moz-box-shadow:inset 0 0 2px #222;
+	box-shadow:inset 0 0 2px #222;
+	}
+#profile-privacy:before {
+	content: "\f023 \a0";
+	font-size: 12px;
+	font-family: 'Fontcons';
+	} 	     

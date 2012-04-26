@@ -18,22 +18,45 @@ if (!HUB) {
 
 HUB.Members = {
 	initialize: function() {
+		HUB.Members.menu();
+		HUB.Members.dashboard();
+		HUB.Members.messageMember();
+	},
+	
+	//-----
+	
+	menu: function()
+	{   
+		$$("#page_menu li").each(function(element, index){
+			var meta = element.getElements(".meta"),
+				alrt = element.getElements(".alrt"),
+				metasize = meta.getSize()[0],
+				oldpos = 33;
+			
+			if(metasize.size.x > 20)
+			{
+				diff = metasize.size.x - 20;
+				alrt.setProperty("style", "right:"+(33+diff)+"px");
+			}
+			else if(metasize.size.x < 20 && metasize.size.x != 0)
+			{
+				diff = 20 - metasize.size.x;
+				alrt.setProperty("style", "right:"+(33-diff)+"px");
+			}
+		});
+		
+	},
+	
+	//-----
+	
+	messageMember: function()
+	{
 		if (typeof(SqueezeBoxHub) != "undefined") {
 			if (!SqueezeBoxHub) {
 				SqueezeBoxHub.initialize({ size: {x: 300, y: 375} });
 			}
 			
-			//hide no javscript messages
-			$$(".no-js").setStyle("display","none");
-			
-			//move the modules button to top
-			if( $("personalize") )
-			{
-				$("personalize").injectInside( $("page_options") );
-				$("personalize").removeClass("hide");
-			}
-			
-			// Modal boxes for presentations
+			// Modal boxes member messaing
 			$$('a.message').each(function(el) {
 				if (el.href.indexOf('?') == -1) {
 					el.href = el.href + '?no_html=1';
@@ -68,7 +91,23 @@ HUB.Members = {
 				});
 			});
 		}
+	},
+	
+	//-----
+	
+	dashboard: function()
+	{
+		//move the modules button to top
+		if( $("personalize") )
+		{
+			$("personalize").injectInside( $("page_options") );
+			$("personalize").removeClass("hide");
+		}
 	}
-}
+	
+	//-----
+};
 
 window.addEvent('domready', HUB.Members.initialize);
+
+//------------------------------------------------------------                                                   

@@ -160,18 +160,14 @@ class plgMembersPoints extends JPlugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($returnmeta) {
-			$arr['metadata'] = "";
+			$arr['metadata'] = array();
 			
 			$points = $BTL->summary();
 		
 			$prefix = ($user->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
-			
-			$text = $points;
 			$title = $prefix . " " . $points . " points.";
 			
-			if($points > 0) {
-				$arr['metadata'] = "<span title=\"{$title}\" class=\"meta\">{$points}</span>";
-			}
+			$arr['metadata']['count'] = $points;
 		}
 
 		return $arr;

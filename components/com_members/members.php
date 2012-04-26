@@ -42,7 +42,7 @@ jimport('joomla.application.component.helper');
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'profile.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
-include_once( JPATH_COMPONENT.DS.'helpers'.DS.'imghandler.php' );
+include_once( JPATH_COMPONENT.DS.'helpers'.DS.'imghandler.php' ); 
 include_once( JPATH_COMPONENT.DS.'helpers'.DS.'tags.php' );
 include_once( JPATH_COMPONENT.DS.'helpers'.DS.'html.php' );
 include_once( JPATH_COMPONENT.DS.'controller.php' );
