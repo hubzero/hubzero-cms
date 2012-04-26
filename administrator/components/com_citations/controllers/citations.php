@@ -143,6 +143,10 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->view->row = new CitationsCitation($this->database);
 			$this->view->row->load($id);
 		}
+		
+		//get all citations sponsors
+		$cs = new CitationsSponsor($this->database);
+		$this->view->sponsors = $cs->getSponsor();
 
 		// Load the associations object
 		$assoc = new CitationsAssociation($this->database);
@@ -155,11 +159,17 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 			// It's new - no associations to get
 			$this->view->assocs = array();
+			
+			//array of sponsors - empty
+			$this->view->row_sponsors = array();
 		} 
 		else 
 		{
 			// Get the associations
 			$this->view->assocs = $assoc->getRecords(array('cid' => $id));
+			
+			//get sponsors for citation
+			$this->view->row_sponsors = $cs->getCitationSponsor($this->view->row->id);
 		}
 
 		//get the citations tags
@@ -311,6 +321,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 				}
 			}
 		}
+		
+		//save sponsors on citation
+		$sponsors = JRequest::getVar("sponsors", array(), "post");
+		$cs = new CitationsSponsor($this->database);
+		$cs->addSponsors($row->id, $sponsors);
 
 		//citation tags object
 		$ct = new CitationTags($this->database);

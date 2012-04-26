@@ -63,6 +63,7 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'author.php' );
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'secondary.php' );
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php' );
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'sponsor.php' );
 
 $controllerName = JRequest::getCmd('controller', 'citations');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -84,6 +85,11 @@ JSubMenuHelper::addEntry(
 	JText::_('Types'),
 	'index.php?option=com_citations&controller=types',
 	$controllerName == 'types'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Sponsors'),
+	'index.php?option=com_citations&controller=sponsors',
+	$controllerName == 'sponsors'
 );
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

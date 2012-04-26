@@ -259,7 +259,29 @@ if($label == "none") {
 									<?php echo $formatter->formatCitation( $cite, $this->filters['search'], $coins, $this->config ); ?>
 								
 									<?php if($rollover == "yes" && $cite->abstract != "") : ?>
-										<div class="citation-notes"><p><?php echo nl2br($cite->abstract); ?></p></div>
+										<div class="citation-notes">
+											<?php
+												$cs = new CitationsSponsor($this->database);
+												$sponsors = $cs->getCitationSponsor($cite->id);
+												$final = "";
+												if($sponsors)
+												{
+													foreach($sponsors as $s)
+													{
+														$sp = $cs->getSponsor($s);
+														if($sp)
+														{
+															$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
+														}
+													}
+												}
+											?>
+											<?php if($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
+												<?php $final = substr($final, 0, -2); ?>
+												<p class="sponsor">Abstract courtesy of <?php echo $final; ?></p>
+											<?php endif; ?>
+											<p><?php echo nl2br($cite->abstract); ?></p>
+										</div>
 									<?php endif; ?>
 								</td>
 							</tr>

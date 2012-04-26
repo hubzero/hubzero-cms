@@ -30,6 +30,10 @@
 			<option value="no">No</option>
 			<option value="yes">Yes</option>
 		</param>
+		<param name="citation_sponsors" type="list" default="yes" label="Citations Sponsors" description="Display citation sponsored by in rollover.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</param>
 		
 		<param type="spacer" /> 
 		

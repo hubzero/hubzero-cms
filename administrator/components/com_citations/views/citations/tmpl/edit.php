@@ -328,6 +328,26 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Citation Sponsors'); ?></span></legend>
+			<table class="adminform">
+				<tbody>
+					<tr>
+						<td>
+							<select name="sponsors[]" multiple="multiple" style="max-width:inherit;width:100%;">
+								<!--<option value="sponsors">- Select Citation Sponsor &mdash;</option>-->
+								<?php foreach($this->sponsors as $s) : ?>
+									<?php $sel = (in_array($s['id'], $this->row_sponsors)) ? 'selected="selected"': ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $s['id']; ?>"><?php echo $s['sponsor']; ?></option>
+								<?php endforeach; ?>
+							</select>
+							<span style="font-size: 90%;color:#aaa;">Select multiple sponsors by Ctrl + click.</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		
 		<?php if($this->config->get("citation_allow_tags", "no") == "yes") : ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('Tags'); ?></span></legend>
