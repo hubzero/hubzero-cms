@@ -287,8 +287,19 @@
 	right:0;
 	color:#444;
 	} 
-
-	
+#member-profile-completeness #completeness-info {
+	display:block;
+	text-align:right;
+	padding:3px 0 0 0;
+	font-weight:normal;
+	text-transform:lowercase;
+	color:#aaa;
+	}
+#member-profile-completeness #completeness-info:hover {
+	cursor:pointer;
+	color:#444;
+	} 
+	   
 /*----------------------------------------------------------
 	Member Picture Upload
 ----------------------------------------------------------*/
@@ -472,8 +483,48 @@
 	-moz-box-shadow:inset 0 0 2px #222;
 	box-shadow:inset 0 0 2px #222;
 	}
-#profile-privacy:before {
+#profile-privacy.private:before {
 	content: "\f023 \a0";
 	font-size: 12px;
 	font-family: 'Fontcons';
-	} 	     
+	}
+	
+/*----------------------------------------------------------
+	Members Incremental
+----------------------------------------------------------*/	
+#award-info {
+	display:none;
+	background: #fdf6ba;
+	padding: 10px 20px;
+	border: 2px solid #ffba00;
+	margin-bottom: 1em;
+	}
+#award-info strong {
+	padding-left: 17px;
+	background: url('/components/com_store/images/coin.gif') no-repeat top left;
+	}
+#award-info .opt-out {
+	background: url('/components/com_support/images/delete.png') no-repeat top left #f3f3f3;
+	padding-left: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	}
+#wallet {
+	position: fixed;
+	bottom: 1em;
+	right: 1em;
+	background: url('/components/com_store/images/wallet.png') no-repeat 10px -12px #fdf6ba;
+	padding-left: 65px;
+	border: 2px solid #ffba00;
+	width: 100px;
+	font-size: large;
+	height: 40px;
+	font-weight: bold;
+	display: none;
+	}
+#wallet span {
+	padding-left: 17px;
+	background: url('/components/com_store/images/coin.gif') no-repeat 0 4px;
+	line-height: 40px;
+	}    

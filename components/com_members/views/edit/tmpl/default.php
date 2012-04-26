@@ -31,81 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$isIncrementalEnabled = JModuleHelper::isEnabled("Incremental Registration");
-
-$uid = (int)$this->profile->get('uidNumber');
-$userIsCurrent = $uid == JFactory::getUser()->get('id');
-$prior = NULL;
-$alreadyComplete = 0;
-$awards = NULL;
-$eligible = array();
-
-if ($userIsCurrent && $isIncrementalEnabled) {
-	$dbh =& JFactory::getDBO();
-	do {
-		$dbh->setQuery('SELECT opted_out, name, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture FROM #__profile_completion_awards WHERE user_id = '.$uid);
-		if (!($awards = $dbh->loadAssoc())) {
-			$dbh->execute('INSERT INTO #__profile_completion_awards(user_id) VALUES ('.$uid.')');
-		}
-	} while (!$awards);
-
-	$dbh->setQuery('SELECT award_per FROM #__incremental_registration_options ORDER BY added DESC limit 1');
-	$awardPer = $dbh->loadResult();
-
-	$completeSql = 'UPDATE #__profile_completion_awards SET ';
-
-	$fieldMap = array(
-		'name'            => 'Fullname',
-		'orgtype'         => 'Employment',
-		'organization'    => 'Organization',
-		'countryorigin'   => 'Citizenship',
-		'countryresident' => 'Residency',
-		'gender'          => 'Sex',
-		'url'             => 'URL',
-		'reason'          => 'Reason',
-		'race'            => 'Race',
-		'phone'           => 'Phone'
-	);
-	foreach ($awards as $k=>$complete) {
-		if ($k === 'opted_out' || $complete) {
-			continue;
-		}
-		if ($k === 'picture') {
-			$dbh->setQuery('SELECT picture FROM #__xprofiles WHERE uidNumber = '.$uid);
-			if ($dbh->loadResult()) {
-				$completeSql .= ($already_complete ? ', ' : '').$k.' = 1'; 
-				$alreadyComplete += $awardPer;
-			}
-			else {
-				$eligible['picture'] = 1;
-			}
-			continue;
-		}
-		$regField = $fieldMap[$k];
-		if (!!$this->profile->get($k)) {
-			$completeSql .= ($alreadyComplete ? ', ' : '').$k.' = 1'; 
-			$alreadyComplete += $awardPer;
-		}
-		else {
-			$eligible[$k == 'url' ? 'web' : $k] = 1;
-		}
-	}
-
-	$dbh->setQuery('SELECT SUM(amount) AS amount FROM #__users_transactions WHERE type = \'deposit\' AND category = \'registration\' AND uid = '.$uid);
-	$prior = $dbh->loadResult();
-	if ($alreadyComplete) {
-		$dbh->execute($completeSql.' WHERE user_id = '.$uid);
-
-		$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$uid.')), 0)');
-		$newAmount = $dbh->loadResult() + $alreadyComplete;
-
-		$dbh->execute('INSERT INTO #__users_transactions(uid, type, description, category, amount, balance) VALUES 
-			('.$uid.', \'deposit\', \'Profile completion award\', \'registration\', '.$alreadyComplete.', '.$newAmount.')');
-	}
-}
-
-
-$name = stripslashes($this->profile->get('name'));
 $surname = stripslashes($this->profile->get('surname'));
 $givenName = stripslashes($this->profile->get('givenName'));
 $middleName = stripslashes($this->profile->get('middleName'));
@@ -133,35 +58,6 @@ $html .= "\t".'</ul>'."\n";
 $html .= '</div><!-- / #content-header-extra -->'."\n";
 $html .= '<div class="main section">'."\n"; 
 
-//
-//$html = "";
-
-if ($userIsCurrent && $isIncrementalEnabled) {
-	$html .= '<div id="award-info">';
-	$html .= '	<p>It is important to us to know about the community we serve. To that end, we are offering <strong>nanos</strong> (our virtual currency, see <a href="/store">the store</a>) for filling out your profile.</p>';
-	if ($prior) {
-		$html .= '<p>Previously, we awarded you <strong>'.$prior.'</strong> for adding to your profile.</p>';
-	}
-	if ($alreadyComplete) {
-		$html .= '<p>Since you\'ve already filled in some of your profile we have just awarded you <strong>'.$alreadyComplete.'</strong>.</p>';
-	}
-	$html .= '<p>Fill in any remaining profile fields and get <strong>'.$awardPer.'</strong> for each. You can exchange these points for <a href="store">nanoHUB products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
-	if ($awards['opted_out']) {
-		$html .= '<em class="opt-out">You have opted out of notifications about this promotion.</em>';
-	}
-	else {
-		$html .= '<form action="/members/'.$uid.'/promo-opt-out" method="post">';
-		$html .= '<button type="submit" class="opt-out">Don\'t remind me about this promotion</button>';
-		$html .= '</form>';
-	}
-	$html .= '</div>';
-	$html .= '<div id="wallet"><span>'.($prior + $alreadyComplete).'</span></div>';
-	$html .= '<script type="text/javascript">
-		window.bonus_eligible_fields = '.json_encode($eligible).';
-		window.bonus_amount = '.$awardPer.';
-	</script>';
-	JFactory::getDocument()->addScript('/components/com_members/incremental.js');
-}
 
 $html .= "\t".'<form id="hubForm" class="edit-profile" method="post" action="index.php" enctype="multipart/form-data">'."\n";
 

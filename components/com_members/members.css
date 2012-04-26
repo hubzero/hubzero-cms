@@ -54,15 +54,18 @@ iframe {
 	}
 #page_identity a {
 	display:block;
+	min-width:150px;
 	min-height:100px;
 	background:#f8f8f8;
+	border:1px solid #efefef;
+	text-align:center;
 	-webkit-border-radius:3px;
 	-khtml-border-radius:3px;
 	-moz-border-radius:3px;
 	border-radius:3px;
 	}	
 #page_identity a:hover { 
-	border:none;
+	border:1px solid transparent;
 	}
 #page_identity img {
 	max-width:100%;
@@ -1004,47 +1007,6 @@ iframe {
 	margin: 1.5em 0 2em 0;
 	padding: 0.5em 0;
 	}
-	
-	
-/*----------------------------------------------------------
-	Members Incremental
-----------------------------------------------------------*/	
-#award-info strong {
-   padding-left: 17px;
-   background: url('/components/com_store/images/coin.gif') no-repeat top left;
-   }
-#award-info {
-   background: #fdf6ba;
-   padding: 5px 16px;
-   border: 2px solid #ffba00;
-   
-   margin-bottom: 1em;
-   }
-#award-info .opt-out {
-   background: url('/components/com_support/images/delete.png') no-repeat top left #f3f3f3;
-   padding-left: 20px;
-   margin-left: auto;
-   margin-right: auto;
-   margin-bottom: 20px;
-   }
-#wallet {
-   position: fixed;
-   bottom: 1em;
-   right: 1em;
-   background: url('/components/com_store/images/wallet.png') no-repeat 10px -12px #fdf6ba;
-   padding-left: 65px;
-   border: 2px solid #ffba00;
-   width: 100px;
-   font-size: large;
-   height: 40px;
-   font-weight: bold;
-   display: none;
-   }
-#wallet span {
-   padding-left: 17px;
-   background: url('/components/com_store/images/coin.gif') no-repeat 0 4px;
-   line-height: 40px;
-   }
 
 
 /*----------------------------------------------------------

@@ -271,7 +271,15 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 	
 	editPrivacy: function()
-	{
+	{   
+		$("#page_identity_link img").load(function(){
+			var w = $("#page_identity_link img").width();
+			w = (w > 150) ? w : 150;
+			$("#page_identity").innerWidth(w);
+			$("#profile-privacy").innerWidth(w + 2);
+		});
+		
+		
 		$("#profile-privacy").on("click", function(event){
 			var text = "",
 				pub = 0,
@@ -323,23 +331,25 @@ HUB.Members.Profile = {
 		//if this is our profile otherwise dont do ot
 		if( $(".section-edit a").length )
 		{
-			$change
-				.css('width', $identity.find("a").width())
-				.attr("href", window.location.href.replace("profile","ajaxupload"))
-				.appendTo($identity);
-				
-			//edit picture	
-			$('.com_members')
-				.on("mouseenter", "#page_identity", function(event) {
-					$change.fadeIn("slow");
-				})
-				.on("mouseleave", "#page_identity", function(event) {
-					$change.fadeOut("slow");
-				})
-				.on("click", "#page_identity_change", function(event) {
-					HUB.Members.Profile.editProfilePicturePopup();
-					event.preventDefault();
-				});	
+			$identity.find("img").load(function(){
+				$change
+					.css('width', $identity.find("img").width())
+					.attr("href", window.location.href.replace("profile","ajaxupload"))
+					.appendTo($identity);
+
+				//edit picture	
+				$('.com_members')
+					.on("mouseenter", "#page_identity", function(event) {
+						$change.fadeIn("slow");
+					})
+					.on("mouseleave", "#page_identity", function(event) {
+						$change.fadeOut("slow");
+					})
+					.on("click", "#page_identity_change", function(event) {
+						HUB.Members.Profile.editProfilePicturePopup();
+						event.preventDefault();
+					});
+			});	
 		}
 	},
 	
@@ -449,6 +459,13 @@ HUB.Members.Profile = {
 			var timeout = setTimeout(function() {
 				$("#meter-percent").width( $("#meter-percent").attr("data-percent") + "%" );
 			}, 1000);
+		}
+		
+		if( $("#award-info").length )
+		{
+			$("#completeness-info").on("click", function(event) {
+				$("#award-info").slideToggle();
+			});
 		}
 	},
 	

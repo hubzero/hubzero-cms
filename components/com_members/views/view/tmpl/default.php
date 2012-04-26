@@ -96,12 +96,12 @@ if (!$no_html) {
 			<?php if($this->profile->get("uidNumber") == $juser->get("id") && $tab == "profile") : ?>
 				<?php
 					$cls = "";
-					$text = "Public Profile. Set Private?";
+					$text = "Public Profile. <wbr>Set Private?";
 					$title = "Public Profile :: Click here to set your profile private.";
 					if($this->profile->get("public") != 1)
 					{
 						$cls = "private";
-						$text = "Private Profile. Set Public?";
+						$text = "Private Profile. <wbr>Set Public?";
 						$title = "Private Profile :: Click here to set your profile public.";
 					}
 				?>

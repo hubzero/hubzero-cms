@@ -48,11 +48,18 @@ if($juser->get("id") == $this->profile->get("uidNumber"))
 	$isUser = true;
 }
 
+//registration update
 $update_missing = array();
 if(isset($this->registration_update))
 {
 	$update_missing = $this->registration_update->_missing;
 }
+
+//incremental registration
+require_once JPATH_BASE.'/administrator/components/com_register/tables/incremental.php';
+$uid = (int)$this->profile->get('uidNumber');
+$incrOpts = new ModIncrementalRegistrationOptions;
+$isIncrementalEnabled = $incrOpts->isEnabled($uid);
 ?>
 
 <div id="profile-page-content">
@@ -78,9 +85,55 @@ if(isset($this->registration_update))
 			<div id="meter">
 				<span id="meter-percent" data-percent="<?php echo $this->completeness; ?>" data-percent-level="<?php echo @$this->completeness_level; ?>" style="width:0%"></span>
 			</div>
+			<?php if($isUser && $isIncrementalEnabled) : ?>
+				<span id="completeness-info">What does this mean?</span>
+			<?php endif; ?>
 		</li>
 	</ul>	
 	<?php endif; ?>
+	
+	<?php 
+		if($isUser && $isIncrementalEnabled) 
+		{ 
+			$awards = new ModIncrementalRegistrationAwards($this->profile);
+			$awards = $awards->award();
+			
+			$increm  = '<div id="award-info">';
+			$increm .= '<p>It is important to us to know about the community we serve. To that end, we are offering <strong>nanos</strong> (our virtual currency, see <a href="/store">the store</a>) for filling out your profile.</p>';
+			
+			if ($awards['prior']) 
+			{
+				$increm .= '<p>Previously, we awarded you <strong>'.$awards['prior'].'</strong> for adding to your profile.</p>';
+			}
+		
+			if ($awards['new']) 
+			{
+				$increm .= '<p>Since you\'ve already filled in some of your profile we have just awarded you <strong>'.$awards['new'].'</strong>.</p>';
+			}
+			
+			$increm .= '<p>Fill in any remaining profile fields and get <strong>'.$incrOpts->getAwardPerField().'</strong> for each. You can exchange these points for <a href="store">nanoHUB products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
+			
+			if ($awards['opted_out']) 
+			{
+				$increm .= '<em class="opt-out">You have opted out of notifications about this promotion.</em>';
+			}
+			else 
+			{
+				$increm .= '<form action="/members/'.$this->profile->get("uidNumber").'/promo-opt-out" method="post">';
+				$increm .= '<button type="submit" class="opt-out">Don\'t remind me about this promotion</button>';
+				$increm .= '</form>';
+			}
+			
+			$increm .= '</div>';
+			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']).'</span></div>';
+			$increm .= '<script type="text/javascript">
+							window.bonus_eligible_fields = '.json_encode($awards['eligible']).';
+							window.bonus_amount = '.$incrOpts->getAwardPerField().';
+						</script>';
+			echo $increm;
+			JFactory::getDocument()->addScript('/components/com_members/incremental.js');
+		}
+	?>
 	
 	<ul id="profile">
 		<?php if(isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>

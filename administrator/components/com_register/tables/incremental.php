@@ -99,7 +99,7 @@ class ModIncrementalRegistrationAwards
 	}
 
 	public function optOut() {
-		self::$dbh->query('UPDATE #__profile_completion_awards SET opted_out = 1 WHERE user_id = '.$this->uid);
+		self::$dbh->execute('UPDATE #__profile_completion_awards SET opted_out = 1 WHERE user_id = '.$this->uid);
 	}
 
 	public function award() {

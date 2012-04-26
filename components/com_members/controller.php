@@ -92,7 +92,6 @@ class MembersController extends Hubzero_Controller
 		{
 			case 'autocomplete': 	$this->autocomplete(); 		break;
 
-			
 			case 'ajaxupload':		$this->ajaxUpload();		break;
 			case 'doajaxupload':	$this->doAjaxUpload();		break;
 			case 'ajaxuploadsave':	$this->ajaxUploadSave();	break;
@@ -116,7 +115,9 @@ class MembersController extends Hubzero_Controller
 			case 'myaccount':  		$this->_myaccount(); 		break;
 			
 			case 'download':   		$this->download( $file );	break;
-
+			
+			case 'promo-opt-out':	$this->incremOptOut();		break;
+			
 			default: 				$this->browse(); 			break;
 		}
 	}
@@ -124,8 +125,27 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-    
-
+	
+	private function incremOptOut()
+	{
+		$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		if(!$profile)
+		{
+			return;
+		}
+		
+		require_once JPATH_BASE.'/administrator/components/com_register/tables/incremental.php';
+		$ia = new ModIncrementalRegistrationAwards($profile);
+		$ia->optOut();
+		
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_members&id='.$profile->get("uidNumber").'&active=profile'),
+			JText::_("You have been successfully opted out of this promotion."),
+			'passed'
+			);
+		return;
+	}
+	
 	/**
 	 * Short description for 'autocomplete'
 	 * 
