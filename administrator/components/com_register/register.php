@@ -60,19 +60,29 @@ switch ($controllerName)
 		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config');
 		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations');
 		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers', true);
+		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental');
 	break;
 	
 	case 'organizations':
 		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config');
 		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations', true);
 		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers');
+		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental');
 	break;
 	
+	case 'incremental':
+		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config');
+		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations');
+		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers');
+		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental', true);
+	break;
+
 	case 'config':
 	default:
 		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config', true);
 		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations');
 		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers');
+		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental');
 	break;
 }
 
