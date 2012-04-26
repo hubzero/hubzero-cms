@@ -32,8 +32,8 @@ HUB.Resources.Geo = {
 				if (geocoder) {
 					geocoder.geocode({ 'address': $(this).value }, function (results, status) {
 						if (status == google.maps.GeocoderStatus.OK) {
-							$($(field).id + '-lat').val(results[0].geometry.location.Ya);
-						    $($(field).id + '-lng').val(results[0].geometry.location.Za);
+							$($(field).id + '-lat').value = results[0].geometry.location.lat();
+						    $($(field).id + '-lng').value = results[0].geometry.location.lng();
 						}
 					});
 				}
