@@ -367,14 +367,18 @@ Class GroupPages extends JTable
 			foreach($members as $member) {
 				$counter++;
 				if($counter < 8) {
-					$u = new Hubzero_User_Profile();
-					$u->load( $member );
-					$member_browser .= '<a class="member" href="'.JRoute::_('index.php?option=com_members&id='.$u->get('uidNumber')).'">';
-						$picture = $this->thumbit($u->get('uidNumber'), $u->get('picture'));
-						$cls = (!$this->default_thumb) ? "member-border" : "";
-						$member_browser .= '<img class="'.$cls.'" src="'.$picture.'" alt="'.$u->get('name').'" width="50px" height="50px" /><br />';
-						$member_browser .= '<span class="name">'.$u->get('name').'</span>';
-					$member_browser .= '</a>';
+					$user =& Hubzero_User_Profile::getInstance( $member );
+					if(is_object($user))
+					{
+						$cls = "member-border";
+						$picture  = $this->thumbit( $user );
+						$link = JRoute::_('index.php?option=com_members&id='.$user->get("uidNumber"));
+						
+						$member_browser .= '<a href="'.$link.'" class="member" title="Go to '.$user->get("name").'\'s Profile.">';
+						$member_browser .= '<img src="'.$picture.'" alt="'.$user->get("name").'" class="'.$cls.'" width="50px" height="50px" />';
+						$member_browser .= '<span class="name">'.$user->get("name").'</span>';
+						$member_browser .= '</a>';
+					}
 				}
 			}
 
@@ -414,56 +418,65 @@ Class GroupPages extends JTable
 	 * Long description (if any) ...
 	 * 
 	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $picture Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	private function thumbit( $uid, $picture )
+	private function thumbit( $user )
 	{
-		//set a default
-		$this->default_thumb = true;
-
-		//set the default for the member picture
-		$default_member_thumb = 'components'.DS.'com_groups'.DS.'assets'.DS.'img'.DS.'default_member_picture.jpg';
-
-		//check if picture is empty
-		if($picture != '') {
-			//split the picture into parts
-			$pic_parts = explode(".", $picture);
-
-			if(strlen($uid) == 4) {
-				$uid = '0'.$uid;
-			}
-
-			if(strlen($uid) == 3) {
-				$uid = '00'.$uid;
-			}
-
-			if(strlen($uid) == 2) {
-				$uid = '000'.$uid;
-			}
-
-			//build the thumb path
-			$thumb = $pic_parts[0]."_thumb.".$pic_parts[1];
-			$path = 'site'.DS.'members'.DS.$uid.DS;
-
-			//check if picture exits
-			if (is_file($path.$thumb)) {
-				$return = $path.$thumb;
-				$this->default_thumb = false;
-			} elseif(is_file($path.$picture)) {
-				$return = $path.$picture;
-				$this->default_thumb = false;
-			} else {
-				$return = $default_member_thumb;
-				$this->default_thumb = true;
-			}
-		} else {
-			$return = $default_member_thumb;
-			$this->default_thumb = true;
+		//load members config
+		$config = JComponentHelper::getParams('com_members');
+		
+		//get default picture
+		$default_picture = $config->get("defaultpic");
+		
+		//get user picture
+		$picture = $user->get("picture");
+		
+		//if user has no picture set return default
+		if($picture == "")
+		{
+			return $default_picture;
 		}
-
-		//return picture
-		return $return;
+		
+		//build path to users profile
+		$path = ltrim(rtrim($config->get("webpath"), DS), DS);
+		$path .= DS . Hubzero_View_Helper_Html::niceidformat($user->get("uidNumber")) . DS;
+		
+		//build path to old uploaded thumbs
+		$parts = explode(".", $user->get("picture"));
+		$ext = array_pop($parts);
+		$name = implode(".", $parts) . "_thumb";
+		
+		//paths to thumbs thumb1 is preferred
+		$thumb1 = $path . 'thumb.png';
+		$thumb2 = $path . $name . '.' . $ext;
+		
+		//return profile thumb based on existence
+		if(file_exists(JPATH_ROOT . DS . $thumb1))
+		{
+			return $thumb1;
+		}
+		elseif(file_exists(JPATH_ROOT . DS . $thumb2))
+		{
+			return $thumb2;
+		}
+		else
+		{
+			$full = JPATH_ROOT . DS . $path . $picture;
+			if(file_exists($full))
+			{
+				echo $user->get("uidNumber") .'<br />';
+				echo $full .'<br>';
+				ximport("Hubzero_Image");
+				$hi = new Hubzero_Image($full);
+				$hi->resize(50, false, true, true);
+				$hi->save($thumb1);
+				return $thumb1;
+			}
+			else
+			{
+				return $default_picture;
+			}
+		}
 	}
 
 	//-----

@@ -94,7 +94,7 @@ $lid = $this->group->get('gidNumber');
 		<label>Page Title: <span class="required">Required</span>
 			<input type="text" name="page[title]" value="<?php echo $title; ?>" />
 		</label>
-		<label>Page Content: <span class="optional">Optional</span>
+		<label for="page[content]">Page Content: <span class="optional">Optional</span>
 			<?php
 				ximport('Hubzero_Wiki_Editor');
 				$editor =& Hubzero_Wiki_Editor::getInstance();

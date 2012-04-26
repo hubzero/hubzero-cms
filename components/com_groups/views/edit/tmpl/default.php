@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+//directory id - use temp for new groups
 if ($this->group->get('gidNumber')) {
 	$lid = $this->group->get('gidNumber');
 } else {
@@ -41,6 +42,32 @@ if ($this->group->get('gidNumber')) {
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
+
+//build back link
+$host = JRequest::getVar("HTTP_HOST", "", "SERVER");
+$referrer = JRequest::getVar("HTTP_REFERER", "", "SERVER");
+
+//check to make sure referrer is a valid url
+//check to make sure the referrer is a link within the HUB
+if(filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == "" || strpos($referrer, $host) === false)
+{
+	$link = JRoute::_('index.php?option='.$this->option);
+}
+else
+{
+	$link = $referrer;
+}
+
+//if we are in edit mode we want to redirect back to group
+if($this->task == "edit") 
+{
+	$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn'));
+	$title = "Back to Group";
+}
+else
+{
+	$title = "Back";
+}
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -48,7 +75,9 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
+		<li class="last">
+			<a class="group" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -98,7 +127,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 				<span class="hint"><?php echo JText::_('GROUPS_FIELD_TAGS_HINT'); ?></span>
 			</label>
 
-			<label>
+			<label for="public_desc">
 				<?php echo JText::_('GROUPS_EDIT_PUBLIC_TEXT'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>
 				
 				<?php
@@ -108,7 +137,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 				?>
 				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
-			<label>
+			<label for="private_desc">
 				<?php echo JText::_('GROUPS_EDIT_PRIVATE_TEXT'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>
 				<?php
 					echo $editor->display('private_desc', 'private_desc', stripslashes($this->group->get('private_desc')), '', '50', '15');

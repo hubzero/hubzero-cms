@@ -119,7 +119,7 @@ $levels = array(
 			<div id="overview_content">
 				<br />
 				<h4>Enter Custom Overview Content</h4>
-				<label>
+				<label for="group[overview_content]">
 					<?php
 						ximport('Hubzero_Wiki_Editor');
 						$editor =& Hubzero_Wiki_Editor::getInstance();

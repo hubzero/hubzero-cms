@@ -5,6 +5,9 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+	.com_groups .clearfix::after {
+		clear: none;
+	}
 .com_groups .container {
 	margin: 1em 0;
 	padding: 0;
@@ -148,7 +151,7 @@
 	}
 .com_groups .entries thead th a {
 	display: inline-block;
-	padding: 0.1em 0.4em;
+	padding: 0.1em 0.295em;
 	margin: 0 0.15em;
 	border: 1px solid #fbfbf6; /*#69c;*/
 	background-color: #fbfbf6; /*#eff7ff;*/

@@ -216,9 +216,16 @@ class GroupsController extends Hubzero_Controller
 	protected function _getGroupScripts()
 	{
 		$doc =& JFactory::getDocument();
-
-		$component_js = "/components".DS."com_groups".DS."assets".DS."js".DS."groups.js";
-
+		
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$component_js = "/components".DS."com_groups".DS."assets".DS."js".DS."groups.jquery.js";
+		}
+		else
+		{
+			$component_js = "/components".DS."com_groups".DS."assets".DS."js".DS."groups.js";
+		}
+		
 		if (file_exists(JPATH_ROOT . $component_js)) {
 			$doc->addScript($component_js);
 		} else {
@@ -588,7 +595,12 @@ class GroupsController extends Hubzero_Controller
 		// Get the group pages if any
 		$GPages = new GroupPages($this->database);
 		$pages = $GPages->getPages($group->get('gidNumber'), true);
-
+		
+		if(in_array($tab, array_keys($pages)))
+		{
+			$wikiconfig['pagename'] .= DS . $tab;
+		}
+		
 		// Push some vars to the group pages
 		$GPages->parser = $p;
 		$GPages->config = $wikiconfig;
