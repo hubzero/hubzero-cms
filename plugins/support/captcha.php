@@ -285,13 +285,18 @@ class plgSupportCaptcha extends JPlugin
 			return false;
 		}
 
+		if (!isset($captcha['krhash']))
+		{
+			$captcha['krhash'] = null;
+		}
+
 		if ($captcha['instance'] < 0 || trim($captcha['answer']) == '')
 		{
 			return false;
 		}
 
 		if ($task && $task != 'logout'
-		 && $this->_confirm(trim($captcha['answer']), trim($captcha['instance'])))
+		 && $this->_confirm(trim($captcha['answer']), trim($captcha['instance']), trim($captcha['krhash'])))
 		{
 			return true;
 		}
@@ -381,8 +386,10 @@ class plgSupportCaptcha extends JPlugin
 	 */
 	private function _generateHash($input, $day)
 	{
+		$jconfig =& JFactory::getConfig();
+		
 		// Add date:
-		$input .= $day . date('ny');
+		$input .= $jconfig->getValue('config.secret') . $day . date('ny');
 
 		// Get MD5 and reverse it
 		$enc = strrev(md5($input));
@@ -431,14 +438,16 @@ class plgSupportCaptcha extends JPlugin
 	 * @param  string  $instanceNo CAPTCHA instance number
 	 * @return boolean True if valid
 	 */
-	private function _confirm($word, $instanceNo='')
+	private function _confirm($word, $instanceNo='', $hash='')
 	{
 		$word = $this->_generateHash(strtolower($word), date('j'));
 
 		$currentSession =& JFactory::getSession();
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
-		if ($word == $securiy_code) {
+		if ($hash && $word == $hash) {
+			return true;
+		} else if ($word == $securiy_code) {
 			return true;
 		} else {
 			return false;
