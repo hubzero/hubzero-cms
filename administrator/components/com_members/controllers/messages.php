@@ -117,14 +117,8 @@ class MembersControllerMessages extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		// Set any errors
-		if ($this->getError()) 
-		{
-			$this->view->setError($this->getError());
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->editTask();
 	}
 
 	/**
@@ -135,6 +129,8 @@ class MembersControllerMessages extends Hubzero_Controller
 	 */
 	public function editTask($id=0)
 	{
+		$this->view->setLayout('edit');
+
 		if (!$id) 
 		{
 			// Incoming
