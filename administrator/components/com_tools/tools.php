@@ -53,8 +53,8 @@ else
 	}
 }
 // Include scripts
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.utils.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'models'.DS.'mw.class.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'models'.DS.'mw.utils.php' );
 
 $controllerName = JRequest::getCmd('controller', 'pipeline');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
