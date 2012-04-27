@@ -531,8 +531,8 @@ class plgMembersResources extends JPlugin
 		}
 
 		if ($limit) {
+			$total = 0;
 			if ($this->_total != null) {
-				$total = 0;
 				$t = $this->_total;
 				foreach ($t as $l)
 				{

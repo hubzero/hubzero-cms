@@ -163,8 +163,15 @@ class plgResourcesCitations extends JPlugin
 			} else {
 				$url = JRoute::_('index.php?option='.$option.'&id='.$resource->id.'&active=citations');
 			}
-
 			
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'citations',
+					'name'=>'metadata'
+				)
+			);
 			$view->url = $url;
 			$view->citations = $citations;
 			$arr['metadata'] = $view->loadTemplate();
