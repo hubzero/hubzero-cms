@@ -32,9 +32,12 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Push some resources to the tmeplate
-$document =& JFactory::getDocument();
-$document->addStyleSheet('/components/com_ysearch/ysearch.css');
-$document->addScript('/components/com_ysearch/ysearch.js');
+ximport('Hubzero_Document');
+Hubzero_Document::addComponentStyleSheet('com_ysearch');
+Hubzero_Document::addComponentScript('com_ysearch');
+//$document =& JFactory::getDocument();
+//$document->addStyleSheet('/components/com_ysearch/ysearch.css');
+//$document->addScript('/components/com_ysearch/ysearch.js');
 $show_weight = array_key_exists('show_weight', $_GET);
 ?>
 <div id="content-header" class="full">
