@@ -441,14 +441,28 @@ class TagsTag extends JTable
 	 * @param      string $order Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getRecentTags( $limit=25, $order='taggedon DESC' )
+	public function getRecentTags($limit=25, $order='taggedon DESC', $exclude_private=1)
 	{
 		$tj = new TagsObject( $this->_db );
 
-		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon
-				FROM $this->_tbl AS t, ".$tj->getTableName()." AS tj
-				WHERE t.admin=0 AND tj.tagid = t.id AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%'
-				GROUP BY raw_tag
+		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon, COUNT(tj.tagid) AS tcount ";
+		$sql .= "FROM $this->_tbl AS t  ";
+		$sql .= "JOIN ".$tj->getTableName()." AS tj ON t.id=tj.tagid AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%' ";
+		if ($exclude_private) {
+			$sql.= "LEFT JOIN #__resources AS R ON R.id=tj.objectid AND tj.tbl='resources' ";
+			$sql.= "LEFT JOIN #__wiki_page AS P ON P.id=tj.objectid AND tj.tbl='wiki' ";
+			$sql.= "LEFT JOIN #__xprofiles AS XP ON XP.uidNumber=tj.objectid AND tj.tbl='xprofiles' ";
+		}
+		$sql.= "WHERE t.id=tj.tagid AND t.admin=0 ";
+		if ($exclude_private) {
+			$sql .= "AND (
+				(tj.tbl='resources' AND R.access!=4) OR 
+				(tj.tbl='wiki' AND P.access=0) OR 
+				(tj.tbl='xprofiles' AND XP.public=0) OR 
+				(tj.tbl NOT IN ('xprofiles', 'wiki', 'resources', 'wishlist', 'support'))
+				) ";
+		}
+		$sql .= "GROUP BY raw_tag
 				ORDER BY $order LIMIT ".$limit;
 
 		$this->_db->setQuery( $sql );

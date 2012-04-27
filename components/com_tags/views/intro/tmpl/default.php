@@ -117,9 +117,9 @@ if ($newtags) {
 		if ($showsizes == 1) {
 			$size = $min_font_size + ($newtag->tcount - $min_qty) * $step;
 			$size = ($size > $max_font_size) ? $max_font_size : $size;
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).'</a></span></li>'."\n";
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).' <span>' . $newtag->tcount . '</span></a></span></li>'."\n";
 		} else {
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).'</a></li>'."\n";
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).' <span>' . $newtag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tl);
@@ -155,9 +155,9 @@ if ($tags) {
 		if ($showsizes == 1) {
 			$size = $min_font_size + ($tag->tcount - $min_qty) * $step;
 			$size = ($size > $max_font_size) ? $max_font_size : $size;
-			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></span></li>'."\n";
+			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->tcount . '</span></a></span></li>'."\n";
 		} else {
-			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
+			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tll);
