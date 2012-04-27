@@ -218,4 +218,5 @@ if ($section->categories) {
 }
 ?>
 	</div><!-- /.subject -->
+	<div class="clear"></div>
 </div><!-- /.main -->

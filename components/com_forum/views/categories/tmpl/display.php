@@ -212,4 +212,5 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			</div><!-- / .container -->
 		</form>
 	</div><!-- /.subject -->
+	<div class="clear"></div>
 </div><!-- /.main -->
