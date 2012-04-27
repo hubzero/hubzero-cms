@@ -79,6 +79,47 @@ class Hubzero_Document
 	}
 
 	/**
+	 * Adds a linked script to the page
+	 *
+	 * @param   string  $component  URL to the linked script
+	 * @param	string  $script     Script name (optional, uses module name if left blank)
+	 * @param   string  $type       Type of script. Defaults to 'text/javascript'
+	 * @param   bool    $defer      Adds the defer attribute.
+	 * @param   bool    $async      Adds the async attribute.
+	 * @return  void
+	 */
+	public static function addComponentScript($component, $script = '', $type = "text/javascript", $defer = false, $async = false)
+	{
+		$mainframe = JFactory::getApplication();
+
+		$jdocument = JFactory::getDocument();
+
+		$template  = $mainframe->getTemplate();
+
+		if (empty($script)) 
+		{
+			$script = substr($component, 4);
+		}
+		
+		$base = DS . 'components' . DS . $component;
+		
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			if (file_exists(JPATH_SITE . $base . DS . $script . '.jquery.js')) 
+			{
+				$script .= '.jquery';
+			}
+		}
+		
+		$url = $base . DS . $script . '.js';
+
+		if (file_exists(JPATH_SITE . $url)) 
+		{
+			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+		}
+	}
+
+	/**
 	 * Gets the path to a component image
 	 * checks template overrides first, then component
 	 *
