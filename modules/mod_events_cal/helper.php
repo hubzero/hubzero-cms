@@ -291,7 +291,17 @@ class modEventsCalendar
 
 		// Start building the table
 		$content  = '<table class="mod_events_calendar" summary="'.JText::_('TABLE_SUMMARY').'">'."\n";
-		$content .= ' <caption><a class="monthyear" href="'.JRoute::_('index.php?option=com_events&amp;year='.$cal_year.'&amp;month='.$cal_month).'">'.EventsHtml::getMonthName($cal_month).'</a></caption>'."\n";
+		$content .= ' <caption>'."\n";
+		if ($this->params->get('show_nav_prev_month'))
+		{
+			$content .= ' <a class="prev month" href="'.JRoute::_('index.php?option=com_events&amp;year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&amp;month='.($cal_month == 1 ? 12 : $cal_month - 1)).'">'.EventsHtml::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
+		}
+		$content .= ' <a class="current month" href="'.JRoute::_('index.php?option=com_events&amp;year='.$cal_year.'&amp;month='.$cal_month).'">'.EventsHtml::getMonthName($cal_month).'</a>'."\n";
+		if ($this->params->get('show_nav_next_month'))
+		{
+			$content .= ' <a class="next month" href="'.JRoute::_('index.php?option=com_events&amp;year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&amp;month='.($cal_month == 12 ? 1 : $cal_month + 1)).'">'.EventsHtml::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
+		}
+		$content .= ' </caption>'."\n";
 		$content .= ' <thead>'."\n";
 	    $content .= '  <tr>'."\n";
 		// Days name rows
