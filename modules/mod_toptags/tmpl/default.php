@@ -40,20 +40,19 @@ if (count($tags) > 0) {
 	$html  = '<ol class="tags">'."\n";
 	foreach ($tags as $tag)
 	{
-		if(!in_array($tag->raw_tag, $exclude)) {
-			$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.$tag->raw_tag.'</a></li>'."\n";
+		if (!in_array($tag->raw_tag, $exclude)) {
+			$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.$tag->raw_tag.' <span>' . $tag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	if ($modtoptags->sortby == 'alphabeta') {
 		ksort($tl);
 	}
-	$html .= implode('',$tl);
+	$html .= implode('', $tl);
 	$html .= '</ol>'."\n";
 	if ($modtoptags->morelnk) {
-		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags').'">'.JText::_('MOD_TOPTAGS_MORE').'</a></p>'."\n";
+		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags').'">'.JText::_('MOD_TOPTAGS_MORE').' <span>' . $tag->tcount . '</span></a></p>'."\n";
 	}
 } else {
 	$html  = '<p>'.$modtoptags->message.'</p>'."\n";
 }
 echo $html;
-?>

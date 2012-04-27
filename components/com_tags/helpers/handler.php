@@ -455,11 +455,11 @@ class TagsHandler extends JObject
 				$tag->raw_tag = str_replace( '&', '&amp;', $tag->raw_tag );
 				if ($showsizes == 1) {
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></span></li>'."\n";
+					$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->count . '</span></a></span></li>'."\n";
 				} elseif ($showsizes == 2) {
-					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="javascript:void(0);" onclick="addtag(\''.$tag->tag.'\');">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
+					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="javascript:void(0);" onclick="addtag(\''.$tag->tag.'\');">'.stripslashes($tag->raw_tag).' <span>' . $tag->count . '</span></a></li>'."\n";
 				} else {
-					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
+					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->count . '</span></a></li>'."\n";
 				}
 			}
 			if ($sort == 'alpha') {
