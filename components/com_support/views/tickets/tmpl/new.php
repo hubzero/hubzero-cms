@@ -135,7 +135,7 @@ $group = JRequest::getVar("group", "");
 
 			<label<?php echo ($this->getError() && $this->reporter['email'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_SUPPORT_EMAIL'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[email]" value="<?php echo (isset($this->reporter['email'])) ? htmlentities($this->reporter['email']) : ''; /*htmlentities is a xss fix, see ticket 1408*/ ?>" id="reporter_email" />
+				<input type="text" name="reporter[email]" value="<?php echo (isset($this->reporter['email'])) ? htmlentities($this->reporter['email'], ENT_COMPAT, 'UTF-8') : ''; /*htmlentities is a xss fix, see ticket #1408*/ ?>" id="reporter_email" />
 			</label>
 <?php if ($this->getError() && $this->reporter['email'] == '') { ?>
 			<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
