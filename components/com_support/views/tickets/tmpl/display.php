@@ -232,7 +232,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">
 						<td><?php echo $row->id; ?></td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo $row->report; ?>">
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo htmlentities($row->report); ?>">
 								<?php echo stripslashes($row->summary); ?>
 							</a>
 							<span class="reporter">
