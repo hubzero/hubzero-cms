@@ -37,7 +37,7 @@ $this->filters['sort'] = '';
 	<h2><?php echo $this->title; ?></h2>
 </div>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="post">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get">
 	<div class="main section">
 		<div class="aside">
 			<p class="help"><strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong><br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?></p>
@@ -56,8 +56,24 @@ $this->filters['sort'] = '';
 			
 			<div class="container">
 				<ul class="entries-menu">
-					<li><a<?php echo ($this->filters['sortby'] == 'total') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=total&search='.urlencode($this->filters['search'])); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li>
-					<li><a<?php echo ($this->filters['sortby'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&search='.urlencode($this->filters['search'])); ?>" title="Sort by title">&darr; <?php echo JText::_('Alphabetically'); ?></a></li>
+					<li>
+						<?php
+							$cls = ($this->filters['sortby'] == 'total') ? ' class="active"' : '';
+							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=total&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0)); 
+						?>
+						<a <?php echo $cls; ?> href="<?php echo $url; ?>" title="Sort by popularity">
+							&darr; <?php echo JText::_('Popular'); ?>
+						</a>
+					</li>
+					<li> 
+						<?php
+							$cls = ($this->filters['sortby'] == '') ? ' class="active"' : '';
+							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
+						?>
+						<a<?php echo $cls; ?> href="<?php echo $url; ?>" title="Sort by title">
+							&darr; <?php echo JText::_('Alphabetically'); ?>
+						</a>
+					</li>
 				</ul>
 				
 				<table class="entries" id="taglist" summary="<?php echo JText::_('COM_TAGS_TABLE_SUMMARY'); ?>">
@@ -105,7 +121,7 @@ if ($this->rows) {
 ?>
 						<tr<?php if ($row->admin) { echo ' class="admin"'; } ?>>
 <?php if ($this->authorized) { ?>
-							<td><a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id[]='.$row->id); ?>"><?php echo JText::_('COM_TAGS_DELETE_TAG'); ?></a></td>
+							<td><a class="delete delete-tag" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id[]='.$row->id.'&search='.urlencode($this->filters['search']).'&sortby='.JRequest::getVar("sortby","").'&limit='.JRequest::getVar("limit",25).'&limitstart='.JRequest::getVar("limitstart",0)); ?>"><?php echo JText::_('COM_TAGS_DELETE_TAG'); ?></a></td>
 							<td><a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$row->id); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo stripslashes($row->raw_tag); ?>&quot;"><?php echo JText::_('COM_TAGS_EDIT'); ?></a></td>
 <?php } ?>
 							<td><a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$row->tag); ?>"><?php echo stripslashes($row->raw_tag); ?></a></td>
@@ -121,18 +137,19 @@ if ($this->rows) {
 				</table>
 				<?php
 					$pn = $this->pageNav->getListFooter();
-					$pn = str_replace('/?','/?task=browse&amp;',$pn);
-					$pn = str_replace('task=browse&amp;task=browse','task=browse',$pn);
-					$pn = str_replace('&amp;&amp;','&amp;',$pn);
-					$pn = str_replace('view=browse','task=browse',$pn);
-					$pn = str_replace('/?task=browse&amp;','/browse?search='.urlencode($this->filters['search']).'&amp;',$pn);
-					$pn = str_replace('?search='.urlencode($this->filters['search']).'&amp;search='.urlencode($this->filters['search']).'&amp;','?search='.urlencode($this->filters['search']).'&amp;',$pn);
-
+					//$pn = str_replace('/?','/?task=browse&amp;',$pn);
+					//$pn = str_replace('task=browse&amp;task=browse','task=browse',$pn);
+					//$pn = str_replace('&amp;&amp;','&amp;',$pn);
+					//$pn = str_replace('view=browse','task=browse',$pn);
+					//$pn = str_replace('/?task=browse&amp;','/browse?search='.urlencode($this->filters['search']).'&amp;',$pn);
+					//$pn = str_replace('?search='.urlencode($this->filters['search']).'&amp;search='.urlencode($this->filters['search']).'&amp;','?search='.urlencode($this->filters['search']).'&amp;',$pn);
+                    
+					$pn = str_replace("/tags/browselimit", "/tags/browse?limit", $pn);
+					$pn = str_replace("/tags/browse?","/tags/browse?search=".urlencode($this->filters['search'])."&sortby=".JRequest::getVar("sortby","")."&", $pn);
 					echo $pn;
 				?>
 				<div class="clearfix"></div>
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="task" value="browse" />
+				<input type="hidden" name="sortby" value="<?php echo JRequest::getVar("sortby",""); ?>" />
 			</div><!-- / .container -->
 		</div><!-- / .main subject -->
 		<div class="clear"></div>

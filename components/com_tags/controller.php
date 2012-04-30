@@ -745,6 +745,9 @@ class TagsController extends Hubzero_Controller
 
 		// Push some styles to the template
 		$this->_getStyles();
+		
+		//
+		$this->_getScripts();
 
 		// Output HTML
 		if ($this->getError()) {
@@ -910,8 +913,16 @@ class TagsController extends Hubzero_Controller
 			$tag = new TagsTag( $this->database );
 			$tag->delete( $id );
 		}
-
-		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
+		
+		//get the browse filters so we can go back to previous view
+		$search = JRequest::getVar("search", "");
+		$sortby = JRequest::getVar("sortby", "");
+		$limit = JRequest::getVar("limit", 25);
+		$limitstart = JRequest::getVar("limitstart", 0);
+		$count = JRequest::getVar("count", 1);
+		
+		//redirect back to browse mode
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=browse&search='.$search.'&sortby='.$sortby.'&limit='.$limit.'&limitstart='.$limitstart.'#count'.$count);
 	}
 
 	//----------------------------------------------------------

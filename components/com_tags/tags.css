@@ -437,3 +437,12 @@
 	* html .results .stats { 
 		position: relative;
 		}
+		
+		
+.entries tbody td.tag-deleted {
+	background:#c14d33;
+	color:#FFF;
+	font-weight:bold;
+	font-size:14px;
+	text-align:center;
+	}

@@ -16,23 +16,63 @@ if (!HUB) {
 // Tags scripts
 //----------------------------------------------------------
 HUB.Tags = {
+	
+	initialize: function()
+	{
+		//
+		HUB.Tags.submitbutton();
+		
+		//
+		HUB.Tags.deleteTag();
+	},
+	
+	//-----
+	
 	submitbutton: function(pressbutton) {
 		var form = $('#hubForm');
+		
+		if(form.length)
+		{
+			if (pressbutton == 'cancel') {
+				submitform( pressbutton );
+				return;
+			}
 
-		if (pressbutton == 'cancel') {
-			submitform( pressbutton );
-			return;
+			// do field validation
+			if (form.raw_tag.value == ''){
+				alert( 'You must fill in a tag name' );
+			} else {
+				submitform( pressbutton );
+			}
 		}
-
-		// do field validation
-		if (form.raw_tag.value == ''){
-			alert( 'You must fill in a tag name' );
-		} else {
-			submitform( pressbutton );
+	},
+	
+	//-----
+	
+	deleteTag: function()
+	{
+		//add count to url
+		$(".delete-tag").each(function(index) {
+			var count = index + 1,
+				url = $(this).attr("href");
+			
+			url += (url.indexOf("?") == -1) ? "?count="+count : "&count="+count;
+			$(this).attr("href", url);
+		});
+		
+		//do we need to scroll down
+		if(window.location.hash)
+		{
+			var row_id = window.location.hash.replace("#count", ""),
+				row = $($(".entries tr")[row_id]);
+			
+			$("body").animate({
+				scrollTop: row.offset().top
+			}, 500);
 		}
 	}
 }
 
 jQuery(document).ready(function($){
-	HUB.Tags.submitbutton();
+	HUB.Tags.initialize();
 });
