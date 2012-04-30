@@ -76,6 +76,11 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 			</p>
 		</div>
 
+<?php 
+
+$params =& JComponentHelper::getParams('com_groups');
+if ($params->get('email_comment_processing'))
+{ ?>
 	<div class="container">
 		<h3><?php echo JText::_('Email Settings'); ?><span class="starter-point"></span></h3>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
@@ -91,6 +96,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 			</p>
 		</form>
 	</div>
+<?php } ?>
 
 <?php if ($this->config->get('access-create-section')) { ?>
 		<div class="container">
