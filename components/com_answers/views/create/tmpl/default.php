@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php //echo $this->title; ?>Questions &amp; Answers: Ask a Question</h2>
 </div><!-- / #content-header -->
 
 <div id="content-header-extra">
@@ -42,10 +42,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=saveq'); ?>" method="post" id="hubForm">
+	<?php
+		foreach($this->notifications as $notification) {
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+		}
+	?>
+	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_ANSWERS_BE_POLITE'); ?></p>
 			<p><?php echo JText::_('COM_ANSWERS_NO_HTML'); ?></p>
@@ -82,11 +84,11 @@ if (count($tf) > 0) {
 			</label>
 			<label>
 				<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
-				<input type="text" name="subject" value="" />
+				<input type="text" name="subject" value="<?php echo @$this->subject; ?>" />
 			</label>
 			<label>
 				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
-				<textarea name="question" rows="10" cols="50"></textarea>
+				<textarea name="question" rows="10" cols="50"><?php echo @$this->question; ?></textarea>
 			</label>
 <?php if ($this->banking) { ?>
 			<label>

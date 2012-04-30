@@ -57,7 +57,7 @@ class AnswersController extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$upconfig = JComponentHelper::getParams('com_userpoints');
+		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 
 		if ($this->banking) {
@@ -1027,7 +1027,7 @@ class AnswersController extends Hubzero_Controller
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
-	protected function create()
+	protected function create( $question = null )
 	{
 		// Login required
 		if ($this->juser->get('guest')) {
@@ -1044,6 +1044,14 @@ class AnswersController extends Hubzero_Controller
 
 		// Incoming
 		$view->tag = JRequest::getVar('tag', '');
+		
+		//
+		if($question != null)
+		{
+			$view->tag = @$question->tags;
+			$view->subject = $question->subject;
+			$view->question = $question->question;
+		}
 
 		// Is banking turned on?
 		$view->funds = 0;
@@ -1066,9 +1074,7 @@ class AnswersController extends Hubzero_Controller
 
 		// Output HTML
 		$view->title = $this->_title;
-		if ($this->getError()) {
-			$view->setError($this->getError());
-		}
+		$view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$view->display();
 	}
 
@@ -1197,13 +1203,6 @@ class AnswersController extends Hubzero_Controller
 			}
 		}
 
-		// Ensure the user added a tag
-		if (!$tags) {
-			//JError::raiseError(500, JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
-			echo "<script type=\"text/javascript\"> alert('".JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG')."'); window.history.go(-1); </script>\n";
-			return;
-		}
-
 		// Initiate class and bind posted items to database fields
 		$row = new AnswersQuestion($this->database);
 		if (!$row->bind($_POST)) {
@@ -1221,10 +1220,19 @@ class AnswersController extends Hubzero_Controller
 		if ($reward && $this->banking) {
 			$row->reward = 1;
 		}
+		
+		// Ensure the user added a tag
+		if (!$tags) {
+			$this->addComponentMessage(JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'), 'error');
+			$this->create( $row );
+			return;
+		}
 
 		// Check content
 		if (!$row->check()) {
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error'); 
+			$row->tags = $tags;
+			$this->create( $row );
 			return;
 		}
 
