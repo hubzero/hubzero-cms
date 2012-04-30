@@ -212,7 +212,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">
 						<td><?php echo $row->id; ?></td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo $row->report; ?>"><?php echo stripslashes($row->summary); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo htmlentities($row->report); ?>">
 							<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="'.$lnk.'">'.$row->login.'</a>)' : ''; if ($tags) { ?>, <?php echo JText::_('TAGS'); ?>: <span class="tags"><?php echo $tags; ?></span><?php } ?></span>
 						</td>
 						<td style="white-space: nowrap;"><span class="<?php echo $status; ?> status"><?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' ('.$row->resolved.')' : ''; ?></span></td>
