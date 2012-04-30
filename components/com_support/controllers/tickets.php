@@ -1738,14 +1738,14 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// The reply-to address contains the token
 									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-									$emails[] = array($row->email, 'htc-' . $token);
+									$emails[] = array($acc, 'htc-' . $token);
 								}
 								else
 								{
 									$emails[] = $acc;
 								}
 
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$juser->get('name').' ('.$juser->get('username').') </li>';
+								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
 							}
 						}
 					}
