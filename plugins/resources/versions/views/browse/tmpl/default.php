@@ -54,12 +54,12 @@ if ($this->rows) {
 	{
 		$handle = '';
 		
-		if($v->doi && $this->tconfig->get('doi_shoulder'))
+		if (isset($v->doi) && $v->doi && $this->tconfig->get('doi_shoulder'))
 		{
 			$handle = 'doi:' . $this->tconfig->get('doi_shoulder') . DS . strtoupper($v->doi);
 			$handle = '<a href="'.$this->tconfig->get('doi_resolve', 'http://dx.doi.org/') . $handle . '">'.$handle.'</a>';
 		}
-		else if($v->doi_label)
+		else if (isset($v->doi_label) && $v->doi_label)
 		{
 			$handle = 'doi:10254/' . $this->tconfig->get('doi_prefix') . $this->resource->id . '.' . $v->doi_label;
 			$handle = '<a href="http://hdl.handle.net/'.$handle.'">'.$handle.'</a>';
