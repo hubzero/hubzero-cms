@@ -5,7 +5,7 @@
 	<p>We'll award you with <strong>15</strong> points for each question you answer. You can use these points towards items in the nanoHUB <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
 	<form action="" method="post">
 		<ol>
-				<?php if ($row['orgtype']): ?>
+				<?php if (isset($row['orgtype'])): ?>
 				<li>
 					<label for="orgtype">Which item best describes your organizational affiliation? </label>
 					<div style="margin-left: 4em;">
@@ -29,7 +29,7 @@
 					</div>
 				</li>
 				<?php endif; ?>
-				<?php if ($row['organization']): ?>
+				<?php if (isset($row['organization'])): ?>
 				<li>
 					<label for="org">Which organization are you affiliated with? </label><br />
 					<div style="margin-left: 4em;">
@@ -50,7 +50,7 @@
 					</div>
 				</li>
 				<?php endif; ?>
-				<?php if ($row['reason']): ?>
+				<?php if (isset($row['reason'])): ?>
 				<li>
 					<label for="reason">What is the primary purpose of your nanoHUB account? </label>
 					<div style="margin-left: 4em">
