@@ -451,6 +451,20 @@ class WikiPage extends JTable
 	}
 
 	/**
+	 * Returns an array of groups that have wiki pages
+	 *
+	 * @param 	array 	$filters
+	 * @return 	array
+	 */
+	public function getGroups($filters=array())
+	{
+		$query = "SELECT DISTINCT g.gidNumber, g.cn, g.description FROM #__xgroups AS g, #__wiki_page AS w WHERE w.group=g.cn ORDER BY g.cn";
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
 	 * Returns a record count for a wiki
 	 * Accepts an array of filters used to build the query
 	 *
@@ -492,8 +506,17 @@ class WikiPage extends JTable
 			$query = "SELECT t.*, (SELECT COUNT(*) FROM #__wiki_version AS tt WHERE tt.pageid=t.id) AS revisions";
 		}
 		$query .= " FROM $this->_tbl AS t";
+		$where = array();
 		if ($filters['search']) {
-			$query .= " WHERE (LOWER( t.pagename ) LIKE '%".$filters['search']."%' OR LOWER( t.title ) LIKE '%".$filters['search']."%')";
+			$where[] = "(LOWER( t.pagename ) LIKE '%".$filters['search']."%' OR LOWER( t.title ) LIKE '%".$filters['search']."%')";
+		}
+		if (isset($filters['group']) && $filters['group'] != '') 
+		{
+			$where[] = "t.`group`='" . $filters['group'] . "'";
+		}
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(' AND ', $where);
 		}
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
 			$query .= " ORDER BY t.".$filters['sortby'];
