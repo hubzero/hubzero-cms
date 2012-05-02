@@ -53,11 +53,13 @@ $jconfig =& JFactory::getConfig();
 			<input type="hidden" name="fields[userid]" value="<?php echo $this->row->userid; ?>" id="userid" />
 			<input type="hidden" name="fields[useremail]" value="<?php echo $this->row->useremail; ?>" id="useremail" />
 
-			<h3><?php echo JText::_('COM_FEEDBACK_STORY_YOUR_STORY'); ?></h3>
+			<legend><?php echo JText::_('COM_FEEDBACK_STORY_YOUR_STORY'); ?></legend>
 
 			<input type="hidden" name="fields[picture]" id="picture" value="" />
-			<iframe width="100%" height="130" scrolling="no" name="filer" frameborder="0" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->user->get('uidNumber'); ?>"></iframe>
-
+			<div class="field-wrap">
+				<iframe width="100%" height="130" scrolling="no" name="filer" frameborder="0" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->user->get('uidNumber'); ?>"></iframe>
+			</div>
+			
 			<label for="fullname">
 				<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
 				<input type="text" name="fields[fullname]" id="fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" id="fullname" />
