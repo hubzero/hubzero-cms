@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+ximport('Hubzero_Module_Helper');
+
 $config =& JFactory::getConfig();
 $juser =& JFactory::getUser();
 
@@ -63,6 +65,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/hub.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/modules/mod_reportproblems/mod_reportproblems.js"></script>
 <?php } ?>
+		<!--[if IE 9]>
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/ie9.css" />
+		<![endif]-->
 		<!--[if IE 8]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/ie8.css" />
 		<![endif]-->
@@ -105,12 +110,12 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
 ?>
 					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
-					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id')); ?>"><span><?php echo JText::_('My Account'); ?></span></a></li>
-					<li id="usersname"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id')); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
+					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Account'); ?></span></a></li>
+					<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
 					<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
 <?php } else { ?>
 					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Login'); ?></a></li>
-					<li id="register"><a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('Sign up for a free account'); ?>"><?php echo JText::_('Sign Up (Free)'); ?></a></li>
+					<li id="register"><a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('Sign up for a free account'); ?>"><?php echo JText::_('Register'); ?></a></li>
 <?php } ?>
 				</ul>
 		
@@ -168,14 +173,11 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							</fieldset>
 						</form>
 					</div><!-- / #outline -->
-<?php 
-			if ($this->debug || $juser->get('username') == 'nkissebe' || $juser->get('username') == 'zooley') :
-				echo "\t\t".'<div id="techinfo">'."\n";
-				echo $this->renderBacktrace()."\n";
-				echo "\t\t".'</div>'."\n";
-			endif;
-?>
-
+<?php if ($this->debug) { ?>
+					<div id="techinfo">
+						<?php echo $this->renderBacktrace(); ?>
+					</div>
+<?php } ?>
 				</div><!-- / #content-wrap -->
 			</div><!-- / #content -->
 		</div><!-- / #wrap -->

@@ -1,0 +1,54 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/css/home.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.heading {
+		border-bottom: none;
+	}
+	#content .three,
+	#content .four {
+		border: none;
+		border-top: 1px solid #e0e0d7;
+		position: relative;
+	}
+	#content .four,
+	#content .three {
+		margin-right: 0;
+		padding-right: 5%;
+	}
+	#content .four .third,
+	#content .fourth {
+		padding-right: 0;
+	}
+	#content .firstset .four {
+		margin-bottom: 0;
+	}
+	#content .four .three {
+		margin-top: -1px;
+		margin-bottom: 2em;
+	}
+	#content .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border: none;
+		border-top: 2px solid #e0e0d7;
+	}
+	#content .columns h3 { 
+		color: #000; 
+		margin-top: 1em;
+		padding-top: 0em;
+		text-transform: uppercase;
+	}
+	#content .columns h3 a { 
+		color: #000; 
+		border-bottom: none;
+	}
+	#content ul {
+		list-style: none;
+		margin-left: 0;
+	}
