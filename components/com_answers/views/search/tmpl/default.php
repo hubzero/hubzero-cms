@@ -77,7 +77,6 @@ if (!$this->filters['filterby'] == 'none') {
 					<input type="text" name="q" value="<?php echo $this->escape($this->filters['q']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					
-					// XSS fix, ticket 1410
 					<input type="hidden" name="area" value="<?php echo htmlentities($this->filters['area']); ?>" />
 					
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
