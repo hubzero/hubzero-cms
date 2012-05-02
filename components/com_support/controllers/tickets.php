@@ -1149,14 +1149,14 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$this->view->row->report = html_entity_decode(stripslashes($this->view->row->report), ENT_COMPAT, 'UTF-8');
 		$this->view->row->report = str_replace('&quote;','&quot;',$this->view->row->report);
-		if (!strstr($this->view->row->report, '</p>') && !strstr($this->view->row->report, '<pre class="wiki">')) 
-		{
-			$this->view->row->report = str_replace("<br />","",$this->view->row->report);
-			$this->view->row->report = htmlentities($this->view->row->report, ENT_COMPAT, 'UTF-8');
+		//if (!strstr($this->view->row->report, '</p>') && !strstr($this->view->row->report, '<pre class="wiki">')) 
+		//{
+			$this->view->row->report = str_replace('<br />', '', $this->view->row->report);
+			$this->view->row->report = $this->view->escape($this->view->row->report);
 			$this->view->row->report = nl2br($this->view->row->report);
-			$this->view->row->report = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$this->view->row->report);
-			$this->view->row->report = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$this->view->row->report);
-		}
+			$this->view->row->report = str_replace("\t",' &nbsp; &nbsp;',$this->view->row->report);
+			$this->view->row->report = preg_replace('/  /', ' &nbsp;', $this->view->row->report);
+		//}
 
 		$this->view->lists = array();
 
