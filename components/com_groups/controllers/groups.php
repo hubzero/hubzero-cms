@@ -71,14 +71,14 @@ class GroupsController extends Hubzero_Controller
 
 		//are we serving up a file
 		$uri = $_SERVER["REQUEST_URI"];
-		if(strstr($uri, "Image")) 
+		if (strstr($uri, "Image:")) 
 		{
-			$file = strstr($uri, "Image");
+			$file = strstr($uri, "Image:");
 			$this->_task = 'download';
 		}
-		elseif(strstr($uri, "File"))
+		elseif (strstr($uri, "File:"))
 		{
-			$file = strstr($uri, "File");
+			$file = strstr($uri, "File:");
 			$this->_task = 'download';
 		}
 
