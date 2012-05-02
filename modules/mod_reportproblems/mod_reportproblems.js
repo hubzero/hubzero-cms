@@ -211,6 +211,7 @@ if (typeof(Fx) === 'undefined') {
 		},
 
 		resetForm: function() {
+			this.upload  = $(this.options.uploadId);
 			this.problem.setProperties({'value':''});
 			this.upload.parentNode.innerHTML = this.upload.parentNode.innerHTML;
 			this.success.hide();
