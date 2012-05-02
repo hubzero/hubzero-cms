@@ -34,13 +34,19 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label for="name"><?php echo JText::_('Name'); ?>:</label></td>
 						<td>
-							<input type="text" name="name" id="name" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" />
+							<input type="text" name="fields[name]" id="name" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><label for="value"><?php echo JText::_('Value'); ?>:</label></td>
+						<td>
+							<input type="text" name="fields[value]" id="value" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->value)); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="description"><?php echo JText::_('Description'); ?>:</label></td>
 						<td>
-							<input type="text" name="description" id="description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
+							<input type="text" name="fields[description]" id="description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
 						</td>
 					</tr>
 				</tbody>

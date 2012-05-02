@@ -33,6 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
+
 /**
  * Short description for 'ToolsController'
  * 
@@ -95,18 +97,37 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function editTask()
+	public function addTask()
+	{
+		$this->editTask();
+	}
+
+	/**
+	 * Edit a record
+	 * 
+	 * @return     void
+	 */
+	public function editTask($row = null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		// Incoming
 		$item = JRequest::getVar('item', '', 'get');
-		
-		// Get the middleware database
+
 		$mwdb =& MwUtils::getMWDBO();
-		$mwdb->setQuery("SELECT * FROM hosttype WHERE name='$item'");
-		$this->view->row = $mwdb->loadObject();
-		
+
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else 
+		{
+			$this->view->row = new ToolHosttype($mwdb);
+			$this->view->row->load($item);
+		}
+
 		if ($this->view->row->value > 0) 
 		{
 			$this->view->bit = log($this->view->row->value)/log(2);
@@ -115,15 +136,15 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		{
 			$this->view->bit = '';
 		}
-		
+
 		$this->view->refs = $this->_refs($this->view->row->value);
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		// Display results
 		$this->view->display();
 	}
@@ -163,104 +184,101 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 		
-		// Incoming
-		$name = JRequest::getVar('name', '', 'post');
-		if (!$name) 
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('You must specify a valid name.'),
-				'error'
-			);
-			return;
-		} 
-		
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 		
-		$id = JRequest::getVar('id', '', 'post');
-		$description = JRequest::getVar('description', '', 'post');
+		//$id = JRequest::getVar('id', '', 'post');
+		//$description = JRequest::getVar('description', '', 'post');
+		$fields = JRequest::getVar('fields', '', 'post');
 		
-		if ($id) 
+		$row = new ToolHosttype($mwdb);
+		if (!$row->bind($fields)) 
 		{
-			$mwdb->setQuery("UPDATE hosttype SET name=" . $mwdb->Quote($name) . ", description=" . $mwdb->Quote($description) . " WHERE name=" . $mwdb->Quote($id).";");
-			if (!$mwdb->query())
-			{
-				$this->setError($mwdb->getError());
-			}
-		} 
-		else 
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		$insert = false;
+		if (!$fields['value']) 
 		{
+			$insert = true;
+
 			$mwdb->setQuery("SELECT * FROM hosttype ORDER BY VALUE");
 			$rows = $mwdb->loadObjectList();
 
 			$value = 1;
 			for ($i=0; $i<count($rows); $i++)
 			{
-				$row = $rows[$i];
-				if ($value == $row->value) 
+				if ($value == $rows[$i]->value) 
 				{
 					$value = $value * 2;
 				}
 			}
 			for ($i=0; $i<count($rows); $i++)
 			{
-				$row = $rows[$i];
-				if ($row->name == $name) 
+				if ($row->name == $rows[$i]->name) 
 				{
-					$this->setError(JText::_('"' . $name . '" already exists in the table.'));
-					$name = '';
+					$insert = false;
 				}
 			}
-			if ($name) 
-			{
-				$mwdb->setQuery("INSERT INTO hosttype (name,value,description) VALUES(" . $mwdb->Quote($name) . "," . $mwdb->Quote($value) . "," . $mwdb->Quote($description) . ");");
-				if (!$mwdb->query())
-				{
-					$this->setError($mwdb->getError());
-				}
-			}
+
+			$row->value = $value;
 		}
-		
-		if ($this->getError())
+
+		// Check content
+		if (!$row->check()) 
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$this->getError(),
-				'error'
-			);
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
-		
+
+		// Store new content
+		if (!$row->store($insert)) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			Jtext::_('Host type successfully saved.'),
 			'message'
 		);
 	}
-	
+
 	/**
 	 * Delete a hostname record
 	 * 
 	 * @return     void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
-		$name = JRequest::getVar('name', '', 'get');
-		
-		// Get the middleware database
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
 		$mwdb =& MwUtils::getMWDBO();
-		$mwdb->setQuery("DELETE FROM hosttype WHERE name=" . $mwdb->Quote($item));
-		if (!$mwdb->query()) 
+
+		if (count($ids) > 0) 
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$mwdb->getErrorMsg(),
-				'error'
-			);
-			return;
+			$row = new ToolHosttype($mwdb);
+			
+			// Loop through each ID
+			foreach ($ids as $id) 
+			{
+				if (!$row->delete($id)) 
+				{
+					JError::raiseError(500, $row->getError());
+					return;
+				}
+			}
 		}
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('Host type successfully deleted.'),
