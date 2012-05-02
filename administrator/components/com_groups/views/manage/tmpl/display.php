@@ -29,7 +29,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'GROUPS' ), 'user.png' );
+JToolBarHelper::title( JText::_( 'GROUPS' ), 'groups.png' );
 JToolBarHelper::preferences('com_groups', '550');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();

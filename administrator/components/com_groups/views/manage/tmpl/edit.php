@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'edit' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
 
-JToolBarHelper::title( JText::_( 'GROUP' ).': <small><small>[ '. $text.' ]</small></small>', 'user.png' );
+JToolBarHelper::title( JText::_( 'GROUP' ).': <small><small>[ '. $text.' ]</small></small>', 'groups.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 

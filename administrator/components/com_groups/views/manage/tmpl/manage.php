@@ -29,7 +29,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'GROUP' ).': <small><small>[ '.JText::_('Manage').' ]</small></small>', 'user.png' );
+JToolBarHelper::title( JText::_( 'GROUP' ).': <small><small>[ '.JText::_('Manage').' ]</small></small>', 'groups.png' );
 JToolBarHelper::cancel();
 
 ?>

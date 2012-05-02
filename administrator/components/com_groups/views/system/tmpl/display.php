@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_GROUPS') . ': <small><small>[ ' . JText::_('System') . ' ]</small></small>', 'groups.png');
+JToolBarHelper::title(JText::_('GROUPS') . ': <small><small>[ ' . JText::_('System') . ' ]</small></small>', 'groups.png');
 //JToolBarHelper::cancel();
 ?>
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
