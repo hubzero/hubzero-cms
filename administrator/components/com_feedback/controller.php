@@ -61,6 +61,7 @@ class FeedbackController extends Hubzero_Controller
 		{
 			$this->type = JRequest::getVar('type', 'regular', 'get');
 		}
+		$this->type = ($this->type == 'regular') ? $this->type : 'selected';
 
 		switch ($this->_task)
 		{
