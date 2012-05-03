@@ -306,6 +306,7 @@
 		color: #999a9b;
 		text-shadow: 0 -1px 1px #111111;
 		cursor: pointer;
+		border-bottom: none;
 	}
 	#app-footer ul {
 		overflow: hidden;
@@ -404,7 +405,7 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		line-height: 1.5em;
+		line-height: 1em;
 		text-indent: 7px;
 	}
 	#diskusage #du-amount span {
@@ -450,7 +451,12 @@
 		overflow: hidden;
 	}
 	#diskusage #du-amount div span {
-		display: none;
+		display: block;
+		width: 190px;
+		font-size: 85%;
+		text-align: right;
+		color: #aaa;
+		padding: 0 10px 0 0;
 	}
 	#app-footer li a,
 	#app-footer li a span,
