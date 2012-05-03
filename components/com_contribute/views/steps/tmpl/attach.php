@@ -57,8 +57,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><?php echo JText::_('COM_CONTRIBUTE_ATTACH_BREEZE_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_CONTRIBUTE_ATTACH_ATTACHMENTS'); ?></h3>
-			<iframe width="100%" height="280" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;task=attach&amp;id=<?php echo $this->id; ?>&amp;no_html=1"></iframe>
+			<legend><?php echo JText::_('COM_CONTRIBUTE_ATTACH_ATTACHMENTS'); ?></legend>
+			<iframe width="100%" height="280" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;task=attach&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />

@@ -30,29 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$app =& JFactory::getApplication();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-	<title><?php echo JText::_('COM_CONTRIBUTE'); ?></title>
-
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-	<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-	<?php
-		if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'contribute.css')) {
-			echo '<link rel="stylesheet" type="text/css" media="screen" href="'.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'contribute.css" />'."\n";
-		} else {
-			echo '<link rel="stylesheet" type="text/css" media="screen" href="'.DS.'components'.DS.$this->option.DS.'contribute.css" />'."\n";
-		}
-	?>
-	
-    <script type="text/javascript" src="/media/system/js/mootools.js"></script>
-	<script type="text/javascript" src="/components/<?php echo $this->option; ?>/contribute.js"></script>
- </head>
- <body id="small-page">
+	<div id="small-page">
 		<form action="index.php" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<label>
@@ -146,5 +125,4 @@ $app =& JFactory::getApplication();
 <?php } else { ?>
 		<p><?php echo JText::_('COM_CONTRIBUTE_ATTACH_NONE_FOUND'); ?></p>
 <?php } ?>
- </body>
-</html>
+	</div>

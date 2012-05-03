@@ -56,11 +56,12 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 			<p><?php echo JText::_('COM_CONTRIBUTE_GROUPS_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_CONTRIBUTE_GROUPS_OWNERSHIP'); ?></h3>
+			<legend><?php echo JText::_('COM_CONTRIBUTE_GROUPS_OWNERSHIP'); ?></legend>
+<?php if ($this->groups && count($this->groups) > 0) { ?>
 			<div class="group">
-			<label>
+			<label for="group_owner">
 				<?php echo JText::_('COM_CONTRIBUTE_GROUPS_GROUP'); ?>: <span class="optional"><?php echo JText::_('COM_CONTRIBUTE_OPTIONAL'); ?></span>
-				<select name="group_owner">
+				<select name="group_owner" id="group_owner">
 					<option value=""><?php echo JText::_('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
 <?php
 				if ($this->groups && count($this->groups) > 0) {
@@ -74,9 +75,9 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 ?>
 				</select>
 			</label>
-			<label>
+			<label for="access">
 				<?php echo JText::_('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo JText::_('COM_CONTRIBUTE_OPTIONAL'); ?></span>
-				<select name="access">';
+				<select name="access" id="access">
 <?php
 				for ($i=0, $n=count( $accesses ); $i < $n; $i++)
 				{
@@ -95,6 +96,11 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION'); ?><br />
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION'); ?>
 			</p>
+<?php } else { ?>
+			<p class="information">
+				Once you have joined one or more groups you may restrict access to this contribution to one of your groups.
+			</p>
+<?php } ?>
 		</fieldset><div class="clear"></div>
 		
 		<div class="explaination">
@@ -105,8 +111,10 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 			<p><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NOT_AUTHOR_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?></h3>
-			<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;task=authors&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+			<legend><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?></legend>
+			<div class="field-wrap">
+				<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;task=authors&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+			</div>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
