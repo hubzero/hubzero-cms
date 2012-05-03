@@ -162,11 +162,12 @@ if ($templates) {
 			{
 				$tagarray[] = $tag['raw_tag'];
 			}
-			$tmpltags = implode(', ', $tagarray);
 			if (strtolower($this->tplate) == strtolower($template->pagename)) {
-				$this->tags = $tmpltags;
+				$this->tags = implode(', ', $tagarray);
 			}
+			$tmpltags = $tagarray;
 		}
+		$tmpltags = implode(', ', $tmpltags);
 
 		echo "\t".'<option value="t'.$template->id.'"';
 		if (strtolower($this->tplate) == strtolower($template->pagename)

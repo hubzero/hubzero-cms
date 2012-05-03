@@ -448,8 +448,8 @@ class WikiControllerPage extends Hubzero_Controller
 			// Parse the HTML
 			$wikiconfig = array(
 				'option'   => $this->_option,
-				'scope'    => $this->scope,
-				'pagename' => $this->pagename,
+				'scope'    => $this->page->scope,
+				'pagename' => $this->page->pagename,
 				'pageid'   => $this->page->id,
 				'filepath' => '',
 				'domain'   => $this->_group
