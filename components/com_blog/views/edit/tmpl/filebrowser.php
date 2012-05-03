@@ -30,26 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$app =& JFactory::getApplication();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title><?php echo JText::_('COM_BLOG_FILE_MANAGER'); ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-<?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'blof.css')) { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS; ?>blog.css" />
-<?php } else { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'components'.DS.$this->option.DS; ?>blog.css" />
-<?php } ?>
-	</head>
-	<body id="attachments">
+	<div id="attachments">
 		<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=listfiles&amp;scope=<?php echo $this->scope; ?>&amp;id=<?php echo $this->id; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;task=listfiles&amp;scope=<?php echo $this->scope; ?>&amp;id=<?php echo $this->id; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
 			<fieldset>
@@ -66,5 +52,4 @@ $app =& JFactory::getApplication();
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	</body>
-</html>
+	</div>

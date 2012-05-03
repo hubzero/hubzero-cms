@@ -96,7 +96,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 				</tbody>
 			</table>
 			<h4 id="files-header"><?php echo JText::_('Uploaded files'); ?></h4>
-			<iframe width="100%" height="370" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media"></iframe>
+			<iframe width="100%" height="370" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;task=media"></iframe>
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></h3>

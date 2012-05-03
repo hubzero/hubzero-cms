@@ -1265,6 +1265,8 @@ class BlogController extends Hubzero_Controller
 		$scope = JRequest::getVar( 'scope', 'site' );
 		$id = JRequest::getInt( 'id', 0 );
 
+		$this->_getStyles();
+
 		// Output HTML
 		$view = new JView( array('name'=>'edit', 'layout'=>'filebrowser') );
 		$view->option = $this->_option;
@@ -1393,6 +1395,8 @@ class BlogController extends Hubzero_Controller
 		//} else {
 		//	$this->setError( JText::sprintf('COM_BLOG_ERROR_MISSING_DIRECTORY', $path) );
 		}
+
+		$this->_getStyles();
 
 		$view = new JView( array('name'=>'edit', 'layout'=>'filelist') );
 		$view->option = $this->_option;

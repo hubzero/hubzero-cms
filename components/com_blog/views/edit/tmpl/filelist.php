@@ -30,20 +30,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$app =& JFactory::getApplication();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title><?php echo JText::_('COM_BLOG_FILE_MANAGER'); ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-<?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'blog.css')) { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS; ?>blog.css" />
-<?php } else { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'components'.DS.$this->option.DS; ?>blog.css" />
-<?php } ?>
 		<script type="text/javascript">
 			function updateDir()
 			{
@@ -78,8 +65,7 @@ $app =& JFactory::getApplication();
 				return false;
 			}
 		</script>
-	</head>
-	<body id="attachments">
+	<div id="attachments">
 		<form action="index.php" method="post" id="filelist">
 <?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
 			<p><?php echo JText::_('COM_BLOG_NO_FILES_FOUND'); ?></p>
@@ -168,5 +154,4 @@ for ($i=0; $i<count($images); $i++)
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	</body>
-</html>
+	</div>
