@@ -59,7 +59,7 @@ class plgSupportTransfer extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'support', 'transfer' );
 		$this->_params = new JParameter( $this->_plugin->params );
 
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$upconfig =& JComponentHelper::getParams( 'com_members' );
 		$banking = $upconfig->get('bankAccounts');
 		$this->banking = $banking;
 

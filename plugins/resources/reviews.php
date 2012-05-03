@@ -60,7 +60,7 @@ class plgResourcesReviews extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 
 		$this->infolink = '/kb/points/';
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$upconfig =& JComponentHelper::getParams( 'com_members' );
 		$this->banking = $upconfig->get('bankAccounts');
 	}
 

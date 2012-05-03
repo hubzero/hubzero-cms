@@ -248,7 +248,7 @@ class plgSupportAnswers extends JPlugin
 			break;
 
 			case 'question':
-				$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+				$upconfig =& JComponentHelper::getParams( 'com_members' );
 				$banking = $upconfig->get('bankAccounts');
 
 				$reward = 0;

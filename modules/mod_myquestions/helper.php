@@ -263,7 +263,7 @@ class modMyQuestions
 	public function display()
 	{
 		//$xhub =& Hubzero_Factory::getHub();
-		$upconfig =& JComponentHelper::getParams('com_userpoints');
+		$upconfig =& JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 		if ($this->banking) 
 		{

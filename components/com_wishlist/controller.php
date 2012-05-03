@@ -202,7 +202,7 @@ class WishlistController extends JObject
 		$this->admingroup = $this->config->get('group') ? $this->config->get('group') : 'hubadmin';
 
 		// are we using banking functions?
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$upconfig =& JComponentHelper::getParams( 'com_members' );
 		$banking =  $upconfig->get('bankAccounts');
 		$this->banking = $this->config->get('banking') && $banking ? $this->config->get('banking') : 0;
 

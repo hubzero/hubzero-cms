@@ -50,7 +50,7 @@ class StoreControllerItems extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$upconfig =& JComponentHelper::getParams('com_userpoints');
+		$upconfig =& JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 		if ($this->banking)
 		{

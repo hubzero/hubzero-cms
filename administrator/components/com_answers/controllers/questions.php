@@ -45,7 +45,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$this->banking = JComponentHelper::getParams('com_userpoints')->get('bankAccounts');
+		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
 
 		if ($this->banking)
 		{

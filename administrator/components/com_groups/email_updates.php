@@ -134,7 +134,6 @@ if (0) {
 } // ( 0 )
 
 //ximport('Hubzero_User_Profile');
-//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_userpoints'.DS.'controller.php' );
 for($i=0;$i<20;$i++) {
 	echo "_______________________________________________\n";
 }

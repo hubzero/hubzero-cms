@@ -117,7 +117,7 @@ class modDashboard
 		$database =& JFactory::getDBO();
 
 		$xhub =& Hubzero_Factory::getHub();
-		$upconfig =& JComponentHelper::getParams('com_userpoints');
+		$upconfig =& JComponentHelper::getParams('com_members');
 		$banking =  $upconfig->get('bankAccounts');
 		$hubname = $xhub->getCfg('hubShortName');
 

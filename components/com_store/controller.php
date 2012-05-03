@@ -290,7 +290,7 @@ class StoreController extends Hubzero_Controller
 		$view->msg = '';
 
 		// Check if economy functions are unavailable
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$upconfig =& JComponentHelper::getParams( 'com_members' );
 		if (!$upconfig->get('bankAccounts')) {
 			$view->juser = $this->juser;
 			$view->setError( JText::_('COM_STORE_MSG_STORE_CLOSED') );

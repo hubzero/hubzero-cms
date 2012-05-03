@@ -63,7 +63,7 @@ class ToolsController extends Hubzero_Controller
 		}
 
 		// Are we banking?
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$upconfig =& JComponentHelper::getParams( 'com_members' );
 		$banking = $upconfig->get('bankAccounts');
 		$this->banking = ($banking && $this->config->get('banking') ) ? 1: 1;
 

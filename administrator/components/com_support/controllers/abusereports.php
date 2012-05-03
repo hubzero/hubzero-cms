@@ -358,7 +358,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		}
 
 		// Check the HUB configuration to see if banking is turned on
-		$upconfig =& JComponentHelper::getParams('com_userpoints');
+		$upconfig =& JComponentHelper::getParams('com_members');
 		$banking = $upconfig->get('bankAccounts');
 
 		// Give some points to whoever reported abuse

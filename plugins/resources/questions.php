@@ -135,7 +135,7 @@ class plgResourcesQuestions extends JPlugin
 			Hubzero_Document::addPluginStylesheet('resources', 'questions');
 
 			// Are we banking?
-			$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+			$upconfig =& JComponentHelper::getParams( 'com_members' );
 			$banking = $upconfig->get('bankAccounts');
 
 			// Info aboit points link
