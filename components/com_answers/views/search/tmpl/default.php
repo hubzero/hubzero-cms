@@ -77,7 +77,7 @@ if (!$this->filters['filterby'] == 'none') {
 					<input type="text" name="q" value="<?php echo $this->escape($this->filters['q']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					
-					<input type="hidden" name="area" value="<?php echo htmlentities($this->filters['area']); ?>" />
+					<input type="hidden" name="area" value="<?php echo $this->escape($this->filters['area']); ?>" />
 					
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); ?>" />
