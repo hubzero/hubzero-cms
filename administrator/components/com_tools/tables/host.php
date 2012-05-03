@@ -36,29 +36,42 @@ defined('_JEXEC') or die( 'Restricted access' );
  * 
  * Long description (if any) ...
  */
-class MwHosttype extends JTable
+class MwHost extends JTable
 {
-
 	/**
-	 * Description for 'name'
+	 * Description for 'hostname'
 	 * 
 	 * @var unknown
 	 */
-	var $name;
+	var $hostname;
 
 	/**
-	 * Description for 'value'
+	 * Description for 'provisions'
 	 * 
 	 * @var unknown
 	 */
-	var $value;
+	var $provisions;
 
 	/**
-	 * Description for 'description'
+	 * Description for 'status'
 	 * 
 	 * @var unknown
 	 */
-	var $description;
+	var $status;
+
+	/**
+	 * Description for 'status'
+	 * 
+	 * @var unknown
+	 */
+	var $uses;
+
+	/**
+	 * Description for 'status'
+	 * 
+	 * @var unknown
+	 */
+	var $portbase;
 
 	/**
 	 * Short description for '__construct'
@@ -70,7 +83,7 @@ class MwHosttype extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('hosttype', 'name', $db);
+		parent::__construct('host', 'hostname', $db);
 	}
 
 	/**
@@ -82,22 +95,16 @@ class MwHosttype extends JTable
 	 */
 	public function check()
 	{
-
-		if (!$this->name) 
+		if (!$this->hostname) 
 		{
-			$this->setError( JText::_('No name provided') );
+			$this->setError( JText::_('No hostname provided') );
 			return false;
 		}
+		$this->hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $this->hostname);
 
-		if (!$this->description) 
+		if (!$this->status) 
 		{
-			$this->setError( JText::_('No description provided.') );
-			return false;
-		}
-
-		if (!$this->value) 
-		{
-			$this->setError( JText::_('No value provided.') );
+			$this->setError( JText::_('No status provided.') );
 			return false;
 		}
 
@@ -117,27 +124,29 @@ class MwHosttype extends JTable
 	{
 		$xlog = &Hubzero_Factory::getLogger();
 		$k = $this->_tbl_key;
-		if ($this->_tbl != "#__session")
-			$xlog->logDebug($this->_tbl . " store()");
+		if ($this->_tbl != '#__session')
+		{
+			$xlog->logDebug($this->_tbl . ' store()');
+		}
 
 		if ($insert)
 		{
-			$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
 		else 
 		{
-			if( $this->$k)
+			if ($this->$k)
 			{
-				$ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
+				$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 			}
 			else
 			{
-				$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+				$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 			}
 		}
-		if( !$ret )
+		if (!$ret)
 		{
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
 			return false;
 		}
 		else
@@ -154,16 +163,17 @@ class MwHosttype extends JTable
 	 * @access public
 	 * @return true if successful otherwise returns and error message
 	 */
-	public function delete( $oid=null )
+	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) {
+		if ($oid) 
+		{
 			$this->$k = $oid;
 		}
 
-		$query = 'DELETE FROM '.$this->_db->nameQuote( $this->_tbl ).
-				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
-		$this->_db->setQuery( $query );
+		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) .
+				' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->Quote($this->$k);
+		$this->_db->setQuery($query);
 
 		if ($this->_db->query())
 		{
@@ -188,12 +198,33 @@ class MwHosttype extends JTable
 	{
 		$where = array();
 
+		if (isset($filters['status']) && $filters['status'] != '') 
+		{
+			$where[] = "c.`status`='" . $filters['status'] . "'";
+		}
+		if (isset($filters['portbase']) && $filters['portbase'] != '') 
+		{
+			$where[] = "c.`portbase`='" . $filters['portbase'] . "'";
+		}
+		if (isset($filters['uses']) && $filters['uses'] != '') 
+		{
+			$where[] = "c.`uses`='" . $filters['uses'] . "'";
+		}
+		if (isset($filters['provisions']) && $filters['provisions'] != '') 
+		{
+			$where[] = "c.`provisions`='" . $filters['provisions'] . "'";
+		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.name) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(c.description) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.hostname) LIKE '%" . strtolower($filters['search']) . "%')";
 		}
 
 		$query = "FROM $this->_tbl AS c";
+		if ($filters['hosttype'] && $filters['hosttype']) 
+		{
+			$query .= " JOIN hosttype AS t ON c.provisions & t.value != 0";
+			$where[] = "t.name = " . $mwdb->Quote($this->view->filters['hosttype']);
+		}
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -235,7 +266,7 @@ class MwHosttype extends JTable
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
-			$filters['sort'] = 'name';
+			$filters['sort'] = 'hostname';
 		}
 		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 		{

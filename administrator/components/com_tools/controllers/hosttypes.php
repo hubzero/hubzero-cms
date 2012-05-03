@@ -54,26 +54,46 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		// Get configuration
 		$config = JFactory::getConfig();
 		$app =& JFactory::getApplication();
-		
+
 		// Get filters
 		$this->view->filters = array();
-		$this->view->filters['usertype'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.usertype', 
-			'usertype', 
-			''
+		// Sorting
+		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
+			'value'
 		));
-		$this->view->filters['hosttype'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.hosttype', 
-			'hosttype', 
-			''
+		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
+			'ASC'
 		));
-		
+		// Get paging variables
+		$this->view->filters['limit']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limit', 
+			'limit', 
+			$config->getValue('config.list_limit'), 
+			'int'
+		);
+		$this->view->filters['start']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart', 
+			'limitstart', 
+			0, 
+			'int'
+		);
+
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 
+		$model = new MwHosttype($mwdb);
+
+		$this->view->total = $model->getCount($this->view->filters);
+
+		$this->view->rows = $model->getRecords($this->view->filters);
+
 		// Form the query and show the table.
-		$mwdb->setQuery("SELECT * FROM hosttype ORDER BY VALUE");
-		$this->view->rows = $mwdb->loadObjectList();
+		//$mwdb->setQuery("SELECT * FROM hosttype ORDER BY VALUE");
+		//$this->view->rows = $mwdb->loadObjectList();
 		if ($this->view->rows)
 		{
 			foreach ($this->view->rows as $key => $row)
@@ -81,13 +101,24 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 				$this->view->rows[$key]->refs = $this->_refs($row->value);
 			}
 		}
-		
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
+
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		// Display results
 		$this->view->display();
 	}
@@ -124,7 +155,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		}
 		else 
 		{
-			$this->view->row = new ToolHosttype($mwdb);
+			$this->view->row = new MwHosttype($mwdb);
 			$this->view->row->load($item);
 		}
 
@@ -142,7 +173,10 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Display results
@@ -183,15 +217,13 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
-		//$id = JRequest::getVar('id', '', 'post');
-		//$description = JRequest::getVar('description', '', 'post');
-		$fields = JRequest::getVar('fields', '', 'post');
-		
-		$row = new ToolHosttype($mwdb);
+
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		$row = new MwHosttype($mwdb);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -200,12 +232,14 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 		}
 
 		$insert = false;
-		if (!$fields['value']) 
+		if (!$fields['id'])
 		{
 			$insert = true;
+		}
 
-			$mwdb->setQuery("SELECT * FROM hosttype ORDER BY VALUE");
-			$rows = $mwdb->loadObjectList();
+		if (!$fields['value']) 
+		{
+			$rows = $row->getRecords();
 
 			$value = 1;
 			for ($i=0; $i<count($rows); $i++)
@@ -214,9 +248,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 				{
 					$value = $value * 2;
 				}
-			}
-			for ($i=0; $i<count($rows); $i++)
-			{
+				// Double check that the hosttype doesn't already exist
 				if ($row->name == $rows[$i]->name) 
 				{
 					$insert = false;
@@ -266,7 +298,7 @@ class ToolsControllerHosttypes extends Hubzero_Controller
 
 		if (count($ids) > 0) 
 		{
-			$row = new ToolHosttype($mwdb);
+			$row = new MwHosttype($mwdb);
 			
 			// Loop through each ID
 			foreach ($ids as $id) 

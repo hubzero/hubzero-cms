@@ -4,7 +4,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ( $this->task == 'edit' ? JText::_( 'Edit Host' ) : JText::_( 'New Host' ) );
 
-JToolBarHelper::title( JText::_( 'Tools' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Tools' ).': <small><small>[ '. $text.' ]</small></small>', 'config.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -69,8 +69,8 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="status" value="check" />
-	<input type="hidden" name="id" value="<?php echo $this->row->name; ?>" />
+	<input type="hidden" name="fields[status]" value="check" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->row->name; ?>" />
 	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

@@ -33,6 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
+
 /**
  * Short description for 'ToolsController'
  * 
@@ -63,40 +66,65 @@ class ToolsControllerHosts extends Hubzero_Controller
 			'hosttype', 
 			''
 		));
+		// Sorting
+		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
+			'hostname'
+		));
+		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
+			'ASC'
+		));
+		// Get paging variables
+		$this->view->filters['limit']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limit', 
+			'limit', 
+			$config->getValue('config.list_limit'), 
+			'int'
+		);
+		$this->view->filters['start']        = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart', 
+			'limitstart', 
+			0, 
+			'int'
+		);
 
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
-		// Form the query and retrieve list of hosts
-		if ($this->view->filters['hosttype']) 
-		{
-			$query = "SELECT host.* 
-					FROM host 
-					JOIN hosttype ON host.provisions & hosttype.value != 0 
-					WHERE hosttype.name = " . $mwdb->Quote($this->view->filters['hosttype']) . " 
-					ORDER BY hostname";
-		} 
-		else 
-		{
-			$query = "SELECT * FROM host ORDER BY hostname";
-		}
-		$mwdb->setQuery($query);
-		$this->view->rows = $mwdb->loadObjectList();
 
-		// Get a list of hosttypes
-		$mwdb->setQuery("SELECT * FROM hosttype ORDER BY value");
-		$this->view->results = $mwdb->loadObjectList();
+		$model = new MwHost($mwdb);
+
+		$this->view->total = $model->getCount($this->view->filters);
+
+		$this->view->rows = $model->getRecords($this->view->filters);
+
+		$ht = new MwHosttype($mwdb);
+
+		$this->view->hosttypes = $ht->getRecords();
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		// Display results
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Short description for 'apply'
 	 * 
@@ -107,26 +135,28 @@ class ToolsControllerHosts extends Hubzero_Controller
 	public function statusTask()
 	{
 		// Incoming
-		$hostname = JRequest::getVar('hostname', '', 'get');
-		
+		$this->view->hostname = JRequest::getVar('hostname', '', 'get');
+
 		// $hostname is eventually used in a string passed to an exec call, we gotta 
 		// clean at least some of it. See RFC 1034 for valid character set info
-		$hostname = preg_replace("[^A-Za-z0-9-.]", "", $hostname);
-		
-		$this->view->status = $this->_middleware("check $hostname yes", $output);
-		$this->view->hostname = $hostname;
+		$this->view->hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $this->view->hostname);
+
+		$this->view->status = $this->_middleware("check " . $this->view->hostname . " yes", $output);
 		$this->view->output = $output;
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		// Display results
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Short description for 'middleware'
 	 * 
@@ -141,7 +171,7 @@ class ToolsControllerHosts extends Hubzero_Controller
 		$retval = 1; // Assume success.
 		$fnoutput = array();
 
-		exec("/bin/sh ../components/".$this->_option."/scripts/mw $comm 2>&1 </dev/null",$output,$status);
+		exec("/bin/sh ../components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null", $output, $status);
 
 		$outln = 0;
 		if ($status != 0) 
@@ -179,36 +209,59 @@ class ToolsControllerHosts extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function editTask()
+	public function addTask()
+	{
+		$this->editTask();
+	}
+
+	/**
+	 * Edit a record
+	 * 
+	 * @return     void
+	 */
+	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
-		// Incoming
-		$hostname = JRequest::getVar( 'hostname', '', 'get' );
-		
-		// $hostname is eventually used in a string passed to an exec call, we gotta 
-		// clean at least some of it. See RFC 1034 for valid character set info
-		$hostname = preg_replace("[^A-Za-z0-9-.]", "", $hostname);
-		
+
+		$this->view->setLayout('edit');
+
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 		
-		$mwdb->setQuery("SELECT * FROM host WHERE hostname='$hostname'");
-		$this->view->row = $mwdb->loadObject();
-		
-		$mwdb->setQuery("SELECT * FROM hosttype ORDER BY value");
-		$this->view->results = $mwdb->loadObjectList();
-		
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else 
+		{
+			// Incoming
+			$hostname = JRequest::getVar('hostname', '', 'get');
+
+			// $hostname is eventually used in a string passed to an exec call, we gotta 
+			// clean at least some of it. See RFC 1034 for valid character set info
+			$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
+
+			$this->view->row = new MwHost($mwdb);
+			$this->view->row->load($hostname);
+		}
+
+		$ht = new MwHosttype($mwdb);
+
+		$this->view->hosttypes = $ht->getRecords();
+
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		// Display results
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save changes to a record
 	 * 
@@ -218,27 +271,33 @@ class ToolsControllerHosts extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
+		// Get the middleware database
+		$mwdb =& MwUtils::getMWDBO();
+
 		// Incoming
-		$hostname = JRequest::getVar('hostname', '', 'post');
-		$id = JRequest::getVar('id', '', 'post');
-		
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		$row = new MwHost($mwdb);
+		if (!$row->bind($fields)) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
 		// $hostname is eventually used in a string passed to an exec call, we gotta 
 		// clean at least some of it. See RFC 1034 for valid character set info
-		$hostname = preg_replace("[^A-Za-z0-9-.]", "", $hostname);
-		$id = preg_replace("[^A-Za-z0-9-.]", "", $id);
-		if (!$hostname) 
+		$row->hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $row->hostname);
+		$fields['id'] = preg_replace("/[^A-Za-z0-9-.]/", '', $fields['id']);
+
+		if (!$row->hostname) 
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('You must specify a valid hostname.'),
-				'error'
-			);
+			$this->addComponentMessage(Jtext::_('You must specify a valid hostname.'), 'error');
+			$this->editTask($row);
 			return;
-		} 
-		
-		$status = JRequest::getVar('status', '', 'post');
-		
+		}
+
 		// Figure out the hosttype stuff.
 		$hosttype = JRequest::getVar('hosttype', array(), 'post');	
 		$harr = array();
@@ -246,59 +305,51 @@ class ToolsControllerHosts extends Hubzero_Controller
 		{
 			$harr[$value] = 1;
 		}
-		$h = 0;
+		$row->provisions = 0;
 
 		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-		$mwdb->setQuery("SELECT name,value FROM hosttype");
-		if ($rows = $mwdb->loadObjectList())
+		$ht = new MwHosttype($mwdb);
+		if ($rows = $ht->getRecords())
 		{
 			for ($i=0; $i < count($rows); $i++)
 			{
 				$row = $rows[$i];
 				if (isset($harr[$row->name])) 
 				{
-					$h += $row->value;
+					$row->provisions += $row->value;
 				}
 			}
 		}
 
-		if ($id) 
+		$insert = false;
+		if (!$fields['id']) 
 		{
-			$query = "UPDATE host SET hostname=".$mwdb->Quote($hostname).",provisions=".$mwdb->Quote($h).",status=".$mwdb->Quote($status) . " WHERE hostname=" . $mwdb->Quote($id) .";";
-			$mwdb->setQuery($query);
-			if (!$mwdb->query())
-			{
-				$this->setError($mwdb->getError());
-			}
-		} 
-		else 
-		{
-			$query = "INSERT INTO host(hostname,provisions,status) VALUES(" . $mwdb->Quote($hostname) . ", " . $mwdb->Quote($h) . ", " . $mwdb->Quote($status) .");";
-			$mwdb->setQuery($query);
-			if (!$mwdb->query())
-			{
-				$this->setError($mwdb->getError());
-			}
+			$insert = true;
 		}
-		
-		if ($this->getError())
+
+		// Check content
+		if (!$row->check()) 
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$this->getError(),
-				'error'
-			);
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
-		
+
+		// Store new content
+		if (!$row->store($insert)) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			Jtext::_('Hostname successfully saved.'),
 			'message'
 		);
 	}
-	
+
 	/**
 	 * Toggle a hostname provision
 	 * 
@@ -311,11 +362,11 @@ class ToolsControllerHosts extends Hubzero_Controller
 		$item = JRequest::getVar('item', '', 'get');
 		// $hostname is eventually used in a string passed to an exec call, we gotta 
 		// clean at least some of it. See RFC 1034 for valid character set info
-		$hostname = preg_replace("[^A-Za-z0-9-.]", "", $hostname);
-		
+		$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
+
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) .
 				" UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
 		$mwdb->setQuery($query);
@@ -327,37 +378,43 @@ class ToolsControllerHosts extends Hubzero_Controller
 		{
 			$result = $mwdb->query_batch();
 		}
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
-	
+
 	/**
-	 * Delete a hostname record
+	 * Delete one or more hostname records
 	 * 
 	 * @return     void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
-		$hostname = JRequest::getVar('hostname', '', 'get');
-		// $hostname is eventually used in a string passed to an exec call, we gotta 
-		// clean at least some of it. See RFC 1034 for valid character set info
-		$hostname = preg_replace("[^A-Za-z0-9-.]", "", $hostname);
-		
-		// Get the middleware database
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
 		$mwdb =& MwUtils::getMWDBO();
-		$mwdb->setQuery("DELETE FROM host WHERE hostname=" . $mwdb->Quote($hostname));
-		if (!$mwdb->query()) 
+
+		if (count($ids) > 0) 
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$mwdb->getErrorMsg(),
-				'error'
-			);
-			return;
+			$row = new MwHost($mwdb);
+
+			// Loop through each ID
+			foreach ($ids as $id) 
+			{
+				$id = preg_replace("/[^A-Za-z0-9-.]/", '', $id);
+				if (!$row->delete($id)) 
+				{
+					JError::raiseError(500, $row->getError());
+					return;
+				}
+			}
 		}
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('Hostname successfully deleted.'),

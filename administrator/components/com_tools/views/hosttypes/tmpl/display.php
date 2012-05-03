@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Tools' ), 'tools.png' );
+JToolBarHelper::title( JText::_( 'Tools' ), 'config.png' );
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
@@ -26,12 +26,17 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th scope="col"><?php echo JText::_('Name'); ?></th>
-				<th scope="col"><?php echo JText::_('Bit#'); ?></th>
-				<th scope="col"><?php echo JText::_('Description'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Bit#', 'value', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Description', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('References'); ?></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+			</tr>
+		</tfoot>
 		<tbody>
 <?php
 if ($this->rows) 
@@ -50,7 +55,7 @@ if ($this->rows)
 ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->name ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->name; ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;item=<?php echo $row->name; ?>">
@@ -80,6 +85,8 @@ if ($this->rows)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

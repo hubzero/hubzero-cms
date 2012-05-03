@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Tools' ), 'generic.png' );
+JToolBarHelper::title( JText::_( 'Tools' ), 'config.png' );
 
 ?>
 <script type="text/javascript">
