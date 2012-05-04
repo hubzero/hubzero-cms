@@ -78,7 +78,7 @@ $juser =& JFactory::getUser();
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
-<?php if ($b == 'firefox' && intval($v) < 4) { ?>
+<?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
 		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 		<!--[if IE 7]>

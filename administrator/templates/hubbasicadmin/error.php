@@ -57,7 +57,7 @@ $juser =& JFactory::getUser();
 <?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
 		<link href="templates/<?php echo $this->template; ?>/css/common/debug.css" rel="stylesheet" type="text/css" />
 <?php } ?>
-<?php if ($b == 'firefox' && intval($v) < 4) { ?>
+<?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
 		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 		<!--[if IE 7]>
