@@ -45,6 +45,11 @@ if ($this->direction == 'rtl') {
 	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
 }
 
+ximport('Hubzero_Browser');
+$browser = new Hubzero_Browser();
+$b = $browser->getBrowser();
+$v = $browser->getBrowserMajorVersion();
+
 $juser =& JFactory::getUser();
 ?>
 <!DOCTYPE html>
@@ -52,7 +57,7 @@ $juser =& JFactory::getUser();
 <!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
 	</head>

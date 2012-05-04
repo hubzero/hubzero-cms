@@ -34,6 +34,11 @@ defined('_JEXEC') or die;
 $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
+ximport('Hubzero_Browser');
+$browser = new Hubzero_Browser();
+$b = $browser->getBrowser();
+$v = $browser->getBrowserMajorVersion();
+
 $juser =& JFactory::getUser();
 ?>
 <!DOCTYPE html>
@@ -41,7 +46,7 @@ $juser =& JFactory::getUser();
 <!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<link href="templates/<?php echo $this->template; ?>/css/template.css" rel="stylesheet" type="text/css" />
 		<link href="templates/<?php echo $this->template; ?>/css/common/icons.css" rel="stylesheet" type="text/css" />
@@ -51,6 +56,9 @@ $juser =& JFactory::getUser();
 <?php endif; ?>
 <?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
 		<link href="templates/<?php echo $this->template; ?>/css/common/debug.css" rel="stylesheet" type="text/css" />
+<?php } ?>
+<?php if ($b == 'firefox' && intval($v) < 4) { ?>
+		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 		<!--[if IE 7]>
 			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />

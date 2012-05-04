@@ -63,6 +63,10 @@ $doc->addScript('templates/' . $this->template . '/js/index.js');
 		});'
 	);
 }*/
+ximport('Hubzero_Browser');
+$browser = new Hubzero_Browser();
+$b = $browser->getBrowser();
+$v = $browser->getBrowserMajorVersion();
 
 $juser =& JFactory::getUser();
 ?>
@@ -71,9 +75,12 @@ $juser =& JFactory::getUser();
 <!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
+<?php if ($b == 'firefox' && intval($v) < 4) { ?>
+		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
+<?php } ?>
 		<!--[if IE 7]>
 			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
 			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>

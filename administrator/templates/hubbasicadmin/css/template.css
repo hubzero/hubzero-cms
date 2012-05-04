@@ -694,6 +694,7 @@
 	#header {
 		margin: 0;
 		padding: 0;
+		position: relative;
 	}
 	#header h1 {
 		display: none;
@@ -1442,7 +1443,7 @@
 	}
 	.toolbar-box #toolbar,
 	.toolbar-box div {
-		margin: 1.5em 1.61803399em 0 0;
+		margin: 1.5em 2.61803399em 0 0;
 		padding: 0;
 		position: absolute;
 		top: 0;
@@ -1517,16 +1518,16 @@
 	.toolbar-box ul li:first-child {
 		padding-right: 0em;
 	}
-	.toolbar-box table td {
-		margin: 0 0 0 0.5em;
-		padding: 0;
+	.toolbar-box table.toolbar td {
+		margin: 0;
+		padding: 0 0 0 0.5em;
 		text-align: center;
 		font-size: 85%;
 	}
 	.toolbar-box table a,
 	.toolbar-box li a {
 		text-align: center;
-		color: #fefefe;
+		color: #aaa;
 	}
 	.toolbar-box table a span,
 	.toolbar-box li a span {
