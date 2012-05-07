@@ -165,7 +165,7 @@ class plgMembersDashboard extends JPlugin
 			ximport('Hubzero_Document');
 			if (!JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				Hubzero_Document::addPluginScript('members', 'xsortables');
+				Hubzero_Document::addPluginScript('members', 'dashboard', 'xsortables');
 			}
 			Hubzero_Document::addPluginScript('members', 'dashboard');
 		}
