@@ -258,9 +258,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td style="white-space: nowrap">
-					<time datetime="<?php echo $row->modified; ?>">
-						<?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); //$this->escape($license); ?>
+					<?php if ($row->modified == '0000-00-00 00:00:00') { echo JText::_('Not modified'); } else { ?>
+					<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
+						<?php echo JHTML::_('date', ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created), $dateFormat, $tz); //$this->escape($license); ?>
 					</time>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($license)); ?>
