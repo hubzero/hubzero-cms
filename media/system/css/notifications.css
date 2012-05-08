@@ -87,12 +87,12 @@
 .info,
 .information { 
 	border: 1px solid #C2D6EF; 
-	color: #4379CA; 
+	color: #4379CA !important;
 }
 .help { 
 	background: #f6efff url("/media/system/images/help.png") 10px 10px no-repeat;
 	border: 1px solid #d7c2ef; 
-	color: #8a42cd;
+	color: #8a42cd !important;
 }
 .info,
 .information { 
@@ -100,7 +100,7 @@
 }
 .help a,
 .info a {
-	color: blue;
+	color: blue !important;
 	border-bottom: 1px solid blue;
 }
 .help a:hover,
@@ -112,18 +112,18 @@
 .alert,
 .warning { 
 	border: 1px solid #EFEAC2; 
-	color: #CC6633; 
+	color: #CC6633 !important;
 	background: #FFFDEF url("/media/system/images/warning.png") 10px 10px no-repeat;
 }
 .failed,
 .error { 
 	border: 1px solid #EFCCC2; 
-	color: #CC0000;
+	color: #CC0000 !important;
 	background: #FFF2EF url("/media/system/images/error.png") 10px 10px no-repeat; 
 }
 .passed { 
 	border: 1px solid #CDDECA; 
-	color: #7AAB69;
+	color: #7AAB69 !important;
 	background: #F3FDF0 url("/media/system/images/accept.png") 10px 10px no-repeat; 
 }
 .archive { 
@@ -133,17 +133,17 @@
 }
 .locked { 
 	border: 1px solid #EFEAC2; 
-	color: #CC6633; 
+	color: #CC6633 !important;
 	background: #FFFDEF url("/media/system/images/lock.png") 10px 10px no-repeat;
 }
 .timed { 
 	border: 1px solid #e9dab3; 
-	color: #ad733f; 
+	color: #ad733f !important;
 	background: #f5efe2 url("/media/system/images/hourglass.png") 10px 10px no-repeat;
 }
 .flagged { 
 	border: 1px solid #EFCCC2; 
-	color: #CC0000;
+	color: #CC0000 !important;
 	background: #FFF2EF url("/media/system/images/flag.png") 10px 10px no-repeat;
 }
 .archive h4,
@@ -161,20 +161,20 @@
 }
 .failed h4,
 .error h4 {
-	color: #CC0000;
+	color: #CC0000 !important;
 }
 .help h4 {
-	color: #8a42cd;
+	color: #8a42cd !important;
 }
 .info h4,
 .information h4 {
-	color: #4379CA;
+	color: #4379CA !important;
 }
 .warning h4 {
-	color: #CC6633;
+	color: #CC6633 !important;
 }
 .passed h4 {
-	color: #360;
+	color: #360 !important;
 }
 
 /* System Messages */
