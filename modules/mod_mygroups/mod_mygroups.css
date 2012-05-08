@@ -15,29 +15,29 @@
 	div.draggable .compactlist li.group {
 		background-position: 0.7em 0.7em;
 		padding-right:5em;
-		}
+	}
 	div.draggable .compactlist li.group a {
-		}
+	}
 	div.draggable .compactlist li span span.status {
-		}
+	}
 	div.draggable .compactlist li span span.member {
 		color: #66AA00;
-		}
+	}
 	div.draggable .compactlist li span span.manager {
 		color: #ff1177;
-		}
+	}
 	div.draggable .compactlist li span span.pending {
 		color: #AA3300;
-		}
+	}
 	div.draggable .compactlist li span span.invitee {
 		color: #aaaaaa;
-		}
+	}
 	div.draggable .compactlist li.group .actions {
 		text-align: left;
 		display: block;
 		padding-right: 1em;
 		margin:0;
-		}
+	}
 	div.draggable .compactlist li.group .actions a {
 		font-size: 90%;
 		border: none;
@@ -49,13 +49,16 @@
 		-khtml-border-radius: 5px;	
 		border-radius: 5px;
 		margin: 0;
-		}
+	}
 	div.draggable .compactlist li.group .actions a:hover {
 		border: none;
-		}
+	}
 	div.draggable .compactlist li.group .actions a.action-accept:hover {
 		background-color: #66AA00;
-		}
+	}
 	div.draggable .compactlist li.group .actions a.action-cancel:hover {
 		background-color: #c30;
-		}
+	}
+	div.draggable .compactlist .group { 
+		background: url("/modules/mod_mygroups/images/group.png") 0.7em 1em no-repeat; 
+	}

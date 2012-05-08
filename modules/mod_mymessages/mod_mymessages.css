@@ -13,8 +13,11 @@
 
 */
 	div.draggable .expandedlist li.actionitem {
-		background: #FFF2EF url("images/error.gif") 0.7em 1em no-repeat;
-		}
+		background: #FFF2EF url("/modules/mod_mymessages/images/error.gif") 0.7em 1em no-repeat;
+	}
 	div.draggable .expandedlist li.actionitem a {
 		color: #c00;
-		}
+	}
+	div.draggable .expandedlist .box { 
+		background: url("/modules/mod_mymessages/images/box.png") 0.7em 1em no-repeat; 
+	}
