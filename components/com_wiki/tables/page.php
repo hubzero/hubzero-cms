@@ -179,6 +179,20 @@ class WikiPage extends JTable
 	}
 
 	/**
+	 * Set the table key
+	 *
+	 * @return void
+	 */
+	public function setKey($key='id')
+	{
+		$key = strtolower($key);
+		if ($key == 'id' || $key == 'pagename')
+		{
+			$this->_tbl_key = $key;
+		}
+	}
+
+	/**
 	 * Returns the record ID for a given page
 	 *
 	 * @return 	integer
