@@ -172,8 +172,15 @@ ximport('Hubzero_User_Profile_Helper');
             $pf = $this->pageNav->getListFooter();
             //$nm = str_replace('com_','',$this->option);
             $pf = str_replace('?controller=threads&amp;', '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
+			//if (strstr('&amp;limitstart=', $pf) && !strstr('&amp;limit=', $pf) && !strstr('?limit=', $pf))
+			//{
+				//$pf = str_replace('limit=', '?limit=', $pf);
+			//}
 			$pf = str_replace('?&amp;', '?', $pf);
-            echo $pf;
+			$pf = preg_replace('/\?task=([A-Za-z0-9]*)(&amp;)?/i', '/$1' . '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
+			$pf = str_replace('?start=', '?limit=' . $this->pageNav->limit . '&amp;limitstart=' . intval($this->pageNav->limitstart), $pf);
+            $pf = str_replace($this->filters['section'] . 'limit', $this->filters['section'], $pf);
+			echo $pf;
             //echo $this->pageNav->getListFooter(); 
             // @FIXME: End Nick's Fix
         ?>
