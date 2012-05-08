@@ -53,10 +53,11 @@ if ($this->row->login)
 	$submitter->load($this->row->login);
 	if (is_object($submitter) && $submitter->get('name')) 
 	{
-		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&amp;task=edit&amp;id[]=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($submitter->get('name'))) . ' (' . $this->escape(stripslashes($submitter->get('username'))) . ')</a>';
+		$this->row->name = ($this->row->name) ? $this->row->name : stripslashes($submitter->get('name'));
+		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&amp;task=edit&amp;id[]=' . $submitter->get('uidNumber')) . '">' . $this->escape($this->row->name) . ' (' . $this->escape(stripslashes($submitter->get('username'))) . ')</a>';
 		$unknown = false;
 		
-		$notify[] = $this->escape(stripslashes($submitter->get('name'))) . ' (' . $this->escape(stripslashes($submitter->get('username'))) . ')';
+		$notify[] = $this->escape($this->row->name) . ' (' . $this->escape(stripslashes($submitter->get('username'))) . ')';
 	}
 } 
 

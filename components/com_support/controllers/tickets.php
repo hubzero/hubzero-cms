@@ -1546,7 +1546,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
 					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
 					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
-					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name;
+					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
 					$message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
 					$message .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
 					$message .= '----------------------------'."\r\n\r\n";
