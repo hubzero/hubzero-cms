@@ -238,8 +238,8 @@ class plgMembersResources extends JPlugin
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
 			//if (count($areas) == 1 && key($areas[0]) != 'resources') {
-			if (count($areas) == 1 && $areas[0] != 'resources') {
-				$filters['type'] = $cats[$areas[0]]['id'];
+			if (count($areas) == 1 && !isset($areas['resources'])) {
+				$filters['type'] = (isset($cats[$areas[0]])) ? $cats[$areas[0]]['id'] : 0;
 			}
 
 			// Get results
@@ -311,6 +311,12 @@ class plgMembersResources extends JPlugin
 	 */
 	public function out( $row )
 	{
+		$authorized = false;
+		$juser =& JFactory::getUser();
+		if ($juser->authorize('com_resources', 'manage'))
+		{
+			$authorized = true;
+		}
 		$database =& JFactory::getDBO();
 
 		// Instantiate a helper object
@@ -344,7 +350,7 @@ class plgMembersResources extends JPlugin
 		}
 		$html .= ' resource">'."\n";
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a>';
-		/*if ($authorized) {
+		if ($authorized || $row->created_by == $juser->get('id')) {
 			switch ($row->state)
 			{
 				case 5: $html .= ' <span class="resource-status internal">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL').'</span>'; break;
@@ -355,7 +361,7 @@ class plgMembersResources extends JPlugin
 				case 0:
 				default: $html .= ' <span class="resource-status unpublished">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_UNPUBLISHED').'</span>'; break;
 			}
-		}*/
+		}
 		$html .= '</p>'."\n";
 		if ($params->get('show_ranking')) {
 			$helper->getCitationsCount();

@@ -166,7 +166,7 @@ foreach ($this->results as $category)
 				}
 			}
 		}
-
+		$name = stripslashes($name);
 		//$num  = $total .' result';
 		//$num .= ($total > 1) ? 's' : '';
 
