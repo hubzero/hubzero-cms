@@ -166,14 +166,14 @@ if ($this->contributors) {
 					</td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
-					    echo '<a href="index.php?option=com_contribute&amp;no_html=1&amp;pid='.$this->id.'&amp;id='.$contributor->id.'&amp;task=orderupc" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+					    echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->id.'&amp;task=orderupc" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
 			  		} else {
 			  		    echo '&nbsp;';
 					}
 					?></td>
 					<td class="d"><?php
 					if ($i < $n-1 || $i+0 < $n-1) {
-						echo '<a href="index.php?option=com_contribute&amp;no_html=1&amp;pid='.$this->id.'&amp;id='.$contributor->id.'&amp;task=orderdownc" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+						echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->id.'&amp;task=orderdownc" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
 			  		} else {
 			  		    echo '&nbsp;';
 					}
