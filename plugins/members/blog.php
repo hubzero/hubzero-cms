@@ -705,7 +705,7 @@ class plgMembersBlog extends JPlugin
 			$view->task = $this->task;
 			$view->config = $this->_params;
 			$view->entry = $entry;
-			//$view->authorized = $this->authorized;
+			$view->authorized = true;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
