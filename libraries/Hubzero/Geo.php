@@ -163,7 +163,7 @@ class Hubzero_Geo
 			$gdb =& Hubzero_Geo::getGODBO();
 
 			if (empty($gdb)) {
-				return '' '' '';
+				return '';
 			}
 
 			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry WHERE ipFROM <= INET_ATON('" . $ip . "') AND ipTO >= INET_ATON('" . $ip . "')";
