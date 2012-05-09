@@ -449,17 +449,22 @@ class TagsController extends Hubzero_Controller
 
 		// Output search results in JSON format
 		$json = array();
-		if (count($rows) > 0) {
+		if (count($rows) > 0) 
+		{
 			foreach ($rows as $row)
 			{
-				//$json[] = '"'.$row->raw_tag.'"';
 				$name = str_replace("\n", '', stripslashes(trim($row->raw_tag)));
 				$name = str_replace("\r", '', $name);
-				$json[] = '{"id":"'.$row->tag.'","name":"'.htmlentities(stripslashes($name), ENT_COMPAT, 'UTF-8').'"}';
+	
+				$obj = array();
+				$obj['id'] = $row->tag;
+				$obj['name'] = $name;
+
+				$json[] = $obj;
 			}
 		}
 
-		echo '['.implode(',',$json).']';
+		echo json_encode($json);
 	}
 
 	/**
