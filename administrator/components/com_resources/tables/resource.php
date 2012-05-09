@@ -608,7 +608,7 @@ class ResourcesResource extends JTable
 				$query = "SELECT count(DISTINCT r.id) ";
 			}
 		} else {
-			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltext AS ftext, r.published AS state, r.created, r.modified, r.publish_up, r.params, 
+			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltext AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.params, 
 					CONCAT( 'index.php?option=com_resources&id=', r.id ) AS href, 'resources' AS section, rt.type AS area, r.type AS category, r.rating, r.times_rated, r.ranking, r.access ";
 			if (isset($filters['tags'])) {
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
