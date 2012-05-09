@@ -553,8 +553,8 @@ class plgMembersResources extends JPlugin
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
 
-			if (count($areas) == 1 && key($areas) != 'resources') {
-				$filters['type'] = $cats[$areas[0]]['id'];
+			if (count($areas) == 1 && !isset($areas['resources'])) {
+				$filters['type'] = (isset($cats[$areas[0]])) ? $cats[$areas[0]]['id'] : 0;
 			}
 
 			// Get results
