@@ -50,13 +50,23 @@ $params->merge( $rparams );
 <?php
 
 if ($this->progress['submitted'] == 1) {
-	if (substr($params->get('license'), 0, 2) == 'cc') {
-		/*?>
+	/*if (substr($params->get('license'), 0, 2) == 'cc') {
+		$txt = '';
+		foreach ($this->licenses as $license) 
+		{
+			if ($params->get('license') == $license->name) 
+			{
+				$txt = nl2br($license->text);
+				break;
+			}
+		}
+		if ($txt) { ?>
 		<p>This resource is licensed under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $hubShortName; ?>. 
 		The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a> support 
 		non-commercial use, require attribution, and require sharing derivative works under the same license.</p>
-		<?php*/
-	} else {
+		<?php
+		}
+	} else {*/
 		?>
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="hubForm">
 			<div class="explaination">
@@ -64,7 +74,8 @@ if ($this->progress['submitted'] == 1) {
 				<p>The submission will be licensed under Creative Commons</p>
 			</div>
 			<fieldset>
-				<h3>Licensing</h3>
+				<legend>Licensing</legend>
+				
 				<label for="license">
 					<?php echo JText::_('License'); ?>
 					<select name="license" id="license">
@@ -72,6 +83,7 @@ if ($this->progress['submitted'] == 1) {
 <?php 
 				$l = array();
 				$c = false;
+				$preview = JText::_('License preview.');
 				foreach ($this->licenses as $license) 
 				{
 					if (substr($license->name, 0, 6) == 'custom') 
@@ -106,36 +118,35 @@ if ($this->progress['submitted'] == 1) {
 					<?php
 					} 
 					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+					if ($params->get('license') == $license->name)
+					{
+						$preview = nl2br($this->escape($license->text));
+					}
 				} 
 ?>
 					</select>
-					<div id="license-preview" style="display:none;"><?php echo JText::_('License preview.'); ?></div>
+					<div id="license-preview" style="display:none;"><?php echo $preview; ?></div>
 					<?php echo implode("\n", $l); ?>
 				</label>
 				<?php if ($this->config->get('cc_license_custom')) { ?>
 				<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $c; ?></textarea>
 				<?php } ?>
-				
-				<label><input class="option" type="checkbox" name="license" value="1" /> <span class="optional">optional</span> 
-				License the work under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
-				The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a> support 
-				non-commercial use, require attribution, and require sharing derivative works under the same license.</label>
+			
+				<p class="help">This contribution has already been submitted and passed review. <a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$this->id); ?>">View it here</a></p>
 			
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 				<input type="hidden" name="published" value="1" />
+				<input type="hidden" name="authorization" value="1" />
 		 	</fieldset><div class="clear"></div>
 			<p class="submit">
 				<input type="submit" value="Save" />
 			</p>
 		</form>
 		<?php
-	}
-	?>
-	<p class="help">This contribution has already been submitted and passed review. <a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$this->id); ?>">View it here</a></p>
-	<?php
+	//}
 } else {
 	?>
 	<form action="index.php?option=<?php echo $this->option; ?>" method="post" id="hubForm">
@@ -163,9 +174,9 @@ if ($this->progress['submitted'] == 1) {
 				<select name="license" id="license">
 					<option value=""><?php echo JText::_('Select license...'); ?></option>
 			<?php 
-			$l = array();
+				$l = array();
 				$c = false;
-				
+				$preview = JText::_('License preview.');
 				foreach ($this->licenses as $license) 
 				{
 					if (substr($license->name, 0, 6) == 'custom') 
@@ -200,10 +211,14 @@ if ($this->progress['submitted'] == 1) {
 					<?php
 					} 
 					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+					if ($params->get('license') == $license->name)
+					{
+						$preview = nl2br($this->escape($license->text));
+					}
 				}
 			?>
 				</select>
-				<div id="license-preview" style="display:none;"><?php echo JText::_('License preview.'); ?></div>
+				<div id="license-preview" style="display:none;"><?php echo $preview; ?></div>
 				<?php echo implode("\n", $l); ?>
 			</label>
 			<?php if ($this->config->get('cc_license_custom')) { ?>
