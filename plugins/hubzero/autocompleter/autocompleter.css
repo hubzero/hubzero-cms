@@ -354,6 +354,10 @@
 		display: block;
 		color: #ccc;
 	}
+	ul.autocompleter-choices li span.autocompleter-queried {
+		display: inline;
+		color: #000;
+	}
 
 /* IE 7 hacks */
 	*:first-child+html ul.textboxlist-holder {
