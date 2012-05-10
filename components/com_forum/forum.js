@@ -19,9 +19,11 @@ HUB.Forum = {
 	initialize: function() {
 		$$('a.delete').each(function(el) {
 			el.addEvent('click', function(e) {
-				new Event(e).stop();
-
-				return confirm('Are you sure you wish to delete this item?');
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					new Event(e).stop();
+				}
+				return res;
 			});
 		});
 	} // end initialize
