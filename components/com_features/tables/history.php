@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'FeaturesHistory'
@@ -74,8 +74,6 @@ class FeaturesHistory extends JTable
 	 */
 	var $note        = NULL;  // string(100)
 
-	//-----------
-
 	/**
 	 * Short description for '__construct'
 	 * 
@@ -84,9 +82,9 @@ class FeaturesHistory extends JTable
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__feature_history', 'id', $db );
+		parent::__construct('#__feature_history', 'id', $db);
 	}
 
 	/**
@@ -99,15 +97,18 @@ class FeaturesHistory extends JTable
 	 * @param      string $note Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function loadActive( $start, $tbl='', $note='' )
+	public function loadActive($start, $tbl='', $note='')
 	{
 		$query  = "SELECT * FROM $this->_tbl WHERE featured='$start' AND tbl='$tbl'";
 		$query .= ($note) ? " AND note='$note'" : '';
-		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -121,14 +122,17 @@ class FeaturesHistory extends JTable
 	 * @param      string $tbl Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function loadObject( $objectid, $tbl='' )
+	public function loadObject($objectid, $tbl='')
 	{
 		$query = "SELECT * FROM $this->_tbl WHERE objectid='$objectid' AND tbl='$tbl'";
-		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -142,12 +146,12 @@ class FeaturesHistory extends JTable
 	 * @param      boolean $authorized Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCount( $filters=array(), $authorized=false )
+	public function getCount($filters=array(), $authorized=false)
 	{
 		$query  = "SELECT COUNT(*)";
-		$query .= $this->buildQuery( $filters, $authorized );
+		$query .= $this->buildQuery($filters, $authorized);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
@@ -160,15 +164,16 @@ class FeaturesHistory extends JTable
 	 * @param      boolean $authorized Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getRecords( $filters=array(), $authorized=false )
+	public function getRecords($filters=array(), $authorized=false)
 	{
 		$query  = "SELECT *";
-		$query .= $this->buildQuery( $filters, $authorized );
-		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != '0') {
+		$query .= $this->buildQuery($filters, $authorized);
+		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != '0') 
+		{
 			$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
@@ -188,29 +193,41 @@ class FeaturesHistory extends JTable
 		// build body of query
 		$query  = " FROM $this->_tbl AS f ";
 
-		if (isset($filters['type']) && $filters['type'] != '') {
+		if (isset($filters['type']) && $filters['type'] != '') 
+		{
 			$query .= " WHERE";
-			if ($filters['type'] == 'tools') {
+			if ($filters['type'] == 'tools') 
+			{
 				$filters['type'] = 'resources';
 				$filters['note'] = 'tools';
-			} else if ($filters['type'] == 'resources') {
+			} 
+			else if ($filters['type'] == 'resources') 
+			{
 				$filters['note'] = 'nontools';
 			}
 			$query .= " f.tbl='" . $filters['type'] . "' ";
 		}
-		if (isset($filters['note']) && $filters['note'] != '') {
-			if (isset($filters['type']) && $filters['type'] != '') {
+		if (isset($filters['note']) && $filters['note'] != '') 
+		{
+			if (isset($filters['type']) && $filters['type'] != '') 
+			{
 				$query .= " AND";
-			} else {
+			} 
+			else 
+			{
 				$query .= " WHERE";
 			}
 			$query .= " f.note='" . $filters['note'] . "' ";
 		}
-		if (!$authorized) {
-			$now = date( 'Y-m-d H:i:s' );
-			if (isset($filters['note']) && $filters['note'] != '' && isset($filters['type']) && $filters['type'] != '') {
+		if (!$authorized) 
+		{
+			$now = date('Y-m-d H:i:s');
+			if (isset($filters['note']) && $filters['note'] != '' && isset($filters['type']) && $filters['type'] != '') 
+			{
 				$query .= " AND";
-			} else {
+			} 
+			else 
+			{
 				$query .= " WHERE";
 			}
 			$query .= " f.featured <= '$now'";

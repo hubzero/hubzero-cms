@@ -43,20 +43,27 @@ function FeaturesBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['id'])) {
+	if (!empty($query['id'])) 
+	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-	if (!empty($query['format'])) {
+	if (!empty($query['format'])) 
+	{
 		$segments[] = $query['format'];
 		unset($query['format']);
 	}
+	if (!empty($query['controller'])) 
+	{
+		unset($query['controller']);
+	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
@@ -69,22 +76,25 @@ function FeaturesBuildRoute(&$query)
  */
 function FeaturesParseRoute($segments)
 {
-    $vars = array();
+	$vars = array();
 
-    if (empty($segments))
-    	return $vars;
+	if (empty($segments))
+	{
+		return $vars;
+	}
 
-    if (isset($segments[0])) {
+	if (isset($segments[0])) 
+	{
 		$vars['task'] = $segments[0];
 	}
-	if (isset($segments[1])) {
+	if (isset($segments[1])) 
+	{
 		$vars['id'] = $segments[1];
 	}
-	if (isset($segments[2])) {
+	if (isset($segments[2])) 
+	{
 		$vars['format'] = $segments[2];
 	}
 
-    return $vars;
+	return $vars;
 }
-
-?>

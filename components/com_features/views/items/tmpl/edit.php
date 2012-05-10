@@ -32,11 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $types = array(
-	'content'=>JText::_('COM_FEATURES_CONTENT'),
-	'tools'=>JText::_('COM_FEATURES_TOOLS'),
-	'resources'=>JText::_('COM_FEATURES_RESOURCES'),
-	'answers'=>JText::_('COM_FEATURES_ANSWERS'),
-	'profiles'=>JText::_('COM_FEATURES_PROFILES'),
+	'content'   => JText::_('COM_FEATURES_CONTENT'),
+	'tools'     => JText::_('COM_FEATURES_TOOLS'),
+	'resources' => JText::_('COM_FEATURES_RESOURCES'),
+	'answers'   => JText::_('COM_FEATURES_ANSWERS'),
+	'profiles'  => JText::_('COM_FEATURES_PROFILES'),
 );
 ?>
 <div id="content-header" class="full">
@@ -44,10 +44,10 @@ $types = array(
 </div><!-- / #content-header -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=save'); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><span class="required">*</span> = <?php echo JText::_('COM_FEATURES_REQUIRED_FIELD'); ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('Back to Features History'); ?></a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Back to Features History'); ?></a></p>
 		</div><!-- / .aside -->
 		<fieldset>
 			<h3><?php echo JText::_('COM_FEATURES_FEATURED_ITEM'); ?></h3>
@@ -55,11 +55,11 @@ $types = array(
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="note" value="<?php echo $this->row->note; ?>" />
+			<input type="hidden" name="note" value="<?php echo $this->escape($this->row->note); ?>" />
 			
 			<label>
 				<?php echo JText::_('COM_FEATURES_OBJECT_ID'); ?>: <span class="required">*</span>
-				<input type="text" name="objectid" value="<?php echo $this->row->objectid; ?>" />
+				<input type="text" name="objectid" value="<?php echo $this->escape($this->row->objectid); ?>" />
 			</label>
 			<label>
 				<?php echo JText::_('COM_FEATURES_OBJECT_TYPE'); ?>: <span class="required">*</span>
@@ -68,7 +68,7 @@ $types = array(
 				foreach ($types as $avalue => $alabel)
 				{
 ?>
-					<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->tbl || $alabel == $this->row->tbl) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
+					<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->tbl || $alabel == $this->row->tbl) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
 <?php
 				}
 ?>
@@ -76,7 +76,7 @@ $types = array(
 			</label>
 			<label>
 				<?php echo JText::_('COM_FEATURES_FEATURED_DATE'); ?>: YYYY-MM-DD <span class="required">*</span>
-				<input type="text" name="featured" value="<?php echo $this->row->featured; ?>" />
+				<input type="text" name="featured" value="<?php echo $this->escape($this->row->featured); ?>" />
 			</label>
 		</fieldset>
 		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_FEATURES_SUBMIT'); ?>" /></p>

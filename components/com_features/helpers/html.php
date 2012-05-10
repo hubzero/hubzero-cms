@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'FeaturesHtml'
@@ -50,7 +50,8 @@ class FeaturesHtml
 	public function niceidformat($someid)
 	{
 		$pre = '';
-		if ($someid < 0) {
+		if ($someid < 0) 
+		{
 			$pre = 'n';
 			$someid = abs($someid);
 		}
@@ -58,7 +59,7 @@ class FeaturesHtml
 		{
 			$someid = 0 . "$someid";
 		}
-		return $pre.$someid;
+		return $pre . $someid;
 	}
 
 	/**
@@ -69,14 +70,14 @@ class FeaturesHtml
 	 * @param      unknown $thumb Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function thumb( $thumb )
+	public function thumb($thumb)
 	{
-		$image = explode('.',$thumb);
+		$image = explode('.', $thumb);
 		$n = count($image);
 		$image[$n-2] .= '_thumb';
 		$end = array_pop($image);
 		$image[] = $end;
-		$thumb = implode('.',$image);
+		$thumb = implode('.', $image);
 
 		return $thumb;
 	}
@@ -89,19 +90,22 @@ class FeaturesHtml
 	 * @param      string $path Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function getImage( $path )
+	public function getImage($path)
 	{
-		$d = @dir(JPATH_ROOT.$path);
+		$d = @dir(JPATH_ROOT . $path);
 
 		$images = array();
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
-				$img_file = $entry;
-				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
-						$images[] = $img_file;
+				$imgFile = $entry;
+				if (is_file(JPATH_ROOT . $path . DS . $imgFile) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png#i", $imgFile)) 
+					{
+						$images[] = $imgFile;
 					}
 				}
 			}
@@ -110,14 +114,16 @@ class FeaturesHtml
 		}
 
 		$b = 0;
-		if ($images) {
+		if ($images) 
+		{
 			foreach ($images as $ima)
 			{
-				$bits = explode('.',$ima);
+				$bits = explode('.', $ima);
 				$type = array_pop($bits);
-				$img = implode('.',$bits);
+				$img = implode('.', $bits);
 
-				if ($img == 'thumb') {
+				if ($img == 'thumb') 
+				{
 					return $ima;
 				}
 			}
@@ -133,13 +139,14 @@ class FeaturesHtml
 	 * @param      integer $versionid Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function getToolImage( $path, $versionid=0 )
+	public function getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
+		$tconfig =& JComponentHelper::getParams('com_contribtool');
 		$allowversions = $tconfig->get('screenshot_edit');
 
-		if ($versionid && $allowversions) {
+		if ($versionid && $allowversions) 
+		{
 			// Add version directory
 			//$path .= DS.$versionid;
 		}
@@ -152,12 +159,15 @@ class FeaturesHtml
 		$ordering = array();
 		$html = '';
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
+				if (is_file(JPATH_ROOT.$path . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file)) 
+					{
 						$images[] = $img_file;
 					}
 				}
@@ -167,14 +177,16 @@ class FeaturesHtml
 		}
 
 		$b = 0;
-		if ($images) {
+		if ($images) 
+		{
 			foreach ($images as $ima)
 			{
-				$bits = explode('.',$ima);
+				$bits = explode('.', $ima);
 				$type = array_pop($bits);
-				$img = implode('.',$bits);
+				$img = implode('.', $bits);
 
-				if ($img == 'thumb') {
+				if ($img == 'thumb') 
+				{
 					return $ima;
 				}
 			}
@@ -191,12 +203,13 @@ class FeaturesHtml
 	 */
 	public function thumbnail($pic)
 	{
-		$pic = explode('.',$pic);
+		$pic = explode('.', $pic);
 		$n = count($pic);
 		$pic[$n-2] .= '-tn';
 		$end = array_pop($pic);
+
 		$pic[] = 'gif';
-		$tn = implode('.',$pic);
+		$tn = implode('.', $pic);
 		return $tn;
 	}
 
@@ -210,21 +223,25 @@ class FeaturesHtml
 	 * @param      string $base Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function build_path( $date, $id, $base='' )
+	public function build_path($date, $id, $base='')
 	{
-		if ( $date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs ) ) {
-			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		{
+			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) {
+		if ($date) 
+		{
 			$dir_year  = date('Y', $date);
 			$dir_month = date('m', $date);
-		} else {
+		} 
+		else 
+		{
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
-		$dir_id = FeaturesHtml::niceidformat( $id );
+		$dir_id = FeaturesHtml::niceidformat($id);
 
-		return $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
+		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
 
 	/**
@@ -237,8 +254,9 @@ class FeaturesHtml
 	 */
 	public function mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
+		{
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
@@ -271,7 +289,10 @@ class FeaturesHtml
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) $val = 0;
+		if ($val < 0) 
+		{
+			$val = 0;
+		}
 
 		// Determine the minor value, to recurse through
 		$new_time = $current_time - ($difference % $lengths[$val]);
@@ -280,13 +301,17 @@ class FeaturesHtml
 		$number = floor($number);
 
 		// If required create a plural
-		if ($number != 1) $periods[$val].= 's';
+		if ($number != 1) 
+		{
+			$periods[$val] .= 's';
+		}
 
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
 
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)) {
+		if (($val >= 1) && (($current_time - $new_time) > 0)) 
+		{
 			$text .= FeaturesHtml::timeAgoo($new_time);
 		}
 
@@ -307,8 +332,8 @@ class FeaturesHtml
 
 		$parts = explode(' ',$text);
 
-		$text  = $parts[0].' '.$parts[1];
-		$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
+		$text  = $parts[0] . ' '.  $parts[1];
+		$text .= ($parts[2]) ? ' ' . $parts[2] . ' ' . $parts[3] : '';
 		return $text;
 	}
 
@@ -321,57 +346,57 @@ class FeaturesHtml
 	 * @param      unknown $database Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getContributorImage( $id, $database )
+	public function getContributorImage($id, $database)
 	{
 		$thumb = '';
 
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php');
-		$helper = new ResourcesHelper( $id, $database );
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+		$helper = new ResourcesHelper($id, $database);
 		$ids = $helper->getContributorIDs();
-		if (count($ids) > 0) {
+		if (count($ids) > 0) 
+		{
 			$uid = $ids[0];
-		} else {
+		} 
+		else 
+		{
 			return $thumb;
 		}
 
 		// Load some needed libraries
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 		// Load the member profile
-		$row = new MembersProfile( $database );
-		$row->load( $uid );
+		$row = new MembersProfile($database);
+		$row->load($uid);
 
 		// Do they have a picture?
-		if (isset($row->picture) && $row->picture != '') {
-			$config =& JComponentHelper::getParams( 'com_members' );
+		if (isset($row->picture) && $row->picture != '') 
+		{
+			$config =& JComponentHelper::getParams('com_members');
 
 			// Yes - so build the path to it
-			$thumb  = $config->get('webpath');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$thumb;
-			}
-			if (substr($thumb, -1, 1) == DS) {
-				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-			}
-			$thumb .= DS.FeaturesHtml::niceidformat($row->uidNumber).DS.$row->picture;
+			$thumb  = DS . trim($config->get('webpath'), DS) . DS . FeaturesHtml::niceidformat($row->uidNumber) . DS . $row->picture;
 
 			// No - use default picture
-			if (is_file(JPATH_ROOT.$thumb)) {
+			if (is_file(JPATH_ROOT . $thumb)) 
+			{
 				// Build a thumbnail filename based off the picture name
-				$thumb = FeaturesHtml::thumb( $thumb );
+				$thumb = FeaturesHtml::thumb($thumb);
 
-				if (!is_file(JPATH_ROOT.$thumb)) {
+				if (!is_file(JPATH_ROOT . $thumb)) 
+				{
 					// Create a thumbnail image
-					include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'imghandler.php' );
+					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
 					$ih = new MembersImgHandler();
-					$ih->set('image',$row->picture);
-					$ih->set('path',JPATH_ROOT.$config->get('webpath').DS.FeaturesHtml::niceidformat($row->uidNumber).DS);
+					$ih->set('image', $row->picture);
+					$ih->set('path', JPATH_ROOT . DS . trim($config->get('webpath'), DS) . DS . FeaturesHtml::niceidformat($row->uidNumber) . DS);
 					$ih->set('maxWidth', 50);
 					$ih->set('maxHeight', 50);
 					$ih->set('cropratio', '1:1');
 					$ih->set('outputName', $ih->createThumbName());
-					if (!$ih->process()) {
+					if (!$ih->process()) 
+					{
 						echo '<!-- Error: '. $ih->getError() .' -->';
 					}
 				}
