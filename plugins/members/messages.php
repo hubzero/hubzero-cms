@@ -216,6 +216,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
 		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$pagenavhtml = str_replace('href="<li class=limit','href="members/'.$member->get('uidNumber').'/messages/inbox/?limit',$pagenavhtml);
+		$pagenavhtml = str_replace('messages?','messages/inbox?',$pagenavhtml);
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -272,6 +273,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
 		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$pagenavhtml = str_replace('href="<li class=limit','href="members/'.$member->get('uidNumber').'/messages/inbox/?limit',$pagenavhtml);
+		$pagenavhtml = str_replace('messages?','messages/archive?',$pagenavhtml);
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -328,6 +330,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
 		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$pagenavhtml = str_replace('href="<li class=limit','href="members/'.$member->get('uidNumber').'/messages/inbox/?limit',$pagenavhtml);
+		$pagenavhtml = str_replace('messages?','messages/trash?',$pagenavhtml);
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -382,6 +385,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
 		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$pagenavhtml = str_replace('href="<li class=limit','href="members/'.$member->get('uidNumber').'/messages/inbox/?limit',$pagenavhtml);
+		$pagenavhtml = str_replace('messages?','messages/sent?',$pagenavhtml);
 		
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
