@@ -60,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 
 			<h3><?php echo JText::_('COM_CONTRIBUTE_TAGS_ADD'); ?></h3>
-<?php if (count($this->fats) > 0) { ?>
+<?php if (isset($this->fats) && count($this->fats) > 0) { ?>
 			<fieldset>
 				<legend><?php echo JText::_('COM_CONTRIBUTE_TAGS_SELECT_FOCUS_AREA'); ?>: <span class="required">required</span></legend>
 				<?php
