@@ -71,6 +71,8 @@ $types = array(
 <?php } ?>
 		</div><!-- / .aside -->
 		<div class="subject">
+			<div class="container">
+				<div class="container-block">
 <?php
 if (count($this->rows) > 0) 
 {
@@ -119,21 +121,29 @@ if (count($this->rows) > 0)
 
 		$now = date('Y-m-d H:i:s');
 ?>
-			<ul class="features results">
+					<!-- <ul class="features entries"> -->
 <?php
 		$html = '';
+		$prevDate = '';
+		$i = 0;
 		foreach ($this->rows as $fh)
 		{
+			$i++;
 			if ($fh->note == 'tools') 
 			{
 				$fh->tbl = 'tools';
 			}
-			$html .= "\t\t\t\t".'<li';
-			if ($fh->featured > $now) 
+			$curDate = JHTML::_('date', $fh->featured, '%d %b. %Y');
+			if ($curDate != $prevDate)
 			{
-				$html .= ' class="upcoming"';
+				$prevDate = $curDate;
+				if ($i > 1) 
+				{
+					$html .= '</ul>';
+				}
+				$html .= '<h3>' . $prevDate . '</h3>';
+				$html .= '<ul class="features entries">';
 			}
-			$html .= '>' . "\n";
 			switch ($fh->tbl)
 			{
 				case 'tools':
@@ -162,6 +172,12 @@ if (count($this->rows) > 0)
 
 					$href  = 'index.php?option=com_resources&id=' . $row->id;
 
+					$html .= "\t\t\t\t".'<li';
+					if ($fh->featured > $now) 
+					{
+						$html .= ' class="upcoming"';
+					}
+					$html .= '>' . "\n";
 					if (is_file(JPATH_ROOT . $thumb)) 
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
@@ -174,6 +190,7 @@ if (count($this->rows) > 0)
 					}
 					$html .= '</p>' . "\n";
 					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->introtext)), $txt_length, 1) . "\n";
+					$html .= '</li>' . "\n";
 				break;
 
 				case 'nontools':
@@ -199,6 +216,12 @@ if (count($this->rows) > 0)
 
 					$href  = 'index.php?option=com_resources&id=' . $row->id;
 
+					$html .= "\t\t\t\t".'<li';
+					if ($fh->featured > $now) 
+					{
+						$html .= ' class="upcoming"';
+					}
+					$html .= '>' . "\n";
 					if (is_file(JPATH_ROOT . $thumb)) 
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
@@ -212,6 +235,7 @@ if (count($this->rows) > 0)
 					}
 					$html .= '</p>' . "\n";
 					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->introtext)), $txt_length, 1) . "\n";
+					$html .= '</li>' . "\n";
 				break;
 
 				case 'questions':
@@ -237,6 +261,12 @@ if (count($this->rows) > 0)
 					$row->created = FeaturesHtml::mkt($row->created);
 					$when = FeaturesHtml::timeAgo($row->created);
 
+					$html .= "\t\t\t\t".'<li';
+					if ($fh->featured > $now) 
+					{
+						$html .= ' class="upcoming"';
+					}
+					$html .= '>' . "\n";
 					if (is_file(JPATH_ROOT . $thumb)) 
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
@@ -253,6 +283,7 @@ if (count($this->rows) > 0)
 					$html .= ($row->rcount == 1) ? JText::sprintf('COM_FEATURES_RESPONSE', $row->rcount) : JText::sprintf('COM_FEATURES_RESPONSES', $row->rcount);
 					$html .= '</span></p>' . "\n";
 					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->question)), $txt_length, 1) . "\n";
+					$html .= '</li>' . "\n";
 				break;
 
 				case 'xprofiles':
@@ -296,6 +327,12 @@ if (count($this->rows) > 0)
 						$thumb = FeaturesHtml::thumb($thumb);
 					}
 
+					$html .= "\t\t\t\t".'<li';
+					if ($fh->featured > $now) 
+					{
+						$html .= ' class="upcoming"';
+					}
+					$html .= '>' . "\n";
 					if (is_file(JPATH_ROOT . $thumb)) 
 					{
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
@@ -309,14 +346,17 @@ if (count($this->rows) > 0)
 					}
 					$html .= '</p>' . "\n";
 					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($txt)), $txt_length, 1) . "\n";
+					$html .= '</li>' . "\n";
 				break;
 			}
-			$html .= '</li>' . "\n";
 		}
-		$html .= '</ul>' . "\n";
 		echo $html;
+?>
+					</ul>
+					<div class="clearfix"></div>
+				</div><!-- / .container-block -->
 
-		$qs = '';
+<?php		$qs = '';
 		foreach ($this->filters as $key=>$value)
 		{
 			$qs .= ($key != 'limit' && $key != 'start') ? $key . '=' . $value . '&' : '';
@@ -325,8 +365,9 @@ if (count($this->rows) > 0)
 		$paging = str_replace('features/?','features/?' . $qs, $paging);
 		echo $paging;
 } else { ?>
-			<p class="warning"><?php echo JText::_('COM_FEATURES_NONE_FOUND'); ?></p>
+				<p class="warning"><?php echo JText::_('COM_FEATURES_NONE_FOUND'); ?></p>
 <?php } ?>
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</form>
