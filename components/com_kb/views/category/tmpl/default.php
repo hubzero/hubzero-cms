@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					$html .= ' class="active"';
 				}
-				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.Hubzero_View_Helper_Html::xhtml($row->title).'</a> ('.$row->numitems.')'."\n";
+				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.$this->escape(stripslashes($row->title)).'</a> ('.$row->numitems.')'."\n";
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
 				{
 					$html .= "\t".'<ul class="categories">'."\n";
@@ -74,7 +74,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						{
 							$html .= ' class="active"';
 						}
-						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$row->alias.'&category='. $cat->alias) .'">'. stripslashes($cat->title) .'</a> ('.$cat->numitems.')</li>'."\n";
+						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$row->alias.'&category='. $cat->alias) .'">'. $this->escape(stripslashes($cat->title)) .'</a> ('.$cat->numitems.')</li>'."\n";
 					}
 					$html .= "\t".'</ul>'."\n";
 				}
