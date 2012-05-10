@@ -29,30 +29,36 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
 }
 
-include_once(JPATH_ROOT.DS.'libraries/joomla/html/html/select.php');
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+}
+
+include_once(JPATH_ROOT . DS . 'libraries/joomla/html/html/select.php');
 jimport('joomla.application.component.helper');
 ximport('Hubzero_View_Helper_Html');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'period.php');
 
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'period.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+$controllerName = JRequest::getCmd('controller', 'results');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'results';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'WhatsnewController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
-$controller = new WhatsnewController();
-$controller->mainframe = $mainframe;
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

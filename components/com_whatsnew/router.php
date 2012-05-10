@@ -41,18 +41,24 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 function whatsnewBuildRoute(&$query)
 {
-    $segments = array();
+	$segments = array();
 
-    if (!empty($query['period'])) {
-        $segments[] = $query['period'];
-        unset($query['period']);
-    }
-	if (!empty($query['task'])) {
-        $segments[] = $query['task'];
-        unset($query['task']);
-    }
+	if (!empty($query['period'])) 
+	{
+		$segments[] = $query['period'];
+		unset($query['period']);
+	}
+	if (!empty($query['task'])) 
+	{
+		$segments[] = $query['task'];
+		unset($query['task']);
+	}
+	if (!empty($query['controller'])) 
+	{
+		unset($query['controller']);
+	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
@@ -65,19 +71,21 @@ function whatsnewBuildRoute(&$query)
  */
 function whatsnewParseRoute($segments)
 {
-    $vars = array();
+	$vars = array();
 
-    if (empty($segments))
-    	return $vars;
+	if (empty($segments))
+	{
+		return $vars;
+	}
 
-    if (isset($segments[0])) {
+	if (isset($segments[0])) 
+	{
 		$vars['period'] = $segments[0];
 	}
-	if (isset($segments[1])) {
+	if (isset($segments[1])) 
+	{
 		$vars['task'] = $segments[1];
 	}
 
-    return $vars;
+	return $vars;
 }
-
-?>

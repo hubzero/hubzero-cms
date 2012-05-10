@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'WhatsnewPeriod'
@@ -40,42 +40,36 @@ class WhatsnewPeriod extends JObject
 {
 
 	/**
-	 * Description for '_period'
+	 * The original search text - should NEVER BE CHANGED
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	private $_period = NULL;     // The original search text - should NEVER BE CHANGED
+	private $_period = NULL;
 
 	/**
-	 * Description for '_data'
+	 * Container for storing overloaded data
 	 * 
 	 * @var array
 	 */
-	private $_data   = array();  // Processed text
-
-	//-----------
+	private $_data   = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $period Parameter description (if any) ...
+	 * @param      string $period Time period (month, week, etc)
 	 * @return     void
 	 */
-	public function __construct( $period=NULL )
+	public function __construct($period=NULL)
 	{
 		$this->_period = $period;
 	}
 
 	/**
-	 * Short description for '__set'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * Method to set an overloaded variable to the component
+	 *
+	 * @param	string	$property	Name of overloaded variable to add
+	 * @param	mixed	$value 		Value of the overloaded variable
+	 * @return	void
 	 */
 	public function __set($property, $value)
 	{
@@ -83,75 +77,78 @@ class WhatsnewPeriod extends JObject
 	}
 
 	/**
-	 * Short description for '__get'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * Method to get an overloaded variable of the component
+	 *
+	 * @param	string	$property	Name of overloaded variable to retrieve
+	 * @return	mixed 	Value of the overloaded variable
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) {
+		if (isset($this->_data[$property])) 
+		{
 			return $this->_data[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'process'
+	 * Processes the _period text into actual dates
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function process()
 	{
-		if (trim($this->_period) == '') {
+		if (trim($this->_period) == '') 
+		{
 			return;
 		}
 
-		$period = $this->_period;
+		$this->period = $this->_period;
 
 		// Determine last week and last month date
 		$today = time();
-		switch ($period)
+		switch ($this->period)
 		{
 			case 'week':
-				$endTime   = $today;
-				$startTime = $endTime - (7*24*60*60);
-				break;
+				$this->endTime   = $today;
+				$this->startTime = $this->endTime - (7*24*60*60);
+			break;
+
 			case 'month':
-				$endTime   = $today;
-				$startTime = $endTime - (31*24*60*60);
-				break;
+				$this->endTime   = $today;
+				$this->startTime = $this->endTime - (31*24*60*60);
+			break;
+
 			case 'quarter':
-				$endTime   = $today;
-				$startTime = $endTime - (3*31*24*60*60);
-				break;
+				$this->endTime   = $today;
+				$this->startTime = $this->endTime - (3*31*24*60*60);
+			break;
+
 			case 'year':
-				$endTime   = $today;
-				$startTime = $endTime - (365*24*60*60);
-				break;
+				$this->endTime   = $today;
+				$this->startTime = $this->endTime - (365*24*60*60);
+			break;
+
 			default:
-				if (substr($period, 0, 2) == 'c_') {
-					$tokens = preg_split('#_#',$period);
-					$period = $tokens[1];
-					$endTime   = strtotime('12/31/'.$period);
-					$startTime = strtotime('01/01/'.$period);
-				} else {
-					$endTime   = strtotime('08/31/'.$period);
-					$startTime = strtotime('09/01/'.($period-1));
+				if (substr($this->period, 0, 2) == 'c_') 
+				{
+					$tokens = preg_split('/_/', $this->period);
+					$this->period = $tokens[1];
+
+					$this->endTime   = strtotime('12/31/' . $this->period);
+					$this->startTime = strtotime('01/01/' . $this->period);
+				} 
+				else 
+				{
+					$this->endTime   = strtotime('08/31/' . $this->period);
+					$this->startTime = strtotime('09/01/' . ($this->period-1));
 				}
-				break;
+			break;
 		}
 
-		$this->period    = $period;
-		$this->endTime   = $endTime;
-		$this->startTime = $startTime;
-		$this->cStartDate = date("Y-m-d H:i:s", $startTime);
-		$this->dStartDate = date("Y-m-d", $startTime);
-		$this->cEndDate   = date("Y-m-d H:i:s", $endTime);
-		$this->dEndDate   = date("Y-m-d", $endTime);
+		$this->cStartDate = date("Y-m-d H:i:s", $this->startTime);
+		$this->dStartDate = date("Y-m-d", $this->startTime);
+		$this->cEndDate   = date("Y-m-d H:i:s", $this->endTime);
+		$this->dEndDate   = date("Y-m-d", $this->endTime);
 	}
 }
 
