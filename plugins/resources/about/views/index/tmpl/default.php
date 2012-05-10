@@ -93,8 +93,8 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $th
 	// Protected - only show the introtext
 ?>
 			<tr>
-				<th><?php echo ''; ?></th>
-				<td><?php echo $this->escape($introtext); ?></td>
+				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></th>
+				<td><?php echo $this->escape($this->resource->introtext); ?></td>
 			</tr>
 <?php
 } else {
