@@ -31,28 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$tags = $modtoptags->tags;
-$exclude = explode(",",$modtoptags->exclude);
-$exclude = array_map("trim", $exclude);
+$tags = $this->tags;
+$exclude = explode(',', $this->exclude);
+$exclude = array_map('trim', $exclude);
 
 $tl = array();
-if (count($tags) > 0) {
-	$html  = '<ol class="tags">'."\n";
+if (count($tags) > 0) 
+{
+	$html  = '<ol class="tags">' . "\n";
 	foreach ($tags as $tag)
 	{
-		if (!in_array($tag->raw_tag, $exclude)) {
-			$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.$tag->raw_tag.' <span>' . $tag->tcount . '</span></a></li>'."\n";
+		if (!in_array($tag->raw_tag, $exclude)) 
+		{
+			$tl[$tag->tag] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_tags&tag='.$tag->tag) . '">' . $tag->raw_tag . ' <span>' . $tag->tcount . '</span></a></li>';
 		}
 	}
-	if ($modtoptags->sortby == 'alphabeta') {
+	if ($this->sortby == 'alphabeta') 
+	{
 		ksort($tl);
 	}
-	$html .= implode('', $tl);
-	$html .= '</ol>'."\n";
-	if ($modtoptags->morelnk) {
-		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags').'">'.JText::_('MOD_TOPTAGS_MORE').' <span>' . $tag->tcount . '</span></a></p>'."\n";
+	$html .= implode("\n", $tl);
+	$html .= '</ol>' . "\n";
+	if ($this->morelnk) 
+	{
+		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags') . '">' . JText::_('MOD_TOPTAGS_MORE') . ' <span>' . $tag->tcount . '</span></a></p>' . "\n";
 	}
-} else {
-	$html  = '<p>'.$modtoptags->message.'</p>'."\n";
+} 
+else 
+{
+	$html  = '<p>' . $this->message . '</p>' . "\n";
 }
 echo $html;

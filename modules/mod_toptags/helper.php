@@ -30,43 +30,36 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modTopTags'
- * 
- * Long description (if any) ...
+ * Module class for displaying a tag cloud of most used tags
  */
 class modTopTags
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params)
 	{
 		$this->params = $params;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,44 +68,42 @@ class modTopTags
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php' );
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
 		$database =& JFactory::getDBO();
 
 		// Get some initial parameters
-		$params =& $this->params;
-		$numtags = $params->get( 'numtags', 25 );
-		$this->message = $params->get( 'message' );
-		$this->sortby  = $params->get( 'sortby' );
-		$this->morelnk = $params->get( 'morelnk' );
-		$this->exclude = $params->get( 'exclude' );
+		$numtags = $this->params->get('numtags', 25);
+		$this->message = $this->params->get('message');
+		$this->sortby  = $this->params->get('sortby');
+		$this->morelnk = $this->params->get('morelnk');
+		$this->exclude = $this->params->get('exclude');
 
-		$obj = new TagsTag( $database );
+		$obj = new TagsTag($database);
 
-		$this->tags = $obj->getTopTags( $numtags );
+		$this->tags = $obj->getTopTags($numtags);
+
+		require(JModuleHelper::getLayoutPath('mod_toptags'));
 	}
 }
 
