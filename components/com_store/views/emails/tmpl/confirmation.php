@@ -29,20 +29,20 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$emailbody  = JText::_('COM_STORE_THANKYOU').' '.JText::_('COM_STORE_IN_THE').' '.$this->hubShortName.' '.JText::_(strtolower($this->option)).'!'."\n\n";
-$emailbody .= JText::_('COM_STORE_EMAIL_KEEP')."\n";
-$emailbody .= '----------------------------------------------------------'."\n";
-$emailbody .= '	'.JText::_('COM_STORE_ORDER').' '. JText::_('COM_STORE_NUM').': '. $this->orderid ."\n";
-$emailbody .= ' '.JText::_('ORDER').' '.JText::_('TOTAL').': '. $this->cost.' '.JText::_('POINTS')."\n";
-$emailbody .= ' '.JText::_('PLACED').' '. JHTML::_('date', $this->now, '%d %b, %Y')."\n";
-$emailbody .= ' '.JText::_('STATUS').': '.JText::_('RECEIVED')."\n";
-$emailbody .= '----------------------------------------------------------'."\n";
-$emailbody .= $this->details."\n";
-$emailbody .= '----------------------------------------------------------'."\n\n";
-$emailbody .= JText::_('COM_STORE_EMAIL_ORDER_PROCESSED').'. ';
-$emailbody .= JText::_('COM_STORE_EMAIL_QUESTIONS').'.'."\n\n";
-$emailbody .= JText::_('COM_STORE_EMAIL_THANKYOU')."\n";
+$emailbody  = JText::_('COM_STORE_THANKYOU') . ' ' . JText::_('COM_STORE_IN_THE') . ' ' . $this->hubShortName . ' ' . JText::_(strtolower($this->option)) . '!' . "\n\n";
+$emailbody .= JText::_('COM_STORE_EMAIL_KEEP') . "\n";
+$emailbody .= '----------------------------------------------------------' . "\n";
+$emailbody .= ' ' . JText::_('COM_STORE_ORDER') . ' ' . JText::_('COM_STORE_NUM') . ': ' . $this->orderid . "\n";
+$emailbody .= ' ' . JText::_('ORDER') . ' ' . JText::_('TOTAL') . ': ' . $this->cost . ' ' . JText::_('POINTS') . "\n";
+$emailbody .= ' ' . JText::_('PLACED') . ' ' . JHTML::_('date', $this->now, '%d %b, %Y') . "\n";
+$emailbody .= ' ' . JText::_('STATUS') . ': ' . JText::_('RECEIVED') . "\n";
+$emailbody .= '----------------------------------------------------------' . "\n";
+$emailbody .= $this->details . "\n";
+$emailbody .= '----------------------------------------------------------' . "\n\n";
+$emailbody .= JText::_('COM_STORE_EMAIL_ORDER_PROCESSED') . '. ';
+$emailbody .= JText::_('COM_STORE_EMAIL_QUESTIONS') . '.' . "\n\n";
+$emailbody .= JText::_('COM_STORE_EMAIL_THANKYOU') . "\n";
+
 echo $emailbody;
-?>

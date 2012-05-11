@@ -40,34 +40,37 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-		<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
-			<fieldset>
-				<input type="hidden" name="task" value="process" />
-				<h3><?php echo JText::_('COM_STORE_SHIPPING_ADDRESS'); ?></h3>
+		<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			<input type="hidden" name="task" value="process" />
 
-				<label>
+			<fieldset>
+				<legend><?php echo JText::_('COM_STORE_SHIPPING_ADDRESS'); ?></legend>
+
+				<label for="name">
 					<?php echo JText::_('COM_STORE_RECEIVER_NAME'); ?> <span class="required"><?php echo JText::_('COM_STORE_REQUIRED'); ?></span>
-					<input name="name" id="name" type="text" value="<?php echo (isset($this->posted['name'])) ? $this->posted['name'] : $this->juser->get('name'); ?>" />
+					<input name="name" id="name" type="text" value="<?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape($this->juser->get('name')); ?>" />
 				</label>
 				
-				<label>
+				<label for="address">
 					<?php echo JText::_('COM_STORE_COMPLETE_ADDRESS'); ?> <span class="required"><?php echo JText::_('COM_STORE_REQUIRED'); ?></span>
-					<textarea name="address" rows="10" cols="50"><?php echo (isset($this->posted['address'])) ? $this->posted['address'] : ''; ?></textarea>
+					<textarea name="address" id="address" rows="10" cols="50"><?php echo (isset($this->posted['address'])) ? $this->escape($this->posted['address']) : ''; ?></textarea>
 				</label>
 				
 				<p class="hint"><?php echo JText::_('COM_STORE_ADDRESS_MSG'); ?></p>
 				
-				<label>
+				<label for="country">
 					<?php echo JText::_('COM_STORE_COUNTRY'); ?> <span class="required"><?php echo JText::_('COM_STORE_REQUIRED'); ?></span>
 					<select name="country" id="country">
 						<option value=""><?php echo JText::_('(select from list)'); ?></option>
 <?php 
 	$countries = Hubzero_Geo::getcountries();
-	$mycountry = (isset($this->posted['country'])) ? htmlentities(($this->posted['country'])) : htmlentities(Hubzero_Geo::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8');
+	$mycountry = (isset($this->posted['country'])) ? $this->posted['country'] : Hubzero_Geo::getcountry($this->xprofile->get('countryresident'));
 	foreach ($countries as $country)
 	{
 ?>
-						<option value="<?php echo htmlentities($country['name']); ?>"<?php echo ($country['name'] == $mycountry) ? ' selected="selected"' : ''; ?>><?php echo htmlentities($country['name']); ?></option>
+						<option value="<?php echo htmlentities($country['name']); ?>"<?php echo ($country['name'] == $mycountry) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($country['name']); ?></option>
 <?php
 	}
 ?>
@@ -75,25 +78,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</label>
 			</fieldset>
 			<fieldset>
-				<h3><?php echo JText::_('COM_STORE_CONTACT_INFO'); ?></h3>
+				<legend><?php echo JText::_('COM_STORE_CONTACT_INFO'); ?></legend>
 				
-				<label>
+				<label for="phone">
 					<?php echo JText::_('COM_STORE_CONTACT_PHONE'); ?>
-					<input name="phone" id="phone" type="text" value="<?php echo (isset($this->posted['phone'])) ? $this->posted['phone'] : htmlentities($this->juser->get('phone'),ENT_COMPAT,'UTF-8'); ?>" />
+					<input name="phone" id="phone" type="text" value="<?php echo (isset($this->posted['phone'])) ? $this->escape($this->posted['phone']) : $this->escape($this->juser->get('phone')); ?>" />
 				</label>
 				
-				<label>
+				<label for="email">
 					<?php echo JText::_('COM_STORE_CONTACT_EMAIL'); ?>
-					<input name="email" id="email" type="text" value="<?php echo (isset($this->posted['email'])) ? $this->posted['email'] : $this->juser->get('email'); ?>" />
+					<input name="email" id="email" type="text" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : $this->escape($this->juser->get('email')); ?>" />
 				</label>
 				<p class="hint"><?php echo JText::_('COM_STORE_CONTACT_MSG'); ?></p>
 			</fieldset>
 			<fieldset>
-				<h3><?php echo JText::_('COM_STORE_ADDITIONAL_COMMENTS'); ?></h3>
+				<legend><?php echo JText::_('COM_STORE_ADDITIONAL_COMMENTS'); ?></legend>
 				
-				<label>
+				<label for="comments">
 					<?php echo JText::_('COM_STORE_DETAILS'); ?>
-					<textarea name="comments" rows="10" cols="50"><?php echo (isset($this->posted['comments'])) ? $this->posted['comments'] : ''; ?></textarea>
+					<textarea name="comments" id="comments" rows="10" cols="50"><?php echo (isset($this->posted['comments'])) ? $this->escape($this->posted['comments']) : ''; ?></textarea>
 				</label>
 			</fieldset>
 			<p class="process"><input type="submit" class="button process_order" value="process" /></p>
@@ -113,7 +116,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($item->selectedsize) { ?>
 			</p>
 			<p>
-				<?php echo JText::_('COM_STORE_SIZE').' '.$item->selectedsize.' (x '.$item->quantity.')'; ?>
+				<?php echo JText::_('COM_STORE_SIZE') . ' ' . $item->selectedsize . ' (x ' . $item->quantity . ')'; ?>
 <?php } else if ($item->category != 'service') { ?>
 				(x <?php echo $item->quantity; ?>)
 <?php } ?>
@@ -124,7 +127,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 			<p><?php echo JText::_('COM_STORE_SHIPPING'); ?>: <span>0</span></p>
 			<p class="totals"><?php echo JText::_('COM_STORE_TOTAL_POINTS'); ?>: <span><?php echo $this->cost; ?></span></p>
-			<p><a class="actionlink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart'); ?>"><?php echo JText::_('COM_STORE_CHANGE_ORDER'); ?></a></p>
+			<p><a class="actionlink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>"><?php echo JText::_('COM_STORE_CHANGE_ORDER'); ?></a></p>
 		</div><!-- / .order_summary -->
 <?php if (!$this->final) { ?>
 		<p class="sidenotes"><?php echo JText::_('COM_STORE_MSG_CHANCE_TO_REVIEW'); ?></p>

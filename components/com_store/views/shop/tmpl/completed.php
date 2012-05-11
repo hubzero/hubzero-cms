@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="final_summary">
 		<?php echo JText::_('COM_STORE_ORDER_NUMBER'); ?>: <strong><?php echo $this->orderid; ?></strong><br />
 		<?php echo JText::_('COM_STORE_THANKYOU_MSG'); ?><br />
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>.
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>.
 	</p>
 	<div class="clear"></div>
 </div><!-- / .main section -->

@@ -29,16 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'StoreHtml'
- * 
- * Long description (if any) ...
+ * Helper class for misc functions
  */
 class StoreHtml
 {
-
 	/**
 	 * Short description for 'productimage'
 	 * 
@@ -52,41 +49,42 @@ class StoreHtml
 	 * @param      string $category Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function productimage( $option, $item, $root, $wpath, $alt, $category )
+	public function productimage($option, $item, $root, $wpath, $alt, $category)
 	{
-		if ($wpath) {
-			// Strip any trailing slash
-			if (substr($wpath, -1) == DS) {
-				$wpath = substr($wpath, 0, strlen($wpath) - 1);
-			}
-			// Ensure a starting slash
-			if (substr($wpath, 0, 1) != DS) {
-				$wpath = DS.$wpath;
-			}
-			$wpath = $wpath.DS;
+		if ($wpath) 
+		{
+			$wpath = DS . trim($wpath, DS) . DS;
 		}
 
-		$d = @dir($root.$wpath.$item);
+		$d = @dir($root . $wpath . $item);
 
 		$images = array();
 		$html = '';
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file($root.$wpath.$item.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file )) {
+				if (is_file($root . $wpath . $item . DS . $img_file) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) 
+					{
 						$images[] = $img_file;
 					}
 				}
 			}
 			$d->close();
-		} else {
-			if ($category=='service') {
-				$html = '<img src="../components/'.$option.'/images/premiumservice.gif" alt="'.JText::_('COM_STORE_PREMIUM_SERVICE').'" />';
-			} else {
-				$html = '<img src="../components/'.$option.'/images/nophoto.gif" alt="'.JText::_('COM_STORE_MSG_NO_PHOTO').'" />';
+		} 
+		else 
+		{
+			if ($category == 'service') 
+			{
+				$html = '<img src="/components/' . $option . '/images/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
+			} 
+			else 
+			{
+				$html = '<img src="/components/' . $option . '/images/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
 			}
 		}
 
@@ -95,24 +93,26 @@ class StoreHtml
 		$k = 0;
 		$g = 0;
 
-		for ($i=0, $n=count( $images ); $i < $n; $i++)
+		for ($i=0, $n=count($images); $i < $n; $i++)
 		{
-			$pic = explode('.',$images[$i]);
+			$pic = explode('.', $images[$i]);
 			$c = count($pic);
 			$pic[$c-2] .= '-tn';
 			$end = array_pop($pic);
 			$pic[] = 'gif';
-			$tn = implode('.',$pic);
+			$tn = implode('.', $pic);
 
-			$type = explode('.',$images[$i]);
+			$type = explode('.', $images[$i]);
 
-			if (is_file($root.$wpath.$item.'/'.$tn)) {
+			if (is_file($root . $wpath . $item . DS . $tn)) 
+			{
 				$k++;
-				$els .= '<a rel="lightbox" href="'.$wpath.$item.'/'.$images[$i].'" title="'.$alt.'"><img src="'.$wpath.$item.'/'.$tn.'" alt="'.$alt.'" /></a>';
+				$els .= '<a rel="lightbox" href="' . $wpath . $item . '/' . $images[$i] . '" title="' . $alt . '"><img src="' . $wpath . $item . '/' . $tn . '" alt="' . $alt . '" /></a>';
 			}
 		}
 
-		if ($els) {
+		if ($els) 
+		{
 			$html .= $els;
 		}
 		return $html;

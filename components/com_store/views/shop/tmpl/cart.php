@@ -37,8 +37,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>" class="storefront"><?php echo JText::_('COM_STORE_STOREFRONT'); ?></a></li>
-		<li class="last"><a class="mypoints" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->juser->get('id').'&active=points'); ?>"><?php echo JText::_('COM_STORE_MY_POINTS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="storefront"><?php echo JText::_('COM_STORE_STOREFRONT'); ?></a></li>
+		<li class="last"><a class="mypoints" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo JText::_('COM_STORE_MY_POINTS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -50,14 +50,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div id="cartcontent">
 <?php if ($this->msg) { ?>
 		<p class="passed"><?php echo $this->msg; ?></p>
-<?php } ?>		
+<?php } ?>
 <?php if ($this->rows) { ?>
 		<p>
 			<?php echo JText::sprintf('COM_STORE_THERE_ARE_ITEMS_IN_CART', count($this->rows)); ?>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>" ><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" ><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>
 		</p>
 		
-		<form id="myCart" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart'); ?>">
+		<form id="myCart" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>">
 			<input type="hidden" name="action" value="" />
 			<input type="hidden" name="task" value="checkout" />
 			<input type="hidden" name="funds" id="funds" value="<?php echo $this->funds; ?>" />
@@ -79,14 +79,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 	foreach ($this->rows as $row)
 	{
 		$price = $row->price*$row->quantity;
-		if ($row->available) { // do not add if not available
+		if ($row->available) 
+		{ // do not add if not available
 			$total = $total+$price;
 		}
 		$sizes = array(); // build size options
-		if ($row->sizes && count($row->sizes) > 0) {
+		if ($row->sizes && count($row->sizes) > 0) 
+		{
 			foreach ($row->sizes as $rs)
 			{
-				if (trim($rs) != '') {
+				if (trim($rs) != '') 
+				{
 					$sizes[$rs] = $rs;
 				}
 			}
@@ -94,7 +97,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 ?>
 					<tr>
-						<td><?php echo $row->title; ?></td>
+						<td><?php echo $this->escape($row->title); ?></td>
 						<td>
 <?php
 if ($row->category!='service') {
@@ -115,7 +118,7 @@ if ($row->category!='service') {
 <?php } else { ?>
 							1 
 <?php } ?>
-							<span class="removeitem"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart&action=remove&item='.$row->itemid); ?>" title="<?php echo JText::_('COM_STORE_REMOVE_FROM_CART'); ?>"><?php echo JText::_('COM_STORE_REMOVE_FROM_CART'); ?></a></span>
+							<span class="removeitem"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart&action=remove&item=' . $row->itemid); ?>" title="<?php echo JText::_('COM_STORE_REMOVE_FROM_CART'); ?>"><?php echo JText::_('COM_STORE_REMOVE_FROM_CART'); ?></a></span>
 						</td>
 						<td>
 <?php if (count($sizes)>0) { ?>
@@ -124,7 +127,7 @@ if ($row->category!='service') {
 							foreach ($sizes as $anode)
 							{
 ?>
-								<option value="<?php echo $anode; ?>"<?php echo ($anode == $selectedsize) ? ' selected="selected"' : ''; ?>><?php echo stripslashes($anode); ?></option>
+								<option value="<?php echo $this->escape(stripslashes($anode)); ?>"<?php echo ($anode == $selectedsize) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($anode)); ?></option>
 <?php
 							}
 ?>
@@ -139,13 +142,13 @@ if ($row->category!='service') {
 	}
 ?>
 					<tr class="totals">
-						<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart&action=empty'); ?>" class="actionlink" title="<?php echo JText::_('COM_STORE_EMPTY_CART'); ?>"><?php echo JText::_('COM_STORE_EMPTY_CART'); ?></a></td>
+						<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart&action=empty'); ?>" class="actionlink" title="<?php echo JText::_('COM_STORE_EMPTY_CART'); ?>"><?php echo JText::_('COM_STORE_EMPTY_CART'); ?></a></td>
 						<td></td>
 						<td><a href="javascript:void(0);" class="actionlink" id="updatecart" title="<?php echo JText::_('COM_STORE_TITLE_UPDATE'); ?>"><?php echo JText::_('COM_STORE_UPDATE'); ?></a></td>
 						<td><?php echo JText::_('COM_STORE_TOTAL'); ?></td>
 						<td><?php echo $total; ?></td>
 					</tr>
-				</tbody>				
+				</tbody>
 			</table>
 
 			<p class="process">
@@ -160,15 +163,15 @@ if ($row->category!='service') {
 		
 		<div class="footernotes">
 			<p>* <?php echo JText::_('COM_STORE_CART_NOTES'); ?></p>
-		</div>		
+		</div>
 <?php } else { ?>
-		<p><?php echo JText::_('COM_STORE_CART_IS_EMPTY'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>" ><?php echo JText::_('COM_STORE_START_SHOPPING'); ?></a>.</p>
+		<p><?php echo JText::_('COM_STORE_CART_IS_EMPTY'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" ><?php echo JText::_('COM_STORE_START_SHOPPING'); ?></a>.</p>
 <?php } ?>
 	</div><!-- / #cartcontent -->
 	<div id="balanceupdate">
-		<p class="point-balance"><small><?php echo JText::_('COM_STORE_YOU_HAVE').' </small> '.$this->funds.'<small> '.JText::_('COM_STORE_POINTS').' '.JText::_('COM_STORE_TO_SPEND'); ?></small></p>
+		<p class="point-balance"><small><?php echo JText::_('COM_STORE_YOU_HAVE') . '</small> ' . $this->funds . '<small> '.JText::_('COM_STORE_POINTS') . ' ' . JText::_('COM_STORE_TO_SPEND'); ?></small></p>
 <?php if ($this->funds < $this->cost && $this->cost != 0) { ?>
-		<p class="error"><?php echo JText::_('COM_STORE_MSG_NO_FUNDS').' '.JText::_('COM_STORE_LEARN_HOW').' <a href="'.$this->infolink.'">'.strtolower(JText::_('COM_STORE_EARN')).'</a>'; ?></p>
+		<p class="error"><?php echo JText::_('COM_STORE_MSG_NO_FUNDS') . ' ' . JText::_('COM_STORE_LEARN_HOW') . ' <a href="' . $this->infolink . '">' . strtolower(JText::_('COM_STORE_EARN')) . '</a>'; ?></p>
 <?php } ?>
 	</div>
 	<div class="clear"></div>

@@ -37,11 +37,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart'); ?>" class="shoppingcart"><?php echo JText::_('COM_STORE_CART'); ?></a></li>
+		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>" class="shoppingcart"><?php echo JText::_('COM_STORE_CART'); ?></a></li>
 	</ul>
 </div>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="get">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
 	<div class="main section">
 		<h3><?php echo JText::_('COM_STORE_SPEND_MERCHANDISE_AND_PREMIUM_SERVICES'); ?></h3>
 <?php
@@ -59,7 +59,7 @@ if ($this->rows) {
 			$cls = 'new';
 		}
 ?>
-		<li<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
+		<li<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
 			<div class="imageholder">
 				<?php echo StoreHtml::productimage( $this->option, $row->id, $row->root, $row->webpath, $row->title, $row->category ); ?>
 			</div>
@@ -88,7 +88,7 @@ if ($row->category != 'service') {
 			<div class="purchase">
 				<span class="price"><a href="<?php echo $this->infolink; ?>" title="<?php echo JText::_('COM_STORE_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_STORE_WHAT_ARE_POINTS'); ?></a><?php echo $row->price; ?></span>
 <?php if ($row->available) { ?>
-				<a class="button buy" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart&action=add&item='.$row->id); ?>" title="<?php echo JText::_('COM_STORE_BUY'); ?>"><?php echo JText::_('COM_STORE_BUY'); ?></a>
+				<a class="button buy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart&action=add&item=' . $row->id); ?>" title="<?php echo JText::_('COM_STORE_BUY'); ?>"><?php echo JText::_('COM_STORE_BUY'); ?></a>
 <?php } else { ?>
 				<span class="button buy_disabled">&nbsp;</span>
 <?php } ?>

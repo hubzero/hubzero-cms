@@ -32,9 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'StoreBuildRoute'
- * 
- * Long description (if any) ...
+ * Build a SEF route from querystring vars
  * 
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
@@ -43,15 +41,22 @@ function StoreBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['action'])) {
+	if (!empty($query['controller'])) 
+	{
+		unset($query['controller']);
+	}
+	if (!empty($query['action'])) 
+	{
 		$segments[] = $query['action'];
 		unset($query['action']);
 	}
-	if (!empty($query['item'])) {
+	if (!empty($query['item'])) 
+	{
 		$segments[] = $query['item'];
 		unset($query['item']);
 	}
@@ -60,9 +65,7 @@ function StoreBuildRoute(&$query)
 }
 
 /**
- * Short description for 'StoreParseRoute'
- * 
- * Long description (if any) ...
+ * Turn a SEF route into querystring vars
  * 
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
@@ -71,17 +74,21 @@ function StoreParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments[0])) {
+	if (empty($segments[0])) 
+	{
 		return $vars;
 	}
 
-	if (isset($segments[0])) {
+	if (isset($segments[0])) 
+	{
 		$vars['task'] = $segments[0];
 	}
-	if (isset($segments[1])) {
+	if (isset($segments[1])) 
+	{
 		$vars['action'] = $segments[1];
 	}
-	if (isset($segments[2])) {
+	if (isset($segments[2])) 
+	{
 		$vars['item'] = $segments[2];
 	}
 

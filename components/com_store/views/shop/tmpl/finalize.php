@@ -40,32 +40,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-		<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
+		<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 			<fieldset>
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="finalize" />
 				<input type="hidden" name="action" value="" />
-				<input type="hidden" name="name" value="<?php echo (isset($this->posted['name'])) ? htmlentities($this->posted['name'],ENT_COMPAT,'UTF-8') : htmlentities($this->juser->get('name'),ENT_COMPAT,'UTF-8'); ?>" />
-				<input type="hidden" name="address" value="<?php echo (isset($this->posted['address'])) ? htmlentities($this->posted['address'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="address1" value="<?php echo (isset($this->posted['address1'])) ? htmlentities($this->posted['address1'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="address2" value="<?php echo (isset($this->posted['address2'])) ? htmlentities($this->posted['address2'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="city" value="<?php echo (isset($this->posted['city'])) ? htmlentities($this->posted['city'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="state" value="<?php echo (isset($this->posted['state'])) ? htmlentities($this->posted['state'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="country" value="<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(Hubzero_Geo::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?>" />
-				<input type="hidden" name="postal" value="<?php echo (isset($this->posted['postal'])) ? htmlentities($this->posted['postal'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="phone" value="<?php echo (isset($this->posted['phone'])) ? htmlentities($this->posted['phone'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="email" value="<?php echo (isset($this->posted['email'])) ? htmlentities($this->posted['email'],ENT_COMPAT,'UTF-8') : $this->juser->get('email'); ?>" />
-				<input type="hidden" name="comments" value="<?php echo (isset($this->posted['comments'])) ? htmlentities($this->posted['comments'],ENT_COMPAT,'UTF-8') : ''; ?>" />
+				<input type="hidden" name="name" value="<?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape($this->juser->get('name')); ?>" />
+				<input type="hidden" name="address" value="<?php echo (isset($this->posted['address'])) ? $this->escape($this->posted['address']) : ''; ?>" />
+				<input type="hidden" name="address1" value="<?php echo (isset($this->posted['address1'])) ? $this->escape($this->posted['address1']) : ''; ?>" />
+				<input type="hidden" name="address2" value="<?php echo (isset($this->posted['address2'])) ? $this->escape($this->posted['address2']) : ''; ?>" />
+				<input type="hidden" name="city" value="<?php echo (isset($this->posted['city'])) ? $this->escape($this->posted['city']) : ''; ?>" />
+				<input type="hidden" name="state" value="<?php echo (isset($this->posted['state'])) ? $this->escape($this->posted['state']) : ''; ?>" />
+				<input type="hidden" name="country" value="<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(Hubzero_Geo::getcountry($this->xprofile->get('countryresident'))); ?>" />
+				<input type="hidden" name="postal" value="<?php echo (isset($this->posted['postal'])) ? $this->escape($this->posted['postal']) : ''; ?>" />
+				<input type="hidden" name="phone" value="<?php echo (isset($this->posted['phone'])) ? $this->escape($this->posted['phone']) : ''; ?>" />
+				<input type="hidden" name="email" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : $this->juser->get('email'); ?>" />
+				<input type="hidden" name="comments" value="<?php echo (isset($this->posted['comments'])) ? $this->escape($this->posted['comments']) : ''; ?>" />
 				
-				<h3><?php echo JText::_('COM_STORE_ORDER_WILL_SHIP'); ?></h3>				
-				 <pre><?php echo (isset($this->posted['name'])) ? htmlentities($this->posted['name'],ENT_COMPAT,'UTF-8') : htmlentities($this->juser->get('name'),ENT_COMPAT,'UTF-8'); ?>
+				<legend><?php echo JText::_('COM_STORE_ORDER_WILL_SHIP'); ?></legend>
+				<pre><?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape($this->juser->get('name')); ?>
 				 
-<?php echo (isset($this->posted['address'])) ? htmlentities($this->posted['address'],ENT_COMPAT,'UTF-8') : ''; ?>
+<?php echo (isset($this->posted['address'])) ? $this->escape($this->posted['address']) : ''; ?>
 
-<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(Hubzero_Geo::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?></pre>				
+<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(Hubzero_Geo::getcountry($this->xprofile->get('countryresident'))); ?></pre>
 				<p><a class="actionlink" href="javascript:void(0);" id="change_address"><?php echo JText::_('COM_STORE_CHANGE_ADDRESS'); ?></a></p>
 			</fieldset>
 			<fieldset>
-				<h3><?php echo JText::_('COM_STORE_CONTACT_INFO'); ?></h3>
+				<legend><?php echo JText::_('COM_STORE_CONTACT_INFO'); ?></legend>
 				<p>
 <?php if (isset($this->posted['phone'])) { ?>
 					<?php echo JText::_('Phone'); ?>: <?php echo $this->posted['phone']; ?><br />
@@ -77,11 +79,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</fieldset>
 <?php if (isset($this->posted['comments']) && $this->posted['comments'] != '') { ?>
 			<fieldset>
-				<h3><?php echo JText::_('COM_STORE_ADDITIONAL_COMMENTS'); ?></h3>
+				<legend><?php echo JText::_('COM_STORE_ADDITIONAL_COMMENTS'); ?></legend>
 				<p><?php echo $this->posted['comments']; ?></p>
 			</fieldset>
 <?php } ?>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart&action=empty'); ?>" class="actionlink"><?php echo JText::_('COM_STORE_CANCEL_ORDER'); ?></a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart&action=empty'); ?>" class="actionlink"><?php echo JText::_('COM_STORE_CANCEL_ORDER'); ?></a></p>
 			<div class="clear"></div>
 			<p class="process"><input type="submit" class="button finalize_order" value="finalize" /></p>
 		</form>
@@ -99,7 +101,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($item->selectedsize) { ?>
 			</p>
 			<p>
-				<?php echo JText::_('COM_STORE_SIZE').' '.$item->selectedsize.' (x '.$item->quantity.')'; ?>
+				<?php echo JText::_('COM_STORE_SIZE') . ' ' . $item->selectedsize . ' (x ' . $item->quantity . ')'; ?>
 <?php } else if ($item->category != 'service') { ?>
 				(x <?php echo $item->quantity; ?>)
 <?php } ?>
@@ -110,7 +112,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 			<p><?php echo JText::_('COM_STORE_SHIPPING'); ?>: <span>0</span></p>
 			<p class="totals"><?php echo JText::_('COM_STORE_TOTAL_POINTS'); ?>: <span><?php echo $this->cost; ?></span></p>
-			<p><a class="actionlink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart'); ?>"><?php echo JText::_('COM_STORE_CHANGE_ORDER'); ?></a></p>
+			<p><a class="actionlink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>"><?php echo JText::_('COM_STORE_CHANGE_ORDER'); ?></a></p>
 		</div><!-- / .order_summary -->
 <?php if (!$this->final) { ?>
 		<p class="sidenotes"><?php echo JText::_('COM_STORE_MSG_CHANCE_TO_REVIEW'); ?></p>

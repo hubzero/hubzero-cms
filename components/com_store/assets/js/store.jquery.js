@@ -5,25 +5,33 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+//-----------------------------------------------------------
+//  Ensure we have our namespace
+//-----------------------------------------------------------
+if (!HUB) {
+	var HUB = {};
+}
+
 //----------------------------------------------------------
 // Store js
 //----------------------------------------------------------
 HUB.Store = {
 	form: 'myCart',
+
 	hubform: 'hubForm',
-	
+
 	initialize: function() {
 		if ($('#updatecart')) {
-			$('#updatecart').bind('click', function(){					
+			$('#updatecart').bind('click', function(){
 				var form = document.getElementById(HUB.Store.form);
 				form.task.value = 'cart';
 				form.action.value = 'update';
-				form.submit( );
+				form.submit();
 				return false;
 			});
 		}
 		if ($('#change_address')) {
-			$('#change_address').bind('click', function(){	
+			$('#change_address').bind('click', function(){
 				var form = document.getElementById(HUB.Store.hubform);
 				form.task.value = 'checkout';
 				form.submit( );
@@ -31,12 +39,11 @@ HUB.Store = {
 			});	
 		}
 	},
-	
-			
+
 	hide: function(obj) {
 		$(obj).hide();
 	},
-	
+
 	show: function(obj) {
 		$(obj).show();
 	}
