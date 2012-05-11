@@ -128,6 +128,7 @@ function TopicsParseRoute($segments)
 	 || substr(strtolower($vars['pagename']), 0, strlen('file:')) == 'file:') 
 	{
 		$vars['controller'] = 'media';
+		$vars['task'] = 'download';
 	}
 
 	return $vars;
