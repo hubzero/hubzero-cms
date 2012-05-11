@@ -1972,8 +1972,11 @@ class Hubzero_User_Profile extends JObject
 			$this->set('password', $registration->get('password'));
 		}
 
-		if ($registration->get('org') !== null) {
+		if ($registration->get('org') !== null || $registration->get('orgtext') !== null) {
 			$this->set('organization', $registration->get('org'));
+			if ($registration->get('orgtext')) {
+				$this->set('organization', $registration->get('orgtext'));
+			}
 		}
 
 		if ($registration->get('sex') !== null) {
