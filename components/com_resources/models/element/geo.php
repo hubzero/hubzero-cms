@@ -85,8 +85,9 @@ class ResourcesElementGeo extends ResourcesElement
 	{
 		if (!$this->_script)
 		{
+			$app = JFactory::getApplication();
 			$script = 'geo';
-			if (JPluginHelper::isEnabled('system', 'jquery'))
+			if (JPluginHelper::isEnabled('system', 'jquery') && !$app->isAdmin())
 			{
 				$script .= '.jquery';
 			}
