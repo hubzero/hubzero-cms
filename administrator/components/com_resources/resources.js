@@ -18,7 +18,7 @@ if (!HUB) {
 
 HUB.Resources = {
 	removeAuthor: function(el) {
-		$(el).parentNode.removeChild($(el));
+		$(el).parentNode.parentNode.removeChild($(el).parentNode);
 		
 		// get the new serials
 		$('new_authors').value = authsorts.serialize('', function(element, index){
