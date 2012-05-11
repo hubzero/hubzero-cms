@@ -1423,8 +1423,10 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 		
 		// Build outgoing email message
+		$juser =& JFactory::getUser();
 		$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
-		$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n" ;
+		$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n\r\n" ;
+		$prependtext .= $juser->name . " (". $juser->username . ") wrote:";
 		$forum_message = $prependtext . "\r\n\r\n" . $model->comment;
 
 		// Translate the message wiki formatting to html
