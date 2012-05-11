@@ -178,16 +178,11 @@ class ContributeController extends Hubzero_Controller
 	 */
 	protected function login()
 	{
-		// Instantiate a view
-		/*$view = new JView( array('name'=>'login') );
-		$view->option = $this->_option;
-		$view->title = $this->_title;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();*/
-		$rtrn = JRequest::getVar('REQUEST_URI', JRequest::getVar('index.php?option=' . $this->_controller), 'server');
-		$this->_redirect = JRequest::getVar('index.php?option=com_login&return=' . base64_encode($rtrn));
+		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller), 'server');
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
+		);
+		return;
 	}
 
 	/**
