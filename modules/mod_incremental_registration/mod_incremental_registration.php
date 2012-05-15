@@ -23,14 +23,11 @@ class ModIncrementalRegistrationController
 			return;
 		}
 		$uid = (int)$user->get('id');
-		$dbg = isset($_GET['incrdebug']);
 
 		$dbh = JFactory::getDBO();
-		if (!$dbg) {
-			return;
-		}
 		
 		require_once JPATH_BASE.'/administrator/components/com_register/tables/incremental.php';
+
 		$opts = new ModIncrementalRegistrationOptions;
 		if (!$opts->isEnabled($uid)) {
 			return;
