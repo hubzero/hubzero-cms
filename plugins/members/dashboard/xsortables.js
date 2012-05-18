@@ -135,7 +135,7 @@ var xSortables = new Class({
 		/* HACK to fix positioning for a floated parent element */
 		if ($('page_sidebar')) {
 			//var pos = this.element.getCoordinates();
-			//this.position.x -= $('page_main').getCoordinates().left; //pos.left - this.element.getSize().size.y;
+			this.position.x -= $('page_main').getCoordinates().left; //pos.left - this.element.getSize().size.y;
 			this.position.y -= $('page_main').getCoordinates().top; //pos.top - this.element.getSize().size.x;
 		}
 		/* end HACK */
