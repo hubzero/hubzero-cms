@@ -85,7 +85,7 @@ class ModIncrementalRegistrationOptions
 		if (!$uid) {
 			$uid = (int)JFactory::getUser()->get('id');
 		}
-		if (!$uid || !JModuleHelper::isEnabled('mod_incremental_registration')) {
+		if (!$uid || !JModuleHelper::isEnabled('incremental_registration')) {
 			return false;
 		}
 		$cur = self::getCurrent();
