@@ -611,16 +611,16 @@ class WikiPage extends JTable
 				}
 			}
 		}
-		$query .= "FROM $this->_tbl AS w, #__wiki_version AS v, #__xgroups AS g ";
+		$query .= "FROM $this->_tbl AS w LEFT JOIN #__wiki_version AS v ON w.id=v.pageid LEFT JOIN #__xgroups AS g ON g.cn=w.group";
 		if (isset($filters['tags'])) 
 		{
 			$query .= ", #__tags_object AS t ";
 		}
 		
 		$where = array();
-		$where[] = "w.id=v.pageid";
+		//$where[] = "w.id=v.pageid";
 		$where[] = "v.approved=1";
-		$where[] = "(w.group='' OR (g.cn=w.group AND g.access<>4))";
+		$where[] = "(w.group='' OR g.access<>4)";
 		$where[] = "w.state<2";
 
 		if (isset($filters['author'])) 
@@ -718,7 +718,7 @@ class WikiPage extends JTable
 
 		if (!empty($where))
 		{
-			$query .= "WHERE " . implode(" AND ", $where) . " ";
+			$query .= " WHERE " . implode(" AND ", $where) . " ";
 		}
 		$query .= "GROUP BY pageid ";
 		if (isset($filters['tags'])) 
