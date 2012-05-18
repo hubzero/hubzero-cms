@@ -1876,3 +1876,7 @@
 		padding:0 0 0 20px;
 		background: url("/components/com_resources/images/flash.png") no-repeat 4px 50%;
 	}
+	.resource ol {
+		list-style: decimal;
+	}
+
