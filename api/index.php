@@ -115,6 +115,7 @@ require(JPATH_LIBRARIES.DS.'Hubzero'.DS.'loader.php');
 
 JLoader::import('joomla.base.object');
 JLoader::import('joomla.factory');
+JLoader::import('joomla.environment.uri');
 JLoader::import('joomla.error.exception');
 JLoader::import('joomla.error.error');
 

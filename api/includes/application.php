@@ -301,7 +301,7 @@ class Hubzero_API extends JApplication
 			}
 
 			$filename = JPATH_SITE . DS . 'components' . DS . 'com_'
-				. $segments[0] . DS . 'api' . DS . 'controller.php';
+				. $segments[0] . DS . 'controllers' . DS . 'api.php';
 
 			if (is_file($filename))
 			{
@@ -341,7 +341,7 @@ class Hubzero_API extends JApplication
 		$oauthp->setRequestTokenPath('/api/oauth/request_token');
 		$oauthp->setAccessTokenPath('/api/oauth/access_token');
 		$oauthp->setAuthorizePath('/api/oauth/authorize');
-
+        
 		if (!$oauthp->validateRequest())
 		{
 			return;
