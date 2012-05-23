@@ -50,7 +50,7 @@ if ($this->curtool) {
 }
 
 $this->resource->introtext = stripslashes($this->resource->introtext);
-$this->resource->fulltext = stripslashes($this->resource->fulltext);
+//$this->resource->fulltext = stripslashes($this->resource->fulltext);
 $this->resource->fulltext = ($this->resource->fulltext) ? trim($this->resource->fulltext) : trim($this->resource->introtext);
 
 // Parse for <nb: > tags
