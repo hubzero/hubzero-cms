@@ -649,7 +649,8 @@ class EventsController extends Hubzero_Controller
 			$event_down->addDays(1);
 		}
 
-		$row->time_zone = JText::_(strtoupper($row->time_zone));
+		// Get time zone name (i.e. not just offset - ex: '-5')
+		$row->time_zone = EventsHtml::getTimeZoneName($row->time_zone);
 
 		// Parse http and mailto
 		$alphadigit = "([a-z]|[A-Z]|[0-9])";
@@ -1320,7 +1321,7 @@ class EventsController extends Hubzero_Controller
 				$start_time = "08:00";
 				$end_time = "17:00";
 				$registerby_time = "08:00";
-				$time_zone = "est";
+				$time_zone = -5;
 			}
 
 			// If user hits refresh, try to maintain event form state
@@ -1546,7 +1547,7 @@ class EventsController extends Hubzero_Controller
 		$end_time   = JRequest::getVar( 'end_time', '17:00', 'post' );
 		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = JRequest::getInt( 'end_pm', 0, 'post' );
-		$time_zone	= JRequest::getVar( 'time_zone', 'est', 'post');
+		$time_zone	= JRequest::getVar( 'time_zone', -5, 'post');
 
 		$reccurweekdays = JRequest::getVar( 'reccurweekdays', array(), 'post' );
 		$reccurweeks    = JRequest::getVar( 'reccurweeks', array(), 'post' );

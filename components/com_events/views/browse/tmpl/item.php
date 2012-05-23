@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// Get abbreviated time zone (i.e just the UTC offset)
+$tz = explode(")", EventsHtml::getTimeZoneName($this->row->time_zone));
+$tz = $tz[0].")";
+
 $this->row->content = stripslashes($this->row->content);
 $this->row->content = str_replace('<br />','',$this->row->content);
 //$this->row->content = EventsHtml::encode_html($this->row->content);
@@ -65,17 +69,17 @@ if ($this->row->start_date == $this->row->stop_date) {
 	if ($this->showdate) {
 		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, '%d %b, %Y', 0).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0).' ('.strtoupper($this->row->time_zone).')</dd>'."\n";
-	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, '%I:%M %p', 0).' ('.strtoupper($this->row->time_zone).')</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0).'&nbsp;'.$tz.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, '%I:%M %p', 0).'&nbsp;'.$tz.'</dd>'."\n";
 } else {
 	if ($this->showdate) {
 		$html .= "\t\t\t".'<dt class="starttime">'.JHTML::_('date',$this->row->publish_up, '%d %b, %Y', 0).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0).' ('.strtoupper($this->row->time_zone).')</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0).'&nbsp;'.$tz.'</dd>'."\n";
 	if ($this->showdate) {
 		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, '%d %b, %Y', 0).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, '%I:%M %p', 0).' ('.strtoupper($this->row->time_zone).')</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, '%I:%M %p', 0).'&nbsp;'.$tz.'</dd>'."\n";
 }
 $html .= "\t\t".'</dl><div class="ewrap">'."\n";
 $html .= "\t\t".'<p class="title"><a href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. stripslashes($this->row->title) .'</a></p>'."\n";

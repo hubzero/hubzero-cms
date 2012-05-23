@@ -330,28 +330,110 @@ class EventsHtml
 	}
 
 	/**
-	 * Short description for 'buildTimeZoneSelect'
+	 * Build a time zone select list for events
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tzselected Parameter description (if any) ...
-	 * @param      unknown $args Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      $tzselected - currently selected time zone
+	 * @param      $args - styles for field
+	 * @return     Return - select list of time zones, with current time zone selected (if applicable)
 	 */
 	public function buildTimeZoneSelect($tzselected, $args)
 	{
-		$timezones[] = JHTML::_('select.option', 'est', JText::_('EVENTS_CAL_TIME_ZONE_EST'), 'value', 'text');
-		$timezones[] = JHTML::_('select.option', 'edt', JText::_('EVENTS_CAL_TIME_ZONE_EDT'), 'value', 'text');
-		$timezones[] = JHTML::_('select.option', 'cst', JText::_('EVENTS_CAL_TIME_ZONE_CST'), 'value', 'text');
-		$timezones[] = JHTML::_('select.option', 'cdt', JText::_('EVENTS_CAL_TIME_ZONE_CDT'), 'value', 'text');
-		$timezones[] = JHTML::_('select.option', 'mst', JText::_('EVENTS_CAL_TIME_ZONE_MST'), 'value', 'text');
-		$timezones[] = JHTML::_('select.option', 'mdt', JText::_('EVENTS_CAL_TIME_ZONE_MDT'), 'value', 'text');
-		$timezones[] = JHTML::_('select.option', 'pst', JText::_('EVENTS_CAL_TIME_ZONE_PST'), 'value', 'text');
-		$timezones[] = JHTML::_('select.option', 'pdt', JText::_('EVENTS_CAL_TIME_ZONE_PDT'), 'value', 'text');
+		$timezones = array (
+			JHTML::_('select.option', -12,   JText::_('(UTC -12:00) International Date Line West')),
+			JHTML::_('select.option', -11,   JText::_('(UTC -11:00) Midway Island, Samoa')),
+			JHTML::_('select.option', -10,   JText::_('(UTC -10:00) Hawaii')),
+			JHTML::_('select.option', -9.5,  JText::_('(UTC -09:30) Taiohae, Marquesas Islands')),
+			JHTML::_('select.option', -9,    JText::_('(UTC -09:00) Alaska')),
+			JHTML::_('select.option', -8,    JText::_('(UTC -08:00) Pacific Time (US &amp; Canada)')),
+			JHTML::_('select.option', -7,    JText::_('(UTC -07:00) Mountain Time (US &amp; Canada)')),
+			JHTML::_('select.option', -6,    JText::_('(UTC -06:00) Central Time (US &amp; Canada), Mexico City')),
+			JHTML::_('select.option', -5,    JText::_('(UTC -05:00) Eastern Time (US &amp; Canada), Bogota, Lima')),
+			JHTML::_('select.option', -4,    JText::_('(UTC -04:00) Atlantic Time (Canada), Caracas, La Paz')),
+			JHTML::_('select.option', -4.5,  JText::_('(UTC -04:30) Venezuela')),
+			JHTML::_('select.option', -3.5,  JText::_('(UTC -03:30) St. John\'s, Newfoundland, Labrador')),
+			JHTML::_('select.option', -3,    JText::_('(UTC -03:00) Brazil, Buenos Aires, Georgetown')),
+			JHTML::_('select.option', -2,    JText::_('(UTC -02:00) Mid-Atlantic')),
+			JHTML::_('select.option', -1,    JText::_('(UTC -01:00) Azores, Cape Verde Islands')),
+			JHTML::_('select.option', 0,     JText::_('(UTC 00:00) Western Europe Time, London, Lisbon, Casablanca')),
+			JHTML::_('select.option', 1,     JText::_('(UTC +01:00) Amsterdam, Berlin, Brussels, Copenhagen, Madrid, Paris')),
+			JHTML::_('select.option', 2,     JText::_('(UTC +02:00) Istanbul, Jerusalem, Kaliningrad, South Africa')),
+			JHTML::_('select.option', 3,     JText::_('(UTC +03:00) Baghdad, Riyadh, Moscow, St. Petersburg')),
+			JHTML::_('select.option', 3.5,   JText::_('(UTC +03:30) Tehran')),
+			JHTML::_('select.option', 4,     JText::_('(UTC +04:00) Abu Dhabi, Muscat, Baku, Tbilisi')),
+			JHTML::_('select.option', 4.5,   JText::_('(UTC +04:30) Kabul')),
+			JHTML::_('select.option', 5,     JText::_('(UTC +05:00) Ekaterinburg, Islamabad, Karachi, Tashkent')),
+			JHTML::_('select.option', 5.5,   JText::_('(UTC +05:30) Bombay, Calcutta, Madras, New Delhi, Colombo')),
+			JHTML::_('select.option', 5.75,  JText::_('(UTC +05:45) Kathmandu')),
+			JHTML::_('select.option', 6,     JText::_('(UTC +06:00) Almaty, Dhaka')),
+			JHTML::_('select.option', 6.5,   JText::_('(UTC +06:30) Yagoon')),
+			JHTML::_('select.option', 7,     JText::_('(UTC +07:00) Bangkok, Hanoi, Jakarta')),
+			JHTML::_('select.option', 8,     JText::_('(UTC +08:00) Beijing, Perth, Singapore, Hong Kong')),
+			JHTML::_('select.option', 8.75,  JText::_('(UTC +08:00) Ulaanbaatar, Western Australia')),
+			JHTML::_('select.option', 9,     JText::_('(UTC +09:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk')),
+			JHTML::_('select.option', 9.5,   JText::_('(UTC +09:30) Adelaide, Darwin, Yakutsk')),
+			JHTML::_('select.option', 10,    JText::_('(UTC +10:00) Eastern Australia, Guam, Vladivostok')),
+			JHTML::_('select.option', 10.5,  JText::_('(UTC +10:30) Lord Howe Island (Australia)')),
+			JHTML::_('select.option', 11,    JText::_('(UTC +11:00) Magadan, Solomon Islands, New Caledonia')),
+			JHTML::_('select.option', 11.5,  JText::_('(UTC +11:30) Norfolk Island')),
+			JHTML::_('select.option', 12,    JText::_('(UTC +12:00) Auckland, Wellington, Fiji, Kamchatka')),
+			JHTML::_('select.option', 12.75, JText::_('(UTC +12:45) Chatham Island')),
+			JHTML::_('select.option', 13,    JText::_('(UTC +13:00) Tonga')),
+			JHTML::_('select.option', 14,    JText::_('(UTC +14:00) Kiribati')),);
 
-		$tzlist = JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected, false, false );
+		return JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
+	}
 
-		return $tzlist;
+	/**
+	 * Get text/name for time zone offset number
+	 * 
+	 * @param      $tz - time zone of which to retrieve name
+	 * @return     Return - time zone name for offset given
+	 */
+	public function getTimeZoneName($tz)
+	{
+		$timezones = array (
+			"-12"   => "(UTC -12:00) International Date Line West",
+			"-11"   => "(UTC -11:00) Midway Island, Samoa",
+			"-10"   => "(UTC -10:00) Hawaii",
+			"-9.5"  => "(UTC -09:30) Taiohae, Marquesas Islands",
+			"-9"    => "(UTC -09:00) Alaska",
+			"-8"    => "(UTC -08:00) Pacific Time (US &amp; Canada)",
+			"-7"    => "(UTC -07:00) Mountain Time (US &amp; Canada)",
+			"-6"    => "(UTC -06:00) Central Time (US &amp; Canada), Mexico City",
+			"-5"    => "(UTC -05:00) Eastern Time (US &amp; Canada), Bogota, Lima",
+			"-4"    => "(UTC -04:00) Atlantic Time (Canada), Caracas, La Paz",
+			"-4.5"  => "(UTC -04:30) Venezuela",
+			"-3.5"  => "(UTC -03:30) St. John's, Newfoundland, Labrador",
+			"-3"    => "(UTC -03:00) Brazil, Buenos Aires, Georgetown",
+			"-2"    => "(UTC -02:00) Mid-Atlantic",
+			"-1"    => "(UTC -01:00) Azores, Cape Verde Islands",
+			"0"     => "(UTC 00:00) Western Europe Time, London, Lisbon, Casablanca",
+			"1"     => "(UTC +01:00) Amsterdam, Berlin, Brussels, Copenhagen, Madrid, Paris",
+			"2"     => "(UTC +02:00) Istanbul, Jerusalem, Kaliningrad, South Africa",
+			"3"     => "(UTC +03:00) Baghdad, Riyadh, Moscow, St. Petersburg",
+			"3.5"   => "(UTC +03:30) Tehran",
+			"4"     => "(UTC +04:00) Abu Dhabi, Muscat, Baku, Tbilisi",
+			"4.5"   => "(UTC +04:30) Kabul",
+			"5"     => "(UTC +05:00) Ekaterinburg, Islamabad, Karachi, Tashkent",
+			"5.5"   => "(UTC +05:30) Bombay, Calcutta, Madras, New Delhi, Colombo",
+			"5.75"  => "(UTC +05:45) Kathmandu",
+			"6"     => "(UTC +06:00) Almaty, Dhaka",
+			"6.5"   => "(UTC +06:30) Yagoon",
+			"7"     => "(UTC +07:00) Bangkok, Hanoi, Jakarta",
+			"8"     => "(UTC +08:00) Beijing, Perth, Singapore, Hong Kong",
+			"8.75"  => "(UTC +08:00) Ulaanbaatar, Western Australia",
+			"9"     => "(UTC +09:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk",
+			"9.5"   => "(UTC +09:30) Adelaide, Darwin, Yakutsk",
+			"10"    => "(UTC +10:00) Eastern Australia, Guam, Vladivostok",
+			"10.5"  => "(UTC +10:30) Lord Howe Island (Australia)",
+			"11"    => "(UTC +11:00) Magadan, Solomon Islands, New Caledonia",
+			"11.5"  => "(UTC +11:30) Norfolk Island",
+			"12"    => "(UTC +12:00) Auckland, Wellington, Fiji, Kamchatka",
+			"12.75" => "(UTC +12:45) Chatham Island",
+			"13"    => "(UTC +13:00) Tonga",
+			"14"    => "(UTC +14:00) Kiribati",);
+
+		return $timezones[$tz];
 	}
 
 	/**
