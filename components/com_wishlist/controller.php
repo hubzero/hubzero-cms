@@ -781,8 +781,8 @@ class WishlistController extends JObject
 
 			if($wish->private && $juser->get('guest')) {
 				// need to log in to view private wish
-				$this->_msg = 'WARNING_LOGIN_PRIVATE_WISH';
-				$this->login($msg);
+				$this->_msg = JText::_('WARNING_LOGIN_PRIVATE_WISH');
+				$this->login();
 				return;
 			}
 

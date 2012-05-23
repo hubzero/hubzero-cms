@@ -57,7 +57,8 @@ if ($this->reply->comment)
 	$this->reply->comment = stripslashes($this->reply->comment);
 	$this->reply->comment = preg_replace('/<br(\s+)\/?>/', '', $this->reply->comment);
 	$this->reply->comment = preg_replace('/\[(attachment #[0-9]{1,} not found)\]/', "$1", $this->reply->comment);
-	$this->reply->comment = $p->parse("\n" . $this->reply->comment, $wikiconfig);
+	
+	//$this->reply->comment = $p->parse("\n" . $this->reply->comment, $wikiconfig);
 }
 
 //$commenttype = $this->reply->added_by == $this->wishauthor && $this->reply->anonymous != 1 ?  'submittercomment' : 'plaincomment';
