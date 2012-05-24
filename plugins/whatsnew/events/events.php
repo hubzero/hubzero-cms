@@ -50,20 +50,6 @@ class plgWhatsnewEvents extends JPlugin
 		parent::__construct($subject, $config);
 
 		$this->loadLanguage();
-
-		$this->yearFormat = '%Y';
-		$this->dayFormat = '%d';
-		$this->monthFormat = '%b';
-		$this->timeFormat = '%I:%M %p';
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->yearFormat = 'Y';
-			$this->monthFormat = 'M';
-			$this->dayFormat = 'd';
-			$this->timeFormat = 'h:i a';
-			$this->tz = true;
-		}
 	}
 
 	/**
@@ -172,13 +158,27 @@ class plgWhatsnewEvents extends JPlugin
 	 */
 	public function out($row, $period)
 	{
+		$yearFormat = '%Y';
+		$dayFormat = '%d';
+		$monthFormat = '%b';
+		$timeFormat = '%I:%M %p';
+		$tz = 0;
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$yearFormat = 'Y';
+			$monthFormat = 'M';
+			$dayFormat = 'd';
+			$timeFormat = 'h:i a';
+			$tz = true;
+		}
+
 		$juri =& JURI::getInstance();
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="event">' . "\n";
-		$html .= "\t\t" . '<p class="event-date"><span class="month">' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '</span>';
-		$html .= '<span class="day">' . JHTML::_('date', $row->publish_up, $this->dayFormat, $this->tz) . '</span> ';
-		$html .= '<span class="year">' . JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '</span></p>' . "\n";
+		$html .= "\t\t" . '<p class="event-date"><span class="month">' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '</span>';
+		$html .= '<span class="day">' . JHTML::_('date', $row->publish_up, $dayFormat, $tz) . '</span> ';
+		$html .= '<span class="year">' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '</span></p>' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>'."\n";
 		if ($row->itext) 
 		{
