@@ -193,16 +193,31 @@ class ContribtoolController extends JObject
 	 */
 	private function getScripts($option='',$name='')
 	{
-		$document =& JFactory::getDocument();
-		if ($option) {
-			$name = ($name) ? $name : $option;
-			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_'.$option.DS.$name.'.js')) {
-				$document->addScript('/components'.DS.'com_'.$option.DS.$name.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('/components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
+		$document = JFactory::getDocument();
+
+		$option = ($option) ? $option : $this->_option;
+		if (substr($option, 0, strlen('com_')) !== 'com_')
+		{
+			$option = 'com_' . $option;
+		}
+		$script = ($script) ? $script : $this->_name;
+
+		$path = DS . 'components' . DS . $option . DS . $script . '.js';
+		$pathAlt = null;
+
+		$document = JFactory::getDocument();
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$pathAlt = DS . 'components' . DS . $option . DS . $script . '.jquery.js';
+		}
+
+		if ($pathAlt && is_file(JPATH_ROOT . $pathAlt))
+		{
+			$document->addScript($pathAlt);
+		}
+		else if (is_file(JPATH_ROOT . $path))
+		{
+			$document->addScript($path);
 		}
 	}
 

@@ -24,34 +24,29 @@ HUB.ContribTool = {
 	canceltool : '#ctCancel',
 	commentarea : '#ctComment',
 	admintools : '#admintools',
+	templatepath : '',
 	
 	initialize: function() {
-		
-		
-		
 		if($('#ctSending')) {
-		HUB.ContribTool.hide(HUB.ContribTool.loader);
+			HUB.ContribTool.hide(HUB.ContribTool.loader);
 		}
 		if($('#ctCancel')) {
-		HUB.ContribTool.hide(HUB.ContribTool.canceltool);
+			HUB.ContribTool.hide(HUB.ContribTool.canceltool);
 		}
 		if($('#ctComment')) {
-		HUB.ContribTool.hide(HUB.ContribTool.commentarea);
+			HUB.ContribTool.hide(HUB.ContribTool.commentarea);
 		}
 		
 		
-		var editform = document.getElementById("hubForm");
-		if (editform) {
-			$('.returntoedit').each(function(i, item) {
-				item.on('click', function() {
-					var editform = document.getElementById("hubForm");
-					editform.step.value = editform.step.value-2;
-					editform.task.value = "start";
-					editform.submit();
-					return false;
-				});
+		$('.returntoedit').each(function(i, item) {
+			$(item).on('click', function() {
+				var editform = document.getElementById("hubForm");
+				editform.step.value = editform.step.value-2;
+				editform.task.value = "start";
+				editform.submit();
+				return false;
 			});
-		}
+		});
 		
 		
 		if ($('#admintools')) { // show admin controls from start
@@ -132,30 +127,28 @@ HUB.ContribTool = {
 		}
 		
 		// change status
-		var flip = $('.flip');
-		if (flip) {
-			flip.each(function(i, item) {
-				$(item).on('click', function(){
-					var newi = $(this.parentNode).attr('id').replace('_', '');
-					var frm2 = document.getElementById(HUB.ContribTool.statusform);
-					frm2.newstate.value = newi;
-					frm2.submit( );
-					return false;
-				});
+		$('.flip').each(function(i, item) {
+			$(item).on('click', function(){
+				var newi = $(this.parentNode).attr('id').replace('_', '');
+				$('#newstate').val(newi);
+				$(HUB.ContribTool.statusform).submit();
+				return false;
 			});
-		}
+		});
 		
 		// flip license code
 		if ($('#curcode')) {
-			var sel = getSelectedOption('versionForm', 't_code');
-			if (sel.value == "@OPEN") {
-				HUB.ContribTool.show($('#lic'));
-				HUB.ContribTool.show($('#legendnotes'));
-				HUB.ContribTool.hide($('#lic_cl'));
-			} else {
-				HUB.ContribTool.hide($('#lic'));
-				HUB.ContribTool.hide($('#legendnotes'));
-				HUB.ContribTool.show($('#lic_cl'));
+			if (document.getElementById('versionForm')) {
+				var sel = getSelectedOption('versionForm', 't_code');
+				if (sel.value == "@OPEN") {
+					HUB.ContribTool.show($('#lic'));
+					HUB.ContribTool.show($('#legendnotes'));
+					HUB.ContribTool.hide($('#lic_cl'));
+				} else {
+					HUB.ContribTool.hide($('#lic'));
+					HUB.ContribTool.hide($('#legendnotes'));
+					HUB.ContribTool.show($('#lic_cl'));
+				}
 			}
 			
 			$('#t_code').on('change', function(){
@@ -194,19 +187,25 @@ HUB.ContribTool = {
 		var groups = $('.groupchoices');
 		if (groups) {
 			groups.each(function(i, item) {
-				item.on('change', function(){
+				$(item).on('change', function(){
 					HUB.ContribTool.checkGroup(this.selectedIndex, this.length);
 				});
 			});
 		}
 		
+		$('script').each(function(i, s) {
+			if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
+				HUB.ContribTool.templatepath = s.src.replace(/js\/hub\.jquery\.js(\?.*)?$/,'');
+			}
+		});
+		
 		// admin actions
 		var admincalls = $('.admincall');
 		if (admincalls) {
 			admincalls.each(function(i, item) {
-				item.on('click', function(){
-					var actionlabel = $(item.parentNode).getProperty('id');
-					var frm = document.getElementById(HUB.ContribTool.form);
+				$(item).on('click', function(){
+					var actionlabel = $($(this).parent()).attr('id');
+					var frm = document.getElementById(HUB.ContribTool.form.replace('#', ''));
 				
 					var actiontxt = '';
 					if (actionlabel == 'publishtool') {
@@ -221,15 +220,11 @@ HUB.ContribTool = {
 						actiontxt =  'Performing action...';
 					}
 				
-					$(HUB.ContribTool.loader).empty();
-					var p = new Element('p');
-					var img = new Element('img', {'src':HUB.Base.templatepath+'html/com_contribtool/images/ajax-loader.gif'}).injectInside(p);
-					var txt = document.createTextNode(actiontxt);
-					p.appendChild(txt);
-					$(HUB.ContribTool.loader).appendChild(p);
-				
-					frm.task.value = actionlabel;
-					frm.no_html.value = 1;
+					$(HUB.ContribTool.loader).html('');
+					$('<p><img src="' + HUB.ContribTool.templatepath + 'html/com_contribtool/images/ajax-loader.gif" />' + actiontxt + '</p>').appendTo($(HUB.ContribTool.loader));
+
+					frm.elements['task'].value = actionlabel;
+					frm.elements['no_html'].value = 1;
 					HUB.ContribTool.sendForm();
 					return false;
 				});
@@ -238,15 +233,17 @@ HUB.ContribTool = {
 	},
 
 	licOptions: function() {
-		var sel = getSelectedOption( 'versionForm', 't_code' );
-		if (sel.value == "@OPEN") {
-			HUB.ContribTool.show($('#lic'));
-			HUB.ContribTool.show($('#legendnotes'));
-			HUB.ContribTool.hide($('#lic_cl'));
-		} else {
-			HUB.ContribTool.hide($('#lic'));
-			HUB.ContribTool.hide($('#legendnotes'));
-			HUB.ContribTool.show($('#lic_cl'));
+		if (document.getElementById('versionForm')) {
+			var sel = getSelectedOption( 'versionForm', 't_code' );
+			if (sel.value == "@OPEN") {
+				HUB.ContribTool.show($('#lic'));
+				HUB.ContribTool.show($('#legendnotes'));
+				HUB.ContribTool.hide($('#lic_cl'));
+			} else {
+				HUB.ContribTool.hide($('#lic'));
+				HUB.ContribTool.hide($('#legendnotes'));
+				HUB.ContribTool.show($('#lic_cl'));
+			}
 		}
 	},
 	
@@ -271,12 +268,10 @@ HUB.ContribTool = {
 		HUB.ContribTool.show(HUB.ContribTool.loader);
 		HUB.ContribTool.hide(HUB.ContribTool.success);
 		
-		$(HUB.ContribTool.form).send({
-				update: HUB.ContribTool.success,
-				onComplete: function() {
-					HUB.ContribTool.hideTimer();
-				}
-        });
+		$.post('/index.php', $(HUB.ContribTool.form).serialize(), function(data){
+			$(HUB.ContribTool.success).html(data);
+			HUB.ContribTool.hideTimer();
+		});
 	},
 	
 	hide: function(obj) {
