@@ -475,7 +475,7 @@ class MembersController extends Hubzero_Controller
 		$profile = Hubzero_User_Profile::getInstance($id);
 
 		// Ensure we have a member
-		if (!$profile->get('name') && !$profile->get('surname')) 
+		if (!is_object($profile) || (!$profile->get('name') && !$profile->get('surname'))) 
 		{
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
