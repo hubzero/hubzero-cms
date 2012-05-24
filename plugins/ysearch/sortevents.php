@@ -31,32 +31,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/**
- * Short description for 'plgYSearchSortEvents'
- * 
- * Long description (if any) ...
- */
-class plgYSearchSortEvents extends YSearchPlugin
-{
-
-	/**
-	 * Short description for 'onYSearchSort'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public static function onYSearchSort($a, $b)
-	{
-		if (!isset($_GET['dbg']))
-			return 0;
-
-		if ($a->get_plugin() !== 'events' || $b->get_plugin() !== 'events' || $a->get_date() === $b->get_date())
-			return 0;
-
-		return $a->get_date() > $b->get_date() ? 1 : -1;
-	}
-}
-
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'ysearch' . DS . 'sortevents' . DS . 'sortevents.php');

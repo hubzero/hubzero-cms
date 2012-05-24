@@ -31,32 +31,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/**
- * Short description for 'plgYSearchWeightContributor'
- * 
- * Long description (if any) ...
- */
-class plgYSearchWeightContributor
-{
-
-	/**
-	 * Short description for 'onYSearchWeightAll'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $terms Parameter description (if any) ...
-	 * @param      object $res Parameter description (if any) ...
-	 * @return     float Return description (if any) ...
-	 */
-  public static function onYSearchWeightAll($terms, $res)
-  {
-    $pos_terms = $terms->get_positive_chunks();
-
-    foreach (array_map('strtolower', $res->get_contributors()) as $contributor)
-      foreach ($pos_terms as $term)
-        if (strpos($contributor, $term) !== false)
-          return 1.0;
-    return 0.5;
-  }
-}
-
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'ysearch' . DS . 'weightcontributor' . DS . 'weightcontributor.php');

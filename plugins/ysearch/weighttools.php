@@ -31,26 +31,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/**
- * Short description for 'plgYSearchWeightTools'
- * 
- * Long description (if any) ...
- */
-class plgYSearchWeightTools
-{
-
-	/**
-	 * Short description for 'onYSearchWeightResources'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $_terms Parameter description (if any) ...
-	 * @param      object $res Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public static function onYSearchWeightResources($_terms, $res)
-	{
-		return $res->get_plugin() == 'resources' && $res->get_section() == 'Tools' ? 1 : 0.5;
-	}
-}
-
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'ysearch' . DS . 'weighttools' . DS . 'weighttools.php');
