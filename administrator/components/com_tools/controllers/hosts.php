@@ -313,10 +313,10 @@ class ToolsControllerHosts extends Hubzero_Controller
 		{
 			for ($i=0; $i < count($rows); $i++)
 			{
-				$row = $rows[$i];
-				if (isset($harr[$row->name])) 
+				$arow = $rows[$i];
+				if (isset($harr[$arow->name])) 
 				{
-					$row->provisions += $row->value;
+					$row->provisions += $arow->value;
 				}
 			}
 		}
@@ -336,7 +336,7 @@ class ToolsControllerHosts extends Hubzero_Controller
 		}
 
 		// Store new content
-		if (!$row->store($insert)) 
+		if (!$row->store($insert, $fields['id'])) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);

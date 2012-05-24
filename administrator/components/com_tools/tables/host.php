@@ -120,7 +120,7 @@ class MwHost extends JTable
 	 * @param boolean If false, null object variables are not updated
 	 * @return null|string null if successful otherwise returns and error message
 	 */
-	public function store($insert=null, $updateNulls=false)
+	public function store($insert=null, $kv=null, $updateNulls=false)
 	{
 		$xlog = &Hubzero_Factory::getLogger();
 		$k = $this->_tbl_key;
@@ -137,7 +137,32 @@ class MwHost extends JTable
 		{
 			if ($this->$k)
 			{
-				$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+				//$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+				$fmtsql = "UPDATE $this->_tbl SET %s WHERE %s";
+				$tmp = array();
+				foreach (get_object_vars($this) as $ky => $v)
+				{
+					if (is_array($v) or is_object($v) or $ky[0] == '_' ) 
+					{ // internal or NA field
+						continue;
+					}
+					if ($ky == $this->_tbl_key) 
+					{ // PK not to be updated
+						$where = $this->_tbl_key . '=' . ($kv ? $this->_db->Quote($kv) : $this->_db->Quote($v));
+						//continue;
+					}
+					if ($v === null)
+					{
+						continue;
+					} 
+					else 
+					{
+						$val = $this->_db->isQuoted($ky) ? $this->_db->Quote($v) : (int) $v;
+					}
+					$tmp[] = $this->_db->nameQuote($ky) . '=' . $val;
+				}
+				$this->_db->setQuery(sprintf($fmtsql, implode(',', $tmp), $where));
+				$ret = $this->_db->query();
 			}
 			else
 			{
