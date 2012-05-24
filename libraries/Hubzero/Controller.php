@@ -401,7 +401,14 @@ class Hubzero_Controller extends JObject
 	protected function _getStyles($option='', $stylesheet='')
 	{
 		ximport('Hubzero_Document');
+
 		$option = ($option) ? $option : $this->_option;
+		if (substr($option, 0, strlen('com_')) !== 'com_')
+		{
+			$option = 'com_' . $option;
+		}
+		//$stylesheet = ($stylesheet) ? $stylesheet : $this->_name;
+
 		Hubzero_Document::addComponentStylesheet($option, $stylesheet);
 	}
 
@@ -415,28 +422,16 @@ class Hubzero_Controller extends JObject
 	 */
 	protected function _getScripts($script='', $option='')
 	{
-		$document = JFactory::getDocument();
+		ximport('Hubzero_Document');
 
 		$option = ($option) ? $option : $this->_option;
+		if (substr($option, 0, strlen('com_')) !== 'com_')
+		{
+			$option = 'com_' . $option;
+		}
 		$script = ($script) ? $script : $this->_name;
 
-		$path = DS . 'components' . DS . $option . DS . $script . '.js';
-		$pathAlt = null;
-
-		$document = JFactory::getDocument();
-		if (JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$pathAlt = DS . 'components' . DS . $option . DS . $script . '.jquery.js';
-		}
-
-		if ($pathAlt && is_file(JPATH_ROOT . $pathAlt))
-		{
-			$document->addScript($pathAlt);
-		}
-		else if (is_file(JPATH_ROOT . $path))
-		{
-			$document->addScript($path);
-		}
+		Hubzero_Document::addComponentScript($option, $script);
 	}
 
 	/**
