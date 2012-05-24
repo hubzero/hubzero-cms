@@ -220,7 +220,9 @@ foreach ($this->results as $category)
 			$html .= call_user_func(array($obj, 'documents'));
 		}
 
-		$feed = JRoute::_('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period)));
+		$act = ($this->active) ? $this->active : $this->cats[$k]['category'];
+
+		$feed = JRoute::_('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
 		if (substr($feed, 0, 4) != 'http') 
 		{
 			if (substr($feed, 0, 1) != DS) 

@@ -39,6 +39,18 @@ ximport('Hubzero_Controller');
 class WhatsnewControllerResults extends Hubzero_Controller
 {
 	/**
+	 * Execute a task
+	 * 
+	 * @return     void
+	 */
+	public function execute()
+	{
+		$this->registerTask('feedrss', 'feed');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of new item's
 	 * 
 	 * @return     void
