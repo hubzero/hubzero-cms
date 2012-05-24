@@ -1871,7 +1871,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$sessnum = '';
 		if ($sess) 
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'mw.utils.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 			$mwdb =& MwUtils::getMWDBO();
 
 			// retrieve the username and IP from session with this session token
