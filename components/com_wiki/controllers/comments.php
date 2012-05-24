@@ -195,7 +195,7 @@ class WikiControllerComments extends Hubzero_Controller
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
-		$this->view->title = ($this->page->title) ? $this->page->title : $this->splitPagename($this->pagename);
+		$this->view->title = $this->page->getTitle();
 
 		// Set the page's <title> tag
 		$document =& JFactory::getDocument();
