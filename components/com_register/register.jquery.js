@@ -415,8 +415,8 @@ HUB.Register = {
 		}
 		passwd = $('#password').val();
 
-		$.post('/register/passwordstrength', {'format': 'raw', 'pass':passwd, 'user':usernm}, function(data) {
-            $('#meter-container').html(data);
+		$.post('/register/passwordstrength?no_html=1', {'format': 'raw', 'pass':passwd, 'user':usernm}, function(data) {
+			$('#meter-container').html(data);
 		});
 	}
 }
