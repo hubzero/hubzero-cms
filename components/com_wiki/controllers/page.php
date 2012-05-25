@@ -674,6 +674,10 @@ class WikiControllerPage extends Hubzero_Controller
 			$a->path = $path;
 
 			$this->revision->pagehtml = $a->parse($this->revision->pagehtml);
+			if ($this->config->get('access-manage') || $this->config->get('access-edit')) 
+			{
+				$this->revision->approved = 1;
+			}
 
 			// Check content
 			if (!$this->revision->check()) 

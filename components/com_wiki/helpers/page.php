@@ -105,8 +105,10 @@ class WikiHelperPage
 			return $config;
 		}
 
+		$option = JRequest::getCmd('option', 'com_wiki');
+
 		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize('com_wiki', 'manage') || $juser->authorize('com_topics', 'manage')) 
+		if ($juser->authorize($option, 'manage')) 
 		{
 			$config->set('access-admin', true);
 			$config->set('access-manage', true);
