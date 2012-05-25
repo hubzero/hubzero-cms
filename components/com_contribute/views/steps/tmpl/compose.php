@@ -60,7 +60,7 @@ $fields = $elements->render();
 
 <div class="main section">
 <?php
-$view = new JView( array('name'=>'steps','layout'=>'steps') );
+$view = new JView(array('name'=>'steps','layout'=>'steps'));
 $view->option = $this->option;
 $view->step = $this->step;
 $view->steps = $this->steps;
@@ -78,15 +78,16 @@ $view->display();
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT_HINT'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABOUT'); ?></h3>
-			<label>
+			<legend><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABOUT'); ?></legend>
+
+			<label for="field-title">
 				<?php echo JText::_('COM_CONTRIBUTE_COMPOSE_TITLE'); ?>: <span class="required"><?php echo JText::_('COM_CONTRIBUTE_REQUIRED'); ?></span>
-				<input type="text" name="title" maxlength="250" value="<?php echo htmlentities(stripslashes($this->row->title), ENT_QUOTES); ?>" />
+				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</label>
-		
-			<label>
+
+			<label for="field-fulltext">
 				<?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
-				<textarea name="fulltext" cols="50" rows="20"><?php echo ContributeController::_txtUnpee(stripslashes($this->row->fulltext)); ?></textarea>
+				<textarea name="fulltext" id="field-fulltext" cols="50" rows="20"><?php echo ContributeController::_txtUnpee(stripslashes($this->row->fulltext)); ?></textarea>
 			</label>
 		</fieldset><div class="clear"></div>
 <?php if ($fields) { ?>

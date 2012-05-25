@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="submit" class="option" value="<?php echo JText::_('COM_CONTRIBUTE_UPLOAD'); ?>" />
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="no_html" value="1" />
+				<input type="hidden" name="tmpl" value="component" />
 				<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="path" id="path" value="<?php echo $this->path; ?>" />
 				<input type="hidden" name="task" value="saveattach" />
@@ -102,19 +102,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<td width="100%" class="<?php echo $liclass; ?>"><span class="ftitle item:name id:<?php echo $child->id; ?>"><?php echo $child->title; ?></span> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?></td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
-					    echo '<a href="index.php?option=com_contribute&amp;no_html=1&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=orderupa" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+					    echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=orderupa" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
 			  		} else {
 			  		    echo '&nbsp;';
 					}
 					?></td>
 					<td class="d"><?php
 					if ($i < $n-1 || $i+0 < $n-1) {
-						echo '<a href="index.php?option=com_contribute&amp;no_html=1&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=orderdowna" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+						echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=orderdowna" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
 			  		} else {
 			  		    echo '&nbsp;';
 					}
 					?></td>
-					<td class="t"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=deleteattach&amp;no_html=1&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></a></td>
+					<td class="t"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=deleteattach&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></a></td>
 				</tr>
 <?php
 				$i++;
