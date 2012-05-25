@@ -29,48 +29,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Search forum entries
+ * Tags plugin class for forum entries
  */
 class plgTagsForum extends JPlugin
 {
 	/**
-	 * Description for '_total'
+	 * Record count
 	 * 
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
-	 * Short description for 'plgTagsBlogs'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
+	 * @param      object &$subject The object to observe
+	 * @param      array  $config   An optional associative array of configuration settings.
 	 * @return     void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'tags', 'forum' );
 		$this->loadLanguage();
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->params = new JParameter($this->_plugin->params);
-		}
 	}
 
 	/**
-	 * Short description for 'onTagAreas'
+	 * Return the name of the area this plugin retrieves records for
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function onTagAreas()
 	{
@@ -79,38 +69,46 @@ class plgTagsForum extends JPlugin
 		);
 		return $areas;
 	}
-	
+
+	/**
+	 * Get the group IDs for all the groups of a specific user
+	 * 
+	 * @param      integer $uid User ID
+	 * @return     array
+	 */
 	private function _getGroupIds($uid=0)
 	{
 		$dbh =& JFactory::getDBO();
 		$dbh->setQuery(
-			'select distinct gidNumber from #__xgroups_members where uidNumber = '.$uid.' union select distinct gidNumber from #__xgroups_managers where uidNumber = '.$uid
+			'select distinct gidNumber from #__xgroups_members where uidNumber = ' . $uid . ' union select distinct gidNumber from #__xgroups_managers where uidNumber = ' . $uid
 		);
 		return $dbh->loadResultArray();
 	}
 
 	/**
-	 * Short description for 'onTagView'
+	 * Retrieve records for items tagged with specific tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $tags Parameter description (if any) ...
-	 * @param      mixed $limit Parameter description (if any) ...
-	 * @param      integer $limitstart Parameter description (if any) ...
-	 * @param      string $sort Parameter description (if any) ...
-	 * @param      unknown $areas Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array   $tags       Tags to match records against
+	 * @param      mixed   $limit      SQL record limit
+	 * @param      integer $limitstart SQL record limit start
+	 * @param      string  $sort       The field to sort records by
+	 * @param      mixed   $areas      An array or string of areas that should retrieve records
+	 * @return     mixed Returns integer when counting records, array when retrieving records
 	 */
-	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		if (is_array( $areas ) && $limit) {
-			if (!array_intersect( $areas, $this->onTagAreas() ) && !array_intersect( $areas, array_keys( $this->onTagAreas() ) )) {
+		if (is_array($areas) && $limit) 
+		{
+			if (!array_intersect($areas, $this->onTagAreas()) 
+			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			{
 				return array();
 			}
 		}
 
 		// Do we have a member ID?
-		if (empty($tags)) {
+		if (empty($tags)) 
+		{
 			return array();
 		}
 
@@ -121,7 +119,7 @@ class plgTagsForum extends JPlugin
 		{
 			$ids[] = $tag->id;
 		}
-		$ids = implode(',',$ids);
+		$ids = implode(',', $ids);
 
 		$addtl_where = array();
 		$juser =& JFactory::getUser();
@@ -130,7 +128,7 @@ class plgTagsForum extends JPlugin
 			$gids = $this->_getGroupIds($juser->get('id'));
 			if (!$juser->authorise('core.view', 'com_forum'))
 			{
-				$addtl_where[] = 'e.group_id IN (0'.($gids ? ',' . join(',', $gids) : '').')';
+				$addtl_where[] = 'e.group_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 			}
 			else 
 			{
@@ -138,11 +136,11 @@ class plgTagsForum extends JPlugin
 
 				if ($gids)
 				{
-					$addtl_where[] = '(e.access IN ('.$viewlevels.') OR ((e.access = 4 OR e.access = 5) AND e.group_id IN (0,'.join(',', $gids).')))';
+					$addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.group_id IN (0,' . join(',', $gids) . ')))';
 				}
 				else 
 				{
-					$addtl_where[] = '(e.access IN ('.$viewlevels.'))';
+					$addtl_where[] = '(e.access IN (' . $viewlevels . '))';
 				}
 			}
 		}
@@ -157,7 +155,7 @@ class plgTagsForum extends JPlugin
 				$groups = $this->_getGroupIds($juser->get('id'));
 				if ($groups)
 				{
-					$addtl_where[] = '(e.access = 0 OR e.access = 1 OR ((e.access = 3 OR e.access = 4) AND e.group_id IN (0,'.join(',', $groups).')))';
+					$addtl_where[] = '(e.access = 0 OR e.access = 1 OR ((e.access = 3 OR e.access = 4) AND e.group_id IN (0,' . join(',', $groups) . ')))';
 				}
 				else
 				{
@@ -181,23 +179,26 @@ class plgTagsForum extends JPlugin
 					LEFT JOIN #__xgroups g ON g.gidNumber = e.group_id
 					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='forum' AND t.tagid IN ($ids)";
 		$e_where  = " WHERE e.state=1 AND e.parent=0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '');
-		$e_where .= " GROUP BY e.id HAVING uniques=".count($tags);
+		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
 			case 'title': $order_by .= 'title ASC, created';  break;
-			case 'id':    $order_by .= "id DESC";                break;
+			case 'id':    $order_by .= "id DESC";             break;
 			case 'date':
 			default:      $order_by .= 'created DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		if (!$limit) {
+		if (!$limit) 
+		{
 			// Get a count
-			$database->setQuery( $e_count . $e_from . $e_where .") AS f" );
+			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
-		} else {
+		} 
+		else 
+		{
 			if (count($areas) > 1) 
 			{
 				return $e_fields . $e_from . $e_where;
@@ -212,74 +213,40 @@ class plgTagsForum extends JPlugin
 			}
 
 			// Get results
-			$database->setQuery( $e_fields . $e_from . $e_where . $order_by );
+			$database->setQuery($e_fields . $e_from . $e_where . $order_by);
 			$rows = $database->loadObjectList();
-
-			/*if ($rows) 
-			{
-				foreach ($rows as $key => $row)
-				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_forum&section='.$row->data2.'&category='.$row->data1.'&thread='.$row->alias);
-				}
-			}*/
 
 			return $rows;
 		}
 	}
 
-	//----------------------------------------------------------
-	// Optional custom functions
-	// uncomment to use
-	//----------------------------------------------------------
-
-	/*public function documents() 
-	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addComponentStylesheet('com_blog');
-	}
-	
-	//-----------
-	
-	public function before()
-	{
-		// ...
-	}*/
-
 	/**
-	 * Short description for 'out'
+	 * Static method for formatting results
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $row Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object $row Database row
+	 * @return     string HTML
 	 */
-	public function out( $row )
+	public function out($row)
 	{
-		if (strstr( $row->href, 'index.php' )) {
-			$row->href = JRoute::_('index.php?option=com_kb&section='.$row->data2.'&category='.$row->data1.'&thread='.$row->alias);
+		if (strstr($row->href, 'index.php')) 
+		{
+			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&thread=' . $row->alias);
 		}
 		$juri =& JURI::getInstance();
-		if (substr($row->href,0,1) == '/') {
-			$row->href = substr($row->href,1,strlen($row->href));
-		}
-		
+
 		// Start building the HTML
-		$html  = "\t".'<li class="kb-entry">'."\n";
-		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
-		$html .= "\t\t".'<p class="details">'.JText::_('PLG_TAGS_FORUM').' &rsaquo; ' . stripslashes($row->data2) . ' &rsaquo; ' . stripslashes($row->data1) .'</p>'."\n";
-		if ($row->ftext) {
-			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
+		$html  = "\t" . '<li class="kb-entry">' . "\n";
+		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+		$html .= "\t\t" . '<p class="details">' . JText::_('PLG_TAGS_FORUM') . ' &rsaquo; ' . stripslashes($row->data2) . ' &rsaquo; ' . stripslashes($row->data1) . '</p>' . "\n";
+		if ($row->ftext) 
+		{
+			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
 		}
-		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
-		$html .= "\t".'</li>'."\n";
+		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t" . '</li>' . "\n";
 
 		// Return output
 		return $html;
 	}
-
-	/*public function after()
-	{
-		// ...
-	}*/
 }
 

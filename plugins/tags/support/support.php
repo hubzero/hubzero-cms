@@ -29,6 +29,26 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'plugins' . DS . 'tags' . DS . 'resources' . DS . 'resources.php');
+jimport('joomla.plugin.plugin');
+
+/**
+ * Tags plugin class for support tickets
+ */
+class plgTagsSupport extends JPlugin
+{
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$subject The object to observe
+	 * @param      array  $config   An optional associative array of configuration settings.
+	 * @return     void
+	 */
+	public function __construct(&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+
+		$this->loadLanguage();
+	}
+}

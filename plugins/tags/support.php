@@ -31,42 +31,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-JPlugin::loadLanguage( 'plg_tags_support' );
-
-/**
- * Short description for 'plgTagsSupport'
- * 
- * Long description (if any) ...
- */
-class plgTagsSupport extends JPlugin
-{
-
-	/**
-	 * Short description for 'plgTagsSupport'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function plgTagsSupport(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'tags', 'support' );
-		$this->_params = new JParameter( $this->_plugin->params );
-	}
-
-	/*public function onTagAreas()
-	{
-	}
-	
-	//-----------
-
-	public function onTagView( $tag, $limit=0, $limitstart=0, $areas=null )
-	{
-	}*/
-}
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'tags' . DS . 'support' . DS . 'support.php');

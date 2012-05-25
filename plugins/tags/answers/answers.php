@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Tags plugin class for Knowledge Base articles
+ * Tags plugin class for questions and answers
  */
-class plgTagsKb extends JPlugin
+class plgTagsAnswers extends JPlugin
 {
 	/**
 	 * Record count
@@ -67,7 +67,7 @@ class plgTagsKb extends JPlugin
 	public function onTagAreas()
 	{
 		$areas = array(
-			'kb' => JText::_('PLG_TAGS_KB')
+			'answers' => JText::_('PLG_TAGS_ANSWERS')
 		);
 		return $areas;
 	}
@@ -84,6 +84,7 @@ class plgTagsKb extends JPlugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
+		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit) 
 		{
 			if (!array_intersect($areas, $this->onTagAreas()) 
@@ -108,33 +109,31 @@ class plgTagsKb extends JPlugin
 		}
 		$ids = implode(',', $ids);
 
-		$now = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
-
 		// Build the query
-		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.alias, e.fulltext AS itext, e.fulltext AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, 
-					NULL AS publish_down, CONCAT('index.php?option=com_kb&section=&category=&alias=', e.alias) AS href, 'kb' AS section, COUNT(DISTINCT t.tagid) AS uniques, 
-					NULL AS params, e.helpful AS rcount, cc.alias AS data1, c.alias AS data2, NULL AS data3 ";
-		$e_from  = " FROM #__faq AS e
-		 			LEFT JOIN #__faq_categories AS c ON c.id = e.section 
-					LEFT JOIN #__faq_categories AS cc ON cc.id = e.category
-					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='kb' AND t.tagid IN ($ids)";
-		$e_where  = " WHERE e.state=1";
-		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
+		$f_count = "SELECT COUNT(f.id) FROM (SELECT a.id, COUNT(DISTINCT t.tagid) AS uniques ";
+
+		$f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by, 
+					NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href, 
+					'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params, 
+					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount, 
+					NULL AS data1, NULL AS data2, NULL AS data3 ";
+
+		$f_from  = " FROM #__answers_questions AS a, #__tags_object AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids)";
+		$f_from .= " GROUP BY a.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, created';  break;
-			case 'id':    $order_by .= "id DESC";                break;
+			case 'title': $order_by .= 'title ASC, created';    break;
+			case 'id':    $order_by .= "id DESC";               break;
 			case 'date':
 			default:      $order_by .= 'created DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
+		// Execute the query
 		if (!$limit) 
 		{
-			// Get a count
-			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
+			$database->setQuery($f_count . $f_from . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
 		} 
@@ -142,7 +141,7 @@ class plgTagsKb extends JPlugin
 		{
 			if (count($areas) > 1) 
 			{
-				return $e_fields . $e_from . $e_where;
+				return $f_fields . $f_from;
 			}
 
 			if ($this->_total != null) 
@@ -153,18 +152,20 @@ class plgTagsKb extends JPlugin
 				}
 			}
 
-			// Get results
-			$database->setQuery($e_fields . $e_from . $e_where . $order_by);
+			$database->setQuery($f_fields . $f_from .  $order_by);
 			$rows = $database->loadObjectList();
 
+			// Did we get any results?
 			if ($rows) 
 			{
+				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
+					$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id);
 				}
 			}
 
+			// Return the results
 			return $rows;
 		}
 	}
@@ -179,14 +180,22 @@ class plgTagsKb extends JPlugin
 	{
 		if (strstr($row->href, 'index.php')) 
 		{
-			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
+			$row->href = JRoute::_($row->href);
 		}
 		$juri =& JURI::getInstance();
-		//$row->href = ltrim($row->href, DS);
 
-		// Start building the HTML
-		$html  = "\t" . '<li class="kb-entry">' . "\n";
+		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+		$html .= "\t\t" . '<p class="details">';
+		if ($row->state == 1) 
+		{
+			$html .= JText::_('PLG_TAGS_ANSWERS_OPEN');
+		} 
+		else 
+		{
+			$html .= JText::_('PLG_TAGS_ANSWERS_CLOSED');
+		}
+		$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
 		if ($row->ftext) 
 		{
 			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
@@ -194,8 +203,6 @@ class plgTagsKb extends JPlugin
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
-		// Return output
 		return $html;
 	}
 }
-

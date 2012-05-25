@@ -29,53 +29,40 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.plugin.plugin' );
+jimport('joomla.plugin.plugin');
 
 /**
- * Short description for 'plgTagsCitations'
- * 
- * Long description (if any) ...
+ * Tags plugin class for citations
  */
 class plgTagsCitations extends JPlugin
 {
-
 	/**
-	 * Description for '_total'
+	 * Record count
 	 * 
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
-	 * Short description for 'plgTagsBlogs'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
+	 * @param      object &$subject The object to observe
+	 * @param      array  $config   An optional associative array of configuration settings.
 	 * @return     void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'tags', 'citations' );
 		$this->loadLanguage();
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->params = new JParameter($this->_plugin->params);
-		}
 	}
 
 	/**
-	 * Short description for 'onTagAreas'
+	 * Return the name of the area this plugin retrieves records for
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function onTagAreas()
 	{
@@ -86,27 +73,29 @@ class plgTagsCitations extends JPlugin
 	}
 
 	/**
-	 * Short description for 'onTagView'
+	 * Retrieve records for items tagged with specific tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $tags Parameter description (if any) ...
-	 * @param      mixed $limit Parameter description (if any) ...
-	 * @param      integer $limitstart Parameter description (if any) ...
-	 * @param      string $sort Parameter description (if any) ...
-	 * @param      unknown $areas Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array   $tags       Tags to match records against
+	 * @param      mixed   $limit      SQL record limit
+	 * @param      integer $limitstart SQL record limit start
+	 * @param      string  $sort       The field to sort records by
+	 * @param      mixed   $areas      An array or string of areas that should retrieve records
+	 * @return     mixed Returns integer when counting records, array when retrieving records
 	 */
-	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		if (is_array( $areas ) && $limit) {
-			if (!array_intersect( $areas, $this->onTagAreas() ) && !array_intersect( $areas, array_keys( $this->onTagAreas() ) )) {
+		if (is_array($areas) && $limit) 
+		{
+			if (!array_intersect($areas, $this->onTagAreas()) 
+			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			{
 				return array();
 			}
 		}
 
 		// Do we have a member ID?
-		if (empty($tags)) {
+		if (empty($tags)) 
+		{
 			return array();
 		}
 
@@ -117,14 +106,15 @@ class plgTagsCitations extends JPlugin
 		{
 			$ids[] = $tag->id;
 		}
-		$ids = implode(',',$ids);
+		$ids = implode(',', $ids);
 
-		$now = date( 'Y-m-d H:i:s', time() + 0 * 60 * 60 );
+		$now = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-					//"SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, NULL AS modified, e.publish_up, e.publish_down, CONCAT( 'index.php?option=com_blog&task=view&id=', e.id ) AS href, 'blog' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1, NULL AS data2, NULL AS data3 "
-		$e_fields = "SELECT e.id, e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal, e.url, 'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
+
+		$e_fields = "SELECT e.id, e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal, e.url, 
+					'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
 		$e_from  = " FROM #__citations AS e, #__tags_object AS t"; //", #__users AS u";
 		$e_where = " WHERE t.objectid=e.id AND t.tbl='citations' AND t.tagid IN ($ids)"; //e.uid=u.id AND 
 		/*$juser =& JFactory::getUser();
@@ -134,41 +124,52 @@ class plgTagsCitations extends JPlugin
 			$e_where .= " AND e.state>0";
 		}*/
 		$e_where .= " AND e.published=1 AND e.id!='' ";
-		$e_where .= " GROUP BY e.id HAVING uniques=".count($tags);
+		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
 			case 'title': $order_by .= 'title ASC, created';  break;
-			case 'id':    $order_by .= "id DESC";                break;
+			case 'id':    $order_by .= "id DESC";             break;
 			case 'date':
 			default:      $order_by .= 'created DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		if (!$limit) {
+		if (!$limit) 
+		{
 			// Get a count
-			$database->setQuery( $e_count . $e_from . $e_where .") AS f" );
+			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
-		} else {
-			if (count($areas) > 1) {
+		} 
+		else 
+		{
+			if (count($areas) > 1) 
+			{
 				return $e_fields . $e_from . $e_where;
 			}
 
-			if ($this->_total != null) {
-				if ($this->_total == 0) {
+			if ($this->_total != null) 
+			{
+				if ($this->_total == 0) 
+				{
 					return array();
 				}
 			}
 
 			// Get results
-			$database->setQuery( $e_fields . $e_from . $e_where . $order_by );
+			$database->setQuery($e_fields . $e_from . $e_where . $order_by);
 			$rows = $database->loadObjectList();
 
 			return $rows;
 		}
 	}
-	
+
+	/**
+	 * Return citation types
+	 * 
+	 * @return     array
+	 */
 	public function getTypes()
 	{
 		static $types;
@@ -188,54 +189,34 @@ class plgTagsCitations extends JPlugin
 		return $types;
 	}
 
-	//----------------------------------------------------------
-	// Optional custom functions
-	// uncomment to use
-	//----------------------------------------------------------
-
-	/*public function documents() 
-	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addComponentStylesheet('com_blog');
-	}
-	
-	//-----------
-	
-	public function before()
-	{
-		// ...
-	}*/
-
 	/**
-	 * Short description for 'out'
+	 * Static method for formatting results
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $row Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object $row Database row
+	 * @return     string HTML
 	 */
 	public function out($row)
 	{
-		$row->author = isset($row->alias) ? $row->alias : '';
-		$row->booktitle = isset($row->itext) ? $row->itext : '';
-		$row->doi = isset($row->ftext) ? $row->ftext : '';
-		$row->published = isset($row->state) ? $row->state : '';
-		$row->year = isset($row->created_by) ? $row->created_by : '';
-		$row->month = isset($row->modified) ? $row->modified : '';
-		$row->isbn = isset($row->publish_up) ? $row->publish_up : '';
-		$row->journal = isset($row->publish_down) ? $row->publish_down : '';
-		$row->url = isset($row->href) ? $row->href : '';
-		$row->volume = isset($row->params) ? $row->params : '';
-		$row->number = isset($row->rcount) ? $row->rcount : '';
-		$row->type = isset($row->data1) ? $row->data1 : '';
-		$row->pages = isset($row->data2) ? $row->data2 : '';
-		$row->publisher = isset($row->data3) ? $row->data3 : '';
-		
+		$row->author    = isset($row->alias)  ? $row->alias  : '';
+		$row->booktitle = isset($row->itext)  ? $row->itext  : '';
+		$row->doi       = isset($row->ftext)  ? $row->ftext  : '';
+		$row->published = isset($row->state)  ? $row->state  : '';
+		$row->year      = isset($row->created_by)   ? $row->created_by   : '';
+		$row->month     = isset($row->modified)     ? $row->modified     : '';
+		$row->isbn      = isset($row->publish_up)   ? $row->publish_up   : '';
+		$row->journal   = isset($row->publish_down) ? $row->publish_down : '';
+		$row->url       = isset($row->href)   ? $row->href   : '';
+		$row->volume    = isset($row->params) ? $row->params : '';
+		$row->number    = isset($row->rcount) ? $row->rcount : '';
+		$row->type      = isset($row->data1)  ? $row->data1  : '';
+		$row->pages     = isset($row->data2)  ? $row->data2  : '';
+		$row->publisher = isset($row->data3)  ? $row->data3  : '';
+
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');
 		$config = JComponentHelper::getParams('com_citations');
-		
+
 		switch ($config->get("citation_label", "number")) 
 		{
 			case 'none':   $citations_label_class = 'no-label';     break;
@@ -243,19 +224,22 @@ class plgTagsCitations extends JPlugin
 			case 'type':   $citations_label_class = 'type-label';   break;
 			case 'both':   $citations_label_class = 'both-label';   break;
 		}
-		
+
 		$formatter = new CitationFormat();
-		$formatter->setTemplate($config->get("citation_format", ""));
-		
+		$formatter->setTemplate($config->get('citation_format', ''));
+
 		// Start building the HTML
-		$html  = "\t".'<li class="citation-entry">'."\n";
-		$html .= "\t\t".'<p class="title"><a href="' . JRoute::_('index.php?option=com_citations&task=browse&type='.$row->type.'&year='.$row->year.'&search='.Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->title)), 50, 0)) . '">'.Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->title)), 200, 0).'</a></p>'."\n";
+		$html  = "\t" . '<li class="citation-entry">' . "\n";
+		$html .= "\t\t" . '<p class="title">';
+		$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->title)), 50, 0)) . '">';
+		$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->title)), 200, 0);
+		$html .= '</a></p>'."\n";
 		$html .= '<p class="details '. $citations_label_class . '">' . JText::_('PLG_TAGS_CITATION');
-		if ($config->get("citation_label", "number") != "none") 
+		if ($config->get('citation_label', 'number') != 'none') 
 		{
 			$types = plgTagsCitations::getTypes();
-			
-			$type = "";
+
+			$type = '';
 			foreach ($types as $t) 
 			{
 				if ($t['id'] == $row->type) 
@@ -263,21 +247,16 @@ class plgTagsCitations extends JPlugin
 					$type = $t['type_title'];
 				}
 			}
-			$type = ($type != "") ? $type : "Generic";
+			$type = ($type != '') ? $type : 'Generic';
 
 			$html .= ' <span>|</span> ' . $type;
 		}
 		$html .= '</p>';
 		$html .= '<p>' . $formatter->formatCitation($row, null, $config->get("citation_coins", 1), $config) . '</p>';
-		$html .= "\t".'</li>'."\n";
+		$html .= "\t" . '</li>'."\n";
 
 		// Return output
 		return $html;
 	}
-
-	/*public function after()
-	{
-		// ...
-	}*/
 }
 

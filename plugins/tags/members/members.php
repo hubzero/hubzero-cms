@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Tags plugin class for Knowledge Base articles
+ * Tags plugin class for members
  */
-class plgTagsKb extends JPlugin
+class plgTagsMembers extends JPlugin
 {
 	/**
 	 * Record count
@@ -67,7 +67,7 @@ class plgTagsKb extends JPlugin
 	public function onTagAreas()
 	{
 		$areas = array(
-			'kb' => JText::_('PLG_TAGS_KB')
+			'members' => JText::_('PLG_TAGS_MEMBERS')
 		);
 		return $areas;
 	}
@@ -84,6 +84,7 @@ class plgTagsKb extends JPlugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
+		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit) 
 		{
 			if (!array_intersect($areas, $this->onTagAreas()) 
@@ -108,33 +109,34 @@ class plgTagsKb extends JPlugin
 		}
 		$ids = implode(',', $ids);
 
-		$now = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
-
 		// Build the query
-		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.alias, e.fulltext AS itext, e.fulltext AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, 
-					NULL AS publish_down, CONCAT('index.php?option=com_kb&section=&category=&alias=', e.alias) AS href, 'kb' AS section, COUNT(DISTINCT t.tagid) AS uniques, 
-					NULL AS params, e.helpful AS rcount, cc.alias AS data1, c.alias AS data2, NULL AS data3 ";
-		$e_from  = " FROM #__faq AS e
-		 			LEFT JOIN #__faq_categories AS c ON c.id = e.section 
-					LEFT JOIN #__faq_categories AS cc ON cc.id = e.category
-					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='kb' AND t.tagid IN ($ids)";
-		$e_where  = " WHERE e.state=1";
-		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
+		$f_count = "SELECT COUNT(f.uidNumber) FROM (SELECT a.uidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
+
+		$f_fields = "SELECT a.uidNumber AS id, a.name AS title, a.username as alias, NULL AS itext, b.bio AS ftext, a.emailConfirmed AS state, a.registerDate AS created, 
+					a.uidNumber AS created_by, NULL AS modified, a.registerDate AS publish_up, a.picture AS publish_down, 
+					CONCAT('index.php?option=com_members&id=', a.uidNumber) AS href, 'members' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.params, NULL AS rcount, 
+					NULL AS data1, NULL AS data2, NULL AS data3 ";
+
+		$f_from = " FROM #__xprofiles AS a LEFT JOIN #__xprofiles_bio AS b ON a.uidNumber=b.uidNumber, #__tags_object AS t
+					WHERE a.public=1 
+					AND a.uidNumber=t.objectid 
+					AND t.tbl='xprofiles' 
+					AND t.tagid IN ($ids)";
+		$f_from .= " GROUP BY a.uidNumber HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, created';  break;
+			case 'title': $order_by .= 'title ASC, publish_up';  break;
 			case 'id':    $order_by .= "id DESC";                break;
 			case 'date':
-			default:      $order_by .= 'created DESC, title'; break;
+			default:      $order_by .= 'publish_up DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
+		// Execute the query
 		if (!$limit) 
 		{
-			// Get a count
-			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
+			$database->setQuery($f_count . $f_from . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
 		} 
@@ -142,7 +144,10 @@ class plgTagsKb extends JPlugin
 		{
 			if (count($areas) > 1) 
 			{
-				return $e_fields . $e_from . $e_where;
+				ximport('Hubzero_Document');
+				Hubzero_Document::addComponentStylesheet('com_members');
+
+				return $f_fields . $f_from;
 			}
 
 			if ($this->_total != null) 
@@ -153,20 +158,33 @@ class plgTagsKb extends JPlugin
 				}
 			}
 
-			// Get results
-			$database->setQuery($e_fields . $e_from . $e_where . $order_by);
+			$database->setQuery($f_fields . $f_from .  $order_by);
 			$rows = $database->loadObjectList();
 
+			// Did we get any results?
 			if ($rows) 
 			{
+				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
+					$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $row->id);
 				}
 			}
 
+			// Return the results
 			return $rows;
 		}
+	}
+
+	/**
+	 * Include needed libraries and push scripts and CSS to the document
+	 * 
+	 * @return     void
+	 */
+	public function documents()
+	{
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_members');
 	}
 
 	/**
@@ -177,15 +195,46 @@ class plgTagsKb extends JPlugin
 	 */
 	public function out($row)
 	{
+		$config =& JComponentHelper::getParams('com_members');
+
+		$row->picture = $row->publish_down;
+
+		if ($row->picture) 
+		{
+			$thumb  = DS . trim($config->get('webpath', '/site/members'), DS);
+			if ($row->id < 0) 
+			{
+				$id = abs($row->id);
+				$thumb .= DS . 'n' . plgTagsMembers::niceidformat($id) . DS . $row->picture;
+			} 
+			else 
+			{
+				$thumb .= DS . plgTagsMembers::niceidformat($row->id) . DS . $row->picture;
+			}
+		} 
+		else 
+		{
+			$thumb = DS . trim($config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
+		}
+
+		$image = explode('.', $thumb);
+		$n = count($image);
+		$image[$n-2] .= '_thumb';
+		$end = array_pop($image);
+		$image[] = $end;
+		$thumb = implode('.', $image);
+
 		if (strstr($row->href, 'index.php')) 
 		{
-			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
+			$row->href = JRoute::_($row->href);
 		}
 		$juri =& JURI::getInstance();
-		//$row->href = ltrim($row->href, DS);
 
-		// Start building the HTML
-		$html  = "\t" . '<li class="kb-entry">' . "\n";
+		$html  = "\t" . '<li class="member">' . "\n";
+		if (is_file(JPATH_ROOT . $thumb)) 
+		{
+			$html .= "\t\t".'<p class="photo"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
+		}
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		if ($row->ftext) 
 		{
@@ -193,9 +242,21 @@ class plgTagsKb extends JPlugin
 		}
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
-
-		// Return output
 		return $html;
 	}
-}
 
+	/**
+	 * Prepend 0's to an ID
+	 * 
+	 * @param      integer $someid ID to format
+	 * @return     integer Formatted ID
+	 */
+	public function niceidformat($someid)
+	{
+		while (strlen($someid) < 5)
+		{
+			$someid = 0 . "$someid";
+		}
+		return $someid;
+	}
+}

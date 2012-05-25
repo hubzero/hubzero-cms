@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Tags plugin class for Knowledge Base articles
+ * Tags plugin class for blog articles
  */
-class plgTagsKb extends JPlugin
+class plgTagsBlogs extends JPlugin
 {
 	/**
 	 * Record count
@@ -67,7 +67,7 @@ class plgTagsKb extends JPlugin
 	public function onTagAreas()
 	{
 		$areas = array(
-			'kb' => JText::_('PLG_TAGS_KB')
+			'blogs' => JText::_('PLG_TAGS_BLOGS')
 		);
 		return $areas;
 	}
@@ -112,22 +112,31 @@ class plgTagsKb extends JPlugin
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.alias, e.fulltext AS itext, e.fulltext AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, 
-					NULL AS publish_down, CONCAT('index.php?option=com_kb&section=&category=&alias=', e.alias) AS href, 'kb' AS section, COUNT(DISTINCT t.tagid) AS uniques, 
-					NULL AS params, e.helpful AS rcount, cc.alias AS data1, c.alias AS data2, NULL AS data3 ";
-		$e_from  = " FROM #__faq AS e
-		 			LEFT JOIN #__faq_categories AS c ON c.id = e.section 
-					LEFT JOIN #__faq_categories AS cc ON cc.id = e.category
-					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='kb' AND t.tagid IN ($ids)";
-		$e_where  = " WHERE e.state=1";
-		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
+		$e_fields = "SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, 
+					NULL AS modified, e.publish_up, e.publish_down, CONCAT('index.php?option=com_blog&task=view&id=', e.id) AS href, 
+					'blog' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1, 
+					NULL AS data2, NULL AS data3 ";
+		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
+		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) 
+		{
+			$e_where .= " AND e.state=1";
+		} 
+		else 
+		{
+			$e_where .= " AND e.state>0";
+		}
+		$e_where .= " AND (e.publish_up = '0000-00-00 00:00:00' OR e.publish_up <= '" . $now . "') ";
+		$e_where .= " AND (e.publish_down = '0000-00-00 00:00:00' OR e.publish_down >= '" . $now . "') ";
+		$e_where .= " GROUP BY e.id HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, created';  break;
+			case 'title': $order_by .= 'title ASC, publish_up';  break;
 			case 'id':    $order_by .= "id DESC";                break;
 			case 'date':
-			default:      $order_by .= 'created DESC, title'; break;
+			default:      $order_by .= 'publish_up DESC, title'; break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -159,9 +168,30 @@ class plgTagsKb extends JPlugin
 
 			if ($rows) 
 			{
+				$yearFormat = '%Y';
+				$monthFormat = '%b';
+				$tz = 0;
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$yearFormat = 'Y';
+					$monthFormat = 'm';
+					$tz = true;
+				}
+
 				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
+					switch ($row->scope)
+					{
+						case 'site':
+							$rows[$key]->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+						break;
+						case 'member':
+							$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+						break;
+						case 'group':
+						break;
+					}
+					$rows[$key]->href = JRoute::_($row->href);
 				}
 			}
 
@@ -177,21 +207,24 @@ class plgTagsKb extends JPlugin
 	 */
 	public function out($row)
 	{
-		if (strstr($row->href, 'index.php')) 
+		$dateFormat = '%d %b %Y';
+		$tz = 0;
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
+			$dateFormat = 'd M Y';
+			$tz = true;
 		}
-		$juri =& JURI::getInstance();
-		//$row->href = ltrim($row->href, DS);
 
 		// Start building the HTML
-		$html  = "\t" . '<li class="kb-entry">' . "\n";
+		$html  = "\t" . '<li class="blog-entry">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+		$html .= "\t\t" . '<p class="details">' . JHTML::_('date', $row->publish_up, $dateFormat, $tz);
+		$html .= ' <span>|</span> ' . JText::sprintf('PLG_TAGS_BLOGS_POSTED_BY', '<cite><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . stripslashes($row->data1) . '</a></cite>');
+		$html .= '</p>'."\n";
 		if ($row->ftext) 
 		{
 			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output
