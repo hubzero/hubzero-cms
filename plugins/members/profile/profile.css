@@ -501,7 +501,7 @@
 	}
 #award-info strong {
 	padding-left: 17px;
-	background: url('/components/com_store/images/coin.gif') no-repeat top left;
+	background: url('/components/com_store/assets/img/coin.gif') no-repeat top left;
 	}
 #award-info .opt-out {
 	background: url('/components/com_support/images/delete.png') no-repeat top left #f3f3f3;
