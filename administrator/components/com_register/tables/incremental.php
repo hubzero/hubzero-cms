@@ -133,7 +133,7 @@ class ModIncrementalRegistrationAwards
 
 	public function __construct($profile) {
 		$this->profile = $profile;
-		$this->uid = (int)$this->profile->get('uidNumber');
+		$this->uid = is_integer($profile) ? $profile : (int)$this->profile->get('uidNumber');
 		self::getDbh();
 		do {
 			self::$dbh->setQuery('SELECT opted_out, name, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture FROM #__profile_completion_awards WHERE user_id = '.$this->uid);
@@ -144,7 +144,7 @@ class ModIncrementalRegistrationAwards
 	}
 
 	public function optOut() {
-		self::$dbh->execute('UPDATE #__profile_completion_awards SET opted_out = 1 WHERE user_id = '.$this->uid);
+		self::$dbh->execute('UPDATE #__profile_completion_awards SET opted_out = opted_out + 1, last_bothered = CURRENT_TIMESTAMP WHERE user_id = '.$this->uid);
 	}
 	
 	public function award() {
