@@ -1,1 +1,1 @@
-jQuery.noConflict();
+var jq = jQuery.noConflict();

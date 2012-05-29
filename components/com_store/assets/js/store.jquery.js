@@ -15,12 +15,20 @@ if (!HUB) {
 //----------------------------------------------------------
 // Store js
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Store = {
+	jQuery: jq,
+	
 	form: 'myCart',
 
 	hubform: 'hubForm',
 
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		if ($('#updatecart')) {
 			$('#updatecart').bind('click', function(){
 				var form = document.getElementById(HUB.Store.form);
@@ -41,10 +49,14 @@ HUB.Store = {
 	},
 
 	hide: function(obj) {
+		var $ = this.jQuery;
+		
 		$(obj).hide();
 	},
 
 	show: function(obj) {
+		var $ = this.jQuery;
+		
 		$(obj).show();
 	}
 }

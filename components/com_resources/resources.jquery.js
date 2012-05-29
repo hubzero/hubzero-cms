@@ -15,15 +15,20 @@ if (!HUB) {
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Resources = {
 	
-	jQuery: $,
+	jQuery: jq,
 
 	settings: {
 	},
 
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		$('a.play').fancybox({
 			type: 'ajax',
 			width: 750,
@@ -91,7 +96,7 @@ HUB.Resources = {
 				});
 			});
 			$('.usagescale').each(function(i, item) {
-				$(item).live('mouseout', function() {					
+				$(item).live('mouseout', function() {
 					$(ex).removeClass('active');
 				});
 			});

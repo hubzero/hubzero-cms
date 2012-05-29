@@ -15,9 +15,13 @@ if (!HUB) {
 //----------------------------------------------------------
 // Tag Browser
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.TagBrowser = {
 	
-	jQuery: $,
+	jQuery: jq,
 
 	settings: {
 	},
@@ -28,6 +32,8 @@ HUB.TagBrowser = {
 	baseURI: 'index.php?option=com_resources&task=browser&no_html=1',
 
 	detect: function() {
+		var $ = this.jQuery;
+		
 		// simplify things
 		var agent 	= navigator.userAgent.toLowerCase();
 				
@@ -58,6 +64,8 @@ HUB.TagBrowser = {
 	},
 
 	incompatible: function() {
+		var $ = this.jQuery;
+		
 		$('tagbrowser').parentNode.removeChild(div);
 		$('tbh2').parentNode.removeChild(tbh2);
 	},

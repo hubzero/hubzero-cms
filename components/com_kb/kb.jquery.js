@@ -14,9 +14,15 @@ if (!HUB) {
 //----------------------------------------------------------
 // Registration form validation
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Kb = {
+	jQuery: jq,
 	
 	initialize: function() {
+		var $ = this.jQuery;
 		// Voting
 		$('.vote-link').each(function(i, el) {
 			$(el).click(function (e) {

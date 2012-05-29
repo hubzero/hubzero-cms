@@ -19,9 +19,13 @@ if (!HUB) {
 //----------------------------------------------------------
 // Trouble Report form
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Modules.ReportProblems = {
 
-	jQuery: $,
+	jQuery: jq,
 
 	settings: { 
 		toggle:  '#tab',
@@ -47,6 +51,9 @@ HUB.Modules.ReportProblems = {
 
 		if (!$(settings.pane)) {
 			return;
+		} else {
+			$(settings.pane).hide();
+			$(settings.pane).css('height', 'auto');
 		}
 
 		$('<a href="#" id="help-btn-close" alt="Close">Close</a>').bind('mousedown', function (e) {

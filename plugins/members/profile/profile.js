@@ -19,8 +19,12 @@ if(!HUB.Members) {
 //-------------------------------------------------------------
 //	Members Profile 
 //-------------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Members.Profile = {
+	jQuery: jq,
 	
 	initialize: function()
 	{   
@@ -43,7 +47,9 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 	
 	edit: function()
-	{   
+	{
+		var $ = this.jQuery;
+		
 		//do we have the ability to edit
 		if( $('.section-edit-container').length )
 		{
@@ -79,6 +85,8 @@ HUB.Members.Profile = {
 	
 	editToggleSection: function( trigger )
 	{
+		var $ = this.jQuery;
+		
 		var $section = trigger.parents("li"),
 			section_classes = $section.attr("class").split(" ");
 		
@@ -106,7 +114,9 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 	
 	editSubmitForm: function( submit_button )
-	{   
+	{
+		var $ = this.jQuery;
+		
 		//get the needed vars
 		var form = submit_button.parent("form"),
 			registration_field = form.attr("data-section-registation"),
@@ -160,11 +170,14 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 
 	editBiographyConvert: function()
-	{   
+	{
 		//if we have any active wykiwyg editors we want to auto-convert html to wiki before submitting
-		if( wykiwygs.length ) 
+		if (typeof(wykiwygs) === 'undefined') {
+			return;
+		}
+		if (wykiwygs.length) 
 		{
-			for(i=0; i<wykiwygs.length; i++)
+			for (i=0; i<wykiwygs.length; i++)
 			{
 				wykiwygs[i].t.value = wykiwygs[i].makeWiki();
 			}
@@ -174,8 +187,10 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 
 	editBiographyEditorReinstantiate: function()
-	{   
-		if( $("#profile-bio").length )
+	{
+		var $ = this.jQuery;
+		
+		if ($("#profile-bio").length)
 		{
 			var edtr = new WYKIWYG.editor.edit('editor',{
 				id: "profile-bio",
@@ -203,6 +218,8 @@ HUB.Members.Profile = {
 
 	editShowUpdatingOverlay: function( element )
 	{
+		var $ = this.jQuery;
+		
 		$(element).css("position","relative").append("<div class=\"edit-profile-overlay update\" />"); 
 
 		var windowHeight = $(window).height(),
@@ -227,6 +244,8 @@ HUB.Members.Profile = {
 
 	editReloadSections: function()
 	{
+		var $ = this.jQuery;
+		
 		$(".member_profile").load(window.location.href + " #profile-page-content", function() {
 			//reload page header in case we edited name
 			$("#page_header").load(window.location.href +  " #page_header > *");
@@ -250,6 +269,8 @@ HUB.Members.Profile = {
 
 	editValidationHandling: function( form, returned_data, registration_field )
 	{
+		var $ = this.jQuery;
+		
 		var error = "",
 			missing = returned_data._missing,
 			invalid = returned_data._invalid;
@@ -271,7 +292,9 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 	
 	editPrivacy: function()
-	{   
+	{
+		var $ = this.jQuery;
+		
 		$("#page_identity_link img").load(function(){
 			var w = $("#page_identity_link img").width();
 			w = (w > 150) ? w : 150;
@@ -325,6 +348,8 @@ HUB.Members.Profile = {
 	
 	editProfilePicture: function()
 	{
+		var $ = this.jQuery;
+		
 		var $identity = $("#page_identity"),
 		    $change = $("<a id=\"page_identity_change\"><span>Change Picture</span></a>");
 			
@@ -357,6 +382,8 @@ HUB.Members.Profile = {
 	
 	editProfilePicturePopup: function()
 	{
+		var $ = this.jQuery;
+		
 		$('#page_identity_change').fancybox({
 			type: 'ajax',
 			width: 500,
@@ -416,6 +443,8 @@ HUB.Members.Profile = {
 	
 	editProfilePictureUpload: function()
 	{
+		var $ = this.jQuery;
+		
 		var uploader = new qq.FileUploader({
 			element: $("#ajax-uploader")[0],
 			action: $("#ajax-uploader").attr("data-action"),
@@ -452,7 +481,9 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 	
 	editCompletenessMeter: function()
-	{   
+	{
+		var $ = this.jQuery;
+		
 		if( $("#member-profile-completeness").length )
 		{
 			$("#member-profile-completeness").appendTo( $("#page_options") ).show();
@@ -473,6 +504,8 @@ HUB.Members.Profile = {
 	
 	editProfileSectionWithHash: function()
 	{
+		var $ = this.jQuery;
+		
 		var timeout = null,
 			distance = 0,
 			bottom = 0,
@@ -509,6 +542,6 @@ HUB.Members.Profile = {
 
 //-------------------------------------------------------------
 
-$(document).ready(function(){
+jQuery(document).ready(function($){
 	HUB.Members.Profile.initialize();
 });

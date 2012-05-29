@@ -18,12 +18,19 @@ if (!HUB.Plugins) {
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Plugins.WikiEditorToolbar = {
+	jQuery: jq,
+	
 	editButtons: new Array(),
 	helpButtons: new Array(),
 	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		$('.wiki-toolbar').each(function(i, toolbar) {
 			$(toolbar).removeClass('hidden');
 			

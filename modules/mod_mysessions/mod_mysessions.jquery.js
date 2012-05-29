@@ -16,12 +16,16 @@ if (!HUB) {
 	HUB.Modules = {};
 }
 
+if (!jq) {
+	var jq = $;
+}
+
 //----------------------------------------------------------
 // Trouble Report form
 //----------------------------------------------------------
 HUB.Modules.MySessions = {
 
-	jQuery: $,
+	jQuery: jq,
 
 	settings: { 
 		mouseOverClass:	'over',

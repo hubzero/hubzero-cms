@@ -15,9 +15,16 @@ if (!HUB) {
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Wiki = {
+	jQuery: jq,
+	
 	getTemplate: function() {
+		var $ = this.jQuery;
+		
 		var id = $('#templates');
 		if (id.val() != 'tc') {
 			var hi = $(id.val()).val();
@@ -54,6 +61,8 @@ HUB.Wiki = {
 	},
 	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		if ($('#templates')) {
 			$('#templates').bind('change', HUB.Wiki.getTemplate);
 		}
@@ -65,6 +74,8 @@ HUB.Wiki = {
 	},
 
 	checkMode: function() {
+		var $ = this.jQuery;
+		
 		var mode = $('#params_mode');
 		if (mode.val() != 'knol') {
 			$($('#params_authors').parent()).addClass('hide');

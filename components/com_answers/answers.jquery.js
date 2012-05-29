@@ -15,8 +15,13 @@ if (!HUB) {
 //----------------------------------------------------------
 // Answers Scripts
 //----------------------------------------------------------
-HUB.Answers = {
+if (!jq) {
+	var jq = $;
+}
 
+HUB.Answers = {
+	jQuery: jq,
+	
 	initialize: function() {
 		var com = this,
 			$ = this.jQuery,
@@ -28,7 +33,7 @@ HUB.Answers = {
 			});
 		});
 		
-		$('.closeform').each(function(i, item) {				 
+		$('.closeform').each(function(i, item) {
 			$(item).click(function () {
 				$(this).closest('.addcomment').hide();
 			});

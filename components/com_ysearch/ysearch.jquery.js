@@ -9,8 +9,16 @@ if (!HUB) {
 	var HUB = {};
 }
 
+if (!jq) {
+	var jq = $;
+}
+
 HUB.YSearch = {
+	jQuery: jq,
+	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		// Collapse nested search results on javascript-aware browsers
 		$('.child-result').each(function(i, el) {
 			$(el).hide();

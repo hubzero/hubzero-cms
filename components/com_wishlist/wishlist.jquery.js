@@ -15,8 +15,16 @@ if (!HUB) {
 //----------------------------------------------------------
 // Answers Scripts
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Wishlist = {
+	jQuery: jq,
+	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		//------------------------
 		// reply to review or comment
 		//------------------------

@@ -24,9 +24,16 @@ if (!HUB) {
 // of $('theapp') to retrieve it seems to throw errors, so
 // we use document.getElementById instead.
 //-------------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Mw = {
+	jQuery: jq,
+	
 	// Helper function used to load the proper applet (signed or unsigned).
 	loadApplet: function() {
+		var $ = this.jQuery;
 		// For now, we just load the unsigned applet.
 		// Someday, the loadApplet() function will examine
 		// the Mambo session table to decide which applet to load.
@@ -45,6 +52,8 @@ HUB.Mw = {
 	},
 	
 	loadApplet: function(jar, w, h, port, pass, connect_value, ro, msie) {
+		var $ = this.jQuery;
+		
 		var app = document.getElementById("theapp");
 		var par = app.parentNode;
 		par.removeChild(app);
@@ -100,6 +109,7 @@ HUB.Mw = {
 
 	// Inform Mambo whether session needs signed applet.
 	sessionUsesSignedApplet: function(value) {
+		var $ = this.jQuery;
 		// Value should be either true or false.
 
 		// This function doesn't do anything yet.
@@ -112,6 +122,7 @@ HUB.Mw = {
 		
 	// Clear the static troubleshooting message
 	clearTroubleshoot: function() {
+		var $ = this.jQuery;
 		var trouble = $('#troubleshoot');
 		if (trouble) {
 			$(trouble).remove();
@@ -134,6 +145,8 @@ HUB.Mw = {
 	
 	// Show a message saying that Java didn't appear to work.
 	appletTimeout: function() {
+		var $ = this.jQuery;
+		
 		HUB.Mw.clearTroubleshoot();
 		HUB.Mw.cancelConnecting();
 
@@ -168,6 +181,8 @@ HUB.Mw = {
 
 	// Show a message explaining that Java is not enabled.
 	noJava: function() {
+		var $ = this.jQuery;
+		
 		HUB.Mw.cancelConnecting();
 		var trouble = $('#troubleshoot');
 		if (!trouble) {
@@ -185,6 +200,8 @@ HUB.Mw = {
 
 	// Show a message explaining that there is a browser/Java bug.
 	javaBug: function() {
+		var $ = this.jQuery;
+		
 		HUB.Mw.cancelConnecting();
 		var trouble = $('#troubleshoot');
 		if (!trouble) {
@@ -263,6 +280,8 @@ HUB.Mw = {
 
 	// Force the size of the appwrap to the size of the app (plus some padding)
 	forceSize: function(w,h) {
+		var $ = this.jQuery;
+		
 		HUB.Mw.clearTroubleshoot();
 		HUB.Mw.cancelConnecting();
 		
@@ -301,6 +320,8 @@ HUB.Mw = {
 	},
 	
 	storageMonitor: function() {
+		var $ = this.jQuery;
+		
 		//fetch.periodical(60000);
 		var holdTheInterval = setInterval(function(){
 			$.get('/index.php?option=com_tools&controller=sessions&&task=diskusage&no_html=1&msgs=0', {}, function(data) {
@@ -310,6 +331,8 @@ HUB.Mw = {
 	},
 	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		if (!$('#theapp') || !$('#app-wrap')) {
 			return;
 		}

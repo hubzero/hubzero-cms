@@ -55,8 +55,9 @@ class plgSystemJquery extends JPlugin
 		
 		if ($this->params->get('noconflict' . $client)) 
 		{
-			JHTML::_('behavior.mootools');
-			$document->addScriptDeclaration('jQuery.noConflict();');
+			//JHTML::_('behavior.mootools');
+			//$document->addScript(JURI::root(true) . '/media/system/js/jquery.noconflict.js');
+			//$document->addScriptDeclaration('var jq = jQuery.noConflict();');
 		}
 
 		if ($value = $this->params->get('jquery')) 
@@ -138,6 +139,12 @@ class plgSystemJquery extends JPlugin
 				$document->addScript($this->params->get('jquerytoolscdnpath'));
 			}
 		}
+		if ($this->params->get('noconflict' . $client)) 
+		{
+			$document->addScript(JURI::root(true) . '/media/system/js/jquery.noconflict.js');
+			JHTML::_('behavior.mootools');
+			//$document->addScriptDeclaration('var jq = jQuery.noConflict();');
+		}
 	}
 
 	public function onAfterDispatch()
@@ -146,11 +153,13 @@ class plgSystemJquery extends JPlugin
 		$document = JFactory::getDocument();
 
 		// No remember me for admin
+		$client = 'Site';
 		if ($app->isAdmin()) 
 		{
+			$client = 'Admin';
 			return;
 		}
-		
+
 		$no_html = JRequest::getVar('no_html', 0);
 
 		if ($document->getType() == 'raw')
@@ -158,9 +167,8 @@ class plgSystemJquery extends JPlugin
 			$no_html = 1;
 		}
 
-		if (!$this->params->get('jquerynoconflict') && !$no_html) 
+		if (!$this->params->get('noconflict' . $client) && !$no_html) 
 		{
-			
 			$data = $document->getHeadData();
 			$nd = array();
 			$mootools = array(
@@ -180,6 +188,7 @@ class plgSystemJquery extends JPlugin
 
 			$nds = array();
 			$data['script'] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\{(.*)\}\)\;/', '', $data['script']);
+			
 			//print_R($data['script']);
 			/*foreach ($data['script'] as $key => $val)
 			{

@@ -14,7 +14,13 @@ if (!HUB) {
 //----------------------------------------------------------
 // Registration form validation
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Register = {
+	jQuery: jq,
+	
 	orgother: "",
 	country_origin: 0,
 	country_resident: 0,
@@ -37,11 +43,15 @@ HUB.Register = {
 	disabilityother: "",
 
 	setOrgOther: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		form.org.selectedIndex = 0;
 	},
 
 	disableOrgOther: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.org.selectedIndex == 0) {
 			form.orgtext.disabled = false;
@@ -55,17 +65,23 @@ HUB.Register = {
 	},
 
 	setNonUSCountryOrigin: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		form.corigin_usno.checked = true;
 		HUB.Register.disableRacialBackground();
 	},
 
 	setNonUSCountryResident: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		form.cresident_usno.checked = true;
 	},
 
 	disableCountryOriginSubgroups: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.corigin_usyes.checked) {
 			HUB.Register.country_origin = form.corigin.selectedIndex;
@@ -80,6 +96,8 @@ HUB.Register = {
 	},
 
 	disableCountryResidentSubgroups: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.cresident_usyes.checked) {
 			HUB.Register.country_resident = form.cresident.selectedIndex;
@@ -92,12 +110,16 @@ HUB.Register = {
 	},
 
 	setNativeAmerican: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		form.racenativeamerican.checked = true;
 		form.racerefused.checked = false;
 	},
 
 	disableNativeTribe: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.racenativeamerican.checked) {
 			form.racenativetribe.disabled = false;
@@ -111,11 +133,15 @@ HUB.Register = {
 	},
 
 	setRacialChoice: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		form.racerefused.checked = false;
 	},
 
 	disableRacialChoices: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.racerefused.checked) {
 			form.racenativeamerican.disabled = true;
@@ -150,6 +176,8 @@ HUB.Register = {
 	},
 
 	disableRacialBackground: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.corigin_usyes.checked) {
 			form.racenativeamerican.checked = HUB.Register.racenativeamerican;
@@ -188,11 +216,15 @@ HUB.Register = {
 	},
 
 	setHispanic: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		form.hispanicyes.checked = true;
 	},
 
 	disableHispanicSubgroups: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.hispanicyes.checked){
 			form.hispaniccuban.checked = HUB.Register.hispaniccuban;
@@ -221,11 +253,15 @@ HUB.Register = {
 	},
 
 	setDisabled: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		form.disabilityyes.checked = true;
 	},
 
 	disableDisabilitySubgroups: function() {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		if(form.disabilityyes.checked){
 			form.disabilityblind.checked = HUB.Register.disabilityblind;
@@ -264,12 +300,16 @@ HUB.Register = {
 	},
 	
 	disableIndie: function() {
+		var $ = this.jQuery;
+		
 		$('#type-indie').checked = false;
 		$('#username').disabled = false;
 		$('#passwd').disabled = false;
 	},
 	
 	disableDomains: function() {
+		var $ = this.jQuery;
+		
 		$('#username').value = '';
 		$('#username').disabled = true;
 		$('#passwd').value = '';
@@ -287,6 +327,8 @@ HUB.Register = {
 	},
 	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		if ($('#tagcloud')) {
 			$('#tagcloud').removeClass('hide');
 			
@@ -410,6 +452,8 @@ HUB.Register = {
 	},
 	
 	checkPass: function() {
+		var $ = this.jQuery;
+		
 		if ($('#userlogin')) {
 			usernm = $('#userlogin').val();
 		}

@@ -15,11 +15,14 @@ if (!HUB) {
 //-------------------------------------------------------------
 // My Hub (singleton)
 //-------------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Myhub = {
 	baseURL: '/index.php?option=com_members&active=dashboard&no_html=1&init=1',
 	
-	jQuery : $,
+	jQuery : jq,
     
     settings : {
         columns : '#droppables .sortable',
@@ -183,10 +186,14 @@ HUB.Myhub = {
 	},
 
 	saveToggle: function (modId) {
+		var $ = this.jQuery;
+	
 		$.get(myhub.baseURL+'&action=toggle&id='+$('#uid').val()+'&mid='+modId, {});
 	},
 	
 	saveParams: function (modId) {
+		var $ = this.jQuery;
+	
 		data = $('#mod_' + modId + ' .module-params').serialize();
 		$.post($('#dashboard-info').attr('action')+'/params', data, function(data) {
 		    $('#mod_' + modId + ' .body').html(data);

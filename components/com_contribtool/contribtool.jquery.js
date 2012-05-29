@@ -12,7 +12,13 @@ if (!HUB) {
 //----------------------------------------------------------
 // Contribtool admin actions form
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.ContribTool = {
+	jQuery: jq,
+	
 	form: '#adminCalls',
 	statusform: '#statusForm',
 	toolid: '#id',
@@ -27,6 +33,8 @@ HUB.ContribTool = {
 	templatepath : '',
 	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		if($('#ctSending')) {
 			HUB.ContribTool.hide(HUB.ContribTool.loader);
 		}
@@ -233,6 +241,8 @@ HUB.ContribTool = {
 	},
 
 	licOptions: function() {
+		var $ = this.jQuery;
+			
 		if (document.getElementById('versionForm')) {
 			var sel = getSelectedOption( 'versionForm', 't_code' );
 			if (sel.value == "@OPEN") {
@@ -265,6 +275,8 @@ HUB.ContribTool = {
 	},
 	
 	sendForm: function() {
+		var $ = this.jQuery;
+		
 		HUB.ContribTool.show(HUB.ContribTool.loader);
 		HUB.ContribTool.hide(HUB.ContribTool.success);
 		
@@ -275,14 +287,20 @@ HUB.ContribTool = {
 	},
 	
 	hide: function(obj) {
+		var $ = this.jQuery;
+		
 		$(obj).css('display', 'none');
 	},
 	
 	show: function(obj) {
+		var $ = this.jQuery;
+		
 		$(obj).css('display', 'block');
 	},
 	
 	checkGroup: function(optionSelected, optionTotal) {
+		var $ = this.jQuery;
+		
 		if (optionSelected==(optionTotal - 1)) {
 			$("#groupname").show();
 		} else {

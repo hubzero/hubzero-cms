@@ -15,7 +15,12 @@ if (!HUB) {
 //----------------------------------------------------------
 // Tags scripts
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Tags = {
+	jQuery: jq,
 	
 	initialize: function()
 	{
@@ -29,6 +34,8 @@ HUB.Tags = {
 	//-----
 	
 	submitbutton: function(pressbutton) {
+		var $ = this.jQuery;
+		
 		var form = $('#hubForm');
 		
 		if(form.length)
@@ -51,6 +58,8 @@ HUB.Tags = {
 	
 	deleteTag: function()
 	{
+		var $ = this.jQuery;
+		
 		//add count to url
 		$(".delete-tag").each(function(index) {
 			var count = index + 1,

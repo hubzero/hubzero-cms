@@ -26,7 +26,12 @@ if (!HUB) {
 //----------------------------------------------------------
 // Scripts for the NCNReporting component
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Citations = {
+	jQuery: jq,
 	
 	initialize: function()
 	{
@@ -78,6 +83,8 @@ HUB.Citations = {
 	
 	bulkimport: function()
 	{
+		var $ = this.jQuery;
+		
 		//click to show citation details
 		$(".upload-list .citation-title").each(function(i) {
 			$(this).bind("click", function(e) {
@@ -136,6 +143,8 @@ HUB.Citations = {
 	
 	download: function()
 	{
+		var $ = this.jQuery;
+		
 		//check all
 		$(".checkall-download").bind("click", function(e) {
 			var tbody = $(this).parents("table.citations").children("tbody");
@@ -184,8 +193,10 @@ HUB.Citations = {
 	
 	singleimport: function()
 	{
+		var $ = this.jQuery;
+		
 	   	function hideCitationFields( display )
-		{    	
+		{
 			$(".add-citation fieldset:first label").each(function(i, el){
 				var forinput = $(this).attr("for");
 				if(forinput != "type" && forinput != "title")
@@ -227,6 +238,8 @@ HUB.Citations = {
 	
 	rollovers: function()
 	{
+		var $ = this.jQuery;
+		
 		var ua = navigator.userAgent;
 		if(ua.indexOf('Firefox') == -1)
 		{
@@ -263,6 +276,6 @@ HUB.Citations = {
 
 //----------------------------------------------------------
 
-$(document).ready(function() {
+jQuery(document).ready(function($){
 	HUB.Citations.initialize();
 });

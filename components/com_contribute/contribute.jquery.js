@@ -180,8 +180,16 @@ if (!HUB) {
 //-----------------------------------------------------------
 //  Highlight table rows when clicking checkbox
 //-----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Contribute = {
+	jQuery: jq,
+	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		if ($('#license-preview')) {
 			$('#license-preview').css({'display':'block'});
 		}

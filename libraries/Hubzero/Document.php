@@ -245,18 +245,24 @@ class Hubzero_Document
 
 		$template  = $mainframe->getTemplate();
 
-		if (empty($script)) {
+		if (empty($script)) 
+		{
 			$script = $module;
 		}
-		
+
+		$url = DS . 'modules' . DS . $module . DS . $script . '.js';
+		$urlAlt = '';
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$script .= '.jquery';
+			$urlAlt = DS . 'modules' . DS . $module . DS . $script . '.jquery.js';
 		}
-		
-		$url = DS . 'modules' . DS . $module . DS . $script . '.js';
 
-		if (file_exists(JPATH_SITE . $url)) {
+		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		{
+			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+		} 
+		else 
+		{
 			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}
@@ -280,16 +286,20 @@ class Hubzero_Document
 
 		$template  = $mainframe->getTemplate();
 
-		if (empty($stylesheet)) {
+		if (empty($stylesheet)) 
+		{
 			$stylesheet = $plugin . '.css';
 		}
 		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $stylesheet;
 
 		$plugincss = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
 
-		if (file_exists(JPATH_SITE . $templatecss)) {
+		if (file_exists(JPATH_SITE . $templatecss)) 
+		{
 			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
-        } else {
+		} 
+		else 
+		{
 			$jdocument->addStyleSheet($plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
 		}
 	}
@@ -312,19 +322,25 @@ class Hubzero_Document
 		$jdocument = JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
-		
-		if (empty($script)) {
+
+		if (empty($script)) 
+		{
 			$script = $plugin;
 		}
-		
+
+		$url = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
+		$urlAlt = '';
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$script .= '.jquery';
+			$urlAlt = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
 		}
-		
-		$url = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
-		
-		if (file_exists(JPATH_SITE . $url)) {
+
+		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		{
+			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+		} 
+		else 
+		{
 			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}

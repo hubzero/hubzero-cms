@@ -131,7 +131,7 @@ class modYoutubeHelper
 			{
 				$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.jquery.js');
 				$jdocument->addScriptDeclaration("
-					$(document).ready(function($){
+					jQuery(document).ready(function($){
 						var youtubefeed = $('#youtube_feed_".$id."').youtube({
 							type: '".$type."',
 							search: '".$content."',

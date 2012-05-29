@@ -15,9 +15,16 @@ if (!HUB) {
 //----------------------------------------------------------
 // Support
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Support = {
+	jQuery: jq,
+	
 	getMessage: function() {
+		var $ = this.jQuery;
+		
 		var id = $('#messages');
 		if (id.val() != 'mc') {
 			var hi = $('#'+id.val()).val();
@@ -30,6 +37,8 @@ HUB.Support = {
 	},
 	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		$('.fixedImgTip').each(function(i, el) {
 			$(this).removeAttr('title');
 			$(this).removeAttr('href'); // Firefox seems to fail if there's an href

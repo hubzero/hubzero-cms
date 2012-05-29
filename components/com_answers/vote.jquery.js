@@ -15,8 +15,16 @@ if (!HUB) {
 //----------------------------------------------------------
 // Thumbs voting
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Vote = {
+	jQuery: jq,
+	
 	initialize: function() {
+		var $ = this.jQuery;
+
 		// review ratings
 		$('.thumbsvote').each(function(i, item) {
 			$(item).bind('onmouseover', function () {

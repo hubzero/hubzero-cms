@@ -15,8 +15,16 @@ if (!HUB) {
 //----------------------------------------------------------
 //  Forum scripts
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Forum = {
+	jQuery: jq,
+	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		$('a.delete').each(function(i, el) {
 			$(el).on('click', function(e) {
 				var res = confirm('Are you sure you wish to delete this item?');

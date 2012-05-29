@@ -15,10 +15,16 @@ if (!HUB) {
 //----------------------------------------------------------
 //  Members scripts
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Members = {
+	jQuery: jq,
 	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		if (!jQuery().fancybox) {
 			return;
 		}

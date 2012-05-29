@@ -18,8 +18,16 @@ if (!HUB.Plugins) {
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.MembersMsg = {
+	jQuery: jq,
+	
 	checkAll: function( ele, clsName ) {
+		var $ = this.jQuery;
+		
 		if (ele.checked) {
 			var val = true;
 		} else {
@@ -37,6 +45,8 @@ HUB.MembersMsg = {
 	
 	initialize: function()
 	{
+		var $ = this.jQuery;
+		
 		$('a.message-link').fancybox({
 			type: 'ajax',
 			width: 700,

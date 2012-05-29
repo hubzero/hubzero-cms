@@ -905,8 +905,16 @@ if (!HUB.Plugins) {
 //----------------------------------------------------------
 // Tag Autocompleter
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Plugins.Autocomplete = {
+	jQuery: jq,
+	
 	writeSelectList: function( members, id ) {
+		var $ = this.jQuery;
+		
 		if (!$('#'+id)) {
 			return;
 		}
@@ -923,7 +931,8 @@ HUB.Plugins.Autocomplete = {
 	},
 	
 	initialize: function() {
-		var plg = this;
+		var plg = this,
+			$ = this.jQuery;
 		
 		//var head = document.head;
 		var head = document.getElementsByTagName('head')[0];

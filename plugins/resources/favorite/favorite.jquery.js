@@ -149,8 +149,16 @@ smaller area with "overflow: scroll" enabled?
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Plugins.ResourcesFavorite = {
+	jQuery: jq,
+	
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		// Add to favorites
 		var fav = $('#fav-this');
 		if ($(fav)) {

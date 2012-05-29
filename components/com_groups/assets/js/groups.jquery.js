@@ -15,8 +15,13 @@ if (!HUB) {
 //----------------------------------------------------------
 //  Members scripts
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
-HUB.Groups = {	
+HUB.Groups = {
+	jQuery: jq,
+	
 	initialize: function() 
 	{	
 		//
@@ -54,6 +59,8 @@ HUB.Groups = {
 	
 	membershipNotifications: function()
 	{
+		var $ = this.jQuery;
+		
 		var content = "",
 			invites = $(".invites"),
 			requests = $(".requests");
@@ -91,6 +98,8 @@ HUB.Groups = {
 	
 	fixEmptyParagraphs: function()
 	{
+		var $ = this.jQuery;
+		
 		$('p').each(function(i, el) {
 			var text = el.innerHTML;
 			if(escape(text) == '%3Cbr%3E%0A' || text == "") {
@@ -103,6 +112,8 @@ HUB.Groups = {
 	
 	togglePublicPrivateDescription: function()
 	{
+		var $ = this.jQuery;
+		
 		var publicDesc = $("#public"),
 			privateDesc = $("#private"),
 			toggleSwitch = $("#toggle_description");
@@ -134,6 +145,8 @@ HUB.Groups = {
 	
 	confirmCancelMembership: function()
 	{
+		var $ = this.jQuery;
+		
 		$(".cancel_group_membership").live('click', function(e) {
 			e.preventDefault();
 			
@@ -149,6 +162,8 @@ HUB.Groups = {
 	
 	confirmLeaveArea: function()
 	{
+		var $ = this.jQuery;
+		
 		$('.leave_area').bind('click', function(e) {
 			e.preventDefault();
 			
@@ -165,6 +180,8 @@ HUB.Groups = {
 	
 	customizePickLogo: function()
 	{
+		var $ = this.jQuery;
+		
 		var logo = "",
 			logoSelecter = $("#group_logo");
 		
@@ -190,6 +207,8 @@ HUB.Groups = {
 	
 	customizeOverviewContent: function()
 	{
+		var $ = this.jQuery;
+		
 		var overview = $('#overview_content'),
 			customOverview = $('#group_overview_type_custom').attr("checked");
 		
@@ -219,6 +238,8 @@ HUB.Groups = {
 	
 	customizePreviewPage: function()
 	{
+		var $ = this.jQuery;
+		
 		$('.quick-view').fancybox({
 			type: 'inline',
 			width: 600,
@@ -233,6 +254,8 @@ HUB.Groups = {
 	
 	scrollingAssetBrowser: function()
 	{
+		var $ = this.jQuery;
+		
 		var topBox = $("#top_box"),
 			bottomBox = $("#bottom_box"),
 			assetBox = $("#asset_browser");

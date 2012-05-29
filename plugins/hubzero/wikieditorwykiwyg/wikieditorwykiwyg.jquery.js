@@ -1490,6 +1490,9 @@ WYKIWYG.converter = function() {
 	}
 }
 
+if (!jq) {
+	var jq = $;
+}
 
 WYKIWYG.editor = function() {
 	var c=[], 
@@ -1522,6 +1525,8 @@ WYKIWYG.editor = function() {
 	c['print']=[25,'Print','a','print'];
 	
 	function edit(n, obj) {
+		var $ = jq;
+		
 		this.n = n; 
 		window[n] = this; 
 		this.t = T$(obj.id);

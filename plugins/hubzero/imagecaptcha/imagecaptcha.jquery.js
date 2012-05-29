@@ -14,9 +14,15 @@ if (!HUB.Plugins) {
 }
 
 // Plugin scripts
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Plugins.HubzeroImagecaptcha = {
+	jQuery: jq,
+	
 	initialize: function() {
-		
+		var $ = this.jQuery;
 	}
 }
 

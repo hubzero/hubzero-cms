@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-	<div id="help-pane" style="<?php if (JPluginHelper::isEnabled('system', 'jquery')) { echo 'display: none;'; } else { echo 'height: 0px;'; } ?>">
+	<div id="help-pane">
 		<div id="help-container">
 			<h1><?php echo JText::_('MOD_REPORTPROBLEMS_SUPPORT'); ?></h1>
 

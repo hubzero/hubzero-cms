@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/resources/share/share.js
+ * @file        plugins/groups/forum/forum.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -16,36 +16,30 @@ if (!HUB.Plugins) {
 }
 
 //----------------------------------------------------------
-// Resource Ranking pop-ups
+//  Forum scripts
 //----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Plugins.ResourcesShare = {
+HUB.Plugins.GroupsForum = {
 	jQuery: jq,
 	
 	initialize: function() {
 		var $ = this.jQuery;
 		
-		// Share links info pop-up
-		var metadata = $('.metadata');
-		var shareinfo = $('.shareinfo');
-		if (shareinfo) {	
-			$('.share').each(function(i, item) {
-				$(item).bind('mouseover', function() {
-					shareinfo.addClass('active');
-				});
+		$('a.delete').each(function(i, el) {
+			$(el).on('click', function(e) {
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					e.preventDefault();
+				}
+				return res;
 			});
-			$('.share').each(function(i, item) {
-				$(item).bind('mouseout', function() {
-					shareinfo.removeClass('active');
-				});
-			});
-		}
+		});
 	} // end initialize
 }
 
 jQuery(document).ready(function($){
-	HUB.Plugins.ResourcesShare.initialize();
+	HUB.Plugins.GroupsForum.initialize();
 });

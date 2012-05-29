@@ -16,12 +16,18 @@ if (!HUB) {
 	HUB.Modules = {};
 }
 
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Modules.MyResources = {
+	jQuery: jq,
 	
 	baseURL: '/index.php?option=com_members&active=dashboard&no_html=1&init=1',
 	
 	initialize: function() {
-		var com = this;
+		var com = this,
+			$ = this.jQuery;
 		
 		this.form = $('#myresources-form');
 		this.sort = $('#myresources-sort');
