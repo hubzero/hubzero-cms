@@ -38,11 +38,6 @@ ximport('Hubzero_Controller');
  */
 class RegisterControllerIncremental extends Hubzero_Controller
 {
-	/**
-	 * Display all employer types
-	 * 
-	 * @return     void
-	 */
 	public function displayTask() {
 		$this->view->display();
 	}
@@ -51,9 +46,13 @@ class RegisterControllerIncremental extends Hubzero_Controller
 		$dbh =& JFactory::getDBO();
 		if (isset($_POST['popover'])) {
 			$popoverText = stripslashes($_POST['popover']);
-			$dbh->setQuery('SELECT popover_text FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
-			if ($popoverText != $dbh->loadResult()) {
-				$dbh->execute('INSERT INTO #__incremental_registration_options(popover_text) VALUES ('.$dbh->quote($popoverText).')');
+			$awardPer = (int)$_POST['award-per'];
+			$testGroup = (int)$_POST['test-group'];
+			$dbh->setQuery('SELECT popover_text, award_per, test_group FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
+			list($exPopover, $exAward, $exGroup) = $dbh->loadRow();
+
+			if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup) {
+				$dbh->execute('INSERT INTO #__incremental_registration_options(popover_text, award_per, test_group) VALUES ('.$dbh->quote($popoverText).', '.$awardPer.', '.$testGroup.')');
 			}
 		}
 		$dbh->execute('DELETE FROM #__incremental_registration_popover_recurrence');

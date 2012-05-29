@@ -34,8 +34,8 @@ JToolBarHelper::title(JText::_('Registration') . ': <small><small>[ ' . JText::_
 JToolBarHelper::save();
 
 $dbh =& JFactory::getDBO();
-$dbh->setQuery('SELECT popover_text FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
-$popoverText = $dbh->loadResult();
+$dbh->setQuery('SELECT popover_text, award_per, test_group FROM #__incremental_registration_options ORDER BY added DESC LIMIT 1');
+list($popoverText, $awardPer, $testGroup) = $dbh->loadRow();
 $dbh->setQuery('SELECT hours FROM #__incremental_registration_popover_recurrence ORDER BY idx');
 $recur = $dbh->loadResultArray();
 
@@ -47,8 +47,7 @@ $groupDefs = $groups->getAllGroups();
 <script type="text/javascript">
 	window.possibleCols = <?php echo json_encode($possibleCols); ?>;
 	
-	function submitbutton(pressbutton) 
-	{
+	function submitbutton(pressbutton) {
 		submitform(pressbutton);
 	}
 </script>
@@ -61,6 +60,18 @@ $groupDefs = $groups->getAllGroups();
 					<td class="key" width="20%">Pop-over text</td>
 					<td>
 						<textarea name="popover" rows="10"><?php echo htmlentities($popoverText); ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="key" width="20%">Award per field completed</td>
+					<td>
+						<input type="text" name="award-per" value="<?php echo str_replace('"', '&quot;', $awardPer); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<td class="key" width="20%">Test group (name or id number)</td>
+					<td>
+						<input type="text" name="test-group" value="<?php echo str_replace('"', '&quot;', $testGroup); ?>" />
 					</td>
 				</tr>
 				<tr>
