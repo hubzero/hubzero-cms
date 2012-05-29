@@ -303,7 +303,11 @@ class ForumPost extends JTable
 		}
 		if (isset($filters['parent']) && $filters['parent'] != 0) 
 		{
-			$query .= " WHERE c.parent=" . $this->_db->Quote($filters['parent']) . " OR c.id=" . $this->_db->Quote($filters['parent']);
+			$query .= " WHERE (c.parent=" . $this->_db->Quote($filters['parent']) . " OR c.id=" . $this->_db->Quote($filters['parent']) . ")";
+			if (isset($filters['state'])) 
+			{
+				$query .= " AND c.state=" . $this->_db->Quote($filters['state']);
+			}
 			if (!isset($filters['sort']) || !$filters['sort']) 
 			{
 				$filters['sort'] = 'c.created';
