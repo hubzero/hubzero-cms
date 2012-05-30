@@ -102,6 +102,7 @@ iframe {
 	display:block;
 	background-image:none;
 	padding:0;
+	border: none;
 	}	
 #page_menu li a:before,
 #page_menu li a:after {
