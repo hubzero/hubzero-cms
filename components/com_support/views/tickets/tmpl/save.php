@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?>
 	</p>
 </div>
-<script type="text/javascript">window.top.window.HUB.Modules.ReportProblems.hideTimer();</script>
+<script type="text/javascript">window.top.window.<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>HUB.Modules.ReportProblems.hideTimer();<?php } else { ?>HUB.ReportProblem.hideTimer();<?php } ?></script>
 <!-- </body>
 </html> -->
 <?php } else { ?>
