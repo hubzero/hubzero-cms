@@ -143,6 +143,7 @@ class XRouter extends JRouter
 				if ($uri->getPath() != 'legal/terms')
 				{
 					$vars = array();
+					/*
 					$vars['option'] = 'com_register';
 
 					if ($juser->get('tmp_user'))
@@ -151,7 +152,12 @@ class XRouter extends JRouter
 						$vars['task'] = 'update';
 
 					$vars['act'] = '';
+                    */
 
+					$vars['option'] = 'com_members';
+					$vars['id'] = $juser->get("id");
+					$vars['active'] = 'profile';
+					
 					$this->setVars($vars);
 					JRequest::set($vars, 'get', true );  // overwrite existing
 					return $vars;
@@ -166,6 +172,10 @@ class XRouter extends JRouter
 				{
 					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
 						return $vars;
+				}
+				else if ($uri->getPath() == 'legal/terms')
+				{
+					return $vars;
 				}
 				else if ($vars['option'] == 'com_register')
 				{
@@ -1081,7 +1091,8 @@ class plgSystemXhub extends JPlugin
 	 * @param object $subject The object to observe
 	 * @since 1.5
 	 */
-	function plgSystemXhub(& $subject) {
+	function plgSystemXhub(& $subject) 
+	{
 		parent::__construct($subject, NULL);
 	}
 
@@ -1092,27 +1103,14 @@ class plgSystemXhub extends JPlugin
 	 * 
 	 * @return     void
 	 */
-        function onAfterRoute()
-        {
-                $app = &JFactory::getApplication();
-                JHTML::_('behavior.mootools');
-                $jdocument =& JFactory::getDocument();
-                $template = $app->getTemplate();
-                $router = &$app->getRouter();
-
-                if (get_class($router) == 'XRouter')
-                {
-                        if (file_exists( JPATH_ROOT . '/templates/' . $template . '/js/hub.js' ))
-                                $jdocument->addScript('/templates/' . $template . '/js/hub.js');
-                        else
-                                $jdocument->addScript('/components/com_hub/js/hub.js');
-
-                        if (file_exists( JPATH_ROOT . '/templates/' . $template . '/css/main.css'))
-                                $jdocument->addStyleSheet('/templates/' . $template . '/css/main.css');
-                        else
-                                $jdocument->addStyleSheet('/components/com_hub/css/main.css');
-                }
-        }
+	function onAfterRoute()
+	{
+		$app = &JFactory::getApplication();
+		if (!JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			JHTML::_('behavior.mootools');
+		}
+	}
 
 	/**
 	 * Short description for 'onAfterInitialise'

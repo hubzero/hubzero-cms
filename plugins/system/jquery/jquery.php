@@ -22,19 +22,20 @@ class plgSystemJquery extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args (void) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @param object $params  The object that holds the plugin parameters
-	 * @since 1.5
+	 * @param  object $subject The object to observe
+	 * @param  object $params  The object that holds the plugin parameters
+	 * @return void
 	 */
 	public function __construct(&$subject, $params)
 	{
 		parent::__construct($subject, $params);
 	}
-	
+
+	/**
+	 * Hook for after routing application
+	 * 
+	 * @return     void
+	 */
 	public function onAfterRoute() 
 	{
 		$app = JFactory::getApplication();
@@ -147,6 +148,11 @@ class plgSystemJquery extends JPlugin
 		}
 	}
 
+	/**
+	 * hook for after dispatching application
+	 * 
+	 * @return     void
+	 */
 	public function onAfterDispatch()
 	{
 		$app = JFactory::getApplication();

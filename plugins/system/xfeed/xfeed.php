@@ -29,6 +29,43 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'plugins' . DS . 'system' . DS . 'disablecache' . DS . 'disablecache.php');
+jimport('joomla.event.plugin');
+
+/**
+ * System plugin to force .rss URLs to raw document mode
+ */
+class plgSystemXFeed extends JPlugin
+{
+	/**
+	 * Constructor
+	 *
+	 * @param     object $subject The object to observe
+	 * @return    void
+	 */
+	public function __construct(&$subject)
+	{
+		parent::__construct($subject, NULL);
+	}
+
+	/**
+	 * Perform actions after initialization
+	 * 
+	 * @return     void
+	 */
+	public function onAfterInitialise()
+	{
+		$uri = $_SERVER['REQUEST_URI'];
+		$bits = explode('?', $uri);
+		$bit = $bits[0];
+		$bi = explode('.', $bit);
+		$b = end($bi);
+		if ($b == strtolower('rss') || $b == strtolower('atom')) 
+		{
+			$_GET['no_html'] = 1;
+			$_REQUEST['no_html'] = 1;
+		}
+	}
+}
+
