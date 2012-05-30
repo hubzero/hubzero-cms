@@ -1674,10 +1674,6 @@ class SupportControllerTickets extends Hubzero_Controller
 								$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);
 								$from['replytoemail'] = 'htc-' . $token;									
 							}
-							else
-							{
-								$newMessage = $message;
-							}
 
 							if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
 							{
@@ -1718,7 +1714,7 @@ class SupportControllerTickets extends Hubzero_Controller
 									}
 
 									// Get the user's email address
-									if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $newMessage, $from, array($juser->get('id')), $this->_option))) 
+									if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
 									{
 										$this->setError(JText::_('Failed to message ticket owner.'));
 									}
