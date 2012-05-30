@@ -34,41 +34,28 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Plugin');
 
 /**
- * Short description for 'plgGroupsForum'
- * 
- * Long description (if any) ...
+ * Groups Plugin class for forum entries
  */
 class plgGroupsForum extends Hubzero_Plugin
 {
-
 	/**
-	 * Short description for 'plgGroupsForum'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
+	 * @param      object &$subject Event observer
+	 * @param      array  $config   Optional config values
 	 * @return     void
 	 */
-	public function plgGroupsForum(&$subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin('groups', 'forum');
 		$this->loadLanguage();
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->params = new JParameter($this->_plugin->params);
-		}
 	}
 
 	/**
-	 * Short description for 'onGroupAreas'
+	 * Return the alias and name for this category of content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function &onGroupAreas()
 	{
@@ -78,24 +65,21 @@ class plgGroupsForum extends Hubzero_Plugin
 			'default_access' => $this->params->get('plugin_access','members'),
 			'display_menu_tab' => true
 		);
-
 		return $area;
 	}
 
 	/**
-	 * Short description for 'onGroup'
+	 * Return data on a group view (this will be some form of HTML)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $group Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      string $authorized Parameter description (if any) ...
-	 * @param      integer $limit Parameter description (if any) ...
-	 * @param      integer $limitstart Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      array $access Parameter description (if any) ...
-	 * @param      unknown $areas Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      object  $group      Current group
+	 * @param      string  $option     Name of the component
+	 * @param      string  $authorized User's authorization level
+	 * @param      integer $limit      Number of records to pull
+	 * @param      integer $limitstart Start of records to pull
+	 * @param      string  $action     Action to perform
+	 * @param      array   $access     What can be accessed
+	 * @param      array   $areas      Active area(s)
+	 * @return     array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -113,8 +97,10 @@ class plgGroupsForum extends Hubzero_Plugin
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) {
-			if(!in_array($this_area['name'],$areas)) {
+		if (is_array($areas) && $limit) 
+		{
+			if (!in_array($this_area['name'], $areas)) 
+			{
 				return $arr;
 			}
 		}
@@ -316,7 +302,15 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Return the output
 		return $arr;
 	}
-	
+
+	/**
+	 * Set redirect and message
+	 * 
+	 * @param      string $url  URL to redirect to
+	 * @param      string $msg  Message to send
+	 * @param      string $type Message type (message, error, warning, info)
+	 * @return     void
+	 */
 	public function setRedirect($url, $msg=null, $type='message')
 	{
 		if ($msg !== null)
@@ -327,100 +321,78 @@ class plgGroupsForum extends Hubzero_Plugin
 	}
 	
 	/**
-	 * Short description for '_authorize'
+	 * Set permissions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
+	 * @param      integer $assetId   Specific object to check permissions for
+	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->params->set('access-view', true);
 		if (!$this->juser->get('guest')) 
 		{
-			/*if (version_compare(JVERSION, '1.6', 'ge'))
+			$this->params->set('access-view-' . $assetType, false);
+			if (in_array($this->juser->get('id'), $this->members))
 			{
-				$asset  = 'com_forum.' . $assetType;
-				$asset .= ($assetId) ? '.' . $assetId : '';
-				
-				// Check general edit permission first.
-				if ($this->juser->authorise('core.create', $asset)) 
+				$this->params->set('access-view-' . $assetType, true);
+			}
+			if (isset($this->model) && is_object($this->model))
+			{
+				if (!$this->model->state)
 				{
-					$this->params->set('access-create-' . $assetType, true);
-				}
-				if ($this->juser->authorise('core.delete', $asset)) 
-				{
-					$this->params->set('access-delete-' . $assetType, true);
-				}
-				if ($this->juser->authorise('core.edit', $asset)) 
-				{
-					$this->params->set('access-edit-' . $assetType, true);
+					$this->params->set('access-view-' . $assetType, false);
 				}
 			}
-			else 
-			{*/
-				$this->params->set('access-view-' . $assetType, false);
-				if (in_array($this->juser->get('id'), $this->members))
-				{
-					$this->params->set('access-view-' . $assetType, true);
-				}
-				if (isset($this->model) && is_object($this->model))
-				{
-					if (!$this->model->state)
+			
+			$this->params->set('access-create-' . $assetType, false);
+			$this->params->set('access-delete-' . $assetType, false);
+			$this->params->set('access-edit-' . $assetType, false);
+			switch ($assetType)
+			{
+				case 'thread':
+					$this->params->set('access-create-' . $assetType, true);
+					if ($this->authorized == 'admin' || $this->authorized == 'manager')
 					{
-						$this->params->set('access-view-' . $assetType, false);
+						$this->params->set('access-delete-' . $assetType, true);
+						$this->params->set('access-edit-' . $assetType, true);
+						$this->params->set('access-view-' . $assetType, true);
 					}
-				}
-				
-				$this->params->set('access-create-' . $assetType, false);
-				$this->params->set('access-delete-' . $assetType, false);
-				$this->params->set('access-edit-' . $assetType, false);
-				switch ($assetType)
-				{
-					case 'thread':
+				break;
+				case 'category':
+					if ($this->authorized == 'admin' || $this->authorized == 'manager')
+					{
 						$this->params->set('access-create-' . $assetType, true);
-						if ($this->authorized == 'admin' || $this->authorized == 'manager')
-						{
-							$this->params->set('access-delete-' . $assetType, true);
-							$this->params->set('access-edit-' . $assetType, true);
-							$this->params->set('access-view-' . $assetType, true);
-						}
-					break;
-					case 'category':
-						if ($this->authorized == 'admin' || $this->authorized == 'manager')
-						{
-							$this->params->set('access-create-' . $assetType, true);
-							$this->params->set('access-delete-' . $assetType, true);
-							$this->params->set('access-edit-' . $assetType, true);
-							$this->params->set('access-view-' . $assetType, true);
-						}
-					break;
-					case 'section':
-						if ($this->authorized == 'admin' || $this->authorized == 'manager')
-						{
-							$this->params->set('access-create-' . $assetType, true);
-							$this->params->set('access-delete-' . $assetType, true);
-							$this->params->set('access-edit-' . $assetType, true);
-							$this->params->set('access-view-' . $assetType, true);
-						}
-					break;
-					case 'component':
-					default:
-						if ($this->authorized == 'admin' || $this->authorized == 'manager')
-						{
-							$this->params->set('access-create-' . $assetType, true);
-							$this->params->set('access-delete-' . $assetType, true);
-							$this->params->set('access-edit-' . $assetType, true);
-							$this->params->set('access-view-' . $assetType, true);
-						}
-					break;
-				}
-			//}
+						$this->params->set('access-delete-' . $assetType, true);
+						$this->params->set('access-edit-' . $assetType, true);
+						$this->params->set('access-view-' . $assetType, true);
+					}
+				break;
+				case 'section':
+					if ($this->authorized == 'admin' || $this->authorized == 'manager')
+					{
+						$this->params->set('access-create-' . $assetType, true);
+						$this->params->set('access-delete-' . $assetType, true);
+						$this->params->set('access-edit-' . $assetType, true);
+						$this->params->set('access-view-' . $assetType, true);
+					}
+				break;
+				case 'component':
+				default:
+					if ($this->authorized == 'admin' || $this->authorized == 'manager')
+					{
+						$this->params->set('access-create-' . $assetType, true);
+						$this->params->set('access-delete-' . $assetType, true);
+						$this->params->set('access-edit-' . $assetType, true);
+						$this->params->set('access-view-' . $assetType, true);
+					}
+				break;
+			}
 		}
 	}
 	
 	/**
-	 * Short description for 'topics'
+	 * Show sections in this forum
 	 * 
 	 * @return     string
 	 */
@@ -444,18 +416,18 @@ class plgGroupsForum extends Hubzero_Plugin
 		$view->filters['search']     = JRequest::getVar('q', '');
 		$view->filters['section_id'] = 0;
 		$view->filters['state']      = 1;
-		
+
 		$view->edit = JRequest::getVar('section', '');
-		
+
 		// Get Sections
 		$sModel = new ForumSection($this->database);
 		$view->sections = $sModel->getRecords(array(
 			'state' => 1, 
 			'group' => $this->group->get('gidNumber')
 		));
-		
+
 		$model = new ForumCategory($this->database);
-		
+
 		// Check if there are uncategorized posts
 		// This should mean legacy data
 		if (($posts = $model->getPostCount(0, $this->group->get('gidNumber'))) || !$view->sections || !count($view->sections))
@@ -485,29 +457,29 @@ class plgGroupsForum extends Hubzero_Plugin
 			{
 				$dCategory->store();
 			}
-			
+
 			if ($posts)
 			{
 				// Update all the uncategorized posts to the new default
 				$tModel = new ForumPost($this->database);
 				$tModel->updateCategory(0, $dCategory->id, $this->group->get('gidNumber'));
 			}
-			
+
 			$view->sections = $sModel->getRecords(array(
 				'state' => 1, 
 				'group' => $this->group->get('gidNumber')
 			));
 		}
-		
+
 		$view->stats = new stdClass;
 		$view->stats->categories = 0;
 		$view->stats->threads = 0;
 		$view->stats->posts = 0;
-		
+
 		foreach ($view->sections as $key => $section)
 		{
 			$view->filters['section_id'] = $section->id;
-			
+
 			$view->sections[$key]->categories = $model->getRecords($view->filters);
 			/*if ($view->sections[$key]->id == 0 && !$view->sections[$key]->categories)
 			{
@@ -524,7 +496,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				
 				$view->sections[$key]->categories = array($default);
 			}*/
-			
+	
 			$view->stats->categories += count($view->sections[$key]->categories);
 			if ($view->sections[$key]->categories)
 			{
@@ -555,24 +527,26 @@ class plgGroupsForum extends Hubzero_Plugin
 		$recvEmailOption = new XGroups_MemberOption($database);
 		$recvEmailOption->loadRecord($this->group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
-		if ($recvEmailOption->id) {
+		if ($recvEmailOption->id) 
+		{
 			$view->recvEmailOptionID = $recvEmailOption->id;
 			$view->recvEmailOptionValue = $recvEmailOption->optionvalue;
-		} else {
+		} 
+		else 
+		{
 			$view->recvEmailOptionID = 0;
 			$view->recvEmailOptionValue = 0;
 		}
 
-		
 		// Set any errors
 		if ($this->getError()) 
 		{
 			$view->setError($this->getError());
 		}
-		
+
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Saves a section and redirects to main page afterward
 	 * 
@@ -583,7 +557,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Incoming posted data
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
-		
+
 		// Instantiate a new table row and bind the incoming data
 		$model = new ForumSection($this->database);
 		if (!$model->bind($fields))
@@ -593,7 +567,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
-		
+
 		// Check content
 		if ($model->check()) 
 		{
@@ -606,7 +580,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
 		);
 	}
-	
+
 	/**
 	 * Deletes a section and redirects to main page afterwards
 	 * 
@@ -642,7 +616,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
-		
+
 		// Check if user is authorized to delete entries
 		$this->_authorize('section', $model->id);
 		if (!$this->params->get('access-delete-section')) 
@@ -669,14 +643,14 @@ class plgGroupsForum extends Hubzero_Plugin
 			{
 				$cats[] = $category->id;
 			}
-			
+
 			// Set all the threads/posts in all the categories to "deleted"
 			$tModel = new ForumPost($this->database);
 			if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 			{
 				$this->setError($tModel->getError());
 			}
-			
+
 			// Set all the categories to "deleted"
 			if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 			{
@@ -703,7 +677,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			'passed'
 		);
 	}
-	
+
 	/**
 	 * Short description for 'topics'
 	 * 
@@ -747,7 +721,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$view->category->alias = str_replace(' ', '-', $view->category->title);
 			$view->category->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($view->category->title));
 		}
-		
+
 		// Initiate a forum object
 		$view->forum = new ForumPost($this->database);
 
@@ -773,22 +747,23 @@ class plgGroupsForum extends Hubzero_Plugin
 			$view->filters['start'], 
 			$view->filters['limit']
 		);
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		return $view->loadTemplate();
 	}
-	
+
 	/**
-	 * Short description for 'topics'
+	 * Search forum entries and display results
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
+	 * @return     string
 	 */
 	public function search()
 	{
@@ -801,7 +776,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				'layout'  => 'search'
 			)
 		);
-		
+
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['authorized'] = 1;
@@ -809,12 +784,12 @@ class plgGroupsForum extends Hubzero_Plugin
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$this->view->filters['search'] = JRequest::getVar('q', '');
 		$this->view->filters['group']  = $this->group->get('gidNumber');
-		
+
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->title = JText::_('Posts');
 		$this->view->section->alias = str_replace(' ', '-', $this->view->section->title);
 		$this->view->section->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->title));
-		
+
 		// Get all sections
 		$sections = $this->view->section->getRecords(array(
 			'state' => 1, 
@@ -826,12 +801,12 @@ class plgGroupsForum extends Hubzero_Plugin
 			$s[$section->id] = $section;
 		}
 		$this->view->sections = $s;
-		
+
 		$this->view->category = new ForumCategory($this->database);
 		$this->view->category->title = JText::_('Search');
 		$this->view->category->alias = str_replace(' ', '-', $this->view->category->title);
 		$this->view->category->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->title));
-		
+
 		// Get all categories
 		$categories = $this->view->category->getRecords(array(
 			'state' => 1, 
@@ -843,7 +818,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$c[$category->id] = $category;
 		}
 		$this->view->categories = $c;
-		
+
 		// Initiate a forum object
 		$this->view->forum = new ForumPost($this->database);
 
@@ -870,22 +845,23 @@ class plgGroupsForum extends Hubzero_Plugin
 		);
 
 		$this->view->notifications = $this->getPluginMessage();
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		return $this->view->loadTemplate();
 	}
-	
+
 	/**
-	 * Short description for 'editTopic'
+	 * Show a form for editing a category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     string
 	 */
 	public function editcategory($model=null)
 	{
@@ -898,7 +874,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				'layout'  => 'edit'
 			)
 		);
-		
+
 		$category = JRequest::getVar('category', '');
 		$section = JRequest::getVar('section', '');
 		if ($this->juser->get('guest')) 
@@ -909,7 +885,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
-		
+
 		$sModel = new ForumSection($this->database);
 		$sModel->loadByAlias($section, $this->group->get('gidNumber'));
 
@@ -923,7 +899,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->view->model = new ForumCategory($this->database);
 			$this->view->model->loadByAlias($category, $sModel->id, $this->group->get('gidNumber'));
 		}
-		
+
 		$this->_authorize('category', $this->view->model->id);
 
 		if (!$this->view->model->id) 
@@ -946,7 +922,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
 			$this->view->sections = array();
-			
+
 			$default = new ForumSection($this->database);
 			$default->id = 0;
 			$default->title = JText::_('Categories');
@@ -959,35 +935,36 @@ class plgGroupsForum extends Hubzero_Plugin
 		$this->view->config = $this->params;
 		$this->view->group = $this->group;
 		$this->view->option = $this->option;
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		return $this->view->loadTemplate();
 	}
-	
+
 	/**
-	 * Short description for 'saveTopic'
+	 * Save a category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function savecategory()
 	{
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
-		
+
 		$model = new ForumCategory($this->database);
 		if (!$model->bind($fields))
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
 		}
-		
+
 		$this->_authorize('category', $model->id);
 		if (!$this->params->get('access-edit-category'))
 		{
@@ -1003,7 +980,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
 		}
-		
+
 		// Store new content
 		if (!$model->store()) 
 		{
@@ -1016,13 +993,11 @@ class plgGroupsForum extends Hubzero_Plugin
 			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
 		);
 	}
-	
+
 	/**
-	 * Short description for 'deleteTopic'
+	 * Delete a category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function deletecategory()
 	{
@@ -1075,7 +1050,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			$this->setError($tModel->getError());
 		}
-		
+
 		// Set the category to "deleted"
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
@@ -1095,13 +1070,11 @@ class plgGroupsForum extends Hubzero_Plugin
 			'passed'
 		);
 	}
-	
+
 	/**
-	 * Short description for 'topic'
+	 * Show a thread
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     string
 	 */
 	public function threads()
 	{
@@ -1129,7 +1102,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			return $this->categories();
 		}
-		
+
 		$view->section = new ForumSection($this->database);
 		$view->section->loadByAlias($view->filters['section'], $this->group->get('gidNumber'));
 		$view->filters['section_id'] = $view->section->id;
@@ -1170,7 +1143,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Get authorization
 		$this->_authorize('category', $view->category->id);
 		$this->_authorize('thread', $view->post->id);
-		
+
 		$view->config = $this->params;
 		$view->group = $this->group;
 		$view->option = $this->option;
@@ -1183,22 +1156,23 @@ class plgGroupsForum extends Hubzero_Plugin
 			$view->filters['start'], 
 			$view->filters['limit']
 		);
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		return $view->loadTemplate();
 	}
-	
+
 	/**
-	 * Short description for 'editTopic'
+	 * Show a form for editing a post
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     string
 	 */
 	public function editthread($post=null)
 	{
@@ -1211,11 +1185,11 @@ class plgGroupsForum extends Hubzero_Plugin
 				'layout'  => 'edit'
 			)
 		);
-		
+
 		$id = JRequest::getInt('thread', 0);
 		$category = JRequest::getVar('category', '');
 		$sectionAlias = JRequest::getVar('section', '');
-		
+
 		if ($this->juser->get('guest')) 
 		{
 			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/new');
@@ -1242,10 +1216,10 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->view->post = new ForumPost($this->database);
 			$this->view->post->load($id);
 		}
-		
+
 		// Get authorization
 		$this->_authorize('thread', $id);
-		
+
 		if (!$id) 
 		{
 			$this->view->post->created_by = $this->juser->get('id');
@@ -1255,13 +1229,13 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category));
 			return;
 		}
-		
+
 		$sModel = new ForumSection($this->database);
 		$this->view->sections = $sModel->getRecords(array(
 			'state' => 1, 
 			'group' => $this->group->get('gidNumber')
 		));
-		
+
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
 			$this->view->sections = array();
@@ -1273,7 +1247,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
 			$this->view->sections[] = $default;
 		}
-		
+
 		$cModel = new ForumCategory($this->database);
 		foreach ($this->view->sections as $key => $section)
 		{
@@ -1296,9 +1270,12 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		return $this->view->loadTemplate();
 	}
 	
@@ -1316,10 +1293,10 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
-		
+
 		// Incoming
 		$section = JRequest::getVar('section', '');
-		
+
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
@@ -1521,11 +1498,9 @@ class plgGroupsForum extends Hubzero_Plugin
 			'passed'
 		);
 	}
-	
+
 	/**
-	 * Short description for 'deleteTopic'
-	 * 
-	 * Long description (if any) ...
+	 * Remove a thread
 	 * 
 	 * @return     void
 	 */
@@ -1533,7 +1508,7 @@ class plgGroupsForum extends Hubzero_Plugin
 	{
 		$section = JRequest::getVar('section', '');
 		$category = JRequest::getVar('category', '');
-		
+
 		// Is the user logged in?
 		if ($this->juser->get('guest')) 
 		{
@@ -1547,11 +1522,11 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Incoming
 		$id = JRequest::getInt('thread', 0);
-		
+
 		// Initiate a forum object
 		$model = new ForumPost($this->database);
 		$model->load($id);
-		
+
 		// Make the sure the category exist
 		if (!$model->id) 
 		{
@@ -1562,7 +1537,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
-		
+
 		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
 		if (!$this->params->get('access-delete-thread'))
@@ -1574,7 +1549,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			);
 			return;
 		}
-		
+
 		// Update replies if this is a parent (thread starter)
 		if (!$model->parent)
 		{
@@ -1583,7 +1558,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				$this->setError($model->getError());
 			}
 		}
-		
+
 		// Delete the topic itself
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
@@ -1603,6 +1578,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			'passed'
 		);
 	}
+
 	/**
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
@@ -1840,172 +1816,12 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 		return;
 	}
-	
-	/**
-	 * Short description for 'savetopic'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
-	 */
-	/*protected function savepost()
-	{
-		//check to make sure editor is a member
-		if (!in_array($this->juser->get('id'), $this->members) && $this->authorized != 'admin') {
-			// Return the topics list
-			$this->addPluginMessage(JText::sprintf('PLG_GROUPS_FORUM_MUST_MEMBER', 'create/edit a topic or reply'),'warning');
-			$this->redirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'));
-		}
-
-		//instantaite database object
-		$database = JFactory::getDBO();
-
-		//get the incoming topic details
-		$incoming = JRequest::getVar('topic',array(),'post');
-
-		//instantiate forum object
-		$row = new XForum($database);
-
-		$group = $this->group;
-
-		//bind the data
-		if (!$row->bind($incoming)) {
-			$this->setError($row->getError());
-			exit();
-		}
-
-		//if we are modifying or creating
-		if (!$row->id) {
-			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$row->created_by = $this->juser->get('id');
-		} else {
-			$row->modified = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$row->modified_by = $this->juser->get('id');
-		}
-
-		//create topic from comment if not one entered
-		if (trim($row->topic) == '') {
-			$row->topic = substr($row->comment, 0, 70);
-			if (strlen($row->topic >= 70)) {
-				$row->topic .= '...';
-			}
-		}
-
-		//is this a sticky topic
-		if (!isset($incoming['sticky'])) {
-			$row->sticky = 0;
-		}
-
-		//is this an anonymous topic
-		if (!isset($incoming['anonymous'])) {
-			$row->anonymous = 0;
-		}
-
-		//is this a public topic
-		if (!isset($incoming['access'])) {
-			$row->access = 4;
-		} else {
-			$row->access = 0;
-		}
-
-   		// Check content
-		if (!$row->check()) {
-			$this->setError($row->getError());
-			return $this->edittopic();
-		}
-
-		// Store new content
-		if (!$row->store()) {
-			$this->setError($row->getError());
-			return $this->edittopic();
-		}
-
-		// Build outgoing email message
-        $prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
-        $prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n" ;
-        $forum_message = $prependtext . "\r\n\r\n" . $row->comment;
-
-		$params = $params = &JComponentHelper::getParams('com_groups');
-		$allowEmailResponses = $params->get('email_comment_processing');
-
-		// Email the group and insert email tokens to allow them to respond to group posts
-		// via email
-		if($allowEmailResponses){
-
-			// Figure out who should be notified about this comment (all group members for now)
-			$members = $this->group->get('members');
-			$userIDsToEmail = array();
-
-			foreach($members as $mbr)
-			{
-				//Look up user info 
-				$user = new JUser();
-
-				if($user->load($mbr)){
-
-					include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
-
-					// Find the user's group settings, do they want to get email (0 or 1)?
-					$groupMemberOption = new XGroups_MemberOption($database);
-					$groupMemberOption->loadRecord($group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
-
-					if($groupMemberOption->id)
-						$sendEmail = $groupMemberOption->optionvalue;
-					else
-						$sendEmail = 0;
-
-					if($sendEmail)
-						$userIDsToEmail[] = $user->id;
-				}
-			}
-
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
-
-
-			$encryptor = new Hubzero_Email_Token();
-
-			// Email each group member separately, each needs a user specific token
-			foreach($userIDsToEmail as $userID)
-			{
-
-				// Construct User specific Email ThreadToken
-				// Version, type, userid, xforumid
-				$token = $encryptor->buildEmailToken(1, 2, $userID, $row->id);
-
-				// Put Token into generic message
-				$subject = $group->get('cn') . ' group discussion post (' . $row->id . ')';
-
-				$jconfig =& JFactory::getConfig();
-				$from = array();
-				$from['name']  = $jconfig->getValue('config.sitename').' ';
-				$from['email'] = $jconfig->getValue('config.mailfrom');
-				$from['replytoemail'] = 'hgm-' . $token;
-
-				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $forum_message, $from, array($userID), $this->_option, null, '', $this->group->get('gidNumber')))) {
-					$this->setError(JText::_('COM_GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
-				}
-
-			}
-		}
-
-		//if we are replying redirect back to that topic
-		if ($row->parent) {
-			$this->addPluginMessage('You have successfully commented on the topic.','passed');
-			$this->redirect(JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=topic&topic='.$row->parent));
-		} else {
-			$this->addPluginMessage('You have successfully added a topic.','passed');
-			$this->redirect(JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'));
-		}
-	}*/
 
 	/**
-	 * Short description for 'onGroupDelete'
+	 * Remove all items associated with the gorup being deleted
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $group Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object $group Group being deleted
+	 * @return     string Log of items removed
 	 */
 	public function onGroupDelete($group)
 	{
@@ -2081,11 +1897,9 @@ class plgGroupsForum extends Hubzero_Plugin
 	}
 
 	/**
-	 * Short description for 'onGroupDeleteCount'
+	 * Get a count of all items that will be deleted with this gorup
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $group Parameter description (if any) ...
+	 * @param      object $group Group to be deleted
 	 * @return     void
 	 */
 	public function onGroupDeleteCount($group)

@@ -32,7 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-JPlugin::loadLanguage( 'plg_resources_questions' );
 
 /**
  * Short description for 'plgResourcesQuestions'
@@ -51,13 +50,17 @@ class plgResourcesQuestions extends JPlugin
 	 * @param      unknown $config Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function plgResourcesQuestions(&$subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'questions' );
-		$this->_params = new JParameter( $this->_plugin->params );
+		$this->loadLanguage();
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->params = new JParameter($this->_plugin->params);
+		}
 	}
 
 	/**
@@ -68,7 +71,7 @@ class plgResourcesQuestions extends JPlugin
 	 * @param      object $resource Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onResourcesAreas( $resource )
+	public function onResourcesAreas( $resource )
 	{
 		if ($resource->_type->_params->get('plg_questions')) {
 			$areas = array(
@@ -106,6 +109,11 @@ class plgResourcesQuestions extends JPlugin
 			}
 		}
 
+		// Display only for tools
+		if ($resource->type != 7) {
+			return $arr;
+		}
+
 		$database =& JFactory::getDBO();
 
 		// Get a needed library
@@ -120,7 +128,7 @@ class plgResourcesQuestions extends JPlugin
 		$filters = array();
 		$filters['limit']    = JRequest::getInt( 'limit', 0 );
 		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
-		$filters['tag']      = $resource->type== 7 ? 'tool:'.$resource->alias : 'resource:'.$resource->id;
+		$filters['tag']      = $resource->type== 7 ?  'tool'.$resource->alias : 'resource'.$resource->id;
 		$filters['q']        = JRequest::getVar( 'q', '' );
 		$filters['filterby'] = JRequest::getVar( 'filterby', '' );
 		$filters['sortby']   = JRequest::getVar( 'sortby', 'withinplugin' );
@@ -135,14 +143,14 @@ class plgResourcesQuestions extends JPlugin
 			Hubzero_Document::addPluginStylesheet('resources', 'questions');
 
 			// Are we banking?
-			$upconfig =& JComponentHelper::getParams( 'com_members' );
+			$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
 			$banking = $upconfig->get('bankAccounts');
 
 			// Info aboit points link
 			$aconfig =& JComponentHelper::getParams( 'com_answers' );
 			$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
 
-			$limit = $this->_params->get('display_limit');
+			$limit = $this->params->get('display_limit');
 			$limit = $limit ? $limit : 10;
 
 			// Get results
@@ -177,17 +185,13 @@ class plgResourcesQuestions extends JPlugin
 
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
-			ximport('Hubzero_Plugin_View');
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'=>'resources',
-					'element'=>'questions',
-					'name'=>'metadata'
-				)
-			);
-			$view->resource = $resource;
-			$view->count = $count;
-			$arr['metadata'] = $view->loadTemplate();
+			$arr['metadata']  = '<p class="answer"><a href="'.JRoute::_('index.php?option='.$option.'&alias='.$resource->alias.'&active=questions').'">';
+			if ($count == 1) {
+				$arr['metadata'] .= JText::sprintf('PLG_RESOURCES_QUESTIONS_NUM_QUESTION',$count);
+			} else {
+				$arr['metadata'] .= JText::sprintf('PLG_RESOURCES_QUESTIONS_NUM_QUESTIONS',$count);
+			}
+			$arr['metadata'] .= '</a> (<a href="/answers/question/new/?tag=tool:'.$resource->alias.'">'.JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION').'</a>)</p>';
 		}
 
 		// Return output
