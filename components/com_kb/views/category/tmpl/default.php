@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 <div id="content-header-extra">
 	<p>
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>">&larr; Main page</a>
+		<a class="main-page" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('&larr; Main page'); ?></a>
 	</p>
 </div>
 <div class="main section">
@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					$html .= ' class="active"';
 				}
-				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.$this->escape(stripslashes($row->title)).'</a> ('.$row->numitems.')'."\n";
+				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.$this->escape(stripslashes($row->title)).' ('.$row->numitems.')</a>'."\n";
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
 				{
 					$html .= "\t".'<ul class="categories">'."\n";
@@ -74,7 +74,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						{
 							$html .= ' class="active"';
 						}
-						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$row->alias.'&category='. $cat->alias) .'">'. $this->escape(stripslashes($cat->title)) .'</a> ('.$cat->numitems.')</li>'."\n";
+						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$row->alias.'&category='. $cat->alias) .'">'. $this->escape(stripslashes($cat->title)) .' ('.$cat->numitems.')</a></li>'."\n";
 					}
 					$html .= "\t".'</ul>'."\n";
 				}

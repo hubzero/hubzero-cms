@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 <div id="content-header-extra">
 	<p>
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>">&larr; Main page</a>
+		<a class="main-page" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('&larr; Main page'); ?></a>
 	</p>
 </div>
 <div class="main section">
@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 	<div class="aside">
 		<div class="container">
-			<h3>Categories</h3>
+			<h3><?php echo JText::_('Categories'); ?></h3>
 <?php
 		$html = '<ul class="categories">'."\n";
 		if ($this->catid == 0) {
@@ -62,7 +62,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				if ($this->catid == $row->id) {
 					$html .= ' class="active"';
 				}
-				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.Hubzero_View_Helper_Html::xhtml($row->title).'</a>';
+				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.$this->escape(stripslashes($row->title)).'</a>';
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) {
 					//$html .= '<h4>'.JText::_('SUBCATEGORIES').'</h4>'."\n";
 					$html .= "\t".'<ul class="categories">'."\n";
@@ -72,7 +72,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						if ($this->article->category == $cat->id) {
 							$html .= ' class="active"';
 						}
-						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$this->category->alias.'&category='. $cat->alias) .'">'. stripslashes($cat->title) .'</a> ('.$cat->numitems.')</li>'."\n";
+						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$this->category->alias.'&category='. $cat->alias) .'">'. $this->escape(stripslashes($cat->title)) .' ('.$cat->numitems.')</a></li>'."\n";
 					}
 					$html .= "\t".'</ul>'."\n";
 				}
@@ -271,7 +271,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 		$lnk = $rtrn;
 	}
 ?>
-					<a class="reply" href="<?php echo $lnk; ?>">Reply</a>
+					<a class="reply" href="<?php echo $lnk; ?>"><?php echo JText::_('Reply'); ?></a>
 <?php } ?>
 				</p>
 <?php 		} ?>
@@ -423,7 +423,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 <?php
 } else {
 ?>
-	<p class="no-comments">There are no comments on this entry.</p>
+	<p class="no-comments"><?php echo JText::_('There are no comments on this entry.'); ?></p>
 <?php
 }
 ?>
@@ -433,7 +433,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 	<div class="clear"></div>
 <div class="below">
 	<h3 class="post-comment-title">
-		Post a comment
+		<?php echo JText::_('Post a comment'); ?>
 	</h3>
 	<div class="aside">
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
@@ -548,7 +548,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 <?php 			} ?>
 <?php 		} else { ?>
 	<p class="warning">
-		Comments are closed on this entry.
+		<?php echo JText::_('Comments are closed on this entry.'); ?>
 	</p>
 <?php 		} ?>
 				<input type="hidden" name="comment[id]" value="0" />
@@ -561,7 +561,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 
 				<div class="sidenote">
 					<p>
-						<strong>Please keep comments relevant to this entry.</strong>
+						<strong><?php echo JText::_('Please keep comments relevant to this entry.'); ?></strong>
 					</p>
 					<p>
 						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
