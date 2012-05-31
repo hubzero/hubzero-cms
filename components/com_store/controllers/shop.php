@@ -157,7 +157,7 @@ class StoreControllerShop extends Hubzero_Controller
 	 */
 	public function loginTask()
 	{
-		$rtrn = JRequest::get('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller), 'server');
+		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller), 'server');
 
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
