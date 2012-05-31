@@ -230,9 +230,12 @@ HUB.Members.Profile = {
 	
 	editInterestsAutocompleterReinstantiate: function()
 	{
-		if(HUB.Plugins.Autocomplete)
+		if(HUB.Plugins != null)
 		{
-			HUB.Plugins.Autocomplete.initialize();
+			if(HUB.Plugins.Autocomplete != null)
+			{
+				HUB.Plugins.Autocomplete.initialize();
+			}
 		}
 	},
 
