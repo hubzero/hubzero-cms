@@ -1106,21 +1106,27 @@ class Hubzero_Registration
 		{   
 			foreach($field_to_check as $f)
 			{
-				foreach($this->_missing as $k => $v)
+				if($this->_missing)
 				{
-					if($k != $f)
+					foreach($this->_missing as $k => $v)
 					{
-						unset($this->_missing[$k]);
+						if($k != $f)
+						{
+							unset($this->_missing[$k]);
+						}
 					}
 				}
 				
-				foreach($this->_invalid as $k => $v)
+				if($this->_invalid)
 				{
-					if($k != $f)
+					foreach($this->_invalid as $k => $v)
 					{
-						unset($this->_invalid[$k]);
+						if($k != $f)
+						{
+							unset($this->_invalid[$k]);
+						}
 					}
-				}             
+				}
 			}
 		}
 		

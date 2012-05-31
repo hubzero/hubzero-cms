@@ -49,12 +49,21 @@ class Hubzero_Image
 		$this->config = $config;
 		
 		if(!$this->checkPackageRequirements('gd'))
-			return false;
-		
+		{
+			return $this->errors;
+		}
+
 		if(!is_null($this->source) && is_file($this->source))
 		{   
 			$this->openImage();
 		}
+	}
+	
+	//-----
+	
+	public function getErrors()
+	{
+		return $this->errors;
 	}
 	
 	//-----
@@ -81,13 +90,12 @@ class Hubzero_Image
 			return false;
 		
 		$installed_exts = get_loaded_extensions();
-		
 		if(!in_array($package, $installed_exts))
 		{   
 			$this->errors[] = "[ERROR] You are missing the required PHP package {$package}.";
 			return false;
 		}
-		   
+		
 		return true;
 	}
 	

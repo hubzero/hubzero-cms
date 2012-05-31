@@ -235,6 +235,9 @@
 #profile li.profile-bio p:first-child {
 	margin-top:0;
 	}
+#profile_bio {
+	width:99%;
+}	
 
 	
 /*----------------------------------------------------------
@@ -462,7 +465,7 @@
 #profile-privacy {
 	display:inline-block;
 	background:#eee;
-	margin:-5px 0 0 24px;
+	margin:-5px 0 0 25px;
 	padding:10px 5px 5px 5px;
 	width:155px;
 	text-align:center;
@@ -473,6 +476,7 @@
 	font-size:11px;
 	color:#444;
 	text-shadow:0 1px 0 #fff;
+	display:none;
 	}
 #profile-privacy.private {
 	color:#FFF;

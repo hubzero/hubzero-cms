@@ -142,12 +142,12 @@ class plgMembersProfile extends JPlugin
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('members', 'profile');
-
-		$document =& JFactory::getDocument();
-		$document->addScript("/media/system/js/jquery.fileuploader.js");
-		if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'profile' . DS . 'profile.js')) 
+		Hubzero_Document::addPluginScript('members', 'profile');
+		
+		if(JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$document->addScript('plugins' . DS . 'members' . DS . 'profile' . DS . 'profile.js');
+			$document =& JFactory::getDocument();
+			$document->addScript("/media/system/js/jquery.fileuploader.js");
 		}
 
 		ximport('Hubzero_Plugin_View');

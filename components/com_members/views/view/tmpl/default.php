@@ -161,16 +161,12 @@ if (!$no_html) {
 			<ul id="page_options">
 				<?php if($edit) : ?>
 					<?php $edit_url = JRoute::_('index.php?option=com_members&id='.$this->profile->get("uidNumber").'&task=edit'); ?>
-					<noscript>
-						<li><a class="edit" id="edit-profile" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
-					</noscript>
-				<?php endif?>
+					<li><a class="edit" id="edit-profile" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
+				<?php endif; ?>
 				
 				<?php if($password) : ?>
 					<?php $pass_url = JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get("uidNumber")); ?>
-					<noscript>
 						<li><a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo $pass_url; ?>"><?php echo JText::_('Change Password'); ?></a></li>
-					</noscript>
 				<?php endif; ?>
 				
 				<?php if($messaging): ?>

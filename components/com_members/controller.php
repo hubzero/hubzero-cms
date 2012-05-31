@@ -2091,7 +2091,7 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		//define upload directory and make sure its writable
-		$uploadDirectory = JPATH_ROOT . DS . ltrim(rtrim($this->config->get("webpath"), "/"), "/") . DS . $id . DS;
+		$uploadDirectory = JPATH_ROOT . DS . ltrim(rtrim($this->config->get("webpath"), "/"), "/") . DS . Hubzero_View_Helper_Html::niceidformat($id) . DS;
 		if (!is_writable($uploadDirectory))
 		{
 			echo json_encode(array('error' => "Server error. Upload directory isn't writable."));
@@ -2099,7 +2099,6 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		//check to make sure we have a file and its not too big
-		
 		if ($size == 0) 
 		{
 			echo json_encode(array('error' => 'File is empty'));
@@ -2155,15 +2154,31 @@ class MembersController extends Hubzero_Controller
 		//resize image to max 400px and rotate in case user didnt before uploading
 		ximport('Hubzero_Image');
 		$hi = new Hubzero_Image($file);
-		$hi->autoRotate();
-		$hi->resize(400);
-		$hi->setImageType(IMAGETYPE_PNG);
-		$hi->save($final_file);
+		if(count($hi->getErrors()) == 0)
+		{
+			$hi->autoRotate();
+			$hi->resize(400);
+			$hi->setImageType(IMAGETYPE_PNG);
+			$hi->save($final_file);
+		}
+		else
+		{
+			echo json_encode(array('error' => $hi->getErrors()));
+			return;
+		}
 		
 		//create thumb
 		$hi = new Hubzero_Image($final_file);
-		$hi->resize(50, false, true, true);
-		$hi->save($final_thumb);
+		if(count($hi->getErrors()) == 0)
+		{
+			$hi->resize(50, false, true, true);
+			$hi->save($final_thumb);
+		}
+		else
+		{
+			echo json_encode(array('error' => $hi->getErrors()));
+			return;
+		}
 		
 		//remove orig
 		unlink($file);

@@ -613,14 +613,14 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						ximport('Hubzero_Wiki_Editor');
 						$editor =& Hubzero_Wiki_Editor::getInstance();
 					
-						$bio = $editor->display('profile[bio]', 'profile-bio', stripslashes($this->profile->get('bio')), '', '40', '15'); 
+						$bio = $editor->display('profile[bio]', 'profile_bio', stripslashes($this->profile->get('bio')), '', '100', '15'); 
 					
 						$editview->registration_field = "bio";
 						$editview->profile_field = "bio";
 						$editview->title = JText::_('Biography');
 						$editview->profile = $this->profile;
 						$editview->isUser = $isUser;
-						$editview->inputs = '<label for="profile-bio">Biography'.$bio.'</label>';
+						$editview->inputs = '<label for="profile_bio">Biography'.$bio.'</label>';
 						$editview->access = '<label>Biography Access Level' . MembersHtml::selectAccess('access[bio]',$this->params->get('access_bio'),'input-select') . '</label>';
 						$editview->display();
 					?>

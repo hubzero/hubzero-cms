@@ -27,11 +27,11 @@ HUB.Members.Profile = {
 	jQuery: jq,
 	
 	initialize: function()
-	{   
+	{
 		//enable edit mode
 		HUB.Members.Profile.edit();
 		
-		//
+		//profile privacy actions
 		HUB.Members.Profile.editPrivacy();
 		
 		//profile picture editor
@@ -49,6 +49,9 @@ HUB.Members.Profile = {
 	edit: function()
 	{
 		var $ = this.jQuery;
+		
+		//hide edit and password links for when jquery is not enabled
+		$("#page_options .edit, #page_options .password").hide();
 		
 		//do we have the ability to edit
 		if( $('.section-edit-container').length )
@@ -190,27 +193,36 @@ HUB.Members.Profile = {
 	{
 		var $ = this.jQuery;
 		
-		if ($("#profile-bio").length)
+		if ($("#profile_bio").length)
 		{
-			var edtr = new WYKIWYG.editor.edit('editor',{
-				id: "profile-bio",
-				controls: [
-							'bold','italic','underline','strikethrough','|',
-							'subscript','superscript','|',
-							'orderedlist','unorderedlist','|',
-							'outdent','indent','|',
-							'unformat','|',
-							'style','|',
-							'hr','link','unlink'
-						],
-				footer: true,
-				toggle: true,
-				resize: true,
-				xhtml: true,
-				cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
-			});
-
-			wykiwygs.push(edtr);
+			if (typeof(wykiwygs) === 'undefined') 
+			{
+				if(HUB.Plugins.WikiEditorToolbar)
+				{
+					HUB.Plugins.WikiEditorToolbar.initialize();
+				}
+			}
+			else
+			{
+				var edtr = new WYKIWYG.editor.edit('editor',{
+					id: "profile_bio",
+					controls: [
+								'bold','italic','underline','strikethrough','|',
+								'subscript','superscript','|',
+								'orderedlist','unorderedlist','|',
+								'outdent','indent','|',
+								'unformat','|',
+								'style','|',
+								'hr','link','unlink'
+							],
+					footer: true,
+					toggle: true,
+					resize: true,
+					xhtml: true,
+					cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
+				});
+				wykiwygs.push(edtr);
+			}
 		}
 	},
 
@@ -295,11 +307,14 @@ HUB.Members.Profile = {
 	{
 		var $ = this.jQuery;
 		
+		//show privacy button
+		$("#profile-privacy").css('display','inline-block');
+		
 		$("#page_identity_link img").load(function(){
-			var w = $("#page_identity_link img").width();
+			var w = $("#page_identity_link img").outerWidth(true);
 			w = (w > 150) ? w : 150;
-			$("#page_identity").innerWidth(w);
-			$("#profile-privacy").innerWidth(w + 2);
+			$("#page_identity").outerWidth(w + 2);
+			$("#profile-privacy").outerWidth(w + 2);
 		});
 		
 		
