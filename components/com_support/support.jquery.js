@@ -23,8 +23,8 @@ HUB.Support = {
 	jQuery: jq,
 	
 	getMessage: function() {
-		var $ = this.jQuery;
-		
+		var $ = HUB.Support.jQuery;
+
 		var id = $('#messages');
 		if (id.val() != 'mc') {
 			var hi = $('#'+id.val()).val();
@@ -37,7 +37,7 @@ HUB.Support = {
 	},
 	
 	initialize: function() {
-		var $ = this.jQuery;
+		var $ = HUB.Support.jQuery;
 		
 		$('.fixedImgTip').each(function(i, el) {
 			$(this).removeAttr('title');
