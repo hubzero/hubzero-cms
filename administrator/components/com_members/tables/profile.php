@@ -651,7 +651,11 @@ class MembersProfile extends JTable
 					END AS lname ";
 		$query .= $this->_buildQuery($filters);
 		//$query .= " GROUP BY m.uidNumber";
-		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		if (isset($filters['sort']) && $filters['sort'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['sort'] . ' ' . $filters['sort_Dir'];
+		} 
+		else if (isset($filters['sortby']) && $filters['sortby'] != '') 
 		{
 			$query .= " ORDER BY ";
 			switch ($filters['sortby'])
