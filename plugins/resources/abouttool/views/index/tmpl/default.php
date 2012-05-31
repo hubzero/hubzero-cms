@@ -136,10 +136,6 @@ if ($shots) {
 				<th><?php echo JText::_('Category'); ?></th>
 				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo stripslashes($this->resource->_type->type); ?></a></td>
 			</tr>
-			<tr>
-				<th><?php echo JText::_('Published'); ?></th>
-				<td><?php echo JHTML::_('date', $thedate, $dateFormat, $tz); ?></a></td>
-			</tr>
 <?php
 // Check how much we can display
 if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
