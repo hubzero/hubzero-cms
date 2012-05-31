@@ -151,7 +151,7 @@ if (!$no_html) {
 				$full = "/site/stats/contributor_impact/impact_".$this->profile->get("uidNumber").".gif"
 			?>
 			<?php if(file_exists(JPATH_ROOT . $thumb)) : ?>
-				<a id="member-stats-graph" title="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
+				<a id="member-stats-graph" rel="lightbox" title="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
 					<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" />
 				</a>
 			<?php endif; ?>
@@ -161,7 +161,7 @@ if (!$no_html) {
 			<ul id="page_options">
 				<?php if($edit) : ?>
 					<?php $edit_url = JRoute::_('index.php?option=com_members&id='.$this->profile->get("uidNumber").'&task=edit'); ?>
-					<li><a class="edit" id="edit-profile" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
+					<li><a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
 				<?php endif; ?>
 				
 				<?php if($password) : ?>
