@@ -113,17 +113,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			
 			$increm .= '<p>Fill in any remaining profile fields and get <strong>'.$incrOpts->getAwardPerField().'</strong> for each. You can exchange these points for <a href="store">nanoHUB products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
 			
-			if ($awards['opted_out']) 
-			{
-				$increm .= '<em class="opt-out">You have opted out of notifications about this promotion.</em>';
-			}
-			else 
-			{
-				$increm .= '<form action="/members/'.$this->profile->get("uidNumber").'/promo-opt-out" method="post">';
-				$increm .= '<button type="submit" class="opt-out">Don\'t remind me about this promotion</button>';
-				$increm .= '</form>';
-			}
-			
 			$increm .= '</div>';
 			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']).'</span></div>';
 			$increm .= '<script type="text/javascript">
