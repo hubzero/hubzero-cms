@@ -309,3 +309,14 @@
 	#small-page .list td {
 		background-position: 0.2em 0.5em;
 	}
+	#small-page .submit {
+		margin: 0;
+		padding: 1.7em 0 0 0;
+	}
+	#small-page table {
+		margin-top: 2em;
+	}
+	#small-page table,
+	#small-page table tfoot td {
+		border-bottom: none;
+	}

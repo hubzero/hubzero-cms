@@ -37,33 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		<form action="index.php" id="authors-form" method="post" enctype="multipart/form-data">
 			<fieldset>
-				<div id="non-js-interface">
-					<!-- <label>
-						<select name="authid" id="authid">
-							<option value=""><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_SELECT'); ?></option>
-					<?php
-				/*if ($this->rows)
-				{
-					foreach ($this->rows as $row)
-					{
-						if ($row->lname || $row->fname) {
-							$name  = stripslashes($row->lname).', ';
-							$name .= stripslashes($row->fname);
-							if ($row->mname != NULL) {
-								$name .= ' '.stripslashes($row->mname);
-							}
-						} else {
-							$name = stripslashes($row->name);
-						}
-
-						echo '<option value="'.$row->uidNumber.'">'.$name.'</option>'."\n";
-					}
-				}*/
-					?> 
-						</select>
-						<?php echo JText::_('COM_CONTRIBUTE_OR'); ?>
-					</label> -->
-				
+				<div class="six columns first second third fourth">
 					<label>
 						<?php echo JText::_('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
 						<?php 
@@ -77,28 +51,31 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php } ?>
 					</label>
 				</div>
-				
-				<label>
-					<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
-					<select name="role" id="new-authors-role">
-						<option value=""><?php echo JText::_('Author'); ?></option>
+				<div class="six columns fifth">
+					<label for="new-authors-role">
+						<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
+						<select name="role" id="new-authors-role">
+							<option value=""><?php echo JText::_('Author'); ?></option>
 <?php 
 		if ($this->roles)
 		{
 			foreach ($this->roles as $role)
 			{
 ?>
-						<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape($role->title); ?></option>
+							<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape($role->title); ?></option>
 <?php
 			}
 		}
 ?>
-					</select>
-				</label>
-				
-				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_ADD'); ?>" />
-				</p>
+						</select>
+					</label>
+				</div>
+				<div class="six columns sixth">
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_ADD'); ?>" />
+					</p>
+				</div>
+				<div class="clear"></div>
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="tmpl" value="component" />
@@ -113,13 +90,13 @@ if ($this->contributors) {
 	$n = count( $this->contributors );
 
 ?>
-	<form action="index.php" id="authors-form" method="post" enctype="multipart/form-data">
+	<form action="index.php?option=<?php echo $this->option; ?>&amp;task=updateauthor&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="task" value="updateauthor" />
 
-		<table class="list">
+		<table class="list" summary="<?php echo JText::_('A list of authors on this resource'); ?>">
 			<tfoot>
 				<td></td>
 				<td>
@@ -134,9 +111,9 @@ if ($this->contributors) {
 	foreach ($this->contributors as $contributor)
 	{
 		if ($contributor->lastname || $contributor->firstname) {
-			$name  = stripslashes($contributor->firstname) .' ';
+			$name  = stripslashes($contributor->firstname) . ' ';
 			if ($contributor->middlename != NULL) {
-				$name .= stripslashes($contributor->middlename) .' ';
+				$name .= stripslashes($contributor->middlename) . ' ';
 			}
 			$name .= stripslashes($contributor->lastname);
 		} else {
@@ -145,8 +122,8 @@ if ($this->contributors) {
 ?>
 				<tr>
 					<td width="100%">
-						<?php echo $name; ?>
-						<?php echo ($contributor->org) ? ' <span class="caption">('.$contributor->org.')</span>' : ''; ?>
+						<?php echo $this->escape($name); ?>
+						<?php echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
 					</td>
 					<td>
 						<select name="authors[<?php echo $contributor->id; ?>]" id="role-<?php echo $contributor->id; ?>">
@@ -178,7 +155,11 @@ if ($this->contributors) {
 			  		    echo '&nbsp;';
 					}
 					?></td>
-					<td class="t"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=removeauthor&amp;tmpl=component&amp;id=<?php echo $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></a></td>
+					<td class="t">
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;task=removeauthor&amp;tmpl=component&amp;id=<?php echo $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>">
+							<span><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></span>
+						</a>
+					</td>
 				</tr>
 <?php
 		$i++;
@@ -188,6 +169,6 @@ if ($this->contributors) {
 		</table>
 	</form>
 <?php } else { ?>
-		<p><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NONE_FOUND'); ?></p>
+	<p><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_NONE_FOUND'); ?></p>
 <?php } ?>
- </div>
+ </div><!-- / #small-page -->
