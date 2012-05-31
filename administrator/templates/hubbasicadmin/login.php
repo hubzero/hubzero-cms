@@ -78,7 +78,15 @@ $v = $browser->getBrowserMajorVersion();
 			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 		<script type="text/javascript">
+			function keepAlive() {
+				if (MooTools.version == '1.11') {
+					var myAjax = new Ajax('index.php', {method: 'get'}).request();
+				} else {
+					var myAjax = new Request({method: "get", url: "index.php"}).send();
+				}
+			}
 			window.addEvent('domready', function () {
+				keepAlive.periodical(3540000);
 				document.getElementById('form-login').username.select();
 				document.getElementById('form-login').username.focus();
 			});

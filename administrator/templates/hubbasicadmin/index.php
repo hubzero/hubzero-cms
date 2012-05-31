@@ -63,6 +63,23 @@ $doc->addScript('templates/' . $this->template . '/js/index.js');
 		});'
 	);
 }*/
+$doc->addScriptDeclaration('
+	var sTimeout = ((' . $app->getCfg('lifetime') . '-1)*60*1000);
+	function sessionWarning() {
+		var val = confirm("Your session is about to timeout! Press \'OK\' to prevent this.");
+		if (val) {
+			if (MooTools.version == "1.12" || MooTools.version == "1.11") {
+				var myAjax = new Ajax("index.php", {method: "get"}).request();
+			} else {
+				var myAjax = new Request({method: "get", url: "index.php"}).send();
+			}
+		}
+	}
+	window.addEvent("domready", function () {
+		sessionWarning.periodical(sTimeout);
+	});
+');
+
 ximport('Hubzero_Browser');
 $browser = new Hubzero_Browser();
 $b = $browser->getBrowser();
