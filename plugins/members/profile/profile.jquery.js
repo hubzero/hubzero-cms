@@ -225,6 +225,16 @@ HUB.Members.Profile = {
 			}
 		}
 	},
+	
+	//-------------------------------------------------------------
+	
+	editInterestsAutocompleterReinstantiate: function()
+	{
+		if(HUB.Plugins.Autocomplete)
+		{
+			HUB.Plugins.Autocomplete.initialize();
+		}
+	},
 
 	//-------------------------------------------------------------
 
@@ -266,7 +276,7 @@ HUB.Members.Profile = {
 			$(".section-edit a").show();
 			
 			//re-initalize autocompler for tags and wiki editor for bio
-			HUB.Plugins.Autocomplete.initialize();
+			HUB.Members.Profile.editInterestsAutocompleterReinstantiate();
 			HUB.Members.Profile.editBiographyEditorReinstantiate();
 			
 			//update the complete ness meter
