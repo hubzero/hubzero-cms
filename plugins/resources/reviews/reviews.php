@@ -133,6 +133,10 @@ class plgResourcesReviews extends JPlugin
 				$rtrn = 'metadata';
 			}
 		}
+		if (!$resource->_type->_params->get('plg_reviews')) 
+		{
+			return $arr;
+		}
 
 		$ar = $this->onResourcesAreas($resource);
 		if (empty($ar)) 

@@ -95,6 +95,10 @@ class plgResourcesQuestions extends JPlugin
 				$rtrn = 'metadata';
 			}
 		}
+		if (!$resource->_type->_params->get('plg_questions')) 
+		{
+			return $arr;
+		}
 
 		$database =& JFactory::getDBO();
 

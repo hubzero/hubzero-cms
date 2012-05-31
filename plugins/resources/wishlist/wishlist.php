@@ -89,6 +89,11 @@ class plgResourcesWishlist extends JPlugin
 	 */
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
+		$arr = array(
+			'html' => '',
+			'metadata' => ''
+		);
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
@@ -97,6 +102,10 @@ class plgResourcesWishlist extends JPlugin
 			{
 				$rtrn = 'metadata';
 			}
+		}
+		if (!$resource->_type->_params->get('plg_citations')) 
+		{
+			return $arr;
 		}
 
 		$database =& JFactory::getDBO();

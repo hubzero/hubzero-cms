@@ -96,6 +96,10 @@ class plgResourcesUsage extends JPlugin
 				$rtrn = 'metadata';
 			}
 		}
+		if (!$resource->_type->_params->get('plg_usage')) 
+		{
+			return $arr;
+		}
 
 		// Display only for tools
 		if ($resource->type != 7) 
