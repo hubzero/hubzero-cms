@@ -42,6 +42,18 @@ switch ($this->params->get('show_date'))
 	case 3: $thedate = $this->resource->publish_up; break;
 }
 
+$dateFormat = '%d %b %Y';
+$yearFormat = '%Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$yearFormat = 'Y';
+	$timeFormat = 'h:M a';
+	$tz = true;
+}
+
 $this->resource->introtext = stripslashes($this->resource->introtext);
 $this->resource->fulltext = stripslashes($this->resource->fulltext);
 $this->resource->fulltext = ($this->resource->fulltext) ? trim($this->resource->fulltext) : trim($this->resource->introtext);
@@ -87,6 +99,10 @@ $maintext = str_replace('</blink>', '', $maintext);
 				<th><?php echo JText::_('Category'); ?></th>
 				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo stripslashes($this->resource->_type->type); ?></a></td>
 			</tr>
+			<tr>
+				<th><?php echo JText::_('Published'); ?></th>
+				<td><?php echo JHTML::_('date', $thedate, $dateFormat, $tz); ?></a></td>
+			</tr>
 <?php
 // Check how much we can display
 if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $this->usersgroups) || !$this->authorized)) {
@@ -106,32 +122,19 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $th
 			</tr>
 <?php
 	}
-$this->helper->getSubmitters(true, 1, $this->plugin->get('badges', 0));
-if ($this->helper->contributors && $this->helper->contributors != '<br />') {
+	$this->helper->getSubmitters(true, 1, $this->plugin->get('badges', 0));
+	if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 ?>
 			<tr>
 				<th><?php echo JText::_('Submitter'); ?></th>
-				<td><?php 
-				/*$name = JText::_('PLG_RESOURCES_ABOUT_ANONYMOUS');
-				if ($this->resource->created_by) {
-					$xuser =& JUser::getInstance($this->resource->created_by);
-					if (is_object($xuser) && $xuser->get('name')) {
-						$name  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->resource->created_by) . '">' . stripslashes($xuser->get('name')) . '</a>';
-						$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
-						if (isset($types[$xuser->gid])) {
-							$name .= ' <ul class="badges"><li>' . str_replace(' ', '-', $types[$xuser->gid]) . '</li></ul>';
-						}
-					}
-				}
-				echo $name; */
-					$html  = ' <span id="authorslist">'."\n";
-					$html .= $this->helper->contributors."\n";
-					$html .= '</span>'."\n";
-					echo $html;
-				?></td>
+				<td>
+					<span id="authorslist">
+						<?php echo $this->helper->contributors; ?>
+					</span>
+				</td>
 			</tr>
 <?php
-}
+	}
 	$citations = '';
 	foreach ($schema->fields as $field)
 	{
@@ -155,14 +158,12 @@ if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 			$this->helper->getUnlinkedContributors();
 
 			// Build our citation object
+			$juri =& JURI::getInstance();
+			
 			$cite = new stdClass();
 			$cite->title = $this->resource->title;
-			$cite->year = JHTML::_('date', $thedate, '%Y');
-			$juri =& JURI::getInstance();
-			if (substr($sef,0,1) == '/') {
-				$sef = substr($sef, 1, strlen($sef));
-			}
-			$cite->location = $juri->base() . $sef;
+			$cite->year = JHTML::_('date', $thedate, $yearFormat, $tz);
+			$cite->location = $juri->base() . ltrim($sef, DS);
 			$cite->date = date( "Y-m-d H:i:s" );
 			$cite->url = '';
 			$cite->type = '';
@@ -188,9 +189,9 @@ if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 // If the resource had a specific event date/time
 if ($this->attribs->get('timeof', '')) {
 	if (substr($this->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
-		$exp = '%B %d, %Y';
+		$exp = $dateFormat; //'%B %d %Y';
 	} else {
-		$exp = '%I:%M %p, %B %d, %Y';
+		$exp = $timeFormat . ', ' . $dateFormat; //'%I:%M %p, %B %d %Y';
 	}
 	if (substr($this->attribs->get('timeof', ''), 4, 1) == '-') {
 		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '')

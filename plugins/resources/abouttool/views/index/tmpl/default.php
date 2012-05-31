@@ -45,8 +45,21 @@ switch ($this->params->get('show_date'))
 	case 2: $thedate = $this->resource->modified;   break;
 	case 3: $thedate = $this->resource->publish_up; break;
 }
-if ($this->curtool) {
+if ($this->curtool) 
+{
 	$thedate = $this->curtool->released;
+}
+
+$dateFormat = '%d %b %Y';
+$yearFormat = '%Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$yearFormat = 'Y';
+	$timeFormat = 'h:M a';
+	$tz = true;
 }
 
 $this->resource->introtext = stripslashes($this->resource->introtext);
@@ -123,6 +136,10 @@ if ($shots) {
 				<th><?php echo JText::_('Category'); ?></th>
 				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo stripslashes($this->resource->_type->type); ?></a></td>
 			</tr>
+			<tr>
+				<th><?php echo JText::_('Published'); ?></th>
+				<td><?php echo JHTML::_('date', $thedate, $dateFormat, $tz); ?></a></td>
+			</tr>
 <?php
 // Check how much we can display
 if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
@@ -169,21 +186,18 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 <?php
 	}
 	$citations = '';
-	if($schema)
+	foreach ($schema->fields as $field)
 	{
-		foreach ($schema->fields as $field)
-		{
-			if (isset($data[$field->name])) {
-				if ($field->name == 'citations') {
-					$citations = $data[$field->name];
-				} else if ($value = $elements->display($field->type, $data[$field->name])) {
-	?>
-				<tr>
-					<th><?php echo $field->label; ?></th>
-					<td><?php echo $value; ?></td>
-				</tr>
-	<?php
-				}
+		if (isset($data[$field->name])) {
+			if ($field->name == 'citations') {
+				$citations = $data[$field->name];
+			} else if ($value = $elements->display($field->type, $data[$field->name])) {
+?>
+			<tr>
+				<th><?php echo $field->label; ?></th>
+				<td><?php echo $value; ?></td>
+			</tr>
+<?php
 			}
 		}
 	}
@@ -194,14 +208,12 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 			$this->helper->getUnlinkedContributors();
 
 			// Build our citation object
+			$juri =& JURI::getInstance();
+			
 			$cite = new stdClass();
 			$cite->title = $this->resource->title;
-			$cite->year = JHTML::_('date', $thedate, '%Y');
-			$juri =& JURI::getInstance();
-			if (substr($sef,0,1) == '/') {
-				$sef = substr($sef,1,strlen($sef));
-			}
-			$cite->location = $juri->base() . $sef;
+			$cite->year = JHTML::_('date', $thedate, $yearFormat, $tz);
+			$cite->location = $juri->base() . ltrim($sef, DS);
 			$cite->date = date("Y-m-d H:i:s");
 
 			$cite->url = '';
@@ -212,16 +224,16 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 			$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
 			$doi = '';
 
-			if(isset($this->resource->doi) && $this->resource->doi && $tconfig->get('doi_shoulder'))
+			if (isset($this->resource->doi) && $this->resource->doi && $tconfig->get('doi_shoulder'))
 			{
 				$doi = $tconfig->get('doi_shoulder') . DS . strtoupper($this->resource->doi);
 			}
-			else if(isset($this->resource->doi_label) && $this->resource->doi_label)
+			else if (isset($this->resource->doi_label) && $this->resource->doi_label)
 			{
 				$doi = '10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $this->resource->doi_label;
 			}
 
-			if($doi)
+			if ($doi)
 			{
 				$cite->doi = $doi;
 			}
@@ -249,9 +261,9 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $us
 // If the resource had a specific event date/time
 if ($this->attribs->get('timeof', '')) {
 	if (substr($this->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
-		$exp = '%B %d, %Y';
+		$exp = $dateFormat; //'%B %d %Y';
 	} else {
-		$exp = '%I:%M %p, %B %d, %Y';
+		$exp = $timeFormat . ', ' . $dateFormat; //'%I:%M %p, %B %d %Y';
 	}
 	if (substr($this->attribs->get('timeof', ''), 4, 1) == '-') {
 		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '')
