@@ -73,17 +73,6 @@ HUB.Wiki = {
 		}
 		
 		if ($('#file-uploader')) {
-			/*$.get($('#file-uploader').attr('data-list'), {}, function(data) {
-				$('#file-uploader-list').html(data);
-				$('a.delete')
-					.unbind('click')
-					.on('click', function(event){
-						event.preventDefault();
-						$.get($(this).attr('href'), {}, function(data) {
-							$('#file-uploader-list').html(data);
-						});
-					});
-			});*/
 			HUB.Wiki.updateFileList();
 		}
 
@@ -98,40 +87,6 @@ HUB.Wiki = {
 			onComplete: function(id, file, response) {
 				$('.qq-upload-list').empty();
 				HUB.Wiki.updateFileList();
-				/*$.get($('#file-uploader').attr('data-list'), {}, function(data) {
-					$('#file-uploader-list').html(data);
-					$('a.delete')
-						.unbind('click')
-						.on('click', function(event){
-							event.preventDefault();
-							$.get($(this).attr('href'), {}, function(data) {
-								$('#file-uploader-list').html(data);
-							});
-						});
-				});*/
-				
-				//$("#file-upload-uploading").append('<li><span class="file-name">' + file + '</span></li>');
-				//$('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
-				
-				/*$("#ajax-upload-uploading").fadeOut("slow").remove();
-				var url = $("#ajax-uploader").attr("data-action");
-				url = url.replace("doajaxupload","getfileatts"); 
-				
-				$.post(url, {file:response.file, dir:response.directory}, function(data) {
-					var upload = jQuery.parseJSON( data );
-					if(upload)
-					{
-						$("#ajax-upload-right").find("table").show();
-						$("#ajax-upload-right").find("p.warning").remove();
-						
-						$("#picture-src").attr("src", upload.src + "?" + new Date().getTime());
-						$("#picture-name").html(upload.name);
-						$("#picture-size").html(upload.size);
-						$("#picture-width").html(upload.width);
-						$("#picture-height").html(upload.height);
-						$("#profile-picture").attr("value", upload.name); 
-					}
-				})*/
 			}
 		});
 	},
