@@ -29,97 +29,313 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$period = JRequest::getVar('period','1999-12');
-$xres   = JRequest::getVar('xres','2050');
-$yres   = JRequest::getVar('yres','1050');
-$label  = JRequest::getVar('label','1');
-$date   = $period;
+jimport('joomla.plugin.plugin');
 
-$dataurl = JRoute::_('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=markers');
-$dataurl = str_replace('&amp;','&',$dataurl);
-
-$html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-	<style type="text/css">
-		.style1 {background-color:#ffffff;font-size:2.5em;font-weight:bold;padding-left:3px;padding-right:3px;border:2px #000000 solid;}
-		.style2 {background-color:#ffffff;}
-	</style>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>User Animation</title>
-	<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'"></script>
-	<script type="text/javascript" src="/components/'.$option.'/maps/js/elabel.js"></script>
-	<script type="text/javascript">
-	function initialize() 
+/**
+ * Usage plugin class for overview
+ */
+class plgUsageMaps extends JPlugin
+{
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$subject The object to observe
+	 * @param      array  $config   An optional associative array of configuration settings.
+	 * @return     void
+	 */
+	public function __construct(&$subject, $config)
 	{
-		var dt = "'.$date.'";
-		var disp_label = "'.$label.'";
-		var plotdt = "'.substr($date,0,7).'";
-		if (GBrowserIsCompatible()) {
-    		map = new GMap2(document.getElementById("map_canvas"));
-			// map.addControl(new GLargeMapControl());
-			map.addControl(new GSmallMapControl());
-			// map.setCenter(new GLatLng(25.4091, -28.8592), 3, G_PHYSICAL_MAP);
-			// map.setCenter(new GLatLng(20.0,11.0), 3, G_PHYSICAL_MAP);
-			// map.setCenter(new GLatLng(20.0, 11.0), 3, G_HYBRID_MAP);
-			map.setCenter(new GLatLng(20.0,11.0), 3, G_SATELLITE_MAP);
+		parent::__construct($subject, $config);
 
-			var icon1 = new GIcon();
-   			icon1.image = "/components/'.$option.'/maps/images/org.png";
-    		icon1.iconSize = new GSize(40, 40);
-    		icon1.iconAnchor = new GPoint(20, 20);
-			marker1 = new GMarker(new GLatLng("40.4427","-86.9237"),icon1);
-    		map.addOverlay(marker1);
-			getMarkers(dt);
-			var label = new ELabel(new GLatLng(-52.7,11.0),"'.substr($date,0,7).'","style1");
-			if (disp_label == "1") {
-				map.addOverlay(label);
+		$this->loadLanguage();
+	}
+
+	/**
+	 * Return the name of the area this plugin retrieves records for
+	 * 
+	 * @return     array
+	 */
+	public function onUsageAreas()
+	{
+		$areas = array(
+			'maps' => JText::_('PLG_USAGE_MAPS')
+		);
+		return $areas;
+	}
+
+	/**
+	 * Get hosts data
+	 * 
+	 * @param      object &$db      JDatabase
+	 * @param      array  $location Longitude/latitude
+	 * @return     string
+	 */
+	private function get_hosts(&$db, $location)
+	{
+		$query = "SELECT DISTINCT(domain) FROM #__xsession WHERE ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "'";
+
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+
+		$info = '';
+		if ($rows) 
+		{
+			foreach ($rows as $row)
+			{
+				$info .= '_b_' . $row->domain . '_bb_' . $this->get_count($db, $row->domain, $location);
 			}
-
-        	// plot overlay
-			//var plt = "'.$mappath.'/plots/"+plotdt+"-14-u1.gif";
-			//var boundaries = new GLatLngBounds(new GLatLng(-52.7,-168.1), new GLatLng(-3.02,-90.96));
-        	//var oldmap = new GGroundOverlay(plt, boundaries);
-        	//map.addOverlay(oldmap);
-
-			// var polyline = new GPolyline([new GLatLng(-60.0, -110),new GLatLng(-10, -110)], "#0000ff", 320);
-			// map.addOverlay(polyline);
-			// var polyline = new GPolyline([new GLatLng(-40.0, -160),new GLatLng(-40.0, -10)], "#ff0000", 248);
-			// map.addOverlay(polyline);
-   		}
-	}
-
-	function getMarkers(dt) 
-	{
-    	//var urlstr="read_location.php?period="+dt;
-        var urlstr="'.$dataurl.'&period="+dt;
-		var request = GXmlHttp.create();
-        request.open("GET", urlstr , true); // request XML from PHP with AJAX call
-        request.onreadystatechange = function () {
-            if (request.readyState == 4) {
-                var xmlDoc = request.responseXML;
-                locations = xmlDoc.documentElement.getElementsByTagName("marker");
-                markers = [];
-                if (locations.length){
-            		for (var i = 0; i < locations.length; i++) { // cycle thru locations
-						var icon = new GIcon();
-                		icon.image = "/components/'.$option.'/maps/images/1.png";
-            			icon.iconSize = new GSize(20, 34);
-            			icon.iconAnchor = new GPoint(10, 34);
-            			markers[i] = new GMarker(new GLatLng(locations[i].getAttribute("lat"),locations[i].getAttribute("lng")),icon);
-            			map.addOverlay(markers[i]);
-            		}
-        		}
-        	}
 		}
-		request.send(null);
+		return rtrim($info, '_br_');
 	}
-	</script>
- </head>
- <body onload="initialize()" onunload="GUnload()">
-	<div id="map_canvas" style="width: '.$xres.'px; height: '.$yres.'px"></div>
- </body>
-</html>';
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      object &$db      JDatabase
+	 * @param      string $domain   Domain
+	 * @param      array  $location Longitude/latitude
+	 * @return     string
+	 */
+	private function get_count(&$db, $domain, $location)
+	{
+		$query = "SELECT COUNT(DISTINCT username) FROM #__xsession,#__session WHERE #__xsession.session_id=#__session.session_id AND guest = '0' AND domain = '" . $domain . "' AND ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+
+		$db->setQuery($query);
+		$users = $db->loadResult();
+
+		$info = '';
+		if ($users) 
+		{
+			$info .= '_br_ - Users: ' . $users;
+		}
+
+		$query = "SELECT COUNT(DISTINCT ip) FROM #__xsession,#__session WHERE #__xsession.session_id=#__session.session_id AND guest = '1' AND domain = '" . $domain . "' AND bot = '0' AND ipLATITUDE = '" . $location['lat']."' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+
+		$db->setQuery($query);
+		$guests = $db->loadResult();
+
+		if ($guests) 
+		{
+			$info .= '_br_ - Guests: ' . $guests;
+		}
+
+		$query = "SELECT COUNT(DISTINCT ip) FROM #__xsession,#__session WHERE #__xsession.session_id=#__session.session_id AND  guest = '1' AND domain = '" . $domain . "' AND bot = '1' AND ipLATITUDE = '" . $location['lat']."' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+
+		$db->setQuery($query);
+		$bots = $db->loadResult();
+
+		if ($bots) 
+		{
+			$info .= '_br_ - Bots: ' . $bots;
+		}
+
+		if ($info) 
+		{
+			$info = $info . '_br_';
+			return $info;
+		} 
+		else 
+		{
+			return '_br_';
+		}
+	}
+
+	/**
+	 * Check if the location is from a bot
+	 * 
+	 * @param      object &$db      JDatabase
+	 * @param      array  $location Longitude/latitude
+	 * @return     integer
+	 */
+	private function checkbot(&$db, $location)
+	{
+		$query = "SELECT bot FROM #__xsession WHERE ipLATITUDE ='" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' ORDER BY bot DESC LIMIT 1";
+
+		$db->setQuery($query);
+		$bot = $db->loadResult();
+
+		return $bot;
+	}
+
+	/**
+	 * Get data for a type
+	 * 
+	 * @param      string $type Data type
+	 * @return     void
+	 */
+	private function getData($type)
+	{
+		$db =& $this->udb;
+
+		$html = '';
+
+		switch ($type)
+		{
+			case 'locations':
+				$query = "SELECT ipLATITUDE, ipLONGITUDE, SUM(hits) as totalhits FROM ipmap GROUP BY ipLATITUDE, ipLONGITUDE ORDER BY totalhits";
+				$db->setQuery($query);
+				$rows = $db->loadObjectList();
+
+				$html .= '<locations>' . "\n";
+				if ($rows) 
+				{
+					foreach ($rows as $row)
+					{
+						$html .= '<location lat="' . $row->ipLATITUDE . '" lng="' . $row->ipLONGITUDE . '" hits="' . $row->totalhits . '"/>' . "\n";
+					}
+				}
+				$html .= '</locations>' . "\n";
+			break;
+
+			case 'markers':
+				$date = JRequest::getVar('period', '2008-03-00');
+				$local = JRequest::getVar('local', '');
+
+				if ($local == 'us') 
+				{
+					$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
+					//$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
+					$query = 'SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < "' . $date . '" AND (countrySHORT = "US" OR countrySHORT = "PR") GROUP BY ipLAT, ipLONG ORDER BY ips';
+				} 
+				else 
+				{
+					$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
+					#$sql = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
+					$query = "SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY ips";
+				}
+
+				$db->setQuery($query);
+				$rows = $db->loadObjectList();
+
+				$html .= '<markers>' . "\n";
+				if ($rows) 
+				{
+					foreach ($rows as $row)
+					{
+						$html .= '<marker lat="' . $row->ipLAT . '" lng="' . $row->ipLONG . '" type="' . $row->ips . '"/>' . "\n";
+					}
+				}
+				$html .= '</markers>' . "\n";
+			break;
+
+			case 'online':
+				$html .= '<markers>' . "\n";
+				$query = "SELECT DISTINCT ipLATITUDE, ipLONGITUDE, ipCITY, ipREGION, countrySHORT FROM #__xsession WHERE ipLATITUDE <> '' GROUP BY ipLATITUDE, ipLONGITUDE";
+
+				$db->setQuery($query);
+				$rows = $db->loadObjectList();
+
+				if ($rows) 
+				{
+					foreach ($rows as $row)
+					{
+						$location = array();
+						$location['lat'] = $row->ipLATITUDE;
+						$location['lng'] = $row->ipLONGITUDE;
+						$city = '_b_' . $row->ipCITY . ', ' . $row->ipREGION . ', ' . $row->countrySHORT . '_bb_';
+
+						$info = $this->get_hosts($db, $location);
+						$bot = $this->checkbot($db, $location);
+
+						$html .= '<marker lat="' . $location['lat'] . '" lng="' . $location['lng'] . '" info = "' . $city . '_hr_' . $info . '" bot = "' . $bot . '"/>' . "\n";
+					}
+				}
+				$html .= '</markers>' . "\n";
+			break;
+		}
+
+		while (@ob_end_clean());
+
+		// Date in the past
+		header("Expires: Mon, 26 Jul 2017 05:00:00 GMT");
+		// always modified
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		// HTTP/1.1
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		// HTTP/1.0
+		header("Pragma: no-cache");
+		//XML Header
+		header("content-type:text/xml");
+
+		echo $html;
+
+		die();
+	}
+
+	/**
+	 * Event call for displaying usage data
+	 * 
+	 * @param      string $option        Component name
+	 * @param      string $task          Component task
+	 * @param      object $db            JDatabase
+	 * @param      array  $months        Month names (Jan -> Dec)
+	 * @param      array  $monthsReverse Month names in reverse (Dec -> Jan)
+	 * @param      string $enddate       Time period
+	 * @return     string HTML
+	 */
+	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
+	{
+		// Check if our task is the area we want to return results for
+		if ($task) 
+		{
+			if (!in_array($task, $this->onUsageAreas())
+			 && !in_array($task, array_keys($this->onUsageAreas()))) 
+			{
+				return '';
+			}
+		}
+
+		// Incoming
+		$lat  = JRequest::getVar('lat', '35');
+		$long = JRequest::getVar('long', '-90');
+		$zoom = JRequest::getVar('zoom', '');
+		if ($lat != '35' && $long != '-90') 
+		{
+			$zoom = '14';
+		} 
+		else 
+		{
+			$zoom = '4';
+		}
+
+		$type = JRequest::getVar('type', 'online');
+		$no_html = JRequest::getVar('no_html', 0);
+
+		$type = str_replace(':', '-', $type);
+
+		if ($no_html) 
+		{
+			$data = JRequest::getVar('data','');
+
+			if ($data) 
+			{
+				$this->getData($data);
+			} 
+			else 
+			{
+				$config =& JComponentHelper::getParams($option);
+
+				$key = $config->get('mapsApiKey');
+				$mappath = $config->get('maps_path');
+
+				include_once(JPATH_ROOT . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php');
+
+				return $html;
+			}
+		}
+
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		$pathway->addItem(JText::_('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
+
+		$html  = '<h3>' . JText::_('PLG_USAGE_MAPS_' . strtoupper($type)) . '</h3>' . "\n";
+		$html .= '<p><a class="map" href="' . JRoute::_('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . JText::_('Reset map') . '</a></p>';
+		$html .= '<iframe src="' . JRoute::_('index.php?option=' . $option . '&task=' . $task . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom) . '" width="100%" height="600px" scrolling="no" frameborder="0"></iframe>' . "\n";
+
+		return $html;
+	}
+}
 

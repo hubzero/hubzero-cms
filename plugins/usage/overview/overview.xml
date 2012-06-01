@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/tageditor/autocompleter.xml
+@file           plugins/usage/overview.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,22 +27,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install version="1.5" type="plugin" group="tageditor">
-	<name>Tag Editor - Auto complete</name>
+<extension version="1.7" type="plugin" group="usage">
+	<name>Usage - Overview</name>
 	<author>Shawn Rice</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Creates an auto-complete field for Tag entry</description>
+	<description>Overview display for Usage component</description>
 	<files>
-		<filename plugin="autocompleter">autocompleter.php</filename>
-		<filename>autocompleter.css</filename>
-		<filename>autocompleter.js</filename>
-		<filename>observer.js</filename>
-		<filename>close.gif</filename>
-		<filename>spinner.gif</filename>
-		<filename>textboxlist.js</filename>
+		<filename plugin="overview">overview.php</filename>
 	</files>
-	<params>
-	</params>
-</install>
-
+	<languages>
+		<language tag="en-GB">en-GB.plg_usage_overview.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+		</fields>
+	</config>
+</extension>
