@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.document.document');
 
@@ -37,22 +37,20 @@ jimport('joomla.document.document');
  * Class for adding stylesheets from components, modules, and plugins to the document
  *
  * @package       hubzero-cms
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author        Shawn Rice <zooley@purdue.edu>
  * @copyright     Copyright 2005-2011 Purdue University. All rights reserved.
  * @license       http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 class Hubzero_Document
 {
-
 	/**
 	 * Adds a linked stylesheet from a component to the page
 	 *
-	 * @param	string  $component	Component name
-	 * @param	string  $stylesheet	Stylesheet name (optional, uses component name if left blank)
-	 * @param	string  $type   	Mime encoding type
-	 * @param	string  $media  	Media type that this stylesheet applies to
-	 * @param	string  $attribs  	Attributes to add to the link
-	 * @param      boolean $augment Parameter description (if any) ...
+	 * @param	string  $component  Component name
+	 * @param	string  $stylesheet Stylesheet name (optional, uses component name if left blank)
+	 * @param	string  $type       Mime encoding type
+	 * @param	string  $media      Media type that this stylesheet applies to
+	 * @param	string  $attribs    Attributes to add to the link
 	 * @return  void
 	 */
 	public static function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
@@ -63,18 +61,31 @@ class Hubzero_Document
 
 		$template  = $mainframe->getTemplate();
 
-		if (empty($stylesheet)) {
-			$stylesheet = substr($component,4) . '.css';
+		if (empty($stylesheet)) 
+		{
+			$stylesheet = substr($component, 4) . '.css';
 		}
 
 		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
 
+		$assetcss = DS . 'components' . DS . $component . DS . 'assets' . DS . 'css' . DS . $stylesheet;
+
 		$componentcss = DS . 'components' . DS . $component . DS . $stylesheet;
 
-		if (file_exists(JPATH_SITE . $templatecss)) {
+		if (file_exists(JPATH_SITE . $templatecss)) 
+		{
+			// Chech for CSS in /templates/$template/html/$component/
 			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
-        } else if (file_exists(JPATH_SITE . $componentcss)) {
-		    $jdocument->addStyleSheet($componentcss . '?v=' . filemtime(JPATH_SITE . $componentcss), $type, $media, $attribs);
+		}
+		else if (file_exists(JPATH_SITE . $assetcss)) 
+		{
+			// Chech for CSS in /components/$component/assets/css/
+			$jdocument->addStyleSheet($assetcss . '?v=' . filemtime(JPATH_SITE . $assetcss), $type, $media, $attribs);
+		} 
+		else if (file_exists(JPATH_SITE . $componentcss)) 
+		{
+			// Chech for CSS in /components/$component/
+			$jdocument->addStyleSheet($componentcss . '?v=' . filemtime(JPATH_SITE . $componentcss), $type, $media, $attribs);
 		}
 	}
 
@@ -100,20 +111,24 @@ class Hubzero_Document
 		{
 			$script = substr($component, 4);
 		}
-		
+
 		$base = DS . 'components' . DS . $component;
-		
+
+		$url = $base . DS . $script . '.js';
+		$urlAlt = '';
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			if (file_exists(JPATH_SITE . $base . DS . $script . '.jquery.js')) 
 			{
-				$script .= '.jquery';
+				$urlAlt .= $base . DS . $script . '.jquery.js';
 			}
 		}
-		
-		$url = $base . DS . $script . '.js';
 
-		if (file_exists(JPATH_SITE . $url)) 
+		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		{
+			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+		} 
+		else if (file_exists(JPATH_SITE . $url)) 
 		{
 			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
@@ -135,11 +150,20 @@ class Hubzero_Document
 
 		$templateimage = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'images' . DS . $image;
 
+		$assetimage = DS . 'components' . DS . $component . DS . 'assets' . DS . 'img' . DS . $image;
+
 		$componentimage = DS . 'components' . DS . $component . DS . 'images' . DS . $image;
 
-		if (file_exists(JPATH_SITE . $templateimage)) {
+		if (file_exists(JPATH_SITE . $templateimage)) 
+		{
 			return $templateimage;
-		} else {
+		} 
+		else if (file_exists(JPATH_SITE . $assetimage)) 
+		{
+			return $assetimage;
+		}
+		else 
+		{
 			return $componentimage;
 		}
 	}
@@ -158,14 +182,23 @@ class Hubzero_Document
 
 		$template  = $mainframe->getTemplate();
 
-		$templateimage = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'css' . DS . $stylesheet;
+		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'css' . DS . $stylesheet;
 
-		$componentimage = DS . 'components' . DS . $component . DS . 'css' . DS . $stylesheet;
+		$assetcss = DS . 'components' . DS . $component . DS . 'assets' . DS . 'css' . DS . $stylesheet;
 
-		if (file_exists(JPATH_SITE . $templateimage)) {
-			return $templateimage;
-		} else {
-			return $componentimage;
+		$componentcss = DS . 'components' . DS . $component . DS . 'css' . DS . $stylesheet;
+
+		if (file_exists(JPATH_SITE . $templatecss)) 
+		{
+			return $templatecss;
+		} 
+		else if (file_exists(JPATH_SITE . $assetcss)) 
+		{
+			return $assetcss;
+		}
+		else 
+		{
+			return $componentcss;
 		}
 	}
 
@@ -187,9 +220,12 @@ class Hubzero_Document
 
 		$moduleimage = DS . 'modules' . DS . $module . DS . 'images' . DS . $image;
 
-		if (file_exists(JPATH_SITE . $templateimage)) {
+		if (file_exists(JPATH_SITE . $templateimage)) 
+		{
 			return $templateimage;
-		} else {
+		} 
+		else 
+		{
 			return $moduleimage;
 		}
 	}
@@ -212,7 +248,8 @@ class Hubzero_Document
 
 		$template  = $mainframe->getTemplate();
 
-		if (empty($stylesheet)) {
+		if (empty($stylesheet)) 
+		{
 			$stylesheet = $module . '.css';
 		}
 
@@ -220,9 +257,12 @@ class Hubzero_Document
 
 		$modulecss = DS . 'modules' . DS . $module . DS . $stylesheet;
 
-		if (file_exists(JPATH_SITE . $templatecss)) {
+		if (file_exists(JPATH_SITE . $templatecss)) 
+		{
 			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
-        } else {
+		} 
+		else 
+		{
 			$jdocument->addStyleSheet($modulecss . '?v=' . filemtime(JPATH_SITE . $modulecss), $type, $media, $attribs);
 		}
 	}
