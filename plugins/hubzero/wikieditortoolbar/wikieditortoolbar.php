@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2011 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * HUBzero plugin class for displaying a WYSIWYG wiki editor
+ * HUBzero plugin class for displaying a wiki editor toolbar
  */
-class plgHubzeroWikiEditorWykiwyg extends JPlugin
+class plgHubzeroWikiEditorToolbar extends JPlugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
@@ -65,8 +67,8 @@ class plgHubzeroWikiEditorWykiwyg extends JPlugin
 		if ($this->_pushscripts) 
 		{
 			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('hubzero', 'wikieditorwykiwyg');
-			Hubzero_Document::addPluginScript('hubzero', 'wikieditorwykiwyg');
+			Hubzero_Document::addPluginStylesheet('hubzero', 'wikieditortoolbar');
+			Hubzero_Document::addPluginScript('hubzero', 'wikieditortoolbar');
 
 			$this->_pushscripts = false;
 		}
@@ -87,8 +89,9 @@ class plgHubzeroWikiEditorWykiwyg extends JPlugin
 	 */
 	public function onDisplayEditor($name, $id, $content, $cls='wiki-toolbar-content', $col=10, $row=35)
 	{
-		$cls = ($cls) ? 'wiki-toolbar-content '.$cls : 'wiki-toolbar-content';
-		$editor = '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $content . '</textarea>' . "\n";
+		$cls = ($cls) ? 'wiki-toolbar-content ' . $cls : 'wiki-toolbar-content';
+		$editor  = '<ul id="wiki-toolbar-' . $id . '" class="wiki-toolbar hidden"></ul>' . "\n";
+		$editor .= '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $content . '</textarea>' . "\n";
 
 		return $editor;
 	}

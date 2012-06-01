@@ -29,70 +29,58 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.plugin.plugin' );
+jimport('joomla.plugin.plugin');
 
 /**
- * Short description for 'plgHubzeroAutocompleter'
- * 
- * Long description (if any) ...
+ * HUBzero plugin class for autocompletion
  */
 class plgHubzeroAutocompleter extends JPlugin
 {
-
 	/**
-	 * Description for '_pushscripts'
+	 * Flag for if scripts need to be pushed to the document or not
 	 * 
 	 * @var boolean
 	 */
 	private $_pushscripts = true;
 
 	/**
-	 * Short description for 'plgHubzeroAutocompleter'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
+	 * @param      object &$subject The object to observe
+	 * @param      array  $config   An optional associative array of configuration settings.
 	 * @return     void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'hubzero', 'autocompleter' );
 		$this->loadLanguage();
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->params = new JParameter($this->_plugin->params);
-		}
 	}
 
 	/**
-	 * Short description for 'onGetAutocompleter'
+	 * Display the autocompleter. Defaults to multi-entry for tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $atts Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $atts Attributes for setting up the autocomplete
+	 * @return     string HTML
 	 */
-	public function onGetAutocompleter( $atts )
+	public function onGetAutocompleter($atts)
 	{
 		// Ensure we have an array
-		if (!is_array($atts)) {
+		if (!is_array($atts)) 
+		{
 			$atts = array();
 		}
-		
+
 		//var to hold scripts
-		$scripts = "";
+		$scripts = '';
 
 		// Set some parameters
 		$opt   = (isset($atts[0])) ? $atts[0] : 'tags';  // The component to call
 		$name  = (isset($atts[1])) ? $atts[1] : 'tags';  // Name of the input field
 		$id    = (isset($atts[2])) ? $atts[2] : 'act';   // ID of the input field
-		$class = (isset($atts[3])) ? 'autocomplete '.$atts[3] : 'autocomplete';  // CSS class(es) for the input field
+		$class = (isset($atts[3])) ? 'autocomplete ' . $atts[3] : 'autocomplete';  // CSS class(es) for the input field
 		$value = (isset($atts[4])) ? $atts[4] : '';      // The value of the input field
 		$size  = (isset($atts[5])) ? $atts[5] : '';      // The size of the input field
 		$wsel  = (isset($atts[6])) ? $atts[6] : '';      // AC autopopulates a select list based on choice?
@@ -100,34 +88,35 @@ class plgHubzeroAutocompleter extends JPlugin
 		$dsabl = (isset($atts[8])) ? $atts[8] : '';      // Readonly input
 
 		// Push some needed scripts and stylings to the template but ensure we do it only once
-		if ($this->_pushscripts) {
+		if ($this->_pushscripts) 
+		{
 			$document = JFactory::getDocument();
 			if (JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.jquery.js');
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.jquery.js'.'"></script>';
+				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js');
+				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>';
 			}
 			else 
 			{
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'textboxlist.js'.'"></script>';
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'observer.js'.'"></script>';
-				$scripts .= '<script src="'.DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.js'.'"></script>';
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'textboxlist.js');
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'observer.js');
-				//$document->addScript(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.js');
+				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>';
+				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>';
+				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>';
+				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
+				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
+				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
 			}
-			//$document->addStyleSheet(DS.'plugins'.DS.'hubzero'.DS.'autocompleter'.DS.'autocompleter.css');
+			//$document->addStyleSheet(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css');
 
 			$this->_pushscripts = false;
 		}
 
 		// Build the input tag
-		$html  = '<input type="text" name="'.$name.'" rel="'.$opt.','.$type.','.$wsel.'"';
-		$html .= ($id)    ? ' id="'.$id.'"'       : '';
-		$html .= ($class) ? ' class="'.trim($class).'"' : '';
-		$html .= ($size)  ? ' size="'.$size.'"'   : '';
-		$html .= ($dsabl) ? ' readonly="readonly"'   : '';
-		$html .= ' value="'. htmlentities($value, ENT_QUOTES) .'" autocomplete="off" />';
+		$html  = '<input type="text" name="' . $name . '" rel="' . $opt . ',' . $type . ',' . $wsel . '"';
+		$html .= ($id)    ? ' id="' . $id . '"'             : '';
+		$html .= ($class) ? ' class="' . trim($class) . '"' : '';
+		$html .= ($size)  ? ' size="' . $size . '"'         : '';
+		$html .= ($dsabl) ? ' readonly="readonly"'          : '';
+		$html .= ' value="' . htmlentities($value, ENT_QUOTES) . '" autocomplete="off" />';
 		$html .= $scripts;
 		
 		/*$json = '';
@@ -163,19 +152,18 @@ class plgHubzeroAutocompleter extends JPlugin
 	}
 
 	/**
-	 * Short description for 'onGetMultiEntry'
+	 * Display the autocompleter for a multi-entry field
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $atts Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      array $atts Attributes for setting up the autocomplete
+	 * @return     string HTML
 	 */
-	public function onGetMultiEntry( $atts )
+	public function onGetMultiEntry($atts)
 	{
-		if (!is_array($atts)) {
+		if (!is_array($atts)) 
+		{
 			$atts = array();
 		}
-		$params = array();
+		$params   = array();
 		$params[] = (isset($atts[0])) ? $atts[0] : 'tags';
 		$params[] = (isset($atts[1])) ? $atts[1] : 'tags';
 		$params[] = (isset($atts[2])) ? $atts[2] : 'act';
@@ -186,23 +174,22 @@ class plgHubzeroAutocompleter extends JPlugin
 		$params[] = 'multi';
 		$params[] = (isset($atts[6])) ? $atts[6] : '';
 
-		return $this->onGetAutocompleter( $params );
+		return $this->onGetAutocompleter($params);
 	}
 
 	/**
-	 * Short description for 'onGetSingleEntry'
+	 * Display the autocompleter for a single entry field
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $atts Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      array $atts Attributes for setting up the autocomplete
+	 * @return     string HTML
 	 */
-	public function onGetSingleEntry( $atts )
+	public function onGetSingleEntry($atts)
 	{
-		if (!is_array($atts)) {
+		if (!is_array($atts)) 
+		{
 			$atts = array();
 		}
-		$params = array();
+		$params   = array();
 		$params[] = (isset($atts[0])) ? $atts[0] : 'tags';
 		$params[] = (isset($atts[1])) ? $atts[1] : 'tags';
 		$params[] = (isset($atts[2])) ? $atts[2] : 'act';
@@ -213,23 +200,22 @@ class plgHubzeroAutocompleter extends JPlugin
 		$params[] = 'single';
 		$params[] = (isset($atts[6])) ? $atts[6] : '';
 
-		return $this->onGetAutocompleter( $params );
+		return $this->onGetAutocompleter($params);
 	}
 
 	/**
-	 * Short description for 'onGetSingleEntryWithSelect'
+	 * Display the autocompleter for a single entry field with accompanying select
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $atts Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      array $atts Attributes for setting up the autocomplete
+	 * @return     string HTML
 	 */
-	public function onGetSingleEntryWithSelect( $atts )
+	public function onGetSingleEntryWithSelect($atts)
 	{
-		if (!is_array($atts)) {
+		if (!is_array($atts)) 
+		{
 			$atts = array();
 		}
-		$params = array();
+		$params   = array();
 		$params[] = (isset($atts[0])) ? $atts[0] : 'groups';
 		$params[] = (isset($atts[1])) ? $atts[1] : 'groups';
 		$params[] = (isset($atts[2])) ? $atts[2] : 'acg';
@@ -240,6 +226,6 @@ class plgHubzeroAutocompleter extends JPlugin
 		$params[] = 'single';
 		$params[] = (isset($atts[7])) ? $atts[7] : '';
 
-		return $this->onGetAutocompleter( $params );
+		return $this->onGetAutocompleter($params);
 	}
 }
