@@ -1,0 +1,190 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_usage/usage.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_usage CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Sections */
+	#sub-menu {
+		margin-bottom: -1px;
+		}
+	/*.com_usage .main {
+		border: none;
+		}*/
+/* Data tables */
+	#statistics table {
+		border-collapse: collapse;
+		margin: 1em 0 2.5em 0;
+		padding: 0;
+		border-top: 2px solid #ccc;
+		border-bottom: 2px solid #eee;
+		font-size: 90%;
+		}
+	#statistics th {
+		font-weight: bold;
+		}
+	#statistics caption {
+		text-align: left;
+		margin-bottom: 1em;
+		padding-bottom: 0;
+		}
+	#statistics thead {
+		border-top: none;
+		border-bottom: 2px solid #ccc;
+		}
+	#statistics thead th,
+	#statistics thead td { 
+		padding: 0.5em 1em;
+		vertical-align: top;
+		border-top: none;
+		white-space: normal;
+		}
+	#statistics .group {
+		background-image: none;
+		}
+	#statistics tbody th,
+	#statistics tbody td { 
+		padding: 0.5em 1em 0.5em 1em;
+		}
+	#statistics tbody th {
+		text-align: left;
+		}
+	#statistics tbody td {
+		text-align: right;
+		}
+	#statistics .textual-data {
+		text-align: left;
+		}
+	#statistics .numerical-data {
+		text-align: right;
+		}
+	#statistics .centered {
+		text-align: center;
+		}	
+	#statistics .odd {
+		background-color: #f6f6f1;
+		}
+	#statistics .odd .highlight {
+		background-color: #e1eae8;
+		}
+	#statistics .odd .group {
+		background-color: #eeeee9;
+		background-image: none;
+		}
+	#statistics .odd .increase {
+		background-color: #e1eddc;
+		}
+	#statistics .odd .decrease {
+		background-color: #ede2dc;
+		}
+	#statistics .even {
+		}
+	#statistics .even .highlight {
+		background-color: #edf3f1;
+		}
+	#statistics .even .group {
+		background-color: #f7f7f7;
+		background-image: none;
+		}
+	#statistics .even .increase {
+		background-color: #e9f5e8;
+		}
+	#statistics .even .decrease {
+		background-color: #f5eae8;
+		}
+	#statistics .summary {
+		background-color: #edf3f1;
+		border-top: 2px solid #ccc;
+		}
+	#statistics .summary .highlight {
+		background-color: #d1dedc;
+		}
+	#statistics .summary .group {
+		background-color: #e1eae8;
+		background-image: none;
+		}
+	#statistics .summary .increase {
+		background-color: #dce6d3;
+		}
+	#statistics .summary .decrease {
+		background-color: #e8dbd3;
+		}
+/* Footnotes */
+	.footnotes {
+		font-size: 90%;
+		text-align: left;
+		}
+	.footnotes hr {
+		margin: 4em 0 1.5em;
+		width: 200px;
+		text-align: left;
+		border-color: #ccc;
+		}
+/* Filters */
+	.com_usage fieldset.filters {
+		margin: 2em 0 2em 0;
+		padding: 1em;
+		background: #F5F7F2;
+		border-top: 1px solid #DEE4CD;
+		border-bottom: 1px solid #DEE4CD;
+		}
+	.com_usage fieldset.filters label {
+		font-weight: bold;
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+		}
+/* Sub sub menu */
+	#sub-sub-menu ul {
+		margin: 0 -15px;
+		padding: 0.7em 15px;
+		list-style: none;
+		border: none;
+		border-bottom: 1px solid #ddd;
+		}
+	#sub-sub-menu li {
+		margin: 0 0 0 20px;
+		padding: 0;
+		border: none;
+		display: inline;
+		}
+	#sub-sub-menu .active a {
+		color: #333;
+		border: none;
+		}
+/* Sparklines */
+	.sparkline { 
+		float: left; 
+		height: 1.2em;
+		margin: 0.2em 0 0 0;
+		color: #888;
+		}
+	.sparkline .index { 
+		position: relative;
+		float: left; 
+		width: 3px; 
+		height: 100%; 
+		}
+	.sparkline .index .count { 
+		display: block; 
+		position: absolute; 
+		bottom: 0; 
+		left: 0; 
+		width: 100%; 
+		height: 0; 
+		background: #888;
+		overflow: hidden; 
+		text-indent: -9999px;
+		}
+/* Sparkline lists */
+	.sparklist li { 
+		padding: 0.4em 0; 
+		}

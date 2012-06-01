@@ -159,7 +159,7 @@ class plgUsageOverview extends JPlugin
 
 					default:
 						$val = $row->value;
-					break
+					break;
 				}
 				$html .= "\t\t\t" . '<td' . $cls . '>' . trim($this->_fmt_result($val, $row->valfmt)) . '</td>' . "\n";
 			}
@@ -189,7 +189,7 @@ class plgUsageOverview extends JPlugin
 			$dateFormat = 'd M Y';
 			$tz = true;
 		}
-		
+
 		$sparkline = '';
 
 		$thisyear = date("Y");

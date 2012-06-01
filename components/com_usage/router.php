@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'UsageBuildRoute'
@@ -41,22 +41,25 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 function UsageBuildRoute(&$query)
 {
-    $segments = array();
+	$segments = array();
 
-    if (!empty($query['task'])) {
-        $segments[] = $query['task'];
-        unset($query['task']);
-    }
-	if (!empty($query['period'])) {
-        $segments[] = $query['period'];
-        unset($query['period']);
-    }
-	if (!empty($query['type'])) {
-        $segments[] = $query['type'];
-        unset($query['type']);
-    }
+	if (!empty($query['task'])) 
+	{
+		$segments[] = $query['task'];
+		unset($query['task']);
+	}
+	if (!empty($query['period'])) 
+	{
+		$segments[] = $query['period'];
+		unset($query['period']);
+	}
+	if (!empty($query['type'])) 
+	{
+		$segments[] = $query['type'];
+		unset($query['type']);
+	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
@@ -69,29 +72,34 @@ function UsageBuildRoute(&$query)
  */
 function UsageParseRoute($segments)
 {
-    $vars = array();
+	$vars = array();
 
-    if (empty($segments))
-    	return $vars;
+	if (empty($segments))
+	{
+		return $vars;
+	}
 
-    $vars['task'] = $segments[0];
-	if (isset($segments[0])) {
+	$vars['task'] = $segments[0];
+	if (isset($segments[0])) 
+	{
 		switch ($segments[0])
 		{
 			case 'maps':
-				if (isset($segments[1])) {
+				if (isset($segments[1])) 
+				{
 					$vars['type'] = $segments[1];
 				}
 			break;
 			case 'overview':
 			default:
-				if (isset($segments[1])) {
+				if (isset($segments[1])) 
+				{
 					$vars['period'] = $segments[1];
 				}
 			break;
 		}
 	}
 
-    return $vars;
+	return $vars;
 }
 

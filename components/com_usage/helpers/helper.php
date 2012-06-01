@@ -29,30 +29,25 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'UsageHelper'
- * 
- * Long description (if any) ...
+ * Usage helper class
  */
 class UsageHelper
 {
-	// Get the database for storing stats
-
 	/**
-	 * Short description for 'getUDBO'
+	 * Return a usage database object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     mixed
 	 */
 	public function getUDBO()
 	{
 		static $instance;
 
-		if (!is_object($instance)) {
-			$config =& JComponentHelper::getParams( 'com_usage' );
+		if (!is_object($instance)) 
+		{
+			$config =& JComponentHelper::getParams('com_usage');
 
 			$options['driver']   = $config->get('statsDBDriver');
 			$options['host']     = $config->get('statsDBHost');
@@ -62,28 +57,32 @@ class UsageHelper
 			$options['database'] = $config->get('statsDBDatabase');
 			$options['prefix']   = $config->get('statsDBPrefix');
 
-			if ((!isset($options['host']) || $options['host'] == '') && (!isset($options['user']) || $options['user'] == '')) {
-				return null;
+			if ((!isset($options['password']) || $options['password'] == '') 
+			 && (!isset($options['user']) || $options['user'] == '')
+			 && (!isset($options['database']) || $options['database'] == '')) 
+			{
+				$instance =& JFactory::getDBO();
 			}
-
-			$instance =& JDatabase::getInstance($options);
+			else 
+			{
+				$instance =& JDatabase::getInstance($options);
+				if (JError::isError($instance)) 
+				{
+					$instance =& JFactory::getDBO();
+				}
+			}
 		}
 
-		if (JError::isError($instance)) {
+		if (JError::isError($instance)) 
+		{
 			return null;
 		}
 
 		return $instance;
 	}
 
-	//----------------------------------//
-	//  Print Top X List from Database  //
-	//----------------------------------//
-
 	/**
-	 * Short description for 'toplist'
-	 * 
-	 * Long description (if any) ...
+	 * Print Top X List from Database
 	 * 
 	 * @param      object &$db Parameter description (if any) ...
 	 * @param      unknown $top Parameter description (if any) ...
@@ -98,46 +97,51 @@ class UsageHelper
 		$hub = 1;
 		$html = '';
 
-		if (!$enddate) {
-	        $dtmonth = date("m") - 1;
-	        $dtyear  = date("Y");
-	        if (!$dtmonth) {
-	            $dtmonth = 12;
-	            $dtyear = $dtyear - 1;
-	        }
-	        $enddate = $dtyear .'-'. $dtmonth;
-	    }
+		if (!$enddate) 
+		{
+			$dtmonth = date("m") - 1;
+			$dtyear  = date("Y");
+			if (!$dtmonth) 
+			{
+				$dtmonth = 12;
+				$dtyear = $dtyear - 1;
+			}
+			$enddate = $dtyear . '-' . $dtmonth;
+		}
 
 		$dtyearnext = $dtyear + 1;
 
 		// Look up top list information...
 		$topname = '';
-		$sql = "SELECT name, valfmt, size FROM tops WHERE top='". mysql_escape_string($top) ."'";
-		$db->setQuery( $sql );
+		$sql = "SELECT name, valfmt, size FROM tops WHERE top='" . mysql_escape_string($top) . "'";
+		$db->setQuery($sql);
 		$result = $db->loadRow();
-		if ($result) {
+		if ($result) 
+		{
 			$topname = $result[0];
 			$valfmt = $result[1];
 			$size = $result[2];
 		}
 
-		if ($topname) {
+		if ($topname) 
+		{
 			// Prepare some date ranges...
 			$enddate .= '-00';
 			$dtmonth = floor(substr($enddate, 5, 2));
 			$dtyear = floor(substr($enddate, 0, 4));
-			$dt = $dtyear .'-'. sprintf("%02d", $dtmonth) .'-00';
+			$dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
 			$dtmonthnext = floor(substr($enddate, 5, 2) + 1);
 
-			if ($dtmonthnext > 12) {
-	            $dtmonthnext = 1;
-	            $dtyearnext++;
-	        }
+			if ($dtmonthnext > 12) 
+			{
+				$dtmonthnext = 1;
+				$dtyearnext++;
+			}
 
 			$dtyearprior = substr($enddate, 0, 4) - 1;
-			$monthtext = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) .' '. $dtyear;
-			$yeartext = 'Jan - '. date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) .' '. $dtyear;
-			$twelvetext = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) .' '. $dtyearprior .' - '. date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) .' '. $dtyear;
+			$monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
+			$yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
+			$twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
 			$period = array(
 				array('key' => 1,  'name' => $monthtext),
 				array('key' => 0,  'name' => $yeartext),
@@ -158,23 +162,27 @@ class UsageHelper
 						AND topvals.datetime = '" . mysql_escape_string($dt) . "' 
 						AND topvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' 
 						AND topvals.rank = '0'";
-				$db->setQuery( $sql );
+				$db->setQuery($sql);
 				$results = $db->loadObjectList();
-				if ($results) {
+				if ($results) 
+				{
 					foreach ($results as $row)
 					{
 						$formattedval = UsageHelper::valformat($row->value, $valfmt);
-						if (strstr($formattedval, "day") !== FALSE) {
-							$chopchar = strrpos($formattedval, ",");
-							if ($chopchar !== FALSE) {
-								$formattedval = substr($formattedval, 0, $chopchar) . "+";
+						if (strstr($formattedval, "day") !== FALSE) 
+						{
+							$chopchar = strrpos($formattedval, ',');
+							if ($chopchar !== FALSE) 
+							{
+								$formattedval = substr($formattedval, 0, $chopchar) . '+';
 							}
 						}
 						array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
 					}
 				}
-				if (!count($toplistset)) {
-					array_push($toplistset, array("n/a", 0, "n/a", "n/a"));
+				if (!count($toplistset)) 
+				{
+					array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
 				}
 
 				// Calculate the top X values for the toplist...
@@ -188,28 +196,35 @@ class UsageHelper
 						AND topvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' 
 						AND topvals.rank > '0' 
 						ORDER BY topvals.rank, topvals.name";
-				$db->setQuery( $sql );
+				$db->setQuery($sql);
 				$results = $db->loadObjectList();
-				if ($results) {
+				if ($results) 
+				{
 					foreach ($results as $row)
 					{
-						if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
+						if ($row->rank > 0 && (!$size || $row->rank <= $size)) 
+						{
 							while ($rank < $row->rank)
 							{
-								array_push($toplistset, array("n/a", 0, "n/a", "n/a"));
+								array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
 								$rank++;
 							}
 							$formattedval = UsageHelper::valformat($row->value, $valfmt);
-							if (strstr($formattedval, "day") !== FALSE) {
-								$chopchar = strrpos($formattedval, ",");
-								if ($chopchar !== FALSE) {
-									$formattedval = substr($formattedval, 0, $chopchar) . "+";
+							if (strstr($formattedval, 'day') !== FALSE) 
+							{
+								$chopchar = strrpos($formattedval, ',');
+								if ($chopchar !== FALSE) 
+								{
+									$formattedval = substr($formattedval, 0, $chopchar) . '+';
 								}
 							}
-							if ($toplistset[0][1] > 0) {
+							if ($toplistset[0][1] > 0) 
+							{
 								array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]))));
-							} else {
-								array_push($toplistset, array($row->name, $row->value, $formattedval, "n/a"));
+							} 
+							else 
+							{
+								array_push($toplistset, array($row->name, $row->value, $formattedval, 'n/a'));
 							}
 							$rank++;
 						}
@@ -217,7 +232,7 @@ class UsageHelper
 				}
 				while ($rank <= $size || $rank == 1)
 				{
-					array_push($toplistset, array("n/a", 0, "n/a", "n/a"));
+					array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
 					$rank++;
 				}
 				array_push($toplist, $toplistset);
@@ -226,58 +241,51 @@ class UsageHelper
 			$cls = 'even';
 
 			// Print top list table...
-			$html .= '<table summary="">'."\n";
-			$html .= "\t".'<caption>Table '.$t.': '.$topname.'</caption>'."\n";
-			$html .= "\t".'<thead>'."\n";
-			$html .= "\t\t".'<tr>'."\n";
+			$html .= '<table summary="">' . "\n";
+			$html .= "\t" . '<caption>Table ' .$t.': ' .$topname.'</caption>' . "\n";
+			$html .= "\t" . '<thead>' . "\n";
+			$html .= "\t\t" . '<tr>' . "\n";
 			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
-				$html .= "\t\t\t".'<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'."\n";
+				$html .= "\t\t\t" . '<th colspan="3" scope="colgroup">' . $period[$pidx]["name"] .'</th>' . "\n";
 			}
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t".'</thead>'."\n";
-			$html .= "\t".'<tbody>'."\n";
-			$html .= "\t\t".'<tr class="summary">'."\n";
+			$html .= "\t\t" . '</tr>' . "\n";
+			$html .= "\t" . '</thead>' . "\n";
+			$html .= "\t" . '<tbody>' . "\n";
+			$html .= "\t\t" . '<tr class="summary">' . "\n";
 			for ($pidx = 0; $pidx < count($period); $pidx++)
 			{
 				$tdcls = ($pidx != 1) ? ' class="group"' : '';
 
-				$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $toplist[$pidx][0][0] .'</th>'."\n";
-				$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][0][2] .'</td>'."\n";
-				$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][0][3] .'</td>'."\n";
+				$html .= "\t\t\t" . '<th' . $tdcls . ' scope="row">' . $toplist[$pidx][0][0] .'</th>' . "\n";
+				$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][0][2] .'</td>' . "\n";
+				$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][0][3] .'</td>' . "\n";
 			}
-			$html .= "\t\t".'</tr>'."\n";
+			$html .= "\t\t" . '</tr>' . "\n";
 			for ($i = 1; $i < $rank; $i++)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
-				$html .= "\t\t".'<tr class="'. $cls .'">'."\n";
+				$html .= "\t\t" . '<tr class="' . $cls .'">' . "\n";
 				for ($pidx = 0; $pidx < count($period); $pidx++)
 				{
 					$tdcls = ($pidx != 1) ? ' class="group"' : '';
-					$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $toplist[$pidx][$i][0] .'</th>'."\n";
-					$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][$i][2] .'</td>'."\n";
-					$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][$i][3] .'</td>'."\n";
+					$html .= "\t\t\t" . '<th' . $tdcls . ' scope="row">' . $toplist[$pidx][$i][0] .'</th>' . "\n";
+					$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][$i][2] .'</td>' . "\n";
+					$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][$i][3] .'</td>' . "\n";
 				}
-				$html .= "\t\t".'</tr>'."\n";
+				$html .= "\t\t" . '</tr>' . "\n";
 			}
-			$html .= "\t".'</tbody>'."\n";
-			$html .= '</table>'."\n";
+			$html .= "\t" . '</tbody>' . "\n";
+			$html .= '</table>' . "\n";
 		}
 		return $html;
 	}
 
-	//----------------------------------------------------------
-	//  Create New Array, Dropping All Duplicates and 
-	//  Reindexing All Elements
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'array_unique_reindex'
+	 * Create New Array, Dropping All Duplicates and Reindexing All Elements
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $somearray Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      array $somearray
+	 * @return     array
 	 */
 	public function array_unique_reindex($somearray)
 	{
@@ -291,21 +299,13 @@ class UsageHelper
 		return($newarr);
 	}
 
-	//----------------------------------------------------------
-	//  Data Check functions
-	//  Returns TRUE if there is data in the database
-	//  for the date passed to it, FALSE otherwise.
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'check_for_data'
+	 * Check for data for a date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object &$db Parameter description (if any) ...
-	 * @param      unknown $yearmonth Parameter description (if any) ...
-	 * @param      unknown $period Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      object &$db       JDatabase
+	 * @param      string $yearmonth YYYY-MM
+	 * @param      string $period    Time period to check for
+	 * @return     boolean True if data is found
 	 */
 	public function check_for_data(&$db, $yearmonth, $period)
 	{
@@ -313,61 +313,56 @@ class UsageHelper
 				FROM totalvals 
 				WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' 
 				AND period = '" . mysql_escape_string($period) . "'";
-		$db->setQuery( $sql );
+		$db->setQuery($sql);
 		$result = $db->loadResult();
-		if ($result && $result > 0) {
+		if ($result && $result > 0) 
+		{
 			return(true);
 		}
 		return(false);
 	}
 
 	/**
-	 * Short description for 'check_for_classdata'
+	 * Check for domain class data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object &$db Parameter description (if any) ...
-	 * @param      unknown $yearmonth Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      object &$db       JDatabase
+	 * @param      string $yearmonth YYYY-MM
+	 * @return     boolean True if data is found
 	 */
 	public function check_for_classdata(&$db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime) 
 				FROM classvals 
 				WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%'";
-		$db->setQuery( $sql );
+		$db->setQuery($sql);
 		$result = $db->loadResult();
-		if ($result && $result > 0) {
+		if ($result && $result > 0) 
+		{
 			return(true);
 		}
 		return(false);
 	}
 
 	/**
-	 * Short description for 'check_for_regiondata'
+	 * Check for region data for a date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object &$db Parameter description (if any) ...
-	 * @param      unknown $yearmonth Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      object &$db       JDatabase
+	 * @param      string $yearmonth YYYY-MM
+	 * @return     boolean True if data is found
 	 */
 	public function check_for_regiondata(&$db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime)
 				FROM regionvals 
 				WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%'";
-		$db->setQuery( $sql );
+		$db->setQuery($sql);
 		$result = $db->loadResult();
-		if ($result && $result > 0) {
+		if ($result && $result > 0) 
+		{
 			return(true);
 		}
 		return(false);
 	}
-
-	//----------------------------------------------------------
-	// Date Format functions
-	//----------------------------------------------------------
 
 	/**
 	 * Short description for 'dateformat'
@@ -386,9 +381,12 @@ class UsageHelper
 		switch ($period)
 		{
 			case 'fiscalyear':
-				if ($month <= 9) {
+				if ($month <= 9) 
+				{
 					return("FY " . $year);
-				} else {
+				} 
+				else 
+				{
 					return("FY " . ($year + 1));
 				}
 			break;
@@ -396,21 +394,31 @@ class UsageHelper
 				return($year);
 			break;
 			case 'quarter':
-				if ($month <= 3) {
+				if ($month <= 3) 
+				{
 					$qtr = '1st';
-				} elseif($month <= 6) {
+				} 
+				elseif ($month <= 6) 
+				{
 					$qtr = '2nd';
-				} elseif($month <= 9) {
+				} 
+				elseif ($month <= 9) 
+				{
 					$qtr = '3rd';
-				} else {
+				} 
+				else 
+				{
 					$qtr = '4th';
 				}
-				return($qtr .' Quarter '. $year);
+				return($qtr .' Quarter ' . $year);
 			break;
 			default:
-				if ($day > 0) {
+				if ($day > 0) 
+				{
 					return(sprintf("%d/%d/%d", $month, $day, $year));
-				} else {
+				} 
+				else 
+				{
 					return(sprintf("%d/%d", $month, $year));
 				}
 			break;
@@ -430,16 +438,15 @@ class UsageHelper
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
 		$day   = substr($seldate, 8, 2);
-		if ($day > 0) {
+		if ($day > 0) 
+		{
 			return(sprintf("%02d/%02d/%04d", $month, $day, $year));
-		} else {
+		} 
+		else 
+		{
 			return(sprintf("%02d/%04d", $month, $year));
 		}
 	}
-
-	//----------------------------------------------------------
-	// Selected Date functions
-	//----------------------------------------------------------
 
 	/**
 	 * Short description for 'seldate_value'
@@ -453,10 +460,12 @@ class UsageHelper
 	 */
 	public function seldate_value($valarray, $seldate, $valkey='value')
 	{
-		if ($valarray) {
+		if ($valarray) 
+		{
 			foreach ($valarray as $val)
 			{
-				if (substr($val['date'], 0, strlen($seldate)) == $seldate) {
+				if (substr($val['date'], 0, strlen($seldate)) == $seldate) 
+				{
 					return($val[$valkey]);
 				}
 			}
@@ -542,26 +551,41 @@ class UsageHelper
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
 		$day   = substr($seldate, 8, 2);
-		if ($period == 'fiscalyear') {
-			if ($month < 9) {
+		if ($period == 'fiscalyear') 
+		{
+			if ($month < 9) 
+			{
 				$month = 9;
 			}
-			if ($month > 9) {
+			if ($month > 9) 
+			{
 				$month = 9;
 				$year++;
 			}
-		} elseif ($period == 'calyear') {
-			if ($month != 12) {
+		} 
+		elseif ($period == 'calyear') 
+		{
+			if ($month != 12) 
+			{
 				$month = 12;
 			}
-		} elseif ($period == 'quarter') {
-			if ($month < 3) {
+		} 
+		elseif ($period == 'quarter') 
+		{
+			if ($month < 3) 
+			{
 				$month = 3;
-			} elseif ($month > 3 && $month < 6) {
+			} 
+			elseif ($month > 3 && $month < 6) 
+			{
 				$month = 6;
-			} elseif ($month > 6 && $month < 9) {
+			} 
+			elseif ($month > 6 && $month < 9) 
+			{
 				$month = 9;
-			} elseif ($month > 9 && $month < 12) {
+			} 
+			elseif ($month > 9 && $month < 12) 
+			{
 				$month = 12;
 			}
 		}
@@ -583,53 +607,60 @@ class UsageHelper
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
 		$day   = substr($seldate, 8, 2);
-		if ($right) {
+		if ($right) 
+		{
 			switch ($period)
 			{
 				case 'fiscalyear':
 					$year++;
-					break;
+				break;
 				case 'calyear':
 					$year++;
-					break;
+				break;
 				case 'quarter':
 					$month += 3;
-					if ($month > 12) {
+					if ($month > 12) 
+					{
 						$year++;
 						$month -= 12;
 					}
-					break;
+				break;
 				default:
 					$month++;
-					if ($month > 12) {
+					if ($month > 12) 
+					{
 						$year++;
 						$month = 1;
 					}
-					break;
+				break;
 			}
-		} else {
+		} 
+		else 
+		{
 			switch ($period)
 			{
 				case 'fiscalyear':
 					$year--;
-					break;
+				break;
 				case 'calyear':
 					$year--;
-					break;
+				break;
 				case 'quarter':
 					$month -= 3;
-					if ($month < 1) {
+					if ($month < 1) 
+					{
 						$year--;
 						$month += 12;
 					}
-					break;
+				break;
 				default:
 					$month--;
-					if ($month < 1) {
+					if ($month < 1) 
+					{
 						$year--;
 						$month = 12;
 					}
-					break;
+				break;
 			}
 		}
 		return(sprintf("%04d-%02d-%02d", $year, $month, $day));
@@ -646,21 +677,25 @@ class UsageHelper
 	 */
 	public function seldate_valuedescsortkey(&$arr, $date)
 	{
-		$reversealpha = array(',' => '', '.' => '', 'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
-								'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O',
-								'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H',
-								'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A');
+		$reversealpha = array(
+			',' => '',  '.' => '',  'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
+			'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O',
+			'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H',
+			'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A'
+		);
 		$dmax = 0;
 		$tmax = 0;
 		for ($i = 0; $i < count($arr); $i++)
 		{
 			$dateval = UsageHelper::seldate_value($arr[$i], $date);
 			$len = strlen($dateval);
-			if ($len > $dmax) {
+			if ($len > $dmax) 
+			{
 				$dmax = $len;
 			}
 			$len = strlen($arr[$i]['total']);
-			if ($len > $tmax) {
+			if ($len > $tmax) 
+			{
 				$tmax = $len;
 			}
 		}
@@ -669,7 +704,8 @@ class UsageHelper
 		{
 			$arr[$i]['sortkey'] = '';
 			$dateval = UsageHelper::seldate_value($arr[$i], $date);
-			if (!$dateval) {
+			if (!$dateval) 
+			{
 				$dateval = "0";
 			}
 			$arr[$i]['sortkey'] .= sprintf($format, $dateval, $arr[$i]['total']) . strtr(strtoupper($arr[$i]['name']), $reversealpha);
@@ -701,12 +737,18 @@ class UsageHelper
 	 */
 	public function valformat($value, $format)
 	{
-		if ($format == 1) {
+		if ($format == 1) 
+		{
 			return(number_format($value));
-		} elseif ($format == 2 || $format == 3) {
-			if ($format == 2) {
+		} 
+		elseif ($format == 2 || $format == 3) 
+		{
+			if ($format == 2) 
+			{
 				$min = round($value / 60);
-			} else {
+			} 
+			else 
+			{
 				$min = floor($value / 60);
 				$sec = $value - ($min * 60);
 			}
@@ -714,36 +756,44 @@ class UsageHelper
 			$min -= ($hr * 60);
 			$day = floor($hr / 24);
 			$hr -= ($day * 24);
-			if ($day == 1) {
-				$day = "1 ".JText::_('COM_USAGE_DAY').", ";
-			} elseif ($day > 1) {
-				$day = number_format($day) . ' '.JText::_('COM_USAGE_DAYS').', ';
-			} else {
-				$day = "";
+			if ($day == 1) 
+			{
+				$day = '1 ' . JText::_('COM_USAGE_DAY') . ', ';
+			} 
+			elseif ($day > 1) 
+			{
+				$day = number_format($day) . ' ' . JText::_('COM_USAGE_DAYS') . ', ';
+			} 
+			else 
+			{
+				$day = '';
 			}
-			if ($format == 2) {
+			if ($format == 2) 
+			{
 				return(sprintf("%s%d:%02d", $day, $hr, $min));
-			} else {
+			} 
+			else 
+			{
 				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
 			}
-		} else {
+		} 
+		else 
+		{
 			return($value);
 		}
 	}
 
 	/**
-	 * Short description for 'options'
+	 * Build a list of select options
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @param      unknown $enddate Parameter description (if any) ...
-	 * @param      unknown $thisyear Parameter description (if any) ...
-	 * @param      array $monthsReverse Parameter description (if any) ...
-	 * @param      string $func Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object  &$db           JDatabase
+	 * @param      string  $enddate       Parameter description (if any) ...
+	 * @param      integer $thisyear      Current year
+	 * @param      array   $monthsReverse List of months (Dec -> Jan)
+	 * @param      string  $func          Function to perform
+	 * @return     string HTML
 	 */
-	public function options( &$db, $enddate, $thisyear, $monthsReverse, $func='' )
+	public function options(&$db, $enddate, $thisyear, $monthsReverse, $func='')
 	{
 		$o = '';
 		for ($i = $thisyear; $i >= 2004; $i--)
@@ -751,12 +801,14 @@ class UsageHelper
 			foreach ($monthsReverse as $key => $month)
 			{
 				$value = $i . '-' . $key;
-				if (UsageHelper::$func($db, $value) ) {
-					$o .= '<option value="'. $value .'"';
-					if ($value == $enddate) {
+				if (UsageHelper::$func($db, $value)) 
+				{
+					$o .= '<option value="' . $value . '"';
+					if ($value == $enddate) 
+					{
 						$o .= ' selected="selected"';
 					}
-					$o .= '>'. $month .' '. $i .'</option>'."\n";
+					$o .= '>' . $month . ' ' . $i . '</option>' . "\n";
 				}
 			}
 		}
