@@ -20,14 +20,19 @@ if (!HUB) {
 //-----------------------------------------------------------
 //  Various functions - encapsulated in HUB namespace
 //-----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
+
 HUB.Base = {
 	
-	jQuery: $,
+	jQuery: jq,
 	
 	templatepath: '',
 
 	//  Overlay for "loading", lightbox, etc.
 	overlayer: function() {
+		var $ = this.jQuery;
 		// The following code creates and inserts HTML into the document:
 		// <div id="initializing" style="display:none;">
 		//   <img id="loading" src="templates/zepar/images/circle_animation.gif" alt="" />
@@ -52,6 +57,8 @@ HUB.Base = {
 	},
 
 	launchTool: function() {
+		var $ = this.jQuery;
+		
 		$('.launchtool').each(function(i, trigger) {
 			$(trigger).on('click', function(e) {
 				$('#sbox-overlay').css({
@@ -72,6 +79,8 @@ HUB.Base = {
 
 	// set focus on username field for login form
 	setLoginFocus: function() {
+		var $ = this.jQuery;
+		
 		if ($('#username')) {
 			$('#username').focus();
 		}
@@ -79,7 +88,7 @@ HUB.Base = {
 
 	// turn links with specific classes into popups
 	popups: function() {
-		var w = 760, h = 520;
+		var w = 760, h = 520, $ = this.jQuery;
 		
 		$('a').each(function(i, trigger) {
 			if ($(trigger).is('.demo, .popinfo, .popup, .breeze')) {
@@ -106,6 +115,8 @@ HUB.Base = {
 	},
 
 	searchbox: function() {
+		var $ = this.jQuery;
+		
 		if ($('#searchword')) {
 			$('#searchword').css('color', '#999');
 			$('#searchword').focus(function(){
@@ -125,6 +136,8 @@ HUB.Base = {
 
 	// launch functions
 	initialize: function() {
+		var $ = this.jQuery;
+		
 		HUB.Base.setLoginFocus();
 		HUB.Base.searchbox();
 		HUB.Base.popups();
