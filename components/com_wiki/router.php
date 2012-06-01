@@ -84,7 +84,7 @@ function WikiParseRoute($segments)
 	}
 	$vars['pagename'] = $e;
 
-	if (!$vars['task'])
+	if (!isset($vars['task']) || !$vars['task'])
 	{
 		$vars['task'] = JRequest::getWord('task', '');
 	}

@@ -36,7 +36,7 @@ HUB.Wiki = {
 			jo.val(ji);
 
 			if ($('#maininput-actags') && jo) {
-				var ul = $($('#maininput-actags').parent().parent());
+				/*var ul = $($('#maininput-actags').parent().parent());
 				var label = $($('#maininput-actags').parent().parent().parent());
 				label.remove(ul);
 				
@@ -53,7 +53,7 @@ HUB.Wiki = {
 					'minLength': 1, // We wait for at least one character
 					'overflow': true, // Overflow for more entries
 					'wrapSelectionsWithSpacesInQuotes': false
-				});
+				});*/
 			}
 		} else {
 			$('#pagetext').val('');
@@ -70,6 +70,87 @@ HUB.Wiki = {
 		var mode = $('#params_mode');
 		if (mode) {
 			mode.bind('change', HUB.Wiki.checkMode);
+		}
+		
+		if ($('#file-uploader')) {
+			/*$.get($('#file-uploader').attr('data-list'), {}, function(data) {
+				$('#file-uploader-list').html(data);
+				$('a.delete')
+					.unbind('click')
+					.on('click', function(event){
+						event.preventDefault();
+						$.get($(this).attr('href'), {}, function(data) {
+							$('#file-uploader-list').html(data);
+						});
+					});
+			});*/
+			HUB.Wiki.updateFileList();
+		}
+
+		var uploader = new qq.FileUploader({
+			element: $('#file-uploader')[0],
+			action: $('#file-uploader').attr('data-action'),
+			multiple: true,
+			debug: false,
+			onSubmit: function(id, file) {
+				//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
+			},
+			onComplete: function(id, file, response) {
+				$('.qq-upload-list').empty();
+				HUB.Wiki.updateFileList();
+				/*$.get($('#file-uploader').attr('data-list'), {}, function(data) {
+					$('#file-uploader-list').html(data);
+					$('a.delete')
+						.unbind('click')
+						.on('click', function(event){
+							event.preventDefault();
+							$.get($(this).attr('href'), {}, function(data) {
+								$('#file-uploader-list').html(data);
+							});
+						});
+				});*/
+				
+				//$("#file-upload-uploading").append('<li><span class="file-name">' + file + '</span></li>');
+				//$('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
+				
+				/*$("#ajax-upload-uploading").fadeOut("slow").remove();
+				var url = $("#ajax-uploader").attr("data-action");
+				url = url.replace("doajaxupload","getfileatts"); 
+				
+				$.post(url, {file:response.file, dir:response.directory}, function(data) {
+					var upload = jQuery.parseJSON( data );
+					if(upload)
+					{
+						$("#ajax-upload-right").find("table").show();
+						$("#ajax-upload-right").find("p.warning").remove();
+						
+						$("#picture-src").attr("src", upload.src + "?" + new Date().getTime());
+						$("#picture-name").html(upload.name);
+						$("#picture-size").html(upload.size);
+						$("#picture-width").html(upload.width);
+						$("#picture-height").html(upload.height);
+						$("#profile-picture").attr("value", upload.name); 
+					}
+				})*/
+			}
+		});
+	},
+
+	updateFileList: function() {
+		var $ = HUB.Wiki.jQuery;
+		
+		if ($('#file-uploader')) {
+			$.get($('#file-uploader').attr('data-list'), {}, function(data) {
+				$('#file-uploader-list').html(data);
+				$('a.delete')
+					.unbind('click')
+					.on('click', function(event){
+						event.preventDefault();
+						$.get($(this).attr('href'), {}, function(data) {
+							HUB.Wiki.updateFileList();
+						});
+					});
+			});
 		}
 	},
 

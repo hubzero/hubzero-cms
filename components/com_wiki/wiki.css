@@ -157,12 +157,77 @@
 	/*#content-header-extra li {
 		display: inline;
 	}*/
+	#file-uploader .qq-upload-button {
+		background:#222;
+		background-image: -webkit-linear-gradient(top, #444, #222);
+		background-image: -moz-linear-gradient(top, #444, #222);
+		background-image: -o-linear-gradient(top, #444, #222);
+		background-image: -ms-linear-gradient(top, #444, #222);
+		background-image: linear-gradient(top, #444, #222);
+		padding:10px;
+		position:relative;
+		color:#FFF;
+		text-align:center;
+		text-indent:20px;
+		-webkit-border-radius:3px;
+		-moz-border-radius:3px;
+		border-radius:3px;
+		border:1px solid #000;
+		border-top:1px solid #666;
+		margin:0 0 10px 0;
+	}
+	#file-uploader .qq-upload-button:active {
+		background-image: -webkit-linear-gradient(top, #222, #444);
+		background-image: -moz-linear-gradient(top, #222, #444);
+		background-image: -o-linear-gradient(top, #222, #444);
+		background-image: -ms-linear-gradient(top, #222, #444);
+		background-image: linear-gradient(top, #222, #444);
+	}	
+	#file-uploader .qq-upload-button:before {
+		content: "\f01b";
+		position: absolute;
+		left: 30px;
+		top: 10px;
+		width: 24px;
+		height: 24px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		color: #FFF;
+	}
+	#file-uploader .qq-upload-drop-area {
+		padding: 0.7em;
+		border: 1px solid #ccc;
+		-webkit-border-radius:3px;
+		-moz-border-radius:3px;
+		border-radius:3px;
+		background: #666;
+		color: #fff;
+		text-align: center;
+	}
+	#hubForm .explaination #file-uploader ul.qq-upload-list {
+		margin: 0;
+	}
+	#file-uploader .qq-upload-size {
+		margin: 0 0 0 2em;
+	}
+	#file-uploader .qq-upload-failed-text {
+		display: none;
+	}
 /* Attachments */
 	#attachments {
 		margin: 0;
 		padding: 0;
 		min-width: 100px;
 		background: #fff;
+	}
+	#hubForm .explaination #attachments {
+		border: 1px solid #ccc;
+		max-height: 300px;
+		overflow: scroll;
+	}
+	#hubForm .explaination #attachments p {
+		margin: 0;
+		padding: 0.2em 0.5em;
 	}
 	#attachments form,
 	#attachments fieldset,

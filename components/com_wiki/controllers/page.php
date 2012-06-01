@@ -409,6 +409,11 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 		// Include any Scripts
 		$this->_getScripts('wiki', 'com_wiki');
+		if (JPluginHelper::isEnabled('system', 'jquery')) 
+		{
+			$document =& JFactory::getDocument();
+			$document->addScript("/media/system/js/jquery.fileuploader.js");
+		}
 
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"

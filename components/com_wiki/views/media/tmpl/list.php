@@ -31,7 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-?>
+$no_html = JRequest::getVar('no_html', 0);
+
+if (!$no_html) { ?>
 <script type="text/javascript">
 	function updateDir()
 	{
@@ -66,8 +68,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		return false;
 	}
 </script>
+<?php } ?>
 	<div id="attachments">
+<?php if (!$no_html) { ?>
 		<form action="index.php" method="post" id="filelist">
+<?php } ?>
 <?php if (count($this->docs) == 0) { ?>
 			<p><?php echo JText::_('NO_FILES_FOUND'); ?></p>
 <?php } else { ?>
@@ -89,10 +94,10 @@ if ($this->docs)
 							</span>
 						</td>
 						<td width="100%">
-							<?php echo $this->escape($name); ?>
+							<?php echo $this->escape(stripslashes($name)); ?>
 						</td>
 						<td>
-							<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');" title="<?php echo JText::_('DELETE'); ?>">
+							<a class="delete" href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('DELETE'); ?>">
 								<img src="/components/<?php echo $this->option; ?>/images/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
 							</a>
 						</td>
@@ -104,7 +109,9 @@ if ($this->docs)
 				</tbody>
 			</table>
 <?php } ?>
+<?php if (!$no_html) { ?>
 		</form>
+<?php } ?>
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
