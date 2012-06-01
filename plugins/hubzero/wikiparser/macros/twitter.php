@@ -111,19 +111,38 @@ class TwitterMacro extends WikiMacro
 
 		$doc =& JFactory::getDocument();
 		$doc->addStyleSheet('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.css');
-		$doc->addScript('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.js');
-		$doc->addScriptDeclaration("
-			window.addEvent(\"domready\",function() {
-				var twitterFeed = new HUB.Twitter(\"twitter{$uniqid}\", {
-					type: \"{$type}\",
-					username: \"{$username}\",
-					trend: \"{$trend}\",
-					tweets: {$num_tweets},
-					linkify:true
+		
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$doc->addScript('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.jquery.js');
+			$doc->addScriptDeclaration("
+				jQuery(document).ready(function($){
+					var twitterFeed = $(\"#twitter{$uniqid}\").twitter({
+						type: \"{$type}\",
+						username: \"{$username}\",
+						trend: \"{$trend}\",
+						tweets: {$num_tweets},
+						linkify:true
+					});
 				});
-			});
+			");
+		}
+		else
+		{
+			$doc->addScript('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.js');
+			$doc->addScriptDeclaration("
+				window.addEvent(\"domready\",function() {
+					var twitterFeed = new HUB.Twitter(\"twitter{$uniqid}\", {
+						type: \"{$type}\",
+						username: \"{$username}\",
+						trend: \"{$trend}\",
+						tweets: {$num_tweets},
+						linkify:true
+					});
+				});
 			
-		");
+			");
+		}
 
 		return "<div id=\"twitter{$uniqid}\" class=\"twitter_feed_container\">Loading Twitter Feed....</div>";
 	}
