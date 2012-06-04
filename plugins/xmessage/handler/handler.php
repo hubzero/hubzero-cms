@@ -261,7 +261,7 @@ class plgXMessageHandler extends JPlugin
 					continue;
 				}
 
-				if ($mconfig->get('user_messaging', 1) == 1)
+				if ($mconfig->get('user_messaging', 1) == 1 && $type == 'member_message')
 				{
 					$pgroups = $user->getGroups('all');
 					$profilesgroups = array();
@@ -314,7 +314,7 @@ class plgXMessageHandler extends JPlugin
 					if (!$methods || count($methods) <= 0) 
 					{
 						// Load the default method
-						$p = JPluginHelper::getPlugin('members','messages');
+						$p = JPluginHelper::getPlugin('members', 'messages');
 						$paramClass = 'JParameter';
 						if (version_compare(JVERSION, '1.6', 'ge'))
 						{
