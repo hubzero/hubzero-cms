@@ -120,7 +120,10 @@ class plgXMessageEmail extends JPlugin
 		$headers .= "X-MSMail-Priority: High\n";
 		$headers .= "X-Mailer: " . $from['name'] . "\n";
 
-		$fullEmailAddress = $user->get('name') . " <" . $user->get('email') . ">";
+		if( strpos($user->get('name'), ',') )
+			$fullEmailAddress = "\"" . $user->get('name') . "\" <" . $user->get('email') . ">";
+		else
+			$fullEmailAddress = $user->get('name') . " <" . $user->get('email') . ">";
 
 		// Want to add some extra headers? We put them into the from array 
 		// If none are there, this breaks nothing
