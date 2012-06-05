@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
 @package        hubzero-cms
-@file           components/com_kb/views/vote/tmpl/default.xml
+@file           components/com_kb/views/article/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,15 +27,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Vote Layout">
+	<layout title="Article">
 		<message>
-			<![CDATA[STANDARD VOTE LAYOUT DESC]]>
+			<![CDATA[Article]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Vote Layout</name>
-		<description>STANDARD VOTE LAYOUT DESC</description>
+		<name>Article</name>
+		<description>Article</description>
 		<params>
 		</params>
 	</state>
 </metadata>
+

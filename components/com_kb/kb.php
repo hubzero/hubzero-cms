@@ -29,27 +29,41 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
+}
+
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
 }
 
 jimport('joomla.application.component.helper');
 ximport('Hubzero_View_Helper_Html');
 
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'tags.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'comment.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'article.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'category.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'vote.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'comment.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'article.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'vote.php');
+
+$controllerName = JRequest::getCmd('controller', 'articles');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'articles';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'KbController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
-$controller = new KbController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

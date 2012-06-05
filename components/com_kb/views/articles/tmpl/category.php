@@ -29,14 +29,24 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="main-page" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('&larr; Main page'); ?></a>
+		<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
 	</p>
 </div>
 <div class="main section">
@@ -45,40 +55,40 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 	<div class="aside">
 		<div class="container">
-			<h3>Categories<span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('Categories'); ?><span class="starter-point"></span></h3>
 			<ul class="categories">
+				<li>
+					<a<?php if ($this->catid == 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
+						<?php echo JText::_('All Articles'); ?>
+					</a>
+				</li>
 <?php
-		$cls = '';
-		if ($this->catid == 0) 
-		{
-			$cls = ' class="active"';
-		}
-		$html = "\t".'<li><a'.$cls.' href="'.JRoute::_('index.php?option='.$this->option.'&section=all').'">'.JText::_('All Articles').'</a></li>'."\n";
+		$html = '';
 		if (count($this->categories) > 0) 
 		{
 			foreach ($this->categories as $row)
 			{
-				$html .= "\t".'<li><a ';
+				$html .= "\t" . '<li><a ';
 				if ($this->catid == $row->id) 
 				{
 					$html .= ' class="active"';
 				}
-				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.$this->escape(stripslashes($row->title)).' ('.$row->numitems.')</a>'."\n";
+				$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias) . '">' . $this->escape(stripslashes($row->title)) . ' (' . $row->numitems . ')</a>' . "\n";
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
 				{
-					$html .= "\t".'<ul class="categories">'."\n";
+					$html .= "\t" . '<ul class="categories">' . "\n";
 					foreach ($this->subcategories as $cat)
 					{
-						$html .= "\t\t".'<li><a ';
+						$html .= "\t\t" . '<li><a ';
 						if ($this->filters['category'] == $cat->id) 
 						{
 							$html .= ' class="active"';
 						}
-						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$row->alias.'&category='. $cat->alias) .'">'. $this->escape(stripslashes($cat->title)) .' ('.$cat->numitems.')</a></li>'."\n";
+						$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias . '&category=' . $cat->alias) . '">' . $this->escape(stripslashes($cat->title)) . ' (' . $cat->numitems . ')</a></li>' . "\n";
 					}
-					$html .= "\t".'</ul>'."\n";
+					$html .= "\t" . '</ul>' . "\n";
 				}
-				$html .= '</li>'."\n";
+				$html .= '</li>' . "\n";
 			}
 		}
 		echo $html;
@@ -87,22 +97,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .container -->
 	</div><!-- / .aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->category->alias); ?>" method="post">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias); ?>" method="post">
 		
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
-					<input type="text" name="search" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
-					<input type="hidden" name="order" value="<?php echo htmlentities($this->filters['order']); ?>" />
-					<input type="hidden" name="section" value="<?php echo $this->category->alias; ?>" />
+					<input type="text" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="order" value="<?php echo $this->escape($this->filters['order']); ?>" />
+					<input type="hidden" name="section" value="<?php echo $this->escape($this->category->alias); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
 			<div class="container">
 				<ul class="entries-menu">
-					<li><a<?php echo ($this->filters['order'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->category->alias.'&order=popularity'); ?>" title="Sort by most liked to least liked">&darr; Popular</a></li>
-					<li><a<?php echo ($this->filters['order'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->category->alias.'&order=recent'); ?>" title="Sort by newest to oldest">&darr; Recent</a></li>
+					<li>
+						<a<?php echo ($this->filters['order'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias.'&order=popularity'); ?>" title="Sort by most liked to least liked">
+							&darr; Popular
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['order'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias.'&order=recent'); ?>" title="Sort by newest to oldest">
+							&darr; Recent
+						</a>
+					</li>
 				</ul>
 	
 				<table class="articles entries" summary="Articles">
@@ -114,11 +132,11 @@ $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($th
 <?php
 if ($this->filters['search'] != '') 
 {
-	echo 'Search for "'.$this->filters['search'].'" in ';
+	echo 'Search for "' . $this->filters['search'] . '" in ';
 }
 ?>
 						<?php echo stripslashes($this->category->title); ?> 
-						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
+						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
 					</caption>
 					<tbody>
 <?php
@@ -126,25 +144,28 @@ if (count($this->articles) > 0)
 {
 	foreach ($this->articles as $row)
 	{
-		$link  = 'index.php?option='.$this->option.'&section='.$row->calias;
-		$link .= ($row->ccalias) ? '&category='.$row->ccalias : '';
-		$link .= ($row->alias) ? '&alias='. $row->alias : '&alias='. $row->id;
+		$link  = 'index.php?option=' . $this->option . '&section=' . $row->calias;
+		$link .= ($row->ccalias) ? '&category= '. $row->ccalias : '';
+		$link .= ($row->alias)   ? '&alias=' . $row->alias      : '&alias=' . $row->id;
 ?>
 						<tr>
 							<th>
 								<span class="entry-id"><?php echo $row->id; ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_($link); ?>"><?php echo stripslashes($row->title); ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_($link); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a><br />
 								<span class="entry-details">
 									Last updated @ 
-									<span class="entry-time"><?php echo JHTML::_('date',$row->modified, '%I:%M %p', 0); ?></span> on 
-									<span class="entry-date"><?php echo JHTML::_('date',$row->modified, '%d %b %Y', 0); ?></span>
+									<span class="entry-time"><?php echo JHTML::_('date', $row->modified, $timeformat, $tz); ?></span> on 
+									<span class="entry-date"><?php echo JHTML::_('date', $row->modified, $dateformat, $tz); ?></span>
 								</span>
 							</td>
 							<td class="voting">
 <?php
-								$view = new JView(array('name'=>'vote'));
+								$view = new JView(array(
+									'name' => $this->controller,
+									'layout' => 'vote'
+								));
 								$view->option = $this->option;
 								$view->item = $row;
 								$view->type = 'entry';
@@ -170,9 +191,9 @@ if (count($this->articles) > 0)
 				</table>
 				<?php 
 				$pagenavhtml = $this->pageNav->getListFooter();
-				$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
-				$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
-				$pagenavhtml = str_replace('/kb/?','/kb/'.$this->category->alias.'/?',$pagenavhtml);
+				$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
+				$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
+				$pagenavhtml = str_replace('/kb/?', '/kb/' . $this->category->alias . '/?', $pagenavhtml);
 				echo $pagenavhtml;
 				?>
 				<div class="clearfix"></div>

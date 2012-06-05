@@ -29,14 +29,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div>
 <div class="main section">
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 <?php } ?>
 	<div class="aside">
 		<div class="container">
@@ -59,14 +59,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .container -->
 	</div><!-- / .aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&section=all'); ?>" method="post">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<legend>Search for articles</legend>
 					<label for="entry-search-field">Enter keyword or phrase</label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
-					<input type="hidden" name="order" value="<?php echo htmlentities($this->filters['order']); ?>" />
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="order" value="<?php echo $this->escape($this->filters['order']); ?>" />
 					<input type="hidden" name="section" value="all" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
@@ -76,18 +76,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<div class="container-block">
 					<h3>Articles</h3>
 					<div class="two columns first">
-						<h4><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=article&section=all&order=popularity'); ?>"><?php echo JText::_('Most Popular Articles'); ?> <span class="more">&raquo;</span></a></h4>
+						<h4><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>"><?php echo JText::_('Most Popular Articles'); ?> <span class="more">&raquo;</span></a></h4>
 						<?php
 						if (count($this->articles['top']) > 0) {
 							$html  = "\t".'<ul class="articles">'."\n";
 							foreach ($this->articles['top'] as $row)
 							{
 								if (!empty($row->alias)) {
-									$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
+									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
 								} else {
-									$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
+									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
 								}
-								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('READ_ARTICLE').'">'.stripslashes($row->title).'</a></li>'."\n";
+								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
 							}
 							$html .= "\t".'</ul>'."\n";
 						} else {
@@ -97,18 +97,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 						?>
 					</div><!-- / .two columns first -->
 					<div class="two columns second">
-						<h4><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=article&section=all&order=recent'); ?>"><?php echo JText::_('Most Recent Articles'); ?> <span class="more">&raquo;</span></a></h4>
+						<h4><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>"><?php echo JText::_('Most Recent Articles'); ?> <span class="more">&raquo;</span></a></h4>
 						<?php
 						if (count($this->articles['new']) > 0) {
 							$html  = "\t".'<ul class="articles">'."\n";
 							foreach ($this->articles['new'] as $row)
 							{
 								if (!empty($row->alias)) {
-									$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
+									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
 								} else {
-									$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
+									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
 								}
-								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('READ_ARTICLE').'">'.stripslashes($row->title).'</a></li>'."\n";
+								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
 							}
 							$html .= "\t".'</ul>'."\n";
 						} else {
@@ -125,7 +125,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html = '';
 		if (count($this->categories) > 0) {
 			// Get the list of articles for this category
-			$kba = new KbArticle( $this->database );
+			$kba = new KbArticle($this->database);
 
 			$filters = array();
 			$filters['limit'] = JRequest::getInt('limit', 3);
@@ -146,7 +146,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 
 				$html .= "\t\t".'<div class="two columns '.$cls.'">'."\n";
-				$html .= "\t\t\t".'<h4><a href="'.JRoute::_('index.php?option='.$this->option.'&section='. $row->alias) .'">'. stripslashes($row->title) .' <span>('.$row->numitems.')</span> <span class="more">&raquo;</span></a></h4>'."\n";
+				$html .= "\t\t\t".'<h4><a href="'.JRoute::_('index.php?option=' . $this->option . '&section='. $row->alias) .'">'. $this->escape(stripslashes($row->title)) .' <span>('.$row->numitems.')</span> <span class="more">&raquo;</span></a></h4>'."\n";
 				/*if ($row->description) {
 					$html .= '<p>'.Hubzero_View_Helper_Html::shortenText($row->description, 100, 0).'</p>'."\n";
 				}*/
@@ -159,15 +159,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 					foreach ($articles as $article)
 					{
 						if (!empty($article->alias)) {
-							$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$article->calias.'&category='.$article->ccalias.'&alias='.$article->alias);
+							$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$article->calias.'&category='.$article->ccalias.'&alias='.$article->alias);
 						} else {
-							$link_on = JRoute::_('index.php?option='.$this->option.'&task=article&section='.$article->calias.'&category='.$article->ccalias.'&id='.$article->id);
+							$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$article->calias.'&category='.$article->ccalias.'&id='.$article->id);
 						}
-						$html .= "\t\t".'<li><a href="'. $link_on .'">'.stripslashes($article->title).'</a></li>'."\n";
+						$html .= "\t\t".'<li><a href="'. $link_on .'">'. $this->escape(stripslashes($article->title)) . '</a></li>'."\n";
 					}
 					$html .= "\t".'</ul>'."\n";
 					/*if ($row->numitems > $filters['limit']) {
-						$html .= '<p class="more-entries"><a href="'.JRoute::_('index.php?option='.$this->option.'&section='. $row->alias) .'">More<span> articles in '. stripslashes($row->title) .'</span> &raquo;</a></p>'."\n";
+						$html .= '<p class="more-entries"><a href="'.JRoute::_('index.php?option=' . $this->option . '&section='. $row->alias) .'">More<span> articles in '. stripslashes($row->title) .'</span> &raquo;</a></p>'."\n";
 					}*/
 				} else {
 					$html .= "\t".'<p>'.JText::_('No articles found.').'</p>'."\n";

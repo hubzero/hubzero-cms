@@ -29,82 +29,99 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$yearFormat  = "%Y";
+$monthFormat = "%m";
+$dayFormat   = "%d";
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$yearFormat  = "Y";
+	$monthFormat = "m";
+	$dayFormat   = "d";
+	$tz = true;
+}
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="main-page" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('&larr; Main page'); ?></a>
+		<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
 	</p>
 </div>
 <div class="main section">
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 <?php } ?>
 	<div class="aside">
 		<div class="container">
 			<h3><?php echo JText::_('Categories'); ?></h3>
+			<ul class="categories">
+				<li>
+					<a<?php if ($this->catid == 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
+						<?php echo JText::_('All Articles'); ?>
+					</a>
+				</li>
 <?php
-		$html = '<ul class="categories">'."\n";
-		if ($this->catid == 0) {
-			$cls = ' class="active"';
-		} else {
-			$cls = '';
-		}
-		$html .= "\t".'<li><a'.$cls.' href="'.JRoute::_('index.php?option='.$this->option.'&section=all').'">'.JText::_('All Articles').'</a></li>'."\n";
-		if (count($this->categories) > 0) {
+		if (count($this->categories) > 0) 
+		{
+			$html = '';
 			foreach ($this->categories as $row)
 			{
-				$html .= "\t".'<li><a ';
+				$html .= "\t" . '<li><a ';
 				if ($this->catid == $row->id) {
 					$html .= ' class="active"';
 				}
-				$html .= 'href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.$this->escape(stripslashes($row->title)).'</a>';
-				if (count($this->subcategories) > 0 && $this->catid == $row->id) {
-					//$html .= '<h4>'.JText::_('SUBCATEGORIES').'</h4>'."\n";
-					$html .= "\t".'<ul class="categories">'."\n";
+				$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias) . '">' . $this->escape(stripslashes($row->title)) . ' (' . $row->numitems . ')</a>';
+				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
+				{
+					$html .= "\t" . '<ul class="categories">' . "\n";
 					foreach ($this->subcategories as $cat)
 					{
-						$html .= "\t\t".'<li><a ';
-						if ($this->article->category == $cat->id) {
+						$html .= "\t\t" . '<li><a ';
+						if ($this->article->category == $cat->id) 
+						{
 							$html .= ' class="active"';
 						}
-						$html .= 'href="'. JRoute::_('index.php?option='.$this->option.'&section='.$this->category->alias.'&category='. $cat->alias) .'">'. $this->escape(stripslashes($cat->title)) .' ('.$cat->numitems.')</a></li>'."\n";
+						$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias . '&category=' . $cat->alias) . '">' . $this->escape(stripslashes($cat->title)) . ' (' . $cat->numitems . ')</a></li>' . "\n";
 					}
-					$html .= "\t".'</ul>'."\n";
+					$html .= "\t" . '</ul>' . "\n";
 				}
-				$html .= '</li>'."\n";
+				$html .= '</li>' . "\n";
 			}
 		}
-		$html .= '</ul>'."\n";
 
 		echo $html;
 ?>
+			</ul>
 		</div><!-- / .container -->
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="container" id="entry-<?php echo $this->article->id; ?>">
 			<div class="container-block">
-				<h3><?php echo stripslashes($this->article->title); ?></h3>
+				<h3><?php echo $this->escape(stripslashes($this->article->title)); ?></h3>
 				<div class="entry-content">
-					<?php echo stripslashes( $this->article->fulltext ); ?>
+					<?php echo stripslashes($this->article->fulltext); ?>
 				</div>
 <?php 
 		if (count($this->tags) > 0) {
 ?>
 				<div class="entry-tags">
-					<p>Tags:</p>			
+					<p>Tags:</p>
 					<ol class="tags">
 <?php
 					foreach ($this->tags as $tag)
 					{
-						$tag['raw_tag'] = str_replace( '&amp;', '&', $tag['raw_tag'] );
-						$tag['raw_tag'] = str_replace( '&', '&amp;', $tag['raw_tag'] );
+						$tag['raw_tag'] = str_replace('&amp;', '&', $tag['raw_tag']);
+						$tag['raw_tag'] = str_replace('&', '&amp;', $tag['raw_tag']);
 
-						echo "\t\t\t\t\t\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$tag['raw_tag'].'</a></li>'."\n";
+						echo "\t\t\t\t\t\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$this->escape(stripslashes($tag['raw_tag'])).'</a></li>'."\n";
 					}
 ?>
 					</ol>
@@ -114,7 +131,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>			
 				<p class="voting">
 <?php 
-	$view = new JView( array('name'=>'vote') );
+	$view = new JView(array(
+		'name' => $this->controller,
+		'layout' => 'vote'
+	));
 	$view->option = $this->option;
 	$view->item = $this->article;
 	$view->type = 'entry';
@@ -126,46 +146,46 @@ defined('_JEXEC') or die( 'Restricted access' );
 			
 				<p class="entry-details">
 					Last updated @ 
-					<span class="entry-time"><?php echo JHTML::_('date',$this->article->modified, '%I:%M %p', 0); ?></span> on 
-					<span class="entry-date"><?php echo JHTML::_('date',$this->article->modified, '%d %b %Y', 0); ?></span>
+					<span class="entry-time"><?php echo JHTML::_('date', $this->article->modified, $timeformat, $tz); ?></span> on 
+					<span class="entry-date"><?php echo JHTML::_('date', $this->article->modified, $dateformat, $tz); ?></span>
 				</p>
 				
 				<div class="clearfix"></div>
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
+</div><!-- / .main section -->
 <?php 
 if ($this->config->get('allow_comments')) {
 	$d = ($this->article->modified) ? $this->article->modified : $this->article->created;
-	$year = intval(substr($d,0,4));
-	$month = intval(substr($d,5,2));
-	$day = intval(substr($d,8,2));
+	$year  = intval(substr($d, 0, 4));
+	$month = intval(substr($d, 5, 2));
+	$day   = intval(substr($d, 8, 2));
 
-	switch ($this->config->get('close_comments'))
+	switch ($this->params->get('comments_close', 'never'))
 	{
 		case 'day':
-			$dt = mktime(0,0,0,$month,($day+1),$year);
+			$dt = mktime(0, 0, 0, $month, ($day+1), $year);
 		break;
 		case 'week':
-			$dt = mktime(0,0,0,$month,($day+7),$year);
+			$dt = mktime(0, 0, 0, $month, ($day+7), $year);
 		break;
 		case 'month':
-			$dt = mktime(0,0,0,($month+1),$day,$year);
+			$dt = mktime(0, 0, 0, ($month+1), $day, $year);
 		break;
 		case '6months':
-			$dt = mktime(0,0,0,($month+6),$day,$year);
+			$dt = mktime(0, 0, 0, ($month+6), $day, $year);
 		break;
 		case 'year':
-			$dt = mktime(0,0,0,$month,$day,($year+1));
+			$dt = mktime(0, 0, 0, $month, $day, ($year+1));
 		break;
 		case 'never':
 		default:
-			$dt =mktime(0,0,0,$month,$day,$year);
+			$dt =mktime(0, 0, 0, $month, $day, $year);
 		break;
 	}
 
-	$pdt = strftime("%Y", $dt ).'-'.strftime("%m", $dt ).'-'.strftime("%d", $dt ).' 00:00:00';
-
-	$today = date( 'Y-m-d H:i:s', time() );
+	$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
+	$today = date('Y-m-d H:i:s', time());
 ?>		
 <div class="below">
 	<h3 class="comments-title">
@@ -175,14 +195,12 @@ if ($this->config->get('allow_comments')) {
 if ($this->config->get('feeds_enabled')) {
 	if ($this->comment_total > 0) {
 		$feed = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'/comments.rss');
-		if (substr($feed, 0, 4) != 'http') {
-			if (substr($feed, 0, 1) != DS) {
-				$feed = DS.$feed;
-			}
+		if (substr($feed, 0, 4) != 'http') 
+		{
 			$jconfig =& JFactory::getConfig();
-			$feed = $jconfig->getValue('config.live_site').$feed;
+			$feed = $jconfig->getValue('config.live_site') . DS . ltrim($feed, DS);
 		}
-		$feed = str_replace('https:://','http://',$feed);
+		$feed = str_replace('https://', 'http://', $feed);
 ?>
 		<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('Comments Feed'); ?>"><?php echo JText::_('Comments Feed'); ?></a>
 <?php 
@@ -220,11 +238,11 @@ if ($this->comments) {
 
 		$name = JText::_('COM_KB_ANONYMOUS');
 		if (!$comment->anonymous) {
-			//$xuser =& JUser::getInstance( $comment->created_by );
+			//$xuser =& JUser::getInstance($comment->created_by);
 			$xuser = new Hubzero_User_Profile();
-			$xuser->load( $comment->created_by );
+			$xuser->load($comment->created_by);
 			if (is_object($xuser) && $xuser->get('name')) {
-				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 			}
 		}
 
@@ -245,7 +263,10 @@ if ($this->comments) {
 			<div class="comment-content">
 				<p class="voting">
 <?php
-						$view = new JView( array('name'=>'vote') );
+						$view = new JView(array(
+							'name' => $this->controller,
+							'layout' => 'vote'
+						));
 						$view->option = $this->option;
 						$view->item = $comment;
 						$view->type = 'comment';
@@ -256,7 +277,9 @@ if ($this->comments) {
 				</p><!-- / .voting -->
 				<p class="comment-title">
 					<strong><?php echo $name; ?></strong> 
-					<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$comment->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$comment->created, '%d %b, %Y', 0); ?></span></a>
+					<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">
+						@ <span class="time"><?php echo JHTML::_('date', $comment->created, $timeformat, $tz); ?></span> 
+						on <span class="date"><?php echo JHTML::_('date', $comment->created, $dateformat, $tz); ?></span></a>
 				</p>
 				<?php echo $content; ?>
 <?php 		if (!$comment->reports) { ?>
@@ -291,11 +314,11 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 
 				$name = JText::_('COM_KB_ANONYMOUS');
 				if (!$reply->anonymous) {
-					//$xuser =& JUser::getInstance( $reply->created_by );
+					//$xuser =& JUser::getInstance($reply->created_by);
 					$xuser = new Hubzero_User_Profile();
-					$xuser->load( $reply->created_by );
+					$xuser->load($reply->created_by);
 					if (is_object($xuser) && $xuser->get('name')) {
-						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 					}
 				}
 
@@ -316,7 +339,10 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 					<div class="comment-content">
 						<p class="voting">
 <?php
-							$view = new JView( array('name'=>'vote') );
+							$view = new JView(array(
+								'name' => $this->controller,
+								'layout' => 'vote'
+							));
 							$view->option = $this->option;
 							$view->item = $reply;
 							$view->type = 'comment';
@@ -327,7 +353,10 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						</p><!-- / .voting -->
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$reply->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$reply->created, '%d %b, %Y', 0); ?></span></a>
+							<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">
+								@ <span class="time"><?php echo JHTML::_('date', $reply->created, $timeformat, $tz); ?></span> 
+								on <span class="date"><?php echo JHTML::_('date', $reply->created, $dateformat, $tz); ?></span>
+							</a>
 						</p>
 						<?php echo $content; ?>
 <?php 				if (!$reply->reports) { ?>
@@ -354,11 +383,11 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 
 						$name = JText::_('COM_KB_ANONYMOUS');
 						if (!$response->anonymous) {
-							//$xuser =& JUser::getInstance( $reply->created_by );
+							//$xuser =& JUser::getInstance($reply->created_by);
 							$xuser = new Hubzero_User_Profile();
-							$xuser->load( $response->created_by );
+							$xuser->load($response->created_by);
 							if (is_object($xuser) && $xuser->get('name')) {
-								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 							}
 						}
 
@@ -379,7 +408,10 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 							<div class="comment-content">
 								<p class="voting">
 <?php
-									$view = new JView( array('name'=>'vote') );
+									$view = new JView(array(
+										'name' => $this->controller,
+										'layout' => 'vote'
+									));
 									$view->option = $this->option;
 									$view->item = $response;
 									$view->type = 'comment';
@@ -390,7 +422,10 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 								</p><!-- / .voting -->
 								<p class="comment-title">
 									<strong><?php echo $name; ?></strong> 
-									<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$response->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$response->created, '%d %b, %Y', 0); ?></span></a>
+									<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">
+										@ <span class="time"><?php echo JHTML::_('date', $response->created, $timeformat, $tz); ?></span> 
+										on <span class="date"><?php echo JHTML::_('date', $response->created, $dateformat, $tz); ?></span>
+									</a>
 								</p>
 								<?php echo $content; ?>
 <?php 					if (!$response->reports) { ?>
@@ -477,10 +512,10 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 <?php
 				if (!$this->juser->get('guest')) {
 					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load( $this->juser->get('id') );
+					$jxuser->load($this->juser->get('id'));
 					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 				} else {
-					$config =& JComponentHelper::getParams( 'com_members' );
+					$config =& JComponentHelper::getParams('com_members');
 					$thumb = $config->get('defaultpic');
 					if (substr($thumb, 0, 1) != DS) {
 						$thumb = DS.$dfthumb;
@@ -497,9 +532,9 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 					ximport('Hubzero_View_Helper_Html');
 					$name = JText::_('COM_KB_ANONYMOUS');
 					if (!$this->replyto->anonymous) {
-						//$xuser =& JUser::getInstance( $reply->created_by );
+						//$xuser =& JUser::getInstance($reply->created_by);
 						$xuser = new Hubzero_User_Profile();
-						$xuser->load( $this->replyto->created_by );
+						$xuser->load($this->replyto->created_by);
 						if (is_object($xuser) && $xuser->get('name')) {
 							$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 						}
@@ -508,7 +543,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				<blockquote cite="c<?php echo $this->replyto->id ?>">
 					<p>
 						<strong><?php echo $name; ?></strong> 
-						@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, '%d %b, %Y', 0); ?></span>
+						@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, $timeformat, $tz); ?></span> 
+						on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, $dateformat, $tz); ?></span>
 					</p>
 					<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
 				</blockquote>

@@ -36,7 +36,7 @@ ximport('Hubzero_Controller');
 /**
  * Knowledge Base controller
  */
-class KbController extends Hubzero_Controller
+class KbControllerArticles extends Hubzero_Controller
 {
 	/**
 	 * Displays an overview of categories and articles in the knowledge base
@@ -45,6 +45,8 @@ class KbController extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		$this->view->setLayout('display');
+
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
@@ -70,7 +72,7 @@ class KbController extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Add any JS to the template
-		$this->_getScripts();
+		$this->_getScripts('assets/js/kb');
 
 		// Set the pathway
 		$this->_buildPathway(null, null, null);
@@ -80,17 +82,20 @@ class KbController extends Hubzero_Controller
 
 		// Output HTML
 		$this->view->database = $this->database;
-		$this->view->title  = JText::_('COM_KB');
-		$this->view->catid  = 0;
-		$this->view->config = $this->config;
+		$this->view->title    = JText::_('COM_KB');
+		$this->view->catid    = 0;
+		$this->view->config   = $this->config;
 
-		$this->view->show_answers_tip = JComponentHelper::isEnabled('com_answers');
+		$this->view->show_answers_tip  = JComponentHelper::isEnabled('com_answers');
 		$this->view->show_wishlist_tip = JComponentHelper::isEnabled('com_wishlist');
-		$this->view->show_ticket_tip = JComponentHelper::isEnabled('com_support');
+		$this->view->show_ticket_tip   = JComponentHelper::isEnabled('com_support');
 
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		$this->view->display();
@@ -103,10 +108,11 @@ class KbController extends Hubzero_Controller
 	 */
 	public function categoryTask()
 	{
+		$this->view->setLayout('category');
+
 		// Make sure we have an ID
 		if (!($alias = JRequest::getVar('alias', ''))) 
 		{
-			$this->view->_name = 'display';
 			$this->displayTask();
 			return;
 		}
@@ -120,8 +126,8 @@ class KbController extends Hubzero_Controller
 		if ($alias == 'all') 
 		{
 			$this->view->category->alias = 'all';
-			$this->view->category->title = 'All Articles';
-			$this->view->category->id = 0;
+			$this->view->category->title = JText::_('All Articles');
+			$this->view->category->id    = 0;
 			$this->view->category->state = 1;
 		} 
 		else 
@@ -139,7 +145,7 @@ class KbController extends Hubzero_Controller
 				$sect = $this->view->category->id;
 			}
 		}
-		
+
 		if (!$this->view->category->state) 
 		{
 			JError::raiseError(404, JText::_('COM_KB_ERROR_CATEGORY_NOT_FOUND'));
@@ -153,6 +159,10 @@ class KbController extends Hubzero_Controller
 		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
 		$this->view->filters['order']    = JRequest::getWord('order', 'recent');
+		if (!in_array($this->view->filters['order'], array('recent', 'popularity')))
+		{
+			$this->view->filters['order'] = 'recent';
+		}
 		$this->view->filters['section']  = $sect;
 		$this->view->filters['category'] = $cat;
 		$this->view->filters['search']   = JRequest::getVar('search','');
@@ -189,7 +199,7 @@ class KbController extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Add any JS to the template
-		$this->_getScripts();
+		$this->_getScripts('assets/js/kb');
 
 		// Set the pathway
 		$this->_buildPathway($this->view->section, $this->view->category, null);
@@ -204,7 +214,10 @@ class KbController extends Hubzero_Controller
 		$this->view->juser  = $this->juser;
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}
@@ -216,7 +229,7 @@ class KbController extends Hubzero_Controller
 	 */
 	public function articleTask()
 	{
-		$this->setView('article');
+		$this->view->setLayout('article');
 
 		// Incoming
 		$alias = JRequest::getVar('alias', '');
@@ -245,8 +258,6 @@ class KbController extends Hubzero_Controller
 			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
 			return;
 		}
-
-		//$this->view->article->hit($this->view->article->id);
 
 		// Is the user logged in?
 		if (!$this->juser->get('guest')) 
@@ -336,7 +347,7 @@ class KbController extends Hubzero_Controller
 			$paramClass = 'JRegistry';
 		}
 		$rparams = new $paramClass($this->view->article->params);
-		
+
 		$this->view->config = $this->config;
 		$this->view->config->merge($rparams);
 
@@ -344,7 +355,7 @@ class KbController extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Add any JS to the template
-		$this->_getScripts();
+		$this->_getScripts('assets/js/kb');
 
 		// Set the pathway
 		$this->_buildPathway($this->view->section, $this->view->category, $this->view->article);
@@ -353,14 +364,16 @@ class KbController extends Hubzero_Controller
 		$this->_buildTitle($this->view->section, $this->view->category, $this->view->article);
 
 		// Output HTML
-		//$this->view->option = $this->_option;
 		$this->view->title   = JText::_('COM_KB');
 		$this->view->juser   = $this->juser;
 		$this->view->helpful = $this->helpful;
 		$this->view->catid   = $this->view->section->id;
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}
@@ -466,10 +479,10 @@ class KbController extends Hubzero_Controller
 
 		// Incoming
 		$no_html = JRequest::getInt('no_html', 0);
-		$type = JRequest::getVar('type', '');
-		$id = JRequest::getVar('id', '');
-		$vote = strtolower(JRequest::getVar('vote', ''));
-		
+		$type    = JRequest::getVar('type', '');
+		$id      = JRequest::getVar('id', '');
+		$vote    = strtolower(JRequest::getVar('vote', ''));
+
 		ximport('Hubzero_Environment');
 		$ip = Hubzero_Environment::ipAddress();
 
@@ -536,13 +549,14 @@ class KbController extends Hubzero_Controller
 		}
 
 		// Record user's vote
-		$params = array();
-		$params['id'] = NULL;
-		$params['object_id'] = $row->id;
-		$params['ip'] = $ip;
-		$params['vote'] = $vote;
-		$params['user_id'] = $this->juser->get('id');
-		$params['type'] = $type;
+		$params = array(
+			'id'        => null,
+			'object_id' => $row->id,
+			'ip'        => $ip,
+			'vote'      => $vote,
+			'user_id'   => $this->juser->get('id'),
+			'type'      => $type
+		);
 
 		$h->bind($params);
 		if (!$h->check()) 
@@ -589,8 +603,10 @@ class KbController extends Hubzero_Controller
 		// Ensure the user is logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->setError(JText::_('COM_KB_LOGIN_NOTICE'));
-			$this->loginTask();
+			$return = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+			);
 			return;
 		}
 
@@ -627,9 +643,10 @@ class KbController extends Hubzero_Controller
 			$this->articleTask();
 			return;
 		}
-		
-		//$this->articleTask();
-		$this->_redirect = 'index.php?option=com_kb&task=article&id='.$comment['entry_id'].'#comments';
+
+		$this->setRedirect(
+			'index.php?option=com_kb&task=article&id=' . $comment['entry_id'] . '#comments'
+		);
 	}
 
 	/**
