@@ -5,6 +5,22 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+if (!String.prototype.trim) {
+	String.prototype.trim = function() {
+		return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+	};
+}
+if (!String.prototype.ltrim) {
+	String.prototype.ltrim = function() {
+		return this.replace(/^\s+/,'');
+	};
+}
+if (!String.prototype.rtrim) {
+	String.prototype.rtrim = function() {
+		return this.replace(/\s+$/,'');
+	};
+}
+
 var WYKIWYG = {};
 
 function T$(i) {
@@ -21,7 +37,9 @@ WYKIWYG.converter = function() {
 			count: 0,
 			cursor: 0
 		};
-		
+
+		var htmlblocks = [];
+
 		var ELEMENTS = [
 			{
 				patterns: 'p',
@@ -38,26 +56,30 @@ WYKIWYG.converter = function() {
 				}
 			},
 			{
-				patterns: 'div',
-				replacement: function(str, attrs, innerHTML) {
+				patterns: 'div([1-6])',
+				replacement: function(str, dlevel, attrs, innerHTML) {
 					var style = attrs.match(attrRegExp('style')),
 						id = attrs.match(attrRegExp('id')),
 						cls = attrs.match(attrRegExp('class')),
 						replace = '';
-					
+
 					if (innerHTML == '<!-- columns -->') {
 						return replace;
 					}
-					
+
 					innerHTML = innerHTML.replace(/^\n\n/, '\n');
-					
+
 					if (cls && cls[1].indexOf('columns') == -1) {
+						if (cls[1] == 'html') {
+							htmlblocks.push('{{{\n#!html\n' + innerHTML.rtrim() + '\n}}}\n');
+							return '#!HTML' + (htmlblocks.length - 1);
+						}
 						replace += innerHTML ? '\n\n' + '[[Div(start' + (style && style[1] ? ', style=' + style[1] : '' ) + (cls && cls[1] ? ', class=' + cls[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' + innerHTML + '[[Div(end)]]' : '';
 					} else if (cls && cls[1]) {
 						columns.cursor++;
-						
+
 						var num = cls[1].match(/two|three|four|five|six/gi);
-						
+
 						cls[1] = cls[1].replace(/columns/, '') // remove columns declaration
 										.replace(/first|second|third|fourth|fifth|sixth/, '') // remove column count
 										.replace(/two|three|four|five|six/, '') // remove coulmn number declaration
@@ -72,7 +94,7 @@ WYKIWYG.converter = function() {
 							case '': 
 							default: break;
 						}
-						
+
 						if (columns.cursor == 1) {
 							replace += '[[Column('+columns.count+')]]\n';
 						} else if (columns.cursor == columns.count) {
@@ -81,7 +103,7 @@ WYKIWYG.converter = function() {
 						}
 						replace += innerHTML ? '\n' + '[[Column(start' + (style && style[1] ? ', style=' + style[1] : '' ) + (cls && cls[1] ? ', class=' + cls[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' + innerHTML + '[[Column(end)]]\n' : '';
 					}
-					
+
 					return replace;
 				}
 			},
@@ -186,13 +208,51 @@ WYKIWYG.converter = function() {
 		string = string.replace(/\&nbsp;/ig, ' ');
 		string = string.replace(/<div><br><\/div>/ig, '\n');
 
+		// THandle nested DIVs
+		string = countDivs(string);
+
+		function countDivs(text) {
+			var j = 0;
+
+			lines = text.split('\n');
+
+			for (var i = 0, len = lines.length; i < len; i++) 
+			{
+				lines[i] = lines[i].replace(/(<div\b([^>]*)>)/g,
+					function(wholeMatch, m1, m2) {
+						j++;
+						if (j == 1) {
+							//wholeMatch += j;
+							wholeMatch = '<div1 ' + m2 + '>';
+						}
+						return wholeMatch;
+					}
+				);
+
+				lines[i] = lines[i].replace(/(<\/div>)/g,
+					function(wholeMatch) {
+						if (j == 1) {
+							//wholeMatch = j + wholeMatch;
+							wholeMatch = '</div1>';
+						}
+						j--;
+						return wholeMatch;
+					}
+				);
+			}
+
+			text = lines.join('\n');
+
+			return text;
+		}
+
 		for (var i = 0, len = ELEMENTS.length; i < len; i++) {
 			if (typeof ELEMENTS[i].patterns === 'string') {
-				string = replaceEls(string, { tag: ELEMENTS[i].patterns, replacement: ELEMENTS[i].replacement, type:	ELEMENTS[i].type });
+				string = replaceEls(string, { tag: ELEMENTS[i].patterns, replacement: ELEMENTS[i].replacement, type: ELEMENTS[i].type });
 			}
 			else {
 				for (var j = 0, pLen = ELEMENTS[i].patterns.length; j < pLen; j++) {
-					string = replaceEls(string, { tag: ELEMENTS[i].patterns[j], replacement: ELEMENTS[i].replacement, type:	ELEMENTS[i].type });
+					string = replaceEls(string, { tag: ELEMENTS[i].patterns[j], replacement: ELEMENTS[i].replacement, type: ELEMENTS[i].type });
 				}
 			}
 		}
@@ -217,9 +277,9 @@ WYKIWYG.converter = function() {
 		}
 
 		// Pre code blocks
-		string = string.replace(/<pre\b[^>]*>([\s\S]*)<\/pre>/gi, function(str, innerHTML) {
+		string = string.replace(/<pre\b[^>]*>([\s\S]*?)<\/pre>/gi, function(str, innerHTML) {
 			innerHTML = innerHTML.replace(/^\t+/g, '	'); // convert tabs to spaces (you know it makes sense)
-			return '\n\n{{{\n' + innerHTML + '\n}}}\n';
+			return '\n\n{{{\n' + innerHTML.rtrim() + '\n}}}\n';
 		});
 
 		// Lists
@@ -240,7 +300,7 @@ WYKIWYG.converter = function() {
 				var lis = innerHTML.split('</li>');
 				lis.splice(lis.length - 1, 1);
 				for (i = 0, len = lis.length; i < len; i++) {
-					if (lis[i]) {
+					if(lis[i]) {
 						var prefix = (listType === 'ol') ? " # " : " * ";
 						lis[i] = lis[i].replace(/\s*<li[^>]*>([\s\S]*)/i, function(str, innerHTML) {
 							innerHTML = innerHTML.replace(/^\s+/, '');
@@ -255,7 +315,7 @@ WYKIWYG.converter = function() {
 			});
 			return '\n\n' + html.replace(/[ \t]+\n|\s+$/g, '');
 		}
-		
+
 		// Converts lists that have no child lists (of same type) first, then works it's way up
 		var noDefChildrenRegex = /<(dl)\b[^>]*>(?:(?!<dl)[\s\S])*?<\/\1>/gi;
 		while(string.match(noDefChildrenRegex)) {
@@ -333,7 +393,18 @@ WYKIWYG.converter = function() {
 			return string;
 		}
 
-		return cleanUp(string);
+		string = cleanUp(string);
+
+		// Put back HTML blocks
+		for (i = 0, len = htmlblocks.length; i < len; i++) {
+			string = string.replace('#!HTML' + i, htmlblocks[i]);
+		}
+		string = string.replace(/&amp;/g,"&");
+		string = string.replace(/&lt;/g,"<");
+		string = string.replace(/&gt;/g,">");
+		string = string.replace(/\n{3,}/g, '\n\n'); // limit consecutive linebreaks to 2
+
+		return string;
 	},
 
 	// Wiki syntax to HTML
@@ -342,6 +413,7 @@ WYKIWYG.converter = function() {
 		var g_urls;
 		var g_titles;
 		var g_html_blocks;
+		var h_html_blocks;
 		var g_macros;
 
 		// Used to track when we're inside an ordered or unordered list
@@ -415,7 +487,7 @@ WYKIWYG.converter = function() {
 			// PHP and ASP-style processor instructions (<?...?> and <%...%>)
 			text = text.replace(/(?:\n\n)([ ]{0,3}(?:<([?%])[^\r]*?\2>)[ \t]*(?=\n{2,}))/g,hashElement);
 
-			// Undo double lines (see comment at top of this function)
+			//  Undo double lines (see comment at top of this function)
 			text = text.replace(/\n\n/g,"\n");
 			return text;
 		}
@@ -446,10 +518,15 @@ WYKIWYG.converter = function() {
 			var key = hashBlock("<hr />");
 			text = text.replace(/^[ ]{0,2}([ ]?\-[ ]?){4,}[ \t]*$/gm,key);
 
+			/*text = _stripCodeBlocks(text);
+			text = _DoHtmlCodeBlocks(text);
+			text = _DoCodeBlocks(text);
+			$('#wtest').val(text);*/
+			
 			text = _DoLists(text);
 			text = _DoDefinitionLists(text);
 			text = _DoTables(text);
-			text = _DoCodeBlocks(text);
+			//text = _DoCodeBlocks(text);
 			text = _DoBlockQuotes(text);
 
 			// We already ran _HashHTMLBlocks() before, but that
@@ -467,6 +544,7 @@ WYKIWYG.converter = function() {
 			// tags like paragraphs, headers, and list items.
 
 			text = _DoCodeSpans(text);
+			//text = _DoSpans(text);
 			text = _EscapeSpecialCharsWithinTagAttributes(text);
 			text = _EncodeBackslashEscapes(text);
 
@@ -500,6 +578,38 @@ WYKIWYG.converter = function() {
 				return tag;
 			});
 
+			return text;
+		}
+
+		function _DoSpans(text) {
+			// Turn Wiki image macros [[(url, alt="optional title")]] into <img> tags.
+
+			// Don't forget: encode * and _
+			text = text.replace(/(\[\[Span\((.*?)\)\]\])/gi, function(wholeMatch, m1, m2){
+				var atts = m2,
+					a = [],
+					content = m2;
+
+				atts = atts.split(',');
+
+				for (var i=0; i < atts.length; i++) {
+					atts[i] = atts[i].replace(/^\s+|\s+$/g,"");
+					if (atts[i] == '') {
+						continue;
+					}
+					if (i == 0) {
+						content = atts[i];
+					}
+					var item = atts[i].split('=');
+					if (item.length > 1) {
+						item[0] = item[0].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
+						item[1] = item[1].replace(/^\s+|\s+$/g,"").replace(/^['"]|['"]$/g,'').replace(/"/g,"&quot;");
+						a.push(item[0] + '="' + escapeCharacters(item[1],"*_") + '"');
+					}
+				}
+				
+				return '<span' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + _RunSpanGamut(content) + '</span>';
+			});
 			return text;
 		}
 
@@ -551,7 +661,7 @@ WYKIWYG.converter = function() {
 			// Turn Wiki image macros [[(url, alt="optional title")]] into <img> tags.
 
 			// Don't forget: encode * and _
-			text = text.replace(/(\[\[\I\m\a\g\e\((.*?)\)\]\])/g,writeImageTag);
+			text = text.replace(/(\[\[Image\((.*?)\)\]\])/g,writeImageTag);
 			return text;
 		}
 
@@ -797,7 +907,7 @@ WYKIWYG.converter = function() {
 				});
 			}
 
-			// strip sentinel
+			//  strip sentinel
 			text = text.replace(/~0/,"");
 
 			return text;
@@ -1033,20 +1143,93 @@ WYKIWYG.converter = function() {
 			return list_str;
 		}
 
+		function _stripCodeBlocks(text) {
+			var j = 0;
+			// sentinel workarounds for lack of \A and \Z, safari\khtml bug
+			text += "~0";
+			
+			lines = text.split('\n');
+			
+			for (var i = 0, len = lines.length; i < len; i++) 
+			{
+				lines[i] = lines[i].replace(/({{{)/g,
+					function(wholeMatch) {
+						j++;
+						if (j == 1) {
+							wholeMatch += j;
+						}
+						return wholeMatch;
+					}
+				);
+
+				lines[i] = lines[i].replace(/(}}})/g,
+					function(wholeMatch) {
+						if (j == 1) {
+							wholeMatch = j + wholeMatch;
+						}
+						j--;
+						return wholeMatch;
+					}
+				);
+			}
+			
+			text = lines.join('\n');
+			
+			// strip sentinel
+			text = text.replace(/~0/,"");
+			
+			return text;
+		}
+
+		function _DoHtmlCodeBlocks(text) {
+			//  Process Wiki `<pre>` blocks.
+
+			// sentinel workarounds for lack of \A and \Z, safari\khtml bug
+			text += "~0";
+			
+			text = text.replace(/\{\{\{1[\s]*#!html[\s]*([\s\S]*?)1\}\}\}(\n*[ ]{0,3})/g,
+				function(wholeMatch, m1, m2) {
+					var codeblock = m1;
+					var nextChar = m2;
+
+					// encode <pre> blocks in the HTML
+					codeblock = codeblock.replace(/<pre>([\s\S]*?)<\/pre>(\n*[ ]{0,3})/g,
+						function(wholeMatch, m1, m2) {
+							var block = m1;
+							var nextChar = m2;
+
+							block = _EncodeCode(block);
+							
+							return '<pre>' + block + '</pre>' + nextChar;
+						}
+					);
+					codeblock = codeblock.replace(/^\n+/g,""); // trim leading newlines
+					codeblock = codeblock.replace(/\n+$/g,""); // trim trailing whitespace
+
+					codeblock = '<div class="html">' + codeblock + "\n</div>";
+
+					return hashBlock(codeblock) + nextChar;
+				}
+			);
+
+			// strip sentinel
+			text = text.replace(/~0/,"");
+
+			return text;
+		}
+
 		function _DoCodeBlocks(text) {
 			//  Process Wiki `<pre>` blocks.
 
 			// sentinel workarounds for lack of \A and \Z, safari\khtml bug
 			text += "~0";
 
-			text = text.replace(/(?:\n\n|^)\{\{\{([\s\S]*?)\}\}\}(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g,
-				function(wholeMatch,m1,m2) {
+			text = text.replace(/\{\{\{1([\s\S]*?)1\}\}\}(\n*[ ]{0,3})/g,
+				function(wholeMatch, m1, m2) {
 					var codeblock = m1;
 					var nextChar = m2;
 
-					//codeblock = _EncodeCode( _Outdent(codeblock));
 					codeblock = _EncodeCode(codeblock);
-					//codeblock = _Detab(codeblock);
 					codeblock = codeblock.replace(/^\n+/g,""); // trim leading newlines
 					codeblock = codeblock.replace(/\n+$/g,""); // trim trailing whitespace
 
@@ -1072,25 +1255,25 @@ WYKIWYG.converter = function() {
 			//   *  Backtick quotes are used for <code></code> spans.
 			// 
 			//   *  You can use multiple backticks as the delimiters if you want to
-			//	 include literal backticks in the code span. So, this input:
-			//	 
-			//		 Just type ``foo `bar` baz`` at the prompt.
-			//	 
-			//	   Will translate to:
-			//	 
-			//		 <p>Just type <code>foo `bar` baz</code> at the prompt.</p>
-			//	 
-			//	There's no arbitrary limit to the number of backticks you
-			//	can use as delimters. If you need three consecutive backticks
-			//	in your code, use four for delimiters, etc.
+			//      include literal backticks in the code span. So, this input:
+			//
+			//     Just type ``foo `bar` baz`` at the prompt.
+			//
+			//     Will translate to:
+			//
+			//     <p>Just type <code>foo `bar` baz</code> at the prompt.</p>
+			//
+			//  There's no arbitrary limit to the number of backticks you
+			//  can use as delimters. If you need three consecutive backticks
+			//  in your code, use four for delimiters, etc.
 			//
 			//  *  You can use spaces to get literal backticks at the edges:
-			//	 
-			//		 ... type `` `bar` `` ...
-			//	 
-			//	   Turns to:
-			//	 
-			//		 ... type <code>`bar`</code> ...
+			//
+			//      ... type `` `bar` `` ...
+			//
+			//     Turns to:
+			//
+			//      ... type <code>`bar`</code> ...
 			//
 
 			text = text.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm,
@@ -1172,14 +1355,14 @@ WYKIWYG.converter = function() {
 					// hack around Konqueror 3.5.4 bug:
 					// "----------bug".replace(/^-/g,"") == "bug"
 
-					bq = bq.replace(/^[ ]{2}[ \t]?/gm,"~0");	// trim one level of quoting
+					bq = bq.replace(/^[ ]{2}[ \t]?/gm,"~0"); // trim one level of quoting
 
 					// clean up hack
 					bq = bq.replace(/~0/g,"");
 
-					bq = bq.replace(/^[ \t]+$/gm,"");		// trim whitespace-only lines
-					bq = _RunBlockGamut(bq);				// recurse
-					//bq = _RunSpanGamut(bq);
+					bq = bq.replace(/^[ \t]+$/gm,""); // trim whitespace-only lines
+					bq = _RunBlockGamut(bq); // recurse
+					bq = _RunSpanGamut(bq);
 					bq = bq.replace(/^\s+|\s+$/g, '');
 
 					bq = bq.replace(/(^|\n)/g,"$1");
@@ -1458,6 +1641,12 @@ WYKIWYG.converter = function() {
 		// contorted like /[ \t]*\n+/ .
 		text = text.replace(/^[ \t]+$/mg, "");
 
+		text = _stripCodeBlocks(text);
+
+		text = _DoHtmlCodeBlocks(text);
+		
+		text = _DoCodeBlocks(text);
+
 		// Turn block-level HTML blocks into hash entries
 		text = _HashHTMLBlocks(text);
 
@@ -1465,7 +1654,7 @@ WYKIWYG.converter = function() {
 		// Otherwise, the link processor would transform macro syntax.
 		// Ex: [[Macro()]] -> [<a href="Macro()">Macro()</a>]
 		text = _DoDivs(text);
-		text = _DoColumns(text);
+		//text = _DoColumns(text);
 		
 		text = _StripMacros(text);
 
@@ -1473,7 +1662,8 @@ WYKIWYG.converter = function() {
 
 		// Restore macros
 		text = _UnStripMacros(text);
-		
+
+		text = _DoSpans(text);
 		// Convert image and file macros
 		//text = _DoImages(text);
 		//text = _DoFiles(text);
