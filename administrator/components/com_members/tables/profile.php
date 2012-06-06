@@ -633,7 +633,7 @@ class MembersProfile extends JTable
 		}
 
 		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, 
-						m.organization, m.email, m.emailConfirmed, u.lastvisitDate, 
+						m.organization, m.email, m.emailConfirmed, u.lastvisitDate, m.registerDate,
 					CASE WHEN m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&nbsp;' THEN 
 						m.givenName 
 					ELSE 
