@@ -59,6 +59,16 @@ else
 
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'job.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'cron.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'FieldInterface.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'AbstractField.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'DayOfMonthField.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'DayOfWeekField.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'FieldFactory.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'HoursField.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'MinutesField.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'MonthField.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'YearField.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php');
 
 $controllerName = JRequest::getCmd('controller', 'jobs');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

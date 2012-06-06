@@ -128,13 +128,21 @@ class CronControllerJobs extends Hubzero_Controller
 			
 			$this->view->row->recurrence = '';
 		}
-		//$bits = explode(' ', $this->view->row->recurrence);
-		$this->view->row->minute = '*'; //$bits[0];
-		$this->view->row->hour = '*'; //$bits[1];
-		$this->view->row->day = '*'; //$bits[2];
-		$this->view->row->month = '*'; //$bits[3];
-		$this->view->row->dayofweek = '*'; //$bits[4];
-		
+		$this->view->row->minute    = '*';
+		$this->view->row->hour      = '*';
+		$this->view->row->day       = '*';
+		$this->view->row->month     = '*';
+		$this->view->row->dayofweek = '*';
+		if ($this->view->row->recurrence)
+		{
+			$bits = explode(' ', $this->view->row->recurrence);
+			$this->view->row->minute    = $bits[0];
+			$this->view->row->hour      = $bits[1];
+			$this->view->row->day       = $bits[2];
+			$this->view->row->month     = $bits[3];
+			$this->view->row->dayofweek = $bits[4];
+		}
+
 		$defaults = array(
 			'',
 			'0 0 1 1 *',
@@ -233,7 +241,14 @@ class CronControllerJobs extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
-		
+
+		if ($row->recurrence)
+		{
+			$cron = Cron\CronExpression::factory($row->recurrence);
+			//$row->last_run = $cron->getPreviousRunDate()->format('Y-m-d H:i:s');
+			$row->next_run = $cron->getNextRunDate()->format('Y-m-d H:i:s');
+		}
+
 		// Check content
 		if (!$row->check()) 
 		{

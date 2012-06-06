@@ -38,97 +38,94 @@ defined('_JEXEC') or die('Restricted access');
  */
 class CronJob extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id           = NULL;
 
 	/**
-	 * Description for 'id'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $id           = NULL;  // @var int(11) Primary key
+	var $title        = NULL;
 
 	/**
-	 * Description for 'title'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $title        = NULL;  // @var varchar(250)
+	var $state        = NULL;
 
 	/**
-	 * Description for 'state'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $state        = NULL;  // @var int(3)
+	var $plugin       = NULL;
 
 	/**
-	 * Description for 'access'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $plugin       = NULL;  // @var int(3)
-
-	/**
-	 * Description for 'alias'
-	 * 
-	 * @var unknown
-	 */
-	var $event        = NULL;  // @var varchar(200)
+	var $event        = NULL;
 	
 	/**
-	 * Description for 'alias'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $last_run     = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $last_run     = NULL;
 	
 	/**
-	 * Description for 'alias'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $next_run     = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $next_run     = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $recurrence   = NULL;  // @var varchar(200)
+	var $recurrence   = NULL;
 	
 	/**
-	 * Description for 'alias'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created      = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $created      = NULL;
 	
 	/**
-	 * Description for 'alias'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by   = NULL;  // @var int(11)
+	var $created_by   = NULL;
 	
 	/**
-	 * Description for 'alias'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $modified     = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $modified     = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $modified_by  = NULL;  // @var int(11)
+	var $modified_by  = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -137,11 +134,9 @@ class CronJob extends JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
@@ -171,17 +166,27 @@ class CronJob extends JTable
 			$this->setError(JText::_('Cron string is invalid. Too many or too little sections.'));
 			return false;
 		}
-		
+
+		$juser = JFactory::getUser();
+		if (!$this->id)
+		{
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+		}
+		else 
+		{
+			$this->modified = date('Y-m-d H:i:s', time());
+			$this->modified_by = $juser->get('id');
+		}
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Parameters to build query from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -209,12 +214,10 @@ class CronJob extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Parameters to build query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -227,12 +230,10 @@ class CronJob extends JTable
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Parameters to build query from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
