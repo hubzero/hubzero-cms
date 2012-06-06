@@ -646,7 +646,7 @@ class plgMembersDashboard extends JPlugin
 	 */
 	public function onCanManage()
 	{
-		return $this->_plugin->name;
+		return $this->_name;
 	}
 
 	/**
