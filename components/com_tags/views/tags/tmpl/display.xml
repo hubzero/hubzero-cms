@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_tags/views/tag/tmpl/default.xml
+@file           components/com_tags/views/intro/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Tag View Layout">
+	<layout title="Tags Intro">
 		<message>
-			<![CDATA[STANDARD TAG VIEW LAYOUT DESC]]>
+			<![CDATA[Tags Intro]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Tag View Layout</name>
-		<description>STANDARD TAG VIEW LAYOUT DESC</description>
+		<name>Tags Intro</name>
+		<description>Tags Intro</description>
 		<params>
 		</params>
 	</state>

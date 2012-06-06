@@ -29,194 +29,197 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'TagsObject'
- * 
- * Long description (if any) ...
+ * Table class for attaching tags to objects
  */
 class TagsObject extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       = NULL;  // int(11)
+	var $id       = NULL;
 
 	/**
-	 * Description for 'objectid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $objectid = NULL;  // int(11)
+	var $objectid = NULL;
 
 	/**
-	 * Description for 'tagid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $tagid    = NULL;  // int(11)
+	var $tagid    = NULL;
 
 	/**
-	 * Description for 'strength'
+	 * tinyint(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $strength = NULL;  // tinyint(3)
+	var $strength = NULL;
 
 	/**
-	 * Description for 'taggerid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $taggerid = NULL;  // int(11)
+	var $taggerid = NULL;
 
 	/**
-	 * Description for 'taggedon'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $taggedon = NULL;  // datetime(0000-00-00 00:00:00)
+	var $taggedon = NULL;
 
 	/**
-	 * Description for 'tbl'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $tbl      = NULL;  // varchar(255)
-
-	//-----------
+	var $tbl      = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__tags_object', 'id', $db );
+		parent::__construct('#__tags_object', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'deleteObjects'
+	 * Delete attachments to a tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tagid Parameter description (if any) ...
-	 * @param      unknown $tbl Parameter description (if any) ...
-	 * @param      unknown $objectid Parameter description (if any) ...
-	 * @param      unknown $taggerid Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $tagid    Tag ID
+	 * @param      string  $tbl      Object type
+	 * @param      integer $objectid Object ID
+	 * @param      integer $taggerid Tagger ID
+	 * @param      boolean $admin    Admin authorization
+	 * @return     boolean True if records removed
 	 */
-	public function deleteObjects( $tagid=null, $tbl=null, $objectid=null, $taggerid=null, $admin=false )
+	public function deleteObjects($tagid=null, $tbl=null, $objectid=null, $taggerid=null, $admin=false)
 	{
-		if (!$tagid) {
+		if (!$tagid) 
+		{
 			$tagid = $this->tagid;
 		}
-		if (!$tagid) {
+		if (!$tagid) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
 		$sql = "DELETE FROM $this->_tbl WHERE tagid='$tagid'";
-		if ($tbl) {
+		if ($tbl) 
+		{
 			$sql .= " AND tbl='$tbl'";
 		}
-		if ($objectid) {
+		if ($objectid) 
+		{
 			$sql .= " AND objectid='$objectid'";
 		}
-		if (!$admin) {
+		if (!$admin) 
+		{
 			$sql .= " AND taggerid='$taggerid'";
 		}
 
-		$this->_db->setQuery( $sql );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'removeAllTags'
+	 * Remove all tag references for a given object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tbl Parameter description (if any) ...
-	 * @param      unknown $objectid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $tbl      Object type
+	 * @param      integer $objectid Object ID
+	 * @return     boolean True if records removed
 	 */
-	public function removeAllTags( $tbl=null, $objectid=null )
+	public function removeAllTags($tbl=null, $objectid=null)
 	{
-		if (!$tbl) {
+		if (!$tbl) 
+		{
 			$tbl = $this->tbl;
 		}
-		if (!$objectid) {
+		if (!$objectid) 
+		{
 			$objectid = $this->objectid;
 		}
-		if (!$tbl || !$objectid) {
+		if (!$tbl || !$objectid) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
 		$sql = "DELETE FROM $this->_tbl WHERE tbl='$tbl' AND objectid='$objectid'";
 
-		$this->_db->setQuery( $sql );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count for a tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tagid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $tagid Tag ID
+	 * @return     mixed Integer if successful, false if not
 	 */
-	public function getCount( $tagid=null )
+	public function getCount($tagid=null)
 	{
-		if (!$tagid) {
+		if (!$tagid) 
+		{
 			$tagid = $this->tagid;
 		}
-		if (!$tagid) {
+		if (!$tagid) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE tagid='$tagid'" );
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tagid='$tagid'");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getTagsOnObject'
+	 * Get all the tags on an object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $objectid Parameter description (if any) ...
-	 * @param      unknown $tbl Parameter description (if any) ...
-	 * @param      integer $state Parameter description (if any) ...
-	 * @param      integer $offset Parameter description (if any) ...
-	 * @param      integer $limit Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $objectid Object ID
+	 * @param      string  $tbl      Object type
+	 * @param      integer $state    Admin authorization
+	 * @param      integer $offset   Where to start pulling records
+	 * @param      integer $limit    Number of records to pull
+	 * @return     mixed Array if successful, false if not
 	 */
 	public function getTagsOnObject($objectid=null, $tbl=null, $state=0, $offset=0, $limit=10)
 	{
-		if (!$objectid) {
+		if (!$objectid) 
+		{
 			$objectid = $this->objectid;
 		}
-		if (!$tbl) {
+		if (!$tbl) 
+		{
 			$tbl = $this->tbl;
 		}
-		if (!$tbl || !$objectid) {
-			$this->setError( JText::_('Missing argument.') );
+		if (!$tbl || !$objectid) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -230,96 +233,104 @@ class TagsObject extends JTable
 			case 1: $sql .= ""; break;
 		}
 		$sql .= " ORDER BY t.raw_tag ASC";
-		if ($limit > 0) {
+		if ($limit > 0) 
+		{
 			$sql .= " LIMIT $offset, $limit";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadAssocList();
 	}
 
 	/**
-	 * Short description for 'getCountForObject'
+	 * Get a count of tags on an object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tagid Parameter description (if any) ...
-	 * @param      unknown $objectid Parameter description (if any) ...
-	 * @param      unknown $tbl Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $tagid    Tag ID
+	 * @param      integer $objectid Object ID
+	 * @param      string  $tbl      Object type
+	 * @return     mixed Integer if successful, false if not
 	 */
-	public function getCountForObject( $tagid=null, $objectid=null, $tbl=null )
+	public function getCountForObject($tagid=null, $objectid=null, $tbl=null)
 	{
-		if (!$tagid) {
+		if (!$tagid) 
+		{
 			$tagid = $this->tagid;
 		}
-		if (!$objectid) {
+		if (!$objectid) 
+		{
 			$objectid = $this->objectid;
 		}
-		if (!$tbl) {
+		if (!$tbl) 
+		{
 			$tbl = $this->tbl;
 		}
-		if (!$tagid || !$tbl || !$objectid) {
+		if (!$tagid || !$tbl || !$objectid) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE tagid='$tagid' AND objectid='$objectid' AND tbl='$tbl'" );
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tagid='$tagid' AND objectid='$objectid' AND tbl='$tbl'");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'moveObjects'
+	 * Move all references to one tag to another tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oldtagid Parameter description (if any) ...
-	 * @param      unknown $newtagid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oldtagid ID of tag to be moved
+	 * @param      integer $newtagid ID of tag to move to
+	 * @return     boolean True if records changed
 	 */
-	public function moveObjects( $oldtagid=null, $newtagid=null )
+	public function moveObjects($oldtagid=null, $newtagid=null)
 	{
-		if (!$oldtagid) {
+		if (!$oldtagid) 
+		{
 			$oldtagid = $this->tagid;
 		}
-		if (!$oldtagid) {
+		if (!$oldtagid) 
+		{
 			return false;
 		}
-		if (!$newtagid) {
+		if (!$newtagid) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "UPDATE $this->_tbl SET tagid='$newtagid' WHERE tagid='$oldtagid'" );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("UPDATE $this->_tbl SET tagid='$newtagid' WHERE tagid='$oldtagid'");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'copyObjects'
+	 * Copy all tags on an object to another object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oldtagid Parameter description (if any) ...
-	 * @param      unknown $newtagid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oldtagid ID of tag to be copied
+	 * @param      integer $newtagid ID of tag to copy to
+	 * @return     boolean True if records copied
 	 */
-	public function copyObjects( $oldtagid=null, $newtagid=null )
+	public function copyObjects($oldtagid=null, $newtagid=null)
 	{
-		if (!$oldtagid) {
+		if (!$oldtagid) 
+		{
 			$oldtagid = $this->tagid;
 		}
-		if (!$oldtagid) {
+		if (!$oldtagid) 
+		{
 			return false;
 		}
-		if (!$newtagid) {
+		if (!$newtagid) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE tagid='$oldtagid'" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tagid='$oldtagid'");
 		$rows = $this->_db->loadObjectList();
-		if ($rows) {
+		if ($rows) 
+		{
 			foreach ($rows as $row)
 			{
 				$to = new TagsObject($this->_db);

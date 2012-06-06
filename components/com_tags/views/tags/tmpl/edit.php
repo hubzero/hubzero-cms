@@ -31,12 +31,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div>
+<div id="content-header-extra">
+	<ul id="useroptions">
+		<li class="last">
+			<a class="tag" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
+			</a>
+		</li>
+	</ul>
+</div>
+<div class="clear"></div>
 
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 <?php } ?>
 
 <div class="main section">
@@ -49,28 +59,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<label>
 				<?php echo JText::_('COM_TAGS_TAG'); ?>
-				<input type="text" name="raw_tag" value="<?php echo htmlentities(stripslashes($this->tag->raw_tag),ENT_COMPAT,'UTF-8'); ?>" size="38" />
+				<input type="text" name="fields[raw_tag]" value="<?php echo $this->escape(stripslashes($this->tag->raw_tag)); ?>" size="38" />
 			</label>
 
 			<label>
 				<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
-				<input type="text" name="alias" value="<?php echo htmlentities(stripslashes($this->tag->alias),ENT_COMPAT,'UTF-8'); ?>" size="38" />
+				<input type="text" name="fields[alias]" value="<?php echo $this->escape(stripslashes($this->tag->alias)); ?>" size="38" />
 			</label>
 
 			<label>
-				<input class="option" type="checkbox" name="minor_edit" value="1" /> 
+				<input class="option" type="checkbox" name="fields[admin]" value="1" /> 
 				<strong><?php echo JText::_('COM_TAGS_ADMINISTRATION'); ?></strong>
 			</label>
 			<p class="hint"><?php echo JText::_('COM_TAGS_ADMINISTRATION_EXPLANATION'); ?></p>
 	
 			<label>
 				<?php echo JText::_('COM_TAGS_DESCRIPTION'); ?>
-				<textarea name="description" rows="10" cols="35"><?php echo stripslashes($this->tag->description); ?></textarea>
+				<textarea name="fields[description]" rows="10" cols="35"><?php echo $this->escape(stripslashes($this->tag->description)); ?></textarea>
 			</label>
 
-			<input type="hidden" name="tag" value="<?php echo $this->tag->tag; ?>" />
-			<input type="hidden" name="id" value="<?php echo $this->tag->id; ?>" />
+			<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->tag; ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->tag->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 		</fieldset>
 		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_TAGS_SUBMIT'); ?>" /></p>

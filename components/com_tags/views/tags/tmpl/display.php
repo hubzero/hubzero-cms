@@ -29,13 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-$showsizes = $this->showsizes;
-$min_font_size = $this->min_font_size;
-$max_font_size = $this->max_font_size;
-$min_qty = $this->min_qty;
-$step = $this->step;
+defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -69,14 +63,14 @@ $step = $this->step;
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=view'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option=' . $option . '&task=view'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<label for="actags">Enter tags:</label>
 						<?php 
-						JPluginHelper::importPlugin( 'hubzero' );
+						JPluginHelper::importPlugin('hubzero');
 						$dispatcher =& JDispatcher::getInstance();
-						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tag', 'actags','','')) );
+						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags','','')));
 
 						if (count($tf) > 0) {
 							echo $tf[0];
@@ -102,31 +96,30 @@ $step = $this->step;
 	<div class="four columns second third fourth">
 		<div class="block">
 <?php
-$newtags = $this->newtags;
 $html = '';
-if ($newtags) {
+if ($this->newtags) {
 	$html .= '<ol class="tags">'."\n";
 	$tl = array();
-	foreach ($newtags as $newtag)
+	foreach ($this->newtags as $newtag)
 	{
 		$class = ($newtag->admin == 1) ? ' class="admin"' : '';
 
-		$newtag->raw_tag = str_replace( '&amp;', '&', $newtag->raw_tag );
-		$newtag->raw_tag = str_replace( '&', '&amp;', $newtag->raw_tag );
+		$newtag->raw_tag = str_replace('&amp;', '&', $newtag->raw_tag);
+		$newtag->raw_tag = str_replace('&', '&amp;', $newtag->raw_tag);
 
-		if ($showsizes == 1) {
-			$size = $min_font_size + ($newtag->tcount - $min_qty) * $step;
-			$size = ($size > $max_font_size) ? $max_font_size : $size;
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).' <span>' . $newtag->tcount . '</span></a></span></li>'."\n";
+		if ($this->showsizes == 1) {
+			$size = $this->min_font_size + ($newtag->tcount - $this->min_qty) * $this->step;
+			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)).' <span>' . $newtag->tcount . '</span></a></span></li>' . "\n";
 		} else {
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).' <span>' . $newtag->tcount . '</span></a></li>'."\n";
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)).' <span>' . $newtag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tl);
 	$html .= implode('',$tl);
 	$html .= '</ol>'."\n";
 } else {
-	$html  = Hubzero_View_Helper_Html::warning( JText::_('COM_TAGS_NO_TAGS') )."\n";
+	$html .= '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 }
 echo $html;
 ?>
@@ -149,22 +142,22 @@ if ($tags) {
 	{
 		$class = ($tag->admin == 1) ? ' class="admin"' : '';
 
-		$tag->raw_tag = str_replace( '&amp;', '&', $tag->raw_tag );
-		$tag->raw_tag = str_replace( '&', '&amp;', $tag->raw_tag );
+		$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
+		$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
 
-		if ($showsizes == 1) {
-			$size = $min_font_size + ($tag->tcount - $min_qty) * $step;
-			$size = ($size > $max_font_size) ? $max_font_size : $size;
-			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->tcount . '</span></a></span></li>'."\n";
+		if ($this->showsizes == 1) {
+			$size = $this->min_font_size + ($tag->tcount - $this->min_qty) * $this->step;
+			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
+			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size, 1) .'em"><a href="' . JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . ' <span>' . $tag->tcount . '</span></a></span></li>' . "\n";
 		} else {
-			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->tcount . '</span></a></li>'."\n";
+			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . ' <span>' . $tag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tll);
 	$html .= implode('',$tll);
 	$html .= '</ol>'."\n";
 } else {
-	$html  = Hubzero_View_Helper_Html::warning( JText::_('COM_TAGS_NO_TAGS') )."\n";
+	$html .= '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 }
 echo $html;
 ?>
@@ -177,7 +170,7 @@ echo $html;
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<label for="tsearch">Keyword or phrase:</label>
@@ -189,7 +182,7 @@ echo $html;
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->

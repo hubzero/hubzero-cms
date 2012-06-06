@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_tags/views/browse/tmpl/default.xml
+@file           components/com_tags/views/browse/tmpl/xml.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Browse Tags Layout">
+	<layout title="Browse Tags X M L Layout">
 		<message>
-			<![CDATA[STANDARD BROWSE TAGS LAYOUT DESC]]>
+			<![CDATA[Browse Tags X M L Layout]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Browse Tags Layout</name>
-		<description>STANDARD BROWSE TAGS LAYOUT DESC</description>
+		<name>Browse Tags X M L Layout</name>
+		<description>Browse Tags X M L Layout</description>
 		<params>
 		</params>
 	</state>

@@ -37,7 +37,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="tag" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('COM_TAGS_MORE_TAGS'); ?></a></li>
+		<li class="last">
+			<a class="tag" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
+			</a>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -45,9 +49,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view'); //.'&tag='.$this->tagstring); ?>" method="get">
 		
 	<div class="aside">
+		<h3><?php echo JText::_('Categories'); ?></h3>
 		<?php
 		// Add the "all" category
-		$all = array('category'=>'','title'=>JText::_('COM_TAGS_ALL_CATEGORIES'),'total'=>$this->total);
+		$all = array(
+			'category' => '',
+			'title'    => JText::_('COM_TAGS_ALL_CATEGORIES'),
+			'total'    => $this->total
+		);
 		$cats = $this->cats;
 		array_unshift($cats, $all);
 
@@ -67,7 +76,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				$url  = 'index.php?option='.$this->option.'&tag='.$this->tagstring;
 				$url .= ($blob) ? '&area='. stripslashes($blob) : '';
-				$url .= ($this->sort) ? '&sort='.$this->sort : '';
+				$url .= ($this->filters['sort']) ? '&sort='.$this->filters['sort'] : '';
 				$sef = JRoute::_($url);
 				$sef = str_replace('%20','+',$sef);
 
@@ -78,11 +87,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					$app =& JFactory::getApplication();
 					$pathway =& $app->getPathway();
-					$pathway->addItem($cat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->sort);
+					$pathway->addItem($cat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
 				}
 
 				// Build the HTML
-				$l = "\t".'<li'.$a.'><a href="'.$sef.'">' . stripslashes($cat['title']) . ' ('.$cat['total'].')</a>';
+				$l = "\t".'<li'.$a.'><a href="'.$sef.'">' . $this->escape(stripslashes($cat['title'])) . ' ('.$cat['total'].')</a>';
 				// Are there sub-categories?
 				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 					// An array for storing the HTML we make
@@ -105,13 +114,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 								$app =& JFactory::getApplication();
 								$pathway =& $app->getPathway();
-								$pathway->addItem($subcat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->sort);
+								$pathway->addItem($subcat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
 							}
 
 							// Build the HTML
-							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->sort);
+							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
 							$sef = str_replace('%20','+',$sef);
-							$k[] = "\t\t\t".'<li'.$a.'><a href="'.$sef.'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
+							$k[] = "\t\t\t".'<li'.$a.'><a href="'.$sef.'">' . $this->escape(stripslashes($subcat['title'])) . ' ('.$subcat['total'].')</a></li>';
 						}
 					}
 					// Do we actually have any links?
@@ -137,7 +146,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// No - nothing to output
 			$html = '';
 		}
-		$html .= "\t" . '<input type="hidden" name="area" value="' . htmlspecialchars($this->active, ENT_QUOTES) . '" />' . "\n";
+		$html .= "\t" . '<input type="hidden" name="area" value="' . $this->escape($this->active) . '" />' . "\n";
 
 		echo $html;
 		?>
@@ -182,20 +191,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		}
 		?>
-		
+		<h3><?php echo JText::_('Results'); ?></h3>
 		<div class="container">
 			<ul class="entries-menu">
-				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php 
+				<li>
+					<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php 
 						$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=title');
 						$sef = str_replace('%20','+',$sef);
 						echo $sef;
-					?>" title="Sort by title">&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'date' || $this->sort == '') ? ' class="active"' : ''; ?> href="<?php 
+					?>" title="Sort by title">
+						&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php 
 						$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=date');
 						$sef = str_replace('%20','+',$sef);
 						echo $sef;
-					?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?></a></li>
-<?php /*				<li><a<?php echo ($this->sort == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li> */ ?>
+					?>" title="Sort by newest to oldest">
+						&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?>
+					</a>
+				</li>
+<?php /*				<li><a<?php echo ($this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li> */ ?>
 			</ul>
 			
 			<div class="container-block">
@@ -219,7 +236,7 @@ foreach ($this->results as $category)
 
 		$name  = $cats[$k]['title'];
 		$total = $cats[$k]['total'];
-		$divid = 'search'.$cats[$k]['category'];
+		$divid = 'search' . $cats[$k]['category'];
 
 		// Is this category the active category?
 		if (!$this->active || $this->active == $cats[$k]['category']) {
@@ -243,7 +260,7 @@ foreach ($this->results as $category)
 						// Found an active category
 						$name  = $sub['title'];
 						$total = $sub['total'];
-						$divid = 'search'.$sub['category'];
+						$divid = 'search' . $sub['category'];
 
 						$dopaging = true;
 						break;
@@ -291,10 +308,10 @@ foreach ($this->results as $category)
 		$ttl = ($ttl > 5) ? 5 : $ttl;
 
 		if (!$dopaging) {
-			$num = ($this->limitstart+1).'-'.$ttl.' of ';
+			$num = ($this->filters['start']+1).'-'.$ttl.' of ';
 		} else {
-			$ttl = ($total > ($this->limit + $this->limitstart)) ? ($this->limit + $this->limitstart) : $total;
-			$num = ($this->limitstart+1).'-'.$ttl.' of ';
+			$ttl = ($total > ($this->filters['limit'] + $this->filters['start'])) ? ($this->filters['limit'] + $this->filters['start']) : $total;
+			$num = ($this->filters['start']+1).'-'.$ttl.' of ';
 		}
 
 		// Build the category HTML
@@ -302,7 +319,7 @@ foreach ($this->results as $category)
 		if (!$dopaging) {
 			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$cats[$k]['category']).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
 		}
-		$html .= stripslashes($name).' <span>('.$num.$total.')</span> ';
+		$html .= $this->escape(stripslashes($name)).' <span>('.$num.$total.')</span> ';
 		if (!$dopaging) {
 			$html .= '<span class="more">&raquo;</span></a> ';
 		}
@@ -369,7 +386,7 @@ foreach ($this->results as $category)
 	$k++;
 }
 if (!$foundresults) {
-	$html .= Hubzero_View_Helper_Html::warning( JText::_('COM_TAGS_NO_RESULTS') );
+	$html .= '<p class="waring">' . JText::_('COM_TAGS_NO_RESULTS') . '</p>';
 }
 echo $html;
 ?>
@@ -377,7 +394,11 @@ echo $html;
 <?php
 if ($dopaging) {
 	jimport('joomla.html.pagination');
-	$pageNav = new JPagination( $this->total, $this->limitstart, $this->limit );
+	$pageNav = new JPagination(
+		$this->total, 
+		$this->filters['start'], 
+		$this->filters['limit']
+	);
 
 	//$html .= $pageNav->getListFooter();
 	$pf = $pageNav->getListFooter();

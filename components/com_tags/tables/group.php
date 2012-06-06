@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'TagsGroup'
@@ -40,54 +40,48 @@ class TagsGroup extends JTable
 {
 
 	/**
-	 * Description for 'id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id      = NULL;  // int(11)
+	var $id      = NULL;
 
 	/**
-	 * Description for 'groupid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $groupid = NULL;  // int(11)
+	var $groupid = NULL;
 
 	/**
-	 * Description for 'tagid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $tagid   = NULL;  // int(11)
+	var $tagid   = NULL;
 
 	/**
-	 * Description for 'priority'
+	 * int(11)
 	 * 
-	 * @var string
+	 * @var integer
 	 */
-	var $priority = NULL;  // int(11)
-
-	//-----------
+	var $priority = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__tags_group', 'id', $db );
+		parent::__construct('#__tags_group', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     integer
 	 */
 	public function getCount()
 	{
@@ -98,16 +92,14 @@ class TagsGroup extends JTable
 					WHERE tg.tagid=t.id 
 					AND g.gidNumber=tg.groupid ORDER BY tg.priority ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get all records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getRecords()
 	{
@@ -118,35 +110,36 @@ class TagsGroup extends JTable
 					WHERE tg.tagid=t.id 
 					AND g.gidNumber=tg.groupid ORDER BY tg.priority ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get the tag next to another tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $move Dirction to look for neighbor
+	 * @return     boolean True if tag was moved
 	 */
-	public function getNeighbor( $move )
+	public function getNeighbor($move)
 	{
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM $this->_tbl WHERE priority < ".$this->priority." ORDER BY priority DESC LIMIT 1";
-				break;
+				$sql = "SELECT * FROM $this->_tbl WHERE priority < " . $this->priority . " ORDER BY priority DESC LIMIT 1";
+			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM $this->_tbl WHERE priority > ".$this->priority." ORDER BY priority ASC LIMIT 1";
-				break;
+				$sql = "SELECT * FROM $this->_tbl WHERE priority > " . $this->priority . " ORDER BY priority ASC LIMIT 1";
+			break;
 		}
-		$this->_db->setQuery( $sql );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
