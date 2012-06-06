@@ -18,7 +18,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<h2><?php echo $this->escape($this->title); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('&larr; All categories'); ?></a></p>
+	<p><a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
 </div>
 <div class="clear"></div>
 
@@ -62,8 +62,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<p>
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
-			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+			<p>
+				<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
 <?php } else { ?>
 			<p class="warning">
