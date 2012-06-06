@@ -786,7 +786,57 @@
 	.com_tools table.sessions .owner {
 		font-size: 90%;
 	}
-
+	.com_tools table.sessions tfoot td {
+		text-align: right;
+	}
+	.com_tools table.sessions tfoot a {
+		padding: 0.4em 0.91em 0.4em 0.91em;
+		text-align: center;
+		color: #555;
+		-webkit-background-clip: padding-box;
+		display: inline-block;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+		background: #e0e0e0;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
+		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+		border: 1px solid #CCC;
+		-webkit-box-shadow: inset 0 0 1px #fff;
+		-moz-box-shadow: inset 0 0 1px #fff;
+		-ms-box-shadow: inset 0 0 1px #fff;
+		box-shadow: inset 0 0 1px #fff;
+		text-shadow: 0 1px 0 #fff;
+		border-color: #CCC #CCC #AAA #AAA;
+		outline: 0;
+		font-weight: bold;
+		font-size: 11px;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		cursor: pointer;
+		position: relative;
+	}
+	.com_tools table.sessions tfoot a:hover {
+		background: #e8e8e8;
+		background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#e8e8e8));
+		background: -webkit-linear-gradient(#f1f1f1, #e8e8e8);
+		background: -moz-linear-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
+		background: -moz-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
+		background: -o-linear-gradient(#f1f1f1, #e8e8e8);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1,endColorstr=#e8e8e8);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1, endColorstr=#e8e8e8)";
+		border: 1px solid #aaaaaa;
+		-webkit-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		-moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		-ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+	}
 /* IE 6 hacks */
 	* html #diskusage #du-amount {
 		float: none;
