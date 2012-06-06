@@ -48,7 +48,7 @@ if ($juser->authorize('com_members', 'admin'))
 	JToolBarHelper::deleteList();
 }
 
-include_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'grid.php');
+JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -84,15 +84,15 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', 'ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Name', 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Username', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Organization', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'E-Mail', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Confirmed', 'emailConfirmed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th><?php echo JHTML::_('grid.sort', '# of contributions', 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th><?php echo JHTML::_('grid.sort', 'Last Visit', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Name'), 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Username'), 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Organization'), 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('E-Mail'), 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', JText::_('Registered'), 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('# of contributions'), 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Last Visit'), 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -104,9 +104,14 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
+$default = DS . trim($this->config->get('defaultpic'), DS);
+$default = Hubzero_User_Profile_Helper::thumbit($default);
+
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
+	$picture = $default;
+
 	$row = &$this->rows[$i];
 
 	if (!$row->surname && !$row->givenName) 
@@ -147,7 +152,20 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	} 
 	else 
 	{
-		$lvisit	= $row->lastvisitDate; //= JHTML::_('date',  $row->lastvisitDate, JText::_('DATE_FORMAT_LC4'));
+		$lvisit = $row->lastvisitDate; //= JHTML::_('date',  $row->lastvisitDate, JText::_('DATE_FORMAT_LC4'));
+	}
+	
+	if ($row->picture)
+	{
+		$thumb  = DS . trim($this->config->get('webpath'), DS);
+		$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($row->uidNumber);
+		$thumb .= DS . ltrim($row->picture, DS);
+		$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+		
+		if (file_exists(JPATH_ROOT . $thumb))
+		{
+			$picture = $thumb;
+		}
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -158,16 +176,16 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->uidNumber; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->uidNumber; ?>">
+					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->uidNumber; ?>" title="<?php echo $this->escape(stripslashes($row->name)); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '[organization unknown]'; ?><?php echo ($row->public) ? '<br />public profile' : '<br />private profile'; ?>">
 						<?php echo $this->escape(stripslashes($row->surname)) . ', ' . $this->escape(stripslashes($row->givenName)) . ' ' . $this->escape(stripslashes($row->middleName)); ?>
 					</a>
 				</td>
 				<td>
 					<?php echo $this->escape($row->username); ?>
 				</td>
-				<td>
-					<?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '&nbsp;';?>
-				</td>
+				<!-- <td>
+					<span class="organization"><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '&nbsp;';?></span>
+				</td> -->
 				<td>
 <?php if (trim($row->email)) { ?>
 					<a href="mailto:<?php echo $row->email; ?>"><?php echo $this->escape($row->email); ?></a>
@@ -181,10 +199,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span class="text"><?php echo $alt; ?></span>
 <?php } ?>
 					</a>
-					<?php //echo $row->rcount; ?>
 				</td>
 				<td>
-					<?php echo $lvisit; ?>
+					<time><?php echo $row->registerDate; ?></time>
+				</td>
+				<td>
+					<time><?php echo $lvisit; ?></time>
 				</td>
 			</tr>
 <?php
@@ -203,4 +223,3 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<?php echo JHTML::_('form.token'); ?>
 </form>
-

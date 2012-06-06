@@ -107,6 +107,8 @@ class MembersControllerMembers extends Hubzero_Controller
 			$this->view->filters['limit']
 		);
 
+		$this->view->config = $this->config;
+
 		// Set any errors
 		if ($this->getError()) 
 		{
