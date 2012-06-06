@@ -47,6 +47,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</param>
+		<param name="warn_multiples" type="radio" default="0" label="Warn user of multiples" description="Warn the user when starting another instance of a tool.">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</param>
 		<param name="storagehost" type="text" menu="hide" label="Storage host" default="" description="The host the storage indicator should use" />
 		<param name="show_storage" type="list" default="1" label="Show storage" description="Select wether to show the storage meter or not.">
 			<option value="1">Yes</option>

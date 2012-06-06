@@ -600,6 +600,36 @@ class ToolsController extends Hubzero_Controller
 			return;
 		}
 
+		if ($this->config->get('warn_multiples', 0) && !JRequest::getInt('newinstance', 0))
+		{
+			$ms = new MwSession($mwdb);
+			$sessions = $ms->getRecords($this->juser->get('username'), $app['name'], false);
+			if ($sessions && count($sessions) > 0)
+			{
+				$view = new JView(array(
+					'name'   => 'session',
+					'layout' => 'list'
+				));
+				$view->option = $this->_option;
+				$view->app = $app;
+				$view->authorized = $authorized;
+				$view->config = $this->config;
+				$view->sessions = $sessions;
+				$view->toolname = $toolname;
+				$view->version = $app['version'];
+
+				if ($this->getError()) 
+				{
+					foreach ($this->getErrors() as $error)
+					{
+						$view->setError($error);
+					}
+				}
+				$view->display();
+				return;
+			}
+		}
+
 		// Get their disk space usage
 		$this->getDiskUsage('hard');  // Check their hardspace limit instead of the softspace
 		$this->_redirect = '';
@@ -1485,7 +1515,7 @@ class ToolsController extends Hubzero_Controller
 
 		$country = Hubzero_Geo::ipcountry($_SERVER['REMOTE_ADDR']);
 
-		if (empty($country) && in_array($exportControl, array('us','d1','pu')))
+		if (empty($country) && in_array($exportcontrol, array('us','d1','pu')))
 		{
 			$this->setError('This tool may not be accessed from your unknown current location due to export/license restrictions.');
 			$xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
