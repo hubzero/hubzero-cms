@@ -170,6 +170,12 @@ class SupportControllerAbuse extends Hubzero_Controller
 			return;
 		}
 
+		// Get the search result totals
+		$results = $dispatcher->trigger('onReportItem', array(
+			$this->view->refid,
+			$this->view->cat
+		));
+
 		// Send notification email 
 		if ($email) 
 		{
