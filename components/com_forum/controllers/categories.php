@@ -295,7 +295,7 @@ class ForumControllerCategories extends Hubzero_Controller
 	public function editTask($model=null)
 	{
 		$category = JRequest::getVar('category', '');
-		$section = JRequest::getInt('section', 0);
+		$section = JRequest::getVar('section', '');
 		
 		if ($this->juser->get('guest')) 
 		{
@@ -319,13 +319,13 @@ class ForumControllerCategories extends Hubzero_Controller
 			$this->view->model = new ForumCategory($this->database);
 			$this->view->model->loadByAlias($category, $this->view->section->id, 0);
 		}
-		
+
 		$this->_authorize('category', $this->view->model->id);
-		
+
 		if (!$this->view->model->id) 
 		{
 			$this->view->model->created_by = $this->juser->get('id');
-			$this->view->model->section_id = $section;
+			$this->view->model->section_id = $this->view->section->id;
 		}
 		elseif ($this->view->model->created_by != $this->juser->get('id') && !$this->config->get('access-create-category'))
 		{
