@@ -166,14 +166,15 @@ class plgSystemJquery extends JPlugin
 			return;
 		}
 
-		$no_html = JRequest::getVar('no_html', 0);
+		$no_html = JRequest::getInt('no_html', 0);
+		$format  = JRequest::getVar('format', '');
 
 		if ($document->getType() == 'raw')
 		{
 			$no_html = 1;
 		}
 
-		if (!$this->params->get('noconflict' . $client) && !$no_html) 
+		if (!$this->params->get('noconflict' . $client) && !$no_html && $format != 'xml') 
 		{
 			$data = $document->getHeadData();
 			$nd = array();
