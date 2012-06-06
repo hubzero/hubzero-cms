@@ -1572,8 +1572,9 @@ class SupportControllerTickets extends Hubzero_Controller
 						$ticketURL = JRoute::_($hublongURL . '/index.php?option=' . $this->option);
 						
 						$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
+						$prependtext .= "You can reply to this message, just include your reply text above this area\r\n" ;
+						$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
 						$prependtext .= "Message from " . $xhub->getCfg('hubShortURL') . " / Ticket #" . $row->id . "\r\n";
-						$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n" ;
 
 						$message = $prependtext . "\r\n\r\n" . $message;
 					}
