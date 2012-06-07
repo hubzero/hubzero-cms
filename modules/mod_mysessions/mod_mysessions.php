@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //-------------------------------------------------------------
 // Joomla module
@@ -38,14 +38,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Middleware component "com_mw" REQUIRED
 //-------------------------------------------------------------
 
-include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.utils.php' );
-include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.class.php' );
-
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-$modmysessions = new modMySessions( $params );
+$modmysessions = new modMySessions($params, $module);
 $modmysessions->specapp = (isset($specapp)) ? $specapp : '';
 $modmysessions->display();
-
-require( JModuleHelper::getLayoutPath('mod_mysessions') );

@@ -29,21 +29,21 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
 $juser =& JFactory::getUser();
 ?>
-<div class="<?php echo $modmysessions->moduleclass_sfx; ?>sessionlist">
-<?php if ($modmysessions->error) { ?>
+<div class="<?php echo $this->moduleclass_sfx; ?>sessionlist">
+<?php if ($this->error) { ?>
 	<p class="error"><?php echo JText::_('MOD_MYSESSIONS_NOT_CONFIGURED'); ?></p>
 <?php } else { ?>
-<?php if ($modmysessions->authorized) { ?>
+<?php if ($this->authorized) { ?>
 	<div id="mySessionsTabs">
 		<ul class="session_tab_titles">
-			<li title="mysessions" class="active">My Sessions</li>
-			<li title="allsessions">All Sessions</li>
+			<li title="mysessions" class="active"><?php echo JText::_('My Sessions'); ?></li>
+			<li title="allsessions"><?php echo JText::_('All Sessions'); ?></li>
 		</ul>
 		<div id="mysessions" class="session_tab_panel active">
 <?php } ?>
@@ -52,12 +52,12 @@ $juser =& JFactory::getUser();
 	// Iterate through the session list and create links for each.
 	$is_even  = 1;
 	$appcount = 0;
-	$sessions = $modmysessions->sessions;
+	$sessions = $this->sessions;
 	if (is_array($sessions)) {
 		foreach ($sessions as $app)
 		{
 			// If we're on a specific tool page, show sessions for that tool ONLY
-			if ($modmysessions->specapp && $app->appname != $modmysessions->specapp) {
+			if ($this->specapp && $app->appname != $this->specapp) {
 				continue;
 			}
 			$bits = explode('_',$app->appname);
@@ -66,8 +66,8 @@ $juser =& JFactory::getUser();
 
 			$cls = ($is_even) ? '' : 'even ';
 
-			if ($modmysessions->supportedtag) {
-				if ($modmysessions->rt->checkTagUsage( $modmysessions->supportedtag, 0, $appname )) {
+			if ($this->supportedtag) {
+				if ($this->rt->checkTagUsage( $this->supportedtag, 0, $appname )) {
 					$cls .= 'supported';
 				} else {
 					$cls .= 'session';
@@ -77,9 +77,9 @@ $juser =& JFactory::getUser();
 			}
 
 			$href = JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname);
-			if ($isiPad && $modmysessions->params->get('hubvnc', ''))
+			if ($isiPad && $this->params->get('hubvnc', ''))
 			{
-				$hubvnc = rtrim($modmysessions->params->get('hubvnc', ''), DS);
+				$hubvnc = rtrim($this->params->get('hubvnc', ''), DS);
 				$href = str_replace('{sessnum}', $app->sessnum, $hubvnc);
 				$href = str_replace('{viewtoken}', $app->viewtoken, $href);
 				$href = str_replace('{viewuser}', $app->viewuser, $href);
@@ -94,12 +94,12 @@ $juser =& JFactory::getUser();
 			<a href="<?php echo $href; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 				<?php
 				echo $app->sessname;
-				if ($modmysessions->authorized === 'admin') {
+				if ($this->authorized === 'admin') {
 					echo '<br />('.$app->username.')';
 				}
 				?>
 			</a> 
-<?php if ($juser->get('username') == $app->username || $modmysessions->authorized === 'admin') { ?>
+<?php if ($juser->get('username') == $app->username || $this->authorized === 'admin') { ?>
 			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_tools&task=stop&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
 <?php } else { ?>
 			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_tools&task=unshare&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
@@ -123,7 +123,7 @@ $juser =& JFactory::getUser();
 	}
 ?>
 	</ul>
-<?php if ($modmysessions->authorized) { ?>
+<?php if ($this->authorized) { ?>
 		</div><!-- / .mysessions -->
 		<div id="allsessions" class="session_tab_panel">
 	<ul class="expandedlist">
@@ -131,12 +131,12 @@ $juser =& JFactory::getUser();
 	// Iterate through the session list and create links for each.
 	$is_even  = 1;
 	$appcount = 0;
-	$sessions = $modmysessions->allsessions;
+	$sessions = $this->allsessions;
 	if (is_array($sessions)) {
 		foreach ($sessions as $app)
 		{
 			// If we're on a specific tool page, show sessions for that tool ONLY
-			if ($modmysessions->specapp && $app->appname != $modmysessions->specapp) {
+			if ($this->specapp && $app->appname != $this->specapp) {
 				continue;
 			}
 
@@ -148,12 +148,12 @@ $juser =& JFactory::getUser();
 			<a href="<?php echo JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 				<?php
 				echo $app->sessname;
-				if ($modmysessions->authorized === 'admin') {
+				if ($this->authorized === 'admin') {
 					echo '<br />('.$app->username.')';
 				}
 				?>
 			</a> 
-<?php if ($juser->get('username') == $app->username || $modmysessions->authorized === 'admin') { ?>
+<?php if ($juser->get('username') == $app->username || $this->authorized === 'admin') { ?>
 			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_tools&task=stop&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
 <?php } else { ?>
 			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_tools&task=unshare&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
@@ -184,7 +184,7 @@ $juser =& JFactory::getUser();
 </div><!-- / .sessionlist -->
 <?php
 	// Get the disk usage
-	if ($modmysessions->show_storage) {
+	if ($this->show_storage) {
 		$du = MwUtils::getDiskUsage($juser->get('username'));
 		if (count($du) <=1) {
 			// Error

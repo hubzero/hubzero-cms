@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //-------------------------------------------------------------
 // Joomla module
@@ -38,10 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-------------------------------------------------------------
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__) . DS . 'helper.php');
 
-$modmypoints = new modMyPoints( $params );
+$modmypoints = new modMyPoints($params, $module);
 $modmypoints->display();
-
-require( JModuleHelper::getLayoutPath('mod_mypoints') );
-

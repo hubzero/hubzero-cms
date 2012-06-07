@@ -29,26 +29,23 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if ($modmypoints->error) {
-	echo '<p class="error">'.JText::_('MOD_MYPOINTS_MISSING_TABLE').'</p>'."\n";
+if ($this->error) {
+	echo '<p class="error">' . JText::_('MOD_MYPOINTS_MISSING_TABLE') . '</p>' . "\n";
 } else {
 	$juser =& JFactory::getUser();
-
-	$history = $modmypoints->history;
 ?>
-<div<?php echo ($modmypoints->moduleclass) ? ' class="'.$modmypoints->moduleclass.'"' : ''; ?>>
+<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<p id="point-balance">
-		<span><?php echo JText::_('MOD_MYPOINTS_YOU_HAVE'); ?> </span> <?php echo $modmypoints->summary; ?><small> <?php echo strtolower(JText::_('MOD_MYPOINTS_POINTS')); ?></small>
+		<span><?php echo JText::_('MOD_MYPOINTS_YOU_HAVE'); ?> </span> <?php echo $this->summary; ?><small> <?php echo strtolower(JText::_('MOD_MYPOINTS_POINTS')); ?></small>
 	</p>
-<?php if (count($history) > 0) { ?>
+<?php if (count($this->history) > 0) { ?>
 	<table class="transactions" summary="<?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_SUMMARY'); ?>">
-		<caption><?php echo JText::sprintf('MOD_MYPOINTS_TRANSACTIONS_TBL_CAPTION', $modmypoints->limit); ?></caption>
+		<caption><?php echo JText::sprintf('MOD_MYPOINTS_TRANSACTIONS_TBL_CAPTION', $this->limit); ?></caption>
 		<thead>
 			<tr>
 				<th scope="col"><?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_TH_DATE'); ?></th>
-				<!-- <th scope="col"><?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_TH_DESCRIPTION'); ?></th> -->
 				<th scope="col"><?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_TH_TYPE'); ?></th>
 				<th scope="col" class="numerical-data"><?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_TH_AMOUNT'); ?></th>
 				<th scope="col" class="numerical-data"><?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_TH_BALANCE'); ?></th>
@@ -56,31 +53,47 @@ if ($modmypoints->error) {
 		</thead>
 		<tbody>
 <?php
+	$dateformat = '%d %b %Y';
+	$tz = 0;
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$dateformat = 'd M Y';
+		$tz = true;
+	}
+
 	$cls = 'even';
-	foreach ($history as $item)
+	foreach ($this->history as $item)
 	{
 		$cls = (($cls == 'even') ? 'odd' : 'even');
-		$html  = "\t\t".'<tr class="'.$cls.'">'."\n";
-		$html .= "\t\t\t".'<td>'.JHTML::_('date',$item->created, '%d %b, %Y').'</td>'."\n";
-		//$html .= "\t\t\t".'<td>'.$item->description.'</td>'."\n";
-		$html .= "\t\t\t".'<td>'.$item->type.'</td>'."\n";
-		if ($item->type == 'withdraw') {
-			$html .= "\t\t\t".'<td class="numerical-data"><span class="withdraw">-'.$item->amount.'</span></td>'."\n";
-		} elseif ($item->type == 'hold') {
-			$html .= "\t\t\t".'<td class="numerical-data"><span class="hold">('.$item->amount.')</span></td>'."\n";
-		} else {
-			$html .= "\t\t\t".'<td class="numerical-data"><span class="deposit">+'.$item->amount.'</span></td>'."\n";
-		}
-		$html .= "\t\t\t".'<td class="numerical-data">'.$item->balance.'</td>'."\n";
-		$html .= "\t\t".'</tr>'."\n";
-		echo $html;
+?>
+			<tr class="<?php echo $cls; ?>">
+				<td>
+					<time datetime="<?php echo $item->created; ?>"><?php echo JHTML::_('date', $item->created, $dateformat, $tz); ?></time>
+				</td>
+				<td>
+					<?php echo $item->type; ?>
+				</td>
+				<td class="numerical-data">
+<?php if ($item->type == 'withdraw') { ?>
+					<span class="withdraw">-<?php echo $item->amount; ?></span>
+<?php } elseif ($item->type == 'hold') { ?>
+					<span class="hold">(<?php echo $item->amount; ?>)</span>
+<?php } else { ?>
+					<span class="deposit">+<?php echo $item->amount; ?></span>
+<?php } ?>
+				</td>
+				<td class="numerical-data">
+					<?php echo $item->balance; ?>
+				</td>
+			</tr>
+<?php
 	}
 ?>
 		</tbody>
 	</table>
 <?php } ?>
 	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='. $juser->get('id') .'&active=points'); ?>"><?php echo JText::_('MOD_MYPOINTS_ALL_TRANSACTIONS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=points'); ?>"><?php echo JText::_('MOD_MYPOINTS_ALL_TRANSACTIONS'); ?></a></li>
 	</ul>
 </div>
 <?php } ?>

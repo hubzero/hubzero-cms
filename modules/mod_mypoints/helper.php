@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMyPoints'
- * 
- * Long description (if any) ...
+ * Module class for displaying point total and recent transactions
  */
 class modMyPoints
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,59 +70,58 @@ class modMyPoints
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
+		$jconfig =& JFactory::getConfig();
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
-		$this->moduleclass = $params->get( 'moduleclass' );
-		$limit = intval( $params->get( 'limit' ) );
-		$limit = ($limit) ? $limit : 10;
-		$this->limit = $limit;
+		$this->moduleclass = $this->params->get('moduleclass');
+		$this->limit = intval($this->params->get('limit', 10));
 		$this->error = false;
 
 		// Check for the existence of required tables that should be
 		// installed with the com_support component
-		$database->setQuery("SHOW TABLES");
-		$tables = $database->loadResultArray();
+		$tables = $database->getTableList();
 
-		if ($tables && array_search($database->_table_prefix.'users_points', $tables)===false) {
-			// MEssages table not found!
+		if ($tables && array_search($jconfig->getValue('config.dbprefix') . 'users_points', $tables) === false) 
+		{
+			// Points table not found
 			$this->error = true;
-		} else {
+		} 
+		else 
+		{
 			// Find the user's most recent support tickets
 			ximport('Hubzero_Bank');
 
-			$BTL  = new Hubzero_Bank_Teller( $database, $juser->get('id') );
+			$BTL  = new Hubzero_Bank_Teller($database, $juser->get('id'));
 			$this->summary = $BTL->summary();
-			$this->history = $BTL->history($limit);
+			$this->history = $BTL->history($this->limit);
 
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStyleSheet('mod_mypoints');
+			Hubzero_Document::addModuleStyleSheet($this->module->module);
 		}
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

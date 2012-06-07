@@ -29,16 +29,16 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if ($modmyfavorites->error) {
-	echo '<p class="error">'.JText::_('MOD_MYFAVORITES_MISSING_TABLE').'</p>'."\n";
+if ($this->error) {
+	echo '<p class="error">' . JText::_('MOD_MYFAVORITES_MISSING_TABLE') . '</p>' . "\n";
 } else {
 	$juser =& JFactory::getUser();
 
-	$results = $modmyfavorites->results;
-	$cats = $modmyfavorites->cats;
-	$active = $modmyfavorites->active;
+	$results = $this->results;
+	$cats = $this->cats;
+	$active = $this->active;
 
 	// Build the HTML
 	$foundresults = false;
@@ -55,14 +55,14 @@ if ($modmyfavorites->error) {
 
 			$name  = $cats[$k]['title'];
 			$total = $cats[$k]['total'];
-			$divid = 'search'.$cats[$k]['category'];
+			$divid = 'search' . $cats[$k]['category'];
 
 			// Is this category the active category?
 			if (!$active || $active == $cats[$k]['category']) {
 				// It is - get some needed info
 				$name  = $cats[$k]['title'];
 				$total = $cats[$k]['total'];
-				$divid = 'search'.$cats[$k]['category'];
+				$divid = 'search' . $cats[$k]['category'];
 			} else {
 				// It is not - does this category have sub-categories?
 				if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
@@ -73,7 +73,7 @@ if ($modmyfavorites->error) {
 							// Found an active category
 							$name  = $sub['title'];
 							$total = $sub['total'];
-							$divid = 'search'.$sub['category'];
+							$divid = 'search' . $sub['category'];
 							break;
 						}
 					}
@@ -81,7 +81,7 @@ if ($modmyfavorites->error) {
 			}
 
 			// Build the category HTML
-			$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.$name.' <span>'.JText::sprintf('MOD_MYFAVORITES_RESULTS',$total).'</span></h4>'."\n";
+			$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.stripslashes($name).' <span>'.JText::sprintf('MOD_MYFAVORITES_RESULTS', $total).'</span></h4>'."\n";
 			$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
 			$html .= '<ol class="compactlist">'."\n";
 			foreach ($category as $row)
@@ -99,10 +99,10 @@ if ($modmyfavorites->error) {
 			if ($cats[$k]['total'] > 5) {
 				$qs = 'area='.urlencode(strToLower($cats[$k]['category']));
 				$seff = JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=favorites');
-				if (strstr( $seff, 'index' )) {
-					$seff .= '&amp;'.$qs;
+				if (strstr($seff, 'index')) {
+					$seff .= '&amp;' . $qs;
 				} else {
-					$seff .= '?'.$qs;
+					$seff .= '?' . $qs;
 				}
 
 				$html .= '<p class="more">'.JText::sprintf('MOD_MYFAVORITES_NUMBER_FAVORITES_SHOWN', $amt);
@@ -114,7 +114,7 @@ if ($modmyfavorites->error) {
 		$k++;
 	}
 	if (!$foundresults) {
-		$html .= '<p>'. JText::_('MOD_MYFAVORITES_NO_FAVORITES') .'</p>';
+		$html .= '<p>' . JText::_('MOD_MYFAVORITES_NO_FAVORITES') . '</p>';
 	}
 
 	// Output the HTML

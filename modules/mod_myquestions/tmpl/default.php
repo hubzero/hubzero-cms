@@ -35,25 +35,23 @@ ximport('Hubzero_View_Helper_Html');
 
 // Questions I asked
 $html  = '<h4>'.JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS').' <small><a href="'.JRoute::_('index.php?option=com_answers&task=search&area=mine&filterby=open').'">'.JText::_('MOD_MYQUESTIONS_VIEW_ALL').'</a></small></h4>'."\n";
-if ($modmyquestions->openquestions) 
+if ($this->openquestions) 
 {
-	$openquestions = $modmyquestions->openquestions;
-
 	$html .= '<ul class="compactlist">'."\n";
-	for ($i=0; $i < count($openquestions); $i++)
+	for ($i=0; $i < count($this->openquestions); $i++)
 	{
-		if ($i < $modmyquestions->limit_mine) 
+		if ($i < $this->limit_mine) 
 		{
-			$rcount = (isset($openquestions[$i]->rcount)) ?  $openquestions[$i]->rcount : 0;
+			$rcount = (isset($this->openquestions[$i]->rcount)) ?  $this->openquestions[$i]->rcount : 0;
 			$rclass = ($rcount > 0) ?  'yes' : 'no';
 
 			$html .= "\t".'<li class="question">'."\n";
-			$html .= "\t\t".'<a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$openquestions[$i]->id).'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($openquestions[$i]->subject), 60, 0).'</a>'."\n";
+			$html .= "\t\t".'<a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$this->openquestions[$i]->id).'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($this->openquestions[$i]->subject), 60, 0).'</a>'."\n";
 			$html .= "\t\t".'<span><span class="responses_'.$rclass.'">'.$rcount.'</span></span>'."\n";
 
-			if ($rcount > 0 && $modmyquestions->banking) 
+			if ($rcount > 0 && $this->banking) 
 			{
-				$html .= "\t\t".'<p class="earnpoints">'.JText::_('MOD_MYQUESTIONS_CLOSE_THIS_QUESTION').' '.$openquestions[$i]->maxaward.' '.JText::_('MOD_MYQUESTIONS_POINTS').'</p>';
+				$html .= "\t\t".'<p class="earnpoints">'.JText::_('MOD_MYQUESTIONS_CLOSE_THIS_QUESTION').' '.$this->openquestions[$i]->maxaward.' '.JText::_('MOD_MYQUESTIONS_POINTS').'</p>';
 			}
 			$html .= "\t".'</li>'."\n";
 		}
@@ -69,24 +67,22 @@ $html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_answers&task=new
 $html .= "\t".'</ul>'."\n";
 
 // Questions related to my contributions
-if ($modmyquestions->show_assigned) 
+if ($this->show_assigned) 
 {
-	$assigned = $modmyquestions->assigned;
-
 	$html .= '<h4>'.JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS_ON_CONTRIBUTIONS').' <small><a href="'.JRoute::_('index.php?option=com_answers&task=search&area=assigned&filterby=open').'">'.JText::_('MOD_MYQUESTIONS_VIEW_ALL').'</a></small></h4>'."\n";
-	if ($assigned) 
+	if ($this->assigned) 
 	{
 		$html .= '<p class="incentive"><span>'.strtolower(JText::_('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN')).'</span></p>'."\n";
 		$html .= '<ul class="compactlist">'."\n";
-		for ($i=0; $i < count($assigned); $i++)
+		for ($i=0; $i < count($this->assigned); $i++)
 		{
-			if ($i < $modmyquestions->limit_assigned) 
+			if ($i < $this->limit_assigned) 
 			{
 				$html .= "\t".'<li class="question">'."\n";
-				$html .= "\t\t".'<a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$assigned[$i]->id).'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($assigned[$i]->subject), 60, 0).'</a>'."\n";
-				if ($modmyquestions->banking) 
+				$html .= "\t\t".'<a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$this->assigned[$i]->id).'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($this->assigned[$i]->subject), 60, 0).'</a>'."\n";
+				if ($this->banking) 
 				{
-					$html .= "\t\t".'<span ><span class="pts">'.$assigned[$i]->maxaward.' '.strtolower(JText::_('MOD_MYQUESTIONS_PTS')).'</span></span>'."\n";
+					$html .= "\t\t".'<span ><span class="pts">'.$this->assigned[$i]->maxaward.' '.strtolower(JText::_('MOD_MYQUESTIONS_PTS')).'</span></span>'."\n";
 				}
 				$html .= "\t".'</li>'."\n";
 			}
@@ -100,14 +96,13 @@ if ($modmyquestions->show_assigned)
 }
 
 // Questions of interest
-if ($modmyquestions->show_interests) 
+if ($this->show_interests) 
 {
 	$juser =& JFactory::getUser();
-	$otherquestions = $modmyquestions->otherquestions;
 
 	$html .= '<h4>'.JText::_('MOD_MYQUESTIONS_QUESTIONS_TO_ANSWER').' <small><a href="'.JRoute::_('index.php?option=com_answers&task=search&area=interest&filterby=open').'">'.JText::_('MOD_MYQUESTIONS_VIEW_ALL').'</a></small></h4>'."\n";
 	$html .= "\t".'<p class="category-header-details">'."\n";
-	if ($modmyquestions->interests) 
+	if ($this->interests) 
 	{
 		$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members&task=edit&id='.$juser->get('id')).'">'.JText::_('MOD_MYQUESTIONS_EDIT').'</a>]</span>'."\n";
 	} 
@@ -115,21 +110,21 @@ if ($modmyquestions->show_interests)
 	{
 		$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members&task=edit&id='.$juser->get('id')).'">'.JText::_('MOD_MYQUESTIONS_ADD_INTERESTS').'</a>]</span>'."\n";
 	}
-	$html .= "\t\t".'<span class="q">'.JText::_('MOD_MYQUESTIONS_MY_INTERESTS').': '.$modmyquestions->intext.'</span>'."\n";
+	$html .= "\t\t".'<span class="q">'.JText::_('MOD_MYQUESTIONS_MY_INTERESTS').': '.$this->intext.'</span>'."\n";
 	$html .= "\t".'</p>'."\n";
-	if ($otherquestions) 
+	if ($this->otherquestions) 
 	{
 		$html .= '<p class="incentive"><span>'.strtolower(JText::_('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN')).'</span></p>'."\n";
 		$html .= '<ul class="compactlist">'."\n";
-		for ($i=0; $i < count($otherquestions); $i++)
+		for ($i=0; $i < count($this->otherquestions); $i++)
 		{
-			if ($i < $modmyquestions->limit_interest) 
+			if ($i < $this->limit_interest) 
 			{
 				$html .= "\t".'<li class="question">'."\n";
-				$html .= "\t\t".'<a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$otherquestions[$i]->id).'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($otherquestions[$i]->subject), 60, 0).'</a>'."\n";
-				if ($modmyquestions->banking) 
+				$html .= "\t\t".'<a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$this->otherquestions[$i]->id).'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($this->otherquestions[$i]->subject), 60, 0).'</a>'."\n";
+				if ($this->banking) 
 				{
-					$html .= "\t\t".'<span><span class="pts">'.$otherquestions[$i]->maxaward.' '.strtolower(JText::_('MOD_MYQUESTIONS_PTS')).'</span></span>'."\n";
+					$html .= "\t\t".'<span><span class="pts">'.$this->otherquestions[$i]->maxaward.' '.strtolower(JText::_('MOD_MYQUESTIONS_PTS')).'</span></span>'."\n";
 				}
 
 				$html .= "\t".'</li>'."\n";

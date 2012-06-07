@@ -39,72 +39,67 @@ defined('_JEXEC') or die('Restricted access');
 class modMyQuestions
 {
 	/**
-	 * Container for class data
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_attributes = array();
+	private $attributes = array();
 
 	/**
-	 * Class constructor
-	 * Sets the params property
+	 * Constructor
 	 * 
 	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct($params)
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $property Name of property
+	 * @param      string $property Name of property to set
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
 	{
-		$this->_attributes[$property] = $value;
+		$this->attributes[$property] = $value;
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->attributes[$property])) 
 		{
-			return $this->_attributes[$property];
+			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'formatTags'
+	 * Format the tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $string Parameter description (if any) ...
-	 * @param      number $num Parameter description (if any) ...
-	 * @param      integer $max Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $string String of comma-separated tags
+	 * @param      number  $num    Number of tags to display
+	 * @param      integer $max    Max character length
+	 * @return     string HTML
 	 */
 	private function _formatTags($string='', $num=3, $max=25)
 	{
 		$out = '';
-		$tags = preg_split('#,#', $string);
+		$tags = explode(',', $string);
 
 		if (count($tags) > 0) 
 		{
-			$out .= '<span class="taggi">'."\n";
+			$out .= '<span class="taggi">' . "\n";
 			$counter = 0;
 
 			for ($i=0; $i< count($tags); $i++)
@@ -117,16 +112,16 @@ class modMyQuestions
 				if ($i < $num) 
 				{
 					// display tag
-					$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $tags[$i]);
+					$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
 					$normalized = strtolower($normalized);
-					$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags&tag='.$normalized).'">'.stripslashes($tags[$i]).'</a> '."\n";
+					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num) 
 			{
 				$out .= ' (&#8230;)';
 			}
-			$out .= '</span>'."\n";
+			$out .= '</span>' . "\n";
 		}
 
 		return $out;
@@ -136,14 +131,14 @@ class modMyQuestions
 	 * Looks up a user's interests (tags)
 	 * 
 	 * @param      integer $cloud Output as tagcloud (defaults to no)
-	 * @return     mixed   List of tags as either a tagcloud or comma-delimitated string 
+	 * @return     string  List of tags as either a tagcloud or comma-delimitated string 
 	 */
 	private function _getInterests($cloud=0)
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
-		require_once(JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'tags.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 
 		// Get tags of interest
 		$mt = new MembersTags($database);
@@ -172,11 +167,11 @@ class modMyQuestions
 		$juser =& JFactory::getUser();
 
 		// Get some classes we need
-		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php');
-		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php');
-		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php');
-		require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php');
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'economy.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
 		$aq = new AnswersQuestion($database);
 		if ($this->banking) 
@@ -206,7 +201,7 @@ class modMyQuestions
 
 			case 'assigned':
 				$filters['mine'] = 0;
-				require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.author.php');
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.author.php');
 
 				$TA = new ToolAuthor($database);
 				$tools = $TA->getToolContributions($juser->get('id'));
@@ -273,7 +268,7 @@ class modMyQuestions
 		//$juser =& JFactory::getUser();
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_myquestions');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
 		// show assigned?
 		$show_assigned = intval($this->params->get('show_assigned'));
@@ -333,6 +328,8 @@ class modMyQuestions
 		$this->limit_mine = ($totalq - $opencount) >= $breaker * ($c-1) ? $breaker : $max - ($totalq - $opencount);
 		$this->limit_assigned = ($totalq - $assignedcount) >= $breaker * ($c-1) ? $breaker : $max - ($totalq - $assignedcount);
 		$this->limit_interest = ($totalq - $othercount) >= $breaker * ($c-1) ? $breaker : $max - ($totalq - $othercount);
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

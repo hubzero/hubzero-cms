@@ -29,9 +29,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
-<table <?php echo ($modlatestusage->cls) ? 'class="'.$modlatestusage->cls.'" ' : ''; ?> summary="<?php echo JText::_('MOD_LATESTUSAGE'); ?>">
+<table <?php echo ($this->cls) ? 'class="' . $this->cls . '" ' : ''; ?> summary="<?php echo JText::_('MOD_LATESTUSAGE'); ?>">
 	<caption><?php echo JText::_('MOD_LATESTUSAGE_CAPTION'); ?></caption>
 	<tfoot>
 		<tr>
@@ -42,19 +42,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<tbody>
 		<tr>
 			<th scope="row"><?php echo JText::_('MOD_LATESTUSAGE_USERS'); ?></th>
-			<td class="numerical-data"><?php echo $modlatestusage->users; ?></td>
+			<td class="numerical-data"><?php echo $this->users; ?></td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo JText::_('MOD_LATESTUSAGE_RESOURCES'); ?></th>
-			<td class="numerical-data"><?php echo $modlatestusage->resources; ?></td>
+			<td class="numerical-data"><?php echo $this->resources; ?></td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo JText::_('MOD_LATESTUSAGE_TOOLS'); ?></th>
-			<td class="numerical-data"><?php echo $modlatestusage->tools; ?></td>
+			<td class="numerical-data"><?php echo $this->tools; ?></td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo JText::_('MOD_LATESTUSAGE_SIMULATIONS'); ?></th>
-			<td class="numerical-data"><?php echo $modlatestusage->sims; ?></td>
+			<td class="numerical-data"><?php echo $this->sims; ?></td>
 		</tr>
 	</tbody>
 </table>

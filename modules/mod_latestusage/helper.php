@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modLatestusage'
- * 
- * Long description (if any) ...
+ * Module class for displaying latest usage
  */
 class modLatestusage
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,26 +70,23 @@ class modLatestusage
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_getOnlineCount'
+	 * Get the count of users currently online
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	private function _getOnlineCount()
 	{
@@ -110,19 +102,23 @@ class modLatestusage
 		$db->setQuery($query);
 		$sessions = $db->loadObjectList();
 
-		if ($db->getErrorNum()) {
-			JError::raiseWarning( 500, $db->stderr() );
+		if ($db->getErrorNum()) 
+		{
+			JError::raiseWarning(500, $db->stderr());
 		}
 
-		if (count($sessions)) {
+		if (count($sessions)) 
+		{
 			foreach ($sessions as $session)
 			{
 				// If guest increase guest count by 1
-				if ($session->guest == 1 && !$session->usertype) {
+				if ($session->guest == 1 && !$session->usertype) 
+				{
 					$guest_array++;
 				}
 				// If member increase member count by 1
-				if ($session->guest == 0) {
+				if ($session->guest == 0) 
+				{
 					$user_array++;
 				}
 			}
@@ -135,9 +131,7 @@ class modLatestusage
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
@@ -145,32 +139,34 @@ class modLatestusage
 	{
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
-
-		//$count = $this->_getOnlineCount();
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_usage'.DS.'helpers'.DS.'helper.php' );
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_usage' . DS . 'helpers' . DS . 'helper.php');
 		$udb =& UsageHelper::getUDBO();
 
-		$this->cls = trim($params->get( 'moduleclass_sfx' ));
+		$this->cls = trim($this->params->get('moduleclass_sfx'));
 
-		if ($udb) {
-			$udb->setQuery( 'SELECT value FROM summary_user_vals WHERE datetime = (SELECT MAX(datetime) FROM summary_user_vals) AND period = "12" AND colid = "1" AND rowid = "1"' );
+		if ($udb) 
+		{
+			$udb->setQuery('SELECT value FROM summary_user_vals WHERE datetime = (SELECT MAX(datetime) FROM summary_user_vals) AND period = "12" AND colid = "1" AND rowid = "1"');
 			$this->users = $udb->loadResult();
 
-			$udb->setQuery( 'SELECT value FROM summary_simusage_vals WHERE datetime  = (SELECT MAX(datetime) FROM summary_simusage_vals) AND period = "12" AND colid = "1" AND rowid = "2"' );
+			$udb->setQuery('SELECT value FROM summary_simusage_vals WHERE datetime  = (SELECT MAX(datetime) FROM summary_simusage_vals) AND period = "12" AND colid = "1" AND rowid = "2"');
 			$this->sims = $udb->loadResult();
-		} else {
-			$database->setQuery( "SELECT COUNT(*) FROM #__users" );
+		} 
+		else 
+		{
+			$database->setQuery("SELECT COUNT(*) FROM #__users");
 			$this->users = $database->loadResult();
 
 			$this->sims = 0;
 		}
 
-		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4" );
+		$database->setQuery("SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4");
 		$this->resources = $database->loadResult();
 
-		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7" );
+		$database->setQuery("SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7");
 		$this->tools = $database->loadResult();
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

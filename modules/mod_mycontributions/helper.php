@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMyContributions'
- * 
- * Long description (if any) ...
+ * Module class for displaying contributions in progress
  */
 class modMyContributions
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,26 +70,23 @@ class modMyContributions
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_getContributions'
+	 * Get a list of contributions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	private function _getContributions()
 	{
@@ -108,7 +100,7 @@ class modMyContributions
 			. " FROM #__resources AS R, #__author_assoc AS AA"
 			. " WHERE AA.authorid='". $juser->get('id') ."'"
 			. " AND R.id=AA.subid AND AA.subtable='resources' AND R.standalone='1' AND R.published=1";
-		$database->setQuery( $query1 );
+		$database->setQuery($query1);
 		$contributions['published'] = $database->loadResult();
 		*/
 
@@ -127,7 +119,7 @@ class modMyContributions
 		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, R.created, R.created_by, R.published, R.publish_up, R.standalone, R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 		$query .= "FROM #__resource_types AS rt, #__resources AS R ";
 		$query .= "LEFT JOIN #__author_assoc AS aa ON aa.subid=R.id AND aa.subtable='resources' ";
-		$query .= "WHERE (aa.authorid='". $juser->get('id') ."' OR R.created_by=". $juser->get('id') .") ";
+		$query .= "WHERE (aa.authorid='" . $juser->get('id') . "' OR R.created_by=" . $juser->get('id') . ") ";
 		$query .= "AND R.standalone=1 AND R.type=rt.id AND (R.published=2 OR R.published=3) AND R.type!=7 ";
 		$query .= "ORDER BY published ASC, title ASC";
 
@@ -139,7 +131,7 @@ class modMyContributions
 			. " FROM #__resources AS R, #__author_assoc AS AA"
 			. " WHERE AA.authorid='". $juser->get('id') ."'"
 			. " AND R.id=AA.subid AND AA.subtable='resources' AND R.standalone='1' AND R.published=3";
-		$database->setQuery( $query3 );
+		$database->setQuery($query3);
 		$contributions['pending'] = $database->loadResult();
 		*/
 
@@ -147,15 +139,13 @@ class modMyContributions
 	}
 
 	/**
-	 * Short description for '_getToollist'
+	 * Get a list of tools
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $show_questions Parameter description (if any) ...
-	 * @param      unknown $show_wishes Parameter description (if any) ...
-	 * @param      unknown $show_tickets Parameter description (if any) ...
-	 * @param      string $limit_tools Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $show_questions Show question count for tool
+	 * @param      integer $show_wishes    Show wish count for tool
+	 * @param      integer $show_tickets   Show ticket count for tool
+	 * @param      string  $limit_tools    Number of records to pull
+	 * @return     mixed False if error, otherwise array
 	 */
 	private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools='40')
 	{
@@ -167,13 +157,14 @@ class modMyContributions
 		$filters['sortby'] = 'f.published DESC';
 		$filters['filterby'] = 'all';
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.tool.php');
 
 		// Create a Tool object
-		$rows = Hubzero_Tool::getTools( $filters, false);
+		$rows = Hubzero_Tool::getTools($filters, false);
 		$limit = 100000;
 
-		if ($rows) {
+		if ($rows) 
+		{
 			for ($i=0; $i < count($rows); $i++)
 			{
 				// what is resource id?
@@ -181,25 +172,29 @@ class modMyContributions
 				$rows[$i]->rid = $rid;
 
 				// get questions, wishes and tickets on published tools
-				if ($rows[$i]->published == 1 && $i <= $limit_tools) {
-					if ($show_questions) {
+				if ($rows[$i]->published == 1 && $i <= $limit_tools) 
+				{
+					if ($show_questions) 
+					{
 						// get open questions
-						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
-						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
-						$aq = new AnswersQuestion( $database );
+						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+						$aq = new AnswersQuestion($database);
 						$filters = array();
 						$filters['limit']    = $limit;
 						$filters['start']    = 0;
 						$filters['filterby'] = 'open';
 						$filters['sortby']   = 'date';
-						$filters['mine']	 = 0;
-						$filters['tag']  	 = 'tool'.$rows[$i]->toolname;
-						$results = $aq->getResults( $filters );
+						$filters['mine']     = 0;
+						$filters['tag']      = 'tool' . $rows[$i]->toolname;
+						$results = $aq->getResults($filters);
 						$unanswered = 0;
-						if ($results) {
+						if ($results) 
+						{
 							foreach ($results as $r)
 							{
-								if ($r->rcount == 0) {
+								if ($r->rcount == 0) 
+								{
 									$unanswered++;
 								}
 							}
@@ -209,32 +204,36 @@ class modMyContributions
 						$rows[$i]->q_new = $unanswered;
 					}
 
-					if ($show_wishes) {
+					if ($show_wishes) 
+					{
 						// get open wishes
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php' );
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php' );
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.group.php' );
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php' );
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php' );
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php' );
-						require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'controller.php' );
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.plan.php');
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.php');
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.group.php');
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
+						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controller.php');
 
-						$objWishlist = new Wishlist( $database );
-						$objWish = new Wish( $database );
+						$objWishlist = new Wishlist($database);
+						$objWish = new Wish($database);
 						$listid = $objWishlist->get_wishlistID($rid, 'resource');
 
 						$rows[$i]->w = 0;
 						$rows[$i]->w_new = 0;
 
-						if ($listid) {
+						if ($listid) 
+						{
 							$filters = WishlistController::getFilters(1);
 							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
 							$unranked = 0;
-							if ($wishes) {
+							if ($wishes) 
+							{
 								foreach ($wishes as $w)
 								{
-									if ($w->ranked == 0) {
+									if ($w->ranked == 0) 
+									{
 										$unranked++;
 									}
 								}
@@ -245,27 +244,31 @@ class modMyContributions
 						}
 					}
 
-					if ($show_tickets) {
+					if ($show_tickets) 
+					{
 						// get open tickets
 						$group = $rows[$i]->devgroup;
 
 						// Find support tickets on the user's contributions
-						$database->setQuery( "SELECT id, summary, category, status, severity, owner, created, login, name, 
+						$database->setQuery("SELECT id, summary, category, status, severity, owner, created, login, name, 
 							 (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
 							 FROM #__support_tickets as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group='$group'
 							 ORDER BY created DESC
 							 LIMIT $limit"
-							);
+						);
 						$tickets = $database->loadObjectList();
-						if ($database->getErrorNum()) {
+						if ($database->getErrorNum()) 
+						{
 							echo $database->stderr();
 							return false;
 						}
 						$unassigned = 0;
-						if ($tickets) {
+						if ($tickets) 
+						{
 							foreach ($tickets as $t)
 							{
-								if ($t->comments == 0 && $t->status==0 && !$t->owner) {
+								if ($t->comments == 0 && $t->status == 0 && !$t->owner) 
+								{
 									$unassigned++;
 								}
 							}
@@ -282,12 +285,10 @@ class modMyContributions
 	}
 
 	/**
-	 * Short description for 'getState'
+	 * Get tool status text
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $int Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $int Tool status
+	 * @return     string
 	 */
 	public function getState($int)
 	{
@@ -307,31 +308,27 @@ class modMyContributions
 	}
 
 	/**
-	 * Short description for 'getType'
+	 * Get resource type title
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $int Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $int Resource type
+	 * @return     string
 	 */
 	public function getType($int)
 	{
 		switch ($int)
 		{
-			case 1:  $type = 'Online Presentation';      break;  // online presentations
-			case 3:  $type = 'Publication';       break;  // publications
-			case 5:  $type = 'Animation';         break;  // animations
-			case 9:  $type = 'Download';          break;  // downloads
-			case 39: $type = 'Teaching Material'; break;  // teaching materials
-			default: $type = 'Other';             break;
+			case 1:  $type = 'Online Presentation'; break;  // online presentations
+			case 3:  $type = 'Publication';         break;  // publications
+			case 5:  $type = 'Animation';           break;  // animations
+			case 9:  $type = 'Download';            break;  // downloads
+			case 39: $type = 'Teaching Material';   break;  // teaching materials
+			default: $type = 'Other';               break;
 		}
 		return $type;
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module contents
 	 * 
 	 * @return     void
 	 */
@@ -344,44 +341,34 @@ class modMyContributions
 		$administrator = in_array('middleware', $xprofile->get('admin'));
 
 		// show tool contributions separately?
-		$show_tools = intval( $this->params->get( 'show_tools' ) );
-		$show_tools = $show_tools ? $show_tools : 1;
-		$this->show_tools = $show_tools;
+		$this->show_tools = intval($this->params->get('show_tools', 1));
 
 		// get questions on resources?
-		//$show_questions = intval( $this->params->get( 'get_questions' ) );
-		//$show_questions = $show_questions ? $show_questions : 1;
-		$this->show_questions = 1;
+		$this->show_questions = intval($this->params->get('get_questions', 1));
 
 		// get wishes on resources?
-		//$show_wishes = intval( $this->params->get( 'get_wishes' ) );
-		//$show_wishes = $show_wishes ? $show_wishes : 1;
-		$this->show_wishes = 1;
+		$this->show_wishes = intval($this->params->get('get_wishes', 1));
 
 		// get tickets on resources?
-		//$show_tickets = intval( $this->params->get( 'get_tickets' ) );
-		//$show_tickets = $show_tickets ? $show_tickets : 1;
-		$this->show_tickets = 1;
+		$this->show_tickets = intval($this->params->get('get_tickets', 1));
 
 		// how many tools to display?
-		$limit_tools = intval( $this->params->get( 'limit_tools' ) );
-		$limit_tools = $limit_tools ? $limit_tools : 10;
-		$this->limit_tools = $limit_tools;
+		$this->limit_tools = intval($this->params->get('limit_tools', 10));
 
 		// how many tools to display?
-		$limit_other = intval( $this->params->get( 'limit_other' ) );
-		$limit_other = $limit_other ? $limit_other : 5;
-		$this->limit_other = $limit_other;
+		$this->limit_other = intval($this->params->get('limit_other', 5));
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_mycontributions');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
 		// Tools in progress
 		$this->tools = ($this->show_tools) ? $this->_getToollist($this->show_questions, $this->show_wishes, $this->show_tickets, $this->limit_tools) : array();
 
 		// Other cotnributions
 		$this->contributions = $this->_getContributions();
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

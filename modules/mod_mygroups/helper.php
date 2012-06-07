@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMyGroups'
- * 
- * Long description (if any) ...
+ * Module class for displaying a list of groups for a user
  */
 class modMyGroups
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,28 +70,25 @@ class modMyGroups
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_getGroups'
+	 * Get groups for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $uid  User ID
+	 * @param      string  $type Membership type to return groups for
+	 * @return     array
 	 */
 	private function _getGroups($uid, $type='all')
 	{
@@ -105,23 +97,23 @@ class modMyGroups
 		// Get all groups the user is a member of
 		$query1 = "SELECT g.published, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_applicants AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		$query2 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_members AS m 
 				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN 
-				   		(SELECT uidNumber 
+						(SELECT uidNumber 
 						 FROM #__xgroups_managers AS manager
 						 WHERE manager.gidNumber = m.gidNumber)
-				   AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		$query3 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_managers AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		$query4 = "SELECT g.published, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager 
 				   FROM #__xgroups AS g, #__xgroups_invitees AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		switch ($type)
 		{
@@ -148,34 +140,46 @@ class modMyGroups
 		$result = $db->loadObjectList();
 
 		if (empty($result))
+		{
 			return array();
+		}
 
 		return $result;
 	}
 
 	/**
-	 * Short description for 'getStatus'
+	 * Get the user's status in the gorup
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $group Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object $group Group to check status in
+	 * @return     string
 	 */
-	public function getStatus( $group )
+	public function getStatus($group)
 	{
-		if ($group->manager) {
+		if ($group->manager) 
+		{
 			$status = 'manager';
-		} else {
-			if ($group->registered) {
-				if ($group->regconfirmed) {
+		} 
+		else 
+		{
+			if ($group->registered) 
+			{
+				if ($group->regconfirmed) 
+				{
 					$status = 'member';
-				} else {
+				} 
+				else 
+				{
 					$status = 'pending';
 				}
-			} else {
-				if ($group->regconfirmed) {
+			} 
+			else 
+			{
+				if ($group->regconfirmed) 
+				{
 					$status = 'invitee';
-				} else {
+				} 
+				else 
+				{
 					$status = '';
 				}
 			}
@@ -184,9 +188,7 @@ class modMyGroups
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module contents
 	 * 
 	 * @return     void
 	 */
@@ -195,27 +197,24 @@ class modMyGroups
 		$juser =& JFactory::getUser();
 
 		// Get the module parameters
-		$params =& $this->params;
-		$this->moduleclass = $params->get( 'moduleclass' );
-		$limit = intval( $params->get( 'limit' ) );
-		$limit = ($limit) ? $limit : 10;
+		$this->moduleclass = $this->params->get('moduleclass');
+		$this->limit = intval($this->params->get('limit', 10));
 
 		// Get the user's groups
-		$members  = $this->_getGroups( $juser->get('id'), 'all' );
+		$members = $this->_getGroups($juser->get('id'), 'all');
 
 		$groups = array();
-
 		foreach ($members as $mem)
 		{
 			$groups[] = $mem;
 		}
-
-		$this->limit = $limit;
 		$this->groups = $groups;
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_mygroups');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

@@ -50,9 +50,10 @@ class modGoogleAnalytics
 	 * @param      object $params JParameter
 	 * @return     void
 	 */
-	public function __construct($params)
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
@@ -101,6 +102,6 @@ class modGoogleAnalytics
 			return;
 		}
 
-		require(JModuleHelper::getLayoutPath('mod_googleanalytics'));
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMySessions'
- * 
- * Long description (if any) ...
+ * Module class for displaying a user's sessions
  */
 class modMySessions
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,64 +70,60 @@ class modMySessions
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_setTimeout'
+	 * Set the time when the session will tiemout
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $sess Parameter description (if any) ...
+	 * @param      integer $sess Session ID
 	 * @return     void
 	 */
-	private function _setTimeout( $sess )
+	private function _setTimeout($sess)
 	{
 		$mwdb =& MwUtils::getMWDBO();
 
-		$ms = new MwSession( $mwdb );
-		$ms->load( $sess );
+		$ms = new MwSession($mwdb);
+		$ms->load($sess);
 		$ms->timeout = 1209600;
 		$ms->store();
 	}
 
 	/**
-	 * Short description for '_getTimeout'
+	 * Get the time when the session will tiemout
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $sess Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $sess Session ID
+	 * @return     string
 	 */
-	private function _getTimeout( $sess )
+	private function _getTimeout($sess)
 	{
 		$mwdb =& MwUtils::getMWDBO();
 
-		$ms = new MwSession( $mwdb );
+		$ms = new MwSession($mwdb);
 		$remaining = $ms->getTimeout();
 
 		$tl = 'unknown';
 
-		if (is_numeric($remaining)) {
+		if (is_numeric($remaining)) 
+		{
 			$days_left = floor($remaining/60/60/24);
 			$hours_left = floor(($remaining - $days_left*60*60*24)/60/60);
 			$minutes_left = floor(($remaining - $days_left*60*60*24 - $hours_left*60*60)/60);
 			$left = array($days_left, $hours_left, $minutes_left);
 
 			$tl  = '';
-			$tl .= ($days_left > 0) ? $days_left .' days, ' : '';
-			$tl .= ($hours_left > 0) ? $hours_left .' hours, ' : '';
+			$tl .= ($days_left > 0)    ? $days_left .' days, '    : '';
+			$tl .= ($hours_left > 0)   ? $hours_left .' hours, '  : '';
 			$tl .= ($minutes_left > 0) ? $minutes_left .' minute' : '';
 			$tl .= ($minutes_left > 1) ? 's' : '';
 		}
@@ -140,72 +131,77 @@ class modMySessions
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display module content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{
-		// Get the module parameters
-		$params =& $this->params;
-		$this->moduleclass_sfx = $params->get( 'moduleclass_sfx' );
-		$this->show_storage = $params->get( 'show_storage' );
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
+
+		$this->moduleclass_sfx = $this->params->get('moduleclass_sfx');
+		$this->show_storage = $this->params->get('show_storage', 1);
 
 		// Check if the user is an admin.
 		$this->authorized = false;
 
 		$xprofile =& Hubzero_Factory::getProfile();
-		if (is_object($xprofile)) {
-			if (in_array('middleware', $xprofile->get('admin'))) {
+		if (is_object($xprofile)) 
+		{
+			if (in_array('middleware', $xprofile->get('admin'))) 
+			{
 				$this->authorized = 'admin';
 			}
 		}
 
 		$jacl =& JFactory::getACL();
-		$jacl->addACL( 'com_tools', 'manage', 'users', 'super administrator' );
-		$jacl->addACL( 'com_tools', 'manage', 'users', 'administrator' );
-		$jacl->addACL( 'com_tools', 'manage', 'users', 'manager' );
+		$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
+		$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
+		$jacl->addACL('com_tools', 'manage', 'users', 'manager');
 
 		$juser =& JFactory::getUser();
 
 		// Get a connection to the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 
-		$mconfig = JComponentHelper::getParams( 'com_tools' );
+		$mconfig = JComponentHelper::getParams('com_tools');
 
 		// Ensure we have a connection to the middleware
 		$this->error = false;
 		if (!$mwdb
 		 || !$mconfig->get('mw_on')
-		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) {
+		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) 
+		{
 			$this->error = true;
 			return false;
 		}
 
-		$ms = new MwSession( $mwdb );
-		$this->sessions = $ms->getRecords( $juser->get('username'), '', false );
-		if ($this->authorized) {
-			// Add the JavaScript that does the AJAX magic to the template
-			$document =& JFactory::getDocument();
-			$document->addScript('/modules/mod_mysessions/mod_mysessions.js');
+		// Push the module CSS to the template
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
-			$this->allsessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
+		$ms = new MwSession($mwdb);
+		$this->sessions = $ms->getRecords($juser->get('username'), '', false);
+		if ($this->authorized) 
+		{
+			// Add the JavaScript that does the AJAX magic to the template
+			Hubzero_Document::addModuleScript($this->module->module);
+
+			$this->allsessions = $ms->getRecords($juser->get('username'), '', $this->authorized);
 		}
 
-		$rconfig = JComponentHelper::getParams( 'com_resources' );
+		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->supportedtag = $rconfig->get('supportedtag');
 
 		$database =& JFactory::getDBO();
-		if ($this->supportedtag) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-			$this->rt = new ResourcesTags( $database );
+		if ($this->supportedtag) 
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			$this->rt = new ResourcesTags($database);
 		}
 
-		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_mysessions');
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

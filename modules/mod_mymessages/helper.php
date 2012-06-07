@@ -33,40 +33,35 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'modMyMessages'
- * 
- * Long description (if any) ...
+ * Module class for displaying the latest messages
  */
 class modMyMessages extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,24 +70,21 @@ class modMyMessages extends JObject
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
@@ -106,10 +98,10 @@ class modMyMessages extends JObject
 
 		// Find the user's most recent support tickets
 		ximport('Hubzero_Message');
-		
+
 		$recipient = new Hubzero_Message_Recipient($database);
 		$this->rows = $recipient->getUnreadMessages($this->juser->get('id'), $limit);
-		
+
 		if ($recipient->getError())
 		{
 			$this->setError($recipient->getError());
@@ -117,9 +109,9 @@ class modMyMessages extends JObject
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_mymessages');
-		
-		require(JModuleHelper::getLayoutPath('mod_mymessages'));
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

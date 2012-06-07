@@ -29,15 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-$no_html = JRequest::getInt( 'no_html', 0 );
-
-$modmyresources = new modMyResources( $params );
+$modmyresources = new modMyResources($params, $module);
 $modmyresources->display();
-
-require( JModuleHelper::getLayoutPath('mod_myresources') );
-?>

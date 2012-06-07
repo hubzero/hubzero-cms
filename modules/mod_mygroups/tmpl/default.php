@@ -29,27 +29,27 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
-$groups = $modmygroups->groups;
+$groups = $this->groups;
 ?>
-<div<?php echo ($modmygroups->moduleclass) ? ' class="'.$modmygroups->moduleclass.'"' : '';?>>
+<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
 <?php if ($groups && count($groups) > 0) { ?>
 	<ul class="compactlist">
 <?php
 	$i = 0;
 	foreach ($groups as $group)
 	{
-		if ($group->published && $i < $modmygroups->limit) {
-			$status = $modmygroups->getStatus( $group );
+		if ($group->published && $i < $this->limit) {
+			$status = $this->getStatus($group);
 ?>
 		<li class="group">
-			<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$group->cn); ?>"><?php echo $group->description; ?></a>
-			<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_'.strtoupper($status)); ?></span></span>
+			<a href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->cn); ?>"><?php echo stripslashes($group->description); ?></a>
+			<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
 <?php if ($group->regconfirmed && !$group->registered) { ?>
 			<span class="actions">
-				<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$group->cn.'&task=accept'); ?>"><?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?></a> 
+				<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->cn . '&task=accept'); ?>"><?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?></a> 
 <?php /*				<a class="action-cancel" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$group->cn.'&task=cancel'); ?>"><?php echo JText::_('MOD_MYGROUPS_ACTION_CANCEL'); ?></a> */ ?>
 			</span>
 <?php } ?>
@@ -65,7 +65,7 @@ $groups = $modmygroups->groups;
 <?php } ?>
 
 	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=groups'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_MY_GROUPS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=groups'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_MY_GROUPS'); ?></a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
 	</ul>

@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMyResources'
- * 
- * Long description (if any) ...
+ * Module class for displaying a user's resources
  */
 class modMyResources
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,51 +70,48 @@ class modMyResources
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
-		$no_html = JRequest::getInt( 'no_html', 0 );
-		if (!$no_html) {
+		$this->no_html = JRequest::getInt('no_html', 0);
+		if (!$this->no_html) 
+		{
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStyleSheet('mod_myresources');
-			Hubzero_Document::addModuleScript('mod_myresources');
+			Hubzero_Document::addModuleStyleSheet($this->module->module);
+			Hubzero_Document::addModuleScript($this->module->module);
 		}
 
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
-		$this->limit = intval( $this->params->get( 'limit' ) );
-		$this->limit = $this->limit ? $this->limit : 5;
+		$this->limit = intval($this->params->get('limit', 5));
 
-		$this->sort = $this->params->get( 'sort' );
-		$this->sort = ($this->sort) ? $this->sort : 'publish_up';
+		$this->sort = $this->params->get('sort', 'publish_up');
 
 		// Get "published" contributions
 		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
 							AA.subtable, R.created, R.created_by, R.modified, R.published, R.publish_up, R.standalone, 
 							R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle, R.params ";
-		if ($this->sort == 'usage') {
+		if ($this->sort == 'usage') 
+		{
 			$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=R.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
 		}
 		$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
@@ -143,13 +135,16 @@ class modMyResources
 				$query .= "publish_up DESC, title ASC";
 			break;
 		}
-		if ($this->limit > 0 && $this->limit != 'all') {
-			$query .= " LIMIT ".$this->limit;
+		if ($this->limit > 0 && $this->limit != 'all') 
+		{
+			$query .= " LIMIT " . $this->limit;
 		}
 
 		$database->setQuery($query);
 
 		$this->contributions = $database->loadObjectList();
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

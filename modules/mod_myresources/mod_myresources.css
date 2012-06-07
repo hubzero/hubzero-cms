@@ -16,10 +16,10 @@
 /* Contribution status */
 	div.draggable .expandedlist li.draft {
 		background: url("/modules/mod_myresources/images/draft.gif") 0.7em 1em  no-repeat;
-		}
+	}
 	div.draggable .expandedlist li.published {
 		background: url("/modules/mod_myresources/images/check.gif") 0.7em 1em  no-repeat;
-		}
+	}
 	div.draggable .expandedlist li.pending {
 		background: url("/modules/mod_myresources/images/pending.gif") 0.7em 1em  no-repeat;
-		}
+	}
