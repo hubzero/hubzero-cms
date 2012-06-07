@@ -96,10 +96,10 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 				</tbody>
 			</table>
 			<h4 id="files-header"><?php echo JText::_('Uploaded files'); ?></h4>
-			<iframe width="100%" height="370" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;task=media"></iframe>
+			<iframe width="100%" height="370" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media"></iframe>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></h3>
+			<legend><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></legend>
 
 			<label<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('COM_BLOG_TITLE'); ?>
@@ -109,7 +109,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
 <?php } ?>
 
-			<label>
+			<label for="entrycontent">
 				<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?>
 				<?php
 				ximport('Hubzero_Wiki_Editor');

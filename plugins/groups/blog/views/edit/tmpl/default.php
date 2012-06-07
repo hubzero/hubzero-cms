@@ -83,7 +83,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		<br />
 		
 		<h4 id="files-header"><?php echo JText::_('Uploaded files'); ?></h4>
-			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo JRoute::_('index.php?option=com_blog&id='.$this->group->get('gidNumber').'&scope=group&task=media&no_html=1'); ?>"></iframe>
+			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo 'index.php?option=com_blog&controller=media&id='.$this->group->get('gidNumber').'&scope=group&tmpl=component'; ?>"></iframe>
 	</div><!-- /.explaination -->
 		
 	<fieldset>

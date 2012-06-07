@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
 
-$entry_year = substr($this->row->publish_up, 0, 4);//intval(JHTML::_('date',$this->row->publish_up, '%Y', 0));
+$entry_year = substr($this->row->publish_up, 0, 4);//intval(JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz));
 $entry_month = substr($this->row->publish_up, 5, 2);//intval(JHTML::_('date',$this->row->publish_up, '%B', 0));
 ?>
 <div id="content-header">
@@ -45,7 +45,7 @@ $entry_month = substr($this->row->publish_up, 5, 2);//intval(JHTML::_('date',$th
 
 <div class="main section">
 	<div class="aside">
-<?php if ($this->authorized) { ?>
+<?php if ($this->config->get('access-create-entry')) { ?>
 		<p><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 <?php } ?>
 <!-- 	<div class="blog-entries-years">
@@ -95,7 +95,7 @@ if ($this->popular) {
 	foreach ($this->popular as $row)
 	{
 ?>
-			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
+			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
 <?php 
 	}
 }
@@ -110,7 +110,7 @@ if ($this->recent) {
 	foreach ($this->recent as $row)
 	{
 ?>
-			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
+			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
 <?php 
 	}
 }
@@ -128,10 +128,10 @@ if ($this->row) {
 
 	<div class="entry" id="e<?php echo $this->row->id; ?>">
 		<dl class="entry-meta">
-			<dt class="date"><?php echo JHTML::_('date',$this->row->publish_up, '%d %b, %Y', 0); ?></dt>
-			<dd class="time"><?php echo JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0); ?></dd>
+			<dt class="date"><?php echo JHTML::_('date',$this->row->publish_up, $this->dateFormat, $this->tz); ?></dt>
+			<dd class="time"><?php echo JHTML::_('date',$this->row->publish_up, $this->timeFormat, $this->tz); ?></dd>
 <?php if ($this->row->allow_comments == 1) { ?>
-			<dd class="comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#comments'); ?>"><?php echo JText::sprintf('COM_BLOG_NUM_COMMENTS', $this->comment_total); ?></a></dd>
+			<dd class="comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#comments'); ?>"><?php echo JText::sprintf('COM_BLOG_NUM_COMMENTS', $this->comment_total); ?></a></dd>
 <?php } else { ?>
 			<dd class="comments"><?php echo JText::_('COM_BLOG_COMMENTS_OFF'); ?></dd>
 <?php } ?>
@@ -179,30 +179,30 @@ if ($this->config->get('show_authors')) {
 <div class="clear"></div>
 <?php if ($this->row->allow_comments == 1) { ?>
 <div class="below section">
-<h3>
-	<a name="comments"></a>
-	Comments on this entry
+	<h3>
+		<a name="comments"></a>
+		Comments on this entry
 <?php
-	$feed = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'/comments.rss');
+	$feed = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'/comments.rss');
 	if (substr($feed, 0, 4) != 'http') {
 		if (substr($feed, 0, 1) != DS) {
 			$feed = DS.$feed;
 		}
 		$jconfig =& JFactory::getConfig();
-		$feed = $jconfig->getValue('config.live_site').$feed;
+		$feed = $jconfig->getValue('config.live_site') . ltrim($feed, DS);
 	}
 	$feed = str_replace('https:://','http://',$feed);
 ?>
-	<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('Comments RSS Feed'); ?>"><?php echo JText::_('Comments RSS Feed'); ?></a>
-</h3>
-<div class="aside">
-	<p class="add"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">Add a comment</a></p>
-</div><!-- / .aside -->
-<div class="subject">
+		<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('Comments RSS Feed'); ?>"><?php echo JText::_('Comments RSS Feed'); ?></a>
+	</h3>
+	<div class="aside">
+		<p><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment'); ?>">Add a comment</a></p>
+	</div><!-- / .aside -->
+	<div class="subject">
 <?php 
 if ($this->comments) {
 ?>
-	<ol class="comments">
+		<ol class="comments">
 <?php 
 	$cls = 'even';
 	ximport('Hubzero_User_Profile');
@@ -250,14 +250,14 @@ if ($this->comments) {
 			<div class="comment-content">
 				<p class="comment-title">
 					<strong><?php echo $name; ?></strong> 
-					<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$comment->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$comment->created, '%d %b, %Y', 0); ?></span></a>
+					<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$comment->created, $this->timeFormat, $this->tz); ?></span> on <span class="date"><?php echo JHTML::_('date',$comment->created, $this->dateFormat, $this->tz); ?></span></a>
 				</p>
 				<?php echo $content; ?>
 <?php 		if (!$comment->reports) { ?>
 				<p class="comment-options">
 					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$comment->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
 <?php
-$rtrn = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment');
+$rtrn = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment');
 if ($juser->get('guest')) {
 	$lnk = '/login?return='. base64_encode($rtrn);
 } else {
@@ -305,13 +305,13 @@ if ($juser->get('guest')) {
 					<div class="comment-content">
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$reply->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$reply->created, '%d %b, %Y', 0); ?></span></a>
+							<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$reply->created, $this->timeFormat, $this->tz); ?></span> on <span class="date"><?php echo JHTML::_('date',$reply->created, $this->dateFormat, $this->tz); ?></span></a>
 						</p>
 						<?php echo $content; ?>
 <?php 				if (!$reply->reports) { ?>
 						<p class="comment-options">
 							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$reply->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-							<a class="reply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
+							<a class="reply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
 						</p>
 <?php 				} ?>
 					</div>
@@ -352,7 +352,7 @@ if ($juser->get('guest')) {
 							<div class="comment-content">
 								<p class="comment-title">
 									<strong><?php echo $name; ?></strong> 
-									<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$response->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$response->created, '%d %b, %Y', 0); ?></span></a>
+									<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$response->created, $this->timeFormat, $this->tz); ?></span> on <span class="date"><?php echo JHTML::_('date',$response->created, $this->dateFormat, $this->tz); ?></span></a>
 								</p>
 								<?php echo $content; ?>
 <?php 					if (!$response->reports) { ?>
@@ -431,7 +431,7 @@ if ($juser->get('guest')) {
 	</table>
 </div><!-- / .aside -->
 <div class="subject">
-	<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias); ?>" id="commentform">
+	<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias); ?>" id="commentform">
 		<p class="comment-member-photo">
 <?php
 			if (!$juser->get('guest')) {
@@ -467,7 +467,7 @@ if ($juser->get('guest')) {
 			<blockquote cite="c<?php echo $this->replyto->id ?>">
 				<p>
 					<strong><?php echo $name; ?></strong> 
-					@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, '%d %b, %Y', 0); ?></span>
+					@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, $this->timeFormat, $this->tz); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, $this->dateFormat, $this->tz); ?></span>
 				</p>
 				<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
 			</blockquote>
@@ -475,7 +475,7 @@ if ($juser->get('guest')) {
 			}
 		}
 ?>
-			<label>
+			<label for="commentcontent">
 				Your <?php echo ($this->replyto->id) ? 'reply' : 'comments'; ?>: <span class="required">required</span>
 <?php
 			if (!$juser->get('guest')) {
@@ -483,7 +483,7 @@ if ($juser->get('guest')) {
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('comment[content]', 'commentcontent', '', '', '40', '15');
 			} else {
-				$rtrn = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment');
+				$rtrn = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment');
 ?>
 				<p class="warning">
 					You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.

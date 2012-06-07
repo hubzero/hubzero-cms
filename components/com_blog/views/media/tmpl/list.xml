@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
 @package        hubzero-cms
-@file           components/com_blog/views/login/tmpl/default.xml
+@file           components/com_blog/views/edit/tmpl/filelist.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,15 +27,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Login Layout">
+	<layout title="File list">
 		<message>
-			<![CDATA[STANDARD LOGIN LAYOUT DESC]]>
+			<![CDATA[File list]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Login Layout</name>
-		<description>STANDARD LOGIN LAYOUT DESC</description>
+		<name>File list</name>
+		<description>File list</description>
 		<params>
 		</params>
 	</state>
 </metadata>
+

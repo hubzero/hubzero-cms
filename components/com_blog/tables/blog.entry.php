@@ -29,162 +29,158 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Blog Entry database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'BlogEntry'
- * 
- * Long description (if any) ...
+ * Blog Entry database class
  */
 class BlogEntry extends JTable
 {
 
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id           = NULL;  // @var int(11) Primary key
+	var $id           = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(150)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $title        = NULL;  // @var varchar(150)
+	var $title        = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(150)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $alias        = NULL;  // @var varchar(150)
+	var $alias        = NULL;
 
 	/**
-	 * Description for 'content'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $content      = NULL;  // @var text
+	var $content      = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created      = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created      = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by   = NULL;  // @var int(11)
+	var $created_by   = NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state        = NULL;  // @var int(3)
+	var $state        = NULL;
 
 	/**
-	 * Description for 'publish_up'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $publish_up   = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $publish_up   = NULL;
 
 	/**
-	 * Description for 'publish_down'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $publish_down = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $publish_down = NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $params		  = NULL;  // @var text
+	var $params       = NULL;
 
 	/**
-	 * Description for 'group_id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $group_id     = NULL;  // @var int(11)
+	var $group_id     = NULL;
 
 	/**
-	 * Description for 'hits'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $hits         = NULL;  // @var int(11)
+	var $hits         = NULL;
 
 	/**
-	 * Description for 'allow_comments'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $allow_comments = NULL;  // @var int(2)
+	var $allow_comments = NULL;
 
 	/**
-	 * Description for 'scope'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $scope        = NULL;  // @var varchar(100)
-
-	//-----------
+	var $scope        = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__blog_entries', 'id', $db );
+		parent::__construct('#__blog_entries', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'loadAlias'
+	 * Load an entry from the database and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      unknown $scope Parameter description (if any) ...
-	 * @param      unknown $created_by Parameter description (if any) ...
-	 * @param      unknown $group_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $oid        Entry alias
+	 * @param      string  $scope      Entry scope [site, group, member]
+	 * @param      integer $created_by Entry author..
+	 * @param      integer $group_id   Group the entry belongs to (if any)
+	 * @return     boolean True if data was retrieved and loaded
 	 */
-	public function loadAlias( $oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL )
+	public function loadAlias($oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL)
 	{
-		if ($oid === NULL) {
+		if ($oid === NULL) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
-		if ($scope === NULL) {
+		if ($scope === NULL) 
+		{
 			$scope = $this->scope;
 		}
-		if (!$scope) {
+		if (!$scope) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 		switch ($scope)
 		{
 			case 'member':
-				if ($created_by === NULL) {
+				if ($created_by === NULL) 
+				{
 					$created_by = $this->created_by;
 				}
-				if (!$created_by) {
+				if (!$created_by) 
+				{
+					$this->setError(JText::_('Missing argument.'));
 					return false;
 				}
 				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND created_by='$created_by'";
@@ -194,7 +190,9 @@ class BlogEntry extends JTable
 				if ($group_id === NULL) {
 					$group_id = $this->group_id;
 				}
-				if (!$group_id) {
+				if (!$group_id) 
+				{
+					$this->setError(JText::_('Missing argument.'));
 					return false;
 				}
 				//$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND group_id='$group_id'";
@@ -205,81 +203,122 @@ class BlogEntry extends JTable
 				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope'";
 			break;
 		}
-		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('Please provide a title.') );
+		$this->title = trim($this->title);
+		if ($this->title == '') 
+		{
+			$this->setError(JText::_('Please provide a title.'));
 			return false;
 		}
-		if (trim( $this->content ) == '') {
-			$this->setError( JText::_('Please provide content.') );
+
+		if (!$this->alias)
+		{
+			$this->alias = $this->_shorten($this->title);
+		}
+		$this->alias = str_replace(' ', '-', $this->alias);
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->alias));
+
+		$this->content = trim($this->content);
+		if ($this->content == '') 
+		{
+			$this->setError(JText::_('Please provide content.'));
 			return false;
 		}
-		if (!$this->created_by) {
-			$this->setError( JText::_('Missing creator ID.') );
-			return false;
+
+		$juser = JFactory::getUser();
+		if (!$this->created_by) 
+		{
+			$this->created_by = $juser->get('id');
 		}
+
+		if (!$this->id)
+		{
+			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->publish_up = date('Y-m-d H:i:s', time());
+		}
+
+		if (!$this->publish_up || $this->publish_up == '0000-00-00 00:00:00') 
+		{
+			$this->publish_up = $this->created;
+		}
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'getEntriesCount'
+	 * Shorten a string
 	 * 
-	 * Long description (if any) ...
+	 * @param      string  $text  String to shorten
+	 * @param      integer $chars Length to shorten to
+	 * @return     string
+	 */
+	public function _shorten($text, $chars=100)
+	{
+		$text = strip_tags($text);
+		$text = trim($text);
+		if (strlen($text) > $chars) 
+		{
+			$text = $text . ' ';
+			$text = substr($text, 0, $chars);
+			$text = substr($text, 0, strrpos($text,' '));
+		}
+		return $text;
+	}
+
+	/**
+	 * Return a count of entries based off of filters passed
 	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getEntriesCount($filters=array())
 	{
 		$filters['limit'] = 0;
-		$query = "SELECT COUNT(*) ".$this->_buildAdminQuery( $filters );
+		$query = "SELECT COUNT(*) " . $this->_buildAdminQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getEntries'
+	 * Get entries based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getEntries($filters=array())
 	{
-		$bc = new BlogComment( $this->_db );
+		$bc = new BlogComment($this->_db);
 
-		$query = "SELECT m.*, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildAdminQuery( $filters );
+		$query = "SELECT m.*, (SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildAdminQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for '_buildAdminQuery'
+	 * Build a query from filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
 	private function _buildAdminQuery($filters)
 	{
@@ -291,14 +330,17 @@ class BlogEntry extends JTable
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
-					WHERE m.scope='".$filters['scope']."' AND m.created_by=u.uidNumber ";
-		if (isset($filters['created_by']) && $filters['created_by'] != 0) {
-			$query .= " AND m.created_by=".$filters['created_by'];
+					WHERE m.scope='" . $filters['scope'] . "' AND m.created_by=u.uidNumber ";
+		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
+		{
+			$query .= " AND m.created_by=" . $filters['created_by'];
 		}
-		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
-			$query .= " AND m.group_id=".$filters['group_id'];
+		if (isset($filters['group_id']) && $filters['group_id'] != 0) 
+		{
+			$query .= " AND m.group_id=" . $filters['group_id'];
 		}
-		if (isset($filters['state']) && $filters['state'] != '') {
+		if (isset($filters['state']) && $filters['state'] != '') 
+		{
 			switch ($filters['state'])
 			{
 				case 'public':
@@ -312,64 +354,64 @@ class BlogEntry extends JTable
 				break;
 			}
 		}
-		if (isset($filters['search']) && $filters['search'] != '') {
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
 			$filters['search'] = strtolower(stripslashes($filters['search']));
-			$query .= " AND (LOWER(m.title) LIKE '%".$filters['search']."%' OR LOWER(m.content) LIKE '%".$filters['search']."%')";
-			//$query .= " AND ( (MATCH(m.title) AGAINST ('".addslashes($filters['search'])."') > 0) OR (MATCH(m.content) AGAINST ('".addslashes($filters['search'])."') > 0) )";
+			$query .= " AND (LOWER(m.title) LIKE '%" . $filters['search'] . "%' OR LOWER(m.content) LIKE '%" . $filters['search'] . "%')";
 		}
-		if (isset($filters['order']) && $filters['order'] != '') {
-			$query .= " ORDER BY ".$filters['order'];
-		} else {
+		if (isset($filters['order']) && $filters['order'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['order'];
+		} 
+		else 
+		{
 			$query .= " ORDER BY publish_up DESC";
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
+	 * Used for admin interface
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
-		$query = "SELECT COUNT(*) ".$this->_buildQuery( $filters );
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
+	 * Used for admin interface
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
-		$bc = new BlogComment( $this->_db );
+		$bc = new BlogComment($this->_db);
 
-		$query = "SELECT m.*, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildQuery( $filters );
+		$query = "SELECT m.*, (SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for '_buildQuery'
+	 * Build a query from filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
 	private function _buildQuery($filters)
 	{
@@ -379,39 +421,51 @@ class BlogEntry extends JTable
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
-					WHERE m.scope='".$filters['scope']."' AND m.created_by=u.uidNumber ";
+					WHERE m.scope='" . $filters['scope'] . "' AND m.created_by=u.uidNumber ";
 
-		if (isset($filters['year']) && $filters['year'] != 0) {
-			if (isset($filters['month']) && $filters['month'] != 0) {
-				$startmonth = $filters['year'].'-'.$filters['month'].'-01 00:00:00';
+		if (isset($filters['year']) && $filters['year'] != 0) 
+		{
+			if (isset($filters['month']) && $filters['month'] != 0) 
+			{
+				$startmonth = $filters['year'] . '-' . $filters['month'] . '-01 00:00:00';
 
-				if ($filters['month']+1 == 13) {
+				if ($filters['month']+1 == 13) 
+				{
 					$year = $filters['year'] + 1;
 					$month = 1;
-				} else {
+				} 
+				else 
+				{
 					$month = ($filters['month']+1);
 					$year = $filters['year'];
 				}
-				$endmonth = sprintf( "%4d-%02d-%02d 00:00:00",$year,$month,1);
+				$endmonth = sprintf("%4d-%02d-%02d 00:00:00", $year, $month,1);
 
-				$query .= " AND m.publish_up >= ".$this->_db->Quote($startmonth)." AND m.publish_up < ".$this->_db->Quote($endmonth)." ";
-			} else {
-				$startyear = $filters['year'].'-01-01 00:00:00';
-				$endyear = ($filters['year']+1).'-01-01 00:00:00';
+				$query .= " AND m.publish_up >= " . $this->_db->Quote($startmonth) . " AND m.publish_up < " . $this->_db->Quote($endmonth) . " ";
+			} 
+			else 
+			{
+				$startyear = $filters['year'] . '-01-01 00:00:00';
+				$endyear = ($filters['year']+1) . '-01-01 00:00:00';
 
-				$query .= " AND m.publish_up >= ".$this->_db->Quote($startyear)." AND m.publish_up < ".$this->_db->Quote($endyear)." ";
+				$query .= " AND m.publish_up >= " . $this->_db->Quote($startyear) . " AND m.publish_up < " . $this->_db->Quote($endyear) . " ";
 			}
-		} else {
-			$query .= "AND (m.publish_up = ".$this->_db->Quote($nullDate)." OR m.publish_up <= ".$this->_db->Quote($now).") 
-					AND (m.publish_down = ".$this->_db->Quote($nullDate)." OR m.publish_down >= ".$this->_db->Quote($now).")";
+		} 
+		else 
+		{
+			$query .= "AND (m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . ") 
+					AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
 		}
-		if (isset($filters['created_by']) && $filters['created_by'] != 0) {
-			$query .= " AND m.created_by=".$filters['created_by'];
+		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
+		{
+			$query .= " AND m.created_by=" . $filters['created_by'];
 		}
-		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
-			$query .= " AND m.group_id=".$filters['group_id'];
+		if (isset($filters['group_id']) && $filters['group_id'] != 0) 
+		{
+			$query .= " AND m.group_id=" . $filters['group_id'];
 		}
-		if (isset($filters['state']) && $filters['state'] != '') {
+		if (isset($filters['state']) && $filters['state'] != '') 
+		{
 			switch ($filters['state'])
 			{
 				case 'public':
@@ -425,74 +479,82 @@ class BlogEntry extends JTable
 				break;
 			}
 		}
-		if (isset($filters['search']) && $filters['search'] != '') {
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
 			$filters['search'] = strtolower(stripslashes($filters['search']));
-			$query .= " AND (LOWER(m.title) LIKE '%".$filters['search']."%' OR LOWER(m.content) LIKE '%".$filters['search']."%')";
-			//$query .= " AND ( (MATCH(m.title) AGAINST ('".addslashes($filters['search'])."') > 0) OR (MATCH(m.content) AGAINST ('".addslashes($filters['search'])."') > 0) )";
+			$query .= " AND (LOWER(m.title) LIKE '%" . $filters['search'] . "%' OR LOWER(m.content) LIKE '%" . $filters['search'] . "%')";
 		}
-		if (isset($filters['order']) && $filters['order'] != '') {
-			$query .= " ORDER BY ".$filters['order'];
-		} else {
+		if (isset($filters['order']) && $filters['order'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['order'];
+		} 
+		else 
+		{
 			$query .= " ORDER BY publish_up DESC";
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		return $query;
 	}
 
 	/**
-	 * Short description for 'deleteComments'
+	 * Delete comments associated with an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Blog entry
+	 * @return     boolean True if comments deleted
 	 */
 	public function deleteComments($id=null)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->id;
 		}
-		if (!$id) {
-			$this->setError( JText::_('Missing Entry ID.') );
+		if (!$id) 
+		{
+			$this->setError(JText::_('Missing Entry ID.'));
 			return false;
 		}
 
-		$bc = new BlogComment( $this->_db );
+		$bc = new BlogComment($this->_db);
 
-		$this->_db->setQuery( "DELETE FROM ".$bc->getTableName()." WHERE entry_id=$id" );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("DELETE FROM " . $bc->getTableName() . " WHERE entry_id=$id");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
-		} else {
+		} 
+		else 
+		{
 			return true;
 		}
 	}
 
 	/**
-	 * Short description for 'deleteFiles'
+	 * Delete files associated with an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Blog entry
+	 * @return     boolean True if files deleted
 	 */
 	public function deleteFiles($id=null)
 	{
 		// Build the file path
 		/*$path = JPATH_ROOT;
 		$config = $this->config;
-		if (substr($config->get('uploadpath'), 0, 1) != DS) {
+		if (substr($config->get('uploadpath'), 0, 1) != DS) 
+		{
 			$path .= DS;
 		}
-		$path .= $config->get('uploadpath').DS.$member->get('uidNumber');
+		$path .= $config->get('uploadpath') . DS . $member->get('uidNumber');
 
-		if (is_dir($path)) { 
+		if (is_dir($path)) 
+		{ 
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete($path)) {
-				$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
+			if (!JFolder::delete($path)) 
+			{
+				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
 				return false;
 			}
 		}*/
@@ -500,90 +562,87 @@ class BlogEntry extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteTags'
+	 * Delete tags associated with an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Blog entry
+	 * @return     boolean True if files deleted
 	 */
 	public function deleteTags($id=null)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->id;
 		}
-		if (!$id) {
-			$this->setError( JText::_('Missing Entry ID.') );
+		if (!$id) 
+		{
+			$this->setError(JText::_('Missing Entry ID.'));
 			return false;
 		}
 
-		$bt = new BlogTags( $this->_db );
-		if (!$bt->remove_all_tags($id)) {
-			$this->setError( JText::_('UNABLE_TO_DELETE_TAGS') );
+		$bt = new BlogTags($this->_db);
+		if (!$bt->remove_all_tags($id)) 
+		{
+			$this->setError(JText::_('UNABLE_TO_DELETE_TAGS'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getPopularEntries'
+	 * Get a list of entries based on comment count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
+	 * @param      array $filters Filters to build query from
 	 * @return     object Return description (if any) ...
 	 */
 	public function getPopularEntries($filters=array())
 	{
 		$filters['order'] = 'hits DESC';
 
-		$bc = new BlogComment( $this->_db );
+		$bc = new BlogComment($this->_db);
 
-		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildQuery( $filters );
+		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, 
+				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getRecentEntries'
+	 * Get a list of entries based on date published
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getRecentEntries($filters=array())
 	{
 		$filters['order'] = 'publish_up DESC';
 
-		$bc = new BlogComment( $this->_db );
+		$bc = new BlogComment($this->_db);
 
-		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, (SELECT COUNT(*) FROM ".$bc->getTableName()." AS c WHERE c.entry_id=m.id) AS comments, u.name ".$this->_buildQuery( $filters );
+		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, 
+				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getDateOfFirstEntry'
+	 * Get the date of the first entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string
 	 */
 	public function getDateOfFirstEntry($filters=array())
 	{
 		$filters['order'] = 'publish_up ASC';
 		$filters['limit'] = 1;
 		$filters['start'] = 0;
-		$filters['year'] = 0;
+		$filters['year']  = 0;
 		$filters['month'] = 0;
 
-		$query = "SELECT publish_up ".$this->_buildQuery( $filters );
+		$query = "SELECT publish_up " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }

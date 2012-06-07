@@ -79,7 +79,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 				</tbody>
 			</table>
 			<h4 id="files-header"><?php echo JText::_('Uploaded files'); ?></h4>
-			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo JRoute::_('index.php?option=com_blog&id='.$this->member->get('uidNumber').'&scope=member&task=media&no_html=1'); ?>"></iframe>
+			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo 'index.php?option=com_blog&controller=media&id='.$this->member->get('uidNumber').'&scope=member&tmpl=component'; ?>"></iframe>
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></h3>

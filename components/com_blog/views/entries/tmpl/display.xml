@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_blog/views/delete/tmpl/default.xml
+@file           components/com_blog/views/browse/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,15 +28,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Delete Blog Entry Layout">
+	<layout title="Archive of entries">
 		<message>
-			<![CDATA[STANDARD DELETE BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[Archive of entries]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Delete Blog Entry Layout</name>
-		<description>STANDARD DELETE BLOG ENTRY LAYOUT DESC</description>
+		<name>Archive of entries</name>
+		<description>Archive of entries</description>
 		<params>
 		</params>
 	</state>
 </metadata>
+

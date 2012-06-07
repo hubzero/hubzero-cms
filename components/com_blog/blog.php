@@ -29,31 +29,39 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
 }
 
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+}
+
 ximport('Hubzero_View_Helper_Html');
 
-require_once( JPATH_COMPONENT.DS.'tables'.DS.'blog.entry.php' );
-require_once( JPATH_COMPONENT.DS.'tables'.DS.'blog.comment.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'blog.member.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'blog.tags.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
+require_once(JPATH_COMPONENT.DS.'tables'.DS.'blog.entry.php');
+require_once(JPATH_COMPONENT.DS.'tables'.DS.'blog.comment.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'blog.member.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'blog.tags.php');
 
-// Editor usertype check
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+$controllerName = JRequest::getCmd('controller', 'entries');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'entries';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'BlogController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
-$controller = new BlogController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

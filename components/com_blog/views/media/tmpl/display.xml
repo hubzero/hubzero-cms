@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
 @package        hubzero-cms
-@file           components/com_blog/views/entry/tmpl/default.xml
+@file           components/com_blog/views/edit/tmpl/filebrowser.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,16 +27,15 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Blog Entry Layout">
+	<layout title="File upload form">
 		<message>
-			<![CDATA[STANDARD BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[File upload form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Blog Entry Layout</name>
-		<description>STANDARD BLOG ENTRY LAYOUT DESC</description>
+		<name>File upload form</name>
+		<description>File upload form</description>
 		<params>
 		</params>
 	</state>
 </metadata>
-

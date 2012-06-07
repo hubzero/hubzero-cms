@@ -31,17 +31,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
-	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-
-<div class="main section">
+	<div id="attachments">
+		<form action="index.phpindex.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=upload" id="adminForm" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div id="themanager" class="manager">
+					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;scope=<?php echo $this->scope; ?>&amp;id=<?php echo $this->id; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+				</div>
+			</fieldset>
+			<fieldset>
+				<p><input type="file" name="upload" id="upload" /></p>
+				<p><input type="submit" value="<?php echo JText::_('COM_BLOG_UPLOAD'); ?>" /></p>
+				
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="upload" />
+				<input type="hidden" name="scope" value="<?php echo $this->scope; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+				<input type="hidden" name="tmpl" value="component" />
+			</fieldset>
+		</form>
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<p class="warning"><?php echo JText::_('COM_KB_NOT_LOGGEDIN'); ?></p>
-<?php
-ximport('Hubzero_Module_Helper');
-Hubzero_Module_Helper::displayModules('force_mod');
-?>
-</div><!-- / .main section -->
+	</div>

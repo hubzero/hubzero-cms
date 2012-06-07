@@ -29,187 +29,192 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Blog Comment database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'BlogComment'
- * 
- * Long description (if any) ...
+ * Blog Comment database class
  */
 class BlogComment extends JTable
 {
 
 	/**
-	 * Description for 'id'
+	 * int(11) primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'entry_id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $entry_id   = NULL;  // @var int(11)
+	var $entry_id   = NULL;
 
 	/**
-	 * Description for 'content'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $content    = NULL;  // @var text
+	var $content    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'anonymous'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $anonymous  = NULL;  // @var int(3)
+	var $anonymous  = NULL;
 
 	/**
-	 * Description for 'parent'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $parent     = NULL;  // @var int(11)
-
-	//-----------
+	var $parent     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__blog_comments', 'id', $db );
+		parent::__construct('#__blog_comments', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->content ) == '') {
-			$this->setError( JText::_('Your comment must contain text.') );
+		$this->content = trim($this->content);
+		if ($this->content == '') 
+		{
+			$this->setError(JText::_('Your comment must contain text.'));
 			return false;
 		}
-		if (!$this->entry_id) {
-			$this->setError( JText::_('Missing entry ID.') );
+
+		if (!$this->entry_id) 
+		{
+			$this->setError(JText::_('Missing entry ID.'));
 			return false;
 		}
-		if (!$this->created_by) {
-			$this->setError( JText::_('Missing creator ID.') );
-			return false;
+
+		$juser = JFactory::getUser();
+		if (!$this->created_by) 
+		{
+			$this->created_by = $juser->get('id');
 		}
+		if (!$this->id)
+		{
+			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
+		}
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadUserComment'
+	 * Get a record from the database and bind it to this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $entry_id Parameter description (if any) ...
-	 * @param      string $user_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $entry_id Blog entry
+	 * @param      integer $user_id  User ID
+	 * @return     boolean True if record found
 	 */
-	public function loadUserComment( $entry_id, $user_id )
+	public function loadUserComment($entry_id, $user_id)
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE entry_id=".$entry_id." AND created_by=".$user_id." LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND created_by=$user_id LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getComments'
+	 * Get all comments off another comment on an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $entry_id Parameter description (if any) ...
-	 * @param      integer $parent Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $entry_id Blog entry
+	 * @param      integer $parent   Parent comment
+	 * @return     array
 	 */
-	public function getComments( $entry_id=NULL, $parent=NULL )
+	public function getComments($entry_id=NULL, $parent=NULL)
 	{
-		if (!$entry_id) {
+		if (!$entry_id) 
+		{
 			$entry_id = $this->entry_id;
 		}
-		if (!$parent) {
+		if (!$parent) 
+		{
 			$parent = 0;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND parent=$parent ORDER BY created ASC" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND parent=$parent ORDER BY created ASC");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getAllComments'
+	 * Get all comments on an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $entry_id Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $entry_id Blog entry
+	 * @return     array..
 	 */
-	public function getAllComments( $entry_id=NULL )
+	public function getAllComments($entry_id=NULL)
 	{
-		if (!$entry_id) {
+		if (!$entry_id) 
+		{
 			$entry_id = $this->entry_id;
 		}
 
-		$comments = $this->getComments( $entry_id, 0 );
-		if ($comments) {
+		$comments = $this->getComments($entry_id, 0);
+		if ($comments) 
+		{
 			$ra = null;
-			if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php')) {
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
-				$ra = new ReportAbuse( $this->_db );
+			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
+			{
+				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
+				$ra = new ReportAbuse($this->_db);
 			}
 			foreach ($comments as $key => $row)
 			{
-				if ($ra) {
-					$comments[$key]->reports = $ra->getCount( array('id'=>$comments[$key]->id, 'category'=>'blog') );
+				if ($ra) 
+				{
+					$comments[$key]->reports = $ra->getCount(array('id' => $comments[$key]->id, 'category' => 'blog'));
 				}
-				$comments[$key]->replies = $this->getComments( $entry_id, $row->id );
-				if ($comments[$key]->replies) {
+				$comments[$key]->replies = $this->getComments($entry_id, $row->id);
+				if ($comments[$key]->replies) 
+				{
 					foreach ($comments[$key]->replies as $ky => $rw)
 					{
-						if ($ra) {
-							$comments[$key]->replies[$ky]->reports = $ra->getCount( array('id'=>$rw->id, 'category'=>'blog') );
+						if ($ra) 
+						{
+							$comments[$key]->replies[$ky]->reports = $ra->getCount(array('id' => $rw->id, 'category' => 'blog'));
 						}
-						$comments[$key]->replies[$ky]->replies = $this->getComments( $entry_id, $rw->id );
-						if ($comments[$key]->replies[$ky]->replies && $ra) {
+						$comments[$key]->replies[$ky]->replies = $this->getComments($entry_id, $rw->id);
+						if ($comments[$key]->replies[$ky]->replies && $ra) 
+						{
 							foreach ($comments[$key]->replies[$ky]->replies as $kyy => $rwy)
 							{
-								$comments[$key]->replies[$ky]->replies[$kyy]->reports = $ra->getCount( array('id'=>$rwy->id, 'category'=>'blog') );
+								$comments[$key]->replies[$ky]->replies[$kyy]->reports = $ra->getCount(array('id' => $rwy->id, 'category' => 'blog'));
 							}
 						}
 					}
@@ -220,42 +225,105 @@ class BlogComment extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteChildren'
+	 * Delete descendants of a comment
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Parent of comments to delete
+	 * @return     boolean True if comments were deleted
 	 */
-	public function deleteChildren( $id=NULL )
+	public function deleteChildren($id=NULL)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->id;
 		}
 
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE parent=".$id );
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $id);
 		$comments = $this->_db->loadObjectList();
-		if ($comments) {
+		if ($comments) 
+		{
 			foreach ($comments as $row)
 			{
-				// Delete abuse reports
-				/*$this->_db->setQuery( "DELETE FROM #__abuse_reports WHERE referenceid=".$row->id." AND category='blog'" );
-				if (!$this->_db->query()) {
-					$this->setError( $this->_db->getErrorMsg() );
-					return false;
-				}*/
 				// Delete children
-				$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE parent=".$row->id );
-				if (!$this->_db->query()) {
-					$this->setError( $this->_db->getErrorMsg() );
+				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $row->id);
+				if (!$this->_db->query()) 
+				{
+					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
 			}
-			$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE parent=".$id );
-			if (!$this->_db->query()) {
-				$this->setError( $this->_db->getErrorMsg() );
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $id);
+			if (!$this->_db->query()) 
+			{
+				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
+		}
+		return true;
+	}
+
+	/**
+	 * Set the state of a comment and all descendants
+	 *
+	 * @param      integer $id     ID of parent comment
+	 * @param      integer $state  State to set (0=unpublished, 1=published, 2=trashed)
+	 * @return     boolean true if successful otherwise returns and error message
+	 */
+	public function setState($oid=null, $state=0)
+	{
+		if (!$oid) 
+		{
+			$oid = $this->id;
+		}
+		$oid = intval($oid);
+
+		if (!$this->setDescendantState($oid, $state))
+		{
+			return false;
+		}
+
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE id=$oid");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Set the state of descendants of a comment
+	 *
+	 * @param      integer $id     ID of parent comment
+	 * @param      integer $state  State to set (0=unpublished, 1=published, 2=trashed)
+	 * @return     boolean true if successful otherwise returns and error message
+	 */
+	public function setDescendantState($id=NULL, $state=0)
+	{
+		if (is_array($id))
+		{
+			$id = array_map('intval', $id);
+			$id = implode(',', $id);
+		}
+		else 
+		{
+			$id = intval($id);
+		}
+
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent IN ($id)");
+		$rows = $this->_db->loadResultArray();
+		if ($rows && count($rows) > 0)
+		{
+			$state = intval($state);
+			$rows = array_map('intval', $rows);
+			$id = implode(',', $rows);
+
+			$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE parent IN ($id)");
+			if (!$this->_db->query()) 
+			{
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+			return $this->setDescendantState($rows, $state);
 		}
 		return true;
 	}

@@ -41,37 +41,31 @@ $juser =& JFactory::getUser();
 </div>
 <div id="content-header-extra">
 	<?php
-	$path  = 'index.php?option='.$this->option.'&task=feed.rss';
-	$path .= ($this->filters['year']) ? '&year='.$this->filters['year'] : '';
-	$path .= ($this->filters['month']) ? '&month='.$this->filters['month'] : '';
+	$path  = 'index.php?option=' . $this->option . '&task=feed.rss';
+	$path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
+	$path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
 	$feed = JRoute::_($path);
-	if (substr($feed, 0, 4) != 'http') {
-		if (substr($feed, 0, 1) != DS) {
-			$feed = DS.$feed;
-		}
+	if (substr($feed, 0, 4) != 'http') 
+	{
 		$jconfig =& JFactory::getConfig();
-		$feed = $jconfig->getValue('config.live_site').$feed;
+		$feed = $jconfig->getValue('config.live_site') . ltrim($feed, DS);
 	}
-	$feed = str_replace('https:://','http://',$feed);
+	$feed = str_replace('https:://','http://', $feed);
 	?>
-	<p><a class="feed" href="<?php echo $feed; ?>"><?php echo JText::_('Blog RSS Feed'); ?></a></p>
+	<p><a class="feed" href="<?php echo $feed; ?>"><?php echo JText::_('RSS Feed'); ?></a></p>
 </div>
 
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get">
 		<div class="aside">
-<?php if ($this->authorized) { ?>
-			<p><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+<?php if ($this->config->get('access-create-entry')) { ?>
+			<p>
+				<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>">
+					<?php echo JText::_('New entry'); ?>
+				</a>
+			</p>
 <?php } ?>
-			<fieldset>
-				<legend>Search</legend>
-				<label>
-					Search Entries
-					<input type="text" name="search" value="<?php echo htmlentities(utf8_encode(stripslashes($this->filters['search'])),ENT_COMPAT,'UTF-8'); ?>" />
-				</label>
-				<input type="submit" name="go" value="Go" />
-			</fieldset>
-			<div class="blog-entries-years">
+			<div class="container blog-entries-years">
 				<h4><?php echo JText::_('Entries By Year'); ?></h4>
 				<ol>
 <?php 
@@ -127,41 +121,54 @@ $juser =& JFactory::getUser();
 ?>
 				</ol>
 			</div><!-- / .blog-entries-years -->
-			<div class="blog-popular-entries">
+			<div class="container blog-popular-entries">
 				<h4><?php echo JText::_('Popular Entries'); ?></h4>
+<?php if ($this->popular) { ?>
 				<ol>
 <?php 
-		if ($this->popular) {
 			foreach ($this->popular as $row)
 			{
 ?>
-					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
 <?php 
 			}
-		}
 ?>
 				</ol>
+<?php } else { ?>
+				<p><?php echo JText::_('No entries found.'); ?></p>
+<?php } ?>
 			</div><!-- / .blog-popular-entries -->
-			<div class="blog-recent-entries">
+			<div class="container blog-recent-entries">
 				<h4><?php echo JText::_('Recent Entries'); ?></h4>
+<?php if ($this->recent) { ?>
 				<ol>
 <?php 
-		if ($this->recent) {
 			foreach ($this->recent as $row)
 			{
 ?>
-					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a></li>
 <?php 
 			}
-		}
 ?>
 				</ol>
+<?php } else { ?>
+				<p><?php echo JText::_('No entries found.'); ?></p>
+<?php } ?>
 			</div><!-- / .blog-recent-entries -->
 		</div><!-- / .aside -->
 		<div class="subject">
 <?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="Search" />
+				<fieldset class="entry-search">
+					<input type="text" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				</fieldset>
+			</div><!-- / .container -->
+
+			<div class="container">
 <?php 
 		if ($this->rows) {
 ?>
@@ -193,18 +200,31 @@ $juser =& JFactory::getUser();
 
 					<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
 						<dl class="entry-meta">
-							<dt class="date"><?php echo JHTML::_('date',$row->publish_up, '%d %b, %Y', 0); ?></dt>
-							<dd class="time"><?php echo JHTML::_('date',$row->publish_up, '%I:%M %p', 0); ?></dd>
+							<dt class="date">
+								<?php echo JHTML::_('date', $row->publish_up, $this->dateFormat, $this->tz); ?>
+							</dt>
+							<dd class="time">
+								<?php echo JHTML::_('date', $row->publish_up, $this->timeFormat, $this->tz); ?>
+							</dd>
 <?php if ($row->allow_comments == 1) { ?>
-							<dd class="comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias.'#comments'); ?>"><?php echo JText::sprintf('COM_BLOG_NUM_COMMENTS', $row->comments); ?></a></dd>
+							<dd class="comments">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias.'#comments'); ?>">
+									<?php echo JText::sprintf('COM_BLOG_NUM_COMMENTS', $row->comments); ?>
+								</a>
+							</dd>
 <?php } else { ?>
-							<dd class="comments"><?php echo JText::_('COM_BLOG_COMMENTS_OFF'); ?></dd>
+							<dd class="comments">
+								<?php echo JText::_('COM_BLOG_COMMENTS_OFF'); ?>
+							</dd>
 <?php } ?>
 						</dl>
 						<h4 class="entry-title">
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+								<?php echo $this->escape(stripslashes($row->title)); ?>
+							</a>
 <?php if ($juser->get('id') == $row->created_by) { ?>
-							<span class="state"><?php 
+							<span class="state">
+								<?php 
 switch ($row->state)
 {
 	case 1:
@@ -218,19 +238,36 @@ switch ($row->state)
 		echo JText::_('Private');
 	break;
 }
-?></span>
-							<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>"><?php echo JText::_('Edit'); ?></a>
-							<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a>
+?>
+							</span>
+							<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+								<?php echo JText::_('Edit'); ?>
+							</a>
+							<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+								<?php echo JText::_('Delete'); ?>
+							</a>
 <?php } ?>
 						</h4>
 						<div class="entry-content">
 <?php if ($this->config->get('show_authors')) { ?>
-							<p class="entry-author">Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo stripslashes($row->name); ?></a></cite></p>
+							<p class="entry-author">
+								Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></cite>
+							</p>
 <?php } ?>
 <?php if ($this->config->get('cleanintro', 1)) { ?>
-							<p><?php echo $row->content; ?> <a class="readmore" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('COM_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a></p>
+							<p>
+								<?php echo $row->content; ?> 
+								<a class="readmore" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('COM_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">
+									Continue reading &rarr;
+								</a>
+							</p>
 <?php } else { ?>
-							<?php echo $row->content; ?> <p><a class="readmore" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('COM_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a></p>
+							<?php echo $row->content; ?> 
+							<p>
+								<a class="readmore" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('COM_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">
+									Continue reading &rarr;
+								</a>
+							</p>
 <?php } ?>
 						</div>
 					</li>
@@ -245,10 +282,13 @@ switch ($row->state)
 			echo $pagenavhtml;
 		} else {
 ?>
-			<p class="warning">No entries found.</p>
+				<p class="warning">No entries found.</p>
 <?php
 		}
 ?>
+				<div class="clearfix"></div>
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
+		<div class="clear"></div>
 	</form>
 </div><!-- / .main section -->
