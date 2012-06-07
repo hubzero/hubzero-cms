@@ -285,6 +285,7 @@ class BlogEntry extends JTable
 
 	/**
 	 * Return a count of entries based off of filters passed
+	 * Used for admin interface
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
@@ -300,6 +301,7 @@ class BlogEntry extends JTable
 
 	/**
 	 * Get entries based off of filters passed
+	 * Used for admin interface
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     array
@@ -316,14 +318,13 @@ class BlogEntry extends JTable
 
 	/**
 	 * Build a query from filters passed
+	 * Used for admin interface
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
 	private function _buildAdminQuery($filters)
 	{
-		$filters['scope'] = 'site';
-
 		$nullDate = $this->_db->getNullDate();
 		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
@@ -339,6 +340,10 @@ class BlogEntry extends JTable
 		{
 			$query .= " AND m.group_id=" . $filters['group_id'];
 		}
+		if (isset($filters['scope']) && $filters['scope'] != '') 
+		{
+			$query .= " AND m.scope='" . $filters['scope'] . "'";
+		}
 		if (isset($filters['state']) && $filters['state'] != '') 
 		{
 			switch ($filters['state'])
@@ -351,6 +356,9 @@ class BlogEntry extends JTable
 				break;
 				case 'private':
 					$query .= " AND m.state=0";
+				break;
+				case 'trashed':
+					$query .= " AND m.state<0";
 				break;
 			}
 		}
@@ -376,7 +384,6 @@ class BlogEntry extends JTable
 
 	/**
 	 * Get a record count
-	 * Used for admin interface
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
@@ -392,7 +399,6 @@ class BlogEntry extends JTable
 
 	/**
 	 * Get records
-	 * Used for admin interface
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     array

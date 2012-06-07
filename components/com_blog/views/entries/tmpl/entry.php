@@ -48,7 +48,7 @@ $entry_month = substr($this->row->publish_up, 5, 2);//intval(JHTML::_('date',$th
 <?php if ($this->config->get('access-create-entry')) { ?>
 		<p><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 <?php } ?>
-<!-- 	<div class="blog-entries-years">
+<!-- 	<div class="container blog-entries-years">
 		<h4><?php echo JText::_('Entries By Year'); ?></h4>
 		<ol>
 <?php 
@@ -87,7 +87,7 @@ if ($this->firstentry) {
 ?>
 		</ol>
 	</div>- / .blog-entries-years -->
-	<div class="blog-popular-entries">
+	<div class="container blog-popular-entries">
 		<h4><?php echo JText::_('Popular Entries'); ?></h4>
 		<ol>
 <?php 
@@ -102,7 +102,7 @@ if ($this->popular) {
 ?>
 		</ol>
 	</div><!-- / .blog-popular-entries -->
-	<div class="blog-recent-entries">
+	<div class="container blog-recent-entries">
 		<h4><?php echo JText::_('Recent Entries'); ?></h4>
 		<ol>
 <?php 
@@ -222,10 +222,6 @@ if ($this->comments) {
 	{
 		$cls = ($cls == 'even') ? 'odd' : 'even';
 
-		if ($this->row->created_by == $comment->created_by) {
-			$cls .= ' author';
-		}
-
 		$name = JText::_('COM_BLOG_ANONYMOUS');
 		if (!$comment->anonymous) {
 			//$xuser =& JUser::getInstance( $comment->created_by );
@@ -233,6 +229,10 @@ if ($this->comments) {
 			$xuser->load( $comment->created_by );
 			if (is_object($xuser) && $xuser->get('name')) {
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+			}
+			
+			if ($this->row->created_by == $comment->created_by) {
+				$cls .= ' author';
 			}
 		}
 
@@ -277,10 +277,6 @@ if ($juser->get('guest')) {
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 
-				if ($this->row->created_by == $reply->created_by) {
-					$cls .= ' author';
-				}
-
 				$name = JText::_('COM_BLOG_ANONYMOUS');
 				if (!$reply->anonymous) {
 					//$xuser =& JUser::getInstance( $reply->created_by );
@@ -288,6 +284,10 @@ if ($juser->get('guest')) {
 					$xuser->load( $reply->created_by );
 					if (is_object($xuser) && $xuser->get('name')) {
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+					}
+					
+					if ($this->row->created_by == $reply->created_by) {
+						$cls .= ' author';
 					}
 				}
 
@@ -324,10 +324,6 @@ if ($juser->get('guest')) {
 					{
 						$cls = ($cls == 'even') ? 'odd' : 'even';
 
-						if ($this->row->created_by == $response->created_by) {
-							$cls .= ' author';
-						}
-
 						$name = JText::_('COM_BLOG_ANONYMOUS');
 						if (!$response->anonymous) {
 							//$xuser =& JUser::getInstance( $reply->created_by );
@@ -335,6 +331,10 @@ if ($juser->get('guest')) {
 							$xuser->load( $response->created_by );
 							if (is_object($xuser) && $xuser->get('name')) {
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+							}
+							
+							if ($this->row->created_by == $response->created_by) {
+								$cls .= ' author';
 							}
 						}
 
