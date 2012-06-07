@@ -67,9 +67,10 @@ function submitbutton(pressbutton)
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
 				<th><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Last Run', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Active', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Next Run', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JText::_('Recurrence'); ?></th>
 			</tr>
@@ -110,6 +111,21 @@ if ($this->results)
 				$cls = 'unpublish';
 			break;
 		}
+		
+		switch ($row->active) 
+		{
+			case '1': // Published
+				$img2 = 'publish_g.png';
+				$alt2 = JText::_('Active');
+				$cls2 = 'publish';
+			break;
+			case '0': // Unpublished
+			default:
+				$img2 = 'publish_x.png';
+				$alt2 = JText::_('Inactive');
+				$cls2 = 'unpublish';
+			break;
+		}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -146,6 +162,11 @@ if ($this->results)
 					</span>
 				</td>
 				<td>
+					<span class="state <?php echo $cls2; ?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img2;?>" width="16" height="16" border="0" alt="<?php echo $alt2; ?>" /><?php } else { echo $alt2; } ?></span>
+					</span>
+				</td>
+				<td>
 					<span class="datetime">
 						<time><?php echo $this->escape($row->next_run); ?></time>
 					</span>
@@ -168,8 +189,8 @@ if ($this->results)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="sort_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
 	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -123,6 +123,20 @@ class CronJob extends JTable
 	var $modified_by  = NULL;
 
 	/**
+	 * int(3)
+	 * 
+	 * @var integer
+	 */
+	var $active       = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $ordering     = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -160,6 +174,18 @@ class CronJob extends JTable
 			return false;
 		}
 
+		if (strstr($this->event, '::'))
+		{
+			$parts = explode('::', $this->event);
+			$this->plugin = trim($parts[0]);
+			$this->event  = trim($parts[1]);
+		}
+		if (!$this->event)
+		{
+			$this->setError(JText::_('Missing plugin.'));
+			return false;
+		}
+
  		$bits = @explode(' ', $this->recurrence);
 		if (count($bits) != 5)
 		{
@@ -191,19 +217,19 @@ class CronJob extends JTable
 	public function buildQuery($filters=array())
 	{
 		$query  = "FROM $this->_tbl AS c";
-		
+
 		$where = array();
-		
+
 		if (isset($filters['state'])) 
 		{
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
-		
+
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$where[] = "LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%'";
 		}
-		
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -242,7 +268,7 @@ class CronJob extends JTable
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
-			$filters['sort'] = 'title';
+			$filters['sort'] = 'ordering';
 		}
 		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 		{
@@ -254,6 +280,40 @@ class CronJob extends JTable
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
 		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Parameters to build query from
+	 * @return     array
+	 */
+	public function getJobs($filters=array())
+	{
+		$query  = "SELECT c.* FROM $this->_tbl AS c";
+
+		$where = array();
+
+		if (isset($filters['state'])) 
+		{
+			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+		}
+
+		if (isset($filters['next_run']) && $filters['next_run'] != '') 
+		{
+			$where[] = "c.next_run <= '" . $filters['next_run'] . "'";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		$query .= " ORDER BY c.ordering ASC, c.next_run DESC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

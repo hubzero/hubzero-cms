@@ -202,7 +202,7 @@ window.addEvent('domready', Fields.initialise);
 								foreach ($plugin->events as $event => $label)
 								{
 ?>
-									<option value="<?php echo $event; ?>"<?php if ($this->row->event == $event) { echo ' selected="selected"'; } ?>><?php echo $this->escape($label); ?></option>
+									<option value="<?php echo $plugin->folder; ?>::<?php echo $event; ?>"<?php if ($this->row->event == $event) { echo ' selected="selected"'; } ?>><?php echo $this->escape($label); ?></option>
 <?php
 								}
 								}

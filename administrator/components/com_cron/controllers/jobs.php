@@ -55,12 +55,12 @@ class CronControllerJobs extends Hubzero_Controller
 		);
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.jobs.sort', 
-			'sort', 
-			'id'
+			'filter_order', 
+			'ordering'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.jobs.sortdir', 
-			'sort_Dir', 
+			'filter_order_Dir', 
 			'DESC'
 		));
 
@@ -83,7 +83,10 @@ class CronControllerJobs extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -91,25 +94,26 @@ class CronControllerJobs extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a new ticket
+	 * Display a form for creating a new entry
 	 *
 	 * @return	void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
-	 * Displays a question response for editing
+	 * Displays a form for editing an entry
 	 *
 	 * @return	void
 	 */
 	public function editTask()
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
 		if (is_array($ids)) 
@@ -120,7 +124,7 @@ class CronControllerJobs extends Hubzero_Controller
 		// load infor from database
 		$this->view->row = new CronJob($this->database);
 		$this->view->row->load($id);
-		
+
 		if (!$this->view->row->id)
 		{
 			$this->view->row->created = date('Y-m-d H:i:s', time());
@@ -155,7 +159,7 @@ class CronControllerJobs extends Hubzero_Controller
 		{
 			$this->view->row->recurrence = 'custom';
 		}
-		
+
 		$e = array();
 		JPluginHelper::importPlugin('cron');
 		$dispatcher =& JDispatcher::getInstance();
@@ -167,7 +171,7 @@ class CronControllerJobs extends Hubzero_Controller
 				$e[$event->plugin] = $event->events;
 			}
 		}
-		
+
 		$query = "SELECT p.* FROM #__extensions AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering";
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
@@ -186,9 +190,12 @@ class CronControllerJobs extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -202,7 +209,7 @@ class CronControllerJobs extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 
@@ -283,10 +290,10 @@ class CronControllerJobs extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-		
+
 		// Ensure we have an ID to work with
 		if (empty($ids)) 
 		{
@@ -297,15 +304,18 @@ class CronControllerJobs extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		$obj = new CronJob($this->database);
-		
+
 		// Loop through each ID
 		foreach ($ids as $id) 
 		{
-			$obj->delete(intval($id));
+			if (!$obj->delete(intval($id)))
+			{
+				$this->addComponentMessage($obj->getError(), 'error');
+			}
 		}
-		
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -322,7 +332,7 @@ class CronControllerJobs extends Hubzero_Controller
 	{
 		$this->stateTask(1);
 	}
-	
+
 	/**
 	 * Calls stateTask to unpublish entries
 	 * 
@@ -332,7 +342,7 @@ class CronControllerJobs extends Hubzero_Controller
 	{
 		$this->stateTask(0);
 	}
-	
+
 	/**
 	 * Sets the state of one or more entries
 	 * 
@@ -387,52 +397,7 @@ class CronControllerJobs extends Hubzero_Controller
 			$message
 		);
 	}
-	
-	/**
-	 * Sets the state of one or more entries
-	 * 
-	 * @param      integer The state to set entries to
-	 * @return     void
-	 */
-	public function accessTask() 
-	{
-		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
-		
-		// Incoming
-		$state = JRequest::getInt('access', 0);
-		$ids = JRequest::getVar('id', array());
 
-		// Check for an ID
-		if (count($ids) < 1) 
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Select an entry to change access'),
-				'error'
-			);
-			return;
-		}
-
-		foreach ($ids as $id) 
-		{
-			// Update record(s)
-			$row = new ForumSection($this->database);
-			$row->load(intval($id));
-			$row->access = $state;
-			if (!$row->store()) 
-			{
-				$this->addComponentMessage($row->getError(), 'error');
-			}
-		}
-
-		// set message
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_(count($ids) . ' Item(s) successfully changed access')
-		);
-	}
-	
 	/**
 	 * Cancels a task and redirects to listing
 	 * 
