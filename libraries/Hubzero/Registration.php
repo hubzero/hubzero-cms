@@ -688,7 +688,7 @@ class Hubzero_Registration
 		if ($registrationUsername != REG_HIDE)
 		{
 			if (!empty($login) && !Hubzero_Registration_Helper::validlogin($login) )
-				$this->_invalid['login'] = 'Invalid login name. Please use only alphanumeric characters.';
+				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';
 		}
 
 		if (!empty($login) && ($task == 'create' || $task == 'proxycreate' || $task == 'update'))
@@ -1185,6 +1185,45 @@ class Hubzero_Registration
 		$score = ($score > 100) ? 100 : $score;
 
 		return $score;
+	}
+	
+	/**
+	 * Checks if username already exists
+	 *
+	 * @param string Username to check
+	 * @return array: status & message
+	 */
+	public function checkusername($username)
+	{
+		$ret['status'] = 'error';
+		if(empty($username)) {
+			$ret['message'] = 'Please enter a username.';	
+			return $ret;
+		}
+		
+		// check the general validity
+		if(!Hubzero_Registration_Helper::validlogin($username)) {
+			$ret['message'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';	
+			return $ret;
+		}
+				
+		// Initialize database
+		$db = & JFactory::getDBO();
+
+		$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote( $username );
+		$db->setQuery($query);
+		$db->query();
+		
+		$num_rows = $db->getNumRows();
+		
+		if($num_rows > 0) {
+			$ret['message'] = 'User login name is not available. Please select another one.';
+			return $ret;
+		}
+		
+		$ret['status'] = 'ok';
+		$ret['message'] = 'User login name is available';		
+		return $ret;
 	}
 }
 

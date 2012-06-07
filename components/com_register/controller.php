@@ -82,7 +82,8 @@ class RegisterController extends Hubzero_Controller
 
 			// AJAX methods
 			case 'passwordstrength': $this->passwordstrength($act); break;
-
+			case 'checkusername': $this->checkusername(); break;
+			
 			// Account confirmation
 			case 'resend':      $this->resend();      break;
 			case 'change':      $this->change();      break;
@@ -648,7 +649,7 @@ class RegisterController extends Hubzero_Controller
 	protected function create()
 	{
 		ximport('Hubzero_Auth_Link');
-
+		
 		global $mainframe;
 
 		// Add the CSS to the template
@@ -684,7 +685,7 @@ class RegisterController extends Hubzero_Controller
 
 			// Perform field validation
 			if ($xregistration->check('create')) {
-
+				
 				// Get required system objects
 				$user 		= clone(JFactory::getUser());
 				$pathway 	=& $mainframe->getPathway();
@@ -762,7 +763,7 @@ class RegisterController extends Hubzero_Controller
 					$xprofile = Hubzero_User_Profile::getInstance($user->get('id'));
 
 					$result = is_object($xprofile);
-
+					
 					// Did we successfully create an account?
 					if ($result) {
 						$xprofile->loadRegistration($xregistration);
@@ -1098,7 +1099,29 @@ class RegisterController extends Hubzero_Controller
 			return $html;
 		}
 	}
+	
+	/**
+	 * Short description for 'checkusername'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @return     string Return description (if any) ...
+	 */
+	protected function checkusername()
+	{
+		// Incoming
+		$username = JRequest::getVar('userlogin','','get');
+		
+		// Instantiate a new registration object
+		$xregistration = new Hubzero_Registration();
 
+		// Check the username
+		$usernamechecked = $xregistration->checkusername($username);
+		
+		$ret = json_encode($usernamechecked);
+		echo $ret; die;
+	}
+	
 	//----------------------------------------------------------
 	//  Email (account confirmation)
 	//----------------------------------------------------------

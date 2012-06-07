@@ -115,10 +115,10 @@ $group = JRequest::getVar("group", "");
 			<input type="hidden" name="botcheck" value="" />
 <?php } ?>
 			
-			<label>
+			<!--label>
 				<?php echo JText::_('COM_SUPPORT_USERNAME'); ?>
 				<input type="text" name="reporter[login]" value="<?php echo (isset($this->reporter['login'])) ? $this->escape($this->reporter['login']) : ''; ?>" id="reporter_login" />
-			</label>
+			</label-->
 			
 			<label<?php echo ($this->getError() && $this->reporter['name'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_SUPPORT_NAME'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>

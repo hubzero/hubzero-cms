@@ -160,7 +160,7 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= "\t\t\t\t".'<input name="login" id="userlogin" type="text" maxlength="32" value="'.htmlentities($this->registration['login'],ENT_COMPAT,'UTF-8') .'" />' ."\n";
 			$html .= ($message) ? "\t\t\t\t" . $message . "\n" : '';
 			$html .= "\t\t\t".'</label>'."\n";
-			$html .= "\t\t\t".'<p class="hint">'.JText::_('Combination of lowercase letters and numbers. No spaces or punctuation.').'</p>'."\n";
+			$html .= "\t\t\t".'<p class="hint" id="usernameHint">'.JText::_('Combination of lowercase letters and numbers. No spaces or punctuation.').'</p>'."\n";
 			$html .= "\t\t".'</div>'."\n";
 		}
 

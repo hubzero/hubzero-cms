@@ -52,3 +52,12 @@
 		display: none;
 		}
 
+/* Username checker */
+
+	p.hint.ok {
+		color: #090;
+	}
+	
+	p.hint.notok {
+		color: #900;
+	}

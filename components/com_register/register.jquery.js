@@ -449,6 +449,18 @@ HUB.Register = {
 				var timer = setTimeout('HUB.Register.checkPass()',200);
 			});
 		}
+		
+		var userlogin = $('#userlogin');
+		var usernameStatusAfter = $('#userlogin');
+		
+		if(userlogin.length > 0) {
+			
+			usernameStatusAfter.after('<p class="hint" id="usernameStatus">&nbsp;</p>');
+			
+			userlogin.focusout(function(obj) {
+				var timer = setTimeout('HUB.Register.checkLogin()',200);
+			});
+		}
 	},
 	
 	checkPass: function() {
@@ -461,6 +473,26 @@ HUB.Register = {
 
 		$.post('/register/passwordstrength?no_html=1', {'format': 'raw', 'pass':passwd, 'user':usernm}, function(data) {
 			$('#meter-container').html(data);
+		});
+	},
+	
+	checkLogin: function() {
+		var $ = this.jQuery;
+		var username = $('#userlogin').val();
+		var submitTo = '/register/checkusername?userlogin=' + username;
+		var usernameStatus = $('#usernameStatus');
+		
+		$.getJSON(submitTo, function(data) {
+			console.log(data);
+			usernameStatus.html(data.message);
+			usernameStatus.removeClass('ok');
+			usernameStatus.removeClass('notok');
+			if(data.status == 'ok') {
+				usernameStatus.addClass('ok');	
+			}
+			else {
+				usernameStatus.addClass('notok');	
+			}
 		});
 	}
 }

@@ -79,7 +79,7 @@ class Hubzero_Registration_Helper
 	 */
 	public function validlogin($login)
 	{
-		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z\.]*$/i", $login)) {
+		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z\.]+$/i", $login)) {
 			if (Hubzero_Registration_Helper::is_positiveint($login)) {
 				return(0);
 			} else {
