@@ -29,37 +29,29 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//-------------------------------------------------------------
-// Contains functions used by multiple Session/Tool modules
-//-------------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'MwUtils'
- * 
- * Long description (if any) ...
+ * Contains functions used by multiple Session/Tool modules
  */
 class MwUtils
 {
-	// Get a list of existing application sessions.
-
 	/**
-	 * Short description for 'getMWDBO'
+	 * Return a middleware database object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     mixed
 	 */
 	public function getMWDBO()
 	{
 		static $instance;
 
-		if (!is_object($instance)) {
-			$config =& JComponentHelper::getParams( 'com_tools' );
+		if (!is_object($instance)) 
+		{
+			$config =& JComponentHelper::getParams('com_tools');
 			$enabled = $config->get('mw_on');
 
-			if (!$enabled) {
+			if (!$enabled) 
+			{
 				return null;
 			}
 
@@ -71,14 +63,24 @@ class MwUtils
 			$options['database'] = $config->get('mwDBDatabase');
 			$options['prefix']   = $config->get('mwDBPrefix');
 
-			if ( defined('_JEXEC') ) {
+			if ((!isset($options['password']) || $options['password'] == '') 
+			 && (!isset($options['user']) || $options['user'] == '')
+			 && (!isset($options['database']) || $options['database'] == '')) 
+			{
+				$instance =& JFactory::getDBO();
+			}
+			else 
+			{
 				$instance =& JDatabase::getInstance($options);
-			} else {
-				$instance = new database($options['host'], $options['user'], $options['password'], $options['database'], $options['prefix']);
+				if (JError::isError($instance)) 
+				{
+					$instance =& JFactory::getDBO();
+				}
 			}
 		}
 
-		if (JError::isError($instance)) {
+		if (JError::isError($instance)) 
+		{
 			return null;
 		}
 
@@ -86,27 +88,29 @@ class MwUtils
 	}
 
 	/**
-	 * Short description for 'getDiskUsage'
+	 * Return the amount of disk space used
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $username Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $username User to look up disk space for
+	 * @return     array
 	 */
 	public function getDiskUsage($username)
 	{
 		$info = array();
 
-		$config =& JComponentHelper::getParams( 'com_tools' );
+		$config =& JComponentHelper::getParams('com_tools');
 		$host = $config->get('storagehost');
 
-		if ($username && $host) {
+		if ($username && $host) 
+		{
 			$fp = stream_socket_client($host, $errno, $errstr, 30);
-			if (!$fp) {
+			if (!$fp) 
+			{
 				$info[] = "$errstr ($errno)\n";
-			} else {
+			} 
+			else 
+			{
 				$msg = '';
-				fwrite($fp, "getquota user=".$username."\n");
+				fwrite($fp, "getquota user=" . $username . "\n");
 				while (!feof($fp))
 				{
 					$msg .= fgets($fp, 1024);
@@ -117,7 +121,7 @@ class MwUtils
 				{
 					if (!empty($token))
 					{
-						$t = preg_split('#=#',$token);
+						$t = preg_split('#=#', $token);
 						$info[$t[0]] = (isset($t[1])) ? $t[1] : '';
 					}
 				}
@@ -126,4 +130,3 @@ class MwUtils
 		return $info;
 	}
 }
-?>
