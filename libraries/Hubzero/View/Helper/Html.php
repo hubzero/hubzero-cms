@@ -29,24 +29,19 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_View_Helper_Html'
- * 
- * Long description (if any) ...
+ * Hubzero helper class for misc. HTML generation
  */
 class Hubzero_View_Helper_Html
 {
-
 	/**
-	 * Short description for 'error'
+	 * Wrap a string in an element with an error class
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg String to wrap element in
+	 * @param      string $tag Element type
+	 * @return     string
 	 */
 	public static function error($msg, $tag='p')
 	{
@@ -54,76 +49,69 @@ class Hubzero_View_Helper_Html
 	}
 
 	/**
-	 * Short description for 'warning'
+	 * Wrap a string in an element with a warningclass
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg String to wrap element in
+	 * @param      string $tag Element type
+	 * @return     string
 	 */
 	public static function warning($msg, $tag='p')
 	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
+		return '<' . $tag . ' class="warning">' . $msg . '</' . $tag . '>' . "\n";
 	}
 
 	/**
-	 * Short description for 'div'
+	 * Wrap a string in a DIV tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $txt Parameter description (if any) ...
-	 * @param      string $cls Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $txt Text to wrap
+	 * @param      string $cls Class to add to element
+	 * @param      string $id  ID to add to element
+	 * @return     string 
 	 */
 	public static function div($txt, $cls='', $id='')
 	{
 		$html  = '<div';
-		$html .= ($cls) ? ' class="'.$cls.'"' : '';
-		$html .= ($id) ? ' id="'.$id.'"' : '';
+		$html .= ($cls) ? ' class="' . $cls . '"' : '';
+		$html .= ($id) ? ' id="' . $id . '"' : '';
 		$html .= '>';
-		$html .= ($txt != '') ? "\n".$txt."\n" : '';
+		$html .= ($txt != '') ? "\n" . $txt . "\n" : '';
 		$html .= '</div><!-- / ';
 		if ($id)
 		{
-			$html .= '#'.$id;
+			$html .= '#' . $id;
 		}
 		if ($cls)
 		{
-			$html .= '.'.$cls;
+			$html .= '.' . $cls;
 		}
-		$html .= ' -->'."\n";
+		$html .= ' -->' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'hed'
+	 * Generate an HTML header element
+	 * ex: <h3>text</h3>
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $level Parameter description (if any) ...
-	 * @param      string $words Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $level Header level
+	 * @param      string  $words Words to wrap in tag
+	 * @param      string  $class Class to add to element
+	 * @return     string
 	 */
-	public static function hed( $level, $words, $class='' )
+	public static function hed($level, $words, $class='')
 	{
-		$html  = '<h'.$level;
-		$html .= ($class) ? ' class="'.$class.'"' : '';
-		$html .= '>'.$words.'</h'.$level.'>'."\n";
+		$html  = '<h' . $level;
+		$html .= ($class) ? ' class="' . $class . '"' : '';
+		$html .= '>' . $words . '</h' . $level . '>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'xhtml'
+	 * Clean up text to be XHTML valid
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $text Text to clean
+	 * @return     string
 	 */
-	public static function xhtml( $text )
+	public static function xhtml($text)
 	{
 		$text = stripslashes($text);
 		$text = strip_tags($text);
@@ -137,14 +125,13 @@ class Hubzero_View_Helper_Html
 	}
 
 	/**
-	 * Short description for 'shortenText'
+	 * Shorten a string to a max length, preserving whole words
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      integer $chars Parameter description (if any) ...
-	 * @param      integer $p Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $text      String to shorten
+	 * @param      integer $chars     Max length to allow
+	 * @param      integer $p         Wrap content in a paragraph tag?
+	 * @param      integer $striptags Strip HTML tags?
+	 * @return     string 
 	 */
 	public static function shortenText($text, $chars=300, $p=1, $striptags=1)
 	{
@@ -156,10 +143,10 @@ class Hubzero_View_Helper_Html
 
 		if (strlen($text) > $chars)
 		{
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' &#8230;';
+			$text = $text . ' ';
+			$text = substr($text, 0, $chars);
+			$text = substr($text, 0, strrpos($text, ' '));
+			$text = $text . ' &#8230;';
 		}
 		if ($text == '')
 		{
@@ -167,46 +154,42 @@ class Hubzero_View_Helper_Html
 		}
 		if ($p)
 		{
-			$text = '<p>'.$text.'</p>';
+			$text = '<p>' . $text . '</p>';
 		}
 
 		return $text;
 	}
 
 	/**
-	 * Short description for 'purifyText'
+	 * Strip potentially harmful or unwanted content from a string
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$text Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string &$text Text to clean
+	 * @return     string
 	 */
-	public static function purifyText( &$text )
+	public static function purifyText(&$text)
 	{
 		$text = stripslashes($text);
-		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
-		$text = preg_replace( '/{.+?}/', '', $text );
-		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
-		$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
-		$text = preg_replace( '/<!--.+?-->/', '', $text );
-		$text = preg_replace( '/&nbsp;/', ' ', $text );
-		$text = preg_replace( '/&amp;/', ' ', $text );
-		$text = preg_replace( '/&quot;/', ' ', $text );
+		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
+		$text = preg_replace('/{.+?}/', '', $text);
+		$text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
+		$text = preg_replace('/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text);
+		$text = preg_replace('/<!--.+?-->/', '', $text);
+		$text = preg_replace('/&nbsp;/', ' ', $text);
+		$text = preg_replace('/&amp;/', ' ', $text);
+		$text = preg_replace('/&quot;/', ' ', $text);
 		$text = str_replace("\n",' ',$text);
 		$text = str_replace("\r",' ',$text);
 		$text = str_replace("\t",' ',$text);
-		$text = strip_tags( $text );
+		$text = strip_tags($text);
 		return $text;
 	}
 
 	/**
-	 * Short description for 'str_highlight'
+	 * Highlight some text in a string
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @param      array $needles Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $text    String to highlight in
+	 * @param      array  $needles List of texts to highlight
+	 * @return     string
 	 */
 	public static function str_highlight($text, $needles)
 	{
@@ -218,55 +201,50 @@ class Hubzero_View_Helper_Html
 		foreach ($needles as $needle)
 		{
 			$needle = preg_quote($needle);
-			$regex = sprintf($pattern, $needle);
-			$text = preg_replace($regex, $highlight, $text);
+			$regex  = sprintf($pattern, $needle);
+			$text   = preg_replace($regex, $highlight, $text);
 		}
 		return $text;
 	}
 
 	/**
-	 * Short description for 'ampReplace'
+	 * Replace ampersands with &amp;
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $text Text to replace ampersands in
+	 * @return     string
 	 */
-	public static function ampReplace( $text )
+	public static function ampReplace($text)
 	{
-		$text = str_replace( '&&', '*--*', $text );
-		$text = str_replace( '&#', '*-*', $text );
-		$text = str_replace( '&amp;', '&', $text );
-		$text = preg_replace( '|&(?![\w]+;)|', '&amp;', $text );
-		$text = str_replace( '*-*', '&#', $text );
-		$text = str_replace( '*--*', '&&', $text );
+		$text = str_replace('&&', '*--*', $text);
+		$text = str_replace('&#', '*-*', $text);
+		$text = str_replace('&amp;', '&', $text);
+		$text = preg_replace('|&(?![\w]+;)|', '&amp;', $text);
+		$text = str_replace('*-*', '&#', $text);
+		$text = str_replace('*--*', '&&', $text);
 
 		return $text;
 	}
 
 	/**
-	 * Short description for 'mkt'
+	 * Turn datetime 0000-00-00 00:00:00 to timestamp
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $stime Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $stime Datetime to convert
+	 * @return     number
 	 */
 	public static function mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
+		{
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
 
 	/**
-	 * Short description for 'timeAgoo'
+	 * Calculate how long ago a date was
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      number $timestamp Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      number $timestamp Date to convert
+	 * @return     string
 	 */
 	public static function timeAgoo($timestamp)
 	{
@@ -288,7 +266,10 @@ class Hubzero_View_Helper_Html
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) $val = 0;
+		if ($val < 0) 
+		{
+			$val = 0;
+		}
 
 		// Determine the minor value, to recurse through
 		$new_time = $current_time - ($difference % $lengths[$val]);
@@ -297,13 +278,17 @@ class Hubzero_View_Helper_Html
 		$number = floor($number);
 
 		// If required create a plural
-		if ($number != 1) $periods[$val].= 's';
+		if ($number != 1) 
+		{
+			$periods[$val] .= 's';
+		}
 
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
 
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)) {
+		if (($val >= 1) && (($current_time - $new_time) > 0)) 
+		{
 			$text .= Hubzero_View_Helper_Html::timeAgoo($new_time);
 		}
 
@@ -311,124 +296,122 @@ class Hubzero_View_Helper_Html
 	}
 
 	/**
-	 * Short description for 'timeAgo'
+	 * Calculate how long ago a date was and put it in human readable format
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $timestamp Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      number $timestamp Date to convert
+	 * @return     string
 	 */
 	public static function timeAgo($timestamp)
 	{
 		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
 
-		$parts = explode(' ',$text);
+		$parts = explode(' ', $text);
 
-		$text  = $parts[0].' '.$parts[1];
-		$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
+		$text  = $parts[0] . ' ' . $parts[1];
+		$text .= ($parts[2]) ? ' ' . $parts[2] . ' ' . $parts[3] : '';
 		return $text;
 	}
 
 	/**
-	 * Short description for 'niceidformat'
+	 * Format an ID by prefixing 0s.
+	 * This is used for directory naming
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $someid ID to format
+	 * @return     string
 	 */
 	public static function niceidformat($someid)
 	{
+		$pre = '';
+		if ($someid < 0) 
+		{
+			$pre = 'n';
+			$someid = abs($someid);
+		}
 		while (strlen($someid) < 5)
 		{
 			$someid = 0 . "$someid";
 		}
-		return $someid;
+		return $pre . $someid;
 	}
 
 	/**
-	 * Short description for 'thumbit'
+	 * Generate a thumbnail file name format
+	 * example.jpg -> example_thumb.jpg
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $thumb Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $thumb Filename to get thumbnail of
+	 * @return     string
 	 */
 	public static function thumbit($thumb)
 	{
-		$image = explode('.',$thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.',$image);
+		jimport('joomla.filesystem.file');
+		$ext = JFile::getExt($thumb);
 
-		return $thumb;
+		return JFile::stripExt($thumb) . '_thumb.' . $ext;
 	}
 
 	/**
-	 * Short description for 'getFileAttribs'
+	 * Get the file attributes (type, size) of a file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $path Parameter description (if any) ...
-	 * @param      string $base_path Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $path      Path to get file info fore
+	 * @param      string $base_path Base path to prepend to $path
+	 * @return     string 
 	 */
-	public static function getFileAttribs( $path, $base_path='' )
+	public static function getFileAttribs($path, $base_path='')
 	{
 		// Return nothing if no path provided
-		if (!$path) {
+		if (!$path) 
+		{
 			return '';
 		}
 
-		if ($base_path) {
+		if ($base_path) 
+		{
 			// Strip any trailing slash
-			if (substr($base_path, -1) == DS) {
-				$base_path = substr($base_path, 0, strlen($base_path) - 1);
-			}
-			// Ensure a starting slash
-			if (substr($base_path, 0, 1) != DS) {
-				$base_path = DS.$base_path;
-			}
+			$base_path = DS . trim($base_path, DS);
 		}
 
 		// Ensure a starting slash
-		if (substr($path, 0, 1) != DS) {
-			$path = DS.$path;
-		}
-		if (substr($path, 0, strlen($base_path)) == $base_path) {
-			// Do nothing
-		} else {
-			$path = $base_path.$path;
-		}
-		$path = JPATH_ROOT.$path;
+		$path = DS . trim($path, DS);
 
-		$file_name_arr = explode(DS,$path);
-	    $type = end($file_name_arr);
+		// Does the beginning of the path match the base path?
+		if (substr($path, 0, strlen($base_path)) != $base_path) 
+		{
+			$path = $base_path . $path;
+		}
+		$path = JPATH_ROOT . $path;
+
+		//$file_name_arr = explode(DS, $path);
+	    //$type = end($file_name_arr);
+
+		jimport('joomla.filesystem.file');
+		$type = JFile::getExt($path);
 
 		$fs = '';
 
 		// Get the file size if the file exist
-		if (file_exists( $path )) {
-			$fs = filesize( $path );
+		if (file_exists($path)) 
+		{
+			$fs = filesize($path);
 		}
 
-		$html  = '<span class="caption">('.$type;
-		if ($fs) {
-			switch ($type)
+		$html  = '<span class="caption">(' . $type;
+		if ($fs) 
+		{
+			switch (strtoupper($type))
 			{
 				case 'HTM':
 				case 'HTML':
 				case 'PHP':
 				case 'ASF':
-				case 'SWF': $fs = ''; break;
+				case 'SWF': 
+					$fs = ''; 
+				break;
 				default:
 					$fs = Hubzero_View_Helper_Html::formatSize($fs);
-					break;
+				break;
 			}
 
-			$html .= ($fs) ? ', '.$fs : '';
+			$html .= ($fs) ? ', ' . $fs : '';
 		}
 		$html .= ')</span>';
 
@@ -436,45 +419,54 @@ class Hubzero_View_Helper_Html
 	}
 
 	/**
-	 * Short description for 'formatSize'
+	 * Format a filesize to more understandable Gb/Mb/Kb/b
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $file_size Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $fileSize File size to format
+	 * @return     string
 	 */
-	public static function formatSize($file_size)
+	public static function formatSize($fileSize)
 	{
-		if ($file_size >= 1073741824) {
-			$file_size = round($file_size / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
-		} elseif ($file_size >= 1048576) {
-			$file_size = round($file_size / 1048576 * 100) / 100 . ' <abbr title="megabytes">Mb</abbr>';
-		} elseif ($file_size >= 1024) {
-			$file_size = round($file_size / 1024 * 100) / 100 . ' <abbr title="kilobytes">Kb</abbr>';
-		} else {
-			$file_size = $file_size . ' <abbr title="bytes">b</abbr>';
+		if (!$fileSize)
+		{
+			return '';
 		}
-		return $file_size;
+		if ($fileSize >= 1073741824) 
+		{
+			$fileSize = round($fileSize / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
+		} 
+		elseif ($fileSize >= 1048576) 
+		{
+			$fileSize = round($fileSize / 1048576 * 100) / 100 . ' <abbr title="megabytes">Mb</abbr>';
+		} 
+		elseif ($fileSize >= 1024) 
+		{
+			$fileSize = round($fileSize / 1024 * 100) / 100 . ' <abbr title="kilobytes">Kb</abbr>';
+		} 
+		else 
+		{
+			$fileSize = $fileSize . ' <abbr title="bytes">b</abbr>';
+		}
+		return $fileSize;
 	}
 
 	/**
-	 * Short description for 'filesize_r'
+	 * Recursive filesize calculator
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $path Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $path Path to calculate total filesize for
+	 * @return     integer
 	 */
 	public static function filesize_r($path)
 	{
-		if (!file_exists($path)) {
+		if (!file_exists($path)) 
+		{
 			return 0;
 		}
-		if (is_file($path)) {
+		if (is_file($path)) 
+		{
 			return filesize($path);
 		}
 		$ret = 0;
-		foreach (glob($path."/*") as $fn)
+		foreach (glob($path . "/*") as $fn)
 		{
 			$ret += Hubzero_View_Helper_Html::filesize_r($fn);
 		}
