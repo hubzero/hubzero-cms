@@ -461,6 +461,10 @@ class plgMembersDashboard extends JPlugin
 		{
 			$this->getmodule();
 		}
+		else 
+		{
+			exit();
+		}
 	}
 
 	/**
