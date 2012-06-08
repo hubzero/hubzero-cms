@@ -32,152 +32,36 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//----------------------------------------------------------
-// This class holds information about one application.
-// It may be either a running session or an app that can be invoked.
-//----------------------------------------------------------
-
 /**
- * Short description for 'MwModApp'
- * 
- * Long description (if any) ...
+ * Module class for displaying a user's recently used/favorite tools
  */
-class MwModApp
-{
-
-	/**
-	 * Description for 'name'
-	 * 
-	 * @var unknown
-	 */
-	var $name;
-
-	/**
-	 * Description for 'caption'
-	 * 
-	 * @var unknown
-	 */
-	var $caption;
-
-	/**
-	 * Description for 'desc'
-	 * 
-	 * @var unknown
-	 */
-	var $desc;
-
-	/**
-	 * Description for 'middleware'
-	 * 
-	 * @var unknown
-	 */
-	var $middleware; // which environment to run in
-
-	/**
-	 * Description for 'session'
-	 * 
-	 * @var unknown
-	 */
-	var $session;    // sessionid of application
-
-	/**
-	 * Description for 'owner'
-	 * 
-	 * @var unknown
-	 */
-	var $owner;      // owner of a running session
-
-	/**
-	 * Description for 'num'
-	 * 
-	 * @var unknown
-	 */
-	var $num;        // Nth occurrence of this application in a list
-
-	/**
-	 * Description for 'public'
-	 * 
-	 * @var unknown
-	 */
-	var $public;     // is this tool public?
-
-	/**
-	 * Description for 'revision'
-	 * 
-	 * @var unknown
-	 */
-	var $revision;   // what license is in use?
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $n Parameter description (if any) ...
-	 * @param      unknown $c Parameter description (if any) ...
-	 * @param      unknown $d Parameter description (if any) ...
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @param      unknown $s Parameter description (if any) ...
-	 * @param      unknown $o Parameter description (if any) ...
-	 * @param      unknown $num Parameter description (if any) ...
-	 * @param      unknown $p Parameter description (if any) ...
-	 * @param      unknown $r Parameter description (if any) ...
-	 * @param      unknown $tn Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($n,$c,$d,$m,$s,$o,$num,$p,$r, $tn)
-	{
-		$this->name       = $n;
-		$this->caption    = $c;
-		$this->desc       = $d;
-		$this->middleware = $m;
-		$this->session    = $s;
-		$this->owner      = $o;
-		$this->num        = $num;
-		$this->public     = $p;
-		$this->revision   = $r;
-		$this->toolname   = $tn;
-	}
-}
-
-//----------------------------------------------------------
-// Module class
-//----------------------------------------------------------
-
-/**
- * Short description for 'class'
- * 
- * Long description (if any) ...
- */
-class modToolList
+class modToolList extends JObject
 {
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct($params)
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -186,12 +70,10 @@ class modToolList
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
@@ -282,12 +164,10 @@ class modToolList
 	}
 
 	/**
-	 * Short description for '_prepText'
+	 * Convert quote marks
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $txt Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $txt Text to convert quotes in
+	 * @return     string
 	 */
 	private function _prepText($txt)
 	{
@@ -297,13 +177,11 @@ class modToolList
 	}
 
 	/**
-	 * Short description for 'buildList'
+	 * Build the HTML for a list of tools
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array &$toollist Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array  &$toollist List of tools to format
+	 * @param      string $type      Type of list being formatted
+	 * @return     string HTML
 	 */
 	public function buildList($toollist, $type='all')
 	{
@@ -318,10 +196,10 @@ class modToolList
 
 		$database = JFactory::getDBO();
 
-		$html  = "\t\t".'<ul>'."\n";
+		$html  = "\t\t" . '<ul>' . "\n";
 		if (count($toollist) <= 0) 
 		{
-			$html .= "\t\t".' <li>'.JText::_('MOD_MYTOOLS_NONE_FOUND').'</li>'."\n";
+			$html .= "\t\t" . ' <li>' . JText::_('MOD_MYTOOLS_NONE_FOUND') . '</li>' . "\n";
 		} 
 		else 
 		{
@@ -344,7 +222,7 @@ class modToolList
 
 					$cls = '';
 					// Build the HTML
-					$html .= "\t\t".' <li id="'.$tool->name.'"';
+					$html .= "\t\t" . ' <li id="'.$tool->name.'"';
 					// If we're in the 'all tools' pane ...
 					if ($type == 'all') 
 					{
@@ -362,23 +240,23 @@ class modToolList
 						}
 					}
 					$html .= ($cls) ? ' class="'.$cls.'"' : '';
-					$html .= '>'."\n";
+					$html .= '>' . "\n";
 
 					// Tool info link
-					$html .= "\t\t\t".' <a href="/tools/'.$tool->toolname.'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>'."\n";
+					$html .= "\t\t\t" . ' <a href="/tools/'.$tool->toolname.'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>' . "\n";
 
 					// Only add the "favorites" button to the all tools list
 					if ($type == 'all') 
 					{
-						$html .= "\t\t\t".' <a href="javascript:void(0);" class="fav" title="Add '.$tool->caption.' to your favorites">'.$tool->caption.'</a>'."\n";
+						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="Add '.$tool->caption.' to your favorites">'.$tool->caption.'</a>' . "\n";
 					}
 
 					// Launch tool link
 					if ($this->can_launch) 
 					{
-						$html .= "\t\t\t".' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>'."\n";
+						$html .= "\t\t\t" . ' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>' . "\n";
 					}
-					$html .= "\t\t".' </li>'."\n";
+					$html .= "\t\t" . ' </li>' . "\n";
 				}
 				// If we're in the 'favorites' pane ...
 				// Add the tool's name to an array for the 'all tools' 
@@ -389,7 +267,7 @@ class modToolList
 				}
 			}
 		}
-		$html .= "\t\t".'</ul>'."\n";
+		$html .= "\t\t" . '</ul>' . "\n";
 
 		if ($type == 'favs') 
 		{
@@ -399,20 +277,25 @@ class modToolList
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
+		include_once(JPATH_ROOT . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
+
 		$params = $this->params;
 
-		$jacl = JFactory::getACL();
-		$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
-		$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
-		$jacl->addACL('com_tools', 'manage', 'users', 'manager');
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$jacl = JFactory::getACL();
+			$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
+			$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
+			$jacl->addACL('com_tools', 'manage', 'users', 'manager');
+		}
 
 		$juser = JFactory::getUser();
 
@@ -428,7 +311,7 @@ class modToolList
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests
-		$this->fav = JRequest::getVar('fav', '');
+		$this->fav     = JRequest::getVar('fav', '');
 		$this->no_html = JRequest::getVar('no_html', 0);
 
 		$rconfig = JComponentHelper::getParams('com_resources');
@@ -437,7 +320,7 @@ class modToolList
 		$database =& JFactory::getDBO();
 		if ($this->supportedtag) 
 		{
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 			$this->rt = new ResourcesTags($database);
 			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
 		}
@@ -446,8 +329,8 @@ class modToolList
 		{
 			// We have a string of tools! This means we're updating the
 			// favorite tools pane of the module via AJAX
-			$favs = preg_split('#,#',$this->fav);
-			$favs = array_map('trim',$favs);
+			$favs = explode(',', $this->fav);
+			$favs = array_map('trim', $favs);
 
 			$this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
 		} 
@@ -460,8 +343,8 @@ class modToolList
 
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStyleSheet('mod_mytools');
-			Hubzero_Document::addModuleScript('mod_mytools');
+			Hubzero_Document::addModuleStyleSheet($this->module->module);
+			Hubzero_Document::addModuleScript($this->module->module);
 
 			// Get a list of recent tools
 			$rt = new RecentTool($database);
@@ -480,7 +363,7 @@ class modToolList
 			$fav = $params->get('myhub_favs');
 			if ($fav) 
 			{
-				$favs = preg_split('#,#', $fav);
+				$favs = explode(',', $fav);
 			} 
 			else 
 			{
@@ -493,5 +376,7 @@ class modToolList
 			$this->favtools = $this->_getToollist($favs);
 			$this->alltools = $this->_getToollist();
 		}
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMyProfile'
- * 
- * Long description (if any) ...
+ * Module class for displaying a user's profile information
  */
-class modMyProfile
+class modMyProfile extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,27 +70,21 @@ class modMyProfile
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
-	//-----------
-	// TODO: needs a lot of work, esp w/r/t configuration
-
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
@@ -107,28 +96,40 @@ class modMyProfile
 
 		$profile = Hubzero_User_Profile::getInstance($this->id);
 
-		if (!$profile->get('name')) {
-			$name  = $profile->get('givenName').' ';
-			$name .= ($profile->get('middleName')) ? $profile->get('middleName').' ' : '';
+		if (!$profile->get('name')) 
+		{
+			$name  = $profile->get('givenName') . ' ';
+			$name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
 			$name .= $profile->get('surname');
 			$profile->set('name', $name);
 		}
 
 		// Get the member's picture (if it exist)
-		if ($profile->get('picture')) {
+		if ($profile->get('picture')) 
+		{
 			ximport('Hubzero_View_Helper_Html');
 
-			$dir = Hubzero_View_Helper_Html::niceidformat( $this->id );
-			if (!file_exists(JPATH_ROOT.$config->get('webpath').DS.$dir.DS.$profile->get('picture'))) {
-				$profile->set('picture', $config->get('defaultpic'));
-			} else {
-				$profile->set('picture', $config->get('webpath').DS.$dir.DS.stripslashes($profile->get('picture')));
-			}
-		} else {
-			if (!file_exists(JPATH_ROOT.$config->get('defaultpic'))) {
+			$dir = DS . trim($config->get('webpath', '/site/members'), DS) . Hubzero_View_Helper_Html::niceidformat($this->id);
+			if (!file_exists(JPATH_ROOT . $dir . DS . $profile->get('picture'))) 
+			{
 				$profile->set('picture', '');
-			} else {
-				$profile->set('picture', $config->get('defaultpic'));
+			} 
+			else 
+			{
+				$profile->set('picture', $dir . DS . stripslashes($profile->get('picture')));
+			}
+		} 
+
+		if (!$profile->get('picture')) 
+		{
+			$default = DS . trim($config->get('defaultpic', '/components/com_members/images/profile.gif'));
+			if (!file_exists(JPATH_ROOT . $default)) 
+			{
+				$profile->set('picture', '');
+			} 
+			else 
+			{
+				$profile->set('picture', $default);
 			}
 		}
 
@@ -136,7 +137,9 @@ class modMyProfile
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_myprofile');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

@@ -32,27 +32,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modSpotlight'
- * 
- * Long description (if any) ...
+ * Module class for showing content spotlight
  */
-class modSpotlight
+class modSpotlight extends JObject
 {
-
 	/**
-	 * Description for '_attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_attributes = array();
+	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @param      unknown $module Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
 	public function __construct($params, $module)
@@ -62,42 +57,36 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
 	{
-		$this->_attributes[$property] = $value;
+		$this->attributes[$property] = $value;
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property]))
+		if (isset($this->attributes[$property])) 
 		{
-			return $this->_attributes[$property];
+			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '__isset'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
 	 */
 	public function __isset($property)
 	{
@@ -105,11 +94,9 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display module contents
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{
@@ -129,11 +116,9 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for 'run'
+	 * Get module contents
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function run()
 	{
@@ -267,7 +252,7 @@ class modSpotlight
 			}
 			else
 			{
-				// No - so we need to randomly choose one					
+				// No - so we need to randomly choose one
 				switch ($tbl)
 				{
 					case 'resources':
@@ -395,7 +380,7 @@ class modSpotlight
 			{
 				$this->html .= '<li class="spot_' . $k . '">' . $out . '</li>' . "\n";
 
-				// Check if this has been saved in the feature history					
+				// Check if this has been saved in the feature history
 				if (!$fh->id || !$fh->objectid)
 				{
 					$fh->featured = $start;
@@ -410,19 +395,17 @@ class modSpotlight
 		}
 
 		// Output HTML
-		require(JModuleHelper::getLayoutPath('mod_spotlight'));
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
 	/**
-	 * Short description for '_composeEntry'
+	 * Format an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $row Parameter description (if any) ...
-	 * @param      string $tbl Parameter description (if any) ...
-	 * @param      number $txtLength Parameter description (if any) ...
-	 * @param      integer $getid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object  $row       Database row
+	 * @param      string  $tbl       Format type
+	 * @param      number  $txtLength Max text length to display
+	 * @param      integer $getid     Just return the ID or not
+	 * @return     string HTML
 	 */
 	private function _composeEntry($row, $tbl, $txtLength=100, $getid=0)
 	{
@@ -447,22 +430,14 @@ class modSpotlight
 				if (isset($row->picture) && $row->picture != '')
 				{
 					// Yes - so build the path to it
-					$thumb  = $mconfig->get('webpath');
-					if (substr($thumb, 0, 1) != DS)
-					{
-						$thumb = DS . $thumb;
-					}
-					if (substr($thumb, -1, 1) == DS)
-					{
-						$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-					}
-					$thumb .= DS . $this->_niceIdFormat($row->uidNumber) . DS . $row->picture;
+					$thumb  = DS . trim($mconfig->get('webpath'), DS);
+					$thumb .= DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS . $row->picture;
 
 					// No - use default picture
 					if (is_file(JPATH_ROOT . $thumb))
 					{
 						// Build a thumbnail filename based off the picture name
-						$thumb = $this->_thumb($thumb);
+						$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
 
 						if (!is_file(JPATH_ROOT . $thumb))
 						{
@@ -470,7 +445,7 @@ class modSpotlight
 							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
 							$ih = new MembersImgHandler();
 							$ih->set('image', $row->picture);
-							$ih->set('path', JPATH_ROOT . $config->get('webpath') . DS . $this->_niceIdFormat($row->uidNumber) . DS);
+							$ih->set('path', JPATH_ROOT . $config->get('webpath') . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS);
 							$ih->set('maxWidth', 50);
 							$ih->set('maxHeight', 50);
 							$ih->set('cropratio', '1:1');
@@ -481,11 +456,7 @@ class modSpotlight
 				// No - use default picture
 				if (!$thumb || !is_file(JPATH_ROOT . $thumb))
 				{
-					$thumb = $mconfig->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS)
-					{
-						$thumb = DS . $thumb;
-					}
+					$thumb = DS . trim($mconfig->get('defaultpic'), DS);
 				}
 
 				$title = $row->name;
@@ -514,9 +485,9 @@ class modSpotlight
 				}
 				else
 				{
-					$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->title)).'" /></a></span>'."\n";
-					$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias).'">'.$row->title.'</a></span> ';
-					$out .=  ' by <a href="'. JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.$profile->get('name').'</a> - '.JText::_('in Blogs')."\n";
+					$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0) . '/'.JHTML::_('date',$row->publish_up, '%m', 0) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+					$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0) . '/'.JHTML::_('date',$row->publish_up, '%m', 0) . '/' . $row->alias) . '">' . $row->title.'</a></span> ';
+					$out .=  ' by <a href="'. JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $profile->get('name') . '</a> - '.JText::_('in Blogs')."\n";
 					$out .= '<div class="clear"></div>'."\n";
 				}
 			break;
@@ -528,10 +499,10 @@ class modSpotlight
 				}
 				$url = ($row->group && $row->scope) ? 'groups' . DS . $row->scope . DS . $row->pagename : 'topics' . DS . $row->pagename;
 
-				$thumb = trim($this->params->get( 'default_topicpic', 'modules/mod_spotlight/default.gif' ));
-				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->title)).'" /></a></span>'."\n";
-				$out .= '<span class="spotlight-item"><a href="'.$url.'">'.stripslashes($row->title).'</a></span> ';
-				$out .=  ' - '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_topics').'">'.JText::_('Topics').'</a>'."\n";
+				$thumb = trim($this->params->get('default_topicpic', '/modules/mod_spotlight/default.gif'));
+				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-item"><a href="' . $url.'">'.stripslashes($row->title) . '</a></span> ';
+				$out .=  ' - '.JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_topics') . '">'.JText::_('Topics') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
@@ -551,9 +522,9 @@ class modSpotlight
 						$name = $juser->get('name');
 					}
 				}
-				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->subject)).'" /></a></span>'."\n";
-				$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'">'.stripslashes($row->subject).'</a></span> ';
-				$out .=  ' - '.JText::_('asked by').' '.$name.', '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_answers').'">'.JText::_('Answers').'</a>'."\n";
+				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '">'.stripslashes($row->subject) . '</a></span> ';
+				$out .=  ' - '.JText::_('asked by') . ' ' . $name.', '.JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_answers') . '">'.JText::_('Answers') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
@@ -600,16 +571,11 @@ class modSpotlight
 
 					if (!is_file(JPATH_ROOT . $thumb) or !$picture)
 					{
-						$thumb = $rconfig->get('defaultpic', '/modules/mod_spotlight/default.gif');
-						if (substr($thumb, 0, 1) != DS)
-						{
-							$thumb = DS . $thumb;
-						}
+						$thumb = DS . trim($rconfig->get('defaultpic', '/modules/mod_spotlight/default.gif'), DS);
 					}
 				}
 
-				$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $row->typetitle);
-				$normalized = strtolower($normalized);
+				$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($row->typetitle));
 
 				$row->typetitle = trim(stripslashes($row->typetitle));
 				$row->title = stripslashes($row->title);
@@ -664,12 +630,10 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for '_getAverageRanking'
+	 * Get a user's average ranking
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @return     integer
 	 */
 	private function _getAverageRanking($uid)
 	{
@@ -691,12 +655,10 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for '_countContributions'
+	 * Get a count of a user's contributions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @return     integer
 	 */
 	private function _countContributions($uid)
 	{
@@ -710,12 +672,10 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for '_getImage'
+	 * Get a resource image
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $path Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $path Path to get resource image from
+	 * @return     string
 	 */
 	private function _getImage($path)
 	{
@@ -757,13 +717,11 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for '_getToolImage'
+	 * Get a screenshot of a tool
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $path Parameter description (if any) ...
-	 * @param      integer $versionid Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $path      Path to look for screenshots in
+	 * @param      integer $versionid Tool version
+	 * @return     string
 	 */
 	private function _getToolImage($path, $versionid=0)
 	{
@@ -780,9 +738,6 @@ class modSpotlight
 		$d = @dir(JPATH_ROOT . $path);
 
 		$images = array();
-		//$tns = array();
-		//$all = array();
-		//$ordering = array();
 
 		if ($d)
 		{
@@ -818,53 +773,26 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for '_thumbnail'
+	 * Generate a thumbnail name from a picture name
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $pic Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $pic Picture name
+	 * @return     string
 	 */
 	private function _thumbnail($pic)
 	{
-		$pic = explode('.', $pic);
-		$n = count($pic);
-		$pic[$n-2] .= '-tn';
-		$end = array_pop($pic);
-		$pic[] = 'gif';
-		$tn = implode('.', $pic);
-		return $tn;
+		jimport('joomla.filesystem.file');
+		$ext = JFile::getExt($pic);
+
+		return JFile::stripExt($pic) . '-tn.gif';
 	}
 
 	/**
-	 * Short description for '_thumb'
+	 * Build a path to a resource's files
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $thumb Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	private function _thumb($thumb)
-	{
-		$image = explode('.', $thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.', $image);
-
-		return $thumb;
-	}
-
-	/**
-	 * Short description for '_buildPath'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      string $base Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $date Resource date
+	 * @param      integer $id   Resource ID
+	 * @param      string  $base Base path to prepend
+	 * @return     string 
 	 */
 	private function _buildPath($date, $id, $base='')
 	{
@@ -883,42 +811,17 @@ class modSpotlight
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
-		$dir_id = $this->_niceIdFormat($id);
+		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
 
 	/**
-	 * Short description for '_niceIdFormat'
+	 * Encode some HTML entities
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $someid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _niceIdFormat($someid)
-	{
-		$pre = '';
-		if ($someid < 0)
-		{
-			$pre = 'n';
-			$someid = abs($someid);
-		}
-		while (strlen($someid) < 5)
-		{
-			$someid = 0 . "$someid";
-		}
-		return $pre . $someid;
-	}
-
-	/**
-	 * Short description for '_encodeHtml'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @param      integer $quotes Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string  $str    String to encode
+	 * @param      integer $quotes Encode quote marks?
+	 * @return     string
 	 */
 	private function _encodeHtml($str, $quotes=1)
 	{
@@ -942,12 +845,10 @@ class modSpotlight
 	}
 
 	/**
-	 * Short description for '_ampersands'
+	 * Convert ampersands
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $str    String to encode
+	 * @return     string
 	 */
 	private function _ampersands($str)
 	{

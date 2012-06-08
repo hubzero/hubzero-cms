@@ -91,8 +91,8 @@ var MyToolsTabs = new Class({
 		var uid = $('uid').value;
 		var id = $(this.el.parentNode.parentNode.parentNode).getProperty('id').replace('mod_','');
 
-		var myAjax2 = new Ajax('/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=saveparams&id='+id+'&uid='+uid+'&params[myhub_favs]='+fs).request();
-		var myAjax2 = new Ajax('/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=refresh&id='+id+'&uid='+uid+'&fav='+fs,{update:'favtools'}).request();
+		var myAjax2 = new Ajax('/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=saveparams&mid='+id+'&id='+uid+'&params[myhub_favs]='+fs).request();
+		var myAjax2 = new Ajax('/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=refresh&mid='+id+'&id='+uid+'&fav='+fs,{update:'favtools'}).request();
 	},
 	
 	activate: function(tab){

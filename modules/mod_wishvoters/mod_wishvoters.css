@@ -23,7 +23,7 @@
 		border-left: 1px solid #968b83;
 		border-right: 1px solid #968b83;
 		border-bottom: 1px solid #968b83;
-		}
+	}
 	ul.voterslist li {
 		border-top: 1px solid #ebe8e6;
 		margin: 0;
@@ -31,27 +31,27 @@
 		list-style: none;
 		font-size: 90%;
 		clear: both;
-		}
+	}
 	ul.voterslist li.title {
 		font-size: 80%;
 		font-style: italic;
 		color: #968b83;
-		}
+	}
 	ul.voterslist li span {
 		float: right;
 		margin-top: -2em;
-		}
+	}
 	ul.voterslist li.title span {
 		margin: 0;
 		display: inline;
-		}
+	}
 	ul.voterslist li span.lnum {
 		float: none;
 		margin: 0;
-		}
+	}
 	ul.voterslist li span.wlogin {
 		float: none;
 		margin: 0;
 		display: block;
 		margin-left: 1em;
-		}
+	}

@@ -29,34 +29,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$html = '';
-if ($modfeaturedmember->error) {
-	$html .= '<p class="error">'.JText::_('MOD_FEATUREDMEMBER_MISSING_CLASS').'</p>'."\n";
-} else {
-	if ($modfeaturedmember->row) {
+if ($this->getError()) { ?>
+	<p class="error"><?php echo JText::_('MOD_FEATUREDMEMBER_MISSING_CLASS'); ?></p>
+<?php } else {
+
+	if ($this->row) {
 		ximport('Hubzero_View_Helper_Html');
-
-		$html .= '<div class="'.$modfeaturedmember->cls.'">'."\n";
-		if ($modfeaturedmember->filters['show'] == 'contributors') {
-			$html .= '<h3>'.JText::_('MOD_FEATUREDMEMBER_PROFILE').'</h3>'."\n";
-		} else {
-			$html .= '<h3>'.JText::_('MOD_FEATUREDMEMBER').'</h3>'."\n";
-		}
-		// Do we have a picture to show?
-		if (is_file(JPATH_ROOT.$modfeaturedmember->thumb)) {
-			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedmember->id).'"><img width="50" height="50" src="'.$modfeaturedmember->thumb.'" alt="'.htmlentities(stripslashes($modfeaturedmember->title)).'" /></a></p>'."\n";
-		}
-		$html .= '<p><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedmember->id).'">'.stripslashes($modfeaturedmember->title).'</a>: '."\n";
-		if ($modfeaturedmember->txt) {
-			$html .= Hubzero_View_Helper_Html::shortenText($modfeaturedmember->encode_html(strip_tags($modfeaturedmember->txt)), $modfeaturedmember->txt_length, 0)."\n";
-		}
-		$html .= '</p>'."\n";
-		$html .= '</div>'."\n";
+?>
+	<div class="<?php echo $this->cls; ?>">
+	<?php if ($this->filters['show'] == 'contributors') { ?>
+		<h3><?php echo JText::_('MOD_FEATUREDMEMBER_PROFILE'); ?></h3>
+	<?php } else { ?>
+		<h3><?php echo JText::_('MOD_FEATUREDMEMBER'); ?></h3>
+	<?php } ?>
+	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
+		<p class="featured-img">
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id); ?>">
+				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="<?php echo htmlentities(stripslashes($this->title)); ?>" />
+			</a>
+		</p>
+	<?php } ?>
+		<p>
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id); ?>">
+				<?php echo stripslashes($this->title); ?>
+			</a>: 
+	<?php if ($this->txt) { ?>
+			<?php echo Hubzero_View_Helper_Html::shortenText(htmlspecialchars(strip_tags($this->txt)), $this->txt_length, 0); ?>
+	<?php } ?>
+		</p>
+	</div>
+<?php
 	}
 }
-
-// Output HTML
-echo $html;
 ?>

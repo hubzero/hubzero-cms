@@ -31,31 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * Description for ''t''
- */
-
-/**
- * Description for ''n''
- */
-
-/**
- * Description for ''r''
- */
-
-/**
- * Description for ''br''
- */
-
-/**
- * Description for ''sp''
- */
-
-/**
- * Description for ''a''
- */
 // Include the logic only once
-require_once (dirname(__FILE__) . DS . 'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
 $modspotlight = new modSpotlight($params, $module);
 $modspotlight->display();

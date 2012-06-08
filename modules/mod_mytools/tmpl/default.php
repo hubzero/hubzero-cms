@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<?php if ($modtoollist->fav || $modtoollist->no_html) { ?>
-	<?php echo $modtoollist->buildList($modtoollist->favtools, 'fav'); ?>
+<?php if ($this->fav || $this->no_html) { ?>
+	<?php echo $this->buildList($this->favtools, 'fav'); ?>
 	<p><?php echo JText::_('MOD_MYTOOLS_EXPLANATION'); ?></p>
 <?php } else { ?>
 <div id="myToolsTabs">
@@ -44,22 +44,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 	
 	<div id="recenttools" class="tab_panel active">
 		<?php 
-		$r = $modtoollist->rectools;
-		echo $modtoollist->buildList($r, 'recent'); ?>
+		$r = $this->rectools;
+		echo $this->buildList($r, 'recent'); ?>
 		<p><?php echo JText::_('MOD_MYTOOLS_RECENT_EXPLANATION'); ?></p>
 	</div>
 	
 	<div id="favtools" class="tab_panel">
 		<?php 
-		$f = $modtoollist->favtools;
-		echo $modtoollist->buildList($f, 'favs'); ?>
+		$f = $this->favtools;
+		echo $this->buildList($f, 'favs'); ?>
 		<p><?php echo JText::_('MOD_MYTOOLS_FAVORITES_EXPLANATION'); ?></p>
 	</div>
 	
 	<div id="alltools" class="tab_panel">
 		<?php 
-		$a = $modtoollist->alltools;
-		echo $modtoollist->buildList($a, 'all'); ?>
+		$a = $this->alltools;
+		echo $this->buildList($a, 'all'); ?>
 		<p><?php echo JText::_('MOD_MYTOOLS_ALL_TOOLS_EXPLANATION'); ?></p>
 	</div>
 </div>

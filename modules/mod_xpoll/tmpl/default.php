@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($modxpoll->poll->id && $modxpoll->poll->title) {
-	$options = $modxpoll->options;
+if ($this->poll->id && $this->poll->title) {
+	$options = $this->options;
 ?>
-<form id="<?php echo ($modxpoll->formid) ? $modxpoll->formid : 'xpoll'.rand(); ?>" method="post" action="<?php echo JRoute::_('index.php?option=com_xpoll'); ?>">
+<form id="<?php echo ($this->formid) ? $this->formid : 'xpoll'.rand(); ?>" method="post" action="<?php echo JRoute::_('index.php?option=com_xpoll'); ?>">
 	<fieldset>
-		<h4><?php echo $modxpoll->poll->title; ?></h4>
+		<h4><?php echo $this->poll->title; ?></h4>
 		<ul class="poll">
 <?php
 $tabcnt = 0;
@@ -57,9 +57,9 @@ for ($i=0, $n=count( $options ); $i < $n; $i++)
 ?>
 		</ul>
 		<p><input type="submit" name="task_button" value="<?php echo JText::_('BUTTON_VOTE'); ?>" />&nbsp;&nbsp;
-		<a href="<?php echo JRoute::_("index.php?option=com_xpoll&amp;task=view&amp;id=".$modxpoll->poll->id); ?>"><?php echo JText::_('BUTTON_RESULTS'); ?></a></p>
+		<a href="<?php echo JRoute::_("index.php?option=com_xpoll&amp;task=view&amp;id=" . $this->poll->id); ?>"><?php echo JText::_('BUTTON_RESULTS'); ?></a></p>
 
-		<input type="hidden" name="id" value="<?php echo $modxpoll->poll->id;?>" />
+		<input type="hidden" name="id" value="<?php echo $this->poll->id;?>" />
 		<input type="hidden" name="task" value="vote" />
 	</fieldset>
 </form>

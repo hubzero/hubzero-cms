@@ -29,23 +29,23 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="<?php echo $modslidingpanes->container; ?>">
+<div id="<?php echo $this->container; ?>">
 	<div class="panes">
 		<div class="panes-content">
 <?php
-if ($modslidingpanes->content) {
+if ($this->content) {
 	$i = 1;
-	$panes = $modslidingpanes->content;
+	$panes = $this->content;
 	foreach ($panes as $pane)
 	{
 ?>
-			<div class="pane" id="<?php echo $modslidingpanes->container.'-pane'.$i; ?>">
+			<div class="pane" id="<?php echo $this->container . '-pane' . $i; ?>">
 				<div class="pane-wrap" id="<?php echo $pane->alias; ?>">
 <?php echo stripslashes($pane->introtext); ?>
 				</div><!-- / .pane-wrap #<?php echo $pane->alias; ?> -->
-			</div><!-- / .pane #<?php echo $modslidingpanes->container.'-pane'.$i; ?> -->
+			</div><!-- / .pane #<?php echo $this->container . '-pane' . $i; ?> -->
 <?php
 		$i++;
 	}

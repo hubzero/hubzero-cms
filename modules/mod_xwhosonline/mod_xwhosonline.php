@@ -29,19 +29,19 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-// Editor usertype check
-$jacl =& JFactory::getACL();
-$jacl->addACL( 'mod_xwhosonline', 'manage', 'users', 'super administrator' );
-$jacl->addACL( 'mod_xwhosonline', 'manage', 'users', 'administrator' );
-$jacl->addACL( 'mod_xwhosonline', 'manage', 'users', 'manager' );
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	// Editor usertype check
+	$jacl =& JFactory::getACL();
+	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'super administrator');
+	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'administrator');
+	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'manager');
+}
 
-$modxwhosonline = new modXWhosonline( $params );
+$modxwhosonline = new modXWhosonline($params, $module);
 $modxwhosonline->display();
-
-require( JModuleHelper::getLayoutPath('mod_xwhosonline') );
-?>

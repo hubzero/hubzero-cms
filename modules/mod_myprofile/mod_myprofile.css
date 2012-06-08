@@ -12,17 +12,16 @@
 	-- -- -- -- -- -- --
 
 */
-
-#myprofile-image {
-	text-align: center;
-}
-#myprofile-image img {
-	border: 1px solid #ddd;
-}
-#myprofile-bio {
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	max-height: 200px;
-	overflow: auto;
-}
-
+	#myprofile-image {
+		text-align: center;
+	}
+	#myprofile-image img {
+		border: 1px solid #ddd;
+	}
+	#myprofile-bio {
+		border-top: 1px solid #ddd;
+		border-bottom: 1px solid #ddd;
+		max-height: 200px;
+		overflow: auto;
+	}
+	

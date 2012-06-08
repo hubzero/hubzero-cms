@@ -48,11 +48,13 @@ class modApplicationEnv
 	 * Constructor
 	 * 
 	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct($params)
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
@@ -97,8 +99,8 @@ class modApplicationEnv
 		}
 
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_application_env');
+		Hubzero_Document::addModuleStylesheet($this->module->module);
 
-		require(JModuleHelper::getLayoutPath('mod_application_env'));
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

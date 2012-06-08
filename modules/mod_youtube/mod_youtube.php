@@ -29,15 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-error_reporting(E_ALL);
-@ini_set('display_errors','1');
+defined('_JEXEC') or die('Restricted access');
 
 //Include the syndicate functions only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
 $youtube = new modYoutubeHelper($params, $module);
-$youtube->render();
-
-require(JModuleHelper::getLayoutPath('mod_youtube'));
+$youtube->display();

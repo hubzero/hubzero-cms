@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modFeaturedmember'
- * 
- * Long description (if any) ...
+ * Module class for displaying featured members
  */
-class modFeaturedmember
+class modFeaturedmember extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $this->params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,153 +70,65 @@ class modFeaturedmember
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'niceidformat'
+	 * Display module contents
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $someid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function niceidformat($someid)
-	{
-		$pre = '';
-		if ($someid < 0) {
-			$pre = 'n';
-			$someid = abs($someid);
-		}
-		while (strlen($someid) < 5)
-		{
-			$someid = 0 . "$someid";
-		}
-		return $pre.$someid;
-	}
-
-	/**
-	 * Short description for 'encode_html'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @param      integer $quotes Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function encode_html($str, $quotes=1)
-	{
-		$str = $this->ampersands($str);
-
-		$a = array(
-			//'&' => '&#38;',
-			'<' => '&#60;',
-			'>' => '&#62;',
-		);
-		if ($quotes) $a = $a + array(
-			"'" => '&#39;',
-			'"' => '&#34;',
-		);
-
-		return strtr($str, $a);
-	}
-
-	/**
-	 * Short description for 'ampersands'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	private function ampersands( $str )
-	{
-		$str = stripslashes($str);
-		$str = str_replace('&#','*-*', $str);
-		$str = str_replace('&amp;','&',$str);
-		$str = str_replace('&','&amp;',$str);
-		$str = str_replace('*-*','&#', $str);
-		return $str;
-	}
-
-	/**
-	 * Short description for 'thumb'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $thumb Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	private function thumb( $thumb )
-	{
-		$image = explode('.',$thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.',$image);
-
-		return $thumb;
-	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
-		ximport('Hubzero_User_Profile');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
 
-		$this->error = false;
-		if (!class_exists('FeaturesHistory')) {
-			$this->error = true;
+		if (!class_exists('FeaturesHistory')) 
+		{
+			$this->setError(JText::_('FeaturesHistory class missing'));
 			return false;
 		}
 
-		$database =& JFactory::getDBO();
+		ximport('Hubzero_User_Profile');
 
-		$params =& $this->params;
+		$database =& JFactory::getDBO();
 
 		$filters = array();
 		$filters['limit'] = 1;
-		$filters['show']  = trim($params->get( 'show' ));
+		$filters['show']  = trim($this->params->get('show'));
 
-		$this->cls = trim($params->get( 'moduleclass_sfx' ));
-		$this->txt_length = trim($params->get( 'txt_length' ));
-		$catid = trim($params->get( 'catid' ));
-		$min = trim($params->get( 'min_contributions' ));
-		$show = trim($params->get( 'show' ));
+		$this->cls = trim($this->params->get('moduleclass_sfx'));
+		$this->txt_length = trim($this->params->get('txt_length'));
 
-		$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
-		$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
+		$catid = trim($this->params->get('catid'));
+		$min   = trim($this->params->get('min_contributions'));
+		$show  = trim($this->params->get('show'));
 
-		$row = null;
+		$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
+		$end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 23:59:59';
 
-		$fh = new FeaturesHistory( $database );
+		$this->row = null;
+
+		$fh = new FeaturesHistory($database);
 
 		$juser =& JFactory::getUser();
 
 		// Is a specific content category set?
-		if ($catid) {
+		if ($catid) 
+		{
 			// Yes - so we need to check if there's an active article to display
 			$aid = $juser->get('aid', 0);
 
-			$contentConfig =& JComponentHelper::getParams( 'com_content' );
+			$contentConfig =& JComponentHelper::getParams('com_content');
 			$noauth = !$contentConfig->get('shownoauth');
 
 			$date =& JFactory::getDate();
@@ -237,9 +144,9 @@ class modFeaturedmember
 				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
 				' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
 				' WHERE a.state = 1 ' .
-				($noauth ? ' AND a.access <= ' .(int) $aid. ' AND cc.access <= ' .(int) $aid. ' AND s.access <= ' .(int) $aid : '').
-				' AND (a.publish_up = '.$database->Quote($nullDate).' OR a.publish_up <= '.$database->Quote($now).' ) ' .
-				' AND (a.publish_down = '.$database->Quote($nullDate).' OR a.publish_down >= '.$database->Quote($now).' )' .
+				($noauth ? ' AND a.access <= ' . (int) $aid . ' AND cc.access <= ' . (int) $aid . ' AND s.access <= ' . (int) $aid : '') .
+				' AND (a.publish_up = ' . $database->Quote($nullDate) . ' OR a.publish_up <= ' . $database->Quote($now) . ') ' .
+				' AND (a.publish_down = ' . $database->Quote($nullDate) . ' OR a.publish_down >= ' . $database->Quote($now) . ')' .
 				' AND cc.id = '. (int) $catid .
 				' AND cc.section = s.id' .
 				' AND cc.published = 1' .
@@ -247,157 +154,182 @@ class modFeaturedmember
 				' ORDER BY a.ordering';
 			$database->setQuery($query, 0, $filters['limit']);
 			$rows = $database->loadObjectList();
-			if (count($rows) > 0) {
-				$row = $rows[0];
+			if (count($rows) > 0) 
+			{
+				$this->row = $rows[0];
 			}
 		}
-		$profile = null;
+		$this->profile = null;
+
 		// Do we have an article to display?
-		if (!$row) {
+		if (!$this->row) 
+		{
 			// No - so we need to display a member
 			// Load some needed libraries
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 			// Check the feature history for today's feature
 			$fh->loadActive($start, 'profiles');
 
 			// Did we find a feature for today?
-			if ($fh->id && $fh->tbl == 'profiles') {
+			if ($fh->id && $fh->tbl == 'profiles') 
+			{
 				// Yes - load the member profile
-				$row = new MembersProfile( $database );
-				$row->load( $fh->objectid );
-			} else {
+				$this->row = new MembersProfile($database);
+				$this->row->load($fh->objectid);
+			} 
+			else 
+			{
 				// No - so we need to randomly choose one
-				$filters['start'] = 0;
-				$filters['sortby'] = "RAND()";
-				$filters['search'] = '';
+				$filters['start']      = 0;
+				$filters['sortby']     = "RAND()";
+				$filters['search']     = '';
 				$filters['authorized'] = false;
-				$filters['show'] = $show;
-				if ($min) {
+				$filters['show']       = $show;
+				if ($min) 
+				{
 					$filters['contributions'] = $min;
 				}
 
-				$mp = new MembersProfile( $database );
+				$mp = new MembersProfile($database);
 
-				$rows = $mp->getRecords( $filters, false );
-				if (count($rows) > 0) {
-					$row = $rows[0];
+				$rows = $mp->getRecords($filters, false);
+				if (count($rows) > 0) 
+				{
+					$this->row = $rows[0];
 				}
 
 				// Load their bio
-				$profile = Hubzero_User_Profile::getInstance($row->uidNumber);
+				$this->profile = Hubzero_User_Profile::getInstance($this->row->uidNumber);
 
-				if (trim(strip_tags($profile->get('bio'))) == '') {
-					return $this->display();
+				if (trim(strip_tags($this->profile->get('bio'))) == '') 
+				{
+					return '';
 				}
 			}
 		}
 
 		// Did we have a result to display?
-		if ($row) {
-			$this->row = $row;
+		if ($this->row) 
+		{
+			ximport('Hubzero_View_Helper_Html');
 
-			$config =& JComponentHelper::getParams( 'com_members' );
+			$config =& JComponentHelper::getParams('com_members');
 
 			// Is this a content article or a member profile?
-			if (isset($row->catid)) {
+			if (isset($this->row->catid)) 
+			{
 				// Content article
-				$this->title = $row->title;
-				$this->id = $row->created_by_alias;
-				$this->txt = $row->introtext;
+				$this->title = $this->row->title;
+				$this->id    = $this->row->created_by_alias;
+				$this->txt   = $this->row->introtext;
 
-				$profile = Hubzero_User_Profile::getInstance($id);
-				$row->picture = $profile->get('picture');
+				$this->profile = Hubzero_User_Profile::getInstance($id);
+				$this->row->picture = $this->profile->get('picture');
 
 				// Check if the article has been saved in the feature history
-				$fh->loadObject($row->id, 'content');
-				if (!$fh->id) {
+				$fh->loadObject($this->row->id, 'content');
+				if (!$fh->id) 
+				{
 					$fh->featured = $start;
-					$fh->objectid = $row->id;
-					$fh->tbl = 'content';
+					$fh->objectid = $this->row->id;
+					$fh->tbl      = 'content';
 					$fh->store();
 				}
-			} else {
-				if (!isset($profile) && !is_object($profile)) {
-					$profile = Hubzero_User_Profile::getInstance($row->uidNumber);
+			} 
+			else 
+			{
+				if (!isset($this->profile) && !is_object($this->profile)) 
+				{
+					$this->profile = Hubzero_User_Profile::getInstance($this->row->uidNumber);
 				}
 
-				$rparams = new JParameter( $profile->get('params') );
-				$params = $config;
-				$params->merge( $rparams );
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
 
-				if ($params->get('access_bio') == 0
-				 || ($params->get('access_bio') == 1 && !$juser->get('guest'))
-				) {
-					$this->txt = $profile->get('bio');
-				} else {
+				$rparams = new $paramsClass($this->profile->get('params'));
+				$this->params = $config;
+				$this->params->merge($rparams);
+
+				if ($this->params->get('access_bio') == 0
+				 || ($this->params->get('access_bio') == 1 && !$juser->get('guest'))
+				) 
+				{
+					$this->txt = $this->profile->get('bio');
+				} 
+				else 
+				{
 					$this->txt = '';
 				}
 
 				// Member profile
-				$this->title = $row->name;
-				if (!trim($this->title)) {
-					$this->title = $row->givenName.' '.$row->surname;
+				$this->title = $this->row->name;
+				if (!trim($this->title)) 
+				{
+					$this->title = $this->row->givenName . ' ' . $this->row->surname;
 				}
-				$this->id = $row->uidNumber;
+				$this->id = $this->row->uidNumber;
 
 				// Check if this has been saved in the feature history
-				if (!$fh->id) {
+				if (!$fh->id) 
+				{
 					$fh->featured = $start;
-					$fh->objectid = $row->uidNumber;
-					$fh->tbl = 'profiles';
+					$fh->objectid = $this->row->uidNumber;
+					$fh->tbl      = 'profiles';
 					$fh->store();
 				}
 			}
 
 			// Do we have a picture?
 			$thumb = '';
-			if (isset($row->picture) && $row->picture != '') {
+			if (isset($this->row->picture) && $this->row->picture != '') 
+			{
 				// Yes - so build the path to it
-				$thumb  = $config->get('webpath');
-				if (substr($thumb, 0, 1) != DS) {
-					$thumb = DS.$thumb;
-				}
-				if (substr($thumb, -1, 1) == DS) {
-					$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-				}
-				$thumb .= DS.$this->niceidformat($row->uidNumber).DS.$row->picture;
+				$thumb  = DS . trim($config->get('webpath', '/site/members'), DS);
+				$thumb .= DS . Hubzero_View_Helper_Html::niceidformat($this->row->uidNumber) . DS . $this->row->picture;
 
 				// No - use default picture
-				if (is_file(JPATH_ROOT.$thumb)) {
+				if (is_file(JPATH_ROOT . $thumb)) 
+				{
 					// Build a thumbnail filename based off the picture name
-					$thumb = $this->thumb( $thumb );
+					$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
 
-					if (!is_file(JPATH_ROOT.$thumb)) {
+					if (!is_file(JPATH_ROOT . $thumb)) 
+					{
 						// Create a thumbnail image
-						include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'imghandler.php' );
+						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
+
 						$ih = new MembersImgHandler();
-						$ih->set('image',$row->picture);
-						$ih->set('path',JPATH_ROOT.$config->get('webpath').DS.$this->niceidformat($row->uidNumber).DS);
+						$ih->set('image', $this->row->picture);
+						$ih->set('path', JPATH_ROOT . DS . trim($config->get('webpath', '/site/members'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($this->row->uidNumber) . DS);
 						$ih->set('maxWidth', 50);
 						$ih->set('maxHeight', 50);
 						$ih->set('cropratio', '1:1');
 						$ih->set('outputName', $ih->createThumbName());
-						/*if (!$ih->process()) {
-							$html .= '<!-- Error: '. $ih->getError() .' -->';
-						}*/
+						if (!$ih->process()) 
+						{
+							$this->setError($ih->getError());
+						}
 					}
 				}
 			}
 
 			// No - use default picture
-			if (!is_file(JPATH_ROOT.$thumb)) {
-				$thumb = $config->get('defaultpic');
-				if (substr($thumb, 0, 1) != DS) {
-					$thumb = DS.$thumb;
-				}
+			if (!is_file(JPATH_ROOT . $thumb)) 
+			{
+				$thumb = DS . ltrim($config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
 				// Build a thumbnail filename based off the picture name
-				$thumb = $this->thumb( $thumb );
+				$thumb = Hubzero_View_Helper_Html::thumbit($thumb);
 			}
 
-			$this->thumb = $thumb;
+			$this->thumb   = $thumb;
 			$this->filters = $filters;
+
+			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
 	}
 }

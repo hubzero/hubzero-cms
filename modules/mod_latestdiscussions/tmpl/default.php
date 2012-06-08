@@ -27,32 +27,24 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-$posts 		= $modlatestdiscussions->posts;
-$limit	 	= $modlatestdiscussions->limit;
-$charlimit	= $modlatestdiscussions->charlimit;
-$cls 		= $modlatestdiscussions->cls;
-$feedlink 	= $modlatestdiscussions->feedlink;
-$morelink 	= $modlatestdiscussions->morelink;
+defined('_JEXEC') or die('Restricted access');
 
 $c = 0;
 ?>
-
-<div id="latest_discussions_module" class="<?php echo $cls; ?>">
-	<?php if(count($posts > 0)) : ?>
+<div id="latest_discussions_module" class="<?php echo $this->cls; ?>">
+	<?php if (count($this->posts > 0)) : ?>
 		<ul class="discussions">
-			<?php foreach($posts as $post) : ?>
-				<?php if($c < $limit) : ?>
+			<?php foreach ($this->posts as $post) : ?>
+				<?php if ($c < $this->limit) : ?>
 					<?php
-						if($post['group_id'] == 0) {
-							$url = "index.php?option=com_forum&task=topic&topic=".$post['id'];
-							$location = "<a href=\"/forum\">Site-Wide Forum</a>";
+						if ($post['group_id'] == 0) {
+							$url = 'index.php?option=com_forum&task=topic&topic=' . $post['id'];
+							$location = '<a href="' . JRoute::_('index.php?option=com_forum') . '">' . JText::_('Site-Wide Forum') . '</a>';
 						} else {
-							ximport("Hubzero_Group");
-							$group = Hubzero_Group::getInstance( $post['group_id'] );
-							$url = "index.php?option=com_groups&gid=".$group->get("cn")."&active=forum&task=topic&topic=".$post['id'];
-							$location = "<a href=\"/groups/{$group->get("cn")}\">{$group->get("description")}</a>";
+							ximport('Hubzero_Group');
+							$group = Hubzero_Group::getInstance($post['group_id']);
+							$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=forum&task=topic&topic=' . $post['id'];
+							$location = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
 						}
 					?>
 					<li>
@@ -61,19 +53,19 @@ $c = 0;
 						</h4>
 						<span class="discussion-author">
 							<?php 
-								if($post['anonymous']) {
-									echo "<i>".JText::_('Anonymous')."</i>";
+								if ($post['anonymous']) {
+									echo '<em>' . JText::_('Anonymous') . '</em>';
 								} else {
 									$juser =& JUser::getInstance($post['created_by']); 
-									echo "<a href=\"/members/{$juser->get("id")}\">{$juser->get("name")}</a>";
+									echo '<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '">' . stripslashes($juser->get("name")) . '</a>';
 								}
-								echo ", in&nbsp;"
+								echo ', in&nbsp;'
 							?>
 						</span>
 						<span class="discussion-location"><?php echo $location; ?></span>
 						<span class="discussion-date"><?php echo date("F jS, Y, g:ia", strtotime($post['created'])); ?></span>
-						<?php if($charlimit > 0) : ?>
-							<span class="discussion-comment"><?php echo substr($post['comment'],0, $charlimit); if(strlen($post['comment']) > $charlimit) { echo "&hellip;"; } ?></span>
+						<?php if ($this->charlimit > 0) : ?>
+							<span class="discussion-comment"><?php echo substr($post['comment'], 0, $this->charlimit); if (strlen($post['comment']) > $this->charlimit) { echo '&hellip;'; } ?></span>
 						<?php endif; ?>
 					</li>
 				<?php endif; ?>
@@ -84,15 +76,12 @@ $c = 0;
 		<p><?php echo JText::_('Currently there are no discussions'); ?></p>
 	<?php endif; ?>
 	
-	<?php if($morelink != "") : ?>
-		<p class="more"><a href="<?php echo $morelink; ?>">More Discussions &rsaquo;</a></p>
+	<?php if ($this->morelink != '') : ?>
+		<p class="more"><a href="<?php echo $this->morelink; ?>">More Discussions &rsaquo;</a></p>
 	<?php endif; ?>
 	
-	<?php if($feedlink == "yes") : ?>
+	<?php if ($this->feedlink == 'yes') : ?>
 		<a href="<?php echo JRoute::_('index.php?option=com_forum&task=latest.rss', true, -1); ?>" class="newsfeed" title="Latest Discussion's Feed">Latest Discussion's Feed</a>
 		<br class="clear" />
 	<?php endif; ?>
 </div>
-
-
-

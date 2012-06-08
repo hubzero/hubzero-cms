@@ -15,18 +15,18 @@
 
 	div.draggable .expandedlist li.wishlist {
 		background: url("/modules/mod_mywishes/images/wishlist.gif") 0.7em 1em no-repeat;
-		}
+	}
 	div.draggable .expandedlist li.wishlist .pending {
-		}
+	}
 	div.draggable .expandedlist li.wishlist .accepted {
 		color: #009900;
-		}
+	}
 	div.draggable .expandedlist li.wishlist .rejected {
 		color: red;
-		}
+	}
 	div.draggable .expandedlist li.wishlist span {
 		color: #fff;
-		}
+	}
 	div.draggable .expandedlist li.wishlist span span {
 		color: #999;
-		}
+	}

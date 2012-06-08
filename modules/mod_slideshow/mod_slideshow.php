@@ -29,16 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-header ("Cache-Control: cache, must-revalidate");
-header ("Pragma: public");
+header("Cache-Control: cache, must-revalidate");
+header("Pragma: public");
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-$modslideshow = new modSlideshow($params);
+$modslideshow = new modSlideshow($params, $module);
 $modslideshow->display();
-
-require( JModuleHelper::getLayoutPath('mod_slideshow') );
-?>

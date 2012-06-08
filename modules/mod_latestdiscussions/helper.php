@@ -28,79 +28,105 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-class modLatestDiscussions
+/**
+ * Module class for displaying the latest forum posts
+ */
+class modLatestDiscussions extends JObject
 {
+	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
-	//-----------
-
-	public function __construct( $params ) 
+	/**
+	 * Constructor
+	 * 
+	 * @param      object $this->params JParameter
+	 * @param      object $module Database row
+	 * @return     void
+	 */
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
-	//-----------
-
+	/**
+	 * Set a property
+	 * 
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
-	
-	//-----------
-	
+
+	/**
+	 * Get a property
+	 * 
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
+	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
-	
-	//-----------
 
+	/**
+	 * Display module contents
+	 * 
+	 * @return     void
+	 */
 	public function display()
 	{
 		$database =& JFactory::getDBO();
-		
+
 		$juser =& JFactory::getUser();
-		
-		
+
 		ximport("Hubzero_Group");
-		
-		$params =& $this->params;
-		
+
 		//get the params
-		$this->cls = $params->get("moduleclass_sfx");
-		$this->limit = $params->get("limit", 5);
-		$this->charlimit = $params->get("charlimit", 100);
-		$this->feedlink = $params->get("feedlink", "yes");
-		$this->morelink = $params->get("morelink", "");
-		$include = $params->get("forum", "both");
-		
+		$this->cls = $this->params->get('moduleclass_sfx');
+		$this->limit = $this->params->get('limit', 5);
+		$this->charlimit = $this->params->get('charlimit', 100);
+		$this->feedlink = $this->params->get('feedlink', 'yes');
+		$this->morelink = $this->params->get('morelink', '');
+		$include = $this->params->get('forum', 'both');
+
 		//get all forum posts on site forum
-		$sql = "SELECT f.* FROM #__forum_posts f WHERE f.group_id='0' AND f.parent='0'";
-		$database->setQuery( $sql );
+		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id='0' AND f.parent='0'");
 		$site_forum = $database->loadAssocList();
-		
+
 		//get any group posts
-		$sql = "SELECT f.* FROM #__forum_posts f WHERE f.group_id<>'0' AND f.parent='0'";
-		$database->setQuery( $sql );
+		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id<>'0' AND f.parent='0'");
 		$group_forum = $database->loadAssocList();
-		
+
 		//make sure that the group for each forum post has the right privacy setting
 		foreach ($group_forum as $k => $gf) 
 		{
-			$group = Hubzero_Group::getInstance( $gf['group_id'] );
-			if (is_object($group)) {
-				$forum_access = $group->getPluginAccess( "forum" );
+			$group = Hubzero_Group::getInstance($gf['group_id']);
+			if (is_object($group)) 
+			{
+				$forum_access = $group->getPluginAccess("forum");
 				
-				if (($forum_access == 'nobody') || 
-					($forum_access == 'registered' && $juser->get("guest")) ||
-					($forum_access == 'members' && !in_array($juser->get("id"), $group->get("members"))) ) {
-						unset($group_forum[$k]);
+				if ($forum_access == 'nobody' 
+				 || ($forum_access == 'registered' && $juser->get('guest')) 
+				 || ($forum_access == 'members' && !in_array($juser->get('id'), $group->get('members')))) 
+				{
+					unset($group_forum[$k]);
 				}
-			} else {
+			} 
+			else 
+			{
 				unset($group_forum[$k]);
 			}
 		}
@@ -108,11 +134,14 @@ class modLatestDiscussions
 		//based on param decide what to include
 		switch ($include) 
 		{
-			case 'site': 	$posts = $site_forum; 								break;
-			case 'group':	$posts = $group_forum;								break;
-			case 'both':	$posts = array_merge($site_forum, $group_forum);	break;
+			case 'site':  $posts = $site_forum;  break;
+			case 'group': $posts = $group_forum; break;
+			case 'both':  
+			default:
+				$posts = array_merge($site_forum, $group_forum);
+			break;
 		}
-		
+
 		//function to sort by created date
 		function sortbydate($a, $b)
 		{
@@ -121,15 +150,17 @@ class modLatestDiscussions
 			
 			return ($d1 > $d2) ? -1 : 1;
 		}
-		
+
 		//sort using function above - date desc
 		usort($posts, "sortbydate");
-		
+
 		//set posts to view
 		$this->posts = $posts;
-		
+
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_latestdiscussions');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

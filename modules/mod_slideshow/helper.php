@@ -30,50 +30,45 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modSlideshow'
- * 
- * Long description (if any) ...
+ * Module class for displaying a slideshow
  */
-class modSlideshow
+class modSlideshow extends JObject
 {
-
 	/**
-	 * Description for 'homedir'
+	 * Path to find slideshow content
 	 * 
 	 * @var string
 	 */
 	public $homedir = 'site/slideshow';
 
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -82,86 +77,94 @@ class modSlideshow
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
+	}
+
+	/**
+	 * Get module contents
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
-		$params = $this->params;
 		ximport('Hubzero_Document');
 
-		$image_dir = ($params->get('image_dir')) ? $params->get('image_dir') : 'site/slideshow' ;
-		$alias = ($params->get('alias')) ? $params->get('alias') : '' ;
-		$height = ($params->get('height')) ? $params->get('height') : '350' ;
-		$width = ($params->get('width')) ? $params->get('width') : '600' ;
-		$timerdelay = ($params->get('timerdelay')) ? $params->get('timerdelay') : '10000' ;
-		$transitiontype = ($params->get('transitiontype')) ? $params->get('transitiontype') : 'fade' ;
-		$random = ($params->get('random')) ? $params->get('random') : 0 ;
-		$xmlPrefix = "slideshow-data";
-		$noflash = ($params->get('stype')) ? $params->get('stype') : 0 ;
-		$noflash_link = ($params->get('noflash_link')) ? $params->get('noflash_link') : '' ;
+		$image_dir = trim($this->params->get('image_dir', 'site/slideshow'), DS);
+		
+		$alias          = $this->params->get('alias', '');
+		$height         = $this->params->get('height', '350');
+		$width          = $this->params->get('width', '600');
+		$timerdelay     = $this->params->get('timerdelay', '10000');
+		$transitiontype = $this->params->get('transitiontype', 'fade');
+		$random         = $this->params->get('random', 0);
+		$xmlPrefix      = "slideshow-data";
+		$noflash        = $this->params->get('stype', 0);
+		$noflash_link   = $this->params->get('noflash_link', '');
 
-		$swffile = rtrim( Hubzero_Document::getModuleImage('mod_slideshow', 'banner'.$width.'x'.$height.'.swf'), '.swf');
-
-		//$swffile = 'modules'.DS.'mod_slideshow'.DS.'images'.DS.'banner600x'.$height.'.swf';
-		//Make sure the path doesn't start with a slash
-		if (substr($image_dir, 0, 1) == DS) {
-			$image_dir = substr($image_dir, 1, strlen($image_dir));
-		}
-		// Make sure the path doesn't end with a slash
-		if (substr($image_dir, -1) == DS) {
-			$image_dir = substr($image_dir, 0, strlen($image_dir) - 1);
-		}
+		$swffile = rtrim(Hubzero_Document::getModuleImage($this->module->module, 'banner' . $width . 'x' . $height . '.swf'), '.swf');
 
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
 		// check for directory
-		if (!is_dir( JPATH_ROOT.DS.$image_dir )) {
-			if (!JFolder::create( JPATH_ROOT.DS.$image_dir, 0777 )) {
-				echo JText::_('failed to create image directory').' '.$image_dir;
+		if (!is_dir( JPATH_ROOT . DS . $image_dir )) 
+		{
+			if (!JFolder::create( JPATH_ROOT . DS . $image_dir, 0777 )) 
+			{
+				echo JText::_('failed to create image directory') . ' ' . $image_dir;
 				$noflash = 1;
-			} else {
+			} 
+			else 
+			{
 				// use default images for this time
 				$image_dir = 'modules/mod_slideshow/images/images';
 			}
 		}
 
 		$images = array();
-		$files = JFolder::files(JPATH_ROOT.DS.$image_dir, '.', false, true, array());
-		if (count($files)==0) {
+		$files = JFolder::files(JPATH_ROOT . DS . $image_dir, '.', false, true, array());
+		if (count($files)==0) 
+		{
 			$image_dir = 'modules/mod_slideshow/images/images';
 		}
 
-		$noflash_file = 'modules/mod_slideshow/images/images/default_'.$width.'x'.$height.'.jpg';
+		$noflash_file = 'modules/mod_slideshow/images/images/default_' . $width . 'x' . $height . '.jpg';
 
-		$d = @dir(JPATH_ROOT.DS.$image_dir);
+		$d = @dir(JPATH_ROOT . DS . $image_dir);
 
-		if ($d) {
+		if ($d) 
+		{
 			// fetch images
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT.DS.$image_dir.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png|swf#i", strtolower($img_file) )) {
+				if (is_file(JPATH_ROOT . DS . $image_dir . DS . $img_file) 
+				 && substr($entry, 0, 1) != '.' 
+				 && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png|swf#i", strtolower($img_file) )) 
+					{
 						$images[] = $img_file;
 					}
 				}
@@ -169,53 +172,64 @@ class modSlideshow
 
 			$d->close();
 
-			if (count($images) > 0) {
+			if (count($images) > 0) 
+			{
 				// pick a random image  to display if flash doesn't work
-				$noflash_file = $image_dir.DS.$images[array_rand($images)];
+				$noflash_file = $image_dir . DS . $images[array_rand($images)];
 
-				if ($random) {
+				if ($random) 
+				{
 					// shuffle array
 					shuffle($images);
 				}
 
 				// start xml output
-				if (!$noflash) {
+				if (!$noflash) 
+				{
 					$xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 					$xml.= " <slideshow>\n";
-					$xml.= " <timerdelay>".$timerdelay."</timerdelay>\n";
-					$xml.= " <transition>".$transitiontype."</transition>\n";
+					$xml.= " <timerdelay>" . $timerdelay . "</timerdelay>\n";
+					$xml.= " <transition>" . $transitiontype . "</transition>\n";
 					for ($i=0, $n=count( $images ); $i < $n; $i++)
 					{
-						if (is_file(JPATH_ROOT.DS.$image_dir.DS.$images[$i])) {
-							$xml.= " <image src='".htmlspecialchars($image_dir.DS.$images[$i])."'  />\n";
+						if (is_file(JPATH_ROOT . DS . $image_dir . DS . $images[$i])) {
+							$xml.= " <image src='" . htmlspecialchars($image_dir . DS . $images[$i]) . "'  />\n";
 						}
 					}
 					$xml.= " </slideshow>\n";
 
-					$xmlpath = JPATH_ROOT.DS.$this->homedir.DS.$xmlPrefix;
-					$xmlpath.= $alias ? '-'.$alias : '';
+					$xmlpath = JPATH_ROOT . DS . $this->homedir . DS . $xmlPrefix;
+					$xmlpath.= $alias ? '-' . $alias : '';
 					$xmlpath.= '.xml';
 
 					$fh = fopen($xmlpath, "w");
 					fwrite($fh,utf8_encode($xml));
 					fclose($fh);
 				}
-			} else {
+			} 
+			else 
+			{
 				$noflash = 1;
 			}
-		} else {
+		} 
+		else 
+		{
 			$noflash = 1;
 		}
 
-		if (!$noflash) {
+		if (!$noflash) 
+		{
+			Hubzero_Document::addModuleScript($this->module->module);
+	
 			$document =& JFactory::getDocument();
-			$document->addScript('modules/mod_slideshow/mod_slideshow.js');
-			$document->addScriptDeclaration('HUB.ModSlideshow.src="'.$swffile.'"; HUB.ModSlideshow.alias="'.$alias.'"; HUB.ModSlideshow.height="'.$height.'"; HUB.ModSlideshow.width="'.$width.'"');
+			$document->addScriptDeclaration('HUB.ModSlideshow.src="' . $swffile . '"; HUB.ModSlideshow.alias="' . $alias . '"; HUB.ModSlideshow.height="' . $height . '"; HUB.ModSlideshow.width="' . $width . '"');
 		}
 
 		$this->width = $width;
 		$this->height = $height;
 		$this->noflash_link = $noflash_link;
 		$this->noflash_file = $noflash_file;
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

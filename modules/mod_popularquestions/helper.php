@@ -33,27 +33,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modPopularQuestions'
- * 
- * Long description (if any) ...
+ * Module class for displaying popular questions
  */
-class modPopularQuestions
+class modPopularQuestions extends JObject
 {
-
 	/**
-	 * Description for '_attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_attributes = array();
+	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @param      unknown $module Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
 	public function __construct($params, $module)
@@ -63,42 +58,36 @@ class modPopularQuestions
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
 	{
-		$this->_attributes[$property] = $value;
+		$this->attributes[$property] = $value;
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property]))
+		if (isset($this->attributes[$property])) 
 		{
-			return $this->_attributes[$property];
+			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '__isset'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
 	 */
 	public function __isset($property)
 	{
@@ -106,102 +95,7 @@ class modPopularQuestions
 	}
 
 	/**
-	 * Short description for 'mkt'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $stime Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function mkt($stime)
-	{
-		if ($stime && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $stime, $regs))
-		{
-			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
-		}
-		return $stime;
-	}
-
-	/**
-	 * Short description for 'timeAgoo'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      number $timestamp Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function timeAgoo($timestamp)
-	{
-		// Store the current time
-		$current_time = time();
-
-		// Determine the difference, between the time now and the timestamp
-		$difference = $current_time - $timestamp;
-
-		// Set the periods of time
-		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
-
-		// Set the number of seconds per period
-		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-
-		// Determine which period we should use, based on the number of seconds lapsed.
-		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
-		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-
-		// Ensure the script has found a match
-		if ($val < 0)
-		{
-			$val = 0;
-		}
-
-		// Determine the minor value, to recurse through
-		$new_time = $current_time - ($difference % $lengths[$val]);
-
-		// Set the current value to be floored
-		$number = floor($number);
-
-		// If required create a plural
-		if ($number != 1)
-		{
-			$periods[$val] .= "s";
-		}
-
-		// Return text
-		$text = sprintf("%d %s ", $number, $periods[$val]);
-
-		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0))
-		{
-			$text .= $this->timeAgoo($new_time);
-		}
-
-		return $text;
-	}
-
-	/**
-	 * Short description for 'timeAgo'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $timestamp Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function timeAgo($timestamp)
-	{
-		$text = $this->timeAgoo($timestamp);
-
-		$parts = explode(' ', $text);
-
-		$text  = $parts[0] . ' ' . $parts[1];
-		$text .= ($parts[2]) ? ' ' . $parts[2] . ' ' . $parts[3] : '';
-		return $text;
-	}
-
-	/**
-	 * Short description for 'run'
-	 * 
-	 * Long description (if any) ...
+	 * Get module contents
 	 * 
 	 * @return     void
 	 */
@@ -223,7 +117,7 @@ class modPopularQuestions
 			default: $st = ""; break;
 		}
 
-		$this->tag = JRequest::getVar('tag', '', 'get');
+		$this->tag   = JRequest::getVar('tag', '', 'get');
 		$this->style = JRequest::getVar('style', '', 'get');
 
 		if ($this->tag)
@@ -252,11 +146,9 @@ class modPopularQuestions
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display module content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{

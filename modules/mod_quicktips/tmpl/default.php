@@ -29,20 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$rows = $modquicktips->rows;
-
-$html = '';
-if ($rows) {
-	$html .= '<div class="'.$modquicktips->moduleclass_sfx.'">'."\n";
-	//$html .= '<h3>'.$module->title.'</h3>'."\n";
-	foreach ($rows as $row)
-	{
-		$html .= '<p>'.$row->introtext.'</p>'."\n";
-		$html .= '<p class="more"><a href="' .JRoute::_( 'index.php?option=com_content&task=view&id='. $row->id) .'">'.JText::_('MOD_QUICKTIPS_LEARN_MORE').'</a></p>'."\n";
-	}
-	$html .= '</div>'."\n";
-}
-echo $html;
-?>
+if ($this->rows) { ?>
+	<div class="<?php echo $this->$this->params->get('moduleclass_sfx'); ?>">
+<?php foreach ($this->rows as $row) { ?>
+		<p><?php echo stripslashes($row->introtext); ?></p>
+		<p class="more">
+			<a href="<?php echo JRoute::_( 'index.php?option=com_content&task=view&id=' . $row->id); ?>">
+				<?php echo JText::_('MOD_QUICKTIPS_LEARN_MORE'); ?>
+			</a>
+		</p>
+<?php } ?>
+	</div>
+<?php } ?>

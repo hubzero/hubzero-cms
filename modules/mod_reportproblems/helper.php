@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modReportProblems'
- * 
- * Long description (if any) ...
+ * Module class for displaying a report problems form
  */
 class modReportProblems
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,47 +70,32 @@ class modReportProblems
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_generate_hash'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $input Parameter description (if any) ...
-	 * @param      string $day Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
 	 */
-	private function _generate_hash($input, $day)
+	public function __isset($property)
 	{
-		// Add date:
-		$input .= $day . date('ny');
-
-		// Get MD5 and reverse it
-		$enc = strrev(md5($input));
-
-		// Get only a few chars out of the string
-		$enc = substr($enc, 26, 1) . substr($enc, 10, 1) . substr($enc, 23, 1) . substr($enc, 3, 1) . substr($enc, 19, 1);
-
-		return $enc;
+		return isset($this->_attributes[$property]);
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
@@ -124,24 +104,19 @@ class modReportProblems
 		$this->juser = JFactory::getUser();
 
 		$this->verified = 0;
-		if (!$this->juser->get('guest')) {
+		if (!$this->juser->get('guest')) 
+		{
 			ximport('Hubzero_User_Profile');
 			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
-			if ($profile->get('emailConfirmed') == 1) {
+			if ($profile->get('emailConfirmed') == 1) 
+			{
 				$this->verified = 1;
 			}
 		}
 
 		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
-		$this->referrer = str_replace( '&amp;', '&', $this->referrer );
-		$this->referrer = str_replace( '&', '&amp;', $this->referrer );
-
-		/*$problem = array();
-		$problem['operand1'] = rand(0,10);
-		$problem['operand2'] = rand(0,10);
-		$this->problem = $problem;
-		$this->sum = $problem['operand1'] + $problem['operand2'];
-		$this->krhash = $this->_generate_hash($this->sum,date('j'));*/
+		$this->referrer = str_replace('&amp;', '&', $this->referrer);
+		$this->referrer = str_replace('&', '&amp;', $this->referrer);
 
 		ximport('Hubzero_Browser');
 		$browser = new Hubzero_Browser();
@@ -152,9 +127,11 @@ class modReportProblems
 		$this->browser_ver = $browser->getBrowserVersion();
 
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_reportproblems');
-		Hubzero_Document::addModuleScript('mod_reportproblems');
+		Hubzero_Document::addModuleStylesheet($this->module->module);
+		Hubzero_Document::addModuleScript($this->module->module);
 
 		$this->supportParams = JComponentHelper::getParams('com_support');
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

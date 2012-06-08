@@ -29,13 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-$modnotices = new modNotices( $params );
+$modnotices = new modNotices($params, $module);
 $modnotices->display();
-
-require( JModuleHelper::getLayoutPath('mod_notices') );
-

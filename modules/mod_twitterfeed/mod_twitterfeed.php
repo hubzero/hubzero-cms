@@ -36,8 +36,8 @@ require_once(dirname(__FILE__).DS.'helper.php');
 
 // Get a parameter from the module's configuration
 $moduleTitle = $params->get('moduleTitle');
-$twitterID  = $params->get('twitterID');
-$tweetCount = $params->get('tweetcount');
+$twitterID   = $params->get('twitterID');
+$tweetCount  = $params->get('tweetcount');
 $displayLink = $params->get('displayLink');
 $displayIcon = $params->get('displayIcon');
 

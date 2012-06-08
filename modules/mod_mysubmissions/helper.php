@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMySubmissions'
- * 
- * Long description (if any) ...
+ * Module class for displaying a user's submissions and their progress
  */
-class modMySubmissions
+class modMySubmissions extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,162 +70,156 @@ class modMySubmissions
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
-	//----------------------------------------------------------
-	// Checks
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'step_type_check'
+	 * Check if the type selection step is completed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     void
+	 * @param      integer $id Resource ID
+	 * @return     boolean True if step completed
 	 */
-	public function step_type_check( $id )
+	public function step_type_check($id)
 	{
-		// do nothing
+		return ($id ? true : false);
 	}
 
 	/**
-	 * Short description for 'step_compose_check'
+	 * Check if the compose step is completed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $id Resource ID
+	 * @return     boolean True if step completed
 	 */
-	public function step_compose_check( $id )
+	public function step_compose_check($id)
 	{
-		return $id;
+		return ($id ? true : false);
 	}
 
 	/**
-	 * Short description for 'step_attach_check'
+	 * Check if the attach step is completed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $id Resource ID
+	 * @return     boolean True if step completed
 	 */
-	public function step_attach_check( $id )
+	public function step_attach_check($id)
 	{
-		if ($id) {
+		if ($id) 
+		{
 			$database =& JFactory::getDBO();
-			$ra = new ResourcesAssoc( $database );
-			$total = $ra->getCount( $id );
-		} else {
+			$ra = new ResourcesAssoc($database);
+			$total = $ra->getCount($id);
+		} 
+		else 
+		{
 			$total = 0;
 		}
-		return $total;
+		return ($total ? true : false);
 	}
 
 	/**
-	 * Short description for 'step_authors_check'
+	 * Check if the authors step is completed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $id Resource ID
+	 * @return     boolean True if step completed
 	 */
-	public function step_authors_check( $id )
+	public function step_authors_check($id)
 	{
-		if ($id) {
+		if ($id) 
+		{
 			$database =& JFactory::getDBO();
-			$rc = new ResourcesContributor( $database );
-			$contributors = $rc->getCount( $id, 'resources' );
-		} else {
+			$rc = new ResourcesContributor($database);
+			$contributors = $rc->getCount($id, 'resources');
+		} 
+		else 
+		{
 			$contributors = 0;
 		}
 
-		return $contributors;
+		return ($contributors ? true : false);
 	}
 
 	/**
-	 * Short description for 'step_tags_check'
+	 * Check if the tags step is completed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $id Resource ID
+	 * @return     boolean True if step completed
 	 */
-	public function step_tags_check( $id )
+	public function step_tags_check($id)
 	{
 		$database =& JFactory::getDBO();
 
-		$rt = new ResourcesTags( $database );
-		$tags = $rt->getTags( $id );
+		$rt = new ResourcesTags($database);
+		$tags = $rt->getTags($id);
 
-		if (count($tags) > 0) {
-			return 1;
-		} else {
-			return 0;
+		if (count($tags) > 0) 
+		{
+			return true;
+		} 
+		else 
+		{
+			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'step_review_check'
+	 * Check if the review step is completed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $id Resource ID
+	 * @return     boolean True if step completed
 	 */
-	public function step_review_check( $id )
+	public function step_review_check($id)
 	{
-		return 0;
+		return false;
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display module content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{
 		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($juser->get('guest')) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
 
 		$database =& JFactory::getDBO();
 
-		$rr = new ResourcesResource( $database );
-		$rt = new ResourcesType( $database );
+		$rr = new ResourcesResource($database);
+		$rt = new ResourcesType($database);
 
 		$query = "SELECT r.*, t.type AS typetitle 
-			FROM ".$rr->getTableName()." AS r 
-			LEFT JOIN ".$rt->getTableName()." AS t ON r.type=t.id 
-			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=".$juser->get('id');
-	    $database->setQuery( $query );
-	    $this->rows = $database->loadObjectList();
+			FROM " . $rr->getTableName() . " AS r 
+			LEFT JOIN " . $rt->getTableName() . " AS t ON r.type=t.id 
+			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=" . $juser->get('id');
+		$database->setQuery($query);
+		$this->rows = $database->loadObjectList();
 
-		if (!empty($this->rows)) {
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'assoc.php');
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'contributor.php');
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
+		if ($this->rows) 
+		{
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		}
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
 

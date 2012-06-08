@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modFeaturedresource'
- * 
- * Long description (if any) ...
+ * Module class for displaying a random featured resource
  */
-class modFeaturedresource
+class modFeaturedresource extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $this->params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,131 +70,68 @@ class modFeaturedresource
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'niceidformat'
+	 * Display module contents
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function niceidformat($someid)
-	{
-		while (strlen($someid) < 5)
-		{
-			$someid = 0 . "$someid";
-		}
-		return $someid;
-	}
-
-	/**
-	 * Short description for 'encode_html'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @param      integer $quotes Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function encode_html($str, $quotes=1)
-	{
-		$str = $this->ampersands($str);
-
-		$a = array(
-			//'&' => '&#38;',
-			'<' => '&#60;',
-			'>' => '&#62;',
-		);
-		if ($quotes) $a = $a + array(
-			"'" => '&#39;',
-			'"' => '&#34;',
-		);
-
-		return strtr($str, $a);
-	}
-
-	/**
-	 * Short description for 'ampersands'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function ampersands( $str )
-	{
-		$str = stripslashes($str);
-		$str = str_replace('&#','*-*', $str);
-		$str = str_replace('&amp;','&',$str);
-		$str = str_replace('&','&amp;',$str);
-		$str = str_replace('*-*','&#', $str);
-		return $str;
-	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
 
-		$this->error = false;
-		if (!class_exists('FeaturesHistory')) {
-			$this->error = true;
-			return false;
+		if (!class_exists('FeaturesHistory')) 
+		{
+			$this->setError(JText::_('FeaturesHistory class missing'));
+			require(JModuleHelper::getLayoutPath($this->module->module));
+			return;
 		}
+
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
-
 		//Get the admin configured settings
 		$filters = array();
-		$filters['limit'] = 1;
-		$filters['start'] = 0;
-		$filters['type'] = trim($params->get( 'type' ));
-		$filters['sortby'] = 'random';
-		$filters['minranking'] = trim($params->get( 'minranking' ));
-		$filters['tag'] = trim($params->get( 'tag' ));
-		$filters['access'] = 'public';
+		$filters['limit']      = 1;
+		$filters['start']      = 0;
+		$filters['type']       = trim($this->params->get('type'));
+		$filters['sortby']     = 'random';
+		$filters['minranking'] = trim($this->params->get('minranking'));
+		$filters['tag']        = trim($this->params->get('tag'));
+		$filters['access']     = 'public';
 
-		$this->cls = trim($params->get( 'moduleclass_sfx' ));
-		$this->txt_length = trim($params->get( 'txt_length' ));
-		$catid = trim($params->get( 'catid' ));
+		$this->cls = trim($this->params->get('moduleclass_sfx'));
+		$this->txt_length = trim($this->params->get('txt_length'));
+		$catid = trim($this->params->get('catid'));
 
-		$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
-		$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
+		$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
+		$end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 23:59:59';
 
 		$row = null;
 
-		$fh = new FeaturesHistory( $database );
+		$fh = new FeaturesHistory($database);
 
 		// Is a specific content category set?
-		if ($catid) {
+		if ($catid) 
+		{
 			// Yes - so we need to check if there's an active article to display
 			$juser =& JFactory::getUser();
 			$aid = $juser->get('aid', 0);
 
-			$contentConfig =& JComponentHelper::getParams( 'com_content' );
+			$contentConfig =& JComponentHelper::getParams('com_content');
 			$noauth = !$contentConfig->get('shownoauth');
 
 			$date =& JFactory::getDate();
@@ -215,150 +147,159 @@ class modFeaturedresource
 				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
 				' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
 				' WHERE a.state = 1 ' .
-				($noauth ? ' AND a.access <= ' .(int) $aid. ' AND cc.access <= ' .(int) $aid. ' AND s.access <= ' .(int) $aid : '').
-				' AND (a.publish_up = '.$database->Quote($nullDate).' OR a.publish_up <= '.$database->Quote($now).' ) ' .
-				' AND (a.publish_down = '.$database->Quote($nullDate).' OR a.publish_down >= '.$database->Quote($now).' )' .
-				' AND cc.id = '. (int) $catid .
+				($noauth ? ' AND a.access <= ' . (int) $aid . ' AND cc.access <= ' . (int) $aid . ' AND s.access <= ' . (int) $aid : '') .
+				' AND (a.publish_up = ' . $database->Quote($nullDate) . ' OR a.publish_up <= ' . $database->Quote($now) . ') ' .
+				' AND (a.publish_down = ' . $database->Quote($nullDate) . ' OR a.publish_down >= ' . $database->Quote($now) . ')' .
+				' AND cc.id = ' . (int) $catid .
 				' AND cc.section = s.id' .
 				' AND cc.published = 1' .
 				' AND s.published = 1' .
 				' ORDER BY a.ordering';
 			$database->setQuery($query, 0, $filters['limit']);
 			$rows = $database->loadObjectList();
-			if (count($rows) > 0) {
+			if (count($rows) > 0) 
+			{
 				$row = $rows[0];
 			}
 		}
 
 		// Do we have an article to display?
-		if (!$row) {
+		if (!$row) 
+		{
 			// No - so we need to display a resource
 			// Check the feature history for today's feature
 			$fh->loadActive($start, 'resources', $filters['type']);
 
 			// Did we find a feature for today?
-			if ($fh->id && $fh->tbl == 'resources') {
+			if ($fh->id && $fh->tbl == 'resources') 
+			{
 				// Yes - load the resource
-				$row = new ResourcesResource( $database );
-				$row->load( $fh->objectid );
-				if ($row) {
+				$row = new ResourcesResource($database);
+				$row->load($fh->objectid);
+				if ($row) 
+				{
 					$row->typetitle = $row->getTypetitle();
 				}
-			} else {
+			} 
+			else 
+			{
 				// No - so we need to randomly choose one
 				// Initiate a resource object
-				$rr = new ResourcesResource( $database );
+				$rr = new ResourcesResource($database);
 
 				// Get records
-				$rows = $rr->getRecords( $filters, false );
-				if (count($rows) > 0) {
+				$rows = $rr->getRecords($filters, false);
+				if (count($rows) > 0) 
+				{
 					$row = $rows[0];
 				}
 			}
 		}
 
 		// Did we get any results?
-		if ($row) {
-			$config =& JComponentHelper::getParams( 'com_resources' );
+		if ($row) 
+		{
+			$config =& JComponentHelper::getParams('com_resources');
 
 			// Is this a content article or a member profile?
-			if (isset($row->catid)) {
+			if (isset($row->catid)) 
+			{
 				// Content article
 				$id = $row->created_by_alias;
 
 				// Check if the article has been saved in the feature history
 				$fh->loadObject($row->id, 'content');
-				if (!$fh->id) {
+				if (!$fh->id) 
+				{
 					$fh->featured = $start;
 					$fh->objectid = $row->id;
-					$fh->tbl = 'content';
+					$fh->tbl      = 'content';
 					$fh->store();
 				}
-				$rr = new ResourcesResource( $database );
-				$rr->load( $id );
-				//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
-				//$type = new ResourcesType( $rr->type );
-				//echo $rr->type;
+				$rr = new ResourcesResource($database);
+				$rr->load($id);
+
 				$row->typetitle = $rr->getTypetitle();
 				$row->type = $rr->type;
-			} else {
+			} 
+			else 
+			{
 				// Resource
 				$id = $row->id;
 
 				// Check if this has been saved in the feature history
-				if (!$fh->id) {
+				if (!$fh->id) 
+				{
 					$fh->featured = $start;
 					$fh->objectid = $row->id;
-					$fh->tbl = 'resources';
-					$fh->note = $filters['type'];
+					$fh->tbl      = 'resources';
+					$fh->note     = $filters['type'];
 					$fh->store();
 				}
 			}
 
-			$path = $config->get('uploadpath');
-			if (substr($path, 0, 1) != DS) {
-				$path = DS.$path;
-			}
-			if (substr($path, -1, 1) == DS) {
-				$path = substr($path, 0, (strlen($path) - 1));
-			}
-			$path = $this->build_path( $row->created, $row->id, $path );
+			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
+			$path = $this->build_path($row->created, $row->id, $path);
 
-			if ($row->type == 7) {
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
+			if ($row->type == 7) 
+			{
+				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.version.php');
 
-				$tv = new ToolVersion( $database );
+				$tv = new ToolVersion($database);
 
-				$versionid = $tv->getVersionIdFromResource( $id, 'current' );
+				$versionid = $tv->getVersionIdFromResource($id, 'current');
 
-				$picture = $this->getToolImage( $path, $versionid );
-			} else {
-				$picture = $this->getImage( $path );
+				$picture = $this->getToolImage($path, $versionid);
+			} 
+			else 
+			{
+				$picture = $this->getImage($path);
 			}
 
-			$thumb = $path.DS.$picture;
+			$thumb = $path . DS . $picture;
 
-			if (!is_file(JPATH_ROOT.$thumb)) {
-				$thumb = $config->get('defaultpic');
-				if (substr($thumb, 0, 1) != DS) {
-					$thumb = DS.$thumb;
-				}
+			if (!is_file(JPATH_ROOT . $thumb)) 
+			{
+				$thumb = DS . trim($config->get('defaultpic'));
 			}
 
-			//$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($row->typetitle));
 			$row->typetitle = trim(stripslashes($row->typetitle));
-			if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies') {
+			if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies') 
+			{
 				$row->typetitle = substr($row->typetitle, 0, strlen($row->typetitle) - 1);
 			}
 
-			$this->id = $id;
+			$this->id    = $id;
 			$this->thumb = $thumb;
-			$this->row = $row;
-		} else {
-			$this->row = null;
+			$this->row   = $row;
+
+			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
 	}
 
 	/**
-	 * Short description for 'getImage'
+	 * Get a resource image
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $path Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $path Path to get resource image from
+	 * @return     string
 	 */
-	private function getImage( $path )
+	private function getImage($path)
 	{
-		$d = @dir(JPATH_ROOT.$path);
+		$d = @dir(JPATH_ROOT . $path);
 
 		$images = array();
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
+				if (is_file(JPATH_ROOT . $path . DS . $img_file) 
+				 && substr($entry, 0, 1) != '.' 
+				 && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file)) 
+					{
 						$images[] = $img_file;
 					}
 				}
@@ -368,14 +309,16 @@ class modFeaturedresource
 		}
 
 		$b = 0;
-		if ($images) {
+		if ($images) 
+		{
 			foreach ($images as $ima)
 			{
-				$bits = explode('.',$ima);
+				$bits = explode('.', $ima);
 				$type = array_pop($bits);
-				$img = implode('.',$bits);
+				$img  = implode('.', $bits);
 
-				if ($img == 'thumb') {
+				if ($img == 'thumb') 
+				{
 					return $ima;
 				}
 			}
@@ -383,39 +326,39 @@ class modFeaturedresource
 	}
 
 	/**
-	 * Short description for 'getToolImage'
+	 * Get a screenshot of a tool
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $path Parameter description (if any) ...
-	 * @param      integer $versionid Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $path      Path to look for screenshots in
+	 * @param      integer $versionid Tool version
+	 * @return     string
 	 */
-	private function getToolImage( $path, $versionid=0 )
+	private function getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
+		$tconfig =& JComponentHelper::getParams('com_contribtool');
 		$allowversions = $tconfig->get('screenshot_edit');
 
-		if ($versionid && $allowversions) {
+		if ($versionid && $allowversions) 
+		{
 			// Add version directory
 			//$path .= DS.$versionid;
 		}
 
-		$d = @dir(JPATH_ROOT.$path);
+		$d = @dir(JPATH_ROOT . $path);
 
 		$images = array();
-		$tns = array();
-		$all = array();
-		$ordering = array();
-		$html = '';
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT.$path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png#i", $img_file )) {
+				if (is_file(JPATH_ROOT . $path . DS . $img_file) 
+				 && substr($entry, 0, 1) != '.' 
+				 && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file)) 
+					{
 						$images[] = $img_file;
 					}
 				}
@@ -425,14 +368,16 @@ class modFeaturedresource
 		}
 
 		$b = 0;
-		if ($images) {
+		if ($images) 
+		{
 			foreach ($images as $ima)
 			{
-				$bits = explode('.',$ima);
+				$bits = explode('.', $ima);
 				$type = array_pop($bits);
-				$img = implode('.',$bits);
+				$img  = implode('.', $bits);
 
-				if ($img == 'thumb') {
+				if ($img == 'thumb') 
+				{
 					return $ima;
 				}
 			}
@@ -440,49 +385,34 @@ class modFeaturedresource
 	}
 
 	/**
-	 * Short description for 'thumbnail'
+	 * Build a path to a resource's files
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $pic Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $date Resource date
+	 * @param      integer $id   Resource ID
+	 * @param      string  $base Base path to prepend
+	 * @return     string 
 	 */
-	private function thumbnail($pic)
+	private function build_path($date, $id, $base='')
 	{
-		$pic = explode('.',$pic);
-		$n = count($pic);
-		$pic[$n-2] .= '-tn';
-		$end = array_pop($pic);
-		$pic[] = 'gif';
-		$tn = implode('.',$pic);
-		return $tn;
-	}
+		ximport('Hubzero_View_Helper_Html');
 
-	/**
-	 * Short description for 'build_path'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      string $base Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	private function build_path( $date, $id, $base='' )
-	{
-		if ( $date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs ) ) {
-			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs)) 
+		{
+			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) {
+		if ($date) 
+		{
 			$dir_year  = date('Y', $date);
 			$dir_month = date('m', $date);
-		} else {
+		} 
+		else 
+		{
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
-		$dir_id = $this->niceidformat( $id );
+		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
 
-		return $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
+		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
 }
 

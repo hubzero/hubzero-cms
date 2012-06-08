@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying current system environment
  */
-class modGoogleAnalytics
+class modGoogleAnalytics extends JObject
 {
 	/**
 	 * Container for properties

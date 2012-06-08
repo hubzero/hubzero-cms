@@ -30,61 +30,61 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-<?php if ($modrapidcontact->recipient === '') { ?>
+<?php if ($this->recipient === '') { ?>
 	<p class="error">No recipient specified</p>
 <?php } else { ?>
-<form method="post" action="<?php echo $modrapidcontact->url; ?>" id="contactform" class="<?php echo $modrapidcontact->mod_class_suffix; ?>">
+<form method="post" action="<?php echo $this->url; ?>" id="contactform" class="<?php echo $this->mod_class_suffix; ?>">
 	<fieldset>
 		<legend>Contact Form</legend>
 
-<?php if ($modrapidcontact->replacement) { ?>
-		<p class="passed"><?php echo $modrapidcontact->replacement; ?></p>
+<?php if ($this->replacement) { ?>
+		<p class="passed"><?php echo $this->replacement; ?></p>
 <?php } ?>
-<?php if ($modrapidcontact->pre_text) { ?>
-		<p><?php echo $modrapidcontact->pre_text; ?></p>
+<?php if ($this->pre_text) { ?>
+		<p><?php echo $this->pre_text; ?></p>
 <?php } ?>
-<?php if ($modrapidcontact->error) { ?>
-		<p class="error"><?php echo $modrapidcontact->error; ?></p>
+<?php if ($this->error) { ?>
+		<p class="error"><?php echo $this->error; ?></p>
 <?php } ?>
 
 		<label for="contact-name">
-			<?php echo $modrapidcontact->name_label; ?>
+			<?php echo $this->name_label; ?>
 		</label>
 		<span class="input">
-			<input type="text" id="contact-name" name="rp[name]" value="<?php echo $modrapidcontact->posted['name']; ?>" />
+			<input type="text" id="contact-name" name="rp[name]" value="<?php echo $this->posted['name']; ?>" />
 		</span>
 
 		<label for="contact-email">
-			<?php echo $modrapidcontact->email_label; ?>
+			<?php echo $this->email_label; ?>
 		</label>
 		<span class="input">
-			<input type="text" id="contact-email" name="rp[email]" value="<?php echo $modrapidcontact->posted['email']; ?>" />
+			<input type="text" id="contact-email" name="rp[email]" value="<?php echo $this->posted['email']; ?>" />
 		</span>
 
 		<label for="contact-subject">
-			<?php echo $modrapidcontact->subject_label; ?>
+			<?php echo $this->subject_label; ?>
 		</label>
 		<span class="input">
-			<input type="text" id="contact-subject" name="rp[subject]" value="<?php echo $modrapidcontact->posted['subject']; ?>" />
+			<input type="text" id="contact-subject" name="rp[subject]" value="<?php echo $this->posted['subject']; ?>" />
 		</span>
 
 		<label for="contact-comments">
-			<?php echo $modrapidcontact->message_label; ?>
+			<?php echo $this->message_label; ?>
 		</label>
 		<span class="input">
-			<textarea name="rp[message]" id="contact-comments" cols="35" rows="10"><?php echo $modrapidcontact->posted['message']; ?></textarea>
+			<textarea name="rp[message]" id="contact-comments" cols="35" rows="10"><?php echo $this->posted['message']; ?></textarea>
 		</span>
 
-<?php if ($modrapidcontact->enable_anti_spam) { ?>
+<?php if ($this->enable_anti_spam) { ?>
 		<label for="contact-antispam">
-			<?php echo $modrapidcontact->anti_spam_q; ?>
+			<?php echo $this->anti_spam_q; ?>
 		</label>
 		<span class="input">
 			<input type="text" id="contact-antispam" name="rp[anti_spam_answer]" />
 		</span>
 <?php } ?>
 
-		<span class="submit"><input type="submit" name="submit" value="<?php echo $modrapidcontact->button_text; ?>" /></span>
+		<span class="submit"><input type="submit" name="submit" value="<?php echo $this->button_text; ?>" /></span>
 	</fieldset>
 </form>
 <?php } ?>

@@ -95,9 +95,10 @@ HUB.Modules.MyTools	 = {
 			f.push($(elm).attr('id'));
 		});
 		
-		$.get(settings.ajax.url + 'saveparams&id='+id+'&uid='+uid, {'params[myhub_favs]': f.join(',')});
-		$.get(settings.ajax.url + 'refresh&id='+id+'&uid='+uid+'&fav='+f.join(','), {}, function(data) {
-            $('#favtools').html(data);
+		$.get(settings.ajax.url + 'saveparams&mid='+id+'&id='+uid, {'params[myhub_favs]': f.join(',')}, function(data){
+			$.get(settings.ajax.url + 'refresh&mid='+id+'&id='+uid+'&fav='+f.join(','), {}, function(data) {
+	            $('#favtools').html(data);
+			});
 		});
 	},
 	

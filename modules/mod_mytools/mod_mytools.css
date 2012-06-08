@@ -17,20 +17,20 @@
 		position: relative;
 		padding: 0;
 		margin: 0;
-		}
+	}
 	.sortable .tab_panel ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		background: #fff;
-		}
+	}
 	.sortable #alltools ul {
 		height: 20.3em;
 		overflow: auto;
 		position: relative; /* fix IE 6,7 - quirky support for overflow:auto, this line fixes it */
 		border-top: 1px solid #ddd;
 		border-bottom: 1px solid #ddd;
-		}
+	}
 	.sortable .tab_panel li {
 		border: none;
 		border-bottom: 1px solid #ddd;
@@ -38,20 +38,20 @@
 		padding: 0.6em 3em 0.6em 0.7em;
 		position: relative;
 		background-image: none;
-		}
+	}
 	.sortable .tab_panel li.supported {
 		background: url("/modules/mod_mytools/images/award_star_gold_1.png") 0.5em 0.7em no-repeat;
 		padding-left: 2em;
-		}
+	}
 	.sortable .tab_panel p {
 		margin: 0.5em;
 		padding: 0;
 		font-size: 90%;
 		color: #999;
-		}
+	}
 	.sortable .tab_panel.active {
 		display: block;
-		}
+	}
 	.sortable .tab_titles {
 		list-style-image: none;
 		list-style-type: none;
@@ -59,7 +59,7 @@
 		padding: 4px 0 0 4px;
 		height: 24px;
 		background: #333;
-		}
+	}
 	.sortable .tab_titles li {
 		float: left;
 		background-color: #656565;
@@ -72,11 +72,11 @@
 		color: #fff;
 		font-weight: bold;
 		background-image: none;
-		}
+	}
 	.sortable .tab_titles li.active {
 		background-color: #fff;
 		color: #333;
-		}
+	}
 	.sortable .fav,
 	.sortable .launchtool {
 		display: block;
@@ -87,29 +87,29 @@
 		top: 0.6em;
 		text-indent: -55em;
 		border: none;
-		}	
+	}	
 	.sortable .fav {
 		right: 50px;
 		background: url("/modules/mod_mytools/images/fav_heart.gif") 0 0 no-repeat;
-		}
+	}
 	.sortable .launchtool {
 		right: 10px;
 		background: url("/modules/mod_mytools/images/app_go.gif") 0 0 no-repeat;
-		}
+	}
 	.sortable .fav:hover,
 	.sortable .launchtool:hover {
 		background-position: 0 -16px;
-		}
+	}
 	.sortable #recenttools .fav,
 	.sortable #favtools .fav {
 		display: none;
-		}
+	}
 	.sortable .favd {
 		background-color: #FFFFEB;
-		}
+	}
 	.sortable .favd .fav {
 		background: url("/modules/mod_mytools/images/heart.png") 0 0 no-repeat;
-		}
+	}
 	.sortable #alltools li {
 		padding-right: 60px;
-		}
+	}

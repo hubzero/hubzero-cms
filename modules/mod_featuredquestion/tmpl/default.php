@@ -29,42 +29,49 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$html = '';
-if ($modfeaturedquestion->error) {
-	$html .= '<p class="error">'.JText::_('MOD_FEATUREDQUESTION_MISSING_CLASS').'</p>'."\n";
-} else {
-	if ($modfeaturedquestion->row) {
+if ($this->getError()) { ?>
+	<p class="error"><?php echo JText::_('MOD_FEATUREDQUESTION_MISSING_CLASS'); ?></p>
+<?php } else {
+	if ($this->row) {
 		ximport('Hubzero_View_Helper_Html');
 
 		$name = JText::_('MOD_FEATUREDQUESTION_ANONYMOUS');
-		if ($modfeaturedquestion->row->anonymous == 0) {
-			$juser =& JUser::getInstance( $modfeaturedquestion->row->created_by );
-			if (is_object($juser)) {
+		if ($this->row->anonymous == 0) 
+		{
+			$juser =& JUser::getInstance($this->row->created_by);
+			if (is_object($juser)) 
+			{
 				$name = $juser->get('name');
 			}
 		}
 
-		$when = $modfeaturedquestion->timeAgo($modfeaturedquestion->mkt($modfeaturedquestion->row->created));
-
-		// Build the HTML
-		$html .= '<div class="'.$modfeaturedquestion->cls.'">'."\n";
-		$html .= '<h3>'.JText::_('MOD_FEATUREDQUESTION').'</h3>'."\n";
-		if (is_file(JPATH_ROOT.$modfeaturedquestion->thumb)) {
-			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$modfeaturedquestion->row->id).'"><img width="50" height="50" src="'.$modfeaturedquestion->thumb.'" alt="" /></a></p>'."\n";
-		}
-		$html .= '<p><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$modfeaturedquestion->row->id).'">'.stripslashes($modfeaturedquestion->row->subject).'</a>'."\n";
-		if ($modfeaturedquestion->row->question) {
-			$html .= ': '.Hubzero_View_Helper_Html::shortenText($modfeaturedquestion->encode_html(strip_tags($modfeaturedquestion->row->question)), $modfeaturedquestion->txt_length, 0)."\n";
-		}
-		$html .= '<br /><span>'.JText::sprintf('MOD_FEATUREDQUESTION_ASKED_BY', $name).'</span> - <span>'.JText::sprintf('MOD_FEATUREDQUESTION_AGO',$when).'</span> - <span>';
-		$html .= ($modfeaturedquestion->row->rcount == 1) ? JText::sprintf('MOD_FEATUREDQUESTION_RESPONSE', $modfeaturedquestion->row->rcount) : JText::sprintf('MOD_FEATUREDQUESTION_RESPONSES', $modfeaturedquestion->row->rcount);
-		$html .= '</span></p>'."\n";
-		$html .= '</div>'."\n";
+		$when = Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt($this->row->created));
+?>
+	<div class="<?php echo $this->cls; ?>">
+		<h3><?php echo JText::_('MOD_FEATUREDQUESTION'); ?></h3>
+	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
+		<p class="featured-img">
+			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
+				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />
+			</a>
+		</p>
+	<?php } ?>
+		<p>
+			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
+				<?php echo stripslashes($this->row->subject); ?>
+			</a>
+		<?php if ($this->row->question) { ?>
+			: <?php echo Hubzero_View_Helper_Html::shortenText(htmlentities(strip_tags($this->row->question)), $this->txt_length, 0); ?>
+		<?php } ?>
+			<br />
+			<span><?php echo JText::sprintf('MOD_FEATUREDQUESTION_ASKED_BY', $name); ?></span> - 
+			<span><?php echo JText::sprintf('MOD_FEATUREDQUESTION_AGO', $when); ?></span> - 
+			<span><?php echo ($this->row->rcount == 1) ? JText::sprintf('MOD_FEATUREDQUESTION_RESPONSE', $this->row->rcount) : JText::sprintf('MOD_FEATUREDQUESTION_RESPONSES', $this->row->rcount); ?></span>
+		</p>
+	</div>
+<?php
 	}
 }
-
-// Output HTML
-echo $html;
 ?>

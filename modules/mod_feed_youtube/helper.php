@@ -32,64 +32,109 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'modFeedYoutubeHelper'
- * 
- * Long description (if any) ...
+ * Module class for displaying a YouTube feed
  */
-class modFeedYoutubeHelper
+class modFeedYoutubeHelper extends JObject
 {
+	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	private $attributes = array();
 
 	/**
-	 * Short description for 'getFeed'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $params Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object $this->params JParameter
+	 * @param      object $module Database row
+	 * @return     void
 	 */
-	static function getFeed($params)
+	public function __construct($params, $module)
+	{
+		$this->params = $params;
+		$this->module = $module;
+	}
+
+	/**
+	 * Set a property
+	 * 
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
+	 * @return     void
+	 */
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
+
+	/**
+	 * Get a property
+	 * 
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
+	 */
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) 
+		{
+			return $this->attributes[$property];
+		}
+	}
+
+	/**
+	 * Display module contents
+	 * 
+	 * @return     void
+	 */
+	public function display()
 	{
 		// module params
-		$rssurl			= $params->get('rssurl', '');
-		$limit			= (int) $params->get('rssitems', 5);
-		$pick_random	= $params->get('pick_random', 0);
-
-		// if ordered, get only limited number of items
-		//$rssurl			.= $pick_random ? '' : '&max-results='.$limit;
+		$limit = (int) $this->params->get('rssitems', 5);
 
 		//  get RSS parsed object
-		$options = array();
-		$options['rssUrl'] 		= $rssurl;
-		$options['cache_time'] = null;
+		$options = array(
+			'rssUrl'     => $this->params->get('rssurl', ''),
+			'cache_time' => null
+		);
+
+		if (!$options['rssUrl'])
+		{
+			echo '<p class="warning">' . JText::_('No feed URL specified.') . '</p>';
+			return;
+		}
 
 		$rssDoc =& JFactory::getXMLparser('RSS', $options);
 
-		$feed = new stdclass();
+		$this->feed = new stdclass();
 
 		if ($rssDoc != false)
 		{
 			// channel header and link
-			$feed->title = $rssDoc->get_title();
-			$feed->link = $rssDoc->get_link();
-			$feed->description = $rssDoc->get_description();
+			$this->this->feed->title        = $rssDoc->get_title();
+			$this->this->feed->link         = $rssDoc->get_link();
+			$this->this->feed->description  = $rssDoc->get_description();
 
 			// channel image if exists
-			$feed->image->url = $rssDoc->get_image_url();
-			$feed->image->title = $rssDoc->get_image_title();
+			$this->feed->image->url   = $rssDoc->get_image_url();
+			$this->feed->image->title = $rssDoc->get_image_title();
 
 			// items
 			$items = $rssDoc->get_items();
 
 			// feed elements
-			if($pick_random) {
+			if ($this->params->get('pick_random', 0)) 
+			{
 				// randomize items
 				shuffle($items);
 			}
-			$feed->items = array_slice($items, 0, $limit);
-		} else {
-			$feed = false;
+			$this->feed->items = array_slice($items, 0, $limit);
+		} 
+		else 
+		{
+			$this->feed = false;
 		}
 
-		return $feed;
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

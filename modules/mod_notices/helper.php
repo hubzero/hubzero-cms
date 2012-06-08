@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modNotices'
- * 
- * Long description (if any) ...
+ * Module class for displaying site wide notices
  */
-class modNotices
+class modNotices extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,31 +70,28 @@ class modNotices
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_countdown'
+	 * Calculate the time left from a date time
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $year Parameter description (if any) ...
-	 * @param      unknown $month Parameter description (if any) ...
-	 * @param      unknown $day Parameter description (if any) ...
-	 * @param      unknown $hour Parameter description (if any) ...
-	 * @param      unknown $minute Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $year   Year
+	 * @param      integer $month  Month
+	 * @param      integer $day    Day
+	 * @param      integer $hour   Hour
+	 * @param      integer $minute Minute
+	 * @return     array 
 	 */
 	private function _countdown($year, $month, $day, $hour, $minute)
 	{
@@ -112,7 +104,10 @@ class modNotices
 		$now = time() + ($config->getValue('config.offset') * 60 * 60);
 
 		$difference = $the_countdown_date - $now;
-		if ($difference < 0) $difference = 0;
+		if ($difference < 0) 
+		{
+			$difference = 0;
+		}
 
 		$days_left = floor($difference/60/60/24);
 		$hours_left = floor(($difference - $days_left*60*60*24)/60/60);
@@ -123,28 +118,25 @@ class modNotices
 	}
 
 	/**
-	 * Short description for '_mkt'
+	 * Turn datetime 0000-00-00 00:00:00 to time
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $stime Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $stime Datetime to convert
+	 * @return     integer
 	 */
 	private function _mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
+		{
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
 
 	/**
-	 * Short description for '_convert'
+	 * Break a timestamp into its parts
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $stime Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $stime Timestamp
+	 * @return     array
 	 */
 	private function _convert($stime)
 	{
@@ -159,30 +151,29 @@ class modNotices
 	}
 
 	/**
-	 * Short description for '_timeto'
+	 * Show the amoutn of time left
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $stime Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $stime Timestamp
+	 * @return     string 
 	 */
 	private function _timeto($stime)
 	{
-		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0) {
+		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0) 
+		{
 			$o  = JText::_('IMMEDIATELY');
-		} else {
-			$o  = JText::_('IN').' ';
-			$o .= ($stime[0] > 0) ? $stime[0] .' '.JText::_('DAYS').', '  : '';
-			$o .= ($stime[1] > 0) ? $stime[1] .' '.JText::_('HOURS').', ' : '';
-			$o .= ($stime[2] > 0) ? $stime[2] .' '.JText::_('MINUTES')    : '';
+		} 
+		else 
+		{
+			$o  = JText::_('IN') . ' ';
+			$o .= ($stime[0] > 0) ? $stime[0] . ' ' . JText::_('DAYS') . ', '  : '';
+			$o .= ($stime[1] > 0) ? $stime[1] . ' ' . JText::_('HOURS') . ', ' : '';
+			$o .= ($stime[2] > 0) ? $stime[2] . ' ' . JText::_('MINUTES')      : '';
 		}
 		return $o;
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
@@ -191,67 +182,87 @@ class modNotices
 		$database =& JFactory::getDBO();
 
 		// Set today's time and date
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = date('Y-m-d H:i:s', time());
+
+		$this->dateFormat = '%Y-%m-%d %H:%M:%S';
+		$this->tz = 0;
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$this->dateFormat = 'Y-m-d H:i:s';
+			$this->tz = true;
+		}
 
 		// Get some initial parameters
-		$params = $this->params;
-		$start = $params->get( 'start_publishing' );
-		$start = JHTML::_('date',$start,'%Y-%m-%d %H:%M:%S', 0);
-		$stop  = $params->get( 'stop_publishing' );
-		$stop  = JHTML::_('date',$stop,'%Y-%m-%d %H:%M:%S', 0);
+		$start = $this->params->get('start_publishing');
+		$start = JHTML::_('date', $start, $this->dateFormat, $this->tz);
+		$stop  = $this->params->get('stop_publishing');
+		$stop  = JHTML::_('date', $stop, $this->dateFormat, $this->tz);
 
 		$this->publish = false;
-		if (!$start || $start == '0000-00-00 00:00:00') {
+		if (!$start || $start == '0000-00-00 00:00:00') 
+		{
 			$this->publish = true;
-		} else {
-			if ($start <= $now) {
+		} 
+		else 
+		{
+			if ($start <= $now) 
+			{
 				$this->publish = true;
-			} else {
+			} 
+			else 
+			{
 				$this->publish = false;
 			}
 		}
-		if (!$stop || $stop == '0000-00-00 00:00:00') {
+		if (!$stop || $stop == '0000-00-00 00:00:00') 
+		{
 			$this->publish = true;
-		} else {
-			if ($stop >= $now && $this->publish) {
+		} 
+		else 
+		{
+			if ($stop >= $now && $this->publish) 
+			{
 				$this->publish = true;
-			} else {
+			} 
+			else 
+			{
 				$this->publish = false;
 			}
 		}
 
 		// Only do something if the module's time frame hasn't expired
-		if ($this->publish) {
+		if ($this->publish) 
+		{
 			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStylesheet('mod_notices');
-			
+			Hubzero_Document::addModuleStylesheet($this->module->module);
+
 			// Get some parameters
-			$this->moduleid   = $params->get( 'moduleid' );
-			$this->alertlevel = $params->get( 'alertlevel' );
-			$timezone   = $params->get( 'timezone' );
-			$message    = $params->get( 'message' );
+			$this->moduleid   = $this->params->get('moduleid');
+			$this->alertlevel = $this->params->get('alertlevel');
+			$timezone         = $this->params->get('timezone');
+			$message          = $this->params->get('message');
 
 			// Convert start time
 			$start = $this->_mkt($start);
 			$d = $this->_convert($start);
-			$time_start = $d['hour'].':'.$d['minute'].' '.$d['ampm'].', '.$d['month'].' '.$d['day'].', '.$d['year'];
+			$time_start = $d['hour'] . ':' . $d['minute'] . ' ' . $d['ampm'] . ', ' . $d['month'] . ' ' . $d['day'] . ', ' . $d['year'];
 
 			// Convert end time
 			$stop = $this->_mkt($stop);
 			$u = $this->_convert($stop);
-			$time_end = $u['hour'].':'.$u['minute'].' '.$u['ampm'].', '.$u['month'].' '.$u['day'].', '.$u['year'];
+			$time_end  = $u['hour'] . ':' . $u['minute'] . ' ' . $u['ampm'] . ', ' . $u['month'] . ' ' . $u['day'] . ', ' . $u['year'];
 
 			// Convert countdown-to-start time
-			$d_month  = date('m', $start);
-			$d_day    = date('d', $start);
-			$d_hour   = date('H', $start);
+			$d_month   = date('m', $start);
+			$d_day     = date('d', $start);
+			$d_hour    = date('H', $start);
 			$time_left = $this->_countdown($d['year'], $d_month, $d_day, $d_hour, $d['minute']);
 			$time_cd_tostart = $this->_timeto($time_left);
 
 			// Convert countdown-to-return time
-			$u_month  = date('m', $stop);
-			$u_day    = date('d', $stop);
-			$u_hour   = date('H', $stop);
+			$u_month   = date('m', $stop);
+			$u_day     = date('d', $stop);
+			$u_hour    = date('H', $stop);
 			$time_left = $this->_countdown($u['year'], $u_month, $u_day, $u_hour, $u['minute']);
 			$time_cd_toreturn = $this->_timeto($time_left);
 
@@ -263,6 +274,8 @@ class modNotices
 			$message = str_replace('<notice:timezone>', $timezone, $message);
 
 			$this->message = $message;
+
+			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
 	}
 }

@@ -31,8 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$html  = '';
-$html .= '<div id="content-header-extra">' . "\n";
+$html  = '<div id="content-header-extra">' . "\n";
 $html .= ' <ul id="useroptions">' . "\n";
 $html .= ' <li><a href="' . JRoute::_('index.php?option=com_feedback&task=success_story') . '" class="add">' . JText::_('Add Your Success Story') . '</a></li>' . "\n";
 $html .= ' </ul>' . "\n";
@@ -75,7 +74,6 @@ if (count($this->quotes) > 0)
 		$quote->org = str_replace('&amp;','&',$quote->org);
 		$quote->org = str_replace('&','&amp;',$quote->org);
 		$html .= '<br />' . $quote->org . '</p>' . "\n\n";
-
 	}
 }
 else

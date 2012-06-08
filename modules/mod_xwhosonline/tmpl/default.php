@@ -29,77 +29,98 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $content = '';
 
-if ($modxwhosonline->online) {
-	$guest_array = $modxwhosonline->guest_array;
-	$user_array = $modxwhosonline->user_array;
+if ($this->online) 
+{
+	$guest_array = $this->guest_array;
+	$user_array  = $this->user_array;
 
-	if ($modxwhosonline->admin) {
+	if ($this->admin) 
+	{
 		$content .= '<a href="/users/">';
 	}
 
-	if ($guest_array<>0 && $user_array==0) {
-		if ($guest_array == 1) {
+	if ($guest_array<>0 && $user_array==0) 
+	{
+		if ($guest_array == 1) 
+		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
-			$content .= $guest_array.' '.JText::_('MOD_XWHOSONLINE_GUEST_COUNT');
-		} else {
+			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUEST_COUNT');
+		} 
+		else 
+		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
-			$content .= $guest_array.' '.JText::_('MOD_XWHOSONLINE_GUESTS_COUNT');
+			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUESTS_COUNT');
 		}
 		$content .= JText::_('MOD_XWHOSONLINE_ONLINE');
 	}
 
-	if ($guest_array==0 && $user_array<>0) {
-		if ($user_array==1) {
+	if ($guest_array==0 && $user_array<>0) 
+	{
+		if ($user_array==1) 
+		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
-			$content .= $user_array.' '.JText::_('MOD_XWHOSONLINE_MEMBER_COUNT');
-		} else {
+			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBER_COUNT');
+		} 
+		else 
+		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
-			$content .= $user_array.' '.JText::_('MOD_XWHOSONLINE_MEMBERS_COUNT');
+			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBERS_COUNT');
 		}
 		$content .= JText::_('MOD_XWHOSONLINE_ONLINE');
 	}
 
-	if ($guest_array<>0 && $user_array<>0) {
-		if ($guest_array==1) {
+	if ($guest_array<>0 && $user_array<>0) 
+	{
+		if ($guest_array==1) 
+		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
-			$content .= $guest_array.' '.JText::_('MOD_XWHOSONLINE_GUEST_COUNT');
+			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUEST_COUNT');
 			$content .= JText::_('MOD_XWHOSONLINE_AND');
-		} else {
+		} 
+		else 
+		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
-			$content .= $guest_array.' '.JText::_('MOD_XWHOSONLINE_GUESTS_COUNT');
+			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUESTS_COUNT');
 			$content .= JText::_('MOD_XWHOSONLINE_AND');
 		}
 
-		if ($user_array==1) {
-			$content .= $user_array.' '.JText::_('MOD_XWHOSONLINE_MEMBER_COUNT');
-		} else {
-			$content .= $user_array.' '.JText::_('MOD_XWHOSONLINE_MEMBERS_COUNT');
+		if ($user_array==1) 
+		{
+			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBER_COUNT');
+		} 
+		else 
+		{
+			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBERS_COUNT');
 		}
 		$content .= JText::_('MOD_XWHOSONLINE_ONLINE');
 	}
 
-	if ($modxwhosonline->admin) {
+	if ($this->admin) 
+	{
 		$content .= '</a>';
 	}
 }
 
-if ($modxwhosonline->users) {
-	$rows = $modxwhosonline->rows;
-	if ($rows) {
-		$content .= '<ul>'."\n";
+if ($this->users) 
+{
+	$rows = $this->rows;
+	if ($rows) 
+	{
+		$content .= '<ul>' . "\n";
 		foreach ($rows as $row)
 		{
-			$content .= '<li><strong>'. $row->username .'</strong></li>'."\n";
+			$content .= '<li><strong>' . $row->username . '</strong></li>' . "\n";
 		}
-		$content .= '</ul>'."\n";
-	} else {
-		$content .= '<p>'.JText::_('MOD_XWHOSONLINE_NONE') .'</p>'."\n";
+		$content .= '</ul>' . "\n";
+	} 
+	else 
+	{
+		$content .= '<p>' . JText::_('MOD_XWHOSONLINE_NONE') . '</p>' . "\n";
 	}
 }
 
 echo $content;
-?>

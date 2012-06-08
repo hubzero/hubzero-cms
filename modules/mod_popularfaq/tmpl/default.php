@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : ''; echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
 <?php if ($this->rows) { ?>
@@ -39,9 +39,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	foreach ($this->rows as $row)
 	{
 		if ($row->access <= $juser->get('aid')) {
-			$link = 'index.php?option=com_kb&amp;section='.$row->section;
-			$link .= ($row->category) ? '&amp;category='.$row->category : '';
-			$link .= ($row->alias) ? '&amp;alias='. $row->alias : '&amp;alias='. $row->id;
+			$link = 'index.php?option=com_kb&amp;section=' . $row->section;
+			$link .= ($row->category) ? '&amp;category=' . $row->category : '';
+			$link .= ($row->alias) ? '&amp;alias=' . $row->alias : '&amp;alias=' . $row->id;
 
 			$link_on = JRoute::_($link);
 		} else {

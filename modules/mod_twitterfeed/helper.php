@@ -30,74 +30,75 @@
  */
 
 //Dont allow direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modTwitterFeedHelper'
- * 
- * Long description (if any) ...
+ * Module class for displaying a Twitter feed
  */
 class modTwitterFeedHelper
 {
-
 	/**
-	 * Short description for 'getTweets'
+	 * Get tweets
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $twitterID Parameter description (if any) ...
-	 * @param      mixed $tweetCount Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $twitterID Twitter feed to pull from
+	 * @param      mixed  $tweetCount Number of recors to return
+	 * @return     array
 	 */
-	public function getTweets( $twitterID, $tweetCount )
+	public static function getTweets($twitterID, $tweetCount)
 	{
 		//declare variables
 		$i = 0;
-		$tweets = array();
-		$tweets['error'] = '';
+		$tweets = array(
+			'error' => ''
+		);
+
 		$subtract = strlen($twitterID) + 2;
 
 		//Check to make sure a twitter ID has been entered
-		if ($twitterID == null || $twitterID == '') {
+		if ($twitterID == null || $twitterID == '') 
+		{
 			$tweets['error'] = JText::_('MOD_TWITTERFEED_MISSING_ID');
 		}
 
 		//Check to make sure admin didnt set # of Tweets to display too high or too low
-		if ($tweetCount > 10 || $tweetCount < 0 || $tweetCount == '') {
+		if ($tweetCount > 10 || $tweetCount < 0 || $tweetCount == '') 
+		{
 			$tweetCount = 3;
 		}
 
-		//Declare Twitter user rss feed with TwitterID from Module Manager
-		$tweetURL = 'http://twitter.com/statuses/user_timeline/'.$twitterID.'.rss';
-
 		//set options for parsing feed
-		$options = array();
-		$options['rssUrl'] = $tweetURL;
+		$options = array(
+			'rssUrl' => 'http://twitter.com/statuses/user_timeline/' . $twitterID . '.rss'  //Declare Twitter user rss feed with TwitterID from Module Manager
+		);
 
 		//Parse the rss feed
 		$twitter =& JFactory::getXMLparser('rss', $options);
 
 		// Check to make sure the RSS feed was parsed corectly
-		if (!isset($twitter) && $tweets['error'] == '') {
+		if (!isset($twitter) && $tweets['error'] == '') 
+		{
 			$tweets['error'] = JText::_('MOD_TWITTERFEED_INVALID_ID');
 		}
 
 		//Check to make sure there are no errors before obtaining tweets
-		if ($tweets['error'] == '')  {
+		if ($tweets['error'] == '')  
+		{
 			// For each slice of pie we've got to get the goods
 		 	foreach ($twitter->get_items(0, $tweetCount) as $tweet)
 			{
 				$tweetTitle = $tweet->get_title();
-				$tweetTitle = substr($tweetTitle,$subtract);
+				$tweetTitle = substr($tweetTitle, $subtract);
 				$tweetTitle = preg_replace("#[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]#", "<a rel=\"external\" href=\"\\0\">\\0</a>", $tweetTitle);
-				$tweets[$i]["tweet"] = $tweetTitle;
-				$tweets[$i]["pubDate"] = $tweet->get_date();
-				$tweets[$i]["link"] = $tweet->get_link();
+				$tweets[$i]['tweet']   = $tweetTitle;
+				$tweets[$i]['pubDate'] = $tweet->get_date();
+				$tweets[$i]['link']    = $tweet->get_link();
 				$i++;
 			}
 		}
+
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_twitterfeed');
+
 		return $tweets;
-	} //end getTweets Function
+	}
 }

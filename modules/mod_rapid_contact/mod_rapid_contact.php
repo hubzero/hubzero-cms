@@ -30,14 +30,10 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-//-------------------------------------------------------------
-$modrapidcontact = new modRapidContact($params);
+$modrapidcontact = new modRapidContact($params, $module);
 $modrapidcontact->display();
-
-require( JModuleHelper::getLayoutPath('mod_rapid_contact') );
-

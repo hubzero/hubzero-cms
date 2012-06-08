@@ -33,40 +33,35 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modMyTickets'
- * 
- * Long description (if any) ...
+ * Module class for displaying a user's support tickets
  */
 class modMyTickets extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct($params)
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,116 +70,23 @@ class modMyTickets extends JObject
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_convertTime'
+	 * Display module content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $stime Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	private function _convertTime($stime)
-	{
-		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) {
-			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
-		}
-		return $stime;
-	}
-
-	/**
-	 * Short description for '_calculateTime'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      number $timestamp Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	private function _calculateTime($timestamp)
-	{
-		// Store the current time
-		$current_time = time();
-
-		// Determine the difference, between the time now and the timestamp
-		$difference = $current_time - $timestamp;
-
-		// Set the periods of time
-		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-
-		// Set the number of seconds per period
-		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-
-		// Determine which period we should use, based on the number of seconds lapsed.
-		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
-		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-
-		// Ensure the script has found a match
-		if ($val < 0) $val = 0;
-
-		// Determine the minor value, to recurse through
-		$new_time = $current_time - ($difference % $lengths[$val]);
-
-		// Set the current value to be floored
-		$number = floor($number);
-
-		// If required create a plural
-		if ($number != 1) $periods[$val] .= "s";
-
-		// Return text
-		$text = sprintf("%d %s ", $number, $periods[$val]);
-
-		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)){
-			$text .= $this->_calculateTime($new_time);
-		}
-
-		return $text;
-	}
-
-	/**
-	 * Short description for 'timeAgo'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $timestamp Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function timeAgo($timestamp)
-	{
-		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
-		$timestamp = $this->_convertTime($timestamp);
-		// Find out how long ago that was as a human readable string
-		$text = $this->_calculateTime($timestamp);
-
-		// Return only the first portions of the string
-		// e.g. return '2 months' rather than '2 months, 3 weeks, 5 days, 4 hours, 2 minutes, 12 seconds'
-		$parts = explode(' ',$text);
-
-		$text  = $parts[0].' '.$parts[1];
-		return $text;
-	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{
@@ -200,7 +102,7 @@ class modMyTickets extends JObject
 				SELECT id, summary, category, status, severity, owner, created, login, name, 
 					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments 
 				FROM #__support_tickets as st 
-				WHERE st.login='".$juser->get('username')."' AND (st.status=0 OR st.status=1) AND type=0 
+				WHERE st.login='" . $juser->get('username') . "' AND (st.status=0 OR st.status=1) AND type=0 
 				ORDER BY created DESC
 				LIMIT $limit
 			)
@@ -209,7 +111,7 @@ class modMyTickets extends JObject
 				SELECT id, summary, category, status, severity, owner, created, login, name, 
 					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments 
 				FROM #__support_tickets as st 
-				WHERE st.owner='".$juser->get('username')."' AND (st.status=0 OR st.status=1) AND type=0 
+				WHERE st.owner='" . $juser->get('username') . "' AND (st.status=0 OR st.status=1) AND type=0 
 				ORDER BY created DESC
 				LIMIT $limit
 			)"
@@ -223,7 +125,7 @@ class modMyTickets extends JObject
 
 		$rows1 = array();
 		$rows2 = array();
-		
+
 		if ($this->rows)
 		{
 			foreach ($this->rows as $row)
@@ -238,14 +140,14 @@ class modMyTickets extends JObject
 				}
 			}
 		}
-		
+
 		$this->rows1 = $rows1;
 		$this->rows2 = $rows2;
 
 		ximport('Hubzero_User_Profile');
 		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 		$xgroups = $profile->getGroups('members');
-		
+
 		$groups = '';
 		if ($xgroups) 
 		{
@@ -279,8 +181,8 @@ class modMyTickets extends JObject
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_mytickets');
-		
-		require(JModuleHelper::getLayoutPath('mod_mytickets'));
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_announcements/mod_announcements.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 /*
 
 	-- -- -- -- -- -- --
@@ -5,46 +12,46 @@
 	-- -- -- -- -- -- --
 
 */
-#block-announcements ul {
-	list-style: none;
-}
-#block-announcements li {
-	border-top: 4px solid #f6f5e8;
-	padding-top: 0.8em;
-	clear: both;
-	bakcground: none;
-}
-#block-announcements li  span {
-	display: block;
-	margin-left: 20px;
-}
-#block-announcements img {
-	float: left;
-	margin-right: 0.5em;
-	padding-bottom: 0.5em;
-	width: 30px;
-	height: 30px;
-}
-#block-announcements li  span.a-date {
-	color:#999999;
-	font-style: italic;
-	font-size: 85%;
-}
-#block-announcements li  span.a-desc {
-	font-size: 90%;
-	line-height: 1.4em;
-}
-#block-announcements li  span.a-content {
-	padding-bottom: 0.5em;
-}
-#block-announcements a {
-	border: none;
-	line-height: 1.3em;
-	font-weight: 500;
-}
-#block-announcements span.a-title {
-	line-height: 1.3em;
-}
-#block-announcements li span.a-link {
-	font-size: 85%;
-}
+	#block-announcements ul {
+		list-style: none;
+	}
+	#block-announcements li {
+		border-top: 4px solid #f6f5e8;
+		padding-top: 0.8em;
+		clear: both;
+		background: none;
+	}
+	#block-announcements li  span {
+		display: block;
+		margin-left: 20px;
+	}
+	#block-announcements img {
+		float: left;
+		margin-right: 0.5em;
+		padding-bottom: 0.5em;
+		width: 30px;
+		height: 30px;
+	}
+	#block-announcements li  span.a-date {
+		color:#999999;
+		font-style: italic;
+		font-size: 85%;
+	}
+	#block-announcements li  span.a-desc {
+		font-size: 90%;
+		line-height: 1.4em;
+	}
+	#block-announcements li  span.a-content {
+		padding-bottom: 0.5em;
+	}
+	#block-announcements a {
+		border: none;
+		line-height: 1.3em;
+		font-weight: 500;
+	}
+	#block-announcements span.a-title {
+		line-height: 1.3em;
+	}
+	#block-announcements li span.a-link {
+		font-size: 85%;
+	}

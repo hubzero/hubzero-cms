@@ -23,40 +23,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-$catid	= $params->get('catid', 0);
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-
-//check if cache diretory is writable as cache files will be created for the announcements
-$cacheDir = JPATH_BASE.DS.'cache';
-if (!is_writable($cacheDir))
-{
-	echo '<div>';
-	echo JText::_('Please make cache directory writable.');
-	echo '</div>';
-	return;
-}
-
-//check if category has been set
-if (empty ($catid))
-{
-	echo '<div>';
-	echo JText::_('No category specified.');
-	echo '</div>';
-	return;
-}
-
-$modannouncements = new modAnnouncementsHelper($params);
+$modannouncements = new modAnnouncementsHelper($params, $module);
 $modannouncements->display();
-require(JModuleHelper::getLayoutPath('mod_announcements'));

@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modXWhosonline'
- * 
- * Long description (if any) ...
+ * Module class for displaying who's online
  */
 class modXWhosonline
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,24 +70,32 @@ class modXWhosonline
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
+	}
+
+	/**
+	 * Display module contents
 	 * 
 	 * @return     void
 	 */
@@ -100,15 +103,15 @@ class modXWhosonline
 	{
 		$database =& JFactory::getDBO();
 
-		$params  =& $this->params;
-		$this->online = $params->get( 'online' );
-		$this->users  = $params->get( 'users' );
-		$moduleclass_sfx = $params->get( 'moduleclass_sfx' );
+		$this->online = $this->params->get('online');
+		$this->users  = $this->params->get('users');
+		$moduleclass_sfx = $this->params->get('moduleclass_sfx');
 
 		$juser =& JFactory::getUser();
 		$this->admin = $juser->authorize('mod_xwhosonline', 'manage');
 
-		if ($this->online) {
+		if ($this->online) 
+		{
 			$query1 = "SELECT COUNT(DISTINCT ip) AS guest_online FROM #__session WHERE guest=1 AND (usertype is NULL OR usertype='')";
 			$database->setQuery($query1);
 			$this->guest_array = $database->loadResult();
@@ -116,19 +119,26 @@ class modXWhosonline
 			$query2 = "SELECT COUNT(DISTINCT username) AS user_online FROM #__session WHERE guest=0 AND usertype <> 'administrator' AND usertype <> 'superadministrator'";
 			$database->setQuery($query2);
 			$this->user_array = $database->loadResult();
-		} else {
+		} 
+		else 
+		{
 			$this->guest_array = null;
 			$this->user_array = null;
 		}
 
-		if ($this->users) {
+		if ($this->users) 
+		{
 			$query = "SELECT DISTINCT a.username"
-					."\n FROM #__session AS a"
-					."\n WHERE (a.guest=0)";
+					. "\n FROM #__session AS a"
+					. "\n WHERE (a.guest=0)";
 			$database->setQuery($query);
 			$this->rows = $database->loadObjectList();
-		} else {
+		} 
+		else 
+		{
 			$this->rows = null;
 		}
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

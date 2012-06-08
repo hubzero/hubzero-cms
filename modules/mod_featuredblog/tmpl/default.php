@@ -29,36 +29,40 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$html = '';
-if ($modfeaturedblog->error) {
-	$html .= '<p class="error">'.JText::_('MOD_FEATUREDBLOG_MISSING_CLASS').'</p>'."\n";
-} else {
-	if ($modfeaturedblog->row) {
+if ($this->getError()) { ?>
+	<p class="error"><?php echo JText::_('MOD_FEATUREDBLOG_MISSING_CLASS'); ?></p>
+<?php } else {
+	$yearFormat  = "%Y";
+	$monthFormat = "%m";
+	$tz = 0;
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$yearFormat  = "Y";
+		$monthFormat = "m";
+		$tz = true;
+	}
+
+	if ($this->row) {
 		ximport('Hubzero_View_Helper_Html');
-
-		$html .= '<div class="'.$modfeaturedblog->cls.'">'."\n";
-		//if ($modfeaturedblog->filters['show'] == 'contributors') {
-		//	$html .= '<h3>'.JText::_('MOD_FEATUREDMEMBER_PROFILE').'</h3>'."\n";
-		//} else {
-			$html .= '<h3>'.JText::_('MOD_FEATUREDBLOG').'</h3>'."\n";
-		//}
-		// Do we have a picture to show?
-		/*if (is_file(JPATH_ROOT.$modfeaturedblog->thumb)) {
-			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedblog->id).'"><img width="50" height="50" src="'.$modfeaturedblog->thumb.'" alt="'.htmlentities(stripslashes($modfeaturedblog->title)).'" /></a></p>'."\n";
-		}*/
-		$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedblog->row->created_by.'&active=blog&task='.JHTML::_('date',$modfeaturedblog->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$modfeaturedblog->row->publish_up, '%m', 0).'/'.$modfeaturedblog->row->alias).'"><img width="50" height="50" src="/modules/mod_featuredblog/images/blog_thumb.gif" alt="'.htmlentities(stripslashes($modfeaturedblog->title)).'" /></a></p>'."\n";
-		$html .= '<p><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedblog->row->created_by.'&active=blog&task='.JHTML::_('date',$modfeaturedblog->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$modfeaturedblog->row->publish_up, '%m', 0).'/'.$modfeaturedblog->row->alias).'">'.stripslashes($modfeaturedblog->title).'</a>: '."\n";
-		if ($modfeaturedblog->txt) {
-			//$p = new WikiParser( stripslashes($modfeaturedblog->title), 'com_members', 'blog', $modfeaturedmember->alias, 0, $path );
-			$html .= Hubzero_View_Helper_Html::shortenText($modfeaturedblog->encode_html(strip_tags($modfeaturedblog->txt)), $modfeaturedblog->txt_length, 0)."\n";
-		}
-		$html .= '</p>'."\n";
-		$html .= '</div>'."\n";
+?>
+	<div class="<?php echo $this->cls; ?>">
+		<p class="featured-img">
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat, $tz) . '/' . $this->row->alias); ?>">
+				<img width="50" height="50" src="/modules/mod_featuredblog/images/blog_thumb.gif" alt="<?php echo htmlentities(stripslashes($this->title)); ?>" />
+			</a>
+		</p>
+		<p>
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat, $tz) . '/' . $this->row->alias); ?>">
+				<?php echo stripslashes($this->title); ?>
+			</a>: 
+		<?php if ($this->txt) { ?>
+			<?php echo Hubzero_View_Helper_Html::shortenText($this->encode_html(strip_tags($this->txt)), $this->txt_length, 0); ?>
+		<?php } ?>
+		</p>
+	</div>
+<?php
 	}
 }
-
-// Output HTML
-echo $html;
 ?>

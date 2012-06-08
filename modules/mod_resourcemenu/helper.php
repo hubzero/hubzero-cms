@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modResourceMenu'
- * 
- * Long description (if any) ...
+ * Module class for displaying a megamenu
  */
-class modResourceMenu
+class modResourceMenu extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,107 +70,64 @@ class modResourceMenu
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_xHubTags'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $ctext Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
 	 */
-	private function _xHubTags( $ctext )
+	public function __isset($property)
 	{
-		// Expression to search for
-		$regex = "/\{xhub:\s*[^\}]*\}/i";
-
-		// Find all instances of plugin and put in $matches
-		$count = preg_match_all( $regex, $ctext, $matches );
-
-		if ($count) {
-			for ( $i=0; $i < $count; $i++ )
-			{
-				$regex = "/\{xhub:\s*([^\s]+)\s*(.*)/i";
-				if ( preg_match($regex, $matches[0][$i], $tag) )
-				{
-					if ($tag[1] == 'module') {
-						$text = $this->_xHubTagsModules($tag[2]);
-					} else {
-						$text = '';
-					}
-					$ctext = str_replace($matches[0][$i], $text, $ctext);
-				}
-			}
-		}
-
-		return $ctext;
+		return isset($this->_attributes[$property]);
 	}
 
 	/**
-	 * Short description for '_xHubTagsModules'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $options Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _xHubTagsModules($options)
-	{
-	    global $mainframe;
-
-	    $regex = "/position\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
-
-		if (!preg_match($regex, $options, $position))
-	        return "";
-
-	    $regex = "/style\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
-
-		if (!preg_match($regex, $options, $style))
-	        $style[2] = "-2";
-
-	    ximport('Hubzero_Module_Helper');
-
-	    return Hubzero_Module_Helper::renderModules($position[2],$style[2]);
-	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
-		// Get the module parameters
-		$params =& $this->params;
-		$this->moduleid = $params->get('moduleid');
-		$this->moduleclass = $params->get('moduleclass');
+		$this->moduleid    = $this->params->get('moduleid');
+		$this->moduleclass = $this->params->get('moduleclass');
 
 		// Build the HTML
-		$this->html = $this->_xHubTags( $params->get('content') );
+		$obj = new stdClass;
+		$obj->text = $this->_xHubTags($this->params->get('content'));
+
+		JPluginHelper::importPlugin('content', 'xhubtags');
+		$dispatcher =& JDispatcher::getInstance();
+
+		// Get the search result totals
+		$results = $dispatcher->trigger(
+			'onPrepareContent', 
+			array(
+				'',
+				$obj,
+				$this->params
+			)
+		);
+
+		$this->html = $obj->text;
 
 		// Push some CSS to the tmeplate
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_resourcemenu');
+		Hubzero_Document::addModuleStylesheet($this->module->module);
+		Hubzero_Document::addModuleScript($this->module->module);
 
-		// Push some javascript to the tmeplate
-		$jdocument =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.'/modules/mod_resourcemenu/mod_resourcemenu.js')) {
-			$jdocument->addScript('/modules/mod_resourcemenu/mod_resourcemenu.js');
-		}
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

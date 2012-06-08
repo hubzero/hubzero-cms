@@ -29,29 +29,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$html = '';
-if ($modfeaturedresource->error) {
-	$html .= '<p class="error">'.JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS').'</p>'."\n";
-} else {
-	ximport('Hubzero_View_Helper_Html');
-
-	if ($modfeaturedresource->row) {
-		$html .= '<div class="'.$modfeaturedresource->cls.'">'."\n";
-		$html .= '<h3>'.JText::_('MOD_FEATUREDRESOURCE_FEATURED').' '.$modfeaturedresource->row->typetitle.'</h3>'."\n";
-		if (is_file(JPATH_ROOT.$modfeaturedresource->thumb)) {
-			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_resources&id='.$modfeaturedresource->id).'"><img width="50" height="50" src="'.$modfeaturedresource->thumb.'" alt="" /></a></p>'."\n";
-		}
-		$html .= '<p><a href="'.JRoute::_('index.php?option=com_resources&id='.$modfeaturedresource->id).'">'.stripslashes($modfeaturedresource->row->title).'</a>: '."\n";
-		if ($modfeaturedresource->row->introtext) {
-			$html .= Hubzero_View_Helper_Html::shortenText($modfeaturedresource->encode_html(strip_tags($modfeaturedresource->row->introtext)), $modfeaturedresource->txt_length, 0)."\n";
-		}
-		$html .= '</p>'."\n";
-		$html .= '</div>'."\n";
+if ($this->getError()) { ?>
+	<p class="error"><?php echo JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS'); ?></p>
+<?php } else {
+	if ($this->row) { 
+		ximport('Hubzero_View_Helper_Html');
+?>
+	<div class="<?php echo $this->cls; ?>">
+		<h3><?php echo JText::_('MOD_FEATUREDRESOURCE_FEATURED') . ' ' . $this->row->typetitle; ?></h3>
+	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
+		<p class="featured-img">
+			<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id); ?>">
+				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />
+			</a>
+		</p>
+	<?php } ?>
+		<p>
+			<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id); ?>">
+				<?php echo stripslashes($this->row->title); ?>
+			</a>:
+		<?php if ($this->row->introtext) { ?>
+			<?php echo Hubzero_View_Helper_Html::shortenText(htmlentities(strip_tags($this->row->introtext)), $this->txt_length, 0); ?>
+		<?php } ?>
+		</p>
+	</div>
+<?php
 	}
 }
-
-// Output HTML
-echo $html;
 ?>

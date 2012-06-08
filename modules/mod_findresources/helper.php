@@ -32,27 +32,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modFindResources'
- * 
- * Long description (if any) ...
+ * Module class for displaying ways to find resources
  */
-class modFindResources
+class modFindResources extends JObject
 {
-
 	/**
-	 * Description for '_attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_attributes = array();
+	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @param      unknown $module Parameter description (if any) ...
+	 * @param      object $this->params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
 	public function __construct($params, $module)
@@ -62,52 +57,33 @@ class modFindResources
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
 	{
-		$this->_attributes[$property] = $value;
+		$this->attributes[$property] = $value;
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property]))
+		if (isset($this->attributes[$property])) 
 		{
-			return $this->_attributes[$property];
+			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '__isset'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_attributes[$property]);
-	}
-
-	/**
-	 * Short description for 'run'
-	 * 
-	 * Long description (if any) ...
+	 * Generate module contents
 	 * 
 	 * @return     void
 	 */
@@ -130,11 +106,9 @@ class modFindResources
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display module contents
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{

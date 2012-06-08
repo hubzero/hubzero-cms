@@ -23,45 +23,72 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Module class for displaying announcements
+ */
 class modAnnouncementsHelper
 {
+	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
-	//-----------
-
-	public function __construct( $params ) 
+	/**
+	 * Constructor
+	 * 
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
+	 * @return     void
+	 */
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
-	//-----------
-
+	/**
+	 * Set a property
+	 * 
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
 	}
 
-	//-----------
-
+	/**
+	 * Get a property
+	 * 
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
+	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
-	//-----------
-
+	/**
+	 * Get a list of content pages
+	 * 
+	 * @return     void
+	 */
 	private function _getList()
 	{
 		$db =& JFactory::getDBO();
 	
-		$catid 	 = (int) $this->params->get('catid', 0);
+		$catid   = (int) $this->params->get('catid', 0);
 		$orderby = 'a.publish_up DESC';
 		$limit   = (int) $this->params->get('numitems', 0);
-		$limitby = $limit ? ' LIMIT 0,'.$limit : '';
+		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
 		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
@@ -76,29 +103,48 @@ class modAnnouncementsHelper
 			' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
 			' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
 			' WHERE a.state = 1 ' .
-			' AND (a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' ) ' .
-			' AND (a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )' .
+			' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
+			' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
 			' AND cc.id = '. (int) $catid .
 			' AND cc.section = s.id' .
 			' AND cc.published = 1' .
 			' AND s.published = 1' .
-			' ORDER BY '.$orderby.' '.$limitby;
+			' ORDER BY ' . $orderby . ' ' . $limitby;
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
 		return $rows;
 	}
 
-	//-----------
-
+	/**
+	 * Display module content
+	 * 
+	 * @return     void
+	 */
 	public function display() 
 	{
+		//check if cache diretory is writable as cache files will be created for the announcements
+		if ($this->params->get('cache', 1) && !is_writable(JPATH_BASE . DS . 'cache'))
+		{
+			echo '<p class="warning">' . JText::_('Please make cache directory writable.') . '</p>';
+			return;
+		}
+
+		//check if category has been set
+		if (!intval($this->params->get('catid', 0)))
+		{
+			echo '<p class="warning">' . JText::_('No category specified.') . '</p>';
+			return;
+		}
+
 		// Push some CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_announcements');
-			
+		Hubzero_Document::addModuleStylesheet($this->module->module);
+
 		$this->content = $this->_getList();	
 		$this->cid = (int) $this->params->get('catid', 0);	
 		$this->container = $this->params->get('container', 'block-announcements');
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

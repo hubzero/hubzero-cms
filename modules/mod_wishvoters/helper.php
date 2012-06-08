@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modWishVoters'
- * 
- * Long description (if any) ...
+ * Module class for displaying top wish voters
  */
-class modWishVoters
+class modWishVoters extends JObject
 {
-
 	/**
-	 * Description for 'params'
+	 * Container for properties
 	 * 
-	 * @var integer
+	 * @var array
 	 */
-	private $params;
+	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,130 +70,84 @@ class modWishVoters
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_list'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $rows Parameter description (if any) ...
-	 * @param      unknown $limit Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
 	 */
-	private function _list( $rows, $limit)
+	public function __isset($property)
 	{
-		if (count($rows) <= 0) {
-			$html  = "\t".'<p>'.JText::_('Noone has yet voted for a single wish on this list.').'</p>'."\n";
-		} else {
-			$html  = "\t".'<ul class="voterslist">'."\n";
-			$html .= "\t\t".'<li class="title">'.JText::_('Name (login)').' <span>'.JText::_('wishes ranked').'</span></li>'."\n";
-			$k=1;
-			foreach ($rows as $row)
-			{
-				if($k <= $limit) {
-					$name = JText::_('UNKNOWN');
-					$auser =& JUser::getInstance($row->userid);
-					if (is_object($auser)) {
-							$name = $auser->get('name');
-							$login = $auser->get('username');
-					}
-
-					$html .= "\t\t".'<li>'."\n";
-					$html .= "\t\t".'<span class="lnum">'.$k.'.</span>'."\n";
-					$html .= "\t\t\t".$name.' <span class="wlogin">('.$login.')</span>'."\n";
-					$html .= "\t\t\t".'<span>'.$row->times.'</span>'."\n";
-					$html .= "\t\t".'</li>';
-					$k++;
-				}
-			}
-			$html .= "\t".'</ul>'."\n";
-		}
-
-		return $html;
+		return isset($this->_attributes[$property]);
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display module contents
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
-		$moduleclass = $params->get( 'moduleclass' );
-		$limit = intval( $params->get( 'limit' ) );
-		$limit = ($limit) ? $limit : 10;
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.plan.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.group.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.group.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php' );
-		$objWishlist = new Wishlist ( $database );
-		//$objOwner = new WishlistOwner( $database );
+		$objWishlist = new Wishlist($database);
+
 		// which list is being viewed?
-		$listid 	= JRequest::getInt( 'id', 0 );
-		$refid		= JRequest::getInt( 'rid', 0 );
-		$category 	= JRequest::getVar( 'category', '' );
+		$listid   = JRequest::getInt('id', 0);
+		$refid    = JRequest::getInt('rid', 0);
+		$category = JRequest::getVar('category', '');
 
 		// figure list id
-		if ($category && $refid) {
+		if ($category && $refid) 
+		{
 			$listid = $objWishlist->get_wishlistID($refid, $category);
 		}
 
 		// cannot rank a wish if list/wish is not found
-		if (!$listid) {
+		if (!$listid) 
+		{
 			echo JText::_('Cannot locate a wish or a wish list');
 			return;
 		}
 
-		//$wparams =& JComponentHelper::getParams( 'com_wishlist' );
-		//$admingroup = $wparams->get('group');
-		//$wishlist = $objWishlist->get_wishlist($listid);			
-		//$owners = $objOwner->get_owners($listid, $admingroup, $wishlist);
-		$database->setQuery( "SELECT DISTINCT v.userid, SUM(v.importance) as imp, COUNT(v.wishid) as times "
-			. " FROM #__wishlist_vote as v JOIN #__wishlist_item as w ON w.id=v.wishid WHERE w.wishlist='".$listid."'"
-			. " GROUP BY v.userid ORDER BY times DESC, v.voted DESC ");
-			//. " LIMIT ".$limit
-			//);
-		$rows = $database->loadObjectList();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
+		$database->setQuery(
+			"SELECT DISTINCT v.userid, SUM(v.importance) as imp, COUNT(v.wishid) as times "
+			. " FROM #__wishlist_vote as v JOIN #__wishlist_item as w ON w.id=v.wishid WHERE w.wishlist='" . $listid . "'"
+			. " GROUP BY v.userid ORDER BY times DESC, v.voted DESC "
+		);
+		$this->rows = $database->loadObjectList();
+		if ($database->getErrorNum()) 
+		{
+			$this->setError($database->stderr());
+			return JText::_('Error occurred retrieving wish voters');
 		}
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_wishvoters');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
-		// Build the HTML
-		$html  = '<div';
-		$html .= ($moduleclass) ? ' class="'.$moduleclass.'">'."\n" : '>'."\n";
-		$html .= "\t".'<h3>Giving the Most Input</h3>'."\n";
-		$html .= $this->_list( $rows, $limit);
-		$html .= '</div>'."\n";
-
-		// Output the HTML
-		echo $html;
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

@@ -29,13 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__) . DS . 'helper.php');
 
-$modreportproblems = new modReportProblems( $params );
+$modreportproblems = new modReportProblems($params, $module);
 $modreportproblems->display();
-
-require( JModuleHelper::getLayoutPath('mod_reportproblems') );
-?>

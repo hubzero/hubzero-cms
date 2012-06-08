@@ -29,23 +29,25 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modYoutubeHelper'
- * 
- * Long description (if any) ...
+ * Module class for displaying a YouTube feed
  */
-class modYoutubeHelper
+class modYoutubeHelper extends JObject
 {
+	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @param      unknown $module Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
 	public function __construct($params, $module)
@@ -55,13 +57,48 @@ class modYoutubeHelper
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
+	 * @return     void
 	 */
-	public function render()
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
+
+	/**
+	 * Get a property
+	 * 
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
+	 */
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) 
+		{
+			return $this->attributes[$property];
+		}
+	}
+
+	/**
+	 * Check if a property is set
+	 * 
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
+	}
+
+	/**
+	 * Display module contents
+	 * 
+	 * @return     void
+	 */
+	public function display()
 	{
 		//get the document
 		$jdocument =& JFactory::getDocument();
@@ -91,25 +128,25 @@ class modYoutubeHelper
 		switch($type)
 		{
 			case 'playlists':
-				$youtube_url .= "playlists/".$content."?v=2";
-				break;
+				$youtube_url .= 'playlists/' . $content . '?v=2';
+			break;
 			case 'users':
-				$youtube_url .= "users/".$content."/uploads?v=2";
-				break;
+				$youtube_url .= 'users/' . $content . '/uploads?v=2';
+			break;
 			case 'videos':
-				$youtube_url .= "videos?q=".$content."&v=2";
-				break;
+				$youtube_url .= 'videos?q=' . $content . '&v=2';
+			break;
 		}
 
 		//get title,desc,logo and link params
 		$show_title = $this->params->get('title');
-		$alt_title = $this->params->get('alttitle');
-		$show_desc = $this->params->get('desc');
-		$alt_desc = $this->params->get('altdesc');
+		$alt_title  = $this->params->get('alttitle');
+		$show_desc  = $this->params->get('desc');
+		$alt_desc   = $this->params->get('altdesc');
 		$show_image = $this->params->get('image');
-		$alt_image = $this->params->get('altimage');
-		$show_link = $this->params->get('link');
-		$alt_link = $this->params->get('altlink');
+		$alt_image  = $this->params->get('altimage');
+		$show_link  = $this->params->get('link');
+		$alt_link   = $this->params->get('altlink');
 
 		//are we randomizing videos
 		$random = $this->params->get('random');
@@ -119,63 +156,68 @@ class modYoutubeHelper
 
 		//Push some CSS to the template
 		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet('mod_youtube');
+		Hubzero_Document::addModuleStylesheet($this->module->module);
 
 		//push the container that the feed with loaded in
 		$this->id = $id;
 		$this->lazy = $lazy_loading;
 
 		//if we are lazy loading
-		if ($lazy_loading) {
+		if ($lazy_loading) 
+		{
+			Hubzero_Document::addModuleScript($this->module->module);
+
 			if (JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.jquery.js');
 				$jdocument->addScriptDeclaration("
 					jQuery(document).ready(function($){
-						var youtubefeed = $('#youtube_feed_".$id."').youtube({
-							type: '".$type."',
-							search: '".$content."',
-							count: ".$num_videos.",
-							random: ".$random.",
+						var youtubefeed = $('#youtube_feed_" . $id . "').youtube({
+							type: '" . $type . "',
+							search: '" . $content . "',
+							count: " . $num_videos . ",
+							random: " . $random . ",
 							details: {
-								showLogo: ".$show_image.",
-								altLogo: '".$alt_image."',
-								showTitle: ".$show_title.",
-								altTitle: '".$alt_title."',
-								showDesc: ".$show_desc.",
-								altDesc: '".$alt_desc."',
-								showLink: ".$show_link.",
-								altLink: '".$alt_link."'
+								showLogo: " . $show_image . ",
+								altLogo: '" . $alt_image . "',
+								showTitle: " . $show_title . ",
+								altTitle: '" . $alt_title . "',
+								showDesc: " . $show_desc . ",
+								altDesc: '" . $alt_desc . "',
+								showLink: " . $show_link . ",
+								altLink: '" . $alt_link . "'
 							}
 						});
 					});
 				");
-			} else {
-				$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.js');
+			} 
+			else 
+			{
 				$jdocument->addScriptDeclaration("
 					window.addEvent('domready', function() {
-						var youtubefeed = new HUB.Youtube('youtube_feed_".$id."',{
-							type: '".$type."',
-							search: '".$content."',
-							count: ".$num_videos.",
-							random: ".$random.",
+						var youtubefeed = new HUB.Youtube('youtube_feed_" . $id . "',{
+							type: '" . $type . "',
+							search: '" . $content . "',
+							count: " . $num_videos . ",
+							random: " . $random . ",
 							details: {
-								showLogo: ".$show_image.",
-								altLogo: '".$alt_image."',
-								showTitle: ".$show_title.",
-								altTitle: '".$alt_title."',
-								showDesc: ".$show_desc.",
-								altDesc: '".$alt_desc."',
-								showLink: ".$show_link.",
-								altLink: '".$alt_link."'
+								showLogo: " . $show_image . ",
+								altLogo: '" . $alt_image . "',
+								showTitle: " . $show_title . ",
+								altTitle: '" . $alt_title . "',
+								showDesc: " . $show_desc . ",
+								altDesc: '" . $alt_desc . "',
+								showLink: " . $show_link . ",
+								altLink: '" . $alt_link . "'
 							}
 						});
 					});
 				");
 			}
-		} else {
+		} 
+		else 
+		{
 			//append the the return type and the callback function
-			$youtube_url .= "&alt=json";
+			$youtube_url .= '&alt=json';
 
 			//get the youtube url's headers
 			$headers = get_headers($youtube_url);
@@ -185,16 +227,21 @@ class modYoutubeHelper
 			jimport('joomla.filesystem.file');
 
 			//cache path
-			$path = JPATH_ROOT.DS.'cache'.DS.'mod_youtube'.DS.$id;
-			$data = $path.DS.$type.'.txt';
+			$path = JPATH_ROOT . DS . 'cache' . DS . 'mod_youtube' . DS . $id;
+			$data = $path . DS . $type . '.txt';
 
 			//check if we have cached already
-			if ($this->params->get('cache') && is_file($data) && filemtime($data) > strtotime("-".$this->params->get('cache_time')." MINUTES")) {
+			if ($this->params->get('cache') && is_file($data) && filemtime($data) > strtotime('-' . $this->params->get('cache_time') . ' MINUTES')) 
+			{
 				$feed = file_get_contents($data);
-			} elseif (strpos($headers[0], 'OK') !== false) {
+			} 
+			elseif (strpos($headers[0], 'OK') !== false) 
+			{
 				$feed = file_get_contents($youtube_url);
-			} else {
-				$this->html = '<p class="error">An Error occurred while trying to parse the Youtube Feed.</p>';
+			} 
+			else 
+			{
+				$this->html = '<p class="error">' . JText::_('An Error occurred while trying to parse the Youtube Feed.') . '</p>';
 				return;
 			}
 
@@ -209,40 +256,54 @@ class modYoutubeHelper
 
 			//get the title, subtitle, logo
 			$title = $feed['title']['$t'];
-			if ($type == 'playlists') {
+			if ($type == 'playlists') 
+			{
 				$desc = $feed['subtitle']['$t'];
 			}
 			$logo = $feed['logo']['$t'];
 
 			//show title based on params
-			if ($show_title) {
-				if ($alt_title != '') {
-					$html .= "<h3>{$alt_title}</h3>";
-				} else {
-					$html .= "<h3>{$title}</h3>";
+			if ($show_title) 
+			{
+				if ($alt_title != '') 
+				{
+					$html .= '<h3>' . $alt_title . '</h3>';
+				} 
+				else 
+				{
+					$html .= '<h3>' . $title . '</h3>';
 				}
 			}
 
 			//show the description based on params
-			if ($show_desc) {
-				if ($alt_desc != '') {
-					$html .= "<p class=\"description\">{$alt_desc}</p>";
-				} elseif($type == 'playlists') {
-					$html .= "<p class=\"description\">{$desc}</p>";
+			if ($show_desc) 
+			{
+				if ($alt_desc != '') 
+				{
+					$html .= '<p class="description">' . $alt_desc . '</p>';
+				} 
+				elseif($type == 'playlists') 
+				{
+					$html .= '<p class="description">' . $desc . '</p>';
 				}
 			}
 
 			//show the logo based on your
-			if ($show_image) {
-				if ($alt_image != '' && is_file(JPATH_ROOT.DS.$alt_image)) {
+			if ($show_image) 
+			{
+				if ($alt_image != '' && is_file(JPATH_ROOT . DS . $alt_image)) 
+				{
 					$html .= '<img class="logo" src="' . $alt_image . '" alt="Youtube" />';
-				} else {
+				} 
+				else 
+				{
 					$html .= '<img class="logo" src="' . $logo . '" alt="Youtube" />';
 				}
 			}
 
 			//are we supposed to randomize
-			if ($random) {
+			if ($random) 
+			{
 				shuffle($entries);
 			}
 
@@ -251,12 +312,13 @@ class modYoutubeHelper
 			$counter = 1;
 			foreach ($entries as $entry)
 			{
-				if ($counter <= $num_videos) {
+				if ($counter <= $num_videos) 
+				{
 					$media = $entry['media$group'];
 					$html .= "<li>";
 					$html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entry['link'][0]['href']}\"><img src=\"{$media['media$thumbnail'][3]['url']}\" alt=\"\" /></a>";
 					$html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entry['link'][0]['href']}\">{$entry['title']['$t']}</a>";
-					$html .= "<br /><span class=\"entry-duration\">".$this->_formatTime($media['yt$duration']['seconds'])."</span>";
+					$html .= "<br /><span class=\"entry-duration\">" . $this->_formatTime($media['yt$duration']['seconds']) . "</span>";
 					$html .= "</li>";
 				}
 				$counter++;
@@ -264,59 +326,65 @@ class modYoutubeHelper
 			$html .= "</ul>";
 
 			//show the view more link based on params
-			if ($show_link) {
-				if ($alt_link != '') {
+			if ($show_link) 
+			{
+				if ($alt_link != '') 
+				{
 					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$alt_link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
-				} else {
+				} 
+				else 
+				{
 					switch ($type)
 					{
 						case 'playlists':
 							$link = "http://www.youtube.com/view_play_list?p=" . $content;
-							break;
+						break;
 						case 'users':
 							$link = "http://www.youtube.com/user/" . $content;
-							break;
+						break;
 						case 'videos':
 							$link = "http://www.youtube.com/results?search_query=" . $content;
-							break;
+						break;
 					}
 					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
 				}
 			}
 
 			//if we want to use caching
-			if ($this->params->get('cache')) {
+			if ($this->params->get('cache')) 
+			{
 				//write to the cache folder
-				if (!is_dir($path)) {
+				if (!is_dir($path)) 
+				{
 					JFolder::create($path, 0777);
 				}
 
 				$full_feed = json_encode($full_feed);
-				JFile::write($data,$full_feed);
+				JFile::write($data, $full_feed);
 			}
 
 			$this->html = $html;
+
+			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
 	}
 
 	/**
-	 * Short description for '_formatTime'
+	 * Format a time
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $seconds Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $seconds Time to format
+	 * @return     string
 	 */
 	private function _formatTime($seconds)
 	{
 		$minutes = floor($seconds / 60);
 		$seconds = $seconds % 60;
 
-		if ($seconds < 10) {
+		if ($seconds < 10) 
+		{
 			$seconds = "0{$seconds}";
 		}
 
 		return "<span>{$minutes}:{$seconds}</span>";
 	}
-
 }

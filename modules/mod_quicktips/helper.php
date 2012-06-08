@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modQuickTips'
- * 
- * Long description (if any) ...
+ * Module class for displaying tips
  */
-class modQuickTips
+class modQuickTips extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,56 +70,69 @@ class modQuickTips
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
+	}
+
+	/**
+	 * Display module content
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
 		$database =& JFactory::getDBO();
-		$params =& $this->params;
 
-		$catid = trim( $params->get( 'catid' ) );
-		$secid = trim( $params->get( 'secid' ) );
-		$this->moduleclass_sfx = $params->get( 'moduleclass_sfx' );
-		$method = trim( $params->get( 'method' ) );
+		$catid = trim($this->params->get('catid'));
+		$secid = trim($this->params->get('secid'));
+		$method = trim($this->params->get('method'));
 
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = date('Y-m-d H:i:s', time());
 
-		if ($method == 'random') {
+		if ($method == 'random') 
+		{
 			$order = "RAND()";
-		} elseif($method == 'ordering') {
+		} 
+		elseif($method == 'ordering') 
+		{
 			$order = "a.ordering ASC";
-		} else {
+		} 
+		else 
+		{
 			$order = "a.publish_up DESC";
 		}
 
 		$query = "SELECT a.id, a.title, a.introtext, a.created"
 				. "\n FROM #__content AS a"
-				. "\n WHERE ( a.state = '1' AND a.checked_out = '0' AND a.sectionid > '0' )"
-				. "\n AND ( a.publish_up = '0000-00-00 00:00:00' OR a.publish_up <= '$now' )"
-				. "\n AND ( a.publish_down = '0000-00-00 00:00:00' OR a.publish_down >= '$now' )"
-				. ($catid ? "\n AND ( a.catid IN (". $catid .") )" : '')
-				. ($secid ? "\n AND ( a.sectionid IN (". $secid .") )" : '')
+				. "\n WHERE (a.state = '1' AND a.checked_out = '0' AND a.sectionid > '0')"
+				. "\n AND (a.publish_up = '0000-00-00 00:00:00' OR a.publish_up <= '$now')"
+				. "\n AND (a.publish_down = '0000-00-00 00:00:00' OR a.publish_down >= '$now')"
+				. ($catid ? "\n AND (a.catid IN (" . $catid . "))" : '')
+				. ($secid ? "\n AND (a.sectionid IN (" . $secid . "))" : '')
 				. "\n ORDER BY $order LIMIT 1";
 		$database->setQuery($query);
 		$this->rows = $database->loadObjectList();
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

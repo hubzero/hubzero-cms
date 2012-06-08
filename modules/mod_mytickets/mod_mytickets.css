@@ -14,32 +14,32 @@
 */
 	div.draggable .expandedlist li.support-ticket {
 		background: url("/modules/mod_mytickets/images/page_white_text.png") 0.7em 1em no-repeat;
-		}
+	}
 	div.draggable .expandedlist li.critical,
 	div.draggable .expandedlist li.critical a {
 		color: #CC0000;
 		background-color: #FFF2EF;
-		}
+	}
 	div.draggable .expandedlist li.major,
 	div.draggable .expandedlist li.major a { 
 		color: #CC6633; 
 		background-color: #FFFDEF;
-		}
+	}
 	div.draggable .expandedlist li.normal { 
-		}
+	}
 	div.draggable .expandedlist li.minor,
 	div.draggable .expandedlist li.minor a {
 		background-color: #dff;
 		color: #099;
-		}
+	}
 	div.draggable .expandedlist li.trivial,
 	div.draggable .expandedlist li.trivial a { 
 		background-color: #dde7ff;
 		color: #469;
-		}
+	}
 	div.draggable .expandedlist li.support-ticket span {
 		color: #fff;
-		}
+	}
 	div.draggable .expandedlist li.support-ticket span span {
 		color: #999;
-		}
+	}

@@ -63,8 +63,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<fieldset class="reporter">
 						<label for="trLogin">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
-<?php if (!$modreportproblems->juser->get('guest')) { ?>
-							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo htmlentities($modreportproblems->juser->get('username'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('username'); ?></span>
+<?php if (!$this->juser->get('guest')) { ?>
+							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo htmlentities($this->juser->get('username'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('username'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[login]" id="trLogin" value="" />
 <?php } ?>
@@ -72,8 +72,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 						<label for="trName">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_NAME'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-<?php if (!$modreportproblems->juser->get('guest')) { ?>
-							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $modreportproblems->juser->get('name'); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('name'); ?></span>
+<?php if (!$this->juser->get('guest')) { ?>
+							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $this->juser->get('name'); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('name'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[name]" id="trName" value="" />
 <?php } ?>
@@ -81,8 +81,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 						<label for="trEmail">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_EMAIL'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-<?php if (!$modreportproblems->juser->get('guest')) { ?>
-							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo htmlspecialchars($modreportproblems->juser->get('email'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('email'); ?></span>
+<?php if (!$this->juser->get('guest')) { ?>
+							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo htmlspecialchars($this->juser->get('email'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('email'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[email]" id="trEmail" value="" />
 <?php } ?>
@@ -108,25 +108,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<fieldset>
 						<label for="trProblem">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_PROBLEM'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-							<textarea name="problem[long]" id="trProblem" <?php //if (!$modreportproblems->verified) { echo 'class="long" '; } ?>rows="10" cols="40"></textarea>
+							<textarea name="problem[long]" id="trProblem" <?php //if (!$this->verified) { echo 'class="long" '; } ?>rows="10" cols="40"></textarea>
 						</label>
 						
 						<label for="trUpload">
 							<?php echo JText::_('Attach a screenshot'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 							<input type="file" name="upload" id="trUpload" />
-							<span class="filetypes">(.<?php echo str_replace(',', ', .', $modreportproblems->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>)</span>
+							<span class="filetypes">(.<?php echo str_replace(',', ', .', $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>)</span>
 						</label>
 						
 						<input type="hidden" name="problem[topic]" value="???" />
 						<input type="hidden" name="problem[short]" value="" />
-						<input type="hidden" name="problem[referer]" value="<?php echo htmlspecialchars($modreportproblems->referrer); ?>" />
+						<input type="hidden" name="problem[referer]" value="<?php echo htmlspecialchars($this->referrer); ?>" />
 						<input type="hidden" name="problem[tool]" value="" />
-						<input type="hidden" name="problem[os]" value="<?php echo $modreportproblems->os; ?>" />
-						<input type="hidden" name="problem[osver]" value="<?php echo $modreportproblems->os_version; ?>" />
-						<input type="hidden" name="problem[browser]" value="<?php echo $modreportproblems->browser; ?>" />
-						<input type="hidden" name="problem[browserver]" value="<?php echo $modreportproblems->browser_ver; ?>" />
-						<input type="hidden" name="verified" value="<?php echo $modreportproblems->verified; ?>" />
-						<input type="hidden" name="reporter[org]" value="<?php echo (!$modreportproblems->juser->get('guest')) ? htmlentities($modreportproblems->juser->get('org'),ENT_QUOTES) : ''; ?>" />
+						<input type="hidden" name="problem[os]" value="<?php echo $this->os; ?>" />
+						<input type="hidden" name="problem[osver]" value="<?php echo $this->os_version; ?>" />
+						<input type="hidden" name="problem[browser]" value="<?php echo $this->browser; ?>" />
+						<input type="hidden" name="problem[browserver]" value="<?php echo $this->browser_ver; ?>" />
+						<input type="hidden" name="verified" value="<?php echo $this->verified; ?>" />
+						<input type="hidden" name="reporter[org]" value="<?php echo (!$this->juser->get('guest')) ? htmlentities($this->juser->get('org'),ENT_QUOTES) : ''; ?>" />
 						<input type="hidden" name="option" value="com_support" />
 						<input type="hidden" name="controller" value="tickets" />
 						<input type="hidden" name="task" value="save" />

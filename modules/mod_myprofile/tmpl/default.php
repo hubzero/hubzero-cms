@@ -33,40 +33,40 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="myprofile-cont">
 	<p id="myprofile-image">
-<?php if (!$modmyprofile->profile->get('picture')) { ?>
+<?php if (!$this->profile->get('picture')) { ?>
 		<img src="/components/com_members/images/profile.gif" alt="<?php echo JText::_('MOD_MYPROFILE_IMAGE'); ?>" />
 <?php 
 	} else {
-		list($width,$height) = getimagesize(JPATH_ROOT.$modmyprofile->profile->get('picture'));
+		list($width, $height) = getimagesize(JPATH_ROOT . $this->profile->get('picture'));
 		$w = ($width && $width > 190) ? 190 : $width;
 		$h = $height;
 ?>
-		<img src="<?php echo $modmyprofile->profile->get('picture'); ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>" alt="<?php echo JText::_('MOD_MYPROFILE_IMAGE'); ?>" />
+		<img src="<?php echo $this->profile->get('picture'); ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>" alt="<?php echo JText::_('MOD_MYPROFILE_IMAGE'); ?>" />
 <?php } ?>
 	</p>
 	<p id="myprofile-name">
-		<strong><?php echo $modmyprofile->profile->get('name'); ?> (<?php echo $modmyprofile->profile->get('username'); ?>)</strong>
+		<strong><?php echo $this->profile->get('name'); ?> (<?php echo $this->profile->get('username'); ?>)</strong>
 	</p>
 	<div id="myprofile-bio">
-<?php if ($modmyprofile->profile->get('bio')) {
+<?php if ($this->profile->get('bio')) {
 	$wikiconfig = array(
 		'option'   => 'com_members',
-		'scope'    => 'members'.DS.'profile',
+		'scope'    => 'members' . DS . 'profile',
 		'pagename' => 'member',
-		'pageid'   => $modmyprofile->profile->get('uidNumber'),
+		'pageid'   => $this->profile->get('uidNumber'),
 		'filepath' => '',
 		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$p =& Hubzero_Wiki_Parser::getInstance();
-	echo $p->parse(stripslashes($modmyprofile->profile->get('bio')), $wikiconfig);
+	echo $p->parse(stripslashes($this->profile->get('bio')), $wikiconfig);
 } else {
 	echo JText::_('MOD_MYPROFILE_NO_BIO');
 } ?>
 	</div>
-	<p><?php echo ($modmyprofile->profile->get('public') ? JText::_('MOD_MYPROFILE_PUBLIC') : JText::_('MOD_MYPROFILE_PRIVATE')); ?></p>
+	<p><?php echo ($this->profile->get('public') ? JText::_('MOD_MYPROFILE_PUBLIC') : JText::_('MOD_MYPROFILE_PRIVATE')); ?></p>
 	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$modmyprofile->id.'&task=edit'); ?>"><?php echo JText::_('MOD_MYPROFILE_EDIT_SETTINGS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id . '&task=edit'); ?>"><?php echo JText::_('MOD_MYPROFILE_EDIT_SETTINGS'); ?></a></li>
 	</ul>
 </div>
 

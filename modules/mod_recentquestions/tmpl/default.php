@@ -31,14 +31,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (count($this->rows) > 0) {
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
+?>
+<div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : ''; echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
+<?php if (count($this->rows) > 0) { ?>
+	<ul class="questions">
+<?php 
 	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'tags.php');
-
 	$tagging = new AnswersTags($this->database);
 
 	ximport('Hubzero_View_Helper_Html');
 
-	$html  = "\t\t" . '<ul class="questions">' . "\n";
 	foreach ($this->rows as $row)
 	{
 		$name = JText::_('MOD_RECENTQUESTIONS_ANONYMOUS');
@@ -47,45 +58,53 @@ if (count($this->rows) > 0) {
 			$juser =& JUser::getInstance($row->created_by);
 			if (is_object($juser))
 			{
-				$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '">' . stripslashes($juser->get('name')) . '</a>';
+				$name = $juser->get('name');
 			}
 		}
 
-		//$when = $this->timeAgo($this->mkt($row->created));
+		$tags = $tagging->get_tags_on_object($row->id, 0, 0, 0);
+?>
+		<li>
+<?php if ($this->style == 'compact') { ?>
+			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id); ?>"><?php echo stripslashes($row->subject); ?></a>
+<?php } else { ?>
+			<h4><a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id); ?>"><?php echo stripslashes($row->subject); ?></a></h4>
+			<p class="entry-details">
+				<?php echo JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $name); ?> @ 
+				<span class="entry-time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> on 
+				<span class="entry-date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
+				<span class="entry-details-divider">&bull;</span>
+				<span class="entry-comments">
+					<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id . '#answers'); ?>" title="<?php echo JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount); ?>">
+						<?php echo $row->rcount; ?>
+					</a>
+				</span>
+			</p>
+			<p class="entry-tags"><?php echo JText::_('MOD_RECENTQUESTIONS_TAGS'); ?>:</p> 
+			<?php
+			if (count($tags) > 0) {
+				$tagarray = array();
+				$tagarray[] = '<ol class="tags">';
+				foreach ($tags as $tag)
+				{
+					$tag['raw_tag'] = str_replace('&amp;', '&', stripslashes($tag['raw_tag']));
+					$tag['raw_tag'] = str_replace('&', '&amp;', $tag['raw_tag']);
+					$tagarray[] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_answers&task=tag&tag=' . $tag['tag']) . '" rel="tag">' . $tag['raw_tag'] . '</a></li>';
+				}
+				$tagarray[] = '</ol>';
 
-		$tags = $tagging->get_tag_cloud(0, 0, $row->id);
-
-		$html .= "\t\t".' <li>'."\n";
-		if ($this->style == 'compact') {
-			$html .= "\t\t\t".'<a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) .'">'.$row->subject.'</a>'."\n";
-			$html .= '<span> - ';
-			$html .= ($row->rcount == 1) ? JText::sprintf('MOD_RECENTQUESTIONS_RESPONSE', $row->rcount) : JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount);
-			$html .= '</span>';
-		} else {
-			$html .= "\t\t\t".'<h4><a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) .'" title="'.htmlentities(stripslashes($row->subject), ENT_COMPAT, 'UTF-8').'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject), 100, 0).'</a></h4>'."\n";
-			/*if ($row->question) {
-				$html .= "\t\t\t".'<p class="snippet">';
-				$html .= Hubzero_View_Helper_Html::shortenText($row->question, 100, 0);
-				$html .= '</p>'."\n";
-			}*/
-			$html .= '<p class="entry-details">'."\n";
-			$html .= '	'. JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $name) .' @ '."\n";
-			$html .= '	<span class="entry-time">'. JHTML::_('date', $row->created, '%I:%M %p', 0) .'</span> on '."\n";
-			$html .= '	<span class="entry-date">'. JHTML::_('date', $row->created, '%d %b %Y', 0) .'</span>'."\n";
-			$html .= '	<span class="entry-details-divider">&bull;</span>'."\n";
-			$html .= '	<span class="entry-comments">'."\n";
-			$html .= '		<a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id.'#answers') .'" title="'. JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount) .'">'."\n";
-			$html .= '			'.$row->rcount."\n";
-			$html .= '		</a>'."\n";
-			$html .= '	</span>'."\n";
-			$html .= '</p>'."\n";
-			$html .= "\t\t\t".'<p class="entry-tags">'.JText::_('MOD_RECENTQUESTIONS_TAGS').':</p> '.$tags."\n";
-		}
-		$html .= "\t\t".' </li>'."\n";
+				echo implode("\n", $tagarray);
+			} else {
+				echo '&nbsp;';
+			}
+			?>
+<?php } ?>
+		</li>
+<?php
 	}
-	$html .= "\t\t" . '</ul>' . "\n";
-} else {
-	$html  = "\t\t" . '<p>' . JText::_('MOD_RECENTQUESTIONS_NO_RESULTS').'</p>'."\n";
-}
-
-echo $html;
+?>
+	</ul>
+<?php } else { ?>
+	<p><?php echo JText::_('MOD_RECENTQUESTIONS_NO_RESULTS'); ?></p>
+<?php } ?>
+</div>

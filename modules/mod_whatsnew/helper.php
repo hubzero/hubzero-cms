@@ -33,27 +33,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modWhatsNew'
- * 
- * Long description (if any) ...
+ * Module class for displaying what's new in a category of content
  */
 class modWhatsNew
 {
-
 	/**
-	 * Description for '_attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_attributes = array();
+	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @param      unknown $module Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
 	public function __construct($params, $module)
@@ -63,42 +58,36 @@ class modWhatsNew
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
 	{
-		$this->_attributes[$property] = $value;
+		$this->attributes[$property] = $value;
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property]))
+		if (isset($this->attributes[$property])) 
 		{
-			return $this->_attributes[$property];
+			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '__isset'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
 	 */
 	public function __isset($property)
 	{
@@ -106,11 +95,9 @@ class modWhatsNew
 	}
 
 	/**
-	 * Short description for '_getAreas'
+	 * Get the categories for What's New
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     array
 	 */
 	private function _getAreas()
 	{
@@ -142,14 +129,12 @@ class modWhatsNew
 	}
 
 	/**
-	 * Short description for 'formatTags'
+	 * Fromat tags for display
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $tags Parameter description (if any) ...
-	 * @param      number $num Parameter description (if any) ...
-	 * @param      integer $max Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array   $tags Tags to format
+	 * @param      integer $num  Number of tags to display
+	 * @param      integer $max  Max characters for a tag
+	 * @return     string HTML
 	 */
 	public function formatTags($tags=array(), $num=3, $max=25)
 	{
@@ -184,9 +169,7 @@ class modWhatsNew
 	}
 
 	/**
-	 * Short description for 'run'
-	 * 
-	 * Long description (if any) ...
+	 * Get module contents
 	 * 
 	 * @return     void
 	 */
@@ -206,7 +189,7 @@ class modWhatsNew
 		// Build the feed link if necessary
 		if ($this->feed)
 		{
-			$this->feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period=' . $this->period);
+			$this->feedlink = JRoute::_('index.php?option=com_whatsnew&task=feed.rss&period=' . $this->period);
 			if (substr($this->feedlink, 0, 5) == 'https')
 			{
 				$this->feedlink = ltrim($this->feedlink, 'https');
@@ -355,11 +338,9 @@ class modWhatsNew
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display module contents
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function display()
 	{

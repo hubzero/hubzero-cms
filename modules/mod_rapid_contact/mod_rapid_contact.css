@@ -15,11 +15,11 @@
 
 	#getintouch form {
 		margin: 1em 0;
-		}
+	}
 	#getintouch fieldset {}
 	#getintouch fieldset legend {
 		display: none;
-		}
+	}
 	#getintouch fieldset label {
 		display: block;
 		font-size: 0.85em;
@@ -28,11 +28,11 @@
 		color: #999;
 		padding: 4px 3px 0 3px;
 		text-transform: uppercase;
-		}
+	}
 	#getintouch fieldset label span.required {
 		font-size: 0.75em;
 		line-height: 0;
-		}
+	}
 	#getintouch fieldset span.input {
 		border: 1px solid #e9e3de;
 		display: block;
@@ -44,7 +44,7 @@
 		-webkit-border-radius: 4px;
 		-khtml-border-radius: 4px;
 		border-radius: 4px;
-		}
+	}
 	#getintouch fieldset span.input span.errorMessage {
 		display: block;
 		line-height: 12px;
@@ -53,10 +53,10 @@
 		right: -29.5%;
 		top: 0;
 		width: 25%;
-		}
+	}
 	#getintouch fieldset span.input + label {
 		margin-top: 4px;
-		}
+	}
 	#getintouch fieldset span.input input[type=text] {
 		background-color: #fff; /*#cbc0b9;*/
 		border: 1px solid #e0e0d7;
@@ -67,15 +67,15 @@
 		-webkit-border-radius: 3px;
 		-khtml-border-radius: 3px;
 		border-radius: 3px;
-		}
+	}
 	#getintouch fieldset span.input input[type=text]:focus {
 		background-color: #ffc;
-		}
+	}
 	#getintouch fieldset span.input input[type=text].error {
 		background-color: rgb(231,111,0);
 		border: 1px solid rgb(255,255,255);
 		color: rgb(255,255,255);
-		}
+	}
 	#getintouch fieldset span.input textarea {
 		background-color: #fff;
 		border: 1px solid #e0e0d7;
@@ -87,10 +87,10 @@
 		-webkit-border-radius: 3px;
 		-khtml-border-radius: 3px;
 		border-radius: 3px;
-		}
+	}
 	#getintouch fieldset span.input textarea:focus {
 		background-color: rgb(255,255,255);
-		}
+	}
 	#getintouch fieldset span.submit {
 		background-color: #e0e0d7;
 		border: none;
@@ -108,10 +108,10 @@
 		-webkit-border-radius: 4px;
 		-khtml-border-radius: 4px;
 		border-radius: 4px;
-		}
+	}
 	#getintouch fieldset span.submit:hover {
 		background-color: rgb(255,255,255);
-		}
+	}
 	#getintouch fieldset span.submit input,
 	#getintouch fieldset span.submit input[type="submit"] {
 		background-color: rgb(231,111,0);
@@ -126,13 +126,13 @@
 		-webkit-border-radius: 2px;
 		-khtml-border-radius: 2px;
 		border-radius: 2px;
-		}
+	}
 	#getintouch fieldset span.submit input[type="submit"].disabled {
 		background-color: rgb(200,200,200);
-		}
+	}
 	#getintouch fieldset p.smallabel {
 		font-size: 1.1em;
 		margin: 0 0 4px 0;
 		padding: 0 5px;
 		top: 0;
-		}
+	}

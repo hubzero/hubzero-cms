@@ -14,24 +14,24 @@
 */
 
 	.twitterfeed {
-		}
+	}
 	.twitterfeed li { 
 		padding: 10px; 
 		background-color: #efefef; 
-		border-radius: 5px; 
 		-webkit-border-radius: 5px; 
 		-moz-border-radius: 5px; 
-		}
+		border-radius: 5px; 
+	}
 	.twitterfeed li .title { 
 		display: block; 
-		}
+	}
 	.twitterfeed li .date { 
 		font-size: 10px; 
 		color: #bababa;
-		}
+	}
 	.twitterfeed li a.viewstatus { 
 		float: right; 
-		}
+	}
 	.twitterbird {
 		float: right;
-		}
+	}

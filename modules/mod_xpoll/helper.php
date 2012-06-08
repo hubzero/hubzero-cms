@@ -30,43 +30,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modXPoll'
- * 
- * Long description (if any) ...
+ * Module class for displaying the latest poll
  */
 class modXPoll
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -75,53 +70,63 @@ class modXPoll
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
+	}
+
+	/**
+	 * Display module contents
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'poll.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'data.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'date.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'menu.php' );
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'poll.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'data.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'date.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'menu.php');
 
 		$database =& JFactory::getDBO();
 
-		$params =& $this->params;
-		$this->formid = $params->get( 'formid' );
+		$this->formid = $this->params->get('formid');
 
 		// Load the latest poll
-		$poll = new XPollPoll( $database );
+		$poll = new XPollPoll($database);
 		$poll->getLatestPoll();
 
 		// Did we get a result from the database?
-		if ($poll->id && $poll->title) {
+		if ($poll->id && $poll->title) 
+		{
 			$this->poll = $poll;
 
-			$xpdata = new XPollData( $database );
-			$this->options = $xpdata->getPollOptions( $poll->id, false );
+			$xpdata = new XPollData($database);
+			$this->options = $xpdata->getPollOptions($poll->id, false);
 
 			// Push the module CSS to the template
 			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStyleSheet('mod_xpoll');
+			Hubzero_Document::addModuleStyleSheet($this->module->module);
+
+			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
 	}
 }

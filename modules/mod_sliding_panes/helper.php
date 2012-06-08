@@ -29,43 +29,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'modSlidingPanes'
- * 
- * Long description (if any) ...
+ * Module class for displaying sliding panes of content
  */
-class modSlidingPanes
+class modSlidingPanes extends JObject
 {
-
 	/**
-	 * Description for 'attributes'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $attributes = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
 	 * @return     void
 	 */
-	public function __construct( $params )
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
+		$this->module = $module;
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -74,43 +69,44 @@ class modSlidingPanes
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) {
+		if (isset($this->attributes[$property])) 
+		{
 			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for '_getList'
+	 * Check if a property is set
 	 * 
-	 * Long description (if any) ...
+	 * @param      string $property Property to check
+	 * @return     boolean True if set
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_attributes[$property]);
+	}
+
+	/**
+	 * Get a list of content articles
 	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     array
 	 */
 	private function _getList()
 	{
-		//global $mainframe;
-
 		$db =& JFactory::getDBO();
-		//$user =& JFactory::getUser();
-		//$aid = $user->get('aid', 0);
 
 		$catid 	 = (int) $this->params->get('catid', 0);
 		$random  = $this->params->get('random', 0);
 		$orderby = $random ? 'RAND()' : 'a.ordering';
 		$limit   = (int) $this->params->get('limitslides', 0);
-		$limitby = $limit ? ' LIMIT 0,'.$limit : '';
-
-		//$contentConfig =& JComponentHelper::getParams( 'com_content' );
-		//$noauth	= !$contentConfig->get('shownoauth');
+		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
 		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
@@ -128,13 +124,13 @@ class modSlidingPanes
 				' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
 				' WHERE a.state = 1 ' .
 				//($noauth ? ' AND a.access <= ' .(int) $aid. ' AND cc.access <= ' .(int) $aid. ' AND s.access <= ' .(int) $aid : '').
-				' AND (a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' ) ' .
-				' AND (a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )' .
+				' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
+				' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
 				' AND cc.id = '. (int) $catid .
 				' AND cc.section = s.id' .
 				' AND cc.published = 1' .
 				' AND s.published = 1' .
-				' ORDER BY '.$orderby.' '.$limitby;
+				' ORDER BY ' . $orderby . ' ' . $limitby;
 		}
 		else 
 		{
@@ -142,22 +138,18 @@ class modSlidingPanes
 			$query = 'SELECT a.* FROM #__content AS a' .
 				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
 				' WHERE a.state = 1 ' .
-				' AND (a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' ) ' .
-				' AND (a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )' .
-				' AND cc.id = '. (int) $catid .
+				' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
+				' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
+				' AND cc.id = ' . (int) $catid .
 				' AND cc.published = 1' .
-				' ORDER BY '.$orderby.' '.$limitby;
+				' ORDER BY ' . $orderby . ' ' . $limitby;
 		}
 		$db->setQuery($query);
-		$rows = $db->loadObjectList();
-
-		return $rows;
+		return $db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Display module contents
 	 * 
 	 * @return     void
 	 */
@@ -166,19 +158,15 @@ class modSlidingPanes
 		$jdocument =& JFactory::getDocument();
 
 		$type = $this->params->get('animation', 'slide');
-		
+
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
-		if (!$this->multiple_instances) {
+		if (!$this->multiple_instances) 
+		{
 			// Push some CSS to the template
 			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStylesheet('mod_sliding_panes', $type.'.css');
-			Hubzero_Document::addModuleScript('mod_sliding_panes');
-
-			// Push some javascript to the template
-			/*if (is_file(JPATH_ROOT.'/modules/mod_sliding_panes/mod_sliding_panes.js')) {
-				$jdocument->addScript('/modules/mod_sliding_panes/mod_sliding_panes.js');
-			}*/
+			Hubzero_Document::addModuleStylesheet($this->module->module, $type . '.css');
+			Hubzero_Document::addModuleScript($this->module->module);
 		}
 
 		$id = rand();
@@ -189,21 +177,23 @@ class modSlidingPanes
 
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$js = "jQuery(document).ready(function($){ $('#".$this->container." .panes-content').jSlidingPanes(); });";
+			$js = "jQuery(document).ready(function($){ $('#" . $this->container . " .panes-content').jSlidingPanes(); });";
 		}
 		else 
 		{
 			$js = "window.addEvent('domready', function(){
-				if ($('".$this->container."')) {
-					myTabs".$id." = new ModSlidingPanes('".$this->container."', ".$this->params->get('rotate', 1).");
+				if ($('" . $this->container . "')) {
+					myTabs" . $id . " = new ModSlidingPanes('" . $this->container . "', " . $this->params->get('rotate', 1) . ");
 
 					// this sets it up to work even if it's width isn't a set amount of pixels
-					window.addEvent('resize', myTabs".$id.".recalcWidths.bind(myTabs".$id."));
+					window.addEvent('resize', myTabs" . $id . ".recalcWidths.bind(myTabs" . $id . "));
 				}
 			});";
 		}
 
 		$jdocument->addScriptDeclaration($js);
 	}
+
+	require(JModuleHelper::getLayoutPath($this->module->module));
 }
 
