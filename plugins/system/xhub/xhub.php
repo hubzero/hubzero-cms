@@ -409,16 +409,26 @@ class XRouter extends JRouter
 
 				if($lenght > 0 && strpos($route.'/', $item->route.'/') === 0 && $item->type != 'menulink')
 				{
-					// HUBzero Extension to pass local URLs through menu unchanged
+					// HUBzero Extension to handle external url menu items differently
 
-					if ($item->type == 'url') { // Pass local URLs through, but record Itemid
-						if (strpos("://",$item->route[0]) === false) {
+					if ($item->type == 'url') { 
+	
+						// If menu route exactly matches url route, 
+						// redirect (if necessary) to menu link 
+						if (trim($item->route,"/") == trim($route,"/")) {
+							if (trim($item->route,"/") != trim($item->link,"/")) {
+								$app->redirect($item->link);
+							}
+						}
+
+						// Pass local URLs through, but record Itemid
+						if (strpos($item->route, "://") === false) {
 							$vars['Itemid'] = $item->id;
 							break;
 						}
 					}
 
-					// End HUBzero Extension to pass local URLs through menu unchanged
+					// End HUBzero Extension to handle external url menu items differently
 
 					$route   = substr($route, $lenght);
 
