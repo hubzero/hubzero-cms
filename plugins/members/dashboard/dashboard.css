@@ -64,6 +64,16 @@
 	#droppables tbody tr td#sortcol_2 {
 		padding: 0 0 0 5px;
 	}
+	/* Firefox doesn't seem to support overflow scroll on fieldsets? */
+	@-moz-document url-prefix() {
+	html.firefox #modules-dock fieldset {
+		overflow: hidden;
+	}
+	html.firefox #modules-dock fieldset ul {
+		max-height: 250px;
+		overflow-y: scroll;
+	}
+	}
 /* Dragables */
 	.com_members div.draggable {
 		position: relative;
