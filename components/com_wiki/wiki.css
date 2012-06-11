@@ -168,7 +168,6 @@
 		position:relative;
 		color:#FFF;
 		text-align:center;
-		text-indent:20px;
 		-webkit-border-radius:3px;
 		-moz-border-radius:3px;
 		border-radius:3px;
@@ -182,17 +181,6 @@
 		background-image: -o-linear-gradient(top, #222, #444);
 		background-image: -ms-linear-gradient(top, #222, #444);
 		background-image: linear-gradient(top, #222, #444);
-	}	
-	#file-uploader .qq-upload-button:before {
-		content: "\f01b";
-		position: absolute;
-		left: 30px;
-		top: 10px;
-		width: 24px;
-		height: 24px;
-		font-size: 20px;
-		font-family: 'Fontcons';
-		color: #FFF;
 	}
 	#file-uploader .qq-upload-drop-area {
 		padding: 0.7em;
@@ -240,6 +228,10 @@
 	}
 	#attachments tbody td {
 		padding: 0.2em 0.4em;
+	}
+	#attachments .delete {
+		padding-left: 0;
+		background: transparent;
 	}
 /* Comments */
 	.com_wiki .below .subject {

@@ -76,19 +76,21 @@ HUB.Wiki = {
 			HUB.Wiki.updateFileList();
 		}
 
-		var uploader = new qq.FileUploader({
-			element: $('#file-uploader')[0],
-			action: $('#file-uploader').attr('data-action'),
-			multiple: true,
-			debug: false,
-			onSubmit: function(id, file) {
-				//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
-			},
-			onComplete: function(id, file, response) {
-				$('.qq-upload-list').empty();
-				HUB.Wiki.updateFileList();
-			}
-		});
+		if (typeof(qq) != 'undefined') {
+			var uploader = new qq.FileUploader({
+				element: $('#file-uploader')[0],
+				action: $('#file-uploader').attr('data-action'),
+				multiple: true,
+				debug: false,
+				onSubmit: function(id, file) {
+					//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
+				},
+				onComplete: function(id, file, response) {
+					$('.qq-upload-list').empty();
+					HUB.Wiki.updateFileList();
+				}
+			});
+		}
 	},
 
 	updateFileList: function() {
