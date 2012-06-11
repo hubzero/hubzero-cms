@@ -716,6 +716,8 @@ class ContributeController extends Hubzero_Controller
 		$row->modified = date( 'Y-m-d H:i:s' );
 		$row->modified_by = $this->juser->get('id');
 
+		$row->introtext = (trim($row->fulltext)) ? Hubzero_View_Helper_Html::shortenText(trim($row->fulltext), 500, 0) : trim($row->fulltext);
+
 		// Get custom areas, add wrapper tags, and compile into fulltext
 		$type = new ResourcesType( $this->database );
 		$type->load($row->type);
@@ -789,7 +791,7 @@ class ContributeController extends Hubzero_Controller
 			$row->fulltext   = $this->_txtClean($row->fulltext);
 			//$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
 			$row->footertext = $this->_txtClean($row->footertext);
-			$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
+			//$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
 		}
 
 		// Check content
