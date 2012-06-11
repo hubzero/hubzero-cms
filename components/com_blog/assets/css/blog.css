@@ -22,6 +22,14 @@
 		border: 10px solid #f4f4f4;
 		background: #f4f4f4;
 	}
+	.com_blog .container h3 {
+		font-size: 115%;
+		background: #f8f8f8 url("/components/com_kb/assets/img/light-stripes.png");
+		border: 2px solid #e9e9e9;
+		border-bottom: 1px solid #e9e9e9;
+		padding: 0.5em 0.7em;
+		margin: 0;
+	}
 	.com_blog .data-entry {
 		border-color: #eef0e7;
 		background-color: #eef0e7;
@@ -118,9 +126,11 @@
 /* Entries listing */
 	ol.blog-entries {
 		list-style-type: none !important;
-		margin-left: 0;
-		padding-left: 0;
-		border-bottom: 1px solid #efefef;
+		border: 2px solid #e9e9e9;
+		border-top: none;
+		background-color: #fff;
+		margin: 0;
+		padding: 0;
 	}
 	ol.blog-entries h4 {
 		margin: 1em 0;
@@ -129,7 +139,7 @@
 	ol.blog-entries > li {
 		clear: left;
 		margin: 0 !important;
-		padding: 0 0 2em 125px;
+		padding: 0 1em;
 		border-top: 1px solid #efefef;
 		position: relative;
 	}
@@ -140,22 +150,26 @@
 	    margin-left: 20px;
 	}
 	ol.blog-entries dl.entry-meta {
-	    float: left;
-	    margin: 1em 20px 2em -125px !important;
-	    padding: 0;
-	    width: 105px;
-	    color: #999;
-	    font-size: 11px;
-	    text-align: right;
+		margin: 0.5em 0;
+		padding: 0;
+		color: #999;
+		font-size: 11px;
 	}
 	dl.entry-meta dt {
-		font-size: 12px;
-		margin: 0;
-		padding: 0;
+		display: none;
 	}
 	dl.entry-meta dd {
-		margin: 0;
+		margin: 0 1.5em 0 0;
 		padding: 0;
+		display: inline;
+	}
+	dl.entry-meta dd a {
+		color: #666;
+		border-bottom: 1px dotted #666;
+	}
+	dl.entry-meta dd a:hover {
+		color: #111;
+		border-bottom: 1px solid #111;
 	}
 	ol.blog-entries .name {
 		color: #777;
@@ -227,20 +241,20 @@
 	}
 	/* Member photo */
 	ol.comments p.comment-member-photo {
-	    float: left;
-	    margin: 0;
-	    padding: 0 20px 0 0;
-	    width: 105px;
+		float: left;
+		margin: 0;
+		padding: 0 20px 0 0;
+		width: 50px;
 		height: 50px;
 		overflow: hidden;
-	    color: #777;
-	    font-size: 11px;
-	    text-align: right;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
 		background: url("/components/com_blog/assets/img/comment-arrow.gif") right 15px no-repeat;
 	}
 	/* Content */
 	ol.comments .comment-content {
-		margin: 0 0 1em 125px;
+		margin: 0 0 1em 70px;
 		background-color: #fafafa;
 		border: 10px solid #f2f2f2;
 		padding: 0 1em;
@@ -295,20 +309,26 @@
 		padding: 0;
 	}
 	div.entry dl.entry-meta {
-	    float: left;
-		margin: 1em 20px 2em 0px;
-	    padding: 0;
-	    width: 105px;
-	    color: #999;
-	    font-size: 11px;
-	    text-align: right;
+		margin: 1em 0;
+		padding: 0.618em 1em;
+		background: #eee;
+		color: #999;
+		font-size: 11px;
+	}
+	div.entry dl.entry-meta dt {
+		display: none;
+	}
+	div.entry dl.entry-meta dd {
+		margin: 0 1.5em 0 0;
+		padding: 0;
+		display: inline;
 	}
 	div.entry .entry-content {
-		margin: 0 0 0 125px;
+		margin: 0;
 	}
-	.main .subject .entry h3 {
+	/*.main .subject .entry h3 {
 		display: block;
-	}
+	}*/
 	.entry .tags {
 		margin: 2em 0 0 0;
 		padding: 0 0 0 20px;
@@ -357,6 +377,47 @@
 		font-style: italic;
 		color: #aaa;
 	}
+	.com_blog .entry-author {
+		margin: 1em 0 2em 0;
+		background: #EEE;
+		font-size: 1em;
+	}
+	.entry-author h3 {
+		margin: 0;
+		padding: 1em;
+		border-bottom: 1px solid #fff;
+	}
+	.entry-author h4 {
+		font-size: 1.2em;
+		padding: 0;
+		margin: 0;
+	}
+	.entry-author h4 a {
+		color: #333;
+		border: none;
+	}
+	.entry-author-photo {
+		margin: 1em;
+		padding: 0;
+		float: left;
+		border: 5px solid #fff;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		width: 50px;
+		height: 50px;
+		overflow: hidden;
+	}
+	.entry-author-photo img {
+		margin: 0;
+		padding: 0;
+	}
+	.entry-author-content {
+		padding: 1em;
+		margin: 0 0 0 75px;
+		font-size: 1em;
+		color: #666;
+	}
 /* Sections */
 	#content-header-extra .archive {
 		margin: 0;
@@ -365,9 +426,9 @@
 		background-color: transparent;
 		background-position: 0 0;
 	}
-	.section h3 {
+	/*.section h3 {
 		display: none;
-	}
+	}*/
 	.section .section h3 {
 		display: block;
 		position: relative;
@@ -410,10 +471,11 @@
 		padding: 1em 0 0 0;
 	}
 	.com_blog .below h3 {
+		display: block;
 		font-weight: normal;
 		text-transform: uppercase;
 		letter-spacing: 1px;
-		margin: 2em 0 0 125px;
+		margin: 2em 0 0 0;
 		padding: 0.5em 0;
 	}
 	.com_blog .below form h3 {
@@ -440,7 +502,7 @@
 		float: left;
 		margin: 0;
 		padding: 0 20px 0 0;
-		width: 105px;
+		width: 50px;
 		height: 50px;
 		overflow: hidden;
 		color: #777;

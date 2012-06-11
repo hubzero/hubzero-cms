@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Archive of entries">
+	<layout title="Archive (default view)">
 		<message>
-			<![CDATA[Archive of entries]]>
+			<![CDATA[Archive (default view)]]>
 		</message>
 	</layout>
 	<state>
-		<name>Archive of entries</name>
-		<description>Archive of entries</description>
+		<name>Archive (default view)</name>
+		<description>Archive (default view)</description>
 		<params>
 		</params>
 	</state>

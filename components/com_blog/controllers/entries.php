@@ -201,10 +201,10 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->view->rows = $be->getRecords($this->view->filters);
 
 		// Highlight search results
-		if ($this->view->filters['search']) 
+		/*if ($this->view->filters['search']) 
 		{
 			$this->view->rows = $this->_highlight($this->view->filters['search'], $this->view->rows);
-		}
+		}*/
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
