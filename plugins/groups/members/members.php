@@ -277,7 +277,7 @@ class plgGroupsMembers extends JPlugin
 					$view->groupusers = array_values(array_filter($view->groupusers, "isSystemUser"));
 				}
 
-				$view->limit = JRequest::getInt('limit', $this->params->get('display_limit'));
+				$view->limit = JRequest::getInt('limit', $this->params->get('display_limit', 50));
 				$view->start = JRequest::getInt('limitstart', 0);
 				$view->start = ($view->limit == 0) ? 0 : $view->start;
 				$view->no_html = JRequest::getInt('no_html', 0);
