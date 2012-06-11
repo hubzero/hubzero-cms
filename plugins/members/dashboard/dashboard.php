@@ -203,23 +203,31 @@ class plgMembersDashboard extends JPlugin
 		}
 
 		// Splits string into columns
-		$mymods = explode(';', $myhub->prefs);
+		/*$mymods = explode(';', $myhub->prefs);
 		// Save array of columns for later work
 		$usermods = $mymods;
 
 		// Splits each column into modules, listed by the order they should appear
 		for ($i = 0; $i < count($mymods); $i++)
 		{
-			if (!trim($mymods[$i])) {
+			if (!trim($mymods[$i])) 
+			{
 				continue;
 			}
 			$mymods[$i] = explode(',', $mymods[$i]);
+		}*/
+		$mymods = $this->_processList($myhub->prefs);
+
+		$usermods = array();
+		foreach ($mymods as $ky => $arr)
+		{
+			$usermods[$ky] = implode(',', $arr);
 		}
 
 		// Build a list of all modules being used by this user 
 		// so we know what to exclude from the list of modules they can still add
 		$allmods = array();
-		
+
 		for ($i = 0; $i < count($mymods); $i++)
 		{
 			if (is_array($mymods[$i]))
@@ -246,6 +254,38 @@ class plgMembersDashboard extends JPlugin
 		{
 			$this->view->columns[$c] = $this->output_modules($mymods[$c], $this->member->get('uidNumber'), $this->_act);
 		}
+	}
+
+	/**
+	 * Convert a preference string into a multi-column list of IDs
+	 * 
+	 * @param      string $strng PReference string
+	 * @return     array
+	 */
+	protected function _processList($strng)
+	{
+		// Splits string into columns
+		if (strstr($strng, ';'))
+		{
+			$cols = explode(';', $strng);
+		}
+		else 
+		{
+			$cols = array($strng);
+		}
+
+		// Splits each column into modules, listed by the order they should appear
+		for ($i = 0; $i < count($cols); $i++)
+		{
+			if (!trim($cols[$i])) 
+			{
+				continue;
+			}
+			$cols[$i] = explode(',', $cols[$i]);
+			$cols[$i] = array_map('intval', $cols[$i]);
+		}
+
+		return $cols;
 	}
 
 	/**
@@ -340,7 +380,8 @@ class plgMembersDashboard extends JPlugin
 		$ids = explode(';',$id);
 		for ($i = 0; $i < count($ids); $i++)
 		{
-			if (!trim($ids[$i])) {
+			if (!trim($ids[$i])) 
+			{
 				continue;
 			}
 			$ids[$i] = explode(',', $ids[$i]);
@@ -546,7 +587,7 @@ class plgMembersDashboard extends JPlugin
 		{
 			$this->view->member = $this->member;
 		}
-		
+
 		$this->view->admin = $app->isAdmin();
 	}
 
@@ -571,6 +612,27 @@ class plgMembersDashboard extends JPlugin
 	 */
 	protected function addmodule()
 	{
+		$myhub = new MyhubPrefs($this->database);
+		$myhub->load($this->member->get('uidNumber'));
+
+		$mid = JRequest::getInt('mid', 0);
+
+		$mods = array();
+		$cols = $this->_processList($myhub->prefs);
+		foreach ($cols as $col)
+		{
+			foreach ($col as $arr)
+			{
+				$mods[] = $arr;
+			}
+		}
+
+		if (in_array($mid, $mods))
+		{
+			// This module already exists
+			return 'ERROR';
+		}
+
 		$this->getmodule(true, 'customize');
 	}
 

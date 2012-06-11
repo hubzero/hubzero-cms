@@ -24,6 +24,8 @@ HUB.Myhub = {
 	
 	jQuery : jq,
 	
+	ready: true,
+	
 	settings : {
 		columns : '#droppables .sortable',
 		moduleSelector: '.draggable',
@@ -188,13 +190,20 @@ HUB.Myhub = {
 			}
 		}
 
-		$.get(myhub.baseURL+'&action=addmodule&id='+$('#uid').val()+'&mid='+modId, {}, function(data) {
-			var wrap = $('<div class="draggable" id="mod_'+modId+'"></div>').append(data);
-			$('#sortcol_' + col).append(wrap);
-			myhub.addModuleControls();
-			$(settings.columns).sortable('enable');
-			myhub.saveOrder('rebuild');
-		});
+		if (HUB.Myhub.ready) {
+			HUB.Myhub.ready = false;
+			$.get(myhub.baseURL+'&action=addmodule&id='+$('#uid').val()+'&mid='+modId, {}, function(data) {
+				if (data == 'ERROR') {
+					return;
+				}
+				var wrap = $('<div class="draggable" id="mod_'+modId+'"></div>').append(data);
+				$('#sortcol_' + col).append(wrap);
+				myhub.addModuleControls();
+				$(settings.columns).sortable('enable');
+				myhub.saveOrder('rebuild');
+				HUB.Myhub.ready = true;
+			});
+		}
 	},
 
 	saveToggle: function (modId) {
