@@ -200,10 +200,9 @@ HUB.TagBrowser = {
 		$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {}, function(data) {
 			$('#level-1').html(data);
 			HUB.TagBrowser.sc = setTimeout("HUB.TagBrowser.setScroll()", 500);
-		});
-
-		$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {}, function(data) {
-			$('#level-2').html(data);
+			$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {}, function(data) {
+				$('#level-2').html(data);
+			});
 		});
 	}
 }
