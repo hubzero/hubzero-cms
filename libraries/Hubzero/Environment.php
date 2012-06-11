@@ -32,13 +32,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'Hubzero_Environment'
- * 
- * Long description (if any) ...
+ * Helper class for getting a user's IP, etc.
  */
 class Hubzero_Environment
 {
-
 	/**
 	 * Checks the $_SERVER super-global for a given index
 	 * 
@@ -67,35 +64,43 @@ class Hubzero_Environment
 	}
 
 	/**
-	 * Short description for 'ipAddress'
+	 * Get a user's IP address
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
 	public function ipAddress()
 	{
-		if (Hubzero_Environment::server('REMOTE_ADDR') AND Hubzero_Environment::server('HTTP_CLIENT_IP')) {
-			$ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
-		} elseif (Hubzero_Environment::server('REMOTE_ADDR')) {
-			$ip_address = JRequest::getVar('REMOTE_ADDR','','server');
-		} elseif (Hubzero_Environment::server('HTTP_CLIENT_IP')) {
-			$ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
-		} elseif (Hubzero_Environment::server('HTTP_X_FORWARDED_FOR')) {
-			$ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR','','server');
+		if (Hubzero_Environment::server('REMOTE_ADDR') && Hubzero_Environment::server('HTTP_CLIENT_IP')) 
+		{
+			$ip_address = JRequest::getVar('HTTP_CLIENT_IP', '', 'server');
+		} 
+		elseif (Hubzero_Environment::server('REMOTE_ADDR')) 
+		{
+			$ip_address = JRequest::getVar('REMOTE_ADDR', '', 'server');
+		} 
+		elseif (Hubzero_Environment::server('HTTP_CLIENT_IP')) 
+		{
+			$ip_address = JRequest::getVar('HTTP_CLIENT_IP', '', 'server');
+		} 
+		elseif (Hubzero_Environment::server('HTTP_X_FORWARDED_FOR')) 
+		{
+			$ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR', '', 'server');
 		}
 
-		if ($ip_address === FALSE) {
+		if ($ip_address === FALSE) 
+		{
 			$ip_address = '0.0.0.0';
 			return $ip_address;
 		}
 
-		if (strstr($ip_address, ',')) {
+		if (strstr($ip_address, ',')) 
+		{
 			$x = explode(',', $ip_address);
 			$ip_address = end($x);
 		}
 
-		if (!Hubzero_Environment::validIp($ip_address)) {
+		if (!Hubzero_Environment::validIp($ip_address)) 
+		{
 			$ip_address = '0.0.0.0';
 		}
 

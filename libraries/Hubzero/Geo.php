@@ -29,29 +29,24 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Geo'
- * 
- * Long description (if any) ...
+ * Helper class for getting geolocation information
  */
 class Hubzero_Geo
 {
-	// Get a list of existing application sessions.
-
 	/**
-	 * Short description for 'getGODBO'
+	 * Get the geo database
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     mixed JDatabase object upon success, null if error
 	 */
 	public function getGODBO()
 	{
 		static $instance;
 
-		if (!is_object($instance)) {
+		if (!is_object($instance)) 
+		{
 			$xhub =& Hubzero_Factory::getHub();
 
 			$options = array();
@@ -64,12 +59,15 @@ class Hubzero_Geo
 			$options['prefix']   = $xhub->getCfg('ipDBPrefix');
 
 			if (!($options['user'] = $xhub->getCfg('ipDBUsername')))
+			{
 				return null;
+			}
 
 			$instance =& JDatabase::getInstance($options);
 		}
 
-		if (JError::isError($instance)) {
+		if (JError::isError($instance)) 
+		{
 			return null;
 		}
 
@@ -77,28 +75,33 @@ class Hubzero_Geo
 	}
 
 	/**
-	 * Short description for 'getcountries'
+	 * Get a list of countries and their coutnry code
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function getcountries()
 	{
 		$countries = array();
 
 		if (!($gdb = Hubzero_Geo::getGODBO()))
+		{
 			return $countries;
+		}
 
-		$sql = "SELECT code, name FROM countries ORDER BY name";
-		$gdb->setQuery( $sql );
+		$gdb->setQuery("SELECT code, name FROM countries ORDER BY name");
 		$results = $gdb->loadObjectList();
 
-		if ($results) {
+		if ($results) 
+		{
 			foreach ($results as $row)
 			{
-				if ($row->code <> "-" && $row->name <> "-") {
-					array_push($countries, array('code' => strtolower($row->code), 'id' => $row->code, 'name' => $row->name));
+				if ($row->code != '-' && $row->name != '-') 
+				{
+					array_push($countries, array(
+						'code' => strtolower($row->code), 
+						'id'   => $row->code, 
+						'name' => $row->name
+					));
 				}
 			}
 		}
@@ -107,93 +110,87 @@ class Hubzero_Geo
 	}
 
 	/**
-	 * Short description for 'getCountriesByContinent'
-	 * 
-	 * Long description (if any) ...
+	 * Get a list of countries by continent
 	 * 
 	 * @param      string $continent Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function getCountriesByContinent($continent='')
 	{
-		if (!$continent) {
+		if (!$continent || !($gdb = Hubzero_Geo::getGODBO())) 
+		{
 			return array();
 		}
 
-		$gdb =& Hubzero_Geo::getGODBO();
-
-		$sql = 'SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) = "'.strtolower($continent).'"';
-		$gdb->setQuery( $sql );
+		$gdb->setQuery("SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) ='" . strtolower($continent) . "'");
 		return $gdb->loadResultArray();
 	}
 
 	/**
-	 * Short description for 'getcountry'
+	 * Get country based on short code
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $code Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $code Short code (ex: us, de, fr, jp)
+	 * @return     string 
 	 */
 	public function getcountry($code='')
 	{
 		$name = '';
-		if ($code) {
-			$gdb =& Hubzero_Geo::getGODBO();
+		if ($code) 
+		{
+			if (!($gdb = Hubzero_Geo::getGODBO()))
+			{
+				return $name;
+			}
 
-			$sql = "SELECT name FROM countries WHERE code = '" . $code . "'";
-			$gdb->setQuery( $sql );
+			$gdb->setQuery("SELECT name FROM countries WHERE code = '" . $code . "'");
 			$name = stripslashes($gdb->loadResult());
 		}
 		return $name;
 	}
 
 	/**
-	 * Short description for 'ipcountry'
+	 * Get the country based on IP address
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $ip Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $ip IP address to look up
+	 * @return     string 
 	 */
 	public function ipcountry($ip='')
 	{
 		$country = '';
-		if ($ip) {
-			$gdb =& Hubzero_Geo::getGODBO();
-
-			if (empty($gdb)) {
-				return '';
+		if ($ip) 
+		{
+			if (!($gdb = Hubzero_Geo::getGODBO()))
+			{
+				return $country;
 			}
 
 			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry WHERE ipFROM <= INET_ATON('" . $ip . "') AND ipTO >= INET_ATON('" . $ip . "')";
-			$gdb->setQuery( $sql );
+			$gdb->setQuery($sql);
 			$country = stripslashes($gdb->loadResult());
 		}
 		return $country;
 	}
 
 	/**
-	 * Short description for 'is_d1nation'
+	 * Is a country an D1 nation?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $country Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $country Country to check
+	 * @return     boolean True if D1
 	 */
 	public function is_d1nation($country)
 	{
 		$d1nation = false;
-		if ($country) {
-			$gdb =& Hubzero_Geo::getGODBO();
+		if ($country) 
+		{
+			if (!($gdb = Hubzero_Geo::getGODBO()))
+			{
+				return $d1nation;
+			}
 
-			if (empty($gdb))
-				return false;
-
-			$sql = "SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER('" . $country . "') AND countrygroup = 'D1'";
-			$gdb->setQuery( $sql );
+			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER('" . $country . "') AND countrygroup = 'D1'");
 			$c = $gdb->loadResult();
-			if ($c > 0) {
+			if ($c > 0) 
+			{
 				$d1nation = true;
 			}
 		}
@@ -201,26 +198,25 @@ class Hubzero_Geo
 	}
 
 	/**
-	 * Short description for 'is_e1nation'
+	 * Is a country an E1 nation?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $country Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $country Country to check
+	 * @return     boolean True if E1
 	 */
 	public function is_e1nation($country)
 	{
 		$e1nation = false;
-		if ($country) {
-			$gdb =& Hubzero_Geo::getGODBO();
+		if ($country) 
+		{
+			if (!($gdb = Hubzero_Geo::getGODBO()))
+			{
+				return $e1nation;
+			}
 
-			if (empty($gdb))
-				return false;
-
-			$sql = "SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER('" . $country . "') AND countrygroup = 'E1'";
-			$gdb->setQuery( $sql );
+			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER('" . $country . "') AND countrygroup = 'E1'");
 			$c = $gdb->loadResult();
-			if ($c > 0) {
+			if ($c > 0) 
+			{
 				$e1nation = true;
 			}
 		}
@@ -228,24 +224,27 @@ class Hubzero_Geo
 	}
 
 	/**
-	 * Short description for 'is_iplocation'
+	 * Check if an IP is in a certain location
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $ip Parameter description (if any) ...
-	 * @param      string $location Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $ip       IP address to check
+	 * @param      string $location Location to check in
+	 * @return     boolean True if IP is in the location
 	 */
 	public function is_iplocation($ip, $location)
 	{
 		$iplocation = false;
-		if ($ip && $location) {
-			$gdb =& Hubzero_Geo::getGODBO();
+		if ($ip && $location) 
+		{
+			if (!($gdb = Hubzero_Geo::getGODBO()))
+			{
+				return $iplocation;
+			}
 
 			$sql = "SELECT COUNT(*) FROM iplocation WHERE ipfrom <= INET_ATON('" . $ip . "') AND ipto >= INET_ATON('" . $ip . "') AND LOWER(location) = LOWER('" . $location . "')";
-			$gdb->setQuery( $sql );
+			$gdb->setQuery($sql);
 			$c = $gdb->loadResult();
-			if ($c > 0) {
+			if ($c > 0) 
+			{
 				$iplocation = true;
 			}
 		}

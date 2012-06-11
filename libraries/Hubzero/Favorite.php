@@ -29,169 +29,157 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Favorite'
- * 
- * Long description (if any) ...
+ * Table class for storing favorited items
  */
 class Hubzero_Favorite extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id    = NULL;  // int(11) Primary key
+	var $id    = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid   = NULL;  // int(11)
+	var $uid   = NULL;
 
 	/**
-	 * Description for 'oid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $oid   = NULL;  // int(11)
+	var $oid   = NULL;
 
 	/**
-	 * Description for 'tbl'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $tbl   = NULL;  // int(11)
+	var $tbl   = NULL;
 
 	/**
-	 * Description for 'faved'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $faved = NULL;  // datetime(0000-00-00 00:00:00)
-
-	//-----------
+	var $faved = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xfavorites', 'id', $db );
+		parent::__construct('#__xfavorites', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'loadFavorite'
+	 * Load a single record and bind it to $this object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      unknown $tbl Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @param      integer $oid Object ID
+	 * @param      string  $tbl Object type
+	 * @return     boolean True if record found
 	 */
-	public function loadFavorite( $uid=NULL, $oid=NULL, $tbl=NULL )
+	public function loadFavorite($uid=NULL, $oid=NULL, $tbl=NULL)
 	{
-		if ($uid === NULL) {
-			return false;
-		}
-		if ($oid === NULL) {
-			return false;
-		}
-		if ($tbl === NULL) {
+		if ($uid === NULL || $oid === NULL || $tbl === NULL) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE uid='$uid' AND oid='$oid' AND tbl='$tbl' LIMIT 1" );
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE uid='$uid' AND oid='$oid' AND tbl='$tbl' LIMIT 1");
 		$this->id = $this->_db->loadResult();
 
-		return $this->load( $this->id );
+		return $this->load($this->id);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->uid ) == '') {
-			$this->setError( JText::_('Missing user ID') );
+		$this->uid = intval($this->uid);
+		if (!$this->uid) 
+		{
+			$this->setError(JText::_('Missing user ID'));
 			return false;
 		}
-		if (trim( $this->oid ) == '') {
-			$this->setError( JText::_('Missing object ID') );
+		$this->oid = intval($this->oid);
+		if (!$this->oid) 
+		{
+			$this->setError(JText::_('Missing object ID'));
 			return false;
 		}
-		if (trim( $this->tbl ) == '') {
-			$this->setError( JText::_('Missing object table') );
+		$this->tbl = trim($this->tbl);
+		if ($this->tbl == '') 
+		{
+			$this->setError(JText::_('Missing object table'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build an SQL statement based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters)
 	{
 		$filter = '';
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
 			$query = "SELECT t.*";
-		} else {
+		} 
+		else 
+		{
 			$query = "SELECT count(*)";
 		}
 		$query .= " FROM $this->_tbl AS t";
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " ORDER BY t.faved ASC LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " ORDER BY t.faved ASC LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
 
-		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		$this->_db->setQuery($this->buildQuery($filters));
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		$this->_db->setQuery($this->buildQuery($filters));
 		return $this->_db->loadObjectList();
 	}
 }

@@ -29,10 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Bank'.DS.'Account.php');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Bank'.DS.'Config.php');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Bank'.DS.'MarketHistory.php');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Bank'.DS.'Teller.php');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Bank'.DS.'Transaction.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Bank' . DS . 'Account.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Bank' . DS . 'Config.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Bank' . DS . 'MarketHistory.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Bank' . DS . 'Teller.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Bank' . DS . 'Transaction.php');

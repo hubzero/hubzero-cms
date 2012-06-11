@@ -104,7 +104,8 @@ class Hubzero_Browser
 	 */
 	public function __construct($sagent=null)
 	{
-		if (!$sagent) {
+		if (!$sagent) 
+		{
 			$sagent = JRequest::getVar('HTTP_USER_AGENT','','server');
 			$this->_user_agent = $sagent;
 		}
@@ -225,7 +226,8 @@ class Hubzero_Browser
 						{
 							$os_version = 'ce';
 						}
-						break;
+					break;
+
 					case 'nt':
 						$os = 'Windows NT';
 						if (stristr($sagent, 'nt 5.2')) // windows server 2003
@@ -254,7 +256,8 @@ class Hubzero_Browser
 						} else {
 							$os_version = '';
 						}
-						break;
+					break;
+
 					case 'mac':
 						$os = 'Mac OS';
 						if (stristr($sagent, 'os x'))
@@ -269,9 +272,10 @@ class Hubzero_Browser
 						{
 							$os_version = 10;
 						}
-						break;
+					break;
+
 					default:
-						break;
+					break;
 				}
 				break;
 			}

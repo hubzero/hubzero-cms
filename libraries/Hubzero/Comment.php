@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * @package		HUBzero                                  CMS
@@ -106,9 +106,9 @@ class Hubzero_Comment extends JTable
 	 * @param object $db JDatabase object
 	 * @return void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__comments', 'id', $db );
+		parent::__construct('#__comments', 'id', $db);
 	}
 
 	/**
@@ -118,8 +118,10 @@ class Hubzero_Comment extends JTable
 	 */
 	public function check()
 	{
-		if (trim( $this->comment ) == '' or trim( $this->comment ) == JText::_('Enter your comments...')) {
-			$this->setError( JText::_('Please provide a comment') );
+		$this->comment = trim($this->comment);
+		if ($this->commen == '' || $this->comment == JText::_('Enter your comments...')) 
+		{
+			$this->setError(JText::_('Please provide a comment'));
 			return false;
 		}
 		return true;
@@ -133,17 +135,17 @@ class Hubzero_Comment extends JTable
 	 * @param int Optional flag for returning the number of abuse reports in the result set
 	 * @return array of objects with properties matching the fields SELECTed
 	 */
-	public function getResults( $filters=array(), $get_profile_name = 0, $get_abuse_reports = 0 )
+	public function getResults($filters=array(), $get_profile_name = 0, $get_abuse_reports = 0)
 	{
 		$query  = "SELECT c.* ";
 		$query .= $get_profile_name ? ", xp.name AS authorname " : "";
 		$query .= $get_abuse_reports ? ", (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=c.id AND RR.state=0 AND RR.category='wishcomment') AS reports " : "";
 		$query .= "FROM $this->_tbl AS c ";
 		$query .= $get_profile_name ? "JOIN #__xprofiles AS xp ON xp.uidNumber=c.added_by " : "";
-		$query .= "WHERE c.referenceid=".$filters['id']." AND c.category='".$filters['category']."' AND c.state!=2 ";
+		$query .= "WHERE c.referenceid=" . $filters['id'] . " AND c.category='" . $filters['category'] . "' AND c.state!=2 ";
 		$query .= "ORDER BY c.added ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }
