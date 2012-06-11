@@ -265,6 +265,12 @@ class plgMembersDashboard extends JPlugin
 			return $html;
 		}
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		// Loop through the modules and output
 		foreach ($mods as $mod)
 		{
@@ -280,12 +286,12 @@ class plgMembersDashboard extends JPlugin
 				// if the user has special prefs, load them. Otherwise, load default prefs
 				if ($module->myparams != '') 
 				{
-					$params = new JParameter($module->myparams);
+					$params = new $paramsClass($module->myparams);
 					$module->params .= $module->myparams;
 				} 
 				else 
 				{
-					$params = new JParameter($module->params);
+					$params = new $paramsClass($module->params);
 				}
 
 				if ($params) 
@@ -502,15 +508,21 @@ class plgMembersDashboard extends JPlugin
 		$myparams = new MyhubParams($this->database);
 		$module = $myparams->loadModule($uid, $mid);
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		// If the user has special prefs, load them.
 		// Otherwise, load default prefs
 		if ($module->myparams != '') 
 		{
-			$params = new JParameter($module->myparams);
+			$params = new $paramsClass($module->myparams);
 		} 
 		else 
 		{
-			$params = new JParameter($module->params);
+			$params = new $paramsClass($module->params);
 		}
 
 		if ($params) 
