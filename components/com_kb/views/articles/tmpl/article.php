@@ -161,7 +161,7 @@ if ($this->config->get('allow_comments')) {
 	$month = intval(substr($d, 5, 2));
 	$day   = intval(substr($d, 8, 2));
 
-	switch ($this->params->get('comments_close', 'never'))
+	switch ($this->config->get('comments_close', 'never'))
 	{
 		case 'day':
 			$dt = mktime(0, 0, 0, $month, ($day+1), $year);
