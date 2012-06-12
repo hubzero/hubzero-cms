@@ -192,8 +192,7 @@ class modSlidingPanes extends JObject
 		}
 
 		$jdocument->addScriptDeclaration($js);
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-
-	require(JModuleHelper::getLayoutPath($this->module->module));
 }
-
