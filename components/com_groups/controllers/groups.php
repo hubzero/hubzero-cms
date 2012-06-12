@@ -1,4 +1,4 @@
-<?php
+e<?php
 /**
  * HUBzero CMS
  *
@@ -3074,11 +3074,11 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Check authorization
-		$authorized = $this->_authorize();
-		if ($authorized != 'admin' && $authorized != 'manager') {
-			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
-			return;
-		}
+		//$authorized = $this->_authorize();
+		//if ($authorized != 'admin' && $authorized != 'manager') {
+		//	JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
+		//	return;
+		//}
 
 		// Load the component config
 		$config = $this->config;
