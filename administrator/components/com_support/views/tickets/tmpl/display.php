@@ -118,7 +118,20 @@ JHTML::_('behavior.tooltip');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8">
+					<?php echo $this->pageNav->getListFooter(); ?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8">
+					<ul id="legend">
+						<li><span class="critical">&nbsp;</span> <?php echo JText::_('critical'); ?></li>
+						<li><span class="major">&nbsp;</span> <?php echo JText::_('major'); ?></li>
+						<li><span class="normal">&nbsp;</span> <?php echo JText::_('normal'); ?></li>
+						<li><span class="minor">&nbsp;</span> <?php echo JText::_('minor'); ?></li>
+						<li><span class="trivial">&nbsp;</span> <?php echo JText::_('trivial'); ?></li>
+					</ul>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>

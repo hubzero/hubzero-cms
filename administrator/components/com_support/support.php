@@ -34,17 +34,27 @@ defined('_JEXEC') or die( 'Restricted access' );
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Ensure user has access to this function
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
-
-// Authorization check
-$user =& JFactory::getUser();
-if (!$user->authorize($option, 'manage'))
+if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
 // Include scripts
@@ -62,6 +72,47 @@ ximport('Hubzero_Filter');
 ximport('Hubzero_User_Profile');
 
 $controllerName = JRequest::getCmd('controller', 'tickets');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'tickets';
+}
+
+JSubMenuHelper::addEntry(
+	JText::_('Tickets'),
+	'index.php?option=com_support&controller=tickets',
+	$controllerName == 'tickets'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Messages'),
+	'index.php?option=com_support&controller=messages',
+	$controllerName == 'messages'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Resolutions'),
+	'index.php?option=com_support&controller=resolutions',
+	$controllerName == 'resolutions'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Abuse Reports'),
+	'index.php?option=com_support&controller=abusereports',
+	$controllerName == 'abusereports'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Tag/Groups'),
+	'index.php?option=com_support&controller=taggroups',
+	$controllerName == 'taggroups'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Stats'),
+	'index.php?option=com_support&controller=stats',
+	$controllerName == 'stats'
+);
+JSubMenuHelper::addEntry(
+	JText::_('ACL'),
+	'index.php?option=com_support&controller=acl',
+	$controllerName == 'acl'
+);
+
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'SupportController' . ucfirst($controllerName);
 

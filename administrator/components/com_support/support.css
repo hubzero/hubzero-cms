@@ -135,6 +135,9 @@
 	#tktlist tbody tr.trivial a:hover {
 		color: #00f;
 	}
+	#tktlist tfoot tr:last-child td {
+		border-top: 1px solid #E9E9E9;
+	}
 	
 	#legend {
 		list-style: none;
