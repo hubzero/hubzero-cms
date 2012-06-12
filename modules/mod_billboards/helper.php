@@ -189,6 +189,7 @@ class modBillboards
 					pager: ' . $js_pager . ',
 					speed: ' . $speed . ',
 					random: ' . $random . ',
+					cleartypeNoBg: true,
 					pause: true
 				});
 			});';
