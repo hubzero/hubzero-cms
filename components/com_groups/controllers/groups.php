@@ -1,4 +1,4 @@
-e<?php
+<?php
 /**
  * HUBzero CMS
  *
@@ -81,7 +81,7 @@ class GroupsController extends Hubzero_Controller
 			$file = strstr($uri, "File:");
 			$this->_task = 'download';
 		}
-
+        
 		// Execute the task
 		switch ($this->_task)
 		{
