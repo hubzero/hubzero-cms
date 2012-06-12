@@ -91,7 +91,6 @@ class UsageControllerResults extends Hubzero_Controller
 			return;
 		}
 
-		$this->view->task = $this->_task;
 		$this->view->no_html = JRequest::getVar('no_html', 0);
 
 		// Get plugins
@@ -100,6 +99,16 @@ class UsageControllerResults extends Hubzero_Controller
 
 		// Trigger the functions that return the areas we'll be using
 		$this->view->cats = $dispatcher->trigger('onUsageAreas', array());
+
+		if (is_array($this->view->cats))
+		{
+			if (!$this->_task || $this->_task == 'default')
+			{
+				$this->_task = (isset($this->view->cats[0]) && is_array($this->view->cats[0])) ? key($this->view->cats[0]) : 'overview';
+			}
+		}
+		$this->_task = ($this->_task) ? $this->_task : 'overview';
+		$this->view->task = $this->_task;
 
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
