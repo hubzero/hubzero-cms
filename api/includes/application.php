@@ -245,8 +245,8 @@ class Hubzero_API extends JApplication
 	 */
 	function initialise()
 	{
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Response.php";
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Request.php";
+		require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Response.php";
+		require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Request.php";
 
 		$this->unregister_long_arrays();
 		$this->unregister_globals();
@@ -273,7 +273,7 @@ class Hubzero_API extends JApplication
 	 */
 	function route()
 	{
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Controller.php";
+		require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Controller.php";
 
 		if (!$this->_enabled)
 		{
@@ -329,12 +329,17 @@ class Hubzero_API extends JApplication
 		{
 			return;
 		}
-
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User' . DS . "Profile.php";
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User' . DS . "Helper.php";
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Oauth' . DS . "Provider.php";
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User.php';
-		require JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Xml.php';
+        
+		ximport('Hubzero_User_Profile');
+		ximport('Hubzero_User_Helper');
+		ximport('Hubzero_Oauth_Provider');
+		ximport('Hubzero_User');
+		ximport('Hubzero_Xml');
+		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User' . DS . "Profile.php";
+		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User' . DS . "Helper.php";
+		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Oauth' . DS . "Provider.php";
+		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User.php';
+		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Xml.php';
 
 		$oauthp = new Hubzero_Oauth_Provider();
 		$oauthp->setResponse($this->_response);
@@ -587,7 +592,26 @@ class Hubzero_API extends JApplication
 	 */
 	function &getRouter($name = null, $options = array())
 	{
-		die('getRouter() invalid in API application context');
+		//die('getRouter() invalid in API application context');
+		/*
+		if(!isset($name)) {
+			$name = $this->_name;
+		}
+
+		jimport( 'joomla.application.router' );
+		$router =& JRouter::getInstance($name, $options);
+		if (JError::isError($router)) {
+			$null = null;
+			return $null;
+		}
+		return $router;
+		*/
+		
+		
+		$config =& JFactory::getConfig();
+		$options['mode'] = $config->getValue('config.sef');
+		$router =& parent::getRouter('api', $options);
+		return $router;
 	}
 
 	/**
@@ -615,7 +639,10 @@ class Hubzero_API extends JApplication
 	 */
 	function &getMenu($name = null, $options = array())
 	{
-		die('getMenu() invalid in API application context');
+		//die('getMenu() invalid in API application context');
+		$options = array();
+		$menu =& parent::getMenu('site', $options);
+		return $menu;
 	}
 
 	/**
