@@ -1867,11 +1867,11 @@ class ToolsController extends Hubzero_Controller
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = urldecode(JRequest::getVar( 'listdir', '' ));
-		if (!$listdir) {
+		/*if (!$listdir) {
 			$this->setError( JText::_('Directory not found.') );
 			$this->listfiles();
 			return;
-		}
+		}*/
 
 		// Build the path
 		$path = $this->buildUploadPath( $listdir);

@@ -285,7 +285,7 @@ HUB.Mw = {
 		HUB.Mw.clearTroubleshoot();
 		HUB.Mw.cancelConnecting();
 		
-		if ($('#theapp')) {
+		if ($('#theapp').length > 0) {
 			if (w < 200) { w = 200; }
 			if (h < 200) { h = 200; }
 			
@@ -333,7 +333,7 @@ HUB.Mw = {
 	initialize: function() {
 		var $ = this.jQuery;
 		
-		if (!$('#theapp') || !$('#app-wrap')) {
+		if ($('#theapp').length <= 0 || $('#app-wrap').length <= 0) {
 			return;
 		}
 		
