@@ -75,7 +75,7 @@ $lid = $this->group->get('gidNumber');
 	<p class="manage"><a href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></p>
 </div>
 
-
+<div class="main section">
 	<?php
 		foreach($this->notifications as $notification) {
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
@@ -125,5 +125,7 @@ $lid = $this->group->get('gidNumber');
 		<input type="hidden" name="page[new]" value="<?php echo $new; ?>" />
 		<input type="hidden" name="sub_task" value="save_page" />
 	</fieldset>
+	<div class="clear"></div>
 	<p class="submit"><input type="submit" name="page_submit" value="<?php echo $form_btn; ?>" /></p>
 </form>
+</div>

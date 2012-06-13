@@ -68,7 +68,7 @@ $levels = array(
 		</div>
 		
 		<fieldset id="top_box">
-			<h3>Group Logo</h3>
+			<legend>Group Logo</legend>
 			<p>Upload your logo using the file upload browser to the right first then refresh your browser and select it in the drop down below.</p>
 			<label>
 				<select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>">
@@ -96,14 +96,14 @@ $levels = array(
 		</fieldset>
 		
 		<fieldset>
-			<h3>Group Main Content</h3>
+			<legend>Group Main Content</legend>
 			<p>This is the content that appears on the main (overview tab) for each group. You can choose to use the default which is your group description and a selection of group members or you can also place custom content using wiki-syntax</p>
 			<div class="preview">
-				<img  src="/components/com_groups/assets/img/group_overview_preview.jpg" alt="Group Overview Content" />
+				<img src="/components/com_groups/assets/img/group_overview_preview.jpg" alt="Group Overview Content" />
 			</div>
 			
-			<br />
-			<h4>Pick Overview Content Type</h4>
+			<fieldset>
+			<legend>Pick Overview Content Type</legend>
 			<p class="side-by-side<?php if($this->group->get('overview_type') == 0) { echo ' checked'; } ?>">
 				<label>
 					<input type="radio" name="group[overview_type]" id="group_overview_type_default" value="0" <?php if($this->group->get('overview_type') == 0) { echo 'checked'; } ?>> Default Content
@@ -115,10 +115,10 @@ $levels = array(
 				</label>
 			</p>
 			<br class="clear" />
+			</fieldset>
 
-			<div id="overview_content">
-				<br />
-				<h4>Enter Custom Overview Content</h4>
+			<fieldset id="overview_content">
+				<legend>Enter Custom Overview Content</legend>
 				<label for="group[overview_content]">
 					<?php
 						ximport('Hubzero_Wiki_Editor');
@@ -127,15 +127,15 @@ $levels = array(
 					?>
 					<span class="hint"><a class="popup" href="/topics/Help:WikiFormatting">Wiki formatting</a> is allowed.</span>
 				</label>
-			</div>	
+			</fieldset>
 		</fieldset>
 		
 		<fieldset>
-			<h3>Group Access</h3>
+			<legend>Group Access</legend>
 			<p>Below is a list of all tabs available to groups on this HUB. You can set access permissions on a per group basis by changing the value in the dropdown corresponding with each link. If you have not previously set permissions but notice that some are pre-selected, that is because those are the defaults set until a group manager overrides them.</p>
-			<br>
-			<h4>Set Permissions for each Tab</h4>
-			<div class="preview">
+
+			<fieldset class="preview">
+				<legend>Set Permissions for each Tab</legend>
 				<ul id="access">
 					<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
 					<?php for($i=0; $i<count($this->hub_group_plugins); $i++) { ?>
@@ -155,13 +155,13 @@ $levels = array(
 						<?php } ?>
 					<?php } ?>
 				</ul>
-			</div>
+			</fieldset>
 		</fieldset>
 		
 		<fieldset id="bottom_box">
 			<h3>Group Custom Content</h3>
 			<p>Group Custom Content includes all the group pages and any group modules at also appear on those pages. Clicking the link below will take you to a different interface where you can add, edit, reorder, turn on/off any group page or module.</p>
-			<a class="leave_area" rel="You are about to leave the group customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages'); ?>">Manage Group Pages</a>
+			<p><a class="leave_area" rel="You are about to leave the group customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages'); ?>">Manage Group Pages</a></p>
 		</fieldset>
 		
 		<p class="submit"><input type="submit" name="group[submit]" value="Save Group Customization" /></p>

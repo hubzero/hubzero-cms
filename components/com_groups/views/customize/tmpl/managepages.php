@@ -49,11 +49,11 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
-
+<div class="main section">
 <form name="groupPages" action="index.php" method="POST" id="hubForm">
 	<div class="explaination">
 		<p>This is where you can manage any of your groups custom content pages. There is no limit to the number of custom pages and pages can contain text, images, links to files. The pages support wiki syntax that is used throughout the hub.</p>
-		<p class="add"><a href="<?php echo JRoute::_($base_link.'&sub_task=add_page'); ?>">Add a New Group Page</a></p>
+		<p><a class="add" href="<?php echo JRoute::_($base_link.'&sub_task=add_page'); ?>">Add a New Group Page</a></p>
 	</div>
 	<fieldset>
 		<h3>Manage Pages</h3>
@@ -146,7 +146,7 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 	
 	<div class="explaination">
 		<p>This is where you can manage any of your groups modules. These are the content blocks that appear on the right of the group overview page as well as any custom group pages which can be managed above. Some modules are pre built modules that do specific things like pull in a Twitter feed. You can also create custom modules which work similar to group pages in that there is no limit to the number of modules and they also support wiki syntax. If you would like to see a new group module type, we would love to hear your idea, <a href="/feedback">so send us feedback</a>.</p>
-		<p class="add"><a href="<?php echo JRoute::_($base_link.'&sub_task=add_module'); ?>">Add a New Group Module</a></p>
+		<p><a class="add" href="<?php echo JRoute::_($base_link.'&sub_task=add_module'); ?>">Add a New Group Module</a></p>
 	</div>
 	<fieldset>
 		<h3>Manage Modules</h3>
@@ -241,5 +241,6 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 			</table>
 		</fieldset>
 	</fieldset>
-		
+	<div class="clear"></div>
 </form>
+</div>
