@@ -112,7 +112,7 @@ for ($i=0; $i<count($folders); $i++)
 {
 	$folder_name = key($folders);
 	$dir = DS.$folders[$folder_name];
-	$num_files = count(JFolder::files($dir, '.', false, true, array()));
+	$num_files = count(JFolder::files($this->path . $dir, '.', false, true, array()));
 
 	$d = ($this->listdir) ? $this->listdir.$dir : $dir;
 	if ($this->listdir == '/') {
