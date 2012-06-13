@@ -34,17 +34,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_View_Helper_Html');
 $app =& JFactory::getApplication();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title><?php echo JText::_('COM_TOOLS_FILE_MANAGER'); ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-<?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'tools.css')) { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS; ?>tools.css" />
-<?php } else { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'components'.DS.$this->option.DS; ?>tools.css" />
-<?php } ?>
 		<script type="text/javascript">
 			function updateDir()
 			{
@@ -79,15 +68,14 @@ $app =& JFactory::getApplication();
 				return false;
 			}
 		</script>
-	</head>
-	<body id="small-page">
+	<div id="small-page">
 		<div class="databrowser">
 			<form action="index.php" method="post" id="filelist">
 
 				<ul id="filepath">
 					<li class="home">
 <?php if (count($this->dirtree) > 0) { ?>
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1'); ?>"><?php echo JText::_('Home'); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&tmpl=component'); ?>"><?php echo JText::_('Home'); ?></a>
 <?php } else { ?>
 						<span><?php echo JText::_('Home'); ?></span>
 <?php } ?>
@@ -105,7 +93,7 @@ $app =& JFactory::getApplication();
 					<li class="arrow">&raquo;</li>
 					<li class="folder">
 <?php 							if ($i != count($this->dirtree)) { ?>
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1&listdir='.$path); ?>"><?php echo ucfirst($branch); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&tmpl=component&listdir='.$path); ?>"><?php echo ucfirst($branch); ?></a>
 <?php 							} else { ?>
 						<span><?php echo ucfirst($branch); ?></span>
 <?php 							} ?>
@@ -124,7 +112,7 @@ for ($i=0; $i<count($folders); $i++)
 {
 	$folder_name = key($folders);
 	$dir = DS.$folders[$folder_name];
-	$num_files = count(JFolder::files($dir.DS.$folder_name, '.', false, true, array()));
+	$num_files = count(JFolder::files($dir, '.', false, true, array()));
 
 	$d = ($this->listdir) ? $this->listdir.$dir : $dir;
 	if ($this->listdir == '/') {
@@ -133,10 +121,10 @@ for ($i=0; $i<count($folders); $i++)
 ?>
 						<tr>
 							<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1&amp;listdir='.$d); ?>"><img src="/components/<?php echo $this->option; ?>/images/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" /></td>
-							<td width="100%"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1&listdir='.urlencode($d)); ?>"><?php echo $dir; ?></a></td>
+							<td width="100%"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&tmpl=component&listdir='.urlencode($d)); ?>"><?php echo $dir; ?></a></td>
 							<td class="file-size"><?php echo Hubzero_View_Helper_Html::formatSize(Hubzero_View_Helper_Html::filesize_r( $this->path.DS.$folders[$folder_name] )); ?></td>
 <?php if ($dir != '/data' && $dir != '/sessions') { ?>
-							<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $num_files; ?>);" title="<?php echo JText::_('Delete'); ?>"><img src="components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('Delete'); ?>" /></a></td>
+							<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $num_files; ?>);" title="<?php echo JText::_('Delete'); ?>"><img src="components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('Delete'); ?>" /></a></td>
 <?php } else { ?>
 							<td> </td>
 <?php } ?>
@@ -164,7 +152,7 @@ for ($i=0; $i<count($docs); $i++)
 							<td><img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" /></td>
 							<td width="100%"><?php echo $docs[$doc_name]; ?></td>
 							<td class="file-size"><?php echo Hubzero_View_Helper_Html::formatSize(filesize( $this->path.DS.$docs[$doc_name] )); ?></td>
-							<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
+							<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
 						</tr>
 <?php
 	next($docs);
@@ -188,7 +176,7 @@ for ($i=0; $i<count($images); $i++)
 							<td><img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" /></td>
 							<td width="100%"><?php echo $images[$image_name]; ?></td>
 							<td class="file-size"><?php echo Hubzero_View_Helper_Html::formatSize(filesize( $this->path.DS.$images[$image_name] )); ?></td>
-							<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
+							<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
 						</tr>
 <?php
 	next($images);
@@ -201,5 +189,4 @@ for ($i=0; $i<count($images); $i++)
 			<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 		</div>
-	</body>
-</html>
+	</div>
