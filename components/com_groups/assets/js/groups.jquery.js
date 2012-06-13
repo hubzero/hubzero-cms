@@ -275,11 +275,11 @@ HUB.Groups = {
 				margin = (max-element.scrollTop());
 			}
 			
-			$(".explaination").css({
+			assetBox.css({
 				'position':'fixed',
-				'right':'80px',
 				'z-index':'999',
-				'width':'24%',
+				'width': assetBox.width() + 'px',
+				'padding': '0px',
 				'margin-top': margin
 			});
 		}
