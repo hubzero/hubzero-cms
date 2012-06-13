@@ -303,6 +303,10 @@ class Hubzero_View_Helper_Html
 	 */
 	public static function timeAgo($timestamp)
 	{
+		if (strstr($timestamp, '-'))
+		{
+			$timestamp = Hubzero_View_Helper_Html::mkt($timestamp);
+		}
 		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
 
 		$parts = explode(' ', $text);
