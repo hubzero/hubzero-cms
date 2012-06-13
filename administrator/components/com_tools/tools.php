@@ -78,10 +78,6 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'hosttypes'
 );
 
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'members';
-}
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ToolsController' . ucfirst($controllerName);
 
