@@ -148,15 +148,15 @@ else
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="<?php echo ($this->acl->check('delete', 'tickets')) ? '8' : '7'; ?>"><?php 
+						<td colspan="<?php echo ($this->acl->check('delete', 'tickets')) ? '8' : '7'; ?>"><?php
 						$html = $this->pageNav->getListFooter();
 						$html = str_replace('support/?', 'support/tickets/?',$html);
 						$html = str_replace('/?/tickets&amp;', '/?',$html);
 						if ($this->filters['_show'] && !strstr($html, 'show=')) {
-							$html = str_replace('/?', '/?show='.$this->filters['_show'].'&amp;',$html);
+							$html = str_replace('?', '?show='.$this->filters['_show'].'&amp;',$html);
 						}
 						if ($this->filters['_find'] && !strstr($html, 'find=')) {
-							$html = str_replace('/?', '/?find='.$this->filters['_find'].'&amp;',$html);
+							$html = str_replace('?', '?find='.$this->filters['_find'].'&amp;',$html);
 						}
 						echo $html;
 						?></td>
@@ -167,7 +167,7 @@ else
 $k = 0;
 $sc = new SupportComment($this->database);
 $st = new SupportTags($this->database);
-
+ximport('Hubzero_View_Helper_Html');
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
@@ -232,8 +232,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">
 						<td><?php echo $row->id; ?></td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo htmlentities($row->report); ?>">
-								<?php echo stripslashes($row->summary); ?>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo JText::_('View this ticket'); ?>">
+								<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->summary), 300, 0); ?>
 							</a>
 							<span class="reporter">
 								by <?php echo $this->escape($row->name); echo ($row->login) ? ' (<a href="' . $lnk . '">' . $this->escape($row->login) . '</a>)' : ''; if ($tags) { ?>, 
