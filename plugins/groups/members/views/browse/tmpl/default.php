@@ -413,6 +413,7 @@ if($this->role_filter) {
 			$pn = $this->pageNav->getListFooter();
 			$pn = str_replace('groups/?','groups/'.$this->group->cn.'/members?',$pn);
 			$pn = str_replace('?start=','?limit=' . $this->limit . '&limitstart=',$pn);
+			$pn = str_replace('&amp;start=','&amp;limit=' . $this->limit . '&limitstart=',$pn);
 			echo $pn;
 			?>
 		</div><!-- / .subject -->
