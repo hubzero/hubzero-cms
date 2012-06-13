@@ -402,13 +402,14 @@ class WhatsnewControllerResults extends Hubzero_Controller
 				$title = html_entity_decode($title);
 
 				// URL link to article
+				$row->href = DS . ltrim($row->href, DS);
 				if (strstr($row->href, 'view')) 
 				{
 					// tests to see if itemid has already been included - this occurs for typed content items
 					if (!strstr($row->href, 'Itemid')) 
 					{
 						$temp = explode('id=', $row->href);
-						$row->href = $row->href . '&Itemid=' . $app->getItemid($temp[1]);
+						$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
 					}
 				}
 				$link = JRoute::_($row->href);
