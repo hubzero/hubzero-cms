@@ -332,12 +332,12 @@ if ($this->row->id) {
 										}
 									]
 								}';*/
-								$logs = Zend_Json::decode($comment->changelog);
+								$logs = json_decode($comment->changelog, true);
 								foreach ($logs as $type => $log)
 								{
-									echo '<ul class="' . $type . '">';
-									if (is_array($log))
+									if (is_array($log) && count($log) > 0)
 									{
+										echo '<ul class="' . $type . '">';
 										foreach ($log as $items)
 										{
 											if ($type == 'changes')
@@ -349,8 +349,8 @@ if ($this->row->id) {
 												echo '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
 											}
 										}
+										echo '</ul>';
 									}
-									echo '</ul>';
 								}
 							}
 						?>

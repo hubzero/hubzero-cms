@@ -152,6 +152,7 @@ else
 						$html = $this->pageNav->getListFooter();
 						$html = str_replace('support/?', 'support/tickets/?',$html);
 						$html = str_replace('/?/tickets&amp;', '/?',$html);
+						$html = str_replace('ticketslimit', 'tickets?limit',$html);
 						if ($this->filters['_show'] && !strstr($html, 'show=')) {
 							$html = str_replace('?', '?show='.$this->filters['_show'].'&amp;',$html);
 						}
@@ -232,7 +233,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">
 						<td><?php echo $row->id; ?></td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo JText::_('View this ticket'); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id='.$row->id.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->report)), 500, 0, 1); ?>">
 								<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->summary), 300, 0); ?>
 							</a>
 							<span class="reporter">

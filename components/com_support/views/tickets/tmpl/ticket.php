@@ -223,7 +223,35 @@ $fstring = urlencode(trim($this->filters['_find']));
 				}
 ?>
 					<div class="changelog">
-						<?php echo $comment->changelog; ?>
+						<?php 
+						if (substr($comment->changelog, 0, 1) == '{')
+						{
+							$logs = json_decode($comment->changelog, true);
+							foreach ($logs as $type => $log)
+							{
+								if (is_array($log) && count($log) > 0)
+								{
+									echo '<ul class="' . $type . '">';
+									foreach ($log as $items)
+									{
+										if ($type == 'changes')
+										{
+											echo '<li>' . JText::_('ticket_changed_from', $items['field'], $items['before'], $items['after']) . '</li>';
+										}
+										else 
+										{
+											echo '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
+										}
+									}
+									echo '</ul>';
+								}
+							}
+						}
+						else
+						{
+							echo $comment->changelog;
+						}
+						?>
 					</div><!-- / .changelog -->
 				</div><!-- / .comment-content -->
 			</li>
