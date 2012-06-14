@@ -119,7 +119,7 @@ class Hubzero_Comment extends JTable
 	public function check()
 	{
 		$this->comment = trim($this->comment);
-		if ($this->commen == '' || $this->comment == JText::_('Enter your comments...')) 
+		if ($this->comment == '' || $this->comment == JText::_('Enter your comments...')) 
 		{
 			$this->setError(JText::_('Please provide a comment'));
 			return false;
