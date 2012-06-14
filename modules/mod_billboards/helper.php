@@ -190,6 +190,7 @@ class modBillboards
 					speed: ' . $speed . ',
 					random: ' . $random . ',
 					cleartypeNoBg: true,
+					slideResize: 0,
 					pause: true
 				});
 			});';
