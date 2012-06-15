@@ -143,21 +143,26 @@ class XRouter extends JRouter
 				if ($uri->getPath() != 'legal/terms')
 				{
 					$vars = array();
-					/*
-					$vars['option'] = 'com_register';
 
-					if ($juser->get('tmp_user'))
-						$vars['task'] = 'create';
-					else
-						$vars['task'] = 'update';
+					if ($juser->get('tmp_user')) // joomla tmp users
+					{
+						$vars['option'] = 'com_register';
+						$vars['task']   = 'create';
+						$vars['act']    = '';
+					}
+					else if (substr($juser->get('email'), -8) == '@invalid') // force auth_link users to registration update page
+					{
+						$vars['option'] = 'com_register';
+						$vars['task']   = 'update';
+						$vars['act']    = '';
+					}
+					else // otherwise, send to profile to fill in missing info
+					{
+						$vars['option'] = 'com_members';
+						$vars['id']     = $juser->get("id");
+						$vars['active'] = 'profile';
+					}
 
-					$vars['act'] = '';
-                    */
-
-					$vars['option'] = 'com_members';
-					$vars['id'] = $juser->get("id");
-					$vars['active'] = 'profile';
-					
 					$this->setVars($vars);
 					JRequest::set($vars, 'get', true );  // overwrite existing
 					return $vars;
