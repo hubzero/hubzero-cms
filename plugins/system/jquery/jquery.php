@@ -98,13 +98,13 @@ class plgSystemJquery extends JPlugin
 				$document->addScript($this->params->get('jqueryuicdnpath'));
 			}
 
-			/*if ($value = $this->params->get('jqueryuicss')) 
+			if ($value = $this->params->get('jqueryuicss')) 
 			{
 				if ($value == 1) 
 				{
 					$document->addStyleSheet($this->params->get('jqueryuicsspath'));
 				}
-			}*/
+			}
 		}
 		if ($value = $this->params->get('jqueryfb')) 
 		{
@@ -119,13 +119,13 @@ class plgSystemJquery extends JPlugin
 				$document->addScript($this->params->get('jqueryfbcdnpath'));
 			}
 
-			/*if ($value = $this->params->get('jqueryfbcss')) 
+			if ($value = $this->params->get('jqueryfbcss')) 
 			{
 				if ($value == 1) 
 				{
 					$document->addStyleSheet($this->params->get('jqueryfbcsspath'));
 				}
-			}*/
+			}
 		}
 		if ($value = $this->params->get('jquerytools')) 
 		{
