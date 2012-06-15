@@ -203,6 +203,7 @@ HUB.Mw = {
 			HUB.Mw.addParam(newapp, "Offer relogin", "Yes");
 			HUB.Mw.addParam(newapp, "DisableSSL", "No");
 			HUB.Mw.addParam(newapp, "Show controls", "No");
+			HUB.Mw.addParam(newapp, "ShowLocalCursor", "Yes");
 
 			if (jar.indexOf('Signed') >= 0) {
 				HUB.Mw.addParam(newapp, "signed", "yes");
@@ -225,6 +226,7 @@ HUB.Mw = {
 				'<param name="Offer relogin" value="Yes"> ' +
 				'<param name="DisableSSL" value="No"> ' +
 				'<param name="Show controls" value="No"> ' +
+				'<param name="ShowLocalCursor" value="Yes"> ' +
 				'<param name="ENCODING" value="<?php echo $this->output->encoding; ?>"> ' +
 				'<param name="signed" value="'+signed+'"> ' +
 				'<param name="forceProxy" value="'+signed+'"> ' +

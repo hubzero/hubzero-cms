@@ -518,7 +518,7 @@ class Hubzero_Tool_Version
         'vnc_command'=>'vncCommand', 'mw'=>'defaultMiddleware', 'priority'=>'priority',
         'alias'=>'alias', 'hostreq'=>'vncHostReq', 'member'=>'member',
         'owner'=>'owner', 'state'=>'state', 'codeaccess'=>'sourcePublic', 'toolaccess'=>'public',
-        'wikiaccess'=>'projectPublic', 'author'=>'author', 'middleware'=>'middleware');
+        'wikiaccess'=>'projectPublic', 'author'=>'author', 'middleware'=>'middleware', 'params'=>'params');
 
 	/**
 	 * Description for '_updatedkeys'

@@ -129,6 +129,7 @@ if (!$this->app['sess']) {
 				<param name="Offer relogin" value="Yes">
 				<param name="DisableSSL" value="No">
 				<param name="Show controls" value="No">
+				<param name="ShowLocalCursor" value="Yes">
 				<param name="ENCODING" value="<?php echo $this->output->encoding; ?>">
 				<p class="error">
 					In order to view an application, you must have Java installed and enabled. (<a href="/kb/misc/java">How do I do this?</a>)
