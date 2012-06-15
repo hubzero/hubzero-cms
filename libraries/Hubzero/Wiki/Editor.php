@@ -142,7 +142,7 @@ class Hubzero_Wiki_Editor extends JObservable
 	{
 		// Return a standard textarea if no editor is found
 		if (!$this->_name) {
-			return '<textarea id="'.$name.'" name="'.$id.'" cols="'.$col.'" rows="'.$row.'" class="'.$cls.'">'.$html.'</textarea>'."\n";
+			return '<textarea name="'.$name.'" id="'.$id.'" cols="'.$col.'" rows="'.$row.'" class="'.$cls.'">'.$html.'</textarea>'."\n";
 		}
 
 		$this->_loadEditor($params);
