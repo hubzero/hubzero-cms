@@ -118,6 +118,7 @@ class MembersControllerGroups extends Hubzero_Controller
 		$filters['search'] = '';
 		$filters['limit']  = 'all';
 		$filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
+		$filters['sortby'] = 'title';
 
 		// Get a list of all groups
 		$this->view->rows = Hubzero_Group::find($filters);
@@ -125,7 +126,10 @@ class MembersControllerGroups extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
