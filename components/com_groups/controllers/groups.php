@@ -1401,7 +1401,7 @@ class GroupsController extends Hubzero_Controller
 		if (!$this->_validCn($g_cn)) {
 			$this->setNotification( JText::_('GROUPS_ERROR_INVALID_ID'), 'error' );
 		}
-		if ($isNew && Hubzero_Group::exists($g_cn)) {
+		if ($isNew && Hubzero_Group::exists($g_cn,true)) {
 			$this->setNotification( JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST'), 'error' );
 		}
 

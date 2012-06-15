@@ -2173,12 +2173,22 @@ class Hubzero_Group
 	 * @param      unknown $group Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	static public function exists($group)
+	static public function exists($group, $check_system = false)
 	{
 		$db = &JFactory::getDBO();
 
 		if (empty($group))
 			return false;
+
+		if ($check_system) {
+			if (is_numeric($group) && posix_getgrid($group)) {
+				return true;
+			}
+				
+			if (!is_numeric($group) && posix_getgrnam($group)) {
+				return true;
+			}
+		}
 
 		if (is_numeric($group))
 			$query = 'SELECT gidNumber FROM #__xgroups WHERE gidNumber=' . $db->Quote($group);
