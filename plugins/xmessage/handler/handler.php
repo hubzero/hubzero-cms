@@ -200,17 +200,19 @@ class plgXMessageHandler extends JPlugin
 		}
 
 		// Does this message require an action?
+		/* [zooley] Phasing out action items
 		$action = new Hubzero_Message_Action($database);
 		if ($element || $description) 
 		{
 			$action->class   = $component;
 			$action->element = $element;
 			$action->description = $description;
+			
 			if (!$action->store()) 
 			{
 				return $action->getError();
 			}
-		}
+		}*/
 
 		// Do we have any recipients?
 		if (count($to) > 0) 
@@ -248,7 +250,7 @@ class plgXMessageHandler extends JPlugin
 				$recipient->mid      = $xmessage->id;
 				$recipient->created  = date('Y-m-d H:i:s', time());
 				$recipient->expires  = date('Y-m-d H:i:s', time() + (168 * 24 * 60 * 60));
-				$recipient->actionid = (is_object($action)) ? $action->id : 0;
+				$recipient->actionid = 0; //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
 				// Get the user's methods for being notified
 				$notify = new Hubzero_Message_Notify($database);
@@ -333,7 +335,7 @@ class plgXMessageHandler extends JPlugin
 						// Use the Default in the case the user has no methods
 						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $d))) 
 						{
-							$this->setError(JText::sprintf('Unable to message user %s with method %s', $uid, $action));
+							$this->setError(JText::sprintf('Unable to message user %s with method %s', $uid, $d));
 						}
 					}
 				}
