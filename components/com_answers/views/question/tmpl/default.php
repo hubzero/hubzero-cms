@@ -64,74 +64,97 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 
 ?>
 <div id="content-header">
-<?php if ($this->question->state == 0 && $this->id!=0) { ?>
-	<h2><?php echo JText::_(strtoupper($this->option)).': '.JText::_('Open Question'); ?></h2>
-<?php } else if ($this->question->state == 2 or $this->id==0) { ?>
-	<h2><?php echo JText::_(strtoupper($this->option)).': '.JText::_('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); ?></h2>
-<?php } else { ?>
-	<h2><?php echo JText::_(strtoupper($this->option)).': '.JText::_('COM_ANSWERS_CLOSED_QUESTION'); ?></h2>
-<?php } ?>
+	<h2>
+<?php 
+	if ($this->question->state == 0 && $this->id != 0) 
+	{
+		echo JText::_(strtoupper($this->option)) . ': ' . JText::_('Open Question');
+	} 
+	else if ($this->question->state == 2 or $this->id == 0) 
+	{ 
+		echo JText::_(strtoupper($this->option)) . ': ' . JText::_('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); 
+	} 
+	else 
+	{ 
+		echo JText::_(strtoupper($this->option)) . ': ' . JText::_('COM_ANSWERS_CLOSED_QUESTION');
+	} 
+?>
+	</h2>
 </div><!-- / #content-header -->
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<!-- <li><a href="<?php //echo JRoute::_('index.php?option='.$this->option.'&task=myquestions'); ?>" class="myquestions"><span><?php //echo JText::_('COM_ANSWERS_MY_QUESTIONS'); ?></span></a></li> -->
+		<li>
 		<?php if (isset($this->question->prev) && $this->question->prev) { ?>
-			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->prev); ?>" class=""><span><?php echo '&lsaquo; ' . JText::_('COM_ANSWERS_PREVIOUS_QUESTION'); ?></span></a></li>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->prev); ?>">
+				<span><?php echo '&lsaquo; ' . JText::_('COM_ANSWERS_PREVIOUS_QUESTION'); ?></span>
+			</a>
+		</li>
 		<?php } else { ?>
-			<li><span><?php echo '&lsaquo; ' . JText::_('COM_ANSWERS_PREVIOUS_QUESTION'); ?></span></li>
+			<span><?php echo '&lsaquo; ' . JText::_('COM_ANSWERS_PREVIOUS_QUESTION'); ?></span>
 		<?php } ?>
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search'); ?>"><span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span></a></li>
+		<li>
+			<a class="question" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
+				<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
+			</a>
+		</li>
+		<li class="last">
 		<?php if (isset($this->question->next) && $this->question->next) { ?>
-			<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->next); ?>" class=""><span><?php echo JText::_('COM_ANSWERS_NEXT_QUESTION') .' &rsaquo;' ; ?></span></a></li>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->next); ?>">
+				<span><?php echo JText::_('COM_ANSWERS_NEXT_QUESTION') .' &rsaquo;' ; ?></span>
+			</a>
 		<?php } else { ?>
-			<li><span><?php echo JText::_('COM_ANSWERS_NEXT_QUESTION') .' &rsaquo;' ; ?></span></li>
+			<span><?php echo JText::_('COM_ANSWERS_NEXT_QUESTION') .' &rsaquo;' ; ?></span>
 		<?php } ?>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
 <?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo $this->getError(); ?></p>
+	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
 <?php if ($this->question->state == 2 or $this->id==0) { ?>
-	<h3><?php echo JText::_('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); ?></h3>		
+	<h3><?php echo JText::_('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); ?></h3>
 	<?php if ($this->note['msg']!='') { ?>
 	<p class="help"><?php echo urldecode($this->note['msg']); ?></p>
 	<?php } else { ?>
 	<p class="error"><?php echo JText::_('COM_ANSWERS_NOTICE_QUESTION_REMOVED'); ?></p>
 	<?php } ?>
-</div><!-- / .main section -->
 <?php } else { ?>
-	<!-- <h3><?php echo JText::_('COM_ANSWERS_CLOSED_QUESTION'); ?></h3> -->
+	<h3><?php echo JText::_('COM_ANSWERS_CLOSED_QUESTION'); ?></h3>
 
 	<div class="aside">
-<?php if ($this->question->state == 0 && $this->responding != 1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
-		<p class="answer-question"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
-<?php } ?>
+	<?php if ($this->question->state == 0 && $this->responding != 1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
+		<p class="answer-question">
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=answer&id=' . $this->question->id); ?>">
+				<?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?>
+			</a>
+		</p>
+	<?php } ?>
 		<div class="status_display">
 			<p class="intro">
 				<?php echo JText::_('COM_ANSWERS_STATUS'); ?>:
-<?php if ($this->question->state == 0 && $reports == 0) { ?>
+			<?php if ($this->question->state == 0 && $reports == 0) { ?>
 				<span class="open"><?php echo JText::_('COM_ANSWERS_STATUS_ACCEPTING_ANSWERS'); ?></span>
-<?php } else if ($reports > 0) { ?>
+			<?php } else if ($reports > 0) { ?>
 				<span class="underreview"><?php echo JText::_('COM_ANSWERS_STATUS_UNDER_REVIEW'); ?></span>
-<?php } else { ?>
+			<?php } else { ?>
 				<span class="closed"><?php echo JText::_('COM_ANSWERS_STATUS_CLOSED'); ?></span></p>
-<?php } ?>
+			<?php } ?>
 			</p>
-<?php if ($this->reward > 0 && $this->question->state == 0 && $this->banking) { ?>
+		<?php if ($this->reward > 0 && $this->question->state == 0 && $this->banking) { ?>
 			<p class="intro"><?php echo JText::_('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php echo $this->infolink; ?>" title="<?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo JText::sprintf('COM_ANSWERS_NUMBER_POINTS', $this->reward); ?></span></p>
-<?php } ?>
-<?php if (isset($this->question->maxaward) && $this->question->state == 0 && $this->banking) { ?>
+		<?php } ?>
+		<?php if (isset($this->question->maxaward) && $this->question->state == 0 && $this->banking) { ?>
 			<p class="youcanearn">
-				<?php echo JText::sprintf('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->maxaward); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=math&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_DETAILS'); ?></a>
+				<?php echo JText::sprintf('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->maxaward); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=math&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_DETAILS'); ?></a>
 			</p>
-<?php } ?>
+		<?php } ?>
 		</div><!-- / .status_display -->
 	</div><!-- / .aside -->
-	
+
 	<div class="subject">
 
 			<div class="question" id="q<?php echo $this->question->id; ?>">
@@ -153,7 +176,7 @@ if ($reports == 0) {
 ?>
 					<p class="voting">
 						<span class="vote-like">
-							<?php if($this->juser->get("guest")) : ?>
+							<?php if ($this->juser->get("guest")) : ?>
 								<span 
 									class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" 
 									title="Vote this up :: Please login to vote.">
@@ -169,7 +192,7 @@ if ($reports == 0) {
 								<?php else: ?>
 									<a 
 										class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips"
-										href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'&vote=1'); ?>" 
+										href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id.'&vote=1'); ?>" 
 										title="Vote this up :: <?php echo $votes; ?> people liked this">
 											<?php echo $votes; ?><span> Like</span>
 									</a>
@@ -180,7 +203,7 @@ if ($reports == 0) {
 <?php } ?>
 					<p class="question-title">
 						<strong><?php echo $name; ?></strong> 
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->question->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->question->created, '%d %b, %Y', 0); ?></span></a>
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->question->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->question->created, '%d %b, %Y', 0); ?></span></a>
 					</p><!-- / .question-title -->
 
 <?php if ($reports > 0) { ?>
@@ -197,7 +220,7 @@ if ($reports == 0) {
 					</div><!-- / .question-long -->
 	<?php } ?>
 					<?php /* <p class="details">
-						<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> - <?php echo JText::sprintf('COM_ANSWERS_TIME_AGO', $when); ?> - <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#answers'); ?>" title="<?php echo JText::_('COM_ANSWERS_READ_RESPONSES'); ?>"><?php echo (count($this->responses) == 1) ? JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)) : JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)); ?></a>
+						<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> - <?php echo JText::sprintf('COM_ANSWERS_TIME_AGO', $when); ?> - <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id.'#answers'); ?>" title="<?php echo JText::_('COM_ANSWERS_READ_RESPONSES'); ?>"><?php echo (count($this->responses) == 1) ? JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)) : JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)); ?></a>
 					</p> */ ?>
 	<?php if (count($this->tags) > 0) { ?>
 					<div class="question-tags">
@@ -223,26 +246,27 @@ if ($reports == 0) {
 <?php } ?>
 				</div><!-- / .question-content -->
 				<p class="question-status">
-<?php if ($reports == 0) { ?>
+				<?php if ($reports == 0) { ?>
 					<span>
 						<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=question&id='.$this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
 					</span>
-			<?php if ($this->question->created_by == $this->juser->get('username') && $this->question->state == 0) { ?>
+					<?php if ($this->question->created_by == $this->juser->get('username') && $this->question->state == 0) { ?>
 					<span>
-						<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id='.$this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_DELETE_QUESTION'); ?>"><?php echo JText::_('COM_ANSWERS_DELETE'); ?></a>
+						<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id='.$this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_DELETE_QUESTION'); ?>"><?php echo JText::_('COM_ANSWERS_DELETE'); ?></a>
 					</span>
-			<?php } ?>
-<?php } ?>
+					<?php } ?>
+				<?php } ?>
 				</p><!-- / .question-status -->
 			</div><!-- / .question -->
-<?php if ($this->note['msg'] != '') { ?>
+		<?php if ($this->note['msg'] != '') { ?>
 			<div class="subject-wrap">
 				<p class="<?php echo $this->note['class']; ?>"><?php echo urldecode($this->note['msg']); ?></p>
 			</div>
-<?php } ?>
+		<?php } ?>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
-	
+</div><!-- / .main section -->
+
 <?php if ($this->responding == 4 && $this->question->state == 0 && $reports == 0) { // delete question ?>
 
 	<div class="below section">
@@ -251,18 +275,18 @@ if ($reports == 0) {
 			<p class="error"><?php echo JText::_('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
 			<!-- 
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete_q&qid='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?></a> | 
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete_q&qid='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?></a> | 
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
 			</p>
 			 -->
-			<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete'); ?>" method="post" id="deleteForm">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete'); ?>" method="post" id="deleteForm">
 				<input type="hidden" name="qid" value="<?php echo $this->question->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="delete_q" />
 
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
 				</p>
 			</form>
 			</div>
@@ -338,8 +362,7 @@ if ($reports == 0) {
 	<div class="clear"></div>
 	<?php } ?>
 
-<?php if ($this->responding == 1) { // answer form ?>
-	
+	<?php if ($this->responding == 1) { // answer form ?>
 	<div class="below section">
 		<h3>
 			<?php echo JText::_('COM_ANSWERS_YOUR_ANSWER'); ?>
@@ -404,7 +427,7 @@ if ($reports == 0) {
 					<input type="hidden" name="task" value="savea" />
 					<input type="hidden" name="response[qid]" value="<?php echo $this->question->id; ?>" />
 
-					<label>
+					<label for="responseanswer">
 						<?php echo JText::_('COM_ANSWERS_YOUR_RESPONSE'); ?>:
 						<?php
 						ximport('Hubzero_Wiki_Editor');
@@ -436,40 +459,39 @@ if ($reports == 0) {
 		</form>
 	</div><!-- / .below section -->
 	<div class="clear"></div>
-
-<?php } ?>
+	<?php } ?>
 
 <?php
-$chosen = false;
-if ($this->responses) {
-	$cls = 'even';
-	foreach ($this->responses as $row)
-	{
-		if ($this->question->state == 1 && $row->state == 1) {
-			$chosen = true;
+	$chosen = false;
+	if ($this->responses) {
+		$cls = 'even';
+		foreach ($this->responses as $row)
+		{
+			if ($this->question->state == 1 && $row->state == 1) {
+				$chosen = true;
 
-			// Set the name of the reviewer
-			$name = JText::_('COM_ANSWERS_ANONYMOUS');
-			$ruser = new Hubzero_User_Profile();
-			$ruser->load( $row->created_by );
-			if ($row->anonymous != 1) {
-				$name = JText::_('COM_ANSWERS_UNKNOWN');
-				//$ruser =& JUser::getInstance($row->created_by);
-				if (is_object($ruser)) {
-					$name = $ruser->get('name');
+				// Set the name of the reviewer
+				$name = JText::_('COM_ANSWERS_ANONYMOUS');
+				$ruser = new Hubzero_User_Profile();
+				$ruser->load( $row->created_by );
+				if ($row->anonymous != 1) {
+					$name = JText::_('COM_ANSWERS_UNKNOWN');
+					//$ruser =& JUser::getInstance($row->created_by);
+					if (is_object($ruser)) {
+						$name = $ruser->get('name');
+					}
 				}
-			}
 
-			$abuse = isset($row->reports) ? $row->reports : 0;
+				$abuse = isset($row->reports) ? $row->reports : 0;
 
-			$cls  = ($cls == 'odd') ? 'even' : 'odd';
-			$cls .= ($abuse) ? ' abusive' : '';
-			if ($this->question->created_by == $row->created_by) {
-				$cls .= ' author';
-			}
+				$cls  = ($cls == 'odd') ? 'even' : 'odd';
+				$cls .= ($abuse) ? ' abusive' : '';
+				if ($this->question->created_by == $row->created_by) {
+					$cls .= ' author';
+				}
 
-		$cls .= ' chosen';
-		?>
+				$cls .= ' chosen';
+?>
 <div class="below section">
 	<h3>
 		<a name="bestanswer"></a>
@@ -508,15 +530,15 @@ if ($this->responses) {
 				<?php } ?>
 					<p class="comment-title">
 						<strong><?php echo $name; ?></strong> 
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span></a>
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id.'#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span></a>
 					</p><!-- / .comment-title -->
 				<?php if (!$abuse) { ?>
 					<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig); ?>
 					<p class="comment-options">
 						<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id='.$row->id.'&parent='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
-						<?php /*<a class="showreplyform" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&category=answer&id='.$this->question->id.'&refid='.$row->id.'#c'.$row->id); ?>" id="rep_<?php echo $row->id; ?>"><?php echo JText::_('COM_ANSWERS_REPLY'); ?></a> 
+						<?php /*<a class="showreplyform" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=reply&category=answer&id='.$this->question->id.'&refid='.$row->id.'#c'.$row->id); ?>" id="rep_<?php echo $row->id; ?>"><?php echo JText::_('COM_ANSWERS_REPLY'); ?></a> 
 					<?php if ($this->juser->get('username') == $this->question->created_by && $this->question->state == 0) { ?>
-						<span class="accept"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=accept&id='.$this->question->id.'&rid='.$row->id); ?>"><?php echo JText::_('COM_ANSWERS_ACCEPT_ANSWER'); ?></a></span>
+						<span class="accept"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=accept&id='.$this->question->id.'&rid='.$row->id); ?>"><?php echo JText::_('COM_ANSWERS_ACCEPT_ANSWER'); ?></a></span>
 					<?php }*/ ?>
 					</p><!-- / .comment-options -->
 				<?php
@@ -650,7 +672,7 @@ if ($this->responses) {
 
 		<div class="aside">
 		<?php if ($this->question->state == 0 && $this->responding!=1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
-			<p class="answer-question"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
+			<p class="answer-question"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 		<?php } ?>
 		
 		<?php if ($this->juser->get('username') == $this->question->created_by && $this->question->state == 0) { ?>
@@ -709,17 +731,17 @@ if ($this->responses) {
 					<?php } ?>
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span></a>
+							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id.'#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span></a>
 						</p><!-- / .comment-title -->
 					<?php if (!$abuse) { ?>
 						<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig); ?>
 						<p class="comment-options">
 							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id='.$row->id.'&parent='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
 						<?php if (!$chosen) { ?>
-							<a class="showreplyform" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&category=answer&id='.$this->question->id.'&refid='.$row->id.'#c'.$row->id); ?>" id="rep_<?php echo $row->id; ?>"><?php echo JText::_('COM_ANSWERS_REPLY'); ?></a> 
+							<a class="showreplyform" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=reply&category=answer&id='.$this->question->id.'&refid='.$row->id.'#c'.$row->id); ?>" id="rep_<?php echo $row->id; ?>"><?php echo JText::_('COM_ANSWERS_REPLY'); ?></a> 
 						<?php } ?>
 						<?php if ($this->juser->get('username') == $this->question->created_by && $this->question->state == 0) { ?>
-							<span class="accept"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=accept&id='.$this->question->id.'&rid='.$row->id); ?>"><?php echo JText::_('COM_ANSWERS_ACCEPT_ANSWER'); ?></a></span>
+							<span class="accept"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=accept&id='.$this->question->id.'&rid='.$row->id); ?>"><?php echo JText::_('COM_ANSWERS_ACCEPT_ANSWER'); ?></a></span>
 						<?php } ?>
 						</p><!-- / .comment-options -->
 					<?php
@@ -843,7 +865,7 @@ if ($this->responses) {
 		</div>
 <?php } else { ?>
 		<div class="subject-wrap">
-		<p><?php echo JText::_('COM_ANSWERS_NO_ANSWERS_BE_FIRST'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_BE_FIRST_ANSWER_THIS'); ?></a>.</p>
+		<p><?php echo JText::_('COM_ANSWERS_NO_ANSWERS_BE_FIRST'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_BE_FIRST_ANSWER_THIS'); ?></a>.</p>
 	<?php if ($this->banking) { ?>
 		<p class="help">
 			<strong><?php echo JText::_('COM_ANSWERS_DID_YOU_KNOW_ABOUT_POINTS'); ?></strong><br />
@@ -853,7 +875,7 @@ if ($this->responses) {
 	<?php } ?>
 <?php } //if ($this->responses) { ?>
 	</div><!-- / .subject -->
-	
+</div><!-- / .subject -->
 <?php } else if ($reports > 0) { ?>
 		</div><!-- / #questionwrap -->
 		<div class="clear"></div>
@@ -861,5 +883,4 @@ if ($this->responses) {
 <?php } ?>
 	<div class="clear"></div>
 </div><!-- / .below section -->
-</div><!-- / .main section -->
 <?php } ?>
