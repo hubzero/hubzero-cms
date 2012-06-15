@@ -133,7 +133,7 @@ $database =& JFactory::getDBO();
 						$date = JHTML::_('date', $row->created, '%d %b, %Y');
 					
 						//special action
-						if ($row->actionid) {
+						/*if ($row->actionid) {
 							$xma = new Hubzero_Message_Action( $database );
 							$xma->load( $row->actionid );
 							if ($xma) {
@@ -144,10 +144,10 @@ $database =& JFactory::getDBO();
 								//we dont want them to be able to move
 								$check = "";
 							}
-						}
+						}*/
 					?>
 				
-					<tr class="<?php if($row->actionid) { echo "actionitem"; } ?>">
+					<tr<?php /*if ($row->actionid) { echo ' class="actionitem"'; }*/ ?>>
 						<td class="check"><?php echo $check; ?></td>
 						<td class="status"><?php echo $status; ?></td>
 						<td><?php echo $subject; ?></td>

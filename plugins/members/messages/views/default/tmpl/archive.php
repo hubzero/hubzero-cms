@@ -137,7 +137,7 @@ $database =& JFactory::getDBO();
 						$delete = "<a title=\"Remove Message\" class=\"trash\" href=\"{$del_link}\">" . JText::_('PLG_MEMBERS_MESSAGES_TRASH') . "</a>";
 					
 						//special action
-						if ($row->actionid) {
+						/*if ($row->actionid) {
 							$xma = new Hubzero_Message_Action( $database );
 							$xma->load( $row->actionid );
 							if ($xma) {
@@ -151,10 +151,10 @@ $database =& JFactory::getDBO();
 								//we dont want them to be able to delete
 								$delete = "";
 							}
-						}
+						}*/
 					?>
 				
-					<tr class="<?php if($row->actionid) { echo "actionitem"; } ?>">
+					<tr<?php /*if ($row->actionid) { echo ' class="actionitem"'; }*/ ?>>
 						<td class="check"><?php echo $check; ?></td>
 						<td class="status"><?php echo $status; ?></td>
 						<td><?php echo $subject; ?></td>
