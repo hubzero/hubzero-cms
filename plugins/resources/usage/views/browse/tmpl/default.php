@@ -206,7 +206,7 @@ if ($toporgs) {
 					<td><?php echo $row->rank; ?></td>
 					<td class="textual-data"><?php echo $row->name; ?></td>
 					<td><?php echo number_format($row->value); ?></td>
-					<td><?php echo round((($row->value/$total)*100),2); ?></td>
+					<td><?php echo ($total) ? round((($row->value/$total)*100),2) : $total; ?></td>
 				</tr>
 <?php
 		}
@@ -256,7 +256,7 @@ if ($topcountries) {
 					<td><?php echo $row->rank; ?></td>
 					<td class="textual-data"><?php echo $row->name; ?></td>
 					<td><?php echo number_format($row->value); ?></td>
-					<td><?php echo round((($row->value/$total)*100),2); ?></td>
+					<td><?php echo ($total) ? round((($row->value/$total)*100),2) : $total; ?></td>
 				</tr>
 <?php
 		}
@@ -306,7 +306,7 @@ if ($topdoms) {
 					<td><?php echo $row->rank; ?></td>
 					<td class="textual-data"><?php echo $row->name; ?></td>
 					<td><?php echo number_format($row->value); ?></td>
-					<td><?php echo round((($row->value/$total)*100),2); ?></td>
+					<td><?php echo ($total) ? round((($row->value/$total)*100),2) : $total; ?></td>
 				</tr>
 <?php
 		}
