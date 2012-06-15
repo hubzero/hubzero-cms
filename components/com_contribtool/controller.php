@@ -2724,13 +2724,6 @@ class ContribtoolController extends JObject
 			$objV = new ToolVersion( $database );
 			$objV->getToolVersions( $this->_toolid, $tools, '', $ldap_read, 1);
 
-			// test - nicktest
-			/*
-			if($this->_toolid == 349) {
-				$status['revision'] = 577;
-				$status['version']  = 'T';
-			} */
-
 			// make checks
 			if(!is_numeric($status['revision'])) {  // bad format
 				$result = 0;
@@ -2925,8 +2918,15 @@ class ContribtoolController extends JObject
 			$new_hztv->codeaccess = $status['code'];
 			$new_hztv->wikiaccess = $status['wiki'];
 			$new_hztv->vnc_geometry = $status['vncGeometry'];
-			$new_hztv->vnc_command = $invoke;
-			$new_hztv->mw = $status['mw'];
+
+			if (strstr($hztv_dev->vnc_command, $invokedir.DS.$status['toolname'].DS) !== false) {
+				$new_hztv->vnc_command = $hztv_dev->vnc_command;
+			} else {
+				$new_hztv->vnc_command = $invoke;
+			}
+			$new_hztv->mw = $hztv_dev->mw;
+			$new_hztv->hostreq = $hztv_dev->hostreq;
+			$new_hztv->params = $hztv_dev->params;
 			$new_hztv->released = $now;
 			$new_hztv->released_by = $juser->get('username');
 			$new_hztv->license = $status['license'];

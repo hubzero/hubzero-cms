@@ -375,7 +375,11 @@ class ContribtoolHtml
 					 <tbody>
 					  <tr>
 					    <td class="key"><label for="command"><?php echo JText::_('TOOL_COMMAND'); ?>:</label></td>
-					    <td><input type="text" name="command" id="command" value="<?php echo $data['vnc_command'];?>" size="50" /> </td>
+					    <td><input type="text" name="command" id="command" value="<?php echo htmlentities($data['vnc_command'],ENT_COMPAT,'UTF-8');?>" size="50" /> </td>
+					  </tr>
+					  <tr>
+					    <td class="key"><label for="geometry"><?php echo JText::_('TOOL_GEOMETRY'); ?>:</label></td>
+					    <td><input type="text" name="geometry" id="geometry" value="<?php echo $data['vnc_geometry'];?>" size="50" /> </td>
 					  </tr>
 					  <tr>
 					    <td class="key"><label for="timeout"><?php echo JText::_('TOOL_TIMEOUT'); ?>:</label></td>
@@ -384,6 +388,10 @@ class ContribtoolHtml
 					  <tr>
 					    <td class="key"><label for="hostreq"><?php echo JText::_('TOOL_HOSTREQ'); ?>:</label></td>
 					    <td><input type="text" name="hostreq" id="hostreq" value="<?php echo implode(',',$data['hostreq']);?>" size="50" /> </td>
+					  </tr>
+					  <tr>
+					    <td class="key"><label for="params"><?php echo JText::_('TOOL_PARAMS'); ?>:</label></td>
+					    <td><input type="text" name="params" id="params" value="<?php echo $data['params'];?>" size="50" /> </td>
 					  </tr>
 					 </tbody>
 				    	</table>

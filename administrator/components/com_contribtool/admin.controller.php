@@ -304,10 +304,15 @@ class ContribtoolController extends JObject
 		if (!$hztv)
 			die('tool instance not found');
 
-		$vnc_command = JRequest::getString('command', null, 'post');
+		$vnc_command = JRequest::getVar('command', null, 'post');
 
 		if (is_null($vnc_command))
 			die('no command value returned by form');
+
+		$vnc_geometry = JRequest::getString('geometry', null, 'post');
+
+		if (is_null($vnc_geometry))
+			die('no geometry value returned by form');
 
 		$vnc_hostreq = JRequest::getString('hostreq', null, 'post');
 
@@ -318,6 +323,11 @@ class ContribtoolController extends JObject
 
 		if (is_null($vnc_timeout))
 			die('no timeout value returned by form');
+
+		$params = JRequest::getString('params', null, 'post');
+
+		if (is_null($params))
+			die('no params value returned by form');
 
 		if ($vnc_timeout == "0")
 		    $vnc_timeout = '0';
@@ -340,6 +350,8 @@ class ContribtoolController extends JObject
 		$hztv->hostreq = $hostreq;
 		$hztv->vnc_command = $vnc_command;
 		$hztv->vnc_timeout = $vnc_timeout;
+		$hztv->vnc_geometry = $vnc_geometry;
+		$hztv->params = $params;
 		$hztv->update();
 
 		if ($redirect) {
@@ -515,9 +527,11 @@ class ContribtoolController extends JObject
 		$data['toolid'] = $hzt->toolid;
 		$data['id'] = $hzt->id;
 		$data['instance'] = $hzt->instance;
+		$data['vnc_geometry'] = $hzt->vnc_geometry;
 		$data['vnc_command'] = $hzt->vnc_command;
 		$data['vnc_timeout'] = $hzt->vnc_timeout;
 		$data['hostreq'] = $hzt->hostreq;
+		$data['params'] = $hzt->params;
 
 		ContribtoolHtml::editToolVersion($data, $this->_option);
 	}
