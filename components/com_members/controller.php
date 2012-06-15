@@ -655,6 +655,10 @@ class MembersController extends Hubzero_Controller
 		$oldpass  = JRequest::getVar('oldpass', '', 'post');
 		$newpass  = JRequest::getVar('newpass', '', 'post');
 		$newpass2 = JRequest::getVar('newpass2', '', 'post');
+		$message = JRequest::getVar('message', '');
+		
+		if (!empty($message))
+			$this->setError( $message );
 
 		$view = new JView( array('name'=>'changepassword') );
 		$view->option = $this->_option;
@@ -668,6 +672,9 @@ class MembersController extends Hubzero_Controller
 		// Blank form request (no data submitted)
 		if (empty($change))  
 		{
+			if ($this->getError())
+				$view->setError( $this->getError() );
+
 			$view->display();
 			return;
 		}
@@ -1324,8 +1331,8 @@ class MembersController extends Hubzero_Controller
 		$field_to_check = JRequest::getVar("field_to_check", array());
 		
 		// Check that required fields were filled in properly
-		if (!$xregistration->check('edit', $profile->get('uidNumber'), $field_to_check)) 
-		{   
+		if (!$xregistration->check('edit', $profile->get('uidNumber'), $field_to_check))
+		{
 			if(!$no_html)
 			{
 				$this->_task = 'edit';
@@ -1343,8 +1350,7 @@ class MembersController extends Hubzero_Controller
 		$profile->set('modifiedDate', date( 'Y-m-d H:i:s', time() ));
 
 		// Save the changes
-		if (!$profile->update()) 
-		{
+		if (!$profile->update()) {
 			JError::raiseError(500, $profile->getError() );
 			return false;
 		}

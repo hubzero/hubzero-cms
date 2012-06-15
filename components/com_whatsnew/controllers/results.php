@@ -409,7 +409,9 @@ class WhatsnewControllerResults extends Hubzero_Controller
 					if (!strstr($row->href, 'Itemid')) 
 					{
 						$temp = explode('id=', $row->href);
+						if (isset($temp[1])) {
 						$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
+						}
 					}
 				}
 				$link = JRoute::_($row->href);

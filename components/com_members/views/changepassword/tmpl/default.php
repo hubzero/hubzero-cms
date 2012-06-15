@@ -42,6 +42,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?> </p>
+	<?php } ?>
+
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>

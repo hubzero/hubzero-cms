@@ -2480,4 +2480,3 @@ class ResourcesHtml
 		return $html;
 	}
 }
-

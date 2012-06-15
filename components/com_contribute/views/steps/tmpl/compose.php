@@ -98,7 +98,7 @@ $view->display();
 			<h3><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_DETAILS'); ?></h3>
 			<?php 
 			echo $fields;
-			?>			
+			?>
 		</fieldset><div class="clear"></div>
 <?php } ?>
 		<input type="hidden" name="published" value="<?php echo $this->row->published; ?>" />

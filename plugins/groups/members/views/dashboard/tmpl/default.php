@@ -109,7 +109,7 @@ if ($this->logs) {
 			<th scope="row"><?php echo $area; ?></th>
 			<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$log->actorid); ?>"><?php echo stripslashes($name); ?></a></td>
 			<td class="action"><?php echo JText::_('PLG_GROUPS_'.strtoupper($log->action)).$info; ?></td>
-			<td class="date"><?php echo JHTML::_('date', $log->timestamp, '%b. %d, %Y @%I:%M %p'); ?></td>
+			<td class="date"><?php echo JHTML::_('date', $log->timestamp, '%b. %d, %Y @%I:%M %p',0); ?></td>
 		</tr>
 <?php
 	}

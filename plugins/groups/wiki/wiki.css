@@ -551,3 +551,7 @@
 	#file-uploader .qq-upload-failed-text {
 		display: none;
 	}
+	#attachments .delete {
+		padding-left: 0;
+		background: transparent;
+	}

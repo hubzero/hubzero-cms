@@ -524,14 +524,14 @@ class SupportTicket extends JTable
 		$filter = $this->buildQuery( $filters, $authorized );
 
 		if ($which == 'prev') {
-			$filter .= " AND id < $this->id";
-			$filters['sortby'] = "id DESC";
+			$filter .= " AND f.id < $this->id";
+			$filters['sortby'] = "f.id DESC";
 		} elseif ($which == 'next') {
-			$filter .= " AND id > $this->id";
-			$filters['sortby'] = "id ASC";
+			$filter .= " AND f.id > $this->id";
+			$filters['sortby'] = "f.id ASC";
 		}
 
-		$this->_db->setQuery( "SELECT id FROM $filter ORDER BY ".$filters['sortby']." LIMIT 1" );
+		$this->_db->setQuery( "SELECT f.id FROM $filter ORDER BY ".$filters['sortby']." LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 

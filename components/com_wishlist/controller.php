@@ -1649,7 +1649,6 @@ class WishlistController extends JObject
 		}
 
 		$saved = $wishid ? 2 : 3;
-
 		$this->_redirect =JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id).'?saved='.$saved;
 	}
 
