@@ -26,6 +26,9 @@ jimport('joomla.application.component.controller');
  */
 class UserController extends JController
 {
+	// @FIXME: Not sure why this is needed, we're probably doing something wrong
+	function attach(){}
+
 	function execute( $task )
 	{
 		$task = strtolower( $task );
