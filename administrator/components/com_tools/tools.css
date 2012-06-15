@@ -38,3 +38,17 @@
 	section .state.unknown:before {
 		content: "?";
 	}
+	table.adminlist a.active {
+		color: #7F913C;
+		color: #666;
+	}
+	table.adminlist a.active:before {
+		font-size: 1.2em;
+		content: "\2022";
+		margin-right: 0.5em;
+	}
+	table.adminlist a.inactive {
+		color: #c55500;
+		color: #999;
+		padding-left: 1.1em;
+	}

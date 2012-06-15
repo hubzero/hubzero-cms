@@ -53,8 +53,8 @@ else
 	}
 }
 // Include scripts
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'models'.DS.'mw.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'models'.DS.'mw.utils.php' );
+//require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'models'.DS.'mw.class.php' );
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'mw.utils.php');
 
 $controllerName = JRequest::getCmd('controller', 'pipeline');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -76,6 +76,11 @@ JSubMenuHelper::addEntry(
 	JText::_('Host Types'),
 	'index.php?option=com_tools&controller=hosttypes',
 	$controllerName == 'hosttypes'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Sessions'),
+	'index.php?option=com_tools&controller=sessions',
+	$controllerName == 'sessions'
 );
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

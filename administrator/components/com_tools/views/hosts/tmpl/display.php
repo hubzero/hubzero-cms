@@ -69,7 +69,7 @@ if ($this->rows)
 							echo '<strong>';
 						}
 ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=toggle&amp;hostname=<?php echo $row->hostname; ?>&amp;item=<?php echo $key; ?>">
+					<a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=toggle&amp;hostname=<?php echo $row->hostname; ?>&amp;item=<?php echo $key; ?>">
 						<span><?php echo $this->escape($key); ?></span>
 					</a>
 <?php
