@@ -1978,7 +1978,7 @@ WYKIWYG.editor = function() {
 		if (!this.d) {
 			var v = converter.makeHtml(this.t.value);
 			if (div) {
-				div.innerHTML = this.obj.toggletext || 'source';
+				div.innerHTML = this.obj.toggletext || 'switch to source';
 			}
 			this.e.body.innerHTML = v;
 			this.t.style.display = 'none'; 
