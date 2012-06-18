@@ -34,22 +34,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 error_reporting(E_ALL);
 @ini_set('display_errors', '1');
 
-$jacl =& JFactory::getacl();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
-
-// Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize('com_contact', 'manage'))
+if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'economy.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'answers.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'question.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'response.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'log.php');
@@ -58,6 +70,10 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'questionslog.php');
 ximport('Hubzero_Environment');
 
 $controllerName = JRequest::getCmd('controller', 'questions');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'questions';
+}
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'AnswersController' . ucfirst($controllerName);
 

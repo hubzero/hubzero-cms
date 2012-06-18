@@ -30,11 +30,27 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = AnswersHelper::getActions('question');
+
 JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Answers Manager' ) . '</a>', 'addedit.png');
-JToolBarHelper::preferences($this->option, '550');
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::deleteList();
+if ($canDo->get('core.admin')) {
+	JToolBarHelper::preferences($this->option, '550');
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) {
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.delete')) {
+	JToolBarHelper::deleteList();
+}
+
+$dateFormat = '%d %b %Y';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = 0;
+}
 
 ?>
 <script type="text/javascript">
@@ -52,11 +68,14 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
+		<input type="text" name="q" id="filter_search" value="<?php echo $this->escape($this->filters['q']); ?>" />
+
 		<label for="filterby"><?php echo JText::_('Filter by:'); ?></label> 
 		<select name="filterby" id="filterby" onchange="document.adminForm.submit( );">
-			<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>>Open Questions</option>
-			<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>>Closed Questions</option>
-			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>>All Questions</option>
+			<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>><?php echo JText::_('Open Questions'); ?></option>
+			<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed Questions'); ?></option>
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('All Questions'); ?></option>
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -108,17 +127,29 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="Edit this question">
-						<span><?php echo stripslashes($row->subject); ?></span>
+<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+						<span><?php echo $this->escape(stripslashes($row->subject)); ?></span>
 					</a>
+<?php } else { ?>
+					<span>
+						<span><?php echo $this->escape(stripslashes($row->subject)); ?></span>
+					</span>
+<?php } ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<span><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</a>
+<?php } else { ?>
+					<span class="state <?php echo $cls; ?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
+					</span>
+<?php } ?>
 				</td>
 				<td style="white-space: nowrap;">
-					<time><?php echo JHTML::_('date', $row->created, '%d %b, %Y') ?></time>
+					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?></time>
 				</td>
 				<td>
 					<a class="user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->created_by; ?>">
@@ -130,8 +161,8 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 				</td>
 <?php if ($row->answers > 0) { ?>
 				<td style="white-space: nowrap;">
-					<a class="glyph comment" href="index.php?option=<?php echo $option ?>&amp;controller=answers&amp;qid=<? echo $row->id; ?>" title="View the answers for this Question">
-						<span><?php echo $row->answers; ?> response(s)</span>
+					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=answers&amp;qid=<?php echo $row->id; ?>" title="<?php echo JText::_('View the answers for this Question'); ?>">
+						<span><?php echo JText::sprintf('%s response(s)', $row->answers); ?></span>
 					</a>
 				</td>
 <?php } else { ?>
@@ -156,5 +187,5 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

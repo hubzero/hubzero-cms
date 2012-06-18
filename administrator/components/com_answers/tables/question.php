@@ -29,124 +29,124 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'AnswersQuestion'
- * 
- * Long description (if any) ...
+ * Table class for a question
  */
 class AnswersQuestion extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'subject'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $subject    = NULL;  // @var varchar(250)
+	var $subject    = NULL;
 
 	/**
-	 * Description for 'question'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $question   = NULL;  // @var text
+	var $question   = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state      = NULL;  // @var int(3)
+	var $state      = NULL;
 
 	/**
-	 * Description for 'anonymous'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $anonymous  = NULL;  // @var int(2)
+	var $anonymous  = NULL;
 
 	/**
-	 * Description for 'email'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $email      = NULL;  // @var int(2)
+	var $email      = NULL;
 
 	/**
-	 * Description for 'helpful'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $helpful    = NULL;  // @var int(11)
+	var $helpful    = NULL;
 
 	/**
-	 * Description for 'reward'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $reward 	= NULL;  // @var int(2)
-
-	//-----------
+	var $reward    = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__answers_questions', 'id', $db );
+		parent::__construct('#__answers_questions', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->subject ) == '') {
-			$this->setError( JText::_('Your question must contain a subject.') );
+		$this->subject = trim($this->subject);
+		if ($this->subject == '') 
+		{
+			$this->setError(JText::_('Your question must contain a subject.'));
 			return false;
 		}
+
+		// Updating entry
+		$juser =& JFactory::getUser();
+		$this->created    = $this->created    ? $this->created    : date("Y-m-d H:i:s");
+		$this->created_by = $this->created_by ? $this->created_by : $juser->get('username');
+
+		// Code cleaner
+		$this->question = nl2br($this->question);
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -154,80 +154,90 @@ class AnswersQuestion extends JTable
 
 		// build body of query
 		$query  = "";
-		if ($filters['tag']) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
-			$tagging = new AnswersTags( $this->_db );
+		if ($filters['tag']) 
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'tags.php');
+			$tagging = new AnswersTags($this->_db);
 
 			$query .= "FROM $this->_tbl AS C";
-			if (isset($filters['count'])) {
+			if (isset($filters['count'])) 
+			{
 				$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=C.id AND RTA.tbl='answers' ";
-			} else {
+			} 
+			else 
+			{
 				$query .= ", #__tags_object AS RTA ";
 			}
 			$query .= "INNER JOIN $tagging->_tag_tbl AS TA ON TA.id=RTA.tagid ";
-		} else {
+		} 
+		else 
+		{
 			$query .= "FROM $this->_tbl AS C ";
 		}
 		$query .= ", #__users AS U ";
 
 		switch ($filters['filterby'])
 		{
-			case 'mine':   		$query .= "WHERE C.state!=2 "; $filters['mine'] = 1;       break;
-			case 'all':    		$query .= "WHERE C.state!=2 ";      break;
-			case 'closed': 		$query .= "WHERE C.state=1 "; 		break;
-			case 'open':   		$query .= "WHERE C.state=0 "; 		break;
-			case 'none':   		$query .= "WHERE 1=2 "; 			break;
-			default:       		$query .= "WHERE C.state!=2 "; 		break;
+			case 'mine':   $query .= "WHERE C.state!=2 "; $filters['mine'] = 1;       break;
+			case 'all':    $query .= "WHERE C.state!=2 ";      break;
+			case 'closed': $query .= "WHERE C.state=1 ";  break;
+			case 'open':   $query .= "WHERE C.state=0 ";  break;
+			case 'none':   $query .= "WHERE 1=2 ";        break;
+			default:       $query .= "WHERE C.state!=2 "; break;
 		}
 		$query .= "AND U.username=C.created_by ";
-		if (isset($filters['q']) && $filters['q'] != '') {
+		if (isset($filters['q']) && $filters['q'] != '') 
+		{
 			$words   = explode(' ', $filters['q']);
 			foreach ($words as $word)
 			{
-				$query .= "AND ( (LOWER(C.subject) LIKE '%$word%') 
+				$query .= "AND ((LOWER(C.subject) LIKE '%$word%') 
 					OR (LOWER(C.question) LIKE '%$word%') 
-					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id AND (LOWER(a.answer) LIKE '%$word%')) > 0 )";
+					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id AND (LOWER(a.answer) LIKE '%$word%')) > 0)";
 			}
 		}
-		if (isset($filters['mine']) && $filters['mine'] != 0) {
+		if (isset($filters['mine']) && $filters['mine'] != 0) 
+		{
 			$query .= " AND C.created_by='" . $juser->get('username') . "' ";
 		}
-		if (isset($filters['mine']) && $filters['mine'] == 0) {
+		if (isset($filters['mine']) && $filters['mine'] == 0) 
+		{
 			$query .= " AND C.created_by!='" . $juser->get('username') . "' ";
 		}
-		if (isset($filters['created_before']) && $filters['created_before'] != '') {
+		if (isset($filters['created_before']) && $filters['created_before'] != '') 
+		{
 			$query .= " AND C.created <='" . $filters['created_before'] . "' ";
 		}
-		if ($filters['tag']) {
-
+		if ($filters['tag']) 
+		{
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$query .= "AND (RTA.objectid=C.id AND (RTA.tbl='answers') AND (TA.tag IN (";
-			$tquery = '';
-			foreach ($tags as $tagg)
+			$query .= "AND (
+							RTA.objectid=C.id 
+							AND RTA.tbl='answers' 
+							AND (
+								TA.tag IN ('" . implode("','", $tags) . "') OR TA.raw_tag IN ('" . implode("','", $tags) . "')
+							)
+						)";
+
+			if (!isset($filters['count'])) 
 			{
-				$tquery .= "'".$tagg."',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") OR TA.raw_tag IN (".$tquery;
-			$query .= ")))";
-			//$query .= " GROUP BY C.id HAVING uniques=".count($tags);
-			if (!isset($filters['count'])) {
 				$query .= " GROUP BY C.id ";
 			}
 		}
 		switch ($filters['sortby'])
 		{
-			case 'rewards':   $query .= " ORDER BY C.reward DESC, points DESC, C.created DESC"; break;
-			case 'votes':     $query .= " ORDER BY C.helpful DESC, C.created DESC"; break;
-			case 'date':      $query .= " ORDER BY C.created DESC"; break;
-			case 'random':    $query .= " ORDER BY RAND()"; break;
-			case 'responses': $query .= " ORDER BY rcount DESC, C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
-			case 'status':    $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
-			case 'withinplugin':   $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
+			case 'rewards':      $query .= " ORDER BY C.reward DESC, points DESC, C.created DESC"; break;
+			case 'votes':        $query .= " ORDER BY C.helpful DESC, C.created DESC"; break;
+			case 'date':         $query .= " ORDER BY C.created DESC"; break;
+			case 'random':       $query .= " ORDER BY RAND()"; break;
+			case 'responses':    $query .= " ORDER BY rcount DESC, C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
+			case 'status':       $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
+			case 'withinplugin': $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
 			default:
 				if (isset($filters['sort'])) 
 				{
+					$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
 					$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
 				}
 				else 
@@ -241,95 +251,83 @@ class AnswersQuestion extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
 		$query  = "SELECT COUNT(C.id) ";
-		//$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id ) AS points";
-		//$query .= (isset($filters['tag']) && $filters['tag']!='') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
 
 		$filters['sortby'] = '';
 		$filters['count'] = 1;
-		$query .= $this->buildQuery( $filters );
+		$query .= $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getResults'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getResults($filters=array())
 	{
-		$ar = new AnswersResponse( $this->_db );
+		$ar = new AnswersResponse($this->_db);
 
 		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful, U.name, U.id AS userid";
 		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount";
-		$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id ) AS points";
+		$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id) AS points";
 		$query .= ($filters['tag']) ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
-		$query .= $this->buildQuery( $filters );
+		$query .= $this->buildQuery($filters);
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 
-		//$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
-		//echo '<!-- '.$query.' -->';
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getQuestionsByTag'
+	 * Get questions by tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $tag Parameter description (if any) ...
-	 * @param      mixed $limit Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      string  $tag   Tag to find records by
+	 * @param      integer $limit Max number of records to return
+	 * @return     array
 	 */
-	public function getQuestionsByTag( $tag, $limit=100 )
+	public function getQuestionsByTag($tag, $limit=100)
 	{
 		$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.qid=a.id) AS rcount";
 		//$query.= "\n FROM $this->_tbl AS a, #__answers_tags AS t, #__tags AS tg";
 		$query .= " FROM $this->_tbl AS a, #__tags_object AS RTA ";
-		$query .= "INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
-		$query.= "\n WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag='".strtolower($tag)."' OR TA.raw_tag='".$tag."' OR TA.alias='".$tag."')";
+		$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
+		$query .= " WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag='" . strtolower($tag) . "' OR TA.raw_tag='" . $tag . "' OR TA.alias='" . $tag . "')";
 
-		$query .= "\n ORDER BY a.created DESC";
-		$query .= ($limit) ? "\n LIMIT ".$limit : "";
+		$query .= " ORDER BY a.created DESC";
+		$query .= ($limit) ? " LIMIT " . $limit : "";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getQuestionID'
+	 * Get the ID of question either before or after the current ID
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $which Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $id    Question ID
+	 * @param      string  $which Direction to look (prev or next)
+	 * @return     integer
 	 */
-	public function getQuestionID( $id, $which )
+	public function getQuestionID($id, $which)
 	{
 		$query  = "SELECT a.id ";
-		$query .= "FROM #__answers_questions AS a ";
+		$query .= "FROM $this->_tbl AS a ";
 		$query .= "WHERE a.state != 2 AND ";
-		$query .= ($which == 'prev')  ? "a.id < '".$id."' " : "a.id > '".$id."'";
-		$query .= ($which == 'prev') ? " ORDER BY a.id DESC " : " ORDER BY a.id ASC ";
+		$query .= ($which == 'prev') ? "a.id < '" . $id . "' " : "a.id > '" . $id . "'";
+		$query .= ($which == 'prev') ? " ORDER BY a.id DESC "  : " ORDER BY a.id ASC ";
 		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }

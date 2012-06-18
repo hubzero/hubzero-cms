@@ -56,9 +56,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'displayTask'
-	 * 
-	 * Long description (if any) ...
+	 * List all questions
 	 * 
 	 * @return     void
 	 */
@@ -276,13 +274,6 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
-
-		// Updating entry
-		$row->created = $row->created ? $row->created : date("Y-m-d H:i:s");
-		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');
-
-		// Code cleaner
-		$row->question = nl2br($row->question);
 
 		// Check content
 		if (!$row->check())
@@ -533,7 +524,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 * Get the amount of point rewards for a question
 	 * 
 	 * @param      integer $id ID of question
-	 * @return     mixed Return description (if any) ...
+	 * @return     integer
 	 */
 	private function _getPointReward($id)
 	{
@@ -545,17 +536,18 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	/**
 	 * Get the count of abuse reports on a question
 	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      unknown $cat Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id  Question ID
+	 * @param      string  $cat Abuse entry category (question)
+	 * @return     integer
 	 */
 	private function _getAbuseReports($id, $cat)
 	{
 		// Incoming
-		$filters = array();
-		$filters['id'] = $id;
-		$filters['category'] = $cat;
-		$filters['state'] = 0;
+		$filters = array(
+			'id'       => $id,
+			'category' => $cat,
+			'state'    => 0
+		);
 
 		// Check for abuse reports on an item
 		$ra = new ReportAbuse($this->database);
@@ -566,10 +558,10 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	/**
 	 * Get the tags on a question
 	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      mixed $tagger_id Parameter description (if any) ...
-	 * @param      mixed $strength Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $id        Question ID
+	 * @param      integer $tagger_id Restrict tags to a specific user
+	 * @param      integer $strength  Tag strength
+	 * @return     mixed array
 	 */
 	private function _getTags($id, $tagger_id=0, $strength=0)
 	{
