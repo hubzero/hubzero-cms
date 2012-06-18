@@ -56,7 +56,7 @@ class plgYSearchForum extends YSearchPlugin
 	public static function onYSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
-		$weight = "match(f.title, f.comment) against ('".join(' ', $terms['stemmed'])."')";
+		$weight = "match(f.title, f.comment) against ('" . join(' ', $terms['stemmed']) . "')";
 
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
@@ -74,7 +74,7 @@ class plgYSearchForum extends YSearchPlugin
 			$gids = $authz->get_group_ids();
 			if (!$juser->authorise('core.view', 'com_groups'))
 			{
-				$addtl_where[] = 'f.group_id IN (0'.($gids ? ',' . join(',', $gids) : '').')';
+				$addtl_where[] = 'f.group_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 			}
 			else 
 			{
@@ -82,7 +82,7 @@ class plgYSearchForum extends YSearchPlugin
 
 				if ($gids)
 				{
-					$addtl_where[] = '(f.access IN ('.$viewlevels.') OR ((f.access = 4 OR f.access = 5) AND f.group_id IN (0,'.join(',', $gids).')))';
+					$addtl_where[] = '(f.access IN ('.$viewlevels.') OR ((f.access = 4 OR f.access = 5) AND f.group_id IN (0,' . join(',', $gids) . ')))';
 				}
 				else 
 				{
@@ -101,7 +101,7 @@ class plgYSearchForum extends YSearchPlugin
 				$groups = array_map('mysql_real_escape_string', $authz->get_group_ids());
 				if ($groups)
 				{
-					$addtl_where[] = '(f.access = 0 OR f.access = 1 OR ((f.access = 3 OR f.access = 4) AND f.group_id IN (0,'.join(',', $groups).')))';
+					$addtl_where[] = '(f.access = 0 OR f.access = 1 OR ((f.access = 3 OR f.access = 4) AND f.group_id IN (0,' . join(',', $groups) . ')))';
 				}
 				else
 				{
@@ -109,13 +109,13 @@ class plgYSearchForum extends YSearchPlugin
 				}
 			}
 		}
-
-		$results->add(new YSearchResultSQL(
+//concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END))
+		$rows = new YSearchResultSQL(
 			"SELECT 
 				f.title,
-				coalesce(f.comment, '') AS description,
+				coalesce(f.comment, '') AS description, f.group_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as thread,
 				(CASE WHEN f.group_id > 0 THEN
-					concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END))
+					concat('/groups/', g.cn, '/forum/')
 				ELSE
 					concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
 				END) AS link,
@@ -134,7 +134,21 @@ class plgYSearchForum extends YSearchPlugin
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
-		));
+		);
+		foreach ($rows->to_associative() as $row)
+		{
+			if (!$row) 
+			{
+				continue;
+			}
+			if ($row->group_id)
+			{
+				$row->link .= ($row->sect ? $row->sect : 'defaultsection') . '/';
+				$row->link .= ($row->cat ? $row->cat : 'discussion') . '/';
+				$row->link .= $row->thread;
+			}
+			$results->add($row);
+		}
 	}
 }
 
