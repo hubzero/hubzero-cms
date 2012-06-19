@@ -324,15 +324,15 @@ class JApplication extends JObject
 			echo "<script>document.location.href='$url';</script>\n";
 		}
 		else {
-			if (!$moved && strstr(strtolower($_SERVER['HTTP_USER_AGENT']), 'webkit') !== false) {
+			/*if (!$moved && strstr(strtolower($_SERVER['HTTP_USER_AGENT']), 'webkit') !== false) {
 				// WebKit browser - Do not use 303, as it causes subresources reload (https://bugs.webkit.org/show_bug.cgi?id=38690)
 				echo '<html><head><meta http-equiv="refresh" content="0;'. $url .'" /></head><body></body></html>';
 			}
-			else {
+			else {*/
 				// All other browsers, use the more efficient HTTP header method
 				header($moved ? 'HTTP/1.1 301 Moved Permanently' : 'HTTP/1.1 303 See other');
 				header('Location: '.$url);
-			}
+			//}
 		}
 
 		$this->close();
