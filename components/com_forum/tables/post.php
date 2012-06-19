@@ -162,11 +162,9 @@ class ForumPost extends JTable
 	var $asset_id = NULL;
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * Constructor
+	 *
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -218,45 +216,48 @@ class ForumPost extends JTable
 		$assetId = null;
 		$db		= $this->getDbo();
 
-		if ($assetId === null) {
+		if ($assetId === null) 
+		{
 			// Build the query to get the asset id for the parent category.
 			$query	= $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
-			$query->where('name = '.$db->quote('com_forum'));
+			$query->where('name = ' . $db->quote('com_forum'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) {
+			if ($result = $db->loadResult()) 
+			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) {
+		if ($assetId) 
+		{
 			return $assetId;
-		} else {
+		} 
+		else 
+		{
 			return parent::_getAssetParentId($table, $id);
 		}
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->comment = trim($this->comment);
-		
+
 		if (!$this->comment) 
 		{
 			$this->setError(JText::_('Please provide a comment'));
 			return false;
 		}
-		
+
 		if (!$this->title) 
 		{
 			$this->title = substr($this->comment, 0, 70);
@@ -265,7 +266,7 @@ class ForumPost extends JTable
 				$this->title .= '...';
 			}
 		}
-		
+
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
 		{
@@ -277,17 +278,15 @@ class ForumPost extends JTable
 			$this->modified = date('Y-m-d H:i:s', time());  // use gmdate() ?
 			$this->modified_by = $juser->get('id');
 		}
-		
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -381,12 +380,10 @@ class ForumPost extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -399,12 +396,10 @@ class ForumPost extends JTable
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -429,7 +424,7 @@ class ForumPost extends JTable
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
@@ -562,7 +557,16 @@ class ForumPost extends JTable
 			return true;
 		}
 	}
-	
+
+	/**
+	 * Short description for 'deleteReplies'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $data Parameter description (if any) ...
+	 * @param      unknown $parent Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function updateReplies($data=array(), $parent=null)
 	{
 		if (!$parent) 
@@ -597,7 +601,17 @@ class ForumPost extends JTable
 			return true;
 		}
 	}
-	
+
+	/**
+	 * Short description for 'deleteReplies'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $old Parameter description (if any) ...
+	 * @param      unknown $nw Parameter description (if any) ...
+	 * @param      unknown $group_id Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function updateCategory($old=null, $nw=null, $group_id=0)
 	{
 		if ($old === null) 
@@ -620,7 +634,15 @@ class ForumPost extends JTable
 			return true;
 		}
 	}
-	
+
+	/**
+	 * Short description for 'deleteReplies'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function deleteByCategory($oid=null)
 	{
 		$oid = intval($oid);
@@ -639,7 +661,15 @@ class ForumPost extends JTable
 		
 		return true;
 	}
-	
+
+	/**
+	 * Short description for 'deleteReplies'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $oid Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
@@ -661,7 +691,16 @@ class ForumPost extends JTable
 		
 		return parent::delete($oid);
 	}
-	
+
+	/**
+	 * Short description for 'deleteReplies'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $cat Parameter description (if any) ...
+	 * @param      unknown $state Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
 	public function setStateByCategory($cat=null, $state=null)
 	{
 		if ($cat === null) 

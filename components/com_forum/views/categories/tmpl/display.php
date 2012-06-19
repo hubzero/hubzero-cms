@@ -43,8 +43,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 ?>
 				<span class="entry-date">
 					@
-					<span class="time"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-					<span class="date"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></span>
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
 				</span>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
@@ -79,9 +79,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>				
+					<legend><span><?php echo JText::_('Search for articles'); ?></span></legend>
+					
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="categories" />
 					<input type="hidden" name="task" value="search" />
@@ -128,7 +130,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?>
+										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -161,7 +163,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 										}
 ?>
 									<span class="entry-date">
-										<?php echo JHTML::_('date', $lastpost->created, $dateFormat, $tz); ?>
+										<time datetime="<?php echo $lastpost->created; ?>"><?php echo JHTML::_('date', $lastpost->created, $dateFormat, $tz); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">

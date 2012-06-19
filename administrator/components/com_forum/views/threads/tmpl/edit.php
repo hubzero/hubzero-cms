@@ -108,13 +108,31 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 <?php } ?>
+<?php if ($this->row->parent) { ?>
+					<tr>
+						<td class="key"><label for="field-title"><?php echo JText::_('COM_FORUM_FIELD_PARENT'); ?>:</label></td>
+						<td>
+							<select name="fields[parent]" id="field-parent">
+								<option value="0"><?php echo JText::_('COM_FORUM_FIELD_PARENT_SELECT'); ?></option>
+					<?php
+						foreach ($this->threads as $thread)
+						{
+					?>
+								<option value="<?php echo $thread->id; ?>"<?php if ($this->row->parent == $thread->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($thread->title)); ?></option>
+					<?php
+						}
+					?>
+							</select>
+						</td>
+					</tr>
+<?php } ?>
 					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('COM_FORUM_FIELD_TITLE'); ?>:</label></td>
 						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-comment"><?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?></label></td>
-						<td><textarea name="fields[comment]" id="field-comment" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->row->comment)); ?></textarea></td>
+						<td><textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->comment)); ?></textarea></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-anonymous"><?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?></label></td>
@@ -201,6 +219,10 @@ function submitbutton(pressbutton)
 							</select>
 						</td>
 					</tr>
+					<tr>
+						<td class="key"><label for="field-group_id"><?php echo JText::_('COM_FORUM_FIELD_GROUP'); ?>:</label></td>
+						<td><input type="text" name="fields[group_id]" id="field-group_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->group_id); ?>" /></td>
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>
@@ -222,9 +244,10 @@ function submitbutton(pressbutton)
 
 	<?php if ($this->row->parent) { ?>
 		<input type="hidden" name="fields[category_id]" value="<?php echo $this->row->category_id; ?>" />
+	<?php } else { ?>
+		<input type="hidden" name="fields[parent]" value="<?php echo $this->row->parent; ?>" />
 	<?php } ?>
-	<input type="hidden" name="fields[group_id]" value="<?php echo $this->row->group_id; ?>" />
-	<input type="hidden" name="fields[parent]" value="<?php echo $this->row->parent; ?>" />
+	<!-- <input type="hidden" name="fields[group_id]" value="<?php echo $this->row->group_id; ?>" /> -->
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

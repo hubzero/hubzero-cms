@@ -100,18 +100,16 @@ class ForumSection extends JTable
 	var $asset_id = NULL;
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * Constructor
+	 *
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
 	{
 		parent::__construct('#__forum_sections', 'id', $db);
 	}
-	
+
 	/**
 	 * Method to compute the default name of the asset.
 	 * The default name is in the form table_name.id
@@ -124,7 +122,7 @@ class ForumSection extends JTable
 	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
-		return 'com_forum.section.'.(int) $this->$k;
+		return 'com_forum.section.' . (int) $this->$k;
 	}
 
 	/**
@@ -138,7 +136,7 @@ class ForumSection extends JTable
 	{
 		return $this->title;
 	}
-	
+
 	/**
 	 * Get the parent asset id for the record
 	 *
@@ -153,37 +151,40 @@ class ForumSection extends JTable
 	{
 		// Initialise variables.
 		$assetId = null;
-		$db		= $this->getDbo();
+		$db = $this->getDbo();
 
-		if ($assetId === null) {
+		if ($assetId === null) 
+		{
 			// Build the query to get the asset id for the parent category.
 			$query	= $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
-			$query->where('name = '.$db->quote('com_forum'));
+			$query->where('name = ' . $db->quote('com_forum'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) {
+			if ($result = $db->loadResult()) 
+			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) {
+		if ($assetId) 
+		{
 			return $assetId;
-		} else {
+		} 
+		else 
+		{
 			return parent::_getAssetParentId($table, $id);
 		}
 	}
 	
 	/**
-	 * Short description for 'loadAlias'
+	 * Load a record by its alias and bind data to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $oid Record alias
+	 * @return     boolean True upon success, False if errors
 	 */
 	public function loadByAlias($oid=NULL, $group_id=null)
 	{
@@ -192,13 +193,13 @@ class ForumSection extends JTable
 			return false;
 		}
 		$oid = trim($oid);
-		
+
 		$query = "SELECT * FROM $this->_tbl WHERE alias='$oid'";
 		if ($group_id !== null)
 		{
 			$query .= " AND group_id=" . $group_id;
 		}
-		
+
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -229,16 +230,14 @@ class ForumSection extends JTable
 		);
 		$result['alias'] = str_replace(' ', '-', $result['title']);
 		$result['alias'] = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($result['alias']));
-		
+
 		return $this->bind($result);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
@@ -247,13 +246,13 @@ class ForumSection extends JTable
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
 		}
-		
+
 		if (!$this->alias)
 		{
 			$this->alias = str_replace(' ', '-', strtolower($this->title));
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
-		
+
 		if (!$this->id)
 		{
 			$juser = JFactory::getUser();
@@ -261,17 +260,15 @@ class ForumSection extends JTable
 			$this->created_by = $juser->get('id');
 			$this->state = 1;
 		}
-		
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -285,24 +282,24 @@ class ForumSection extends JTable
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 		}
-		
+
 		$where = array();
-		
+
 		if (isset($filters['state'])) 
 		{
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
-		
+
 		if (isset($filters['group']) && $filters['group'] >= 0) 
 		{
 			$where[] = "c.group_id=" . $this->_db->Quote($filters['group']);
 		}
-		
+
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$where[] = "LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%'";
 		}
-		
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -313,12 +310,10 @@ class ForumSection extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -331,12 +326,10 @@ class ForumSection extends JTable
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -371,19 +364,19 @@ class ForumSection extends JTable
 	}
 
 	/**
-	 * Short description for 'getLastPost'
+	 * Get the last post of a thread
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $parent Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $parent Parent post (thread ID)
+	 * @return     array
 	 */
 	public function getLastPost($parent=null)
 	{
-		if (!$parent) {
+		if (!$parent) 
+		{
 			$parent = $this->parent;
 		}
-		if (!$parent) {
+		if (!$parent) 
+		{
 			return null;
 		}
 
@@ -394,27 +387,30 @@ class ForumSection extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteReplies'
+	 * Delete all replies to a parent entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $parent Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $parent Parent post (thread ID)
+	 * @return     boolean False if errors, True otherwise
 	 */
 	public function deleteReplies($parent=null)
 	{
-		if (!$parent) {
+		if (!$parent) 
+		{
 			$parent = $this->parent;
 		}
-		if (!$parent) {
+		if (!$parent) 
+		{
 			return null;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=$parent");
-		if (!$this->_db->query()) {
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		} else {
+		} 
+		else 
+		{
 			return true;
 		}
 	}

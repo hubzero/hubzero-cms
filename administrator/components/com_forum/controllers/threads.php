@@ -384,6 +384,21 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->view->row->created_by = $this->juser->get('id');
 		}
 
+		if ($this->view->row->parent)
+		{
+			echo $this->view->row->category_id;
+			$filters = array(
+				'category_id' => $this->view->row->category_id,
+				'sort'        => 'title',
+				'sort_Dir'    => 'ASC',
+				'limit'       => 100,
+				'start'       => 0,
+				'parent'      => 0
+			);
+
+			$this->view->threads = $this->view->row->getRecords($filters);
+		}
+
 		// Get the category
 		$this->view->category = new ForumCategory($this->database);
 		$this->view->category->load($this->view->row->category_id);

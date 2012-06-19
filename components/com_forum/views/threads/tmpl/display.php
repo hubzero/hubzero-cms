@@ -18,13 +18,18 @@ ximport('Hubzero_User_Profile_Helper');
 	<h2><?php echo $this->escape(stripslashes($this->post->title)); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias); ?>"><?php echo JText::_('&larr; All discussions'); ?></a></p>
+	<p>
+		<a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias); ?>">
+			<?php echo JText::_('All discussions'); ?>
+		</a>
+	</p>
 </div>
 <div class="clear"></div>
 
 <?php
-	foreach($this->notifications as $notification) {
-		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+	foreach ($this->notifications as $notification) 
+	{
+		echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 	}
 ?>
 <div class="main section">
@@ -47,12 +52,12 @@ ximport('Hubzero_User_Profile_Helper');
 	{ 
 		if (!$participant->anonymous) { 
 ?>
-				<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
+				<li><a class="member" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
 <?php 
 		} else if (!$anon) {
 			$anon = true;
 ?>
-				<li><?php echo JText::_('COM_FORUM_ANONYMOUS'); ?></li>
+				<li><span class="member"><?php echo JText::_('COM_FORUM_ANONYMOUS'); ?></span></li>
 <?php
 		}
 	}
@@ -80,8 +85,8 @@ ximport('Hubzero_User_Profile_Helper');
 		<h3 class="comments-title">
 			<?php echo JText::_('COM_FORUM_COMMENTS'); ?>
 		</h3>
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&section=' . $this->filters['section'] . '&category='.$this->category->alias.'&thread='.$this->post->id); ?>" method="get">
-		<ol class="comments">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $this->post->id); ?>" method="get">
+			<ol class="comments">
 			<?php
 			if ($this->rows) {
 				ximport('Hubzero_User_Profile');
@@ -130,12 +135,12 @@ ximport('Hubzero_User_Profile_Helper');
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
 							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>">@
-								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-								<span class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
+								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+								<span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
 									&mdash; <?php echo JText::_('COM_FORUM_EDITED'); ?>
-									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-									<span class="date"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></span>
+									<span class="time"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+									<span class="date"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></time></span>
 								<?php } ?>
 							</a>
 						</p>
@@ -180,20 +185,22 @@ ximport('Hubzero_User_Profile_Helper');
 				</li>
 			<?php } ?>
 		<?php } else { ?>
-			<li><p><?php echo JText::_('COM_FORUM_NO_REPLIES_FOUND'); ?></p></li>
+				<li>
+					<p><?php echo JText::_('COM_FORUM_NO_REPLIES_FOUND'); ?></p>
+				</li>
 		<?php } ?>
-		</ol>
-	    <?php 
-            // @FIXME: Nick's Fix Based on Resources View
-            //echo '<input type="hidden" name="topic" value="' . $this->post->id . '" />';
-            $pf = $this->pageNav->getListFooter();
-            //$nm = str_replace('com_','',$this->option);
-            $pf = str_replace('?controller=threads&amp;', '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
+			</ol>
+		<?php 
+			// @FIXME: Nick's Fix Based on Resources View
+			//echo '<input type="hidden" name="topic" value="' . $this->post->id . '" />';
+			$pf = $this->pageNav->getListFooter();
+			//$nm = str_replace('com_','',$this->option);
+			$pf = str_replace('?controller=threads&amp;', '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
 			$pf = str_replace('?&amp;', '?', $pf);
-            echo $pf;
-            //echo $this->pageNav->getListFooter(); 
-            // @FIXME: End Nick's Fix
-        ?>
+			echo $pf;
+			//echo $this->pageNav->getListFooter(); 
+			// @FIXME: End Nick's Fix
+		?>
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
@@ -202,7 +209,7 @@ ximport('Hubzero_User_Profile_Helper');
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
-	</h3>			
+	</h3>
 	<div class="aside">
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
 			<caption>Wiki Syntax Reference</caption>
@@ -239,7 +246,7 @@ ximport('Hubzero_User_Profile_Helper');
 		</table>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&category='.$this->category->alias.'&thread='.$this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&category=' . $this->category->alias . '&thread=' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 <?php
@@ -259,6 +266,7 @@ ximport('Hubzero_User_Profile_Helper');
 					}
 					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
 				}
+				$now = date('Y-m-d H:i:s', time());
 ?>
 				<img src="<?php echo $thumb; ?>" alt="" />
 			</p>
@@ -272,8 +280,8 @@ ximport('Hubzero_User_Profile_Helper');
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
 					<span class="permalink">@
-						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $dateFormat, $tz); ?></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
 					</span>
 				</p>
 				
@@ -305,14 +313,14 @@ ximport('Hubzero_User_Profile_Helper');
 				<fieldset>
 					<legend><?php echo JText::_('COM_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
-						<label>
+						<label for="upload">
 							<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
 						</label>
 
-						<label>
+						<label for="field-description">
 							<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>:
-							<input type="text" name="description" value="" />
+							<input type="text" name="description" id="field-description" value="" />
 						</label>
 					</div>
 				</fieldset>

@@ -29,15 +29,15 @@ $juser = JFactory::getUser();
 				<tbody>
 					<tr>
 						<th><?php echo JText::_('Categories'); ?></th>
-						<td><?php echo $this->stats->categories; ?></td>
+						<td><span class="item-count"><?php echo $this->stats->categories; ?></span></td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('Discussions'); ?></th>
-						<td><?php echo $this->stats->threads; ?></td>
+						<td><span class="item-count"><?php echo $this->stats->threads; ?></span></td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('Posts'); ?></th>
-						<td><?php echo $this->stats->posts; ?></td>
+						<td><span class="item-count"><?php echo $this->stats->posts; ?></span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -57,8 +57,8 @@ $juser = JFactory::getUser();
 ?>
 				<span class="entry-date">
 					@
-					<span class="time"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
-					<span class="date"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></span>
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
 				</span>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
