@@ -91,9 +91,13 @@ $this->database->setQuery( $sql );
 $author_ids = $this->database->loadResultArray();
 
 //get the author names from ids
-foreach($author_ids as $ai) {
-	$author =& JUser::getInstance($ai);
-	$authors[] = $author->name;
+if ($author_ids && is_array($author_ids))
+{
+	foreach ($author_ids as $ai) 
+	{
+		$author =& JUser::getInstance($ai);
+		$authors[] = $author->name;
+	}
 }
 ?>
 
