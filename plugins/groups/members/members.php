@@ -248,19 +248,19 @@ class plgGroupsMembers extends JPlugin
 						$view->managers = array();
 					break;
 					case 'pending':
-						$view->groupusers  = ($view->q) ? $group->search('applicants', $view->q) : $group->get('applicants');
-						$view->managers = array();
+						$view->groupusers = ($view->q) ? $group->search('applicants', $view->q) : $group->get('applicants');
+						$view->managers   = array();
 					break;
 					case 'managers':
-						$view->groupusers  = ($view->q) ? $group->search('managers', $view->q) : $group->get('managers');
+						$view->groupusers = ($view->q) ? $group->search('managers', $view->q) : $group->get('managers');
 						$view->groupusers = ($view->role_filter) ? $group->search_roles($view->role_filter) : $view->groupusers;
-						$view->managers = $group->get('managers');
+						$view->managers   = $group->get('managers');
 					break;
 					case 'members':
 					default:
 						$view->groupusers = ($view->q) ? $group->search('members', $view->q) : $group->get('members');
 						$view->groupusers = ($view->role_filter) ? $group->search_roles($view->role_filter) : $view->groupusers;
-						$view->managers = $group->get('managers');
+						$view->managers   = $group->get('managers');
 					break;
 				}
 
@@ -272,7 +272,7 @@ class plgGroupsMembers extends JPlugin
 
 				//if we dont want to display system users
 				//filter values through callback above and then reset array keys
-				if ($this->display_system_users == 'no') 
+				if ($this->display_system_users == 'no' && is_array($view->groupusers)) 
 				{
 					$view->groupusers = array_values(array_filter($view->groupusers, "isSystemUser"));
 				}
