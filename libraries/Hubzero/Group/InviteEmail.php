@@ -30,10 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-?>
-
-<?php
-
 
 /**
  * Short description for 'Hubzero_Group_Invite_Email'
@@ -160,5 +156,3 @@ Class Hubzero_Group_Invite_Email extends JTable
 	    return $return; 
 	}
 }
-
-?>
