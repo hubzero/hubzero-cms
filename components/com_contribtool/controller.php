@@ -414,14 +414,12 @@ class ContribtoolController extends JObject
 			$this->_error = JRequest::getVar( 'error', '');
 		}
 
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
-
 		// check access rights
 		if($this->check_access($this->_toolid, $juser, $this->_admin) ) {
 
 			// Create a Tool Version object
 			$objV = new ToolVersion( $database );
-			$objV->getToolVersions( $this->_toolid, $versions, '', $ldap);
+			$objV->getToolVersions( $this->_toolid, $versions, '');
 
 		}
 		else {
@@ -493,8 +491,6 @@ class ContribtoolController extends JObject
 			$this->_error = JRequest::getVar( 'error', '');
 		}
 
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
-
 		// check access rights
 		if($this->check_access($this->_toolid, $juser, $this->_admin) ) {
 
@@ -502,7 +498,7 @@ class ContribtoolController extends JObject
 			$obj = new Tool( $database );
 
 			// get tool status
-			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev', $ldap );
+			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev');
 
 			if(!$status) {
 				JError::raiseError( 404, JText::_('ERR_STATUS_CANNOT_FIND') );
@@ -565,8 +561,6 @@ class ContribtoolController extends JObject
 		if (!$this->_version) {
 			$this->_version = JRequest::getVar( 'version', 'dev');
 		}
-
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 
 		// check access rights
 		if($this->check_access($this->_toolid, $juser, $this->_admin) ) {
@@ -698,8 +692,6 @@ class ContribtoolController extends JObject
 			$this->_error = JRequest::getVar( 'error', '');
 		}
 
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
-
 		// check access rights
 		if($this->check_access($this->_toolid, $juser, $this->_admin) ) {
 
@@ -707,7 +699,7 @@ class ContribtoolController extends JObject
 			$obj = new Tool( $database );
 
 			// get tool status
-			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev', $ldap );
+			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev');
 
 			if(!$status) {
 				JError::raiseError( 404, JText::_('ERR_STATUS_CANNOT_FIND') );
@@ -855,13 +847,11 @@ class ContribtoolController extends JObject
 			$this->_msg = JRequest::getVar( 'msg', '', 'post' );
 		}
 
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
-
 		// check access rights
 		if($this->check_access($this->_toolid, $juser, $this->_admin) ) {
 
 			// get tool status
-			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev', $ldap );
+			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev');
 
 			if(!$status) {
 				var_dump($obj);
@@ -1118,7 +1108,6 @@ class ContribtoolController extends JObject
 		$tool				= ($task=='save' or $task=='register') ? array_map('trim', $_POST['tool']): array();
 		$tool				= array_map(array('JRequest','_cleanVar'), $tool); // Sanitize the input a bit
 		$today 				= date( 'Y-m-d H:i:s', time() );
-		$ldap_save		    = isset($this->config->parameters['ldap_save']) ? $this->config->parameters['ldap_save'] : 0;
 		$group_prefix       = isset($this->config->parameters['group_prefix']) ? $this->config->parameters['group_prefix'] : 'app-';
 		$dev_suffix       	= isset($this->config->parameters['dev_suffix']) ? $this->config->parameters['dev_suffix'] : '_dev';
 		$invokedir 			= isset($this->config->parameters['invokescript_dir']) ? $this->config->parameters['invokescript_dir'] : DS.'apps';
@@ -2386,12 +2375,10 @@ class ContribtoolController extends JObject
 		$scriptdirparam =& JComponentHelper::getParams( 'com_contribtool' );
 		$scriptdir = $scriptdirparam->get( 'addreposcript_dir', '/usr/bin' );
 
-		$ldap = 0;
-
 		// Create a Tool object
 		if(empty($toolinfo)) {
 			$obj = new Tool( $database );
-			$obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev', $ldap);
+			$obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev');
 		}
 
 		if(!empty($toolinfo)) {
@@ -2429,12 +2416,11 @@ class ContribtoolController extends JObject
 
 		$database =& JFactory::getDBO();
 		$xhub   =& Hubzero_Factory::getHub();
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		// Create a Tool object
 		$obj = new Tool( $database );
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 		if(count($status) > 0) {
 			$command = '/bin/bash ' . $scriptdir.DS.'installtool.php -type raw -hubdir '.JPATH_ROOT.' '.$status['toolname'];
 
@@ -2490,7 +2476,6 @@ class ContribtoolController extends JObject
 
 		$database =& JFactory::getDBO();
 		$xhub   =& Hubzero_Factory::getHub();
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		//$tarball_path = $this->rconfig->get('uploadpath');
@@ -2499,7 +2484,7 @@ class ContribtoolController extends JObject
 		$xlog->logDebug("finalizeTool(): checkpoint 2");
 		// Create a Tool object
 		$obj = new Tool( $database );
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 		if(count($status) > 0) {
 
 			// Make sure the path exist
@@ -2620,13 +2605,12 @@ class ContribtoolController extends JObject
 	protected function retire (&$output, $result = 1)
 	{
 		$database 	=& JFactory::getDBO();
-		$ldap = isset($this->config->parameters['ldap_save']) ? $this->config->parameters['ldap_save'] : 0;
 
 		$output = array('class'=>'passed', 'msg'=>JText::_('NOTICE_SUCCESS_TOOL_RETIRED'), 'pass'=>'', 'fail'=>'');
 
 		// get current status
 		$obj = new Tool( $database );
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
 		if(count($status) <=0) {
 			$result = 0;
@@ -2643,17 +2627,6 @@ class ContribtoolController extends JObject
 			}
 			else {
 				$output['pass'] .= '<br />* '.JText::_('NOTICE_UNPUBLISHED_PREV_VERSIONS');
-			}
-
-			if($ldap) {
-			     $hzt = Hubzero_Tool::getInstance($this->_toolid);
-				if (is_object($hzt) && $hzt->unpublishAllVersions('ldap')) {
-					$output['pass'] .= '<br />* '.JText::_('NOTICE_UNPUBLISHED_PREV_VERSIONS_LDAP');
-				}
-				else {
-					$output['fail'] .= '<br />* '.JText::_('ERR_FAILED_TO_UNPUBLISH_PREV_VERSIONS_LDAP');
-				}
-
 			}
 		}
 
@@ -2699,8 +2672,6 @@ class ContribtoolController extends JObject
 		$doiprefix 		= isset($this->config->parameters['doi_prefix']) ? $this->config->parameters['doi_prefix'] : '';
 
 		// get config
-		$ldap_save = isset($this->config->parameters['ldap_save']) ? $this->config->parameters['ldap_save'] : 0;
-		$ldap_read = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$doiservice = isset($this->config->parameters['doi_service']) ? $this->config->parameters['doi_service'] : 'http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl';
 		$old_doi = isset($this->config->parameters['usedoi']) ? $this->config->parameters['usedoi'] : 0;
 		$new_doi = isset($this->config->parameters['new_doi']) ? $this->config->parameters['new_doi'] : 0;
@@ -2712,7 +2683,7 @@ class ContribtoolController extends JObject
 		$xlog->logDebug("publish(): checkpoint 2:$result");
 		// get current status
 		$obj = new Tool( $database );
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap_read);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
 		if(count($status) <=0) {
 			$result = 0;
@@ -2722,7 +2693,7 @@ class ContribtoolController extends JObject
 
 			// Create a Tool Version object
 			$objV = new ToolVersion( $database );
-			$objV->getToolVersions( $this->_toolid, $tools, '', $ldap_read, 1);
+			$objV->getToolVersions( $this->_toolid, $tools, '',1);
 
 			// make checks
 			if(!is_numeric($status['revision'])) {  // bad format
@@ -2873,9 +2844,6 @@ class ContribtoolController extends JObject
 				}
 			}
 		}
-
-		$xlog->logDebug("publish(): checkpoint 5:$result, running ldap stuff");
-		// ldap actions
 
 		if($result)
 		{
@@ -3035,7 +3003,6 @@ class ContribtoolController extends JObject
 		$database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
 		$xhub      	=& Hubzero_Factory::getHub();
-		$ldap 		= isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -3063,7 +3030,7 @@ class ContribtoolController extends JObject
 		$nextstep = $step + 1;
 
 		// get tool version (dev or current) information
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 		// get resource information
 		$row = new ResourcesResource( $database );
@@ -3115,7 +3082,7 @@ class ContribtoolController extends JObject
 			} else {
 			*/
 				// get updated tool status
-				$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
+				$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 			}
 
@@ -3286,7 +3253,6 @@ class ContribtoolController extends JObject
 	    $database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
 		$xhub      	=& Hubzero_Factory::getHub();
-		$ldap 		= isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -3341,7 +3307,7 @@ class ContribtoolController extends JObject
 		// get updated version
 		$objV = new ToolVersion($database);
 
-		$thistool = $objV->getVersionInfo('', $version, $resource->alias, '', $ldap);
+		$thistool = $objV->getVersionInfo('', $version, $resource->alias, '');
 		$thistool = $thistool ? $thistool[0] : '';
 
 		// replace resource info with requested version

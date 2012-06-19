@@ -232,8 +232,6 @@ class ContribtoolController extends JObject
 					group_prefix=app-
 					demo_url=
 					doi_service=http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl
-					ldap_save=1
-					ldap_read=0
 					usedoi=0
 					exec_pu=0
 					screenshot_edit=1';

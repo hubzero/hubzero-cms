@@ -101,7 +101,6 @@ HUBzero is a registered trademark of Purdue University.
 			<filename>contribtool.author.php</filename>
 			<filename>contribtool.config.php</filename>
 			<filename>contribtool.helper.php</filename>
-			<filename>contribtool.ldap.php</filename>
 		        <filename>contribtool.license.php</filename>
 			<filename>contribtool.tool.php</filename>
 			<filename>contribtool.toolgroup.php</filename>
@@ -129,7 +128,6 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="group_prefix" type="text" menu="hide" default="app-" label="Dev group prefix" description="Prefix to name of development group (e.g. app-) " />
 		<param name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
 		<param name="doi_service" type="text" menu="hide" default="" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
-		<param name="ldap_save" type="radio" default="0" label="Save in LDAP?" description="Duplicate tool information in mysql and LDAP">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>

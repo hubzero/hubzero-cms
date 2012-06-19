@@ -597,21 +597,20 @@ class Tool extends JTable
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @param      array &$status Parameter description (if any) ...
 	 * @param      string $version Parameter description (if any) ...
-	 * @param      boolean $ldap Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function getToolStatus($toolid, $option, &$status, $version='dev', $ldap=false)
+	public function getToolStatus($toolid, $option, &$status, $version='dev')
 	{
 		$toolinfo = $this->getToolInfo(intval($toolid));
 		if($toolinfo) {
 
 			$objV = new ToolVersion( $this->_db);
 			$objA = new ToolAuthor( $this->_db);
-			$version = $objV->getVersionInfo(0, $version, $toolinfo[0]->toolname, $ldap);
+			$version = $objV->getVersionInfo(0, $version, $toolinfo[0]->toolname);
 			$developers = $this->getToolDevelopers($toolid);
 			$authors = $objA->getToolAuthors($version, $toolinfo[0]->rid, $toolinfo[0]->toolname);
 
-			$this->buildToolStatus($toolinfo, $developers, $authors, $version, $status, $option, $ldap);
+			$this->buildToolStatus($toolinfo, $developers, $authors, $version, $status, $option);
 
 		}
 		else {
@@ -631,10 +630,9 @@ class Tool extends JTable
 	 * @param      array $version Parameter description (if any) ...
 	 * @param      array &$status Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      unknown $ldap Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function buildToolStatus($toolinfo, $developers=array(), $authors=array(), $version, &$status, $option, $ldap)
+	public function buildToolStatus($toolinfo, $developers=array(), $authors=array(), $version, &$status, $option)
 	{
 		// Create a Version object
 		$objV = new ToolVersion( $this->_db);
@@ -689,10 +687,7 @@ class Tool extends JTable
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
 
 		// get latest version information
-		if($ldap) {
-			$current = $objV->getVersionInfo('', 'current', $status['toolname'], '', true);
-		}
-		else if($status['published']) {
+		if($status['published']) {
 			$current = $objV->getVersionInfo('', 'current', $toolinfo[0]->toolname);
 		}
 

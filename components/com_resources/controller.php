@@ -1098,11 +1098,9 @@ class ResourcesController extends Hubzero_Controller
 			$tables = $database->getTableList();
 			$table = $database->_table_prefix.'tool_version';
 
-			$ldap = $tconfig->get('ldap_read');
-
 			if (in_array($table,$tables)) {
 				$tv = new ToolVersion( $database );
-				$tv->getToolVersions( '', $alltools, $alias, $ldap);
+				$tv->getToolVersions( '', $alltools, $alias);
 
 				if ($alltools) {
 					foreach ($alltools as $tool)

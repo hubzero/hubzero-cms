@@ -55,14 +55,6 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
 		<param name="doi_service" type="text" menu="hide" default="" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="ldap_save" type="radio" default="0" label="Save in LDAP?" description="Duplicate tool information in mysql and LDAP">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="ldap_read" type="radio" default="0" label="Read from LDAP?" description="Get tool information from LDAP">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="usedoi" type="radio" default="0" label="Register old-style DOI?" description="Register DOI handle for new tool releases">
 			<option value="0">No</option>

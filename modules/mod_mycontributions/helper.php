@@ -334,7 +334,7 @@ class modMyContributions
 	 */
 	public function display()
 	{
-		// Get the user's profile from LDAP...
+		// Get the user's profile 
 		$xprofile =& Hubzero_Factory::getProfile();
 		$juser =& JFactory::getUser();
 		$session_quota = $xprofile->get('jobsAllowed');

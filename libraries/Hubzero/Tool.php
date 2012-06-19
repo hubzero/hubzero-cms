@@ -48,55 +48,13 @@ class Hubzero_ToolHelper
 	 * Long description (if any) ...
 	 * 
 	 * @param      unknown $func Parameter description (if any) ...
-	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    static public function iterate($func, $storage = 'mysql')
+    static public function iterate($func)
     {
         $db = &JFactory::getDBO();
 
-        if (!empty($storage) && !in_array($storage, array('mysql', 'ldap')))
-        {
-            return false;
-        }
-
-        if ($storage == 'ldap')
-        {
-            $xhub = &Hubzero_Factory::getHub();
-            $conn = &Hubzero_Factory::getPLDC();
-
-            $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
-            $dn = 'ou=toolnames,' . $hubLDAPBaseDN;
-            $filter = '(objectclass=hubToolName)';
-
-            $attributes[] = 'toolName';
-
-            $sr = ldap_search($conn, $dn, $filter, $attributes, 0, 0, 0);
-
-            if ($sr === false)
-            {
-                return false;
-            }
-
-            $count = ldap_count_entries($conn, $sr);
-
-            if ($count === false)
-            {
-                return false;
-            }
-
-            $entry = ldap_first_entry($conn, $sr);
-
-            do
-            {
-                $attributes = ldap_get_attributes($conn, $entry);
-                call_user_func($func, $attributes['toolName'][0]);
-                $entry = ldap_next_entry($conn, $entry);
-            }
-            while ($entry !== false);
-        }
-        else if ($storage == 'mysql')
+        if (true)
         {
             $query = "SELECT toolname FROM #__tool;";
 
@@ -214,13 +172,6 @@ class Hubzero_Tool
     private $_list_keys = array('version');
 
 	/**
-	 * Description for '_ldapToolMirror'
-	 * 
-	 * @var boolean
-	 */
-    private $_ldapToolMirror = false;
-
-	/**
 	 * Description for '_updateAll'
 	 * 
 	 * @var boolean
@@ -250,8 +201,6 @@ class Hubzero_Tool
 	 */
     private function __construct()
     {
-        $config = & JComponentHelper::getParams('com_contribtool');
-        $this->_ldapToolMirror = $config->get('ldap_save') == '1';
     }
 
 	/**
@@ -326,45 +275,18 @@ class Hubzero_Tool
 	 * @param      string $format Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-    public function toArray($format = 'mysql')
+    public function toArray()
     {
         $xhub = &Hubzero_Factory::getHub();
         $result = array();
-        $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
 
-        if ($format == 'mysql')
+        if (true)
         {
             foreach (self::$_propertyattrmap as $key=>$value)
             {
                 $current = $this->__get($key);
 
                 $result[$key] = $current;
-            }
-
-            return $result;
-        }
-        else if ($format == 'ldap')
-        {
-            foreach (self::$_propertyattrmap as $key=>$value)
-            {
-                $current = $this->__get($key);
-
-                if (isset($current) && !is_null($current))
-                {
-                    $result[$value] = $current;
-                }
-                else
-                {
-                    $result[$value] = array();
-                }
-            }
-
-            foreach ($result['member'] as $key=>$member)
-            {
-                if (!empty($member))
-                {
-                    $result['member'][$key] = "tool=$member,ou=toolnames," . $hubLDAPBaseDN;
-                }
             }
 
             return $result;
@@ -379,14 +301,13 @@ class Hubzero_Tool
 	 * Long description (if any) ...
 	 * 
 	 * @param      unknown $instance Parameter description (if any) ...
-	 * @param      unknown $storage Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-    public function getInstance($instance, $storage = null)
+    public function getInstance($instance)
     {
         $hztv = new Hubzero_Tool();
 
-        if ($hztv->read($instance, $storage) === false)
+        if ($hztv->read($instance) === false)
         {
             return false;
         }
@@ -419,43 +340,6 @@ class Hubzero_Tool
         }
 
         return false;
-    }
-
-	/**
-	 * Short description for '_ldap_create'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
-	 */
-    private function _ldap_create()
-    {
-        $xhub = &Hubzero_Factory::getHub();
-        $conn = &Hubzero_Factory::getPLDC();
-
-        if (empty($conn) || empty($xhub))
-        {
-            return false;
-        }
-
-        if (empty($this->toolname))
-        {
-            return false;
-        }
-
-        $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
-        $dn = 'toolname=' . $this->toolname . ',ou=toolnames,' . $hubLDAPBaseDN;
-        $attr["objectclass"][0] = "top";
-        $attr["objectclass"][1] = "hubToolName";
-        $attr['toolName'] = $this->toolname;
-
-        if (!@ldap_add($conn, $dn, $attr) && @ldap_errno($conn) != 68)
-        {
-            return false;
-        }
-
-        return true;
     }
 
 	/**
@@ -528,35 +412,13 @@ class Hubzero_Tool
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function create($storage = null)
+    public function create()
     {
-        if (is_null($storage))
-        {
-            $storage = ($this->_ldapToolMirror) ? 'all' : 'mysql';
-        }
-
-		if ($storage == 'all' && !$this->_ldapToolMirror)
-			$storage = 'mysql';
-
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
-            die();
-        }
-
-        if (!in_array($storage, array('mysql', 'ldap', 'all')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
-
         $result = true;
 
-        if ($storage == 'mysql' || $storage == 'all')
+        if (true)
         {
             $result = $this->_mysql_create();
 
@@ -566,139 +428,7 @@ class Hubzero_Tool
             }
         }
 
-        if ($result === true && ($storage == 'ldap' || $storage == 'all'))
-        {
-            $result = $this->_ldap_create();
-
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": LDAP create failed", E_USER_WARNING);
-            }
-        }
         return $result;
-    }
-
-	/**
-	 * Short description for '_ldap_read'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
-	 */
-    private function _ldap_read()
-    {
-        $xhub = &Hubzero_Factory::getHub();
-        $conn = &Hubzero_Factory::getPLDC();
-
-        if (empty($conn) || empty($xhub))
-        {
-            return false;
-        }
-
-        $dn = "toolName=" . $this->toolname . ",ou=toolnames," . $xhub->getCfg('hubLDAPBaseDN');
-
-        $reqattr = array('toolName', 'cn', 'member');
-
-        $entry = @ldap_search($conn, $dn, "(objectClass=hubToolName)", $reqattr, 0, 0, 0, 3);
-
-        if (empty($entry))
-        {
-            return false;
-        }
-
-        $count = ldap_count_entries($conn, $entry);
-
-        if ($count <= 0)
-        {
-            return false;
-        }
-
-        $firstentry = ldap_first_entry($conn, $entry);
-        $attr = ldap_get_attributes($conn, $firstentry);
-        $toolinfo = array();
-
-        foreach ($reqattr as $key=>$value)
-        {
-            if (isset($attr[$reqattr[$key]][0]))
-            {
-                if (count($attr[$reqattr[$key]]) <= 2)
-                {
-                    $toolinfo[$value] = $attr[$reqattr[$key]][0];
-                }
-                else
-                {
-                    $toolinfo[$value] = $attr[$reqattr[$key]];
-                    unset($toolinfo[$value]['count']);
-                }
-            }
-            else
-            {
-                unset($toolinfo[$value]);
-            }
-        }
-
-        foreach (array('member') as $list)
-        {
-            if (!empty($toolinfo[$list]))
-            {
-                if (!is_array($toolinfo[$list]))
-                {
-                    $toolinfo[$list] = array($toolinfo[$list]);
-                }
-
-                foreach ($toolinfo[$list] as $key=>$value)
-                {
-                    if (strncmp($value, "tool=", 5) == 0)
-                    {
-                        $endpos = strpos($value, ',', 5);
-
-                        if ($endpos)
-                        {
-                            $value = substr($value, 5, $endpos - 5);
-                        }
-                        else
-                        {
-                            $value = substr($value, 5);
-                        }
-
-                        $toolinfo[$list][$key] = $value;
-                    }
-                    else if (strncmp($value, "toolName=", 9) == 0)
-                    {
-                        $endpos = strpos($value, ',', 9);
-
-                        if ($endpos)
-                        {
-                            $value = substr($value, 9, $endpos - 9);
-                        }
-                        else
-                        {
-                            $value = substr($value, 9);
-                        }
-
-                        $toolinfo[$list][$key] = $value;
-                    }
-                }
-            }
-        }
-
-        $this->clear();
-
-        foreach (self::$_propertyattrmap as $key=>$value)
-        {
-            if (isset($toolinfo[$value]))
-            {
-                $this->__set($key, $toolinfo[$value]);
-            }
-            else
-            {
-                $this->__set($key, null);
-            }
-        }
-
-        $this->_updatedkeys = array();
-
-        return true;
     }
 
 	/**
@@ -763,16 +493,10 @@ class Hubzero_Tool
 	 * Long description (if any) ...
 	 * 
 	 * @param      unknown $toolname Parameter description (if any) ...
-	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function read($toolname = null, $storage = 'mysql')
+    public function read($toolname = null)
     {
-        if (is_null($storage))
-        {
-            $storage = 'mysql';
-        }
-
         if (is_null($toolname))
         {
             $toolname = $this->toolname;
@@ -792,22 +516,9 @@ class Hubzero_Tool
             die();
         }
 
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #2 is not a string", E_USER_ERROR);
-            die();
-        }
-
-        if (!in_array($storage, array('mysql', 'ldap')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #2 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
-
         $result = true;
 
-        if ($storage == 'mysql')
+        if (true)
         {
             $this->clear();
             $this->toolname = $toolname;
@@ -819,118 +530,8 @@ class Hubzero_Tool
                 $this->clear();
             }
         }
-        else if ($storage == 'ldap')
-        {
-            $this->clear();
-            $this->toolname = $toolname;
-
-            $result = $this->_ldap_read();
-
-            if ($result === false)
-            {
-                $this->clear();
-            }
-        }
 
         return $result;
-    }
-
-	/**
-	 * Short description for '_ldap_update'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $all Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-    private function _ldap_update($all = false)
-    {
-        $xhub = &Hubzero_Factory::getHub();
-        $conn = &Hubzero_Factory::getPLDC();
-        $errno = 0;
-
-        if (empty($conn) || empty($xhub))
-        {
-            return false;
-        }
-
-        if (empty($this->toolname))
-        {
-            return false;
-        }
-
-        $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
-        $toolinfo = $this->toArray('ldap');
-
-        $current_hzt = Hubzero_Tool::getInstance($this->toolname, 'ldap');
-
-        if (!is_object($current_hzt))
-        {
-            if ($this->_ldap_create() === false)
-            {
-                return false;
-            }
-
-            $current_hzt = Hubzero_Tool::getInstance($this->toolname, 'ldap');
-
-            if (!is_object($current_hzt))
-            {
-                return false;
-            }
-        }
-
-        $currentinfo = $current_hzt->toArray('ldap');
-
-        $dn = 'toolName=' . $this->toolname . ',ou=toolnames,' . $hubLDAPBaseDN;
-
-        $replace_attr = array();
-        $add_attr = array();
-        $delete_attr = array();
-        $_attrpropertymap = array_flip(self::$_propertyattrmap);
-
-        // @FIXME Check for empty strings, use delete instead of replace as
-        // LDAP disallows empty values
-
-        foreach ($currentinfo as $key=>$value)
-        {
-            if (!$all && !in_array($_attrpropertymap[$key], $this->_updatedkeys))
-            {
-                continue;
-            }
-            else if ($toolinfo[$key] == array() && $currentinfo[$key] != array())
-            {
-                $delete_attr[$key] = array();
-            }
-            else if ($toolinfo[$key] != array() && $currentinfo[$key] == array())
-            {
-                $add_attr[$key] = $toolinfo[$key];
-            }
-            else if ($toolinfo[$key] != $currentinfo[$key])
-            {
-                $replace_attr[$key] = $toolinfo[$key];
-            }
-        }
-
-        if (!@ldap_mod_replace($conn, $dn, $replace_attr))
-        {
-            $errno = @ldap_errno($conn);
-        }
-        if (!@ldap_mod_add($conn, $dn, $add_attr))
-        {
-            $errno = @ldap_errno($conn);
-        }
-        if (!@ldap_mod_del($conn, $dn, $delete_attr))
-        {
-            $errno = @ldap_errno($conn);
-        }
-
-        if ($errno != 0)
-        {
-            return false;
-        }
-
-        return true;
     }
 
 	/**
@@ -1120,52 +721,17 @@ class Hubzero_Tool
     }
 
 	/**
-	 * Short description for 'syncldap'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
-	 */
-    public function syncldap()
-    {
-        $this->_updateAll = true;
-        return $this->update('ldap');
-    }
-
-	/**
 	 * Short description for 'update'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function update($storage = null)
+    public function update()
     {
-        if (is_null($storage))
-        {
-            $storage = ($this->_ldapToolMirror) ? 'all' : 'mysql';
-        }
-
-		if ($storage == 'all' && !$this->_ldapToolMirror)
-			$storage = 'mysql';
-
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
-            die();
-        }
-
-        if (!in_array($storage, array('mysql', 'ldap', 'all')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
-
         $result = true;
 
-        if ($storage == 'mysql' || $storage == 'all')
+        if (true)
         {
             $result = $this->_mysql_update($this->_updateAll);
 
@@ -1175,50 +741,8 @@ class Hubzero_Tool
             }
         }
 
-        if ($result === true && ($storage == 'ldap' || $storage == 'all'))
-        {
-            $result = $this->_ldap_update($this->_updateAll);
-
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": LDAP update failed", E_USER_WARNING);
-            }
-        }
-
         $this->_updateAll = false;
         return $result;
-    }
-
-	/**
-	 * Short description for '_ldap_delete'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
-	 */
-    private function _ldap_delete()
-    {
-        $conn = & Hubzero_Factory::getPLDC();
-        $xhub = & Hubzero_Factory::getHub();
-
-        if (empty($conn) || empty($xhub))
-        {
-            return false;
-        }
-
-        if (empty($this->toolname))
-        {
-            return false;
-        }
-
-        $dn = "toolName=" . $this->toolname . ",ou=toolnames," . $xhub->getCfg('hubLDAPBaseDN');
-
-        if (!@ldap_delete($conn, $dn))
-        {
-            return false;
-        }
-
-        return true;
     }
 
 	/**
@@ -1275,57 +799,19 @@ class Hubzero_Tool
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function delete($storage = null)
+    public function delete()
     {
-        if (func_num_args() > 1)
-        {
-            $this->_error(__FUNCTION__ . ": Invalid number of arguments", E_USER_ERROR);
-            die();
-        }
-
-        if (is_null($storage))
-        {
-            $storage = ($this->_ldapToolMirror) ? 'all' : 'mysql';
-        }
-
-		if ($storage == 'all' && !$this->_ldapToolMirror)
-			$storage = 'mysql';
-
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
-            die();
-        }
-
-        if (!in_array($storage, array('mysql', 'ldap', 'all')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
-
         $result = true;
 
-        if ($storage == 'mysql' || $storage == 'all')
+        if (true)
         {
             $result = $this->_mysql_delete();
 
             if ($result === false)
             {
                 $this->_error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
-            }
-        }
-
-        if ($result === true && ($storage == 'ldap' || $storage == 'all'))
-        {
-            $result = $this->_ldap_delete();
-
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": LDAP deletion failed", E_USER_WARNING);
             }
         }
 
@@ -1635,10 +1121,9 @@ class Hubzero_Tool
 	 * Long description (if any) ...
 	 * 
 	 * @param      unknown $instance Parameter description (if any) ...
-	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function unpublishVersion($instance, $storage = 'all')
+    public function unpublishVersion($instance)
     {
         $db = &JFactory::getDBO();
 
@@ -1682,10 +1167,9 @@ class Hubzero_Tool
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-    public function unpublishAllVersions($storage = 'all')
+    public function unpublishAllVersions()
     {
         $db = &JFactory::getDBO();
 
