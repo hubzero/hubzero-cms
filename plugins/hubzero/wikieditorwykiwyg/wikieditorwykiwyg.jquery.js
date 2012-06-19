@@ -52,7 +52,8 @@ WYKIWYG.converter = function() {
 				replacement: function(str, attrs, innerHTML) {
 					var style = attrs.match(attrRegExp('style')),
 							id = attrs.match(attrRegExp('id'));
-					return innerHTML ? '[[Span(' + innerHTML + (style && style[1] ? ', style=' + style[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' : str;
+					//return innerHTML ? '[[Span(' + innerHTML + (style && style[1] ? ', style=' + style[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' : str;
+					return innerHTML ? innerHTML : '';
 				}
 			},
 			{
