@@ -2021,7 +2021,7 @@ window.addEvent('domready', function(){
 	$$('.wiki-toolbar-content').each(function(textarea) {
 		var id = $(textarea).getProperty('id');
 		
-		var edtr = new WYKIWYG.editor.edit('editor',{
+		var edtr = new WYKIWYG.editor.edit('editor' + id,{
 			id: id,
 			controls: [
 						'bold','italic','underline','strikethrough','|',

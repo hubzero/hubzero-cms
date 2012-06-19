@@ -2021,7 +2021,7 @@ jQuery(document).ready(function($){
 	$('.wiki-toolbar-content').each(function(i, textarea) {
 		var id = $(textarea).attr('id');
 		
-		var edtr = new WYKIWYG.editor.edit('editor',{
+		var edtr = new WYKIWYG.editor.edit('editor' + id,{
 			id: id,
 			controls: [
 						'bold','italic','underline','strikethrough','|',
@@ -2038,7 +2038,7 @@ jQuery(document).ready(function($){
 			xhtml: true,
 			cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
 		});
-		
+
 		wykiwygs.push(edtr);
 	});
 });
