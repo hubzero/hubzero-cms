@@ -45,7 +45,7 @@ class Hubzero_View_Helper_Html
 	 */
 	public static function error($msg, $tag='p')
 	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
+		return '<' . $tag . ' class="error">' . $msg . '</' . $tag . '>' . "\n";
 	}
 
 	/**
