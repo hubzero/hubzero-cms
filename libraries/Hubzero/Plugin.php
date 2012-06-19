@@ -29,30 +29,44 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.plugin.plugin' );
+jimport('joomla.plugin.plugin');
 
 /**
- * @package		HUBzero                                  CMS
- * @author		Shawn                                     Rice <zooley@purdue.edu>
- * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 class Hubzero_Plugin extends JPlugin
 {
 	/**
 	 * Container for component messages
-	 * @var		array
+	 * @var array
 	 */
 	public $pluginMessageQueue = array();
 
 	/**
-	 * Description for '_redirect'
+	 * URL to redirect to
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	public $_redirect = NULL;
+
+	/**
+	 * Message to send
+	 * 
+	 * @var string
+	 */
+	public $_message = NULL;
+
+	/**
+	 * Message type [error, message, warning]
+	 * 
+	 * @var string
+	 */
+	public $_messageType = NULL;
 
 	/**
 	 * Constructor
@@ -61,11 +75,11 @@ class Hubzero_Plugin extends JPlugin
 	 * @param	array	$config		Optional configurations to be used
 	 * @return	void
 	 */
-	public function __construct( $subject, $config )
+	public function __construct($subject, $config)
 	{
-		parent::__construct( $subject, $config );
+		parent::__construct($subject, $config);
 
-		$this->option = "com_" . $config['type'];
+		$this->option = 'com_' . $config['type'];
 		$this->plugin = $config['name'];
 	}
 
@@ -75,15 +89,16 @@ class Hubzero_Plugin extends JPlugin
 	 * @param	string	$message	The message to add
 	 * @return	void
 	 */
-	public function redirect( $url, $msg="", $msgType="" )
+	public function redirect($url, $msg='', $msgType='')
 	{
-		$url = ($url != "") ? $url : $this->_redirect;
+		$url = ($url != '') ? $url : $this->_redirect;
 		$url = str_replace('&amp;', '&', $url);
 
 		$msg = ($msg) ? $msg : $this->_message;
 		$msgType = ($msgType) ? $msgType : $this->_messageType;
 
-		if ($url) {
+		if ($url) 
+		{
 			$app =& JFactory::getApplication();
 			$app->redirect($url, $msg, $msgType);
 		}
@@ -99,8 +114,14 @@ class Hubzero_Plugin extends JPlugin
 	public function addPluginMessage($message, $type='message')
 	{
 		//if message is somthing
-		if ($message != '') {
-			$this->pluginMessageQueue[] = array('message' => $message, 'type' => strtolower($type), 'option' => $this->option, 'plugin' => $this->plugin);
+		if ($message != '') 
+		{
+			$this->pluginMessageQueue[] = array(
+				'message' => $message, 
+				'type'    => strtolower($type), 
+				'option'  => $this->option, 
+				'plugin'  => $this->plugin
+			);
 		}
 
 		$session =& JFactory::getSession();
@@ -114,23 +135,26 @@ class Hubzero_Plugin extends JPlugin
 	 */
 	public function getPluginMessage()
 	{
-		if (!count($this->pluginMessageQueue)) {
+		if (!count($this->pluginMessageQueue)) 
+		{
 			$session =& JFactory::getSession();
 			$pluginMessage = $session->get('plugin.message.queue');
-			if (count($pluginMessage)) {
+			if (count($pluginMessage)) 
+			{
 				$this->pluginMessageQueue = $pluginMessage;
 				$session->set('plugin.message.queue', null);
 			}
 		}
 
-		foreach ($this->pluginMessageQueue as $k => $cmq) {
-			if ($cmq['option'] != $this->option) {
+		foreach ($this->pluginMessageQueue as $k => $cmq) 
+		{
+			if ($cmq['option'] != $this->option) 
+			{
 				$this->pluginMessageQueue[$k] = array();
 			}
 		}
 
 		return $this->pluginMessageQueue;
 	}
-
 }
 
