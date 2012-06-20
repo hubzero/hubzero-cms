@@ -2098,6 +2098,16 @@ class MembersController extends Hubzero_Controller
 		
 		//define upload directory and make sure its writable
 		$uploadDirectory = JPATH_ROOT . DS . ltrim(rtrim($this->config->get("webpath"), "/"), "/") . DS . Hubzero_View_Helper_Html::niceidformat($id) . DS;
+		
+		if(!is_dir($uploadDirectory))
+		{
+			if(!JFolder::create($uploadDirectory))
+			{
+				echo json_encode(array('error' => "Server error. Unable to create upload directory."));
+				return;
+			}
+		}
+		
 		if (!is_writable($uploadDirectory))
 		{
 			echo json_encode(array('error' => "Server error. Upload directory isn't writable."));
