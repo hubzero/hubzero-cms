@@ -38,7 +38,7 @@ class Hubzero_Password_Rule
 		$db = &JFactory::getDBO();
 
 		if (empty($db)) {
-			return false;
+			return array();
 		}
 
 		if (empty($group)) {
@@ -59,6 +59,10 @@ class Hubzero_Password_Rule
 		$db->setQuery($query);
 
 		$result = $db->loadAssocList();
+
+		if (empty($result)) {
+			return array();
+		}
 
 		return $result;
 	}
