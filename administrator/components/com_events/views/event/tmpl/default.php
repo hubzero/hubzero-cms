@@ -1,34 +1,7 @@
 <?php
-/**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
-
-// Check to ensure this file is included in Joomla!
+// No direct access
 defined('_JEXEC') or die( 'Restricted access' );
+
 $text = ($this->task == 'edit') ? JText::_( 'EDIT' ) : JText::_( 'NEW' );
 JToolBarHelper::title( JText::_( 'EVENT' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
 JToolBarHelper::save();
@@ -42,7 +15,7 @@ $xprofilem =& Hubzero_User_Profile::getInstance( $this->row->modified_by );
 $userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
 $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 
-$params = new JParameter( $this->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->option.DS.'events.xml' );
+$params =& new JParameter( $this->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->option.DS.'events.xml' );
 ?>
 <script type="text/javascript" src="../components/<?php echo $option; ?>/js/calendar.rc4.js"></script>
 <script type="text/javascript">
@@ -56,9 +29,9 @@ var HUB = {};
 
 <script type="text/javascript" src="../components/<?php echo $this->option; ?>/js/events.js"></script>
 <form action="index.php" method="post" name="adminForm" id="hubForm">
-	<div class="col width-60">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('EVENT'); ?></legend>
+			<legend><span><?php echo JText::_('EVENT'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
@@ -87,7 +60,7 @@ var HUB = {};
 						<td><input type="text" name="extra_info" size="45" maxlength="240" value="<?php echo htmlentities(stripslashes($this->row->extra_info), ENT_COMPAT, 'UTF-8'); ?>" /></td>
 					</tr>
 					<?php
-					foreach ($this->fields as $field)
+					foreach ($this->fields as $field) 
 					{
 					?>
 					<tr>
@@ -115,7 +88,7 @@ var HUB = {};
 			</table>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('PUBLISHING'); ?></legend>
+			<legend><span><?php echo JText::_('PUBLISHING'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
@@ -149,7 +122,7 @@ var HUB = {};
 							<?php } ?>
 						</td>
 					</tr>
-					<!-- REPEAT
+					<!-- REPEAT -->
 					<tr>
 						<td class="key" style="vertical-align:top;"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEATTYPE'); ?></td>
 						<td colspan="3">
@@ -245,12 +218,12 @@ var HUB = {};
 							</table>
 						</td>
 					</tr>
-				END REPEAT -->
+				<!-- END REPEAT -->
 				</tbody>
 			</table>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('REGISTRATION'); ?></legend>
+			<legend><span><?php echo JText::_('REGISTRATION'); ?></span></legend>
 			
 			<table class="admintable">
 				<tbody>
@@ -278,9 +251,9 @@ var HUB = {};
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-40">
+	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATUS'); ?></legend>
+			<legend><span><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATUS'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>

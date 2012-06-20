@@ -36,7 +36,7 @@ JToolBarHelper::cancel('cancelconfig');
 
 <form action="index.php" method="post" name="adminForm">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('EVENTS_CAL_LANG_CONFIG'); ?></legend>
+		<legend><span><?php echo JText::_('EVENTS_CAL_LANG_CONFIG'); ?></span></legend>
 		
 		<table class="admintable">
 			<tbody>
@@ -162,7 +162,7 @@ JToolBarHelper::cancel('cancelconfig');
 		</table>
 	</fieldset>
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('EVENTS_CAL_LANG_CUSTOM_FIELDS'); ?></legend>
+		<legend><span><?php echo JText::_('EVENTS_CAL_LANG_CUSTOM_FIELDS'); ?></span></legend>
 		
 		<table class="admintable">
 			<thead>
