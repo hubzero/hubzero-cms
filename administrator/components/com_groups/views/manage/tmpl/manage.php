@@ -28,8 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'GROUP' ).': <small><small>[ '.JText::_('Manage').' ]</small></small>', 'groups.png' );
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('COM_GROUPS') . ': <small><small>[ ' . JText::_('Manage') . ' ]</small></small>', 'groups.png');
 JToolBarHelper::cancel();
 
 ?>
@@ -37,7 +38,7 @@ JToolBarHelper::cancel();
 function submitbutton(pressbutton) 
 {
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 <h3><?php echo $this->group->description; ?> (<?php echo $this->group->cn; ?>)</h3>
@@ -48,23 +49,26 @@ if ($this->getError()) {
 ?>
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" id="adminForm" method="post">
 	<fieldset id="filter-bar">
-		<label for="filter-usernames"><?php echo JText::_('ADD_USERNAME'); ?></label> 
+		<label for="filter-usernames"><?php echo JText::_('COM_GROUPS_ADD_USERNAME'); ?></label> 
 		<input type="text" name="usernames" class="input-username" id="filter-usernames" value="" />
 		
-		<label for="filter-tbl"><?php echo JText::_('TO'); ?></label> 
+		<label for="filter-tbl"><?php echo JText::_('COM_GROUPS_TO'); ?></label> 
 		<select name="tbl" id="filter-tbl">
-			<option value="invitees"><?php echo JText::_('INVITEES'); ?></option>
-			<option value="applicants"><?php echo JText::_('APPLICANTS'); ?></option>
-			<option value="members" selected="selected"><?php echo JText::_('MEMBERS'); ?></option>
-			<option value="managers"><?php echo JText::_('MANAGERS'); ?></option>
+			<option value="invitees"><?php echo JText::_('COM_GROUPS_INVITEES'); ?></option>
+			<option value="applicants"><?php echo JText::_('COM_GROUPS_APPLICANTS'); ?></option>
+			<option value="members" selected="selected"><?php echo JText::_('COM_GROUPS_MEMBERS'); ?></option>
+			<option value="managers"><?php echo JText::_('COM_GROUPS_MANAGERS'); ?></option>
 		</select>
 		
-		<input type="submit" name="action" value="<?php echo JText::_('GROUP_MEMBER_ADD'); ?>" />
+		<input type="submit" name="action" value="<?php echo JText::_('COM_GROUPS_MEMBER_ADD'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
 <?php
-	$view = new JView( array('name'=>'manage', 'layout'=>'table') );
+	$view = new JView(array(
+		'name'   => $this->controller, 
+		'layout' => 'table'
+	));
 	$view->option = $this->option;
 	$view->task = $this->task;
 	$view->gid = $this->group->cn;
@@ -89,6 +93,7 @@ if ($this->getError()) {
 	<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
 	<input type="hidden" name="task" value="manage" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	
+	<?php echo JHTML::_('form.token'); ?>
 </form>

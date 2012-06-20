@@ -34,9 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'GroupsControllerManage'
- * 
- * Long description (if any) ...
+ * Groups controller class for managing membership and group info
  */
 class GroupsControllerManage extends Hubzero_Controller
 {
@@ -115,7 +113,10 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -135,9 +136,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Ensure we have a group ID
 		if (!$gid)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-			$this->_message = JText::_('GROUPS_MISSING_ID');
-			$this->_messageType = 'error';
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_GROUPS_MISSING_ID'),
+				'error'
+			);
 			return;
 		}
 
@@ -204,7 +207,10 @@ class GroupsControllerManage extends Hubzero_Controller
 			// Set any errors
 			if ($this->getError())
 			{
-				$this->view->setError($this->getError());
+				foreach ($this->getErrors() as $error)
+				{
+					$this->view->setError($error);
+				}
 			}
 
 			// Output the HTML
@@ -223,7 +229,6 @@ class GroupsControllerManage extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -235,7 +240,9 @@ class GroupsControllerManage extends Hubzero_Controller
 	public function editTask()
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
@@ -255,7 +262,10 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -319,11 +329,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Check for any missing info
 		if (!$g['cn'])
 		{
-			$this->setError(JText::_('GROUPS_ERROR_MISSING_INFORMATION') . ': ' . JText::_('GROUPS_ID'));
+			$this->setError(JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_GROUPS_ID'));
 		}
 		if (!$g['description'])
 		{
-			$this->setError(JText::_('GROUPS_ERROR_MISSING_INFORMATION') . ': ' . JText::_('GROUPS_TITLE'));
+			$this->setError(JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_GROUPS_TITLE'));
 		}
 
 		// Push back into edit mode if any errors
@@ -348,11 +358,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Ensure the data passed is valid
 		if (!$this->_validCn($g['cn'], $g['type']))
 		{
-			$this->setError(JText::_('GROUPS_ERROR_INVALID_ID'));
+			$this->setError(JText::_('COM_GROUPS_ERROR_INVALID_ID'));
 		}
 		if ($isNew && Hubzero_Group::exists($g['cn']))
 		{
-			$this->setError(JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST'));
+			$this->setError(JText::_('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
 		}
 
 		// Push back into edit mode if any errors
@@ -373,7 +383,12 @@ class GroupsControllerManage extends Hubzero_Controller
 		}
 
 		// group params
-		$gparams = new JParameter($group->get('params'));
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$gparams = new $paramsClass($group->get('params'));
 
 		// set membership control param
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
@@ -424,8 +439,10 @@ class GroupsControllerManage extends Hubzero_Controller
 		$group->update();
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('GROUP_SAVED');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('COM_GROUPS_SAVED')
+		);
 	}
 
 	/**
@@ -472,25 +489,25 @@ class GroupsControllerManage extends Hubzero_Controller
 				$members = array_merge($groupusers, $groupmanagers);
 
 				// Start log
-				$log  = JText::_('GROUPS_SUBJECT_GROUP_DELETED');
-				$log .= JText::_('GROUPS_TITLE') . ': ' . $group->get('description') . "\n";
-				$log .= JText::_('GROUPS_ID') . ': ' . $group->get('cn') . "\n";
-				$log .= JText::_('GROUPS_PRIVACY') . ': ' . $group->get('access') . "\n";
-				$log .= JText::_('GROUPS_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc')) . "\n";
-				$log .= JText::_('GROUPS_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc')) . "\n";
-				$log .= JText::_('GROUPS_RESTRICTED_MESSAGE') . ': ' . stripslashes($group->get('restrict_msg')) . "\n";
+				$log  = JText::_('COM_GROUPS_SUBJECT_GROUP_DELETED');
+				$log .= JText::_('COM_GROUPS_TITLE') . ': ' . $group->get('description') . "\n";
+				$log .= JText::_('COM_GROUPS_ID') . ': ' . $group->get('cn') . "\n";
+				$log .= JText::_('COM_GROUPS_PRIVACY') . ': ' . $group->get('access') . "\n";
+				$log .= JText::_('COM_GROUPS_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc')) . "\n";
+				$log .= JText::_('COM_GROUPS_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc')) . "\n";
+				$log .= JText::_('COM_GROUPS_RESTRICTED_MESSAGE') . ': ' . stripslashes($group->get('restrict_msg')) . "\n";
 
 				// Log ids of group members
 				if ($groupusers)
 				{
-					$log .= JText::_('GROUPS_MEMBERS') . ': ';
+					$log .= JText::_('COM_GROUPS_MEMBERS') . ': ';
 					foreach ($groupusers as $gu)
 					{
 						$log .= $gu . ' ';
 					}
 					$log .=  "\n";
 				}
-				$log .= JText::_('GROUPS_MANAGERS') . ': ';
+				$log .= JText::_('COM_GROUPS_MANAGERS') . ': ';
 				foreach ($groupmanagers as $gm)
 				{
 					$log .= $gm . ' ';
@@ -515,8 +532,10 @@ class GroupsControllerManage extends Hubzero_Controller
 		}
 
 		// Redirect back to the groups page
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('GROUPS_REMOVED');
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('COM_GROUPS_REMOVED')
+		);
 	}
 
 	/**
@@ -526,7 +545,9 @@ class GroupsControllerManage extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**
@@ -543,7 +564,8 @@ class GroupsControllerManage extends Hubzero_Controller
 		$ids = JRequest::getVar('id', array());
 
 		// Get the single ID we're working with
-		if (!is_array($ids)) {
+		if (!is_array($ids)) 
+		{
 			$ids = array();
 		}
 
@@ -564,24 +586,26 @@ class GroupsControllerManage extends Hubzero_Controller
 				}
 
 				//set the group to be published and update
-				$group->set('published',1);
+				$group->set('published', 1);
 				$group->update();
 
 				// Log the group approval
 				$log = new XGroupLog($this->database);
-				$log->gid = $group->get('gidNumber');
-				$log->uid = $this->juser->get('id');
+				$log->gid       = $group->get('gidNumber');
+				$log->uid       = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action = 'group_published';
-				$log->actorid = $this->juser->get('id');
+				$log->action    = 'group_published';
+				$log->actorid   = $this->juser->get('id');
 				if (!$log->store())
 				{
 					$this->setError($log->getError());
 				}
 
 				// Output messsage and redirect
-				$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-				$this->_message = JText::_('Group has been published.');
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JText::_('Group has been published.')
+				);
 			}
 		}
 	}
@@ -622,24 +646,26 @@ class GroupsControllerManage extends Hubzero_Controller
 				}
 
 				//set the group to be published and update
-				$group->set('published',0);
+				$group->set('published', 0);
 				$group->update();
 
 				// Log the group approval
 				$log = new XGroupLog($this->database);
-				$log->gid = $group->get('gidNumber');
-				$log->uid = $this->juser->get('id');
+				$log->gid       = $group->get('gidNumber');
+				$log->uid       = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action = 'group_unpublished';
-				$log->actorid = $this->juser->get('id');
+				$log->action    = 'group_unpublished';
+				$log->actorid   = $this->juser->get('id');
 				if (!$log->store())
 				{
 					$this->setError($log->getError());
 				}
 
 				// Output messsage and redirect
-				$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-				$this->_message = JText::_('Group has been unpublished.');
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JText::_('COM_GROUPS_UNPUBLISHED')
+				);
 			}
 		}
 	}
@@ -700,7 +726,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 		// Remove the user from any other lists they may be apart of
@@ -768,7 +794,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -829,7 +855,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -885,7 +911,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -920,7 +946,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Only admins can demote the last manager
 		if ($authorized != 'admin' && $nummanagers <= 1)
 		{
-			$this->setError(JText::_('GROUPS_LAST_MANAGER'));
+			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
 			return;
 		}
 
@@ -941,14 +967,14 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
 		// Make sure there's always at least one manager left
 		if ($authorized != 'admin' && count($users) >= count($managers))
 		{
-			$this->setError(JText::_('GROUPS_LAST_MANAGER'));
+			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
 			return;
 		}
 
@@ -986,7 +1012,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Only admins can demote the last manager
 		if ($authorized != 'admin' && $nummanagers <= 1)
 		{
-			$this->setError(JText::_('GROUPS_LAST_MANAGER'));
+			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
 			return;
 		}
 
@@ -1018,7 +1044,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -1028,7 +1054,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Make sure there's always at least one manager left
 		if ($authorized !== 'admin' && count($users_man) >= count($managers))
 		{
-			$this->setError(JText::_('GROUPS_LAST_MANAGER'));
+			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
 		}
 		else
 		{
@@ -1079,7 +1105,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -1125,7 +1151,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError(JText::_('GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 

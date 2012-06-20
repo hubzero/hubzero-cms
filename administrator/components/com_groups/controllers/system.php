@@ -34,17 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'GroupsControllerSystem'
- * 
- * Long description (if any) ...
+ * Groups controller class for system options
  */
 class GroupsControllerSystem extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'displayTask'
-	 * 
-	 * Long description (if any) ...
+	 * Display options for LDAP information
 	 * 
 	 * @return     void
 	 */
@@ -79,9 +74,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'exporttoldapTask'
-	 * 
-	 * Long description (if any) ...
+	 * Export info to LDAP
 	 * 
 	 * @return     void
 	 */
@@ -166,9 +159,7 @@ class GroupsControllerSystem extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'importldapTask'
-	 * 
-	 * Long description (if any) ...
+	 * Import LDAP info
 	 * 
 	 * @return     void
 	 */

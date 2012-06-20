@@ -34,20 +34,34 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors', '1');
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
-
-// Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize($option, 'manage'))
+if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
+
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'group.php');
+	require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'group.php');
 }
 
 // Include scripts
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'groups.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reason.php');
 ximport('Hubzero_User_Helper');

@@ -28,33 +28,47 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'GROUPS' ), 'groups.png' );
-JToolBarHelper::preferences('com_groups', '550');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList('delete','delete');
+defined('_JEXEC') or die('Restricted access');
 
+$canDo = GroupsHelper::getActions('group');
+
+JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences('com_groups', '550');
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList('delete', 'delete');
+}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label> 
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
 		
-		<label for="filter-type"><?php echo JText::_('TYPE'); ?>:</label> 
+		<label for="filter-type"><?php echo JText::_('COM_GROUPS_TYPE'); ?>:</label> 
 		<select name="type" id="filter-type">
 			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Type...'); ?></option>
 			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>hub</option>
@@ -80,23 +94,23 @@ function submitbutton(pressbutton)
 			<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Closed'); ?></option>
 		</select>
 		
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_GROUPS_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 	
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist" summary="<?php echo JText::_('COM_GROUPS_TABLE_SUMMARY'); ?>">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('ID'); ?></th>
-				<th><?php echo JText::_('CN'); ?></th>
-				<th><?php echo JText::_('NAME'); ?></th>
-				<th><?php echo JText::_('TYPE'); ?></th>
-				<th><?php echo JText::_('PUBLISHED'); ?></th>
-				<th><?php echo JText::_('APPLICANTS'); ?></th>
-				<th><?php echo JText::_('INVITEES'); ?></th>
-				<th><?php echo JText::_('MANAGERS'); ?></th>
-				<th><?php echo JText::_('TOTAL_MEMBERS'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_CN'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_TYPE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_APPLICANTS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_INVITEES'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_MANAGERS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_TOTAL_MEMBERS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -107,7 +121,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
@@ -137,48 +151,80 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $this->escape($row->gidNumber); ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
 						<?php echo $this->escape($row->cn); ?>
 					</a>
+<?php } else { ?>
+					<?php echo $this->escape($row->cn); ?>
+<?php } ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
 						<?php echo $this->escape(stripslashes($row->description)); ?>
 					</a>
+<?php } else { ?>
+					<span>
+						<?php echo $this->escape(stripslashes($row->description)); ?>
+					</span>
+<?php } ?>
 				</td>
 				<td>
 					<?php echo $type; ?>
 				</td>
 				<td>
-					<?php 
-						if($row->published) {
-							//echo '<span class="check">'.JText::_('YES').'</span>';
-							echo ' <a class="state publish" href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=unpublish&amp;id[]='.$row->cn.'" title="Unpublish Group"><span><img src="/administrator/images/publish_g.png" /></span></a>';
-						} else {
-							//echo '<span class="off">'.JText::_('No').'</span>';
-							echo ' <a class="state unpublish" href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=publish&amp;id[]='.$row->cn.'" title="Publish Group"><span><img src="/administrator/images/publish_x.png" /></span></a>';
-						}
-					?>
+<?php if ($canDo->get('core.edit.state')) { ?>
+					<?php if ($row->published) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Unpublish Group'); ?>">
+						<span class="state publish">
+							<span class="text"><?php echo JText::_('Published'); ?></span>
+						</span>
+					</a>
+					<?php } else { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Publish Group'); ?>">
+						<span class="state unpublish">
+							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
+						</span>
+					</a>
+					<?php } ?>
+<?php } ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>">
+<?php if ($canDo->get('core.manage')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
 						<?php echo $applicants; ?>
 					</a>
+<?php } else { ?>
+					<?php echo $applicants; ?>
+<?php } ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>">
+<?php if ($canDo->get('core.manage')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
 						<?php echo $invitees; ?>
 					</a>
+<?php } else { ?>
+					<?php echo $invitees; ?>
+<?php } ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>">
+<?php if ($canDo->get('core.manage')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
 						<?php echo $managers; ?>
 					</a>
+<?php } else { ?>
+					<?php echo $managers; ?>
+<?php } ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>">
+<?php if ($canDo->get('core.manage')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
 						<?php echo $members; ?>
 					</a>
+<?php } else { ?>
+					<?php echo $members; ?>
+<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -192,5 +238,6 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>
