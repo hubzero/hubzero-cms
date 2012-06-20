@@ -985,6 +985,18 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		// Push some values to the view
+
+		ximport('Hubzero_Password_Rule');
+		$password_rules = Hubzero_Password_Rule::getRules();
+
+		$view->password_rules = array();
+
+		foreach($password_rules as $rule) {
+			if (!empty($rule['description'])) {
+				$view->password_rules[] = $rule['description'];
+			}
+		}
+
 		$view->showMissing = true;
 		$view->registration = $view->xregistration->_registration;
 		$view->registrationUsername = $this->_registrationField('registrationUsername','RROO',$task);

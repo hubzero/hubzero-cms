@@ -87,6 +87,31 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 				</label>
 			</div>
+<?php
+			if (count($this->password_rules) > 0) {
+				echo "\t\t<ul>\n";
+				foreach ($this->password_rules as $rule) {
+					if (!empty($rule)) {
+						if (is_array($this->validated)) {
+							$err = in_array($rule, $this->validated);
+						} else {
+							$err = '';
+						}
+
+						$mclass = ($err)  ? ' class="error"' : '';
+						echo "\t\t\t<li $mclass>".$rule."</li>\n";
+					}
+				}
+				if (is_array($this->validated)) {
+					foreach ($this->validated as $msg) {
+						if (!in_array($msg,$this->password_rules)) {
+							echo "\t\t\t".'<li class="error">'.$msg."</li>\n";
+						}
+					}
+				}
+				echo "\t\t\t</ul>\n";
+			}
+?>
 		</fieldset><div class="clear"></div>
 		<p class="submit">
 			<input name="change" type="submit" value="<?php echo JText::_('CHANGEPASSWORD'); ?>" />

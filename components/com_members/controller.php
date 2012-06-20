@@ -570,6 +570,8 @@ class MembersController extends Hubzero_Controller
 	 */
 	protected function changepassword()
 	{
+		ximport('Hubzero_User_Password');
+
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
@@ -668,6 +670,25 @@ class MembersController extends Hubzero_Controller
 		$view->oldpass = $oldpass;
 		$view->newpass = $newpass;
 		$view->newpass2 = $newpass2;
+		$view->validated = true;
+
+		ximport('Hubzero_Password_Rule');
+		$password_rules = Hubzero_Password_Rule::getRules();
+
+		$view->password_rules = array();
+
+		foreach($password_rules as $rule) {
+			if (!empty($rule['description'])) {
+				$view->password_rules[] = $rule['description'];
+			}
+		}
+
+		if (!empty($newpass)) {
+			$msg = Hubzero_Password_Rule::validate($newpass,$password_rules,$profile->get('username'));
+		}
+		else {
+			$msg = array();
+		}
         
 		// Blank form request (no data submitted)
 		if (empty($change))  
@@ -678,6 +699,8 @@ class MembersController extends Hubzero_Controller
 			$view->display();
 			return;
 		}
+
+		$passrules = false;
 
 		if ($profile->get('userPassword') != Hubzero_User_Helper::encrypt_password($oldpass)) 
 		{
@@ -695,12 +718,34 @@ class MembersController extends Hubzero_Controller
 		{
 			$this->setError( JText::_('MEMBERS_PASS_INVALID') );
 		}
+		elseif ($oldpass == $newpass)
+		{
+			// make sure the current password and new password are not the same
+			// this should really be done in the password rules validation step
+			$this->setError( JText::_('Your new password must be different from your current password') );
+		}
+		elseif (!empty($msg)) {
+			$this->setError( JText::_('Password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
+			$view->validated = $msg;
+			$passrules = true;
+		}
+
 
 		if ($this->getError())
 		{   
 			$change = array();
 			$change['_missing']['password'] = $this->getError();
-			
+
+			if(!empty($msg) && $passrules) {
+				$change['_missing']['password'] .= "<ul>";
+				foreach($msg as $m) {
+					$change['_missing']['password'] .= "<li>";
+					$change['_missing']['password'] .= $m;
+					$change['_missing']['password'] .= "</li>";
+				}
+				$change['_missing']['password'] .= "</ul>";
+			}
+
 			if(JRequest::getInt("no_html", 0))
 			{
 				echo json_encode($change);

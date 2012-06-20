@@ -96,6 +96,17 @@ class UserViewReset extends JView
 
 		$this->assignRef('params',		$params);
 
+		ximport('Hubzero_Password_Rule');
+
+		$password_rules = Hubzero_Password_Rule::getRules();
+		$this->password_rules = array();
+
+		foreach($password_rules as $rule) {
+			if (!empty($rule['description'])) {
+				$this->password_rules[] = $rule['description'];
+			}
+		}
+
 		parent::display($tpl);
 	}
 }

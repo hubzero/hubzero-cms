@@ -172,9 +172,11 @@ class UserModelReset extends JModel
 		$id	= $mainframe->getUserState($this->_namespace.'id');
 
 		// Load some needed Hubzero libraries
+		ximport('Hubzero_User_Password');
 		ximport('Hubzero_Registration_Helper');
 		ximport('Hubzero_User_Helper');
 		ximport('Hubzero_User_Profile');
+		ximport('Hubzero_Password_Rule');
 
 		// Initiate profile classs
 		$profile = new Hubzero_User_Profile();
@@ -189,8 +191,17 @@ class UserModelReset extends JModel
 		$dispatcher->trigger('onBeforeStoreUser', array($user->getProperties(), false));
 		
 		if (Hubzero_User_Helper::isXDomainUser($user->get('id'))) {
-			JError::raiseError( 403, JText::_('This is a linked account. To change your password you must change it using the procedures available where the account your are linked to is managed.') );
+			JError::raiseError( 403, JText::_('This is a linked account. To change your password you must change it using the procedures available where the account you are linked to is managed.') );
 			return;
+		}
+
+		$password_rules = Hubzero_Password_Rule::getRules();
+
+		if (!empty($password1)) {
+			$msg = Hubzero_Password_Rule::validate($password1,$password_rules,$profile->get('username'));
+		} 
+		else {
+                        $msg = array();
 		}
 
 		if (!$password1 || !$password2) {
@@ -199,7 +210,9 @@ class UserModelReset extends JModel
 			$this->setError( JText::_('the new password and confirmation you entered do not match. Please try again') );
 		} elseif (!Hubzero_Registration_Helper::validpassword($password1)) {
 			$this->setError( JText::_('the password you entered was invalid password. You may be using characters that are not allowed') );
-		}
+		} elseif (is_array($msg)) {
+			$this->setError( JText::_('the password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
+                }
 
 		if ($this->getError()) {
 			$this->setError( $this->getError() );
