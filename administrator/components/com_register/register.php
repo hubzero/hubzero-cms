@@ -34,17 +34,27 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
-
-// Ensure user has access to this function
-$juser =& JFactory::getUser();
-if (!$juser->authorize($option, 'manage')) 
+// Authorization check
+if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$app =& JFactory::getApplication();
-	$app->redirect('index.php');
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
 // Include scripts
@@ -53,38 +63,31 @@ include_once(JPATH_ROOT . DS . 'components' . DS .  $option . DS . 'tables' . DS
 include_once(JPATH_ROOT . DS . 'components' . DS .  $option . DS . 'tables' . DS . 'organization.php');
 
 $controllerName = JRequest::getCmd('controller', 'config');
-
-switch ($controllerName)
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	case 'employers':
-		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config');
-		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations');
-		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers', true);
-		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental');
-	break;
-	
-	case 'organizations':
-		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config');
-		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations', true);
-		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers');
-		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental');
-	break;
-	
-	case 'incremental':
-		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config');
-		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations');
-		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers');
-		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental', true);
-	break;
-
-	case 'config':
-	default:
-		JSubMenuHelper::addEntry(JText::_('Config'), 'index.php?option=' .  $option . '&controller=config', true);
-		JSubMenuHelper::addEntry(JText::_('Organizations'), 'index.php?option=' .  $option . '&controller=organizations');
-		JSubMenuHelper::addEntry(JText::_('Employer Types'), 'index.php?option=' .  $option . '&controller=employers');
-		JSubMenuHelper::addEntry(JText::_('Incremental Registration'), 'index.php?option=' .  $option . '&controller=incremental');
-	break;
+	$controllerName = 'config';
 }
+
+JSubMenuHelper::addEntry(
+	JText::_('Config'), 
+	'index.php?option=' .  $option . '&controller=config',
+	($controllerName == 'config')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Organizations'), 
+	'index.php?option=' .  $option . '&controller=organizations',
+	($controllerName == 'organizations')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Employer Types'), 
+	'index.php?option=' .  $option . '&controller=employers', 
+	($controllerName == 'employers')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Incremental Registration'), 
+	'index.php?option=' .  $option . '&controller=incremental',
+	($controllerName == 'incremental')
+);
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'RegisterController' . ucfirst($controllerName);
