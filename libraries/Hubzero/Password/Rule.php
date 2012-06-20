@@ -35,32 +35,32 @@ class Hubzero_Password_Rule
 {
 	public function getRules($group = null, $all = false)
 	{
-	$db = &JFactory::getDBO();
+		$db = &JFactory::getDBO();
 
-	if (empty($db)) {
-		return false;
-	}
-
-	if (empty($group)) {
-		$group = "'%'";
+		if (empty($db)) {
+			return false;
 		}
-	else {
-		$group = $db->Quote($group);
-	}
 
-	$query = "SELECT id,rule,class,value,description,failuremsg FROM " . "#__password_rule WHERE `group` LIKE $group";
+		if (empty($group)) {
+			$group = "'%'";
+		}
+		else {
+			$group = $db->Quote($group);
+		}
 
-	if ($all == false) {
-		$query .= " AND enabled='1'";
-	} 
+		$query = "SELECT id,rule,class,value,description,failuremsg FROM " . "#__password_rule WHERE `group` LIKE $group";
 
-	$query .= " ORDER BY ordering ASC;";
+		if ($all == false) {
+			$query .= " AND enabled='1'";
+		} 
 
-	$db->setQuery($query);
+		$query .= " ORDER BY ordering ASC;";
 
-	$result = $db->loadAssocList();
+		$db->setQuery($query);
 
-	return $result;
+		$result = $db->loadAssocList();
+
+		return $result;
 	}
 
 	public function analyze($password)
@@ -107,9 +107,15 @@ class Hubzero_Password_Rule
 
 	public function validate($password, $rules, $user, $name=null)
 	{
+		if (empty($rules)) {
+			return true;
+		}
+
 		ximport('Hubzero_Password_Blacklist');
 		ximport('Hubzero_User_Password_History');
+
 		$fail = array();
+
 		$stats = self::analyze($password);
 
 		foreach($rules as $rule) {
