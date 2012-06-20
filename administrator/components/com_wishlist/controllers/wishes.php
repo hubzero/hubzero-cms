@@ -29,64 +29,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'WishlistController'
- * 
- * Long description (if any) ...
+ * Cotnroller class for wish lists
  */
-class WishlistController extends Hubzero_Controller
+class WishlistControllerWishes extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Display a list of entries
 	 * 
 	 * @return     void
 	 */
-	public function execute()
+	public function displayTask()
 	{
-		// Load the component config
-		$config =& JComponentHelper::getParams( $this->_option );
-		$this->config = $config;
-
-		$this->_task = JRequest::getVar( 'task', '' );
-
-		switch ($this->_task)
-		{
-			default: $this->wishes(); break;
-		}
-	}
-
-	//----------------------------------------------------------
-	// Views
-	//----------------------------------------------------------
-
-	/**
-	 * Short description for 'wishes'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function wishes()
-	{
-		// Instantiate a new view
-		$view = new JView( array('name'=>'wishes') );
-		$view->option = $this->_option;
-		$view->task = $this->_task;
-
 		// Set any errors
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
-		$view->display();
+		$this->view->display();
 	}
 }
 

@@ -29,35 +29,54 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
 // Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize( $option, 'manage' )) {
-	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
 // Include scripts
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.plan.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.owner.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.owner.group.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.rank.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.attachment.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wishlist.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wishlist.plan.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wishlist.owner.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wishlist.owner.group.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wish.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wish.rank.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wish.attachment.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'wishlist.php');
+
+$controllerName = JRequest::getCmd('controller', 'wishes');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'wishes';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'WishlistController' . ucfirst($controllerName);
 
 // Initiate controller
-$controller = new WishlistController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

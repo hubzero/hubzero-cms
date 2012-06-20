@@ -28,9 +28,14 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( '<a href="index.php?option=com_wishlist">'.JText::_( 'Wishlist Manager' ).'</a>', 'addedit.png' );
-JToolBarHelper::preferences('com_wishlist', '550');
+defined('_JEXEC') or die('Restricted access');
 
+$canDo = WishlistHelper::getActions('component');
+
+JToolBarHelper::title('<a href="index.php?option=com_wishlist">' . JText::_('Wishlist Manager') . '</a>', 'addedit.png');
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences('com_wishlist', '550');
+}
 ?>
 <p>There is currently no back-end functionality</p>
