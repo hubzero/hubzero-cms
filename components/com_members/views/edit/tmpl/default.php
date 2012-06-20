@@ -466,7 +466,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 		$html .= "\t".'<fieldset'.$fieldclass.'>'."\n";
 		$html .= $message;
-		$html .= "\t\t".'<legend>'.JText::_('Sex').':'.$required.'</legend>'."\n";
+		$html .= "\t\t".'<legend>'.JText::_('Gender').':'.$required.'</legend>'."\n";
 		$html .= "\t\t".'<input type="hidden" name="sex" value="unspecified" />'."\n";
 		$html .= "\t\t".'<label><input type="radio" name="sex" value="male" class="option"';
 		$html .= ($this->profile->get('gender') == 'male') ? ' checked="checked"' : '';

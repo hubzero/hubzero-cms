@@ -231,7 +231,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td><?php echo $xprofile->get('countryresident'); ?></td>
 			</tr>
 			<tr class="odd">
-				<th>Sex:</th>
+				<th>Gender:</th>
 				<td><?php echo MembersHtml::propercase_singleresponse($xprofile->get('gender')); ?></td>
 			</tr>
 			<tr class="even">

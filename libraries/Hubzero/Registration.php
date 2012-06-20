@@ -962,7 +962,7 @@ class Hubzero_Registration
 		{
 			if (empty($registration['sex']))
 			{
-				$this->_missing['sex'] = 'Sex';
+				$this->_missing['sex'] = 'Gender';
 				$this->_invalid['sex'] = 'Please select gender.';
 			}
 		}

@@ -701,7 +701,7 @@ defined('_JEXEC') or die('Restricted access');
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 			$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t".'<legend>'.JText::_('COM_REGISTER_FORM_SEX').': '.$required.'</legend>'."\n";
+			$html .= "\t\t\t".'<legend>'.JText::_('COM_REGISTER_FORM_GENDER').': '.$required.'</legend>'."\n";
 			$html .= ($message) ? "\t\t\t" . $message . "\n" : '';
 			$html .= "\t\t\t".'<input type="hidden" name="sex" value="unspecified" />'."\n";
 			$html .= "\t\t\t".'<label>'.RegistrationHelperHtml::radio('sex','male','option',$this->registration['sex']).' '.JText::_('COM_REGISTER_FORM_MALE').'</label>'."\n";
