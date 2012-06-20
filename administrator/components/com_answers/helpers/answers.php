@@ -32,6 +32,11 @@ defined('_JEXEC') or die('Restricted access');
 
 class AnswersHelper
 {
+	/**
+	 * Name of the component
+	 * 
+	 * @var string
+	 */
 	public static $extension = 'com_answers';
 
 	/**

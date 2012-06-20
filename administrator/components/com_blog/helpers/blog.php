@@ -32,6 +32,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class BlogHelper
 {
+	/**
+	 * Name of the component
+	 * 
+	 * @var string
+	 */
 	public static $extension = 'com_blog';
 
 	/**
