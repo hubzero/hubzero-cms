@@ -212,6 +212,23 @@ class plgXAuthenticationHzldap extends JPlugin
 			// Were good - So say so.
 			$response->status        = JAUTHENTICATE_STATUS_SUCCESS;
 			$response->error_message = '';
+
+			ximport('Hubzero_Password_Rule');
+			ximport('Hubzero_User_Password');
+
+			$password_rules = Hubzero_Password_Rule::getRules();
+			$msg = Hubzero_Password_Rule::validate($credentials['password'],$password_rules,$credentials['username']);
+
+			if (is_array($msg)) {
+				$session =& JFactory::getSession();
+				$session->set('badpassword','1');
+			}
+
+			if (Hubzero_User_Password::isPasswordExpired($credentials['username'])) {
+				$session =& JFactory::getSession();
+				$session->set('expiredpassword','1');
+			}
+
 		}
 
 		@ldap_close($_ldc);

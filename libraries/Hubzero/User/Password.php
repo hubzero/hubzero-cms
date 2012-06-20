@@ -1076,7 +1076,7 @@ class Hubzero_User_Password
 		$hzup = self::getInstance($user);
 
 		if (!is_object($hzup)) {
-			return true;
+			return false;
 		}
 
 		if (empty($hzup->shadowLastChange)) {
