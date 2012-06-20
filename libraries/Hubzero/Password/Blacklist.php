@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright	Copyright 2010 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ * HUBzero CMS
  *
- * Copyright 2010 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 3 as 
- * published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package     hubzero-cms
+ * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright	Copyright 2010-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -27,20 +33,19 @@ defined('_JEXEC') or die('Restricted access');
 
 class Hubzero_Password_Blacklist
 {
-    public function inBlacklist($word)
+	public function inBlacklist($word)
 	{
-        $db = &JFactory::getDBO();
+		$db = &JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db)) {
+			return false;
+		}
 
-		if (empty($word))
+		if (empty($word)) {
 			$word = '';
+		}
 
-		$query = 'SELECT 1 FROM #__password_blacklist WHERE word=' . 
-			$db->Quote($word) . ';';
+		$query = 'SELECT 1 FROM #__password_blacklist WHERE word=' .  $db->Quote($word) . ';';
 
 		$db->setQuery($query);
 
@@ -81,7 +86,7 @@ class Hubzero_Password_Blacklist
 			'2' => 'Z', 
 		);
 
-	 	$word2 = str_replace( array_keys($subs), array_values($subs), $word);
+		$word2 = str_replace( array_keys($subs), array_values($subs), $word);
 
 		return strtolower($word2);
 	}
@@ -189,7 +194,7 @@ class Hubzero_Password_Blacklist
 			'|}' => 'D',
 			'|>' => 'D',
 			'[>' => 'D',
-            'o|' => 'D',
+			'o|' => 'D',
 			'ii' => 'E',
 			'|=' => 'F',
 			'(=' => 'F',
@@ -206,7 +211,7 @@ class Hubzero_Password_Blacklist
 			'()' => 'O', 
 			'[]' => 'O', 
 			'<>' => 'O', 
- 			'|o' => 'P',
+			'|o' => 'P',
 			'|D' => 'P', 
 			'|*' => 'P', 
 			'|>' => 'P', 
@@ -269,7 +274,7 @@ class Hubzero_Password_Blacklist
 			" u " => " you "
 		);
 
-	 	$word2 = str_replace( array_keys($subs), array_values($subs), $word);
+		$word2 = str_replace( array_keys($subs), array_values($subs), $word);
 		$word2 = strtolower($word2);
 		$word2 = str_replace( array_keys($wordsubs), array_values($wordsubs), $word2);
 		return $word2;
@@ -281,15 +286,16 @@ class Hubzero_Password_Blacklist
 
 		$len = strlen($word);
 
-		for($i = 0; $i < $word; $i++)
-		{
+		for($i = 0; $i < $word; $i++) {
 			$o = ord( $word[$i] );
 
-			if ($o < 97) // convert to lowercase
-            	$o += 32;
+			if ($o < 97) { // convert to lowercase
+				$o += 32;
+			}
 
-			if ($o > 122 || $o < 97) // skip anything not a lowercase letter
-            	continue;
+			if ($o > 122 || $o < 97) { // skip anything not a lowercase letter
+				continue;
+			}
 
 			$nword .= chr($o);
 		}
@@ -299,15 +305,15 @@ class Hubzero_Password_Blacklist
 
 	public function basedOnBlacklist($word)
 	{
-        $db = &JFactory::getDBO();
+		$db = &JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db)) {
+			return false;
+		}
 
-		if (empty($word))
+		if (empty($word)) {
 			$word = '';
+		}
 
 		$words[] = $word;
 		$words[] = strtolower($word);
@@ -316,10 +322,10 @@ class Hubzero_Password_Blacklist
 		$len = strlen($word);
 		$word2 = '';
 		// @FIXME: badly inefficient
-		for($i = 0; $i < $len; $i++)
-		{
-			if (preg_match('/[a-zA-Z]/',$word[$i]))
+		for($i = 0; $i < $len; $i++) {
+			if (preg_match('/[a-zA-Z]/',$word[$i])) {
 				$word2 .= $word[$i];
+			}
 		}
 		$words[] = strtolower($word2);
 		$words[] = strtolower( strrev($word2) );
@@ -366,9 +372,11 @@ class Hubzero_Password_Blacklist
 		$words[] = $surname.$middleName.$givenName;
 		$words[] = strrev($surname.$middleName.$givenName);
 
-		foreach($words as $w)
-			if ($w == $word)
+		foreach($words as $w) {
+			if ($w == $word) {
 				return true;
+			}
+		}
 
 		return false;
 	}
@@ -382,11 +390,13 @@ class Hubzero_Password_Blacklist
 		$words[] = $username;
 		$words[] = strrev($username);
 		
-       foreach($words as $w)
-            if ($w == $word)
-                return true;
+		foreach($words as $w) {
+			if ($w == $word) {
+				return true;
+			}
+		}
 
-        return false;
+		return false;
 	}
 		
 }

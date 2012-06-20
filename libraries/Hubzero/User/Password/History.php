@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright	Copyright 2010 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ * HUBzero CMS
  *
- * Copyright 2010 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2010-2012 Purdue University. All rights reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 3 as 
- * published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author	  Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2010-2012 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -27,59 +33,61 @@ defined('_JEXEC') or die('Restricted access');
 
 class Hubzero_User_Password_History
 {
-    private $user_id;
+	private $user_id;
 
-    private function logDebug($msg)
-    {
-        $xlog = &HUbzero_Factory::getLogger();
-        $xlog->logDebug($msg);
-    }
+	private function logDebug($msg)
+	{
+		$xlog = &HUbzero_Factory::getLogger();
+		$xlog->logDebug($msg);
+	}
 
-    public function getInstance($instance)
-    {
-        $db = &JFactory::getDBO();
+	public function getInstance($instance)
+	{
+		$db = &JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db)) {
+			return false;
+		}
 
 		$hzph = new Hubzero_User_Password_History();
 
-		if (is_numeric($instance) && $instance > 0)
+		if (is_numeric($instance) && $instance > 0) {
 			$hzph->user_id = $instance;
-		else
-		{
-			$query = "SELECT id FROM #__users WHERE username=" .
-				$db->Quote($instance) . ";";
+		}
+		else {
+			$query = "SELECT id FROM #__users WHERE username=" .  $db->Quote($instance) . ";";
 			$db->setQuery($query);
 			$result = $db->loadResult();
-			if (is_numeric($result) && $result > 0)
+			if (is_numeric($result) && $result > 0) {
 				$hzph->user_id = $result;
+			}
 		}
 
-		if (empty($hzph->user_id))
+		if (empty($hzph->user_id)) {
 			return false;
+		}
 
 		return $hzph;
-    }
+	}
 
-    public function add($passhash = null, $invalidated = null)
-    {
-        $db = &JFactory::getDBO();
+	public function add($passhash = null, $invalidated = null)
+	{
+		$db = &JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db)) {
+			return false;
+		}
 
-		if (empty($passhash))
+		if (empty($passhash)) {
 			$passhash = null;
+		}
 
-		if (empty($invalidated))
+		if (empty($invalidated)) {
 			$invalidated = "NOW()";
-		else
-			$invalidated = $db->Quote($invalidated);
+		}
+		else {
+			$invalidated = $db->Quote($invalidated); 
+		}
 
 		$user_id = $this->user_id;
 
@@ -93,31 +101,30 @@ class Hubzero_User_Password_History
 
 		$db->setQuery($query);
 
-        $result = $db->query();
+		$result = $db->query();
 
-        if ($result !== false || $db->getErrorNum() == 1062)
-        {
-                return true;
-        }
+		if ($result !== false || $db->getErrorNum() == 1062) {
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public function exists($passhash = null, $since =  null)
-    {
-        $db = JFactory::getDBO();
+	public function exists($passhash = null, $since =  null)
+	{
+		$db = JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db)) {
+			return false;
+		}
 
-        $query = "SELECT 1 FROM #__users_password_history WHERE " .
+		$query = "SELECT 1 FROM #__users_password_history WHERE " .
 			"user_id=" . $db->Quote($this->user_id) . " AND " .
 			"passhash=" . $db->Quote($passhash);
 
-		if (!empty($since))
+		if (!empty($since)) {
 			$query .= " AND invalidated >= " . $db->Quote($since);
+		}
 
 		$query .= ";";
 
@@ -125,38 +132,37 @@ class Hubzero_User_Password_History
 
 		$result = $db->loadResult();
 
-		if ($result == '1')
+		if ($result == '1') {
 			return true;
+		}
 
 		return false;
-    }
+	}
 
-    public function remove($passhash, $timestamp)
-    {
-        if ($this->user_id <= 0)
-        {
-            return false;
-        }
+	public function remove($passhash, $timestamp)
+	{
+		if ($this->user_id <= 0) {
+			return false;
+		}
 
-        $db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db))
+		{
+			return false;
+		}
 
-        $db->setQuery("DELETE FROM #__users_password_history WHERE user_id= " . 
+		$db->setQuery("DELETE FROM #__users_password_history WHERE user_id= " . 
 			$db->Quote($this->user_id) . " AND passhash = " .
 			$db->Quote($passhash) . " AND invalidated = " .
 			$db->Quote($timestamp) . ";");
 
-        if (!$db->query())
-        {
-            return false;
-        }
+		if (!$db->query()) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	public function addPassword($passhash, $user = null)
 	{
@@ -167,4 +173,3 @@ class Hubzero_User_Password_History
 		return true;
 	}
 }
-
