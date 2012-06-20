@@ -163,6 +163,7 @@ class FeedbackControllerMedia extends Hubzero_Controller
 		{
 			$this->setError(JText::_('FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
+			return;
 		}
 
 		$qid = JRequest::getInt('qid', 0);
@@ -194,6 +195,7 @@ class FeedbackControllerMedia extends Hubzero_Controller
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
+				return;
 			}
 
 			$row->picture = '';
@@ -217,7 +219,7 @@ class FeedbackControllerMedia extends Hubzero_Controller
 	 */
 	public function displayTask($file='', $id=0, $qid=0)
 	{
-		$this->view->setLayout('dipslay');
+		$this->view->setLayout('display');
 
 		$this->view->type = $this->type;
 
