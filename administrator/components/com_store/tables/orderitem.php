@@ -29,133 +29,123 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'OrderItem'
- * 
- * Long description (if any) ...
+ * Table class for store order item
  */
 class OrderItem extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'oid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $oid    	= NULL;  // @var int(11)
+	var $oid    	= NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid    	= NULL;  // @var int(11)
+	var $uid    	= NULL;
 
 	/**
-	 * Description for 'itemid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $itemid     = NULL;  // @var int(11)
+	var $itemid     = NULL;
 
 	/**
-	 * Description for 'price'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $price    	= NULL;  // @var int(11)
+	var $price    	= NULL;
 
 	/**
-	 * Description for 'quantity'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $quantity   = NULL;  // @var int(11)
+	var $quantity   = NULL;
 
 	/**
-	 * Description for 'selections'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $selections = NULL;  // @var text
-
-	//----------
+	var $selections = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__order_items', 'id', $db );
+		parent::__construct('#__order_items', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getOrderItems'
+	 * Get all items for an order
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $oid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $oid Order ID
+	 * @return     mixed
 	 */
 	public function getOrderItems($oid)
 	{
-		if ($oid == null) {
+		if ($oid == null) 
+		{
 			return false;
 		}
 		$sql = "SELECT r.*, s.* 
 				FROM $this->_tbl AS r 
 				LEFT JOIN #__store AS s ON s.id=r.itemid 
-				WHERE r.oid=".$oid;
-		$this->_db->setQuery( $sql );
+				WHERE r.oid=" . $oid;
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'countAllItemOrders'
+	 * Count all items for an order
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $oid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $oid Order ID
+	 * @return     mixed
 	 */
 	public function countAllItemOrders($oid)
 	{
-		if ($oid == null) {
+		if ($oid == null) 
+		{
 			return false;
 		}
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl AS r, #__store AS s 
 				WHERE s.id=r.itemid 
-				AND r.oid=".$oid;
-		$this->_db->setQuery( $sql );
+				AND r.oid=" . $oid;
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'countActiveItemOrders'
+	 * Count all active items for an order
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $oid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $oid Order ID
+	 * @return     mixed
 	 */
 	public function countActiveItemOrders($oid)
 	{
-		if ($oid == null) {
+		if ($oid == null) 
+		{
 			return false;
 		}
 		$sql = "SELECT count(*) 
@@ -163,8 +153,8 @@ class OrderItem extends JTable
 				WHERE o.status=0 
 				AND s.id=r.itemid 
 				AND o.id=r.oid 
-				AND r.itemid=".$oid;
-		$this->_db->setQuery( $sql );
+				AND r.itemid=" . $oid;
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 }

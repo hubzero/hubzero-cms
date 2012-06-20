@@ -29,177 +29,170 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Store'
- * 
- * Long description (if any) ...
+ * Table class for store items
  */
 class Store extends  JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         	= NULL;  // @var int(11) Primary key
+	var $id         	= NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(127)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $title    		= NULL;
 
 	/**
-	 * Description for 'price'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $price    		= NULL;
 
 	/**
-	 * Description for 'description'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $description    = NULL;
 
 	/**
-	 * Description for 'available'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $available    	= NULL;
 
 	/**
-	 * Description for 'published'
+	 * tinyint(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $published   	= NULL;
 
 	/**
-	 * Description for 'featured'
+	 * tinyint(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $featured   	= NULL;
 
 	/**
-	 * Description for 'special'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $special   		= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(127)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $category   	= NULL;
 
 	/**
-	 * Description for 'type'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $type   		= NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created  		= NULL;  // @var datetime
+	var $created  		= NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $params 		= NULL;  // @var text
-
-	//-----------
+	var $params 		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__store', 'id', $db );
+		parent::__construct('#__store', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getInfo'
+	 * Get a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
+	 * @param      integer $id 
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getInfo( $id)
+	public function getInfo($id)
 	{
-		if ($id == null) {
+		if ($id == null) 
+		{
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE id=".$id;
-		$this->_db->setQuery( $query );
+		$query = "SELECT * FROM $this->_tbl WHERE id=" . $id;
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getItems'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rtrn Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      object $config Parameter description (if any) ...
+	 * @param      string $rtrn    Return data (record count or array or records)
+	 * @param      array  $filters Filters to build query from
+	 * @param      object $config  JParameter
 	 * @return     array Return description (if any) ...
 	 */
-	public function getItems( $rtrn='count', $filters, $config)
+	public function getItems($rtrn='count', $filters, $config)
 	{
 		// build body of query
 		$query  = "FROM $this->_tbl AS C WHERE ";
 
-		if (isset($filters['filterby'])) {
+		if (isset($filters['filterby'])) 
+		{
 			switch ($filters['filterby'])
 			{
 				case 'all':
 					$query .= "1=1";
-					break;
+				break;
 				case 'available':
 					$query .= "C.available=1";
-					break;
+				break;
 				case 'published':
 					$query .= "C.published=1";
-					break;
+				break;
 				default:
 					$query .= "C.published=1";
-					break;
+				break;
 			}
-		} else {
+		} 
+		else 
+		{
 			$query .= "C.published=1";
 		}
 
 		switch ($filters['sortby'])
 		{
-			case 'pricelow':   	$query .= " ORDER BY C.price DESC, C.publish_up ASC"; break;
-			case 'pricehigh':   $query .= " ORDER BY C.price ASC, C.publish_up ASC"; break;
-			case 'date':   		$query .= " ORDER BY C.created DESC"; break;
-			case 'category':   	$query .= " ORDER BY C.category DESC"; break;
-			case 'type':   		$query .= " ORDER BY C.type DESC"; break;
-			default:       	  	$query .= " ORDER BY C.featured DESC, C.id DESC"; break; // featured and newest first
+			case 'pricelow':  $query .= " ORDER BY C.price DESC, C.publish_up ASC"; break;
+			case 'pricehigh': $query .= " ORDER BY C.price ASC, C.publish_up ASC"; break;
+			case 'date':      $query .= " ORDER BY C.created DESC"; break;
+			case 'category':  $query .= " ORDER BY C.category DESC"; break;
+			case 'type':      $query .= " ORDER BY C.type DESC"; break;
+			default:          $query .= " ORDER BY C.featured DESC, C.id DESC"; break; // featured and newest first
 		}
 
 		// build count query (select only ID)
@@ -208,30 +201,41 @@ class Store extends  JTable
 		// build fetch query
 		$query_fetch  = "SELECT C.id, C.title, C.description, C.price, C.created, C.available, C.params, C.special, C.featured, C.category, C.type, C.published ";
 		$query_fetch .= $query;
-		if ($filters['limit'] && $filters['start']) {
+		if ($filters['limit'] && $filters['start']) 
+		{
 			$query_fetch .= " LIMIT " . $start . ", " . $limit;
 		}
 
 		// execute query
 		$result = NULL;
-		if ($rtrn == 'count') {
-			$this->_db->setQuery( $query_count );
+		if ($rtrn == 'count') 
+		{
+			$this->_db->setQuery($query_count);
 			$result = $this->_db->loadResult();
-		} else {
-			$this->_db->setQuery( $query_fetch );
+		} 
+		else 
+		{
+			$this->_db->setQuery($query_fetch);
 			$result = $this->_db->loadObjectList();
-			if ($result) {
+			if ($result) 
+			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
 				for ($i=0; $i < count($result); $i++)
 				{
 					$row = &$result[$i];
 
-					$row->webpath = $config->get('webpath');
+					$row->webpath = $config->get('webpath', '/site/store');
 					$row->root = JPATH_ROOT;
 
 					// Get parameters
-					$params = new JParameter( $row->params );
-					$row->size  = $params->get( 'size', '' );
-					$row->color = $params->get( 'color', '' );
+					$params = new $paramsClass($row->params);
+					$row->size  = $params->get('size', '');
+					$row->color = $params->get('color', '');
 				}
 			}
 		}

@@ -28,17 +28,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$canDo = StoreHelper::getActions('component');
+
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
 JToolBarHelper::title(JText::_('Store Manager') . $text, 'store.png');
-JToolBarHelper::save();
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
-$created = NULL;
-if (intval( $this->row->created ) <> 0)
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$created = JHTML::_('date', $this->row->created, '%d %b, %Y');
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
+
+$created = NULL;
+if (intval($this->row->created) <> 0)
+{
+	$created = JHTML::_('date', $this->row->created, $dateFormat, $tz);
 }
 
 ?>
@@ -49,11 +65,11 @@ public function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	
-	submitform( pressbutton );
+	submitform(pressbutton);
 
 }
 </script>
@@ -61,7 +77,7 @@ public function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 <?php if (isset($this->row->id)) { ?>
-			<legend><span><?php echo JText::_('STORE').' '. JText::_('ITEM').' #'.$this->row->id.' '.JText::_('DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('STORE') . ' ' . JText::_('ITEM') . ' #' . $this->row->id . ' ' . JText::_('DETAILS'); ?></span></legend>
 			<table class="admintable">
 			 <tbody>
 	         <tr>
@@ -76,15 +92,15 @@ public function submitbutton(pressbutton)
 			  </tr>
 	          <tr>
 			   <td class="key"><label><?php echo JText::_('PRICE'); ?>:</label></td>
-			   <td><input type="text" name="price" id="price"  size="5" value="<?php echo $this->row->price; ?>" /></td>
+			   <td><input type="text" name="price" id="price"  size="5" value="<?php echo $this->escape(stripslashes($this->row->price)); ?>" /></td>
 			  </tr>
 			  <tr>
 			   <td class="key"><label><?php echo JText::_('TITLE'); ?>:</label></td>
-			   <td><input type="text" name="title" id="title"  maxlength="100" style="width:100%" value="<?php echo stripslashes($this->row->title); ?>" /></td>
+			   <td><input type="text" name="title" id="title"  maxlength="100" style="width:100%" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 			  </tr>
 	          <tr>
 			  <td class="key"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></td>
-			   <td><textarea name="description" id="description"  cols="50" rows="10"><?php echo stripslashes($this->row->description); ?></textarea>
+			   <td><textarea name="description" id="description"  cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
 	        <br /><?php echo JText::_('WARNING_DESCR'); ?></td>
 			  </tr>
 			 </tbody>
@@ -110,13 +126,13 @@ public function submitbutton(pressbutton)
 			  </tr> 
 	          <tr>
 			   <td class="key"><label><?php echo JText::_('AV_SIZES'); ?>:</label></td>
-			   <td><input type="text" name="sizes" size="15" value="<?php echo (isset($this->row->size)) ? $this->row->size : '' ; ?>" /><br /><?php echo JText::_('SAMPLE_SIZES'); ?>:</td>
-			  </tr>           
+			   <td><input type="text" name="sizes" size="15" value="<?php echo (isset($this->row->size)) ? $this->escape(stripslashes($this->row->size)) : '' ; ?>" /><br /><?php echo JText::_('SAMPLE_SIZES'); ?>:</td>
+			  </tr>
 			 </tbody>
 			</table>
 		</fieldset>
 	</div>
-	<div class="clr"></div>			 
+	<div class="clr"></div>
 	
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -124,5 +140,5 @@ public function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="save" />
 <?php  } // end if id exists ?>
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

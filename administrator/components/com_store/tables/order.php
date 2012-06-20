@@ -29,170 +29,162 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Order'
- * 
- * Long description (if any) ...
+ * Table class for store order
  */
 class Order extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id         		= NULL;
 
 	/**
-	 * Description for 'id'
+	 * int(11)
 	 * 
+	 * @var integer
+	 */
+	var $uid    			= NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $total      		= NULL;
+
+	/**
+	 * int(11)
+	 * 0 - 'placed (newly received)'
+	 * 1 - 'processed' (account debited)
+	 * 2 - 'cancelled'
 	 * @var unknown
 	 */
-	var $id         		= NULL;  // @var int(11) Primary key
+	var $status     		= NULL;
 
 	/**
-	 * Description for 'uid'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $uid    			= NULL;  // @var int(11)
-	//var $type    			= NULL;  // @var varchar(20)
+	var $details  			= NULL;
 
 	/**
-	 * Description for 'total'
+	 * varchar(150)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $total      		= NULL;  // @var int(11)
+	var $email    			= NULL;
 
 	/**
-	 * Description for 'status'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $status     		= NULL;  // @var int(11)
+	var $ordered  			= NULL;
 
 	/**
-	 * Description for 'details'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $details  			= NULL;  // @var text
+	var $status_changed  	= NULL;
 
 	/**
-	 * Description for 'email'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $email    			= NULL;  // @var varchar(150)
+	var $notes  			= NULL;
 
 	/**
-	 * Description for 'ordered'
+	 * Constructor
 	 * 
-	 * @var unknown
-	 */
-	var $ordered  			= NULL;  // @var datetime
-
-	/**
-	 * Description for 'status_changed'
-	 * 
-	 * @var unknown
-	 */
-	var $status_changed  	= NULL;  // @var datetime
-
-	/**
-	 * Description for 'notes'
-	 * 
-	 * @var unknown
-	 */
-	var $notes  			= NULL;  // @var text
-
-	//----------
-	// order status:
-	// 0 - 'placed (newly received)'
-	// 1 - 'processed' (account debited)
-	// 2 - 'cancelled'
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__orders', 'id', $db );
+		parent::__construct('#__orders', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getOrderID'
+	 * Get the ID of an order for a user from a certain date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $ordered Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid     User ID
+	 * @param      string  $ordered Timestamp
+	 * @return     mixed
 	 */
-	public function getOrderID( $uid, $ordered)
+	public function getOrderID($uid, $ordered)
 	{
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			return false;
 		}
-		if ($ordered == null) {
+		if ($ordered == null) 
+		{
 			return false;
 		}
 
-		$sql = "SELECT id FROM $this->_tbl WHERE uid='".$uid."' AND ordered='".$ordered."' ";
-		$this->_db->setQuery( $sql);
+		$sql = "SELECT id FROM $this->_tbl WHERE uid='" . $uid . "' AND ordered='" . $ordered . "' ";
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getOrders'
+	 * Get all orders
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rtrn Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $rtrn    Data return type (record count or array of records)
+	 * @param      array   $filters Filters to build query from
+	 * @return     mixed
 	 */
-	public function getOrders( $rtrn='count', $filters)
+	public function getOrders($rtrn='count', $filters)
 	{
 		switch ($filters['filterby'])
 		{
 			case 'all':
 				$where = "1=1";
-				break;
+			break;
 			case 'new':
 				$where = "m.status=0";
-				break;
+			break;
 			case 'processed':
 				$where = "m.status=1";
-				break;
+			break;
 			case 'cancelled':
 			default:
 				$where = "m.status=2";
-				break;
+			break;
 		}
 
 		// build count query (select only ID)
-		$query_count  = "SELECT count(*) FROM $this->_tbl AS m WHERE ".$where;
+		$query_count  = "SELECT count(*) FROM $this->_tbl AS m WHERE " . $where;
 
 		$query_fetch = "SELECT m.id, m.uid, m.total, m.status, m.ordered, m.status_changed,  
 				(SELECT count(*) FROM #__order_items AS r WHERE r.oid=m.id) AS items"
 			. "\n FROM $this->_tbl AS m"
-			. "\n WHERE ".$where
-			. "\n ORDER BY ".$filters['sortby'];
+			. "\n WHERE " . $where
+			. "\n ORDER BY " . $filters['sortby'];
 
-		if ($filters['limit'] && $filters['start']) {
+		if ($filters['limit'] && $filters['start']) 
+		{
 			$query_fetch .= " LIMIT " . $start . ", " . $limit;
 		}
 
 		// execute query
 		$result = NULL;
-		if ($rtrn == 'count') {
-			$this->_db->setQuery( $query_count );
+		if ($rtrn == 'count') 
+		{
+			$this->_db->setQuery($query_count);
 			$results = $this->_db->loadResult();
-		} else {
-			$this->_db->setQuery( $query_fetch );
+		} 
+		else 
+		{
+			$this->_db->setQuery($query_fetch);
 			$result = $this->_db->loadObjectList();
 		}
 

@@ -5,16 +5,30 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/* Brought from nanoHUB CSS //==================================================================== */
-	
 	.published,
-	.unpublished { margin-left: 20px; padding: 0; display: block; width: 12px; height: 12px; }
+	.unpublished { 
+		margin-left: 20px;
+		padding: 0; 
+		display: block; 
+		width: 12px; 
+		height: 12px;
+	}
 	.published span,
-	.unpublished span { display: none; }	
+	.unpublished span { 
+		display: none; 
+	}
 	
 	.check,
-	.published { background: url("images/check.gif") 0 0 no-repeat; }
-	.unpublished { background: url("images/minus.gif") 0 0 no-repeat; }
+	.published { 
+		background: url("images/check.gif") 0 0 no-repeat;
+	}
+	.unpublished { 
+		background: url("images/minus.gif") 0 0 no-repeat;
+	}
 	
-	.yes { color:green; }
-	.no { color:no; }
+	.yes { 
+		color: green;
+	}
+	.no { 
+		color: #999;
+	}

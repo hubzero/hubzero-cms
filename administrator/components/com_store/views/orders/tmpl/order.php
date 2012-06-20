@@ -28,27 +28,42 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$canDo = StoreHelper::getActions('component');
 
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
-JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'addedit.png');
-JToolBarHelper::save();
+JToolBarHelper::title(JText::_('Store Manager') . $text, 'addedit.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
-$order_date = (intval( $this->row->ordered ) <> 0) ? JHTML::_('date', $this->row->ordered, '%d %b, %Y') : NULL ;
-$status_changed = (intval( $this->row->status_changed ) <> 0) ? JHTML::_('date', $this->row->status_changed, '%d %b, %Y') : NULL;
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
+
+$order_date = (intval($this->row->ordered) <> 0) ? JHTML::_('date', $this->row->ordered, $dateFormat, $tz) : NULL ;
+$status_changed = (intval($this->row->status_changed) <> 0) ? JHTML::_('date', $this->row->status_changed, $dateFormat, $tz) : NULL;
 
 switch ($this->row->status)
 {
 	case 0:
-		$status = "<span class='yes'>".strtolower(JText::_('NEW'))."</span>";
+		$status = '<span class="yes">' . strtolower(JText::_('NEW')) . '</span>';
 		break;
 	case 1:
-		$status = "completed";
+		$status = 'completed';
 		break;
 	case 2:
 	default:
-		$status = "cancelled";
+		$status = 'cancelled';
 		break;
 }
 
@@ -59,11 +74,11 @@ public function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	
-	submitform( pressbutton );
+	submitform(pressbutton);
 
 }
 </script>
@@ -72,7 +87,7 @@ public function submitbutton(pressbutton)
 		<fieldset class="adminform">
 
 <?php if (isset($this->row->id)) { ?>
-			<legend><span><?php echo JText::_('ORDER').' #'.$this->row->id.' '.JText::_('DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('ORDER') . ' #' . $this->row->id . ' ' . JText::_('DETAILS'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
@@ -82,35 +97,35 @@ public function submitbutton(pressbutton)
 			foreach ($this->orderitems as $o)
 			{
 				$avail = ($o->available) ?  'available' : 'unavailable';
-				$html  = $k.') ';
-		   		$html .= $o->title. ' (x'.$o->quantity.')';
-				$html .= ($o->selectedsize) ? '- size '.$o->selectedsize : '';
-				$html .= '<br /><span style="color:#999;">'.JText::_('ITEM').' '.JText::_('STORE').' '.JText::_('ID').' #'.$o->itemid.'. '.JText::_('STATUS').': '.$avail;
+				$html  = $k . ') ';
+		   		$html .= $o->title . ' (x' . $o->quantity . ')';
+				$html .= ($o->selectedsize) ? '- size ' . $o->selectedsize : '';
+				$html .= '<br /><span style="color:#999;">' . JText::_('ITEM') . ' ' . JText::_('STORE') . ' ' . JText::_('ID') . ' #' . $o->itemid . '. ' . JText::_('STATUS') . ': ' . $avail;
 				if (!$o->sizeavail) {
 					$html .= JText::_('WARNING_NOT_IN_STOCK');
 				}
-				$html .= '. '.JText::_('CURRENT_PRICE').': '.$o->price.'</span><br />';
+				$html .= '. ' . JText::_('CURRENT_PRICE') . ': ' . $o->price . '</span><br />';
 				$k++;
 				echo $html;
-		   	}
+			}
 ?></p>
 						</td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('SHIPPING'); ?>:</label></td>
-						<td><pre><?php echo $this->row->details ?></pre></td>
+						<td><pre><?php echo $this->escape(stripslashes($this->row->details)); ?></pre></td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('PROFILE_INFO'); ?>:</label></td>
 						<td>
-							<?php echo JText::_('LOGIN'); ?>: <?php echo $this->customer->get('username') ?> <br />
-							<?php echo JText::_('NAME'); ?>: <?php echo $this->customer->get('name') ?> <br />
-							<?php echo JText::_('EMAIL'); ?>: <?php echo $this->customer->get('email') ?>
+							<?php echo JText::_('LOGIN'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('username'))); ?> <br />
+							<?php echo JText::_('NAME'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('name'))); ?> <br />
+							<?php echo JText::_('EMAIL'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('email'))); ?>
 						</td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('ADMIN_NOTES'); ?>:</label></td>
-						<td><textarea name="notes" id="notes"  cols="50" rows="10"><?php echo (stripslashes($this->row->notes)); ?></textarea></td>
+						<td><textarea name="notes" id="notes"  cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->notes)); ?></textarea></td>
 					</tr>
 				</tbody>
 			</table>
@@ -131,12 +146,12 @@ public function submitbutton(pressbutton)
 					</tr>
 <?php if ($this->row->status != 0) { ?>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ORDER').' '.$status; ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('ORDER') . ' ' . $status; ?>:</label></td>
 						<td><?php echo $status_changed ?></td>
 					</tr>
 <?php } ?>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ORDER').' '.JText::_('TOTAL'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('ORDER') . ' ' . JText::_('TOTAL'); ?>:</label></td>
 						<td>
 <?php if ($this->row->status == 0) { ?>
 							<input type="text" name="total" value="<?php echo $this->row->total ?>"  /> <?php echo JText::_('POINTS'); ?>
@@ -172,11 +187,13 @@ public function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="clr"></div>				 
+	<div class="clr"></div>
+	
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 <?php  } // end if id exists ?>
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

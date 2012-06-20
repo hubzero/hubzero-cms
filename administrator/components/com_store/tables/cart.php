@@ -29,113 +29,104 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Cart'
- * 
- * Long description (if any) ...
+ * Table class for store cart
  */
 class Cart extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid    	= NULL;  // @var int(11)
+	var $uid    	= NULL;
 
 	/**
-	 * Description for 'itemid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $itemid     = NULL;  // @var int(11)
+	var $itemid     = NULL;
 
 	/**
-	 * Description for 'type'
+	 * varchar(20)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $type    	= NULL;  // @var varchar(20)
+	var $type    	= NULL;
 
 	/**
-	 * Description for 'quantity'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $quantity   = NULL;  // @var int(11)
+	var $quantity   = NULL;
 
 	/**
-	 * Description for 'added'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $added  	= NULL;  // @var datetime
+	var $added  	= NULL;
 
 	/**
-	 * Description for 'selections'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $selections = NULL;  // @var text
-
-	//------------
+	var $selections = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__cart', 'id', $db );
+		parent::__construct('#__cart', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'checkCartItem'
+	 * Check if an item is already in the cart
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id  Entry ID
+	 * @param      integer $uid User ID
+	 * @return     array
 	 */
-	public function checkCartItem( $id=null, $uid)
+	public function checkCartItem($id=null, $uid)
 	{
-		if ($id == null or $uid == null) {
+		if ($id == null or $uid == null) 
+		{
 			return false;
 		}
 
-		$sql = "SELECT id, quantity FROM $this->_tbl WHERE itemid='".$id."' AND uid=".$uid;
-		$this->_db->setQuery( $sql );
+		$sql = "SELECT id, quantity FROM $this->_tbl WHERE itemid='" . $id . "' AND uid=" . $uid;
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getCartItems'
+	 * Get items int he cart
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $rtrn Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid  User ID
+	 * @param      string  $rtrn Return cost or items?
+	 * @return     mixed
 	 */
 	public function getCartItems($uid, $rtrn='')
 	{
 		$total = 0;
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			return false;
 		}
 
@@ -146,37 +137,45 @@ class Cart extends JTable
 
 		$query  = "SELECT B.quantity, B.itemid, B.uid, B.added, B.selections, a.title, a.price, a.available, a.params, a.type, a.category ";
 		$query .= " FROM $this->_tbl AS B, #__store AS a";
-		$query .= " WHERE a.id = B.itemid AND B.uid=".$uid;
+		$query .= " WHERE a.id = B.itemid AND B.uid=" . $uid;
 		$query .= " ORDER BY B.id DESC";
-		$this->_db->setQuery( $query);
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
-		if ($result) {
+		if ($result) 
+		{
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
 			foreach ($result as $r)
 			{
 				$price = $r->price * $r->quantity;
-				if ($r->available) {
+				if ($r->available) 
+				{
 					$total = $total + $price;
 				}
 
-				$params 	 		= new JParameter( $r->params );
-				$selections  		= new JParameter( $r->selections );
+				$params 	 		= new $paramsClass($r->params);
+				$selections  		= new $paramsClass($r->selections);
 
 				// get size selection
-				$r->sizes    		= $params->get( 'size', '' );
-				$r->sizes 			= str_replace(" ","",$r->sizes);
-				$r->selectedsize    = trim($selections->get( 'size', '' ));
-				$r->sizes    		= preg_split('#,#',$r->sizes);
+				$r->sizes    		= $params->get('size', '');
+				$r->sizes 			= str_replace(' ', '', $r->sizes);
+				$r->selectedsize    = trim($selections->get('size', ''));
+				$r->sizes    		= explode(',', $r->sizes);
 
 				// get color selection
-				$r->colors    		= $params->get( 'color', '' );
-				$r->colors 			= str_replace(" ","",$r->colors);
-				$r->selectedcolor   = trim($selections->get( 'color', '' ));
-				$r->colors    		= preg_split('#,#',$r->colors);
+				$r->colors    		= $params->get('color', '');
+				$r->colors 			= str_replace(' ', '', $r->colors);
+				$r->selectedcolor   = trim($selections->get('color', ''));
+				$r->colors    		= explode(',', $r->colors);
 			}
 		}
 
-		if ($rtrn) {
+		if ($rtrn) 
+		{
 			$result = $total; // total cost of items in cart
 		}
 
@@ -184,31 +183,32 @@ class Cart extends JTable
 	}
 
 	/**
-	 * Short description for 'saveCart'
+	 * Save items to the cart
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $posteditems Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      array  $posteditems List of items to save
+	 * @param      string $uid         User ID
+	 * @return     boolean True upon success
 	 */
-	public function saveCart( $posteditems, $uid)
+	public function saveCart($posteditems, $uid)
 	{
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			return false;
 		}
 
 		// get current cart items
 		$items = $this->getCartItems($uid);
-		if ($items) {
+		if ($items) 
+		{
 			foreach ($items as $item)
 			{
-				if ($item->type != 2) { // not service	
+				if ($item->type != 2) 
+				{ // not service	
 					$size 			= (isset($item->selectedsize)) ? $item->selectedsize : '';
 					$color 			= (isset($item->color)) ? $item->color : '';
-					$sizechoice 	= (isset($posteditems['size'.$item->itemid])) ? $posteditems['size'.$item->itemid] : $size;
-					$colorchoice 	= (isset($posteditems['color'.$item->itemid])) ? $posteditems['color'.$item->itemid] : $color;
-					$newquantity 	= (isset($posteditems['num'.$item->itemid])) ? $posteditems['num'.$item->itemid] : $item->quantity;
+					$sizechoice 	= (isset($posteditems['size' . $item->itemid]))  ? $posteditems['size' . $item->itemid]  : $size;
+					$colorchoice 	= (isset($posteditems['color' . $item->itemid])) ? $posteditems['color' . $item->itemid] : $color;
+					$newquantity 	= (isset($posteditems['num' . $item->itemid]))   ? $posteditems['num' . $item->itemid]   : $item->quantity;
 
 					$selection	    = '';
 					$selection	   .= 'size=';
@@ -217,11 +217,11 @@ class Cart extends JTable
 					$selection	   .= 'color=';
 					$selection 	   .= $colorchoice;
 
-					$query  = "UPDATE $this->_tbl SET quantity='".$newquantity."',";
-					$query .= " selections='".$selection."'";
-					$query .= " WHERE itemid=".$item->itemid;
-					$query .= " AND uid=".$uid;
-					$this->_db->setQuery( $query);
+					$query  = "UPDATE $this->_tbl SET quantity='" . $newquantity . "',";
+					$query .= " selections='" . $selection . "'";
+					$query .= " WHERE itemid=" . $item->itemid;
+					$query .= " AND uid=" . $uid;
+					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
 			}
@@ -229,46 +229,46 @@ class Cart extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteCartItem'
+	 * Remove an item from the cart
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      integer $all Parameter description (if any) ...
+	 * @param      integer $id  Entry ID
+	 * @param      integer $uid User ID
+	 * @param      integer $all Remove all items?
 	 * @return     void
 	 */
 	public function deleteCartItem($id, $uid, $all=0)
 	{
-		$sql = "DELETE FROM $this->_tbl WHERE uid='".$uid."'  ";
-		if (!$all && $id) {
-			$sql.= "AND itemid='".$id."' ";
+		$sql = "DELETE FROM $this->_tbl WHERE uid='" . $uid . "'  ";
+		if (!$all && $id) 
+		{
+			$sql .= "AND itemid='" . $id . "' ";
 		}
 
-		$this->_db->setQuery( $sql);
+		$this->_db->setQuery($sql);
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'deleteUnavail'
+	 * Delete items marked as unavailable
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      array $items Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid   User ID
+	 * @param      array   $items List of item IDs
+	 * @return     boolean True upon success
 	 */
-	public function deleteUnavail( $uid, $items)
+	public function deleteUnavail($uid, $items)
 	{
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			return false;
 		}
-		if (count($items) > 0) {
+		if (count($items) > 0) 
+		{
 			foreach ($items as $i)
 			{
-				if ($i->available == 0) {
-					$sql = "DELETE FROM $this->_tbl WHERE itemid=".$i->itemid." AND uid=".$uid;
-					$this->_db->setQuery( $sql);
+				if ($i->available == 0) 
+				{
+					$sql = "DELETE FROM $this->_tbl WHERE itemid=" . $i->itemid . " AND uid=" . $uid;
+					$this->_db->setQuery($sql);
 					$this->_db->query();
 				}
 			}
@@ -276,28 +276,29 @@ class Cart extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteItem'
+	 * Delete an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $itemid Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $itemid Entry ID
+	 * @param      integer $uid    User ID
+	 * @param      string  $type   Entry type
+	 * @return     boolean True upon success
 	 */
 	public function deleteItem($itemid=null, $uid=null, $type='merchandise')
 	{
-		if ($itemid == null) {
+		if ($itemid == null) 
+		{
 			return false;
 		}
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			return false;
 		}
 
 		$sql = "DELETE FROM $this->_tbl WHERE itemid='$itemid' AND type='$type' AND uid=$uid";
 		$this->_db->setQuery($sql);
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;

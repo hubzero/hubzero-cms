@@ -28,23 +28,40 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$canDo = StoreHelper::getActions('item');
+
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title(JText::_( 'Store Manager' ) . $text, 'store.png');
-JToolBarHelper::preferences('com_store', '550');
-
+JToolBarHelper::title(JText::_('Store Manager') . $text, 'store.png');
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences($this->option, '550');
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 ?>
 <script type="text/javascript">
 public function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -52,14 +69,14 @@ public function submitbutton(pressbutton)
 		<?php echo count($this->rows); ?> <?php echo JText::_('ITEMS_DISPLAYED'); ?>.
 
 		<label><?php echo JText::_('FILTERBY'); ?>:</label> 
-		<select name="filterby" onchange="document.adminForm.submit( );">
+		<select name="filterby" onchange="document.adminForm.submit();">
 			<option value="available"<?php if ($this->filters['filterby'] == 'available') { echo ' selected="selected"'; } ?>><?php echo JText::_('INSTORE_ITEMS'); ?></option>
 	    	<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('PUBLISHED'); ?></option>
 			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL_ITEMS'); ?></option>
 		</select>
 
 		<label><?php echo JText::_('SORTBY'); ?>:</label> 
-		<select name="sortby" onchange="document.adminForm.submit( );">
+		<select name="sortby" onchange="document.adminForm.submit();">
 	    	<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('Lowest price'); ?></option>
 	    	<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('Highlest price'); ?></option>
 			<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Date added')); ?></option>
@@ -71,14 +88,14 @@ public function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo strtoupper(JText::_('ID')); ?></th>
-				<th><?php echo JText::_('CATEGORY'); ?></th>
-				<th><?php echo JText::_('TITLE'); ?></th>
-				<th><?php echo JText::_('DESCRIPTION'); ?></th>
-				<th><?php echo JText::_('PRICE'); ?></th>
-				<th><?php echo JText::_('TIMES_ORDERED'); ?></th>
-				<th><?php echo JText::_('INSTOCK'); ?></th>
-				<th><?php echo JText::_('PUBLISHED'); ?></th>
+				<th scope="col"><?php echo strtoupper(JText::_('ID')); ?></th>
+				<th scope="col"><?php echo JText::_('CATEGORY'); ?></th>
+				<th scope="col"><?php echo JText::_('TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('DESCRIPTION'); ?></th>
+				<th scope="col"><?php echo JText::_('PRICE'); ?></th>
+				<th scope="col"><?php echo JText::_('TIMES_ORDERED'); ?></th>
+				<th scope="col"><?php echo JText::_('INSTOCK'); ?></th>
+				<th scope="col"><?php echo JText::_('PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -90,11 +107,11 @@ public function submitbutton(pressbutton)
 <?php
 ximport('Hubzero_View_Helper_Html');
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$status='';
+	$status = '';
 	switch ($row->available)
 	{
 		case '1':
@@ -127,21 +144,54 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>"><?php echo $row->id; ?></a></td>
-				<td><?php echo $row->category;  ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>"><?php echo stripslashes($row->title); ?></a></td>
-				<td><?php echo Hubzero_View_Helper_Html::shortenText($row->description, 300);  ?></td>
-				<td><?php echo $row->price ?></td>
-				<td><?php echo ($row->allorders) ? $row->allorders : '0';  ?></td>
 				<td>
-					<a class="state <?php echo $a_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>">
-						<span><img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" /></span>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>">
+						<?php echo $row->id; ?>
 					</a>
 				</td>
 				<td>
+					<?php echo $this->escape(stripslashes($row->category)); ?>
+				</td>
+				<td>
+<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</a>
+<?php } else { ?>
+					<span>
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</span>
+<?php } ?>
+				</td>
+				<td>
+					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->description), 300); ?></td>
+				<td>
+					<?php echo $this->escape(stripslashes($row->price)); ?>
+				</td>
+				<td>
+					<?php echo ($row->allorders) ? $row->allorders : '0'; ?>
+				</td>
+				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $a_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $a_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $a_alt;?>">
+						<span><img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" /></span>
+					</a>
+<?php } else { ?>
+					<span class="state <?php echo $a_class;?>">
+						<span><img src="images/<?php echo $a_img; ?>" width="16" height="16" border="0" alt="<?php echo $a_alt; ?>" /></span>
+					</span>
+<?php } ?>
+				</td>
+				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $p_class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>">
 						<span><img src="images/<?php echo $p_img; ?>" width="16" height="16" border="0" alt="<?php echo $p_alt; ?>" /></span>
 					</a>
+<?php } else { ?>
+					<span class="state <?php echo $p_class;?>">
+						<span><img src="images/<?php echo $p_img; ?>" width="16" height="16" border="0" alt="<?php echo $p_alt; ?>" /></span>
+					</span>
+<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -155,5 +205,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

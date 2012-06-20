@@ -34,17 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'StoreControllerOrders'
- * 
- * Long description (if any) ...
+ * Controller class for store orders
  */
 class StoreControllerOrders extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
@@ -61,9 +56,7 @@ class StoreControllerOrders extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'displayTask'
-	 * 
-	 * Long description (if any) ...
+	 * Display all orders
 	 * 
 	 * @return     void
 	 */
@@ -144,7 +137,10 @@ class StoreControllerOrders extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -152,9 +148,7 @@ class StoreControllerOrders extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'receiptTask'
-	 * 
-	 * Long description (if any) ...
+	 * Generate a receipt
 	 * 
 	 * @return     void
 	 */
@@ -256,19 +250,12 @@ class StoreControllerOrders extends Hubzero_Controller
 			$pdf->Warning('No information available. Please supply order ID');
 		}
 
-		// Thank-you line
-		/*for($i=1;$i<=40;$i++) 
-		{
-			$pdf->Cell(0,10,'Printing line number '.$i,0,1);
-		}*/
 		$pdf->Output();
 		exit();
 	}
 
 	/**
-	 * Short description for 'orderTask'
-	 * 
-	 * Long description (if any) ...
+	 * Display an order
 	 * 
 	 * @return     void
 	 */
@@ -326,7 +313,10 @@ class StoreControllerOrders extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -487,8 +477,10 @@ class StoreControllerOrders extends Hubzero_Controller
 			}
 		}
 
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = $statusmsg;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			$statusmsg
+		);
 	}
 
 	/**
@@ -498,6 +490,8 @@ class StoreControllerOrders extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

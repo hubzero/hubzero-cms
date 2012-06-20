@@ -34,17 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'StoreControllerItems'
- * 
- * Long description (if any) ...
+ * Controller class for store items
  */
 class StoreControllerItems extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
@@ -128,12 +123,15 @@ class StoreControllerItems extends Hubzero_Controller
 		}
 
 		// Push some styles to the view
-		$this->_getStyles();
+		//$this->_getStyles();
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -147,7 +145,6 @@ class StoreControllerItems extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -158,6 +155,10 @@ class StoreControllerItems extends Hubzero_Controller
 	 */
 	public function editTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
 		// Instantiate a new view
 		$this->view->store_enabled = $this->config->get('store_enabled');
 
@@ -177,7 +178,7 @@ class StoreControllerItems extends Hubzero_Controller
 		}
 		else
 		{
-			// New item			
+			// New item
 			$this->view->row->available = 0;
 			$this->view->row->created   = date('Y-m-d H:i:s', time());
 			$this->view->row->published = 0;
@@ -190,7 +191,10 @@ class StoreControllerItems extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -264,9 +268,7 @@ class StoreControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'availableTask'
-	 * 
-	 * Long description (if any) ...
+	 * Calls stateTask to set entry to available
 	 * 
 	 * @return     void
 	 */
@@ -276,9 +278,7 @@ class StoreControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'unavailableTask'
-	 * 
-	 * Long description (if any) ...
+	 * Calls stateTask to set entry to unavailable
 	 * 
 	 * @return     void
 	 */
@@ -288,9 +288,7 @@ class StoreControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'publishTask'
-	 * 
-	 * Long description (if any) ...
+	 * Calls stateTask to publish entries
 	 * 
 	 * @return     void
 	 */
@@ -300,9 +298,7 @@ class StoreControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'unpublishTask'
-	 * 
-	 * Long description (if any) ...
+	 * Calls stateTask to unpublish entries
 	 * 
 	 * @return     void
 	 */
@@ -312,11 +308,9 @@ class StoreControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'stateTask'
+	 * Sets the state of one or more entries
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function stateTask()
 	{
@@ -396,7 +390,9 @@ class StoreControllerItems extends Hubzero_Controller
 			break;
 		}
 
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**
@@ -406,7 +402,9 @@ class StoreControllerItems extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }
 
