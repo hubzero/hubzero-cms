@@ -55,40 +55,33 @@ else
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
+
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'page.php');
 }
 
 ximport('Hubzero_User_Helper');
 
 // Include scripts
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'wiki.php');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'differenceengine.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'attachment.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'author.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'comment.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'page.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'revision.php');
+
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'differenceengine.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'setup.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 
 // Initiate controller
 $controllerName = JRequest::getCmd('controller', 'pages');
-if (!file_exists(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'pages';
 }
-/*JSubMenuHelper::addEntry(
-	JText::_('Manage'), 
-	'index.php?option=' .  $option . '&controller=manage', 
-	$controllerName == 'pages'
-);
-JSubMenuHelper::addEntry(
-	JText::_('Revisions'), 
-	'index.php?option=' .  $option . '&controller=system', 
-	$controllerName == 'revisions'
-);*/
-
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'WikiController' . ucfirst($controllerName);
 

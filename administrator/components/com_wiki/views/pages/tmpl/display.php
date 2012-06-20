@@ -28,29 +28,39 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_( 'Wiki' ), 'addedit.png');
-//JToolBarHelper::publishList( 'publishc' );
-//JToolBarHelper::unpublishList( 'unpublishc' );
-JToolBarHelper::preferences('com_wiki', '550');
-//JToolBarHelper::spacer();
-//JToolBarHelper::custom('newrevision', 'new', '', JText::_('New Revision'), false );
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+$canDo = WikiHelper::getActions('page');
+
+JToolBarHelper::title(JText::_('Wiki'), 'addedit.png');
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences($this->option, '550');
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -80,7 +90,7 @@ if ($this->groups) {
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('Mode'); ?></th>
@@ -104,7 +114,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 	switch ($row->state)
@@ -149,16 +159,30 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('Edit Page'); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a>
+<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('Edit Page'); ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</a>
+<?php } else { ?>
+					<span>
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</span>
+<?php } ?>
 					<br /><?php if ($row->scope) { ?><span style="color: #999; font-size: 90%"><?php echo stripslashes($row->scope); ?>/</span> &nbsp; <?php } ?><span style="color: #999; font-size: 90%"><?php echo stripslashes($row->pagename); ?></span>
 				</td>
 				<td>
 					<?php echo $this->escape($params->get('mode')); ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->id; ?>&amp;state=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="<?php echo JText::_('Change State'); ?>">
 						<?php echo $alt;?>
 					</a>
+<?php } else { ?>
+					<span <?php echo $color_access; ?>>
+						<?php echo $alt;?>
+					</span>
+<?php } ?>
 				</td>
 				<td>
 					<span class="group">
@@ -198,5 +222,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

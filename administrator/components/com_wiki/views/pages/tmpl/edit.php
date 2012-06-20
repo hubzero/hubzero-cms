@@ -1,16 +1,20 @@
 <?php
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$text = ( $this->task == 'editpage' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+$canDo = WikiHelper::getActions('page');
 
-JToolBarHelper::title( JText::_('Wiki').': '.JText::_('Page').': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-JToolBarHelper::save();
+$text = ($this->task == 'editpage' ? JText::_('EDIT') : JText::_('NEW'));
+
+JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page').': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
-
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -18,8 +22,8 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton =='resethits') {
-		if (confirm( <?php echo JText::_('RESET_HITS_WARNING'); ?> )){
-			submitform( pressbutton );
+		if (confirm(<?php echo JText::_('RESET_HITS_WARNING'); ?>)){
+			submitform(pressbutton);
 			return;
 		} else {
 			return;
@@ -27,17 +31,17 @@ function submitbutton(pressbutton)
 	}
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// do field validation
 	if ($('pagetitle').value == '') {
-		alert( <?php echo JText::_('ERROR_MISSING_TITLE'); ?> );
+		alert(<?php echo JText::_('ERROR_MISSING_TITLE'); ?>);
 	} else if ($('pagename').value == '') {
-		alert( <?php echo JText::_('ERROR_MISSING_PAGENAME'); ?> );
+		alert(<?php echo JText::_('ERROR_MISSING_PAGENAME'); ?>);
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 </script>
@@ -130,5 +134,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -270,7 +270,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->pageid,
 			JText::_('Revision saved')
 		);
 	}
@@ -446,9 +446,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'cancel'
-	 * 
-	 * Long description (if any) ...
+	 * Cancel a task and redirect to main listing
 	 * 
 	 * @return     void
 	 */

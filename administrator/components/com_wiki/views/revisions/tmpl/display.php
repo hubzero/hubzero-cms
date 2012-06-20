@@ -1,11 +1,22 @@
 <?php
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_('Wiki').'</a>: '.JText::_('Page Revisions'), 'addedit.png' );
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+$canDo = WikiHelper::getActions('page');
+
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">'.JText::_('Wiki') . '</a>: ' . JText::_('Page Revisions'), 'addedit.png');
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 
 ?>
 <script type="text/javascript">
@@ -13,29 +24,28 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
-
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<tbody>
 			<tr>
 				<th>Title</th>
-				<td><?php echo stripslashes($this->page->title); ?></td>
+				<td><?php echo $this->escape(stripslashes($this->page->title)); ?></td>
 				<th>Scope</th>
-				<td><?php echo stripslashes($this->page->scope); ?></td>
+				<td><?php echo $this->escape(stripslashes($this->page->scope)); ?></td>
 			</tr>
 			<tr>
 				<th>(ID) Pagename</th>
-				<td>(<?php echo $this->page->id; ?>) <?php echo stripslashes($this->page->pagename); ?></td>
+				<td>(<?php echo $this->page->id; ?>) <?php echo $this->escape(stripslashes($this->page->pagename)); ?></td>
 				<th>Group</th>
-				<td><?php echo stripslashes($this->page->group); ?></td>
+				<td><?php echo $this->escape(stripslashes($this->page->group)); ?></td>
 			</tr>
 			<tr>
 		</tbody>
@@ -52,7 +62,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Revision', 'revision', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Edit Summary', 'summary', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -70,7 +80,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+for ($i=0, $n=count($this->rows); $i < $n; $i++) 
 {
 	$row = &$this->rows[$i];
 
@@ -98,23 +108,35 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $this->escape($row->id); ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Edit revision'); ?>">
-						Revision <?php echo $this->escape(stripslashes($row->version)); ?>
+						<?php echo JText::sprintf('Revision %s', $this->escape(stripslashes($row->version))); ?>
 					</a>
+<?php } else { ?>
+					<span>
+						<?php echo JText::sprintf('Revision %s', $this->escape(stripslashes($row->version))); ?>
+					</span>
+<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->summary)); ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
 					<a <?php echo $color_access; ?> class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;approve=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Set state'); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
+<?php } else { ?>
+					<span <?php echo $color_access; ?> class="<?php echo $class;?>">
+						<span><?php echo $alt; ?></span>
+					</span>
+<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->minor_edit); ?>
 				</td>
 				<td>
-					<time><?php echo $this->escape($row->created); ?></time>
+					<time datetime="<?php echo $this->escape($row->created); ?>"><?php echo $this->escape($row->created); ?></time>
 				</td>
 				<td>
 					<span class="user">
@@ -137,5 +159,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="pageid" value="<?php echo $this->filters['pageid']; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

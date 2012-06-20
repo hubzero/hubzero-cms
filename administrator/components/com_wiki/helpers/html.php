@@ -29,16 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiHtml'
- * 
- * Long description (if any) ...
+ * Wiki helper class for HTML
  */
 class WikiHtml
 {
-
 	/**
 	 * Short description for 'alert'
 	 * 
@@ -47,9 +44,9 @@ class WikiHtml
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function alert( $msg )
+	public function alert($msg)
 	{
-		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
+		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
 
 	/**
@@ -66,19 +63,19 @@ class WikiHtml
 	 */
 	public function formSelect($name, $array, $value, $class='', $id)
 	{
-		$out  = '<select name="'.$name.'" id="'.$name.'" onchange="return listItemTask(\'cb'. $id .'\',\'regroup\')"';
-		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
+		$out  = '<select name="' . $name . '" id="' . $name . '" onchange="return listItemTask(\'cb' . $id . '\',\'regroup\')"';
+		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		$out .= ' <option value="0"';
 		$out .= ($value == 0 || $value == '') ? ' selected="selected"' : '';
-		$out .= '>'. JText::_('NONE') .'</option>'."\n";
+		$out .= '>' . JText::_('NONE') . '</option>' . "\n";
 		foreach ($array as $anode)
 		{
 			$selected = ($anode->id == $value || $anode->title == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$out .= ' <option value="'.$anode->id.'"'.$selected.'>'.$anode->title.'</option>'."\n";
+			$out .= ' <option value="' . $anode->id . '"' . $selected . '>' . $anode->title . '</option>' . "\n";
 		}
-		$out .= '</select>'."\n";
+		$out .= '</select>' . "\n";
 		return $out;
 	}
 
@@ -92,18 +89,18 @@ class WikiHtml
 	 * @param      string $name Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function sectionSelect( $categories, $val, $name )
+	public function sectionSelect($categories, $val, $name)
 	{
-		$out  = '<select name="'.$name.'">'."\n";
-		$out .= "\t".'<option value="">'.JText::_('SELECT_CATEGORY') .'</option>'."\n";
+		$out  = '<select name="' . $name . '">' . "\n";
+		$out .= "\t" . '<option value="">' . JText::_('SELECT_CATEGORY') . '</option>' . "\n";
 		foreach ($categories as $category)
 		{
 			$selected = ($category->id == $val)
 					  ? ' selected="selected"'
 					  : '';
-			$out .= "\t".'<option value="'.$category->id.'"'.$selected.'>'.$category->title.'</option>'."\n";
+			$out .= "\t" . '<option value="' . $category->id . '"' . $selected . '>' . $category->title . '</option>' . "\n";
 		}
-		$out .= '</select>'."\n";
+		$out .= '</select>' . "\n";
 		return $out;
 	}
 }
