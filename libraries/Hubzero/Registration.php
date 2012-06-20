@@ -755,6 +755,11 @@ class Hubzero_Registration
 			} else if ($score >= PASS_SCORE_STRONG) {
 				// Strong pass
 			}
+			ximport('Hubzero_Password_Rule');
+			$rules = Hubzero_Password_Rule::getRules();
+			$msg = Hubzero_Password_Rule::validate($registration['password'],$rules,$login,$registration['name']);
+			if (is_array($msg))
+				$this->_invalid['password'] = $msg;
 		}
 
 		if ($registrationFullname == REG_REQUIRED)
