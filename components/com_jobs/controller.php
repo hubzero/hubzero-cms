@@ -261,7 +261,7 @@ class JobsController extends Hubzero_Controller
 		$view->display();*/
 		$rtrn = jRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
-			JRout::_('index.php?option=com_login&return=' . base64_encode($rtrn))
+			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
 		);
 	}
 
