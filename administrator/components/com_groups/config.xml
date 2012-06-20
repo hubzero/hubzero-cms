@@ -69,6 +69,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="email_member_groupsidcussionemail_autosignup" type="list" default="0" label="Enable groups to auto setup new members to receive discussion email by default" description="Automatically setup new group users to get email from the group discussions">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
         
 	</params>
 </config>

@@ -1349,6 +1349,7 @@ class GroupsController extends Hubzero_Controller
 		$g_restrict_msg = trim(JRequest::getVar( 'restrict_msg', '', 'post', 'none', 2 ));
 		$g_join_policy  = JRequest::getInt('join_policy', 0, 'post' );
 		$tags = trim(JRequest::getVar( 'tags', '' ));
+		$g_discussion_email_autosubscribe = JRequest::getInt('discussion_email_autosubscribe', 0, 'post' );
 
 		// Instantiate an Hubzero_Group object
 		$group = new Hubzero_Group();
@@ -1387,6 +1388,7 @@ class GroupsController extends Hubzero_Controller
 			$group->set('restrict_msg',$g_restrict_msg);
 			$group->set('join_policy',$g_join_policy);
 			$group->set('cn',$g_cn);
+			$group->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
 
 			$this->group = $group;
 			$this->tags = $tags;
@@ -1416,7 +1418,8 @@ class GroupsController extends Hubzero_Controller
 			$group->set('restrict_msg',$g_restrict_msg);
 			$group->set('join_policy',$g_join_policy);
 			$group->set('cn',$g_cn);
-
+			$group->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
+                    
 			$this->group = $group;
 			$this->tags = $tags;
 			$this->edit();
@@ -1479,6 +1482,7 @@ class GroupsController extends Hubzero_Controller
 		$group->set('private_desc', $g_private_desc );
 		$group->set('restrict_msg',$g_restrict_msg);
 		$group->set('join_policy',$g_join_policy);
+		$group->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
 		$group->update();
 
 		// Process tags

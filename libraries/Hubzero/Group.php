@@ -118,6 +118,13 @@ class Hubzero_Group
 	 * @var unknown
 	 */
 	private $privacy = null;
+        
+	/**
+	 * Description for 'discussion_email_autosubscribe'
+	 * 
+	 * @var tinyint
+	 */
+	private $discussion_email_autosubscribe = 0;
 
 	/**
 	 * Description for 'logo'
@@ -1411,6 +1418,8 @@ class Hubzero_Group
 	private static function _mysql_update($gidNumber = null, $data)
 	{
 		$db = &JFactory::getDBO();
+		$xlog = &Hubzero_Factory::getLogger();
+		$aNewUserGroupEnrollments = array();
 
 		if (empty($data))
 			return false;
@@ -1421,7 +1430,7 @@ class Hubzero_Group
 		$query = "UPDATE #__xgroups SET ";
 
 		$classvars = get_class_vars(__CLASS__);
-
+                
 		$first = true;
 
 		if (!is_numeric($gidNumber))
@@ -1451,7 +1460,7 @@ class Hubzero_Group
 				$query .= "`$property`=" . $db->Quote($value);
 			}
 		}
-
+                
 		$query .= " WHERE `gidNumber`=" . $db->Quote($gidNumber) . ";";
 
 		if ($first == true) {
@@ -1498,7 +1507,29 @@ class Hubzero_Group
 				$ulist .= $db->Quote($value);
 				$tlist .= '(' . $db->Quote($gidNumber) . ',' . $db->Quote($value) . ')';
 			}
+			
+			// Not neat, but because all group membership is resaved every time even for single additions
+			// there is no nice way to detect only *new* additions without this check. I don't want to 
+			// fire off an 'onUserGroupEnrollment' event for users unless they are really being enrolled
+			if (in_array($property, array('members', 'managers'))) {
 
+				$db = JFactory::getDBO();
+				$query = "SELECT uidNumber FROM #__xgroups_members WHERE gidNumber=" . $gidNumber;
+				$db->setQuery($query);
+
+				// compile current list of members in this group
+				$aExistingUserMembership = array();
+				if (($results = $db->loadAssoc())){
+					foreach ($results as $uid){
+						$aExistingUserMembership[] = $uid;
+					}				
+				}
+				
+				// see who is missing
+				$aNewUserGroupEnrollments = array_diff($list, $aExistingUserMembership);
+				
+			}				
+			
 			if (is_array($list) && count($list) > 0) {
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
 					$query = "REPLACE INTO $aux_table (gidNumber,uidNumber) VALUES $tlist;";
@@ -1530,7 +1561,18 @@ class Hubzero_Group
 			}
 		}
 
-		return true;
+		// After SQL is done and has no errors, fire off onGroupUserEnrolledEvents 
+		// for every user added to this group
+		
+		JPluginHelper::importPlugin( 'groups' );
+		$dispatcher =& JDispatcher::getInstance();
+
+		foreach($aNewUserGroupEnrollments as $userid){
+			$xlog->logDebug("drb pre onGroupUserEnrollment " . $gidNumber .  ' ' . $userid);
+			$dispatcher->trigger('onGroupUserEnrollment', array($gidNumber, $userid));
+		
+		}
+				return true;
 	}
 
 	/**
@@ -2515,6 +2557,7 @@ class Hubzero_Group
 		$this->restrict_msg = $result['restrict_msg'];
 		$this->join_policy = $result['join_policy'];
 		$this->privacy = $result['privacy'];
+		$this->discussion_email_autosubscribe = $result['discussion_email_autosubscribe'];
 
 		return true;
 	}

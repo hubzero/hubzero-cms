@@ -175,8 +175,8 @@ else
 			</fieldset>
 		</fieldset>
 		<div class="clear"></div>
-
-		<fieldset id="bottom_box">
+               
+		<fieldset>
 			<h3><?php echo JText::_('Discoverability Settings'); ?></h3>
 			<p><?php echo JText::_('GROUPS_ACCESS_EXPLANATION'); ?></p>
 			<fieldset>
@@ -188,7 +188,9 @@ else
 				<label>
 					<input type="radio" class="option" name="privacy" value="1"<?php if ($this->group->get('privacy') == 1) { echo ' checked="checked"'; } ?> /> 
 					<strong><?php echo JText::_('GROUPS_ACCESS_HIDDEN'); ?></strong> <br /><span class="indent">Group can not be found through searches and only viewable by group members.</span>
-				</label>
+				</label>$params = $params = &JComponentHelper::getParams('com_groups');
+
+$allowEmailResponses = $params->get('email_comment_processing');
 			</fieldset>
 			
 			
@@ -196,12 +198,14 @@ else
 			<fieldset>
 				<legend><?php echo JText::_('Content Privacy'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span></legend>
 				<p><?php echo JText::_('GROUPS_PRIVACY_HINT'); ?></p>
-				<label>
+		$params = $params = &JComponentHelper::getParams('com_groups');
+
+$allowEmailResponses = $params->get('email_comment_processing');		<label>
 					<input type="radio" class="option" name="access" value="0"<?php if ($this->group->get('access') == 0) { echo ' checked="checked"'; } ?> /> 
 					<strong><?php echo JText::_('GROUPS_ACCESS_PUBLIC'); ?></strong> <span class="indent"><?php echo JText::_('GROUPS_ACCESS_PUBLIC_EXPLANATION'); ?></span>
 				</label>
 				<label>
-					<input type="radio" class="option" name="access" value="3"<?php if ($this->group->get('access') == 3) { echo ' checked="checked"'; } ?> /> 
+			GROUPS_ACCESS_EXPLANATION		<input type="radio" class="option" name="access" value="3"<?php if ($this->group->get('access') == 3) { echo ' checked="checked"'; } ?> /> 
 					<strong><?php echo JText::_('GROUPS_ACCESS_PROTECTED'); ?></strong> <span class="indent"><?php echo JText::_('GROUPS_ACCESS_PROTECTED_EXPLANATION'); ?></span>
 				</label>
 				<label>
@@ -210,10 +214,33 @@ else
 				</label>
 			</fieldset>
 			-->
-			
+	
 			
 		</fieldset>
-	
+
+		<?php 
+		$params = $params = &JComponentHelper::getParams('com_groups');
+		$allowEmailResponses = $params->get('email_member_groupsidcussionemail_autosignup');
+		if ($allowEmailResponses) {
+		?>
+		
+		<fieldset id="bottom_box">
+		<h3><?php echo JText::_('GROUPS_SETTINGS'); ?></h3>
+		<p><?php echo JText::_('GROUP_LEVEL_CONFIGURATION_OPTIONS'); ?></p>
+			<fieldset>
+				<legend><?php echo JText::_('GROUPS_SETTING_EMAIL'); ?></legend>
+				<label>
+					<input type="checkbox" class="option" name="discussion_email_autosubscribe" value="1"
+						<?php if ($this->group->get('discussion_email_autosubscribe') == 1) { echo ' checked="checked"'; } ?> /> 
+					<strong><?php echo JText::_('GROUPS_SETTING_AUTO_SUBSCRIBE_NEW_USERS_TO_FORUM_EMAIL'); ?></strong> <br />
+					<span class="indent">
+						<?php echo JText::_('GROUPS_SETTING_AUTO_SUBSCRIBE_NEW_USERS_TO_FORUM_EMAIL_NOTE'); ?>
+					</span>
+				</label>
+			</fieldset>
+		</fieldset>                
+		<?php }?>
+		
 		<div class="clear"></div>
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
