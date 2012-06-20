@@ -24,7 +24,7 @@
  *
  * @package	  HUBzero
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author	  Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -72,8 +72,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      object &$uri Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param	   object &$uri Parameter description (if any) ...
+	 * @return	   array Return description (if any) ...
 	 */
 	function parse(&$uri)
 	{
@@ -147,19 +147,19 @@ class XRouter extends JRouter
 					if ($juser->get('tmp_user')) // joomla tmp users
 					{
 						$vars['option'] = 'com_register';
-						$vars['task']   = 'create';
-						$vars['act']    = '';
+						$vars['task']	= 'create';
+						$vars['act']	= '';
 					}
 					else if (substr($juser->get('email'), -8) == '@invalid') // force auth_link users to registration update page
 					{
 						$vars['option'] = 'com_register';
-						$vars['task']   = 'update';
-						$vars['act']    = '';
+						$vars['task']	= 'update';
+						$vars['act']	= '';
 					}
 					else // otherwise, send to profile to fill in missing info
 					{
 						$vars['option'] = 'com_members';
-						$vars['id']     = $juser->get("id");
+						$vars['id']		= $juser->get("id");
 						$vars['active'] = 'profile';
 					}
 
@@ -198,6 +198,43 @@ class XRouter extends JRouter
 
 				return $vars;
 			}
+
+			$badpassword = $session->get('badpassword',false);
+			$expiredpassword = $session->get('expiredpassword',false);
+
+			if ($badpassword || $expiredpassword) {
+				if ($vars['option'] == 'com_members' && $vars['task'] == 'changepassword') {
+					return $vars;
+				}
+
+				if ($vars['option'] == 'com_user' && $vars['view'] == 'logout') {
+					return $vars;
+				}
+
+				if ($vars['option'] == 'com_support' && $vars['task'] == 'save') {
+					return $vars;
+				}
+
+				// @FIXME: should double check shadowFlag here in case password gets chanegd
+				// out of band.
+
+				// @FIXME: should we clear POST and GET data
+
+				$vars = array();
+				$vars['option'] = 'com_members';
+				$vars['task'] = 'changepassword';
+
+				if ($badpassword) {
+					$vars['message'] = "Your password does not meet current site requirements. Please change your password now.";
+				}
+
+				if ($expiredpassword) {
+					$vars['message'] = "Your password has expired. Please change your password now.";
+				}
+
+				$this->setVars($vars);
+				JRequest::set($vars, 'get', true ); // overwrite existing
+			}
 		}
 
 		return $vars;
@@ -208,8 +245,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $url Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param	   unknown $url Parameter description (if any) ...
+	 * @return	   object Return description (if any) ...
 	 */
 	function &build($url)
 	{
@@ -260,8 +297,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      object &$uri Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param	   object &$uri Parameter description (if any) ...
+	 * @return	   array Return description (if any) ...
 	 */
 	function _parseRawRoute(&$uri)
 	{
@@ -313,12 +350,12 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      object &$uri Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	   object &$uri Parameter description (if any) ...
+	 * @return	   mixed Return description (if any) ...
 	 */
 	function _parseSefRoute(&$uri)
 	{
-		$vars   = array();
+		$vars	= array();
 		$app = JFactory::getApplication();
 
 		if ($app->getCfg('sef_groups'))
@@ -398,7 +435,7 @@ class XRouter extends JRouter
 		if(substr($route, 0, 9) == 'component')
 		{
 			$segments	= explode('/', $route);
-			$route      = str_replace('component/'.$segments[1], '', $route);
+			$route		= str_replace('component/'.$segments[1], '', $route);
 
 			$vars['option'] = 'com_'.$segments[1];
 			$vars['Itemid'] = null;
@@ -435,7 +472,7 @@ class XRouter extends JRouter
 
 					// End HUBzero Extension to handle external url menu items differently
 
-					$route   = substr($route, $lenght);
+					$route	 = substr($route, $lenght);
 
 					$vars['Itemid'] = $item->id;
 					$vars['option'] = $item->component;
@@ -540,8 +577,8 @@ class XRouter extends JRouter
 				jimport('joomla.juri');
 				$db =& JFactory::getDBO();
 				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
-	        	$db->setQuery($sql);
-		        $row = $db->loadObject();
+				$db->setQuery($sql);
+				$row = $db->loadObject();
 
 				if (!empty($row))
 				{
@@ -586,8 +623,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown &$uri Parameter description (if any) ...
-	 * @return     void
+	 * @param	   unknown &$uri Parameter description (if any) ...
+	 * @return	   void
 	 */
 	function _buildRawRoute(&$uri)
 	{
@@ -598,8 +635,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      object &$uri Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param	   object &$uri Parameter description (if any) ...
+	 * @return	   unknown Return description (if any) ...
 	 */
 	function _buildSefRoute(&$uri)
 	{
@@ -642,7 +679,7 @@ class XRouter extends JRouter
 		 * Build the component route
 		 */
 		$component	= preg_replace('/[^A-Z0-9_\.-]/i', '', $query['option']);
-		$tmp 		= '';
+		$tmp		= '';
 
 		// Use the component routing handler if it exists
 		$path = JPATH_BASE.DS.'components'.DS.$component.DS.'router.php';
@@ -707,8 +744,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      object &$uri Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param	   object &$uri Parameter description (if any) ...
+	 * @return	   array Return description (if any) ...
 	 */
 	function _processParseRules(&$uri)
 	{
@@ -735,8 +772,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      object &$uri Parameter description (if any) ...
-	 * @return     void
+	 * @param	   object &$uri Parameter description (if any) ...
+	 * @return	   void
 	 */
 	function _processBuildRules(&$uri)
 	{
@@ -778,8 +815,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $url Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param	   unknown $url Parameter description (if any) ...
+	 * @return	   object Return description (if any) ...
 	 */
 	function &_createURI($url)
 	{
@@ -828,8 +865,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      array &$query Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param	   array &$query Parameter description (if any) ...
+	 * @return	   array Return description (if any) ...
 	 */
 	function _buildContentRoute(&$query)
 	{
@@ -904,8 +941,8 @@ class XRouter extends JRouter
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      array &$segments Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param	   array &$segments Parameter description (if any) ...
+	 * @return	   array Return description (if any) ...
 	 */
 	function _parseContentRoute(&$segments)
 	{
@@ -1116,7 +1153,7 @@ class plgSystemXhub extends JPlugin
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     void
+	 * @return	   void
 	 */
 	function onAfterRoute()
 	{
@@ -1132,7 +1169,7 @@ class plgSystemXhub extends JPlugin
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     void
+	 * @return	   void
 	 */
 	function onAfterInitialise()
 	{
@@ -1209,8 +1246,8 @@ class plgSystemXhub extends JPlugin
 					{
 						apache_note('userid',$myuser->get('id'));
 						apache_note('auth','cookie');
-                        $authlog = Hubzero_Factory::getAuthLogger();
-                    	$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+						$authlog = Hubzero_Factory::getAuthLogger();
+						$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 					}
 				}
 			}
@@ -1222,8 +1259,8 @@ class plgSystemXhub extends JPlugin
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $response Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	   unknown $response Parameter description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
 	function onLoginFailure($response)
 	{
