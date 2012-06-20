@@ -34,27 +34,55 @@ defined('_JEXEC') or die( 'Restricted access' );
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-
-// Ensure user has access to this function
-$juser = & JFactory::getUser();
-if (!$juser->authorize($option, 'manage')) {
-	$app =& JFactory::getApplication();
-	$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'date.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'repeat.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'category.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'event.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'config.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'page.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'respondent.php');
-require_once(JPATH_COMPONENT.DS.'helpers'.DS.'html.php');
-require_once(JPATH_COMPONENT.DS.'controller.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'date.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'repeat.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'event.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'config.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'page.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'respondent.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'controller.php');
+
+JSubMenuHelper::addEntry(
+	JText::_('Events'),
+	'index.php?option=com_events',
+	$task == ''
+);
+JSubMenuHelper::addEntry(
+	JText::_('Categories'),
+	'index.php?option=com_events&task=cats',
+	$task == 'cats'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Config'),
+	'index.php?option=com_events&task=config',
+	$task == 'config'
+);
 
 // Instantiate controller
 $controller = new EventsController();
