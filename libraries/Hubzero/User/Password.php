@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2010-2012 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2010-2012 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,1102 +44,1139 @@ class Hubzero_User_Password
 	 * 
 	 * @var mixed
 	 */
-    private $user_id = null;
+	private $user_id = null;
 
 	/**
 	 * Description for 'passhash'
 	 * 
 	 * @var unknown
 	 */
-    private $passhash = null;
+	private $passhash = null;
 
 	/**
 	 * Description for 'shadowLastChange'
 	 * 
 	 * @var unknown
 	 */
-    private $shadowLastChange = null;
+	private $shadowLastChange = null;
 
 	/**
 	 * Description for 'shadowMin'
 	 * 
 	 * @var array
 	 */
-    private $shadowMin = array();
+	private $shadowMin = array();
 
 	/**
 	 * Description for 'shadowMax'
 	 * 
 	 * @var unknown
 	 */
-    private $shadowMax = null;
+	private $shadowMax = null;
 
 	/**
 	 * Description for 'shadowWarning'
 	 * 
 	 * @var unknown
 	 */
-    private $shadowWarning = null;
+	private $shadowWarning = null;
 
 	/**
 	 * Description for 'shadowInactive'
 	 * 
 	 * @var unknown
 	 */
-    private $shadowInactive = null;
+	private $shadowInactive = null;
 
 	/**
 	 * Description for 'shadowExpire'
 	 * 
 	 * @var unknown
 	 */
-    private $shadowExpire = null;
+	private $shadowExpire = null;
 
 	/**
 	 * Description for 'shadowFlag'
 	 * 
 	 * @var unknown
 	 */
-    private $shadowFlag = null;
+	private $shadowFlag = null;
+
+	/**
+	 * Description for '_uid'
+	 * 
+	 * @var unknown
+	 */
+	private $_uid = null;
 
 	/**
 	 * Description for '_ldapPasswordMirror'
 	 * 
 	 * @var boolean
 	 */
-    private $_ldapPasswordMirror = true;
+	private $_ldapPasswordMirror = true;
 
 	/**
 	 * Description for '_updateAll'
 	 * 
 	 * @var boolean
 	 */
-    private $_updateAll = false;
+	private $_updateAll = false;
 
 	/**
 	 * Description for '_propertyattrmap'
 	 * 
 	 * @var array
 	 */
-    static $_propertyattrmap = array("user_id"=>"uidNumber","passhash"=>"userPassword","shadowLastChange"=>"shadowLastChange",
-                                     "shadowMin"=>"shadowMin","shadowMax"=>"shadowMax","shadowWarning"=>"shadowWarning",
-                                     "shadowInactive"=>"shadowInactive","shadowExpire"=>"shadowExpire","shadowFlag"=>"shadowFlag");
+	static $_propertyattrmap = array("user_id"=>"uidNumber","passhash"=>"userPassword","shadowLastChange"=>"shadowLastChange",
+									 "shadowMin"=>"shadowMin","shadowMax"=>"shadowMax","shadowWarning"=>"shadowWarning",
+									 "shadowInactive"=>"shadowInactive","shadowExpire"=>"shadowExpire","shadowFlag"=>"shadowFlag");
 
 	/**
 	 * Description for '_updatedkeys'
 	 * 
 	 * @var array
 	 */
-    private $_updatedkeys = array();
+	private $_updatedkeys = array();
 
 	/**
 	 * Short description for '__construct'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     void
+	 * @return	   void
 	 */
-    private function __construct()
-    {
-        $config = & JComponentHelper::getParams('com_members');
-        $this->_ldapPasswordMirror = $config->get('ldap_save') == '1';
-    }
+	private function __construct()
+	{
+		$config = & JComponentHelper::getParams('com_members');
+		$this->_ldapPasswordMirror = $config->get('ldapProfileMirror') == '1';
+	}
 
 	/**
 	 * Short description for 'clear'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     void
+	 * @return	   void
 	 */
-    public function clear()
-    {
-        $cvars = get_class_vars(__CLASS__);
+	public function clear()
+	{
+		$cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = array();
+		$this->_updatedkeys = array();
 
-        foreach ($cvars as $key=>$value)
-        {
-            if ($key{0} != '_')
-            {
-                unset($this->$key);
+		foreach ($cvars as $key=>$value) {
+			if ($key{0} != '_') {
+				unset($this->$key);
 
-                $this->$key = null;
-            }
-        }
+				$this->$key = null;
+			}
+		}
 
-        $this->_updateAll = false;
-        $this->_updatedkeys = array();
-    }
+		$this->_updateAll = false;
+		$this->_updatedkeys = array();
+	}
 
 	/**
 	 * Short description for 'logDebug'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $msg Parameter description (if any) ...
-	 * @return     void
+	 * @param	   unknown $msg Parameter description (if any) ...
+	 * @return	   void
 	 */
-    private function logDebug($msg)
-    {
-        $xlog = &Hubzero_Factory::getLogger();
-        $xlog->logDebug($msg);
-    }
+	private function logDebug($msg)
+	{
+		$xlog = &Hubzero_Factory::getLogger();
+		$xlog->logDebug($msg);
+	}
 
 	/**
 	 * Short description for 'toArray'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $format Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	   string $format Parameter description (if any) ...
+	 * @return	   mixed Return description (if any) ...
 	 */
-    public function toArray($format = 'mysql')
-    {
-        $xhub = &Hubzero_Factory::getHub();
-        $result = array();
-        $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+	public function toArray($format = 'mysql')
+	{
+		$xhub = &Hubzero_Factory::getHub();
+		$result = array();
+		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
 
-        if ($format == 'mysql')
-        {
-            foreach (self::$_propertyattrmap as $key=>$value)
-            {
-                $current = $this->__get($key);
+		if ($format == 'mysql') {
+			foreach (self::$_propertyattrmap as $key=>$value) {
+				$current = $this->__get($key);
 
-                $result[$key] = $current;
-            }
+				$result[$key] = $current;
+			}
 
-            return $result;
-        }
-        else if ($format == 'ldap')
-        {
-            foreach (self::$_propertyattrmap as $key=>$value)
-            {
-                $current = $this->__get($key);
+			return $result;
+		}
+		else if ($format == 'ldap') {
+			foreach (self::$_propertyattrmap as $key=>$value) {
+				$current = $this->__get($key);
 
-                if (isset($current) && !is_null($current))
-                {
-                    $result[$value] = $current;
-                }
-                else
-                {
-                    $result[$value] = array();
-                }
-            }
+				if (isset($current) && !is_null($current)) {
+					$result[$value] = $current;
+				}
+				else {
+					$result[$value] = array();
+				}
+			}
 
-            return $result;
-        }
+			return $result;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	/**
 	 * Short description for 'getInstance'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $instance Parameter description (if any) ...
-	 * @param      unknown $storage Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	   unknown $instance Parameter description (if any) ...
+	 * @param	   unknown $storage Parameter description (if any) ...
+	 * @return	   mixed Return description (if any) ...
 	 */
-    public function getInstance($instance, $storage = null)
-    {
-        $hzup = new Hubzero_User_Password();
+	public function getInstance($instance, $storage = null)
+	{
+		$hzup = new Hubzero_User_Password();
 
-        if ($hzup->read($instance, $storage) === false)
-        {
-            return false;
-        }
+		if ($hzup->read($instance, $storage) === false) {
+			return false;
+		}
 
-        return $hzup;
-    }
+		return $hzup;
+	}
 
 	/**
 	 * Short description for 'createInstance'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $user_id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param	   unknown $user_id Parameter description (if any) ...
+	 * @return	   mixed Return description (if any) ...
 	 */
-    public function createInstance($user_id)
-    {
-        if (empty($name))
-        {
-            return false;
-        }
+	public function createInstance($user_id)
+	{
+		if (empty($name)) {
+			return false;
+		}
 
-        $instance = new Hubzero_User_Password();
+		$instance = new Hubzero_User_Password();
 
-        $instance->user_id = $user_id;
+		$instance->user_id = $user_id;
 
-        if ($instance->create())
-        {
-            return $instance;
-        }
+		if ($instance->create()) {
+			return $instance;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	/**
 	 * Short description for '_ldap_create'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    private function _ldap_create()
-    {
+	private function _ldap_create()
+	{
 		// @FIXME: should check if it exists in LDAP, return true if it does, otherwise false
 		return false;
-    }
+	}
 
 	/**
 	 * Short description for '_mysql_create'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    public function _mysql_create()
-    {
-        $db = &JFactory::getDBO();
+	public function _mysql_create()
+	{
+		$db = &JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db)) {
+			return false;
+		}
 
 		// @FIXME: this should fail if id doesn't exist in jos_users
 
-        if ($this->user_id > 0)
-        {
-            $query = "INSERT INTO #__users_password (user_id) VALUES ( " . $db->Quote($this->user_id) . ");";
+		if ($this->user_id > 0) {
+			$query = "INSERT INTO #__users_password (user_id) VALUES ( " . $db->Quote($this->user_id) . ");";
 
-            $db->setQuery();
+			$db->setQuery($query);
 
-            $result = $db->query();
+			$result = $db->query();
 
-            if ($result !== false || $db->getErrorNum() == 1062)
-            {
-                return true;
-            }
-        }
+			if ($result !== false || $db->getErrorNum() == 1062) {
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	/**
 	 * Short description for 'create'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $storage Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	   string $storage Parameter description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    public function create($storage = null)
-    {
-        if (is_null($storage))
-        {
-            $storage = ($this->_ldapPasswordMirror) ? 'all' : 'mysql';
-        }
+	public function create($storage = null)
+	{
+		if (is_null($storage)) {
+			$storage = ($this->_ldapPasswordMirror) ? 'all' : 'mysql';
+		}
 
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
-            die();
-        }
+		if (!is_string($storage)) {
+			$this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
+			die();
+		}
 
-        if (!in_array($storage, array('mysql', 'ldap', 'all')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
+		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
+			$this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value", E_USER_ERROR);
+			die();
+		}
 
-        $result = true;
+		$result = true;
 
-        if ($storage == 'mysql' || $storage == 'all')
-        {
-            $result = $this->_mysql_create();
+		if ($storage == 'mysql' || $storage == 'all') {
+			$result = $this->_mysql_create();
 
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
-            }
-        }
+			if ($result === false) {
+				$this->_error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
+			}
+		}
 
-        if ($result === true && ($storage == 'ldap' || $storage == 'all'))
-        {
-            $result = $this->_ldap_create();
+		if ($result === true && ($storage == 'ldap' || $storage == 'all')) {
+			$result = $this->_ldap_create();
 
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": LDAP create failed", E_USER_WARNING);
-            }
-        }
+			if ($result === false) {
+				$this->_error(__FUNCTION__ . ": LDAP create failed", E_USER_WARNING);
+			}
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 
 	/**
 	 * Short description for '_ldap_read'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    private function _ldap_read()
-    {
-        $xhub = &Hubzero_Factory::getHub();
-        $conn = &Hubzero_Factory::getPLDC();
+	private function _ldap_read($instance = null)
+	{
+		$xhub = &Hubzero_Factory::getHub();
+		$conn = &Hubzero_Factory::getPLDC();
 
-        if (empty($conn) || empty($xhub))
-        {
-            return false;
-        }
+		if (empty($conn) || empty($xhub) || empty($instance)) {
+			return false;
+		}
 
-        $dn = "uidNumber=" . $this->user_id . ",ou=users," . $xhub->getCfg('hubLDAPBaseDN');
+		if (is_numeric($instance) && $instance > 0) {
+			$dn = "ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
+			$filter = '(uidNumber=' . $instance . ')';
+		}
+		else {
+			$dn = "uid=" . $instance . ",ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
+			$filter = '(objectclass=*)';
+		}
 
-        $reqattr = array('uidNumber', 'userPassword', 'shadowLastChange',
+		$reqattr = array('uidNumber', 'userPassword', 'shadowLastChange',
 						'shadowMin', 'shadowMax', 'shadowWarning',
-						'shadowInactive', 'shadowExpire', 'shadowFlag');
+						'shadowInactive', 'shadowExpire', 'shadowFlag', 'uid');
 
-        $entry = @ldap_search($conn, $dn, "(objectClass=hubAccount)", $reqattr, 0, 0, 0, 3);
+		$entry = @ldap_search($conn, $dn, $filter, $reqattr,
+			0, 0, 0, 3);
 
-        if (empty($entry))
-        {
-            return false;
-        }
+		if (empty($entry)) {
+			return false;
+		}
 
-        $count = ldap_count_entries($conn, $entry);
+		$count = ldap_count_entries($conn, $entry);
 
-        if ($count <= 0)
-        {
-            return false;
-        }
+		if ($count <= 0) {
+			return false;
+		}
 
-        $firstentry = ldap_first_entry($conn, $entry);
-        $attr = ldap_get_attributes($conn, $firstentry);
-        $pwinfo = array();
+		$firstentry = ldap_first_entry($conn, $entry);
+		$attr = ldap_get_attributes($conn, $firstentry);
+		$pwinfo = array();
 
-        foreach ($reqattr as $key=>$value)
-        {
-            if (isset($attr[$reqattr[$key]][0]))
-            {
-                if (count($attr[$reqattr[$key]]) <= 2)
-                {
-                    $pwinfo[$value] = $attr[$reqattr[$key]][0];
-                }
-                else
-                {
-                    $pwinfo[$value] = $attr[$reqattr[$key]];
-                    unset($pwinfo[$value]['count']);
-                }
-            }
-            else
-            {
-                unset($pwinfo[$value]);
-            }
-        }
+		foreach ($reqattr as $key=>$value) {
+			if (isset($attr[$reqattr[$key]][0])) {
+				if (count($attr[$reqattr[$key]]) <= 2) {
+					$pwinfo[$value] = $attr[$reqattr[$key]][0];
+				}
+				else {
+					$pwinfo[$value] = $attr[$reqattr[$key]];
+					unset($pwinfo[$value]['count']);
+				}
+			}
+			else {
+				unset($pwinfo[$value]);
+			}
+		}
 
-        $this->clear();
+		$this->clear();
 
-        foreach (self::$_propertyattrmap as $key=>$value)
-        {
-            if (isset($pwinfo[$value]))
-            {
-                $this->__set($key, $pwinfo[$value]);
-            }
-            else
-            {
-                $this->__set($key, null);
-            }
-        }
+		foreach (self::$_propertyattrmap as $key=>$value) {
+			if (isset($pwinfo[$value])) {
+				$this->__set($key, $pwinfo[$value]);
+			}
+			else {
+				$this->__set($key, null);
+			}
+		}
 
-        $this->_updatedkeys = array();
+		$this->_uid = $pwinfo['uid'];
 
-        return true;
-    }
+		$this->_updatedkeys = array();
+
+		return true;
+	}
 
 	/**
 	 * Short description for '_mysql_read'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    private function _mysql_read()
-    {
-        $db = JFactory::getDBO();
+	private function _mysql_read($instance = null)
+	{
+		$db = JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
-
-        if ($this->user_id > 0)
-        {
-            $query = "SELECT user_id,passhash,shadowLastChange,shadowMin,shadowMax,shadowWarning,shadowInactive,shadowExpire,shadowFlag FROM #__users_password WHERE user_id=" . $db->Quote($this->user_id) . ";";
-        }
-        else
-        {
+		if (empty($db) || empty($instance)) {
 			return false;
-        }
+		}
 
-        $db->setQuery($query);
+		if (is_numeric($instance)) {
+			if ($instance <= 0) {
+				return false;
+			}
 
-        $result = $db->loadAssoc();
+			$query = "SELECT user_id,passhash,shadowLastChange,shadowMin," . 
+				"shadowMax,shadowWarning,shadowInactive,shadowExpire," .
+				"shadowFlag FROM #__users_password WHERE user_id=" . 
+				$db->Quote($instance) . ";";
+		}
+		else {
+			$query = "SELECT user_id,passhash,shadowLastChange,shadowMin," .
+				"shadowMax,shadowWarning,shadowInactive,shadowExpire," .
+				"shadowFlag FROM #__users_password,#__users WHERE user_id=id" .
+				" AND username=" . $db->Quote($instance) . ";";
+		}
 
-        if (empty($result))
-        {
-            return false;
-        }
+		$db->setQuery($query);
 
-        $this->clear();
+		$result = $db->loadAssoc();
 
-        foreach ($result as $key=>$value)
-        {
-            $this->__set($key, $value);
-        }
+		if (empty($result)) {
+			return false;
+		}
 
-        $this->_updatedkeys = array();
+		$this->clear();
 
-        return true;
-    }
+		foreach ($result as $key=>$value) {
+			$this->__set($key, $value);
+		}
+
+		$this->_updatedkeys = array();
+
+		return true;
+	}
 
 	/**
 	 * Short description for 'read'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      integer $user_id Parameter description (if any) ...
-	 * @param      string $storage Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	   integer $user_id Parameter description (if any) ...
+	 * @param	   string $storage Parameter description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    public function read($user_id = null, $storage = 'mysql')
-    {
-        if (is_null($storage))
-        {
-            $storage = 'mysql';
-        }
+	public function read($instance = null, $storage = 'all')
+	{
+		if (is_null($storage)) {
+			$storage = 'all';
+		}
 
-        if (is_null($user_id))
-        {
-            $user_id = $this->user_id;
+		if (empty($instance)) {
+			$instance = $this->user_id;
 
-            if ($user_id <= 0)
-            {
-                $this->_error(__FUNCTION__ . ": invalid user id defined", E_USER_ERROR);
-                die();
-            }
-        }
+			if (empty($instance)) {
+				$this->_error(__FUNCTION__ . ": invalid user instance defined", E_USER_ERROR);
+				die();
+			}
+		}
 
-        if ($user_id <= 0)
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not numeric", E_USER_ERROR);
-            die();
-        }
+		if (!is_string($storage)) {
+			$this->_error(__FUNCTION__ . ": Argument #2 is not a string", E_USER_ERROR);
+			die();
+		}
 
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #2 is not a string", E_USER_ERROR);
-            die();
-        }
+		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
+			$this->_error(__FUNCTION__ .  ": Argument #2 [$storage] is not a valid value", E_USER_ERROR);
+			die();
+		}
 
-        if (!in_array($storage, array('mysql', 'ldap')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #2 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
+		$result = true;
 
-        $result = true;
+		if ($storage == 'mysql' || $storage == 'all') {
+			$this->clear();
 
-        if ($storage == 'mysql')
-        {
-            $this->clear();
-            $this->user_id = $user_id;
+			$result = $this->_mysql_read($instance);
 
-            $result = $this->_mysql_read();
+			if ($result === false) {
+				$this->clear();
+			}
+			else {
+				return $result;
+			}
+		}
 
-            if ($result === false)
-            {
-                $this->clear();
-            }
-        }
-        else if ($storage == 'ldap')
-        {
-            $this->clear();
-            $this->user_id = $user_id;
+		if ($storage == 'ldap' || $storage == 'all') {
+			$this->clear();
 
-            $result = $this->_ldap_read();
+			$result = $this->_ldap_read($instance);
 
-            if ($result === false)
-            {
-                $this->clear();
-            }
-        }
+			if ($result === false) {
+				$this->clear();
+			}
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 
 	/**
 	 * Short description for '_ldap_update'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      boolean $all Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	   boolean $all Parameter description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    private function _ldap_update($all = false)
-    {
-        $xhub = &Hubzero_Factory::getHub();
-        $conn = &Hubzero_Factory::getPLDC();
-        $errno = 0;
+	private function _ldap_update($all = false)
+	{
+		$xhub = &Hubzero_Factory::getHub();
+		$conn = &Hubzero_Factory::getPLDC();
+		$errno = 0;
 
-        if (empty($conn) || empty($xhub))
-        {
-            return false;
-        }
+		if (empty($conn) || empty($xhub)) {
+			return false;
+		}
 
-        if ($this->user_id <= 0)
-        {
-            return false;
-        }
+		if ($this->user_id <= 0) {
+			return false;
+		}
 
-        $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
 
-        $pwinfo = $this->toArray('ldap');
+		$pwinfo = $this->toArray('ldap');
 
-        $current_hzup = Hubzero_User_Password::getInstance($this->user_id, 'ldap');
+		$current_hzup = Hubzero_User_Password::getInstance($this->user_id, 'ldap');
 
-        if (!is_object($current_hzup))
-        {
-            if ($this->_ldap_create() === false)
-            {
-                return false;
-            }
+		if (!is_object($current_hzup)) {
+			if ($this->_ldap_create() === false) {
+				return false;
+			}
 
-            $current_hzup = Hubzero_User_Password::getInstance($this->user_id, 'ldap');
+			$current_hzup = Hubzero_User_Password::getInstance($this->user_id, 'ldap');
 
-            if (!is_object($current_hzup))
-            {
-                return false;
-            }
-        }
+			if (!is_object($current_hzup)) {
+				return false;
+			}
+		}
 
-        $currentinfo = $current_hzup->toArray('ldap');
+		$currentinfo = $current_hzup->toArray('ldap');
 
-        $dn = 'uidNumber=' . $this->user_id . ',ou=users,' . $hubLDAPBaseDN;
+		$dn = 'uid=' . $current_hzup->_uid . ',ou=users,' . $hubLDAPBaseDN;
 
-        $replace_attr = array();
-        $add_attr = array();
-        $delete_attr = array();
-        $_attrpropertymap = array_flip(self::$_propertyattrmap);
+		$replace_attr = array();
+		$add_attr = array();
+		$delete_attr = array();
+		$_attrpropertymap = array_flip(self::$_propertyattrmap);
 
-        // @FIXME Check for empty strings, use delete instead of replace as
-        // LDAP disallows empty values
+		// @FIXME Check for empty strings, use delete instead of replace as
+		// LDAP disallows empty values
 
-        foreach ($currentinfo as $key=>$value)
-        {
-            if (!$all && !in_array($_attrpropertymap[$key], $this->_updatedkeys))
-            {
-                continue;
-            }
-            else if ($pwinfo[$key] == array() && $currentinfo[$key] != array())
-            {
-                $delete_attr[$key] = array();
-            }
-            else if ($pwinfo[$key] != array() && $currentinfo[$key] == array())
-            {
-                $add_attr[$key] = $pwinfo[$key];
-            }
-            else if ($pwinfo[$key] != $currentinfo[$key])
-            {
-                $replace_attr[$key] = $pwinfo[$key];
-            }
-        }
+		foreach ($currentinfo as $key=>$value) {
+			if (!$all && !in_array($_attrpropertymap[$key], $this->_updatedkeys)) {
+				continue;
+			}
+			else if ($pwinfo[$key] == array() && $currentinfo[$key] != array()) {
+				$delete_attr[$key] = array();
+			}
+			else if ($pwinfo[$key] != array() && $currentinfo[$key] == array()) {
+				$add_attr[$key] = $pwinfo[$key];
+			}
+			else if ($pwinfo[$key] != $currentinfo[$key]) {
+				$replace_attr[$key] = $pwinfo[$key];
+			}
+		}
 
-        if (!@ldap_mod_replace($conn, $dn, $replace_attr))
-        {
-            $errno = @ldap_errno($conn);
-        }
-        if (!@ldap_mod_add($conn, $dn, $add_attr))
-        {
-            $errno = @ldap_errno($conn);
-        }
-        if (!@ldap_mod_del($conn, $dn, $delete_attr))
-        {
-            $errno = @ldap_errno($conn);
-        }
+		if (!@ldap_mod_replace($conn, $dn, $replace_attr)) {
+			$errno = @ldap_errno($conn);
+		}
+		if (!@ldap_mod_add($conn, $dn, $add_attr)) {
+			$errno = @ldap_errno($conn);
+		}
+		if (!@ldap_mod_del($conn, $dn, $delete_attr)) {
+			$errno = @ldap_errno($conn);
+		}
 
-        if ($errno != 0)
-        {
-            return false;
-        }
+		if ($errno != 0) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Short description for '_mysql_update'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      boolean $all Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	   boolean $all Parameter description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    function _mysql_update($all = false)
-    {
-        $db = &JFactory::getDBO();
+	function _mysql_update($all = false, $create_on_fail = true)
+	{
+		$db = &JFactory::getDBO();
 
-        $query = "UPDATE #__users_password SET ";
+		$query = "UPDATE #__users_password SET ";
 
-        $classvars = get_class_vars(__CLASS__);
+		$classvars = get_class_vars(__CLASS__);
 
-        $first = true;
+		$first = true;
 
-        foreach ($classvars as $property=>$value)
-        {
-            if (($property{0} == '_'))
-            {
-                continue;
-            }
+		foreach ($classvars as $property=>$value) {
+			if (($property{0} == '_')) {
+				continue;
+			}
 
-            if (!$all && !in_array($property, $this->_updatedkeys))
-            {
-                continue;
-            }
+			if (!$all && !in_array($property, $this->_updatedkeys)) {
+				continue;
+			}
 
-            if (!$first)
-            {
-                $query .= ',';
-            }
-            else
-            {
-                $first = false;
-            }
+			if (!$first) {
+				$query .= ',';
+			}
+			else {
+				$first = false;
+			}
 
-            $value = $this->__get($property);
+			$value = $this->__get($property);
 
-            if ($value === null)
-            {
-                $query .= "`$property`=NULL";
-            }
-            else
-            {
-                $query .= "`$property`=" . $db->Quote($value);
-            }
-        }
+			if ($value === null) {
+				$query .= "`$property`=NULL";
+			}
+			else {
+				$query .= "`$property`=" . $db->Quote($value);
+			}
+		}
 
-        $query .= " WHERE `user_id`=" . $db->Quote($this->__get('user_id')) . ";";
+		$query .= " WHERE `user_id`=" . $db->Quote($this->__get('user_id')) .  " LIMIT 1;";
 
-        if ($first == true)
-        {
-            $query = '';
-        }
+		if ($first == true) {
+			$query = '';
+		}
 
-        $db->setQuery($query);
+		$db->setQuery($query);
 
-        if (!empty($query))
-        {
-            $result = $db->query();
+		if (!empty($query)) {
+			$result = $db->query();
 
-            if ($result === false)
-            {
-                return false;
-            }
-        }
+			if ($result === false) {
+				return false;
+			}
+		}
 
-        return true;
-    }
+		if ($db->getAffectedRows() <= 0) {
+			if ($create_on_fail) {
+				$this->_mysql_create();
+				return $this->_mysql_update($all,false);
+			}
+
+			return false;
+		}
+
+		return true;
+	}
 
 	/**
 	 * Short description for 'sync'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return	   unknown Return description (if any) ...
 	 */
-    public function sync()
-    {
-        $this->_updateAll = true;
-        return $this->update();
-    }
+	public function sync()
+	{
+		$this->_updateAll = true;
+		return $this->update();
+	}
 
 	/**
 	 * Short description for 'syncldap'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     string Return description (if any) ...
+	 * @return	   string Return description (if any) ...
 	 */
-    public function syncldap()
-    {
-        $this->_updateAll = true;
-        return $this->update('ldap');
-    }
+	public function syncldap()
+	{
+		$this->_updateAll = true;
+		return $this->update('ldap');
+	}
 
 	/**
 	 * Short description for 'update'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $storage Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	   string $storage Parameter description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    public function update($storage = null)
-    {
-        if (is_null($storage))
-        {
-            $storage = ($this->_ldapPasswordMirror) ? 'all' : 'mysql';
-        }
+	public function update($storage = null)
+	{
+		if (is_null($storage)) {
+			$storage = ($this->_ldapPasswordMirror) ? 'all' : 'mysql';
+		}
 
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
-            die();
-        }
+		if (!is_string($storage)) {
+			$this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
+			die();
+		}
 
-        if (!in_array($storage, array('mysql', 'ldap', 'all')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
+		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
+			$this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value", E_USER_ERROR);
+			die();
+		}
 
-        $result = true;
+		$result = true;
 
-        if ($storage == 'mysql' || $storage == 'all')
-        {
-            $result = $this->_mysql_update($this->_updateAll);
+		if ($storage == 'mysql' || $storage == 'all') {
+			$result = $this->_mysql_update($this->_updateAll);
 
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
-            }
-        }
+			if ($result === false) {
+				$this->_error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
+			}
+		}
 
-        if ($result === true && ($storage == 'ldap' || $storage == 'all'))
-        {
-            $result = $this->_ldap_update($this->_updateAll);
+		if ($result === true && ($storage == 'ldap' || $storage == 'all')) {
+			$result = $this->_ldap_update($this->_updateAll);
 
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": LDAP update failed", E_USER_WARNING);
-            }
-        }
+			if ($result === false) {
+				$this->_error(__FUNCTION__ . ": LDAP update failed", E_USER_WARNING);
+			}
+		}
 
-        $this->_updateAll = false;
-        return $result;
-    }
+		$this->_updateAll = false;
+		return $result;
+	}
 
 	/**
 	 * Short description for '_ldap_delete'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    private function _ldap_delete()
-    {
-        $conn = & Hubzero_Factory::getPLDC();
-        $xhub = & Hubzero_Factory::getHub();
+	private function _ldap_delete()
+	{
+		$conn = & Hubzero_Factory::getPLDC();
+		$xhub = & Hubzero_Factory::getHub();
 
 		return false;
 
 		// WARNING: THIS WOULD BE BAD, it would delete the ldap account record
-        // at best we could delete some/all of the password fields but even
-        // that is questionable
+		// at best we could delete some/all of the password fields but even
+		// that is questionable
 
-        if (empty($conn) || empty($xhub))
-        {
-            return false;
-        }
+		if (empty($conn) || empty($xhub)) {
+			return false;
+		}
 
-        if (empty($this->user_id))
-        {
-            return false;
-        }
+		if (empty($this->user_id)) {
+			return false;
+		}
 
-        $dn = "uidNumber=" . $this->user_id . ",ou=users," . $xhub->getCfg('hubLDAPBaseDN');
+		$dn = "uidNumber=" . $this->user_id . ",ou=users," . $xhub->getCfg('hubLDAPBaseDN');
 
-        if (!@ldap_delete($conn, $dn))
-        {
-            return false;
-        }
+		if (!@ldap_delete($conn, $dn)) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Short description for '_mysql_delete'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    public function _mysql_delete()
-    {
-        if ($this->user_id <= 0)
-        {
-            return false;
-        }
+	public function _mysql_delete()
+	{
+		if ($this->user_id <= 0) {
+			return false;
+		}
 
-        $db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-        if (empty($db))
-        {
-            return false;
-        }
+		if (empty($db)) {
+			return false;
+		}
 
-        if (!isset($this->user_id))
-        {
-            $db->setQuery("SELECT user_id FROM #__users_password WHERE user_id" .
-                $db->Quote($this->user_id) . ";");
+		if (!isset($this->user_id)) {
+			$db->setQuery("SELECT user_id FROM #__users_password WHERE user_id" .
+				$db->Quote($this->user_id) . ";");
 
-            $this->user_id = $db->loadResult();
-        }
+			$this->user_id = $db->loadResult();
+		}
 
-        if (empty($this->user_id))
-        {
-            return false;
-        }
+		if (empty($this->user_id)) {
+			return false;
+		}
 
-        $db->setQuery("DELETE FROM #__users_password WHERE user_id= " . $db->Quote($this->user_id) . ";");
+		$db->setQuery("DELETE FROM #__users_password WHERE user_id= " . $db->Quote($this->user_id) . ";");
 
-        if (!$db->query())
-        {
-            return false;
-        }
+		if (!$db->query()) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Short description for 'delete'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $storage Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	   string $storage Parameter description (if any) ...
+	 * @return	   boolean Return description (if any) ...
 	 */
-    public function delete($storage = null)
-    {
-        if (func_num_args() > 1)
-        {
-            $this->_error(__FUNCTION__ . ": Invalid number of arguments", E_USER_ERROR);
-            die();
-        }
+	public function delete($storage = null)
+	{
+		if (func_num_args() > 1) {
+			$this->_error(__FUNCTION__ . ": Invalid number of arguments", E_USER_ERROR);
+			die();
+		}
 
-        if (is_null($storage))
-        {
-            $storage = ($this->_ldapPasswordMirror) ? 'all' : 'mysql';
-        }
+		if (is_null($storage)) {
+			$storage = ($this->_ldapPasswordMirror) ? 'all' : 'mysql';
+		}
 
-        if (!is_string($storage))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
-            die();
-        }
+		if (!is_string($storage)) {
+			$this->_error(__FUNCTION__ . ": Argument #1 is not a string", E_USER_ERROR);
+			die();
+		}
 
-        if (!in_array($storage, array('mysql', 'ldap', 'all')))
-        {
-            $this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value",
-                E_USER_ERROR);
-            die();
-        }
+		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
+			$this->_error(__FUNCTION__ . ": Argument #1 [$storage] is not a valid value", E_USER_ERROR);
+			die();
+		}
 
-        $result = true;
+		$result = true;
 
-        if ($storage == 'mysql' || $storage == 'all')
-        {
-            $result = $this->_mysql_delete();
+		if ($storage == 'mysql' || $storage == 'all') {
+			$result = $this->_mysql_delete();
 
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
-            }
-        }
+			if ($result === false) {
+				$this->_error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
+			}
+		}
 
-        if ($result === true && ($storage == 'ldap' || $storage == 'all'))
-        {
-            $result = $this->_ldap_delete();
+		if ($result === true && ($storage == 'ldap' || $storage == 'all')) {
+			$result = $this->_ldap_delete();
 
-            if ($result === false)
-            {
-                $this->_error(__FUNCTION__ . ": LDAP deletion failed", E_USER_WARNING);
-            }
-        }
+			if ($result === false) {
+				$this->_error(__FUNCTION__ . ": LDAP deletion failed", E_USER_WARNING);
+			}
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 
 	/**
 	 * Short description for '__get'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param	   string $property Parameter description (if any) ...
+	 * @return	   string Return description (if any) ...
 	 */
-    public function __get($property = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-            {
-                $property = '(null)';
-            }
+	public function __get($property = null)
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
+			if (empty($property)) {
+				$property = '(null)';
+			}
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        if (isset($this->$property))
-        {
-            return $this->$property;
-        }
+		if (isset($this->$property)) {
+			return $this->$property;
+		}
 
-        if (array_key_exists($property, get_object_vars($this)))
-        {
-            return null;
-        }
+		if (array_key_exists($property, get_object_vars($this))) {
+			return null;
+		}
 
-        $this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
+		$this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
 
-        return null;
-    }
+		return null;
+	}
 
 	/**
 	 * Short description for '__set'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * @param	   string $property Parameter description (if any) ...
+	 * @param	   unknown $value Parameter description (if any) ...
+	 * @return	   void
 	 */
-    public function __set($property = null, $value = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-            {
-                $property = '(null)';
-            }
+	public function __set($property = null, $value = null)
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
+			if (empty($property)) {
+				$property = '(null)';
+			}
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        $this->$property = $value;
+		$this->$property = $value;
 
-        if (!in_array($property, $this->_updatedkeys))
-            $this->_updatedkeys[] = $property;
-    }
+		if (!in_array($property, $this->_updatedkeys)) {
+			$this->_updatedkeys[] = $property;
+		}
+	}
 
 	/**
 	 * Short description for '__isset'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param	   string $property Parameter description (if any) ...
+	 * @return	   string Return description (if any) ...
 	 */
-    public function __isset($property = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-                $property = '(null)';
+	public function __isset($property = null)
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
+			if (empty($property)) {
+				$property = '(null)';
+			}
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        return isset($this->$property);
-    }
+		return isset($this->$property);
+	}
 
 	/**
 	 * Short description for '__unset'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     void
+	 * @param	   string $property Parameter description (if any) ...
+	 * @return	   void
 	 */
-    public function __unset($property = null)
-    {
-        if (!property_exists(__CLASS__, $property) || $property{0} == '_')
-        {
-            if (empty($property))
-                $property = '(null)';
+	public function __unset($property = null)
+	{
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
+			if (empty($property)) {
+				$property = '(null)';
+			}
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
-            die();
-        }
+			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+			die();
+		}
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+		$this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
 
-        unset($this->$property);
-    }
+		unset($this->$property);
+	}
 
 	/**
 	 * Short description for '_error'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      string $message Parameter description (if any) ...
-	 * @param      integer $level Parameter description (if any) ...
-	 * @return     void
+	 * @param	   string $message Parameter description (if any) ...
+	 * @param	   integer $level Parameter description (if any) ...
+	 * @return	   void
 	 */
-    private function _error($message, $level = E_USER_NOTICE)
-    {
-        $caller = next(debug_backtrace());
+	private function _error($message, $level = E_USER_NOTICE)
+	{
+		$caller = next(debug_backtrace());
 
-        switch ($level)
-        {
-            case E_USER_NOTICE:
-                echo "Notice: ";
-                break;
-            case E_USER_ERROR:
-                echo "Fatal error: ";
-                break;
-            default:
-                echo "Unknown error: ";
-                break;
-        }
+		switch ($level) {
+			case E_USER_NOTICE:
+				echo "Notice: ";
+				break;
+			case E_USER_ERROR:
+				echo "Fatal error: ";
+				break;
+			default:
+				echo "Unknown error: ";
+				break;
+		}
 
-        echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
-    }
+		echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
+	}
 
 	/**
 	 * Short description for 'get'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param	   unknown $key Parameter description (if any) ...
+	 * @return	   unknown Return description (if any) ...
 	 */
-    public function get($key)
-    {
-        return $this->__get($key);
-    }
+	public function get($key)
+	{
+		return $this->__get($key);
+	}
 
 	/**
 	 * Short description for 'set'
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param	   unknown $key Parameter description (if any) ...
+	 * @param	   unknown $value Parameter description (if any) ...
+	 * @return	   unknown Return description (if any) ...
 	 */
-    public function set($key, $value)
-    {
-        return $this->__set($key, $value);
-    }
-}
+	public function set($key, $value)
+	{
+		return $this->__set($key, $value);
+	}
 
+	public function isPasswordExpired($user = null)
+	{
+		$hzup = self::getInstance($user);
+
+		if (!is_object($hzup)) {
+			return true;
+		}
+
+		if (empty($hzup->shadowLastChange)) {
+			return false;
+		}
+
+		if ($hzup->shadowMax === '0') {
+			return true;
+		}
+
+		if (empty($hzup->shadowMax)) {
+			return false;
+		}
+
+		$chgtime = time();
+		$chgtime = intval($chgtime / 86400);
+		if ( ($hzup->shadowLastChange + $hzup->shadowMax) >= $chgtime) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function changePassword($user = null, $password)
+	{
+		$passhash =  "{MD5}" . base64_encode(pack('H*', md5($password)));
+
+		return self::changePasshash($user,$passhash);
+	}
+
+	public function changePasshash($user = null, $passhash)
+	{
+		ximport('Hubzero_User_Password_History');
+		$hzup = self::getInstance($user);
+		$oldhash = $hzup->passhash;
+
+		if ($oldhash == $passhash) {
+			return true;
+		}
+
+		$hzup->__set('passhash',$passhash);
+		$hzup->__set('shadowFlag',null);
+
+		$chgtime = time();
+		$chgtime = intval($chgtime / 86400);
+		$hzup->__set('shadowLastChange', $chgtime);
+		$hzup->__set('shadowMin', '0');
+		$hzup->__set('shadowMax', '120');
+		$hzup->__set('shadowWarning', '7');
+		$hzup->__set('shadowInactive', '0');
+		$hzup->__set('shadowExpire', null);
+		$hzup->update();
+		Hubzero_User_Password_History::addPassword($oldhash, $user);
+
+		return true;
+	}
+
+	public function passwordMatches($user = null, $password)
+	{
+		jimport('joomla.user.helper');
+		$hzup = self::getInstance($user);
+
+		if (!is_object($hzup)) {
+			return false;
+		}
+
+		preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/",$hzup->passhash,$matches);
+		$encryption = strtolower($matches[2]);
+		$salt = $matches[4];
+		$crypt = $matches[5];
+
+		if ($encryption == 'md5') {
+			$encryption = "md5-base64";
+		}
+
+		if (empty($encryption)) {
+			$passhash = $password;
+		}
+		else if (empty($salt) && ($encryption == 'ssha')) {
+			$salt = substr(base64_decode(substr($crypt,-32)),-4);
+			$passhash = "{SSHA}" . base64_encode( mhash(MHASH_SHA1, $password . $salt).$salt );
+		}
+		else {
+			$passhash = JUserHelper::getCryptedPassword($password, $salt, $encryption, true);
+		}
+
+		if ($hzup->passhash == $passhash) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function invalidatePassword($user = null)
+	{
+		$hzup = self::getInstance($user);
+		
+		$hzup->__set('shadowFlag','-1');
+		$hzup->update();
+	
+		return true;
+	}
+}
