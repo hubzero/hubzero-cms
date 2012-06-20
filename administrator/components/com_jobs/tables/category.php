@@ -29,76 +29,68 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'JobCategory'
- * 
- * Long description (if any) ...
+ * Table class for job category
  */
 class JobCategory extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         	= NULL;  // @var int(11) Primary key
+	var $id         	= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(150)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category		= NULL;  // @var varchar(150)
+	var $category		= NULL;
 
 	/**
-	 * Description for 'description'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $description	= NULL;  // @var varchar(255)
-
-	//-----------
+	var $description	= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_categories', 'id', $db );
+		parent::__construct('#__jobs_categories', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getCats'
+	 * Get all records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $sortby Parameter description (if any) ...
-	 * @param      string $sortdir Parameter description (if any) ...
-	 * @param      integer $getobject Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string  $sortby    Field to sort by
+	 * @param      string  $sortdir   Sort direction (ASC/DESC)
+	 * @param      integer $getobject Return records as objects?
+	 * @return     array
 	 */
-	public function getCats ($sortby = 'ordernum', $sortdir = 'ASC', $getobject = 0)
+	public function getCats($sortby = 'ordernum', $sortdir = 'ASC', $getobject = 0)
 	{
 		$cats = array();
 
 		$query  = $getobject ? "SELECT * " : "SELECT id, category ";
-		$query .= "FROM #__jobs_categories   ";
-		$query .= " ORDER BY $sortby $sortdir";
-		$this->_db->setQuery( $query );
+		$query .= "FROM $this->_tbl ORDER BY $sortby $sortdir";
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($getobject) {
+		if ($getobject) 
+		{
 			return $result;
 		}
 
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $r)
 			{
 				$cats[$r->id] = $r->category;
@@ -109,48 +101,47 @@ class JobCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'getCat'
+	 * Get a category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $id Parameter description (if any) ...
-	 * @param      string $default Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      itneger $id      Category ID
+	 * @param      string  $default Default value if no record found
+	 * @return     mixed False if errors, String upon success
 	 */
-	public function getCat($id = NULL, $default = 'unspecified' )
+	public function getCat($id = NULL, $default = 'unspecified')
 	{
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			 return false;
 		}
-		if ($id == 0 ) {
+		if ($id == 0) 
+		{
 			return $default;
 		}
 
-		$query  = "SELECT category ";
-		$query .= "FROM #__jobs_categories WHERE id='".$id."'  ";
-		$this->_db->setQuery( $query );
+		$query  = "SELECT category FROM $this->_tbl WHERE id='" . $id . "'";
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'updateOrder'
+	 * Update the ordering of records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      integer $ordernum Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id       Category ID
+	 * @param      integer $ordernum ORder number to make it
+	 * @return     boolean True upon success
 	 */
-	public function updateOrder($id = NULL, $ordernum = 1 )
+	public function updateOrder($id = NULL, $ordernum = 1)
 	{
-		if ($id === NULL or !intval($ordernum)) {
+		if ($id === NULL or !intval($ordernum)) 
+		{
 			 return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET ordernum=$ordernum WHERE id=".$id;
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$query  = "UPDATE $this->_tbl SET ordernum=$ordernum WHERE id=" . $id;
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;

@@ -29,89 +29,82 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Resume'
- * 
- * Long description (if any) ...
+ * Table class for job resumes
  */
 class Resume extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid		= NULL;  // @var int(11)
+	var $uid		= NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $created	= NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $title		= NULL;
 
 	/**
-	 * Description for 'filename'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $filename	= NULL;
 
 	/**
-	 * Description for 'main'
+	 * tinyint  0 - no, 1 - yes
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $main		= NULL;  // tinyint  0 - no, 1 - yes
-
-	//-----------
+	var $main		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_resumes', 'id', $db );
+		parent::__construct('#__jobs_resumes', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (intval( $this->uid ) == 0) {
-			$this->setError( JText::_('ERROR_MISSING_UID') );
+		if (intval($this->uid) == 0) 
+		{
+			$this->setError(JText::_('ERROR_MISSING_UID'));
 			return false;
 		}
 
-		if (trim( $this->filename ) == '') {
-			$this->setError( JText::_('ERROR_MISSING_FILENAME') );
+		if (trim($this->filename) == '') 
+		{
+			$this->setError(JText::_('ERROR_MISSING_FILENAME'));
 			return false;
 		}
 
@@ -119,96 +112,94 @@ class Resume extends JTable
 	}
 
 	/**
-	 * Short description for 'load'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $name Parameter description (if any) ...
+	 * @return     boolean True upon success
 	 */
-	public function load( $name=NULL )
+	public function load($name=NULL)
 	{
-		if ($name !== NULL) {
+		if ($name !== NULL) 
+		{
 			$this->_tbl_key = 'uid';
 		}
 		$k = $this->_tbl_key;
-		if ($name !== NULL) {
+		if ($name !== NULL) 
+		{
 			$this->$k = $name;
 		}
 		$name = $this->$k;
-		if ($name === NULL) {
+		if ($name === NULL) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$name' AND main='1' LIMIT 1" );
-		//return $this->_db->loadObject( $this );
-
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			return false;
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$name' AND main='1' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'delete_resume'
+	 * Delete a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Resume ID
+	 * @return     boolean False if errors, True upon success
 	 */
-	public function delete_resume ($id = NULL)
+	public function delete_resume($id = NULL)
 	{
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			$id == $this->id;
 		}
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			return false;
 		}
 
-		$query  = "DELETE FROM $this->_tbl WHERE id=".$id;
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$query  = "DELETE FROM $this->_tbl WHERE id=" . $id;
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getResumeFiles'
+	 * Get resume files
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $pile Parameter description (if any) ...
-	 * @param      mixed $uid Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string  $pile  shortlisted or applied
+	 * @param      integer $uid   User ID
+	 * @param      integer $admin Admin access?
+	 * @return     array 
 	 */
-	public function getResumeFiles ($pile = 'all', $uid = 0, $admin = 0)
+	public function getResumeFiles($pile = 'all', $uid = 0, $admin = 0)
 	{
 		$query  = "SELECT DISTINCT r.uid, r.filename FROM $this->_tbl AS r ";
 		$query .= "JOIN #__jobs_seekers AS s ON s.uid=r.uid ";
-		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=".$uid." AND s.uid != '".$uid."' AND s.uid=r.uid AND W.category='resume' " : "";
-		$uid 	 = $admin ? 1 : $uid;
+		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $uid . " AND s.uid != '" . $uid . "' AND s.uid=r.uid AND W.category='resume' " : "";
+		$uid = $admin ? 1 : $uid;
 		$query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid='$uid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
 
 		$files = array();
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $r)
 			{
 				$files[$r->uid] = $r->filename;
 			}
 		}
 
-		$files = array_unique($files);
-		return $files;
+		return array_unique($files);
 	}
 }
 

@@ -29,63 +29,54 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'JobType'
- * 
- * Long description (if any) ...
+ * Table class for job types
  */
 class JobType extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $id       = NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(150)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category = NULL;  // @var varchar(150)
-
-	//-----------
+	var $category = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_types', 'id', $db );
+		parent::__construct('#__jobs_types', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getTypes'
+	 * Get all records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $sortby Parameter description (if any) ...
-	 * @param      string $sortdir Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $sortby  Sort by field
+	 * @param      string $sortdir Sort direction ASC/DESC
+	 * @return     array
 	 */
 	public function getTypes($sortby = 'id', $sortdir = 'ASC')
 	{
 		$types = array();
 
-		$query  = "SELECT id, category ";
-		$query .= "FROM #__jobs_types ORDER BY $sortby $sortdir ";
-		$this->_db->setQuery( $query );
+		$query  = "SELECT id, category FROM $this->_tbl ORDER BY $sortby $sortdir ";
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $r)
 			{
 				$types[$r->id] = $r->category;
@@ -96,26 +87,25 @@ class JobType extends JTable
 	}
 
 	/**
-	 * Short description for 'getType'
+	 * Load a record from the database
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $id Parameter description (if any) ...
-	 * @param      string $default Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id      Type ID
+	 * @param      string  $default Default value to return
+	 * @return     string
 	 */
 	public function getType($id = NULL, $default = 'unspecified')
 	{
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			 return false;
 		}
-		if ($id == 0 ) {
+		if ($id == 0) 
+		{
 			return $default;
 		}
 
-		$query  = "SELECT category ";
-		$query .= "FROM #__jobs_types WHERE id='".$id."'  ";
-		$this->_db->setQuery( $query );
+		$query = "SELECT category FROM $this->_tbl WHERE id='$id'";
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }

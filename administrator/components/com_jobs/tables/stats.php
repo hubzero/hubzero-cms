@@ -29,94 +29,89 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'JobStats'
- * 
- * Long description (if any) ...
+ * Table class for job stats
  */
 class JobStats extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
 	 * @var integer
 	 */
-	var $id         	= NULL;  // @var int(11) Primary key
+	var $id         	= NULL;
 
 	/**
-	 * Description for 'itemid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $itemid			= NULL;  // @var int(11)
+	var $itemid			= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(11) job / seeker  / employer
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category		= NULL;  // job / seeker  / employer
+	var $category		= NULL;
 
 	/**
-	 * Description for 'total_viewed'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $total_viewed	= NULL;
 
 	/**
-	 * Description for 'total_shared'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $total_shared	= NULL;
 
 	/**
-	 * Description for 'viewed_today'
+	 * int(11)
 	 * 
 	 * @var integer
 	 */
 	var $viewed_today	= NULL;
 
 	/**
-	 * Description for 'lastviewed'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $lastviewed		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_stats', 'id', $db );
+		parent::__construct('#__jobs_stats', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (intval( $this->itemid ) == 0) {
-			$this->setError( JText::_('Missing item id.') );
+		if (intval($this->itemid) == 0) 
+		{
+			$this->setError(JText::_('Missing item id.'));
 			return false;
 		}
 
-		if (intval( $this->category ) == '') {
-			$this->setError( JText::_('Missing category.') );
+		if (intval($this->category) == '') 
+		{
+			$this->setError(JText::_('Missing category.'));
 			return false;
 		}
 
@@ -124,18 +119,17 @@ class JobStats extends JTable
 	}
 
 	/**
-	 * Short description for 'loadStat'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $itemid Parameter description (if any) ...
-	 * @param      unknown $category Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $itemid   Job ID
+	 * @param      string  $category Job type
+	 * @param      string  $type     Record type
+	 * @return     boolean True upon success
 	 */
 	public function loadStat($itemid = NULL, $category = NULL, $type = "viewed")
 	{
-		if ($itemid === NULL or $category === NULL) {
+		if ($itemid === NULL or $category === NULL) 
+		{
 			return false;
 		}
 
@@ -143,13 +137,13 @@ class JobStats extends JTable
 		$query .= $type=='shared' ? "lastshared": "lastviewed";
 		$query .= " DESC LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			return false;
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
 		}
+		return false;
 	}
 
 	/**
@@ -157,95 +151,106 @@ class JobStats extends JTable
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      unknown $itemid Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $itemid   Job ID
+	 * @param      string  $category Job type
+	 * @param      integer $admin    Admin access?
+	 * @return     mixed False if errors, Array upon success
 	 */
 	public function getStats($itemid = NULL, $category = 'employer', $admin = 0)
 	{
-		if ($itemid === NULL) {
+		if ($itemid === NULL) 
+		{
 			return false;
 		}
 
-		$stats = array();
-		$stats = array('total_resumes'=> 0,
-						'shortlisted' => 0,
-						'applied' => 0,
-						'bookmarked' => 0,
-						'total_viewed' => 0,
-						'total_shared' => 0,
-						'viewed_today' => 0,
-						'viewed_thisweek' => 0,
-						'viewed_thismonth' => 0,
-						'lastviewed' => '');
+		$stats = array(
+			'total_resumes'    => 0,
+			'shortlisted'      => 0,
+			'applied'          => 0,
+			'bookmarked'       => 0,
+			'total_viewed'     => 0,
+			'total_shared'     => 0,
+			'viewed_today'     => 0,
+			'viewed_thisweek'  => 0,
+			'viewed_thismonth' => 0,
+			'lastviewed'       => ''
+		);
 
 		// get total resumes in the pool
-		$row = new JobSeeker( $this->_db );
+		$row = new JobSeeker($this->_db);
 		$filters = array('filterby'=>'all', 'sortby'=>'', 'search'=>'', 'category'=>'', 'type'=>'');
-		$stats['total_resumes'] = $row->countSeekers( $filters);
+		$stats['total_resumes'] = $row->countSeekers($filters);
 
 		// get stats for employer
-		if ($category == 'employer') {
+		if ($category == 'employer') 
+		{
 			$filters['filterby'] = 'shortlisted';
-			$stats['shortlisted'] = $row->countSeekers( $filters, $itemid);
+			$stats['shortlisted'] = $row->countSeekers($filters, $itemid);
 
 			$filters['filterby'] = 'applied';
 			$itemid = $admin ? 1 : $itemid;
-			$stats['applied'] = $row->countSeekers( $filters, $itemid);
+			$stats['applied'] = $row->countSeekers($filters, $itemid);
 		}
 
 		// get stats for seeker
-		if ($category == 'seeker') {
-			$stats['totalviewed'] = $this->getView($itemid, $category);
-			$stats['viewed_today'] = $this->getView($itemid, $category, 'viewed', 'today');
-			$stats['viewed_thisweek'] = $this->getView($itemid, $category, 'viewed', 'thisweek');
+		if ($category == 'seeker') 
+		{
+			$stats['totalviewed']      = $this->getView($itemid, $category);
+			$stats['viewed_today']     = $this->getView($itemid, $category, 'viewed', 'today');
+			$stats['viewed_thisweek']  = $this->getView($itemid, $category, 'viewed', 'thisweek');
 			$stats['viewed_thismonth'] = $this->getView($itemid, $category, 'viewed', 'thismonth');
-			$stats['shortlisted'] = $row->countShortlistedBy($itemid);
+			$stats['shortlisted']      = $row->countShortlistedBy($itemid);
 		}
 
 		return $stats;
 	}
 
 	/**
-	 * Short description for 'getView'
+	 * Get a view
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $itemid Parameter description (if any) ...
-	 * @param      unknown $category Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      string $when Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $itemid   Job ID
+	 * @param      string  $category Job type
+	 * @param      string  $type     Record type
+	 * @param      string  $when     Timestamp
+	 * @return     integer
 	 */
-	public function getView( $itemid=NULL, $category=NULL, $type='viewed', $when ='')
+	public function getView($itemid=NULL, $category=NULL, $type='viewed', $when ='')
 	{
-		$lastweek = date('Y-m-d H:i:s', time() - (7 * 24 * 60 * 60));
+		$lastweek  = date('Y-m-d H:i:s', time() - (7 * 24 * 60 * 60));
 		$lastmonth = date('Y-m-d H:i:s', time() - (30 * 24 * 60 * 60));
-		$today = date('Y-m-d H:i:s', time() - (24 * 60 * 60));
+		$today     = date('Y-m-d H:i:s', time() - (24 * 60 * 60));
 
 		$query  = "SELECT ";
-		if ($type == 'viewed') {
+		if ($type == 'viewed') 
+		{
 			$query .= $when ? " SUM(viewed_today) AS times " : " MAX(total_viewed) AS times ";
-		} else {
+		} 
+		else 
+		{
 			$query .= " MAX(p.total_shared) AS times ";
 		}
 		$query .= " FROM $this->_tbl WHERE itemid='$itemid' AND category='$category' AND ";
 
-		if ($when == 'thisweek') {
-			$query .= " lastviewed > '".$lastweek."' ";
-		} else if($when == 'thismonth') {
-			$query .= " lastviewed > '".$lastmonth."' ";
-		} else if ($when == 'today') {
-			$query .= " lastviewed > '".$today."' ";
-		} else {
-			$query .= " 1=1 ";
+		switch ($when)
+		{
+			case 'thisweek':
+				$query .= " lastviewed > '" . $lastweek . "' ";
+			break;
+			case 'thismonth':
+				$query .= " lastviewed > '" . $lastmonth . "' ";
+			break;
+			case 'today':
+				$query .= " lastviewed > '" . $today . "' ";
+			break;
+			default:
+				$query .= " 1=1 ";
+			break;
 		}
 		$query .= "GROUP BY itemid, category ";
 		$query .= "ORDER BY times DESC ";
 		$query .= "LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result =  $this->_db->loadResult();
 
 		$result = $result ? $result : 0;
@@ -253,54 +258,62 @@ class JobStats extends JTable
 	}
 
 	/**
-	 * Short description for 'saveView'
+	 * Save view
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $itemid Parameter description (if any) ...
-	 * @param      unknown $category Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $itemid   Job ID
+	 * @param      string  $category Job type
+	 * @param      string  $type     Record type
+	 * @return     boolean True upon success, False if errors
 	 */
-	public function saveView( $itemid=NULL, $category=NULL, $type='viewed')
+	public function saveView($itemid=NULL, $category=NULL, $type='viewed')
 	{
-		if ($itemid=== NULL) {
+		if ($itemid=== NULL) 
+		{
 			$itemid = $this->itemid;
 		}
-		if ($category === NULL) {
+		if ($category === NULL) 
+		{
 			$category = $this->category;
 		}
 
-		if ($itemid === NULL or $category === NULL) {
+		if ($itemid === NULL or $category === NULL) 
+		{
 			return false;
 		}
 
-		$today = date( 'Y-m-d');
-		$now = date( 'Y-m-d H:i:s' );
+		$today = date('Y-m-d');
+		$now = date('Y-m-d H:i:s');
 
 		// load existing entry
-		$this->loadStat( $itemid, $category);
+		$this->loadStat($itemid, $category);
 
 		// create new entry for another day
-		if (substr($this->lastviewed, 0, 10) != $today ) {
+		if (substr($this->lastviewed, 0, 10) != $today) 
+		{
 			$this->id = 0;
 			$this->itemid = $itemid;
 			$this->category = $category;
 			$this->viewed_today = 1;
-		} else {
+		} 
+		else 
+		{
 			$this->viewed_today = $this->viewed_today + 1;
 		}
 
 		$this->total_viewed = $this->total_viewed + 1;
 
 		// avoid duplicates
-		if ($this->lastviewed != $now) {
+		if ($this->lastviewed != $now) 
+		{
 			$this->lastviewed = $now;
 
-			if (!$this->store()) {
-				$this->setError( JText::_('Failed to store item view.') );
+			if (!$this->store()) 
+			{
+				$this->setError(JText::_('Failed to store item view.'));
 				return false;
-			} else {
+			} 
+			else 
+			{
 				// clean-up views older than 30 days
 				$this->cleanup();
 			}
@@ -308,34 +321,32 @@ class JobStats extends JTable
 	}
 
 	/**
-	 * Short description for 'cleanup'
-	 * 
-	 * Long description (if any) ...
+	 * Remove records before a certaind ate
 	 * 
 	 * @return     void
 	 */
 	public function cleanup()
 	{
 		$lastmonth = date('Y-m-d H:i:s', time() - (30 * 24 * 60 * 60));
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE lastviewed < '".$lastmonth."'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE lastviewed < '" . $lastmonth . "'");
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'deleteStats'
+	 * Delete records for an item
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $itemid Parameter description (if any) ...
-	 * @param      unknown $category Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $itemid   Job ID
+	 * @param      string  $category Job category
+	 * @return     boolean True upon success
 	 */
 	public function deleteStats($itemid, $category)
 	{
-		if ($itemid === NULL or $category === NULL) {
+		if ($itemid === NULL or $category === NULL) 
+		{
+			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE itemid ='$itemid' AND category ='$category'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE itemid ='$itemid' AND category ='$category'");
 		$this->_db->query();
 	}
 }

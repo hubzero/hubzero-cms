@@ -29,84 +29,75 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Employer'
- * 
- * Long description (if any) ...
+ * Table class for job employer
  */
 class Employer extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         		= NULL;  // @var int(11) Primary key
+	var $id         		= NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid				= NULL;  // @var int(11)
+	var $uid				= NULL;
 
 	/**
-	 * Description for 'added'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $added    			= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $added    			= NULL;
 
 	/**
-	 * Description for 'subscriptionid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $subscriptionid		= NULL;  // @var int(11)
+	var $subscriptionid		= NULL;
 
 	/**
-	 * Description for 'companyName'
+	 * varchar (250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $companyName		= NULL;  // @var varchar (250)
+	var $companyName		= NULL;
 
 	/**
-	 * Description for 'companyLocation'
+	 * varchar (250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $companyLocation	= NULL;  // @var varchar (250)
+	var $companyLocation	= NULL;
 
 	/**
-	 * Description for 'companyWebsite'
+	 * varchar (250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $companyWebsite		= NULL;  // @var varchar (250)
-
-	//-----------
+	var $companyWebsite		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_employers', 'id', $db );
+		parent::__construct('#__jobs_employers', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'isEmployer'
-	 * 
-	 * Long description (if any) ...
+	 * Check if a user is an employer
 	 * 
 	 * @param      string $uid Parameter description (if any) ...
 	 * @param      integer $admin Parameter description (if any) ...
@@ -114,81 +105,87 @@ class Employer extends JTable
 	 */
 	public function isEmployer($uid, $admin=0)
 	{
-		if ($uid === NULL) {
+		if ($uid === NULL) 
+		{
 			return false;
 		}
 
-		$now = date( 'Y-m-d H:i:s', time() );
-		$query  = "SELECT e.id ";
-		$query .= "FROM #__jobs_employers AS e  ";
-		if (!$admin) {
+		$now = date('Y-m-d H:i:s', time());
+		$query  = "SELECT e.id FROM $this->_tbl AS e  ";
+		if (!$admin) 
+		{
 			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-			$query .= "WHERE e.uid = '".$uid."' AND s.status=1";
-			$query .= " AND s.expires > '".$now."' ";
-		} else {
+			$query .= "WHERE e.uid = '" . $uid . "' AND s.status=1";
+			$query .= " AND s.expires > '" . $now . "' ";
+		} 
+		else 
+		{
 			$query .= "WHERE e.uid = 1";
 		}
-		$this->_db->setQuery( $query );
-		if ($this->_db->loadResult()) {
+		$this->_db->setQuery($query);
+		if ($this->_db->loadResult()) 
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'loadEmployer'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @return     boolean True upon success
 	 */
-	public function loadEmployer( $uid=NULL )
+	public function loadEmployer($uid=NULL)
 	{
-		if ($uid === NULL) {
+		if ($uid === NULL) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid='$uid' " );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			return false;
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid='$uid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'getEmployer'
+	 * Get an employer
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $subscriptioncode Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid              User ID
+	 * @param      string  $subscriptioncode Subscription code
+	 * @return     mixed False if errors, Array upon success
 	 */
-	public function getEmployer( $uid = NULL, $subscriptioncode = NULL )
+	public function getEmployer($uid = NULL, $subscriptioncode = NULL)
 	{
-		if ($uid === NULL or $subscriptioncode === NULL) {
+		if ($uid === NULL or $subscriptioncode === NULL) 
+		{
 			return false;
 		}
 		$query  = "SELECT e.* ";
 		$query .= "FROM #__jobs_employers AS e  ";
-		if ($subscriptioncode == 'admin') {
+		if ($subscriptioncode == 'admin') 
+		{
 			$query .= "WHERE e.uid = 1";
-		} else if ($subscriptioncode) {
+		} 
+		else if ($subscriptioncode) 
+		{
 			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 			$query .= "WHERE s.code='$subscriptioncode'";
-		} else if ($uid) {
-			$query .= "WHERE e.uid = '".$uid."'";
+		} 
+		else if ($uid) 
+		{
+			$query .= "WHERE e.uid = '" . $uid . "'";
 		}
-		$this->_db->setQuery( $query);
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($result) {
+		if ($result) 
+		{
 			return $result[0];
-		} else {
-			return false;
 		}
+		return false;
 	}
 }
 

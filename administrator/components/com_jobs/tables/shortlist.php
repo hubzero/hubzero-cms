@@ -29,89 +29,82 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Shortlist'
- * 
- * Long description (if any) ...
+ * Table class for job shortlist
  */
 class Shortlist extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'emp'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $emp		= NULL;  // @var int(11)
+	var $emp		= NULL;
 
 	/**
-	 * Description for 'seeker'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $seeker		= NULL;  // @var int(11)
+	var $seeker		= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar (job / resume)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category	= NULL;  // @var varchar (job / resume)
+	var $category	= NULL;
 
 	/**
-	 * Description for 'jobid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $jobid		= NULL;  // @var int(11)
+	var $jobid		= NULL;
 
 	/**
-	 * Description for 'added'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $added		= NULL;  // @var datetime
-
-	//-----------
+	var $added		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_shortlist', 'id', $db );
+		parent::__construct('#__jobs_shortlist', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (intval( $this->emp) == 0) {
-			$this->setError( JText::_('ERROR_MISSING_EMPLOYER_ID') );
+		if (intval($this->emp) == 0) 
+		{
+			$this->setError(JText::_('ERROR_MISSING_EMPLOYER_ID'));
 			return false;
 		}
 
-		if (trim( $this->seeker ) == 0) {
-			$this->setError( JText::_('ERROR_MISSING_JOB_SEEKER_ID') );
+		if (trim($this->seeker) == 0) 
+		{
+			$this->setError(JText::_('ERROR_MISSING_JOB_SEEKER_ID'));
 			return false;
 		}
 
@@ -119,28 +112,27 @@ class Shortlist extends JTable
 	}
 
 	/**
-	 * Short description for 'loadEntry'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $emp Parameter description (if any) ...
-	 * @param      unknown $seeker Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $emp      Employer ID
+	 * @param      integer $seeker   Seeker ID
+	 * @param      string  $category Category
+	 * @return     boolean True upon success
 	 */
-	public function loadEntry( $emp, $seeker, $category = 'resume' )
+	public function loadEntry($emp, $seeker, $category = 'resume')
 	{
-		if ($emp === NULL or $seeker === NULL) {
+		if ($emp === NULL or $seeker === NULL) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE emp='$emp' AND seeker='$seeker' AND category='$category' LIMIT 1" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE emp='$emp' AND seeker='$seeker' AND category='$category' LIMIT 1");
 
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			return false;
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
 		}
+		return false;
 	}
 }
 

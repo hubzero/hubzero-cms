@@ -29,13 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( '<a href="index.php?option=com_jobs&controller=categories">'.JText::_( 'Job Categories' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-JToolBarHelper::save();
+$canDo = JobsHelper::getActions('category');
+
+$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+JToolBarHelper::title('<a href="index.php?option=com_jobs&controller=categories">' . JText::_('Job Categories') . '</a>: <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
-
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -43,15 +47,15 @@ function submitbutton(pressbutton)
 	var form = document.getElementById('item-form');
 	
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	
 	// form field validation
 	if (form.category.value == '') {
-		alert( 'Category must have a title' );
+		alert('Category must have a title');
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 </script>
@@ -60,7 +64,7 @@ function submitbutton(pressbutton)
 	<?php echo JText::_('Warning: changing the category title will affect all currently available job postings in this category.'); ?>
 </p>
 <?php } ?>
-<form action="index.php" method="post" id="item-form" name="adminForm">			
+<form action="index.php" method="post" id="item-form" name="adminForm">
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('Edit category title'); ?></span></legend>
 		
@@ -68,11 +72,11 @@ function submitbutton(pressbutton)
 			<tbody>
 				<tr>
 					<th class="key"><label for="type"><?php echo JText::_('Category Title'); ?>: <span class="required">*</span></label></th>
-					<td><input type="text" name="category" id="category" size="30" maxlength="100" value="<?php echo $this->row->category; ?>" /></td>
+					<td><input type="text" name="category" id="category" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" /></td>
 				</tr>
-                <tr>
+				<tr>
 					<th class="key"><label for="description"><?php echo JText::_('Description'); ?>: </label></th>
-					<td><input type="text" name="description" id="description"  maxlength="255" value="<?php echo $this->row->description; ?>" /></td>
+					<td><input type="text" name="description" id="description"  maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" /></td>
 				</tr>
 			</tbody>
 		</table>
@@ -83,6 +87,5 @@ function submitbutton(pressbutton)
 		<input type="hidden" name="task" value="save" />
 	</fieldset>
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
-

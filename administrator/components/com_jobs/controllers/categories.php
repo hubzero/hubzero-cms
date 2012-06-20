@@ -95,7 +95,10 @@ class JobsControllerCategories extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -142,7 +145,6 @@ class JobsControllerCategories extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -154,7 +156,9 @@ class JobsControllerCategories extends Hubzero_Controller
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -173,7 +177,10 @@ class JobsControllerCategories extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -195,7 +202,6 @@ class JobsControllerCategories extends Hubzero_Controller
 		if (!$row->bind($_POST)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -204,7 +210,6 @@ class JobsControllerCategories extends Hubzero_Controller
 		if (!$row->store()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}

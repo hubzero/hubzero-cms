@@ -29,22 +29,31 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( '<a href="index.php?option=com_jobs">'.JText::_( 'Jobs Manager' ).'</a>: <small><small>[ Types ]</small></small>', 'addedit.png' );
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+$canDo = JobsHelper::getActions('type');
 
+JToolBarHelper::title('<a href="index.php?option=com_jobs">' . JText::_('Jobs Manager') . '</a>: <small><small>[ Types ]</small></small>', 'addedit.png');
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 ?>
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist" summary="<?php echo JText::_('A list of job types'); ?>">
 		<thead>
 			<tr>
-				<th width="2%" nowrap="nowrap"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('Title'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" width="2%"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col" width="5%"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Title'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -54,10 +63,12 @@ JToolBarHelper::deleteList();
 		</tfoot>
 		<tbody>
 <?php
-$k = 0;
-$i = 0;
-foreach ($this->rows as $avalue => $alabel)
+if ($this->rows)
 {
+	$k = 0;
+	$i = 0;
+	foreach ($this->rows as $avalue => $alabel)
+	{
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -67,14 +78,21 @@ foreach ($this->rows as $avalue => $alabel)
 					<?php echo $this->escape($avalue); ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $avalue; ?>">
 						<span><?php echo $this->escape($alabel); ?></span>
 					</a>
+<?php } else { ?>
+					<span>
+						<span><?php echo $this->escape($alabel); ?></span>
+					</span>
+<?php } ?>
 				</td>
 			</tr>
 <?php
-	$k = 1 - $k;
-	$i++;
+		$k = 1 - $k;
+		$i++;
+	}
 }
 ?>
 		</tbody>
@@ -86,6 +104,6 @@ foreach ($this->rows as $avalue => $alabel)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	<?php echo JHTML::_( 'form.token' ); ?>
-</form>
 
+	<?php echo JHTML::_('form.token'); ?>
+</form>

@@ -29,89 +29,80 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'JobAdmin'
- * 
- * Long description (if any) ...
+ * Table class for job admins
  */
 class JobAdmin extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'jid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $jid		= NULL;  // @var int(11)
+	var $jid        = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid		= NULL;  // @var int(11)
-
-	//-----------
+	var $uid        = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_admins', 'id', $db );
+		parent::__construct('#__jobs_admins', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'isAdmin'
+	 * Check if a user is an admin for a job
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $jid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @param      integer $jid Job ID
+	 * @return     boolean True if admin
 	 */
 	public function isAdmin($uid,  $jid)
 	{
-		if ($uid === NULL or $jid === NULL) {
+		if ($uid === NULL or $jid === NULL) 
+		{
 			return false;
 		}
 
 		$query  = "SELECT id ";
 		$query .= "FROM #__jobs_admins  ";
-		$query .= "WHERE uid = '".$uid."' AND jid = '".$jid."'";
-		$this->_db->setQuery( $query );
-		if ($this->_db->loadResult()) {
+		$query .= "WHERE uid = '" . $uid . "' AND jid = '" . $jid . "'";
+		$this->_db->setQuery($query);
+		if ($this->_db->loadResult()) 
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'getAdmins'
+	 * Get a list of administrators
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $jid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $jid Job ID
+	 * @return     array
 	 */
 	public function getAdmins($jid)
 	{
-		if ($jid === NULL) {
+		if ($jid === NULL) 
+		{
 			return false;
 		}
 
@@ -119,10 +110,11 @@ class JobAdmin extends JTable
 
 		$query  = "SELECT uid ";
 		$query .= "FROM #__jobs_admins  ";
-		$query .= "WHERE jid = '".$jid."'";
-		$this->_db->setQuery( $query );
+		$query .= "WHERE jid = '" . $jid . "'";
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $r)
 			{
 				$admins[] = $r->uid;

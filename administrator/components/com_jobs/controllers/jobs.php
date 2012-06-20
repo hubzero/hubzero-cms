@@ -113,7 +113,10 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -128,7 +131,6 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -141,7 +143,9 @@ class JobsControllerJobs extends Hubzero_Controller
 	public function editTask($isnew=0)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		$jconfig =& JFactory::getConfig();
 
 		// Push some styles to the template
@@ -229,7 +233,10 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -371,7 +378,8 @@ class JobsControllerJobs extends Hubzero_Controller
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option))) {
+			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option))) 
+			{
 				$this->setError(JText::_('Failed to message users.'));
 			}
 		}

@@ -29,74 +29,66 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Prefs'
- * 
- * Long description (if any) ...
+ * Table class for job prefs
  */
 class Prefs extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid		= NULL;  // @var int(11)
+	var $uid		= NULL;
 
 	/**
-	 * Description for 'filters'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $filters	= NULL;  // @var text
-
-	//-----------
+	var $filters	= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_prefs', 'id', $db );
+		parent::__construct('#__jobs_prefs', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'loadPrefs'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid      User ID
+	 * @param      string  $category Category
+	 * @return     boolean True upon success
 	 */
-	public function loadPrefs( $uid, $category = 'resume' )
+	public function loadPrefs($uid, $category = 'resume')
 	{
-		if ($uid === NULL) {
+		if ($uid === NULL) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid='$uid' AND category='$category' LIMIT 1" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid='$uid' AND category='$category' LIMIT 1");
 
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			return false;
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
 		}
+		return false;
 	}
 }
 

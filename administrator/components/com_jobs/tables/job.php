@@ -29,220 +29,214 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Job'
- * 
- * Long description (if any) ...
+ * Table class for job openings
  */
 class Job extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         		= NULL;  // @var int(11) Primary key
+	var $id         		= NULL;
 
 	/**
-	 * Description for 'cid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $cid       			= NULL;  // @var int
+	var $cid       			= NULL;
 
 	/**
-	 * Description for 'employerid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $employerid      	= NULL;  // @var int
+	var $employerid      	= NULL;
 
 	/**
-	 * Description for 'code'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $code      			= NULL;  // @var int
+	var $code      			= NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $title				= NULL;  // @var varchar(200)
+	var $title				= NULL;
 
 	/**
-	 * Description for 'companyName'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $companyName		= NULL;  // @var varchar(200)
+	var $companyName		= NULL;
 
 	/**
-	 * Description for 'companyLocation'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $companyLocation	= NULL;  // @var varchar(200)
+	var $companyLocation	= NULL;
 
 	/**
-	 * Description for 'companyLocationCountry'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $companyLocationCountry	= NULL;  // @var varchar(100)
+	var $companyLocationCountry	= NULL;
 
 	/**
-	 * Description for 'companyWebsite'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $companyWebsite		= NULL;  // @var varchar(200)
+	var $companyWebsite		= NULL;
 
 	/**
-	 * Description for 'description'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $description		= NULL;  // @var text
+	var $description		= NULL;
 
 	/**
-	 * Description for 'addedBy'
+	 * int(50)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $addedBy 			= NULL;  // @var int(50)
+	var $addedBy 			= NULL;
 
 	/**
-	 * Description for 'editedBy'
+	 * int(50)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $editedBy 			= NULL;  // @var int(50)
+	var $editedBy 			= NULL;
 
 	/**
-	 * Description for 'added'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $added    			= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $added    			= NULL;
 
 	/**
-	 * Description for 'edited'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $edited	    		= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $edited	    		= NULL;
 
 	/**
-	 * Description for 'status'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $status				= NULL;  // @var int(11)
-		// 0 pending approval
-		// 1 published
-		// 2 deleted
-		// 3 inactive
-		// 4 draft
+	var $status				= NULL;
 
 	/**
-	 * Description for 'type'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * 0 pending approval
+	 * 1 published
+	 * 2 deleted
+	 * 3 inactive
+	 * 4 draft
+	 *
+	 * @var integer
 	 */
-	var $type				= NULL;  // @var int(3)
+	var $type				= NULL;
 
 	/**
-	 * Description for 'opendate'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $opendate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $opendate    		= NULL;
 
 	/**
-	 * Description for 'closedate'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $closedate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $closedate    		= NULL;
 
 	/**
-	 * Description for 'startdate'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $startdate    		= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $startdate    		= NULL;
 
 	/**
-	 * Description for 'applyExternalUrl'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $applyExternalUrl	= NULL;  // @var varchar(250)
+	var $applyExternalUrl	= NULL;
 
 	/**
-	 * Description for 'applyInternal'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $applyInternal 		= NULL;  // @var varchar(50)
+	var $applyInternal 		= NULL;
 
 	/**
-	 * Description for 'contactName'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $contactName		= NULL;  // @var varchar(100)
+	var $contactName		= NULL;
 
 	/**
-	 * Description for 'contactEmail'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $contactEmail		= NULL;  // @var varchar(100)
+	var $contactEmail		= NULL;
 
 	/**
-	 * Description for 'contactPhone'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $contactPhone		= NULL;  // @var varchar(100)
-
-	//-----------
+	var $contactPhone		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_openings', 'id', $db );
+		parent::__construct('#__jobs_openings', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('ERROR_MISSING_JOB_TITLE') );
+		if (trim($this->title) == '') 
+		{
+			$this->setError(JText::_('ERROR_MISSING_JOB_TITLE'));
 			return false;
 		}
 
-		if (trim( $this->companyName ) == '') {
-			$this->setError( JText::_('ERROR_MISSING_EMPLOYER_NAME') );
+		if (trim($this->companyName) == '') 
+		{
+			$this->setError(JText::_('ERROR_MISSING_EMPLOYER_NAME'));
 			return false;
 		}
 
@@ -250,36 +244,34 @@ class Job extends JTable
 	}
 
 	/**
-	 * Short description for 'get_my_openings'
+	 * Get a user's openings
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      mixed $current Parameter description (if any) ...
-	 * @param      mixed $admin Parameter description (if any) ...
-	 * @param      mixed $active Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $uid     User ID
+	 * @param      integer $current Get current?
+	 * @param      integer $admin   Admin access?
+	 * @param      integer $active  Active openings?
+	 * @return     array
 	 */
 	public function get_my_openings($uid = NULL, $current = 0, $admin = 0, $active = 0)
 	{
-	 	if ($uid === NULL) {
+		if ($uid === NULL) 
+		{
 			$juser =& JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 
 		$sql  = "SELECT j.id, j.title, j.status, j.added, j.code, ";
-		$sql .= $current ? "(SELECT j.id FROM  #__jobs_openings AS j WHERE j.id=$current) as current, " : "0 as current, ";
+		$sql .= $current ? "(SELECT j.id FROM  $this->_tbl AS j WHERE j.id=$current) as current, " : "0 as current, ";
 		$sql .= "(SELECT count(*) FROM  #__jobs_applications AS a WHERE a.jid=j.id AND a.status=1) as applications ";
-		$sql .= "\n FROM #__jobs_openings AS j ";
-		//$sql .= "\n JOIN  #__jobs_admins AS B ON B.jid=j.id AND B.uid=".$uid."";
+		$sql .= "\n FROM $this->_tbl AS j ";
 		$sql .= "\n WHERE  j.status!=2 ";
 		$sql .= $active ? "\n AND  j.status!=3 " : "";
 		$sql .= $admin ? "\n AND j.employerid=1 " : "\n AND j.employerid='$uid' ";
 		$sql .= " ORDER BY j.status ASC";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
-	 }
+	}
 
 	/**
 	 * Short description for 'countMyActiveOpenings'
@@ -291,262 +283,290 @@ class Job extends JTable
 	 * @param      mixed $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	 public function countMyActiveOpenings($uid = NULL, $onlypublished = 0, $admin = 0)
-	 {
-	 	if ($uid === NULL) {
+	public function countMyActiveOpenings($uid = NULL, $onlypublished = 0, $admin = 0)
+	{
+		if ($uid === NULL) 
+		{
 			$juser =& JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 
-		$sql  = "SELECT count(*) FROM #__jobs_openings AS j ";
-		if ($onlypublished) {
+		$sql  = "SELECT count(*) FROM $this->_tbl AS j ";
+		if ($onlypublished) 
+		{
 			$sql .= "\n WHERE  j.status=1 ";
-		} else {
+		} 
+		else 
+		{
 			$sql .= "\n WHERE  j.status!=2 AND  j.status!=3 ";
 		}
 		$sql .= $admin ? "\n AND j.employerid=1 " : "\n AND j.employerid='$uid' ";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
-	 }
+	}
 
 	/**
-	 * Short description for 'get_openings'
+	 * Get job openings
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      mixed $uid Parameter description (if any) ...
-	 * @param      mixed $admin Parameter description (if any) ...
-	 * @param      string $subscription Parameter description (if any) ...
+	 * @param      array   $filters      Filters to build query from
+	 * @param      integer $uid          User ID
+	 * @param      itneger $admin        Admin access?
+	 * @param      string  $subscription Subscription code
 	 * @return     object Return description (if any) ...
 	 */
-	 public function get_openings($filters, $uid = 0, $admin = 0, $subscription = '', $count = 0)
-	 {
+	public function get_openings($filters, $uid = 0, $admin = 0, $subscription = '', $count = 0)
+	{
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
-		$category = isset($filters['category']) ? $filters['category'] : 'all';
-		$now = date( 'Y-m-d H:i:s', time() );
+		$category    = isset($filters['category']) ? $filters['category'] : 'all';
+		$now = date('Y-m-d H:i:s', time());
 		$juser =& JFactory::getUser();
 		$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
 		$active = isset($filters['active']) && $filters['active'] == 1 ? 1 : 0;
 
 		$sort = $filters['search'] != '' ? 'keywords DESC, ' : '';
-	//	$sort = '';
+
 		$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'DESC';
 
 		// list  sorting
 		switch ($filters['sortby'])
 		{
-			case 'opendate':    $sort .= 'j.status ASC, j.opendate '.$sortdir.', ';
+			case 'opendate':    $sort .= 'j.status ASC, j.opendate ' . $sortdir . ', ';
 								$sort .= $defaultsort=='type' ? 'j.type ASC' : 'c.ordernum ASC ';
 								break;
-			case 'category':    $sort .= 'isnull '.$sortdir.', c.ordernum '.$sortdir.', j.status ASC, j.opendate DESC ';
+			case 'category':    $sort .= 'isnull ' . $sortdir . ', c.ordernum ' . $sortdir . ', j.status ASC, j.opendate DESC ';
 								break;
-			case 'type':    	$sort .= 'typenull '.$sortdir.', j.type '.$sortdir.', j.opendate DESC ';
+			case 'type':    	$sort .= 'typenull ' . $sortdir . ', j.type ' . $sortdir . ', j.opendate DESC ';
 								break;
 			// admin sorting
-			case 'added':    	$sort .= 'j.added '.$sortdir.' ';
+			case 'added':    	$sort .= 'j.added ' . $sortdir . ' ';
 								break;
-			case 'status':    	$sort .= 'j.status '.$sortdir.' ';
+			case 'status':    	$sort .= 'j.status ' . $sortdir . ' ';
 								break;
-			case 'title':    	$sort .= 'j.title '.$sortdir.' ';
+			case 'title':    	$sort .= 'j.title ' . $sortdir . ' ';
 								break;
-			case 'adminposting':$sort .= 'j.employerid '.$sortdir.' ';
+			case 'adminposting':$sort .= 'j.employerid ' . $sortdir . ' ';
 								break;
 			default: 			$sort .= $defaultsort=='type' 
 								? 'j.type ASC, j.status ASC, j.opendate DESC' 
 								: 'c.ordernum ASC, j.status ASC, j.opendate DESC ';
 								break;
 		}
-		
-		if($count)
+
+		if ($count)
 		{
 			$sql = "SELECT COUNT(*) ";
 		}
 		else 
 		{
-			$sql = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS NULL AS isnull, j.type=0 as typenull, ";
+			$sql  = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS NULL AS isnull, j.type=0 as typenull, ";
 
-			$sql.= $admin ? "s.expires  AS inactive,  " : ' NULL AS inactive, ';
-			if ($uid) {
-				$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=".$uid.") AS manager,";
-			} else {
+			$sql .= $admin ? "s.expires  AS inactive,  " : ' NULL AS inactive, ';
+			if ($uid) 
+			{
+				$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=" . $uid . ") AS manager,";
+			} 
+			else 
+			{
 				$sql.= "\n NULL AS manager,";
 			}
 			$sql.= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
-			if (!$juser->get('guest')) {
+			if (!$juser->get('guest')) 
+			{
 				$myid = $juser->get('id');
-				$sql.= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";
-				$sql.= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=2) AS withdrawn,";
-			} else {
-				$sql.= "\n NULL AS applied,";
-				$sql.= "\n NULL AS withdrawn,";
+				$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";
+				$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=2) AS withdrawn,";
+			} 
+			else 
+			{
+				$sql .= "\n NULL AS applied,";
+				$sql .= "\n NULL AS withdrawn,";
 			}
-			$sql.= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
+			$sql .= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
 
-			if (trim($filters['search'])) {
+			if (trim($filters['search'])) 
+			{
 				$words   = explode(',', $filters['search']);
 				$s = array();
 				foreach ($words as $word)
 				{
-					if (trim($word) != "") {
+					if (trim($word) != '') 
+					{
 						$s[] = trim($word);
 					}
 				}
 
-				if (count($s) > 0 ) {
+				if (count($s) > 0) 
+				{
 					$kw = 0;
-					for ($i=0, $n=count( $s ); $i < $n; $i++)
+					for ($i=0, $n=count($s); $i < $n; $i++)
 					{
-						$sql .= "\n , (SELECT count(*) FROM #__jobs_openings AS o WHERE o.id=j.id ";
+						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
 						$sql .= "AND  LOWER(o.title) LIKE '%$s[$i]%') AS keyword$i ";
-						$sql .= "\n , (SELECT count(*) FROM #__jobs_openings AS o WHERE o.id=j.id ";
+						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
 						$sql .= "AND  LOWER(o.description) LIKE '%$s[$i]%') AS bodykeyword$i ";
-						$kw .= '+ keyword'.$i.' * 2 ';
-						$kw .= '+ bodykeyword'.$i;
+						$kw .= '+ keyword' . $i . ' * 2 ';
+						$kw .= '+ bodykeyword' . $i;
 					}
 
-					$sql .= "\n , (SELECT ".$kw." ) AS keywords ";
-				} else {
-					$sql .= "\n , (SELECT 0 ) AS keywords ";
+					$sql .= "\n , (SELECT " . $kw . ") AS keywords ";
+				} 
+				else 
+				{
+					$sql .= "\n , (SELECT 0) AS keywords ";
 				}
-			} else {
-				$sql.= "\n , (SELECT 0 ) AS keywords ";
+			} 
+			else 
+			{
+				$sql .= "\n , (SELECT 0) AS keywords ";
 			}
 		}
 
-		$sql.= "\n FROM #__jobs_openings AS j";
-		$sql.= "\n LEFT JOIN #__jobs_categories AS c ON c.id=j.cid ";
+		$sql .= "\n FROM $this->_tbl AS j";
+		$sql .= "\n LEFT JOIN #__jobs_categories AS c ON c.id=j.cid ";
 
 		// make sure the employer profile is active
 		$sql .= $admin ? "\n LEFT JOIN #__jobs_employers AS e ON e.uid=j.employerid " : "\n JOIN #__jobs_employers AS e ON e.uid=j.employerid ";
 		$sql .= "LEFT JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 		$sql .= " WHERE ";
 		// only show active ads
-		$sql.= $admin ? "\n  j.status!=2" : "\n  j.status=1 AND s.status=1 AND s.expires > '".$now."' ";
+		$sql .= $admin ? "\n  j.status!=2" : "\n  j.status=1 AND s.status=1 AND s.expires > '" . $now . "' ";
 
 		if ($category!='all') {
-			$sql.= "\n AND j.cid='".$category."'";
+			$sql .= "\n AND j.cid='" . $category . "'";
 		}
-		if ($subscription) {
-			$sql.= "\n AND s.code='".$subscription."'";
+		if ($subscription) 
+		{
+			$sql .= "\n AND s.code='" . $subscription . "'";
 		}
-		if($active) {
-			$sql.= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS NULL OR j.closedate > '".$now."') ";
+		if ($active) 
+		{
+			$sql .= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS NULL OR j.closedate > '" . $now . "') ";
 		}
 		
-		if(!$count)
+		if (!$count)
 		{
-			$sql.= " ORDER BY ". $sort;
+			$sql .= " ORDER BY ". $sort;
 		}
 
-		if (!$count && isset ($filters['limit']) && $filters['limit']!=0) {
-			$sql.= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
+		if (!$count && isset ($filters['limit']) && $filters['limit']!=0) 
+		{
+			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'loadJob'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $code Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $code Job code
+	 * @return     boolean True upon success
 	 */
-	public function loadJob( $code=NULL )
+	public function loadJob($code=NULL)
 	{
-		if ($code === NULL) {
+		if ($code === NULL) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE code='$code' LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			return false;
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE code='$code' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'delete_opening'
+	 * Delete an open job
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $jid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $jid Job ID
+	 * @return     boolean True upon success
 	 */
 	public function delete_opening($jid)
 	{
-		if ($jid === NULL) {
+		if ($jid === NULL) 
+		{
 			$jid == $this->id;
 		}
-		if ($jid === NULL) {
+		if ($jid === NULL) 
+		{
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET status='2' WHERE id=".$jid;
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$query  = "UPDATE $this->_tbl SET status='2' WHERE id=" . $jid;
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'get_opening'
+	 * Get job opening
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $jid Parameter description (if any) ...
-	 * @param      integer $uid Parameter description (if any) ...
-	 * @param      mixed $admin Parameter description (if any) ...
-	 * @param      string $jobcode Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $jid     Job ID
+	 * @param      integer $uid     User ID
+	 * @param      integer $admin   Admin access?
+	 * @param      string  $jobcode Job code
+	 * @return     mixed False if errors, array if records found, null if not
 	 */
-	public function get_opening ($jid = 0, $uid = 0, $admin = 0, $jobcode = '')
+	public function get_opening($jid = 0, $uid = 0, $admin = 0, $jobcode = '')
 	{
-		if ($jid === NULL && $jobcode == '') {
+		if ($jid === NULL && $jobcode == '') 
+		{
 			return false;
 		}
 
-		$now = date( 'Y-m-d H:i:s', time() );
-		$juser    =& JFactory::getUser();
+		$now = date('Y-m-d H:i:s', time());
+		$juser =& JFactory::getUser();
 		$myid = $juser->get('id');
 
 		$sql  = "SELECT j.*, ";
 		$sql .= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
 		$sql .= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
-		if (!$juser->get('guest')) {
+		if (!$juser->get('guest')) 
+		{
 			$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";
 			$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=2) AS withdrawn,";
-		} else {
+		} 
+		else 
+		{
 			$sql .= "\n NULL AS applied,";
 			$sql .= "\n NULL AS withdrawn,";
 		}
 		$sql .= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
-		$sql .= "\n FROM #__jobs_openings AS j";
+		$sql .= "\n FROM $this->_tbl AS j";
 		$sql .= $admin ? "\n LEFT JOIN #__jobs_employers AS e ON e.uid=j.employerid " : "\n JOIN #__jobs_employers AS e ON e.uid=j.employerid ";
 		$sql .= "LEFT JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-		$sql .= "AND s.status=1 AND s.expires > '".$now."' WHERE ";
+		$sql .= "AND s.status=1 AND s.expires > '" . $now . "' WHERE ";
 
-		if ($admin) {
+		if ($admin) 
+		{
 			$sql .= " j.status != 2 ";
-		} else if ($uid) {
+		} 
+		else if ($uid) 
+		{
 			$sql .= "\n  (j.status=1 OR (j.status != 1 AND j.status!=2 AND j.employerid = '$uid')) ";
-		} else {
+		} 
+		else 
+		{
 			$sql .= " j.status = 1 ";
 		}
-		if ($jid) {
+		if ($jid) 
+		{
 			$sql .= "\n AND j.id='$jid'";
-		} else if ($jobcode) {
+		} 
+		else if ($jobcode) 
+		{
 			$sql .= "\n AND j.code='$jobcode'";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
 		$result = $result ? $result[0] : NULL;
 		return $result;

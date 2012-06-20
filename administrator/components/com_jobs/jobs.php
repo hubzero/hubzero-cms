@@ -74,6 +74,7 @@ include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'shortlist.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'stats.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php');
 
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'jobs.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 
 $controllerName = JRequest::getCmd('controller', 'jobs');

@@ -29,14 +29,24 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=com_jobs">'.JText::_('Jobs Manager').'</a>: <small><small>[ Categories ]</small></small>', 'addedit.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
+$canDo = JobsHelper::getActions('category');
+
+JToolBarHelper::title('<a href="index.php?option=com_jobs">' . JText::_('Jobs Manager') . '</a>: <small><small>[ Categories ]</small></small>', 'addedit.png');
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
 JToolBarHelper::save('saveorder', 'Save Order');
-JToolBarHelper::deleteList();
-
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -44,16 +54,16 @@ JToolBarHelper::deleteList();
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" />
+					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" />
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
-                <th>
-					<?php echo JHTML::_('grid.sort', JText::_('Order'), 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
-                </th>
 				<th>
-					<?php echo JHTML::_('grid.sort', JText::_('Title'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', JText::_('Order'), 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+				</th>
+				<th>
+					<?php echo JHTML::_('grid.sort', JText::_('Title'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 			</tr>
 		</thead>
@@ -65,7 +75,7 @@ JToolBarHelper::deleteList();
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 
@@ -77,13 +87,19 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td class="order">
 					<?php echo $row->id; ?>
 				</td>
-                <td class="order" nowrap="nowrap">
-					<input type="text" name="order[<?php echo $row->id; ?>]" size="5" value="<?php echo $row->ordernum; ?>"  class="text_area" style="text-align: center" />
-                </td>
+				<td class="order" nowrap="nowrap">
+					<input type="text" name="order[<?php echo $row->id; ?>]" size="5" value="<?php echo $row->ordernum; ?>" class="text_area" style="text-align: center" />
+				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<span><?php echo $row->category; ?></span>
+						<span><?php echo $this->escape(stripslashes($row->category)); ?></span>
 					</a>
+<?php } else { ?>
+					<span>
+						<span><?php echo $this->escape(stripslashes($row->category)); ?></span>
+					</span>
+<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -100,6 +116,6 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
 

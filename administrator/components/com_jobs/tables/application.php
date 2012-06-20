@@ -29,128 +29,121 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'JobApplication'
- * 
- * Long description (if any) ...
+ * Table class for job application
  */
 class JobApplication extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'jid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $jid		= NULL;  // @var int(11)
+	var $jid		= NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid		= NULL;  // @var int(11)
+	var $uid		= NULL;
 
 	/**
-	 * Description for 'applied'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $applied	= NULL;
 
 	/**
-	 * Description for 'withdrawn'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $withdrawn	= NULL;
 
 	/**
-	 * Description for 'cover'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $cover		= NULL;
 
 	/**
-	 * Description for 'resumeid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $resumeid	= NULL;
 
 	/**
-	 * Description for 'status'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $status		= NULL;
 
 	/**
-	 * Description for 'reason'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $reason		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__jobs_applications', 'id', $db );
+		parent::__construct('#__jobs_applications', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getApplications'
+	 * Get job applications
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $jobid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $jobid Job ID
+	 * @return     mixed False if errors, Array upon success
 	 */
-	public function getApplications ($jobid)
+	public function getApplications($jobid)
 	{
-		if ($jobid === NULL) {
+		if ($jobid === NULL) 
+		{
 			return false;
 		}
 
-		$sql = "SELECT a.* FROM  #__jobs_applications AS a ";
-		$sql.= "JOIN #__jobs_seekers as s ON s.uid=a.uid";
-		$sql.= "\n WHERE  a.jid='$jobid' AND s.active=1 ";
-		$sql.= " ORDER BY a.applied DESC";
+		$sql  = "SELECT a.* FROM  #__jobs_applications AS a ";
+		$sql .= "JOIN #__jobs_seekers as s ON s.uid=a.uid";
+		$sql .= "\n WHERE  a.jid='$jobid' AND s.active=1 ";
+		$sql .= " ORDER BY a.applied DESC";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'loadApplication'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      string $jid Parameter description (if any) ...
-	 * @param      unknown $jobcode Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid     User ID
+	 * @param      integer $jid     Job ID
+	 * @param      string  $jobcode Job code
+	 * @return     boolean True upon success
 	 */
-	public function loadApplication( $uid = NULL, $jid = NULL, $jobcode = NULL )
+	public function loadApplication($uid = NULL, $jid = NULL, $jobcode = NULL)
 	{
-		if ($uid === NULL or ($jid === NULL && $jobcode === NULL)) {
+		if ($uid === NULL or ($jid === NULL && $jobcode === NULL)) 
+		{
 			return false;
 		}
 
@@ -159,12 +152,12 @@ class JobApplication extends JTable
 		$query .= " WHERE A.uid='$uid' ";
 		$query .=  $jid ? "AND A.jid='$jid' " : "AND J.code='$jobcode' ";
 		$query .= " LIMIT 1";
-		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			return false;
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
 		}
+		return false;
 	}
 }
 
