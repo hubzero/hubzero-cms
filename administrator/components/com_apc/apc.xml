@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           administrator/components/com_apc/apc.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<install type="component" version="1.5">
+	<name>APC</name>
+	<author>Sam Wilson</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Manage PHP APC</description>
+	<files>
+		<!-- no front end component -->
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_apc.ini</language>
+	</languages>
+		<install>
+			<sql>
+				<file charset="utf8" driver="mysql">install.sql</file>
+			</sql>
+		</install>
+		<uninstall>
+		</uninstall>
+	<administration>
+		<menu>APC</menu>
+			<files>
+				<filename>apc.css</filename>
+				<filename>apc.php</filename>
+				<filename>apc.xml</filename>
+				<filename>config.xml</filename>
+				<filename>controller.php</filename>
+				<filename>index.html</filename>
+				<filename>install.sql</filename>
+				<filename>helpers/html.php</filename>
+				<filename>views/dircache/tmpl/default.php</filename>
+				<filename>views/dircache/tmpl/default.xml</filename>
+				<filename>views/dircache/tmpl/index.html</filename>
+				<filename>views/host/tmpl/default.php</filename>
+				<filename>views/host/tmpl/default.xml</filename>
+				<filename>views/host/tmpl/index.html</filename>
+				<filename>views/system/tmpl/default.php</filename>
+				<filename>views/system/tmpl/default.xml</filename>
+				<filename>views/system/tmpl/index.html</filename>
+				<filename>views/user/tmpl/default.php</filename>
+				<filename>views/user/tmpl/default.xml</filename>
+				<filename>views/user/tmpl/index.html</filename>
+				<filename>views/version/tmpl/default.php</filename>
+				<filename>views/version/tmpl/default.xml</filename>
+				<filename>views/version/tmpl/index.html</filename>
+			</files>
+	</administration>
+	<params>
+		<!-- no params -->
+	</params>
+</install>
