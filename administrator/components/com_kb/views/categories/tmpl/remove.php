@@ -28,8 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'COM_KB' ), 'generic.png' );
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('COM_KB'), 'generic.png');
 JToolBarHelper::cancel();
 
 ?>
@@ -39,7 +40,7 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 	
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 }
@@ -75,5 +76,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

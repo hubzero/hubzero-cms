@@ -32,70 +32,63 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'KbCategory'
- * 
- * Long description (if any) ...
+ * Table class for knowledge base categories
  */
 class KbCategory extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id           = NULL;  // @var int(11) Primary key
+	var $id           = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $title        = NULL;  // @var varchar(250)
+	var $title        = NULL;
 
 	/**
-	 * Description for 'description'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $description  = NULL;  // @var text
+	var $description  = NULL;
 
 	/**
-	 * Description for 'section'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $section      = NULL;  // @var int(1)
+	var $section      = NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state        = NULL;  // @var int(3)
+	var $state        = NULL;
 
 	/**
-	 * Description for 'access'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $access       = NULL;  // @var int(3)
+	var $access       = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $alias        = NULL;  // @var varchar(200)
-
-	//-----------
+	var $alias        = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -113,75 +106,152 @@ class KbCategory extends JTable
 	public function check()
 	{
 		$this->id = intval($this->id);
-		
-		if (trim($this->title) == '') 
+		$this->title = trim($this->title);
+
+		if ($this->title == '') 
 		{
 			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
 			return false;
 		}
-		
+
 		if (!$this->alias)
 		{
 			$this->alias = str_replace(' ', '-', strtolower($this->title));
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
-		
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadAlias'
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form table_name.id
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		return 'com_kb.category.' . (int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * Get the parent asset id for the record
+	 *
+	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   integer  $id     The id for the asset
+	 *
+	 * @return  integer  The id of the asset's parent
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		// Initialise variables.
+		$assetId = null;
+		$db		= $this->getDbo();
+
+		if ($assetId === null) 
+		{
+			// Build the query to get the asset id for the parent category.
+			$query	= $db->getQuery(true);
+			$query->select('id');
+			$query->from('#__assets');
+			$query->where('name = ' . $db->quote('com_kb'));
+
+			// Get the asset id from the database.
+			$db->setQuery($query);
+			if ($result = $db->loadResult()) 
+			{
+				$assetId = (int) $result;
+			}
+		}
+
+		// Return the asset id.
+		if ($assetId) 
+		{
+			return $assetId;
+		} 
+		else 
+		{
+			return parent::_getAssetParentId($table, $id);
+		}
+	}
+
+	/**
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $oid Alias
+	 * @return     boolean True upon success, False if errors
 	 */
 	public function loadAlias($oid=NULL)
 	{
-		if (empty($oid)) {
+		if (empty($oid)) 
+		{
 			return false;
 		}
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
-		if ($result = $this->_db->loadAssoc()) {
+		if ($result = $this->_db->loadAssoc()) 
+		{
 			return $this->bind($result);
-		} else {
+		} 
+		else 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getCategories'
+	 * Get categories for a section
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $noauth Parameter description (if any) ...
-	 * @param      integer $empty_cat Parameter description (if any) ...
-	 * @param      mixed $catid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $noauth    Restrict by article authorizartion level
+	 * @param      integer $empty_cat Return empty categories?
+	 * @param      integer $catid     Section ID
+	 * @return     array
 	 */
 	public function getCategories($noauth, $empty_cat=0, $catid=0)
 	{
-        $juser =& JFactory::getUser();
+		$juser =& JFactory::getUser();
 
-		if ($empty_cat) {
+		if ($empty_cat) 
+		{
 			$empty = '';
-		} else {
+		} 
+		else 
+		{
 			$empty = "\n HAVING COUNT(b.id) > 0";
 		}
 
-		if ($catid) {
+		if ($catid) 
+		{
 			$sect = "b.category";
-		} else {
+		} 
+		else 
+		{
 			$sect = "b.section";
 		}
 
 		$query = "SELECT a.*, COUNT(b.id) AS numitems"
 				. " FROM $this->_tbl AS a"
-				. " LEFT JOIN #__faq AS b ON ".$sect." = a.id AND b.state=1 AND b.access=0"
-				. " WHERE a.state=1 AND a.section=".$catid
-				. ($noauth ? " AND a.access <= '". $juser->get('aid') ."'" : '')
+				. " LEFT JOIN #__faq AS b ON " . $sect . " = a.id AND b.state=1 AND b.access=0"
+				. " WHERE a.state=1 AND a.section=" . $catid
+				. ($noauth ? " AND a.access <= '" . $juser->get('aid') . "'" : '')
 				. " GROUP BY a.id"
 				. $empty
 				. " ORDER BY a.title";
@@ -190,34 +260,34 @@ class KbCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteSef'
+	 * Delete an SEF record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $option Component name
+	 * @param      string $id     Record ID
+	 * @return     boolean True upon success
 	 */
 	public function deleteSef($option, $id=NULL)
 	{
-		if ($id == NULL) {
+		if ($id == NULL) 
+		{
 			$id = $this->id;
 		}
-		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=".$option."&task=category&id=".$id."'");
-		if ($this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=" . $option . "&task=category&id=" . $id . "'");
+		if ($this->_db->query()) 
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getAllSections'
+	 * Get all sections
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getAllSections()
 	{
@@ -226,11 +296,9 @@ class KbCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'getAllCategories'
+	 * Get all categories
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getAllCategories()
 	{
@@ -239,12 +307,10 @@ class KbCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'getCategoriesCount'
+	 * Get a count of records based off of filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getCategoriesCount($filters=array())
 	{
@@ -256,19 +322,20 @@ class KbCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'getCategoriesAll'
+	 * Get records based off of filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getCategoriesAll($filters=array())
 	{
-		if (isset($filters['id']) && $filters['id']) {
+		if (isset($filters['id']) && $filters['id']) 
+		{
 			$sect = $filters['id'];
 			$sfield = "category";
-		} else {
+		} 
+		else 
+		{
 			$sect = 0;
 			$sfield = "section";
 		}
@@ -276,7 +343,7 @@ class KbCategory extends JTable
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.name AS groupname, 
-					(SELECT count(*) FROM #__faq AS fa WHERE fa.".$sfield."=m.id) AS total, 
+					(SELECT count(*) FROM #__faq AS fa WHERE fa." . $sfield . "=m.id) AS total, 
 					(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
 				. " FROM #__faq_categories AS m"
 				. " LEFT JOIN #__groups AS g ON g.id = m.access";
@@ -284,16 +351,16 @@ class KbCategory extends JTable
 		else 
 		{
 			$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.title AS groupname, 
-					(SELECT count(*) FROM #__faq AS fa WHERE fa.".$sfield."=m.id) AS total, 
+					(SELECT count(*) FROM #__faq AS fa WHERE fa." . $sfield . "=m.id) AS total, 
 					(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
 				. " FROM #__faq_categories AS m"
 				. " LEFT JOIN #__viewlevels AS g ON g.id = (m.access + 1)";
 		}
-		$query .= " WHERE m.section=".$sect
-				. " ORDER BY ".$filters['filterby'];
+		$query .= " WHERE m.section=" . $sect
+				. " ORDER BY " . $filters['filterby'];
 		if (isset($filters['limit']) && $filters['limit'])
 		{
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		
 		$this->_db->setQuery($query);

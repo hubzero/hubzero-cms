@@ -28,11 +28,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-$text = ( $this->task == 'edit' ? JText::_( 'COM_KB_EDIT' ) : JText::_( 'COM_KB_NEW' ) );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_('COM_KB').': '.JText::_('COM_KB_ARTICLE').': <small><small>[ '. $text.' ]</small></small>', 'generic.png' );
-JToolBarHelper::save();
+$canDo = KbHelper::getActions('article');
+
+$text = ($this->task == 'edit' ? JText::_('COM_KB_EDIT') : JText::_('COM_KB_NEW'));
+
+JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_ARTICLE') . ': <small><small>[ ' . $text . ' ]</small></small>', 'generic.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
@@ -44,8 +50,8 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton =='resethits') {
-		if (confirm( <?php echo JText::_('COM_KB_RESET_HITS_WARNING'); ?> )){
-			submitform( pressbutton );
+		if (confirm(<?php echo JText::_('COM_KB_RESET_HITS_WARNING'); ?>)){
+			submitform(pressbutton);
 			return;
 		} else {
 			return;
@@ -53,15 +59,15 @@ function submitbutton(pressbutton)
 	}
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// do field validation
 	if (form.document.getElementById('field-title').value == ''){
-		alert( <?php echo JText::_('COM_KB_ERROR_MISSING_TITLE'); ?> );
+		alert(<?php echo JText::_('COM_KB_ERROR_MISSING_TITLE'); ?>);
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 </script>
@@ -79,11 +85,11 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: *</label></td>
-						<td><?php echo KbHtml::sectionSelect( $this->sections, $this->row->section, 'fields[section]' ); ?></td>
+						<td><?php echo KbHtml::sectionSelect($this->sections, $this->row->section, 'fields[section]'); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-category"><?php echo JText::_('COM_KB_SUB_CATEGORY'); ?>:</label></td>
-						<td><?php echo KbHtml::sectionSelect( $this->categories, $this->row->category, 'fields[category]' ); ?></td>
+						<td><?php echo KbHtml::sectionSelect($this->categories, $this->row->category, 'fields[category]'); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -191,10 +197,23 @@ if ($this->row->modified != '0000-00-00 00:00:00') {
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
+	<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+		<?php if ($canDo->get('core.admin')): ?>
+			<div class="col width-100 fltlft">
+				<fieldset class="panelform">
+					<legend><span><?php echo JText::_('COM_KB_FIELDSET_RULES'); ?></span></legend>
+					<?php echo $this->form->getLabel('rules'); ?>
+					<?php echo $this->form->getInput('rules'); ?>
+				</fieldset>
+			</div>
+			<div class="clr"></div>
+		<?php endif; ?>
+	<?php } ?>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

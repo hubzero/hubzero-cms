@@ -29,114 +29,108 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'KbHelpful'
- * 
- * Long description (if any) ...
+ * Table class for knowledge base article vote
  */
 class KbHelpful extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id      = NULL;  // @var int(11) Primary key
+	var $id      = NULL;
 
 	/**
-	 * Description for 'fid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $fid     = NULL;  // @var int(11)
+	var $fid     = NULL;
 
 	/**
-	 * Description for 'ip'
+	 * varchar(15)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $ip      = NULL;  // @var varchar(15)
+	var $ip      = NULL;
 
 	/**
-	 * Description for 'helpful'
+	 * varchar(10)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $helpful = NULL;  // @var varchar(10)
-
-	//-----------
+	var $helpful = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__faq_helpful_log', 'id', $db );
+		parent::__construct('#__faq_helpful_log', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->fid ) == '') {
-			$this->_error = JText::_('KB_ERROR_MISSING_ARTICLE_ID');
+		if (trim($this->fid) == '') 
+		{
+			$this->setError(JText::_('KB_ERROR_MISSING_ARTICLE_ID'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getHelpful'
+	 * Get the positive vote count for an article
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $fid Parameter description (if any) ...
-	 * @param      string $ip Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $fid Article ID
+	 * @param      string  $ip  IP address
+	 * @return     integer
 	 */
-	public function getHelpful( $fid=NULL, $ip=NULL )
+	public function getHelpful($fid=NULL, $ip=NULL)
 	{
-		if ($fid == NULL) {
+		if ($fid == NULL) 
+		{
 			$fid = $this->fid;
 		}
-		if ($ip == NULL) {
+		if ($ip == NULL) 
+		{
 			$ip = $this->ip;
 		}
-		$this->_db->setQuery( "SELECT helpful FROM $this->_tbl WHERE fid =".$fid." AND ip='".$ip."'" );
+		$this->_db->setQuery("SELECT helpful FROM $this->_tbl WHERE fid =" . $fid . " AND ip='" . $ip . "'");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'deleteHelpful'
+	 * Delete vote records for an article
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $fid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $fid Article ID
+	 * @return     boolean True upon success, False if errors
 	 */
-	public function deleteHelpful( $fid=NULL )
+	public function deleteHelpful($fid=NULL)
 	{
-		if ($fid == NULL) {
+		if ($fid == NULL) 
+		{
 			$fid = $this->fid;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE fid=".$fid );
-		if ($this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE fid=" . $fid);
+		if ($this->_db->query()) 
+		{
 			return true;
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}

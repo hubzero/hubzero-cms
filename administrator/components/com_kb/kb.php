@@ -55,6 +55,9 @@ else
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
+
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'category.php');
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'article.php');
 }
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'comment.php');
@@ -63,6 +66,7 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'vote.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'kb.php');
 
 $controllerName = JRequest::getCmd('controller', 'categories');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

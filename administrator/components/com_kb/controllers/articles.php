@@ -34,16 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'KbController'
- * 
- * Long description (if any) ...
+ * Controller class for knowledge base articles
  */
 class KbControllerArticles extends Hubzero_Controller
 {
 	/**
-	 * Short description for 'articles'
-	 * 
-	 * Long description (if any) ...
+	 * Display a list of articles
 	 * 
 	 * @return     void
 	 */
@@ -121,35 +117,37 @@ class KbControllerArticles extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
-	 * Create a new category
+	 * Create a new article
 	 * 
 	 * @return     void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
-	 * Short description for 'editfaq'
+	 * show a form for editing an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -162,7 +160,7 @@ class KbControllerArticles extends Hubzero_Controller
 			{
 				$id = $ids[0];
 			}
-			
+
 			// Load category
 			$this->view->row = new KbArticle($this->database);
 			$this->view->row->load($id);
@@ -189,7 +187,7 @@ class KbControllerArticles extends Hubzero_Controller
 			$this->view->row->created_by = $this->juser->get('id');
 			$this->view->row->created = date('Y-m-d H:i:s', time());
 		}
-		
+
 		// Get name of creator
 		$this->view->creator = JUser::getInstance($this->view->row->created_by);
 
@@ -210,10 +208,19 @@ class KbControllerArticles extends Hubzero_Controller
 		// Get the sections
 		$this->view->categories = $c->getAllCategories();
 
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$m = new KbModelArticle();
+			$this->view->form = $m->getForm();
+		}
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -221,9 +228,7 @@ class KbControllerArticles extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'savefaq'
-	 * 
-	 * Long description (if any) ...
+	 * Save an entry
 	 * 
 	 * @return     void
 	 */
@@ -267,7 +272,6 @@ class KbControllerArticles extends Hubzero_Controller
 		if (!$row->check()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -276,7 +280,6 @@ class KbControllerArticles extends Hubzero_Controller
 		if (!$row->store()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -287,7 +290,7 @@ class KbControllerArticles extends Hubzero_Controller
 		$tags = JRequest::getVar('tags', '', 'post');
 		$st = new KbTags($this->database);
 		$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
-		
+
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -296,9 +299,7 @@ class KbControllerArticles extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'deletefaq'
-	 * 
-	 * Long description (if any) ...
+	 * Remove one or more entries
 	 * 
 	 * @return     void
 	 */
@@ -306,7 +307,7 @@ class KbControllerArticles extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$cid = JRequest::getInt('cid', 0);
 		$ids = JRequest::getVar('id', array(0));
@@ -326,7 +327,7 @@ class KbControllerArticles extends Hubzero_Controller
 				$article->delete(intval($id));
 			}
 		}
-		
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -335,7 +336,7 @@ class KbControllerArticles extends Hubzero_Controller
 	}
 
 	/**
-	 * Set the state of an article to 'public'
+	 * Set the access level of an article to 'public'
 	 * 
 	 * @return     void
 	 */
@@ -343,9 +344,9 @@ class KbControllerArticles extends Hubzero_Controller
 	{
 		return $this->accessTask(0);
 	}
-	
+
 	/**
-	 * Set the state of an article to 'registered'
+	 * Set the access level of an article to 'registered'
 	 * 
 	 * @return     void
 	 */
@@ -355,7 +356,7 @@ class KbControllerArticles extends Hubzero_Controller
 	}
 	
 	/**
-	 * Set the state of an article to 'special'
+	 * Set the access level of an article to 'special'
 	 * 
 	 * @return     void
 	 */
@@ -365,7 +366,7 @@ class KbControllerArticles extends Hubzero_Controller
 	}
 
 	/**
-	 * Set the state of an article
+	 * Set the access level of an article
 	 * 
 	 * @param      integer $access Access level to set
 	 * @return     void
@@ -390,7 +391,7 @@ class KbControllerArticles extends Hubzero_Controller
 		$row = new KbArticle($this->database);
 		$row->load($id);
 		$row->access = $access;
-		
+
 		// Check and store the changes
 		if (!$row->check()) 
 		{
@@ -463,7 +464,7 @@ class KbControllerArticles extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Update record(s)
 		foreach ($ids as $id)
 		{
@@ -503,7 +504,7 @@ class KbControllerArticles extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$filters = JRequest::getVar('filters', array());
-		
+
 		if (isset($filters['id']) && $filters['id']) 
 		{
 			// Bind the posted data to the article object and check it in
@@ -511,18 +512,16 @@ class KbControllerArticles extends Hubzero_Controller
 			$article->load(intval($filters['id']));
 			$article->checkin();
 		}
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 
 	/**
-	 * Short description for 'resethits'
+	 * Reset the hit count on an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     void
 	 */
 	public function resethitsTask()
 	{
@@ -570,11 +569,9 @@ class KbControllerArticles extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'resetvotes'
+	 * Reset the vote count on an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     void
 	 */
 	public function resetvotesTask()
 	{

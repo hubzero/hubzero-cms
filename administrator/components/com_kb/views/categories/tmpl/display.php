@@ -30,15 +30,32 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = KbHelper::getActions('category');
+
 JToolBarHelper::title(JText::_('COM_KB'), 'generic.png');
-JToolBarHelper::preferences($this->option, '550');
-JToolBarHelper::spacer();
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences($this->option, '550');
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.edit.state')) 
+{
+	JToolBarHelper::publishList();
+	JToolBarHelper::unpublishList();
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 
 ?>
 <script type="text/javascript">
@@ -46,11 +63,11 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -58,12 +75,12 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_PUBLISHED'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_ACCESS'), 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_SUB_CATEGORIES'), 'cats', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_QUESTIONS'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_KB_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_KB_PUBLISHED'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_KB_ACCESS'), 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_KB_SUB_CATEGORIES'), 'cats', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_KB_QUESTIONS'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -74,7 +91,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 	switch ($row->state)
@@ -112,19 +129,37 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_KB_EDIT_CATEGORY'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
+<?php } else { ?>
+					<span class="glyph category">
+						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+					</span>
+<?php } ?>
 				</td>
 				<td>
-					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK',$task);?>">
+<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
+<?php } else { ?>
+					<span class="state <?php echo $class; ?>">
+						<span><?php echo $alt; ?></span>
+					</span>
+<?php } ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>" <?php echo $color_access; ?> title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
 						<?php echo $row->groupname; ?>
 					</a>
+<?php } else { ?>
+					<span <?php echo $color_access; ?>>
+						<?php echo $row->groupname; ?>
+					</span>
+<?php } ?>
 				</td>
 				<td>
 <?php if ($row->cats > 0) { ?>
@@ -140,7 +175,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td>
 <?php if ($row->total > 0) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=articles&amp;id=<? echo $row->id; echo ($this->filters['id']) ? '&amp;cid='.$this->filters['id'] : ''; ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
-						<span><?php echo $row->total.' '.JText::_('COM_KB_ARTICLES'); ?></span>
+						<span><?php echo $row->total . ' ' . JText::_('COM_KB_ARTICLES'); ?></span>
 					</a>
 <?php } else { ?>
 					<span>
@@ -164,5 +199,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

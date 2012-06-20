@@ -29,213 +29,213 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Blog Comment database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'KbComment'
- * 
- * Long description (if any) ...
+ * Table class for knowledge base article comments
  */
 class KbComment extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'entry_id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $entry_id   = NULL;  // @var int(11)
+	var $entry_id   = NULL;
 
 	/**
-	 * Description for 'content'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $content    = NULL;  // @var text
+	var $content    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'anonymous'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $anonymous  = NULL;  // @var int(3)
+	var $anonymous  = NULL;
 
 	/**
-	 * Description for 'parent'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $parent     = NULL;  // @var int(11)
+	var $parent     = NULL;
 
 	/**
-	 * Description for 'helpful'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $helpful    = NULL;  // @var int(11)
+	var $helpful    = NULL;
 
 	/**
-	 * Description for 'nothelpful'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $nothelpful = NULL;  // @var int(11)
-
-	//-----------
+	var $nothelpful = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__faq_comments', 'id', $db );
+		parent::__construct('#__faq_comments', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->content ) == '') {
-			$this->setError( JText::_('Your comment must contain text.') );
+		$this->content = trim($this->content);
+		if ($this->content == '') 
+		{
+			$this->setError(JText::_('Your comment must contain text.'));
 			return false;
 		}
-		if (!$this->entry_id) {
-			$this->setError( JText::_('Missing entry ID.') );
+		if (!$this->entry_id) 
+		{
+			$this->setError(JText::_('Missing entry ID.'));
 			return false;
 		}
-		if (!$this->created_by) {
-			$this->setError( JText::_('Missing creator ID.') );
+		if (!$this->created_by) 
+		{
+			$this->setError(JText::_('Missing creator ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadUserComment'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $entry_id Parameter description (if any) ...
-	 * @param      string $user_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $entry_id Entry ID
+	 * @param      integer $user_id  User ID
+	 * @return     boolean True upon success, False if errors
 	 */
-	public function loadUserComment( $entry_id, $user_id )
+	public function loadUserComment($entry_id, $user_id)
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE entry_id=".$entry_id." AND created_by=".$user_id." LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $entry_id . " AND created_by=" . $user_id . " LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getComments'
+	 * Get all comments for an entry and parent comment
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $entry_id Parameter description (if any) ...
-	 * @param      integer $parent Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      itneger $entry_id Entry ID
+	 * @param      integer $parent   Parent comment
+	 * @return     array
 	 */
-	public function getComments( $entry_id=NULL, $parent=NULL )
+	public function getComments($entry_id=NULL, $parent=NULL)
 	{
-		if (!$entry_id) {
+		if (!$entry_id) 
+		{
 			$entry_id = $this->entry_id;
 		}
-		if (!$parent) {
+		if (!$parent) 
+		{
 			$parent = 0;
 		}
 
 		$juser =& JFactory::getUser();
 
 		//$sql = "SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND parent=$parent ORDER BY created ASC";
-		if (!$juser->get('guest')) {
+		if (!$juser->get('guest')) 
+		{
 			$sql  = "SELECT c.*, v.vote FROM $this->_tbl AS c ";
-			$sql .= "LEFT JOIN #__faq_helpful_log AS v ON v.object_id=c.id AND v.user_id=".$juser->get('id')." AND v.type='comment' ";
-		} else {
+			$sql .= "LEFT JOIN #__faq_helpful_log AS v ON v.object_id=c.id AND v.user_id=" . $juser->get('id') . " AND v.type='comment' ";
+		} 
+		else 
+		{
 			$sql = "SELECT c.* FROM $this->_tbl AS c ";
 		}
 		$sql .= "WHERE c.entry_id=$entry_id AND c.parent=$parent ORDER BY created ASC";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getAllComments'
+	 * Get all comments (and their abuse reports) on an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $entry_id Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $entry_id Entry ID
+	 * @return     array
 	 */
-	public function getAllComments( $entry_id=NULL )
+	public function getAllComments($entry_id=NULL)
 	{
-		if (!$entry_id) {
+		if (!$entry_id) 
+		{
 			$entry_id = $this->entry_id;
 		}
 
-		$comments = $this->getComments( $entry_id, 0 );
-		if ($comments) {
+		$comments = $this->getComments($entry_id, 0);
+		if ($comments) 
+		{
 			$ra = null;
-			if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php')) {
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
-				$ra = new ReportAbuse( $this->_db );
+			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
+			{
+				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
+				$ra = new ReportAbuse($this->_db);
 			}
 			foreach ($comments as $key => $row)
 			{
-				if ($ra) {
-					$comments[$key]->reports = $ra->getCount( array('id'=>$comments[$key]->id, 'category'=>'kb') );
+				if ($ra) 
+				{
+					$comments[$key]->reports = $ra->getCount(array('id'=>$comments[$key]->id, 'category'=>'kb'));
 				}
-				$comments[$key]->replies = $this->getComments( $entry_id, $row->id );
-				if ($comments[$key]->replies) {
+				$comments[$key]->replies = $this->getComments($entry_id, $row->id);
+				if ($comments[$key]->replies) 
+				{
 					foreach ($comments[$key]->replies as $ky => $rw)
 					{
-						if ($ra) {
-							$comments[$key]->replies[$ky]->reports = $ra->getCount( array('id'=>$rw->id, 'category'=>'kb') );
+						if ($ra) 
+						{
+							$comments[$key]->replies[$ky]->reports = $ra->getCount(array('id'=>$rw->id, 'category'=>'kb'));
 						}
-						$comments[$key]->replies[$ky]->replies = $this->getComments( $entry_id, $rw->id );
-						if ($comments[$key]->replies[$ky]->replies && $ra) {
+						$comments[$key]->replies[$ky]->replies = $this->getComments($entry_id, $rw->id);
+						if ($comments[$key]->replies[$ky]->replies && $ra) 
+						{
 							foreach ($comments[$key]->replies[$ky]->replies as $kyy => $rwy)
 							{
-								$comments[$key]->replies[$ky]->replies[$kyy]->reports = $ra->getCount( array('id'=>$rwy->id, 'category'=>'kb') );
+								$comments[$key]->replies[$ky]->replies[$kyy]->reports = $ra->getCount(array('id'=>$rwy->id, 'category'=>'kb'));
 							}
 						}
 					}
@@ -246,40 +246,42 @@ class KbComment extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteChildren'
+	 * Delete all children of a comment
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Comment ID
+	 * @return     boolean True upon success
 	 */
-	public function deleteChildren( $id=NULL )
+	public function deleteChildren($id=NULL)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->id;
 		}
 
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE parent=".$id );
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $id);
 		$comments = $this->_db->loadObjectList();
-		if ($comments) {
+		if ($comments) 
+		{
 			foreach ($comments as $row)
 			{
 				// Delete abuse reports
-				/*$this->_db->setQuery( "DELETE FROM #__abuse_reports WHERE referenceid=".$row->id." AND category='blog'" );
+				/*$this->_db->setQuery("DELETE FROM #__abuse_reports WHERE referenceid=".$row->id." AND category='blog'");
 				if (!$this->_db->query()) {
-					$this->setError( $this->_db->getErrorMsg() );
+					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}*/
 				// Delete children
-				$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE parent=".$row->id );
-				if (!$this->_db->query()) {
-					$this->setError( $this->_db->getErrorMsg() );
+				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $row->id);
+				if (!$this->_db->query()) 
+				{
+					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
 			}
-			$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE parent=".$id );
-			if (!$this->_db->query()) {
-				$this->setError( $this->_db->getErrorMsg() );
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $id);
+			if (!$this->_db->query()) 
+			{
+				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
 		}

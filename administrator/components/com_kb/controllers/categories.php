@@ -34,16 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'KbController'
- * 
- * Long description (if any) ...
+ * Controller class for knowledge base categories
  */
 class KbControllerCategories extends Hubzero_Controller
 {
 	/**
-	 * Short description for 'categories'
-	 * 
-	 * Long description (if any) ...
+	 * Display a list of all categories
 	 * 
 	 * @return     void
 	 */
@@ -115,7 +111,10 @@ class KbControllerCategories extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -129,7 +128,6 @@ class KbControllerCategories extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -141,7 +139,9 @@ class KbControllerCategories extends Hubzero_Controller
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -168,14 +168,23 @@ class KbControllerCategories extends Hubzero_Controller
 			$this->view->row->created = date('Y-m-d H:i:s', time());
 		}
 		$this->view->creator = JUser::getInstance($this->view->row->created_by);*/
-		
+
 		// Get the sections
 		$this->view->sections = $this->view->row->getAllSections();
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$m = new KbModelCategory();
+			$this->view->form = $m->getForm();
+		}
 
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -212,11 +221,10 @@ class KbControllerCategories extends Hubzero_Controller
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
-		
+
 		if (!isset($fields['access']))
 		{
 			$row->access = JRequest::getInt('access', 0, 'post');
@@ -226,7 +234,6 @@ class KbControllerCategories extends Hubzero_Controller
 		if (!$row->check()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -235,11 +242,10 @@ class KbControllerCategories extends Hubzero_Controller
 		if (!$row->store()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
-		
+
 		if ($redirect) 
 		{
 			// Redirect
@@ -249,17 +255,14 @@ class KbControllerCategories extends Hubzero_Controller
 			);
 			return;
 		} 
-		
-		$this->view->setLayout('edit');
+
 		$this->editTask($row);
 	}
 
 	/**
-	 * Short description for 'deletecategory'
+	 * Remove an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     void
 	 */
 	public function removeTask()
 	{
@@ -371,7 +374,7 @@ class KbControllerCategories extends Hubzero_Controller
 	}
 	
 	/**
-	 * Set the state of an article to 'public'
+	 * Set the access level of an article to 'public'
 	 * 
 	 * @return     void
 	 */
@@ -381,7 +384,7 @@ class KbControllerCategories extends Hubzero_Controller
 	}
 	
 	/**
-	 * Set the state of an article to 'registered'
+	 * Set the access level of an article to 'registered'
 	 * 
 	 * @return     void
 	 */
@@ -391,7 +394,7 @@ class KbControllerCategories extends Hubzero_Controller
 	}
 	
 	/**
-	 * Set the state of an article to 'special'
+	 * Set the access level of an article to 'special'
 	 * 
 	 * @return     void
 	 */
@@ -401,7 +404,7 @@ class KbControllerCategories extends Hubzero_Controller
 	}
 
 	/**
-	 * Set the state of an article
+	 * Set the access level of an article
 	 * 
 	 * @param      integer $access Access level to set
 	 * @return     void
@@ -474,11 +477,9 @@ class KbControllerCategories extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'publish'
+	 * Set the state of an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $w Parameter description (if any) ...
+	 * @param      integer $state State to set
 	 * @return     void
 	 */
 	public function stateTask($state=0)

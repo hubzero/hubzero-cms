@@ -28,7 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$canDo = KbHelper::getActions('article');
 
 if ($this->filters['orphans']) {
 	$ttle = JText::_('COM_KB_ARTICLES').' (orphans)';
@@ -36,13 +38,25 @@ if ($this->filters['orphans']) {
 	$ttle = JText::_('COM_KB_ARTICLES');
 }
 
-JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_('COM_KB').'</a> <span class="sep">&rsaquo;</span> <span>'.$ttle.'</span>', 'generic.png' );
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_KB') . '</a> <span class="sep">&rsaquo;</span> <span>' . $ttle . '</span>', 'generic.png');
+if ($canDo->get('core.edit.state')) 
+{
+	JToolBarHelper::publishList();
+	JToolBarHelper::unpublishList();
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 
 $juser = JFactory::getUser();
 ?>
@@ -51,11 +65,11 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -65,9 +79,9 @@ function submitbutton(pressbutton)
 		<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
 		<?php
 			if ($this->filters['cid']) {
-				echo KbHtml::sectionSelect( $this->sections, $this->filters['cid'], 'id' );
+				echo KbHtml::sectionSelect($this->sections, $this->filters['cid'], 'id');
 			} else {
-				echo KbHtml::sectionSelect( $this->sections, $this->filters['id'], 'id' );
+				echo KbHtml::sectionSelect($this->sections, $this->filters['id'], 'id');
 			}
 		?>
 		
@@ -78,7 +92,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
- 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+ 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
  				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
  				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_PUBLISHED'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
  				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_CATEGORY'), 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -94,10 +108,10 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 $database =& JFactory::getDBO();
-//$sc = new SupportComment( $database );
-$st = new KbTags( $database );
+//$sc = new SupportComment($database);
+$st = new KbTags($database);
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
@@ -120,7 +134,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			break;
 	}
 
-	$tags = $st->get_tag_cloud( 3, 1, $row->id );
+	$tags = $st->get_tag_cloud(3, 1, $row->id);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -132,18 +146,30 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</span>
 <?php } else { ?>
+	<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
+	<?php } else { ?>
+					<span>
+						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+					</span>
+	<?php } ?>
 <?php } ?>
 <?php if ($tags) { ?>
 					<br /><span><?php echo JText::_('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
 <?php } ?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;cid=<?php echo $this->filters['id']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
+<?php } else { ?>
+					<span class="state <?php echo $class; ?>">
+						<span><?php echo $alt; ?></span>
+					</span>
+<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->ctitle); echo ($row->cctitle) ? ' ('.$this->escape($row->cctitle).')' : ''; ?>
@@ -168,5 +194,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
