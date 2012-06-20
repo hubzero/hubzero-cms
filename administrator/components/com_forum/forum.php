@@ -67,6 +67,10 @@ require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS 
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'forum.php');
 
 $controllerName = JRequest::getCmd('controller', 'sections');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'sections';
+}
 switch ($controllerName)
 {
 	case 'sections':
