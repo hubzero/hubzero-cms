@@ -29,76 +29,107 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-
+/**
+ * Table class for citation sponsor
+ */
 class CitationsSponsor extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
 	var $id = null;
+
+	/**
+	 * varchar(150)
+	 * 
+	 * @var string
+	 */
 	var $sponsor = null;
+
+	/**
+	 * varchar(200)
+	 * 
+	 * @var string
+	 */
 	var $link = null;
-	
-	//-----
-	
-	function __construct( &$db )
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$db JDatabase
+	 * @return     void
+	 */
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__citations_sponsors', 'id', $db );
+		parent::__construct('#__citations_sponsors', 'id', $db);
 	}
-	
-	//-----
-	
-	public function getSponsor( $id = '' )
+
+	/**
+	 * Load sponsor(s) in an associative array
+	 * 
+	 * @param      integer $id Sponsor ID
+	 * @return     array
+	 */
+	public function getSponsor($id = '')
 	{
 		$where = (is_numeric($id)) ? "WHERE id='{$id}'" : "";
 
 		$sql = "SELECT * FROM {$this->_tbl} {$where} ORDER BY sponsor";
-		$this->_db->setQuery( $sql );
-		$results = $this->_db->loadAssocList();
+		$this->_db->setQuery($sql);
+		return $this->_db->loadAssocList();
+	}
 
-		return $results;
-	}
-	
-	//-----
-	
-	public function getCitationSponsor( $citeid )
+	/**
+	 * Get all the sponsor IDs associated with a citation
+	 * 
+	 * @param      integer $citeid Citation ID
+	 * @return     array
+	 */
+	public function getCitationSponsor($citeid)
 	{
-		if(!$citeid)
+		if (!$citeid)
 		{
 			return;
 		}
 		
-		$sql = "SELECT sid FROM #__citations_sponsors_assoc WHERE cid=".$citeid;
-		$this->_db->setQuery( $sql );
-		$results = $this->_db->loadResultArray();
-		
-		return $results;
+		$sql = "SELECT sid FROM #__citations_sponsors_assoc WHERE cid=" . $citeid;
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResultArray();
 	}
-	
-	//-----
-	
-	public function addSponsors( $citeid, $sponsors )
+
+	/**
+	 * Add associations to a citation for a list of sponsors
+	 * 
+	 * @param      integer $citeid   Citation ID
+	 * @param      array   $sponsors List of sponsor IDs
+	 * @return     array
+	 */
+	public function addSponsors($citeid, $sponsors)
 	{
-		if(!$citeid)
+		if (!$citeid)
 		{
 			return;
 		}
-		
+
 		// remove any existing associations
-		$sql = "DELETE FROM #__citations_sponsors_assoc WHERE cid=".$citeid;
-		$this->_db->setQuery( $sql );
+		$sql = "DELETE FROM #__citations_sponsors_assoc WHERE cid=" . $citeid;
+		$this->_db->setQuery($sql);
 		$this->_db->query();
-		
+
 		//add all new associations
 		$sql = "INSERT INTO #__citations_sponsors_assoc(cid, sid) VALUES";
-		foreach($sponsors as $s)
+		foreach ($sponsors as $s)
 		{
 			$sql .= "({$citeid}, {$s}), ";
 		}
 		$sql = substr($sql, 0, -2) . ";";
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$this->_db->query();
-		
+
 		return true;
 	}
 }
-?>

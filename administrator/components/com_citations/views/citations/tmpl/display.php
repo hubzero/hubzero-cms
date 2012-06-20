@@ -28,24 +28,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'CITATIONS' ), 'citation.png' );
-JToolBarHelper::preferences( 'com_citations', 600, 800 );
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+defined('_JEXEC') or die('Restricted access');
 
+$canDo = CitationsHelper::getActions('citation');
+
+JToolBarHelper::title(JText::_('CITATIONS'), 'citation.png');
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences('com_citations', 600, 800);
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
 	var form = $('adminForm');
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -70,12 +84,12 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th width="100px"><?php echo JText::_('TYPE'); ?></th>
-				<th><?php echo JText::_('TITLE'); ?> / <?php echo JText::_('AUTHORS'); ?></th>
-				<th><?php echo JText::_('YEAR'); ?></th>
-				<th><?php echo JText::_('AFFILIATED'); ?></th>
-				<th><?php echo JText::_('FUNDED_BY'); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col" width="100px"><?php echo JText::_('TYPE'); ?></th>
+				<th scope="col"><?php echo JText::_('TITLE'); ?> / <?php echo JText::_('AUTHORS'); ?></th>
+				<th scope="col"><?php echo JText::_('YEAR') ?></th>
+				<th scope="col"><?php echo JText::_('AFFILIATED'); ?></th>
+				<th scope="col"><?php echo JText::_('FUNDED_BY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -88,9 +102,8 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$filterstring = ($this->filters['sort']) ? '&amp;sort='.$this->filters['sort'] : '';
 
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 ?>
@@ -110,17 +123,24 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					?>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<?php echo $this->escape($row->title); ?></a><br />
 						<small><?php echo $this->escape($row->author); ?></small>
 					</a>
+<?php } else { ?>
+					<span>
+						<?php echo $this->escape($row->title); ?></a><br />
+						<small><?php echo $this->escape($row->author); ?></small>
+					</span>
+<?php } ?>
 				</td>
 				<td><?php echo $this->escape($row->year); ?></td>
 				<td>
-					<?php if ($row->affiliated == 1) { echo '<span class="state publish"><span>'.JText::_('YES').'</span></span>'; } ?>
+					<?php if ($row->affiliated == 1) { echo '<span class="state publish"><span>' . JText::_('YES') . '</span></span>'; } ?>
 				</td>
 				<td>
-					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>'.JText::_('YES').'</span></span>'; } ?>
+					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . JText::_('YES') . '</span></span>'; } ?>
 				</td>
 			</tr>
 <?php
@@ -135,5 +155,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

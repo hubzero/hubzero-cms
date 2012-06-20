@@ -28,8 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '.JText::_( 'STATS' ).' ]</small></small>', 'citation.png' );
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('CITATION') . ': <small><small>[ ' . JText::_('STATS') . ' ]</small></small>', 'citation.png');
 ?>
 <table class="adminlist">
 	<thead>
@@ -42,7 +43,7 @@ JToolBarHelper::title( JText::_( 'CITATION' ).': <small><small>[ '.JText::_( 'ST
 	</thead>
 	<tbody>
 <?php
-	foreach ($this->stats as $year=>$amt)
+	foreach ($this->stats as $year => $amt)
 	{
 ?>
 		<tr>

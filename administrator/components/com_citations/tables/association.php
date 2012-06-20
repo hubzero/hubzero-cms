@@ -29,158 +29,153 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'CitationsAssociation'
- * 
- * Long description (if any) ...
+ * Table class for citation associations
  */
 class CitationsAssociation extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id    = NULL;  // @var int(11) Primary key
+	var $id    = NULL;
 
 	/**
-	 * Description for 'cid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $cid   = NULL;  // @var int(11)
+	var $cid   = NULL;
 
 	/**
-	 * Description for 'oid'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $oid   = NULL;  // @var varchar(200)
+	var $oid   = NULL;
 
 	/**
-	 * Description for 'type'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $type  = NULL;  // @var int(3)
+	var $type  = NULL;
 
 	/**
-	 * Description for 'table'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $table = NULL;  // @var int(3)
-
-	//-----------
+	var $table = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__citations_assoc', 'id', $db );
+		parent::__construct('#__citations_assoc', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->cid ) == '') {
-			$this->setError( JText::_('ASSOCIATION_MUST_HAVE_CITATION_ID') );
+		if (trim($this->cid) == '') 
+		{
+			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_CITATION_ID'));
 			return false;
 		}
-		if (trim( $this->oid ) == '') {
-			$this->setError( JText::_('ASSOCIATION_MUST_HAVE_OBJECT_ID') );
+		if (trim($this->oid) == '') 
+		{
+			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_OBJECT_ID'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters )
+	public function buildQuery($filters)
 	{
 		$query = "";
 
 		$ands = array();
-		if (isset($filters['cid']) && $filters['cid'] != 0) {
-			$ands[] = "r.cid='".$filters['cid']."'";
+		if (isset($filters['cid']) && $filters['cid'] != 0) 
+		{
+			$ands[] = "r.cid='" . $filters['cid'] . "'";
 		}
-		if (isset($filters['oid']) && $filters['oid'] != 0) {
-			$ands[] = "r.oid='".$filters['oid']."'";
+		if (isset($filters['oid']) && $filters['oid'] != 0) 
+		{
+			$ands[] = "r.oid='" . $filters['oid'] . "'";
 		}
-		if (isset($filters['type']) && $filters['type'] != '') {
-			$ands[] = "r.type='".$filters['type']."'";
+		if (isset($filters['type']) && $filters['type'] != '') 
+		{
+			$ands[] = "r.type='" . $filters['type'] . "'";
 		}
-		if (isset($filters['type']) && $filters['type'] != '') {
-			$ands[] = "r.type='".$filters['type']."'";
+		if (isset($filters['type']) && $filters['type'] != '') 
+		{
+			$ands[] = "r.type='" . $filters['type'] . "'";
 		}
-		if (isset($filters['table']) && $filters['table'] != '') {
-			$ands[] = "r.table='".$filters['table']."'";
+		if (isset($filters['table']) && $filters['table'] != '') 
+		{
+			$ands[] = "r.table='" . $filters['table'] . "'";
 		}
-		if (count($ands) > 0) {
+		if (count($ands) > 0) 
+		{
 			//$query .= " WHERE r.published=1 AND ";
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $ands);
 		}
-		if (isset($filters['sort']) && $filters['sort'] != '') {
-			$query .= " ORDER BY ".$filters['sort'];
+		if (isset($filters['sort']) && $filters['sort'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['sort'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*) FROM $this->_tbl AS r" . $this->buildQuery( $filters );
+		$query  = "SELECT COUNT(*) FROM $this->_tbl AS r" . $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT * FROM $this->_tbl AS r" . $this->buildQuery( $filters );
+		$query  = "SELECT * FROM $this->_tbl AS r" . $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

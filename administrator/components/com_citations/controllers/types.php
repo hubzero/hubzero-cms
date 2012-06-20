@@ -51,7 +51,10 @@ class CitationsControllerTypes extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -65,7 +68,6 @@ class CitationsControllerTypes extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -77,6 +79,8 @@ class CitationsControllerTypes extends Hubzero_Controller
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
 
 		$this->view->config = $this->config;
 
@@ -97,7 +101,10 @@ class CitationsControllerTypes extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -113,14 +120,13 @@ class CitationsControllerTypes extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$fields = JRequest::getVar('type', array(), 'post');
 
 		$row = new CitationsType($this->database);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -128,7 +134,6 @@ class CitationsControllerTypes extends Hubzero_Controller
 		if (!$row->check()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -138,7 +143,6 @@ class CitationsControllerTypes extends Hubzero_Controller
 		if (!$row->store()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}

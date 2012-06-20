@@ -29,88 +29,80 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'CitationsType'
- * 
- * Long description (if any) ...
+ * Table class for citation type
  */
 class CitationsType extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id         = NULL;
 
 	/**
-	 * Description for 'id'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $id    			= NULL;
+	var $type        = NULL;
 
 	/**
-	 * Description for 'type'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $type			= NULL;
+	var $type_title  = NULL;
 
 	/**
-	 * Description for 'type_title'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $type_title		= NULL;
+	var $type_desc   = NULL;
 
 	/**
-	 * Description for 'type_desc'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $type_desc 		= NULL;
-
-	/**
-	 * Description for 'type_export'
-	 * 
-	 * @var unknown
-	 */
-	var $type_export  	= NULL;
+	var $type_export = NULL;
 	
 	/**
-	 * Description for 'fields'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $fields  	= NULL;
+	var $fields      = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__citations_types', 'id', $db );
+		parent::__construct('#__citations_types', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getType'
+	 * Load citation type(s)
+	 * If ID is passed, it loads only one record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $id Type ID
+	 * @return     array
 	 */
-	public function getType( $id = "" )
+	public function getType($id = '')
 	{
-		$where = ($id != "") ? "WHERE id='{$id}'" : "";
+		$where = ($id != '') ? "WHERE id='{$id}'" : "";
 
 		$sql = "SELECT * FROM {$this->_tbl} {$where} ORDER BY type";
-		$this->_db->setQuery( $sql );
-		$results = $this->_db->loadAssocList();
-
-		return $results;
+		$this->_db->setQuery($sql);
+		return $this->_db->loadAssocList();
 	}
 }
 

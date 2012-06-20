@@ -64,7 +64,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			0, 
 			'int'
 		);
-		
+
 		// Get filters
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
@@ -100,7 +100,10 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -114,7 +117,6 @@ class CitationsControllerCitations extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayou('edit');
 		$this->editTask();
 	}
 
@@ -126,9 +128,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		$this->view->config = $this->config;
-		
+
 		if (is_object($row))
 		{
 			$this->view->type = $row;
@@ -143,7 +147,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->view->row = new CitationsCitation($this->database);
 			$this->view->row->load($id);
 		}
-		
+
 		//get all citations sponsors
 		$cs = new CitationsSponsor($this->database);
 		$this->view->sponsors = $cs->getSponsor();
@@ -198,11 +202,19 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
-		$this->view->params = new JParameter($this->view->row->params);
-		
+
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$this->view->params = new $paramsClass($this->view->row->params);
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -221,7 +233,10 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -247,16 +262,21 @@ class CitationsControllerCitations extends Hubzero_Controller
 		if (!$row->bind($citation)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
-		
+
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		//set params
-		$cparams = new JParameter( $this->getParams($row->id) );
+		$cparams = new $paramsClass($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
 		$row->params = $cparams->toString();
-		
+
 		// New entry so set the created date
 		if (!$row->id) 
 		{
@@ -267,7 +287,6 @@ class CitationsControllerCitations extends Hubzero_Controller
 		if (!$row->check()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -276,7 +295,6 @@ class CitationsControllerCitations extends Hubzero_Controller
 		if (!$row->store()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -293,37 +311,44 @@ class CitationsControllerCitations extends Hubzero_Controller
 			// Initiate extended database class
 			$assoc = new CitationsAssociation($this->database);
 
-			if (!$this->_isempty($a, $ignored)) {
+			if (!$this->_isempty($a, $ignored)) 
+			{
 				$a['cid'] = $row->id;
 
 				// bind the data
-				if (!$assoc->bind($a)) {
+				if (!$assoc->bind($a)) 
+				{
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
 
 				// Check content
-				if (!$assoc->check()) {
+				if (!$assoc->check()) 
+				{
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
 
 				// Store new content
-				if (!$assoc->store()) {
+				if (!$assoc->store()) 
+				{
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
-			} elseif ($this->_isEmpty($a, $ignored) && !empty($a['id'])) {
+			} 
+			elseif ($this->_isEmpty($a, $ignored) && !empty($a['id'])) 
+			{
 				// Delete the row
-				if (!$assoc->delete($a['id'])) {
+				if (!$assoc->delete($a['id'])) 
+				{
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
 			}
 		}
-		
+
 		//save sponsors on citation
-		$sponsors = JRequest::getVar("sponsors", array(), "post");
+		$sponsors = JRequest::getVar('sponsors', array(), 'post');
 		$cs = new CitationsSponsor($this->database);
 		$cs->addSponsors($row->id, $sponsors);
 
@@ -331,18 +356,16 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$ct = new CitationTags($this->database);
 
 		//get the tags
-		$tags = trim(JRequest::getVar("tags", ""));
+		$tags = trim(JRequest::getVar('tags', ''));
 
 		//get the badges
-		$badges = trim(JRequest::getVar("badges", ""));
-		
-		$juser =& JFactory::getUser();
+		$badges = trim(JRequest::getVar('badges', ''));
 
 		//add tags
-		$ct->tag_object($juser->get("id"), $row->id, $tags, 1, false, "");
+		$ct->tag_object($this->juser->get("id"), $row->id, $tags, 1, false, "");
 
 		//add badges
-		$ct->tag_object($juser->get("id"), $row->id, $badges, 1, false, "badge");
+		$ct->tag_object($this->juser->get("id"), $row->id, $badges, 1, false, "badge");
 
 		// Redirect
 		$this->setRedirect(
@@ -352,19 +375,17 @@ class CitationsControllerCitations extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for '_isEmpty'
+	 * Check if an array has any values set other than $ignored values
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $b Parameter description (if any) ...
-	 * @param      array $ignored Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      array $b       Array to check
+	 * @param      array $ignored Values to ignore
+	 * @return     boolean True if empty
 	 */
 	private function _isEmpty($b, $ignored=array())
 	{
 		foreach ($ignored as $ignore)
 		{
-			if (array_key_exists($ignore,$b)) 
+			if (array_key_exists($ignore, $b)) 
 			{
 				$b[$ignore] = NULL;
 			}
@@ -445,16 +466,14 @@ class CitationsControllerCitations extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'getformat'
-	 * 
-	 * Long description (if any) ...
+	 * Get the current citations format
 	 * 
 	 * @return     void
 	 */
 	public function getformatTask()
 	{
 		//get the format being sent via json
-		$format = JRequest::getVar("format", "apa");
+		$format = JRequest::getVar('format', 'apa');
 
 		//include citations format class
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');
@@ -470,28 +489,27 @@ class CitationsControllerCitations extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'gettemplatekeys'
-	 * 
-	 * Long description (if any) ...
+	 * Get citation template keys
 	 * 
 	 * @return     void
 	 */
 	public function gettemplatekeysTask()
 	{
-		//include citations format class
+		// include citations format class
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');
 
-		//new citations format object
+		// new citations format object
 		$cf = new CitationFormat();
 
-		//get the keys
-	 	$keys = $cf->getTemplateKeys();
+		// get the keys
+		$keys = $cf->getTemplateKeys();
 
-		//var to hold html data
-		$html = "";
+		// var to hold html data
+		$html = '';
 
-		//create row for each key pair
-		foreach($keys as $k => $v) {
+		// create row for each key pair
+		foreach ($keys as $k => $v) 
+		{
 			$html .= "<tr><td>{$v}</td><td>{$k}</td></tr>";
 		}
 
@@ -511,13 +529,17 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
-	
-	private function getParams( $citation )
+
+	/**
+	 * Get the params for a citation
+	 *
+	 * @param      integer $citation Citation ID
+	 * @return     integer
+	 */
+	private function _getParams($citation)
 	{
-		$database =& JFactory::getDBO();
-		$sql = "SELECT c.params from #__citations c WHERE id=".$citation;
-		$database->setQuery($sql);
-		return $database->loadResult();
+		$this->database->setQuery("SELECT c.params from #__citations c WHERE id=" . $citation);
+		return $this->database->loadResult();
 	}
 }
 

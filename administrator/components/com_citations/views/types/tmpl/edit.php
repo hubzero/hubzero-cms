@@ -28,69 +28,76 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-$text = ( $this->task == 'edittype' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'Citation Type' ).': <small><small>[ '. $text.' ]</small></small>', 'citation.png' );
-JToolBarHelper::save();
+$canDo = CitationsHelper::getActions('type');
+
+$text = ($this->task == 'edittype' ? JText::_('EDIT') : JText::_('NEW'));
+
+JToolBarHelper::title(JText::_('Citation Type') . ': <small><small>[ ' . $text . ' ]</small></small>', 'citation.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
-$id = NULL;
-$type = NULL;
-$title = NULL;
-$desc = NULL; 
+$id     = NULL;
+$type   = NULL;
+$title  = NULL;
+$desc   = NULL; 
 $fields = NULL;
-if ($this->type) {
-	$id = $this->type->id;
-	$type = $this->type->type;
-	$title = $this->type->type_title;
-	$desc = $this->type->type_desc;
-	$fields = $this->type->fields; 
+if ($this->type) 
+{
+	$id     = $this->type->id;
+	$type   = $this->escape(stripslashes($this->type->type));
+	$title  = $this->escape(stripslashes($this->type->type_title));
+	$desc   = $this->escape(stripslashes($this->type->type_desc));
+	$fields = $this->escape(stripslashes($this->type->fields)); 
 }
  
 $f = array(
-	"cite" => "Cite Key",
-	"ref_type" => "Ref Type",
-	"date_submit" => "Date Submitted",
-	"date_accept" => "Date Accepted",
-	"date_publish" => "Date Published",
-	"year" => "Year",	
- 	"author" => "Authors",
-	"author_address" => "Author Address",
-	"editor" => "Editors",
-	"booktitle" => "Book Title",
-	"shorttitle" => "Short Title",
-	"journal" => "Journal",
-	"volume" => "Volume",
-	"issue" => "Issue/Number",
-	"pages" => "Pages",
-	"isbn" => "ISBN/ISSN",
-	"doi" => "DOI",
-	"callnumber" => "Call Number",
-	"accessionnumber" => "Accession Number",
-	"series" => "Series",
-	"edition" => "Edition",
-	"school" => "School",
-	"publisher" => "Publisher",
-	"institution" => "Institution",
-	"address" => "Address",
-	"location" => "Location",
-	"howpublished" => "How Published",
-	"uri" => "URL",
-	"eprint" => "E-print",
-	"abstract" => "Abstract",
-	"note" => "Text Snippet/ Notes",
-	"keywords" => "Keywords",
-	"research_notes" => "Research Notes",
-	"language" => "Language",
-	"label" => "Label"
+	"cite"           => 'Cite Key',
+	"ref_type"       => 'Ref Type',
+	"date_submit"    => 'Date Submitted',
+	"date_accept"    => 'Date Accepted',
+	"date_publish"   => 'Date Published',
+	"year"           => 'Year',
+	"author"         => 'Authors',
+	"author_address" => 'Author Address',
+	"editor"         => 'Editors',
+	"booktitle"      => 'Book Title',
+	"shorttitle"     => 'Short Title',
+	"journal"        => 'Journal',
+	"volume"         => 'Volume',
+	"issue"          => 'Issue/Number',
+	"pages"          => 'Pages',
+	"isbn"           => 'ISBN/ISSN',
+	"doi"            => 'DOI',
+	"callnumber"     => 'Call Number',
+	"accessionnumber" => 'Accession Number',
+	"series"         => 'Series',
+	"edition"        => 'Edition',
+	"school"         => 'School',
+	"publisher"      => 'Publisher',
+	"institution"    => 'Institution',
+	"address"        => 'Address',
+	"location"       => 'Location',
+	"howpublished"   => 'How Published',
+	"uri"            => 'URL',
+	"eprint"         => 'E-print',
+	"abstract"       => 'Abstract',
+	"note"           => 'Text Snippet/ Notes',
+	"keywords"       => 'Keywords',
+	"research_notes" => 'Research Notes',
+	"language"       => 'Language',
+	"label"          => 'Label'
 );
 ?>
 
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	return submitform( pressbutton );
+	return submitform(pressbutton);
 }
 </script>
 
@@ -100,30 +107,29 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('Citation Type'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
-					<?php if($id) : ?>
+					<?php if ($id) : ?>
 						<tr>
-							<td class="key">Type ID</td>
+							<th class="key"><?php echo JText::_('Type ID'); ?></th>
 							<td><?php echo $id; ?><input type="hidden" name="type[id]" value="<?php echo $id; ?>" /></td>
 						</tr>
 					<?php endif ;?>
 					<tr>
-						<td class="key">Type Alias</td>
+						<th class="key"><?php echo JText::_('Type Alias'); ?></th>
 						<td><input type="text" name="type[type]" value="<?php echo $type; ?>" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="key">Type Title</td>
+						<th class="key"><?php echo JText::_('Type Title'); ?></th>
 						<td><input type="text" name="type[type_title]" value="<?php echo $title; ?>" size="100" /></td>
 					</tr>
 					<tr>
-						<td class="key">Type Description</td>
+						<th class="key"><?php echo JText::_('Type Description'); ?></th>
 						<td><textarea name="type[type_desc]" rows="5" cols="58"><?php echo $desc; ?></textarea></td>
 					</tr>
 					<tr>
-						<td class="key">Fields</td>
+						<th class="key"><?php echo JText::_('Fields'); ?></th>
 						<td>
-							**Type and Title are automatically included<br />
+							<?php echo JText::_('**Type and Title are automatically included'); ?><br />
 							<textarea name="type[fields]" rows="20" cols="58"><?php echo $fields; ?></textarea>
-							
 						</td>
 					</tr>
 				</tbody>
@@ -139,7 +145,7 @@ function submitbutton(pressbutton)
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach($f as $k => $v) : ?>
+				<?php foreach ($f as $k => $v) : ?>
 					<tr>
 						<td><?php echo $k; ?></td>
 						<td><?php echo $v; ?></td>
@@ -148,8 +154,11 @@ function submitbutton(pressbutton)
 			</tbody>
 		</table>
 	</div>
+	<div class="clr"></div>
+	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	
+	<?php echo JHTML::_('form.token'); ?>
 </form>

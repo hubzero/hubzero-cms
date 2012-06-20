@@ -28,23 +28,34 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'Citation Types' ), 'citation.png' );
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+defined('_JEXEC') or die('Restricted access');
 
+$canDo = CitationsHelper::getActions('type');
+
+JToolBarHelper::title(JText::_('Citation Types'), 'citation.png');
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
 	var form = $('adminForm');
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -52,9 +63,9 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('ID'); ?></th>
-				<th><?php echo JText::_('Alias'); ?></th>
-				<th><?php echo JText::_('Title'); ?></th>
+				<th scope="col"><?php echo JText::_('ID'); ?></th>
+				<th scope="col"><?php echo JText::_('Alias'); ?></th>
+				<th scope="col"><?php echo JText::_('Title'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -81,5 +92,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

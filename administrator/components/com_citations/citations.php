@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
@@ -57,13 +57,14 @@ else
 	}
 }
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'citation.php' );
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'association.php' );
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'author.php' );
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'secondary.php' );
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php' );
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php' );
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'sponsor.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'citation.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'association.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'author.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'secondary.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'sponsor.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'citations.php');
 
 $controllerName = JRequest::getCmd('controller', 'citations');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

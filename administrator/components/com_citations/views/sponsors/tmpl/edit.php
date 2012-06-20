@@ -28,27 +28,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-$text = ( $this->task == 'edit' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'Citation Sponsor' ).': <small><small>[ '. $text.' ]</small></small>', 'citation.png' );
-JToolBarHelper::save();
+$canDo = CitationsHelper::getActions('sponsor');
+
+$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+
+JToolBarHelper::title(JText::_('Citation Sponsor') . ': <small><small>[ ' . $text . ' ]</small></small>', 'citation.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
-$id = null;
+$id      = null;
 $sponsor = null;
-$link = null;
-if($this->sponsor)
+$link    = null;
+if ($this->sponsor)
 {
-	$id = $this->sponsor[0]['id'];
-	$sponsor = $this->sponsor[0]['sponsor'];
-	$link = $this->sponsor[0]['link'];
+	$id      = $this->sponsor[0]['id'];
+	$sponsor = $this->escape(stripslashes($this->sponsor[0]['sponsor']));
+	$link    = $this->escape(stripslashes($this->sponsor[0]['link']));
 }
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	return submitform( pressbutton );
+	return submitform(pressbutton);
 }
 </script>
 
@@ -59,20 +65,23 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key">Sponsor Name</td>
+						<th class="key"><?php echo JText::_('Sponsor Name'); ?></th>
 						<td><input type="text" name="sponsor[sponsor]" value="<?php echo $sponsor; ?>" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="key">Sponsor Link</td>
+						<th class="key"><?php echo JText::_('Sponsor Link'); ?></th>
 						<td><input type="text" name="sponsor[link]" value="<?php echo $link; ?>" size="50" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
+	<div class="clr"></div>
+
 	<input type="hidden" name="sponsor[id]" value="<?php echo $id; ?>" />
-	<input type="hidden" name="option" value="com_citations" />
-	<input type="hidden" name="controller" value="sponsors" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	
+	<?php echo JHTML::_('form.token'); ?>
 </form>

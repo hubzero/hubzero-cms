@@ -45,13 +45,16 @@ class CitationsControllerSponsors extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		$cs = new CitationsSponsor( $this->database );
+		$cs = new CitationsSponsor($this->database);
 		$this->view->sponsors = $cs->getSponsor();
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -88,7 +91,7 @@ class CitationsControllerSponsors extends Hubzero_Controller
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
-			
+
 			$this->view->sponsor = new CitationsSponsor($this->database);
 			$this->view->sponsor = $this->view->sponsor->getSponsor($id[0]);
 		}
@@ -96,7 +99,10 @@ class CitationsControllerSponsors extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -112,7 +118,7 @@ class CitationsControllerSponsors extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$s = JRequest::getVar('sponsor', array(), 'post');
 
 		$row = new CitationsSponsor($this->database);

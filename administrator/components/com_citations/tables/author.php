@@ -29,206 +29,200 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'CitationsAuthor'
- * 
- * Long description (if any) ...
+ * Table class for citation authors
  */
 class CitationsAuthor extends JTable
 {
 
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id              = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $cid             = NULL;
+
+	/**
+	 * varchar(64)
+	 * 
+	 * @var string
+	 */
+	var $author          = NULL;
+
+	/**
+	 * int(20)
+	 * 
+	 * @var integer
+	 */
+	var $author_uid      = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $ordering        = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $givenName       = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $middleName      = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $surname         = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $organization    = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $org_dept        = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $orgtype         = NULL;
+
+	/**
+	 * char(2)
 	 * 
 	 * @var unknown
 	 */
-	var $id              = NULL;  // @var int(11) Primary key
+	var $countryresident = NULL;
 
 	/**
-	 * Description for 'cid'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $cid             = NULL;  // @var int(11)
+	var $email           = NULL;
 
 	/**
-	 * Description for 'author'
+	 * Constructor
 	 * 
-	 * @var unknown
-	 */
-	var $author          = NULL;  // @var varchar(64)
-
-	/**
-	 * Description for 'author_uid'
-	 * 
-	 * @var unknown
-	 */
-	var $author_uid      = NULL;  // @var int(20)
-
-	/**
-	 * Description for 'ordering'
-	 * 
-	 * @var unknown
-	 */
-	var $ordering        = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'givenName'
-	 * 
-	 * @var unknown
-	 */
-	var $givenName       = NULL;  // @var varchar(255)
-
-	/**
-	 * Description for 'middleName'
-	 * 
-	 * @var unknown
-	 */
-	var $middleName      = NULL;  // @var varchar(255)
-
-	/**
-	 * Description for 'surname'
-	 * 
-	 * @var unknown
-	 */
-	var $surname         = NULL;  // @var varchar(255)
-
-	/**
-	 * Description for 'organization'
-	 * 
-	 * @var unknown
-	 */
-	var $organization    = NULL;  // @var varchar(255)
-
-	/**
-	 * Description for 'org_dept'
-	 * 
-	 * @var unknown
-	 */
-	var $org_dept        = NULL;  // @var varchar(255)
-
-	/**
-	 * Description for 'orgtype'
-	 * 
-	 * @var unknown
-	 */
-	var $orgtype         = NULL;  // @var varchar(255)
-
-	/**
-	 * Description for 'countryresident'
-	 * 
-	 * @var unknown
-	 */
-	var $countryresident = NULL;  // @var char(2)
-
-	/**
-	 * Description for 'email'
-	 * 
-	 * @var unknown
-	 */
-	var $email           = NULL;  // @var varchar(100)
-
-	//-----------
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__citations_authors', 'id', $db );
+		parent::__construct('#__citations_authors', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->cid ) == '') {
-			$this->setError( JText::_('AUTHOR_MUST_HAVE_CITATION_ID') );
+		if (trim($this->cid) == '') 
+		{
+			$this->setError(JText::_('AUTHOR_MUST_HAVE_CITATION_ID'));
 			return false;
 		}
-		if (trim( $this->author ) == '') {
-			$this->setError( JText::_('AUTHOR_MUST_HAVE_TEXT') );
+		if (trim($this->author) == '') 
+		{
+			$this->setError(JText::_('AUTHOR_MUST_HAVE_TEXT'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters )
+	public function buildQuery($filters)
 	{
 		$query = "";
 		$ands = array();
-		if (isset($filters['cid']) && $filters['cid'] != 0) {
-			$ands[] = "r.cid='".$filters['cid']."'";
+		if (isset($filters['cid']) && $filters['cid'] != 0) 
+		{
+			$ands[] = "r.cid='" . $filters['cid'] . "'";
 		}
-		if (isset($filters['author_uid']) && $filters['author_uid'] != 0) {
-			$ands[] = "r.author_uid='".$filters['author_uid']."'";
+		if (isset($filters['author_uid']) && $filters['author_uid'] != 0) 
+		{
+			$ands[] = "r.author_uid='" . $filters['author_uid'] . "'";
 		}
-		if (isset($filters['author']) && trim($filters['author']) != '') {
-			$ands[] = "LOWER(r.author)='".strtolower($filters['author'])."'";
+		if (isset($filters['author']) && trim($filters['author']) != '') 
+		{
+			$ands[] = "LOWER(r.author)='" . strtolower($filters['author']) . "'";
 		}
-		if (count($ands) > 0) {
+		if (count($ands) > 0) 
+		{
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $ands);
 		}
-		if (isset($filters['sort']) && $filters['sort'] != '') {
-			$query .= " ORDER BY ".$filters['sort'];
+		if (isset($filters['sort']) && $filters['sort'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['sort'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*) FROM $this->_tbl AS r" . $this->buildQuery( $filters );
+		$query  = "SELECT COUNT(*) FROM $this->_tbl AS r" . $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT * FROM $this->_tbl AS r" . $this->buildQuery( $filters );
+		$query  = "SELECT * FROM $this->_tbl AS r" . $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

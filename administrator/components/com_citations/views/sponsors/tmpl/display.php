@@ -28,20 +28,26 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'Citation Sponsors' ), 'citation.png' );
-JToolBarHelper::addNew();
+defined('_JEXEC') or die('Restricted access');
+
+$canDo = CitationsHelper::getActions('sponsor');
+
+JToolBarHelper::title(JText::_('Citation Sponsors'), 'citation.png');
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
 	var form = $('adminForm');
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -56,15 +62,19 @@ function submitbutton(pressbutton)
 			</tr>
 		</thead>
 		<tbody>
-			<?php if(count($this->sponsors) > 0) : ?>
-				<?php foreach($this->sponsors as $sponsor) : ?>
+			<?php if (count($this->sponsors) > 0) : ?>
+				<?php foreach ($this->sponsors as $sponsor) : ?>
 					<tr>
 						<td><?php echo $sponsor['id']; ?></td>
 						<td><?php echo $sponsor['sponsor']; ?></td>
 						<td><?php echo $sponsor['link']; ?></td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option=com_citations&controller=sponsors&task=edit&id[]='.$sponsor['id']); ?>">Edit</a> | 
-							<a href="<?php echo JRoute::_('index.php?option=com_citations&controller=sponsors&task=remove&id[]='.$sponsor['id']); ?>">Delete</a>
+<?php if ($canDo->get('core.edit')) { ?>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $sponsor['id']); ?>">Edit</a> | 
+<?php } ?>
+<?php if ($canDo->get('core.delete')) { ?>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id[]=' . $sponsor['id']); ?>">Delete</a>
+<?php } ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -75,8 +85,9 @@ function submitbutton(pressbutton)
 			<?php endif; ?>
 		</tbody>
 	</table>
-	<input type="hidden" name="option" value="com_citations" />
-	<input type="hidden" name="controller" value="sponsors" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>
