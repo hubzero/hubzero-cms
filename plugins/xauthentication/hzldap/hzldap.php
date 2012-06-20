@@ -219,7 +219,7 @@ class plgXAuthenticationHzldap extends JPlugin
 			$password_rules = Hubzero_Password_Rule::getRules();
 			$msg = Hubzero_Password_Rule::validate($credentials['password'],$password_rules,$credentials['username']);
 
-			if (is_array($msg)) {
+			if (!empty($msg)) {
 				$session =& JFactory::getSession();
 				$session->set('badpassword','1');
 			}

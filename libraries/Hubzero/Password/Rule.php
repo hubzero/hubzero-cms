@@ -112,7 +112,7 @@ class Hubzero_Password_Rule
 	public function validate($password, $rules, $user, $name=null)
 	{
 		if (empty($rules)) {
-			return true;
+			return array();
 		}
 
 		ximport('Hubzero_Password_Blacklist');
@@ -265,7 +265,7 @@ class Hubzero_Password_Rule
 		}
 
 		if (empty($fail)) {
-			return true;
+			return array();
 		}
 		else {
 			return $fail;
