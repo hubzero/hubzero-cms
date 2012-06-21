@@ -29,75 +29,46 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'UsageController'
- * 
- * Long description (if any) ...
+ * Controller class for usage
  */
-class UsageController extends Hubzero_Controller
+class UsageControllerData extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Display primary page
 	 * 
 	 * @return     void
 	 */
-	public function execute()
+	public function displayTask()
 	{
-		$this->_task = JRequest::getVar( 'task', '' );
-
-		switch ($this->_task)
-		{
-			case 'browse': $this->browse(); break;
-
-			default: $this->browse(); break;
-		}
-	}
-
-	//----------------------------------------------------------
-	// Views
-	//----------------------------------------------------------
-
-	/**
-	 * Short description for 'browse'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	protected function browse()
-	{
-		// Instantiate a new view
-		$view = new JView( array('name'=>'browse') );
-		$view->option = $this->_option;
-		$view->task = $this->_task;
-
 		// Set any errors
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
+		if ($this->getError()) 
+		{
+			foreach ($this->getError() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
-	 * Short description for 'cancel'
-	 * 
-	 * Long description (if any) ...
+	 * Cancel a task
 	 * 
 	 * @return     void
 	 */
-	protected function cancel()
+	public function cancel()
 	{
 		// Redirect
-		$this->_redirect = 'index.php?option='. $this->_option;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }
 
