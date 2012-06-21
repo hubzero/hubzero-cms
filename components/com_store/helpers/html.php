@@ -37,17 +37,15 @@ defined('_JEXEC') or die('Restricted access');
 class StoreHtml
 {
 	/**
-	 * Short description for 'productimage'
+	 * Get a default image for the store item
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      string $item Parameter description (if any) ...
-	 * @param      string $root Parameter description (if any) ...
-	 * @param      string $wpath Parameter description (if any) ...
-	 * @param      string $alt Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $option   Component name
+	 * @param      string $item     Item ID
+	 * @param      string $root     Root path
+	 * @param      string $wpath    Base path for files
+	 * @param      string $alt      Image alt text
+	 * @param      string $category Item category
+	 * @return     string HTML
 	 */
 	public function productimage($option, $item, $root, $wpath, $alt, $category)
 	{
@@ -80,11 +78,11 @@ class StoreHtml
 		{
 			if ($category == 'service') 
 			{
-				$html = '<img src="/components/' . $option . '/images/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
+				$html = '<img src="/components/' . $option . '/assets/img/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
 			} 
 			else 
 			{
-				$html = '<img src="/components/' . $option . '/images/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
+				$html = '<img src="/components/' . $option . '/assets/img/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
 			}
 		}
 
