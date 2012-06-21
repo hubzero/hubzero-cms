@@ -154,6 +154,7 @@ class KbControllerArticles extends Hubzero_Controller
 		}
 		else 
 		{
+			$id = 0;
 			// Incoming
 			$ids = JRequest::getVar('id', array(0));
 			if (is_array($ids) && !empty($ids)) 
