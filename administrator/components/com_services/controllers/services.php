@@ -50,7 +50,7 @@ class ServicesControllerServices extends Hubzero_Controller
 		$app =& JFactory::getApplication();
 
 		$this->view->filters = array();
-		
+
 		// Get paging variables
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit', 
@@ -64,7 +64,7 @@ class ServicesControllerServices extends Hubzero_Controller
 			0, 
 			'int'
 		);
-		
+
 		// Get sorting variables
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
@@ -76,7 +76,7 @@ class ServicesControllerServices extends Hubzero_Controller
 			'filter_order_Dir', 
 			'ASC'
 		));
-		
+
 		// get all available services
 		$objS = new Service($this->database);
 		$this->view->rows = $objS->getServices('', 1, '', $this->view->filters['sort'], $this->view->filters['sort_Dir'], '', 1);
@@ -94,7 +94,10 @@ class ServicesControllerServices extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors())
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -169,7 +172,7 @@ class ServicesControllerServices extends Hubzero_Controller
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Create a new subscription
 	 * Displays the edit form
@@ -178,7 +181,6 @@ class ServicesControllerServices extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -190,11 +192,16 @@ class ServicesControllerServices extends Hubzero_Controller
 	public function editTask()
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors())
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML

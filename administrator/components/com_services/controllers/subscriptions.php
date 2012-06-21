@@ -52,7 +52,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
+
 		$this->view->filters = array();
 
 		// Get paging variables
@@ -68,7 +68,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 			0, 
 			'int'
 		);
-		
+
 		// Get sorting variables
 		$this->view->filters['sortby']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortby', 
@@ -100,7 +100,10 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors())
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -115,7 +118,6 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -127,7 +129,9 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		if (is_object($row))
 		{
 			$this->view->subscription = $row;
@@ -139,7 +143,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 			$row = new Subscription($this->database);
 			$this->view->subscription = $row->getSubscription($id);
 		}
-		
+
 		if (!$this->view->subscription) 
 		{
 			$this->setRedirect(
@@ -161,7 +165,10 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors())
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -215,7 +222,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 			case 'refund':
 				$received_refund 				= JRequest::getInt('received_refund', 0);
 				$newunits 		    			= JRequest::getInt('newunits', 0);
-				$pending 						= $subscription->pendingpayment - $received_refund	;
+				$pending 						= $subscription->pendingpayment - $received_refund;
 				$pendingunits 					= $subscription->pendingunits - $newunits;
 				$subscription->pendingpayment 	= $pending <= 0 ? 0 : $pending;
 				$subscription->pendingunits  	= $pendingunits <= 0 ? 0 : $pendingunits;
@@ -234,16 +241,17 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 				$oldunits						= $subscription->units;
 
 				$months 						= $newunits * $service->unitsize;
-				$newexpire 						= ($oldunits > 0  && intval($subscription->expires) <> 0) ? date("Y-m-d",strtotime($subscription->expires. "+".$months."months")) : date("Y-m-d",strtotime("+".$months."months"));
+				$newexpire 						= ($oldunits > 0  && intval($subscription->expires) <> 0) ? date("Y-m-d", strtotime($subscription->expires . "+" . $months . "months")) : date("Y-m-d", strtotime("+" . $months . "months"));
 				$subscription->expires 			= $newunits ? $newexpire : $subscription->expires;
 				$subscription->status 			=  1;
 				$subscription->units 			= $subscription->units + $newunits;
 
 				$email = ($received_payment > 0 or $newunits > 0)  ? 1 : 0;
 				$statusmsg .= JText::_('Subscription has been activated');
-				if ($newunits > 0) {
-					$statusmsg .=  ' '.JText::_('for').' '.$newunits.' ';
-					$statusmsg .= $oldunits > 0 ? JText::_('additional').' ' : '';
+				if ($newunits > 0) 
+				{
+					$statusmsg .=  ' ' . JText::_('for') . ' ' . $newunits . ' ';
+					$statusmsg .= $oldunits > 0 ? JText::_('additional') . ' ' : '';
 					$statusmsg .= JText::_('month(s)');
 				}
 			break;
@@ -268,11 +276,11 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 
 		if (($action && $action != 'message') || $message) 
 		{
-			$subscription->notes .= '------------------------------'."\r\n";
-			$subscription->notes .= JText::_('Subscription status update').', '.date('Y-m-d H:i:s', time())."\r\n";
-			$subscription->notes .= $statusmsg ? $statusmsg."\r\n" : '';
-			$subscription->notes .= $message ? $message."\r\n" : '';
-			$subscription->notes .= '------------------------------'."\r\n";
+			$subscription->notes .= '------------------------------' . "\r\n";
+			$subscription->notes .= JText::_('Subscription status update') . ', '.date('Y-m-d H:i:s', time()) . "\r\n";
+			$subscription->notes .= $statusmsg ? $statusmsg . "\r\n" : '';
+			$subscription->notes .= $message   ? $message . "\r\n"   : '';
+			$subscription->notes .= '------------------------------' . "\r\n";
 		}
 
 		if (!$subscription->check()) 
@@ -297,13 +305,13 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 			// E-mail "from" info
 			$from = array();
 			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('Subscriptions');
+			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('Subscriptions');
 
 			// start email message
-			$subject = JText::_('Status update on your subscription #').$subscription->code;
-			$emailbody  = $subject.':'."\r\n";
-			$emailbody .= JText::_('Subscription Service').' - '.$service->title."\r\n";
-			$emailbody .= '----------------------------------------------------------'."\r\n";
+			$subject = JText::_('Status update on your subscription #') . $subscription->code;
+			$emailbody  = $subject . ':' . "\r\n";
+			$emailbody .= JText::_('Subscription Service') . ' - ' . $service->title . "\r\n";
+			$emailbody .= '----------------------------------------------------------' . "\r\n";
 
 			$emailbody .= $action != 'message' && $statusmsg ? $statusmsg : '';
 			if ($message) 
@@ -322,7 +330,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Subscription successfully saved.') . ($statusmsg ? ' '.$statusmsg : '')
+			JText::_('Subscription successfully saved.') . ($statusmsg ? ' ' . $statusmsg : '')
 		);
 	}
 	
