@@ -29,162 +29,157 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WishlistPlan'
- * 
- * Long description (if any) ...
+ * Table class for wishlist plan
  */
 class WishlistPlan extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'wishid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $wishid		= NULL;  // @var int(11)
+	var $wishid		= NULL;
 
 	/**
-	 * Description for 'version'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $version	= NULL;  // @var int(11)
+	var $version	= NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $created	= NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $created_by	= NULL;
 
 	/**
-	 * Description for 'minor_edit'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $minor_edit	= NULL;
 
 	/**
-	 * Description for 'pagetext'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $pagetext	= NULL;
 
 	/**
-	 * Description for 'pagehtml'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $pagehtml	= NULL;
 
 	/**
-	 * Description for 'approved'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $approved   = NULL;
 
 	/**
-	 * Description for 'summary'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $summary	= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wishlist_implementation', 'id', $db );
+		parent::__construct('#__wishlist_implementation', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getPlan'
+	 * Get a record for a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $wishid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $wishid Wish ID
+	 * @return     mixed False if error, array on success
 	 */
 	public function getPlan($wishid)
 	{
-		if ($wishid == NULL) {
+		if ($wishid == NULL) 
+		{
 			return false;
 		}
 
 		$query  = "SELECT *, xp.name AS authorname ";
 		$query .= "FROM #__wishlist_implementation AS p  ";
 		$query .= "JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
-		$query .= "WHERE p.wishid = '".$wishid."' ORDER BY p.created DESC LIMIT 1";
-		$this->_db->setQuery( $query );
+		$query .= "WHERE p.wishid = '" . $wishid . "' ORDER BY p.created DESC LIMIT 1";
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'load'
+	 * Get a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid Record ID
+	 * @return     boolean True on success
 	 */
-	public function load( $oid=NULL )
+	public function load($oid=NULL)
 	{
-		if ($oid == NULL or !is_numeric($oid)) {
+		if ($oid == NULL or !is_numeric($oid)) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE id='$oid'" );
-		//return $this->_db->loadObject( $this );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id='$oid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'deletePlan'
+	 * Delete a record based on wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $wishid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $wishid Wish ID
+	 * @return     boolean False if errors, True on success
 	 */
 	public function deletePlan($wishid)
 	{
-		if ($wishid == NULL) {
+		if ($wishid == NULL) 
+		{
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE wishid='". $wishid."'";
-		$this->_db->setQuery( $query );
+		$query = "DELETE FROM $this->_tbl WHERE wishid='" . $wishid . "'";
+		$this->_db->setQuery($query);
 		$this->_db->query();
+		return true;
 	}
 }
 

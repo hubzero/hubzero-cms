@@ -29,105 +29,98 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Wishlist'
- * 
- * Long description (if any) ...
+ * Table class for wishlist
  */
 class Wishlist extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         	= NULL;  // @var int(11) Primary key
+	var $id         	= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category       = NULL;  // @var varchar(50)
+	var $category       = NULL;
 
 	/**
-	 * Description for 'referenceid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $referenceid	= NULL;  // @var int(11)
+	var $referenceid	= NULL;
 
 	/**
-	 * Description for 'description'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $description	= NULL;  // @var text
+	var $description	= NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(150)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $title			= NULL;  // @var varchar(150)
+	var $title			= NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created    	= NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by 	= NULL;  // @var int(11)
+	var $created_by 	= NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state     		= NULL;  // @var int(3)
+	var $state     		= NULL;
 
 	/**
-	 * Description for 'public'
+	 * int(3)  // can any user view and submit to it?
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $public			= NULL;  // @var int(3)  // can any user view and submit to it?
-
-	//-----------
+	var $public			= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wishlist', 'id', $db );
+		parent::__construct('#__wishlist', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('Missing title for the wish list') );
+		$this->title = trim($this->title);
+		if ($this->title == '') 
+		{
+			$this->setError(JText::_('Missing title for the wish list'));
 			return false;
 		}
 
@@ -135,47 +128,46 @@ class Wishlist extends JTable
 	}
 
 	/**
-	 * Short description for 'get_wishlistID'
+	 * Get the ID of an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $rid Parameter description (if any) ...
-	 * @param      string $cat Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $rid Reference ID
+	 * @param      string  $cat Category
+	 * @return     mixed False if errors, integer on success
 	 */
 	public function get_wishlistID($rid=0, $cat='resource')
 	{
-		if ($rid === NULL) {
+		if ($rid === NULL) 
+		{
 			$rid = $this->referenceid;
 		}
-		if ($rid === NULL) {
+		if ($rid === NULL) 
+		{
 			return false;
 		}
 
 		// get individuals
 		$sql = "SELECT id"
 			. "\n FROM $this->_tbl "
-			. "\n WHERE referenceid='".$rid."' AND category='".$cat."' ORDER BY id DESC LIMIT 1";
+			. "\n WHERE referenceid='" . $rid . "' AND category='" . $cat . "' ORDER BY id DESC LIMIT 1";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return  $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'createlist'
+	 * Create an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      unknown $refid Parameter description (if any) ...
-	 * @param      integer $public Parameter description (if any) ...
-	 * @param      string $title Parameter description (if any) ...
-	 * @param      string $description Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $category    Category
+	 * @param      integer $refid       Reference ID
+	 * @param      integer $public      Public/private list
+	 * @param      string  $title       Entry title
+	 * @param      string  $description Entry description
+	 * @return     mixed False if errors, integer on success
 	 */
 	public function createlist($category='resource', $refid, $public=1, $title='', $description='')
 	{
-		if ($refid === NULL) {
+		if ($refid === NULL) 
+		{
 			return false;
 		}
 
@@ -183,70 +175,73 @@ class Wishlist extends JTable
 		$hubShortName = $xhub->getCfg('hubShortName');
 		$juser =& JFactory::getUser();
 
-		$this->created = date( 'Y-m-d H:i:s' );
-		$this->category = $category;
-		$this->created_by = $juser->get('id');
+		$this->created     = date('Y-m-d H:i:s');
+		$this->category    = $category;
+		$this->created_by  = $juser->get('id');
 		$this->referenceid = $refid;
 		$this->description = $description;
-		$this->public = $public;
+		$this->public      = $public;
 
 		switch ($category)
 		{
 			case 'general':
 				$this->title = $title ? $title : $hubShortName;
 
-				if (!$this->store()) {
+				if (!$this->store()) 
+				{
 					$this->_error = $this->getError();
 					return false;
-				} else {
-					// Checkin wishlist
-					$this->checkin();
-				}
+				} 
+				// Checkin wishlist
+				$this->checkin();
 
 				return $this->id;
 			break;
 
 			case 'resource':
 				// resources can only have one list
-				if (!$this->get_wishlist('',$refid, 'resource')) {
-					$this->title = $title ? $title :'Resource #'.$rid;
+				if (!$this->get_wishlist('', $refid, 'resource')) 
+				{
+					$this->title = $title ? $title : 'Resource #' . $rid;
 
-					if (!$this->store()) {
+					if (!$this->store()) 
+					{
 						$this->_error = $this->getError();
 						return false;
-					} else {
-						// Checkin wishlist
-						$this->checkin();
 					}
+					// Checkin wishlist
+					$this->checkin();
 
 					return $this->id;
-				} else {
+				} 
+				else 
+				{
 					return $this->get_wishlistID($refid); // return existing id
 				}
 			break;
 
 			case 'group':
-				$this->title = $title ? $title :'Group #'.$rid;
-				if (!$this->store()) {
+				$this->title = $title ? $title : 'Group #' . $rid;
+				if (!$this->store()) 
+				{
 					$this->_error = $this->getError();
 					return false;
-				} else {
-					// Checkin wishlist
-					$this->checkin();
 				}
+				// Checkin wishlist
+				$this->checkin();
 
 				return $this->id;
 			break;
 
 			case 'user':
 				$this->title = $title;
-				if (!$this->store()) {
+				if (!$this->store()) 
+				{
 					$this->_error = $this->getError();
 					return false;
-				} else {
-					// Checkin wishlist
-					$this->checkin();
 				}
+				// Checkin wishlist
+				$this->checkin();
 
 				return $this->id;
 			break;
@@ -256,71 +251,68 @@ class Wishlist extends JTable
 	}
 
 	/**
-	 * Short description for 'getTitle'
+	 * Get the title for an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id Entry ID
+	 * @return     mixed False if error, string on success
 	 */
 	public function getTitle($id)
 	{
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			return false;
 		}
-		$sql = "SELECT w.title "
-				. "\n FROM $this->_tbl AS w";
-		$sql .=	"\n WHERE w.id=".$id;
+		$sql = "SELECT w.title FROM $this->_tbl AS w WHERE w.id=" . $id;
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'is_primary'
+	 * Check if an entry is the primary wislist
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Entry ID
+	 * @return     boolean True if primary
 	 */
 	public function is_primary($id)
 	{
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			return false;
 		}
-		$sql = "SELECT w.* FROM $this->_tbl AS w WHERE w.id=".$id." AND w.referenceid=1 AND w.category='general'";
+		$sql = "SELECT w.* FROM $this->_tbl AS w WHERE w.id=" . $id . " AND w.referenceid=1 AND w.category='general'";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$bingo = $this->_db->loadResult();
-		if ($bingo) {
+		if ($bingo) 
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'get_wishlist'
+	 * Load a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      mixed $refid Parameter description (if any) ...
-	 * @param      string $cat Parameter description (if any) ...
-	 * @param      integer $primary Parameter description (if any) ...
-	 * @param      integer $getversions Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id          Entry ID
+	 * @param      integer $refid       Reference ID
+	 * @param      string  $cat         Category
+	 * @param      integer $primary     Primary list?
+	 * @param      integer $getversions Return reference versions?
+	 * @return     mixed False if error, object on success
 	 */
 	public function get_wishlist($id='', $refid=0, $cat='', $primary = 0, $getversions=0)
 	{
-		if ($id===NULL && $refid===0 && $cat===NULL) {
+		if ($id===NULL && $refid===0 && $cat===NULL) 
+		{
 			return false;
 		}
-		if ($id && !intval($id)) {
+		if ($id && !intval($id)) 
+		{
 			return false;
 		}
-		if ($refid && !intval($refid)) {
+		if ($refid && !intval($refid)) 
+		{
 			return false;
 		}
 
@@ -332,52 +324,57 @@ class Wishlist extends JTable
 		//if($cat == 'resource') {
 			//$sql .= "\n JOIN #__resources AS r ON r.id=w.referenceid";	
 		//}
-		if ($id) {
-			$sql .=	"\n WHERE w.id=".$id;
-		} else if ($refid && $cat) {
-			$sql .=	"\n WHERE w.referenceid=".$refid." AND w.category='".$cat."'";
-		} else if ($primary) {
+		if ($id) 
+		{
+			$sql .=	"\n WHERE w.id=" . $id;
+		} 
+		else if ($refid && $cat) 
+		{
+			$sql .=	"\n WHERE w.referenceid=" . $refid . " AND w.category='" . $cat . "'";
+		} 
+		else if ($primary) 
+		{
 			$sql .=	"\n WHERE w.referenceid=1 AND w.category='general'";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$res = $this->_db->loadObjectList();
 		$wishlist = ($res) ? $res[0] : array();
 
 		// get parent 
 		//$parent = $this->get_wishlist_parent($wishlist->referenceid, $wishlist->category);
 
-		if (count($wishlist) > 0 && $wishlist->category=='resource') {
+		if (count($wishlist) > 0 && $wishlist->category=='resource') 
+		{
 			$wishlist->resource = $this->get_wishlist_parent($wishlist->referenceid, $wishlist->category);
 			// Currenty for tools only
-			if ($getversions && $wishlist->resource && isset($wishlist->resource->type) && $wishlist->resource->type==7) {
-				$wishlist->resource->versions = $this->get_parent_versions($wishlist->referenceid, $wishlist->resource->type );
+			if ($getversions && $wishlist->resource && isset($wishlist->resource->type) && $wishlist->resource->type==7) 
+			{
+				$wishlist->resource->versions = $this->get_parent_versions($wishlist->referenceid, $wishlist->resource->type);
 			}
 		}
 
 		return $wishlist;
 	}
-	//-----------
 
 	/**
-	 * Short description for 'get_parent_versions'
+	 * Get the parent tool version
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      integer $type Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $rid  Resource ID
+	 * @param      integer $type Resource type
+	 * @return     array
 	 */
 	public function get_parent_versions($rid, $type)
 	{
 		$versions = array();
 		// currently for tools only
-		if ($type == 7) {
-			$query = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id='".$rid."'";
-			$query.= " AND v.state=3 ";
-			$query.= " OR v.state!=3 ORDER BY state DESC, revision DESC LIMIT 3";
-			$this->_db->setQuery( $query );
-			$result  = $this->_db->loadObjectList();
+		if ($type == 7) 
+		{
+			$query  = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id='" . $rid . "'";
+			$query .= " AND v.state=3 ";
+			$query .= " OR v.state!=3 ORDER BY state DESC, revision DESC LIMIT 3";
+			$this->_db->setQuery($query);
+			$result = $this->_db->loadObjectList();
 			$versions = $result ? $result : array();
 		}
 
@@ -385,23 +382,22 @@ class Wishlist extends JTable
 	}
 
 	/**
-	 * Short description for 'get_wishlist_parent'
+	 * Get the parent resource for a wishlist
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $refid Parameter description (if any) ...
-	 * @param      string $cat Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $refid Resource ID
+	 * @param      string  $cat   Resource type
+	 * @return     array
 	 */
 	public function get_wishlist_parent($refid, $cat='resource')
 	{
 		$resource = array();
-		if ($cat == 'resource') {
+		if ($cat == 'resource') 
+		{
 			$sql = "SELECT r.title, r.type, r.alias, r.introtext, t.type as typetitle"
 				. "\n FROM #__resources AS r"
 				. "\n LEFT JOIN #__resource_types AS t ON t.id=r.type "
-				. "\n WHERE r.id='".$refid."'";
-			$this->_db->setQuery( $sql );
+				. "\n WHERE r.id='" . $refid . "'";
+			$this->_db->setQuery($sql);
 			$res  = $this->_db->loadObjectList();
 			$resource = ($res) ? $res[0]: array();
 		}
@@ -410,12 +406,10 @@ class Wishlist extends JTable
 	}
 
 	/**
-	 * Short description for 'getCons'
+	 * Get authors of a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $refid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $refid Resource ID
+	 * @return     array
 	 */
 	public function getCons($refid)
 	{
@@ -423,20 +417,18 @@ class Wishlist extends JTable
 			 . "\n FROM #__xprofiles AS n"
 			 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
 			 . "\n WHERE a.subtable = 'resources'"
-			 . "\n AND a.subid=". $refid;
+			 . "\n AND a.subid=" . $refid;
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getToolDevGroup'
+	 * Get a tool's development group
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $refid Parameter description (if any) ...
-	 * @param      array $groups Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $refid  Tool ID
+	 * @param      array   $groups ?
+	 * @return     string
 	 */
 	public function getToolDevGroup($refid, $groups = array())
 	{
@@ -444,8 +436,9 @@ class Wishlist extends JTable
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		$query .= " JOIN #__tool AS t ON g.toolid=t.id ";
 		$query .= " JOIN #__resources as r ON r.alias = t.toolname";
-		$query .= " WHERE r.id = '".$refid."' AND g.role=1 ";
-		$this->_db->setQuery( $query );
+		$query .= " WHERE r.id = '" . $refid . "' AND g.role=1 ";
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }

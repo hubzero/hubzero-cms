@@ -29,180 +29,175 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Wish'
- * 
- * Long description (if any) ...
+ * Table class for a wish
  */
 class Wish extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id         	= NULL;
 
 	/**
-	 * Description for 'id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         	= NULL;  // @var int(11) Primary key
+	var $wishlist       = NULL;
 
 	/**
-	 * Description for 'wishlist'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $wishlist       = NULL;  // @var int
+	var $subject		= NULL;
 
 	/**
-	 * Description for 'subject'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $subject		= NULL;  // @var varchar(200)
+	var $about			= NULL;
 
 	/**
-	 * Description for 'about'
-	 * 
-	 * @var unknown
+	 * int(11)
+	 *  0 new/pending
+	 *  1 granted
+	 *  2 deleted
+	 *  3 rejected
+	 *  4 withdrawn
+	 *
+	 * @var integer
 	 */
-	var $about			= NULL;  // @var text
+	var $status			= NULL;
+		
 
 	/**
-	 * Description for 'status'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $status			= NULL;  // @var int(11)
-		// 0 new/pending
-		// 1 granted
-		// 2 deleted
-		// 3 rejected
-		// 4 withdrawn
+	var $proposed    	= NULL;
 
 	/**
-	 * Description for 'proposed'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $proposed    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $granted    	= NULL;
 
 	/**
-	 * Description for 'granted'
+	 * int(50)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $granted    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $proposed_by 	= NULL;
 
 	/**
-	 * Description for 'proposed_by'
+	 * int(50)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $proposed_by 	= NULL;  // @var int(50)
+	var $granted_by 	= NULL;
 
 	/**
-	 * Description for 'granted_by'
+	 * int(50)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $granted_by 	= NULL;  // @var int(50)
+	var $granted_vid 	= NULL;
 
 	/**
-	 * Description for 'granted_vid'
+	 * int(50)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $granted_vid 	= NULL;  // @var int(50)
+	var $assigned 		= NULL;
 
 	/**
-	 * Description for 'assigned'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $assigned 		= NULL;  // @var int(50)
+	var $effort		    = NULL;
 
 	/**
-	 * Description for 'effort'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $effort		    = NULL;  // @var int(3)
+	var $due    	    = NULL;
 
 	/**
-	 * Description for 'due'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $due    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $anonymous		= NULL;
 
 	/**
-	 * Description for 'anonymous'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $anonymous		= NULL;  // @var int(3)
+	var $ranking		= NULL;
 
 	/**
-	 * Description for 'ranking'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $ranking		= NULL;  // @var int(11)
+	var $private		= NULL;
 
 	/**
-	 * Description for 'private'
+	 * int(11) 
+	 *  1 admins accepted this wish
+	 *  2 wish author accepted solution
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $private		= NULL;  // @var int(11)
+	var $accepted		= NULL;
 
 	/**
-	 * Description for 'accepted'
+	 * int(11) 
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $accepted		= NULL;  // @var int(11) 
+	var $points			= NULL;
 
-	/**
-	 * Description for 'points'
-	 * 
-	 * @var unknown
-	 */
-	var $points			= NULL;  // @var int(11) 
-		// 1 admins accepted this wish
-		// 2 wish author accepted solution
-
-	//-----------
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( &$db )
+		/**
+		 * Constructor
+		 * 
+		 * @param      object &$db JDatabase
+		 * @return     void
+		 */
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wishlist_item', 'id', $db );
+		parent::__construct('#__wishlist_item', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->subject ) == '') {
-			$this->setError( JText::_('WISHLIST_ERROR_NO_SUBJECT') );
+		$this->subject = trim($this->subject);
+		if ($this->subject == '') 
+		{
+			$this->setError(JText::_('WISHLIST_ERROR_NO_SUBJECT'));
 			return false;
 		}
 
-		if (trim( $this->wishlist ) == '') {
-			$this->setError( JText::_('WISHLIST_ERROR_NO_LIST') );
+		if (trim($this->wishlist) == '') 
+		{
+			$this->setError(JText::_('WISHLIST_ERROR_NO_LIST'));
 			return false;
 		}
 
@@ -210,147 +205,151 @@ class Wish extends JTable
 	}
 
 	/**
-	 * Short description for 'get_votes_sum'
+	 * Get the sum total votes
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $wishid Parameter description (if any) ...
-	 * @param      unknown $what Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $wishid Entry ID
+	 * @param      string  $what   Field to sum
+	 * @return     mixed False if error, integer on success
 	 */
 	public function get_votes_sum($wishid, $what)
 	{
-		if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			return false;
 		}
 
-	 	$sql = "SELECT SUM($what) FROM #__wishlist_vote WHERE wishid=".$wishid;
-		$this->_db->setQuery( $sql );
+		$sql = "SELECT SUM($what) FROM #__wishlist_vote WHERE wishid=" . $wishid;
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'get_count'
+	 * Get a record count for a list
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $listid Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      unknown $admin Parameter description (if any) ...
-	 * @param      object $juser Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $listid  List ID
+	 * @param      array   $filters Filters to build query on
+	 * @param      integer $admin   User is admin?
+	 * @param      object  $juser   current user
+	 * @return     mixed False if error, integer on success
 	 */
 	public function get_count($listid, $filters, $admin, $juser=NULL)
 	{
-		if ($listid === NULL) {
+		if ($listid === NULL) 
+		{
 			return false;
 		}
-		if (is_object($juser)) {
+		if (is_object($juser)) 
+		{
 			$uid = $juser->get('id');
-		} else {
+		} 
+		else 
+		{
 			$uid = 0;
 		}
 
 		$sql = "SELECT ws.id FROM #__wishlist_item AS ws ";
 
-		if ($filters['tag']) {
-			$sql.= "\n LEFT JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
-			$sql.= "\n LEFT JOIN #__tags AS TA ON RTA.tagid=TA.id ";
+		if ($filters['tag']) 
+		{
+			$sql .= "\n LEFT JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
+			$sql .= "\n LEFT JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
 
-		$sql.="\n WHERE ws.wishlist='".$listid."'";
+		$sql .="\n WHERE ws.wishlist='" . $listid . "'";
 		// list  filtering
 		switch ($filters['filterby'])
 		{
-				case 'all':    		$sql.= ' AND ws.status!=2';
+				case 'all':    		$sql .= ' AND ws.status!=2';
 									break;
-				case 'granted':    	$sql.= ' AND ws.status=1';
+				case 'granted':    	$sql .= ' AND ws.status=1';
 									break;
-				case 'open':    	$sql.= ' AND ws.status=0';
+				case 'open':    	$sql .= ' AND ws.status=0';
 									break;
-				case 'accepted':    $sql.= ' AND ws.accepted=1 AND ws.status=0';
+				case 'accepted':    $sql .= ' AND ws.accepted=1 AND ws.status=0';
 									break;
-				case 'pending':     $sql.= ' AND ws.accepted=0 AND ws.status=0';
+				case 'pending':     $sql .= ' AND ws.accepted=0 AND ws.status=0';
 									break;
-				case 'rejected':    $sql.= ' AND ws.status=3';
+				case 'rejected':    $sql .= ' AND ws.status=3';
 									break;
-				case 'withdrawn':   $sql.= ' AND ws.status=4';
+				case 'withdrawn':   $sql .= ' AND ws.status=4';
 									break;
-				case 'deleted':     $sql.= ' AND ws.status=2';
+				case 'deleted':     $sql .= ' AND ws.status=2';
 									break;
-				case 'useraccepted':$sql.= ' AND ws.accepted=3 AND ws.status!=2';
+				case 'useraccepted':$sql .= ' AND ws.accepted=3 AND ws.status!=2';
 									break;
-				case 'private':    	$sql.= ' AND ws.status!=2 AND ws.private=1';
+				case 'private':    	$sql .= ' AND ws.status!=2 AND ws.private=1';
 									break;
-				case 'public':    	$sql.= ' AND ws.status!=2 AND ws.private=0';
+				case 'public':    	$sql .= ' AND ws.status!=2 AND ws.private=0';
 									break;
-				case 'mine':    	if ($uid) {
-										$sql.= ' AND ws.assigned="'.$uid.'" AND ws.status!=2';
-									}
-									break;
-				case 'submitter':   if ($uid) {
-										$sql.= ' AND ws.proposed_by='.$uid.' AND ws.status!=2';
-									}
-									break;
-				case 'assigned':    $sql.= ' AND ws.assigned NOT NULL AND ws.status!=2';
-									break;
-				default: 			$sql .= ' AND ws.status!=2';
-									break;
+				case 'mine':
+					if ($uid) 
+					{
+						$sql .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
+					}
+				break;
+				case 'submitter':
+					if ($uid) 
+					{
+						$sql .= ' AND ws.proposed_by=' . $uid . ' AND ws.status!=2';
+					}
+					break;
+				case 'assigned':
+					$sql .= ' AND ws.assigned NOT NULL AND ws.status!=2';
+				break;
+				default:
+					$sql .= ' AND ws.status!=2';
+				break;
 		}
 
 		// do not show private wishes
-		if (!$admin) {
-			$sql.="\n AND ws.private='0'";
+		if (!$admin) 
+		{
+			$sql .="\n AND ws.private='0'";
 		}
 
-		if ($filters['tag']) {
-			$tagging = new WishTags( $this->_db );
+		if ($filters['tag']) 
+		{
+			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN (";
-			$tquery = '';
-			foreach ($tags as $tagg)
-			{
-				$tquery .= "'".$tagg."',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$sql .= $tquery.") OR TA.raw_tag IN (".$tquery;
-			$sql .= ")))";
+			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN ('" . implode("','", $tags) . "') OR TA.raw_tag IN ('" . implode("','", $tags) . "')))";
 			$sql .= " GROUP BY ws.id ";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
 
 		return count($result);
 	}
 
 	/**
-	 * Short description for 'get_wishes'
+	 * Get wishes for a list
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $listid Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      unknown $admin Parameter description (if any) ...
-	 * @param      object $juser Parameter description (if any) ...
-	 * @param      integer $fullinfo Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $listid   List ID
+	 * @param      array   $filters  Filters to build query from
+	 * @param      itneger $admin    Admin access?
+	 * @param      object  $juser    JUser
+	 * @param      integer $fullinfo Return fullinfo or not?
+	 * @return     mixed False if error, array on success
 	 */
 	public function get_wishes($listid, $filters, $admin, $juser=NULL, $fullinfo = 1)
 	{
-		if ($listid === NULL) {
+		if ($listid === NULL) 
+		{
 			return false;
 		}
-		if (is_object($juser)) {
+		if (is_object($juser)) 
+		{
 			$uid = $juser->get('id');
-		} else {
+		} 
+		else 
+		{
 			$uid = 0;
 		}
 
 		$filters['tag'] = isset($filters['tag']) ? $filters['tag'] : '';
 
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'helpers'.DS.'tags.php' );
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'tags.php');
 
 		$sort = 'ws.status ASC, ws.proposed DESC';
 		// list  sorting
@@ -376,10 +375,14 @@ class Wish extends JTable
 				? "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, "
 				: "SELECT ws.id, ws.wishlist, ws.proposed, ws.granted, ws.granted_vid, ws.status, xp.name AS authorname ";
 
-		if ($fullinfo) {
-			if ($uid) {
-				$sql .= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=".$uid.") AS ranked,";
-			} else {
+		if ($fullinfo) 
+		{
+			if ($uid) 
+			{
+				$sql .= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=" . $uid . ") AS ranked,";
+			} 
+			else 
+			{
 				$sql .= "\n NULL AS ranked,";
 			}
 			// Get votes
@@ -387,13 +390,14 @@ class Wish extends JTable
 			$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 			$sql .= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
 
-			if ($filters['sortby'] == 'latestcomment') {
+			if ($filters['sortby'] == 'latestcomment') 
+			{
 				$sql .= "\n (SELECT MAX(CC.added) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND (CC.category='wish' OR CC.category='wishcomment')  GROUP BY CC.referenceid) AS latestcomment, ";
 			}
 
 			// Get xprofile info
-			$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by ) as grantedby, ";
-			$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned ) as assignedto, ";
+			$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by) as grantedby, ";
+			$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned) as assignedto, ";
 
 			// Get comments count
 			$sql .= "\n (SELECT count(*) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND CC.state=0 AND CC.category='wish') AS comments, ";
@@ -414,62 +418,71 @@ class Wish extends JTable
 		}
 		$sql .= "\n FROM #__wishlist_item AS ws";
 		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
-		if ($fullinfo) {
+		if ($fullinfo) 
+		{
 			//$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
-			$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
-			$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
-			if ($filters['tag']) {
+			$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='" . $uid . "' ";
+			$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='" . $uid . "' ";
+			if ($filters['tag']) 
+			{
 				$sql .= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
 				$sql .= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 			}
 		}
 
-		$sql .= "\n WHERE ws.wishlist='".$listid."'";
+		$sql .= "\n WHERE ws.wishlist='" . $listid . "'";
 		$sql .= "\n AND 1=1 ";
 
-		if (!$fullinfo && isset($filters['timelimit'])) {
-			$sql.="\n OR (ws.status= 1 AND ws.granted > '".$filters['timelimit']."') ";
+		if (!$fullinfo && isset($filters['timelimit'])) 
+		{
+			$sql .= "\n OR (ws.status= 1 AND ws.granted > '" . $filters['timelimit'] . "') ";
 		}
 
-		if (!$fullinfo && isset($filters['versionid'])) {
-			$sql.="\n OR (ws.granted_vid = '".$filters['versionid']."') ";
+		if (!$fullinfo && isset($filters['versionid'])) 
+		{
+			$sql .= "\n OR (ws.granted_vid = '" . $filters['versionid'] . "') ";
 		}
 
-		if ($fullinfo) {
+		if ($fullinfo) 
+		{
 			// list  filtering
 			switch ($filters['filterby'])
 			{
-					case 'all':    		$sql.= ' AND ws.status!=2';
+					case 'all':    		$sql .= ' AND ws.status!=2';
 										break;
-					case 'granted':    	$sql.= ' AND ws.status=1';
+					case 'granted':    	$sql .= ' AND ws.status=1';
 										break;
-					case 'open':    	$sql.= ' AND ws.status=0';
+					case 'open':    	$sql .= ' AND ws.status=0';
 										break;
-					case 'accepted':    $sql.= ' AND ws.accepted=1 AND ws.status=0';
+					case 'accepted':    $sql .= ' AND ws.accepted=1 AND ws.status=0';
 										break;
-					case 'pending':     $sql.= ' AND ws.accepted=0 AND ws.status=0';
+					case 'pending':     $sql .= ' AND ws.accepted=0 AND ws.status=0';
 										break;
-					case 'rejected':    $sql.= ' AND ws.status=3';
+					case 'rejected':    $sql .= ' AND ws.status=3';
 										break;
-					case 'withdrawn':   $sql.= ' AND ws.status=4';
+					case 'withdrawn':   $sql .= ' AND ws.status=4';
 										break;
-					case 'deleted':     $sql.= ' AND ws.status=2';
+					case 'deleted':     $sql .= ' AND ws.status=2';
 										break;
-					case 'useraccepted':$sql.= ' AND ws.accepted=3 AND ws.status!=2';
+					case 'useraccepted':$sql .= ' AND ws.accepted=3 AND ws.status!=2';
 										break;
-					case 'private':    	$sql.= ' AND ws.status!=2 AND ws.private=1';
+					case 'private':    	$sql .= ' AND ws.status!=2 AND ws.private=1';
 										break;
-					case 'public':    	$sql.= ' AND ws.status!=2 AND ws.private=0';
+					case 'public':    	$sql .= ' AND ws.status!=2 AND ws.private=0';
 										break;
-					case 'mine':    	if ($uid) {
-											$sql.= ' AND ws.assigned="'.$uid.'" AND ws.status!=2';
-										}
-										break;
-					case 'submitter':   if ($uid) {
-											$sql.= ' AND ws.proposed_by='.$uid.' AND ws.status!=2';
-										}
-										break;
-					case 'assigned':    $sql.= ' AND ws.assigned NOT NULL AND ws.status!=2';
+					case 'mine':
+						if ($uid) 
+						{
+							$sql .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
+						}
+					break;
+					case 'submitter':
+						if ($uid) 
+						{
+							$sql .= ' AND ws.proposed_by=' . $uid . ' AND ws.status!=2';
+						}
+					break;
+					case 'assigned':    $sql .= ' AND ws.assigned NOT NULL AND ws.status!=2';
 										break;
 					default: 			$sql .= ' AND ws.status!=2';
 										break;
@@ -477,265 +490,255 @@ class Wish extends JTable
 		}
 
 		// do not show private wishes
-		if (!$admin) {
-			$sql.="\n AND ws.private='0'";
+		if (!$admin) 
+		{
+			$sql .= "\n AND ws.private='0'";
 		}
 
-		if ($fullinfo && $filters['tag']) {
-			$tagging = new WishTags( $this->_db );
+		if ($fullinfo && $filters['tag']) 
+		{
+			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN (";
-			$tquery = '';
-			foreach ($tags as $tagg)
-			{
-				$tquery .= "'".$tagg."',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$sql .= $tquery.") OR TA.raw_tag IN (".$tquery;
-			$sql .= ")))";
+			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN ('" . implode("','", $tags) . "') OR TA.raw_tag IN ('" . implode("','", $tags) . "')))";
 			$sql .= " GROUP BY ws.id ";
-
 		}
 
-		$sql.= "\n ORDER BY ". $sort;
+		$sql .= "\n ORDER BY " . $sort;
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'delete_wish'
+	 * Delete a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $wishid Parameter description (if any) ...
-	 * @param      integer $withdraw Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $wishid   Wish ID
+	 * @param      integer $withdraw Withdraw a wish
+	 * @return     boolean False if error, True on success
 	 */
-	public function delete_wish ($wishid, $withdraw=0)
+	public function delete_wish($wishid, $withdraw=0)
 	{
-		if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			$wishid == $this->id;
 		}
-		if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			return false;
 		}
 		$status = $withdraw ? 4 : 2;
 
-		$query  = "UPDATE $this->_tbl SET status='".$status."', ranking='0' WHERE id=".$wishid;
+		$query  = "UPDATE $this->_tbl SET status='" . $status . "', ranking='0' WHERE id=" . $wishid;
 
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'get_wish'
+	 * Get a record based on some filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $wishid Parameter description (if any) ...
-	 * @param      mixed $uid Parameter description (if any) ...
-	 * @param      integer $refid Parameter description (if any) ...
-	 * @param      string $cat Parameter description (if any) ...
-	 * @param      integer $deleted Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $wishid  Wish ID
+	 * @param      integer $uid     User ID
+	 * @param      integer $refid   Reference object ID
+	 * @param      string  $cat     Reference object catgory
+	 * @param      integer $deleted Record is deleted state?
+	 * @return     mixed False if error, object on success
 	 */
-	public function get_wish ($wishid = 0, $uid = 0, $refid = 0, $cat = '', $deleted = 0)
+	public function get_wish($wishid = 0, $uid = 0, $refid = 0, $cat = '', $deleted = 0)
 	{
-	 	if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			return false;
 		}
 
 		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, ";
-		if ($uid) {
-			$sql.= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=".$uid.") AS ranked,";
+		if ($uid) 
+		{
+			$sql .= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=" . $uid . ") AS ranked,";
 		}
-		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=ws.id) AS positive, ";
-		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
+		$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=ws.id) AS positive, ";
+		$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 
 		// Get xprofile info
-		$sql.= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by ) as grantedby, ";
-		$sql.= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned ) as assignedto, ";
+		$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by) as grantedby, ";
+		$sql .= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned) as assignedto, ";
 
 		// Get comments count
-		$sql.= "\n (SELECT count(*) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND CC.state=0 AND CC.category='wish') AS comments, ";
-		$sql.= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wish' WHERE CC.state=0 AND CC.category='wishcomment' AND C2.referenceid=ws.id) AS commentreplies, ";
-		$sql.= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wishcomment' JOIN #__comments AS C3 ON C3.id=C2.referenceid AND C3.category='wish'  WHERE CC.state=0 AND CC.category='wishcomment' AND C3.referenceid=ws.id) AS replyreplies, ";
-		$sql.= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
+		$sql .= "\n (SELECT count(*) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND CC.state=0 AND CC.category='wish') AS comments, ";
+		$sql .= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wish' WHERE CC.state=0 AND CC.category='wishcomment' AND C2.referenceid=ws.id) AS commentreplies, ";
+		$sql .= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wishcomment' JOIN #__comments AS C3 ON C3.id=C2.referenceid AND C3.category='wish'  WHERE CC.state=0 AND CC.category='wishcomment' AND C3.referenceid=ws.id) AS replyreplies, ";
+		$sql .= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
 
 		// Get abouse reports count
-		$sql.= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
+		$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
 
-		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
-		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort=6) AS num_skipped_votes, "; // did anyone skip effort selection?
-		$sql.= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
-		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort!=6) AS average_effort, ";
-		$sql.= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
-		$sql.= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";
+		$sql .= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
+		$sql .= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort=6) AS num_skipped_votes, "; // did anyone skip effort selection?
+		$sql .= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
+		$sql .= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort!=6) AS average_effort, ";
+		$sql .= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
+		$sql .= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";
 
-		$sql.= "\n FROM #__wishlist_item AS ws";
-		if ($refid && $cat) {
-			$sql.= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid='$refid' AND W.category='$cat' ";
+		$sql .= "\n FROM #__wishlist_item AS ws";
+		if ($refid && $cat) 
+		{
+			$sql .= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid='$refid' AND W.category='$cat' ";
 		}
-		$sql.= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
-		$sql.= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
-		$sql.= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
-		$sql.= "\n WHERE ws.id='".$wishid."' ";
-		if (!$deleted) {
-			$sql.=" AND ws.status!=2";
+		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
+		$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='" . $uid . "' ";
+		$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='" . $uid . "' ";
+		$sql .= "\n WHERE ws.id='" . $wishid . "' ";
+		if (!$deleted) 
+		{
+			$sql .=" AND ws.status!=2";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$res = $this->_db->loadObjectList();
 		$wish = ($res) ? $res[0] : array();
 
 		return $wish;
 	}
 
-	//----------
-	// Does the wish exist on this list?
-
 	/**
-	 * Short description for 'check_wish'
+	 * Does the wish exist on this list?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $wishid Parameter description (if any) ...
-	 * @param      string $listid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $wishid Wish ID
+	 * @param      integer $listid List ID
+	 * @return     mixed False if error, integer on success
 	 */
 	public function check_wish($wishid, $listid)
 	{
-		if ($wishid === NULL or $listid === NULL) {
+		if ($wishid === NULL or $listid === NULL) 
+		{
 			return false;
 		}
 
 		$query  = "SELECT id ";
 		$query .= "FROM #__wishlist_item  ";
-		$query .= "WHERE id = '".$wishid."' AND wishlist='".$listid."' LIMIT 1";
+		$query .= "WHERE id = '" . $wishid . "' AND wishlist='" . $listid . "' LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getWishID'
+	 * Get an entry ID based off of some filtrs
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $which Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $listid Parameter description (if any) ...
-	 * @param      unknown $admin Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $which   Sort records
+	 * @param      integer $id      Wish ID
+	 * @param      integer $listid  List ID
+	 * @param      integer $admin   Admin access?
+	 * @param      integer $uid     User ID.
+	 * @param      array   $filters Filters to build query from
+	 * @return     mixed False if error, integer on success
 	 */
 	public function getWishID($which, $id, $listid, $admin, $uid, $filters=array())
 	{
-		if ($which === NULL or $id === NULL or $listid === NULL) {
+		if ($which === NULL or $id === NULL or $listid === NULL) 
+		{
 			return false;
 		}
 
 		$query  = "SELECT ws.id ";
 		$query .= "FROM #__wishlist_item AS ws ";
-		if (isset($filters['tag']) && $filters['tag']!='') {
-			$query.= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
-			$query.= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
+		if (isset($filters['tag']) && $filters['tag']!='') 
+		{
+			$query .= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
+			$query .= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
-		$query .= "WHERE ws.wishlist='".$listid."' AND ";
-		$query .= ($which == 'prev')  ? "ws.id < '".$id."' " : "ws.id > '".$id."'";
+		$query .= "WHERE ws.wishlist='" . $listid . "' AND ";
+		$query .= ($which == 'prev')  ? "ws.id < '" . $id . "' " : "ws.id > '" . $id . "'";
 
-		if (isset($filters['filterby'])) {
+		if (isset($filters['filterby'])) 
+		{
 			switch ($filters['filterby'])
 			{
 				case 'all':    		$query .= ' AND ws.status!=2';
 									break;
-				case 'granted':    	$query.= ' AND ws.status=1';
+				case 'granted':    	$query .= ' AND ws.status=1';
 									break;
-				case 'open':    	$query.= ' AND ws.status=0';
+				case 'open':    	$query .= ' AND ws.status=0';
 									break;
-				case 'accepted':    $query.= ' AND ws.accepted=1 AND ws.status=0';
+				case 'accepted':    $query .= ' AND ws.accepted=1 AND ws.status=0';
 									break;
-				case 'pending':     $query.= ' AND ws.accepted=0 AND ws.status=0';
+				case 'pending':     $query .= ' AND ws.accepted=0 AND ws.status=0';
 									break;
-				case 'rejected':    $query.= ' AND ws.status=3';
+				case 'rejected':    $query .= ' AND ws.status=3';
 									break;
-				case 'withdrawn':   $query.= ' AND ws.status=4';
+				case 'withdrawn':   $query .= ' AND ws.status=4';
 									break;
-				case 'deleted':     $query.= ' AND ws.status=2';
+				case 'deleted':     $query .= ' AND ws.status=2';
 									break;
-				case 'useraccepted':$query.= ' AND ws.accepted=3 AND ws.status!=2';
+				case 'useraccepted':$query .= ' AND ws.accepted=3 AND ws.status!=2';
 									break;
-				case 'private':    	$query.= ' AND ws.status!=2 AND ws.private=1';
+				case 'private':    	$query .= ' AND ws.status!=2 AND ws.private=1';
 									break;
-				case 'public':    	$query.= ' AND ws.status!=2 AND ws.private=0';
+				case 'public':    	$query .= ' AND ws.status!=2 AND ws.private=0';
 									break;
-				case 'mine':    	if ($uid) {
-										$query.= ' AND ws.assigned="'.$uid.'" AND ws.status!=2';
-									}
-									break;
+				case 'mine':
+					if ($uid) 
+					{
+						$query .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
+					}
+				break;
 				case 'assigned':    $query .= ' AND ws.assigned NOT NULL AND ws.status!=2';
 									break;
 				default: 			$query .= ' AND ws.status!=2';
 									break;
 			}
-		} else {
+		} 
+		else 
+		{
 			$query .= ' AND ws.status!=2';
 		}
 
-		if (!$admin) {
-			$query.="\n AND ws.private='0' ";
+		if (!$admin) 
+		{
+			$query .="\n AND ws.private='0' ";
 		}
-		if (isset($filters['tag']) && $filters['tag']!='') {
-			$tagging = new WishTags( $this->_db );
+		if (isset($filters['tag']) && $filters['tag']!='') 
+		{
+			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$query .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN (";
-			$tquery = '';
-			foreach ($tags as $tagg)
-			{
-				$tquery .= "'".$tagg."',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") OR TA.raw_tag IN (".$tquery;
-			$query .= ")))";
+			$query .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN ('" . implode("','", $tags) . "') OR TA.raw_tag IN ('" . implode("','", $tags) . "')))";
 			$query .= " GROUP BY ws.id ";
 		}
 		$query .= ($which == 'prev') ? " ORDER BY ws.id DESC " : " ORDER BY ws.id ASC ";
 		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'get_vote'
+	 * Get the vote count on an object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $refid Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $refid    Reference object ID
+	 * @param      string  $category Reference object category
+	 * @param      integer $uid      User ID
+	 * @return     mixed False if error, integer on success
 	 */
 	public function get_vote($refid, $category= 'wish', $uid)
 	{
-		if ($refid === NULL or $uid === NULL) {
+		if ($refid === NULL or $uid === NULL) 
+		{
 			return false;
 		}
 
 		$query  = "SELECT v.helpful ";
 		$query .= "FROM #__vote_log as v  ";
-		$query .= "WHERE v.referenceid = '".$refid."' AND v.category='".$category."' AND v.voter='".$uid."' LIMIT 1";
+		$query .= "WHERE v.referenceid = '" . $refid . "' AND v.category='" . $category . "' AND v.voter='" . $uid . "' LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }

@@ -29,91 +29,83 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WishRank'
- * 
- * Long description (if any) ...
+ * Table class for wish ranking
  */
 class WishRank extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         	= NULL;  // @var int(11) Primary key
+	var $id         	= NULL;
 
 	/**
-	 * Description for 'wishid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $wishid      	= NULL;  // @var int
+	var $wishid      	= NULL;
 
 	/**
-	 * Description for 'userid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $userid 		= NULL;  // @var int
+	var $userid 		= NULL;
 
 	/**
-	 * Description for 'voted'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $voted    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $voted    	    = NULL;
 
 	/**
-	 * Description for 'importance'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $importance     = NULL;  // @var int(3)
+	var $importance     = NULL;
 
 	/**
-	 * Description for 'effort'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $effort		    = NULL;  // @var int(3)
+	var $effort		    = NULL;
 
 	/**
-	 * Description for 'due'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $due    	    = NULL;  // @var datetime (0000-00-00 00:00:00)
-
-	//-----------
+	var $due    	    = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wishlist_vote', 'id', $db );
+		parent::__construct('#__wishlist_vote', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->wishid ) == '') {
-			$this->setError( JText::_('WISHLIST_ERROR_NO_WISHID') );
+		if (trim($this->wishid) == '') 
+		{
+			$this->setError(JText::_('WISHLIST_ERROR_NO_WISHID'));
 			return false;
 		}
 
@@ -121,71 +113,75 @@ class WishRank extends JTable
 	}
 
 	/**
-	 * Short description for 'load_vote'
+	 * Get a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      unknown $wishid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid    User ID
+	 * @param      integer $wishid Wish ID
+	 * @return     boolean False if error, True on success
 	 */
-	public function load_vote( $oid=NULL, $wishid=NULL )
+	public function load_vote($oid=NULL, $wishid=NULL)
 	{
-		if ($oid === NULL) {
+		if ($oid === NULL) 
+		{
 			$oid = $this->userid;
 		}
-		if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			$wishid = $this->wishid;
 		}
 
-		if ($oid === NULL or $wishid === NULL) {
+		if ($oid === NULL or $wishid === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM #__wishlist_vote WHERE userid='$oid' AND wishid='$wishid'");
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE userid='$oid' AND wishid='$wishid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'get_votes'
+	 * Get votes on a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $wishid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $wishid Wish ID
+	 * @return     mixed False if error, array on success
 	 */
-	public function get_votes( $wishid=NULL )
+	public function get_votes($wishid=NULL)
 	{
-		if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			$wishid = $this->wishid;
 		}
 
-		if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM #__wishlist_vote WHERE wishid='$wishid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE wishid='$wishid'");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'remove_vote'
+	 * Remove a vote
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $wishid Parameter description (if any) ...
-	 * @param      string $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $wishid Wish ID
+	 * @param      integer $oid    User ID
+	 * @return     boolean False if error, True on success
 	 */
-	public function remove_vote( $wishid=NULL, $oid=NULL )
+	public function remove_vote($wishid=NULL, $oid=NULL)
 	{
-		if ($oid === NULL) {
+		if ($oid === NULL) 
+		{
 			$oid = $this->userid;
 		}
-		if ($wishid === NULL) {
+		if ($wishid === NULL) 
+		{
 			$wishid = $this->wishid;
 		}
 
@@ -193,13 +189,15 @@ class WishRank extends JTable
 			return false;
 		}
 
-		$query = "DELETE FROM #__wishlist_vote WHERE wishid='$wishid'";
-		if ($oid) {
-			$query .= " AND userid=".$oid;
+		$query = "DELETE FROM $this->_tbl WHERE wishid='$wishid'";
+		if ($oid) 
+		{
+			$query .= " AND userid=" . $oid;
 		}
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 

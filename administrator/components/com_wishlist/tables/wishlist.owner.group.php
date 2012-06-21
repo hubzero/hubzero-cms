@@ -29,118 +29,122 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Group');
 
 /**
- * Short description for 'WishlistOwnerGroup'
- * 
- * Long description (if any) ...
+ * Table class for wishlist owner group
  */
 class WishlistOwnerGroup extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
 	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'wishlist'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $wishlist	= NULL;  // @var int(11)
+	var $wishlist	= NULL;
 
 	/**
-	 * Description for 'groupid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $groupid	= NULL;  // @var int(11)
-
-	//-----------
+	var $groupid	= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wishlist_ownergroups', 'id', $db );
+		parent::__construct('#__wishlist_ownergroups', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'get_owner_groups'
+	 * Get the groups ow a wishlist owner
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $listid Parameter description (if any) ...
-	 * @param      string $controlgroup Parameter description (if any) ...
-	 * @param      mixed $wishlist Parameter description (if any) ...
-	 * @param      integer $native Parameter description (if any) ...
-	 * @param      array $groups Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $listid       List ID
+	 * @param      string  $controlgroup Control group name
+	 * @param      object  $wishlist     Wishlist
+	 * @param      integer $native       Get groups assigned to this wishlist?
+	 * @param      array   $groups       List of gorups
+	 * @return     mixed False if errors, array on success
 	 */
-	public function get_owner_groups($listid, $controlgroup='', $wishlist='', $native=0, $groups = array())
+	public function get_owner_groups($listid, $controlgroup='', $wishlist=null, $native=0, $groups = array())
 	{
 		ximport('Hubzero_Group');
 
-		if ($listid === NULL) {
+		if ($listid === NULL) 
+		{
 			return false;
 		}
 
 		$wishgroups = array();
 
-		$obj = new Wishlist( $this->_db );
+		$obj = new Wishlist($this->_db);
 
 		// if tool, get tool group
-		if (!$wishlist) {
+		if (!$wishlist) 
+		{
 			$wishlist = $obj->get_wishlist($listid);
 		}
-		if (isset($wishlist->resource) && $wishlist->resource->type=='7') {
+		if (isset($wishlist->resource) && $wishlist->resource->type == 7) 
+		{
 			$toolgroup = $obj->getToolDevGroup ($wishlist->referenceid);
-			if ($toolgroup) { $groups[] = $toolgroup; }
+			if ($toolgroup) 
+			{
+				$groups[] = $toolgroup;
+			}
 		}
 
 		// if primary list, add all site admins
-		if ($controlgroup && $wishlist->category=='general') {
+		if ($controlgroup && $wishlist->category == 'general') 
+		{
 			$instance = Hubzero_Group::getInstance($controlgroup);
 
-			if (is_object($instance)) {
+			if (is_object($instance)) 
+			{
 				$gid = $instance->get('gidNumber');
-				if ($gid) {
+				if ($gid) 
+				{
 					$groups[] = $gid;
 				}
 			}
 		}
 
 		// if private group list, add the group
-		if ($wishlist->category == 'group') {
+		if ($wishlist->category == 'group') 
+		{
 			$groups[] = $wishlist->referenceid;
 		}
 
 		// get groups assigned to this wishlist
-		if (!$native) {
+		if (!$native) 
+		{
 			$sql = "SELECT o.groupid"
 				. "\n FROM #__wishlist_ownergroups AS o "
-				. "\n WHERE o.wishlist='".$listid."'";
+				. "\n WHERE o.wishlist='" . $listid . "'";
 
-			$this->_db->setQuery( $sql );
+			$this->_db->setQuery($sql);
 			$wishgroups = $this->_db->loadObjectList();
 
-			if ($wishgroups) {
+			if ($wishgroups) 
+			{
 				foreach ($wishgroups as $wg)
 				{
-					if (Hubzero_Group::exists($wg->groupid)) {
-						$groups[]=$wg->groupid;
+					if (Hubzero_Group::exists($wg->groupid)) 
+					{
+						$groups[] = $wg->groupid;
 					}
 				}
 			}
@@ -152,71 +156,77 @@ class WishlistOwnerGroup extends JTable
 	 }
 
 	/**
-	 * Short description for 'delete_owner_group'
+	 * Remove a user as owner
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $listid Parameter description (if any) ...
-	 * @param      string $groupid Parameter description (if any) ...
-	 * @param      unknown $admingroup Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $listid     List ID
+	 * @param      integer $groupid    Group ID
+	 * @param      object  $admingroup Admin group
+	 * @return     boolean False if errors, true on success
 	 */
 	 public function delete_owner_group($listid, $groupid, $admingroup)
 	 {
 	 	ximport('Hubzero_Group');
 
-		if ($listid === NULL or $groupid === NULL) {
+		if ($listid === NULL or $groupid === NULL) 
+		{
 			return false;
 		}
 
 		$nativegroups = $this->get_owner_groups($listid, $admingroup, '', 1);
 
 		// cannot delete "native" owners (e.g. tool dev group)
-		if (Hubzero_Group::exists($groupid) && !in_array($groupid, $nativegroups, true)) {
-			$query = "DELETE FROM $this->_tbl WHERE wishlist='". $listid."' AND groupid='".$groupid."'";
-			$this->_db->setQuery( $query );
+		if (Hubzero_Group::exists($groupid) 
+		 && !in_array($groupid, $nativegroups, true)) 
+		{
+			$query = "DELETE FROM $this->_tbl WHERE wishlist='" . $listid . "' AND groupid='" . $groupid . "'";
+			$this->_db->setQuery($query);
 			$this->_db->query();
+			return true;
 		}
 	}
 
 	/**
-	 * Short description for 'save_owner_groups'
+	 * Add a user as owner to groups
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $listid Parameter description (if any) ...
-	 * @param      unknown $admingroup Parameter description (if any) ...
-	 * @param      array $newgroups Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $listid     Wishlist ID
+	 * @param      object  $admingroup Admin group
+	 * @param      array   $newgroups  Groups to add to
+	 * @return     boolean True on success
 	 */
 	public function save_owner_groups($listid, $admingroup, $newgroups = array())
 	{
-		if ($listid === NULL) {
+		if ($listid === NULL) 
+		{
 			return false;
 		}
 
 		$groups = $this->get_owner_groups($listid, $admingroup);
 
-		if( count($newgroups) > 0)  {
+		if (count($newgroups) > 0) 
+		{
 			foreach ($newgroups as $ng)
 			{
 				$instance = Hubzero_Group::getInstance($ng);
-				if (is_object($instance))  {
+				if (is_object($instance)) 
+				{
 					$gid = $instance->get('gidNumber');
 
-					if ($gid && !in_array($gid, $groups, true)) {
-						$this->id = 0;
-						$this->groupid = $gid;
+					if ($gid && !in_array($gid, $groups, true)) 
+					{
+						$this->id       = 0;
+						$this->groupid  = $gid;
 						$this->wishlist = $listid;
 
-						if (!$this->store()) {
-							$this->setError( JText::_('Failed to add a user.') );
+						if (!$this->store()) 
+						{
+							$this->setError(JText::_('Failed to add a user.'));
 							return false;
 						}
 					}
 				}
 			}
 		}
+		return true;
 	}
 }
 
