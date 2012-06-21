@@ -131,6 +131,18 @@ public function submitbutton(pressbutton)
 			 </tbody>
 			</table>
 		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('PICTURE'); ?></span></legend>
+<?php
+	if ($this->row->id != 0) {
+?>
+			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->row->id; ?>"></iframe>
+<?php
+	} else {
+		echo '<p class="alert">' . JText::_('MUST_BE_SAVED_BEFORE_PICTURE') . '</p>';
+	}
+?>
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 	
