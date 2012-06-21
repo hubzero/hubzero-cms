@@ -93,14 +93,12 @@ class StoreHtml
 
 		for ($i=0, $n=count($images); $i < $n; $i++)
 		{
-			$pic = explode('.', $images[$i]);
-			$c = count($pic);
-			$pic[$c-2] .= '-tn';
-			$end = array_pop($pic);
-			$pic[] = 'gif';
-			$tn = implode('.', $pic);
+			jimport('joomla.filesystem.file');
+			
+			$ext = JFile::getExt($images[$i]);
+			$tn = JFile::stripExt($images[$i]) . '-tn.' .  $ext;
 
-			$type = explode('.', $images[$i]);
+			//$type = explode('.', $images[$i]);
 
 			if (is_file($root . $wpath . $item . DS . $tn)) 
 			{

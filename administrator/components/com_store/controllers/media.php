@@ -86,23 +86,38 @@ class StoreControllerMedia extends Hubzero_Controller
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
+		require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php');
+
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
-			$file = $curfile;
 		}
 		else
 		{
+			$ih = new StoreImgHandler();
+	
 			// Do we have an old file we're replacing?
-			$curfile = JRequest::getVar('current', '');
-
-			if ($curfile != '' && $curfile != $file['name'])
+			if (($curfile = JRequest::getVar('current', ''))) 
 			{
-				// Yes - remove it
-				if (file_exists($path . DS . $curfile))
+				// Remove old image
+				if (file_exists($path . DS . $curfile)) 
 				{
-					if (!JFile::delete($path . DS . $curfile))
+					if (!JFile::delete($path . DS . $curfile)) 
+					{
+						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+						$this->displayTask($id);
+						return;
+					}
+				}
+
+				// Get the old thumbnail name
+				$curthumb = $ih->createThumbName($curfile);
+
+				// Remove old thumbnail
+				if (file_exists($path . DS . $curthumb)) 
+				{
+					if (!JFile::delete($path . DS . $curthumb)) 
 					{
 						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
@@ -110,10 +125,22 @@ class StoreControllerMedia extends Hubzero_Controller
 					}
 				}
 			}
+
+			// Create a thumbnail image
+			$ih->set('image', $file['name']);
+			$ih->set('path', $path . DS);
+			$ih->set('maxWidth', 300);
+			$ih->set('maxHeight', 300);
+			$ih->set('cropratio', '1:1');
+			$ih->set('outputName', $ih->createThumbName());
+			if (!$ih->process()) 
+			{
+				$this->setError($ih->getError());
+			}
 		}
 
 		// Push through to the image view
-		$this->dipslayTask($id);
+		$this->displayTask($id);
 	}
 
 	/**
@@ -189,6 +216,8 @@ class StoreControllerMedia extends Hubzero_Controller
 
 		if (is_dir($path))
 		{
+			jimport('joomla.filesystem.file');
+
 			// Loop through all files and separate them into arrays of images, folders, and other
 			$dirIterator = new DirectoryIterator($path);
 			foreach ($dirIterator as $file)
@@ -216,6 +245,12 @@ class StoreControllerMedia extends Hubzero_Controller
 
 					if (preg_match("#bmp|gif|jpg|png|swf#i", $name))
 					{
+						$base = JFile::stripExt($name);
+						if (substr($base, -3) == '-tn')
+						{
+							continue;
+						}
+
 						$imgs[$path . DS . $name] = $name;
 					}
 					else

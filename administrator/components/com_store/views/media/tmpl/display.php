@@ -69,6 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	if ($this->file && file_exists(JPATH_ROOT . $this->path . DS . $this->file)) 
 	{
+		ximport('Hubzero_View_Helper_Html');
 		$this_size = filesize(JPATH_ROOT . $this->path . DS . $this->file);
 		list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $this->path . DS . $this->file);
 ?>
@@ -93,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->cotnroller; ?>&amp;tmpl=component&amp;task=delete&amp;current=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=delete&amp;current=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 			</tr>
 <?php } else { ?>
 			<tr>
