@@ -36,7 +36,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class ResourcesUtilities
 {
-
 	/**
 	 * Cleans, normalizes, and constructs full path to media directory
 	 * 

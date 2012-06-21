@@ -30,20 +30,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = MembersHelper::getActions('component');
+
 $juser = & JFactory::getUser();
 
 JToolBarHelper::title(JText::_('MEMBERS'), 'user.png');
-JToolBarHelper::preferences('com_members', '550');
-JToolBarHelper::spacer();
-JToolBarHelper::publishList('confirm', JText::_('Confirm'));
-JToolBarHelper::unpublishList('unconfirm', JText::_('Unconfirm'));
-JToolBarHelper::spacer();
-if ($juser->authorize('com_members', 'admin')) 
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences($this->option, '550');
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.edit.state')) 
+{
+	JToolBarHelper::publishList('confirm', JText::_('Confirm'));
+	JToolBarHelper::unpublishList('unconfirm', JText::_('Unconfirm'));
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
 }
-JToolBarHelper::editList();
-if ($juser->authorize('com_members', 'admin')) 
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
 {
 	JToolBarHelper::deleteList();
 }

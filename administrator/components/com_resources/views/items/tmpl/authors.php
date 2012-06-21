@@ -31,8 +31,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $document =& JFactory::getDocument();
-$document->addScript('components/'.$this->option.'/xsortables.js');
-$document->addScript('components/'.$this->option.'/resources.js');
+$document->addScript('components/'.$this->option.'/assets/js/xsortables.js');
+$document->addScript('components/'.$this->option.'/assets/js/resources.js');
 
 $authIDs = array();
 ?>

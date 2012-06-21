@@ -15,31 +15,29 @@
 	.writeable,
 	.public, a.public {
 		color: green;
-		}
+	}
 	.no,
 	.disabled,
 	.unwriteable,
 	.registered, 
 	a.registered {
 		color: red;
-		}
+	}
 	.special, 
 	a.special { 
 		color: black; 
-		}
+	}
 	.enabled,
 	.writeable,
 	.disabled,
 	.unwriteable {
 		font-weight: bold;
-		}
-	
+	}
 	.clear {
 		clear: both;
 		margin: 0;
 		padding: 0;
-		}
-	
+	}
 	.draft,
 	.draftinternal,
 	.draftexternal,
@@ -55,8 +53,7 @@
 		display: block; 
 		width: 12px; 
 		height: 12px; 
-		}
-	
+	}
 	.draft span,
 	.draftinternal span,
 	.draftexternal span,
@@ -70,19 +67,18 @@
 	.deleted span,
 	.upload span { 
 		display: none; 
-		}	
-
+	}	
 	.check,
-	.published { background: url("images/check.gif") 0 0 no-repeat; }
-	.pending { background: url("images/check_circle.gif") 0 0 no-repeat; }
-	.expired { background: url("images/check_star.gif") 0 0 no-repeat; }
-	.unpublished { background: url("images/minus.gif") 0 0 no-repeat; }
-	.upload { background: url("images/upload.gif") 0 0 no-repeat; }
-	.submitted { background: url("images/pending.gif") 0 0 no-repeat; }
-	.draftexternal, .draft { background: url("images/draft_external.gif") 0 0 no-repeat; }
-	.draftinternal { background: url("images/draft_internal.gif") 0 0 no-repeat; }
-	.deleted { background: url("images/deleted.gif") 0 0 no-repeat; }
-	
+	.published { background: url("../img/check.gif") 0 0 no-repeat; }
+	.pending { background: url("../img/check_circle.gif") 0 0 no-repeat; }
+	.expired { background: url("../img/check_star.gif") 0 0 no-repeat; }
+	.unpublished { background: url("../img/minus.gif") 0 0 no-repeat; }
+	.upload { background: url("../img/upload.gif") 0 0 no-repeat; }
+	.submitted { background: url("../img/pending.gif") 0 0 no-repeat; }
+	.draftexternal, 
+	.draft { background: url("../img/draft_external.gif") 0 0 no-repeat; }
+	.draftinternal { background: url("../img/draft_internal.gif") 0 0 no-repeat; }
+	.deleted { background: url("../img/deleted.gif") 0 0 no-repeat; }
 	.hasassoc,
 	.noassoc { 
 		padding: 0;
@@ -91,17 +87,22 @@
 		width: 12px;
 		height: 12px;
 		border: none;
-		}
-	.hasassoc { background: url("images/tags.gif") 0 0 no-repeat; }
-	.noassoc { background: url("images/tags.gif") 0 -12px no-repeat; }
+	}
+	.hasassoc { 
+		background: url("../img/tags.gif") 0 0 no-repeat; 
+	}
+	.noassoc { 
+		background: url("../img/tags.gif") 0 -12px no-repeat; 
+	}
 	.hasassoc:hover,
-	.noassoc:hover { border: none; }
-
+	.noassoc:hover { 
+		border: none; 
+	}
 	ul.key {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		}
+	}
 	ul.key li.draft,
 	ul.key li.draftinternal,
 	ul.key li.draftexternal,
@@ -110,13 +111,13 @@
 	ul.key li.pending,
 	ul.key li.expired,
 	ul.key li.deleted,
+	ul.key li.new,
 	ul.key li.unpublished { 
 		margin: 0;
 		padding-left: 18px;
 		width: auto;
 		height: auto;
-		}
-	
+	}
 	.draft:hover,
 	.draftinternal:hover,
 	.draftexternal:hover,
@@ -126,28 +127,31 @@
 	.expired:hover,
 	.unpublished:hover,
 	.deleted:hover,
-	.upload:hover { border: none; }
-	
-	.check { text-indent: 50px; overflow: hidden; }
-	
+	.upload:hover { 
+		border: none;
+	}
+	.check { 
+		text-indent: 50px; 
+		overflow: hidden;
+	}
 	#author-list { 
 		list-style: none;
 		margin: 0.5em;
 		padding-left: 0;
-		}
+	}
 	#author-list li {
 		border: 1px solid #ddd;
 		background: #efefef;
 		margin: 0 0 3px 0;
 		padding: 3px;
 		position: relative;
-		}
+	}
 	#author-list li .handle {
 		cursor:move;
 		float: right;
 		font-weight: bold;
 		color: #999;
-		}
+	}
 	#resource-custom-fields label {
 		display: block;
 	}

@@ -61,6 +61,7 @@ else
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'imghandler.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'profile.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'association.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'members.php');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_User_Profile');
 

@@ -28,13 +28,18 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$text = ( $this->task == 'edit' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+$canDo = MembersHelper::getActions('component');
 
-JToolBarHelper::title( JText::_( 'MEMBER' ).': <small><small>[ '. $text.' ]</small></small>', 'user.png' );
-JToolBarHelper::apply();
-JToolBarHelper::save();
+$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+
+JToolBarHelper::title(JText::_('MEMBER').': <small><small>[ '. $text.' ]</small></small>', 'user.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::apply();
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 ?>
 <script type="text/javascript">
@@ -43,11 +48,11 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 	
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -90,5 +95,5 @@ function submitbutton(pressbutton)
 		</table>
 	</div>
 	<div class="clr"></div>
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

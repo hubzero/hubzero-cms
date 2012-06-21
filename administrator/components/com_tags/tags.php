@@ -29,29 +29,59 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
 
-// Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize( $option, 'manage' )) {
-	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'handler.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
+
+$controllerName = JRequest::getCmd('controller', 'entries');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'entries';
+}
+
+JSubMenuHelper::addEntry(
+	JText::_('Tags'),
+	'index.php?option=com_tags',
+	true
+);
+JSubMenuHelper::addEntry(
+	JText::_('Plugins'),
+	'index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags'
+);
+
 // Include scripts
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'handler.php' );
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'TagsController' . ucfirst($controllerName);
 
 // Initiate controller
-$controller = new TagsController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

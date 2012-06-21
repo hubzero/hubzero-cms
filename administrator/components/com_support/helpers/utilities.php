@@ -29,55 +29,56 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Support Utilities class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Long description (if any) ...
+ * Support Utilities class
  */
 class SupportUtilities
 {
-
 	/**
-	 * Short description for 'sendEmail'
+	 * Send an email
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $email Parameter description (if any) ...
-	 * @param      unknown $subject Parameter description (if any) ...
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      array $from Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $email             Address to send to
+	 * @param      string $subject           Message subject
+	 * @param      string $message           Message to send
+	 * @param      array  $from              Who the message is from
+	 * @param      array  $replyto           Reply to information
+	 * @param      array  $additionalHeaders More headers to apply
+	 * @return     integer 1 = success, 0 = failure
 	 */
 	public function sendEmail($email, $subject, $message, $from, $replyto = '', $additionalHeaders = null)
 	{
-		if ($from) {
+		if ($from) 
+		{
 			$args = "-f '" . $from['email'] . "'";
 			$headers  = "MIME-Version: 1.0\n";
 			$headers .= "Content-type: text/plain; charset=utf-8\n";
 			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
 
 			if ($replyto)
-			  $headers .= 'Reply-To: ' . $replyto['name'] .' <'. $replyto['email'] . ">\n";
+			{
+				$headers .= 'Reply-To: ' . $replyto['name'] .' <'. $replyto['email'] . ">\n";
+			}
 			else
-			  $headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
+			{
+				$headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
+			}
 
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
 			$headers .= 'X-Mailer: '. $from['name'] ."\n";
 
-			if(!is_null($additionalHeaders))
+			if (!is_null($additionalHeaders))
 			{
-				foreach($additionalHeaders as $header)
+				foreach ($additionalHeaders as $header)
 				{
-					$headers .= $header['name'] . ": " . $header['value'] . "\n";
+					$headers .= $header['name'] . ': ' . $header['value'] . "\n";
 				}
 			}
 
-			if (mail($email, $subject, $message, $headers, $args)) {
+			if (mail($email, $subject, $message, $headers, $args)) 
+			{
 				return(1);
 			}
 		}
@@ -85,68 +86,63 @@ class SupportUtilities
 	}
 
 	/**
-	 * Short description for 'checkValidLogin'
+	 * Check if a username is valid
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $login Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $login Username to check
+	 * @return     boolean True if valid
 	 */
 	public function checkValidLogin($login)
 	{
-		if (preg_match("#^[_0-9a-zA-Z]+$#i", $login)) {
-			return(1);
-		} else {
-			return(0);
+		if (preg_match("#^[_0-9a-zA-Z]+$#i", $login)) 
+		{
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'checkValidEmail'
+	 * Check if an email address is valid
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $email Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $email Address to check
+	 * @return     boolean True if valid
 	 */
 	public function checkValidEmail($email)
 	{
-		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) {
-			return(1);
-		} else {
-			return(0);
+		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) 
+		{
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'getSeverities'
+	 * Generate an array of severities
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $severities Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $severities Comma-separated list
+	 * @return     array 
 	 */
 	public function getSeverities($severities)
 	{
-		if ($severities) {
+		if ($severities) 
+		{
 			$s = array();
 			$svs = explode(',', $severities);
 			foreach ($svs as $sv)
 			{
 				$s[] = trim($sv);
 			}
-		} else {
-			$s = array('critical','major','normal','minor','trivial');
+		} 
+		else 
+		{
+			$s = array('critical', 'major', 'normal', 'minor', 'trivial');
 		}
 		return $s;
 	}
 
 	/**
-	 * Short description for 'getFilters'
+	 * Retrieve and parse incoming filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function getFilters()
 	{
@@ -155,45 +151,44 @@ class SupportUtilities
 
 		// Query filters defaults
 		$filters = array();
-		$filters['search'] = '';
-		$filters['status'] = 'open';
-		$filters['type'] = 0;
-		$filters['owner'] = '';
+		$filters['search']     = '';
+		$filters['status']     = 'open';
+		$filters['type']       = 0;
+		$filters['owner']      = '';
 		$filters['reportedby'] = '';
-		$filters['severity'] = 'normal';
-		$filters['severity'] = '';
-		//$filters['section'] = 0;
-		//$filters['category'] = '';
-		$filters['sort'] = trim($app->getUserStateFromRequest($this->_option.'.tickets.sort', 'filter_order', 'created'));
-		$filters['sortdir'] = trim($app->getUserStateFromRequest($this->_option.'.tickets.sortdir', 'filter_order_Dir', 'DESC'));
+		$filters['severity']   = 'normal';
+		$filters['severity']   = '';
+
+		$filters['sort']       = trim($app->getUserStateFromRequest($this->_option . '.tickets.sort', 'filter_order', 'created'));
+		$filters['sortdir']    = trim($app->getUserStateFromRequest($this->_option . '.tickets.sortdir', 'filter_order_Dir', 'DESC'));
 
 		// Paging vars
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.tickets.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = $app->getUserStateFromRequest($this->_option.'.tickets.limitstart', 'limitstart', 0, 'int');
+		$filters['limit']      = $app->getUserStateFromRequest($this->_option . '.tickets.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$filters['start']      = $app->getUserStateFromRequest($this->_option . '.tickets.limitstart', 'limitstart', 0, 'int');
 
 		// Incoming
-		$filters['_find'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.tickets.find', 'find', '')));
-		$filters['_show'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.tickets.show', 'show', '')));
+		$filters['_find']      = urldecode(trim($app->getUserStateFromRequest($this->_option . '.tickets.find', 'find', '')));
+		$filters['_show']      = urldecode(trim($app->getUserStateFromRequest($this->_option . '.tickets.show', 'show', '')));
 
 		// Break it apart so we can get our filters
 		// Starting string hsould look like "filter:option filter:option"
-		if ($filters['_find'] != '') {
+		if ($filters['_find'] != '') 
+		{
 			$chunks = explode(' ', $filters['_find']);
 			$filters['_show'] = '';
-		} else {
+		} 
+		else 
+		{
 			$chunks = explode(' ', $filters['_show']);
 		}
 
 		// Loop through each chunk (filter:option)
 		foreach ($chunks as $chunk)
 		{
-			if (!strstr($chunk,':')) {
-				if ((substr($chunk, 0, 1) == '"'
-				 || substr($chunk, 0, 1) == "'")
-				 && (substr($chunk, -1) == '"'
-				 || substr($chunk, -1) == "'")) {
-					$chunk = substr($chunk, 1, -1);  // Remove any surrounding quotes
-				}
+			if (!strstr($chunk, ':')) 
+			{
+				$chunk = trim($chunk, '"');
+				$chunk = trim($chunk, "'");
 
 				$filters['search'] = $chunk;
 				continue;
@@ -207,47 +202,58 @@ class SupportUtilities
 			{
 				case 'q':
 					$pieces[0] = 'search';
-					if (isset($pieces[1])) {
-						// Queries must be in quotes. If they're not, we ignore it
-						if ((substr($pieces[1], 0, 1) == '"'
-						|| substr($pieces[1], 0, 1) == "'")
-						&& (substr($pieces[1], -1) == '"'
-						|| substr($pieces[1], -1) == "'")) {
-							$pieces[1] = substr($pieces[1], 1, -1);  // Remove any surrounding quotes
-						}
-					} else {
+					if (isset($pieces[1])) 
+					{
+						$pieces[1] = trim($pieces[1], '"');  // Remove any surrounding quotes
+						$pieces[1] = trim($pieces[1], "'");  // Remove any surrounding quotes
+					} 
+					else 
+					{
 						$pieces[1] = $filters[$pieces[0]];
 					}
 				break;
 				case 'status':
-					$allowed = array('open','closed','all','waiting','new');
-					if (!in_array($pieces[1],$allowed)) {
+					$allowed = array('open', 'closed', 'all', 'waiting', 'new');
+					if (!in_array($pieces[1], $allowed)) 
+					{
 						$pieces[1] = $filters[$pieces[0]];
 					}
 				break;
 				case 'type':
-					$allowed = array('submitted'=>0,'automatic'=>1,'none'=>2,'tool'=>3);
-					if (in_array($pieces[1],$allowed)) {
-						//$pieces[1] = ($pieces[1] == $allowed[0]) ? 0 : 1;
+					$allowed = array(
+						'submitted' => 0,
+						'automatic' => 1,
+						'none'      => 2,
+						'tool'      => 3
+					);
+					if (in_array($pieces[1],$allowed)) 
+					{
 						$pieces[1] = $allowed[$pieces[1]];
-					} else {
+					} 
+					else 
+					{
 						$pieces[1] = 0;
 					}
 				break;
 				case 'owner':
 				case 'reportedby':
-					if (isset($pieces[1])) {
-						if ($pieces[1] == 'me') {
+					if (isset($pieces[1])) 
+					{
+						if ($pieces[1] == 'me') 
+						{
 							$juser =& JFactory::getUser();
 							$pieces[1] = $juser->get('username');
-						} else if ($pieces[1] == 'none') {
+						} 
+						else if ($pieces[1] == 'none') 
+						{
 							$pieces[1] = 'none';
 						}
 					}
 				break;
 				case 'severity':
 					$allowed = array('critical', 'major', 'normal', 'minor', 'trivial');
-					if (!in_array($pieces[1],$allowed)) {
+					if (!in_array($pieces[1], $allowed)) 
+					{
 						$pieces[1] = $filters[$pieces[0]];
 					}
 				break;
@@ -255,15 +261,6 @@ class SupportUtilities
 
 			$filters[$pieces[0]] = (isset($pieces[1])) ? $pieces[1] : '';
 		}
-
-		// Check if we have a section:category
-		/*$secat = trim(JRequest::getVar( 'category', '' ));
-		if ($secat) {
-			// Break it apart to get the individual pieces
-			$bits = explode(':',$filters['category']);
-			$filters['category'] = end($bits);
-			$filters['section'] = $bits[0];
-		}*/
 
 		// Return the array
 		return $filters;

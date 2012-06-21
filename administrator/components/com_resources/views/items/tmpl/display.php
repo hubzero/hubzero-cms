@@ -30,17 +30,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Resource Manager') . '</a>', 'addedit.png');
-JToolBarHelper::preferences($this->option, '550');
-JToolBarHelper::spacer();
-JToolBarHelper::addNew('addchild', 'Add Child');
-JToolBarHelper::spacer();
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+$canDo = ResourcesHelper::getActions('resource');
+
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Resource Manager') . '</a>', 'generic.png');
+if ($canDo->get('core.admin')) 
+{
+	JToolBarHelper::preferences($this->option, '550');
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew('addchild', 'Add Child');
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.edit.state')) 
+{
+	JToolBarHelper::publishList();
+	JToolBarHelper::unpublishList();
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 
 $dateFormat = 'd M, Y';
 $timeFormat = 'H:m a';

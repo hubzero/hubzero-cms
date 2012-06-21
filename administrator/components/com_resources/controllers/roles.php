@@ -36,12 +36,12 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.type.php');
 
 /**
- * Manage resource types
+ * Manage resource author roles
  */
 class ResourcesControllerRoles extends Hubzero_Controller
 {
 	/**
-	 * List resource types
+	 * List resource roles
 	 * 
 	 * @return     void
 	 */
@@ -108,7 +108,10 @@ class ResourcesControllerRoles extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -116,23 +119,26 @@ class ResourcesControllerRoles extends Hubzero_Controller
 	}
 
 	/**
-	 * Add a new type
+	 * Add a new role
 	 * 
 	 * @return     void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
-	 * Edit a type
+	 * Edit a role
 	 * 
 	 * @return     void
 	 */
 	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
 		if ($row)
 		{
 			$this->view->row = $row;
@@ -168,14 +174,17 @@ class ResourcesControllerRoles extends Hubzero_Controller
 		{
 			$this->view->row->types = array();
 		}
-		
+
 		$types = new ResourcesType($this->database);
 		$this->view->types = $types->getMajorTypes();
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -183,7 +192,7 @@ class ResourcesControllerRoles extends Hubzero_Controller
 	}
 
 	/**
-	 * Save a type
+	 * Save a role
 	 * 
 	 * @return     void
 	 */
@@ -200,7 +209,6 @@ class ResourcesControllerRoles extends Hubzero_Controller
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -209,7 +217,6 @@ class ResourcesControllerRoles extends Hubzero_Controller
 		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -218,18 +225,16 @@ class ResourcesControllerRoles extends Hubzero_Controller
 		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
-		
+
 		$types = JRequest::getVar('types', array(), 'post');
 		$types = array_map('trim', $types);
-		
+
 		if (!$row->setTypesForRole($row->id, $types))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}

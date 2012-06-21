@@ -36,16 +36,12 @@ ximport('Hubzero_User_Profile');
 ximport('Hubzero_Bank');
 
 /**
- * Short description for 'UserpointsController'
- * 
- * Long description (if any) ...
+ * Members controller class for user points
  */
 class MembersControllerPoints extends Hubzero_Controller
 {
 	/**
-	 * Short description for 'summary'
-	 * 
-	 * Long description (if any) ...
+	 * Display an overview of point earnings
 	 * 
 	 * @return     void
 	 */
@@ -70,7 +66,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('', 'deposit', '', 0, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('', 'deposit', '', 0, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('', 'deposit', '', 0, '', '', 1, '', $calc=1))
+		);
 
 		// Get overall earnings on Answers
 		$this->view->stats[] = array(
@@ -82,7 +79,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc=1))
+		);
 
 		// Get overall earnings on Wishes
 		$this->view->stats[] = array(
@@ -94,7 +92,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc=1))
+		);
 
 		// Get overall spending
 		$this->view->stats[] = array(
@@ -106,7 +105,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+		);
 
 		// Get overall spending in Store
 		$this->view->stats[] = array(
@@ -118,7 +118,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+		);
 
 		// Get overall spending on Answers
 		$this->view->stats[] = array(
@@ -130,7 +131,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+		);
 
 		// Get overall spending on Wishes
 		$this->view->stats[] = array(
@@ -142,7 +144,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+		);
 
 		// Get royalties
 		$this->view->stats[] = array(
@@ -154,7 +157,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+		);
 
 		// Get royalties on answers
 		$this->view->stats[] = array(
@@ -166,7 +170,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+		);
 
 		// Get royalties on reviews
 		$this->view->stats[] = array(
@@ -178,7 +183,8 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+		);
 
 		// Get royalties on resource contributions
 		$this->view->stats[] = array(
@@ -190,12 +196,16 @@ class MembersControllerPoints extends Hubzero_Controller
 			'alltimetran'   => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
 			'thismonthtran' => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
 			'lastmonthtran' => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1)));
+			'avg'           => round($BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+		);
 
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -203,9 +213,7 @@ class MembersControllerPoints extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'edit'
-	 * 
-	 * Long description (if any) ...
+	 * Edit an entry
 	 * 
 	 * @return     void
 	 */
@@ -234,7 +242,10 @@ class MembersControllerPoints extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -254,11 +265,9 @@ class MembersControllerPoints extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function saveTask()
 	{
@@ -390,8 +399,8 @@ class MembersControllerPoints extends Hubzero_Controller
 
 		for ($i=0; $i < count($points); $i++)
 		{
-	    	$point = intval($points[$i]);
-	    	$description = $descriptions[$i];
+			$point = intval($points[$i]);
+			$description = $descriptions[$i];
 			$alias = $aliases[$i];
 			if ($point) 
 			{
@@ -417,7 +426,10 @@ class MembersControllerPoints extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -425,9 +437,7 @@ class MembersControllerPoints extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'process_batch'
-	 * 
-	 * Long description (if any) ...
+	 * Process a batch of records
 	 * 
 	 * @return     void
 	 */
@@ -458,7 +468,7 @@ class MembersControllerPoints extends Hubzero_Controller
 			{ // run only once
 				// get array of affected users
 				$users = str_replace(' ', ',', $data['users']);
-				$users = preg_split('/,/', $users);
+				$users = explode(',', $users);
 				$users = array_unique($users); // get rid of duplicates
 
 				foreach ($users as $user)
@@ -510,7 +520,7 @@ class MembersControllerPoints extends Hubzero_Controller
 			$this->_message = JText::_('Could not process. Some required fields are missing.');
 		}
 
-		// show output if run manually						
+		// show output if run manually
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=batch',
 			JText::_($this->_message)
@@ -518,9 +528,7 @@ class MembersControllerPoints extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'royalty'
-	 * 
-	 * Long description (if any) ...
+	 * Calculate royalties
 	 * 
 	 * @return     void
 	 */
@@ -555,7 +563,7 @@ class MembersControllerPoints extends Hubzero_Controller
 		$AE = new AnswersEconomy($this->database);
 		$accumulated = 0;
 
-		// Get Royalties on Answers		
+		// Get Royalties on Answers
 		if (!$royaltyAnswers) 
 		{
 			$rows = $AE->getQuestions();
@@ -702,12 +710,12 @@ class MembersControllerPoints extends Hubzero_Controller
 		} 
 		else 
 		{
-			$this->_message .= 'Royalties on Resources for '.$curyear.' were previously distributed.';
+			$this->_message .= 'Royalties on Resources for ' . $curyear . ' were previously distributed.';
 		}
 
 		if (!$auto) 
 		{
-			// show output if run manually						
+			// show output if run manually
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				JText::_($this->_message)

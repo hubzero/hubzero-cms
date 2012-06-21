@@ -29,36 +29,29 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportHtml'
- * 
- * Long description (if any) ...
+ * Support helper class for HTML
  */
 class SupportHtml
 {
-
 	/**
-	 * Short description for 'alert'
+	 * Display a message and go to previous page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg Message
+	 * @return     string Javascript
 	 */
-	public function alert( $msg )
+	public function alert($msg)
 	{
-		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
+		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
 
 	/**
-	 * Short description for 'getStatus'
+	 * Get the status text for a status number
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $int Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $int Status number
+	 * @return     string 
 	 */
 	public function getStatus($int)
 	{

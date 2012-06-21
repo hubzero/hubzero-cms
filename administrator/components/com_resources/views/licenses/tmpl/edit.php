@@ -30,11 +30,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resource License') . '</a>: <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+$canDo = ResourcesHelper::getActions('license');
 
+$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resource License') . '</a>: <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
+JToolBarHelper::cancel();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -67,19 +72,19 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape($this->row->title); ?>" /></td>
+						<td><input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-name"><?php echo JText::_('Name'); ?>:</label></td>
 						<td>
-							<input type="text" name="fields[name]" id="field-name" size="35" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" /><br />
+							<input type="text" name="fields[name]" id="field-name" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" /><br />
 							<span class="hint"><?php echo JText::_('If no name is provided, one will be generated from the title.'); ?></span>
 						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
 						<td>
-							<input type="text" name="fields[url]" id="field-url" size="35" maxlength="100" value="<?php echo $this->escape($this->row->url); ?>" /><br />
+							<input type="text" name="fields[url]" id="field-url" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" /><br />
 							<span class="hint"><?php echo JText::_('URL to the license.'); ?></span>
 						</td>
 					</tr>

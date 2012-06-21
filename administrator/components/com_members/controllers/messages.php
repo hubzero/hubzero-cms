@@ -35,12 +35,12 @@ ximport('Hubzero_Controller');
 ximport('Hubzero_Message_Component');
 
 /**
- * Manage site members
+ * Manage messaging settings
  */
 class MembersControllerMessages extends Hubzero_Controller
 {
 	/**
-	 * Display a list of site members
+	 * Display a list of messaging settings
 	 * 
 	 * @return     void
 	 */
@@ -59,12 +59,12 @@ class MembersControllerMessages extends Hubzero_Controller
 		));
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
-			'sort', 
+			'filter_order', 
 			'c.name'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'sort_Dir', 
+			'filter_order_Dir', 
 			'ASC'
 		));
 
@@ -103,7 +103,10 @@ class MembersControllerMessages extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -111,7 +114,7 @@ class MembersControllerMessages extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a new member
+	 * Create a new record
 	 * 
 	 * @return     void
 	 */
@@ -122,16 +125,20 @@ class MembersControllerMessages extends Hubzero_Controller
 	}
 
 	/**
-	 * Edit a member's information
+	 * Edit a record
 	 * 
-	 * @param      integer $id ID of member to edit
+	 * @param      object $row Database row
 	 * @return     void
 	 */
-	public function editTask($id=0)
+	public function editTask($row=null)
 	{
 		$this->view->setLayout('edit');
 
-		if (!$id) 
+		if (is_object($row)) 
+		{
+			$this->view->row = $row;
+		}
+		else 
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array());
@@ -145,16 +152,19 @@ class MembersControllerMessages extends Hubzero_Controller
 			{
 				$id = 0;
 			}
-		}
 
-		// Initiate database class and load info
-		$this->view->row = new Hubzero_Message_Component($this->database);
-		$this->view->row->load($id);
+			// Initiate database class and load info
+			$this->view->row = new Hubzero_Message_Component($this->database);
+			$this->view->row->load($id);
+		}
 
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -162,9 +172,7 @@ class MembersControllerMessages extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'apply'
-	 * 
-	 * Long description (if any) ...
+	 * Save an entry and display edit form
 	 * 
 	 * @return     void
 	 */
@@ -174,18 +182,16 @@ class MembersControllerMessages extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save an entry and redirect to main listing
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $redirect Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $redirect Redirect after save?
+	 * @return     void
 	 */
 	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming profile edits
 		$fields = JRequest::getVar('fields', array(), 'post');
 
@@ -193,21 +199,24 @@ class MembersControllerMessages extends Hubzero_Controller
 		$row = new Hubzero_Message_Component($this->database);
 		if (!$row->bind($fields)) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
-		
+
 		// Check content
 		if (!$row->check()) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
 		// Store content
 		if (!$row->store()) 
 		{
-			JError::raiseError(500, $row->getError());
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 		
@@ -223,13 +232,12 @@ class MembersControllerMessages extends Hubzero_Controller
 		} 
 		else 
 		{
-			$this->view->setLayout('edit');
-			$this->editTask($fields['id']);
+			$this->editTask($row);
 		}
 	}
 
 	/**
-	 * Removes a profile entry, associated picture, and redirects to main listing
+	 * Delete a record
 	 * 
 	 * @return     void
 	 */
@@ -246,12 +254,12 @@ class MembersControllerMessages extends Hubzero_Controller
 		{
 			ximport('Hubzero_Message_Notify');
 			$notify = new Hubzero_Message_Notify($this->database);
-			
+
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
 				$id = intval($id);
-				
+
 				$row = new Hubzero_Message_Component($this->database);
 				$row->load($id);
 
@@ -277,7 +285,9 @@ class MembersControllerMessages extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }
 

@@ -112,7 +112,10 @@ class MembersControllerMembers extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -129,7 +132,10 @@ class MembersControllerMembers extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -144,6 +150,8 @@ class MembersControllerMembers extends Hubzero_Controller
 	 */
 	public function editTask($id=0)
 	{
+		$this->view->setLayout('edit');
+
 		if (!$id) 
 		{
 			// Incoming
@@ -173,7 +181,10 @@ class MembersControllerMembers extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -181,9 +192,7 @@ class MembersControllerMembers extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'apply'
-	 * 
-	 * Long description (if any) ...
+	 * Save an entry and return to edit form
 	 * 
 	 * @return     void
 	 */
@@ -193,12 +202,10 @@ class MembersControllerMembers extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save an entry and return to main listing
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $redirect Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $redirect Redirect to main listing?
+	 * @return     void
 	 */
 	public function saveTask($redirect=1)
 	{
@@ -396,7 +403,6 @@ class MembersControllerMembers extends Hubzero_Controller
 		} 
 		else 
 		{
-			$this->view->setLayout('edit');
 			$this->editTask($id);
 		}
 	}
@@ -423,7 +429,7 @@ class MembersControllerMembers extends Hubzero_Controller
 				$id = intval($id);
 				
 				// Delete any associated pictures
-				$path = JPATH_ROOT . DS . $this->config->get('webpath') . DS . Hubzero_View_Helper_Html::niceidformat($id);
+				$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
 				if (!file_exists($path . DS . $file) or !$file) 
 				{
 					$this->setError(JText::_('FILE_NOT_FOUND'));
@@ -537,7 +543,9 @@ class MembersControllerMembers extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }
 

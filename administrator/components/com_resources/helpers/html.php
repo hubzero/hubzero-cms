@@ -29,61 +29,26 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesHtml'
- * 
- * Long description (if any) ...
+ * Resources helper class for HTML
  */
 class ResourcesHtml
 {
-
 	/**
-	 * Short description for 'error'
+	 * Display a message and go back tot he previous page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg Message
+	 * @return     string Javascript
 	 */
-	public function error( $msg, $tag='p' )
+	public function alert($msg)
 	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
+		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
 
 	/**
-	 * Short description for 'warning'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function warning( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
-	}
-
-	/**
-	 * Short description for 'alert'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function alert( $msg )
-	{
-		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
-	}
-
-	/**
-	 * Short description for 'statusKey'
-	 * 
-	 * Long description (if any) ...
+	 * Display a key for various resource statuses
 	 * 
 	 * @return     void
 	 */
@@ -105,65 +70,10 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'shortenText'
+	 * Format an ID by prepending 0
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      integer $chars Parameter description (if any) ...
-	 * @param      integer $p Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function shortenText($text, $chars=300, $p=1)
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' ...';
-		}
-		if ($text == '') {
-			$text = '...';
-		}
-		if ($p) {
-			$text = '<p>'.$text.'</p>';
-		}
-
-		return $text;
-	}
-
-	/**
-	 * Short description for 'parseTag'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function parseTag($text, $tag)
-	{
-		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
-		if (count($matches) > 0) {
-			$match = $matches[0];
-			$match = str_replace('<nb:'.$tag.'>','',$match);
-			$match = str_replace('</nb:'.$tag.'>','',$match);
-		} else {
-			$match = '';
-		}
-		return $match;
-	}
-
-	/**
-	 * Short description for 'niceidformat'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $someid ID to format
+	 * @return     integer
 	 */
 	public function niceidformat($someid)
 	{
@@ -175,32 +85,34 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'build_path'
+	 * Build the path to resource files from the creation date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      string $base Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $date Resource creation date
+	 * @param      integer $id   Resource ID
+	 * @param      string  $base Base path to prepend
+	 * @return     string
 	 */
-	public function build_path( $date, $id, $base='' )
+	public function build_path($date, $id, $base='')
 	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs )) {
-			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		{
+			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) {
+		if ($date) 
+		{
 			$dir_year  = date('Y', $date);
 			$dir_month = date('m', $date);
-		} else {
+		} 
+		else 
+		{
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
-		$dir_id = ResourcesHtml::niceidformat( $id );
+		$dir_id = ResourcesHtml::niceidformat($id);
 
-		$path = $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
+		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 
-		//return $base.DS.$dir_id;
+		//return $base . DS . $dir_id;
 		return $path;
 	}
 
@@ -212,7 +124,7 @@ class ResourcesHtml
 	 * @param      string $rating Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function writeRating( $rating )
+	public function writeRating($rating)
 	{
 		switch ($rating)
 		{
@@ -233,289 +145,149 @@ class ResourcesHtml
 		return '<p class="avgrating'.$class.'"><span>Rating: '.$rating.' out of 5 stars</span></p>';
 	}
 
-	//----------------------------------------------------------
-	// Form <select> builders
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'selectAccess'
+	 * Generate a select access list
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $as Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array  $as    Access levels
+	 * @param      string $value Value to select
+	 * @return     string HTML
 	 */
 	public function selectAccess($as, $value)
 	{
 		$as = explode(',',$as);
-		$html  = '<select name="access">'."\n";
-		for ($i=0, $n=count( $as ); $i < $n; $i++)
+		$html  = '<select name="access">' . "\n";
+		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
-			$html .= "\t".'<option value="'.$i.'"';
-			if ($value == $i) {
+			$html .= "\t" . '<option value="' . $i . '"';
+			if ($value == $i) 
+			{
 				$html .= ' selected="selected"';
 			}
-			$html .= '>'.trim($as[$i]).'</option>'."\n";
+			$html .= '>' . trim($as[$i]) . '</option>' . "\n";
 		}
-		$html .= '</select>'."\n";
+		$html .= '</select>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'selectGroup'
+	 * Generate a select list for groups
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $groups Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array  $groups Groups to populate list
+	 * @param      string $value  Value to select
+	 * @return     string HTML
 	 */
 	public function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner"';
-		if (!$groups) {
+		if (!$groups) 
+		{
 			$html .= ' disabled="disabled"';
 		}
-		$html .= ' style="max-width: 15em;">'."\n";
-		$html .= ' <option value="">'.JText::_('Select group ...').'</option>'."\n";
-		if ($groups) {
+		$html .= ' style="max-width: 15em;">' . "\n";
+		$html .= ' <option value="">' . JText::_('Select group ...') . '</option>' . "\n";
+		if ($groups) 
+		{
 			foreach ($groups as $group)
 			{
-				$html .= ' <option value="'.$group->cn.'"';
-				if ($value == $group->cn) {
+				$html .= ' <option value="' . $group->cn . '"';
+				if ($value == $group->cn) 
+				{
 					$html .= ' selected="selected"';
 				}
-				$html .= '>'.stripslashes($group->description) .'</option>'."\n";
+				$html .= '>' . stripslashes($group->description) . '</option>' . "\n";
 			}
 		}
-		$html .= '</select>'."\n";
+		$html .= '</select>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'selectSection'
+	 * Generate a section select list
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      integer $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $name  Name of the field
+	 * @param      array   $array Values to populate list
+	 * @param      integer $value Value to select
+	 * @param      string  $class Class name of field
+	 * @param      string  $id    ID of field
+	 * @return     string HTML
 	 */
 	public function selectSection($name, $array, $value, $class='', $id)
 	{
-		$html  = '<select name="'.$name.'" id="'.$name.'" onchange="return listItemTask(\'cb'. $id .'\',\'regroup\')"';
-		$html .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
+		$html  = '<select name="' . $name . '" id="' . $name . '" onchange="return listItemTask(\'cb' . $id . '\',\'regroup\')"';
+		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		$html .= ' <option value="0"';
 		$html .= ($id == $value || $value == 0) ? ' selected="selected"' : '';
-		$html .= '>'.JText::_('[ none ]').'</option>'."\n";
+		$html .= '>' . JText::_('[ none ]') . '</option>' . "\n";
 		foreach ($array as $anode)
 		{
 			$selected = ($anode->id == $value || $anode->type == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$html .= ' <option value="'.$anode->id.'"'.$selected.'>'.$anode->type.'</option>'."\n";
+			$html .= ' <option value="' . $anode->id . '"' . $selected . '>' . $anode->type . '</option>' . "\n";
 		}
-		$html .= '</select>'."\n";
+		$html .= '</select>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'selectType'
+	 * Generate a type select list
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $arr Parameter description (if any) ...
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      mixed $value Parameter description (if any) ...
-	 * @param      string $shownone Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @param      string $js Parameter description (if any) ...
-	 * @param      string $skip Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array  $arr      Values to populate list
+	 * @param      string $name     Name of the field
+	 * @param      mixed  $value    Value to select
+	 * @param      string $shownone Show a 'none' option?
+	 * @param      string $class    Class name of field
+	 * @param      string $js       Scripts to add to field
+	 * @param      string $skip     ITems to skip
+	 * @return     string HTML
 	 */
 	public function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
 	{
-		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
-		$html .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
-		if ($shownone != '') {
-			$html .= "\t".'<option value=""';
+		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
+		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
+		if ($shownone != '') 
+		{
+			$html .= "\t" . '<option value=""';
 			$html .= ($value == 0 || $value == '') ? ' selected="selected"' : '';
-			$html .= '>'.$shownone.'</option>'."\n";
+			$html .= '>' . $shownone . '</option>' . "\n";
 		}
-		if ($skip) {
-			$skips = explode(',',$skip);
-		} else {
+		if ($skip) 
+		{
+			$skips = explode(',', $skip);
+		} 
+		else 
+		{
 			$skips = array();
 		}
 		foreach ($arr as $anode)
 		{
-			if (!in_array($anode->id, $skips)) {
+			if (!in_array($anode->id, $skips)) 
+			{
 				$selected = ($value && ($anode->id == $value || $anode->type == $value))
 					  ? ' selected="selected"'
 					  : '';
-				$html .= "\t".'<option value="'.$anode->id.'"'.$selected.'>'.stripslashes($anode->type).'</option>'."\n";
+				$html .= "\t" . '<option value="' . $anode->id . '"' . $selected . '>' . stripslashes($anode->type) . '</option>' . "\n";
 			}
 		}
-		$html .= '</select>'."\n";
+		$html .= '</select>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'selectAuthors'
+	 * Convert a date to a path
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $rows Parameter description (if any) ...
-	 * @param      array $authnames Parameter description (if any) ...
-	 * @param      object $attribs Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $date Date to convert (0000-00-00 00:00:00)
+	 * @return     string
 	 */
-	public function selectAuthors($rows, $authnames, $attribs, $option)
+	public function dateToPath($date)
 	{
-		$authIDs = array();
-
-		$document =& JFactory::getDocument();
-		$document->addScript('components/'.$option.'/xsortables.js');
-		$document->addScript('components/'.$option.'/resources.js');
-
-		$html  = 'User ID: <input type="text" name="authid" id="authid" value="" /> ';
-		$html .= "\t\t".'<select name="authrole" id="authrole">'."\n";
-		$html .= "\t\t\t".'<option value="">Role...</option>'."\n";
-		$html .= "\t\t\t".'<option value="submitter">submitter</option>'."\n";
-		$html .= "\t\t\t".'<option value="editor">editor</option>'."\n";
-		$html .= "\t\t".'</select>'."\n";
-		$html .= '<input type="button" name="addel" id="addel" onclick="HUB.Resources.addAuthor();" value="'.JText::_('Add').'" />';
-		$html .= '<ul id="author-list">'."\n";
-		if ($authnames != NULL) {
-			foreach ($authnames as $authname)
-			{
-				if ($authname->name) {
-					$name = $authname->name;
-				} else {
-					$name = $authname->givenName .' ';
-					if ($authname->middleName != null) {
-						$name .= $authname->middleName .' ';
-					}
-					$name .= $authname->surname;
-				}
-
-				$authIDs[] = $authname->id;
-
-				$org = ($authname->organization) ? htmlentities($authname->organization,ENT_COMPAT,'UTF-8') : $attribs->get( $authname->id, '' );
-
-				$html .= "\t".'<li id="author_'.$authname->id.'"><span class="handle">'.JText::_('DRAG HERE').'</span> '. $name .' ('.$authname->id.') [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;">'.JText::_('remove').'</a> ]';
-				//$html .= '<br />'.JText::_('Affiliation').': <input type="text" name="attrib['.$authname->id.']" value="'. $attribs->get( $authname->id, '' ) .'" />';
-				$html .= '<br />'.JText::_('Affiliation').': <input type="text" name="'.$authname->id.'_organization" value="'. $org .'" />';
-				$html .= "\t\t".'<select name="'.$authname->id.'_role">'."\n";
-				$html .= "\t\t\t".'<option value="">Role...</option>'."\n";
-				$html .= "\t\t\t".'<option value="submitter"';
-				$html .= ($authname->role == 'submitter') ? ' selected="selected"' : '';
-				$html .= '>submitter</option>'."\n";
-				$html .= "\t\t\t".'<option value="editor"';
-				$html .= ($authname->role == 'editor') ? ' selected="selected"' : '';
-				$html .= '>editor</option>'."\n";
-				$html .= "\t\t".'</select>'."\n";
-				$html .= '<input type="hidden" name="'.$authname->id.'_name" value="'. htmlentities($name,ENT_COMPAT,'UTF-8') .'" />';
-				//$html .= '<input type="hidden" name="'.$authname->id.'_organization" value="'. htmlentities($authname->organization,ENT_COMPAT,'UTF-8') .'" />';
-				$html .= '</li>'."\n";
-			}
-		}
-		$authIDs = implode(',',$authIDs);
-		$html .= '</ul>'."\n";
-		$html .= '<input type="hidden" name="old_authors" id="old_authors" value="'.$authIDs.'" />'."\n";
-		$html .= '<input type="hidden" name="new_authors" id="new_authors" value="'.$authIDs.'" />'."\n";
-
-		return $html;
-	}
-
-	/**
-	 * Short description for 'dateToPath'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function dateToPath( $date )
-	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs )) {
-			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		{
+			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		$dir_year  = date('Y', $date);
 		$dir_month = date('m', $date);
-		return $dir_year.DS.$dir_month;
-	}
-
-	//-------------------------------------------------------------
-	// Media manager functions
-	//-------------------------------------------------------------
-
-	/**
-	 * Short description for 'dir_name'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $dir Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function dir_name($dir)
-	{
-		$lastSlash = intval(strrpos($dir, '/'));
-		if ($lastSlash == strlen($dir)-1) {
-			return substr($dir, 0, $lastSlash);
-		} else {
-			return dirname($dir);
-		}
-	}
-
-	/**
-	 * Short description for 'parse_size'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $size Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public function parse_size($size)
-	{
-		if ($size < 1024) {
-			return $size.' bytes';
-		} else if ($size >= 1024 && $size < 1024*1024) {
-			return sprintf('%01.2f',$size/1024.0).' <abbr title="kilobytes">Kb</abbr>';
-		} else {
-			return sprintf('%01.2f',$size/(1024.0*1024)).' <abbr title="megabytes">Mb</abbr>';
-		}
-	}
-
-	/**
-	 * Short description for 'num_files'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $dir Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function num_files($dir)
-	{
-		$total = 0;
-
-		if (is_dir($dir)) {
-			$d = @dir($dir);
-
-			while (false !== ($entry = $d->read()))
-			{
-				if (substr($entry,0,1) != '.') {
-					$total++;
-				}
-			}
-			$d->close();
-		}
-		return $total;
+		return $dir_year . DS . $dir_month;
 	}
 }
 

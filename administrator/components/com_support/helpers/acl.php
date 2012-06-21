@@ -29,52 +29,47 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'acos.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'aros_acos.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'aros.php' );
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'acos.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'aros_acos.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'aros.php');
 
 /**
- * Short description for 'SupportACL'
- * 
- * Long description (if any) ...
+ * Helper class for support ACL
  */
 class SupportACL extends JObject
 {
-
 	/**
-	 * Description for '_juser'
+	 * Current user
 	 * 
 	 * @var object
 	 */
 	private $_juser;
 
 	/**
-	 * Description for '_db'
+	 * Database
 	 * 
 	 * @var object
 	 */
 	private $_db;
 
 	/**
-	 * Description for '_raw_data'
+	 * Raw data from database
 	 * 
 	 * @var array
 	 */
 	private $_raw_data;
 
 	/**
-	 * Description for '_user_groups'
+	 * User's groups
 	 * 
 	 * @var array
 	 */
 	private $_user_groups;
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
+	 * constructor
 	 * 
 	 * @return     void
 	 */
@@ -88,27 +83,27 @@ class SupportACL extends JObject
 				LEFT JOIN #__support_acl_aros AS r ON m.aro_id=r.id 
 				LEFT JOIN #__support_acl_acos AS c ON m.aco_id=c.id";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$this->_raw_data = $this->_db->loadAssocList();
 
-		if (!$this->_juser->get('guest')) {
+		if (!$this->_juser->get('guest')) 
+		{
 			ximport('Hubzero_User_Helper');
-			$this->_user_groups = Hubzero_User_Helper::getGroups( $this->_juser->get('id') );
+			$this->_user_groups = Hubzero_User_Helper::getGroups($this->_juser->get('id'));
 		}
 	}
 
 	/**
-	 * Short description for 'getACL'
+	 * Get the support ACL, creating if not already exists
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     object SupportACL
 	 */
 	public function &getACL()
 	{
 		static $instance;
 
-		if (!is_object($instance)) {
+		if (!is_object($instance)) 
+		{
 			$instance = new SupportACL();
 		}
 
@@ -116,31 +111,32 @@ class SupportACL extends JObject
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Check permissions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      unknown $aco Parameter description (if any) ...
-	 * @param      unknown $aco_foreign_key Parameter description (if any) ...
-	 * @param      unknown $aro_foreign_key Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string  $action          Action to check permissions for
+	 * @param      string  $aco             ACO model (comment, ticket, etc)
+	 * @param      integer $aco_foreign_key Parameter description (if any) ...
+	 * @param      integer $aro_foreign_key User ID
+	 * @return     integer 1 = allowed, 0 = not allowed
 	 */
-	public function check( $action=null, $aco=null, $aco_foreign_key=null, $aro_foreign_key=null )
+	public function check($action=null, $aco=null, $aco_foreign_key=null, $aro_foreign_key=null)
 	{
 		$permission = 0;
 
 		// Check if they are logged in
-		if (!$aro_foreign_key && $this->_juser->get('guest')) {
+		if (!$aro_foreign_key && $this->_juser->get('guest')) 
+		{
 			return $permission;
 		}
 
-		if ($aro_foreign_key) {
+		if ($aro_foreign_key) 
+		{
 			$this->setUser($aro_foreign_key);
 		}
 
 		// Check user's groups
-		if ($this->_user_groups && count($this->_user_groups) > 0) {
+		if ($this->_user_groups && count($this->_user_groups) > 0) 
+		{
 			foreach ($this->_user_groups as $ug)
 			{
 				foreach ($this->_raw_data as $line)
@@ -148,16 +144,19 @@ class SupportACL extends JObject
 					// Get the aco permission
 					if ($line['aro_model'] == 'group'
 					 && $line['aro_foreign_key'] == $ug->gidNumber
-					 && $line['aco_model'] == $aco) {
-						$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+					 && $line['aco_model'] == $aco) 
+					{
+						$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
 					}
 					// Get the specific aco model permission if specified (overrides aco permission)
-					if ($aco_foreign_key) {
+					if ($aco_foreign_key) 
+					{
 						if ($line['aro_model'] == 'group'
 						 && $line['aro_foreign_key'] == $ug->gidNumber
 						 && $line['aco_model'] == $aco
-						 && $line['aco_foreign_key'] == $aco_foreign_key) {
-							$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+						 && $line['aco_foreign_key'] == $aco_foreign_key) 
+						{
+							$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
 						}
 					}
 				}
@@ -172,27 +171,33 @@ class SupportACL extends JObject
 			// Get the aco permission
 			if ($line['aro_model'] == 'user'
 			 && $line['aro_foreign_key'] == $this->_juser->get('id')
-			 && $line['aco_model'] == $aco) {
-				if (isset($line['action_'.$action])) {
-					$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+			 && $line['aco_model'] == $aco) 
+			{
+				if (isset($line['action_' . $action])) 
+				{
+					$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
 					$userspecific = true;
 				}
 			}
 			// Get the specific aco model permission if specified (overrides aco permission)
-			if ($aco_foreign_key) {
+			if ($aco_foreign_key) 
+			{
 				if ($line['aro_model'] == 'user'
 				 && $line['aro_foreign_key'] == $this->_juser->get('id')
 				 && $line['aco_model'] == $aco
-				 && $line['aco_foreign_key'] == $aco_foreign_key) {
-					if (isset($line['action_'.$action])) {
-						$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+				 && $line['aco_foreign_key'] == $aco_foreign_key) 
+				{
+					if (isset($line['action_' . $action])) 
+					{
+						$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
 						$userspecific = true;
 					}
 				}
 			}
 		}
 
-		if ($userspecific) {
+		if ($userspecific) 
+		{
 			return $permission;
 		}
 
@@ -200,90 +205,93 @@ class SupportACL extends JObject
 	}
 
 	/**
-	 * Short description for 'setUser'
+	 * Set a specific user to check permissions for
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $aro_foreign_key Parameter description (if any) ...
+	 * @param      integer $aro_foreign_key User ID
 	 * @return     void
 	 */
 	public function setUser($aro_foreign_key=null)
 	{
-		if ($aro_foreign_key) {
-			if ($this->_juser->get('id') != $aro_foreign_key) {
+		if ($aro_foreign_key) 
+		{
+			if ($this->_juser->get('id') != $aro_foreign_key) 
+			{
 				ximport('Hubzero_User_Helper');
 				$this->_juser = JUser::getInstance($aro_foreign_key);
-				$this->_user_groups = Hubzero_User_Helper::getGroups( $this->_juser->get('id') );
+				$this->_user_groups = Hubzero_User_Helper::getGroups($this->_juser->get('id'));
 			}
 		}
 	}
 
 	/**
-	 * Short description for 'setAccess'
+	 * Set the permissions for an action
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      unknown $aco Parameter description (if any) ...
-	 * @param      unknown $permission Parameter description (if any) ...
-	 * @param      unknown $aco_foreign_key Parameter description (if any) ...
-	 * @param      unknown $aro_foreign_key Parameter description (if any) ...
+	 * @param      string  $action          Action to check permissions for
+	 * @param      string  $aco             ACO model (comment, ticket, etc)
+	 * @param      integer $permission      Permission to set
+	 * @param      integer $aco_foreign_key Parameter description (if any) ...
+	 * @param      integer $aro_foreign_key User ID
 	 * @return     void
 	 */
 	public function setAccess($action=null, $aco=null, $permission=null, $aco_foreign_key=null, $aro_foreign_key=null)
 	{
-		if ($aro_foreign_key) {
+		if ($aro_foreign_key) 
+		{
 			$this->setUser($aro_foreign_key);
 		}
 		$set = false;
-		for ($i=0, $n=count( $this->_raw_data ); $i < $n; $i++)
+		for ($i=0, $n=count($this->_raw_data); $i < $n; $i++)
 		{
 			$line =& $this->_raw_data[$i];
 
 			// Get the aco permission
 			if ($line['aro_model'] == 'user'
 			 && $line['aro_foreign_key'] == $this->_juser->get('id')
-			 && $line['aco_model'] == $aco) {
-				$line['action_'.$action] = $permission;
+			 && $line['aco_model'] == $aco) 
+			{
+				$line['action_' . $action] = $permission;
 				$set = true;
 			}
 			// Get the specific aco model permission if specified (overrides aco permission)
-			if ($aco_foreign_key) {
+			if ($aco_foreign_key) 
+			{
 				if ($line['aro_model'] == 'user'
 				 && $line['aro_foreign_key'] == $this->_juser->get('id')
 				 && $line['aco_model'] == $aco
-				 && $line['aco_foreign_key'] == $aco_foreign_key) {
-					$line['action_'.$action] = $permission;
+				 && $line['aco_foreign_key'] == $aco_foreign_key) 
+				{
+					$line['action_' . $action] = $permission;
 					$set = true;
 				}
 			}
 		}
-		if (!$set) {
+		if (!$set) 
+		{
 			$l = array(
-				'aro_model' => 'user',
-				'aro_foreign_key' => $this->_juser->get('id'),
-				'aco_model' => $aco,
-				'aco_foreign_key' => $aco_foreign_key,
-				'action_'.$action => $permission
+				'aro_model'         => 'user',
+				'aro_foreign_key'   => $this->_juser->get('id'),
+				'aco_model'         => $aco,
+				'aco_foreign_key'   => $aco_foreign_key,
+				'action_' . $action => $permission
 			);
 			array_push($this->_raw_data, $l);
 		}
 	}
 
 	/**
-	 * Short description for 'authorize'
+	 * Check if a user is in a group
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $group Group to check
+	 * @return     boolean True if in group
 	 */
 	public function authorize($group=null)
 	{
-		if ($group && $this->_user_groups && count($this->_user_groups) > 0) {
+		if ($group && $this->_user_groups && count($this->_user_groups) > 0) 
+		{
 			foreach ($this->_user_groups as $ug)
 			{
-				if ($ug->cn == $group) {
+				if ($ug->cn == $group) 
+				{
 					return true;
 				}
 			}

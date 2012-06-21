@@ -71,7 +71,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 	{
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'resources.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
 		// Get configuration
 		$app =& JFactory::getApplication();
@@ -140,7 +140,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -156,7 +159,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 	{
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components'. DS . $this->_option . DS . 'resources.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
 		// Get configuration
 		$app =& JFactory::getApplication();
@@ -237,7 +240,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -255,7 +261,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'resources.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
 		$this->view->pid = '-1';
 
@@ -323,7 +329,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -331,11 +340,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'ratings'
+	 * Show the ratings for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     void
 	 */
 	public function ratingsTask()
 	{
@@ -357,7 +364,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -365,11 +375,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'addchild'
+	 * Show a form for adding a child to a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function addchildTask()
 	{
@@ -599,7 +607,6 @@ class ResourcesControllerItems extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		return $this->editTask(1);
 	}
 
@@ -612,7 +619,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 	public function editTask($isnew=0)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
+		$this->view->setLayout('edit');
+
 		$this->view->isnew = $isnew;
 
 		// Get the resource component config
@@ -706,21 +715,27 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$this->view->row->modified_by_name = '';
 		}
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		// Get params definitions
-		$this->view->params  = new JParameter($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
-		$this->view->attribs = new JParameter($this->view->row->attribs);
+		$this->view->params  = new $paramsClass($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
+		$this->view->attribs = new $paramsClass($this->view->row->attribs);
 
 		// Build selects of various types
 		$rt = new ResourcesType($this->database);
 		if ($this->view->row->standalone != 1)
 		{
-			$this->view->lists['type'] = ResourcesHtml::selectType($rt->getTypes(30), 'type', $this->view->row->type, '', '', '', '');
+			$this->view->lists['type']         = ResourcesHtml::selectType($rt->getTypes(30), 'type', $this->view->row->type, '', '', '', '');
 			$this->view->lists['logical_type'] = ResourcesHtml::selectType($rt->getTypes(28), 'logical_type', $this->view->row->logical_type, '[ none ]', '', '', '');
-			$this->view->lists['sub_type'] = ResourcesHtml::selectType($rt->getTypes(30), 'logical_type', $this->view->row->logical_type, '[ none ]', '', '', '');
+			$this->view->lists['sub_type']     = ResourcesHtml::selectType($rt->getTypes(30), 'logical_type', $this->view->row->logical_type, '[ none ]', '', '', '');
 		}
 		else
 		{
-			$this->view->lists['type'] = ResourcesHtml::selectType($rt->getTypes(27), 'type', $this->view->row->type, '', '', '', '');
+			$this->view->lists['type']         = ResourcesHtml::selectType($rt->getTypes(27), 'type', $this->view->row->type, '', '', '', '');
 			$this->view->lists['logical_type'] = ResourcesHtml::selectType($rt->getTypes(21), 'logical_type', $this->view->row->logical_type, '[ none ]', '', '', '');
 		}
 
@@ -745,8 +760,8 @@ class ResourcesControllerItems extends Hubzero_Controller
 			// Build <select> of groups
 			$this->view->lists['groups'] = ResourcesHtml::selectGroup($groups, $this->view->row->group_owner);
 
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php');
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 			// Get all contributors
 			$mp = new MembersProfile($this->database);
@@ -783,7 +798,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -884,55 +902,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 				$fields[$field->name] = $field;
 			}
 
-			/*$fields = array();
-			if (trim($type->customFields) != '')
-			{
-				$fs = explode("\n", trim($type->customFields));
-				foreach ($fs as $f)
-				{
-					$fields[] = explode('=', $f);
-				}
-			}
-			else
-			{
-				if ($row->type == 7)
-				{
-					$flds = $this->config->get('tagstool');
-				}
-				else
-				{
-					$flds = $this->config->get('tagsothr');
-				}
-				$flds = explode(',', $flds);
-				foreach ($flds as $fld)
-				{
-					$fields[] = array($fld, $fld, 'textarea', 0);
-				}
-			}
-
-			$nbtag = $_POST['nbtag'];
-			$nbtag = array_map('trim',$nbtag);
-			foreach ($nbtag as $tagname => $tagcontent)
-			{
-				if ($tagcontent != '')
-				{
-					$row->fulltext .= "\n".'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'."\n";
-				}
-				else
-				{
-					foreach ($fields as $f)
-					{
-						if ($f[0] == $tagname && end($f) == 1)
-						{
-							echo ResourcesHtml::alert(JText::sprintf('RESOURCES_REQUIRED_FIELD_CHECK', $f[1]));
-							exit();
-						}
-					}
-				}
-			}*/
 			$nbtag = $_POST['nbtag'];
 			$found = array();
-			//$nbtag = array_map('trim',$nbtag);
+
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
 				$content = null;
@@ -947,22 +919,20 @@ class ResourcesControllerItems extends Hubzero_Controller
 				{
 					foreach ($content as $key => $val)
 					{
-						//if ($key != 'value') {
-							$row->fulltext .= '<'.$key.'>' . trim($val) . '</'.$key.'>';
-						//}
+						$row->fulltext .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
 					}
 				}
-				$row->fulltext .= '</nb:'.$tagname.'>'."\n";
+				$row->fulltext .= '</nb:' . $tagname . '>' . "\n";
 
 				if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required) 
 				{
 					echo ResourcesHtml::alert(JText::sprintf('RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 					exit();
 				}
-				
+
 				$found[] = $tagname;
 			}
-			
+
 			foreach ($fields as $field)
 			{
 				if (!in_array($field->name, $found) && $field->required)
@@ -1132,7 +1102,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$subject = JText::_('EMAIL_SUBJECT');
 
 			$juri =& JURI::getInstance();
-			
+
 			$base = $juri->base();
 			$base = trim($base, '/');
 			if (substr($base, -13) == 'administrator')
@@ -1140,9 +1110,6 @@ class ResourcesControllerItems extends Hubzero_Controller
 				$base = substr($base, 0, strlen($base)-13);
 			}
 			$base = trim($base, '/');
-			
-			//$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id);
-			//$sef = trim($sef, '/')
 
 			// Build message
 			$message  = JText::sprintf('EMAIL_MESSAGE', $jconfig->getValue('config.sitename')) . "\r\n";
@@ -1225,7 +1192,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$pid = JRequest::getInt('pid', 0);
 
 		// Redirect
-		$this->_redirect = $this->buildRedirectURL($pid);
+		$this->setRedirect(
+			$this->buildRedirectURL($pid)
+		);
 	}
 
 	/**
@@ -1274,7 +1243,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$assoc->store();
 
 		// Redirect
-		$this->_redirect = $this->buildRedirectURL($pid);
+		$this->setRedirect(
+			$this->buildRedirectURL($pid)
+		);
 	}
 
 	/**
@@ -1298,8 +1269,6 @@ class ResourcesControllerItems extends Hubzero_Controller
 			echo ResourcesHtml::alert(JText::_('No Resource ID found.'));
 			exit;
 		}
-
-		//$access = JRequest::getInt('access', 0);
 
 		// Choose access level
 		switch ($this->_task)
@@ -1330,7 +1299,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_redirect = $this->buildRedirectURL($pid);
+		$this->setRedirect(
+			$this->buildRedirectURL($pid)
+		);
 	}
 
 	/**
@@ -1408,7 +1379,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_redirect = $this->buildRedirectURL($pid);
+		$this->setRedirect(
+			$this->buildRedirectURL($pid)
+		);
 	}
 
 	/**
@@ -1431,7 +1404,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$row->checkin();
 
 		// Redirect
-		$this->_redirect = $this->buildRedirectURL($pid);
+		$this->setRedirect(
+			$this->buildRedirectURL($pid)
+		);
 	}
 
 	/**
@@ -1565,7 +1540,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 		}
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**
@@ -1632,7 +1609,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$resource2->store();
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid
+		);
 	}
 
 	/**
@@ -1698,9 +1677,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$users = $result;
 		}
 
-		$users = JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
-
-		return $users;
+		return JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 	}
 
 	/**
@@ -1730,14 +1707,14 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$this->view->name  = $profile->get('name');
 		}
 		$this->view->org = $profile->get('organization');
-		
+
 		$row = new ResourcesResource($this->database);
 		$row->load($rid);
-		
+
 		$rt = new ResourcesType($this->database);
-		
+
 		$this->view->roles = $rt->getRolesForType($row->type);
-		
+
 		$this->view->display();
 	}
 }

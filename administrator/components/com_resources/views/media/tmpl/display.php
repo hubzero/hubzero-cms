@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 if ($this->getError()) {
-	echo ResourcesHtml::error($this->getError());
+	echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }
 ?>
 <script type="text/javascript">

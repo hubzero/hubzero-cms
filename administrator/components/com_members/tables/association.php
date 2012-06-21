@@ -29,82 +29,75 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'MembersAssociation'
- * 
- * Long description (if any) ...
+ * Table class for member/object association
  */
 class MembersAssociation extends JTable
 {
-
 	/**
-	 * Description for 'subtable'
+	 * varchar(50) Primary Key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $subtable = NULL;  // @var varchar(50) Primary Key
+	var $subtable = NULL;
 
 	/**
-	 * Description for 'subid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $subid    = NULL;  // @var int(11) Primary Key
+	var $subid    = NULL;
 
 	/**
-	 * Description for 'authorid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $authorid = NULL;  // @var int(11) Primary Key
+	var $authorid = NULL;
 
 	/**
-	 * Description for 'ordering'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $ordering = NULL;  // @var int(11)
+	var $ordering = NULL;
 
 	/**
-	 * Description for 'role'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $role     = NULL;  // @var varchar(50)
-
-	//-----------
+	var $role     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__author_assoc', 'authorid', $db );
+		parent::__construct('#__author_assoc', 'authorid', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (!$this->authorid) {
-			$this->setError( JText::_('Must have an author ID.') );
+		if (!$this->authorid) 
+		{
+			$this->setError(JText::_('Must have an author ID.'));
 			return false;
 		}
 
-		if (!$this->subid) {
-			$this->setError( JText::_('Must have an item ID.') );
+		if (!$this->subid) 
+		{
+			$this->setError(JText::_('Must have an item ID.'));
 			return false;
 		}
 
@@ -112,22 +105,22 @@ class MembersAssociation extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteAssociations'
+	 * Delete records for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id User ID
+	 * @return     boolean True on success
 	 */
-	public function deleteAssociations( $id=NULL )
+	public function deleteAssociations($id=NULL)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->authorid;
 		}
 
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE authorid='".$id."'" );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid='" . $id . "'");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;

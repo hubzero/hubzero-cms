@@ -30,9 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = ResourcesHelper::getActions('type');
+
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resource Type') . '</a>: <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
-JToolBarHelper::save();
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
 $params = new JParameter($this->row->params);

@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
@@ -46,7 +46,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	if (!$user->authorize($option, 'manage'))
 	{
 		$app = JFactory::getApplication();
-		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
 	}
 }
 else 
@@ -58,16 +58,15 @@ else
 }
 
 // Include scripts
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'ticket.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'comment.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'message.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'resolution.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'attachment.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'utilities.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'acl.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php');
-//require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
-include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'ticket.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'comment.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'message.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'resolution.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'attachment.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utilities.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'acl.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 ximport('Hubzero_Filter');
 ximport('Hubzero_User_Profile');
 

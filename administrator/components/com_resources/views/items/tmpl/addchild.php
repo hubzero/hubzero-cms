@@ -38,8 +38,8 @@ JToolBarHelper::cancel();
 	<h3><?php echo stripslashes($this->parent->title); ?></h3>
 	
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('Choose a method for adding a new child resource'); ?></legend>
-		<?php if ($this->getError()) { echo ResourcesHtml::error($this->getError()); } ?>
+		<legend><span><?php echo JText::_('Choose a method for adding a new child resource'); ?></span></legend>
+		<?php if ($this->getError()) { echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>'; } ?>
 		
 		<table class="admintable">
 			<tbody>

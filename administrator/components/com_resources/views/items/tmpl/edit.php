@@ -30,50 +30,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = ResourcesHelper::getActions('resource');
+
 $text = ($this->task == 'edit' ? JText::_('Edit') . ' #' . $this->row->id : JText::_('New'));
 
 JToolBarHelper::title(JText::_('Resource') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
-JToolBarHelper::spacer();
-JToolBarHelper::save();
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::spacer();
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
 
 if ($this->row->standalone == 1) {
 	$database =& JFactory::getDBO();
 
-	$type = new ResourcesType( $database );
-	$type->load( $this->row->type );
+	$type = new ResourcesType($database);
+	$type->load($this->row->type);
 
-	/*$fields = array();
-	if (trim($type->customFields) != '') {
-		$fs = explode("\n", trim($type->customFields));
-		foreach ($fs as $f)
-		{
-			$fields[] = explode('=', $f);
-		}
-	} else {
-		if ($this->row->type == 7) {
-			$flds = $this->rconfig->get('tagstool');
-		} else {
-			$flds = $this->rconfig->get('tagsothr');
-		}
-		$flds = explode(',',$flds);
-		foreach ($flds as $fld)
-		{
-			$fields[] = array($fld, $fld, 'textarea', 0);
-		}
-	}
-
-	if (!empty($fields)) {
-		for ($i=0, $n=count( $fields ); $i < $n; $i++)
-		{
-			// Explore the text and pull out all matches
-			array_push($fields[$i], ResourcesHtml::parseTag($this->row->fulltext, $fields[$i][0]));
-
-			// Clean the original text of any matches
-			$this->row->fulltext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$this->row->fulltext);
-		}
-		$this->row->fulltext = trim($this->row->fulltext);
-	}*/
 	$data = array();
 	preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltext, $matches, PREG_SET_ORDER);
 	if (count($matches) > 0) 
@@ -91,9 +65,9 @@ if ($this->row->standalone == 1) {
 }
 
 // Build the path for uploading files
-$path = ResourcesHtml::dateToPath( $this->row->created );
+$path = ResourcesHtml::dateToPath($this->row->created);
 if ($this->row->id) {
-	$dir_id = ResourcesHtml::niceidformat( $this->row->id );
+	$dir_id = ResourcesHtml::niceidformat($this->row->id);
 } else {
 	$dir_id = time().rand(0,10000);
 }
@@ -110,7 +84,7 @@ function submitbutton(pressbutton)
 
 	if (pressbutton == 'resethits') {
 		if (confirm('Are you sure you want to reset the Hits to Zero? \nAny unsaved changes to this content will be lost.')){
-			submitform( pressbutton );
+			submitform(pressbutton);
 			return;
 		} else {
 			return;
@@ -119,7 +93,7 @@ function submitbutton(pressbutton)
 
 	if (pressbutton == 'resetrating') {
 		if (confirm('Are you sure you want to reset the Rating to Unrated? \nAny unsaved changes to this content will be lost.')){
-			submitform( pressbutton );
+			submitform(pressbutton);
 			return;
 		} else {
 			return;
@@ -127,17 +101,17 @@ function submitbutton(pressbutton)
 	}
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// do field validation
 	if (form.title.value == ''){
-		alert( 'Content item must have a title' );
+		alert('Content item must have a title');
 	} else if (form.type.value == "-1"){
-		alert( 'You must select a Section.' );
+		alert('You must select a Section.');
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 
@@ -206,20 +180,20 @@ function popratings()
 			<tbody>
 				<tr>
 					<th class="key"><label for="title">Title:</label></th>
-					<td colspan="3"><input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo htmlentities(stripslashes($this->row->title), ENT_COMPAT, 'UTF-8', ENT_QUOTES); ?>" /></td>
+					<td colspan="3"><input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 				</tr>
 				<tr>
 					<th class="key"><label>Type:</label></th>
 					<td><?php echo $this->lists['type']; ?></td>
 <?php if ($this->row->standalone == 1) { ?>
 					<th class="key"><label for="alias">Alias:</label></th>
-					<td><input type="text" name="alias" id="alias" size="25" maxlength="250" value="<?php echo stripslashes($this->row->alias); ?>" /></td>
+					<td><input type="text" name="alias" id="alias" size="25" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /></td>
 				</tr>
 				<tr>
 					<th class="key"><label for="attrib[location]">Location:</label></th>
-					<td><input type="text" name="attrib[location]" id="attrib[location]" size="25" maxlength="250" value="<?php echo $this->attribs->get( 'location', '' ); ?>" /></td>
+					<td><input type="text" name="attrib[location]" id="attrib[location]" size="25" maxlength="250" value="<?php echo $this->attribs->get('location', ''); ?>" /></td>
 					<th class="key"><label for="attrib[timeof]">Time:</label></th>
-					<td><input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo $this->attribs->get( 'timeof', '' ); ?>" /></td>
+					<td><input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo $this->attribs->get('timeof', ''); ?>" /></td>
 				</tr>
 <?php } else { ?>
 					<th class="key"><label>Logical Type:</label></th>
@@ -227,26 +201,26 @@ function popratings()
 				</tr>
 				<tr>
 					<th class="key"><label for="path">File/URL:</label></th>
-					<td colspan="3"><input type="text" name="path" id="path" size="60" maxlength="250" value="<?php echo $this->row->path; ?>" /></td>
+					<td colspan="3"><input type="text" name="path" id="path" size="60" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->path)); ?>" /></td>
 				</tr>
 				<!-- <tr>
 					<th class="key"><label for="attrib[exclude]">Exclude from menu:</label></th>
-					<td><input type="checkbox" name="attrib[exclude]" id="attrib[exclude]" value="1"<?php if($this->attribs->get( 'exclude', '' ) == 1) { echo ' checked="checked"'; } ?> /></td>
+					<td><input type="checkbox" name="attrib[exclude]" id="attrib[exclude]" value="1"<?php if($this->attribs->get('exclude', '') == 1) { echo ' checked="checked"'; } ?> /></td>
 				</tr> -->
 				<tr>
 					<th class="key"><label for="attrib[duration]">Duration:</label></th>
-					<td colspan="3"><input type="text" name="attrib[duration]" id="attrib[duration]" size="60" maxlength="100" value="<?php echo $this->attribs->get( 'duration', '' ); ?>" /></td>
+					<td colspan="3"><input type="text" name="attrib[duration]" id="attrib[duration]" size="60" maxlength="100" value="<?php echo $this->attribs->get('duration', ''); ?>" /></td>
 				</tr>
 				<tr>
 					<th class="key"><label for="attrib[width]">Width:</label></th>
-					<td><input type="text" name="attrib[width]" id="attrib[width]" size="5" maxlength="250" value="<?php echo $this->attribs->get( 'width', '' ); ?>" /></td>
+					<td><input type="text" name="attrib[width]" id="attrib[width]" size="5" maxlength="250" value="<?php echo $this->attribs->get('width', ''); ?>" /></td>
 					<th class="key"><label for="attrib[height]">Height:</label></th>
-					<td><input type="text" name="attrib[height]" id="attrib[height]" size="5" maxlength="250" value="<?php echo $this->attribs->get( 'height', '' ); ?>" /></td>
+					<td><input type="text" name="attrib[height]" id="attrib[height]" size="5" maxlength="250" value="<?php echo $this->attribs->get('height', ''); ?>" /></td>
 				</tr>
 				<tr>
 					<th class="key"><label for="attrib[attributes]">Attributes:</label></th>
 					<td colspan="3">
-						<input type="text" name="attrib[attributes]" id="attrib[attributes]" size="60" maxlength="100" value="<?php echo $this->attribs->get( 'attributes', '' ); ?>" /><br />
+						<input type="text" name="attrib[attributes]" id="attrib[attributes]" size="60" maxlength="100" value="<?php echo $this->attribs->get('attributes', ''); ?>" /><br />
 						<span class="hint">code:silicon, class:one two three, one:more</span>
 					</td>
 				</tr>
@@ -256,7 +230,7 @@ function popratings()
 						<label>Intro Text:</label><br />
 						<?php
 						$editor =& JFactory::getEditor();
-						echo $editor->display('introtext', htmlentities(stripslashes($this->row->introtext), ENT_COMPAT, 'UTF-8'), '100%', '100px', '45', '10', false);
+						echo $editor->display('introtext', $this->escape(stripslashes($this->row->introtext)), '100%', '100px', '45', '10', false);
 						?>
 					</td>
 				</tr>
@@ -264,7 +238,7 @@ function popratings()
 					<td colspan="4">
 						<label>Main Text: (optional)</label><br />
 						<?php
-						echo $editor->display('fulltext', htmlentities(stripslashes($this->row->fulltext), ENT_COMPAT, 'UTF-8'), '100%', '300px', '45', '10', false);
+						echo $editor->display('fulltext', $this->escape(stripslashes($this->row->fulltext)), '100%', '300px', '45', '10', false);
 						?>
 					</td>
 				</tr>
@@ -339,7 +313,7 @@ function popratings()
 				<th>Rating:</th>
 				<td>
 					<?php echo $this->row->rating.'/5.0 ('.$this->row->times_rated.' reviews)'; ?>
-					<?php if ( $this->row->rating != '0.0' ) { ?>
+					<?php if ($this->row->rating != '0.0') { ?>
 						<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" /> 
 						<a onclick="popratings();" href="#">View ratings</a>
 					<?php } ?>
@@ -419,7 +393,7 @@ function popratings()
 					<td class="paramlist_key"><strong>Hits:</strong></td>
 					<td>
 						<?php echo $this->row->hits; ?>
-						<?php if ( $this->row->hits ) { ?>
+						<?php if ($this->row->hits) { ?>
 							<input type="button" name="reset_hits" id="reset_hits" value="Reset Hit Count" onclick="submitbutton('resethits');" />
 						<?php } ?>
 					</td>
@@ -493,5 +467,5 @@ function popratings()
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -30,12 +30,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = MembersHelper::getActions('component');
+
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Members') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'user.png');
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editListX();
+if ($canDo->get('core.edit.state')) 
+{
+	JToolBarHelper::publishList();
+	JToolBarHelper::unpublishList();
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editListX();
+}
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter">
@@ -119,14 +130,16 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
 <?php
-					if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
+					if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
 						echo $this->escape($row->name);
 					} else {
 ?>
@@ -136,7 +149,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 <?php } ?>
 				</td>
 				<td>
-<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
+<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
 					<span class="state <?php echo $cls; ?>">
 <?php 		if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>

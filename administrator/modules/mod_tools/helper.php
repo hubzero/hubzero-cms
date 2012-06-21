@@ -27,59 +27,88 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Module class for com_tools data
+ */
 class modTools
 {
-	private $_attributes = array();
+	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	private $attributes = array();
 
-	//-----------
-
-	public function __construct($params, $module) 
+	/**
+	 * Constructor
+	 * 
+	 * @param      object $this->params JParameter
+	 * @param      object $module Database row
+	 * @return     void
+	 */
+	public function __construct($params, $module)
 	{
 		$this->params = $params;
 		$this->module = $module;
 	}
 
-	//-----------
-
+	/**
+	 * Set a property
+	 * 
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
+	 * @return     void
+	 */
 	public function __set($property, $value)
 	{
-		$this->_attributes[$property] = $value;
+		$this->attributes[$property] = $value;
 	}
-	
-	//-----------
-	
+
+	/**
+	 * Get a property
+	 * 
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
+	 */
 	public function __get($property)
 	{
-		if (isset($this->_attributes[$property])) 
+		if (isset($this->attributes[$property])) 
 		{
-			return $this->_attributes[$property];
+			return $this->attributes[$property];
 		}
 	}
-	
-	//-----------
-	
+
+	/**
+	 * Check if a property is set
+	 * 
+	 * @param      string $property Property name
+	 * @return     boolean
+	 */
 	public function __isset($property)
 	{
 		return isset($this->_attributes[$property]);
 	}
 
-	//-----------
-
+	/**
+	 * Display module contents
+	 * 
+	 * @return     void
+	 */
 	public function display()
 	{
 		$this->database = JFactory::getDBO();
 		
 		$this->registered = 0;
-		$this->created = 0;
-		$this->uploaded = 0;
-		$this->installed = 0;
-		$this->updated = 0;
-		$this->approved = 0;
-		$this->published = 0;
-		$this->retired = 0;
-		$this->abandoned = 0;
+		$this->created    = 0;
+		$this->uploaded   = 0;
+		$this->installed  = 0;
+		$this->updated    = 0;
+		$this->approved   = 0;
+		$this->published  = 0;
+		$this->retired    = 0;
+		$this->abandoned  = 0;
 		
 		$query = "SELECT f.state FROM #__tool as f 
 				JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 
@@ -120,7 +149,7 @@ class modTools
 		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=3 WHERE t.state IN (1,3,5,6)";
 		$this->database->setQuery($sql);
 		$this->uploaded = $this->database->loadResult();
-		
+
 		// get contribtool entries requiring admin attention
 		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=4 WHERE t.state IN (1,3,5,6)";
 		$this->database->setQuery($sql);
@@ -135,25 +164,25 @@ class modTools
 		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=6 WHERE t.state IN (1,3,5,6)";
 		$this->database->setQuery($sql);
 		$this->approved = $this->database->loadResult();
-		
+
 		// get contribtool entries requiring admin attention
 		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=7 WHERE t.state IN (1,3,5,6)";
 		$this->database->setQuery($sql);
 		$this->published = $this->database->loadResult();
-		
+
 		// get contribtool entries requiring admin attention
 		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=8 WHERE t.state IN (1,3,5,6)";
 		$this->database->setQuery($sql);
 		$this->retired = $this->database->loadResult();
-		
+
 		// get contribtool entries requiring admin attention
 		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=9 WHERE t.state IN (1,3,5,6)";
 		$this->database->setQuery($sql);
 		$this->abandoned = $this->database->loadResult();*/
-		
+
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
-		
+
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

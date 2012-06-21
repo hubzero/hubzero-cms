@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Manage resource entries
+ * Manage resource entry tags
  */
 class ResourcesControllerTags extends Hubzero_Controller
 {
@@ -78,7 +78,10 @@ class ResourcesControllerTags extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML

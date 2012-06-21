@@ -103,7 +103,10 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -117,7 +120,6 @@ class ResourcesControllerTypes extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -128,6 +130,10 @@ class ResourcesControllerTypes extends Hubzero_Controller
 	 */
 	public function editTask($row=null)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
 		if ($row)
 		{
 			$this->view->row = $row;
@@ -156,7 +162,10 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -189,16 +198,16 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		{
 			$elements = new stdClass();
 			$elements->fields = array();
-			
+
 			foreach ($fields as $val)
 			{
 				if ($val['title'])
 				{
 					$element = new stdClass();
-					$element->default = (isset($val['default'])) ? $val['default'] : '';
-					$element->name = $this->_normalize(trim($val['title']));
-					$element->label = $val['title'];
-					$element->type = (isset($val['type']))     ? $val['type']     : 'text';
+					$element->default  = (isset($val['default'])) ? $val['default'] : '';
+					$element->name     = $this->_normalize(trim($val['title']));
+					$element->label    = $val['title'];
+					$element->type     = (isset($val['type']))     ? $val['type']     : 'text';
 					$element->required = (isset($val['required'])) ? $val['required'] : '0';
 					foreach ($val as $key => $v)
 					{
@@ -224,9 +233,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 					$elements->fields[] = $element;
 				}
 			}
-			//$field = implode("\n", $txta);
-			//$row->customFields = $field;
-			//print_R($_POST); die();
+
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 			$re = new ResourcesElements($elements);
 			$row->customFields = $re->toString();
@@ -351,7 +358,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 	}
 	
 	/**
-	 * Cancel a task (redirects to default task)
+	 * Retrieve an element's options (typically called via AJAX)
 	 *
 	 * @return	void
 	 */
@@ -364,18 +371,18 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		$option->value = '';
 
 		$field = new stdClass;
-		$field->label = JRequest::getVar('name', 0);
-		$field->element = '';
+		$field->label       = JRequest::getVar('name', 0);
+		$field->element     = '';
 		$field->description = '';
-		$field->text = $field->label;
-		$field->name = $field->label;
-		$field->default = '';
-		$field->type = JRequest::getVar('type', '');
-		$field->options = array(
+		$field->text        = $field->label;
+		$field->name        = $field->label;
+		$field->default     = '';
+		$field->type        = JRequest::getVar('type', '');
+		$field->options     = array(
 			$option,
 			$option
 		);
-		
+
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 		$elements = new ResourcesElements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);

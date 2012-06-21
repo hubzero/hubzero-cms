@@ -41,7 +41,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 	/**
 	 * Upload a file or create a new folder
 	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function uploadTask()
 	{
@@ -90,7 +90,9 @@ class ResourcesControllerMedia extends Hubzero_Controller
 				}
 			}
 			// Directory created
-		} else {
+		} 
+		else 
+		{
 			// Make sure the upload path exist
 			if (!is_dir($path))
 			{
@@ -117,7 +119,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			$file['name'] = JFile::makeSafe($file['name']);
 			// Ensure file names fit.
 			$ext = JFile::getExt($file['name']);
-			$file['name'] = str_replace(' ','_',$file['name']);
+			$file['name'] = str_replace(' ', '_', $file['name']);
 			if (strlen($file['name']) > 230)
 			{
 				$file['name'] = substr($file['name'], 0, 230);
@@ -301,7 +303,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		$this->view->listdir = JRequest::getVar('listdir', '');
 		if (!$this->view->listdir)
 		{
-			echo ResourcesHtml::error(JText::_('No list directory provided.'));
+			echo '<p class="error">' . JText::_('No list directory provided.') . '</p>';
 			return;
 		}
 
@@ -343,7 +345,10 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -361,7 +366,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 		$this->view->listdir = JRequest::getVar('listdir', '');
 		if (!$this->view->listdir)
 		{
-			echo ResourcesHtml::error(JText::_('No list directory provided.'));
+			echo '<p class="error">' . JText::_('No list directory provided.') . '</p>';
 			return;
 		}
 
@@ -415,7 +420,10 @@ class ResourcesControllerMedia extends Hubzero_Controller
 
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}

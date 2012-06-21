@@ -34,17 +34,27 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
-
-// Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize($option, 'manage'))
+if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
 jimport('joomla.application.component.helper');
@@ -56,10 +66,15 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'assoc.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'review.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'doi.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'resources.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utilities.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 
 $controllerName = JRequest::getCmd('controller', 'items');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'items';
+}
 
 JSubMenuHelper::addEntry(
 	JText::_('Resources'),
@@ -88,14 +103,10 @@ JSubMenuHelper::addEntry(
 );
 JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
-	'index.php?option=' . $option . '&controller=plugins', //'index.php?option=com_plugins&view=plugins&filter_folder=resources'
+	'index.php?option=' . $option . '&controller=plugins',
 	$controllerName == 'plugins'
 );
 
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'items';
-}
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ResourcesController' . ucfirst($controllerName);
 

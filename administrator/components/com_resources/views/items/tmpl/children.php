@@ -30,20 +30,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = ResourcesHelper::getActions('resource');
+
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Resource Manager') . '</a>', 'addedit.png');
 if ($this->filters['parent_id'] > 0)
 {
-	JToolBarHelper::addNew('addchild', 'Add Child');
-	JToolBarHelper::deleteList('', 'removechild', 'Remove Child');
+	if ($canDo->get('core.create')) 
+	{
+		JToolBarHelper::addNew('addchild', 'Add Child');
+	}
+	if ($canDo->get('core.delete')) 
+	{
+		JToolBarHelper::deleteList('', 'removechild', 'Remove Child');
+	}
 }
 else
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
+	if ($canDo->get('core.edit.state')) 
+	{
+		JToolBarHelper::publishList();
+		JToolBarHelper::unpublishList();
+		JToolBarHelper::spacer();
+	}
 }
-JToolBarHelper::spacer();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 
 JHTML::_('behavior.tooltip');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
@@ -271,7 +288,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') { ?>
+<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit')) { ?>
 					<span class="editlinktip hasTip" title="<?php echo JText::_('Publish Information');?>::<?php echo $info; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>
@@ -283,7 +300,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 <?php } ?>
 				</td>
 				<td>
-<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') { ?>
+<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
 					<span class="<?php echo $class;?>">
 						<span><?php echo $alt; ?></span>
 					</span>
@@ -294,7 +311,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 <?php } ?>
 				</td>
 				<td>
-<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') { ?>
+<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
 					<span class="access" <?php echo $color_access; ?>>
 						<span><?php echo $row->groupname; ?></span>
 					</span>

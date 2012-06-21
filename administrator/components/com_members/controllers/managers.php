@@ -34,9 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'MembersController'
- * 
- * Long description (if any) ...
+ * Manage a member's manager entries
  */
 class MembersControllerManagers extends Hubzero_Controller
 {

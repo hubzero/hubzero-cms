@@ -39,11 +39,9 @@ ximport('Hubzero_Controller');
 class MembersControllerMedia extends Hubzero_Controller
 {
 	/**
-	 * Short description for 'upload'
+	 * Upload a file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function uploadTask()
 	{
@@ -71,7 +69,7 @@ class MembersControllerMedia extends Hubzero_Controller
 
 		// Build upload path
 		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath'), DS) . DS . $dir;
+		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		if (!is_dir($path)) 
 		{
@@ -165,11 +163,9 @@ class MembersControllerMedia extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'deleteimg'
+	 * Delete a file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function removeTask()
 	{
@@ -196,7 +192,7 @@ class MembersControllerMedia extends Hubzero_Controller
 
 		// Build the file path
 		$dir  = Hubzero_View_Helper_Html::niceidformat($id);
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath'), DS) . DS . $dir;
+		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
@@ -214,10 +210,10 @@ class MembersControllerMedia extends Hubzero_Controller
 				$this->displayTask($file, $id);
 				return;
 			}
-			
+
 			// Get the file thumbnail name
 			$curthumb = $ih->createThumbName($file);
-			
+
 			// Remove the thumbnail
 			if (file_exists($path . DS . $curthumb)) 
 			{
@@ -245,23 +241,22 @@ class MembersControllerMedia extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'img'
+	 * Display a file and its info
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $file Parameter description (if any) ...
-	 * @param      integer $id Parameter description (if any) ...
+	 * @param      string  $file File name
+	 * @param      integer $id   User ID
 	 * @return     void
 	 */
 	public function displayTask($file='', $id=0)
 	{
 		$this->view->setLayout('display');
-		
+
 		// Load the component config
 		$this->view->config = $this->config;
 
 		// Incoming
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = JRequest::getInt('id', 0);
 		}
 		$this->view->id = $id;
@@ -273,18 +268,16 @@ class MembersControllerMedia extends Hubzero_Controller
 		$this->view->file = $file;
 
 		// Build the file path
-		$this->view->dir = Hubzero_View_Helper_Html::niceidformat($id);
-		$this->view->path = JPATH_ROOT;
-		if (substr($this->config->get('webpath'), 0, 1) != DS) 
-		{
-			$this->view->path .= DS;
-		}
-		$this->view->path .= $this->config->get('webpath') . DS . $this->view->dir;
+		$this->view->dir  = Hubzero_View_Helper_Html::niceidformat($id);
+		$this->view->path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $this->view->dir;
 
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML

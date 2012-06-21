@@ -28,10 +28,15 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'TAGS' ).': <small><small>[ '.JText::_('MERGE').' ]</small></small>', 'addedit.png' );
-JToolBarHelper::save('merge');
+$canDo = TagsHelper::getActions();
+
+JToolBarHelper::title(JText::_('TAGS') . ': <small><small>[ ' . JText::_('MERGE') . ' ]</small></small>', 'tags.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save('merge');
+}
 JToolBarHelper::cancel();
 
 ?>
@@ -41,26 +46,26 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" class="editform">
+<form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<p><?php echo JText::_('MERGED_EXPLANATION'); ?></p>
 	
-	<div class="col width-50">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('MERGING'); ?></legend>
+			<legend><span><?php echo JText::_('MERGING'); ?></span></legend>
 			
 			<ul>
 			<?php
 			foreach ($this->tags as $tag)
 			{
-				echo '<li>'.stripslashes($tag->raw_tag).' ('.$tag->tag.' - '.$tag->total.')</li>'."\n";
+				echo '<li>' . $this->escape(stripslashes($tag->raw_tag)) . ' (' . $this->escape($tag->tag) . ' - ' . $tag->total . ')</li>' . "\n";
 			}
 			?>
 			</ul>
@@ -68,7 +73,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-50">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('MERGE_TO'); ?></legend>
+			<legend><span><?php echo JText::_('MERGE_TO'); ?></span></legend>
 			
 			<table class="admintable">
 				<tbody>
@@ -80,7 +85,7 @@ function submitbutton(pressbutton)
 								<?php
 								foreach ($this->rows as $row)
 								{
-									echo '<option value="'.$row->id.'">'.stripslashes($row->raw_tag).'</option>'."\n";
+									echo '<option value="' . $row->id . '">' . $this->escape(stripslashes($row->raw_tag)) . '</option>' . "\n";
 								}
 								?>
 							</select>
@@ -113,9 +118,9 @@ function submitbutton(pressbutton)
 
 	<input type="hidden" name="ids" value="<?php echo $this->idstr; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 	<input type="hidden" name="task" value="merge" />
 	
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
-

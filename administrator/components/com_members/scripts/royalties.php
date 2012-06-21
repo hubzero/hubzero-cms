@@ -38,24 +38,24 @@ $bits = explode('/', $thispath);
 $basepath = '/'.$bits[1].'/'.$bits[2];
 
 /** Set flag that this is a parent file */
-define( "_JEXEC", 1 );
+define("_JEXEC", 1);
 
 /**
  * Description for ''JPATH_BASE''
  */
-define('JPATH_BASE', $basepath );
+define('JPATH_BASE', $basepath);
 
 /**
  * Description for ''DS''
  */
-define( 'DS', DIRECTORY_SEPARATOR );
+define('DS', DIRECTORY_SEPARATOR);
 
-require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
-require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
+require_once (JPATH_BASE  . DS . 'includes' . DS . 'defines.php');
+require_once (JPATH_BASE  . DS . 'includes' . DS . 'framework.php');
 
 $time_start = microtime(true);
 
-JDEBUG ? $_PROFILER->mark( 'afterLoad' ) : null;
+JDEBUG ? $_PROFILER->mark('afterLoad') : null;
 
 /**
  * CREATE THE APPLICATION
@@ -87,7 +87,7 @@ if (0) {
 $mainframe->route();
 
 // authorization
-$Itemid = JRequest::getInt( 'Itemid');
+$Itemid = JRequest::getInt('Itemid');
 $mainframe->authorize($Itemid);
 
 // trigger the onAfterRoute events
@@ -116,48 +116,48 @@ $mainframe->render();
 // trigger the onAfterRender events
 JDEBUG ? $_PROFILER->mark('afterRender') : null;
 $mainframe->triggerEvent('onAfterRender');
-} // ( 0 )
+} // (0)
 // Begin Joomla 1.5 Core Compatibility Support *njk*
 /*
-define('JPATH_BASE', dirname(__FILE__) );
-define( 'DS', DIRECTORY_SEPARATOR );
-$parts = explode( DS, JPATH_BASE );
-array_pop( $parts );
-array_pop( $parts );
-array_pop( $parts );
-define( 'JPATH_ROOT', implode( DS, $parts ) );
-define( 'JPATH_SITE', JPATH_ROOT );
-define( 'JPATH_LIBRARIES', JPATH_ROOT.DS.'libraries' );
-define( 'JPATH_CONFIGURATION',     JPATH_ROOT );
-require_once( JPATH_LIBRARIES . DS . 'loader.php' );
-jimport( 'joomla.common.abstract.object' );
-jimport( 'joomla.factory' );
-ximport( 'Hubzero_Factory' );
+define('JPATH_BASE', dirname(__FILE__));
+define('DS', DIRECTORY_SEPARATOR);
+$parts = explode(DS, JPATH_BASE);
+array_pop($parts);
+array_pop($parts);
+array_pop($parts);
+define('JPATH_ROOT', implode(DS, $parts));
+define('JPATH_SITE', JPATH_ROOT);
+define('JPATH_LIBRARIES', JPATH_ROOT . DS . 'libraries');
+define('JPATH_CONFIGURATION',     JPATH_ROOT);
+require_once(JPATH_LIBRARIES . DS . 'loader.php');
+jimport('joomla.common.abstract.object');
+jimport('joomla.factory');
+ximport('Hubzero_Factory');
 */
 // End Joomla 1.5 Core Compatibility Support *njk*
 
 /*
-if (!file_exists( "../../../configuration.php" )) {
-	header( "Location: ../../../installation/index.php" );
+if (!file_exists("../../../configuration.php")) {
+	header("Location: ../../../installation/index.php");
 	exit();
 }
 
-require_once( JPATH_ROOT.DS."globals.php" );
-require_once( JPATH_ROOT.DS."configuration.php" );
-include_once( $mosConfig_absolute_path . "/language/".$mosConfig_lang.".php" );
+require_once(JPATH_ROOT . DS . "globals.php");
+require_once(JPATH_ROOT . DS . "configuration.php");
+include_once($mosConfig_absolute_path . "/language/".$mosConfig_lang.".php");
 
-$database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
-$database->debug( $mosConfig_debug );
+$database = new database($mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix);
+$database->debug($mosConfig_debug);
 */
 
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_Bank');
 
-include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'economy.php' );
-include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'economy.php' );
-include_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'helpers'.DS.'economy.php' );
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'economy.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'controllers'.DS.'points.php' );
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'controllers' . DS . 'points.php');
 
 echo "_______________________________________________\n";
 echo date(DATE_RFC822)."\n";

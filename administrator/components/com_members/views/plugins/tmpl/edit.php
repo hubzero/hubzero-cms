@@ -1,20 +1,49 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-	JToolBarHelper::title( JText::_( 'Members' ) .': <small><small>[' .JText::_('Plugins').': '.JText::_('Edit'). ']</small></small>', 'plugin.png' );
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+$canDo = MembersHelper::getActions('component');
+
+JToolBarHelper::title(JText::_('Members') . ': <small><small>[' . JText::_('Plugins') . ': '.JText::_('Edit') . ']</small></small>', 'plugin.png');
+if ($canDo->get('core.edit')) 
+{
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
-	JToolBarHelper::cancel();
-	
-	JHTML::_('behavior.tooltip');
-	
-	// clean item data
-	JFilterOutput::objectHTMLSafe($this->row, ENT_QUOTES, '');
-	
-	/*$this->row->nameA = '';
-	if ($this->row->id) 
-	{
-		$row->nameA = '<small><small>[ '. $this->row->name .' ]</small></small>';
-	}*/
+}
+JToolBarHelper::cancel();
+
+JHTML::_('behavior.tooltip');
+
+// clean item data
+JFilterOutput::objectHTMLSafe($this->row, ENT_QUOTES, '');
 ?>
 <script language="javascript" type="text/javascript">
 	function submitbutton(pressbutton) {
@@ -25,9 +54,9 @@
 		// validation
 		var form = document.adminForm;
 		if (form.name.value == "") {
-			alert( "<?php echo JText::_( 'Plugin must have a name', true ); ?>" );
+			alert("<?php echo JText::_('Plugin must have a name', true); ?>");
 		} else if (form.element.value == "") {
-			alert( "<?php echo JText::_( 'Plugin must have a filename', true ); ?>" );
+			alert("<?php echo JText::_('Plugin must have a filename', true); ?>");
 		} else {
 			submitform(pressbutton);
 		}
@@ -37,13 +66,13 @@
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_( 'Details' ); ?></legend>
+			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
 						<td width="100" class="key">
 							<label for="name">
-								<?php echo JText::_( 'Name' ); ?>:
+								<?php echo JText::_('Name'); ?>:
 							</label>
 						</td>
 						<td>
@@ -52,7 +81,7 @@
 					</tr>
 					<tr>
 						<td valign="top" class="key">
-							<?php echo JText::_( 'Published' ); ?>:
+							<?php echo JText::_('Published'); ?>:
 						</td>
 						<td>
 							<?php echo $this->lists['published']; ?>
@@ -61,7 +90,7 @@
 					<tr>
 						<td valign="top" class="key">
 							<label for="folder">
-								<?php echo JText::_( 'Type' ); ?>:
+								<?php echo JText::_('Type'); ?>:
 							</label>
 						</td>
 						<td>
@@ -72,7 +101,7 @@
 					<tr>
 						<td valign="top" class="key">
 							<label for="element">
-								<?php echo JText::_( 'Plugin file' ); ?>:
+								<?php echo JText::_('Plugin file'); ?>:
 							</label>
 						</td>
 						<td>
@@ -82,7 +111,7 @@
 					<tr>
 						<td valign="top" class="key">
 							<label for="access">
-								<?php echo JText::_( 'Access Level' ); ?>:
+								<?php echo JText::_('Access Level'); ?>:
 							</label>
 						</td>
 						<td>
@@ -91,7 +120,7 @@
 					</tr>
 					<tr>
 						<td valign="top" class="key">
-							<?php echo JText::_( 'Order' ); ?>:
+							<?php echo JText::_('Order'); ?>:
 						</td>
 						<td>
 							<?php echo $this->lists['ordering']; ?>
@@ -99,10 +128,10 @@
 					</tr>
 					<tr>
 						<td valign="top" class="key">
-							<?php echo JText::_( 'Description' ); ?>:
+							<?php echo JText::_('Description'); ?>:
 						</td>
 						<td>
-							<?php echo JText::_( $this->row->description ); ?>
+							<?php echo JText::_($this->row->description); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -111,7 +140,7 @@
 	</div>
 	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_( 'Parameters' ); ?></span></legend>
+			<legend><span><?php echo JText::_('Parameters'); ?></span></legend>
 <?php
 		jimport('joomla.html.pane');
 		$pane =& JPane::getInstance('sliders');
@@ -155,5 +184,5 @@
 	<input type="hidden" name="cid[]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="client" value="<?php echo $this->row->client_id; ?>" />
 	<input type="hidden" name="task" value="" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
