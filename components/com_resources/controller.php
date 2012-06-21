@@ -509,6 +509,11 @@ class ResourcesController extends Hubzero_Controller
 			break;
 
 			case 3:
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
 				// Incoming (should be a resource ID)
 				$id = JRequest::getInt( 'input', 0 );
 
@@ -522,14 +527,14 @@ class ResourcesController extends Hubzero_Controller
 				$resource->ranking = round($resource->ranking, 1);
 
 				// Get parameters and merge with the component params
-				$rparams = new JParameter( $resource->params );
+				$rparams = new $paramsClass( $resource->params );
 				$params = $this->config;
 				$params->merge( $rparams );
 				$bits['params'] = $params;
 
 				$resource->_type = new ResourcesType( $database );
 				$resource->_type->load($resource->type);
-				$resource->_type->_params = new JParameter( $resource->_type->params );
+				$resource->_type->_params = new $paramsClass( $resource->_type->params );
 
 				// Version checks (tools only)
 				if ($resource->type == 7 && $resource->alias) {
@@ -937,8 +942,14 @@ class ResourcesController extends Hubzero_Controller
 			$base = substr($base, 0, -1);
 		} 
 		
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		
 		//get the hieght and width
-		$attribs = new JParameter($activechild->attribs);
+		$attribs = new $paramsClass($activechild->attribs);
 		$width  = intval($attribs->get('width', 0));
 		$height = intval($attribs->get('height', 0));
 
@@ -1160,9 +1171,15 @@ class ResourcesController extends Hubzero_Controller
 		$sections = array();
 		$cats = array();
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		$resource->_type = new ResourcesType($database);
 		$resource->_type->load($resource->type);
-		$resource->_type->_params = new JParameter($resource->_type->params);
+		$resource->_type->_params = new $paramsClass($resource->_type->params);
 
 		// We need to do this here because we need some stats info to pass to the body
 		if (!$thistool) {
@@ -1201,12 +1218,12 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		// Get parameters and merge with the component params
-		$rparams = new JParameter($resource->params);
+		$rparams = new $paramsClass($resource->params);
 		$params = $this->config;
 		$params->merge($rparams);
 
 		// Get attributes
-		$attribs = new JParameter($resource->attribs);
+		$attribs = new $paramsClass($resource->attribs);
 
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
@@ -1553,6 +1570,12 @@ class ResourcesController extends Hubzero_Controller
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+			
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -1644,9 +1667,9 @@ class ResourcesController extends Hubzero_Controller
 				}
 
 				// Get attributes
-				//$attribs = new JParameter( $row->attribs );
+				//$attribs = new $paramsClass( $row->attribs );
 				if($children)
-					$attribs = new JParameter( $children[0]->attribs );
+					$attribs = new $paramsClass( $children[0]->attribs );
 
 				foreach ( $podcasts as $podcast )
 				{

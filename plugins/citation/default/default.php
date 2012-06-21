@@ -51,11 +51,6 @@ class plgCitationDefault extends JPlugin
 		parent::__construct($subject, $config);
 
 		$this->loadLanguage();
-		if (!$this->params && version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->_plugin = JPluginHelper::getPlugin('citation', 'bibtex');
-			$this->params = new JParameter($this->_plugin->params);
-		}
 	}
 
 	/**

@@ -389,7 +389,13 @@ class CronControllerPlugins extends Hubzero_Controller
 
 		$this->view->lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->view->row->published);
 
-		$this->view->params = new JParameter(
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$this->view->params = new $paramsClass(
 			$this->view->row->params, 
 			JApplicationHelper::getPath('plg_xml', $this->view->row->folder . DS . $this->view->row->element), 
 			'plugin'

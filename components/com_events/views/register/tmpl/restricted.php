@@ -31,7 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$params = new JParameter( $this->event->params );
+$paramsClass = 'JParameter';
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$paramsClass = 'JRegistry';
+}
+
+$params = new $paramsClass( $this->event->params );
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

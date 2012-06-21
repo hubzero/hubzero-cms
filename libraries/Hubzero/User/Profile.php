@@ -667,7 +667,13 @@ class Hubzero_User_Profile extends JObject
 
 		$this->clear();
 
-		$this->_params = new JParameter( '' );
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$this->_params = new $paramsClass( '' );
 
 		foreach($result as $property=>$value)
 			$this->set($property,$value);

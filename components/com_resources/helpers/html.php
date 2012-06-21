@@ -1733,6 +1733,12 @@ class ResourcesHtml
 		$out = '';
 		$blorp = '';
 		if ($children != NULL) {
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+			
 			$out .= '<ul>'."\n";
 			$base = $config->get('uploadpath');
 			foreach ($children as $child)
@@ -1750,11 +1756,11 @@ class ResourcesHtml
 						} else {
 							$rt = new ResourcesType($database);
 							$rt->load($child->type);
-							$tparams = new JParameter($rt->params);
+							$tparams = new $paramsClass($rt->params);
 
 							$lt = new ResourcesType($database);
 							$lt->load($child->logicaltype);
-							$ltparams = new JParameter($lt->params);
+							$ltparams = new $paramsClass($lt->params);
 
 							// Check the link action by child's type
 							if ($child->logicaltype) {
@@ -1803,7 +1809,7 @@ class ResourcesHtml
 							}
 
 							// Check for any link action overrides on the child itself
-							$childParams = new JParameter($child->params);
+							$childParams = new $paramsClass($child->params);
 							$linkAction = intval($childParams->get('link_action', $linkAction));
 							switch ($linkAction)
 							{
@@ -2096,6 +2102,12 @@ class ResourcesHtml
 			break;
 
 			default:
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+				
 				$firstChild->title = str_replace('"', '&quot;', $firstChild->title);
 				$firstChild->title = str_replace('&amp;', '&', $firstChild->title);
 				$firstChild->title = str_replace('&', '&amp;', $firstChild->title);
@@ -2107,11 +2119,11 @@ class ResourcesHtml
 
 				$lt = new ResourcesType($database);
 				$lt->load($firstChild->logicaltype);
-				$ltparams = new JParameter($lt->params);
+				$ltparams = new $paramsClass($lt->params);
 
 				$rt = new ResourcesType($database);
 				$rt->load($firstChild->type);
-				$tparams = new JParameter($rt->params);
+				$tparams = new $paramsClass($rt->params);
 
 				if ($firstChild->logicaltype) {
 					$rtLinkAction = $ltparams->get('linkAction', 'extension');
@@ -2191,7 +2203,7 @@ class ResourcesHtml
 					$html .= ResourcesHtml::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
 					//$html .= t.'<p class="warning" style="clear: none;">You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can download.</p>'."\n";
 				} else {
-					$childParams = new JParameter($firstChild->params);
+					$childParams = new $paramsClass($firstChild->params);
 					$linkAction = intval($childParams->get('link_action', $linkAction));
 
 					$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $linkAction);
@@ -2220,7 +2232,7 @@ class ResourcesHtml
 						break;
 					}
 
-					$attribs = new JParameter($firstChild->attribs);
+					$attribs = new $paramsClass($firstChild->attribs);
 					$width  = intval($attribs->get('width', 0));
 					$height = intval($attribs->get('height', 0));
 					if ($width > 0 && $height > 0) {
@@ -2429,6 +2441,12 @@ class ResourcesHtml
 	 */
 	public function writeResults(&$database, &$lines, $show_edit=0, $show_date=3)
 	{
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		
 		$juser =& JFactory::getUser();
 
 		$config =& JComponentHelper::getParams('com_resources');
@@ -2451,7 +2469,7 @@ class ResourcesHtml
 
 			// Get parameters
 			$params = clone($config);
-			$rparams = new JParameter($line->params);
+			$rparams = new $paramsClass($line->params);
 			$params->merge($rparams);
 
 			// Instantiate a new view

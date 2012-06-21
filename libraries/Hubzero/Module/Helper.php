@@ -132,8 +132,14 @@ class Hubzero_Module_Helper
 		$db->setQuery( $sql );
 		$params = $db->loadResult();
 		
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		
 		//parse params
-		$mparams = new JParameter( $params );
+		$mparams = new $paramsClass( $params );
 		
 		//return params
 		return $mparams;

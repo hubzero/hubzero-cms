@@ -278,9 +278,15 @@ class Hubzero_Wiki_Editor extends JObservable
 		// Require plugin file
 		require_once $path;
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		// Get the plugin
 		$plugin =& JPluginHelper::getPlugin('hubzero', $this->_name);
-		$params = new JParameter($plugin->params);
+		$params = new $paramsClass($plugin->params);
 		$params->loadArray($config);
 		$plugin->params = $params;
 

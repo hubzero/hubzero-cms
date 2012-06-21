@@ -191,7 +191,13 @@ class KbControllerArticles extends Hubzero_Controller
 		// Get name of creator
 		$this->view->creator = JUser::getInstance($this->view->row->created_by);
 
-		$this->view->params = new JParameter(
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$this->view->params = new $paramsClass(
 			$this->view->row->params, 
 			JPATH_COMPONENT . DS . 'kb.xml'
 		);

@@ -52,12 +52,12 @@ class MembersControllerPlugins extends Hubzero_Controller
 			JRequest::setVar('action', $task);
 			JRequest::setVar('task', 'manage');
 		}
-		
+
 		$this->_folder = 'members';
-		
+
 		parent::execute();
 	}
-	
+
 	/**
 	 * List resource types
 	 * 
@@ -105,7 +105,7 @@ class MembersControllerPlugins extends Hubzero_Controller
 			'',
 			'word'
 		));
-		
+
 		$where = array();
 		$this->client = JRequest::getWord('filter_client', 'site');
 
@@ -194,14 +194,14 @@ class MembersControllerPlugins extends Hubzero_Controller
 			JError::raiseError(500, $this->database->stderr());
 			return false;
 		}
-		
+
 		// Get related plugins
 		JPluginHelper::importPlugin('members');
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Show related content
 		$this->view->manage = $dispatcher->trigger('onCanManage');
-		
+
 		$this->view->client = $this->client;
 		$this->view->states = JHTML::_('grid.state', $this->view->filters['state']);
 		$this->view->user = $this->juser;
@@ -209,7 +209,10 @@ class MembersControllerPlugins extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -387,15 +390,21 @@ class MembersControllerPlugins extends Hubzero_Controller
 		{
 			$this->view->lists['ordering'] = '<input type="hidden" name="ordering" value="' . $this->view->row->ordering . '" />' . JText::_('This plugin cannot be reordered');
 		}
-		
+
 		$this->view->lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->view->row->published);
-		
-		$this->view->params = new JParameter(
+
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$this->view->params = new $paramsClass(
 			$this->view->row->params, 
 			JApplicationHelper::getPath('plg_xml', $this->view->row->folder . DS . $this->view->row->element), 
 			'plugin'
 		);
-		
+
 		// Set any errors
 		if ($this->getError())
 		{

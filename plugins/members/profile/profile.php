@@ -136,7 +136,13 @@ class plgMembersProfile extends JPlugin
 		$registration->Reason = $this->_registrationField('registrationReason','HHHH','edit');
 		$registration->OptIn = $this->_registrationField('registrationOptIn','HHHH','edit');
 
-		$rparams = new JParameter($this->member->get('params'));
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$rparams = new $paramsClass($this->member->get('params'));
 		$params = JComponentHelper::getParams('com_members');
 		$params->merge($rparams);
 
@@ -144,7 +150,7 @@ class plgMembersProfile extends JPlugin
 		Hubzero_Document::addPluginStylesheet('members', 'profile');
 		Hubzero_Document::addPluginScript('members', 'profile');
 		
-		if(JPluginHelper::isEnabled('system', 'jquery'))
+		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			$document =& JFactory::getDocument();
 			$document->addScript("/media/system/js/jquery.fileuploader.js");

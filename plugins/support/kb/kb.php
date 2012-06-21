@@ -38,7 +38,6 @@ jimport( 'joomla.plugin.plugin' );
  */
 class plgSupportKb extends JPlugin
 {
-
 	/**
 	 * Constructor
 	 * 
@@ -49,24 +48,15 @@ class plgSupportKb extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-
-		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'support', 'kb' );
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->params = new JParameter($this->_plugin->params);
-		}
 	}
 
 	/**
-	 * Short description for 'getReportedItem'
+	 * Get items reported as abusive
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $refid Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $parent Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $refid    Comment ID
+	 * @param      string  $category Item type (kb)
+	 * @param      integer $parent   Parent ID
+	 * @return     array
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
@@ -84,7 +74,7 @@ class plgSupportKb extends JPlugin
 						ON s.id = f.section
 					LEFT JOIN #__faq_categories AS c
 						ON c.id = f.category
-					WHERE rc.id=".$refid;
+					WHERE rc.id=" . $refid;
 
 		$database =& JFactory::getDBO();
 		$database->setQuery($query);
@@ -93,7 +83,7 @@ class plgSupportKb extends JPlugin
 		{
 			foreach ($rows as $key => $row)
 			{
-				$rows[$key]->href = JRoute::_('index.php?option=com_kb&section='.$row->section.'&category='.$row->category.'&alias='.$row->article);
+				$rows[$key]->href = JRoute::_('index.php?option=com_kb&section=' . $row->section . '&category=' . $row->category . '&alias=' . $row->article);
 			}
 		}
 		return $rows;

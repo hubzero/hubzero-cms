@@ -41,7 +41,13 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-$params = new JParameter($this->row->params);
+$paramsClass = 'JParameter';
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$paramsClass = 'JRegistry';
+}
+
+$params = new $paramsClass($this->row->params);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

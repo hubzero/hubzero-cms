@@ -53,14 +53,8 @@ class  plgSystemIndent extends JPlugin
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
-		// load plugin parameters
-		//$this->_plugin = JPluginHelper::getPlugin('system', 'indent');
+
 		$this->loadLanguage();
-		/*if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->params = new JParameter($this->_plugin->params);
-		}*/
 	}
 
 	/**

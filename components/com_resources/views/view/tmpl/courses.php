@@ -334,13 +334,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= t.t.'</tr>'."\n";
 				$html .= t.'</thead>'."\n";
 				$html .= t.' <tbody>'."\n";
+				
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
 				foreach ($schildren as $child)
 				{
 					// Retrieve the grandchildren
 					$helper = new ResourcesHelper($child->id, $database);
 					$helper->getChildren();
 
-					$child_params = new JParameter( $child->params );
+					$child_params = new $paramsClass( $child->params );
 					$link_action = $child_params->get( 'link_action', '' );
 
 					$child->title = ResourcesHtml::encode_html($child->title);

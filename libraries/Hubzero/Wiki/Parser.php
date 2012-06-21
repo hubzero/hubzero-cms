@@ -199,7 +199,12 @@ class Hubzero_Wiki_Parser extends JObservable
 		$plugin =& JPluginHelper::getPlugin('hubzero', $this->_name);
 		if (is_string($plugin->params))
 		{
-			$plugin->params = new JParameter($plugin->params);
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+			$plugin->params = new $paramsClass($plugin->params);
 		}
 		$plugin->params->loadArray($config);
 

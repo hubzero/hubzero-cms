@@ -266,6 +266,12 @@ Class GroupPages extends JTable
 	 */
 	public function defaultPage()
 	{
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		
 		//get the group members
 		$members = $this->group->get('members');
 		shuffle($members);
@@ -273,7 +279,7 @@ Class GroupPages extends JTable
 		$oparams = JComponentHelper::getParams( "com_groups" ); 
 		$o_system_users = $oparams->get('display_system_users', 'no');
 		
-		$gparams = new JParameter( $this->group->get('params') );
+		$gparams = new $paramsClass( $this->group->get('params') );
 		$g_system_users = $gparams->get('display_system_users', "global");
 		
 		

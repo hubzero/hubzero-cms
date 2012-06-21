@@ -170,10 +170,16 @@ class StoreControllerOrders extends Hubzero_Controller
 			$orderitems = $oi->getOrderItems($id);
 			if ($orderitems)
 			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
 				foreach ($orderitems as $r)
 				{
-					$params = new JParameter($r->params);
-					$selections = new JParameter($r->selections);
+					$params = new $paramsClass($r->params);
+					$selections = new $paramsClass($r->selections);
 
 					// Get size selection
 					$r->sizes    		= $params->get('size', '');
@@ -281,10 +287,16 @@ class StoreControllerOrders extends Hubzero_Controller
 			$this->view->orderitems = $oi->getOrderItems($id);
 			if (count($this->view->orderitems) > 0)
 			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
 				foreach ($this->view->orderitems as $r)
 				{
-					$params = new JParameter($r->params);
-					$selections = new JParameter($r->selections);
+					$params = new $paramsClass($r->params);
+					$selections = new $paramsClass($r->selections);
 
 					// Get size selection
 					$r->sizes = $params->get('size', '');

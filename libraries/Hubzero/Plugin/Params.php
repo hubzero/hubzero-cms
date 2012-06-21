@@ -178,7 +178,13 @@ class Hubzero_Plugin_Params extends JTable
 		$this->_db->setQuery( "SELECT params FROM $this->_tbl WHERE object_id=$oid AND folder='$folder' AND element='$element' LIMIT 1" );
 		$result = $this->_db->loadResult();
 
-		$params = new JParameter( $result );
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$params = new $paramsClass( $result );
 		return $params;
 	}
 
@@ -203,8 +209,14 @@ class Hubzero_Plugin_Params extends JTable
 			return null;
 		}
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		$plugin = JPluginHelper::getPlugin( $folder, $element );
-		$params = new JParameter( $plugin->params );
+		$params = new $paramsClass( $plugin->params );
 		return $params;
 	}
 

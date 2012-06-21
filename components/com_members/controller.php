@@ -532,7 +532,13 @@ class MembersController extends Hubzero_Controller
 		//$sections = $dispatcher->trigger( 'onMembers', array($profile, $this->_option, $authorized, array($tab)) );
 		$sections = $dispatcher->trigger( 'onMembers', array($this->juser, $profile, $this->_option, array($tab)) );
 
-		$rparams = new JParameter( $profile->get('params') );
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$rparams = new $paramsClass( $profile->get('params') );
 		$params = $this->config;
 		$params->merge( $rparams );
 		
@@ -2662,9 +2668,15 @@ class MembersController extends Hubzero_Controller
 				}
 			}
 			
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+			
 			//get the params from the members blog plugin
 			$blog_config = JPluginHelper::getPlugin( 'members', 'blog' );
-			$blog_params = new JParameter( $blog_config->params );
+			$blog_params = new $paramsClass( $blog_config->params );
 			
 			ximport("Hubzero_User_Profile_Helper");
 			

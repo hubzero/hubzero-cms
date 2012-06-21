@@ -612,8 +612,14 @@ class plgGroupsBlog extends JPlugin
 
 			if ($view->row->scope == 'member') 
 			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+				
 				$plugin = JPluginHelper::getPlugin('members', 'blog');
-				$params = new JParameter($plugin->params);
+				$params = new $paramsClass($plugin->params);
 				$path = $params->get('uploadpath');
 				$path = str_replace('{{uid}}', BlogHelperMember::niceidformat($view->row->created_by), $path);
 			} 

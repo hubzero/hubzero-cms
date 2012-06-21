@@ -2226,7 +2226,12 @@ maxads=3'
 	 */
 	public function getServiceParams (&$service)
 	{
-		$params = new JParameter( $service->params );
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$params = new $paramsClass( $service->params );
 		$service->maxads = $params->get( 'maxads', '' );
 		$service->maxads = intval(str_replace(" ","",$service->maxads));
 	}

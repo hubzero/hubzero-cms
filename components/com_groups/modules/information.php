@@ -91,7 +91,13 @@ Class InformationModule
 		$oparams = JComponentHelper::getParams( "com_groups" ); 
 		$o_system_users = $oparams->get('display_system_users', 'no');
 		
-		$gparams = new JParameter( $this->group->get('params') );
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		
+		$gparams = new $paramsClass( $this->group->get('params') );
 		$g_system_users = $gparams->get('display_system_users', "global");
 		
 		switch( $g_system_users )

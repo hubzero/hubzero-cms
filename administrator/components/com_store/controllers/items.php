@@ -171,9 +171,14 @@ class StoreControllerItems extends Hubzero_Controller
 
 		if ($id)
 		{
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
 			// Get parameters
-			$params = new JParameter($this->view->row->params);
-			$this->view->row->size = $params->get('size', '');
+			$params = new $paramsClass($this->view->row->params);
+			$this->view->row->size  = $params->get('size', '');
 			$this->view->row->color = $params->get('color', '');
 		}
 		else

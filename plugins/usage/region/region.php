@@ -48,10 +48,8 @@ class plgUsageRegion extends JPlugin
 	public function plgUsageRegion(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-
-		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin('usage', 'region');
-		$this->_params = new JParameter($this->_plugin->params);
+		
+		$this->loadLanguage();
 	}
 
 	/**

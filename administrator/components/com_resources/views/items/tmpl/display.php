@@ -143,11 +143,17 @@ $filterstring  = ''; //($this->filters['sort'])   ? '&amp;sort='.$this->filters[
 $database =& JFactory::getDBO();
 $rt = new ResourcesTags($database);
 
+$paramsClass = 'JParameter';
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$paramsClass = 'JRegistry';
+}
+
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 
-	$rparams = new JParameter($row->params);
+	$rparams = new $paramsClass($row->params);
 	$license = $rparams->get('license');
 
 	// Build some publishing info
