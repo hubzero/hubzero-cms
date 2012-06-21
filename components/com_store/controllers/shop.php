@@ -247,6 +247,9 @@ class StoreControllerShop extends Hubzero_Controller
 		if (!$upconfig->get('bankAccounts')) 
 		{
 			$this->view->juser = $this->juser;
+			$this->view->rows  = 0;
+			$this->view->funds = 0;
+			$this->view->cost  = 0;
 			$this->view->setError(JText::_('COM_STORE_MSG_STORE_CLOSED'));
 			$this->view->display();
 			return;
