@@ -29,33 +29,52 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
 // Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize( $option, 'manage' )) {
-	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
 // Include scripts
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'poll.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'data.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'date.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'menu.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'poll.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'data.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'date.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'menu.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'xpoll.php');
 
 // Initiate controller
-$controller = new XPollController();
+$controllerName = JRequest::getCmd('controller', 'polls');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'polls';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'XPollController' . ucfirst($controllerName);
+
+// Instantiate controller
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 
