@@ -103,11 +103,11 @@ class modLatestDiscussions extends JObject
 		$include = $this->params->get('forum', 'both');
 
 		//get all forum posts on site forum
-		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id='0' AND f.parent='0'");
+		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id='0' AND f.state='1'");
 		$site_forum = $database->loadAssocList();
 
 		//get any group posts
-		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id<>'0' AND f.parent='0'");
+		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id<>'0' AND f.state='1'");
 		$group_forum = $database->loadAssocList();
 
 		//make sure that the group for each forum post has the right privacy setting
@@ -116,7 +116,7 @@ class modLatestDiscussions extends JObject
 			$group = Hubzero_Group::getInstance($gf['group_id']);
 			if (is_object($group)) 
 			{
-				$forum_access = $group->getPluginAccess("forum");
+				$forum_access = $group->getPluginAccess('forum');
 				
 				if ($forum_access == 'nobody' 
 				 || ($forum_access == 'registered' && $juser->get('guest')) 
