@@ -186,12 +186,13 @@ class ForumAttachment extends JTable
 	 */
 	public function getAttachment($id, $url=null, $config=null)
 	{
-
 		foreach ($this->getProperties() as $name => $value)
 		{
 			$this->$name = null;
 		}
 		$this->loadByPost($id);
+
+		$type = 'file';
 
 		$path = $this->getUploadPath($this->parent, $config) . DS . $this->parent . DS . $this->post_id . DS . $this->filename;
 		if ($this->filename && file_exists($path)) 
@@ -202,17 +203,24 @@ class ForumAttachment extends JTable
 
 			if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $this->filename)) 
 			{
+				$type = 'img';
+				$html  = '<span class="figure">';
 				$size = getimagesize($path);
 				if ($size[0] > 400) 
 				{
-					$html  = '<a href="' . $url . '" title="'. JText::_('Click for larger version') . '">';
-					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="400" /><br /><span class="img-caption">' . $this->description . '</span>';
+					$html .= '<a href="' . $url . '" title="'. JText::_('Click for larger version') . '">';
+					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="400" />';
 					$html .= '</a>';
 				} 
 				else 
 				{
-					$html = '<img src="' . $url . '" alt="' . $this->description . '" />';
+					$html .= '<img src="' . $url . '" alt="' . $this->description . '" />';
 				}
+				if ($this->description)
+				{
+					$html .= '<span class="figcaption">' . $this->description . '</span>';
+				}
+				$html .= '</span>';
 			} 
 			else 
 			{
@@ -226,7 +234,7 @@ class ForumAttachment extends JTable
 			return '';
 		}
 
-		return '<p class="attachment">' . $html . '</p>';
+		return '<p class="' . $type . ' attachment">' . $html . '</p>';
 	}
 
 	/**

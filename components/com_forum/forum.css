@@ -75,6 +75,10 @@
 		border-bottom: 1px solid #e9e9e9;
 		margin-right: -2px; /* Fix 2px issue */
 	}
+	html.opera .com_forum .entries caption,
+	html.firefox .com_forum .entries caption {
+		margin: 0;
+	}
 	.container-block h4 span,
 	.entries caption span {
 		color: #aaa;
@@ -144,7 +148,6 @@
 		border-bottom: 1px dotted #999;
 	}
 	.entries .entry-options {
-		/*white-space: nowrap;*/
 		text-align: right;
 	}
 	/* Lists */
@@ -183,58 +186,11 @@
 		background: none;
 		padding: 0 4px 0 0;
 	}
-/* tbody 
-	.entries tbody td {
-		text-align: left;
-		border-bottom: 1px solid #eee;
-		padding: 10px;
-		background-color: #fff;
-		position: relative;
-		display: block;
-	}
-	.entries tbody th {
-		width: 50px;
-		padding: 10px;
-		text-align: center;
-		border-bottom: 1px solid #eee;
-	}
-	.entries .sticky {
-		background: url('/components/com_forum/images/sticky.png') no-repeat 0px 2px;
-		padding-left: 20px;
-	}*/
+/* tbody */
 	.entries .topic {
 		font-weight: bold;
 		margin: 0;
 	}
-	/*.entries .entry-details {
-		margin: 7px 0 0 20px;
-		color: #777;
-		font-size: 90%;
-	}
-	.entries .created {
-	}
-	.entries .created .created_on {
-		padding-right: 15px;
-	}
-	.entries .created .created_by {
-		padding-right: 10px;
-	}
-	.entries .replies {
-		padding: 0 10px;
-	}	
-	.entries .lastpost {
-		padding-left: 10px;
-	}
-	.entries .lastpost .lastpost_by {
-	}
-	.entries .lastpost .lastpost_on {
-		padding-right: 15px;
-	}
-	.entries .options {
-		position:absolute;
-		top: 10px;
-		right: 10px;
-	}*/
 /* Aside */
 	.com_forum .aside .container {
 		margin: 0 0 1em 0;
@@ -598,6 +554,24 @@
 	ol.comments .attachment {
 		background: url("/components/com_forum/images/attach.png") 0 0 no-repeat;
 		padding-left: 20px;
+	}
+	ol.comments .img {
+		padding-left: 0px;
+		background: transparent;
+		text-align: center;
+	}
+	ol.comments .figure {
+		display: inline-block;
+		background: #fff;
+		border: 1px solid #eaeaea;
+	}
+	ol.comments .figure a {
+		border: none;
+	}
+	ol.comments .figcaption {
+		display: block;
+		padding: 0.5em;
+		background: #efefef;
 	}
 /* IE 7 */
 	html>body .entries .entry-options .edit,

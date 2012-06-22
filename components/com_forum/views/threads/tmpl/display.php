@@ -15,12 +15,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header">
-	<h2><?php echo $this->escape(stripslashes($this->post->title)); ?></h2>
+	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
 	<p>
 		<a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias); ?>">
-			<?php echo JText::_('All discussions'); ?>
+			<?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?>
 		</a>
 	</p>
 </div>
@@ -52,12 +52,20 @@ ximport('Hubzero_User_Profile_Helper');
 	{ 
 		if (!$participant->anonymous) { 
 ?>
-				<li><a class="member" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
+				<li>
+					<a class="member" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>">
+						<?php echo $this->escape(stripslashes($participant->name)); ?>
+					</a>
+				</li>
 <?php 
 		} else if (!$anon) {
 			$anon = true;
 ?>
-				<li><span class="member"><?php echo JText::_('COM_FORUM_ANONYMOUS'); ?></span></li>
+				<li>
+					<span class="member">
+						<?php echo JText::_('COM_FORUM_ANONYMOUS'); ?>
+					</span>
+				</li>
 <?php
 		}
 	}
@@ -91,8 +99,8 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .aside -->
 	
 	<div class="subject">
-		<h3 class="comments-title">
-			<?php echo JText::_('COM_FORUM_COMMENTS'); ?>
+		<h3 class="thread-title">
+			<?php echo $this->escape(stripslashes($this->post->title)); ?>
 		</h3>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $this->post->id); ?>" method="get">
 			<ol class="comments">
