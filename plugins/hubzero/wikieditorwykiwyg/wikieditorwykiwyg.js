@@ -1974,6 +1974,11 @@ WYKIWYG.editor = function() {
 		}
 		return converter.makeWiki(v);
 	},
+	edit.prototype.makeHtml = function() {
+		var converter = new WYKIWYG.converter(),
+			v = this.t.value;
+		return converter.makeHtml(v);
+	},
 	edit.prototype.toggle = function(post, div) {
 		var converter = new WYKIWYG.converter();
 		if (!this.d) {
