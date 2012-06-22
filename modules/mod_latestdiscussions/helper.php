@@ -142,6 +142,22 @@ class modLatestDiscussions extends JObject
 			break;
 		}
 
+		$categories = array();
+		$ids = array();
+		foreach ($posts as $post)
+		{
+			$ids[] = $post['category_id'];
+		}
+		$database->setQuery("SELECT c.id, c.alias, s.alias as section FROM #__forum_categories c LEFT JOIN #__forum_sections as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
+		$cats = $database->loadObjectList();
+		if ($cats)
+		{
+			foreach ($cats as $category)
+			{
+				$categories[$category->id] = $category;
+			}
+		}
+
 		//function to sort by created date
 		function sortbydate($a, $b)
 		{
@@ -156,6 +172,7 @@ class modLatestDiscussions extends JObject
 
 		//set posts to view
 		$this->posts = $posts;
+		$this->categories = $categories;
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
