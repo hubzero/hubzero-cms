@@ -29,202 +29,189 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportTicket'
- * 
- * Long description (if any) ...
+ * Table class for support ticket
  */
 class SupportTicket extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'status'
+	 * int(3)  --  0 = new, 1 = accepted, 2 = closed
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $status     = NULL;  // @var int(3)  --  0 = new, 1 = accepted, 2 = closed
+	var $status     = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime
+	var $created    = NULL;
 
 	/**
-	 * Description for 'login'
+	 * string(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $login      = NULL;  // @var string(200)
+	var $login      = NULL;
 
 	/**
-	 * Description for 'severity'
+	 * string(30)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $severity   = NULL;  // @var string(30)
+	var $severity   = NULL;
 
 	/**
-	 * Description for 'owner'
+	 * string(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $owner      = NULL;  // @var string(50)
+	var $owner      = NULL;
 
 	/**
-	 * Description for 'category'
+	 * string(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category   = NULL;  // @var string(50)
+	var $category   = NULL;
 
 	/**
-	 * Description for 'summary'
+	 * string(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $summary    = NULL;  // @var string(250)
+	var $summary    = NULL;
 
 	/**
-	 * Description for 'report'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $report     = NULL;  // @var text
+	var $report     = NULL;
 
 	/**
-	 * Description for 'resolved'
+	 * string(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $resolved   = NULL;  // @var string(50)
+	var $resolved   = NULL;
 
 	/**
-	 * Description for 'email'
+	 * string(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $email      = NULL;  // @var string(200)
+	var $email      = NULL;
 
 	/**
-	 * Description for 'name'
+	 * string(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $name       = NULL;  // @var string(200)
+	var $name       = NULL;
 
 	/**
-	 * Description for 'os'
+	 * string(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $os         = NULL;  // @var string(50)
+	var $os         = NULL;
 
 	/**
-	 * Description for 'browser'
+	 * string(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $browser    = NULL;  // @var string(50)
+	var $browser    = NULL;
 
 	/**
-	 * Description for 'ip'
+	 * string(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $ip         = NULL;  // @var string(200)
+	var $ip         = NULL;
 
 	/**
-	 * Description for 'hostname'
+	 * string(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $hostname   = NULL;  // @var string(200)
+	var $hostname   = NULL;
 
 	/**
-	 * Description for 'uas'
+	 * string(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $uas        = NULL;  // @var string(250)
+	var $uas        = NULL;
 
 	/**
-	 * Description for 'referrer'
+	 * string(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $referrer   = NULL;  // @var string(250)
+	var $referrer   = NULL;
 
 	/**
-	 * Description for 'cookies'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $cookies    = NULL;  // @var int(3)
+	var $cookies    = NULL;
 
 	/**
-	 * Description for 'instances'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $instances  = NULL;  // @var int(11)
+	var $instances  = NULL;
 
 	/**
-	 * Description for 'section'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $section    = NULL;  // @var int(11)
+	var $section    = NULL;
 
 	/**
-	 * Description for 'type'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $type       = NULL;  // @var int(3)
+	var $type       = NULL;
 
 	/**
-	 * Description for 'group'
+	 * string(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $group      = NULL;  // @var string(250)
-
-	//-----------
+	var $group      = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_tickets', 'id', $db );
+		parent::__construct('#__support_tickets', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
@@ -289,37 +276,30 @@ class SupportTicket extends JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $admin   Admin access?
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters, $admin )
+	public function buildQuery($filters, $admin)
 	{
-		//$juser =& JFactory::getUser();
-
 		$filter = " WHERE report!=''";
-		//$filter = " WHERE (section=1 OR section=0)";
-		/*if ($admin) {
-			$filter .= " WHERE (section=1 OR section=0)";
-		} else {
-			$filter .= " WHERE (section=1 OR section=0) AND login='".$juser->get('username')."'";
-		}*/
+
 		switch ($filters['status'])
 		{
 			case 'open':    $filter .= " AND (status=0 OR status=1)"; break;
 			case 'closed':  $filter .= " AND status=2";               break;
 			case 'all':     $filter .= "";                            break;
-			case 'new':     $filter .= " AND status=0 AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0 )"; break;
+			case 'new':     $filter .= " AND status=0 AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0)"; break;
 			case 'waiting': $filter .= " AND status=1";               break;
 		}
-		if (isset($filters['severity']) && $filters['severity'] != '') {
+		if (isset($filters['severity']) && $filters['severity'] != '') 
+		{
 			$filter .= " AND severity='".$filters['severity']."'";
 		}
-		if ($admin) {
+		if ($admin) 
+		{
 			switch ($filters['type'])
 			{
 				case '3': $filter .= " AND type=3"; break;
@@ -328,224 +308,227 @@ class SupportTicket extends JTable
 				case '0':
 				default:  $filter .= " AND type=0"; break;
 			}
-		} else {
+		} 
+		else 
+		{
 			$filter .= " AND type=0";
 		}
-		if (isset($filters['category']) && $filters['category'] != '') {
-			$filter .= " AND category='".$filters['category']."'";
+		if (isset($filters['category']) && $filters['category'] != '') 
+		{
+			$filter .= " AND category='" . $filters['category'] . "'";
 		}
-		if (isset($filters['owner']) && $filters['owner'] != '') {
+		if (isset($filters['owner']) && $filters['owner'] != '') 
+		{
 			$filter .= " AND ";
-			if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != '')) {
+			if ($admin == false 
+			 && (!isset($filters['owner']) || $filters['owner'] != '') 
+			 && (!isset($filters['reportedby']) || $filters['reportedby'] != '')) 
+			{
 				$filter .= "(";
 			}
-			if (isset($filters['reportedby']) && $filters['reportedby'] != '') {
+			if (isset($filters['reportedby']) && $filters['reportedby'] != '') 
+			{
 				$filter .= "(";
 			}
-			if ($filters['owner'] == 'none') {
+			if ($filters['owner'] == 'none') 
+			{
 				$filter .= "(owner='' OR owner IS NULL)";
-			} else {
-				$filter .= "owner='".$filters['owner']."'";
+			} 
+			else 
+			{
+				$filter .= "owner='" . $filters['owner'] . "'";
 			}
-			/*if (!isset($filters['reportedby']) || $filters['reportedby'] == '') {
-				$filter .= ")";
-			}*/
 		}
-		if (isset($filters['reportedby']) && $filters['reportedby'] != '') {
-			if (isset($filters['owner']) && $filters['owner'] != '') {
+		if (isset($filters['reportedby']) && $filters['reportedby'] != '') 
+		{
+			if (isset($filters['owner']) && $filters['owner'] != '') 
+			{
 				$filter .= " OR ";
-			} else {
+			} 
+			else 
+			{
 				$filter .= " AND ";
 			}
-			$filter .= "login='".$filters['reportedby']."'";
-			if (isset($filters['owner']) && $filters['owner'] != '') {
+			$filter .= "login='" . $filters['reportedby'] . "'";
+			if (isset($filters['owner']) && $filters['owner'] != '') 
+			{
 				$filter .= ")";
 			}
 		}
-		if (isset($filters['group']) && $filters['group'] != '') {
-			$filter .= " AND `group`='".$filters['group']."'";
+		if (isset($filters['group']) && $filters['group'] != '') 
+		{
+			$filter .= " AND `group`='" . $filters['group'] . "'";
 		}
-		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != '')) {
+		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != '')) 
+		{
 			ximport('Hubzero_User_Helper');
 			$juser =& JFactory::getUser();
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
 			$groups = '';
-			if ($xgroups) {
+			if ($xgroups) 
+			{
 				$g = array();
 				foreach ($xgroups as $xgroup)
 				{
 					$g[] = $xgroup->cn;
 				}
-				$groups = implode("','",$g);
+				$groups = implode("','", $g);
 			}
 			$filter .= ($groups) ? " OR `group` IN ('$groups'))" : ")";
 		}
-		/*if ($admin == false) {
-			$filter .= ")";
-		}*/
 
-		/*switch ($filters['searchin'])
+		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			case 'reporter':
-				if ($filters['search']) {
-					$filter .= " AND (LOWER( name ) LIKE '%".$filters['search']."%' OR LOWER( login ) LIKE '%".$filters['search']."%')";
-				}
-				break;
-			case 'owner':
-				if ($filters['search']) {
-					$filter .= " AND (LOWER( owner ) LIKE '%".$filters['search']."%')";
-				}
-				break;
-			case 'report': 
-			default:
-				if ($filters['search']) {
-					$filter .= " AND (LOWER( summary ) LIKE '%".$filters['search']."%'";
-					$filter .= " OR LOWER( report ) LIKE '%".$filters['search']."%'";
-					if(is_numeric($filters['search'])) {
-						$filter .= " OR id=".$filters['search'];
-					}
-					$filter .= ")";
-				}
-				break;
-		}*/
-		if (isset($filters['search']) && $filters['search'] != '') {
 			$from = "(
-						( SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.login, f.name, f.email, f.type, f.section, f.group 
+						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.login, f.name, f.email, f.type, f.section, f.group 
 							FROM $this->_tbl AS f ";
-			if (isset($filters['tag']) && $filters['tag'] != '') {
+			if (isset($filters['tag']) && $filters['tag'] != '') 
+			{
 				$from .= ", #__tags_object AS st, #__tags as t ";
 			}
-			if (isset($filters['search']) && $filters['search'] != '') {
+			if (isset($filters['search']) && $filters['search'] != '') 
+			{
 				$from .= "WHERE ";
-				$from .= "(LOWER( f.summary ) LIKE '%".$filters['search']."%' 
-						OR LOWER( f.report ) LIKE '%".$filters['search']."%' 
-						OR LOWER( f.owner ) LIKE '%".$filters['search']."%' 
-						OR LOWER( f.name ) LIKE '%".$filters['search']."%' 
-						OR LOWER( f.login ) LIKE '%".$filters['search']."%'";
+				$from .= "(LOWER(f.summary) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.report) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.owner) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.name) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.login) LIKE '%" . $filters['search'] . "%'";
 
-				if (is_numeric($filters['search'])) {
+				if (is_numeric($filters['search'])) 
+				{
 					$from .= " OR ";
-					$from .= "id=".$filters['search'];
+					$from .= "id=" . $filters['search'];
 				}
 				$from .= ") ";
 			}
-			if (isset($filters['tag']) && $filters['tag'] != '') {
-				if (!isset($filters['search']) || $filters['search'] == '') {
+			if (isset($filters['tag']) && $filters['tag'] != '') 
+			{
+				if (!isset($filters['search']) || $filters['search'] == '') 
+				{
 					$from .= "WHERE ";
-				} else {
+				} 
+				else 
+				{
 					$from .= " AND ";
 				}
-				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
+				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='" . $filters['tag'] . "'";
 			}
 			$from .= ") UNION (
 				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.login, g.name, g.email, g.type, g.section, g.group
 				FROM #__support_comments AS w, $this->_tbl AS g
 				WHERE w.ticket=g.id";
-			if (isset($filters['search']) && $filters['search'] != '') {
-				$from .= " AND LOWER( w.comment ) LIKE '%".$filters['search']."%'";
+			if (isset($filters['search']) && $filters['search'] != '') 
+			{
+				$from .= " AND LOWER(w.comment) LIKE '%" . $filters['search'] . "%'";
 			}
 			$from .= ")) AS h";
-		} else {
+		} 
+		else 
+		{
 			$from = "$this->_tbl AS f";
-			if (isset($filters['tag']) && $filters['tag'] != '') {
+			if (isset($filters['tag']) && $filters['tag'] != '') 
+			{
 				$from .= ", #__tags_object AS st, #__tags as t";
 			}
-			if (isset($filters['tag']) && $filters['tag'] != '') {
-				$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
+			if (isset($filters['tag']) && $filters['tag'] != '') 
+			{
+				$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='" . $filters['tag'] . "'";
 			}
 		}
 
-		$query = $from." ".$filter;
+		$query = $from . " " . $filter;
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getTicketsCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $admin   Admin access?
+	 * @return     integer
 	 */
-	public function getTicketsCount( $filters=array(), $admin=false )
+	public function getTicketsCount($filters=array(), $admin=false)
 	{
-		$filter = $this->buildQuery( $filters, $admin );
+		$filter = $this->buildQuery($filters, $admin);
 
-		if (isset($filters['search']) && $filters['search'] != '') {
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
 			$sql = "SELECT count(DISTINCT id) FROM $filter";
-		} else {
+		} 
+		else 
+		{
 			$sql = "SELECT count(DISTINCT f.id) FROM $filter";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getTickets'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $admin   Admin access?
+	 * @return     array
 	 */
-	public function getTickets( $filters=array(), $admin=false )
+	public function getTickets($filters=array(), $admin=false)
 	{
-		$filter = $this->buildQuery( $filters, $admin );
+		$filter = $this->buildQuery($filters, $admin);
 
-		if (isset($filters['search']) && $filters['search'] != '') {
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
 			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`";
-		} else {
+		} 
+		else 
+		{
 			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name, f.email";
 		}
 		$sql .= " FROM $filter";
-		$sql .= " ORDER BY ".$filters['sort'].' '.$filters['sortdir'];
-		$sql .= ($filters['limit']) ? " LIMIT ".$filters['start'].",".$filters['limit'] : "";
+		$sql .= " ORDER BY ".$filters['sort'] . ' ' . $filters['sortdir'];
+		$sql .= ($filters['limit']) ? " LIMIT " . $filters['start'] . "," . $filters['limit'] : "";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getTicketId'
+	 * Get the next or previous ticket ID for a set of filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $which Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $authorized Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      string  $which   prev or next
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $authorized Admin access?
+	 * @return     integer
 	 */
 	public function getTicketId($which, $filters, $authorized=false)
 	{
-		$filter = $this->buildQuery( $filters, $authorized );
+		$filter = $this->buildQuery($filters, $authorized);
 
-		if ($which == 'prev') {
+		if ($which == 'prev') 
+		{
 			$filter .= " AND f.id < $this->id";
 			$filters['sortby'] = "f.id DESC";
-		} elseif ($which == 'next') {
+		} 
+		elseif ($which == 'next') 
+		{
 			$filter .= " AND f.id > $this->id";
 			$filters['sortby'] = "f.id ASC";
 		}
 
-		$this->_db->setQuery( "SELECT f.id FROM $filter ORDER BY ".$filters['sortby']." LIMIT 1" );
+		$this->_db->setQuery("SELECT f.id FROM $filter ORDER BY " . $filters['sortby'] . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getCountOfTicketsOpened'
+	 * Get a count of tickets opened for a given time period
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $type Parameter description (if any) ...
-	 * @param      string $year Parameter description (if any) ...
-	 * @param      string $month Parameter description (if any) ...
-	 * @param      string $day Parameter description (if any) ...
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $type     Ticket type
+	 * @param      string  $year     Year to calculate for
+	 * @param      string  $month    Month to calculate for
+	 * @param      string  $day      Day to calculate for
+	 * @param      string  $group    Group to calculate data for
+	 * @return     integer
 	 */
 	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null)
 	{
@@ -555,29 +538,30 @@ class SupportTicket extends JTable
 				FROM $this->_tbl 
 				WHERE report!='' 
 				AND type='$type'";
-		if (!$group) {
+		if (!$group) 
+		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
-		} else {
+		} 
+		else 
+		{
 			$sql .= " AND `group`='$group'";
 		}
-		$sql .= " AND created>='".$year."-".$month."-".$day." 00:00:00'";
+		$sql .= " AND created>='" . $year . "-" . $month . "-" . $day . " 00:00:00'";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getCountOfTicketsClosed'
+	 * Get a count of tickets closed for a given time period
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $type Parameter description (if any) ...
-	 * @param      string $year Parameter description (if any) ...
-	 * @param      string $month Parameter description (if any) ...
-	 * @param      string $day Parameter description (if any) ...
-	 * @param      string $username Parameter description (if any) ...
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $type     Ticket type
+	 * @param      string  $year     Year to calculate for
+	 * @param      string  $month    Month to calculate for
+	 * @param      string  $day      Day to calculate for
+	 * @param      string  $username User to get count for
+	 * @param      string  $group    Group to calculate data for
+	 * @return     integer
 	 */
 	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null)
 	{
@@ -589,29 +573,31 @@ class SupportTicket extends JTable
 				AND f.type='$type' 
 				AND f.status=2 
 				AND k.ticket=f.id 
-				AND k.created>='".$year."-".$month."-".$day." 00:00:00'";
-		if (!$group) {
+				AND k.created>='" . $year . "-" . $month . "-" . $day . " 00:00:00'";
+		if (!$group) 
+		{
 			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
-		} else {
+		} 
+		else 
+		{
 			$sql .= " AND f.`group`='$group'";
 		}
-		if ($username) {
-			$sql .= " AND k.created_by='".$username."'";
+		if ($username) 
+		{
+			$sql .= " AND k.created_by='" . $username . "'";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getCountOfOpenTickets'
+	 * Get a count of open tickets
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $type Parameter description (if any) ...
-	 * @param      boolean $unassigned Parameter description (if any) ...
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $type       Ticket type
+	 * @param      boolean $unassigned Include unassigned tickets?
+	 * @param      string  $group      Group to calculate data for
+	 * @return     integer
 	 */
 	public function getCountOfOpenTickets($type=0, $unassigned=false, $group=null)
 	{
@@ -620,36 +606,38 @@ class SupportTicket extends JTable
 				WHERE report!='' 
 				AND type='$type' 
 				AND (status=0 OR status=1)";
-		if (!$group) {
+		if (!$group) 
+		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
-		} else {
+		} 
+		else 
+		{
 			$sql .= " AND `group`='$group'";
 		}
-		if ($unassigned) {
+		if ($unassigned) 
+		{
 			$sql .= " AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='')";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getCountOfTicketsClosedInMonth'
+	 * Count the number of tickets closed in a given month
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $type Parameter description (if any) ...
-	 * @param      string $year Parameter description (if any) ...
-	 * @param      string $month Parameter description (if any) ...
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $type  Ticket type
+	 * @param      string  $year  Year to calculate for
+	 * @param      string  $month Month to calculate for
+	 * @param      string  $group Group to calculate data for
+	 * @return     integer
 	 */
 	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
 
-		$nextyear = (intval($month) == 12) ? $year+1 : $year;
-		$nextmonth = (intval($month) == 12) ? '01' : sprintf( "%02d",intval($month)+1);
+		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
 
 		$sql = "SELECT COUNT(DISTINCT k.ticket) 
 				FROM #__support_comments AS k, $this->_tbl AS f
@@ -657,61 +645,63 @@ class SupportTicket extends JTable
 				AND f.type='$type' 
 				AND f.status=2 
 				AND k.ticket=f.id 
-				AND k.created>='".$year."-".$month."-01 00:00:00' 
-				AND k.created<'".$nextyear."-".$nextmonth."-01 00:00:00'";
-		if (!$group) {
+				AND k.created>='" . $year . "-" . $month . "-01 00:00:00' 
+				AND k.created<'" . $nextyear . "-" . $nextmonth . "-01 00:00:00'";
+		if (!$group) 
+		{
 			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
-		} else {
+		} 
+		else 
+		{
 			$sql .= " AND f.`group`='$group'";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getCountOfTicketsOpenedInMonth'
+	 * Count the number of tickets opened in a given month
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $type Parameter description (if any) ...
-	 * @param      string $year Parameter description (if any) ...
-	 * @param      string $month Parameter description (if any) ...
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $type  Ticket type
+	 * @param      string  $year  Year to calculate for
+	 * @param      string  $month Month to calculate for
+	 * @param      string  $group Group to calculate data for
+	 * @return     integer
 	 */
 	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
 
-		$nextyear = (intval($month) == 12) ? $year+1 : $year;
-		$nextmonth = (intval($month) == 12) ? '01' : sprintf( "%02d",intval($month)+1);
+		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
 
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
 				WHERE report!='' 
-				AND type=".$type." 
-				AND created>='".$year."-".$month."-01 00:00:00' 
-				AND created<'".$nextyear."-".$nextmonth."-01 00:00:00'";
-		if (!$group) {
+				AND type=" . $type . " 
+				AND created>='" . $year . "-" . $month . "-01 00:00:00' 
+				AND created<'" . $nextyear . "-" . $nextmonth . "-01 00:00:00'";
+		if (!$group) 
+		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
-		} else {
+		} 
+		else 
+		{
 			$sql .= " AND `group`='$group'";
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getAverageLifeOfTicket'
+	 * Get the average lifetime of a ticket
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $type Parameter description (if any) ...
-	 * @param      string $year Parameter description (if any) ...
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $type  Ticket type
+	 * @param      string  $year  Year to calculate for
+	 * @param      string  $group Group to calculate data for
+	 * @return     array
 	 */
 	public function getAverageLifeOfTicket($type=0, $year='', $group=null)
 	{
@@ -723,19 +713,23 @@ class SupportTicket extends JTable
 				AND f.type='$type' 
 				AND f.status=2 
 				AND k.ticket=f.id 
-				AND f.created>='".$year."-01-01 00:00:00'";
-		if (!$group) {
+				AND f.created>='" . $year . "-01-01 00:00:00'";
+		if (!$group) 
+		{
 			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
-		} else {
+		} 
+		else 
+		{
 			$sql .= " AND f.`group`='$group'";
 		}
 		$sql .= " GROUP BY k.ticket";
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$times = $this->_db->loadObjectList();
 
 		$lifetime = array();
 
-		if ($times) {
+		if ($times) 
+		{
 			$count = 0;
 			$lt = 0;
 			foreach ($times as $tim)
@@ -744,7 +738,10 @@ class SupportTicket extends JTable
 				$count++;
 			}
 			$difference = ($lt / $count);
-			if ($difference < 0) $difference = 0;
+			if ($difference < 0) 
+			{
+				$difference = 0;
+			}
 
 			$days = floor($difference/60/60/24);
 			$hours = floor(($difference - $days*60*60*24)/60/60);

@@ -29,67 +29,55 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportCategory'
- * 
- * Long description (if any) ...
+ * Table class for support ticket category
  */
 class SupportCategory extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $id       = NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category = NULL;  // @var varchar(50)
+	var $category = NULL;
 
 	/**
-	 * Description for 'section'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $section  = NULL;  // @var int(11)
-
-	//-----------
+	var $section  = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_categories', 'id', $db );
+		parent::__construct('#__support_categories', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->category ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
+		if (trim($this->category) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 
@@ -97,79 +85,74 @@ class SupportCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'getCategories'
+	 * Get categories for a section
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $section Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $section Section ID
+	 * @return     array
 	 */
-	public function getCategories( $section=NULL )
+	public function getCategories($section=NULL)
 	{
-		if ($section !== NULL) {
+		if ($section !== NULL) 
+		{
 			$section = ($section) ? $section : 1;
 			$where = "WHERE section=$section";
-		} else {
+		} 
+		else 
+		{
 			$where = "";
 		}
 
-		$this->_db->setQuery( "SELECT category AS id, category AS txt FROM $this->_tbl $where ORDER BY category");
+		$this->_db->setQuery("SELECT category AS id, category AS txt FROM $this->_tbl $where ORDER BY category");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters=array() )
+	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS c, #__support_sections AS s"
 				. " WHERE c.section=s.id";
-		if (isset($filters['order']) && $filters['order'] != '') {
-			$query .= " ORDER BY ".$filters['order'];
+		if (isset($filters['order']) && $filters['order'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['order'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT COUNT(*)" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
 		$filters['order'] = 'section, category';
 
-		$query  = "SELECT c.id, c.category, s.section";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT c.id, c.category, s.section" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

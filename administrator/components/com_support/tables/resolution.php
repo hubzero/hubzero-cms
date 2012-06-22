@@ -29,73 +29,64 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //----------------------------------------------------------
 // Extended database class
 //----------------------------------------------------------
 
 /**
- * Short description for 'SupportResolution'
- * 
- * Long description (if any) ...
+ * Table class for support resolutions
  */
 class SupportResolution extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
 	 * @var unknown
 	 */
-	var $id    = NULL;  // @var int(11) Primary key
+	var $id    = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(100)
 	 * 
 	 * @var unknown
 	 */
-	var $title = NULL;  // @var varchar(100)
+	var $title = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(100)
 	 * 
 	 * @var unknown
 	 */
-	var $alias = NULL;  // @var varchar(100)
-
-	//-----------
+	var $alias = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_resolutions', 'id', $db );
+		parent::__construct('#__support_resolutions', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
-		
+
 		if (!$this->title) 
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
-		
+
 		if (!$this->alias)
 		{
 			$this->alias = $this->title;
@@ -106,70 +97,62 @@ class SupportResolution extends JTable
 	}
 
 	/**
-	 * Short description for 'getResolutions'
+	 * Get all resolutions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getResolutions()
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl ORDER BY title");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl ORDER BY title");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters=array() )
+	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl";
-		if (isset($filters['order']) && $filters['order'] != '') {
-			$query .= " ORDER BY ".$filters['order'];
+		if (isset($filters['order']) && $filters['order'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['order'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT COUNT(*)" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
 		$filters['order'] = 'title, alias';
 
-		$query  = "SELECT *";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT *" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

@@ -29,60 +29,48 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportSection'
- * 
- * Long description (if any) ...
+ * Table class for support ticket sections
  */
 class SupportSection extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id      = NULL;  // @var int(11) Primary key
+	var $id      = NULL;
 
 	/**
-	 * Description for 'section'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $section = NULL;  // @var varchar(50)
-
-	//-----------
+	var $section = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_sections', 'id', $db );
+		parent::__construct('#__support_sections', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->section ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
+		if (trim($this->section) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 
@@ -90,66 +78,57 @@ class SupportSection extends JTable
 	}
 
 	/**
-	 * Short description for 'getSections'
+	 * Get all sections
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getSections()
 	{
-		$this->_db->setQuery( "SELECT id, section AS txt FROM $this->_tbl ORDER BY id");
+		$this->_db->setQuery("SELECT id, section AS txt FROM $this->_tbl ORDER BY id");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters=array() )
+	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY section";
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT COUNT(*)" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT id, section";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT id, section" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

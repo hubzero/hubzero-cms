@@ -29,170 +29,156 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Report Abuse database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ReportAbuse'
- * 
- * Long description (if any) ...
+ * Table class for abuse items
  */
 class ReportAbuse extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id         	= NULL;
 
 	/**
-	 * Description for 'id'
+	 * text
 	 * 
 	 * @var unknown
 	 */
-	var $id         	= NULL;  // @var int(11) Primary key
+	var $report   		= NULL;
 
 	/**
-	 * Description for 'report'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $report   		= NULL;  // @var text
+	var $created    	= NULL;
 
 	/**
-	 * Description for 'created'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created_by 	= NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by 	= NULL;  // @var int(11)
+	var $state      	= NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state      	= NULL;  // @var int(3)
+	var $referenceid    = NULL;
 
 	/**
-	 * Description for 'referenceid'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $referenceid    = NULL;  // @var int(11)
+	var $category		= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(150)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category		= NULL;  // @var varchar(50)
+	var $subject		= NULL;
 
 	/**
-	 * Description for 'subject'
+	 * Constructor
 	 * 
-	 * @var unknown
-	 */
-	var $subject		= NULL;  // @var varchar(150)
-
-	//-----------
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__abuse_reports', 'id', $db );
+		parent::__construct('#__abuse_reports', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->report ) == '' && trim( $this->subject ) == JText::_('OTHER')) {
-			$this->setError( JText::_('Please describe the issue.') );
+		if (trim($this->report) == '' && trim($this->subject) == JText::_('OTHER')) 
+		{
+			$this->setError(JText::_('Please describe the issue.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters=array() )
+	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS a WHERE";
 
-		if (isset($filters['state']) && $filters['state'] == 1) {
+		if (isset($filters['state']) && $filters['state'] == 1) 
+		{
 			$query .= " a.state=1";
-		} else {
+		} 
+		else 
+		{
 			$query .= " a.state=0";
 		}
-		if (isset($filters['id']) && $filters['id'] != '') {
-			$query .= " AND a.referenceid='".$filters['id']."'";
+		if (isset($filters['id']) && $filters['id'] != '') 
+		{
+			$query .= " AND a.referenceid='" . $filters['id'] . "'";
 		}
-		if (isset($filters['category']) && $filters['category'] != '') {
-			$query .= " AND a.category='".$filters['category']."'";
+		if (isset($filters['category']) && $filters['category'] != '') 
+		{
+			$query .= " AND a.category='" . $filters['category'] . "'";
 		}
-		if (isset($filters['sortby']) && $filters['sortby'] != '') {
-			$query .= " ORDER BY ".$filters['sortby']." LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['sortby'] . " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
 		$filters['sortby'] = '';
 
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->buildQuery( $filters );
+		$query  = "SELECT COUNT(*)" . $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT *";
-		$query .= $this->buildQuery( $filters );
+		$query  = "SELECT *" . $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

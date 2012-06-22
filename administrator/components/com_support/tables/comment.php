@@ -29,95 +29,83 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportComment'
- * 
- * Long description (if any) ...
+ * Table class for support ticket comment
  */
 class SupportComment extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'ticket'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $ticket     = NULL;  // @var int(11)
+	var $ticket     = NULL;
 
 	/**
-	 * Description for 'comment'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $comment    = NULL;  // @var text
+	var $comment    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * var(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created_by = NULL;  // @var var(50)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'changelog'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $changelog  = NULL;  // @var text
+	var $changelog  = NULL;
 
 	/**
-	 * Description for 'access'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $access     = NULL;  // @var int(3)
-
-	//-----------
+	var $access     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_comments', 'id', $db );
+		parent::__construct('#__support_comments', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->comment ) == '' && trim( $this->changelog ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_COMMENT') );
+		if (trim($this->comment) == '' && trim($this->changelog) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_COMMENT'));
 			return false;
 		}
 
@@ -125,92 +113,98 @@ class SupportComment extends JTable
 	}
 
 	/**
-	 * Short description for 'getComments'
+	 * Get comments on a ticket
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @param      string $ticket Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $authorized Administrator access?
+	 * @param      integer $ticket     Ticket ID
+	 * @return     array
 	 */
-	public function getComments( $authorized, $ticket=NULL )
+	public function getComments($authorized, $ticket=NULL)
 	{
-		if (!$ticket) {
+		if (!$ticket) 
+		{
 			$ticket = $this->_ticket;
 		}
-		if ($authorized) {
+		if ($authorized) 
+		{
 			$sqladmin = "";
-		} else {
+		} 
+		else 
+		{
 			$sqladmin = "AND access=0";
 		}
-		$sql = "SELECT * FROM $this->_tbl WHERE ticket=".$ticket." $sqladmin ORDER BY created ASC";
+		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $ticket . " $sqladmin ORDER BY created ASC";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'countComments'
+	 * Get a count of comments on a ticket
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @param      string $ticket Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $authorized Administrator access?
+	 * @param      integer $ticket     Ticket ID
+	 * @return     integer
 	 */
-	public function countComments( $authorized, $ticket=NULL )
+	public function countComments($authorized, $ticket=NULL)
 	{
-		if (!$ticket) {
+		if (!$ticket) 
+		{
 			$ticket = $this->_ticket;
 		}
-		if ($authorized) {
+		if ($authorized) 
+		{
 			$sqladmin = "";
-		} else {
+		} 
+		else 
+		{
 			$sqladmin = "AND access=0";
 		}
-		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE ticket=".$ticket." $sqladmin" );
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE ticket=" . $ticket . " $sqladmin");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'newestComment'
+	 * Get the newest comment on a ticket
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @param      string $ticket Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $authorized Administrator access?
+	 * @param      integer $ticket     Ticket ID
+	 * @return     object
 	 */
-	public function newestComment( $authorized, $ticket=NULL )
+	public function newestComment($authorized, $ticket=NULL)
 	{
-		if (!$ticket) {
+		if (!$ticket) 
+		{
 			$ticket = $this->_ticket;
 		}
-		if ($authorized) {
+		if ($authorized) 
+		{
 			$sqladmin = "";
-		} else {
+		} 
+		else 
+		{
 			$sqladmin = "AND access=0";
 		}
-		$this->_db->setQuery( "SELECT created FROM $this->_tbl WHERE ticket=".$ticket." $sqladmin ORDER BY created DESC LIMIT 1" );
+		$this->_db->setQuery("SELECT created FROM $this->_tbl WHERE ticket=" . $ticket . " $sqladmin ORDER BY created DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'deleteComments'
+	 * Delete comments based on parent ticket ID
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $ticket Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $ticket Ticket ID
+	 * @return     boolean True on success
 	 */
-	public function deleteComments( $ticket=NULL )
+	public function deleteComments($ticket=NULL)
 	{
-		if ($ticket === NULL) {
+		if ($ticket === NULL) 
+		{
 			$ticket = $this->ticket;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE ticket=".$ticket );
-		if (!$this->_db->query()) {
-			$this->setError( $database->getErrorMsg() );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $ticket);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($database->getErrorMsg());
 			return false;
 		}
 	}

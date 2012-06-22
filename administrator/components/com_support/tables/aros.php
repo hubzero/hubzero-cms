@@ -29,78 +29,67 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportAro'
- * 
- * Long description (if any) ...
+ * Table class for support ACL ARO
  */
 class SupportAro extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var itneger
 	 */
-	var $id      = NULL;  // @var int(11) Primary key
+	var $id      = NULL;
 
 	/**
-	 * Description for 'model'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $model   = NULL;  // @var varchar(100)
+	var $model   = NULL;
 
 	/**
-	 * Description for 'foreign_key'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $foreign_key = NULL;  // @var int(11)
+	var $foreign_key = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $alias   = NULL;  // @var varchar(250)
-
-	//-----------
+	var $alias   = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_acl_aros', 'id', $db );
+		parent::__construct('#__support_acl_aros', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->model ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD').': model' );
+		if (trim($this->model) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': model');
 			return false;
 		}
-		if (trim( $this->foreign_key ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD').': foreign_key' );
+		if (trim($this->foreign_key) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': foreign_key');
 			return false;
 		}
 
@@ -108,52 +97,45 @@ class SupportAro extends JTable
 	}
 
 	/**
-	 * Short description for '_buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	private function _buildQuery( $filters=array() )
+	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl ORDER BY id";
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->_buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT COUNT(*)" . $this->_buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT *";
-		$query .= $this->_buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT *" . $this->_buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

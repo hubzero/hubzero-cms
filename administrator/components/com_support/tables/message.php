@@ -29,67 +29,55 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportMessage'
- * 
- * Long description (if any) ...
+ * Table class for support messages
  */
 class SupportMessage extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id      = NULL;  // @var int(11) Primary key
+	var $id      = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $title   = NULL;  // @var varchar(250)
+	var $title   = NULL;
 
 	/**
-	 * Description for 'message'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $message = NULL;  // @var text
-
-	//-----------
+	var $message = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_messages', 'id', $db );
+		parent::__construct('#__support_messages', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->message ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
+		if (trim($this->message) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 
@@ -97,66 +85,57 @@ class SupportMessage extends JTable
 	}
 
 	/**
-	 * Short description for 'getMessages'
+	 * Get all messages
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getMessages()
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl ORDER BY id");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl ORDER BY id");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters=array() )
+	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY id";
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT COUNT(*)" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT id, title";
-		$query .= $this->buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT id, title" . $this->buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

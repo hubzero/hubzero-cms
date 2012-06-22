@@ -29,95 +29,88 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportAroAco'
- * 
- * Long description (if any) ...
+ * Table class for support ACL ARO/ACO map
  */
 class SupportAroAco extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id      = NULL;  // @var int(11) Primary key
+	var $id      = NULL;
 
 	/**
-	 * Description for 'aro_id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $aro_id  = NULL;  // @var int(11)
+	var $aro_id  = NULL;
 
 	/**
-	 * Description for 'aco_id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $aco_id  = NULL;  // @var int(11)
+	var $aco_id  = NULL;
 
 	/**
-	 * Description for 'action_create'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $action_create = NULL;  // @var int(3)
+	var $action_create = NULL;
 
 	/**
-	 * Description for 'action_read'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $action_read   = NULL;  // @var int(3)
+	var $action_read   = NULL;
 
 	/**
-	 * Description for 'action_update'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $action_update = NULL;  // @var int(3)
+	var $action_update = NULL;
 
 	/**
-	 * Description for 'action_delete'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $action_delete = NULL;  // @var int(3)
-
-	//-----------
+	var $action_delete = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__support_acl_aros_acos', 'id', $db );
+		parent::__construct('#__support_acl_aros_acos', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->aro_id ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD').': aro_id' );
+		if (trim($this->aro_id) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aro_id');
 			return false;
 		}
-		if (trim( $this->aco_id ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD').': aco_id' );
+		if (trim($this->aco_id) == '') 
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aco_id');
 			return false;
 		}
 
@@ -125,96 +118,89 @@ class SupportAroAco extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteRecordsByAro'
+	 * Delete records by ARO
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $aro_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $aro_id ARO ID
+	 * @return     boolean True on success
 	 */
-	public function deleteRecordsByAro( $aro_id=0 )
+	public function deleteRecordsByAro($aro_id=0)
 	{
-		if (!$aro_id) {
-			$this->setError( JText::_('Missing ARO ID') );
+		if (!$aro_id) 
+		{
+			$this->setError(JText::_('Missing ARO ID'));
 			return false;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE aro_id=$aro_id" );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aro_id=$aro_id");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'deleteRecordsByAco'
+	 * Delete records by ACO
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $aco_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $aco_id ACO ID
+	 * @return     boolean True on success
 	 */
-	public function deleteRecordsByAco( $aco_id=0 )
+	public function deleteRecordsByAco($aco_id=0)
 	{
-		if (!$aco_id) {
-			$this->setError( JText::_('Missing ACO ID') );
+		if (!$aco_id) 
+		{
+			$this->setError(JText::_('Missing ACO ID'));
 			return false;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE aco_id=$aco_id" );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aco_id=$aco_id");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for '_buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	private function _buildQuery( $filters=array() )
+	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl ORDER BY id";
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->_buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT COUNT(*)" . $this->_buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT *";
-		$query .= $this->_buildQuery( $filters );
-		$this->_db->setQuery( $query );
+		$query  = "SELECT *" . $this->_buildQuery($filters);
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

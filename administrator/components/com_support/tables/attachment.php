@@ -29,56 +29,45 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Support Attachments class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'SupportAttachment'
- * 
- * Long description (if any) ...
+ * Table class for support attachments (tickets, comments)
  */
 class SupportAttachment extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id          = NULL;  // @var int(11) Primary key
+	var $id          = NULL;
 
 	/**
-	 * Description for 'ticket'
+	 * int(11)
 	 * 
 	 * @var string
 	 */
-	var $ticket      = NULL;  // @var int(11)
+	var $ticket      = NULL;
 
 	/**
-	 * Description for 'filename'
+	 * varchar(255)
 	 * 
 	 * @var string
 	 */
-	var $filename    = NULL;  // @var varchar(255)
+	var $filename    = NULL;
 
 	/**
-	 * Description for 'description'
+	 * varchar(255)
 	 * 
 	 * @var string
 	 */
-	var $description = NULL;  // @var varchar(255)
-
-	//-----------
+	var $description = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -87,19 +76,19 @@ class SupportAttachment extends JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if ($this->ticket == NULL) {
+		if ($this->ticket == NULL) 
+		{
 			$this->setError(JText::_('SUPPORT_ERROR_NO_TICKET_ID'));
 			return false;
 		}
-		if (trim($this->filename) == '') {
+		if (trim($this->filename) == '') 
+		{
 			$this->setError(JText::_('SUPPORT_ERROR_NO_FILENAME'));
 			return false;
 		}
@@ -108,26 +97,22 @@ class SupportAttachment extends JTable
 	}
 
 	/**
-	 * Short description for 'getID'
+	 * Get the ID of a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
+	 * @return     integer
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename='".$this->filename."' AND description='".$this->description."' AND ticket=".$this->ticket);
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename='" . $this->filename . "' AND description='" . $this->description . "' AND ticket=" . $this->ticket);
 		$id = $this->_db->loadResult();
 		$this->id = $id;
 	}
 
 	/**
-	 * Short description for 'parse'
+	 * Scan text for attachment macros {attachment#}
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $text Text to search
+	 * @return     string HTML
 	 */
 	public function parse($text)
 	{
@@ -136,89 +121,91 @@ class SupportAttachment extends JTable
 	}
 
 	/**
-	 * Short description for 'getAttachment'
+	 * Process an attachment macro and output a link to the file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array $matches Macro info
+	 * @return     string HTML
 	 */
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
-		$tokens = explode('#',$match);
+		$tokens = explode('#', $match);
 		$id = intval(end($tokens));
 
-		$this->_db->setQuery( "SELECT filename, description FROM $this->_tbl WHERE id=".$id );
+		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $id);
 		$a = $this->_db->loadRow();
 
-		if ($this->output == 'web') {
-			if (is_file($this->uppath . DS . $a[0])) {
-				$juri =& JURI::getInstance();
-				$sef = JRoute::_('index.php?option=com_support&task=download&id='. $id . '&file=' . $a[0]);
-				if (substr($sef,0,1) == '/') {
-					$sef = substr($sef,1,strlen($sef));
-				}
-				$url = $juri->base() . $sef;
+		if ($this->output != 'web') 
+		{
+			return $this->webpath . '/' . $a[0];
+		}
 
-				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0])) {
-					$size = getimagesize($this->uppath . DS . $a[0]);
-					if ($size[0] > 400) {
-						$img = '<a href="' . $url . '" title="Click for larger version"><img src="' . $url . '" alt="' . $a[1] . '" width="400" /></a>';
-					} else {
-						$img = '<img src="' . $url . '" alt="' . $a[1] . '" />';
-					}
-					return $img;
-				} else {
-					$html  = '<a href="' . $url . '" title="' . $a[1] . '">';
-					$html .= ($a[1]) ? $a[1] : $a[0];
-					$html .= '</a>';
-					return $html;
+		if (is_file($this->uppath . DS . $a[0])) 
+		{
+			$juri =& JURI::getInstance();
+			$sef = JRoute::_('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
+			$url = $juri->base() . trim($sef, DS);
+
+			if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0])) 
+			{
+				$size = getimagesize($this->uppath . DS . $a[0]);
+				if ($size[0] > 400) 
+				{
+					$img = '<a href="' . $url . '" title="Click for larger version"><img src="' . $url . '" alt="' . $a[1] . '" width="400" /></a>';
+				} 
+				else 
+				{
+					$img = '<img src="' . $url . '" alt="' . $a[1] . '" />';
 				}
-			} else {
-				return '[attachment #'.$id.' not found]';
+				return $img;
+			} 
+			else 
+			{
+				$html  = '<a href="' . $url . '" title="' . $a[1] . '">';
+				$html .= ($a[1]) ? $a[1] : $a[0];
+				$html .= '</a>';
+				return $html;
 			}
 		} else {
-			return $this->webpath . '/' . $a[0];
+			return '[attachment #' . $id . ' not found]';
 		}
 	}
 
 	/**
-	 * Short description for 'deleteAttachment'
+	 * Delete a record based on filename and ticket number
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $ticket Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $filename File name
+	 * @param      integer $ticket   Ticket ID
+	 * @return     boolean True on success
 	 */
-	public function deleteAttachment( $filename, $ticket )
+	public function deleteAttachment($filename, $ticket)
 	{
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND ticket=".$ticket );
-		if (!$this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename='" . $filename . "' AND ticket=" . $ticket);
+		if (!$this->_db->query()) 
+		{
 			return $this->_db->getErrorMsg();
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadAttachment'
+	 * Load a record based on filename and ticket number and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $filename Parameter description (if any) ...
-	 * @param      unknown $ticket Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $filename File name
+	 * @param      integer $ticket   Ticket ID
+	 * @return     boolean True on success
 	 */
 	public function loadAttachment($filename=NULL, $ticket=NULL)
 	{
-		if ($filename === NULL) {
+		if ($filename === NULL) 
+		{
 			return false;
 		}
-		if ($ticket === NULL) {
+		if ($ticket === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE filename='$filename' AND ticket='$ticket'" );
-		return $this->_db->loadObject( $this );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename='$filename' AND ticket='$ticket'");
+		return $this->_db->loadObject($this);
 	}
 }
