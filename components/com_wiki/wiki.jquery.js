@@ -23,19 +23,79 @@ HUB.Wiki = {
 	jQuery: jq,
 	
 	getTemplate: function() {
-		var $ = this.jQuery;
+		var $ = HUB.Wiki.jQuery
+			hi = '';
 		
 		var id = $('#templates');
 		if (id.val() != 'tc') {
-			var hi = $(id.val()).val();
+			var hi = $('#'+id.val()).val();
 			var co = $('#pagetext');
 			co.val(hi);
-			
+
 			var ji = $('#'+id.val()+'_tags').val();
 			var jo = $('#actags');
 			jo.val(ji);
 
-			if ($('#maininput-actags') && jo) {
+			if ($('#token-input-actags') && jo) {
+				var data = [];
+				if (ji) {
+					if (ji.indexOf(',') == -1) {
+						var values = [ji];
+					} else {
+						var values = ji.split(',');
+					}
+					$(values).each(function(i, v){
+						v = v.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+						var id = null, 
+							name = null;
+						if (v.match(/(.+?) \((.+?)\)/ig)) {
+							id = v.replace(/(.+?) \((.+?)\)/ig, '$2');
+						    name = v.replace(/(.+?) \((.+?)\)/ig, '$1');
+						}
+						id = (id) ? id : v;
+						name = (name) ? name : id;
+
+						data[i] = {
+							'id': id,
+							'name': name
+						};
+						jo.tokenInput('add', data[i]);
+					});
+				}
+				
+				/*jo.tokenInput('/index.php?option=com_tags&no_html=1&task=autocomplete', {
+	                theme: 'act',
+					hintText: 'Type in a search term',
+					prePopulate: data,
+					tokenLimit: null,
+					preventDuplicates: true,
+					resultsFormatter: function(item){ 
+						if (option != 'tags') {
+							var html = "<li>";
+							if (item['picture']) {
+								html += '<img src="'+item['picture']+'" width="30" height="30" alt="picture" />';
+							}
+							html += item[this.propertyToSearch]+ " ("+item['id']+")";
+							if (item['org']) {
+								html += '<span>' + item['org'] + '</span>';
+							}
+							if (item['picture']) {
+								html += '<div style="display:inline;clear:left;"></div>';
+							}
+							html += "</li>";
+							return html;
+						}
+						return "<li>" + item[this.propertyToSearch]+ "</li>";
+					},
+					onAdd: function(){
+						if (wsel) {
+							$.getJSON('/index.php?option=com_groups&no_html=1&task=memberslist&group=' + $('#'+id).val(), function(data) {
+								HUB.Plugins.Autocomplete.writeSelectList(data.members, wsel);
+							});
+						}
+					}
+	            });*/
+				//jo.tokenInput().add();
 				/*var ul = $($('#maininput-actags').parent().parent());
 				var label = $($('#maininput-actags').parent().parent().parent());
 				label.remove(ul);
@@ -58,13 +118,23 @@ HUB.Wiki = {
 		} else {
 			$('#pagetext').val('');
 		}
+		if (typeof(wykiwygs) === 'undefined') {
+			return;
+		}
+		if (wykiwygs.length) {
+			for (i=0; i<wykiwygs.length; i++)
+			{
+				wykiwygs[i].t.value = hi;
+				wykiwygs[i].e.body.innerHTML = wykiwygs[i].makeHtml(wykiwygs[i].t.value);
+			}
+		}
 	},
 	
 	initialize: function() {
 		var $ = this.jQuery;
-		
-		if ($('#templates')) {
-			$('#templates').bind('change', HUB.Wiki.getTemplate);
+
+		if ($('#templates').length > 0) {
+			$('#templates').on('change', HUB.Wiki.getTemplate);
 		}
 		
 		var mode = $('#params_mode');
