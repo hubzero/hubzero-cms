@@ -291,7 +291,8 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			$this->view->sections[$key]->categories = $cModel->getRecords(array(
 				'section_id' => $sect->id,
-				'group'      => 0
+				'group'      => 0,
+				'state'      => 1
 			));
 		}
 

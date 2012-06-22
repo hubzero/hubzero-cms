@@ -31,121 +31,115 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//----------------------------------------------------------
-// XForum database class
-//----------------------------------------------------------
-
 /**
- * Short description for 'XForum'
- * 
- * Long description (if any) ...
+ * Table class for forum posts
  */
 class ForumPost extends JTable
 {
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var integer int(11) Primary key
+	 * @var integer 
 	 */
 	var $id         = NULL;
 
 	/**
-	 * Description for 'category_id'
+	 * int(11)
 	 * 
-	 * @var integer int(11)
+	 * @var integer 
 	 */
 	var $category_id = NULL;
 	
 	/**
-	 * Description for 'title'
+	 * varchar(255)
 	 * 
-	 * @var string  varchar(255)
+	 * @var string  
 	 */
 	var $title      = NULL;
 
 	/**
-	 * Description for 'comment'
+	 * text
 	 * 
-	 * @var string  text
+	 * @var string  
 	 */
 	var $comment    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var string  datetime(0000-00-00 00:00:00)
+	 * @var string  
 	 */
 	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var integer int(11)
+	 * @var integer 
 	 */
 	var $created_by = NULL;
 
 	/**
-	 * Description for 'modified'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var string  datetime(0000-00-00 00:00:00)
+	 * @var string  
 	 */
 	var $modified   = NULL;
 
 	/**
-	 * Description for 'modified_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $modified_by = NULL;  // @var int(11)
+	var $modified_by = NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state      = NULL;  // @var int(2)
+	var $state      = NULL;
 
 	/**
-	 * Description for 'sticky'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $sticky     = NULL;  // @var int(2)
+	var $sticky     = NULL;
 
 	/**
-	 * Description for 'parent'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $parent     = NULL;  // @var int(11)
+	var $parent     = NULL;
 
 	/**
-	 * Description for 'hits'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $hits       = NULL;  // @var int(11)
+	var $hits       = NULL;
 
 	/**
-	 * Description for 'group'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $group_id = NULL;  // @var int(11)
+	var $group_id = NULL;
 
 	/**
-	 * Description for 'access'
+	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $access     = NULL;  // @var tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
+	var $access     = NULL;
 
 	/**
-	 * Description for 'anonymous'
+	 * tinyint(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $anonymous  = NULL;  // @var tinyint(2)
+	var $anonymous  = NULL;
 	
 	/**
 	 * ID for ACL asset (J1.6+)
@@ -430,12 +424,10 @@ class ForumPost extends JTable
 	}
 	
 	/**
-	 * Short description for 'getRecords'
+	 * Get a list of all participants in a thread
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getParticipants($filters=array())
 	{
@@ -444,18 +436,12 @@ class ForumPost extends JTable
 					LEFT JOIN #__users AS u ON c.created_by=u.id 
 					WHERE ";
 
-		/*if (isset($filters['group']) && $filters['group'] != 0) 
-		{
-			$where[] = "c.group_id = " . $this->_db->Quote($filters['group']);
-		}*/
 		if (isset($filters['category_id'])) 
 		{
 			$where[] = "c.category_id = " . $this->_db->Quote($filters['category_id']);
 		}
 		$where[] = "(c.parent = " . $this->_db->Quote($filters['parent']) . " OR c.id = " . $this->_db->Quote($filters['parent']) . ")";
-		//$where[] = "c.state = " . $this->_db->Quote(1);
-		//$where[] = "c.anonymous != " . $this->_db->Quote(1);
-		
+
 		$query .= implode(" AND ", $where);
 
 		$this->_db->setQuery($query);
@@ -463,12 +449,10 @@ class ForumPost extends JTable
 	}
 
 	/**
-	 * Short description for 'getLastPost'
+	 * Get the last post in a thread
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $parent Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $parent Thread ID
+	 * @return     object
 	 */
 	public function getLastPost($parent=null)
 	{
@@ -493,12 +477,11 @@ class ForumPost extends JTable
 	}
 	
 	/**
-	 * Short description for 'getLastPost'
+	 * Get the last activity for a category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $parent Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $group_id    Group ID
+	 * @param      integer $category_id Category ID
+	 * @return     object
 	 */
 	public function getLastActivity($group_id=null, $category_id=null)
 	{
@@ -528,12 +511,10 @@ class ForumPost extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteReplies'
+	 * Delete replies to a post
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $parent Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $parent Thread ID
+	 * @return     boolean True on success
 	 */
 	public function deleteReplies($parent=null)
 	{
@@ -559,13 +540,11 @@ class ForumPost extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteReplies'
+	 * Update all replies to a post
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $data Parameter description (if any) ...
-	 * @param      unknown $parent Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      array   $data   Data to update posts with
+	 * @param      integer $parent Parent ID
+	 * @return     boolean True on success
 	 */
 	public function updateReplies($data=array(), $parent=null)
 	{
@@ -577,19 +556,19 @@ class ForumPost extends JTable
 		{
 			return false;
 		}
-		
+
 		if (empty($data))
 		{
 			return false;
 		}
-		
+
 		$set = array();
 		foreach ($data as $key => $val)
 		{
 			$set[] = $key . '=' . $this->_db->Quote($val);
 		}
 		$values = implode(', ', $set);
-		
+
 		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=$parent");
 		if (!$this->_db->query()) 
 		{
@@ -603,14 +582,12 @@ class ForumPost extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteReplies'
+	 * Set a new category for all records of a previous category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $old Parameter description (if any) ...
-	 * @param      unknown $nw Parameter description (if any) ...
-	 * @param      unknown $group_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $old      Old category ID
+	 * @param      integer $nw       New category ID
+	 * @param      integer $group_id Group ID
+	 * @return     boolean True on success
 	 */
 	public function updateCategory($old=null, $nw=null, $group_id=0)
 	{
@@ -636,12 +613,10 @@ class ForumPost extends JTable
 	}
 
 	/**
-	 * Short description for 'deleteReplies'
+	 * Delete all records in a category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid Record ID
+	 * @return     boolean True on success
 	 */
 	public function deleteByCategory($oid=null)
 	{
@@ -650,37 +625,36 @@ class ForumPost extends JTable
 		{
 			return false;
 		}
-		
-		$query = 'DELETE FROM '.$this->_db->nameQuote($this->_tbl) .' WHERE category_id = '. $this->_db->Quote($oid);
+
+		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE category_id = ' . $this->_db->Quote($oid);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'deleteReplies'
+	 * Delete a record and any children
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid Record ID
+	 * @return     boolean True on success
 	 */
 	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) {
-			$this->$k = intval( $oid );
+		if ($oid) 
+		{
+			$this->$k = intval($oid);
 		}
-		
+
 		$this->load($this->$k);
 		if (!$this->parent)
 		{
-			$query = 'DELETE FROM '.$this->_db->nameQuote($this->_tbl) .' WHERE parent = '. $this->_db->Quote($this->$k);
+			$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE parent = ' . $this->_db->Quote($this->$k);
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{
@@ -688,18 +662,16 @@ class ForumPost extends JTable
 				return false;
 			}
 		}
-		
+
 		return parent::delete($oid);
 	}
 
 	/**
-	 * Short description for 'deleteReplies'
+	 * Set the state of posts by the category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $cat Parameter description (if any) ...
-	 * @param      unknown $state Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $cat   Category ID
+	 * @param      integer $state State to set (0, 1, 2)
+	 * @return     boolean True on success
 	 */
 	public function setStateByCategory($cat=null, $state=null)
 	{

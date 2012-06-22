@@ -37,98 +37,98 @@ defined('_JEXEC') or die('Restricted access');
 class ForumCategory extends JTable
 {
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
 	 * @var unknown
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(255)
 	 * 
 	 * @var unknown
 	 */
-	var $title      = NULL;  // @var varchar(255)
+	var $title      = NULL;
 	
 	/**
-	 * Description for 'alias'
+	 * varchar(255)
 	 * 
 	 * @var unknown
 	 */
-	var $alias      = NULL;  // @var varchar(255)
+	var $alias      = NULL;
 
 	/**
-	 * Description for 'comment'
+	 * text
 	 * 
 	 * @var unknown
 	 */
-	var $description    = NULL;  // @var text
+	var $description    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
 	 * @var unknown
 	 */
-	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'modified'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
 	 * @var unknown
 	 */
-	var $modified   = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $modified   = NULL;
 
 	/**
-	 * Description for 'modified_by'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $modified_by = NULL;  // @var int(11)
+	var $modified_by = NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(2)
 	 * 
 	 * @var unknown
 	 */
-	var $state      = NULL;  // @var int(2)
+	var $state      = NULL;
 
 	/**
-	 * Description for 'hits'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $hits       = NULL;  // @var int(11)
+	var $hits       = NULL;
 
 	/**
-	 * Description for 'group'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $group_id = NULL;  // @var int(11)
+	var $group_id = NULL;
 
 	/**
-	 * Description for 'access'
+	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
 	 * 
 	 * @var unknown
 	 */
-	var $access     = NULL;  // @var tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
+	var $access     = NULL;
 	
 	/**
-	 * Description for 'section_id'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $section_id = NULL;  // @var int(11)
+	var $section_id = NULL;
 	
 	/**
-	 * Description for 'section_id'
+	 * tinyint(2)
 	 * 
 	 * @var unknown
 	 */
@@ -142,18 +142,16 @@ class ForumCategory extends JTable
 	var $asset_id = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
 	{
 		parent::__construct('#__forum_categories', 'id', $db);
 	}
-	
+
 	/**
 	 * Method to compute the default name of the asset.
 	 * The default name is in the form table_name.id
@@ -166,7 +164,7 @@ class ForumCategory extends JTable
 	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
-		return 'com_forum.category.'.(int) $this->$k;
+		return 'com_forum.category.' . (int) $this->$k;
 	}
 
 	/**
@@ -180,7 +178,7 @@ class ForumCategory extends JTable
 	{
 		return $this->title;
 	}
-	
+
 	/**
 	 * Get the parent asset id for the record
 	 *
@@ -197,35 +195,38 @@ class ForumCategory extends JTable
 		$assetId = null;
 		$db		= $this->getDbo();
 
-		if ($assetId === null) {
+		if ($assetId === null) 
+		{
 			// Build the query to get the asset id for the parent category.
 			$query	= $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
-			$query->where('name = '.$db->quote('com_forum'));
+			$query->where('name = ' . $db->quote('com_forum'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) {
+			if ($result = $db->loadResult()) 
+			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) {
+		if ($assetId) 
+		{
 			return $assetId;
-		} else {
+		} 
+		else 
+		{
 			return parent::_getAssetParentId($table, $id);
 		}
 	}
-	
+
 	/**
-	 * Short description for 'loadAlias'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $oid Record alias
+	 * @return     boolean True on success
 	 */
 	public function loadByAlias($oid=NULL, $section_id=null, $group_id=null)
 	{
@@ -256,7 +257,7 @@ class ForumCategory extends JTable
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Populate the object with default data
 	 * 
@@ -282,11 +283,9 @@ class ForumCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
@@ -320,12 +319,10 @@ class ForumCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     string SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -373,12 +370,10 @@ class ForumCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -391,12 +386,10 @@ class ForumCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -440,7 +433,14 @@ class ForumCategory extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
+	/**
+	 * Get a count of all threads for a category
+	 * 
+	 * @param      integer $oid      Category ID
+	 * @param      integer $group_id Group ID
+	 * @return     array
+	 */
 	public function getThreadCount($oid=null, $group_id=0)
 	{
 		$k = $this->_tbl_key;
@@ -448,13 +448,20 @@ class ForumCategory extends JTable
 		{
 			$this->$k = intval($oid);
 		}
-		
+
 		$query = "SELECT COUNT(*) FROM #__forum_posts WHERE category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-	
+
+	/**
+	 * Get a count of all posts for a category
+	 * 
+	 * @param      integer $oid      Category ID
+	 * @param      integer $group_id Group ID
+	 * @return     array
+	 */
 	public function getPostCount($oid=null, $group_id=0)
 	{
 		$k = $this->_tbl_key;
@@ -462,7 +469,7 @@ class ForumCategory extends JTable
 		{
 			$this->$k = intval($oid);
 		}
-		
+
 		//$query = "SELECT COUNT(*) FROM #__forum_posts WHERE parent IN (SELECT r.id FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
 		$query = "SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2";
 		$this->_db->setQuery($query);
@@ -492,7 +499,14 @@ class ForumCategory extends JTable
 		
 		return parent::delete();
 	}
-	
+
+	/**
+	 * Set the state of records for a section
+	 * 
+	 * @param      integer $section Section ID
+	 * @param      integer $state   State (0, 1, 2)
+	 * @return     array
+	 */
 	public function setStateBySection($section=null, $state=null)
 	{
 		if ($section=== null) 

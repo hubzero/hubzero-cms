@@ -41,7 +41,7 @@ class ForumSection extends JTable
 	 * 
 	 * @var integer int(11) 
 	 */
-	var $id = NULL;  // @var 
+	var $id = NULL;
 
 	/**
 	 * Description for 'title'
@@ -51,30 +51,31 @@ class ForumSection extends JTable
 	var $title = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(255)
 	 * 
 	 * @var unknown
 	 */
-	var $alias      = NULL;  // @var varchar(255)
+	var $alias      = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var string datetime (0000-00-00 00:00:00)
+	 * @var string 
 	 */
 	var $created = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var integer int(11)
+	 * @var integer 
 	 */
 	var $created_by = NULL;
 
 	/**
+	 * int(2)
 	 * Pushed state (0=unpublished, 1=published, 2=trashed)
 	 * 
-	 * @var integer int(2)
+	 * @var integer 
 	 */
 	var $state = NULL;
 
@@ -86,16 +87,18 @@ class ForumSection extends JTable
 	var $group_id = NULL;
 
 	/**
+	 * tinyint(2)
 	 * Access level (0=public, 1=registered, 2=special, 3=protected, 4=private)
 	 * 
-	 * @var integer tinyint(2)
+	 * @var integer 
 	 */
 	var $access = NULL;
 
 	/**
+	 * int(11)
 	 * ID for ACL asset (J1.6+)
 	 * 
-	 * @var integer int(11)
+	 * @var integer 
 	 */
 	var $asset_id = NULL;
 

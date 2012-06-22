@@ -395,7 +395,7 @@ class ForumControllerCategories extends Hubzero_Controller
 				JRoute::_('index.php?option=' . $this->_option)
 			);
 		}
-
+		$model->closed = (isset($fields['closed']) && $fields['closed']) ? 1 : 0;
 		// Check content
 		if (!$model->check()) 
 		{

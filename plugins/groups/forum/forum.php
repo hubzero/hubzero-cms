@@ -973,7 +973,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
 			);
 		}
-
+		$model->closed = (isset($fields['closed']) && $fields['closed']) ? 1 : 0;
 		// Check content
 		if (!$model->check()) 
 		{
@@ -1253,7 +1253,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			$this->view->sections[$key]->categories = $cModel->getRecords(array(
 				'section_id' => $section->id,
-				'group'      => $this->group->get('gidNumber')
+				'group'      => $this->group->get('gidNumber'),
+				'state'      => 1
 			));
 		}
 

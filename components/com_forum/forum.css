@@ -605,3 +605,9 @@
 		*display: block;
 		*float: right;
 	}
+	html>body .entries caption a.edit,
+	html>body .entries caption a.delete {
+		*display: block;
+		*margin-top: -1.5em;
+		*background-position: 0 0;
+	}

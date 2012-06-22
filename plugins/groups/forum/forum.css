@@ -635,6 +635,7 @@
 	html>body .group_forum .entries caption .edit, 
 	html>body .group_forum .entries caption .delete {
 		*margin-top: -1.5em;
+		*background-position: 0 0;
 	}
 	html>body .group_forum .thread-data .container h3 .starter-point, 
 	html>body .group_forum .thread-data .container h4 .starter-point, 
