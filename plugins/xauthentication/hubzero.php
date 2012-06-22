@@ -1,125 +1,34 @@
 <?php
-
 /**
- * Short description for 'file'
- * 
- * Long description (if any) ...
- * 
- * PHP versions 4 and 5
- * 
- * All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- * + Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * + Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- * + Neither the name of the <ORGANIZATION> nor the names of its contributors
- * may be used to endorse or promote products derived
- * from this software without specific prior written permission.
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @category  CategoryName
- * @package   plgXAuthenticationHubzero
- * @author    Author's name <author@mail.com>
- * @copyright 2011 Author's name
- * @license   http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @version   CVS: $Id:$
- * @link      http://pear.php.net/package/plgXAuthenticationHubzero
- * @see       References to other sections (if any)...
+ * HUBzero CMS
+ *
+ * Copyright 2012 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2012 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-ximport('Hubzero_User_Profile');
-
-/**
- * Short description for 'plgXAuthenticationHubzero'
- * 
- * Long description (if any) ...
- */
-class plgXAuthenticationHubzero extends JPlugin
-{
-	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param 	object $subject The object to observe
-	 * @param 	array  $config  An array that holds the plugin configuration
-	 */
-	function plgXAuthenticationHubzero(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
-	 * This method should handle any authentication and report back to the subject
-	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options	 Array of extra options
-	 * @param	object	$response	Authentication response object
-	 * @return	object	boolean
-	 */
-	function onAuthenticate( $credentials, $options, &$response )
-	{
-		// For JLog
-		$response->type = 'hubzero';
-
-		if (empty($credentials['password']))
-		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			$response->error_message = 'Can not have a blank password';
-			return false;
-		}
-
-		$profile = Hubzero_User_Profile::getInstance( $credentials['username'] );
-
-		if (empty($profile)) {
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			$response->error_message = 'Username not found';
-			return false;
-		}
-
-		$passhash = $profile->get('userPassword');
-
-		if (empty($passhash)) {
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			$response->error_message = 'Password not found for requested account';
-			return false;
-		}
-
-		if( Hubzero_User_Helper::encrypt_password( $credentials['password'] ) != $passhash )
-		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			$response->error_message = 'Incorrect username/password';
-			return false;
-		}
-
-		$response->username = $profile->get('username');
-		$response->email = $profile->get('email');
-		$response->fullname = $profile->get('name');
-		$response->password_clear = $credentials['password'];
-		// Were good - So say so.
-		$response->status		= JAUTHENTICATE_STATUS_SUCCESS;
-		$response->error_message = '';
-	}
-}
-
-?>
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'xauthentication' . DS . 'hubzero' . DS . 'hubzero.php');
