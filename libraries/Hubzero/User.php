@@ -108,7 +108,7 @@ class Hubzero_User
 	 * @param      unknown $password Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	function comparePassword($password)
+	function comparePassword($password) // @TODO: PASSWORD, deprecated?
 	{
 		if (is_null($this->_profile))
 		{

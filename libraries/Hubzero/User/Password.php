@@ -969,7 +969,7 @@ class Hubzero_User_Password
 			$this->_updatedkeys[] = $property;
 		}
 	}
-
+	
 	/**
 	 * Short description for '__isset'
 	 * 
@@ -1110,6 +1110,8 @@ class Hubzero_User_Password
 	public function changePasshash($user = null, $passhash)
 	{
 		ximport('Hubzero_User_Password_History');
+		ximport('Hubzero_User_Profile');
+		
 		$hzup = self::getInstance($user);
 		$oldhash = $hzup->passhash;
 
@@ -1129,6 +1131,16 @@ class Hubzero_User_Password
 		$hzup->__set('shadowInactive', '0');
 		$hzup->__set('shadowExpire', null);
 		$hzup->update();
+		
+		$hzp = Hubzero_User_Profile::getInstance($user);
+		$hzp->set('userPassword', $passhash);
+		$hzp->update('mysql');
+		
+		$jtu = JTable::getInstance('user');
+		$jtu->load($hzup->user_id);
+		$jtu->set('password',$passhash);
+		$jtu->store();
+		
 		Hubzero_User_Password_History::addPassword($oldhash, $user);
 
 		return true;

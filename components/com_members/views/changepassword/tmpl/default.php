@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+ximport('Hubzero_User_Password');
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -51,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<label<?php echo ($this->change && (!$this->oldpass || Hubzero_User_Helper::encrypt_password($this->oldpass) != $this->profile->get('userPassword'))) ? ' class="fieldWithErrors"' : ''; ?>>
+			<label<?php echo ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass)) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('MEMBER_FIELD_CURRENT_PASS'); ?>
 				<input name="oldpass" id="oldpass" type="password" value="" />
 			</label>
@@ -59,11 +61,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if ($this->change && !$this->oldpass) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
 					}
-					if ($this->change && $this->oldpass && Hubzero_User_Helper::encrypt_password($this->oldpass) != $this->profile->get('userPassword')) {
+					if ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass)) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
 					}
 ?>
 			<div class="group twoup">
+				
 				<label<?php echo ($this->change && (!$this->newpass || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : ''; ?>>
 					<?php echo JText::_('MEMBER_FIELD_NEW_PASS'); ?>
 					<input name="newpass" id="newpass" type="password" value="" />

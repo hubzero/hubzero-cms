@@ -220,26 +220,13 @@ class UserModelReset extends JModel
 		}
 
 		// Encrypt the password and update the profile
-		$userPassword = Hubzero_User_Helper::encrypt_password($password1);
-		$profile->set('userPassword', $userPassword);
+		$result = Hubzero_User_Password::changePassword($profile->get('username'), $password1);
 
 		// Save the changes
-		if (!$profile->update()) {
+		if (!$result) {
 			$this->setError( JText::_('There was an error changing your password.') );
 			return false;
 		}
-
-		/* update hubzero password, @FIXME: should we do this with onAfterStoreUser plugin? */
-		ximport('Hubzero_User_Helper');
-		ximport('Hubzero_User_Profile');
-		$userPassword = Hubzero_User_Helper::encrypt_password($password1);
-                $profile =& Hubzero_User_Profile::getInstance($user->id);
-                $profile->set('userPassword', $userPassword);
-
-                // Save the changes
-                if (!$profile->update()) {
-                        $this->setError( JText::_('MEMBERS_PASS_CHANGE_FAILED') );
-                }
 
 		// Fire the onAfterStoreUser trigger
 		$dispatcher->trigger('onAfterStoreUser', array($user->getProperties(), false, $result, $this->getError()));

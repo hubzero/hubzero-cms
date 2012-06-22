@@ -708,7 +708,7 @@ class MembersController extends Hubzero_Controller
 
 		$passrules = false;
 
-		if ($profile->get('userPassword') != Hubzero_User_Helper::encrypt_password($oldpass)) 
+		if (!Hubzero_User_Password::passwordMatches($profile->get('uidNumber'),$oldpass)) 
 		{
 			$this->setError( JText::_('MEMBERS_PASS_INCORRECT') );
 		} 
@@ -720,10 +720,6 @@ class MembersController extends Hubzero_Controller
 		{
 			$this->setError( JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH') );
 		} 
-		elseif (!Hubzero_Registration_Helper::validpassword($newpass)) 
-		{
-			$this->setError( JText::_('MEMBERS_PASS_INVALID') );
-		}
 		elseif ($oldpass == $newpass)
 		{
 			// make sure the current password and new password are not the same
@@ -766,11 +762,10 @@ class MembersController extends Hubzero_Controller
 		}
 
 		// Encrypt the password and update the profile
-		$userPassword = Hubzero_User_Helper::encrypt_password($newpass);
-		$profile->set('userPassword', $userPassword);
+		$result = Hubzero_User_Password::changePassword($profile->get('uidNumber'),$newpass);
 
 		// Save the changes
-		if (!$profile->update()) 
+		if (!$result)
 		{
 			$view->setError( JText::_('MEMBERS_PASS_CHANGE_FAILED') );
 			$view->display();
@@ -778,14 +773,26 @@ class MembersController extends Hubzero_Controller
 		}
 
 		// Redirect user back to main account page
-		if(JRequest::getInt("no_html", 0))
+	        $return = base64_decode( JRequest::getVar('return', '',  'method', 'base64') );
+		$this->_redirect = $return ? $return : JRoute::_('index.php?option='.$this->_option.'&id='.$id);
+		$session =& JFactory::getSession();
+
+                // Redirect user back to main account page
+                if(JRequest::getInt("no_html", 0))
+                {
+                        echo json_encode( array("success" => true) );
+                        exit();
+                }
+                else
 		{
-			echo json_encode( array("success" => true) );
-			exit();
-		}
-		else
-		{
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$id);
+	        	if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			{
+	        		$hconfig = &JComponentHelper::getParams('com_hub');
+        	    		$r = $hconfig->get('LoginReturn');
+            			$this->_redirect = ($r) ? $r : '/members/myaccount';
+				$session->set('badpassword','0');
+				$session->set('expiredpassword','0');
+			}
 		}
 	}
 

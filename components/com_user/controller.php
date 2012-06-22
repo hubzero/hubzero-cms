@@ -132,12 +132,12 @@ class UserController extends JController
 			$msg	= $model->getError();
 		}
 	
-		$userPassword = Hubzero_User_Helper::encrypt_password($post['password']);
-		$profile =& Hubzero_Factory::getProfile();
-		$profile->set('userPassword', $userPassword);
+		ximport('Hubzero_User_Password');
+		
+		$result = Hubzero_User_Password::changePassword($user->get('username'), $post['password']);
 
         // Save the changes
-        if (!$profile->update()) {
+        if (!$result) {
            	$model->setError( JText::_('MEMBERS_PASS_CHANGE_FAILED') );
 			$msg = $model->getError();
         }

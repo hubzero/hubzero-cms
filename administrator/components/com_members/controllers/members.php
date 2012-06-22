@@ -362,9 +362,9 @@ class MembersControllerMembers extends Hubzero_Controller
 		if ($newpass != '') 
 		{
 			ximport('Hubzero_User_Helper');
-			 // Encrypt the password and update the profile
-			$userPassword = Hubzero_User_Helper::encrypt_password($newpass);
-			$profile->set('userPassword', $userPassword);
+			ximport('Hubzero_User_Password');
+			
+			Hubzero_User_Password::changePassword( $profile->get('username'), $newpass);
 		}
 
 		// Save the changes

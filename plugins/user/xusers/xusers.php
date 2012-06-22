@@ -64,35 +64,31 @@ class plgUserXusers extends JPlugin
 
 		$juser = &JFactory::getUser();   // get user from session (might be tmp_user, can't fetch from db)
 
-		if ($juser->get('guest') == '1') // joomla user plugin hasn't run or something went very badly
-		{
+		if ($juser->get('guest') == '1') { // joomla user plugin hasn't run or something went very badly
+
 			$plugins = JPluginHelper::getPlugin('user');
 			$xuser_order = false;
 			$joomla_order = false;
 			$i = 0;
 
-			foreach ($plugins as $plugin)
-			{
-				if ($plugin->name == 'xusers') 
-				{
+			foreach ($plugins as $plugin) {
+				
+				if ($plugin->name == 'xusers') {
 					$xuser_order = $i;
 				}
 
-				if ($plugin->name == 'joomla') 
-				{
+				if ($plugin->name == 'joomla') {
 					$joomla_order = $i;
 				}
 
 				$i++;
 			}
 
-			if ($joomla_order === false) 
-			{
+			if ($joomla_order === false) {
 				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'));
 			}
 
-			if ($xuser_order <= $joomla_order) 
-			{
+			if ($xuser_order <= $joomla_order) {
 				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'));
 			}
 
@@ -101,14 +97,12 @@ class plgUserXusers extends JPlugin
 
 		$authlog = Hubzero_Factory::getAuthLogger();
 
-		if ($juser->get('id') == '0')
-		{
+		if ($juser->get('id') == '0') {
 			$authlog->logAuth($juser->get('id') . ' ' . $_SERVER['REMOTE_ADDR'] . 'auth');
 			apache_note('auth','auth');
 
 		}
-		else
-		{
+		else {
 			$authlog->logAuth($juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
 			apache_note('auth','login');
 		}
@@ -133,44 +127,41 @@ class plgUserXusers extends JPlugin
 
 		$username = $juser->get('username');
 
-		if (isset($user['auth_link']) && is_object($user['auth_link'])) 
-		{
+		if (isset($user['auth_link']) && is_object($user['auth_link'])) {
 			$hzal = $user['auth_link'];
 		}
-		else 
-		{
+		else {
 			$hzal = null;
 		}
 
-		if ($juser->get('tmp_user')) 
-		{
+		if ($juser->get('tmp_user')) {
+			
 			$email = $juser->get('email');
 
-			if ($username[0] == '-') 
-			{
+			if ($username[0] == '-') {
+				
 				$username = trim($username,'-');
-				if ($hzal) 
-				{
+				
+				if ($hzal) {
 					$juser->set('username','guest;' . $username);
 					$juser->set('email', $hzal->email);
 				}
 			}
 		}
-		else
-		{
-			if ($username[0] == '-') 
-			{
+		else {
+			
+			if ($username[0] == '-') {
+				
 				$username = trim($username, '-');
-				if ($hzal) 
-				{
+				
+				if ($hzal) {
 					$hzal->user_id = $juser->get('id');
 					$hzal->update();
 				}
 			}
 		}
 
-		if ($hzal)
-		{
+		if ($hzal) {
 			$juser->set('auth_link_id',$hzal->id);
 		}
 
@@ -191,19 +182,20 @@ class plgUserXusers extends JPlugin
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
 		ximport('Hubzero_User_Profile');
-
+		ximport('Hubzero_User_Password');
+		
 		$xhub =& Hubzero_Factory::getHub();
 		$hubHomeDir = $xhub->getCfg('hubHomeDir');
 
 		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
 
-		if (!is_object($xprofile))
-		{
+		if (!is_object($xprofile)) {
+						
 			$xprofile = new Hubzero_User_Profile();
+			
 			$xprofile->set('gidNumber', '3000');
 			$xprofile->set('gid','public');
 			$xprofile->set('uidNumber', $user['id']);
-			$xprofile->set('password', $user['password']);
 			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $user['username']);
 			$xprofile->set('loginShell', '/bin/bash');
 			$xprofile->set('ftpShell', '/usr/lib/sftp-server');
@@ -214,50 +206,46 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('jobsAllowed', 3);
 			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
 			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
-			if (isset($_SERVER['REMOTE_HOST'])) 
-			{
+			
+			if (isset($_SERVER['REMOTE_HOST'])) {
 				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
 			}
+			
 			$xprofile->set('registerDate', date('Y-m-d H:i:s'));
 
 			$result = $xprofile->create();
 
-			if (!$result)
-			{
+			if (!$result) {
 				return JError::raiseError('500', 'xHUB Internal Error: Unable to create Hubzero_User_Profile record');
 			}
+			
+			Hubzero_User_Password::changePassword( $user['username'], $user['password']);
 		}
-		else
-		{
+		else {
 			$update = false;
 
-			if ($xprofile->get('username') != $user['username'])
-			{
+			if ($xprofile->get('username') != $user['username']) {
 				$xprofile->set('username', $user['username']);
 				$update = true;
 			}
 
-			if ($xprofile->get('name') != $user['name'])
-			{
+			if ($xprofile->get('name') != $user['name']) {
 				$xprofile->set('name', $user['name']);
 				$update = true;
 			}
 
-			if ($xprofile->get('email') != $user['email'])
-			{
+			if ($xprofile->get('email') != $user['email']) {
 				$xprofile->set('email', $user['email']);
 				$xprofile->set('emailConfirmed', 0);
 				$update = true;
 			}
 
-			if ($xprofile->get('emailConfirmed') == '')
-			{
+			if ($xprofile->get('emailConfirmed') == '')	{
 				$xprofile->set('emailConfirmed', '3');
 				$update = true;
 			}
 
-			if ($update) 
-			{
+			if ($update) {
 				$xprofile->update();
 			}
 		}
@@ -277,8 +265,7 @@ class plgUserXusers extends JPlugin
 
 		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
 
-		if (is_object($xprofile))
-		{
+		if (is_object($xprofile)) {
 			$xprofile->delete();
 		}
 
@@ -297,8 +284,11 @@ class plgUserXusers extends JPlugin
 	public function onLogoutUser($user, $options = array())
 	{
 		$authlog = Hubzero_Factory::getAuthLogger();
+		
 		$authlog->logAuth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
+		
 		apache_note('auth','logout');
+		
 		return true;
 	}
 }

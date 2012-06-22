@@ -303,6 +303,8 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function proxycreate($action='show')
 	{
+		ximport('Hubzero_User_Password');
+		
 		$action = ($action) ? $action : 'show';
 
                 $admin = $this->juser->authorize($this->_option, 'manage');
@@ -391,10 +393,11 @@ class RegisterController extends Hubzero_Controller
 			$target_xprofile->set('jobsAllowed', 3);
 			$target_xprofile->set('regIP', JRequest::getVar('REMOTE_ADDR','','server'));
 			$target_xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
+			
 			if (isset($_SERVER['REMOTE_HOST'])) {
 				$target_xprofile->set('regHost', JRequest::getVar('REMOTE_HOST','','server'));
 			}
-			$target_xprofile->set('password', $xregistration->get('password'));
+
 			$target_xprofile->set('registerDate', date('Y-m-d H:i:s'));
 			$target_xprofile->set('proxyUidNumber', $this->juser->get('id'));
 			$target_xprofile->set('proxyPassword', $xregistration->get('password'));
@@ -403,8 +406,13 @@ class RegisterController extends Hubzero_Controller
 			$result = $target_xprofile->update();
 		}
 
+		if ($result) {
+			$result = Hubzero_User_Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
+		}
+		
 		// Did we successully create/update an account?
 		if (!$result) {
+			// @FIXME: Should delete partially created records on failure (don't forget LDAP)
 			$view = new JView( array('name'=>'error') );
 			$view->title = JText::_('COM_REGISTER_PROXY_CREATE');
 			$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT', $hubMonitorEmail) );
@@ -668,10 +676,12 @@ class RegisterController extends Hubzero_Controller
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION') );
 		}
 
-		if ($this->juser->get('auth_link_id'))
+		if ($this->juser->get('auth_link_id')) {
 			$hzal = Hubzero_Auth_Link::find_by_id($this->juser->get('auth_link_id'));
-		else
+		}
+		else {
 			$hzal = null;
+		}
 
 		// Instantiate a new registration object
 		$xregistration = new Hubzero_Registration();
@@ -736,8 +746,7 @@ class RegisterController extends Hubzero_Controller
 				*/
 
 				// If there was an error with registration, set the message and display form
-				if ( $user->save() )
-				{
+				if ( $user->save() ) {
 					/*
 					// Send registration confirmation mail
 					$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
@@ -768,8 +777,7 @@ class RegisterController extends Hubzero_Controller
 					if ($result) {
 						$xprofile->loadRegistration($xregistration);
 
-						if (is_object($hzal))
-						{
+						if (is_object($hzal)) {
 							if ($xprofile->get('email') == $hzal->email) {
 								$xprofile->set('emailConfirmed',3);
 							}
@@ -782,14 +790,18 @@ class RegisterController extends Hubzero_Controller
 
 						// Do we have a return URL?
 						$regReturn = JRequest::getVar('return', '');
+						
 						if ($regReturn) {
 							$xprofile->setParam('return', $regReturn);
-							$xprofile->update();
 						}
 
 						$result = $xprofile->update();
 					}
 
+					if (!$result) {
+						$result = Hubzero_User_Password::changePassword($xprofile->get('uidNumber'), $xregistration->get('password'));
+					}			
+					
 					// Did we successfully create/update an account?
 					if (!$result) {
 						$view = new JView( array('name'=>'error') );
@@ -838,15 +850,20 @@ class RegisterController extends Hubzero_Controller
 					$view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
 					$view->hubShortName = $this->jconfig->getValue('config.sitename');
 					$view->xprofile = $xprofile;
+					
 					if ($this->getError()) {
 						$view->setError( $this->getError() );
 					}
+					
 					$view->display();
 
 					if (is_object($hzal)) {
+						
 						$hzal->user_id = $user->get('id');
-						if ($hzal->user_id > 0)
+						
+						if ($hzal->user_id > 0) {
 							$hzal->update();
+						}
 					}
 
 					$this->juser->set('auth_link_id',null);
@@ -854,6 +871,7 @@ class RegisterController extends Hubzero_Controller
 					$this->juser->set('username', $xregistration->get('login'));
 					$this->juser->set('email', $xregistration->get('email'));
 					$this->juser->set('id', $user->get('id'));
+					
 					return;
 				}
 			}
