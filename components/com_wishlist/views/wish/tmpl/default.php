@@ -690,8 +690,8 @@ if ($this->wishlist && $this->wish) {
 			<?php echo JText::_('COMMENTS');?> (<?php echo $this->wish->numreplies; ?>)
 		</h3>
 		<div class="aside">
-			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id.'#commentform');?>">
+			<p>
+				<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id.'#commentform');?>">
 					<?php echo JText::_('ADD_A_COMMENT'); ?>
 				</a>
 			</p>
@@ -835,8 +835,8 @@ if ($this->wishlist && $this->wish) {
 		<form action="index.php" method="post" id="planform" enctype="multipart/form-data">
 			<div class="aside">
 <?php if ($this->wish->action != 'editplan') { ?>
-				<p class="add">
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
+				<p>
+					<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
 						<?php echo JText::_('ADD_TO_THE_PLAN'); ?>
 					</a>
 				</p>
