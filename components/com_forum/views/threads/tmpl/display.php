@@ -72,9 +72,18 @@ ximport('Hubzero_User_Profile_Helper');
 <?php 
 			foreach ($this->attachments as $attachment) 
 			{
+				$cls = 'file';
 				$title = ($attachment->description) ? $attachment->description : $attachment->filename;
+				if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $attachment->filename)) 
+				{
+					$cls = 'img';
+				}
 ?>
-				<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $attachment->parent . '&post=' . $attachment->post_id . '&file=' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
+				<li>
+					<a class="<?php echo $cls; ?> attachment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $attachment->parent . '&post=' . $attachment->post_id . '&file=' . $attachment->filename); ?>">
+						<?php echo $this->escape(stripslashes($title)); ?>
+					</a>
+				</li>
 <?php 		} ?>
 			</ul>
 		</div><!-- / .container -->
@@ -163,7 +172,7 @@ ximport('Hubzero_User_Profile_Helper');
 									)
 								) { ?>
 						<p class="comment-options">
-							<?php if ((!$row->parent && $this->config->get('access-delete-thread')) || ($row->parent && $this->config->get('access-delete-post'))) { ?>
+							<?php if ($row->parent && $this->config->get('access-delete-post')) { ?>
 							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $row->id . '&task=delete'); ?>">
 								<?php echo JText::_('COM_FORUM_DELETE'); ?>
 							</a>

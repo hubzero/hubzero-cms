@@ -54,12 +54,27 @@ $juser = JFactory::getUser();
 				{
 					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
 				}
+				foreach ($this->sections as $section)
+				{
+					if ($section->categories) 
+					{
+						foreach ($section->categories as $row) 
+						{
+							if ($row->id == $this->lastpost->category_id)
+							{
+								$cat = $row->alias;
+								$sec = $section->alias;
+								break;
+							}
+						}
+					}
+				}
 ?>
-				<span class="entry-date">
+				<a class="entry-date" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $sec . '&category=' . $cat . '&thread=' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
 					@
 					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
 					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
-				</span>
+				</a>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
 					<?php echo $lname; ?>
@@ -84,7 +99,9 @@ $juser = JFactory::getUser();
 						<?php echo JText::_('Section Title'); ?>
 						<input type="text" name="fields[title]" id="field-title" value="" />
 					</label>
-					<input type="submit" value="<?php echo JText::_('Create'); ?>" />
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('Create'); ?>" />
+					</p>
 					<input type="hidden" name="task" value="save" />
 					<input type="hidden" name="controller" value="sections" />
 					<input type="hidden" name="fields[group_id]" value="0" />
@@ -95,19 +112,19 @@ $juser = JFactory::getUser();
 	</div><!-- / .aside -->
 
 	<div class="subject">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
-		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
-			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search categories'); ?></legend>				
-				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="categories" />
-				<input type="hidden" name="task" value="search" />
-			</fieldset>
-		</div><!-- / .container -->
-	</form>
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<fieldset class="entry-search">
+					<legend><?php echo JText::_('Search categories'); ?></legend>				
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="controller" value="categories" />
+					<input type="hidden" name="task" value="search" />
+				</fieldset>
+			</div><!-- / .container -->
+		</form>
 <?php
 foreach ($this->sections as $section)
 {
