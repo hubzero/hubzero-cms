@@ -105,7 +105,7 @@ class plgAuthenticationHubzero extends JPlugin
 			else {
 				$profile = Hubzero_User_Profile::getInstance($credentials['username']);				
 				
-				if (is_object($profile) && !empty($profile->userPassword)) {
+				if (is_object($profile) && ($profile->get('userPassword') != '')) {
 					$passhash = $profile->userPassword;
 				}
 				else {
