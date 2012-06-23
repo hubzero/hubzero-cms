@@ -368,85 +368,6 @@ class Hubzero_User_Password
 	}
 
 	/**
-	 * Short description for '_ldap_read'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return	   boolean Return description (if any) ...
-	 */
-	private function _ldap_read($instance = null)
-	{
-		$xhub = &Hubzero_Factory::getHub();
-		$conn = &Hubzero_Factory::getPLDC();
-
-		if (empty($conn) || empty($xhub) || empty($instance)) {
-			return false;
-		}
-
-		if (is_numeric($instance) && $instance > 0) {
-			$dn = "ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
-			$filter = '(uidNumber=' . $instance . ')';
-		}
-		else {
-			$dn = "uid=" . $instance . ",ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
-			$filter = '(objectclass=*)';
-		}
-
-		$reqattr = array('uidNumber', 'userPassword', 'shadowLastChange',
-						'shadowMin', 'shadowMax', 'shadowWarning',
-						'shadowInactive', 'shadowExpire', 'shadowFlag', 'uid');
-
-		$entry = @ldap_search($conn, $dn, $filter, $reqattr,
-			0, 0, 0, 3);
-
-		if (empty($entry)) {
-			return false;
-		}
-
-		$count = ldap_count_entries($conn, $entry);
-
-		if ($count <= 0) {
-			return false;
-		}
-
-		$firstentry = ldap_first_entry($conn, $entry);
-		$attr = ldap_get_attributes($conn, $firstentry);
-		$pwinfo = array();
-
-		foreach ($reqattr as $key=>$value) {
-			if (isset($attr[$reqattr[$key]][0])) {
-				if (count($attr[$reqattr[$key]]) <= 2) {
-					$pwinfo[$value] = $attr[$reqattr[$key]][0];
-				}
-				else {
-					$pwinfo[$value] = $attr[$reqattr[$key]];
-					unset($pwinfo[$value]['count']);
-				}
-			}
-			else {
-				unset($pwinfo[$value]);
-			}
-		}
-
-		$this->clear();
-
-		foreach (self::$_propertyattrmap as $key=>$value) {
-			if (isset($pwinfo[$value])) {
-				$this->__set($key, $pwinfo[$value]);
-			}
-			else {
-				$this->__set($key, null);
-			}
-		}
-
-		$this->_uid = $pwinfo['uid'];
-
-		$this->_updatedkeys = array();
-
-		return true;
-	}
-
-	/**
 	 * Short description for '_mysql_read'
 	 * 
 	 * Long description (if any) ...
@@ -506,12 +427,8 @@ class Hubzero_User_Password
 	 * @param	   string $storage Parameter description (if any) ...
 	 * @return	   boolean Return description (if any) ...
 	 */
-	public function read($instance = null, $storage = 'all')
+	public function read($instance = null)
 	{
-		if (is_null($storage)) {
-			$storage = 'all';
-		}
-
 		if (empty($instance)) {
 			$instance = $this->user_id;
 
@@ -521,19 +438,9 @@ class Hubzero_User_Password
 			}
 		}
 
-		if (!is_string($storage)) {
-			$this->_error(__FUNCTION__ . ": Argument #2 is not a string", E_USER_ERROR);
-			die();
-		}
-
-		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
-			$this->_error(__FUNCTION__ .  ": Argument #2 [$storage] is not a valid value", E_USER_ERROR);
-			die();
-		}
-
 		$result = true;
 
-		if ($storage == 'mysql' || $storage == 'all') {
+		if (true) {
 			$this->clear();
 
 			$result = $this->_mysql_read($instance);
@@ -543,16 +450,6 @@ class Hubzero_User_Password
 			}
 			else {
 				return $result;
-			}
-		}
-
-		if ($storage == 'ldap' || $storage == 'all') {
-			$this->clear();
-
-			$result = $this->_ldap_read($instance);
-
-			if ($result === false) {
-				$this->clear();
 			}
 		}
 
@@ -1145,41 +1042,52 @@ class Hubzero_User_Password
 
 		return true;
 	}
+	
+	public function comparePasswords($passhash, $password)
+	{
+		preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/",$passhash,$matches);
+		$encryption = strtolower($matches[2]);
+		
+		if (empty($encryption)) {		// Joomla
+			$encryption = "md5-hex";
+			
+			if (!empty($matches[4])) {	// Joomla 1.5
+				$crypt = $matches[4];
+				$salt = $matches[5];
+			} else {					// Joomla 1.0
+				$crypt = $matches[5];
+				$salt = '';
+			}
+		} else {
+			$salt = $matches[4];
+			$crypt = $matches[5];
+		}
+
+		if ($encryption == 'md5') {
+			$encryption = "md5-base64";
+		}
+		
+		if (empty($salt) && ($encryption == 'ssha')) {
+			$salt = substr(base64_decode(substr($crypt,-32)),-4);
+			$hashed = base64_encode( mhash(MHASH_SHA1, $password . $salt).$salt );
+		}
+		else {
+			jimport('joomla.user.helper');
+			$hashed = JUserHelper::getCryptedPassword($password, $salt, $encryption);
+		}
+		
+		return ($crypt == $hashed);
+	}
 
 	public function passwordMatches($user = null, $password)
 	{
-		jimport('joomla.user.helper');
 		$hzup = self::getInstance($user);
 
 		if (!is_object($hzup)) {
 			return false;
 		}
 
-		preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/",$hzup->passhash,$matches);
-		$encryption = strtolower($matches[2]);
-		$salt = $matches[4];
-		$crypt = $matches[5];
-
-		if ($encryption == 'md5') {
-			$encryption = "md5-base64";
-		}
-
-		if (empty($encryption)) {
-			$passhash = $password;
-		}
-		else if (empty($salt) && ($encryption == 'ssha')) {
-			$salt = substr(base64_decode(substr($crypt,-32)),-4);
-			$passhash = "{SSHA}" . base64_encode( mhash(MHASH_SHA1, $password . $salt).$salt );
-		}
-		else {
-			$passhash = JUserHelper::getCryptedPassword($password, $salt, $encryption, true);
-		}
-
-		if ($hzup->passhash == $passhash) {
-			return true;
-		}
-
-		return false;
+		return self::comparePasswords($hzup->passhash, $password);
 	}
 
 	public function invalidatePassword($user = null)
