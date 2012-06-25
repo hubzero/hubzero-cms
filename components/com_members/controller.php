@@ -708,7 +708,7 @@ class MembersController extends Hubzero_Controller
 
 		$passrules = false;
 
-		if (!Hubzero_User_Password::passwordMatches($profile->get('uidNumber'),$oldpass)) 
+		if (!Hubzero_User_Password::passwordMatches($profile->get('uidNumber'),$oldpass,true)) 
 		{
 			$this->setError( JText::_('MEMBERS_PASS_INCORRECT') );
 		} 
