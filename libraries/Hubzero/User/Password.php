@@ -1129,9 +1129,7 @@ class Hubzero_User_Password
 	{
 		ximport('Hubzero_User_Password_History');
 		ximport('Hubzero_User_Profile');
-		debug_print_backtrace();
-		self::logDebug("changePasshash: $user $passhash \n");
-		
+
 		$hzup = self::getInstance($user);
 		
 		$oldhash = $hzup->__get('passhash');
