@@ -172,6 +172,7 @@ HUB.Members.Profile = {
 			data: form.serialize(),
 			success: function(data, status, xhr)
 			{
+				//console.log(data); // Dump the raw data to see what's being returned
 				//parse the returned json data
 				var returned = jQuery.parseJSON(data);
 				
