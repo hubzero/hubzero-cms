@@ -218,8 +218,6 @@ class plgUserXusers extends JPlugin
 			if (!$result) {
 				return JError::raiseError('500', 'xHUB Internal Error: Unable to create Hubzero_User_Profile record');
 			}
-			
-			Hubzero_User_Password::changePassword( $user['username'], $user['password']);
 		}
 		else {
 			$update = false;

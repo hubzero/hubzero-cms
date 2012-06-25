@@ -427,8 +427,12 @@ class Hubzero_User_Password
 	 * @param	   string $storage Parameter description (if any) ...
 	 * @return	   boolean Return description (if any) ...
 	 */
-	public function read($instance = null)
+	public function read($instance = null, $storage = 'all')
 	{
+		if (is_null($storage)) {
+			$storage = 'all';
+		}
+
 		if (empty($instance)) {
 			$instance = $this->user_id;
 
@@ -438,24 +442,141 @@ class Hubzero_User_Password
 			}
 		}
 
+		if (!is_string($storage)) {
+			$this->_error(__FUNCTION__ . ": Argument #2 is not a string", E_USER_ERROR);
+			die();
+		}
+
+		if (!in_array($storage, array('mysql', 'ldap', 'all'))) {
+			$this->_error(__FUNCTION__ .  ": Argument #2 [$storage] is not a valid value", E_USER_ERROR);
+			die();
+		}
+
 		$result = true;
 
-		if (true) {
+		if ($storage == 'mysql' || $storage == 'all') {
 			$this->clear();
 
 			$result = $this->_mysql_read($instance);
 
 			if ($result === false) {
 				$this->clear();
+			
+				$hzp = Hubzero_User_Profile::getInstance($instance);
+			
+				if (is_object($hzp)) {
+			
+					$this->user_id = $hzp->get('uidNumber');
+					$this->passhash = $hzp->get('userPassword');
+			
+					$this->create('mysql');
+					$this->update('mysql');
+					
+					return true;
+				}
 			}
 			else {
 				return $result;
 			}
 		}
 
+		if ($storage == 'ldap' || $storage == 'all') {
+			$this->clear();
+
+			$result = $this->_ldap_read($instance);
+
+			if ($result === false) {
+				$this->clear();
+			}
+			else if ($storage == 'all') {
+				$this->create('mysql');
+				$this->update('mysql');
+			}
+		}
+
 		return $result;
 	}
-
+	
+	
+	/**
+	 * Short description for '_ldap_read'
+	 *
+	 * Long description (if any) ...
+	 *
+	 * @return         boolean Return description (if any) ...
+	 */
+	private function _ldap_read($instance = null)
+	{
+		$xhub = &Hubzero_Factory::getHub();
+		$conn = &Hubzero_Factory::getPLDC();
+	
+		if (empty($conn) || empty($xhub) || empty($instance)) {
+			return false;
+		}
+	
+		if (is_numeric($instance) && $instance > 0) {
+			$dn = "ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
+			$filter = '(uidNumber=' . $instance . ')';
+		}
+		else {
+			$dn = "uid=" . $instance . ",ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
+			$filter = '(objectclass=*)';
+		}
+	
+		$reqattr = array('uidNumber', 'userPassword', 'shadowLastChange',
+				'shadowMin', 'shadowMax', 'shadowWarning',
+				'shadowInactive', 'shadowExpire', 'shadowFlag', 'uid');
+	
+		$entry = @ldap_search($conn, $dn, $filter, $reqattr,
+				0, 0, 0, 3);
+	
+		if (empty($entry)) {
+			return false;
+		}
+	
+		$count = ldap_count_entries($conn, $entry);
+	
+		if ($count <= 0) {
+			return false;
+		}
+	
+		$firstentry = ldap_first_entry($conn, $entry);
+		$attr = ldap_get_attributes($conn, $firstentry);
+		$pwinfo = array();
+	
+		foreach ($reqattr as $key=>$value) {
+			if (isset($attr[$reqattr[$key]][0])) {
+				if (count($attr[$reqattr[$key]]) <= 2) {
+					$pwinfo[$value] = $attr[$reqattr[$key]][0];
+				}
+				else {
+					$pwinfo[$value] = $attr[$reqattr[$key]];
+					unset($pwinfo[$value]['count']);
+				}
+			}
+			else {
+				unset($pwinfo[$value]);
+			}
+		}
+	
+		$this->clear();
+	
+		foreach (self::$_propertyattrmap as $key=>$value) {
+			if (isset($pwinfo[$value])) {
+				$this->__set($key, $pwinfo[$value]);
+			}
+			else {
+				$this->__set($key, null);
+			}
+		}
+	
+		$this->_uid = $pwinfo['uid'];
+	
+		$this->_updatedkeys = array();
+	
+		return true;
+	}
+	
 	/**
 	 * Short description for '_ldap_update'
 	 * 
@@ -482,7 +603,7 @@ class Hubzero_User_Password
 
 		$pwinfo = $this->toArray('ldap');
 
-		$current_hzup = Hubzero_User_Password::getInstance($this->user_id, 'ldap');
+		$current_hzup = self::getInstance($this->user_id, 'ldap');
 
 		if (!is_object($current_hzup)) {
 			if ($this->_ldap_create() === false) {
@@ -1008,14 +1129,13 @@ class Hubzero_User_Password
 	{
 		ximport('Hubzero_User_Password_History');
 		ximport('Hubzero_User_Profile');
+		debug_print_backtrace();
+		self::logDebug("changePasshash: $user $passhash \n");
 		
 		$hzup = self::getInstance($user);
-		$oldhash = $hzup->passhash;
-
-		if ($oldhash == $passhash) {
-			return true;
-		}
-
+		
+		$oldhash = $hzup->__get('passhash');
+				
 		$hzup->__set('passhash',$passhash);
 		$hzup->__set('shadowFlag',null);
 
@@ -1038,14 +1158,21 @@ class Hubzero_User_Password
 		$jtu->set('password',$passhash);
 		$jtu->store();
 		
-		Hubzero_User_Password_History::addPassword($oldhash, $user);
+		if (!empty($oldhash)) {
+			Hubzero_User_Password_History::addPassword($oldhash, $user);
+		}
 
 		return true;
 	}
 	
 	public function comparePasswords($passhash, $password)
 	{
+		if (empty($passhash) || empty($password)) {
+			return false;
+		}
+		
 		preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/",$passhash,$matches);
+		
 		$encryption = strtolower($matches[2]);
 		
 		if (empty($encryption)) {		// Joomla
@@ -1079,15 +1206,33 @@ class Hubzero_User_Password
 		return ($crypt == $hashed);
 	}
 
-	public function passwordMatches($user = null, $password)
+	public function passwordMatches($user = null, $password, $alltables = false)
 	{
+		$passhash = null;
+		
 		$hzup = self::getInstance($user);
 
-		if (!is_object($hzup)) {
-			return false;
+		if (is_object($hzup) && !empty($hzup->passhash)) {
+			$passhash = $hzup->passhash;
 		}
+		else if ($alltables) { 
 
-		return self::comparePasswords($hzup->passhash, $password);
+			$profile = Hubzero_User_Profile::getInstance($user);
+		
+			if (is_object($profile) && ($profile->get('userPassword') != '')) {
+				$passhash = $profile->get('userPassword');
+			}
+			else {
+			
+				$user = JUser::getInstance($user);
+
+				if (is_object($user) && !empty($user->password)) {
+					$passhash = $user->password;
+				}
+			}
+		}
+		
+		return self::comparePasswords($passhash, $password);
 	}
 
 	public function invalidatePassword($user = null)

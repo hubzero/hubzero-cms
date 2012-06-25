@@ -71,8 +71,7 @@ class plgAuthenticationHubzero extends JPlugin
 		$response->type = 'hubzero';
 
 		// HUBzero does not like blank passwords
-		if (empty($credentials['password']))
-		{
+		if (empty($credentials['password'])) {
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'Empty password not allowed';
 			return false;
@@ -92,40 +91,25 @@ class plgAuthenticationHubzero extends JPlugin
 		
 		$result = $db->loadObject();
 		
-		
 		if ($result)
 		{	
-			$user = JUser::getInstance($result->id); // Bring this in line with the rest of the system
-		
-			$hzup = Hubzero_User_Password::getInstance($credentials['username']);
-		
-			if (is_object($hzup) && !empty($hzup->passhash)) {
-				$passhash = $hzup->passhash;
-			}
-			else {
-				$profile = Hubzero_User_Profile::getInstance($credentials['username']);				
+			if (Hubzero_User_Password::passwordMatches($credentials['username'], $credentials['password'], true)) {
 				
-				if (is_object($profile) && ($profile->get('userPassword') != '')) {
-					$passhash = $profile->get('userPassword');
-				}
-				else {
-					$passhash = $user->password;
-				}
-			}		
-
-			if (Hubzero_User_Password::comparePasswords($passhash, $credentials['password'])) {
+				$user = JUser::getInstance($result->id);
+				
 				$response->username = $user->username;
 				$response->email = $user->email;
 				$response->fullname = $user->name;
 				$response->status = JAUTHENTICATE_STATUS_SUCCESS;
 				$response->error_message = '';
 			} else {
+				
 				$response->status = JAUTHENTICATE_STATUS_FAILURE;
 				$response->error_message = 'Invalid password';
 			}
 		}
-		else 
-		{
+		else {
+			
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'User does not exist';
 		}

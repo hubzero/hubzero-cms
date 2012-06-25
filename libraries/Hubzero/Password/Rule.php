@@ -253,7 +253,7 @@ class Hubzero_Password_Rule
 				}
 			}
 			else if ($rule['rule'] == 'notRepeat') {
-				if (Hubzero_User_Password::passwordMatches($user, $password)) {
+				if (Hubzero_User_Password::passwordMatches($user, $password, true)) {
 					$fail[] = $rule['failuremsg'];
 				}
 			}

@@ -357,23 +357,23 @@ class MembersControllerMembers extends Hubzero_Controller
 			$profile->set('race',$p['race']);
 		}
 
-		// Do we have a new pass?
-		$newpass = trim(JRequest::getVar('newpass', '', 'post'));
-		if ($newpass != '') 
-		{
-			ximport('Hubzero_User_Helper');
-			ximport('Hubzero_User_Password');
-			
-			Hubzero_User_Password::changePassword( $profile->get('username'), $newpass);
-		}
-
 		// Save the changes
 		if (!$profile->update()) 
 		{
 			JError::raiseWarning('', $profile->getError());
 			return false;
 		}
-
+		
+		// Do we have a new pass?
+		$newpass = trim(JRequest::getVar('newpass', '', 'post'));
+		if ($newpass != '')
+		{
+			ximport('Hubzero_User_Helper');
+			ximport('Hubzero_User_Password');
+				
+			Hubzero_User_Password::changePassword( $profile->get('username'), $newpass);
+		}
+		
 		// Get the user's interests (tags)
 		$tags = trim(JRequest::getVar('tags', ''));
 

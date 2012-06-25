@@ -53,7 +53,7 @@ ximport('Hubzero_User_Password');
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<label<?php echo ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass)) ? ' class="fieldWithErrors"' : ''; ?>>
+			<label<?php echo ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('MEMBER_FIELD_CURRENT_PASS'); ?>
 				<input name="oldpass" id="oldpass" type="password" value="" />
 			</label>
@@ -61,7 +61,7 @@ ximport('Hubzero_User_Password');
 					if ($this->change && !$this->oldpass) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
 					}
-					if ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass)) {
+					if ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true)) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
 					}
 ?>
