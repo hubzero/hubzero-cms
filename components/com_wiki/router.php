@@ -28,15 +28,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function WikiBuildRoute(&$query)
 {
@@ -59,12 +57,10 @@ function WikiBuildRoute(&$query)
 }
 
 /**
- * Short description for 'WikiParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  unknown $segments Parameter description (if any) ...
- * @return array   Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function WikiParseRoute($segments)
 {

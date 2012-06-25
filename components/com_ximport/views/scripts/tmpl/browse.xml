@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard XImport Browse Layout">
+	<layout title="Browse scripts">
 		<message>
-			<![CDATA[STANDARD XIMPORT BROWSE LAYOUT DESC]]>
+			<![CDATA[Browse scripts]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard XImport Layout</name>
-		<description>STANDARD XIMPORT BROWSE LAYOUT DESC</description>
+		<name>Browse scripts</name>
+		<description>Browse scripts</description>
 		<params>
 		</params>
 	</state>

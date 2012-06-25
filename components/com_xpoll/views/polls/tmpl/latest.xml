@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_groups/views/view/tmpl/default.xml
+@file           components/com_xpoll/views/latest/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard XImport Run Layout">
+	<layout title="View latest poll">
 		<message>
-			<![CDATA[STANDARD XIMPORT RUN LAYOUT DESC]]>
+			<![CDATA[View latest poll]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard XImport Run Layout</name>
-		<description>STANDARD XIMPORT RUN LAYOUT DESC</description>
+		<name>View latest poll</name>
+		<description>View latest poll</description>
 		<params>
 		</params>
 	</state>

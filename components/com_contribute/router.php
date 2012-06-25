@@ -29,15 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'contributeBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  unknown &$query Parameter description (if any) ...
- * @return array   Return description (if any) ...
+ * @param  array &$query Parameter description (if any) ...
+ * @return array Return description (if any) ...
  */
 function contributeBuildRoute(&$query)
 {
@@ -47,9 +45,7 @@ function contributeBuildRoute(&$query)
 }
 
 /**
- * Short description for 'contributeParseRoute'
- * 
- * Long description (if any) ...
+ * Parse a SEF route
  * 
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
@@ -59,23 +55,23 @@ function contributeParseRoute($segments)
 	$vars = array();
 
 	if (empty($segments))
+	{
 		return $vars;
+	}
 
 	if ($segments[0] == 'tools')
 	{
 		if (isset($segments[1]) && $segments[1] == 'register')
 		{
 			$vars['option'] = 'com_contribtool';
-			$vars['task'] = 'create';
+			$vars['task']   = 'create';
 			return $vars;
 		}
 	}
 
 	$vars['option'] = 'com_content';
-	$vars['view'] = 'article';
-	$vars['route'] = 'contribute/' . implode('/', $segments);
+	$vars['view']   = 'article';
+	$vars['route']  = 'contribute/' . implode('/', $segments);
 
 	return $vars;
 }
-
-?>

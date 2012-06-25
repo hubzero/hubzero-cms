@@ -29,91 +29,125 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'membersBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function membersBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['id'])) {
-		if (substr($query['id'],0,1) == '-') {
-			$query['id'] = 'n' . substr($query['id'],1);
+	if (!empty($query['id'])) 
+	{
+		if (substr($query['id'], 0, 1) == '-') 
+		{
+			$query['id'] = 'n' . substr($query['id'], 1);
 		}
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-	if (!empty($query['active'])) {
+	if (!empty($query['active'])) 
+	{
 		$segments[] = $query['active'];
 		unset($query['active']);
 
-		if (!empty($query['task'])) {
+		if (!empty($query['task'])) 
+		{
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
 	}
-	if (empty($query['id']) && !empty($query['task'])) {
+	if (empty($query['id']) && !empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	/**/
 
-    return $segments;
+	return $segments;
 }
 
 /**
- * Short description for 'membersParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function membersParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments)) {
+	if (empty($segments)) 
+	{
 		return $vars;
 	}
 
-	if (isset($segments[0])) {
-		if ($segments[0] == 'whois' || $segments[0] == 'activity' || $segments[0] == 'autocomplete' || $segments[0] == 'myaccount') {
-			$vars['task'] = $segments[0];
-		} elseif ($segments[0] == 'vips') {
-			$vars['task'] = 'browse';
-			$vars['show'] = 'vips';
-		} elseif ($segments[0]{0} == 'n') {
-			$vars['id'] = '-' . substr($segments[0],1);
-		} else {
-			$vars['id'] = $segments[0];
-		}
+	if (isset($segments[0])) 
+	{
+		switch ($segments[0])
+		{
+			case 'whois':
+			case 'activity':
+			case 'autocomplete':
+			case 'myaccount': 
+				$vars['task'] = $segments[0];
+			break;
+			case 'vips':
+				$vars['task'] = 'browse';
+				$vars['show'] = 'vips';
+			break;
+			default:
+				if ($segments[0]{0} == 'n') 
+				{
+					$vars['id'] = '-' . substr($segments[0],1);
+				} 
+				else 
+				{
+					$vars['id'] = $segments[0];
+				}
+			break;
+		} 
 	}
-	if (isset($segments[1])) {
-		$user_tasks = array("edit", "changepassword", "raiselimit", "cancel", "deleteimg", "upload", "ajaxupload", "doajaxupload", "ajaxuploadsave", "getfileatts", "promo-opt-out");
-		if (in_array($segments[1], $user_tasks)) {
+	if (isset($segments[1])) 
+	{
+		$userTasks = array(
+			'edit', 
+			'changepassword', 
+			'raiselimit', 
+			'cancel', 
+			'deleteimg', 
+			'upload', 
+			'ajaxupload', 
+			'doajaxupload', 
+			'ajaxuploadsave', 
+			'getfileatts', 
+			'promo-opt-out'
+		);
+		if (in_array($segments[1], $userTasks)) 
+		{
 			$vars['task'] = $segments[1];
-		} else {
+		} 
+		else 
+		{
 			$vars['active'] = $segments[1];
 
-			if (isset($segments[2])) {
-				if (trim($segments[1]) == 'profile') {
+			if (isset($segments[2])) 
+			{
+				if (trim($segments[1]) == 'profile') 
+				{
 					$vars['task'] = $segments[2];
-				} else {
+				} 
+				else 
+				{
 					$vars['action'] = $segments[2];
 				}
 			}
 		}
 	}
-	/**/
+
 	return $vars;
 }
 
-?>

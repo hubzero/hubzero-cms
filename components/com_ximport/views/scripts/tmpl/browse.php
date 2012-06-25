@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo JText::_('XImport'); ?></h2>
@@ -43,11 +43,11 @@ if ($this->paths) {
 		<caption>Available scripts</caption>
 		<thead>
 			<tr>
-				<th>Script</th>
-				<th>Description</th>
-				<th>Last Ran</th>
-				<th>Total Runs</th>
-				<th>Option</th>
+				<th scope"col">Script</th>
+				<th scope"col">Description</th>
+				<th scope"col">Last Ran</th>
+				<th scope"col">Total Runs</th>
+				<th scope"col">Option</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -83,10 +83,10 @@ if ($this->paths) {
 		$cls = ($cls == 'even') ? 'odd' : 'even';
 ?>
 			<tr class="<?php echo $cls; ?>">
-				<th><?php echo $scriptName; ?></th>
-				<td><?php echo $description; ?></td>
-				<td><?php echo $lastRun; ?></td>
-				<td><?php echo $totalRuns; ?></td>
+				<th scope"row"><?php echo $this->escape($scriptName); ?></th>
+				<td><?php echo $this->escape($description); ?></td>
+				<td><?php echo $this->escape($lastRun); ?></td>
+				<td><?php echo $this->escape($totalRuns); ?></td>
 				<td>
 <?php if ($form) { ?>
 					<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">

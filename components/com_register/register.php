@@ -29,13 +29,19 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
+}
+
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
 }
 
 jimport('joomla.application.component.helper');
@@ -47,10 +53,6 @@ ximport('Hubzero_User_Helper');
 ximport('Hubzero_Toolbox');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'controller.php');
-
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
 
 // Instantiate controller
 $controller = new RegisterController();

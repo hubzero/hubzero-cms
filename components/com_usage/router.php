@@ -32,12 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'UsageBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function UsageBuildRoute(&$query)
 {
@@ -63,12 +61,10 @@ function UsageBuildRoute(&$query)
 }
 
 /**
- * Short description for 'UsageParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function UsageParseRoute($segments)
 {

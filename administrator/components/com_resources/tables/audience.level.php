@@ -28,77 +28,69 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourceAudienceLevel'
- * 
- * Long description (if any) ...
+ * Table class for resource audience level
  */
 class ResourceAudienceLevel extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       		= NULL;  // @var int(11) Primary key
+	var $id       		= NULL;
 
 	/**
-	 * Description for 'label'
+	 * varchar(11)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $label 			= NULL;  // @var 
+	var $label 			= NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $title 			= NULL;  // @var
+	var $title 			= NULL;
 
 	/**
-	 * Description for 'description'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $description 	= NULL;  // @var
-
-	//-----------
+	var $description 	= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_taxonomy_audience_levels', 'id', $db );
+		parent::__construct('#__resource_taxonomy_audience_levels', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getLevels'
+	 * Get records to a determined level
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $numlevels Parameter description (if any) ...
-	 * @param      array $levels Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $numlevels Number of levels to return
+	 * @param      array   $levels    Array to populate
+	 * @return     array
 	 */
-	public function getLevels ($numlevels = 4, $levels = array())
+	public function getLevels($numlevels = 4, $levels = array())
 	{
-		$sql  = "SELECT label, title FROM #__resource_taxonomy_audience_levels ";
+		$sql  = "SELECT label, title FROM $this->_tbl ";
 		$sql .= $numlevels == 4 ? " WHERE label != 'level5' " : "";
 		$sql .= " ORDER BY label ASC";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $r)
 			{
 				$levels[$r->label] = $r->title;

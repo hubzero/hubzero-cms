@@ -29,25 +29,25 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'RegisterBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function RegisterBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['confirm'])) {
+	if (!empty($query['confirm'])) 
+	{
 		$segments[] = $query['confirm'];
 		unset($query['confirm']);
 	}
@@ -56,25 +56,28 @@ function RegisterBuildRoute(&$query)
 }
 
 /**
- * Short description for 'RegisterParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function RegisterParseRoute($segments)
 {
 	$vars  = array();
 
-	if (empty($segments)) {
+	if (empty($segments)) 
+	{
 		return $vars;
 	}
 
-    if (isset($segments[0])) {
+	if (isset($segments[0])) 
+	{
 		$vars['task'] = $segments[0];
 	}
-	if (isset($segments[1]) && is_numeric($segments[1]) && $vars['task'] == 'confirm') {
+	if (isset($segments[1]) 
+	 && is_numeric($segments[1]) 
+	 && $vars['task'] == 'confirm') 
+	{
 		$vars['confirm'] = $segments[1];
 	}
 

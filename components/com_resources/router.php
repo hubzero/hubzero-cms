@@ -29,73 +29,82 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function ResourcesBuildRoute(&$query)
 {
-    $segments = array();
+	$segments = array();
 
-    if (!empty($query['id'])) {
+	if (!empty($query['id'])) 
+	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-    if (!empty($query['alias'])) {
+	if (!empty($query['alias'])) 
+	{
 		$segments[] = $query['alias'];
 		unset($query['alias']);
 	}
-	if (!empty($query['active'])) {
+	if (!empty($query['active'])) 
+	{
 		$segments[] = $query['active'];
 		unset($query['active']);
 	}
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['file'])) {
+	if (!empty($query['file'])) 
+	{
 		$segments[] = $query['file'];
 		unset($query['file']);
 	}
-	if (!empty($query['type'])) {
+	if (!empty($query['type'])) 
+	{
 		$segments[] = $query['type'];
 		unset($query['type']);
 	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
- * Short description for 'ResourcesParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function ResourcesParseRoute($segments)
 {
 	$vars = array();
 
 	if (empty($segments[0]))
+	{
 		return $vars;
+	}
 
-	if (is_numeric($segments[0])) {
+	if (is_numeric($segments[0])) 
+	{
 		$vars['id'] = $segments[0];
-	} elseif ($segments[0] == 'browse') {
+	} 
+	elseif ($segments[0] == 'browse') 
+	{
 		$vars['task'] = $segments[0];
-	} else {
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
+	} 
+	else 
+	{
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 		$database =& JFactory::getDBO();
 
-		$t = new ResourcesType( $database );
+		$t = new ResourcesType($database);
 		$types = $t->getMajorTypes();
 
 		// Normalize the title
@@ -103,25 +112,31 @@ function ResourcesParseRoute($segments)
 		// For example, /resources/learningmodules => Learning Modules
 		for ($i = 0; $i < count($types); $i++)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $types[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $types[$i]->type);
 			$normalized = strtolower($normalized);
 
-			if (trim($segments[0]) == $normalized) {
+			if (trim($segments[0]) == $normalized) 
+			{
 				$vars['type'] = $segments[0];
 				$vars['task'] = 'browsetags';
 			}
 		}
 
-		if ($segments[0] == 'license') {
+		if ($segments[0] == 'license') 
+		{
 			$vars['task'] = $segments[0];
-		} else {
-			if (!isset($vars['type'])) {
+		} 
+		else 
+		{
+			if (!isset($vars['type'])) 
+			{
 				$vars['alias'] = $segments[0];
 			}
 		}
 	}
 
-	if (!empty($segments[1])) {
+	if (!empty($segments[1])) 
+	{
 		switch ($segments[1])
 		{
 			case 'download': $vars['task'] = 'download'; break;
@@ -140,4 +155,3 @@ function ResourcesParseRoute($segments)
 	return $vars;
 }
 
-?>

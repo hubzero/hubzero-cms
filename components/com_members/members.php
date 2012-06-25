@@ -29,30 +29,32 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
 }
 
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+}
+
 jimport('joomla.application.component.helper');
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'profile.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
-include_once( JPATH_COMPONENT.DS.'helpers'.DS.'imghandler.php' ); 
-include_once( JPATH_COMPONENT.DS.'helpers'.DS.'tags.php' );
-include_once( JPATH_COMPONENT.DS.'helpers'.DS.'html.php' );
-include_once( JPATH_COMPONENT.DS.'controller.php' );
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'profile.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'association.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php'); 
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+include_once(JPATH_COMPONENT . DS . 'controller.php');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
 
 // Instantiate controller
 $controller = new MembersController();

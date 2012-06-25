@@ -29,25 +29,25 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'xpollBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function xpollBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) {
-        $segments[] = $query['task'];
-        unset($query['task']);
-    }
-	if (!empty($query['id'])) {
+	if (!empty($query['task'])) 
+	{
+		$segments[] = $query['task'];
+		unset($query['task']);
+	}
+	if (!empty($query['id'])) 
+	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
@@ -56,24 +56,22 @@ function xpollBuildRoute(&$query)
 }
 
 /**
- * Short description for 'xpollParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function xpollParseRoute($segments)
 {
 	$vars = array();
 
 	if (empty($segments))
+	{
 		return $vars;
+	}
 
 	$vars['task'] = $segments[0];
 	$vars['id']   = $segments[1];
 
 	return $vars;
 }
-
-?>

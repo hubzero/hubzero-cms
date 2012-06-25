@@ -35,10 +35,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2><?php echo JText::_('XImport: ' . $this->script); ?></h2>
 </div><!-- / #content-header -->
 <div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">&larr; All scripts</a></p>
+	<p><a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">All scripts</a></p>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
 	<h3>Script output:</h3>
-	<?php echo $this->content; ?>
+	<?php echo $this->escape($this->content); ?>
 </div><!-- / .main section -->

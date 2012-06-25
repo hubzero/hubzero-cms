@@ -29,213 +29,216 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesAssoc'
- * 
- * Long description (if any) ...
+ * Table class for linking resources to each other
  */
 class ResourcesAssoc extends JTable
 {
-
 	/**
-	 * Description for 'parent_id'
+	 * int(11)
 	 * 
-	 * @var string
+	 * @var integer
 	 */
-	var $parent_id = NULL;  // @var int(11)
+	var $parent_id = NULL;
 
 	/**
-	 * Description for 'child_id'
+	 * int(11)
 	 * 
-	 * @var string
+	 * @var integer
 	 */
-	var $child_id  = NULL;  // @var int(11)
+	var $child_id  = NULL;
 
 	/**
-	 * Description for 'ordering'
+	 * int(11)
 	 * 
-	 * @var string
+	 * @var integer
 	 */
-	var $ordering  = NULL;  // @var int(11)
+	var $ordering  = NULL;
 
 	/**
-	 * Description for 'grouping'
+	 * int(11)
 	 * 
-	 * @var string
+	 * @var integer
 	 */
-	var $grouping  = NULL;  // @var int(11)
-
-	//-----------
+	var $grouping  = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_assoc', 'parent_id', $db );
+		parent::__construct('#__resource_assoc', 'parent_id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->child_id ) == '') {
-			$this->setError( JText::_('Your resource association must have a child.') );
+		if (trim($this->child_id) == '') 
+		{
+			$this->setError(JText::_('Your resource association must have a child.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadAssoc'
+	 * Load a record by parent/child association and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $pid Parameter description (if any) ...
-	 * @param      string $cid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $pid Parent ID
+	 * @param      integer $cid Child ID
+	 * @return     boolean True on success
 	 */
-	public function loadAssoc( $pid, $cid )
+	public function loadAssoc($pid, $cid)
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE parent_id=".$pid." AND child_id=".$cid );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent_id=" . $pid . " AND child_id=" . $cid);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get the record directly before or after this record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $move Direction to look
+	 * @return     boolean True on success
 	 */
-	public function getNeighbor( $move )
+	public function getNeighbor($move)
 	{
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=".$this->parent_id." AND ordering < ".$this->ordering." ORDER BY ordering DESC LIMIT 1";
-				break;
+				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->parent_id . " AND ordering < " . $this->ordering . " ORDER BY ordering DESC LIMIT 1";
+			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=".$this->parent_id." AND ordering > ".$this->ordering." ORDER BY ordering LIMIT 1";
-				break;
+				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->parent_id . " AND ordering > " . $this->ordering . " ORDER BY ordering LIMIT 1";
+			break;
 		}
-		$this->_db->setQuery( $sql );
-		//return $this->_db->loadObject( $this );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getLastOrder'
+	 * Get the last number in an ordering
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $pid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $pid Parent ID
+	 * @return     integer
 	 */
-	public function getLastOrder( $pid=NULL )
+	public function getLastOrder($pid=NULL)
 	{
-		if (!$pid) {
+		if (!$pid) 
+		{
 			$pid = $this->parent_id;
 		}
-		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl WHERE parent_id=".$pid." ORDER BY ordering DESC LIMIT 1" );
+		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE parent_id=" . $pid . " ORDER BY ordering DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'delete'
+	 * Delete a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $pid Parameter description (if any) ...
-	 * @param      string $cid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $pid Parent ID
+	 * @param      integer $cid Child ID
+	 * @return     boolean True on success
 	 */
-	public function delete( $pid=NULL, $cid=NULL )
+	public function delete($pid=NULL, $cid=NULL)
 	{
-		if (!$pid) {
+		if (!$pid) 
+		{
 			$pid = $this->parent_id;
 		}
-		if (!$cid) {
+		if (!$cid) 
+		{
 			$cid = $this->child_id;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE parent_id=".$pid." AND child_id=".$cid );
-		if ($this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent_id=" . $pid . " AND child_id=" . $cid);
+		if ($this->_db->query()) 
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			$this->_error = $this->_db->getErrorMsg();
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'store'
+	 * Store a record
+	 * Defaults to update unless forcing an insert
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $new Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      boolean $new Create new?
+	 * @return     boolean True on success
 	 */
-	public function store( $new=false )
+	public function store($new=false)
 	{
-		if (!$new) {
-			$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=".$this->ordering.", grouping=".$this->grouping." WHERE child_id=".$this->child_id." AND parent_id=".$this->parent_id);
-			if ($this->_db->query()) {
+		if (!$new) 
+		{
+			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->ordering . ", grouping=" . $this->grouping . " WHERE child_id=" . $this->child_id . " AND parent_id=" . $this->parent_id);
+			if ($this->_db->query()) 
+			{
 				$ret = true;
-			} else {
+			} 
+			else 
+			{
 				$ret = false;
 			}
-		} else {
-			$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+		} 
+		else 
+		{
+			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
-		if (!$ret) {
-			$this->setError( strtolower(get_class( $this )).'::store failed <br />' . $this->_db->getErrorMsg() );
+		if (!$ret) 
+		{
+			$this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
-		} else {
+		} 
+		else 
+		{
 			return true;
 		}
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count for a parent
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $pid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $pid Parent ID
+	 * @return     itneger
 	 */
-	public function getCount( $pid=NULL )
+	public function getCount($pid=NULL)
 	{
-		if (!$pid) {
+		if (!$pid) 
+		{
 			$pid = $this->parent_id;
 		}
-		if (!$pid) {
+		if (!$pid) 
+		{
 			return null;
 		}
-		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE parent_id=".$pid );
+		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE parent_id=" . $pid);
 		return $this->_db->loadResult();
 	}
 }

@@ -29,12 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'CitationsBuildRoute'
- * 
- * Long description (if any) ...
+ * Turn querystring parameters into an SEF route
  * 
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
@@ -43,48 +41,52 @@ function CitationsBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['id'])) {
+	if (!empty($query['id'])) 
+	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-	if (!empty($query['format'])) {
+	if (!empty($query['format'])) 
+	{
 		$segments[] = $query['format'];
 		unset($query['format']);
 	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
- * Short description for 'CitationsParseRoute'
- * 
- * Long description (if any) ...
+ * Parse a SEF route
  * 
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
 function CitationsParseRoute($segments)
 {
-    $vars = array();
+	$vars = array();
 
-    if (empty($segments))
-    	return $vars;
+	if (empty($segments))
+	{
+		return $vars;
+	}
 
-    if (isset($segments[0])) {
+	if (isset($segments[0])) 
+	{
 		$vars['task'] = $segments[0];
 	}
-	if (isset($segments[1])) {
+	if (isset($segments[1])) 
+	{
 		$vars['id'] = $segments[1];
 	}
-	if (isset($segments[2])) {
+	if (isset($segments[2])) 
+	{
 		$vars['format'] = $segments[2];
 	}
 
-    return $vars;
+	return $vars;
 }
-
-?>

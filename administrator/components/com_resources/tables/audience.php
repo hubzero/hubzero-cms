@@ -28,163 +28,157 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourceAudience'
- * 
- * Long description (if any) ...
+ * Table class for resource audience
  */
 class ResourceAudience extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       	= NULL;  // @var int(11) Primary key
+	var $id       	= NULL;
 
 	/**
-	 * Description for 'rid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $rid 		= NULL;  // @var int(11)
+	var $rid 		= NULL;
 
 	/**
-	 * Description for 'versionid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $versionid 	= NULL;  // @var int(11)
+	var $versionid 	= NULL;
 
 	/**
-	 * Description for 'level0'
+	 * tinyint
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $level0 	= NULL;  // @var tinyint
+	var $level0 	= NULL;
 
 	/**
-	 * Description for 'level1'
+	 * tinyint
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $level1 	= NULL;  // @var tinyint
+	var $level1 	= NULL;
 
 	/**
-	 * Description for 'level2'
+	 * tinyint
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $level2 	= NULL;  // @var tinyint
+	var $level2 	= NULL;
 
 	/**
-	 * Description for 'level3'
+	 * tinyint
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $level3 	= NULL;  // @var tinyint
+	var $level3 	= NULL;
 
 	/**
-	 * Description for 'level4'
+	 * tinyint
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $level4 	= NULL;  // @var tinyint	
+	var $level4 	= NULL;
 
 	/**
-	 * Description for 'level5'
+	 * tinyint
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $level5 	= NULL;  // @var tinyint
+	var $level5 	= NULL;
 
 	/**
-	 * Description for 'comments'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $comments 	= NULL;  // @var varchar(255)
+	var $comments 	= NULL;
 
 	/**
-	 * Description for 'addedBy'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $addedBy	= NULL;  // @var int(11)
+	var $addedBy	= NULL;
 
 	/**
-	 * Description for 'added'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $added		= NULL;  // @var datetime
-
-	//-----------
+	var $added		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_taxonomy_audience', 'id', $db );
+		parent::__construct('#__resource_taxonomy_audience', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->rid ) == '') {
-			$this->setError( JText::_('Missing resource ID') );
+		if (trim($this->rid) == '') 
+		{
+			$this->setError(JText::_('Missing resource ID'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getAudience'
+	 * Get the audience for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $rid Parameter description (if any) ...
-	 * @param      mixed $versionid Parameter description (if any) ...
-	 * @param      integer $getlabels Parameter description (if any) ...
-	 * @param      mixed $numlevels Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Resource version ID
+	 * @param      integer $getlabels Get labels or not (1 = yes, 0 = no)
+	 * @param      integer $numlevels Number of levels to return
+	 * @return     mixed False if error, Object on success
 	 */
 	public function getAudience($rid, $versionid = 0, $getlabels = 1, $numlevels = 5)
 	{
-		if ($rid === NULL) {
+		if ($rid === NULL) 
+		{
 			return false;
 		}
 
 		$sql = "SELECT a.* ";
-		if ($getlabels) {
+		if ($getlabels) 
+		{
 			$sql .="\n, L0.title as label0, L1.title as label1, L2.title as label2, L3.title as label3, L4.title as label4 ";
 			$sql .= $numlevels == 5 ? ", L5.title as label5  " : "";
 			$sql .= "\n, L0.description as desc0, L1.description as desc1, L2.description as desc2, L3.description as desc3, L4.description as desc4 ";
 			$sql .= $numlevels == 5 ? ", L5.description as desc5  " : "";
 		}
 		$sql .= " FROM $this->_tbl AS a ";
-		if ($getlabels) {
+		if ($getlabels) 
+		{
 			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L0 on L0.label='level0' ";
 			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L1 on L1.label='level1' ";
 			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L2 on L2.label='level2' ";
 			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L3 on L3.label='level3' ";
 			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L4 on L4.label='level4' ";
-			if ($numlevels == 5) {
+			if ($numlevels == 5) 
+			{
 				$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L5 on L5.label='level5' ";
 			}
 		}
@@ -192,7 +186,7 @@ class ResourceAudience extends JTable
 		$sql .= $versionid ? " AND  a.versionid=$versionid " : "";
 		$sql .= " LIMIT 1 ";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 }

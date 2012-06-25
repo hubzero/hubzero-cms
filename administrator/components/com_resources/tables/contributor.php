@@ -29,96 +29,89 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesContributor'
- * 
- * Long description (if any) ...
+ * Table class for resource contributor
  */
 class ResourcesContributor extends JTable
 {
-
 	/**
-	 * Description for 'subtable'
+	 * varchar(50) Primary Key
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $subtable = NULL;  // @var varchar(50) Primary Key
+	var $subtable = NULL;
 
 	/**
-	 * Description for 'subid'
+	 * int(11) Primary Key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $subid    = NULL;  // @var int(11) Primary Key
+	var $subid    = NULL;
 
 	/**
-	 * Description for 'authorid'
+	 * int(11) Primary Key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $authorid = NULL;  // @var int(11) Primary Key
+	var $authorid = NULL;
 
 	/**
-	 * Description for 'ordering'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $ordering = NULL;  // @var int(11)
+	var $ordering = NULL;
 
 	/**
-	 * Description for 'role'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $role     = NULL;  // @var varchar(50)
+	var $role     = NULL;
 
 	/**
-	 * Description for 'name'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $name     = NULL;  // @var varchar(255)
+	var $name     = NULL;
 
 	/**
-	 * Description for 'organization'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $organization = NULL;  // @var varchar(255)
-
-	//-----------
+	var $organization = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__author_assoc', 'authorid', $db );
+		parent::__construct('#__author_assoc', 'authorid', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (!$this->authorid) {
-			$this->setError( JText::_('Must have an author ID.') );
+		if (!$this->authorid) 
+		{
+			$this->setError(JText::_('Must have an author ID.'));
 			return false;
 		}
 
-		if (!$this->subid) {
-			$this->setError( JText::_('Must have an item ID.') );
+		if (!$this->subid) 
+		{
+			$this->setError(JText::_('Must have an item ID.'));
 			return false;
 		}
 
@@ -126,213 +119,222 @@ class ResourcesContributor extends JTable
 	}
 
 	/**
-	 * Short description for 'loadAssociation'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $authorid Parameter description (if any) ...
-	 * @param      string $subid Parameter description (if any) ...
-	 * @param      string $subtable Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $authorid Member ID
+	 * @param      integer $subid    Object ID
+	 * @param      string  $subtable Object type (resource)
+	 * @return     boolean True on success
 	 */
-	public function loadAssociation( $authorid=NULL, $subid=NULL, $subtable='' )
+	public function loadAssociation($authorid=NULL, $subid=NULL, $subtable='')
 	{
-		if (!$authorid) {
+		if (!$authorid) 
+		{
 			$authorid = $this->authorid;
 		}
-		if (!$authorid) {
+		if (!$authorid)
+		{
 			return false;
 		}
-		if (!$subid) {
+		if (!$subid) 
+		{
 			$subid = $this->subid;
 		}
-		if (!$subtable) {
+		if (!$subtable) 
+		{
 			$subtable = $this->subtable;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE subid=".$subid." AND subtable='$subtable' AND authorid=".$authorid );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $subid . " AND subtable='$subtable' AND authorid=" . $authorid);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'deleteAssociations'
+	 * Delete all associations for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id User ID
+	 * @return     boolean True on success
 	 */
-	public function deleteAssociations( $id=NULL )
+	public function deleteAssociations($id=NULL)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->authorid;
 		}
 
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE authorid=".$id );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $id);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'deleteAssociation'
+	 * Delete a record by user and resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $authorid Parameter description (if any) ...
-	 * @param      string $subid Parameter description (if any) ...
-	 * @param      string $subtable Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $authorid Member ID
+	 * @param      integer $subid    Object ID
+	 * @param      string  $subtable Object type (resource)
+	 * @return     boolean True on success
 	 */
-	public function deleteAssociation( $authorid=NULL, $subid=NULL, $subtable='' )
+	public function deleteAssociation($authorid=NULL, $subid=NULL, $subtable='')
 	{
-		if (!$authorid) {
+		if (!$authorid) 
+		{
 			$authorid = $this->authorid;
 		}
-		if (!$authorid) {
+		if (!$authorid) 
+		{
 			return false;
 		}
-		if (!$subid) {
+		if (!$subid) 
+		{
 			$subid = $this->subid;
 		}
-		if (!$subtable) {
+		if (!$subtable) 
+		{
 			$subtable = $this->subtable;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=".$subid." AND authorid=".$authorid;
+		$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=" . $subid . " AND authorid=" . $authorid;
 
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'createAssociation'
+	 * Create a new record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True on success
 	 */
 	public function createAssociation()
 	{
-		//$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering)";
 		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering, '$this->role', '$this->name', '$this->organization')";
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'updateAssociation'
+	 * Update a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True on success
 	 */
 	public function updateAssociation()
 	{
-		//$query = "UPDATE $this->_tbl SET ordering=$this->ordering WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
 		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, role='$this->role', name='$this->name', organization='$this->organization' WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $subid Parameter description (if any) ...
-	 * @param      unknown $subtable Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $subid    Object ID
+	 * @param      string  $subtable Object type ('resource')
+	 * @return     integer
 	 */
-	public function getCount( $subid=NULL, $subtable=null )
+	public function getCount($subid=NULL, $subtable=null)
 	{
-		if (!$subid) {
+		if (!$subid) 
+		{
 			$subid = $this->subid;
 		}
-		if (!$subid) {
+		if (!$subid) 
+		{
 			return null;
 		}
-		if (!$subtable) {
+		if (!$subtable) 
+		{
 			$subtable = $this->subtable;
 		}
-		if (!$subtable) {
+		if (!$subtable) 
+		{
 			return null;
 		}
-		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable'" );
+		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable'");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getLastOrder'
+	 * Get the last number in an ordering
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $subid Parameter description (if any) ...
-	 * @param      unknown $subtable Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $subid    Object ID
+	 * @param      string  $subtable Object type ('resource')
+	 * @return     integer
 	 */
-	public function getLastOrder( $subid=NULL, $subtable=null )
+	public function getLastOrder($subid=NULL, $subtable=null)
 	{
-		if (!$subid) {
+		if (!$subid) 
+		{
 			$subid = $this->subid;
 		}
-		if (!$subid) {
+		if (!$subid) 
+		{
 			return null;
 		}
-		if (!$subtable) {
+		if (!$subtable) 
+		{
 			$subtable = $this->subtable;
 		}
-		if (!$subtable) {
+		if (!$subtable) 
+		{
 			return null;
 		}
-		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable' ORDER BY ordering DESC LIMIT 1" );
+		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable' ORDER BY ordering DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get the record directly before or after this record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $move Direction to look
+	 * @return     boolean True on success
 	 */
-	public function getNeighbor( $move )
+	public function getNeighbor($move)
 	{
 		switch ($move)
 		{
 			case 'orderup':
 				$sql = "SELECT * FROM $this->_tbl WHERE subid=$this->subid AND subtable='$this->subtable' AND ordering < $this->ordering ORDER BY ordering DESC LIMIT 1";
-				break;
+			break;
 
 			case 'orderdown':
 				$sql = "SELECT * FROM $this->_tbl WHERE subid=$this->subid AND subtable='$this->subtable' AND ordering > $this->ordering ORDER BY ordering LIMIT 1";
-				break;
+			break;
 		}
-		$this->_db->setQuery( $sql );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
