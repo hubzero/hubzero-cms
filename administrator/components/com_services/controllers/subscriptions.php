@@ -100,7 +100,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			foreach ($this->getErrors())
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -165,7 +165,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			foreach ($this->getErrors())
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
