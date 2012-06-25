@@ -33,11 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Auth_Domain');
 ximport('Hubzero_Auth_Link');
+jimport('joomla.plugin.plugin');
 
 /**
  * Authentication Plugin class for PUCAS
  */
-class plgAuthenticationPUCAS
+class plgAuthenticationPUCAS extends JPlugin
 {
 	/**
 	 * Constructor
@@ -46,7 +47,7 @@ class plgAuthenticationPUCAS
 	 * @param      array  $config   Optional config values
 	 * @return     void
 	 */
-	public function __construct(&$subject, $config)
+	public function plgAuthenticationPucas(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 	}
