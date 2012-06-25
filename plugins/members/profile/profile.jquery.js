@@ -37,6 +37,9 @@ HUB.Members.Profile = {
 		//profile picture editor
 		HUB.Members.Profile.editProfilePicture();
 		
+		//terms of use
+		HUB.Members.Profile.editTermsOfUse();
+		
 		//profile completeness meter
 		HUB.Members.Profile.editCompletenessMeter();
 		
@@ -51,7 +54,7 @@ HUB.Members.Profile = {
 		var $ = this.jQuery;
 		
 		//hide edit and password links for when jquery is not enabled
-		$("#page_options .edit, #page_options .password").hide();
+		$("#page_options .edit, #page_options .password").parent("li").hide();
 		
 		//do we have the ability to edit
 		if( $('.section-edit-container').length )
@@ -78,6 +81,36 @@ HUB.Members.Profile = {
 					event.preventDefault();
 				})
 				.on("click", ".section-edit-submit", function(event) {
+					HUB.Members.Profile.editSubmitForm( $(this) );
+					event.preventDefault();
+				});
+				
+			$("body")
+				.on("click", ".fancybox-wrap .section-edit-submit", function(event) {
+					HUB.Members.Profile.editSubmitForm( $(this) );
+					event.preventDefault();
+				})
+				.on("click", ".fancybox-wrap .usage-agreement-do-not-agree", function(event) {
+					$("#usage-agreement-box").css("background", "#ffefef");
+					$("#usage-agreement").hide();
+					$("#usage-agreement-last-chance").show();
+					$("#usage-agreement-buttons").hide();
+					$("#usage-agreement-last-chance-buttons").show();
+					$("#usage-agreement-popup input[name=declinetou]").attr("value", 1);
+					$("#usage-agreement-popup input[name=usageAgreement]").attr("value", 0);
+					event.preventDefault();
+				})
+				.on("click", ".fancybox-wrap .usage-agreement-back-to-agree", function(event) {
+					$("#usage-agreement-box").css("background", "#FFF");
+					$("#usage-agreement").show();
+					$("#usage-agreement-last-chance").hide();
+					$("#usage-agreement-buttons").show();
+					$("#usage-agreement-last-chance-buttons").hide();
+					$("#usage-agreement-popup input[name=declinetou]").attr("value", 0);
+					$("#usage-agreement-popup input[name=usageAgreement]").attr("value", 1);
+					event.preventDefault();
+				})
+				.on("click", ".fancybox-wrap .usage-agreement-dont-accept", function(event) {
 					HUB.Members.Profile.editSubmitForm( $(this) );
 					event.preventDefault();
 				});
@@ -121,7 +154,7 @@ HUB.Members.Profile = {
 		var $ = this.jQuery;
 		
 		//get the needed vars
-		var form = submit_button.parent("form"),
+		var form = submit_button.parents("form"),
 			registration_field = form.attr("data-section-registation"),
 			profile_field = form.attr("data-section-profile");
 
@@ -148,14 +181,16 @@ HUB.Members.Profile = {
 
 				//if we successfully saved
 				if(returned.success)
-				{   
-					HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
-
+				{
 					switch( profile_field )
 					{
 						case 'email': 	HUB.Members.Profile.editRedirect(window.location.href);		break;
 						default: 		HUB.Members.Profile.editReloadSections();
 					}
+				}
+				else if(returned.loggedout)
+				{
+				    HUB.Members.Profile.editRedirect("/");
 				}
 				else
 				{
@@ -271,23 +306,36 @@ HUB.Members.Profile = {
 	{
 		var $ = this.jQuery;
 		
-		$(".member_profile").load(window.location.href + " #profile-page-content", function() {
-			//reload page header in case we edited name
-			$("#page_header").load(window.location.href +  " #page_header > *");
+		//close any open lightboxes
+		$.fancybox.close();
+		
+		//check to see if we are edit our profile or we were forced to fill in fields due to registration update
+		if(window.location.pathname.match(/\/members\/\d+\/profile/g))
+		{
+			//show updating overlay
+			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
 			
-			//show edit links
-			$(".section-edit a").show();
+			$(".member_profile").load(window.location.href + " #profile-page-content", function() {
+				//reload page header in case we edited name
+				$("#page_header").load(window.location.href +  " #page_header > *");
 			
-			//re-initalize autocompler for tags and wiki editor for bio
-			HUB.Members.Profile.editInterestsAutocompleterReinstantiate();
-			HUB.Members.Profile.editBiographyEditorReinstantiate();
+				//show edit links
+				$(".section-edit a").show();
 			
-			//update the complete ness meter
-			var new_completeness = $("#profile-page-content #member-profile-completeness #meter-percent").attr("data-percent");
-			$("#page_options #meter-percent").width( new_completeness + "%" );
-			$("#page_options #meter-percent").attr("data-percent", new_completeness);
-		});
-
+				//re-initalize autocompler for tags and wiki editor for bio
+				HUB.Members.Profile.editInterestsAutocompleterReinstantiate();
+				HUB.Members.Profile.editBiographyEditorReinstantiate();
+			
+				//update the complete ness meter
+				var new_completeness = $("#profile-page-content #member-profile-completeness #meter-percent").attr("data-percent");
+				$("#page_options #meter-percent").width( new_completeness + "%" );
+				$("#page_options #meter-percent").attr("data-percent", new_completeness);
+			});
+		}
+		else
+		{
+			HUB.Members.Profile.editRedirect(window.location.href);
+		}
 	},
 
 	//-------------------------------------------------------------
@@ -504,6 +552,33 @@ HUB.Members.Profile = {
 				})
 			}
 		});
+	},
+	
+	//-------------------------------------------------------------
+	
+	editTermsOfUse: function()
+	{
+		var $ = this.jQuery;
+		
+		if( $("#usage-agreement-popup").length )
+		{
+			$("#usage-agreement-popup").hide();
+			$("#usage-agreement").load("/legal/terms?tmpl=component", function() {
+				$.fancybox({
+					type:'inline',
+					autoSize:false, 
+					modal: true,
+					width: 600,
+					content:$("#usage-agreement-popup"),
+					beforeLoad: function() 
+					{
+						href = $("#usage-agreement-popup form").attr('action').replace("#", "");
+						href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+						$("#usage-agreement-popup form").attr('action', href);	
+					},
+				});
+			});
+		}
 	},
 	
 	//-------------------------------------------------------------

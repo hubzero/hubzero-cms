@@ -1246,7 +1246,7 @@ class MembersController extends Hubzero_Controller
 	 * @return     boolean Return description (if any) ...
 	 */
 	protected function save()
-	{   
+	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
@@ -1274,7 +1274,7 @@ class MembersController extends Hubzero_Controller
 		$p = JRequest::getVar( 'profile', array(), 'post' );
 		$n = JRequest::getVar( 'name', array(), 'post' );
 		$a = JRequest::getVar( 'access', array(), 'post' );
-		
+
 		// Load the profile
 		$profile = Hubzero_User_Profile::getInstance($id);
 
@@ -1294,8 +1294,8 @@ class MembersController extends Hubzero_Controller
 		if(isset($p['bio']))
 		{
 			$profile->set('bio', trim($p['bio']));
-        } 
-        
+        }
+
 		if(is_array($a) && count($a) > 0)
 		{
 			foreach ($a as $k=>$v)
@@ -1308,17 +1308,12 @@ class MembersController extends Hubzero_Controller
 		{
 			$profile->set('public',$p['public']);
 		}
-        
-		// Set some post data for the xregistration class
-		if(JRequest::getVar('tags'))
-		{   
-			$tags = trim(JRequest::getVar('tags', ''));
-			JRequest::setVar('interests',$tags,'post');
-		}
 		
-		if(!JRequest::getVar("usageAgreement"))
+		// Set some post data for the xregistration class
+		$tags = trim(JRequest::getVar('tags',''));
+		if(isset($tags))
 		{
-			JRequest::setVar('usageAgreement', $profile->get("usageAgreement"),'post');
+			JRequest::setVar('interests',$tags,'post');
 		}
 		
 		// Instantiate a new Hubzero_Registration
@@ -1350,11 +1345,11 @@ class MembersController extends Hubzero_Controller
 		if (!is_null($xregistration->_registration['nativetribe']))
 			$profile->set('nativeTribe',$xregistration->_registration['nativetribe']);
 
-		if (!is_null($xregistration->_registration['org']) && trim($xregistration->_registration['org']) != '') 
+		if ($xregistration->_registration['org'] != '') 
 		{
 			$profile->set('organization', $xregistration->_registration['org']);
 		} 
-		elseif (!is_null($xregistration->_registration['orgtext']) && trim($xregistration->_registration['orgtext']) != '') 
+		elseif ($xregistration->_registration['orgtext'] != '')
 		{
 			$profile->set('organization', $xregistration->_registration['orgtext']);
 		}
@@ -1385,7 +1380,7 @@ class MembersController extends Hubzero_Controller
 		
 		if (!is_null($xregistration->_registration['usageAgreement']))
 			$profile->set('usageAgreement',$xregistration->_registration['usageAgreement']);
-        
+
 		$field_to_check = JRequest::getVar("field_to_check", array());
 		
 		// Check that required fields were filled in properly
@@ -1402,6 +1397,15 @@ class MembersController extends Hubzero_Controller
 				echo json_encode($xregistration);
 				exit();
 			}
+		}
+		
+		//are we declining the terms of use
+		//if yes we want to set the usage agreement to 0 and profile to private
+		$declineTOU = JRequest::getVar("declinetou", 0);
+		if($declineTOU)
+		{
+			$profile->set("public", 0);
+			$profile->set("usageAgreement", 0);
 		}
 		
 		// Set the last modified datetime
@@ -1452,6 +1456,15 @@ class MembersController extends Hubzero_Controller
 		if ($email != $oldemail) 
 		{
 			$this->_message = $this->send_confirmation_code($profile->get('username'), $email, $confirm);
+		}
+		
+		//if were declinging the terms we want to logout user and tell the javascript
+		if($declineTOU)
+		{
+			$application =& JFactory::getApplication();
+			$application->logout();
+			echo json_encode( array("loggedout" => true) );
+			return;
 		}
 
 		// Redirect

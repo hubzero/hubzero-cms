@@ -273,11 +273,11 @@
 	background-image: -o-linear-gradient(top, #439bf4, #2074cb);
 	background-image: -ms-linear-gradient(top, #439bf4, #2074cb);
 	background-image: linear-gradient(top, #439bf4, #2074cb);
-	-webkit-transition: all 1s linear;
-	-moz-transition: all 1s linear;
-	-o-transition: all 1s linear;
-	-ms-transition: all 1s linear;
-	transition: all 1s linear;
+	-webkit-transition: all 0.5s linear;
+	-moz-transition: all 0.5s linear;
+	-o-transition: all 0.5s linear;
+	-ms-transition: all 0.5s linear;
+	transition: all 0.5s linear;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 	filter: alpha(opacity=70);
 	opacity:0.7;
@@ -458,7 +458,58 @@
 	color:#ccc;
 	}
 
-
+/*----------------------------------------------------------
+	Member Picture Upload
+----------------------------------------------------------*/
+#usage-agreement-popup {
+	background:#FFF;
+	padding:20px;
+	}
+#usage-agreement-popup h2 {
+	margin:0 0 10px 0;
+	line-height:1em;
+	}
+#usage-agreement-box {
+	border:1px solid #ccc;
+	padding:20px;
+	}
+#usage-agreement {
+	width:100%;
+	height:300px;
+	overflow-y:scroll;
+	}	
+#usage-agreement-buttons {
+	text-align:center;
+	margin:10px 0 0 0;
+	overflow:hidden;
+	}
+#usage-agreement-last-chance {
+	display:none; 
+	background:#ffefef;
+	}
+#usage-agreement-last-chance h3 {
+	margin:0 0 10px 0;
+	}
+#usage-agreement-last-chance-buttons {
+	display:none;
+	margin:10px 0 0 0;
+	overflow:hidden;
+	}
+.usage-agreement-back-to-agree {
+	float:left;
+	font-size:13px;
+	background:#065EFF;
+	color:#FFF;
+	border:1px solid #0441B0;
+	}
+.usage-agreement-dont-accept {
+	background:#F00;
+	float:right;
+	color:#FFF;
+	font-size:13px;
+	border:1px solid #8b0101;
+	}
+	
 /*----------------------------------------------------------
 	Member Public Profile
 ----------------------------------------------------------*/

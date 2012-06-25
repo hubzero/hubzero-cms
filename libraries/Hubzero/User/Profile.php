@@ -1177,30 +1177,33 @@ class Hubzero_User_Profile extends JObject
 			$property = substr($property,6);
 			$first = true;
 			$query = "REPLACE INTO #__xprofiles_" . $property . " (uidNumber, " . $property . ") VALUES ";
+            $query_values = "";
 
 			$list = $this->get($property);
 
-			if (!empty($list))
+			if (!is_array($list))
 			{
-				if (!is_array($list))
-					$list = array($list);
+				$list = array($list);
+			}
 
-				foreach($list as $value)
+			foreach($list as $value)
+			{
+				if (!$first)
 				{
-					if (!$first)
-						$query .= ',';
-
-					$first = false;
-					$query .= '(' . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($value) . ')';
+					$query_values .= ',';
 				}
-
-				$db->setQuery( $query );
+				
+				$first = false;
+				$query_values .= '(' . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($value) . ')';
+			}
+               
+			if($query_values != '')
+			{
+				$db->setQuery( $query.$query_values );
 
 				if (!$db->query())
 				{
-					$this->setError("Error updating data in xprofiles $property table: "
-						. $db->getErrorMsg());
-
+					$this->setError("Error updating data in xprofiles $property table: " . $db->getErrorMsg());
 					return false;
 				}
 			}
@@ -1222,16 +1225,13 @@ class Hubzero_User_Profile extends JObject
 
 				if (!$db->query())
 				{
-					$this->setError("Error deleting data in xprofiles $property table: "
-						. $db->getErrorMsg());
-
+					$this->setError("Error deleting data in xprofiles $property table: " . $db->getErrorMsg());
 					return false;
 				}
 			}
 		}
 
 		return true;
-
 	}
 
 	/**

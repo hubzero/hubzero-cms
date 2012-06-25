@@ -68,14 +68,17 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	</h3>
 	 
 	<?php if(count($update_missing) > 0) : ?>
-		<div class="error">
-			<strong>You must update your profile before continuing:</strong>
-			<ul>
-				<?php foreach($update_missing as $um) : ?>
-					<li><?php echo $um; ?></li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
+		<?php if(count($update_missing) == 1 && in_array("usageAgreement",array_keys($update_missing))) : ?>
+		<?php else: ?>
+			<div class="error">
+				<strong>You must update your profile before continuing:</strong>
+				<ul>
+					<?php foreach($update_missing as $um) : ?>
+						<li><?php echo $um; ?></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 	
 	<?php if($isUser) : ?>
@@ -124,39 +127,36 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		}
 	?>
 	
-	<ul id="profile">
-		<?php if(isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
-			<li class="profile-usageAgreement section missing">
-				<div class="key"><?php echo JText::_('Usage Agreement'); ?></div>
-				<div class="details">
-					<?php
-						echo ($this->profile->get("usageAgreement")) ? "Agreed to terms." : "Have not yet agreed to terms."; 
-						ximport('Hubzero_Plugin_View');
-						$editview = new Hubzero_Plugin_View(
-							array(
-								'folder'  => 'members',
-								'element' => 'profile',
-								'name'    => 'edit'
-							)
-						);
-					
-						$ckd = ($this->profile->get("usageAgreement")) ? 'checked="checked"' : '';
-						$ua = '<label><input type="checkbox" name="usageAgreement" id="usageAgreement" value="1" '.$ckd.' />';
-						$ua .= JText::_('Yes, I have read and agree to the <a class="popup 700x500" href="/legal/terms">Terms of Use</a>.') . "</label>";
-
-						$editview->registration_field = "usageAgreement";
-						$editview->profile_field = "usageAgreement";
-						$editview->title =  JText::_('Usage Agreement');
-						$editview->profile = $this->profile;
-						$editview->isUser = $isUser;
-						$editview->inputs = $ua;
-						$editview->access = '';
-						$editview->display();
-					?>
+	<?php if(isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
+		<div id="usage-agreement-popup">
+			<form action="index.php" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
+				<h2>New Terms of Use</h2>
+				<div id="usage-agreement-box">
+					<iframe id="usage-agreement" src="/legal/terms?tmpl=component"></iframe>
+					<div id="usage-agreement-last-chance">
+						<h3>Are you Sure?</h3>
+						<p>By not agreeing to our terms your account will be marked private if not already and you will be logged out of your current session.</p>
+					</div>
 				</div>
-			</li>
-		<?php endif; ?>
-		
+				<div id="usage-agreement-buttons">
+					<button class="section-edit-cancel usage-agreement-do-not-agree">Do Not Agree</button>
+					<button class="section-edit-submit">Agree to Terms</button>
+				</div>
+				<div id="usage-agreement-last-chance-buttons">
+					<button class="section-edit-cancel usage-agreement-back-to-agree">Go back and accept terms</button>
+					<button class="section-edit-cancel usage-agreement-dont-accept">I Do Not Agree</button>
+				</div>
+				<input type="hidden" name="declinetou" value="0" />
+				<input type="hidden" name="usageAgreement" value="1" />
+				<input type="hidden" name="field_to_check[]" value="usageAgreement" />
+				<input type="hidden" name="option" value="com_members" />
+				<input type="hidden" name="id" value="<?php echo $juser->get("id"); ?>" />
+				<input type="hidden" name="task" value="save" />
+			</form>
+		</div>
+	<?php endif; ?>
+	
+	<ul id="profile">
 		<?php if($isUser) : ?> 
 			<li class="profile-name section hidden">
 				<div class="section-content">
