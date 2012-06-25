@@ -121,7 +121,10 @@ class YoutubeMacro extends WikiMacro
 
 		//append to the youtube url
 		$youtube_url .= $video_id;
-
+		
+		//add wmode to url so that lightboxes appear over embedded videos
+		$youtube_url .= "?wmode=transparent";
+		
 		//return the emdeded youtube video
 		return "<iframe src=\"{$youtube_url}\" width=\"{$width}\" height=\"{$height}\"></iframe>";
 	}
