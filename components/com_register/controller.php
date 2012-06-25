@@ -798,7 +798,7 @@ class RegisterController extends Hubzero_Controller
 						$result = $xprofile->update();
 					}
 
-					if (!$result) {
+					if ($result) {
 						$result = Hubzero_User_Password::changePassword($xprofile->get('uidNumber'), $xregistration->get('password'));
 					}			
 					
