@@ -61,6 +61,8 @@ else
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'imghandler.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'profile.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'association.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'password_rules.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'password_blacklist.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'members.php');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_User_Profile');
@@ -90,6 +92,16 @@ JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
 	'index.php?option=' . $option . '&controller=plugins', //'index.php?option=com_plugins&view=plugins&filter_folder=members&filter_type=members'
 	$controllerName == 'plugins'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Password Rules'),
+	'index.php?option=com_members&controller=passwordrules',
+	$controllerName == 'passwordrules'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Password Blacklist'),
+	'index.php?option=com_members&controller=passwordblacklist',
+	$controllerName == 'passwordblacklist'
 );
 
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
