@@ -172,7 +172,9 @@ class Wishlist extends JTable
 		}
 
 		$xhub =& Hubzero_Factory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
+
 		$juser =& JFactory::getUser();
 
 		$this->created     = date('Y-m-d H:i:s');
@@ -185,7 +187,7 @@ class Wishlist extends JTable
 		switch ($category)
 		{
 			case 'general':
-				$this->title = $title ? $title : $hubShortName;
+				$this->title = $title ? $title : $sitename;
 
 				if (!$this->store()) 
 				{

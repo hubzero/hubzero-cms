@@ -43,7 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } else { ?>
-			<p>A confirmation email has been sent to <?php echo $this->xprofile->get('email'); ?>. You must click the link in that email to activate your account and begin using <?php echo $this->hubShortName; ?>.</p>
+			<p>A confirmation email has been sent to <?php echo $this->xprofile->get('email'); ?>. You must click the link in that email to activate your account and begin using <?php echo $this->sitename; ?>.</p>
 		<?php } ?>
 	<?php } ?>
 <?php } else { ?>
@@ -53,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } else { ?>
-			<p>A confirmation email has been sent to <?php echo $this->xprofile->get('email'); ?>. They must click the link in that email to activate your account and begin using <?php echo $this->hubShortName; ?>.</p>
+			<p>A confirmation email has been sent to <?php echo $this->xprofile->get('email'); ?>. They must click the link in that email to activate your account and begin using <?php echo $this->sitename; ?>.</p>
 		<?php } ?>
 	<?php } ?>
 <?php } ?>

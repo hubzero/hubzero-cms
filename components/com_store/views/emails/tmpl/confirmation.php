@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$emailbody  = JText::_('COM_STORE_THANKYOU') . ' ' . JText::_('COM_STORE_IN_THE') . ' ' . $this->hubShortName . ' ' . JText::_(strtolower($this->option)) . '!' . "\n\n";
+$emailbody  = JText::_('COM_STORE_THANKYOU') . ' ' . JText::_('COM_STORE_IN_THE') . ' ' . $this->sitename . ' ' . JText::_(strtolower($this->option)) . '!' . "\n\n";
 $emailbody .= JText::_('COM_STORE_EMAIL_KEEP') . "\n";
 $emailbody .= '----------------------------------------------------------' . "\n";
 $emailbody .= ' ' . JText::_('COM_STORE_ORDER') . ' ' . JText::_('COM_STORE_NUM') . ': ' . $this->orderid . "\n";

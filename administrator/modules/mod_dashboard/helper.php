@@ -117,9 +117,10 @@ class modDashboard
 		$database =& JFactory::getDBO();
 
 		$xhub =& Hubzero_Factory::getHub();
+		$jconfig = JFactory::getConfig();
 		$upconfig =& JComponentHelper::getParams('com_members');
 		$banking =  $upconfig->get('bankAccounts');
-		$hubname = $xhub->getCfg('hubShortName');
+		$sitename = $jconfig->getValue('config.sitename');
 
 		$threemonths 	= date( 'Y-m-d H:i:s', time() - (92 * 24 * 60 * 60));
 		$onemonth 		= date( 'Y-m-d H:i:s', time() - (30 * 24 * 60 * 60) );

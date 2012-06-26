@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-Thank you for creating an account on <?php echo $this->hubShortName; ?>! Your username is: <?php echo $this->xregistration->get('login'); ?>
+Thank you for creating an account on <?php echo $this->sitename; ?>! Your username is: <?php echo $this->xregistration->get('login'); ?>
 
 You must click the following link to confirm your email address and activate your account:
 <?php echo $this->baseURL . JRoute::_('index.php?option='.$this->option.'&task=confirm&confirm='. -$this->xprofile->get('emailConfirmed')); ?>

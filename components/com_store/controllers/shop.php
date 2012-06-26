@@ -565,7 +565,7 @@ class StoreControllerShop extends Hubzero_Controller
 				'layout' => 'confirmation'
 			));
 			$eview->option = $this->_option;
-			$eview->hubShortName = $jconfig->getValue('config.sitename');
+			$eview->sitename = $jconfig->getValue('config.sitename');
 			$eview->orderid = $orderid;
 			$eview->cost = $cost;
 			$eview->now = $now;

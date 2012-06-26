@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-Thank you for updating your account on <?php echo $this->hubShortName; ?>!
+Thank you for updating your account on <?php echo $this->sitename; ?>!
 
 Since you have changed your e-mail address you must click the following link to confirm your new email address and reactivate your account:
 <?php echo $this->baseURL . JRoute::_('index.php?option='.$this->option.'&task=confirm&confirm='. -$this->xprofile->get('emailConfirmed')); ?>

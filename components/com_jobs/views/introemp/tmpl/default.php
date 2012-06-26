@@ -33,7 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Mini-login screen for employers */
 
 	$xhub =& Hubzero_Factory::getHub();
-	$hubShortName = $xhub->getCfg('hubShortName');
+	$jconfig = JFactory::getConfig();
+	$sitename = $jconfig->getValue('config.sitename');
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
 	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
@@ -48,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= '<div class="main section">'.n;
 	$html .= t.'<div class="process_steps threecol">'.n;
 	$html .= t.t.'<div class="current">'.n;
-	$html .= t.t.t.'<h3><span>1</span> '.JText::_('STEP_LOGIN').' '.JText::_('TO').' '.$hubShortName.'</h3>'.n;
+	$html .= t.t.t.'<h3><span>1</span> '.JText::_('STEP_LOGIN').' '.JText::_('TO').' '.$sitename.'</h3>'.n;
 	$html .= t.t.'</div>'.n;
 
 	$html .= t.t.'<div>'.n;

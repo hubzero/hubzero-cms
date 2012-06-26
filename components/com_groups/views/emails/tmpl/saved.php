@@ -42,10 +42,10 @@ $message = $this->juser->get('name');
 $message .= ','."\n";
 $message .= '"'.$this->juser->get('username') .'" ('. $this->juser->get('email') .')'."\n";
 if ($this->isNew) {
-	$message .= JText::sprintf('GROUPS_USER_HAS_REQUESTED_GROUP', $this->hubShortName) .':'."\n\n";
+	$message .= JText::sprintf('GROUPS_USER_HAS_REQUESTED_GROUP', $this->sitename) .':'."\n\n";
 	$message .= JText::_('GROUPS_ID').': '. $this->g_cn ."\n";
 } else {
-	$message .= JText::sprintf('GROUPS_USER_HAS_CHANGED_GROUP', $this->hubShortName) .':'."\n\n";
+	$message .= JText::sprintf('GROUPS_USER_HAS_CHANGED_GROUP', $this->sitename) .':'."\n\n";
 	$message .= JText::_('GROUPS_TITLE').': '. $this->group->get('description') ."\n";
 	switch ($this->group->get('join_policy'))
 	{

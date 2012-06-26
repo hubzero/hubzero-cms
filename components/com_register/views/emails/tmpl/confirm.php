@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-This email is to confirm the email address for the <?php echo $this->hubShortName; ?> account: <?php echo $this->login; ?>.
+This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
 
-Click the following link to confirm your email address and activate your <?php echo $this->hubShortName; ?> account.
+Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
 
 <?php echo $this->baseURL . JRoute::_('index.php?option='.$this->option.'&task=confirm&confirm='. -$this->confirm); ?>

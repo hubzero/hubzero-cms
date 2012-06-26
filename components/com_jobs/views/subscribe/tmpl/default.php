@@ -33,7 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Subscription screen */
 
 	$xhub =& Hubzero_Factory::getHub();
-	$hubShortName = $xhub->getCfg('hubShortName');
+	$jconfig = JFactory::getConfig();
+	$sitename = $jconfig->getValue('config.sitename');
 	$juser 	  =& JFactory::getUser();
 
 	// get some configs

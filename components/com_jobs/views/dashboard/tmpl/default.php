@@ -34,7 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	// load some classes
 	$xhub =& Hubzero_Factory::getHub();
-	$hubShortName = $xhub->getCfg('hubShortName');
+	$jconfig = JFactory::getConfig();
+	$sitename = $jconfig->getValue('config.sitename');
 
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';

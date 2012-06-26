@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php echo $this->xprofile->get('name');
 if ($this->xprofile->get('orginization')) {
 	echo ' / ' . $this->xprofile->get('orginization');
-} ?> (<?php echo $this->xprofile->get('email'); ?>) has requested the new account '<?php echo $this->xprofile->get('username'); ?>' on <?php echo $this->hubShortName; ?>.
+} ?> (<?php echo $this->xprofile->get('email'); ?>) has requested the new account '<?php echo $this->xprofile->get('username'); ?>' on <?php echo $this->sitename; ?>.
 
 Click the following link to review this user's account:
 <?php echo $this->baseURL . JRoute::_('index.php?option=com_members&task=whois&username=' . $this->xprofile->get('username')); ?>

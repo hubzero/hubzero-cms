@@ -908,7 +908,7 @@ class GroupsController extends Hubzero_Controller
 		// Build the e-mail message
 		$eview = new JView( array('name'=>'emails','layout'=>'cancelled') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$message = $eview->loadTemplate();
@@ -1055,7 +1055,7 @@ class GroupsController extends Hubzero_Controller
 		// Build the e-mail message
 		$eview = new JView( array('name'=>'emails','layout'=>'request') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$eview->row = $row;
@@ -1228,7 +1228,7 @@ class GroupsController extends Hubzero_Controller
 		// Build the e-mail message
 		$eview = new JView( array('name'=>'emails','layout'=>'accepted') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$message = $eview->loadTemplate();
@@ -1477,7 +1477,7 @@ class GroupsController extends Hubzero_Controller
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
 		$eview = new JView( array('name'=>'emails','layout'=>'saved') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$eview->isNew = $isNew;
@@ -1783,7 +1783,7 @@ class GroupsController extends Hubzero_Controller
 		// Build the e-mail message
 		$eview = new JView( array('name'=>'emails','layout'=>'deleted') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
@@ -1884,7 +1884,7 @@ class GroupsController extends Hubzero_Controller
 		// Build the e-mail message	
 		$eview = new JView( array('name'=>'emails','layout'=>'approved') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$message = $eview->loadTemplate();
@@ -2141,7 +2141,7 @@ class GroupsController extends Hubzero_Controller
 		// Message body for HUB user
 		$eview = new JView( array('name'=>'emails','layout'=>'invite') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$eview->msg = $msg;
@@ -2155,7 +2155,7 @@ class GroupsController extends Hubzero_Controller
 			// Message body for HUB user
 			$eview2 = new JView( array('name'=>'emails','layout'=>'inviteemail') );
 			$eview2->option = $this->_option;
-			$eview2->hubShortName = $jconfig->getValue('config.sitename');
+			$eview2->sitename = $jconfig->getValue('config.sitename');
 			$eview2->juser = $this->juser;
 			$eview2->group = $group;
 			$eview2->msg = $msg;

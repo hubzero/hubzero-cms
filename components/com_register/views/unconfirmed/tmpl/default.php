@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .aside -->
 	<div class="subject">
 		<p class="error">
-			Your email address "<?php echo htmlentities($this->email,ENT_COMPAT,'UTF-8'); ?>" has not been confirmed. Please check your email for a confirmation notice. You must click the link in that email to activate your account and resume using <?php echo $this->hubShortName; ?>.
+			Your email address "<?php echo htmlentities($this->email,ENT_COMPAT,'UTF-8'); ?>" has not been confirmed. Please check your email for a confirmation notice. You must click the link in that email to activate your account and resume using <?php echo $this->sitename; ?>.
 		</p>
 	</div><!-- / .subject -->
 </div><!-- / .section -->

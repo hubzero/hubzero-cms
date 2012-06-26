@@ -36,8 +36,8 @@ if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 ?>
-This email is to confirm the email address for the <?php echo $this->hubShortName; ?> account: <?php echo $this->login; ?>.
+This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
 
-Click the following link to confirm your email address and activate your <?php echo $this->hubShortName; ?> account.
+Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
 
 <?php echo $this->baseURL . $sef; ?>

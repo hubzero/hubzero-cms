@@ -605,7 +605,10 @@ class Hubzero_Registration
 		ximport('Hubzero_User_Helper');
 		ximport('Hubzero_Registration_Helper');
 		ximport('Hubzero_Validate');
-
+		
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
+		
 		$juser =& JFactory::getUser();
 
 		if ($id == 0) {
@@ -824,7 +827,7 @@ class Hubzero_Registration
 			{
 				$eid = $this->getEmailId($email);
 
-				if ($xhub->getCfg('hubShortName') == 'nanoHUB.org')
+				if ($sitename == 'nanoHUB.org')
 					$allow_duplicate_email = true;
 				else
 					$allow_duplicate_email = false;

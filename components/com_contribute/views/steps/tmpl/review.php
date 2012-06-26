@@ -61,7 +61,7 @@ if ($this->progress['submitted'] == 1) {
 			}
 		}
 		if ($txt) { ?>
-		<p>This resource is licensed under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $hubShortName; ?>. 
+		<p>This resource is licensed under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $sitename; ?>. 
 		The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a> support 
 		non-commercial use, require attribution, and require sharing derivative works under the same license.</p>
 		<?php

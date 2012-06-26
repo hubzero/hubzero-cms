@@ -50,6 +50,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div>
 	</div><!-- / .subject -->
 <?php } else { ?>
-	<p class="passed">Your email address "<?php echo htmlentities($this->email,ENT_COMPAT,'UTF-8'); ?>" has already been confirmed. You should be able to use <?php echo $this->hubShortName; ?> now. Thank you.</p>
+	<p class="passed">Your email address "<?php echo htmlentities($this->email,ENT_COMPAT,'UTF-8'); ?>" has already been confirmed. You should be able to use <?php echo $this->sitename; ?> now. Thank you.</p>
 <?php } ?>
 </div><!-- / .section -->

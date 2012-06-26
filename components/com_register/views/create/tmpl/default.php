@@ -40,6 +40,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } else if ($this->xprofile->get('emailConfirmed') < 0){ ?>
-	<p>A confirmation email has been sent to '<?php echo $this->xprofile->get('email'); ?>'. You must click the link in that email to activate your account and resume using <?php echo $this->hubShortName; ?>.</p>
+	<p>A confirmation email has been sent to '<?php echo $this->xprofile->get('email'); ?>'. You must click the link in that email to activate your account and resume using <?php echo $this->sitename; ?>.</p>
 <?php } ?>
 </div><!-- / .main section -->

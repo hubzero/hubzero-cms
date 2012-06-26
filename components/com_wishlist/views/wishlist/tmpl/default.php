@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+$jconfig = JFactory::getConfig();
+$sitename = $jconfig->getValue('config.sitename');
 
 /* Wish List */
 if ($this->wishlist) {	
@@ -126,7 +128,7 @@ if ($this->admin && !$this->getError()) {
 		$html  = '<p>'.$this->wishlist->description.'<p>';
 	} else {
 		$xhub =& Hubzero_Factory::getHub();	
-		$html  = '<p>'.JText::_('HELP_US_IMPROVE').' '.$xhub->getCfg('hubShortName').' '.JText::_('HELP_IMPROVE_BY_IDEAS').'</p>';
+		$html  = '<p>'.JText::_('HELP_US_IMPROVE').' '.$sitename.' '.JText::_('HELP_IMPROVE_BY_IDEAS').'</p>';
 	}				
 			
 	switch ($this->admin) 

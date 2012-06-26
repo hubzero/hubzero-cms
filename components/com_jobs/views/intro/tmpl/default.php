@@ -32,8 +32,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Intro */
 	$xhub =& Hubzero_Factory::getHub();
-	$hubShortName = $xhub->getCfg('hubShortName');
-
+	$jconfig = JFactory::getConfig();
+	$sitename = $jconfig->getValue('config.sitename');
+	
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
 	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
 ?>
@@ -68,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="three columns first">
-			<p class="intronote"><?php echo JText::_('TIP_ENJOY_COMMUNITY_EXPOSURE').' '.$hubShortName.'. '.JText::_('TIP_SERVICES_FREE'); echo ' '.JText::_('TIP_EMPLOYERS_SUBSCRIPTION_REQUIRED'); ?></p>
+			<p class="intronote"><?php echo JText::_('TIP_ENJOY_COMMUNITY_EXPOSURE').' '.$sitename.'. '.JText::_('TIP_SERVICES_FREE'); echo ' '.JText::_('TIP_EMPLOYERS_SUBSCRIPTION_REQUIRED'); ?></p>
 		</div>
 		<div class="three columns second">
 			<h3><?php echo JText::_('EMPLOYERS'); ?></h3>           

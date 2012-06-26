@@ -34,7 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	// load some classes
 	$xhub =& Hubzero_Factory::getHub();
-	$hubShortName = $xhub->getCfg('hubShortName');
+	$jconfig = JFactory::getConfig();
+	$sitename = $jconfig->getValue('config.sitename');
 	$juser =& JFactory::getUser();
 
 	$job = $this->job;
@@ -152,7 +153,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= $job->applyInternal ? '<span class="or">'.strtolower(JText::_('OR')).'</span>'.n : ''.n;
 			}
 			if($job->applyInternal) {
-				$html .= t.t.'<span class="applybtn"><a href="'.JRoute::_('index.php?option='.$option.a.'task=apply'.a.'code='.$job->code).'">'.JText::_('ACTION_APPLY_THROUGH_HUB').' '.$hubShortName.'</a></span>'.n;
+				$html .= t.t.'<span class="applybtn"><a href="'.JRoute::_('index.php?option='.$option.a.'task=apply'.a.'code='.$job->code).'">'.JText::_('ACTION_APPLY_THROUGH_HUB').' '.$sitename.'</a></span>'.n;
 			}
 		}
 		$html .= t.t.'</p>';

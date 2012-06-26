@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-An administrative process has updated your account on <?php echo $this->hubShortName; ?>!
+An administrative process has updated your account on <?php echo $this->sitename; ?>!
 
 This process has changed your registered e-mail address. You must click the following link to confirm that you received this e-mail at the new address and reactivate your account:
 <?php echo $this->baseURL . JRoute::_('index.php?option='.$this->option.'&task=confirm&confirm='. -$this->xprofile->get('emailConfirmed')); ?>

@@ -1315,7 +1315,7 @@ class AnswersController extends Hubzero_Controller
 			// Build the message	
 			$eview = new JView(array('name'=>'emails','layout'=>'question'));
 			$eview->option = $this->_option;
-			$eview->hubShortName = $jconfig->getValue('config.sitename');
+			$eview->sitename = $jconfig->getValue('config.sitename');
 			$eview->juser = $this->juser;
 			$eview->row = $row;
 			$eview->id = $row->id ? $row->id : 0;
@@ -1419,7 +1419,7 @@ class AnswersController extends Hubzero_Controller
 		// Build the message	
 		$eview = new JView(array('name'=>'emails','layout'=>'response'));
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->question = $question;
 		$eview->row = $row;
@@ -1545,7 +1545,7 @@ class AnswersController extends Hubzero_Controller
 				// Build the message	
 				$eview = new JView(array('name'=>'emails','layout'=>'removed'));
 				$eview->option = $this->_option;
-				$eview->hubShortName = $jconfig->getValue('config.sitename');
+				$eview->sitename = $jconfig->getValue('config.sitename');
 				$eview->juser = $this->juser;
 				$eview->question = $question;
 				$eview->id = $id;

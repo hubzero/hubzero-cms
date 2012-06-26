@@ -38,7 +38,7 @@ if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-$message  = JText::sprintf('GROUPS_USER_HAS_INVITED', $this->juser->get('name'), $this->hubShortName)."\n\n";
+$message  = JText::sprintf('GROUPS_USER_HAS_INVITED', $this->juser->get('name'), $this->sitename)."\n\n";
 $message .= JText::_('GROUPS_GROUP').': '.$this->group->get('description')."\n";
 $message .= $juri->base().$sef."\n\n";
 if ($this->msg) {

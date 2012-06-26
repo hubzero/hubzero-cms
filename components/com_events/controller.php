@@ -1039,7 +1039,7 @@ class EventsController extends Hubzero_Controller
 
 			$eview = new JView( array('name'=>'register','layout'=>'email') );
 			$eview->option = $this->_option;
-			$eview->hubShortName = $jconfig->getValue('config.sitename');
+			$eview->sitename= $jconfig->getValue('config.sitename');
 			$eview->register = $register;
 			$eview->race = $race;
 			$eview->dietary = $dietary;
@@ -1510,7 +1510,7 @@ class EventsController extends Hubzero_Controller
 		// Build the message to be e-mailed
 		$eview = new JView( array('name'=>'emails','layout'=>'deleted') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->event = $event;
 		$message = $eview->loadTemplate();
@@ -1766,7 +1766,7 @@ class EventsController extends Hubzero_Controller
 			$eview = new JView( array('name'=>'emails','layout'=>'edited') );
 		}
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->row = $row;
 		$message = $eview->loadTemplate();

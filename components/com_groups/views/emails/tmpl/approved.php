@@ -38,7 +38,7 @@ if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-$message  = JText::sprintf('GROUPS_EMAIL_MSG_APPROVED', $this->hubShortName)."\n\n";
+$message  = JText::sprintf('GROUPS_EMAIL_MSG_APPROVED', $this->sitename)."\n\n";
 $message .= JText::_('GROUPS_ID').': '. $this->group->get('cn') ."\n";
 $message .= JText::_('GROUPS_TITLE').': '. $this->group->get('description') ."\n";
 switch ($this->group->get('access'))

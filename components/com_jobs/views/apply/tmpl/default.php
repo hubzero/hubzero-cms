@@ -34,7 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	// load some classes
 	$xhub =& Hubzero_Factory::getHub();
-	$hubShortName = $xhub->getCfg('hubShortName');
+	$jconfig = JFactory::getConfig();
+	$sitename = $jconfig->getValue('config.sitename');
 	$juser 	  =& JFactory::getUser();
 
 	$job = $this->job;
@@ -64,7 +65,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 <?php
 	if (!$seeker) { ?>
-		<p class="warning"><?php echo JText::_('APPLY_TO_APPLY').' '.$hubShortName.' '.JText::_('APPLY_NEED_RESUME') ?></p>
+		<p class="warning"><?php echo JText::_('APPLY_TO_APPLY').' '.$sitename.' '.JText::_('APPLY_NEED_RESUME') ?></p>
         <p>
 			<?php echo '<a href="'. JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=resume').'" class="add">'.JText::_('ACTION_CREATE_PROFILE').'</a>'; ?>
         </p>

@@ -100,9 +100,9 @@ if (count($tf) > 0) {
 			<input type="submit" value="<?php echo JText::_('COM_ANSWERS_GO'); ?>" />
 		</fieldset>
 		
-		<p><?php echo JText::_('COM_ANSWERS_CANT_FIND_ANSWER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('COM_ANSWERS_KNOWLEDGE_BASE'); ?></a> <?php echo JText::_('COM_ANSWERS_OR_BY').' '.JText::_('COM_ANSWERS_SEARCH').'? '.JText::_('COM_ANSWERS_ASK_YOUR_FELLOW').' '.$hubShortName.' '.JText::_('COM_ANSWERS_MEMBERS'); ?>!</p>
+		<p><?php echo JText::_('COM_ANSWERS_CANT_FIND_ANSWER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('COM_ANSWERS_KNOWLEDGE_BASE'); ?></a> <?php echo JText::_('COM_ANSWERS_OR_BY').' '.JText::_('COM_ANSWERS_SEARCH').'? '.JText::_('COM_ANSWERS_ASK_YOUR_FELLOW').' '.$sitename.' '.JText::_('COM_ANSWERS_MEMBERS'); ?>!</p>
 <?php if ($this->banking) { ?>
-		<p><?php echo JText::_('COM_ANSWERS_START_EARNING').' '.$hubShortName.' '.JText::_('COM_ANSWERS_COMMUNITY'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_EARN_MORE'); ?></a>.</p>
+		<p><?php echo JText::_('COM_ANSWERS_START_EARNING').' '.$sitename.' '.JText::_('COM_ANSWERS_COMMUNITY'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_EARN_MORE'); ?></a>.</p>
 <?php } ?>		
 	</div><!-- / .aside -->
 	<div class="subject">
