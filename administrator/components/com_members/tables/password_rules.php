@@ -256,17 +256,8 @@ class MembersPasswordRules extends JTable
 							'failuremsg'  => 'Passwords must be changed at least every 120 days',
 							'group'       => 'hub',
 							'ordering'    => '10',
-							'rule'        => 'frequency',
+							'rule'        => 'notStale',
 							'value'       => '120');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'You cannot repeat your current password',
-							'enabled'     => '0',
-							'failuremsg'  => 'You cannot repeat your current password',
-							'group'       => 'hub',
-							'ordering'    => '11',
-							'rule'        => 'notRepeat',
-							'value'       => '');
 
 		// Get a few config values from joomla
 		$app    =& JFactory::getApplication();

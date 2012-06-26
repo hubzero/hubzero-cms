@@ -420,8 +420,7 @@ class MembersControllerPasswordRules extends Hubzero_Controller
 		$rules[] = JHTML::_('select.option', 'notNameBased',        JText::_('notNameBased'),        'value', 'text');
 		$rules[] = JHTML::_('select.option', 'notUsernameBased',    JText::_('notUsernameBased'),    'value', 'text');
 		$rules[] = JHTML::_('select.option', 'notReused',           JText::_('notReused'),           'value', 'text');
-		$rules[] = JHTML::_('select.option', 'frequency',           JText::_('frequency'),           'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notRepeat',           JText::_('notRepeat'),           'value', 'text');
+		$rules[] = JHTML::_('select.option', 'notStale',            JText::_('notStale'),            'value', 'text');
 
 		$rselected = $current_rule;
 
