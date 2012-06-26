@@ -128,6 +128,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">Disallow</option>
 			<option value="1">Allow</option>
 		</param>
+		<param name="shadowMax" type="hidden" default="120" />
+		<param name="shadowMin" type="hidden" default="0" />
+		<param name="shadowWarning" type="hidden" default="7" />
 	</params>
 </config>
-
