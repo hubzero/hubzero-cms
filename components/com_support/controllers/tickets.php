@@ -2221,10 +2221,10 @@ class SupportControllerTickets extends Hubzero_Controller
 	public function uploadTask($listdir)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		/*if ($this->juser->get('guest')) 
 		{
 			return '';
-		}
+		}*/
 
 		if (!$listdir) 
 		{
