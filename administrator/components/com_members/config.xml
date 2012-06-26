@@ -40,6 +40,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="defaultpic" type="text" menu="hide" default="/components/com_members/images/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="webpath" type="text" menu="hide" default="/site/members" label="Upload path" description="File path for pictures" />
+		<param name="homedir" type="text" menu="hide" default="/home" label="Home directory path" description="Hub users' home directory path (typically '/home/{hubname}')" />
 		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
 		<param name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
@@ -128,8 +129,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">Disallow</option>
 			<option value="1">Allow</option>
 		</param>
-		<param name="shadowMax" type="hidden" default="120" />
-		<param name="shadowMin" type="hidden" default="0" />
-		<param name="shadowWarning" type="hidden" default="7" />
+		<param name="shadowMax" type="text" default="120" label="Shadow Maximum" />
+		<param name="shadowMin" type="text" default="0" label="Shadow Minimum" />
+		<param name="shadowWarning" type="text" default="7" label="Shadow Warning" />
 	</params>
 </config>
