@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_answers/views/create/tmpl/default.xml
+@file           components/com_answers/views/question/tmpl/addcomment.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard New Question Layout">
+	<layout title="Add Question Comment">
 		<message>
-			<![CDATA[STANDARD NEW QUESTION LAYOUT DESC]]>
+			<![CDATA[Add Question Comment]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard New Question Layout</name>
-		<description>STANDARD NEW QUESTION LAYOUT DESC</description>
+		<name>Add Question Comment</name>
+		<description>Add Question Comment</description>
 		<params>
 		</params>
 	</state>

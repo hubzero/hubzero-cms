@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_answers/views/search/tmpl/default.xml
+@file           components/com_answers/views/rateitem/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Search Questions Layout">
+	<layout title="Vote">
 		<message>
-			<![CDATA[STANDARD SEARCH QUESTIONS LAYOUT DESC]]>
+			<![CDATA[Vote]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Search Questions Layout</name>
-		<description>STANDARD SEARCH QUESTIONS LAYOUT DESC</description>
+		<name>Vote</name>
+		<description>Vote</description>
 		<params>
 		</params>
 	</state>

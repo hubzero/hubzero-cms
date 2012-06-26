@@ -23,125 +23,120 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author	Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'AnswersBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function AnswersBuildRoute(&$query)
 {
-    $segments = array();
+	$segments = array();
 
-    if (!empty($query['task'])) {
-		if ($query['task'] == 'new') {
+	if (!empty($query['task'])) 
+	{
+		if ($query['task'] == 'new') 
+		{
 			$segments[] = 'question';
 			$segments[] = 'new';
-		} else {
-        	$segments[] = $query['task'];
-        }
+		} 
+		else 
+		{
+			$segments[] = $query['task'];
+		}
 		unset($query['task']);
-    }
-    if (!empty($query['tag'])) {
-        $segments[] = $query['tag'];
-        unset($query['tag']);
-    }
-    if (!empty($query['id'])) {
-        $segments[] = $query['id'];
-        unset($query['id']);
-    }
-    return $segments;
+	}
+	if (!empty($query['tag'])) 
+	{
+		$segments[] = $query['tag'];
+		unset($query['tag']);
+	}
+	if (!empty($query['id'])) 
+	{
+		$segments[] = $query['id'];
+		unset($query['id']);
+	}
+	if (!empty($query['controller'])) 
+	{
+		unset($query['controller']);
+	}
+	return $segments;
 }
 
 /**
- * Short description for 'AnswersParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function AnswersParseRoute($segments)
 {
-    $vars = array();
+	$vars = array();
 
-    // Count route segments
-    $count = count($segments);
+	// Count route segments
+	$count = count($segments);
 
-	if (empty($segments[0])) {
+	if (empty($segments[0])) 
+	{
 		return $vars;
 	}
 
-    switch ($segments[0])
+	switch ($segments[0])
 	{
+		case 'latest':
 		case 'latest.rss':
 			$vars['task'] = $segments[0];
 			break;
 		case 'question':
-			if (empty($segments[1])) {
+			if (empty($segments[1])) 
+			{
 				return $vars;
 			}
 
 			$vars['task'] = 'question';
 
-			if ($segments[1] == 'new') {
+			if ($segments[1] == 'new') 
+			{
 				$vars['task'] = 'new';
 				return $vars;
 			}
 
-	        $vars['id'] = $segments[1];
+			$vars['id'] = $segments[1];
 		break;
 
-		case 'tags':
+		/*case 'tags':
 			$vars['task'] = 'tags';
-        	$vars['tag'] = $segments[1];
+			$vars['tag'] = $segments[1];
 		break;
 
 		case 'myquestions':
 			$vars['task'] = 'myquestions';
-		break;
+		break;*/
 
 		case 'search':
 			$vars['task'] = 'search';
 		break;
 
 		case 'answer':
-			$vars['task'] = 'answer';
-			$vars['id'] = $segments[1];
-		break;
-
 		case 'delete':
-			$vars['task'] = 'delete';
-			$vars['id'] = $segments[1];
-		break;
-
-		case 'delete_q':
-			$vars['task'] = 'delete_q';
-			$vars['id'] = $segments[1];
+		case 'deleteq':
+		case 'vote':
+		case 'reply':
+		case 'math':
+			$vars['task'] = $segments[0];
+			$vars['id']   = $segments[1];
 		break;
 
 		case 'rateitem':
 			$vars['task'] = 'rateitem';
-		break;
-
-		case 'reply':
-			$vars['task'] = 'reply';
-			$vars['id'] = $segments[1];
-		break;
-
-		case 'math':
-			$vars['task'] = 'math';
-			$vars['id'] = $segments[1];
 		break;
 
 		case 'savereply':
@@ -150,11 +145,10 @@ function AnswersParseRoute($segments)
 
 		case 'accept':
 			$vars['task'] = 'accept';
-			$vars['id'] = $segments[1];
-			$vars['rid'] = $segments[2];
+			$vars['id']   = $segments[1];
+			$vars['rid']  = $segments[2];
 		break;
 	}
 
-    return $vars;
+	return $vars;
 }
-?>

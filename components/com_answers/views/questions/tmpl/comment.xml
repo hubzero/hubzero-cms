@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_answers/views/rateitem/tmpl/default.xml
+@file           components/com_answers/views/question/tmpl/comment.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Rate Item Layout">
+	<layout title="Question Comment">
 		<message>
-			<![CDATA[STANDARD RATE ITEM LAYOUT DESC]]>
+			<![CDATA[Question Comment]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Rate Item Layout</name>
-		<description>STANDARD RATE ITEM LAYOUT DESC</description>
+		<name>Question Comment</name>
+		<description>Question Comment</description>
 		<params>
 		</params>
 	</state>

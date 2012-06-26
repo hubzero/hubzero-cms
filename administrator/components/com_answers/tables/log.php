@@ -29,119 +29,142 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'AnswersLog'
- * 
- * Long description (if any) ...
+ * Table class for answer votes
  */
 class AnswersLog extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id      = NULL;  // @var int(11) Primary key
+	var $id      = NULL;
 
 	/**
-	 * Description for 'rid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $rid     = NULL;  // @var int(11)
+	var $rid     = NULL;
 
 	/**
-	 * Description for 'ip'
+	 * varchar(15)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $ip      = NULL;  // @var varchar(15)
+	var $ip      = NULL;
 
 	/**
-	 * Description for 'helpful'
+	 * varchar(10)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $helpful = NULL;  // @var varchar(10)
-
-	//-----------
+	var $helpful = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__answers_log', 'id', $db );
+		parent::__construct('#__answers_log', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
+	 * @param      integer $rid Answer ID
+	 * @param      string  $ip  IP address
+	 * @return     boolean True upon success, False if errors
+	 */
+	public function loadByIp($rid=null, $ip=null)
+	{
+		if ($rid == null) 
+		{
+			$rid = $this->rid;
+		}
+		if ($rid == null) 
+		{
+			return false;
+		}
+		$sql  = "SELECT * FROM $this->_tbl WHERE rid='" . $rid . "' AND ip='" . $ip . "' LIMIT 1";
+		$this->_db->setQuery($sql);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
+	 * Validate data
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->rid ) == '') {
-			$this->setError( JText::_('Missing response ID') );
+		if (trim($this->rid) == '') 
+		{
+			$this->setError(JText::_('Missing response ID'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'checkVote'
+	 * Check if a vote has been registered for an answer/IP
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $ip Parameter description (if any) ...
+	 * @param      integer $rid Answer ID
+	 * @param      string  $ip  IP address
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function checkVote($rid=null, $ip=null)
 	{
-		if ($rid == null) {
+		if ($rid == null) 
+		{
 			$rid = $this->rid;
 		}
-		if ($rid == null) {
+		if ($rid == null) 
+		{
 			return false;
 		}
 
-		$query = "SELECT helpful FROM $this->_tbl WHERE rid='".$rid."' AND ip='".$ip."'";
+		$query = "SELECT helpful FROM $this->_tbl WHERE rid='" . $rid . "' AND ip='" . $ip . "'";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'deleteLog'
+	 * Delete a record by answer/IP
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $rid Answer ID
+	 * @return     boolean True on success, false if error
 	 */
 	public function deleteLog($rid=null)
 	{
-		if ($rid == null) {
+		if ($rid == null) 
+		{
 			$rid = $this->rid;
 		}
-		if ($rid == null) {
+		if ($rid == null) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE rid=".$rid );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE rid=" . $rid);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 

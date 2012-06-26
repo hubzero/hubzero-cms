@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_answers/views/question/tmpl/comment.xml
+@file           components/com_answers/views/question/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Question Comment Layout">
+	<layout title="View question">
 		<message>
-			<![CDATA[STANDARD QUESTION COMMENT LAYOUT DESC]]>
+			<![CDATA[View question]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Question Comment Layout</name>
-		<description>STANDARD QUESTION COMMENT LAYOUT DESC</description>
+		<name>View question</name>
+		<description>View question</description>
 		<params>
 		</params>
 	</state>

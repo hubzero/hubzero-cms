@@ -29,115 +29,107 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'AnswersQuestionsLog'
- * 
- * Long description (if any) ...
+ * Table class for question votes
  */
 class AnswersQuestionsLog extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id      = NULL;
 
 	/**
-	 * Description for 'id'
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $qid     = NULL;
+
+	/**
+	 * datetime (0000-00-00 00:00:00)
 	 * 
 	 * @var unknown
 	 */
-	var $id      = NULL;  // @var int(11) Primary key
+	var $expires = NULL;
 
 	/**
-	 * Description for 'qid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $qid     = NULL;  // @var int(11)
+	var $voter   = NULL;
 
 	/**
-	 * Description for 'expires'
+	 * varchar(15)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $expires = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $ip      = NULL;
 
 	/**
-	 * Description for 'voter'
+	 * Constructor
 	 * 
-	 * @var unknown
-	 */
-	var $voter   = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'ip'
-	 * 
-	 * @var unknown
-	 */
-	var $ip      = NULL;  // @var varchar(15)
-
-	//-----------
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__answers_questions_log', 'id', $db );
+		parent::__construct('#__answers_questions_log', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->qid ) == '') {
-			$this->setError( JText::_('Missing question ID') );
+		if (trim($this->qid) == '') 
+		{
+			$this->setError(JText::_('Missing question ID'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'checkVote'
+	 * Check if a user has voted
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $qid Parameter description (if any) ...
-	 * @param      string $ip Parameter description (if any) ...
-	 * @param      string $voter Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $qid   Question ID
+	 * @param      string  $ip    IP address
+	 * @param      integer $voter Voter user ID
+	 * @return     mixed False if error, integer on success
 	 */
 	public function checkVote($qid=null, $ip=null, $voter=null)
 	{
-		if ($qid == null) {
+		if ($qid == null) 
+		{
 			$qid = $this->qid;
 		}
-		if ($qid == null) {
+		if ($qid == null) 
+		{
 			return false;
 		}
 
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = date('Y-m-d H:i:s', time());
 
-		if($voter !== null)
+		if ($voter !== null)
 		{
-			$and = " AND voter='".$voter."'";
+			$and = " AND voter='" . $voter . "'";
 		}
 		else
 		{
-			$and = " AND ip='".$ip."'";
+			$and = " AND ip='" . $ip . "'";
 		}
 
-		$query = "SELECT count(*) FROM $this->_tbl WHERE qid='".$qid."'".$and;
+		$query = "SELECT count(*) FROM $this->_tbl WHERE qid='" . $qid . "'" . $and;
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }

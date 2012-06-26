@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_answers/views/question/tmpl/default.xml
+@file           components/com_answers/views/start/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Question Layout">
+	<layout title="Questions Main Page">
 		<message>
-			<![CDATA[STANDARD QUESTION LAYOUT DESC]]>
+			<![CDATA[Questions Main Page]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Question Layout</name>
-		<description>STANDARD QUESTION LAYOUT DESC</description>
+		<name>Questions Main Page</name>
+		<description>Questions Main Page</description>
 		<params>
 		</params>
 	</state>

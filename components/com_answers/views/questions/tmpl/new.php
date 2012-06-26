@@ -37,16 +37,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search'); ?>"><span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span></a></li>
+		<li class="last">
+			<a class="search" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
+				<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
+			</a>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<?php
-		foreach($this->notifications as $notification) {
-			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-		}
-	?>
+	<?php foreach ($this->notifications as $notification) { ?>
+	<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
+	<?php } ?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_ANSWERS_BE_POLITE'); ?></p>
@@ -59,14 +61,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		</div><!-- / .explaination -->
 		<fieldset>
-			<h3><?php echo JText::_('COM_ANSWERS_YOUR_QUESTION'); ?></h3>
+			<legend><?php echo JText::_('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
 			
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="saveq" />
 			<input type="hidden" name="funds" value="<?php echo $this->funds; ?>" />
 			
-			<label>
-				<input class="option" type="checkbox" name="anonymous" value="1" /> 
+			<label for="field-anonymous">
+				<input class="option" type="checkbox" name="anonymous" id="field-anonymous" value="1" /> 
 				<?php echo JText::_('COM_ANSWERS_POST_QUESTION_ANON'); ?>
 			</label>
 			<label>
@@ -82,18 +85,18 @@ if (count($tf) > 0) {
 				<textarea name="tags" id="tags-men" rows="6" cols="35"><?php echo $this->tag; ?></textarea>
 <?php } ?>
 			</label>
-			<label>
+			<label for="field-subject">
 				<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
-				<input type="text" name="subject" value="<?php echo @$this->subject; ?>" />
+				<input type="text" name="subject" id="field-subject" value="<?php echo @$this->subject; ?>" />
 			</label>
-			<label>
+			<label for="field-question">
 				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
-				<textarea name="question" rows="10" cols="50"><?php echo @$this->question; ?></textarea>
+				<textarea name="question" id="field-question" rows="10" cols="50"><?php echo @$this->question; ?></textarea>
 			</label>
 <?php if ($this->banking) { ?>
-			<label>
+			<label for="field-reward">
 				<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-				<input type="text" name="reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/> 
+				<input type="text" name="reward" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/> 
 				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->funds; ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
 			</label>
 <?php } else { ?>

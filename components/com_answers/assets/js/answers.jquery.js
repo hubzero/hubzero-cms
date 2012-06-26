@@ -23,19 +23,24 @@ HUB.Answers = {
 	jQuery: jq,
 	
 	initialize: function() {
-		var com = this,
-			$ = this.jQuery,
-			settings = this.settings;
+		var $ = this.jQuery;
 			
-		$('.showreplyform').each(function(i, item) {
-			$(item).click(function () {
-				$(this).closest('.addcomment').show();
+		$('.reply').each(function(i, item) {
+			$(item).click(function (e) {
+				e.preventDefault();
+				var cfrm = $('#' + $(this).attr('rel'));
+				if (cfrm.hasClass('hide')) {
+					cfrm.removeClass('hide');
+				} else {
+					cfrm.addClass('hide');
+				}
 			});
 		});
 		
-		$('.closeform').each(function(i, item) {
-			$(item).click(function () {
-				$(this).closest('.addcomment').hide();
+		$('.cancelreply').each(function(i, item) {
+			$(item).click(function (e) {
+				e.preventDefault();
+				$(this).closest('.addcomment').addClass('hide');
 			});
 		});
 	}

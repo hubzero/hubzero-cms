@@ -104,7 +104,7 @@ function checkState(checkboxname)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-50 fltlft">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('FEEDBACK_DETAILS'); ?></span></legend>
 
@@ -183,7 +183,7 @@ function checkState(checkboxname)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-50 fltrt">
+	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('FEEDBACK_PICTURE'); ?></span></legend>
 <?php

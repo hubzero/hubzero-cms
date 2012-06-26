@@ -53,13 +53,21 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'economy.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'member.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controller.php');
+
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Filter');
 ximport('Hubzero_Comment');
 
+$controllerName = JRequest::getCmd('controller', 'questions');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'questions';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'AnswersController' . ucfirst(strtolower($controllerName));
+
 // Instantiate controller
-$controller = new AnswersController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

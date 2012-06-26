@@ -29,150 +29,142 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Vote'
- * 
- * Long description (if any) ...
+ * Table class for votes
  */
 class Vote extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id      		= NULL;  // @var int(11) Primary key
+	var $id      		= NULL;
 
 	/**
-	 * Description for 'referenceid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $referenceid    = NULL;  // @var int(11)
+	var $referenceid    = NULL;
 
 	/**
-	 * Description for 'voted'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $voted 			= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $voted 			= NULL;
 
 	/**
-	 * Description for 'voter'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $voter   		= NULL;  // @var int(11)
+	var $voter   		= NULL;
 
 	/**
-	 * Description for 'helpful'
+	 * varchar(11)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $helpful     	= NULL;  // @var varchar(11)
+	var $helpful     	= NULL;
 
 	/**
-	 * Description for 'ip'
+	 * varchar(15)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $ip      		= NULL;  // @var varchar(15)
+	var $ip      		= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category     	= NULL;  // @var varchar(50)
-
-	//-----------
+	var $category     	= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__vote_log', 'id', $db );
+		parent::__construct('#__vote_log', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->referenceid ) == '') {
-			$this->setError( JText::_('Missing reference ID') );
+		if (trim($this->referenceid) == '') 
+		{
+			$this->setError(JText::_('Missing reference ID'));
 			return false;
 		}
-		return true;
 
-		if (trim( $this->category ) == '') {
-			$this->setError( JText::_('Missing category') );
+		if (trim($this->category) == '') 
+		{
+			$this->setError(JText::_('Missing category'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'checkVote'
+	 * Check if a user has voted on an item
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $refid Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $voter Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $refid    Reference ID
+	 * @param      string  $category Reference type
+	 * @param      integer $voter    User ID
+	 * @return     mixed False on error, integer on success
 	 */
 	public function checkVote($refid=null, $category=null, $voter=null)
 	{
-		if ($refid == null) {
+		if ($refid == null) 
+		{
 			$refid = $this->referenceid;
 		}
-		if ($refid == null) {
+		if ($refid == null) 
+		{
 			return false;
 		}
-		if ($category == null) {
+		if ($category == null) 
+		{
 			$category = $this->category;
 		}
-		if ($category == null) {
+		if ($category == null) 
+		{
 			return false;
 		}
 
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = date('Y-m-d H:i:s', time());
 
-		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid='".$refid."' AND category = '".$category."' AND voter='".$voter."'";
+		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid='" . $refid . "' AND category = '" . $category . "' AND voter='" . $voter . "'";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getResults'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getResults( $filters=array() )
+	public function getResults($filters=array())
 	{
 		$query = "SELECT c.* 
 				FROM $this->_tbl AS c 
-				WHERE c.referenceid=".$filters['id']." AND category='".$filters['category']."' ORDER BY c.voted DESC";
+				WHERE c.referenceid=" . $filters['id'] . " AND category='" . $filters['category'] . "' ORDER BY c.voted DESC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

@@ -29,7 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
 
 $wikiconfig = array(
 	'option'   => $this->option,
@@ -39,7 +49,8 @@ $wikiconfig = array(
 	'filepath' => '',
 	'domain'   => ''
 );
-if (!$this->parser) {
+if (!$this->parser) 
+{
 	ximport('Hubzero_Wiki_Parser');
 	$parser =& Hubzero_Wiki_Parser::getInstance();
 	$this->parser = $parser;
@@ -48,12 +59,14 @@ if (!$this->parser) {
 // Set the name of the reviewer
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
 $ruser = new Hubzero_User_Profile();
-$ruser->load( $this->reply->added_by );
-if ($this->reply->anonymous != 1) {
+$ruser->load($this->reply->added_by);
+if ($this->reply->anonymous != 1) 
+{
 	$name = JText::_('COM_ANSWERS_UNKNOWN');
 	//$ruser =& JUser::getInstance($this->reply->added_by);
-	if (is_object($ruser)) {
-		$name = $ruser->get('name');
+	if (is_object($ruser)) 
+	{
+		$name = $this->escape(stripslashes($ruser->get('name')));
 	}
 }
 ?>
@@ -64,7 +77,10 @@ if ($this->reply->anonymous != 1) {
 <div class="comment-content">
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
-		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$this->reply->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->reply->added, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->reply->added, '%d %b, %Y', 0); ?></span></a>
+		<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->id . '#c' . $this->reply->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
+			@ <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $timeFormat, $tz); ?></time></span> 
+			on <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $dateFormat, $tz); ?></time></span>
+		</a>
 	</p>
 <?php if ($this->abuse && $this->reply->reports > 0) { ?>
 	<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
@@ -77,24 +93,29 @@ if ($this->reply->anonymous != 1) {
 
 	<p class="comment-options">
 <?php if ($this->abuse) { ?>
-		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
+		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->reply->id . '&parent=' . $this->id); ?>">
+			<?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?>
+		</a>
 <?php } ?>
-<?php 
-	// Cannot reply at third level
-	if ($this->level < 3) {
-		echo '<a class="showreplyform" href="'.JRoute::_('index.php?option='.$this->option.'&task=reply&category=answercomment&id='.$this->id.'&refid='.$this->reply->id.'#c'.$this->reply->id).'" id="rep_'.$this->reply->id.'">'.JText::_('COM_ANSWERS_REPLY').'</a>';
-	}
-?>
+<?php if ($this->level < 3) { ?>
+		<a class="reply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=reply&category=answercomment&id=' . $this->id . '&refid=' . $this->reply->id . '#c' . $this->reply->id); ?>" rel="commentform_<?php echo $this->reply->id; ?>">
+			<?php echo JText::_('COM_ANSWERS_REPLY'); ?>
+		</a>
+<?php } ?>
 	</p>
 <?php 
 	// Add the reply form if needed
-	if ($this->level < 3 && !$this->juser->get('guest')) {
-		$view = new JView( array('name'=>'question', 'layout'=>'addcomment') );
-		$view->option = $this->option;
-		$view->row = $this->reply;
-		$view->juser = $this->juser;
-		$view->level = $this->level;
-		$view->question = $this->question;
+	if ($this->level < 3 && !$this->juser->get('guest')) 
+	{
+		$view = new JView(array(
+			'name'   => 'questions', 
+			'layout' => 'addcomment'
+		));
+		$view->option     = $this->option;
+		$view->row        = $this->reply;
+		$view->juser      = $this->juser;
+		$view->level      = $this->level;
+		$view->question   = $this->question;
 		$view->addcomment = $this->addcomment;
 		$view->display();
 	}

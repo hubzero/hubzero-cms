@@ -29,289 +29,282 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'AnswersResponse'
- * 
- * Long description (if any) ...
+ * Table class for answers response
  */
 class AnswersResponse extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'qid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $qid        = NULL;  // @var int(11)
+	var $qid        = NULL;
 
 	/**
-	 * Description for 'answer'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $answer     = NULL;  // @var text
+	var $answer     = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * varchar(200)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created_by = NULL;  // @var varchar(200)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'helpful'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $helpful    = NULL;  // @var int(11)
+	var $helpful    = NULL;
 
 	/**
-	 * Description for 'nothelpful'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $nothelpful = NULL;  // @var int(11)
+	var $nothelpful = NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state      = NULL;  // @var int(3)
+	var $state      = NULL;
 
 	/**
-	 * Description for 'anonymous'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $anonymous  = NULL;  // @var int(2)
-
-	//-----------
+	var $anonymous  = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__answers_responses', 'id', $db );
+		parent::__construct('#__answers_responses', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->answer ) == '') {
-			$this->setError( JText::_('Your response must contain text.') );
+		if (trim($this->answer) == '') 
+		{
+			$this->setError(JText::_('Your response must contain text.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records based on filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
 		$juser =& JFactory::getUser();
 
-		$ab = new ReportAbuse( $this->_db );
+		$ab = new ReportAbuse($this->_db);
 
-		if (isset($filters['qid'])) {
+		if (isset($filters['qid'])) 
+		{
 			$qid = $filters['qid'];
-		} else {
+		} 
+		else 
+		{
 			$qid = $this->qid;
 		}
-		if ($qid == null) {
+		if ($qid == null) 
+		{
 			return false;
 		}
 
-		if (!$juser->get('guest')) {
+		if (!$juser->get('guest')) 
+		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip='".$filters['ip']."' WHERE r.state!=2 AND r.qid=".$qid;
-		} else {
+			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip='" . $filters['ip'] . "' WHERE r.state!=2 AND r.qid=" . $qid;
+		} 
+		else 
+		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.qid=".$qid;
+			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.qid=" . $qid;
 		}
 		$query .= " ORDER BY r.state DESC, r.created DESC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getActions'
+	 * Get all users and their votes for responses on a question
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $qid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $qid Question ID
+	 * @return     mixed False on error, array on success
 	 */
-	public function getActions( $qid=null )
+	public function getActions($qid=null)
 	{
-		if ($qid == null) {
+		if ($qid == null) 
+		{
 			$qid = $this->qid;
 		}
-		if ($qid == null) {
+		if ($qid == null) 
+		{
 			return false;
 		}
 
-		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE qid=".$qid." AND state!='2'";
+		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE qid=" . $qid . " AND state!='2'";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getResponse'
+	 * Load a response with vote information
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $ip Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id Record ID
+	 * @param      string  $ip IP address
+	 * @return     mixed False on error, array on success
 	 */
-	public function getResponse( $id=null, $ip = null )
+	public function getResponse($id=null, $ip = null)
 	{
-		if ($id == null) {
+		if ($id == null) 
+		{
 			$id = $this->id;
 		}
-		if ($id == null) {
+		if ($id == null) 
+		{
 			return false;
 		}
-		if ($ip == null) {
+		if ($ip == null) 
+		{
 			$ip = $this->ip;
 		}
-		if ($ip == null) {
+		if ($ip == null) 
+		{
 			return false;
 		}
 
-		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip='".$ip."' WHERE r.state!=2 AND r.id=".$id;
+		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip='" . $ip . "' WHERE r.state!=2 AND r.id=" . $id;
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'deleteResponse'
+	 * Set a response to "deleted"
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $id Record ID
+	 * @return     boolean True on success
 	 */
-	public function deleteResponse( $id=null)
+	public function deleteResponse($id=null)
 	{
-		if ($id == null) {
+		if ($id == null) 
+		{
 			$id = $this->id;
 		}
-		if ($id == null) {
+		if ($id == null) 
+		{
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET state='2' WHERE id=".$id;
+		$query  = "UPDATE $this->_tbl SET state='2' WHERE id=" . $id;
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$this->_db->query();
+		return true;
 	}
 
 	/**
-	 * Short description for 'getIds'
+	 * Get the response IDs for a question
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $qid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $qid Question ID
+	 * @return     mixed False if error, array on success
 	 */
-	public function getIds( $qid=null)
+	public function getIds($qid=null)
 	{
-		if ($qid == null) {
+		if ($qid == null) 
+		{
 			$qid = $this->qid;
 		}
-		if ($qid == null) {
+		if ($qid == null) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE qid=".$qid );
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE qid=" . $qid);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
 		$filters['sortby'] = '';
-		$filters['limit'] = 0;
+		$filters['limit']  = 0;
 
-		$query  = "SELECT COUNT(*) ";
-		$query .= $this->buildQuery( $filters );
+		$query  = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getResults'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getResults($filters=array())
 	{
 		$query  = "SELECT m.id, m.answer, m.created, m.created_by, m.helpful, m.nothelpful, m.state, m.anonymous, u.name ";
-		$query .= $this->buildQuery( $filters );
+		$query .= $this->buildQuery($filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -331,20 +324,25 @@ class AnswersResponse extends JTable
 				break;
 		}
 
-		if (isset($filters['qid']) && $filters['qid'] > 0) {
+		if (isset($filters['qid']) && $filters['qid'] > 0) 
+		{
 			$query .= " AND m.qid=" . $filters['qid'];
 		}
 
-		if (isset($filters['sortby']) && $filters['sortby'] != '') {
+		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		{
 			$query .= " ORDER BY " . $filters['sortby'];
-		} else {
+		} 
+		else 
+		{
 			if (isset($filters['sort'])) 
 			{
 				$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
 			}
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] > 0) {
+		if (isset($filters['limit']) && $filters['limit'] > 0) 
+		{
 			$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
 

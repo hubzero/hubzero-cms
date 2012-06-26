@@ -29,39 +29,44 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (!$this->juser->get('guest')) {
+if (!$this->juser->get('guest')) 
+{
 	$category = ($this->level==0) ? 'answer': 'answercomment';
 
 	$class = ' hide';
-	if (is_object($this->addcomment)) {
+	if (is_object($this->addcomment)) 
+	{
 		$class = ($this->addcomment->referenceid == $this->row->id && $this->addcomment->category==$category) ? '' : ' hide';
 	}
 ?>
-					<div class="addcomment<?php echo $class; ?>">
-						<form action="index.php" method="post" id="commentform_<?php echo $this->row->id; ?>">
+					<div class="addcomment<?php echo $class; ?>" id="commentform_<?php echo $this->row->id; ?>">
+						<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 							<fieldset>
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+								<input type="hidden" name="controller" value="questions" />
 								<input type="hidden" name="rid" value="<?php echo $this->question->id; ?>" />
 								<input type="hidden" name="active" value="answers" />
 								<input type="hidden" name="task" value="savereply" />
 								<input type="hidden" name="referenceid" value="<?php echo $this->row->id; ?>" />
 								<input type="hidden" name="category" value="<?php echo $category; ?>" />
 								
-								<label>
+								<label for="comment<?php echo $this->row->id; ?>">
 									<?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?>
-									<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?>"></textarea>
+									<textarea name="comment" rows="4" cols="50" class="commentarea" id="comment<?php echo $this->row->id; ?>" placeholder="<?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?>"></textarea>
 								</label>
 								
-								<label class="reply-anonymous-label">
-									<input class="option" type="checkbox" name="anonymous" value="1" /> 
+								<label for="anonymous<?php echo $this->row->id; ?>" class="reply-anonymous-label">
+									<input class="option" type="checkbox" name="anonymous" id="anonymous<?php echo $this->row->id; ?>" value="1" /> 
 									<?php echo JText::_('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
 								</label>
 								
 								<p class="submit">
 									<input type="submit" value="<?php echo JText::_('COM_ANSWERS_POST_COMMENT'); ?>" /> 
-									<a class="closeform cancelreply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$this->row->id); ?>"><?php echo JText::_('COM_ANSWERS_CANCEL'); ?></a>
+									<a class="cancelreply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->id . '#c' . $this->row->id); ?>">
+										<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>
+									</a>
 								</p>
 							</fieldset>
 						</form>
