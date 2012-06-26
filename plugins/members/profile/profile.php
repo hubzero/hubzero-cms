@@ -141,11 +141,15 @@ class plgMembersProfile extends JPlugin
 		{
 			$paramsClass = 'JRegistry';
 		}
-
+		
+		//get member params
 		$rparams = new $paramsClass($this->member->get('params'));
-		$params = JComponentHelper::getParams('com_members');
+		
+		//get profile plugin's params
+		$plugin = JPluginHelper::getPlugin("members", "profile");
+		$params = new $paramsClass( $plugin->params );
 		$params->merge($rparams);
-
+        
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('members', 'profile');
 		Hubzero_Document::addPluginScript('members', 'profile');
