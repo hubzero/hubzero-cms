@@ -308,8 +308,16 @@ class plgContentXhubtags extends JPlugin
 	{
 		$options = trim($options, " \n\t\r}");
 
-		$xhub = Hubzero_Factory::getHub();
-
-		return $xhub->getCfg($options);
+		$sitename = $jconfig->getValue('config.sitename');
+		$live_site = rtrim(JURI::base(),'/');
+		
+		if ($options == 'hubShortName') {
+				return $sitename;
+		}
+		else if ($options == 'hubShortURL') {
+				return $live_site;
+		}
+		
+		return '';
 	}
 }
