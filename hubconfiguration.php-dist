@@ -15,7 +15,6 @@ class HubConfig {
     var $ipDBPassword = '';
     var $ipDBDatabase = 'network';
     var $ipDBPrefix = '';
-    var $hubSupportEmail = 'root@localhost';
     var $hubHomeDir = '/home/myhub';
     var $forgeName = 'myFORGE';
     var $forgeURL = 'https://myhub-fqdn';
