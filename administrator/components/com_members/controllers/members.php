@@ -64,12 +64,12 @@ class MembersControllerMembers extends Hubzero_Controller
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
 			'filter_order', 
-			'lname'
+			'registerDate'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir', 
 			'filter_order_Dir', 
-			'ASC'
+			'DESC'
 		));
 		$this->view->filters['show']         = '';
 		$this->view->filters['scope']        = '';
