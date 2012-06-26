@@ -1220,8 +1220,15 @@ class EventsController extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components'.DS.$this->_option.DS.'calendar.css');
 
-		$document->addScript('/components/'.$this->_option.'/js/calendar.rc4.js');
-		$document->addScript('/components/'.$this->_option.'/js/events.js');
+		if(JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$document->addScript('/components/'.$this->_option.'/js/events.jquery.js');
+		}
+		else
+		{
+			$document->addScript('/components/'.$this->_option.'/js/calendar.rc4.js');
+			$document->addScript('/components/'.$this->_option.'/js/events.js');
+		}
 		// Push some scripts to the template
 		//$this->_getScripts();
 
