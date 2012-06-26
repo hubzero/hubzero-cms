@@ -19,7 +19,6 @@ class HubConfig {
     var $hubShortURL = 'myhub-fqdn';
     var $hubLongURL = 'http://myhub-fqdn';
     var $hubSupportEmail = 'root@localhost';
-    var $hubMonitorEmail = 'root@localhost';
     var $hubHomeDir = '/home/myhub';
     var $forgeName = 'myFORGE';
     var $forgeURL = 'https://myhub-fqdn';

@@ -171,7 +171,6 @@ class RegisterController extends Hubzero_Controller
 
 		$target_xprofile->loadRegistration($xregistration);
 
-		$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 		$hubHomeDir      = $xhub->getCfg('hubHomeDir');
 		$updateEmail     = false;
 
@@ -219,7 +218,8 @@ class RegisterController extends Hubzero_Controller
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 				if (!Hubzero_Toolbox::send_email($target_xprofile->get('email'), $subject, $message)) {
-					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail));
+					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+					// @FIXME: LOG ERROR CONDITION SOMEWHERE
 				}
 			}
 
@@ -234,7 +234,8 @@ class RegisterController extends Hubzero_Controller
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+			// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+			// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 
 			// Determine action based on if the user chaged their email or not
 			if (!$updateEmail) {
@@ -255,7 +256,8 @@ class RegisterController extends Hubzero_Controller
 				$message = str_replace("\n", "\r\n", $message);
 
 				if (!Hubzero_Toolbox::send_email($target_xprofile->get('email'), $subject, $message)) {
-					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail));
+					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+					// @FIXME: LOG ERROR CONDITION SOMEWHERE
 				}
 			}
 
@@ -270,7 +272,8 @@ class RegisterController extends Hubzero_Controller
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+			// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+			// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 
 			// Determine action based on if the user chaged their email or not
 			if (!$updateEmail) {
@@ -361,8 +364,6 @@ class RegisterController extends Hubzero_Controller
 		// Get some settings
 		$jconfig =& JFactory::getConfig();
 		$this->jconfig = $jconfig;
-		//$this->baseURL      = $xhub->getCfg('hubLongURL');
-		$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 		$hubHomeDir      = $xhub->getCfg('hubHomeDir');
 
 		jimport('joomla.application.component.helper');
@@ -415,7 +416,8 @@ class RegisterController extends Hubzero_Controller
 			// @FIXME: Should delete partially created records on failure (don't forget LDAP)
 			$view = new JView( array('name'=>'error') );
 			$view->title = JText::_('COM_REGISTER_PROXY_CREATE');
-			$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT', $hubMonitorEmail) );
+			$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT'/*, $hubMonitorEmail*/) );
+			// @FIXME: LOG ERROR CONDITION SOMEWHERE
 			$view->display();
 			return;
 		}
@@ -516,7 +518,6 @@ class RegisterController extends Hubzero_Controller
 
 		if (!$force && $check && JRequest::getMethod() == 'POST') {
 
-			$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 			$hubHomeDir      = $xhub->getCfg('hubHomeDir');
 			$updateEmail     = false;
 
@@ -600,7 +601,8 @@ class RegisterController extends Hubzero_Controller
 				$message = str_replace("\n", "\r\n", $message);
 
 				if (!Hubzero_Toolbox::send_email($xprofile->get('email'), $subject, $message)) {
-					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION',$hubMonitorEmail));
+					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*,$hubMonitorEmail*/));
+					// @FIXME: LOG ERROR SOMEWHERE
 				}
 			}
 
@@ -616,7 +618,8 @@ class RegisterController extends Hubzero_Controller
 				$message = $eaview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
-				Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+				// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+				// @FIXME: LOG ACCOUNT UPDATE ACTIVITY SOMEWHERE
 			}
 
 			if (!$updateEmail) {
@@ -765,7 +768,6 @@ class RegisterController extends Hubzero_Controller
 
 					// Get some settings
 					$xhub =& Hubzero_Factory::getHub();
-					$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 					$hubHomeDir      = $xhub->getCfg('hubHomeDir');
 
 					// Attempt to get the new user
@@ -806,7 +808,8 @@ class RegisterController extends Hubzero_Controller
 					if (!$result) {
 						$view = new JView( array('name'=>'error') );
 						$view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
-						$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT', $hubMonitorEmail) );
+						$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT'/*, $hubMonitorEmail*/) );
+						// @FIXME: LOG ERROR SOMEWHERE
 						$view->display();
 						return;
 					}
@@ -827,7 +830,8 @@ class RegisterController extends Hubzero_Controller
 						$fullEmailAddress = $xprofile->get('name') . " <" . $xprofile->get('email') . ">";
 
 						if (!Hubzero_Toolbox::send_email($fullEmailAddress, $subject, $message)) {
-							$this->setError( JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail) );
+							$this->setError( JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/) );
+							// @FIXME: LOG ERROR SOMEWHERE
 						}
 					}
 
@@ -842,7 +846,8 @@ class RegisterController extends Hubzero_Controller
 					$message = $eaview->loadTemplate();
 					$message = str_replace("\n", "\r\n", $message);
 
-					Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+					// Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+					// @FIXME: LOG ACCOUNT CREATION ACTIVITY SOMEWHERE
 
 					// Instantiate a new view
 					$view = new JView( array('name'=>'create') );
