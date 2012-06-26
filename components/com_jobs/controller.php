@@ -1500,7 +1500,8 @@ class JobsController extends Hubzero_Controller
 		$database 	=& JFactory::getDBO();
 		$juser    	=& JFactory::getUser();
 		$jconfig 	=& JFactory::getConfig();
-
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Incoming
 		$code 	= JRequest::getVar('code', '');
 		$empid  = $this->_admin ? 1 : $juser->get('id');
@@ -1573,7 +1574,7 @@ class JobsController extends Hubzero_Controller
 			$employer->subscriptionid = 1;
 			$employer->companyName 		= $jconfig->getValue('config.sitename');
 			$employer->companyLocation  = '';
-			$employer->companyWebsite   = $jconfig->getValue('config.live_site');
+			$employer->companyWebsite   = $live_site;
 			$uid = 1; // site admin
 		}
 
@@ -1667,11 +1668,13 @@ class JobsController extends Hubzero_Controller
 
 				// make sure we have dummy admin employer account
 				$jconfig 	=& JFactory::getConfig();
+				$live_site = rtrim(JURI::base(),'/');
+				
 				$employer->uid = 1;
 				$employer->subscriptionid = $subscription->id;
 				$employer->companyName 		= $jconfig->getValue('config.sitename');
 				$employer->companyLocation  = '';
-				$employer->companyWebsite   = $jconfig->getValue('config.live_site');
+				$employer->companyWebsite   = $live_site;
 
 				// save employer information		
 				if (!$employer->store()) {

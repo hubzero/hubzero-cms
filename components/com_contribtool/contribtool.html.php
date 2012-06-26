@@ -649,9 +649,9 @@ class ContribtoolHtml
 		// get configs
 		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
-		$hubShortURL 	= $xhub->getCfg('hubShortURL');
-		$hubLongURL 	= $xhub->getCfg('hubLongURL');
-
+		$config =& JFactory::getConfig();
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// get tool access text
 		$toolaccess = ContribtoolHtml::getToolAccess($status['exec'], $status['membergroups']);
 
@@ -715,7 +715,7 @@ class ContribtoolHtml
 
 		//  installed
         case 4:
-			$par = '		<p>'.JText::_('WHATSNEXT_INSTALLED_CODE_READY').' '.$xhub->getCfg('hubShortURL').'. '.JText::_('WHATSNEXT_INSTALLED_PLS_TEST').':</p>'.n;
+			$par = '		<p>'.JText::_('WHATSNEXT_INSTALLED_CODE_READY').' '.$live_site.'. '.JText::_('WHATSNEXT_INSTALLED_PLS_TEST').':</p>'.n;
 			$par .= '		<ul ><li class="todo"><span id="primary-document" >'.JText::_('WHATSNEXT_INSTALLED_TEST').': <a class="launchtool" style="padding:0.4em 0.2em 0.1em 1.5em;margin-top:1em;"  href="'.$testpath.'" title="">'.JText::_('LAUNCH_TOOL').'</a></span></li>'.n;
 			$par .= '		<li class="todo">'.n;
 			$par .= ($status['resource_modified']) ? '<a href="index.php?option=com_contribtool&amp;task=preview&amp;rid='.$status['resourceid'].'">'.JText::_('TODO_REVIEW_RES_PAGE').'</a>' : '<a href="index.php?option=com_contribtool&amp;task=start&amp;step=1&amp;rid='.$status['resourceid'].'">'.JText::_('TODO_CREATE_PAGE').'</a>';
@@ -747,7 +747,7 @@ class ContribtoolHtml
         case 6:
 			$par = '		<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_APPROVED_SINCE').'  '.JText::_('WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess.'.</p>';
 			$par .= '		<p> '.JText::_('WHATSNEXT_APPROVED_PLS_CLICK').' '.$xhub->getCfg('hubShortName').': <br />'.n;
-			$par .= '		<a href="'.JRoute::_('index.php?option=com_resources&alias='.$status['toolname']).'" ><'.$xhub->getCfg('hubLongURL').'/tools/'.$status['toolname'].'</a></p>';
+			$par .= '	 <a href="'.JRoute::_('index.php?option=com_resources&alias='.$status['toolname']).'" ><'.$live_site.'/tools/'.$status['toolname'].'</a></p>';
 			$step2 = '		<li class="complete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>' ;
 			$step4 = '		<li class="complete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 			$step5addon = '<br /><span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_WAIT').'</a></span>';
@@ -756,7 +756,7 @@ class ContribtoolHtml
 		//  published
         case 7:
 			$par = '		<p>'.JText::_('WHATSNEXT_PUBLISHED_MSG').': <br />'.n;
-			$par .= '		<a href="'.JRoute::_('index.php?option=com_resources&alias='.$status['toolname']).'" >'.$xhub->getCfg('hubLongURL').'/tools/'.$status['toolname'].'</a></p>'.n;
+			$par .= '		<a href="'.JRoute::_('index.php?option=com_resources&alias='.$status['toolname']).'" >'.$live_site.'/tools/'.$status['toolname'].'</a></p>'.n;
 			$par .= '		<h3>'.JText::_('WHATSNEXT_YOUR_OPTIONS').':</h3>'.n;
 			$par .= '		<ul class="youroptions">'.n;
 			$par .= '		<li> '.JText::_('WHATSNEXT_CHANGES_MADE').' <span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_PUBLISHED_PLS_INSTALL').'</a></span></li>'.n;
@@ -765,7 +765,7 @@ class ContribtoolHtml
 
 		//  retired
         case 8:
-			$par = '		<p>'.JText::_('WHATSNEXT_RETIRED_FROM').' '.$xhub->getCfg('hubShortURL').'. '.JText::_('CONTACT').' '.$xhub->getCfg('hubShortName').' '.JText::_('CONTACT_SUPPORT_TO_REPUBLISH').' .</p>	';
+			$par = '		<p>'.JText::_('WHATSNEXT_RETIRED_FROM').' '.$live_site.'. '.JText::_('CONTACT').' '.$xhub->getCfg('hubShortName').' '.JText::_('CONTACT_SUPPORT_TO_REPUBLISH').' .</p>	';
 			$par .= '		<h3>'.JText::_('WHATSNEXT_YOUR_OPTIONS').':</h3>'.n;
 			$par .= '		<ul class="youroptions">'.n;
 			$par .= '		<li> '.JText::_('WHATSNEXT_RETIRED_WANT_REPUBLISH').'. <span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_RETIRED_PLS_REPUBLISH').'</a></span></li>'.n;
@@ -786,7 +786,7 @@ class ContribtoolHtml
 			 $html .= $step2.n;
 			 $html .= $step3.n;
 			 $html .= $step4.n;
-			 $html .= ' 		<li class="incomplete">  '.JText::_('WHATSNEXT_PUBLISH').' '.$xhub->getCfg('hubShortURL');
+			 $html .= ' 		<li class="incomplete">  '.JText::_('WHATSNEXT_PUBLISH').' '.$live_site;
 			 $html .= ($step5addon) ? $step5addon: '';
 			 $html .= '			</li>'.n;
 			 $html .= '		</ul>'.n;
@@ -1658,8 +1658,7 @@ class ContribtoolHtml
 		// get configs
 		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
-		$hubShortURL 	= $xhub->getCfg('hubShortURL');
-		$hubLongURL 	= $xhub->getCfg('hubLongURL');
+		$live_site = rtrim(JURI::base(),'/');
 
 		// get tool access text
 		$toolaccess = ContribtoolHtml::getToolAccess($status['exec'], $status['membergroups']);
@@ -2343,7 +2342,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		$juser =& JFactory::getUser();
 		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
-		$hubShortURL = $xhub->getCfg('hubShortURL');
 		$license = '/legal/license';
 
 		$html = '';

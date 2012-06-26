@@ -48,7 +48,9 @@ $juser =& JFactory::getUser();
 	if (substr($feed, 0, 4) != 'http') 
 	{
 		$jconfig =& JFactory::getConfig();
-		$feed = $jconfig->getValue('config.live_site') . ltrim($feed, DS);
+		$live_site = rtrim(JURI::base(),'/');
+		
+		$feed = $live_site . ltrim($feed, DS);
 	}
 	$feed = str_replace('https:://','http://', $feed);
 	?>

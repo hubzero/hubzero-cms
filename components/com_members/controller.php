@@ -968,7 +968,7 @@ class MembersController extends Hubzero_Controller
 			$juri =& JURI::getInstance();
 			$xhub =& Hubzero_Factory::getHub();
 			$hubName = $xhub->getCfg('hubShortName');
-			$hubUrl = $xhub->getCfg('hubLongURL');
+			$live_site = rtrim(JURI::base(),'/');
 
 			// Email subject
 			$subject = $hubName . " Account Resource Request";

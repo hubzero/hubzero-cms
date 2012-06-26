@@ -127,13 +127,16 @@ class plgResourcesSupportingDocs extends JPlugin
 				'name'    => 'browse'
 			)
 		);
-
+		
+		$jconfig =& JFactory::getConfig();
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Pass the view some info
 		$view->option    = $option;
 		$view->resource  = $resource;
 		$view->helper    = $helper;
 		$view->config    = $config;
-		$view->live_site = $xhub->getCfg('hubLongURL');
+		$view->live_site = $live_site;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

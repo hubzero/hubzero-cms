@@ -176,7 +176,8 @@ class modWhatsNew
 	public function run()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
-
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Get some initial parameters
 		$count        = intval($this->params->get('limit', 5));
 		$this->feed   = $this->params->get('feed');
@@ -198,7 +199,7 @@ class modWhatsNew
 			if (substr($this->feedlink, 0, 1) == '/')
 			{
 				$xhub =& Hubzero_Factory::getHub();
-				$this->feedlink = $xhub->getCfg('hubLongURL') . $this->feedlink;
+				$this->feedlink = $live_site . $this->feedlink;
 			}
 		}
 

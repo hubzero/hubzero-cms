@@ -16,7 +16,6 @@ class HubConfig {
     var $ipDBDatabase = 'network';
     var $ipDBPrefix = '';
     var $hubShortName = 'myhub';
-    var $hubShortURL = 'myhub-fqdn';
     var $hubLongURL = 'http://myhub-fqdn';
     var $hubSupportEmail = 'root@localhost';
     var $hubHomeDir = '/home/myhub';

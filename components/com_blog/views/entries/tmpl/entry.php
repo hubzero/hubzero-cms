@@ -285,7 +285,9 @@ if ($this->recent) {
 	$feed = JRoute::_('index.php?option=' . $this->option . '&task=' . JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias . '/comments.rss');
 	if (substr($feed, 0, 4) != 'http') {
 		$jconfig =& JFactory::getConfig();
-		$feed = $jconfig->getValue('config.live_site') . ltrim($feed, DS);
+		$live_site = rtrim(JURI::base(),'/');
+		
+		$feed = $live_site . ltrim($feed, DS);
 	}
 	$feed = str_replace('https:://', 'http://', $feed);
 ?>

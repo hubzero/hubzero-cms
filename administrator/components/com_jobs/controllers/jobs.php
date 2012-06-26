@@ -147,7 +147,8 @@ class JobsControllerJobs extends Hubzero_Controller
 		$this->view->setLayout('edit');
 
 		$jconfig =& JFactory::getConfig();
-
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'jobs.css');
@@ -208,7 +209,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			$this->view->employer->subscriptionid = 1;
 			$this->view->employer->companyName 		= $jconfig->getValue('config.sitename');
 			$this->view->employer->companyLocation  = '';
-			$this->view->employer->companyWebsite   = $jconfig->getValue('config.live_site');
+			$this->view->employer->companyWebsite   = $live_site;
 		}
 
 		// Get subscription info

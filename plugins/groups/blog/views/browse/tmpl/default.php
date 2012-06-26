@@ -65,7 +65,9 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 								$feed = DS.$feed;
 							}
 							$jconfig =& JFactory::getConfig();
-							$feed = $jconfig->getValue('config.live_site').$feed;
+							$live_site = rtrim(JURI::base(),'/');
+								
+							$feed = $live_site . $feed;
 						}
 						$feed = str_replace('https:://','http://',$feed);
 

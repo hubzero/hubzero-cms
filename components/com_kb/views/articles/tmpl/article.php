@@ -198,7 +198,9 @@ if ($this->config->get('feeds_enabled')) {
 		if (substr($feed, 0, 4) != 'http') 
 		{
 			$jconfig =& JFactory::getConfig();
-			$feed = $jconfig->getValue('config.live_site') . DS . ltrim($feed, DS);
+			$live_site = rtrim(JURI::base(),'/');
+				
+			$feed = $live_site . DS . ltrim($feed, DS);
 		}
 		$feed = str_replace('https://', 'http://', $feed);
 ?>

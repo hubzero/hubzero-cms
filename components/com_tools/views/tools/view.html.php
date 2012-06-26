@@ -59,8 +59,9 @@ class ToolsViewTools extends JView
 		$forgeName = $xhub->getCfg('forgeName');
 		$forgeURL = $xhub->getCfg('forgeURL');
 		$hubShortName = $xhub->getCfg('hubShortName');
-		$hubShortURL = $xhub->getCfg('hubShortURL');
-		$hubLongURL = $xhub->getCfg('hubLongURL');
+		$config =& JFactory::getConfig();
+		$jconfig =& JFactory::getConfig();
+		$live_site = rtrim(JURI::base(),'/');
 
 		// Get the tool list
 		$appTools = $model->getApplicationTools();
@@ -70,8 +71,7 @@ class ToolsViewTools extends JView
 
 		$this->assignRef( 'forgeName', $forgeName );
 		$this->assignRef( 'forgeURL', $forgeURL);
-		$this->assignRef( 'hubShortURL', $hubShortURL );
-		$this->assignRef( 'hubLongURL', $hubLongURL );
+		$this->assignRef( 'live_site', $live_site);
 		$this->assignRef( 'hubShortName', $hubShortName );
 		$this->assignRef( 'appTools', $appTools);
 		$this->assignRef( 'image', $image);

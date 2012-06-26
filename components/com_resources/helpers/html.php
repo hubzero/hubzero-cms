@@ -1118,7 +1118,8 @@ class ResourcesHtml
 	public function about($database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $option, $fsize)
 	{
 		$xhub =& Hubzero_Factory::getHub();
-
+		$live_site = rtrim(JURI::base(),'/');
+		
 		//if ($resource->type != 31 || $resource->type != 2 || !$thistool) {
 		if (!$thistool) {
 			$helper->getChildren();
@@ -1288,7 +1289,7 @@ class ResourcesHtml
 		} else {
 			$helper->getFirstChild();
 
-			$live_site = $xhub->getCfg('hubLongURL');
+			$jconfig =& JFactory::getConfig();
 
 			switch ($resource->type)
 			{
@@ -1392,15 +1393,15 @@ class ResourcesHtml
 					}
 
 					$html .= "\t\t".'<p>'."\n";
-					$html .= "\t\t\t".'<a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-					$html .= "\t\t\t".'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
-					$html .= "\t\t\t".'<a class="feed" id="resource-slides-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
+					$html .= "\t\t\t".'<a class="feed" id="resource-audio-feed" href="'. $live_site . '/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+					$html .= "\t\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site . '/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
+					$html .= "\t\t\t".'<a class="feed" id="resource-slides-feed" href="'. $live_site . '/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
 					$html .= "\t\t".'</p>'."\n";
 				break;
 
 				case 8:
-					$html .= "\t\t".'<p><a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-					$html .= "\t\t".'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
+					$html .= "\t\t".'<p><a class="feed" id="resource-audio-feed" href="'. $live_site . '/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+					$html .= "\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site . '/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
 					// do nothing
 				break;
 

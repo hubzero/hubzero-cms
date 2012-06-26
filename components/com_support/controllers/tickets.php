@@ -488,6 +488,8 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Get plugins
 		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
@@ -737,7 +739,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Parse comments for attachments
 		$xhub =& Hubzero_Factory::getHub();
 		$attach = new SupportAttachment($this->database);
-		$attach->webpath = $xhub->getCfg('hubLongURL') . $this->config->get('webpath') . DS . $row->id;
+		$attach->webpath = $live_site . $this->config->get('webpath') . DS . $row->id;
 		$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $row->id;
 		$attach->output  = 'email';
 
@@ -1300,10 +1302,12 @@ class SupportControllerTickets extends Hubzero_Controller
 		$rows = $obj->getTickets($filters, true);
 
 		$xhub =& Hubzero_Factory::getHub();
-
+		$config =& JFactory::getConfig();
+		$live_site = rtrim(JURI::base(),'/');
+		
 		$doc->title       = $xhub->getCfg('hubShortName') . ' ' . JText::_('SUPPORT_RSS_TITLE');
 		$doc->description = JText::sprintf('SUPPORT_RSS_DESCRIPTION', $xhub->getCfg('hubShortName'));
-		$doc->copyright   = JText::sprintf('SUPPORT_RSS_COPYRIGHT', date("Y"), $xhub->getCfg('hubShortURL'));
+		$doc->copyright   = JText::sprintf('SUPPORT_RSS_COPYRIGHT', date("Y"), $live_site);
 		$doc->category    = JText::_('SUPPORT_RSS_CATEGORY');
 
 		foreach ($rows as $row)
@@ -1347,6 +1351,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	public function updateTask()
 	{
 		$xhub =& Hubzero_Factory::getHub();
+		$live_site = rtrim(JURI::base(),'/');
 		
 		// Make sure we are still logged in
 		if ($this->juser->get('guest')) 
@@ -1533,7 +1538,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 					// Parse comments for attachments
 					$attach = new SupportAttachment($this->database);
-					$attach->webpath = $xhub->getCfg('hubLongURL') . $this->config->get('webpath') . DS . $id;
+					$attach->webpath = $live_site . $this->config->get('webpath') . DS . $id;
 					$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $id;
 					$attach->output  = 'email';
 
@@ -1572,13 +1577,12 @@ class SupportControllerTickets extends Hubzero_Controller
                     // Prepare message to allow email responses to be parsed and added to the ticket
 					if ($allowEmailResponses)
 					{
-						$hublongURL = $xhub->getCfg('hubLongURL');
-						$ticketURL = JRoute::_($hublongURL . '/index.php?option=' . $this->option);
+						$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
 						
 						$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
 						$prependtext .= "You can reply to this message, just include your reply text above this area\r\n" ;
 						$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
-						$prependtext .= "Message from " . $xhub->getCfg('hubShortURL') . " / Ticket #" . $row->id . "\r\n";
+						$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
 
 						$message = $prependtext . "\r\n\r\n" . $message;
 					}

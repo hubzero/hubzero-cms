@@ -360,7 +360,8 @@ class XRouter extends JRouter
 
 		if ($app->getCfg('sef_groups'))
 		{
-			$servername = $app->getCfg('live_site');
+			$servername = rtrim(JURI::base(),'/');
+				
 			$serveruri = JURI::getInstance($servername);
 			$sfqdn = $serveruri->getHost();
 			$rfqdn = $uri->getHost();

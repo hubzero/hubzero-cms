@@ -64,6 +64,7 @@ class FileIndexMacro extends WikiMacro
 	public function render()
 	{
 		$et = $this->args;
+		$live_site = rtrim(JURI::base(),'/');
 
 		// What pages are we getting?
 		if ($et) {
@@ -93,7 +94,7 @@ class FileIndexMacro extends WikiMacro
 			foreach ($rows as $row)
 			{
 				//$html .= '<li><a href="'.$this->scope.'/'.$row->pagename.'">'.$title.'</a></li>';
-				$link = $xhub->getCfg('hubLongURL').$config->get('filepath').DS.$this->pageid.DS.$row->filename;
+				$link = $live_site.$config->get('filepath').DS.$this->pageid.DS.$row->filename;
 
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;

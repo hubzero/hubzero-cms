@@ -1735,7 +1735,9 @@ class ContribtoolController extends JObject
 		$subject     = JText::_(strtoupper($this->_name)).', '.JText::_('TOOL').' '.$status['toolname'].'(#'.$toolid.'): '.$headline;
 		$from        = $jconfig->getValue('config.sitename').' '.JText::_('CONTRIBTOOL');
 		$hub         = array('email' => $jconfig->getValue('config.mailfrom'), 'name' => $from);
-
+		
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Compose Message
 		$message  = strtoupper(JText::_('TOOL')).': '.$status['title'].' ('.$status['toolname'].')'.r.n;
 		$message .= strtoupper(JText::_('SUMMARY')).': '.$summary.r.n;
@@ -1748,7 +1750,7 @@ class ContribtoolController extends JObject
 		$message .= '----------------------------'.r.n.r.n;
 		}
 		$message .= JText::_('TIP_URL_TO_STATUS').''.r.n;
-		$message .= $xhub->getCfg('hubLongURL').JRoute::_('index.php?option=com_contribtool&task=status&toolid='.$toolid) .r.n;
+		$message .= $live_site.JRoute::_('index.php?option=com_contribtool&task=status&toolid='.$toolid) .r.n;
 
 		// fire off message
 		if($summary or $comment) {
@@ -2662,7 +2664,8 @@ class ContribtoolController extends JObject
 		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$app 			=& JFactory::getApplication();
-		$livesite 		= $xhub->getCfg('hubLongURL');
+		$jconfig =& JFactory::getConfig();
+		$live_site = rtrim(JURI::base(),'/');
 		$exportmap     = array('@OPEN'=>null,'@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 		$juser =& JFactory::getUser();
 		$xlog =& Hubzero_Factory::getLogger();
@@ -2743,7 +2746,7 @@ class ContribtoolController extends JObject
 		if($result && ($old_doi || $new_doi)) {
 
 			// Collect metadata
-			$url = $livesite . '/resources/' . $status['resourceid'] . '/?rev='.$status['revision'];
+			$url = $live_site . '/resources/' . $status['resourceid'] . '/?rev='.$status['revision'];
 
 			// Check if DOI exists for this revision
 			$objDOI = new ResourcesDoi ($database);

@@ -177,7 +177,7 @@ class CitationFormat
 		ximport('Hubzero_Hub');
 		$hub = new Hubzero_Hub();
 		$hub_name = $hub->getCfg("hubShortName");
-		$hub_url = $hub->getCfg("hubLongURL");
+		$hub_url = rtrim(JURI::base(),'/');
 
 		$c_type = "journal";
 

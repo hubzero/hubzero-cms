@@ -1183,7 +1183,8 @@ class ContributeController extends Hubzero_Controller
 		}
 
 		/*$jconfig =& JFactory::getConfig();
-		
+		$live_site = rtrim(JURI::base(),'/');
+
 		// E-mail "from" info
 		$from = array();
 		$from['email'] = $jconfig->getValue('config.mailfrom');
@@ -1193,7 +1194,7 @@ class ContributeController extends Hubzero_Controller
 		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_CONTRIBUTE_EMAIL_SUBJECT');
 		
 		// E-mail message
-		$message  = JText::sprintf('COM_CONTRIBUTE_EMAIL_MESSAGE', $jconfig->getValue('config.live_site'))."\r\n";
+		$message  = JText::sprintf('COM_CONTRIBUTE_EMAIL_MESSAGE', $live_site)."\r\n";
 		$message .= JRoute::_('index.php?option=com_resources&id='.$id);
 
 		// Send e-mail

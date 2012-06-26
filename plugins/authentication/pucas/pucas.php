@@ -69,8 +69,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		}
 
 		$xhub = Hubzero_Factory::getHub();
-
-		$service = $xhub->getCfg('hubLongURL');
+		$service = rtrim(JURI::base(),'/');
 
 		if (empty($service))
 		{
@@ -164,9 +163,8 @@ class plgAuthenticationPUCAS extends JPlugin
 		}
 
 		$xhub = Hubzero_Factory::getHub();
-
-		$service = $xhub->getCfg('hubLongURL');
-
+		$servive = rtrim(JURI::base(),'/');
+		
 		if (empty($service))
 		{
 			$service = $_SERVER['HTTP_HOST'];

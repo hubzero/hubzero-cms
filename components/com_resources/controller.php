@@ -1373,7 +1373,7 @@ class ResourcesController extends Hubzero_Controller
 		// Output HTML
 		if ($no_html) {
 			$jconfig =& JFactory::getConfig();
-			$css = $jconfig->getValue('config.live_site').DS;
+			$css = JURI::base();
 
 			$app =& JFactory::getApplication();
 			if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->_option.DS.'resources.css')) {

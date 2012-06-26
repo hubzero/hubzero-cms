@@ -39,6 +39,9 @@ else
 {
 	$fstring = urlencode(trim($this->filters['_find']));
 }
+
+$live_site = rtrim(JURI::base(),'/');
+
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -128,7 +131,7 @@ else
 
 				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 				
-				<?php /*<a class="feed" id="ticket-feed" href="<?php echo $xhub->getCfg('hubLongURL'); ?>/support/tickets/feed.rss<?php echo ($fstring) ? '?'.$fstring : ''; ?>"><?php echo JText::_('SUPPORT_RSS'); ?></a>*/ ?>
+				<?php /*<a class="feed" id="ticket-feed" href="<?php echo $live_site; ?>/support/tickets/feed.rss<?php echo ($fstring) ? '?'.$fstring : ''; ?>"><?php echo JText::_('SUPPORT_RSS'); ?></a>*/ ?>
 			</fieldset>
 			
 			<table id="tktlist">

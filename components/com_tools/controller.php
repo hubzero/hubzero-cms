@@ -222,9 +222,9 @@ class ToolsController extends Hubzero_Controller
 		$forgeName = $xhub->getCfg('forgeName');
 		$forgeURL = $xhub->getCfg('forgeURL');
 		$hubShortName = $xhub->getCfg('hubShortName');
-		$hubShortURL = $xhub->getCfg('hubShortURL');
-		$hubLongURL = $xhub->getCfg('hubLongURL');
-
+		$config =& JFactory::getConfig();
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Get the tool list
 		$appTools = $model->getApplicationTools();
 
@@ -238,8 +238,7 @@ class ToolsController extends Hubzero_Controller
 		$view->title = $this->_title;
 		$view->forgeName = $forgeName;
 		$view->forgeURL = $forgeURL;
-		$view->hubShortURL = $hubShortURL;
-		$view->hubLongURL = $hubLongURL;
+		$view->live_site = $live_site;
 		$view->hubShortName = $hubShortName;
 		$view->appTools = $appTools;
 		$view->image = $image;

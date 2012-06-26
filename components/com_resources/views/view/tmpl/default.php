@@ -46,7 +46,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$attribs 		= $this->attribs;
 	$fsize 			= $this->fsize;
 	$filters 		= $this->filters;
-
+	$live_site = rtrim(JURI::base(),'/');
+	
 	$juser =& JFactory::getUser();
 
 	$html  = '<div class="main section upperpane">'."\n";
@@ -143,15 +144,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .= ResourcesHtml::primary_child( $option, $resource, '', '' );
 				}
 				$feeds .= "\t\t".'<p>'."\n";
-				$feeds .= "\t\t\t".'<a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-				$feeds .= "\t\t\t".'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
-				$feeds .= "\t\t\t".'<a class="feed" id="resource-slides-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-slides-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
 				$feeds .= "\t\t".'</p>'."\n";
 			break;
 
 			case 8:
-				$feeds .= "\t\t".'<p><a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-				$feeds .= "\t\t".'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
+				$feeds .= "\t\t".'<p><a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+				$feeds .= "\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
 				// do nothing
 			break;
 

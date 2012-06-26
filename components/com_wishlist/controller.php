@@ -1153,7 +1153,8 @@ class WishlistController extends JObject
 
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-
+		$live_site = rtrim(JURI::base(),'/');
+		
 		$wishid  = JRequest::getInt( 'wishid', 0 );
 
 		// Make sure we have wish id
@@ -1302,7 +1303,7 @@ class WishlistController extends JObject
 				$message .= r.n.r.n;
 
 				$message .= '----------------------------'.r.n;
-				$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
+				$url = $live_site.JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
 				$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_ASSIGNED_WISH').'.';
 
 				JPluginHelper::importPlugin( 'xmessage' );
@@ -1477,7 +1478,8 @@ class WishlistController extends JObject
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-
+		$live_site = rtrim(JURI::base(),'/');
+		
 		$listid = JRequest::getInt( 'wishlist', 0 );
 		$wishid = JRequest::getInt( 'id', 0 );
 		$reward = JRequest::getVar( 'reward', '');
@@ -1631,7 +1633,7 @@ class WishlistController extends JObject
 			$message .= r.n.r.n;
 
 			$message .= '----------------------------'.r.n;
-			$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$row->id);
+			$url = $live_site.JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$row->id);
 			$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
 
 			JPluginHelper::importPlugin( 'xmessage' );
@@ -1663,7 +1665,8 @@ class WishlistController extends JObject
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
-
+		$live_site = rtrim(JURI::base(),'/');
+		
 		$wishid  = JRequest::getInt( 'wishid', 0 );
 		$id  	= JRequest::getInt( 'id', 0 );
 		$refid  = JRequest::getInt( 'rid', 0 );
@@ -1808,7 +1811,7 @@ class WishlistController extends JObject
 					else {
 					$message .= JText::_('MSG_WISH_STATUS_CHANGED_TO').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
 					}
-					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid);
+					$url = $live_site.JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid);
 					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_WISH').'.';
 					$as_mes  .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_ASSIGNED_WISH').'.';
 				}
@@ -1860,6 +1863,7 @@ class WishlistController extends JObject
 
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
+		$live_site = rtrim(JURI::base(),'/');
 
 		$listid 	= JRequest::getInt( 'wishlist', 0 );
 		$wishid 	= JRequest::getInt( 'wish', 0 );
@@ -2052,7 +2056,7 @@ class WishlistController extends JObject
 					$message .= r.n.r.n;
 
 					$message .= '----------------------------'.r.n;
-					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'id='.$newlist.a.'wishid='.$wishid);
+					$url = $live_site.JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'id='.$newlist.a.'wishid='.$wishid);
 					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
 
 					JPluginHelper::importPlugin( 'xmessage' );
@@ -2511,6 +2515,7 @@ class WishlistController extends JObject
 	{
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
+		$live_site = rtrim(JURI::base(),'/');
 
 		// Incoming
 		$id      	= JRequest::getInt( 'referenceid', 0 );
@@ -2618,7 +2623,7 @@ class WishlistController extends JObject
 				// Parse comments for attachments
 				$webpath = $this->getWebPath($wishid);
 				$attach = new WishAttachment( $database );
-				$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
+				$attach->webpath = $live_site.$webpath;
 				$attach->uppath  = JPATH_ROOT.$webpath;
 				$attach->output  = 'email';
 				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('MSG_COMENT_POSTED_YOUR_WISH').' #'.$wishid.' '.JText::_('BY').' '.$name;
@@ -2650,7 +2655,7 @@ class WishlistController extends JObject
 				$message .= r.n;
 
 				$message .= '----------------------------'.r.n;
-				$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
+				$url = $live_site.JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
 				$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
 
 				JPluginHelper::importPlugin( 'xmessage' );
@@ -2955,6 +2960,7 @@ class WishlistController extends JObject
 	{
 			$database =& JFactory::getDBO();
 			$juser =& JFactory::getUser();
+			$live_site = rtrim(JURI::base(),'/');
 
 			$level++;
 			$hc = new Hubzero_Comment( $database );
@@ -2971,7 +2977,7 @@ class WishlistController extends JObject
 				$webpath = $this->getWebPath($parentid);
 
 				$attach = new WishAttachment( $database );
-				$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
+				$attach->webpath = $live_site.$webpath;
 				$attach->uppath  = JPATH_ROOT.$webpath;
 				$attach->output  = 'web';
 				}

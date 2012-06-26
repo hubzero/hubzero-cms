@@ -148,7 +148,7 @@ class WishlistOwner extends JTable
 					$message  = $subject . '. ';
 					$message .= "\r\n\r\n";
 					$message .= '----------------------------' . "\r\n";
-					$url = $xhub->getCfg('hubLongURL') . JRoute::_('index.php?option=com_wishlist&id=' . $listid);
+					$url = JURI::base() . JRoute::_('index.php?option=com_wishlist&id=' . $listid);
 				    $message .= JText::_('Please go to') . ' ' . $url . ' ' . JText::_('to view the wish list and rank new wishes.');
 
 					JPluginHelper::importPlugin('xmessage');

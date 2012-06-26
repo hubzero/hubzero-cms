@@ -266,8 +266,9 @@ class ResourcesDoi extends JTable
 		$call .= $prefix ? DS . $prefix : DS;
 
 		// Get config
-		$livesite = $jconfig->getValue('config.live_site');
-		if (!$livesite || !isset($metadata['targetURL']) || !isset($metadata['title'])) 
+		$live_site = rtrim(JURI::base(),'/');
+		
+		if (!$live_site || !isset($metadata['targetURL']) || !isset($metadata['title'])) 
 		{
 			$doierr .= 'Missing url, title or live site configuration';
 			return false;

@@ -63,7 +63,7 @@ if ($juser->get('guest')) {
 			<h3>Tool Development</h3>
 			<p>
 				Welcome to <?php echo $this->forgeName;?>, the tool
-		        development area of <a href="<?php echo $this->hubLongURL;?>"><?php echo $this->hubShortURL;?></a>.
+		        development area of <a href="<?php echo $this->live_site;?>"><?php echo $this->live_site;?></a>.
 		        The following pages are maintained by the various owners of each
 		        tool.  Many of these tools are available as Open Source, and
 		        you can download the code via Subversion from this site.  Some authors choose to keep

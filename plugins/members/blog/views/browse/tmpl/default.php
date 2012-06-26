@@ -30,6 +30,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
+$live_site = rtrim(JURI::base(),'/');
+
 ?>
 <div class="aside">
 	<?php if ($juser->get('id') == $this->member->get('uidNumber') || $this->config->get('feeds_enabled')) : ?>
@@ -51,7 +53,7 @@ $juser =& JFactory::getUser();
 						
 						ximport("Hubzero_Hub");
 						$xhub = new Hubzero_Hub();
-						$feed = $xhub->getCfg("hubLongURL").$feed;
+						$feed = $live_site.$feed;
 					}
 					$feed = str_replace('https:://','http://',$feed);
 			?>

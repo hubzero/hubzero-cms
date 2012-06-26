@@ -893,7 +893,8 @@ class ContribtoolController extends JObject
 
 		// Get hub config
 		$xhub =& Hubzero_Factory::getHub();
-		$livesite 		= $xhub->getCfg('hubLongURL');
+		$jconfig =& JFactory::getConfig();
+		$live_site = rtrim(JURI::base(),'/');
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		
 		// Get config
@@ -940,7 +941,7 @@ class ContribtoolController extends JObject
 
 				// Collect metadata
 				$metadata = array();
-				$metadata['targetURL'] = $livesite . '/resources/' . $row->rid . '/?rev='.$row->local_revision;
+				$metadata['targetURL'] = $live_site . '/resources/' . $row->rid . '/?rev='.$row->local_revision;
 				$metadata['title'] = htmlspecialchars($title);
 				$metadata['pubYear'] = $pubyear;
 				

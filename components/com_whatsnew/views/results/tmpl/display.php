@@ -229,7 +229,10 @@ foreach ($this->results as $category)
 			{
 				$feed = DS . $feed;
 			}
-			$feed = $jconfig->getValue('config.live_site') . $feed;
+			$jconfig =& JFactory::getConfig();
+			$live_site = rtrim(JURI::base(),'/');
+				
+			$feed = $live_site . $feed;
 		}
 		$feed = str_replace('https:://', 'http://', $feed);
 
