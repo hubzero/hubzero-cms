@@ -37,28 +37,19 @@ class Hubzero_Password_CharacterClass
 
 	private function init()
 	{
-		$db = &JFactory::getDBO();
+		$classes[] = array('id' => '1', 'name' => 'uppercase', 'regex' => '[A-Z]',                                       'flag' => '1');
+		$classes[] = array('id' => '2', 'name' => 'numeric',   'regex' => '[0-9]',                                       'flag' => '1');
+		$classes[] = array('id' => '3', 'name' => 'lowercase', 'regex' => '[a-z]',                                       'flag' => '1');
+		$classes[] = array('id' => '4', 'name' => 'special',   'regex' => '[!"\'(),-.:;?[`{}#$%&*+<=>@^_|~\]\/\\\]',     'flag' => '1');
+		$classes[] = array('id' => '5', 'name' => 'nonalpha',  'regex' => '[!"\'(),\-.:;?[`{}#$%&*+<=>@^_|~\]\/\\\0-9]', 'flag' => '0');
+		$classes[] = array('id' => '6', 'name' => 'alpha',     'regex' => '[A-Za-z]',                                    'flag' => '0');
 
-		if (empty($db))	{
-	    	return false;
-		}
-
-		$query = "SELECT id,name,regex,flag FROM #__password_character_class;";
-
-		$db->setQuery($query);
-
-		self::$classes = $db->loadObjectList();
+		self::$classes = $classes;
 	}
 
     public function match($char = null)
 	{
 		$result = array();
-
-		$db = &JFactory::getDBO();
-
-		if (empty($db)) {
-		    return $result;
-		}
 
 		if (empty(self::$classes)) {
 			self::init();
@@ -75,10 +66,10 @@ class Hubzero_Password_CharacterClass
 		$char = $char{0};
 
 		foreach(self::$classes as $class) {
-			if (preg_match("/" . $class->regex . "/", $char)) {
+			if (preg_match("/" . $class['regex'] . "/", $char)) {
 				$match = new stdClass();
-				$match->name = $class->name;
-				$match->flag = $class->flag;
+				$match->name = $class['name'];
+				$match->flag = $class['flag'];
 				$result[] = $match;
 			}
 		}	
