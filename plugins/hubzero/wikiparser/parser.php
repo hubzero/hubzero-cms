@@ -496,6 +496,8 @@ class WikiParser
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 		$text = preg_replace_callback("/$UrlPtrn/", array(&$this,"handle_autolink"), $text);
 
+		$text = preg_replace_callback("/([\s]*)[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", array(&$this,"handle_autolink"), $text);
+
 		// Camelcase links (e.g. MyLink) 
 		if ($camelcase) {
 			$UpperPtn = "[A-Z]"; //"[A-Z\xc0-\xde]";
@@ -545,14 +547,41 @@ class WikiParser
 			$href = substr($href, 1);
 		}
 
+		if (substr($href, 0, strlen('mailto:')) == 'mailto:') 
+		{
+			$href = 'mailto:' . $this->obfuscate(substr($href, strlen('mailto:')));
+		}
+		else if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $href))
+		{
+			$href = 'mailto:' . $this->obfuscate($href);
+		}
+
 		$l = sprintf(
 			'<a class="ext-link" href="%s"%s>%s</a>',
 			$href,
 			' rel="external"',
 			trim($href)
 		);
-		array_push($this->alinks,$pfx.$l);
+		array_push($this->alinks, $pfx . $l);
 		return '<alink></alink>';
+	}
+
+	/**
+	 * Obfuscate an email adress
+	 * 
+	 * @param      string $email Address to obfuscate
+	 * @return     string
+	 */
+	public function obfuscate($email)
+	{
+		$length = strlen($email);
+		$obfuscatedEmail = '';
+		for ($i = 0; $i < $length; $i++) 
+		{
+			$obfuscatedEmail .= '&#' . ord($email[$i]) . ';';
+		}
+		
+		return $obfuscatedEmail;
 	}
 
 	/**
@@ -591,7 +620,7 @@ class WikiParser
 		$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
 		           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
-		if ((preg_match("/$UrlPtn/", $matches[2].$href) && strpos($matches[2].$href,'/') !== false)
+		if ((preg_match("/$UrlPtn/", $matches[2] . $href) && strpos($matches[2] . $href, '/') !== false)
 		 || substr($matches[0], 1, 1) == '/') {
 			/*$matchesext = array(
 				$matches[0],
@@ -791,15 +820,17 @@ class WikiParser
 	 * @param      boolean $html Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	private function unstrip( $text, $html=true )
+	private function unstrip($text, $html=true)
 	{
 		$this->_wikitohtml = $html;
 
 		if (is_array($this->shelf))
+		{
 			do {
 				$old = $text;
 				$text = strtr($text, $this->shelf);
 			 } while ($text != $old);
+		}
 
 		$text = preg_replace_callback('/<pre><\/pre>/i',array(&$this,"handle_restore_pre"),$text);
 		$text = preg_replace_callback('/<code><\/code>/i',array(&$this,"handle_restore_code"),$text);
@@ -812,20 +843,22 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'handle_pre_up'
+	 * Adds a count to first level PRE blocks 
+	 * Enables handling of nested blocks
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array $matches Code block matches
+	 * @return     string
 	 */
 	private function handle_pre_up($matches)
 	{
 		$this->counter++;
-		if ($this->counter == 1) {
-			return "{{{".$this->counter.$matches[1];
-		} else {
-			return "{{{".$matches[1];
+		if ($this->counter == 1) 
+		{
+			return '{{{' . $this->counter . $matches[1];
+		} 
+		else 
+		{
+			return '{{{' . $matches[1];
 		}
 	}
 
