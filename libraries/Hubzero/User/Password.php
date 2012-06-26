@@ -1130,6 +1130,12 @@ class Hubzero_User_Password
 		ximport('Hubzero_User_Password_History');
 		ximport('Hubzero_User_Profile');
 
+		// Get config values for min, max, and warning
+		$config =& JComponentHelper::getParams('com_members');
+		$shadowMin     = $config->get('shadowMin', '0');
+		$shadowMax     = $config->get('shadowMax', '120');
+		$shadowWarning = $config->get('shadowWarning', '7');
+
 		$hzup = self::getInstance($user);
 		
 		$oldhash = $hzup->__get('passhash');
@@ -1140,9 +1146,9 @@ class Hubzero_User_Password
 		$chgtime = time();
 		$chgtime = intval($chgtime / 86400);
 		$hzup->__set('shadowLastChange', $chgtime);
-		$hzup->__set('shadowMin', '0');
-		$hzup->__set('shadowMax', '120');
-		$hzup->__set('shadowWarning', '7');
+		$hzup->__set('shadowMin', $shadowMin);
+		$hzup->__set('shadowMax', $shadowMax);
+		$hzup->__set('shadowWarning', $shadowWarning);
 		$hzup->__set('shadowInactive', '0');
 		$hzup->__set('shadowExpire', null);
 		$hzup->update();
