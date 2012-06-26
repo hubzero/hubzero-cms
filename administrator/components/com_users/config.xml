@@ -19,5 +19,9 @@
    <option value="0">Hide</option>
    <option value="1">Show</option>
   </param>
+  <param name="allow_duplicate_emails" type="radio" default="0" label="Allow Duplicate Emails (DON'T DO IT!)" description="TIPALLOWDUPLICATEEMAILS">
+   <option value="0">No</option>
+   <option value="1">Yes</option>
+  </param>
  </params>
 </config>

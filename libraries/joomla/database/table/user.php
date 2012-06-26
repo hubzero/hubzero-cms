@@ -188,8 +188,10 @@ class JTableUser extends JTable
 		$this->_db->setQuery( $query );
 		$xid = intval( $this->_db->loadResult() );
 		if ($xid && $xid != intval( $this->id )) {
-			$xhub = Hubzero_Factory::getHub();
-			$allow_dupes = $xhub->getCfg('deprecatedDoNotEnforceUniqueEmailAddresses',false);
+			
+			$usersConfig = &JComponentHelper::getParams( 'com_users' );
+			$allow_dupes = $usersConfig->get( 'allow_duplicate_emails' );		
+			
 			if (!$allow_dupes) {
 				$this->setError( JText::_( 'WARNREG_EMAIL_INUSE' ) );
 				return false;
