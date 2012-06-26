@@ -167,7 +167,12 @@ defined('_JEXEC') or die('Restricted access');
 		// Password
 		if ($this->registrationPassword != REG_HIDE) {
 			$required = ($this->registrationPassword == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['password'])) ? '<span class="error">' . $this->xregistration->_invalid['password'] . '</span>' : '';
+
+			if (!empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password']))
+				$message ='<span class="error">' . $this->xregistration->_invalid['password'] . '</span>';
+			else
+				$message = '';
+
 			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 			$html .= "\t\t".'<div class="group">'."\n";
@@ -191,6 +196,31 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 			$html .= "\t\t".'</div>'."\n";
+			if (count($this->password_rules) > 0) {
+				$html .= "\t\t"."<ul>"."\n";
+				foreach ($this->password_rules as $rule)
+				{
+					if (!empty($rule))
+					{
+						if (!empty($this->xregistration->_invalid['password']) && is_array($this->xregistration->_invalid['password'])) {
+							$err = in_array($rule, $this->xregistration->_invalid['password']);
+						} else {
+							$err = '';
+						}
+						$mclass = ($err)  ? ' class="error"' : '';
+						$html .= "\t\t\t"."<li $mclass>".$rule."</li>"."\n";
+					}
+				}
+				if (!empty($this->xregistration->_invalid['password']) && is_array($this->xregistration->_invalid['password'])) {
+					foreach ($this->xregistration->_invalid['password'] as $msg) 
+					{
+						if (!in_array($msg,$this->password_rules)) {
+							$html .= "\t\t\t".'<li class="error">'.$msg."</li>"."\n";
+						}
+					}
+				}
+				$html .= "\t\t"."</ul>"."\n";
+			}
 		}
 		$hconfig =& JComponentHelper::getParams('com_register');
 		if ($hconfig->get('passwordMeter')) {
