@@ -306,6 +306,8 @@ class plgContentXhubtags extends JPlugin
 	 */
 	private function _getCfg($options)
 	{
+		$jconfig = JFactory::getConfig();
+		
 		$options = trim($options, " \n\t\r}");
 
 		$sitename = $jconfig->getValue('config.sitename');
