@@ -116,6 +116,7 @@ class Hubzero_Password_Rule
 		}
 
 		ximport('Hubzero_Password_Blacklist');
+		ximport('Hubzero_User_Password');
 		ximport('Hubzero_User_Password_History');
 
 		$fail = array();
