@@ -33,7 +33,6 @@ HUBzero is a registered trademark of Purdue University.
 	<copyright>(C) 2009 Network for Computational Nanotechnology</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>alisa@purdue.edu</authorEmail>
-	<authorUrl>alisa.nanohub.org</authorUrl>
 	<version>1</version>
 	<description>This module will display a list of questions submitted by the user, as well as those user can answer.</description>
 	<files>

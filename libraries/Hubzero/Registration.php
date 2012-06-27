@@ -826,15 +826,13 @@ class Hubzero_Registration
 			else
 			{
 				$eid = $this->getEmailId($email);
-
-				if ($sitename == 'nanoHUB.org')
-					$allow_duplicate_email = true;
-				else
-					$allow_duplicate_email = false;
-
-				if (!$allow_duplicate_email && ($eid && $eid != $id)) // TODO: RESOLVE NANOHUB MULTIPLE EMAIL ACCOUNT USAGE
+				
+				$usersConfig = &JComponentHelper::getParams( 'com_users' );
+				
+				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
+				
+				if (!$allow_duplicate_emails && ($eid && $eid != $id)) // TODO: RESOLVE MULTIPLE EMAIL ACCOUNT USAGE
 				{
-					//$this->_missing['email'] = 'Valid Email';
 					$this->_invalid['email'] = 'An existing account is already using this e-mail address.';
 				}
 			}

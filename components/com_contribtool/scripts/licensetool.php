@@ -34,7 +34,7 @@
 #    licensetool ?flags? <project>
 #
 #    where ?flags? includes:
-#      -hub nanohub.org .. doing install for this hub
+#      -hub example.com .. doing install for this hub
 #      -root /where ...... install into this directory (default /apps)
 #      -revision num ..... install a particular subversion revision
 #                          from the trunk (default is latest revision)

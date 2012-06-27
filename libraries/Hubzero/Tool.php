@@ -1782,7 +1782,7 @@ class Hubzero_Tool
 	static public function getToolGroups($toolid, $groups = array())
     {
 		$db = &JFactory::getDBO();
-        $query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
+        $query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique
         $query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
         $query .= "WHERE g.toolid = '".$toolid."' AND g.role=0 ";
         $db->setQuery( $query );

@@ -46,7 +46,7 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 .style2 {background-color:#ffffff;}
 </style>
 <meta http-equiv='content-type' content='text/html; charset=utf-8'/>
-<title>nanoHUB User Animation</title>
+<title>User Animation</title>
 <script type='text/javascript' src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=".$key."'></script>
 <script type='text/javascript' src='/components/".$option."/maps/js/elabel.js'></script>
 <script type='text/javascript'>

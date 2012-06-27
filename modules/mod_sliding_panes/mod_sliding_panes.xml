@@ -34,7 +34,6 @@ HUBzero is a registered trademark of Purdue University.
 	<copyright>(C) 2000 - 2004 Miro International Pty Ltd</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>support@hubzero.org</authorEmail>
-	<authorUrl>nanohub.org</authorUrl>
 	<version>1.5.0</version>
 	<description>Rotate through panes of content</description>
 	<files>

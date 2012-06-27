@@ -44,11 +44,11 @@ class TwitterMacro extends WikiMacro
 	{
 		$txt = array();
 		$txt['wiki'] = "Embeds a Twitter Feed into the page";
-		$txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@nanohub) or search by trend(#nanotechnology), followed by a comma(,) and then the number of tweets to display.</p>
+		$txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero) or search by trend(#hubzero), followed by a comma(,) and then the number of tweets to display.</p>
 						<p>Examples:</p>
 						<ul>
-							<li><code>[[Twitter(@nanohub,2)]]</code></li>
-							<li><code>[[Twitter(#nanotechnology,5)]]</code></li>
+							<li><code>[[Twitter(@hubzero,2)]]</code></li>
+							<li><code>[[Twitter(#hubzero,5)]]</code></li>
 						</ul>
 						<p>Displays:</p>
 						<link type="text/css" rel="stylesheet" href="/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.css" />
@@ -57,7 +57,7 @@ class TwitterMacro extends WikiMacro
 							window.addEvent("domready",function() {
 											var twitterFeed = new HUB.Twitter("twitterMacroList", {
 												type: "user",
-												username: "@nanohub",
+												username: "@hubzero",
 												trend: "",
 												tweets: 2,
 												linkify:true

@@ -2,7 +2,7 @@
 
 Wiki markup is a core feature for Topic pages, tightly integrating all the other parts of Trac into a flexible and powerful whole.
 
-nanoHUB has a built in small and powerful wiki rendering engine. This wiki engine implements an ever growing subset of the commands from other popular Wikis, especially [http://moinmoin.wikiwikiweb.de/ MoinMoin]. 
+This site has a built in small and powerful wiki rendering engine. This wiki engine implements an ever growing subset of the commands from other popular Wikis, especially [http://moinmoin.wikiwikiweb.de/ MoinMoin]. 
 
 This page demonstrates the formatting syntax available anywhere [Help:WikiFormatting Wiki Formatting] is allowed.
 

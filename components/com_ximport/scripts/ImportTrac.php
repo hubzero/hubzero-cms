@@ -60,7 +60,7 @@ class ImportTrac extends XImportHelperScript
 		$db   = &JFactory::getDBO();
 
 	if (0) {
-	    $infrastructure_projects = array( 'ncn_students','pharmengine','rkspack' );
+	    $infrastructure_projects = array();
 
 		foreach ($infrastructure_projects as $group)
 		{
@@ -92,7 +92,7 @@ class ImportTrac extends XImportHelperScript
 			}
 		}
 
-	    $infrastructure_projects = array( 'nanowhim','rappture','rappture-bat','rappture-runtime' );
+	    $infrastructure_projects = array();
 
 		foreach ($infrastructure_projects as $group)
 		{
@@ -126,7 +126,7 @@ class ImportTrac extends XImportHelperScript
 
 		die();
 
-	    $infrastructure_projects = array( 'breeze-admin','hubzero','lib-gangli','mw','nanohub','nanohub-for-kids','nanohub-support','ncn','sysman','xhub','nmi' );
+	    $infrastructure_projects = array( );
 
 		foreach ($infrastructure_projects as $group)
 		{
@@ -160,7 +160,7 @@ class ImportTrac extends XImportHelperScript
 
 	    die();
 
-	    $group_projects = array( 'alam_group','group_p_in_si','klimeck','koslowski','mse597g','piezo_frg','strachangroup' );
+	    $group_projects = array();
 
 		foreach ($group_projects as $group)
 		{

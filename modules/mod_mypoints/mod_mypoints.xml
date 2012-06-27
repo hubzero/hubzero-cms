@@ -34,7 +34,6 @@ HUBzero is a registered trademark of Purdue University.
 	<copyright>(C) 2007 Network for Computational Nanotechnology</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>zooley@purdue.edu</authorEmail>
-	<authorUrl>zooley.nanohub.org</authorUrl>
 	<version>1</version>
 	<description>This module will display a point total and list of most recent point transactions.</description>
 	<files>

@@ -360,10 +360,4 @@ if (!$this->app['sess']) {
         <?php endif;?>
 <?php } ?>
 
-<?php /*if ($this->authorized === 'admin') {
-	echo '<p>Administrator viewing '.$this->app['username'].' '.$this->app['ip'].' '.$this->app['sess'].'</p>';
-
-
-	<p id="powered-by">Powered by <a href="https://nanohub.org/about/middleware/#Maxwell" rel="external">Maxwell&#146;s D&#xE6;mon</a>.</p>
-}*/ ?>
 </div><!-- / .main section #session-section -->

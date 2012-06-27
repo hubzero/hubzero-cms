@@ -786,7 +786,7 @@ HUB.Presenter = {
 								<a href=\"http://twitter.com/home?status=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
 							</div> \
 						</div> \
-						<a id=\"replay-back\" href=\"#\">&laquo; Back to nanoHUB.org</a> \
+						<a id=\"replay-back\" href=\"#\">&laquo; Back to site</a> \
 						<a id=\"replay-now\" href=\"#\">Replay Presentation</a> \
 					  </div>";
 		

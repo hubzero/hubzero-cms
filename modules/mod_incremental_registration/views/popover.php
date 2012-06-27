@@ -2,7 +2,7 @@
 <div id="questions">
 	<h2>Help us keep this website and its services free</h2>
 	<p>Please provide a little more information about yourself. <small>(<a href="/legal/privacy">Why do we need this information?</a>)</small></p>
-	<p>We'll award you with <strong>15</strong> points for each question you answer. You can use these points towards items in the nanoHUB <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
+	<p>We'll award you with <strong>15</strong> points for each question you answer. You can use these points towards items in the site <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
 	<form action="" method="post">
 		<ol>
 				<?php if (isset($row['orgtype'])): ?>
@@ -52,7 +52,7 @@
 				<?php endif; ?>
 				<?php if (isset($row['reason'])): ?>
 				<li>
-					<label for="reason">What is the primary purpose of your nanoHUB account? </label>
+					<label for="reason">What is the primary purpose of your account? </label>
 					<div style="margin-left: 4em">
 					<?php if (isset($errors['reason'])): ?>
 						<p class="warning">Please select the reason for your account or enter one in the provided "other" field</p>

@@ -329,7 +329,7 @@ class GroupsController extends Hubzero_Controller
 	 */
 	public function getMemberProfile( $user )
 	{
-		//look up username in nanohub profiles
+		//look up username in profiles
 		if (is_numeric($user)) {
 			$sql = "SELECT * FROM #__xprofiles WHERE uidNumber='".$user."'";
 		} else {

@@ -114,7 +114,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				$increm .= '<p>Since you\'ve already filled in some of your profile we have just awarded you <strong>'.$awards['new'].'</strong>.</p>';
 			}
 			
-			$increm .= '<p>Fill in any remaining profile fields and get <strong>'.$incrOpts->getAwardPerField().'</strong> for each. You can exchange these points for <a href="store">nanoHUB products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
+			$increm .= '<p>Fill in any remaining profile fields and get <strong>'.$incrOpts->getAwardPerField().'</strong> for each. You can exchange these points for <a href="store">products and services</a>, or place them as bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a> to influence the direction of the site and the tools hosted on it.</p>';
 			
 			$increm .= '</div>';
 			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']).'</span></div>';

@@ -143,7 +143,6 @@ class Hubzero_Validate
 			"mailnull",
 			"man",
 			"nagios",
-			"nanohub",
 			"netdump",
 			"news",
 			"nfsnobody",
