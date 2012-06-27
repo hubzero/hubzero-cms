@@ -481,8 +481,6 @@ class ToolsController extends Hubzero_Controller
 	 */
 	protected function invoke()
 	{
-		ximport('Hubzero_Ldap');
-
 		// Check that the user is logged in
 		if ($this->juser->get('guest')) {
 			$this->login();
@@ -586,11 +584,6 @@ class ToolsController extends Hubzero_Controller
 		// Find out how many sessions the user is ALLOWED to run.
 		$xprofile =& Hubzero_Factory::getProfile();
 		$remain = $xprofile->get('jobsAllowed') - $appcount;
-
-		if (!Hubzero_Ldap::user_exists($xprofile->get('username'))) {
-			//$xlog->logDebug("mw::invoke create ldap user for this account");
-			$xprofile->create('ldap');
-		}
 
 		// Have they reached their session quota?
 		if ($remain <= 0) {
