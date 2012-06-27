@@ -57,12 +57,12 @@ class ToolsViewTools extends JView
 
 		// Get some vars to fill in text
 		$forgeName = $xhub->getCfg('forgeName');
-		$forgeURL = $xhub->getCfg('forgeURL');
 		$config =& JFactory::getConfig();
 		$jconfig =& JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
-
+		$slive_site = preg_replace('/^http:\/\//','https://',$live_site,1);
+		
 		// Get the tool list
 		$appTools = $model->getApplicationTools();
 
@@ -70,7 +70,7 @@ class ToolsViewTools extends JView
 		$image = Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
 
 		$this->assignRef( 'forgeName', $forgeName );
-		$this->assignRef( 'forgeURL', $forgeURL);
+		$this->assignRef( 'slive_site', $slive_site);
 		$this->assignRef( 'live_site', $live_site);
 		$this->assignRef( 'sitename', $sitename);
 		$this->assignRef( 'appTools', $appTools);

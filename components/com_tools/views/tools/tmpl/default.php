@@ -103,9 +103,9 @@ if (count($this->appTools) > 0) {
 			}
 ?>
 				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
-					<?php /*<td><a href="<?php echo $this->forgeURL;?>/tools/<?php echo $project;?>/wiki"><?php echo $project;?></a></td>*/ ?>
-					<td><a href="<?php echo $this->forgeURL;?>/tools/<?php echo $project->toolname;?>/wiki" title="<?php echo htmlentities(stripslashes($project->title),ENT_COMPAT,'UTF-8'); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($project->title), 50, 0); ?></a></td>
-					<td><a href="<?php echo $this->forgeURL;?>/tools/<?php echo $project->toolname;?>/wiki"><?php echo $project->toolname; ?></a></td>
+					<?php /*<td><a href="<?php echo $this->slive_site;?>/tools/<?php echo $project;?>/wiki"><?php echo $project;?></a></td>*/ ?>
+					<td><a href="<?php echo $this->slive_site;?>/tools/<?php echo $project->toolname;?>/wiki" title="<?php echo htmlentities(stripslashes($project->title),ENT_COMPAT,'UTF-8'); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($project->title), 50, 0); ?></a></td>
+					<td><a href="<?php echo $this->slive_site;?>/tools/<?php echo $project->toolname;?>/wiki"><?php echo $project->toolname; ?></a></td>
 					<td><span class="<?php echo $status; ?>-code"><?php echo $status; ?></span></td>
 				</tr>
 <?php

@@ -53,7 +53,7 @@
 #                          directory, assumed to be HubConfiguration Class
 #                          with simple variable assignments.  In
 #                          particular, we look for:
-#                            $forgeURL ......... xhub.org
+#                            $forgeURL ......... example.com
 #                            $svn_user ....... user for subversion
 #                            $svn_password ... passwd for subversion
 #
