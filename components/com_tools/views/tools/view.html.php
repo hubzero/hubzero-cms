@@ -58,9 +58,9 @@ class ToolsViewTools extends JView
 		// Get some vars to fill in text
 		$forgeName = $xhub->getCfg('forgeName');
 		$forgeURL = $xhub->getCfg('forgeURL');
-		$hubShortName = $xhub->getCfg('hubShortName');
 		$config =& JFactory::getConfig();
 		$jconfig =& JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
 
 		// Get the tool list
@@ -72,7 +72,7 @@ class ToolsViewTools extends JView
 		$this->assignRef( 'forgeName', $forgeName );
 		$this->assignRef( 'forgeURL', $forgeURL);
 		$this->assignRef( 'live_site', $live_site);
-		$this->assignRef( 'hubShortName', $hubShortName );
+		$this->assignRef( 'sitename', $sitename);
 		$this->assignRef( 'appTools', $appTools);
 		$this->assignRef( 'image', $image);
 

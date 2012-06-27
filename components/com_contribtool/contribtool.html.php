@@ -321,19 +321,20 @@ class ContribtoolHtml
 	{
 		// get hub parameters
 		$xhub =& Hubzero_Factory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
 
 		$toolnum = ($status['state']!=9) ? JText::_('THIS_TOOL').'  ': '';
 		if(!$status['published'] && ContribtoolHtml::toolActive($status['state']) ) {
 			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('TOOLS')). ' '
-			.strtolower(JText::_('UNDER_DEVELOPMENT')).' '.JText::_('ON').' '.$xhub->getCfg('hubShortName');
+			.strtolower(JText::_('UNDER_DEVELOPMENT')).' '.JText::_('ON').' '.$sitename;
 		}
 		else if($status['published'] && ContribtoolHtml::toolActive($status['state'])) {
 			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('TOOLS')). ' '
-			.strtolower(JText::_('PUBLISHED')).' '.JText::_('ON').' '.$xhub->getCfg('hubShortName');
+			.strtolower(JText::_('PUBLISHED')).' '.JText::_('ON').' '.$sitename;
 		}
 		else if($status['state']==8) {
-			$toolnum .= JText::_('WAS_ONCE_PUBLISHED').' '.JText::_('ON').' '.$xhub->getCfg('hubShortName').' '.JText::_('NOW_RETIRED');
+			$toolnum .= JText::_('WAS_ONCE_PUBLISHED').' '.JText::_('ON').' '.$sitename.' '.JText::_('NOW_RETIRED');
 		}
 
 		return $toolnum;
@@ -648,8 +649,8 @@ class ContribtoolHtml
 	{
 		// get configs
 		$xhub 			=& Hubzero_Factory::getHub();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$config =& JFactory::getConfig();
+		$sitename = $config->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
 		
 		// get tool access text
@@ -685,7 +686,7 @@ class ContribtoolHtml
 
 		//  created
         case 2:
-			$par  = '		<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').'  '.JText::_('WHATSNEXT_AREA_CREATED').' <a href="'.$developer_url.'">'.$developer_site.'</a>:<br />';
+			$par  = '		<p>'.ucfirst(JText::_('THE')).' '.$sitename.'  '.JText::_('WHATSNEXT_AREA_CREATED').' <a href="'.$developer_url.'">'.$developer_site.'</a>:<br />';
 			$par .= '		<a href="'.$developer_url.$project_path.$status['toolname'].'/wiki">'.$developer_url.$project_path.$status['toolname'].'/wiki</a></p>'.n;
 			$par .= '		<p>'.JText::_('WHATSNEXT_FOLLOW_STEPS').':</p>'.n;
 			$par .= '		<ul>'.n;
@@ -708,7 +709,7 @@ class ContribtoolHtml
 
 		//  uploaded
         case 3:
-			$par = '<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS').' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 3 '.JText::_('DAYS').'.</p>';
+			$par = '<p>'.ucfirst(JText::_('THE')).' '.$sitename.' '.JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS').' '.$sitename.' '.JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 3 '.JText::_('DAYS').'.</p>';
 			$step2 = '		<li class="complete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>';
 			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 		break;
@@ -738,15 +739,15 @@ class ContribtoolHtml
 
 		//  updated
         case 5:
-			$par = '<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS').' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 3 '.JText::_('DAYS').'.</p>';
+			$par = '<p>'.ucfirst(JText::_('THE')).' '.$sitename.' '.JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS').' '.$sitename.' '.JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 3 '.JText::_('DAYS').'.</p>';
 			$step2 = '		<li class="complete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>' ;
 			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 		break;
 
 		//  approved
         case 6:
-			$par = '		<p>'.ucfirst(JText::_('THE')).' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_APPROVED_SINCE').'  '.JText::_('WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess.'.</p>';
-			$par .= '		<p> '.JText::_('WHATSNEXT_APPROVED_PLS_CLICK').' '.$xhub->getCfg('hubShortName').': <br />'.n;
+			$par = '		<p>'.ucfirst(JText::_('THE')).' '.$sitename.' '.JText::_('WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_APPROVED_SINCE').'  '.JText::_('WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess.'.</p>';
+			$par .= '		<p> '.JText::_('WHATSNEXT_APPROVED_PLS_CLICK').' '.$sitename.': <br />'.n;
 			$par .= '	 <a href="'.JRoute::_('index.php?option=com_resources&alias='.$status['toolname']).'" ><'.$live_site.'/tools/'.$status['toolname'].'</a></p>';
 			$step2 = '		<li class="complete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>' ;
 			$step4 = '		<li class="complete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
@@ -765,7 +766,7 @@ class ContribtoolHtml
 
 		//  retired
         case 8:
-			$par = '		<p>'.JText::_('WHATSNEXT_RETIRED_FROM').' '.$live_site.'. '.JText::_('CONTACT').' '.$xhub->getCfg('hubShortName').' '.JText::_('CONTACT_SUPPORT_TO_REPUBLISH').' .</p>	';
+			$par = '		<p>'.JText::_('WHATSNEXT_RETIRED_FROM').' '.$live_site.'. '.JText::_('CONTACT').' '.$sitename.' '.JText::_('CONTACT_SUPPORT_TO_REPUBLISH').' .</p>	';
 			$par .= '		<h3>'.JText::_('WHATSNEXT_YOUR_OPTIONS').':</h3>'.n;
 			$par .= '		<ul class="youroptions">'.n;
 			$par .= '		<li> '.JText::_('WHATSNEXT_RETIRED_WANT_REPUBLISH').'. <span id="Updated"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_RETIRED_PLS_REPUBLISH').'</a></span></li>'.n;
@@ -774,7 +775,7 @@ class ContribtoolHtml
 
 		//  abandoned
         case 9:
-			$par = '		<p> '.JText::_('WHATSNEXT_ABANDONED_MSG').' '.$xhub->getCfg('hubShortName').' '.JText::_('WHATSNEXT_ABANDONED_CONTACT').'.</p>	';
+			$par = '		<p> '.JText::_('WHATSNEXT_ABANDONED_MSG').' '.$sitename.' '.JText::_('WHATSNEXT_ABANDONED_CONTACT').'.</p>	';
 		break;
 		}
 			 $html = $par.n;
@@ -782,7 +783,7 @@ class ContribtoolHtml
 			 if($step2) {
 			 $html .= '		<h4>'.JText::_('WHATSNEXT_REMAINING_STEPS').':</h4>'.n;
 			 $html .= '		<ul>'.n;
-			 $html .= ' 		<li class="complete">'.JText::_('WHATSNEXT_REGISTER').' '.$xhub->getCfg('hubShortName').'</li>'.n;
+			 $html .= ' 		<li class="complete">'.JText::_('WHATSNEXT_REGISTER').' '.$sitename.'</li>'.n;
 			 $html .= $step2.n;
 			 $html .= $step3.n;
 			 $html .= $step4.n;
@@ -1053,7 +1054,8 @@ class ContribtoolHtml
 	public function writeToolForm($option, $title, $admin, $juser, $defaults, $error, $id, $task, $config, $editversion='dev')
 	{
 		$xhub =& Hubzero_Factory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
 
 		$exec_pu = isset($config->parameters['exec_pu']) ? $config->parameters['exec_pu'] : 1;
 
@@ -1166,7 +1168,7 @@ class ContribtoolHtml
 				   </label>
                     <label><?php echo JText::_('DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 				   		 <input type="text" name="tool[developers]" id="t_team" value="<?php echo ContribToolHtml::getDevTeam($defaults['developers'], $id);  ?>" />
-                        <p class="hint"><?php echo $hubShortName.' '.JText::_('HINT_TEAM'); ?> </p>
+                        <p class="hint"><?php echo $sitename.' '.JText::_('HINT_TEAM'); ?> </p>
 				   </label>               
                    <p class="submit"><input type="submit" value="<?php echo (!$id) ? JText::_('REGISTER_TOOL') : JText::_('SAVE_CHANGES'); ?>" />
                     <?php if($id) { echo ' &nbsp;&nbsp;<a href="'.JRoute::_('index.php?option=com_contribtool&amp;task=status&amp;toolid='.$id).'" title="'.JText::_('HINT_CANCEL').'">'.JText::_('CANCEL').'</a>'; }?>
@@ -1657,7 +1659,8 @@ class ContribtoolHtml
 
 		// get configs
 		$xhub 			=& Hubzero_Factory::getHub();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
 
 		// get tool access text
@@ -2089,8 +2092,9 @@ class ContribtoolHtml
 
 		$dev = ($version=='dev') ? 1: 0;
 		$xhub =& Hubzero_Factory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
-
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
+		
 		if($version=='dev') {
 			$v = ($status['version'] && $status['version']!= $status['currentversion']) ? $status['version'] : '';
 		}
@@ -2341,7 +2345,8 @@ if($tagname!='screenshots' and $tagname!='bio') {
 
 		$juser =& JFactory::getUser();
 		$xhub =& Hubzero_Factory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');
 		$license = '/legal/license';
 
 		$html = '';

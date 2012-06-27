@@ -176,7 +176,8 @@ class CitationFormat
 		//get hub specific details
 		ximport('Hubzero_Hub');
 		$hub = new Hubzero_Hub();
-		$hub_name = $hub->getCfg("hubShortName");
+		$jconfig = JFactory::getConfig();
+		$hub_name = $jconfig->getValue('config.sitename');
 		$hub_url = rtrim(JURI::base(),'/');
 
 		$c_type = "journal";

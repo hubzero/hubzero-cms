@@ -275,7 +275,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
-		$hubShortName 	= $xhub->getCfg('hubShortName');
+		$sitename 	= $jconfig->getValue('config.sitename');
 		
 		// Get config
 		$config =& JComponentHelper::getParams($this->_option);

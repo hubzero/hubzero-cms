@@ -1304,9 +1304,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		$xhub =& Hubzero_Factory::getHub();
 		$config =& JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
+		$sitename = $config->getValue('config.sitename');
 		
-		$doc->title       = $xhub->getCfg('hubShortName') . ' ' . JText::_('SUPPORT_RSS_TITLE');
-		$doc->description = JText::sprintf('SUPPORT_RSS_DESCRIPTION', $xhub->getCfg('hubShortName'));
+		$doc->title       = $sitename . ' ' . JText::_('SUPPORT_RSS_TITLE');
+		$doc->description = JText::sprintf('SUPPORT_RSS_DESCRIPTION', $sitename);
 		$doc->copyright   = JText::sprintf('SUPPORT_RSS_COPYRIGHT', date("Y"), $live_site);
 		$doc->category    = JText::_('SUPPORT_RSS_CATEGORY');
 

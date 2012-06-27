@@ -2662,9 +2662,9 @@ class ContribtoolController extends JObject
 		$database 		=& JFactory::getDBO();
 		$now 			= date( 'Y-m-d H:i:s' );
 		$xhub 			=& Hubzero_Factory::getHub();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$app 			=& JFactory::getApplication();
 		$jconfig =& JFactory::getConfig();
+		$sitename = $jconfig->getValue('config.sitename');		
 		$live_site = rtrim(JURI::base(),'/');
 		$exportmap     = array('@OPEN'=>null,'@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 		$juser =& JFactory::getUser();
@@ -2678,7 +2678,7 @@ class ContribtoolController extends JObject
 		$doiservice = isset($this->config->parameters['doi_service']) ? $this->config->parameters['doi_service'] : 'http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl';
 		$old_doi = isset($this->config->parameters['usedoi']) ? $this->config->parameters['usedoi'] : 0;
 		$new_doi = isset($this->config->parameters['new_doi']) ? $this->config->parameters['new_doi'] : 0;
-		$doiprefix = $doiprefix ? $doiprefix : strtolower($hubShortName).'-r';
+		$doiprefix = $doiprefix ? $doiprefix : strtolower($sitename).'-r';
 		$invokedir = isset($this->config->parameters['invokescript_dir']) ? $this->config->parameters['invokescript_dir'] : DS.'apps';
 		$invokedir = rtrim($invokedir,"\\/");
 		$output = array('class'=>'passed', 'msg'=>JText::_('NOTICE_SUCCESS_TOOL_PUBLISHED'), 'pass'=>'', 'fail'=>'');

@@ -967,7 +967,8 @@ class MembersController extends Hubzero_Controller
 		{
 			$juri =& JURI::getInstance();
 			$xhub =& Hubzero_Factory::getHub();
-			$hubName = $xhub->getCfg('hubShortName');
+			$jconfig = JFactory::getConfig();
+			$sitename = $jconfig->getValue('config.sitename');
 			$live_site = rtrim(JURI::base(),'/');
 
 			// Email subject
@@ -1502,7 +1503,7 @@ class MembersController extends Hubzero_Controller
 		// Email message
 		$eview = new JView( array('name'=>'emails','layout'=>'confirm') );
 		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->login = $login;
 		$eview->confirm = $confirm;
 		$eview->baseURL = $juri->base();

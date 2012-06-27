@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		send an email including all of this text to the new user at <?php echo $this->target_xprofile->get('email'); ?>:
 	</p>
 	<blockquote>
-<pre>An account has been created on your behalf at <?php echo $this->hubShortName; ?> by <?php echo $this->xprofile->get('name'); ?>.
+<pre>An account has been created on your behalf at <?php echo $this->sitename; ?> by <?php echo $this->xprofile->get('name'); ?>.
 
 Your initial new account username is: <?php echo $this->target_juser->get('username'); ?><br />
 Your initial new account password is: <?php echo $this->target_xprofile->get('proxyPassword'); ?><br />
