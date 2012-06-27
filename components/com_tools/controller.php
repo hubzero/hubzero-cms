@@ -219,11 +219,11 @@ class ToolsController extends Hubzero_Controller
 		$model = new ToolsModelTools();
 
 		// Get some vars to fill in text
-		$forgeName = $xhub->getCfg('forgeName');
 		$config =& JFactory::getConfig();
 		$sitename = $config->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
 		$slive_site = preg_replace('/^http:\/\//','https://',$live_site,1);
+		$forgeName = $sitename . " FORGE";
 		
 		// Get the tool list
 		$appTools = $model->getApplicationTools();

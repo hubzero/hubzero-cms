@@ -56,12 +56,12 @@ class ToolsViewTools extends JView
 		$model = & $this->getModel();
 
 		// Get some vars to fill in text
-		$forgeName = $xhub->getCfg('forgeName');
 		$config =& JFactory::getConfig();
 		$jconfig =& JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
 		$slive_site = preg_replace('/^http:\/\//','https://',$live_site,1);
+		$forgeName = $sitename . " FORGE";
 		
 		// Get the tool list
 		$appTools = $model->getApplicationTools();
