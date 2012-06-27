@@ -197,7 +197,7 @@ class FileMacro extends WikiMacro
 		{
 			$this->config->set('filepath', $this->filepath);
 		}
-		$imgs = explode(',', $this->config->get('img_ext'));
+		$imgs = explode(',', $this->config->get('img_ext', 'jpg, jpeg, jpe, gif, png'));
 		array_map('trim', $imgs);
 		array_map('strtolower', $imgs);
 		$this->imgs = $imgs;
@@ -266,7 +266,7 @@ class FileMacro extends WikiMacro
 			if ($alt)
 			{
 				$nid = null;
-				$bits = explode('/', $this->config->get('filepath'));
+				$bits = explode('/', $this->config->get('filepath', '/site/wiki'));
 				foreach ($bits as $bit)
 				{
 					if (is_numeric($bit))
@@ -282,7 +282,7 @@ class FileMacro extends WikiMacro
 					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
 				}
 			}
-			$path  = JPATH_ROOT . $this->config->get('filepath');
+			$path  = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;
 		}
@@ -402,18 +402,24 @@ class FileMacro extends WikiMacro
 							$attribs[] = $k . '="' . $v . '"';
 						}
 					}
+					$html  = '<span class="figure">';
 					$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . '" />';
 					if ($attr['href'] == 'none') 
 					{
-						$html = $img;
+						$html .= $img;
 					} 
 					else 
 					{
 						$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
 						$attr['rel'] = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
-						$html = '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';
+						$html .= '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';
 					}
+					if (isset($attr['desc']) && $attr['desc'])
+					{
+						$html .= '<span class="figcaption">' . $attr['desc'] . '</span>';
+					}
+					$html .= '</span>';
 				}
 				else
 				{

@@ -113,6 +113,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 <p>Examples:</p>
 <ul>
 <li><code>[[Image(photo.jpg)]]</code> # simplest</li>
+<li><code>[[Image(photo.jpg, desc="My caption here")]]</code> # caption text</li>
 <li><code>[[Image(photo.jpg, 120px)]]</code> # with image width size</li>
 <li><code>[[Image(photo.jpg, right)]]</code> # aligned by keyword</li>
 <li><code>[[Image(photo.jpg, nolink)]]</code>       # without link to source</li>
@@ -248,7 +249,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		{
 			$this->config->set('filepath', $this->filepath);
 		}
-		$imgs = explode(',', $this->config->get('img_ext'));
+		$imgs = explode(',', $this->config->get('img_ext', 'jpg, jpeg, jpe, gif, png'));
 		array_map('trim', $imgs);
 		array_map('strtolower', $imgs);
 		$this->imgs = $imgs;
@@ -299,7 +300,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		else 
 		{
 			// Return error message
-			return '(Image(' . $content . ') failed - File not found)';
+			return '(Image(' . $content . ') failed - File not found)' . $this->_path($file);
 		}
 	}
 	
@@ -321,7 +322,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			if ($alt)
 			{
 				$nid = null;
-				$bits = explode('/', $this->config->get('filepath'));
+				$bits = explode('/', $this->config->get('filepath', '/site/wiki'));
 				foreach ($bits as $bit)
 				{
 					if (is_numeric($bit))
@@ -336,7 +337,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
 				}
 			}
-			$path  = JPATH_ROOT . $this->config->get('filepath');
+			$path  = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;
 		}
@@ -407,21 +408,28 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 				$attribs[] = $k . '="' . $v . '"';
 			}
 		}
-		
+
+		$html  = '<span class="figure">';
+
 		$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . '" />';
-		
+
 		if ($attr['href'] == 'none') 
 		{
-			$html = $img;
+			$html .= $img;
 		} 
 		else 
 		{
 			$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
 			$attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
-			$html = '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';
+			$html .= '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';
 		}
-		
+		if (isset($attr['desc']) && $attr['desc'])
+		{
+			$html .= '<span class="figcaption">' . $attr['desc'] . '</span>';
+		}
+		$html .= '</span>';
+
 		return $html;
 	}
 }

@@ -863,3 +863,24 @@
 	.com_wiki .fourth {
 		padding-right: 0;
 	}
+/* Figures */
+	.com_wiki .figure img {
+		margin: 0.5em;
+		padding: 0;
+		background: transparent;
+		text-align: center;
+	}
+	.com_wiki .figure {
+		display: inline-block;
+		background: #fff;
+		border: 1px solid #eaeaea;
+	}
+	.com_wiki .figure a {
+		border: none;
+	}
+	.com_wiki .figcaption {
+		display: block;
+		margin: 0;
+		padding: 0.5em;
+		background: #efefef;
+	}
