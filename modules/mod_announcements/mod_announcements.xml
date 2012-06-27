@@ -3,10 +3,8 @@
 	<name>Announcements Display</name>
 	<author>HUBzero</author>
 	<creationDate>May 2010</creationDate>
-	<copyright>Copyright (C) 2005 - 2010 HUBzero.org. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>alisa@purdue.edu</authorEmail>
-	<authorUrl>www.HUBzero.org</authorUrl>
 	<version>1.0.0</version>
 	<description>This module allows the display of announcements</description>
 	<files>

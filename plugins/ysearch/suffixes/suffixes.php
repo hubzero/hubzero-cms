@@ -52,7 +52,7 @@ class plgYSearchSuffixes extends YSearchPlugin
 		$add = array();
 		foreach ($terms as $term)
 		{
-			// eg nanoelectric <-> nanoelectronic
+			// eg electric <-> electronic
 			if (preg_match('/^(.*?)(on)?ic$/', $term, $match))
 			{
 				$add[] = count($match) == 3 ? $match[1] . 'ic' : $match[1] . 'onic';

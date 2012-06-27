@@ -5,7 +5,6 @@
 	<copyright>Copyright 2012 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<authorEmail>nkissebe@purdue.edu</authorEmail>
-	<authorUrl>www.hubzero.org</authorUrl>
 	<version>1.5</version>
 	<description>Handles HUBzero default user authentication</description>
 	<files>

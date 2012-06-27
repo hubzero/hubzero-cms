@@ -32,7 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">yes</option>
 			<option value="0">no</option>
 		</param>		
-		<param name="industry" type="text" menu="hide" label="Industry Name" default="" description="Name of industry where jobs are posted, e.g. Nanotechnology" />
+		<param name="industry" type="text" menu="hide" label="Industry Name" default="" description="Name of industry where jobs are posted" />
 		<param name="admingroup" type="text" menu="hide" label="Admin Group" default="" description="Name of a HUB group to have unrestricted access to job postings and resumes, in addition to Joomla site administrators" />
 		<param name="specialgroup" type="text" menu="hide" label="Special Services Group " default="" description="Name of a HUB group to have access to restricted-level subscriptions (usually above Premium)" />
 		 <param name="autoapprove" type="radio" default="1" label="Auto approve job postings" description="Auto approve job postings from employer with a valid subscription">

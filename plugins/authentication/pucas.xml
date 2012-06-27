@@ -32,8 +32,6 @@ HUBzero is a registered trademark of Purdue University.
 	<creationDate>February 2008</creationDate>
 	<copyright>Copyright (C) 2008-2010 Purdue University.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<authorEmail>hubzero@hubzero.org</authorEmail>
-	<authorUrl>hubzero.org</authorUrl>
 	<version>1.5</version>
 	<description>Handles user authentication against Purdue's CAS</description>
 	<files>

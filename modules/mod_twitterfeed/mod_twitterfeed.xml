@@ -33,7 +33,6 @@ HUBzero is a registered trademark of Purdue University.
   	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license> 
     <authorEmail>csmoak@purdue.edu</authorEmail>   
-    <authorUrl>http://hubzero.org</authorUrl>   
     <version>1.0.0</version>
     <description>Loads the Twitter feed of the specified Twitter ID</description>  
     
@@ -50,7 +49,7 @@ HUBzero is a registered trademark of Purdue University.
     </languages>  
       
     <params> 
-	 	<param name="moduleTitle" type="text" default="GET VIRTUAL HIGHLIGHTS ON NANOEHS ARTICLES" label="Module Title Text" description="The title of the module block." />
+	 	<param name="moduleTitle" type="text" default="GET VIRTUAL HIGHLIGHTS ON SITE ARTICLES" label="Module Title Text" description="The title of the module block." />
 		<param name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." /> 
         <param name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." /> 
  		<param name="displayLink" type="list" default="yes" label="Display Link To Twitter" description="To display link to Twitter account page.">

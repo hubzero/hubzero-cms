@@ -102,7 +102,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			$awards = $awards->award();
 			
 			$increm  = '<div id="award-info">';
-			$increm .= '<p>It is important to us to know about the community we serve. To that end, we are offering <strong>nanos</strong> (our virtual currency, see <a href="/store">the store</a>) for filling out your profile.</p>';
+			$increm .= '<p>It is important to us to know about the community we serve. To that end, we are offering <strong>points</strong> (our virtual currency, see <a href="/store">the store</a>) for filling out your profile.</p>';
 			
 			if ($awards['prior']) 
 			{

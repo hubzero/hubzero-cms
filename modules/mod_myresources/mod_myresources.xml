@@ -33,8 +33,6 @@ HUBzero is a registered trademark of Purdue University.
 	<creationDate>January 2011</creationDate>
 	<copyright>(C) 2011 HUBzero</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>support@hubzero.org</authorEmail>
-	<authorUrl>http://hubzero.org</authorUrl>
 	<version>1</version>
 	<description>This module will display a list of publications (resources, wiki pages, etc.)</description>
 	<files>

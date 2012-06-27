@@ -34,7 +34,6 @@ HUBzero is a registered trademark of Purdue University.
 	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>zooley@purdue.edu</authorEmail>
-	<authorUrl>hubzero.org</authorUrl>
 	<version>1.5</version>
 	<description>Indent HTML correctly</description>
 	<files>

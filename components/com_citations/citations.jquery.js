@@ -24,7 +24,7 @@ if (!HUB) {
 }
 
 //----------------------------------------------------------
-// Scripts for the NCNReporting component
+// Scripts for the citations component
 //----------------------------------------------------------
 if (!jq) {
 	var jq = $;

@@ -22,10 +22,9 @@
 	<name>Google Analytics</name>
 	<author>Shawn Rice</author>
 	<creationDate>April 2012</creationDate>
-	<copyright>(C) 2012 Network for Computational Nanotechnology</copyright>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>zooley@purdue.edu</authorEmail>
-	<authorUrl>hubzero.org</authorUrl>
 	<version>1.5.0</version>
 	<description>This module adds some Javascript to the page for Google Analytics reporting</description>
 	<files>
