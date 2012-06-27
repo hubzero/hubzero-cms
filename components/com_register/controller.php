@@ -170,8 +170,11 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		$target_xprofile->loadRegistration($xregistration);
-
-		$hubHomeDir      = $xhub->getCfg('hubHomeDir');
+		
+		$params =& JComponentHelper::getParams('com_members');
+		
+		$hubHomeDir = trim($params->get('hubHomeDir'),'/');
+		
 		$updateEmail     = false;
 
 		if ($target_xprofile->get('homeDirectory') == '') {
@@ -364,8 +367,9 @@ class RegisterController extends Hubzero_Controller
 		// Get some settings
 		$jconfig =& JFactory::getConfig();
 		$this->jconfig = $jconfig;
-		$hubHomeDir      = $xhub->getCfg('hubHomeDir');
-
+		$params =& JComponentHelper::getParams('com_members');
+		$hubHomeDir = trim($params->get('hubHomeDir'),'/');
+		
 		jimport('joomla.application.component.helper');
 		$config   =& JComponentHelper::getParams( 'com_users' );
 		$usertype = $config->get( 'new_usertype', 'Registered' );
@@ -518,7 +522,9 @@ class RegisterController extends Hubzero_Controller
 
 		if (!$force && $check && JRequest::getMethod() == 'POST') {
 
-			$hubHomeDir      = $xhub->getCfg('hubHomeDir');
+			$params =& JComponentHelper::getParams('com_members');
+			$hubHomeDir = trim($params->get('hubHomeDir'),'/');
+
 			$updateEmail     = false;
 
 			if ($xprofile->get('homeDirectory') == '') {
@@ -768,8 +774,9 @@ class RegisterController extends Hubzero_Controller
 
 					// Get some settings
 					$xhub =& Hubzero_Factory::getHub();
-					$hubHomeDir      = $xhub->getCfg('hubHomeDir');
-
+					$params =& JComponentHelper::getParams('com_members');
+					$hubHomeDir = trim($params->get('hubHomeDir'),'/');
+					
 					// Attempt to get the new user
 					$xprofile = Hubzero_User_Profile::getInstance($user->get('id'));
 
